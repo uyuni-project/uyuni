@@ -152,23 +152,32 @@ public class JSONPackageState {
             PackageState packageState = new PackageState();
             packageState.setPackageState(ps);
             packageState.setName(PackageManager.lookupPackageName(getName()));
-            packageState.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
-                    getEpoch(), getVersion(), getRelease()));
             packageState.setArch(PackageFactory.lookupPackageArchByLabel(getArch()));
 
             // Some package states *require* a version constraint
             Optional<VersionConstraints> versionConstraint = getVersionConstraintId()
                     .flatMap(VersionConstraints::byId);
-            if (PackageStates.requiresVersionConstraint(ps) &&
-                    !versionConstraint.isPresent()) {
-                LOG.error("Version constraint required for " + ps + ": " +
-                        packageState.getName());
-                return Optional.empty();
+
+            if (PackageStates.requiresVersionConstraint(ps)) {
+                if (versionConstraint.isPresent()) {
+                    VersionConstraints vc = versionConstraint.get();
+                    if (vc != VersionConstraints.LATEST) {
+                        packageState.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
+                                getEpoch(), getVersion(), getRelease()));
+                    }
+                    packageState.setVersionConstraint(vc);
+                }
+                else {
+                    LOG.error("Version constraint required for " + ps + ": " +
+                            packageState.getName());
+                    return Optional.empty();
+                }
             }
             else {
-                versionConstraint.ifPresent(packageState::setVersionConstraint);
-                return Optional.of(packageState);
+               packageState.setVersionConstraint(
+                       versionConstraint.orElse(VersionConstraints.LATEST));
             }
+            return Optional.of(packageState);
         });
     }
 
