@@ -127,23 +127,23 @@ When(/^we wait till Salt master sees this minion as rejected$/) do
 end
 
 When(/^I delete this minion key in the Salt master$/) do
-  sshcmd("yes | salt-key -d #{$myhostname}")
+  sshcmd("salt-key -y -d #{$myhostname}")
 end
 
 When(/^I accept this minion key in the Salt master$/) do
-  sshcmd("yes | salt-key --accept=#{$myhostname}")
+  sshcmd("salt-key -y --accept=#{$myhostname}")
 end
 
 When(/^I reject this minion key in the Salt master$/) do
-  sshcmd("yes | salt-key --reject=#{$myhostname}")
+  sshcmd("salt-key -y --reject=#{$myhostname}")
 end
 
 When(/^I delete all keys in the Salt master$/) do
-  sshcmd("yes | salt-key -D")
+  sshcmd("salt-key -y -D")
 end
 
 When(/^I accept all Salt unaccepted keys$/) do
-  sshcmd("yes | salt-key -A")
+  sshcmd("salt-key -y -A")
 end
 
 When(/^I get OS information of the Minion from the Master$/) do
