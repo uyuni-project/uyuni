@@ -17,7 +17,7 @@ class XMLRPCBaseTest
 
 
   def logout()
-      @connection.call("auth.logout", @sid)
+    @connection.call("auth.logout", @sid)
   end
 end
 
