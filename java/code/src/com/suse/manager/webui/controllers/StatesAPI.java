@@ -29,6 +29,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.log4j.Logger;
+
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.RepoFileUtils;
@@ -57,6 +59,9 @@ import spark.Response;
  * Controller class providing the backend for API calls to work with states.
  */
 public class StatesAPI {
+
+    /** Logger */
+    private static final Logger LOG = Logger.getLogger(StatesAPI.class);
 
     private static final Gson GSON = new GsonBuilder().create();
     private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
@@ -211,6 +216,7 @@ public class StatesAPI {
      * @param server the server
      */
     private static void generateServerPackageState(Server server) {
+        LOG.debug("Generating SLS file for: " + server.getId());
         StateFactory.latestPackageStates(server).ifPresent(packageStates -> {
             SaltPkgInstalled pkgInstalled =
                     new SaltPkgInstalled(server.getDigitalServerId());
@@ -227,7 +233,7 @@ public class StatesAPI {
                 saltStateGenerator.generate(pkgInstalled);
             }
             catch (IOException e) {
-                e.printStackTrace();
+                LOG.error(e.getMessage(), e);
             }
         });
     }
