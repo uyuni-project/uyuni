@@ -9,7 +9,7 @@ Feature: Test XML-RPC "Action Chain" functionality.
     When I call XML-RPC/createChain with chainLabel "Quick Brown Fox"
     And I call actionchain.listChains() if label "Quick Brown Fox" is there
     Then I delete the action chain
-    And there should be no action chain with the label "Quick Brown Fox".
+    And there should be no action chain with the label "Quick Brown Fox"
     When I call XML-RPC/createChain with chainLabel "Quick Brown Fox"
     Then I call actionchain.renameChain() to rename it from "Quick Brown Fox" to "Slow Gray Elephant"
     Then there should be a new action chain with the label "Slow Gray Elephant"

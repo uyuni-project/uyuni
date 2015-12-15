@@ -1,4 +1,3 @@
-# COPYRIGHT 2015 SUSE LLC
 require 'json'
 
 virtualhostmanager = XMLRPCVHMTest.new(ENV['TESTHOST'])
