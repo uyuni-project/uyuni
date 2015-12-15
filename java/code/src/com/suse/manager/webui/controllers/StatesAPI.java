@@ -206,7 +206,8 @@ public class StatesAPI {
     }
 
     /**
-     * Generate package state file for a given server
+     * Generate the package states into an SLS file for a given server.
+     *
      * @param server the server
      */
     private static void generateServerPackageState(Server server) {
@@ -232,7 +233,8 @@ public class StatesAPI {
     }
 
     /**
-     * Import the current installed packages as state for a given server
+     * Import all currently installed packages as package states for a given server.
+     *
      * @param server the server
      */
     private void importPackageStates(Server server) {
