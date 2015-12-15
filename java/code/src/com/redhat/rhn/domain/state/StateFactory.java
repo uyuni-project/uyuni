@@ -88,7 +88,6 @@ public class StateFactory extends HibernateFactory {
      * @param server the server
      * @return the latest package states for this server
      */
-    @SuppressWarnings("unchecked")
     public static Optional<Set<PackageState>> latestPackageStates(Server server) {
         DetachedCriteria maxQuery = DetachedCriteria.forClass(ServerStateRevision.class)
                 .add(Restrictions.eq("server", server))
