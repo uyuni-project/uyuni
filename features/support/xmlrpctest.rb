@@ -7,7 +7,6 @@ class XMLRPCBaseTest
     @connection = XMLRPC::Client.new2("http://" + @host + "/rpc/api")
   end
 
-
   #
   # Authenticate against the $HOST
   #
