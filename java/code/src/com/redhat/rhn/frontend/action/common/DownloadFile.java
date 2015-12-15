@@ -255,6 +255,9 @@ public class DownloadFile extends DownloadAction {
 
 
         KickstartSession ksession = null;
+        KickstartSessionState newState = null;
+
+
         if (map.containsKey("session")) {
             String sessionId = SessionSwap.extractData(map.get("session"))[0];
             ksession = KickstartFactory.
@@ -280,10 +283,6 @@ public class DownloadFile extends DownloadAction {
         }
         else {
             tree = KickstartFactory.lookupKickstartTreeByLabel(label);
-        }
-
-        if (tree != null && tree.getChannel().getLabel() != label) {
-            map.put(CHILD, label);
         }
 
         if (map.containsKey("child") &&
