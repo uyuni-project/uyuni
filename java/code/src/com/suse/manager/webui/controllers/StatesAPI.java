@@ -35,6 +35,7 @@ import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.RepoFileUtils;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
+import com.suse.manager.webui.utils.SaltPkgRemoved;
 import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.gson.JSONPackageState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
@@ -221,9 +222,13 @@ public class StatesAPI {
         LOG.debug("Generating SLS file for: " + server.getId());
         StateFactory.latestPackageStates(server).ifPresent(packageStates -> {
             SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
+            SaltPkgRemoved pkgRemoved = new SaltPkgRemoved();
             for (PackageState state : packageStates) {
                 if (state.getPackageState() == PackageStates.INSTALLED) {
                     pkgInstalled.addPackage(state.getName().getName());
+                }
+                else if (state.getPackageState() == PackageStates.REMOVED) {
+                    pkgRemoved.addPackage(state.getName().getName());
                 }
             }
 
@@ -235,7 +240,7 @@ public class StatesAPI {
                         "packages_" + server.getDigitalServerId() + ".sls");
                 SaltStateGenerator saltStateGenerator =
                         new SaltStateGenerator(filePath.toFile());
-                saltStateGenerator.generate(pkgInstalled);
+                saltStateGenerator.generate(pkgInstalled, pkgRemoved);
             }
             catch (IOException e) {
                 LOG.error(e.getMessage(), e);

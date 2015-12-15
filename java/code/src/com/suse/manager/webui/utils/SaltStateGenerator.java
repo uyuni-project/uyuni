@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -56,7 +57,7 @@ public class SaltStateGenerator {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public void generate(SaltState state)
+    public void generate(SaltState... states)
             throws IOException {
         DumperOptions setup = new DumperOptions();
         setup.setIndent(4);
@@ -66,6 +67,9 @@ public class SaltStateGenerator {
         setup.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         setup.setCanonical(false);
 
-        new Yaml(setup).dump(state.getData(), this.destination);
+        Yaml yaml = new Yaml(setup);
+        for (SaltState state : states) {
+            yaml.dump(state.getData(), destination);
+        }
     }
 }
