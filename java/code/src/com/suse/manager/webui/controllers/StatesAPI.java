@@ -110,6 +110,7 @@ public class StatesAPI {
      * @return null to make spark happy
      */
     public static Object save(Request request, Response response, User user) {
+        response.type("application/json");
         JSONServerPackageStates json = GSON.fromJson(request.body(),
                 JSONServerPackageStates.class);
         Server server = ServerFactory.lookupById(json.getServerId());
@@ -129,9 +130,12 @@ public class StatesAPI {
 
         // Add only valid states to the new revision, unmanaged packages will be skipped
         json.getPackageStates().stream().forEach(pkgState ->
-                 pkgState.convertToPackageState().ifPresent(state::addPackageState));
+                 pkgState.convertToPackageState().ifPresent(s -> {
+                     s.setStateRevision(state);
+                     state.addPackageState(s);
+                 }));
         StateFactory.save(state);
-        return null;
+        return "";
     }
 
     /**
