@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -56,9 +55,7 @@ public class SaltPkgInstalled implements SaltState {
 
     private final String machineId;
     private final Set<String> repos;
-    private final Map<String, SaltPkgInstalled.Package> packages ;
-    private File destination;
-    private boolean packageVerify = true;
+    private final Map<String, SaltPkgInstalled.Package> packages;
 
     /**
      * Constructor.
@@ -71,17 +68,6 @@ public class SaltPkgInstalled implements SaltState {
     }
 
     /**
-     * Set package verification flag.
-     *
-     * @param packageVerify
-     * @return
-     */
-    public SaltPkgInstalled setPackageVerify(boolean packageVerify) {
-        this.packageVerify = packageVerify;
-        return this;
-    }
-
-    /**
      * Add a repository.
      *
      * @param repo
@@ -89,7 +75,6 @@ public class SaltPkgInstalled implements SaltState {
      */
     public SaltPkgInstalled addRepo(String repo) {
         this.repos.add(repo);
-
         return this;
     }
 
@@ -128,44 +113,48 @@ public class SaltPkgInstalled implements SaltState {
     }
 
     /**
-     * Get a data for the YAML.
+     * Get the data structure to be serialized as YAML.
      *
-     * @return
+     * @return data structure to be serialized as YAML
      */
     @Override
     public Map<String, Object> getData() {
-        Map<String, Object> policy = new LinkedHashMap<>();
-        Map<String, Object> pkgs = new LinkedHashMap<>();
-        Map<String, Object> state = new LinkedHashMap<>();
-        List<Object> content = new ArrayList<>();
-
         // Set general settings
-        pkgs.put("pkg_verify", this.packageVerify);
-        pkgs.put("refresh", false);
+        List<Map<String, Object>> pkgs = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        map.put("refresh", true);
+        pkgs.add(map);
 
-        // Set packages
-        for (SaltPkgInstalled.Package pkg : this.packages.values()) {
+        // The list of packages
+        List<Object> pkgsList = new ArrayList<>();
+        for (SaltPkgInstalled.Package pkg : packages.values()) {
             if (pkg.getVersion() != null) {
                 StringBuilder version = new StringBuilder();
                 if (pkg.getOperator() != null) {
                     version.append(pkg.getOperator());
                 }
                 version.append(pkg.getVersion());
-                content.add(new HashMap<String, Object>() {
+                pkgsList.add(new HashMap<String, Object>() {
                     {
                         put(pkg.getName(), version.toString());
                     }
                 });
             }
             else {
-                content.add(pkg.getName());
+                pkgsList.add(pkg.getName());
             }
         }
+        map = new HashMap<>();
+        map.put("pkgs", pkgsList);
+        pkgs.add(map);
 
-        state.put(String.format("%s_pkg_installed", this.machineId), policy);
+        // Put the policy
+        Map<String, Object> policy = new LinkedHashMap<>();
         policy.put("pkg.installed", pkgs);
-        pkgs.put("pkgs", content);
 
+        // State is on the top level
+        Map<String, Object> state = new LinkedHashMap<>();
+        state.put(String.format("%s_pkg_installed", this.machineId), policy);
         return state;
     }
 }
