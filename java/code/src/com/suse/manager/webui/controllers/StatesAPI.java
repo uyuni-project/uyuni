@@ -19,8 +19,10 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.PackageState;
+import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
@@ -29,17 +31,24 @@ import com.google.gson.GsonBuilder;
 
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.RepoFileUtils;
+import com.suse.manager.webui.utils.SaltPkgInstalled;
+import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.gson.JSONPackageState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
 import com.suse.manager.webui.utils.salt.Grains;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import spark.Request;
 import spark.Response;
@@ -135,6 +144,7 @@ public class StatesAPI {
                      state.addPackageState(s);
                  }));
         StateFactory.save(state);
+        generateServerPackageState(server);
         return "";
     }
 
@@ -193,5 +203,57 @@ public class StatesAPI {
                     Optional.of(state.getVersionConstraintId())
             )
         ).collect(Collectors.toSet());
+    }
+
+    /**
+     * Generate package state file for a given server
+     * @param server the server
+     */
+    private static void generateServerPackageState(Server server) {
+        StateFactory.latestPackageStates(server).ifPresent(packageStates -> {
+            SaltPkgInstalled pkgInstalled =
+                    new SaltPkgInstalled(server.getDigitalServerId());
+            for (PackageState state : packageStates) {
+                if (state.getPackageState() == PackageStates.INSTALLED) {
+                    if (state.getVersionConstraint() == VersionConstraints.EQUAL) {
+                        pkgInstalled.addPackage(state.getName().getName(),
+                                state.getEvr().getVersion());
+                    } else if (state.getVersionConstraint() == VersionConstraints.LATEST) {
+                        pkgInstalled.addPackage(state.getName().getName());
+                    }
+                }
+            }
+
+            Path baseDir = Paths.get(RepoFileUtils.GENERATED_SLS_ROOT, "packages.sls");
+            try {
+                SaltStateGenerator saltStateGenerator =
+                        new SaltStateGenerator(baseDir.toFile());
+                saltStateGenerator.generate(pkgInstalled);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * Import the current installed packages as state for a given server
+     * @param server the server
+     */
+    private void importPackageStates(Server server) {
+        ServerStateRevision serverRev =  new ServerStateRevision();
+        serverRev.setServer(server);
+        Stream<PackageState> packageStateStream = server.getPackages().stream().map(pkg -> {
+            PackageState packageState = new PackageState();
+            packageState.setStateRevision(serverRev);
+            packageState.setName(pkg.getName());
+            packageState.setEvr(pkg.getEvr());
+            packageState.setArch(pkg.getArch());
+            packageState.setPackageState(PackageStates.INSTALLED);
+            packageState.setVersionConstraint(VersionConstraints.EQUAL);
+            return packageState;
+        });
+        serverRev.setPackageStates(packageStateStream.collect(Collectors.toSet()));
+        StateFactory.save(serverRev);
     }
 }
