@@ -10,7 +10,7 @@ Given /^I am logged in via XML\-RPC\/user as user "([^"]*)" and password "([^"]*
 end
 
 When /^I call user\.listUsers\(\)$/ do
-  users = rpctest.getUserIds()
+  users = rpctest.getUsers()
 end
 
 Then /^I should get at least user "([^"]*)"$/ do |luser|
@@ -38,7 +38,7 @@ When /^I call user\.create\(sid, login, pwd, name, lastname, email\) with login 
 end
 
 Then /^when I call user\.listUsers\(\), I should see a user "([^"]*)"$/ do |luser|
-  users = rpctest.getUserIds()
+  users = rpctest.getUsers()
   seen = false
   for user in users
     if luser == user['login']
@@ -74,7 +74,7 @@ When /^I delete user "([^"]*)"$/ do |luser|
 end
 
 Given /^I make sure "([^"]*)" is not present$/ do |luser|
-  users = rpctest.getUserIds()
+  users = rpctest.getUsers()
   for user in users
     if luser == user['login']
       rpctest.deleteUser(luser)
