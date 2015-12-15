@@ -12,6 +12,7 @@ LOGFILE="/var/log/susemanager-ora2pg.log"
 # set -x
 exec > >(tee -a $LOGFILE) 2>&1
 
+echo
 echo "################################################"
 date
 echo "################################################"
@@ -22,7 +23,7 @@ if [ $UID -ne 0 ]; then
 fi
 
 TIMESTAMP=`date "+%Y%m%d%H%M%S"`
-DUMPFILE="/var/tmp/oracle-db.dump"
+DUMPFILE="/var/tmp/oracle-db.dump.gz"
 
 read_value() {
     local key=$1
@@ -121,11 +122,14 @@ dump_schema() {
         exit 1
     fi
     if [ ! -s "$DUMPFILE" ]; then
+        echo "`date +"%H:%M:%S"`   Dumping Oracle database. Please wait..."
         perl -CSAD /usr/bin/spacewalk-dump-schema \
-             --db="$DBNAME" --user="$DBUSER" --password="$DBPASS" > $DUMPFILE
+             --db="$DBNAME" --user="$DBUSER" --password="$DBPASS" | gzip > $DUMPFILE
         if [ "$?" != "0" ]; then
-            echo "Failed to dump the schema."
+            echo "`date +"%H:%M:%S"`   FAILURE!"
             exit 1
+        else
+            echo "`date +"%H:%M:%S"`   Database successfully dumped."
         fi
     else
         echo "Using existing schema dump ($DUMPFILE)"
@@ -133,14 +137,17 @@ dump_schema() {
 }
 
 import_schema() {
+    echo "`date +"%H:%M:%S"`   Importing database dump. Please wait..."
     if [ ! -s "$DUMPFILE" ]; then
         echo "Unable to import schema. $DUMPFILE does not exist or is empty."
         exit 1
     fi
-    PGPASSWORD="$DBPASS" psql -h localhost -U "$DBUSER" "$DBNAME" < $DUMPFILE
+    zcat $DUMPFILE | PGPASSWORD="$DBPASS" psql -h localhost -U "$DBUSER" "$DBNAME" > /dev/null
     if [ "$?" != "0" ]; then
-        echo "Failed to load the schema."
+        echo "`date +"%H:%M:%S"`   FAILURE!"
         exit 1
+    else
+        echo "`date +"%H:%M:%S"`   Database dump successfully imported."
     fi
 }
 
@@ -270,3 +277,6 @@ configure_suma
 import_schema
 
 spacewalk-service start
+
+echo "`date +"%H:%M:%S"`   Migration successful!"
+echo "Database dump $DUMPFILE can be deleted to free up space."
