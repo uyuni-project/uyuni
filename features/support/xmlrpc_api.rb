@@ -1,19 +1,14 @@
-File.expand_path(__FILE__)           # For Ruby 1.9.2+
-$LOAD_PATH << File.dirname(__FILE__) # For Ruby 1.8
-
-require 'xmlrpctest'
-
+require_relative 'xmlrpctest'
 
 class XMLRPCApiTest < XMLRPCBaseTest
   def getVersion()
-    return @connection.call("api.getVersion")
+    @connection.call("api.getVersion")
   end
 
 
   def systemVersion()
-    return @connection.call("api.systemVersion")
+    @connection.call("api.systemVersion")
   end
-
 
   def getCountOfApiNamespaces()
     namespaces = @connection.call("api.getApiNamespaces", @sid)
@@ -21,10 +16,8 @@ class XMLRPCApiTest < XMLRPCBaseTest
     if namespaces != nil
       count = namespaces.length
     end
-
     return count
   end
-
 
   #
   # Test lists all available api calls grouped by namespace.
@@ -35,10 +28,8 @@ class XMLRPCApiTest < XMLRPCBaseTest
     if callList != nil
       count = callList.length
     end
-
     return count
   end
-
 
   def getCountOfApiNamespaceCallList()
     count = 0
@@ -54,7 +45,6 @@ class XMLRPCApiTest < XMLRPCBaseTest
         puts "Failed"
       end
     end
-
     return count
   end
 end
