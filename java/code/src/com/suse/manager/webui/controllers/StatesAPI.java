@@ -42,6 +42,7 @@ import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
 import com.suse.manager.webui.utils.salt.Grains;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -65,6 +66,7 @@ public class StatesAPI {
 
     private static final Gson GSON = new GsonBuilder().create();
     private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
+    public static final String SALT_PACKAGE_FILES = "packages";
 
     private StatesAPI() { }
 
@@ -218,18 +220,21 @@ public class StatesAPI {
     private static void generateServerPackageState(Server server) {
         LOG.debug("Generating SLS file for: " + server.getId());
         StateFactory.latestPackageStates(server).ifPresent(packageStates -> {
-            SaltPkgInstalled pkgInstalled =
-                    new SaltPkgInstalled(server.getDigitalServerId());
+            SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
             for (PackageState state : packageStates) {
                 if (state.getPackageState() == PackageStates.INSTALLED) {
                     pkgInstalled.addPackage(state.getName().getName());
                 }
             }
 
-            Path baseDir = Paths.get(RepoFileUtils.GENERATED_SLS_ROOT, "packages.sls");
             try {
+                Path baseDir = Paths.get(
+                        RepoFileUtils.GENERATED_SLS_ROOT, SALT_PACKAGE_FILES);
+                Files.createDirectories(baseDir);
+                Path filePath = baseDir.resolve(
+                        "packages_" + server.getDigitalServerId() + ".sls");
                 SaltStateGenerator saltStateGenerator =
-                        new SaltStateGenerator(baseDir.toFile());
+                        new SaltStateGenerator(filePath.toFile());
                 saltStateGenerator.generate(pkgInstalled);
             }
             catch (IOException e) {
