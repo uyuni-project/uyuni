@@ -4,3 +4,4 @@ base:
     - channels
   '*':
     - certs
+    - packages
