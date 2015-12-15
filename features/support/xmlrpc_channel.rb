@@ -1,78 +1,34 @@
-File.expand_path(__FILE__)           # For Ruby 1.9.2+
-$LOAD_PATH << File.dirname(__FILE__) # For Ruby 1.8
-
-require 'xmlrpctest'
+require_relative 'xmlrpctest'
 
 class XMLRPCChannelTest < XMLRPCBaseTest
 
-  #
-  # Create a repo
-  #
   def createRepo(label, url)
-    ret = nil
-    begin
-       ret = @connection.call("channel.software.createRepo", @sid, label, 'yum', url)
-    rescue Exception => ex
-      puts "Something went wrong: " + ex
-    ensure
-      return ret
-    end
+    @connection.call("channel.software.createRepo", @sid, label, 'yum', url)
   end
 
-  #
-  # associateRepo
-  #
   def  associateRepo(channelLabel, repoLabel)
-    ret = nil
-    begin
-      ret = @connection.call("channel.software.associateRepo", @sid, channelLabel, repoLabel)
-    rescue Exception => ex
-      puts "Something went wrong: " + ex
-    ensure
-      return ret
-    end
+    @connection.call("channel.software.associateRepo", @sid, channelLabel, repoLabel)
   end
 
   #
   # Create a custom software channel
   #
   def create(label, name, summary, arch, parent)
-    ret = nil
-    begin
-      ret = @connection.call("channel.software.create", @sid, label, name, summary, arch, parent)
-    rescue Exception => ex
-      puts "Something went wrong: " + ex
-    ensure
-      return ret
-    end
+    @connection.call("channel.software.create", @sid, label, name, summary, arch, parent)
   end
 
   #
   # Delete a custom software channel
   #
   def delete(label)
-    ret = nil
-    begin
-      ret = @connection.call("channel.software.delete", @sid, label)
-    rescue Exception => ex
-      puts "Something went wrong: " + ex
-    ensure
-      return ret
-    end
+    @connection.call("channel.software.delete", @sid, label)
   end
 
   #
   # Delete a repo
   #
   def deleteRepo(label)
-    ret = nil
-    begin
-      ret = @connection.call("channel.software.removeRepo", @sid, label)
-    rescue Exception => ex
-      puts "Something went wrong: " + ex
-    ensure
-      return ret
-    end
+    @connection.call("channel.software.removeRepo", @sid, label)
   end
 
   #
@@ -82,49 +38,30 @@ class XMLRPCChannelTest < XMLRPCBaseTest
     channels = @connection.call("channel.listSoftwareChannels", @sid)
     return channels == nil ? 0 : channels.length
   end
- 
+
   #
   # Check if a certain software channel is listed
   #
   def verifyChannel(label)
-    channels = @connection.call("channel.listSoftwareChannels", @sid)
-    for c in channels
-      if label == c['label']
-          return true
-      end
-    end
-    return false
+    @connection.call("channel.listSoftwareChannels", @sid)
+      .map {|c| c['label']}
+      .include?(label)
   end
 
   #
   # Check if a software channel is the parent of a given child channel
   #
   def isParentChannel(child, parent)
-    ret = false
-    begin
-      channel = @connection.call("channel.software.getDetails", @sid, child)
-      if channel['parent_channel_label'] == parent
-        ret = true
-      end
-    rescue Exception => ex
-      puts "Something went wrong: " + ex
-    ensure
-      return ret
-    end
+    channel = @connection.call("channel.software.getDetails", @sid, child)
+    return true if channel['parent_channel_label'] == parent
+    false
   end
 
   #
   # get channel details
   #
   def getChannelDetails(label)
-    ret = nil
-    begin
-      ret = @connection.call("channel.software.getDetails", @sid, label)
-    rescue Exception => ex
-      puts "Something went wrong: " + ex
-    ensure
-      return ret
-    end
+    @connection.call("channel.software.getDetails", @sid, label)
   end
 
   #
