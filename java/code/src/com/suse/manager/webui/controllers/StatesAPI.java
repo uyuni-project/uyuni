@@ -148,7 +148,7 @@ public class StatesAPI {
     public static Object apply(Request request, Response response) {
         JSONServerApplyStates json = GSON.fromJson(request.body(),
                 JSONServerApplyStates.class);
-        Server server = ServerFactory.lookupById(Long.valueOf(json.getServerId()));
+        Server server = ServerFactory.lookupById(json.getServerId());
         Map<String, Map<String, Object>> results = SALT_SERVICE.applyState(
                 new Grains("machine_id", server.getDigitalServerId()), json.getStates());
 
