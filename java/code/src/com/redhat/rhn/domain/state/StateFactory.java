@@ -18,10 +18,15 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Factory class for working with states.
@@ -75,6 +80,24 @@ public class StateFactory extends HibernateFactory {
                 .add(Restrictions.eq("server", server))
                 .addOrder(Order.desc("created"))
                 .list();
+    }
+
+    /**
+     * Lookup the latest set of {@link PackageState} objects for a given server.
+     *
+     * @param server the server
+     * @return the latest package states for this server
+     */
+    @SuppressWarnings("unchecked")
+    public static Optional<Set<PackageState>> latestPackageStates(Server server) {
+        DetachedCriteria maxQuery = DetachedCriteria.forClass(ServerStateRevision.class)
+                .add(Restrictions.eq("server", server))
+                .setProjection(Projections.max("created"));
+        return Optional.ofNullable((Set<PackageState>) getSession()
+                .createCriteria(ServerStateRevision.class)
+                .add(Restrictions.eq("server", server))
+                .add(Property.forName("created").eq(maxQuery))
+                .uniqueResult());
     }
 
     /**
