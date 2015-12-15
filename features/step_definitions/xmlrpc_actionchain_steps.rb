@@ -32,8 +32,8 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
   end
 
   # Flush all chains
-  for chain in rpc.listChains() do
-    rpc.deleteChain(chain["name"])
+  rpc.listChains.each do |label|
+    rpc.deleteChain(label)
   end
 end
 
