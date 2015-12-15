@@ -63,6 +63,7 @@ public class JsonSystem {
      * @param s the server
      */
     public JsonSystem(Server s) {
+        this();
         id = s.getId();
         name = s.getName();
         if (s.getCpu() == null) {
@@ -78,7 +79,6 @@ public class JsonSystem {
         if (productSet != null) {
             baseProduct = productSet.getBaseProduct();
         }
-        productIds = new LinkedList<>();
         if (baseProduct != null) {
             productIds.add(baseProduct.getProductId());
 
@@ -89,7 +89,6 @@ public class JsonSystem {
                 productIds.add(p.getProductId());
             }
         }
-        virtualSystemIds = new LinkedList<>();
         for (VirtualInstance vi : s.getGuests()) {
             Server guest = vi.getGuestSystem();
             if (guest != null) {

@@ -114,7 +114,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     assertEquals("874-005117", item.getSku());
                 }
                 else {
-                    assertTrue(false);
+                    fail();
                 }
             }
         }

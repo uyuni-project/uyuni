@@ -8,13 +8,13 @@
             </generator>
         </id>
         <property name="sccId" column="scc_id" type="long"/>
-		<property name="name" column="name" type="string"/>
-		<property name="startsAt" column="starts_at" type="timestamp"/>
-		<property name="expiresAt" column="expires_at" type="timestamp"/>
-		<property name="status" column="status" type="string"/>
-		<property name="regcode" column="regcode" type="string"/>
-		<property name="type" column="subtype" type="string"/>
-		<property name="systemLimit" column="system_limit" type="long"/>
+        <property name="name" column="name" type="string"/>
+        <property name="startsAt" column="starts_at" type="timestamp"/>
+        <property name="expiresAt" column="expires_at" type="timestamp"/>
+        <property name="status" column="status" type="string"/>
+        <property name="regcode" column="regcode" type="string"/>
+        <property name="type" column="subtype" type="string"/>
+        <property name="systemLimit" column="system_limit" type="long"/>
         <property name="created" column="created" type="timestamp" insert="false" update="false"/>
         <property name="modified" column="modified" type="timestamp"/>
         <many-to-one name="credentials" column="credentials_id" class="com.redhat.rhn.domain.credentials.Credentials"/>
