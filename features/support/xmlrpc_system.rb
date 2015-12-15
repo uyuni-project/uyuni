@@ -5,6 +5,10 @@ class XMLRPCSystemTest < XMLRPCBaseTest
     @connection.call('system.listSystems', @sid)
   end
 
+  def deleteSystem(id)
+    @connection.call('system.deleteSystems', @sid, id)
+  end
+
   # Get the list of latest installable packages for a given system.
   def listAllInstallablePackages(server)
     @connection.call('system.listAllInstallablePackages', @sid, server)

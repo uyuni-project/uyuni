@@ -32,10 +32,6 @@ When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
   @output = sshcmd("cat #{filename}")
 end
 
-When(/^I delete the key of this client$/) do
-  sshcmd("yes | salt-key -d #{$myhostname}")
-end
-
 When(/^I restart salt-minion$/) do
   system("systemctl restart salt-minion")
 end
@@ -90,6 +86,7 @@ end
 Given(/^this minion key is unaccepted$/) do
   steps %{
     Then I delete this minion key in the Salt master
+    And I restart salt-minion
     And we wait till Salt master sees this minion as unaccepted
   }
 end
@@ -130,7 +127,7 @@ When(/^we wait till Salt master sees this minion as rejected$/) do
 end
 
 When(/^I delete this minion key in the Salt master$/) do
-  sshcmd("yes | salt-key --delete=#{$myhostname}")
+  sshcmd("yes | salt-key -d #{$myhostname}")
 end
 
 When(/^I accept this minion key in the Salt master$/) do
@@ -154,14 +151,22 @@ When(/^I get OS information of the Minion from the Master$/) do
 end
 
 Then(/^it should contain a "(.*?)" text$/) do |content|
-  fail if not @output[:stdout].include? content
+  assert_match(/#{content}/, @output[:stdout])
 end
 
 Then(/^salt\-api should be listening on local port (\d+)$/) do |port|
-  fail if not sshcmd("ss -nta | grep #{port}")[:stdout].include? "127.0.0.1:#{port}"
+  output = sshcmd("ss -nta | grep #{port}")
+  assert_match(/127.0.0.1:#{port}/, output[:stdout])
 end
 
 Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
-  fail if not sshcmd("ss -nta | grep #{port}")[:stdout].include? "*:#{port}"
+  output = sshcmd("ss -nta | grep #{port}")
+  assert_match(/\*:#{port}/, output[:stdout])
 end
 
+And(/^this minion is not registered in Spacewalk$/) do
+  @rpc = XMLRPCSystemTest.new($myhostname)
+  @rpc.login('admin', 'admin')
+  @rpc.deleteSystem($myhostname)
+  refute_includes(@rpc.listSystems.map {|s| s['id']}, $myhostname)
+end

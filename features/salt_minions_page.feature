@@ -7,7 +7,7 @@ Feature: Explore the Minions page
   I want to verify all the minion key management features in the UI
 
   Background:
-    Given I am authorized as "admin" with password "admin"
+    Given I am authorized as "testing" with password "testing"
 
   Scenario: Completeness of the Minions page
     And I go to the minion onboarding page
@@ -42,6 +42,7 @@ Feature: Explore the Minions page
 
   Scenario: Accepted minion shows up as a registered system
     Given this minion key is unaccepted
+    And this minion is not registered in Spacewalk
     And I go to the minion onboarding page
     Then I should see this client in the Pending section
     When I accept this client's minion key
