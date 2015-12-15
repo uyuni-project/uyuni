@@ -53,7 +53,6 @@ public class SaltPkgInstalled implements SaltState {
         }
     }
 
-    private final String machineId;
     private final Set<String> repos;
     private final Map<String, SaltPkgInstalled.Package> packages;
 
@@ -61,8 +60,7 @@ public class SaltPkgInstalled implements SaltState {
      * Constructor.
      * @param machineId
      */
-    public SaltPkgInstalled(String machineId) {
-        this.machineId = machineId;
+    public SaltPkgInstalled() {
         this.repos = new HashSet<>();
         this.packages = new LinkedHashMap<>();
     }
@@ -154,7 +152,7 @@ public class SaltPkgInstalled implements SaltState {
 
         // State is on the top level
         Map<String, Object> state = new LinkedHashMap<>();
-        state.put(String.format("%s_pkg_installed", this.machineId), policy);
+        state.put("pkg_installed", policy);
         return state;
     }
 }

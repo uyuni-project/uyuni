@@ -63,7 +63,7 @@ public class SaltStateGeneratorTest extends TestCase {
      */
     @SuppressWarnings("unchecked")
     public void testSLSTestBasicTree() throws IOException {
-        SaltPkgInstalled obj = new SaltPkgInstalled(SaltStateGeneratorTest.MACHINE_ID);
+        SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackage("emacs");
         this.generator.generate(obj);
 
@@ -89,7 +89,7 @@ public class SaltStateGeneratorTest extends TestCase {
      */
     @SuppressWarnings("unchecked")
     public void testSLSPackageInstalledNoVersion() throws IOException {
-        SaltPkgInstalled obj = new SaltPkgInstalled(SaltStateGeneratorTest.MACHINE_ID);
+        SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackage("emacs");
         this.generator.generate(obj);
 
@@ -109,7 +109,7 @@ public class SaltStateGeneratorTest extends TestCase {
     @SuppressWarnings("unchecked")
     public void testSLSPackageInstalledVersion() throws IOException {
         String ver = "24.5.1";
-        SaltPkgInstalled obj = new SaltPkgInstalled(SaltStateGeneratorTest.MACHINE_ID);
+        SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackage("emacs", ver);
         this.generator.generate(obj);
 
@@ -125,7 +125,7 @@ public class SaltStateGeneratorTest extends TestCase {
     @SuppressWarnings("unchecked")
     public void testSLSPackageInstalledOpVersion() throws IOException {
         String ver = "24.5.1";
-        SaltPkgInstalled obj = new SaltPkgInstalled(SaltStateGeneratorTest.MACHINE_ID);
+        SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackage("emacs", ver, ">");
         this.generator.generate(obj);
         Map<String, Object> data = this.getPayload((Map<String, Object>)
@@ -140,7 +140,7 @@ public class SaltStateGeneratorTest extends TestCase {
      */
     @SuppressWarnings("unchecked")
     public void testSLSPackagesInstalledNoVersion() throws IOException {
-        SaltPkgInstalled obj = new SaltPkgInstalled(SaltStateGeneratorTest.MACHINE_ID);
+        SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackage("emacs");
         obj.addPackage("jed");
         obj.addPackage("mutt");
@@ -163,7 +163,7 @@ public class SaltStateGeneratorTest extends TestCase {
      */
     @SuppressWarnings("unchecked")
     public void testSLSPackagesInstalledVersion() throws IOException {
-        SaltPkgInstalled obj = new SaltPkgInstalled(SaltStateGeneratorTest.MACHINE_ID);
+        SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackage("emacs", "24.5.1");
         obj.addPackage("jed", "1.2.3");
         obj.addPackage("mutt", "5.0.5");
@@ -197,7 +197,7 @@ public class SaltStateGeneratorTest extends TestCase {
      */
     @SuppressWarnings("unchecked")
     public void testSLSPackagesInstalledOpVersion() throws IOException {
-        SaltPkgInstalled obj = new SaltPkgInstalled(SaltStateGeneratorTest.MACHINE_ID);
+        SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackage("emacs", "24.5.1", ">");
         obj.addPackage("jed", "1.2.3", ">");
         obj.addPackage("mutt", "5.0.5", ">");
