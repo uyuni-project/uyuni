@@ -586,6 +586,7 @@ install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirwiz}
 install -d -m 755 $RPM_BUILD_ROOT%{cobdirsnippets}
 %if 0%{?suse_version}
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
+install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/subscription-matcher
 %else
 install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 %endif
@@ -917,6 +918,7 @@ fi
 
 %if 0%{?suse_version}
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/scc
+%attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/subscription-matcher
 %dir %{appdir}/rhn/WEB-INF
 %dir %{jardir}
 %else

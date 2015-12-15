@@ -16,6 +16,7 @@ package com.suse.scc.client;
 
 import com.redhat.rhn.domain.scc.SCCRepository;
 
+import com.suse.scc.model.SCCOrder;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
@@ -55,5 +56,15 @@ public interface SCCClient {
      * @throws SCCClientException if anything goes wrong SCC side
      */
     List<SCCSubscription> listSubscriptions() throws SCCClientException;
+
+    /**
+     * Gets and returns the list of orders available to an organization.
+     *
+     * GET /connect/organizations/orders
+     *
+     * @return list of orders available to organization
+     * @throws SCCClientException if anything goes wrong SCC side
+     */
+    List<SCCOrder> listOrders() throws SCCClientException;
 
 }
