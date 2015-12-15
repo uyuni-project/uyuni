@@ -100,8 +100,8 @@ public class StatesAPI {
     }
 
     /**
-     * Save a new state revision for a server given an incoming list of package states in
-     * the request body.
+     * Save a new state revision for a server based on the latest existing revision and an
+     * incoming list of changed package states in the request body.
      *
      * @param request the request object
      * @param response the response object
@@ -111,17 +111,25 @@ public class StatesAPI {
     public static Object save(Request request, Response response, User user) {
         JSONServerPackageStates json = GSON.fromJson(request.body(),
                 JSONServerPackageStates.class);
+        Server server = ServerFactory.lookupById(json.getServerId());
 
-        // Save a new state revision for the specified server
+        // Create a new state revision for this server
         ServerStateRevision state = new ServerStateRevision();
-        state.setServer(ServerFactory.lookupById(json.getServerId()));
+        state.setServer(server);
         state.setCreator(user);
-        json.getPackageStates().forEach(pkgState -> {
-            pkgState.convertToPackageState().ifPresent(state::addPackageState);
-        });
-        StateFactory.save(state);
 
-        // Make spark happy
+        // Get the latest package states, convert to JSON and merge with the changes
+        Set<JSONPackageState> jsonLatestStates = new HashSet<>();
+        Optional<Set<PackageState>> latestStates = StateFactory.latestPackageStates(server);
+        if (latestStates.isPresent()) {
+            jsonLatestStates = convertToJSON(latestStates.get());
+        }
+        json.getPackageStates().addAll(jsonLatestStates);
+
+        // Add only valid states to the new revision, unmanaged packages will be skipped
+        json.getPackageStates().stream().forEach(pkgState ->
+                 pkgState.convertToPackageState().ifPresent(state::addPackageState));
+        StateFactory.save(state);
         return null;
     }
 
@@ -158,19 +166,27 @@ public class StatesAPI {
             packageStates = stateRevisions.get(0).getPackageStates();
         }
 
-        // Convert into a list of JSON objects
-        Set<JSONPackageState> currentStates = packageStates.stream().map(state ->
-                new JSONPackageState(
-                        state.getName().getName(),
-                        Optional.ofNullable(state.getEvr())
-                                .orElse(new PackageEvr("", "", "")),
-                        Optional.ofNullable(state.getArch())
-                                .map(PackageArch::getLabel).orElse(""),
-                        Optional.of(state.getPackageStateTypeId()),
-                        Optional.of(state.getVersionConstraintId())
-                )
-        ).collect(Collectors.toSet());
+        return convertToJSON(packageStates);
+    }
 
-        return currentStates;
+    /**
+     * Convert a given set of {@link PackageState} objects into a set of
+     * {@link JSONPackageState} objects.
+     *
+     * @param packageStates the set of package states
+     * @return set of JSON objects
+     */
+    private static Set<JSONPackageState> convertToJSON(Set<PackageState> packageStates) {
+        return packageStates.stream().map(state ->
+            new JSONPackageState(
+                    state.getName().getName(),
+                    Optional.ofNullable(state.getEvr())
+                            .orElse(new PackageEvr("", "", "")),
+                    Optional.ofNullable(state.getArch())
+                            .map(PackageArch::getLabel).orElse(""),
+                    Optional.of(state.getPackageStateTypeId()),
+                    Optional.of(state.getVersionConstraintId())
+            )
+        ).collect(Collectors.toSet());
     }
 }
