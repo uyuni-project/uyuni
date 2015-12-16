@@ -1,4 +1,5 @@
 require 'jwt'
+require 'securerandom'
 
 def token(secret, org, channels)
   payload = { org: org }
@@ -17,4 +18,8 @@ end
 
 Given(/^I have a valid token for organization "([^"]*)"$/) do |arg1|
   @token = token(server_secret, 1, nil)
+end
+
+Given(/^I have an invalid token for organization "([^"]*)"$/) do |arg1|
+  @token = token(SecureRandom.hex(64), 1, nil)
 end
