@@ -22,7 +22,6 @@ Feature: Explore the Minions page
 
   Scenario: Pending minion shows up in the Overview dashboard
     Given this minion key is unaccepted
-    And I go to the minion onboarding page
     Then I should see a "Manage Pending Minions (1)" link
     When I follow "Manage Pending Minions (1)"
     Then I should see this client in the Pending section
