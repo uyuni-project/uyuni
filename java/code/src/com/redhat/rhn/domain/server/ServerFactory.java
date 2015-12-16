@@ -937,6 +937,8 @@ public class ServerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<Server> list() {
-        return getSession().createCriteria(Server.class).list();
+        return getSession().createCriteria(Server.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .list();
     }
 }
