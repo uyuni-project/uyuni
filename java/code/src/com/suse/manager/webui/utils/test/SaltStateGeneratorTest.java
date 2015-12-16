@@ -31,7 +31,6 @@ import org.yaml.snakeyaml.Yaml;
 public class SaltStateGeneratorTest extends TestCase {
     private SaltStateGenerator generator;
     private StringWriter writer;
-    private static final String MACHINE_ID = "testminion";
     private Yaml yaml;
 
     @Override
@@ -48,12 +47,9 @@ public class SaltStateGeneratorTest extends TestCase {
      * @return
      */
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getPayload(Map<String, Object> data) {
-        @SuppressWarnings("unchecked")
-        Map<String, Object> sub = (Map<String, Object>) data
-                .get(String.format("%s_pkg_installed", SaltStateGeneratorTest.MACHINE_ID));
-
-        return (Map<String, Object>) sub.get("pkg.installed");
+    private List<Map<String, Object>> getPayload(Map<String, Object> data) {
+        Map<String, Object> sub = (Map<String, Object>) data.get("pkg_installed");
+        return (List<Map<String, Object>>) sub.get("pkg.installed");
     }
 
     /**
@@ -67,19 +63,14 @@ public class SaltStateGeneratorTest extends TestCase {
         obj.addPackage("emacs");
         this.generator.generate(obj);
 
-        @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> data = (LinkedHashMap<String, Object>)
                 this.yaml.load(this.writer.getBuffer().toString());
-        @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> sub = (LinkedHashMap<String, Object>)
-                data.get(String.format("%s_pkg_installed",
-                                       SaltStateGeneratorTest.MACHINE_ID));
+                data.get("pkg_installed");
         assertNotNull(sub);
         assertNotNull(sub.get("pkg.installed"));
-        assertEquals(((Map<String, Object>) sub.get("pkg.installed"))
-                .get("pkg_verify"), true);
-        assertEquals(((Map<String, Object>) sub.get("pkg.installed"))
-                .get("refresh"), false);
+        assertEquals(((List<Map<String, Object>>) sub.get("pkg.installed"))
+                .get(0).get("refresh"), true);
     }
 
     /**
@@ -93,10 +84,10 @@ public class SaltStateGeneratorTest extends TestCase {
         obj.addPackage("emacs");
         this.generator.generate(obj);
 
-        Map<String, Object> data = this.getPayload((Map<String, Object>)
+        List<Map<String, Object>> data = this.getPayload((Map<String, Object>)
                 this.yaml.load(this.writer.getBuffer().toString()));
 
-        List<Object> pkgs = (List) data.get("pkgs");
+        List<Object> pkgs = (List<Object>) data.get(1).get("pkgs");
         assertEquals(pkgs.size(), 1);
         assertEquals(pkgs.get(0), "emacs");
     }
@@ -113,9 +104,11 @@ public class SaltStateGeneratorTest extends TestCase {
         obj.addPackage("emacs", ver);
         this.generator.generate(obj);
 
-        Map<String, Object> data = this.getPayload((Map<String, Object>)
+        List<Map<String, Object>> data = this.getPayload((Map<String, Object>)
                 this.yaml.load(this.writer.getBuffer().toString()));
-        assertEquals((String) ((Map) ((List) data.get("pkgs")).get(0)).get("emacs"), ver);
+
+        assertEquals(ver,
+                (String) ((Map) ((List) data.get(1).get("pkgs")).get(0)).get("emacs"));
     }
 
     /**
@@ -128,10 +121,10 @@ public class SaltStateGeneratorTest extends TestCase {
         SaltPkgInstalled obj = new SaltPkgInstalled();
         obj.addPackage("emacs", ver, ">");
         this.generator.generate(obj);
-        Map<String, Object> data = this.getPayload((Map<String, Object>)
+        List<Map<String, Object>> data = this.getPayload((Map<String, Object>)
                 this.yaml.load(this.writer.getBuffer().toString()));
-        assertEquals((String) ((Map) ((List) data.get("pkgs")).get(0)).get("emacs"),
-                     ">" + ver);
+        assertEquals(">" + ver,
+                (String) ((Map) ((List) data.get(1).get("pkgs")).get(0)).get("emacs"));
     }
 
     /**
@@ -146,10 +139,10 @@ public class SaltStateGeneratorTest extends TestCase {
         obj.addPackage("mutt");
         this.generator.generate(obj);
 
-        Map<String, Object> data = this.getPayload((Map<String, Object>)
+        List<Map<String, Object>> data = this.getPayload((Map<String, Object>)
                 this.yaml.load(this.writer.getBuffer().toString()));
 
-        List<String> pkgs = (List) data.get("pkgs");
+        List<String> pkgs = (List<String>) data.get(1).get("pkgs");
         assertEquals(pkgs.size(), 3);
         assertTrue(pkgs.contains("emacs"));
         assertTrue(pkgs.contains("jed"));
@@ -169,10 +162,10 @@ public class SaltStateGeneratorTest extends TestCase {
         obj.addPackage("mutt", "5.0.5");
         this.generator.generate(obj);
 
-        Map<String, Object> data = this.getPayload((Map<String, Object>)
+        List<Map<String, Object>> data = this.getPayload((Map<String, Object>)
                 this.yaml.load(this.writer.getBuffer().toString()));
 
-        List<String> pkgs = (List) data.get("pkgs");
+        List<String> pkgs = (List<String>) data.get(1).get("pkgs");
         assertEquals(pkgs.size(), 3);
         assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
             {
@@ -203,10 +196,10 @@ public class SaltStateGeneratorTest extends TestCase {
         obj.addPackage("mutt", "5.0.5", ">");
         this.generator.generate(obj);
 
-        Map<String, Object> data = this.getPayload((Map<String, Object>)
+        List<Map<String, Object>> data = this.getPayload((Map<String, Object>)
                 this.yaml.load(this.writer.getBuffer().toString()));
 
-        List<String> pkgs = (List) data.get("pkgs");
+        List<String> pkgs = (List<String>) data.get(1).get("pkgs");
         assertEquals(pkgs.size(), 3);
         assertTrue(pkgs.contains(new LinkedHashMap<String, Object>(){
             {
