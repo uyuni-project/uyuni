@@ -6,7 +6,7 @@
 
 <html:html >
     <body>
-<rhn:toolbar base="h1" icon="header-errata">
+<rhn:toolbar base="h1" icon="header-errata"
                  helpUrl="">
         <bean:message key="cloneerrata.jsp.erratamanagement"/>
     </rhn:toolbar>
