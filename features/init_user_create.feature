@@ -51,3 +51,6 @@ Feature: Create initial users
     And I click on "Update"
     Then I should see a "User information updated" text
     And I should see a "testing" text
+
+  Scenario: wait for mgr-sync refresh finished
+    Then I wait for mgr-sync refresh is finished

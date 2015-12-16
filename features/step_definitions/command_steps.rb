@@ -153,3 +153,15 @@ Then /^I wont get "([^"]*)"$/ do |arg1|
     raise "'#{arg1}' found in output '#{$command_output}'"
   end
 end
+
+Then /^I wait for mgr-sync refresh is finished$/ do
+  for c in 0..20
+      begin
+          sshcmd('ls /var/lib/spacewalk/scc/scc-data/*organizations_orders.json')
+      rescue
+          sleep 15
+      else
+          break
+      end
+  end
+end
