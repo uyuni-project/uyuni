@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Dec 16 11:15:04 CET 2015 - mc@suse.de
+
+- version 3.0.6-1
+- compress db dump for migration
+- improve logging during migration
+- mgr-sync refresh is now called after first user gots created
+- remove setting name of first org. It will be now created together
+  with the first user
+
+-------------------------------------------------------------------
 Thu Dec 10 17:57:22 CET 2015 - mc@suse.de
 
 - version 3.0.5-1
