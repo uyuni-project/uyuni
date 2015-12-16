@@ -5,7 +5,6 @@ import re
 log = logging.getLogger(__name__)
 
 def cpusockets():
-  p = re.compile("physical id\\s+:\\s+(\\d+)")
   grains = {}
   physids = {}
   with open('/proc/cpuinfo') as f:
