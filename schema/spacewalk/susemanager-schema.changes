@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Wed Dec 16 11:22:39 CET 2015 - mc@suse.de
+
+- version 3.0.5-1
+- Add taskomatic task for running subscription matcher
+- add caching table for order items
+- add caching table for SCCSubscriptions
+- create table susePinnedSubscription
+- Fix unique constraint name (after column was renamed)
+- enhance create_new_org to create the first org as well and
+  drop create_first_org
+- during installation insert default SSL crypto key with null org
+
+-------------------------------------------------------------------
 Thu Dec 10 17:54:52 CET 2015 - mc@suse.de
 
 - version 3.0.4-1
