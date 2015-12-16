@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Dec 16 11:29:24 CET 2015 - mc@suse.de
+
+- version 2.5.1.2-1
+- Add a string for the navigation menu entry
+- Rename gatherer-bunch to gatherer-matcher-bunch
+
+-------------------------------------------------------------------
 Mon Nov 30 11:38:14 CET 2015 - mc@suse.de
 
 - version 2.5.1.1-1
