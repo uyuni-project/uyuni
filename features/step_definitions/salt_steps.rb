@@ -188,7 +188,7 @@ Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
 end
 
 And(/^this minion is not registered in Spacewalk$/) do
-  @rpc = XMLRPCSystemTest.new($myhostname)
+  @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
   @rpc.deleteSystem($myhostname)
   refute_includes(@rpc.listSystems.map {|s| s['id']}, $myhostname)
