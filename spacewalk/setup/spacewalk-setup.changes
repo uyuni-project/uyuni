@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Dec 16 11:10:39 CET 2015 - mc@suse.de
+
+- version 2.5.3.1-1
+- setup called with option db_only should not configure tomcat
+- removing create first org code from installer
+
+-------------------------------------------------------------------
 Thu Dec 10 17:50:32 CET 2015 - mc@suse.de
 
 - version 2.5.2.2-1
