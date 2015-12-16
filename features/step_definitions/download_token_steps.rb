@@ -31,6 +31,11 @@ Given(/^I have an expired valid token for organization "([^"]*)"$/) do |arg1|
 end
 
 Given(/^I have a valid token expiring tomorrow for organization "([^"]*)"$/) do |arg1|
-  yesterday = Time.now.to_i + 86_400
-  @token = token(server_secret, org: 1, exp: yesterday)
+  tomorrow = Time.now.to_i + 86_400
+  @token = token(server_secret, org: 1, exp: tomorrow)
+end
+
+Given(/^I have a not yet usable valid token for organization "([^"]*)"$/) do |arg1|
+  tomorrow = Time.now.to_i + 86_400
+  @token = token(server_secret, org: 1, nbf: tomorrow)
 end
