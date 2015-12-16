@@ -87,8 +87,9 @@ Then(/^the list of the keys should contain this client's hostname$/) do
       end
     end
   rescue Timeout::Error
-      fail "#{$myhostname} is not listed in the key list: #{@output[:stdout]}"
+    puts "timeout waiting for the key to appear"
   end
+  assert_match(/#{$myhostname}/, @output[:stdout], "#{$myhostname} is not listed in the key list")
 end
 
 Given(/^this minion key is unaccepted$/) do
