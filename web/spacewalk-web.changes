@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Dec 16 11:11:40 CET 2015 - mc@suse.de
+
+- version 2.5.6.1-1
+- Add UI for package state management
+- Integrate system header and navigation menu
+- Send epoch, version and release separately
+- Initial react component showing the page heading
+- remove call_procedure and call_function from RHN::DB
+  again.
+- moving some config parameter to java default file
+
+-------------------------------------------------------------------
 Mon Nov 30 10:54:19 CET 2015 - mc@suse.de
 
 - version 2.5.5.1-1
