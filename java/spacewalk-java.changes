@@ -1,4 +1,35 @@
 -------------------------------------------------------------------
+Wed Dec 16 12:35:08 CET 2015 - mc@suse.de
+
+- version 2.5.26.1-1
+- ServerFactory: don't return multiple Server objects if they have
+  joint tables
+- Render nav menu by either request or page context
+- Add support for setting package state REMOVED and INSTALLED
+- Add Salt SLS generator for the packages
+- Fix the link to the online help
+- implement managing package sate of a minion
+- implement taskomatic task for running subscription matcher
+- add caching tables for subscriptions and order items
+- Create json string as input for the subscription-matcher
+- installedProducts attribute was renamed to installedProductSet (bsc#959043)
+- Set the correct status code for error pages
+- fix calling error pages without session
+- List global available CryptoKeys
+- schedule mgr-sync refresh after first user gots created.
+- 1274282 - Teach CobblerSyncProfile that profiles might disappear in mid-run
+- refactor setting ditro kernel params (bsc#944241)
+- compile jspf files differently to avoid problems with Tomcat 8
+- adding setup for first organization
+- create first org togther with the first user
+- during installion insert default SSL crypto key with null org
+- restyle page for creating users
+- remove RHEL 5 related things - we don't build on el5 anymore
+- BugFix: skip similar tasks only if task is 'single threaded'
+- 1076490 - prefer the package from the given channel
+- removing link to removed page
+
+-------------------------------------------------------------------
 Thu Dec 10 17:58:59 CET 2015 - mc@suse.de
 
 - version 2.5.16.2-1
