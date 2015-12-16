@@ -17,25 +17,29 @@ def server_secret
   return data[1].strip
 end
 
-Given(/^I have a valid token for organization "([^"]*)"$/) do |arg1|
-  @token = token(server_secret, org: 1)
+Given(/^I have a valid token for organization "([^"]*)"$/) do |org|
+  @token = token(server_secret, org: org.to_i)
 end
 
-Given(/^I have an invalid token for organization "([^"]*)"$/) do |arg1|
-  @token = token(SecureRandom.hex(64), org: 1)
+Given(/^I have an invalid token for organization "([^"]*)"$/) do |org|
+  @token = token(SecureRandom.hex(64), org: org.to_i)
 end
 
-Given(/^I have an expired valid token for organization "([^"]*)"$/) do |arg1|
+Given(/^I have an expired valid token for organization "([^"]*)"$/) do |org|
   yesterday = Time.now.to_i - 86_400
-  @token = token(server_secret, org: 1, exp: yesterday)
+  @token = token(server_secret, org: org.to_i, exp: yesterday)
 end
 
-Given(/^I have a valid token expiring tomorrow for organization "([^"]*)"$/) do |arg1|
+Given(/^I have a valid token expiring tomorrow for organization "([^"]*)"$/) do |org|
   tomorrow = Time.now.to_i + 86_400
-  @token = token(server_secret, org: 1, exp: tomorrow)
+  @token = token(server_secret, org: org.to_i, exp: tomorrow)
 end
 
-Given(/^I have a not yet usable valid token for organization "([^"]*)"$/) do |arg1|
+Given(/^I have a not yet usable valid token for organization "([^"]*)"$/) do |org|
   tomorrow = Time.now.to_i + 86_400
-  @token = token(server_secret, org: 1, nbf: tomorrow)
+  @token = token(server_secret, org: org.to_i, nbf: tomorrow)
+end
+
+Given(/^I have a valid token for organization "(.*?)" and channel "(.*?)"$/) do |org, channel|
+  @token = token(server_secret, org: org, onlyChannels: [channel])
 end
