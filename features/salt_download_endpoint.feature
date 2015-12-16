@@ -17,3 +17,13 @@ Feature: Endpoint to download packages
     Then I try download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "sles11-sp3-updates-x86_64-channel"
     Then the download should get a 403 response
 
+  Scenario: user with an expired valid token for the org
+    Given I have an expired valid token for organization "1"
+    Then I try download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "sles11-sp3-updates-x86_64-channel"
+    Then the download should get a 403 response
+
+  Scenario: user with an non expired valid token for the org
+    Given I have a valid token expiring tomorrow for organization "1"
+    Then I try download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "sles11-sp3-updates-x86_64-channel"
+    Then the download should get no error
+

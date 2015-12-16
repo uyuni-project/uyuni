@@ -1,11 +1,12 @@
 require 'jwt'
 require 'securerandom'
 
-def token(secret, org, channels)
-  payload = { org: org }
-  if channels && !channels.empty?
-    payload.merge!(onlyChannels: channels)
-  end
+# Valid claims:
+#   - org
+#   - onlyChannels
+def token(secret, claims={})
+  payload = {}
+  payload.merge!(claims)
   puts secret
   JWT.encode payload, [secret].pack('H*').bytes.to_a.pack('c*'), 'HS256'
 end
@@ -17,9 +18,19 @@ def server_secret
 end
 
 Given(/^I have a valid token for organization "([^"]*)"$/) do |arg1|
-  @token = token(server_secret, 1, nil)
+  @token = token(server_secret, org: 1)
 end
 
 Given(/^I have an invalid token for organization "([^"]*)"$/) do |arg1|
-  @token = token(SecureRandom.hex(64), 1, nil)
+  @token = token(SecureRandom.hex(64), org: 1)
+end
+
+Given(/^I have an expired valid token for organization "([^"]*)"$/) do |arg1|
+  yesterday = Time.now.to_i - 86_400
+  @token = token(server_secret, org: 1, exp: yesterday)
+end
+
+Given(/^I have a valid token expiring tomorrow for organization "([^"]*)"$/) do |arg1|
+  yesterday = Time.now.to_i + 86_400
+  @token = token(server_secret, org: 1, exp: yesterday)
 end
