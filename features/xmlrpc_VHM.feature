@@ -43,7 +43,7 @@ Feature: Test XML-RPC "virtualhostmanager" namespace.
   Scenario: Run virtual-host-gatherer
     Given I am on the Admin page
     When I follow "Task Schedules"
-    And I follow "gatherer-bunch"
+    And I follow "gatherer-matcher-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I wait for "10" seconds
