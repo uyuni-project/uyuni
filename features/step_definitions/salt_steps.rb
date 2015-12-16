@@ -15,8 +15,11 @@ end
 
 Given(/^that the master can reach this client$/) do
   begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
+    # 300 is the default 1st keepalive interval for the minion
+    # where it realizes the connection is stuck
+    Timeout.timeout(DEFAULT_TIMEOUT + 300) do
+      # only try 3 times
+      3.times do
         @output = sshcmd("salt #{$myhostname} test.ping", ignore_err: true)
         break if @output[:stdout].include?($myhostname) &&
            @output[:stdout].include?('True')
