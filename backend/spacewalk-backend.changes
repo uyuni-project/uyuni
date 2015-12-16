@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Dec 16 11:18:47 CET 2015 - mc@suse.de
+
+- version 2.5.8.1-1
+- making synced channels in null org visible to all orgs
+- during installation insert default SSL crypto key with null org
+- fix typos
+
+-------------------------------------------------------------------
 Thu Dec 10 17:58:23 CET 2015 - mc@suse.de
 
 - version 2.5.4.2-1
