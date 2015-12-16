@@ -145,8 +145,10 @@ When(/^I delete this minion key in the Salt master$/) do
         sleep(1)
       end
     end
-  rescue RuntimeError, Timeout::Error => e
-    break
+  rescue RuntimeError => e
+    puts ".dfn should be gone"
+  rescue Timeout::Error => e
+    puts "timeout witing for .dfn to vanish"
   end
   sshcmd("salt-key -y -d #{$myhostname}")
 end
