@@ -87,7 +87,7 @@ end
 # Schedule scenario
 #
 When(/^I call actionchain\.addScriptRun\(\) with the script like "(.*?)"$/) do |script|
-  assert(rpc.addScriptRun($clientId, script, $chainLabel) < 1)
+  refute(rpc.addScriptRun($clientId, script, $chainLabel) < 1)
 end
 
 Then(/^I should be able to see all these actions in the action chain$/) do
@@ -105,7 +105,7 @@ end
 
 # Reboot
 When(/^I call actionchain\.addSystemReboot\(\)$/) do
-  assert(rpc.addSystemReboot($clientId, $chainLabel) < 1)
+  refute(rpc.addSystemReboot($clientId, $chainLabel) < 1)
 end
 
 # Packages operations
