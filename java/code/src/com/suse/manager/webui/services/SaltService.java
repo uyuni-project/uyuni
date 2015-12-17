@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.services;
 
-import com.suse.manager.webui.services.impl.Smbios;
+import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.datatypes.target.Target;
@@ -140,7 +140,7 @@ public interface SaltService {
     /**
      * Get the CPU info from a minion.
      * @param minionId the minion id
-     * @return the CPU data
+     * @return the CPU data as a map.
      */
     Map<String, Object> getCpuInfo(String minionId);
 
@@ -154,7 +154,8 @@ public interface SaltService {
      * Get DMI records from a minion.
      * @param minionId the minion id
      * @param recordType the record type to get
-     * @return the DMI data
+     * @return the DMI data as a map. An empty
+     * imutable map is returned if there is no data.
      */
     Map<String, Object> getDmiRecords(String minionId, Smbios.RecordType recordType);
 
