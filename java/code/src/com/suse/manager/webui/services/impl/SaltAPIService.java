@@ -308,7 +308,8 @@ public enum SaltAPIService implements SaltService {
                     Smbios.records(recordType), new MinionList(minionId),
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             List<Smbios.Record> col = records.get(minionId);
-            return CollectionUtils.isNotEmpty(col) ? col.get(0).getData() : Collections.emptyMap();
+            return CollectionUtils.isNotEmpty(col) ? col.get(0).getData() :
+                    Collections.emptyMap();
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
