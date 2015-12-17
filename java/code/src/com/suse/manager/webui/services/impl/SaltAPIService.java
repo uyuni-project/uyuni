@@ -17,6 +17,8 @@ package com.suse.manager.webui.services.impl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.utils.salt.SaltUtil;
+import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.calls.WheelResult;
@@ -37,6 +39,7 @@ import com.suse.saltstack.netapi.exception.SaltStackException;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -305,8 +308,7 @@ public enum SaltAPIService implements SaltService {
                     Smbios.records(recordType), new MinionList(minionId),
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             List<Smbios.Record> col = records.get(minionId);
-            return CollectionUtils.isNotEmpty(col) ? col.get(0).getData() : null;
-
+            return CollectionUtils.isNotEmpty(col) ? col.get(0).getData() : Collections.emptyMap();
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
