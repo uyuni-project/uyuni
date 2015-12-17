@@ -163,9 +163,9 @@ public class SCCCachingFactory extends HibernateFactory {
             return;
         }
         getSession()
-        .getNamedQuery("SCCSubscription.deleteByCredential")
-        .setParameter("creds", c)
-        .executeUpdate();
+                .getNamedQuery("SCCSubscription.deleteByCredential")
+                .setParameter("creds", c)
+                .executeUpdate();
     }
 
     /**
