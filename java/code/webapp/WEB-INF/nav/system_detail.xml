@@ -76,7 +76,7 @@
       </rhn-tab>
     </rhn-tab>
 
-    <rhn-tab name="Software Channels" acl="system_feature(ftr_package_updates)">
+    <rhn-tab name="Software Channels" acl="system_feature(ftr_package_updates) or system_has_salt_entitlement()">
       <rhn-tab-url>/rhn/systems/details/SystemChannels.do</rhn-tab-url>
     </rhn-tab>
 
