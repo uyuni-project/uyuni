@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.services.impl;
+package com.suse.manager.webui.utils.salt;
 
 import java.util.LinkedHashMap;
 import java.util.List;
