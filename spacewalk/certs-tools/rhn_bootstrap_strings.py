@@ -403,6 +403,8 @@ EOF
 	}
 
     fi
+  # remove client bootstrap repo
+  zypper rr "$Z_CLIENT_REPO_NAME"
   fi
 
   # on code10 we need to convert metadata of installed products
