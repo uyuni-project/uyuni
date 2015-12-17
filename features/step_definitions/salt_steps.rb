@@ -4,13 +4,16 @@ require 'timeout'
 Given(/^the Salt Minion is configured$/) do
   # cleanup the key in case the image was reused
   # to run the test twice
+  step %[I stop salt-minion]
+  step %[I stop salt-master]
   key = '/etc/salt/pki/minion/minion_master.pub'
   if File.exist?(key)
     File.delete(key)
     puts "Key #{key} has been removed"
   end
   File.write('/etc/salt/minion.d/master.conf', "master: #{ENV['TESTHOST']}\n")
-  step %[I restart salt-minion]
+  step %[I start salt-master]
+  step %[I start salt-minion]
 end
 
 Given(/^that the master can reach this client$/) do
@@ -38,6 +41,22 @@ end
 
 When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
   @output = sshcmd("cat #{filename}")
+end
+
+When(/^I stop salt-master$/) do
+  sshcmd("systemctl stop salt-master")
+end
+
+When(/^I start salt-master$/) do
+  sshcmd("systemctl start salt-master")
+end
+
+When(/^I stop salt-minion$/) do
+  system("systemctl stop salt-minion")
+end
+
+When(/^I start salt-minion$/) do
+  system("systemctl start salt-minion")
 end
 
 When(/^I restart salt-minion$/) do
