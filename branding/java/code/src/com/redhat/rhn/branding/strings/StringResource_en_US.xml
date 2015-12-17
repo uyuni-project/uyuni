@@ -2186,6 +2186,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="saltstack_entitled">
         <source>SaltStack</source>
       </trans-unit>
+      <trans-unit id="packagesindex.jsp.states">
+        <source>Manage Package States</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
