@@ -47,6 +47,11 @@
         <bean:message key="packagesindex.jsp.profiles"/></a></li>
   </rhn:require>
 
+  <rhn:require acl="system_has_salt_entitlement()">
+      <li><a href="/rhn/manager/systems/details/packages?sid=${param.sid}">
+        <bean:message key="packagesindex.jsp.states"/></a></li>
+  </rhn:require>
+
 </ul>
 
 <rhn:require acl="system_feature(ftr_package_refresh)">
