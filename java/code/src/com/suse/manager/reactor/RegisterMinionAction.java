@@ -273,7 +273,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
     }
 
     private String getValueAsString(Map<String, Object> valueMap, String key) {
-        return get(valueMap, key).map(ObjectUtils::toString).orElse("");
+        return get(valueMap, key).map(Object::toString).orElse("");
     }
 
     private Optional<Long> getValueAsLong(Map<String, Object> valueMap, String key) {
