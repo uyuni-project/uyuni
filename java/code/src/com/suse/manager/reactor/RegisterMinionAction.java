@@ -14,18 +14,6 @@
  */
 package com.suse.manager.reactor;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.log4j.Logger;
-
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -49,8 +37,19 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 
-import com.suse.manager.webui.services.impl.Smbios;
+import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.log4j.Logger;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Event handler to create system records for salt minions.
@@ -198,7 +197,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
     private void mapHardwareDetails(String minionId, Server server,
             Map<String, Object> grains) {
         String cpuarch = getValueAsString(grains, "cpuarch");
-        server.setRam(getValueAsLong(grains, "mem_total"));
+        server.setRam(getValueAsLong(grains, "mem_total").orElse(0L));
 
         mapCpuDetails(minionId, server, grains, cpuarch);
         mapDmiInfo(minionId, server);
@@ -211,7 +210,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         CPU cpu = new CPU();
 
         cpu.setModel(getValueAsString(grains, "cpu_model"));
-        cpu.setNrCPU(getValueAsLong(grains, "num_cpus"));
+        cpu.setNrCPU(getValueAsLong(grains, "num_cpus").orElse(0L));
 
         CPUArch arch = ServerFactory.lookupCPUArchByName(cpuarch);
         cpu.setArch(arch);
@@ -223,7 +222,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         cpu.setStepping(getValueAsString(cpuinfo, "stepping"));
         cpu.setFamily(getValueAsString(cpuinfo, "cpu family"));
         cpu.setCache(getValueAsString(cpuinfo, "cache size"));
-        cpu.setNrsocket(getValueAsLong(grains, "cpusockets"));
+        cpu.setNrsocket(getValueAsLong(grains, "cpusockets").orElse(0L));
 
         if (arch != null) {
             // shuld not happen but if we don't have the arch we cannot insert the cpu data
@@ -271,52 +270,44 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         server.setDmi(dmi);
 
         return dmi;
-
     }
 
+    private String getValueAsString(Map<String, Object> valueMap, String key) {
+        return get(valueMap, key).map(ObjectUtils::toString).orElse("");
+    }
 
-    private Long getValueAsLong(Map<String, Object> valueMap, String key) {
-        if (valueMap == null) {
-            return 0L;
-        }
-        Object value = valueMap.get(key);
+    private Optional<Long> getValueAsLong(Map<String, Object> valueMap, String key) {
+        return get(valueMap, key).flatMap(this::toLong);
+    }
+
+    private Optional<Long> toLong(Object value) {
         if (value instanceof Double) {
-            return ((Double)value).longValue();
+            return Optional.of(((Double)value).longValue());
         }
         else if (value instanceof Long) {
-            return (Long)value;
+            return Optional.of((Long)value);
         }
         else if (value instanceof Integer) {
-            return ((Integer)value).longValue();
+            return Optional.of(((Integer)value).longValue());
         }
         else if (value instanceof String) {
             try {
-                return Long.parseLong((String) value);
+                return Optional.of(Long.parseLong((String) value));
             }
             catch (NumberFormatException e) {
                 LOG.warn("Error converting  '" + value + "' to long", e);
-                return 0L;
+                return Optional.empty();
             }
         }
         else {
             LOG.warn("Value '" + ObjectUtils.toString(value) +
                     "' could not be converted to long.");
-            return 0L;
+            return Optional.empty();
         }
     }
 
-    private String getValueAsString(Map<String, Object> valueMap, String key) {
-        if (valueMap == null) {
-            return "";
-        }
-        Object value = valueMap.get(key);
-        if (value instanceof String) {
-            return (String)value;
-        }
-        else {
-            LOG.warn("Value of '" + key + "' is not a string. Using value.toString()");
-            return ObjectUtils.toString(value);
-        }
+    private Optional<Object> get(Map<String, Object> valueMap, String key) {
+        return Optional.ofNullable(valueMap.get(key));
     }
 
     /**
