@@ -17,13 +17,11 @@ package com.suse.manager.reactor.test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.manager.webui.services.impl.Smbios;
+import com.suse.manager.webui.utils.salt.Smbios;
 import org.jmock.Mock;
 
 import com.redhat.rhn.domain.server.InstalledPackage;
@@ -79,13 +77,17 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
                 returnValue(this.getMinionPackages()));
         saltServiceMock.stubs().method("sendEvent").will(returnValue(true));
         saltServiceMock.stubs().method("syncGrains");
-        saltServiceMock.stubs().method("getDmiRecords").with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.BIOS)})
+        saltServiceMock.stubs().method("getDmiRecords")
+                .with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.BIOS)})
                 .will(returnValue(getDmiBios(minionId, "bios")));
-        saltServiceMock.stubs().method("getDmiRecords").with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.SYSTEM)})
+        saltServiceMock.stubs().method("getDmiRecords")
+                .with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.SYSTEM)})
                 .will(returnValue(getDmiBios(minionId, "system")));
-        saltServiceMock.stubs().method("getDmiRecords").with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.CHASSIS)})
+        saltServiceMock.stubs().method("getDmiRecords")
+                .with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.CHASSIS)})
                 .will(returnValue(getDmiBios(minionId, "chassis")));
-        saltServiceMock.stubs().method("getDmiRecords").with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.BASEBOARD)})
+        saltServiceMock.stubs().method("getDmiRecords")
+                .with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.BASEBOARD)})
                 .will(returnValue(getDmiBios(minionId, "baseboard")));
 
         SaltService saltService = (SaltService) saltServiceMock.proxy();
@@ -145,49 +147,31 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
 
     private Map<String, Object> getCpuInfo(String minionId) throws IOException, ClassNotFoundException {
         Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
-                Files.lines(new File(TestUtils.findTestData(
-                        "/com/suse/manager/reactor/test/dummy_cpuinfo.json").getPath()
-                ).toPath()).collect(Collectors.joining("\n")));
+                readFile("dummy_cpuinfo.json"));
         return (Map<String, Object>)((List<Map<String, Object>>)grains.get("return")).get(0).get(minionId);
     }
 
-    private Map<String, Pkg.Info> getMinionPackages()
-            throws IOException,
-                   ClassNotFoundException {
+    private Map<String, Pkg.Info> getMinionPackages() throws IOException, ClassNotFoundException {
         return new JsonParser<>(Pkg.infoInstalled("").getReturnType()).parse(
-                Files.lines(new File(TestUtils.findTestData(
-                        "/com/suse/manager/reactor/test/dummy_package.json").getPath()
-                ).toPath()).collect(Collectors.joining("\n")));
+                readFile("dummy_package.json"));
     }
 
     private Map<String, Object> getGrains(String minionId) throws ClassNotFoundException, IOException {
     	Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
-    			Files.lines(new File(TestUtils.findTestData(
-                        "/com/suse/manager/reactor/test/dummy_grains.json").getPath()
-                ).toPath()).collect(Collectors.joining("\n")));
+                readFile("dummy_grains.json"));
     	return (Map<String, Object>)((List<Map<String, Object>>)grains.get("return")).get(0).get(minionId);
     }
 
     public Map<String, Object> getDmiBios(String minionId, String type) throws IOException, ClassNotFoundException {
         Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
-                Files.lines(new File(TestUtils.findTestData(
-                        "/com/suse/manager/reactor/test/dummy_dmi_" + type + ".json").getPath()
-                ).toPath()).collect(Collectors.joining("\n")));
+                readFile("dummy_dmi_" + type + ".json"));
         return (Map<String, Object>)((List<Map<String, Object>>)grains.get(minionId)).get(0).get("data");
     }
 
-
-//    public void testIntegration() {
-//        String minionId = "clisles12-suma3pg.vagrant.local";
-//
-//        SaltService saltService = SaltAPIService.INSTANCE;
-//        RegisterMinionAction action = new RegisterMinionAction(saltService) {};
-//        action.doExecute(new RegisterMinionEvent(minionId));
-//
-//
-//        String machineId = saltService.getMachineId(minionId);
-//        Server minion = ServerFactory.findRegisteredMinion(machineId);
-//        assertNotNull(minion);
-//    }
+    private String readFile(String file) throws IOException, ClassNotFoundException {
+        return Files.lines(new File(TestUtils.findTestData(
+                "/com/suse/manager/reactor/test/" + file).getPath()
+        ).toPath()).collect(Collectors.joining("\n"));
+    }
 
 }
