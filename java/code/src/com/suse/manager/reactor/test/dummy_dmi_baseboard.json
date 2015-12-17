@@ -1,0 +1,24 @@
+{
+  "suma3pg.vagrant.local": [
+    {
+      "type": 2,
+      "handle": "0x0002",
+      "description": "Base Board Information",
+      "data": {
+        "chassis_handle": "0x0003",
+        "features": [
+          "",
+          "Board is a hosting board",
+          "Board is replaceable"
+        ],
+        "asset_tag": "Not Specified",
+        "version": "A02",
+        "serial_number": "/3T4YF82/CN7220057I01BF/",
+        "location_in_chassis": "Not Specified",
+        "type": "Motherboard",
+        "product_name": "0K240Y",
+        "manufacturer": "Dell Inc."
+      }
+    }
+  ]
+}

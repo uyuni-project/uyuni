@@ -17,6 +17,8 @@ package com.suse.manager.webui.services.impl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.utils.salt.SaltUtil;
+import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.calls.WheelResult;
@@ -24,6 +26,7 @@ import com.suse.saltstack.netapi.calls.modules.Cmd;
 import com.suse.saltstack.netapi.calls.modules.Grains;
 import com.suse.saltstack.netapi.calls.modules.Match;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
+import com.suse.saltstack.netapi.calls.modules.Status;
 import com.suse.saltstack.netapi.calls.runner.Manage;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.client.SaltStackClient;
@@ -33,8 +36,10 @@ import com.suse.saltstack.netapi.datatypes.target.MinionList;
 import com.suse.saltstack.netapi.datatypes.target.Target;
 import com.suse.saltstack.netapi.event.EventStream;
 import com.suse.saltstack.netapi.exception.SaltStackException;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +89,7 @@ public enum SaltAPIService implements SaltService {
     public Map<String, Object> getGrains(String minionId) {
         try {
             Map<String, Map<String, Object>> grains = SALT_CLIENT.callSync(
-                    Grains.items(true), new MinionList(minionId),
+                    Grains.items(false), new MinionList(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return grains.getOrDefault(minionId, new HashMap<>());
         }
@@ -277,4 +282,51 @@ public enum SaltAPIService implements SaltService {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Object> getCpuInfo(String minionId) {
+        try {
+            Map<String, Map<String, Object>> stats = SALT_CLIENT.callSync(
+                    Status.cpuinfo(), new MinionList(minionId),
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return stats.get(minionId);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Object> getDmiRecords(String minionId,
+            Smbios.RecordType recordType) {
+        try {
+            Map<String, List<Smbios.Record>> records = SALT_CLIENT.callSync(
+                    Smbios.records(recordType), new MinionList(minionId),
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            List<Smbios.Record> col = records.get(minionId);
+            return CollectionUtils.isNotEmpty(col) ? col.get(0).getData() : Collections.emptyMap();
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void syncGrains(String target) {
+        try {
+            Map<String, List<String>> result = SALT_CLIENT.callSync(
+                    SaltUtil.syncGrains(),
+                    new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

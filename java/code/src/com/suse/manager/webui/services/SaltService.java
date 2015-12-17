@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services;
 
+import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.datatypes.target.Target;
@@ -135,5 +136,27 @@ public interface SaltService {
      * @return true if successful otherwise false
      */
     boolean sendEvent(String tag, Object data);
+
+    /**
+     * Get the CPU info from a minion.
+     * @param minionId the minion id
+     * @return the CPU data as a map.
+     */
+    Map<String, Object> getCpuInfo(String minionId);
+
+    /**
+     * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
+     * @param target a target glob
+     */
+    void syncGrains(String target);
+
+    /**
+     * Get DMI records from a minion.
+     * @param minionId the minion id
+     * @param recordType the record type to get
+     * @return the DMI data as a map. An empty
+     * imutable map is returned if there is no data.
+     */
+    Map<String, Object> getDmiRecords(String minionId, Smbios.RecordType recordType);
 
 }
