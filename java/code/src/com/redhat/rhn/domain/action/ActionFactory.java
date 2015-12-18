@@ -105,8 +105,8 @@ public class ActionFactory extends HibernateFactory {
                 Iterator i = types.iterator();
                 while (i.hasNext()) {
                     ActionArchType type = (ActionArchType) i.next();
-                    // don't cache the entire ActionArchType bean to ovoid
-                    // any LazyInitializatoinException later
+                    // don't cache the entire ActionArchType bean to avoid
+                    // any LazyInitializatoinException latter
                     actionArchTypes.add(toActionArchTypeKey(type.getActionType().getId(),
                             type.getActionStyle()));
                 }
