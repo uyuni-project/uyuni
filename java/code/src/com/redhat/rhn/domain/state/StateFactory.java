@@ -91,11 +91,11 @@ public class StateFactory extends HibernateFactory {
     public static Optional<Set<PackageState>> latestPackageStates(Server server) {
         DetachedCriteria maxQuery = DetachedCriteria.forClass(ServerStateRevision.class)
                 .add(Restrictions.eq("server", server))
-                .setProjection(Projections.max("created"));
+                .setProjection(Projections.max("id"));
         ServerStateRevision revision = (ServerStateRevision) getSession()
                 .createCriteria(ServerStateRevision.class)
                 .add(Restrictions.eq("server", server))
-                .add(Property.forName("created").eq(maxQuery))
+                .add(Property.forName("id").eq(maxQuery))
                 .uniqueResult();
         return Optional.ofNullable(revision).map(ServerStateRevision::getPackageStates);
     }
