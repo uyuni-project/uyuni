@@ -51,7 +51,10 @@ class PackageStates extends React.Component {
         filter: "",
         view: "system",
         packageStates: [],
-        searchResults: [],
+        search: {
+            filter: null,
+            results: []
+        },
         changed: new Map()
     };
     this.init();
@@ -70,16 +73,25 @@ class PackageStates extends React.Component {
   }
 
   search() {
-    $.get("/rhn/manager/api/states/packages/match?sid=" + serverId + "&target=" + this.state.filter, data => {
-      console.log(data);
-      this.setState({
-        view: "search",
-        searchResults: data.map(state => {
-          state.packageStateId = normalizePackageState(state.packageStateId);
-          return state;
-        })
-      });
-    });
+    if (this.state.filter === this.state.search.filter) {
+        this.setState({
+            view: "search"
+        });
+    } else {
+        $.get("/rhn/manager/api/states/packages/match?sid=" + serverId + "&target=" + this.state.filter, data => {
+          console.log(data);
+          this.setState({
+            view: "search",
+            search:  {
+                filter: this.state.filter,
+                results: data.map(state => {
+                  state.packageStateId = normalizePackageState(state.packageStateId);
+                  return state;
+                })
+            }
+          });
+        });
+    }
   }
 
   save() {
@@ -124,7 +136,7 @@ class PackageStates extends React.Component {
     if(this.state.view === "system") {
         rows = this.state.packageStates;
     } else if(this.state.view === "search") {
-        rows = this.state.searchResults;
+        rows = this.state.search.results;
     } else if(this.state.view === "changes") {
         for(var state of this.state.changed.values()) {
             rows.push(state)
