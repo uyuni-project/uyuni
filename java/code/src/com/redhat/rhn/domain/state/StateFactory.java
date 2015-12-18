@@ -19,12 +19,10 @@ import com.redhat.rhn.domain.server.Server;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -40,46 +38,12 @@ public class StateFactory extends HibernateFactory {
     }
 
     /**
-     * Save a {@link PackageState}.
-     *
-     * @param packageState the package state to save
-     */
-    public static void save(PackageState packageState) {
-        singleton.saveObject(packageState);
-    }
-
-    /**
      * Save a {@link StateRevision}.
      *
      * @param stateRevision the state revision to save
      */
     public static void save(StateRevision stateRevision) {
         singleton.saveObject(stateRevision);
-    }
-
-    /**
-     * Lookup all package states.
-     *
-     * @return list of all package states
-     */
-    @SuppressWarnings("unchecked")
-    public static List<PackageState> lookupPackageStates() {
-        return getSession().createCriteria(PackageState.class)
-                .list();
-    }
-
-    /**
-     * Lookup all {@link ServerStateRevision} objects for a given server.
-     *
-     * @param server the server
-     * @return the state revisions for this server, newest first
-     */
-    @SuppressWarnings("unchecked")
-    public static List<ServerStateRevision> lookupServerStateRevisions(Server server) {
-        return getSession().createCriteria(ServerStateRevision.class)
-                .add(Restrictions.eq("server", server))
-                .addOrder(Order.desc("created"))
-                .list();
     }
 
     /**
@@ -98,13 +62,6 @@ public class StateFactory extends HibernateFactory {
                 .add(Property.forName("id").eq(maxQuery))
                 .uniqueResult();
         return Optional.ofNullable(revision).map(ServerStateRevision::getPackageStates);
-    }
-
-    /**
-     * Clear all state revisions from the database.
-     */
-    public static void clearStateRevisions() {
-        getSession().getNamedQuery("StateRevision.deleteAll").executeUpdate();
     }
 
     /**
