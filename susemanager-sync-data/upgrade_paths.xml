@@ -69,7 +69,6 @@
 	<upgrade from_pdid="995" from_product="SUSE_SLES-11.1-VMWARE.None" to_pdid="996" to_product="SLES-for-VMware-11.2-None.None"/>
 	<upgrade from_pdid="996" from_product="SLES-for-VMware-11.2-None.None" to_pdid="993" to_product="SLES-for-VMware-11.3-None.None"/>
 	<upgrade from_pdid="1000" from_product="SUSE-Manager-Proxy-1.2-None.None" to_pdid="1002" to_product="SUSE-Manager-Proxy-1.7-None.x86_64"/>
-	<upgrade from_pdid="1001" from_product="SUSE-Manager-Server-1.7-None.x86_64" to_pdid="1119" to_product="SUSE-Manager-Server-2.1-None.x86_64"/>
 	<upgrade from_pdid="1002" from_product="SUSE-Manager-Proxy-1.7-None.x86_64" to_pdid="1141" to_product="SUSE-Manager-Proxy-2.1-None.x86_64"/>
 	<upgrade from_pdid="1033" from_product="SUSE_SLES-11.1-None.ia64" to_pdid="1034" to_product="SUSE_SLES-11.2-None.ia64"/>
 	<upgrade from_pdid="1034" from_product="SUSE_SLES-11.2-None.ia64" to_pdid="1037" to_product="SUSE_SLES-11.3-None.ia64"/>
@@ -79,7 +78,7 @@
 	<upgrade from_pdid="1046" from_product="sle-hae-11.1-None.ppc64" to_pdid="1044" to_product="sle-hae-11.2-None.ppc64"/>
 	<upgrade from_pdid="1051" from_product="SUSE-Linux-Enterprise-RT-11.1-None.None" to_pdid="1052" to_product="SUSE-Linux-Enterprise-RT-11.2-None.None"/>
 	<upgrade from_pdid="1052" from_product="SUSE-Linux-Enterprise-RT-11.2-None.None" to_pdid="1058" to_product="SUSE-Linux-Enterprise-RT-11.3-None.None"/>
-	<upgrade from_pdid="1058" from_product="SUSE-Linux-Enterprise-RT-11.3-None.None" to_pdid="1296" to_product="SUSE-Linux-Enterprise-RT-11.4-None.None"/>
+	<upgrade from_pdid="1058" from_product="SUSE-Linux-Enterprise-RT-11.3-None.None" to_pdid="1296" to_product="SUSE-Linux-Enterprise-RT-11.4-None.x86_64"/>
 	<upgrade from_pdid="1060" from_product="sle-hae-11.2-None.ia64" to_pdid="1063" to_product="sle-hae-11.3-None.ia64"/>
 	<upgrade from_pdid="1061" from_product="sle-hae-11.1-None.ia64" to_pdid="1060" to_product="sle-hae-11.2-None.ia64"/>
 	<upgrade from_pdid="1063" from_product="sle-hae-11.3-None.ia64" to_pdid="1259" to_product="sle-hae-11.4-None.ia64"/>
