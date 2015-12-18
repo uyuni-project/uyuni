@@ -151,9 +151,15 @@ public class StatesAPI {
                      s.setStateRevision(state);
                      state.addPackageState(s);
                  }));
-        StateFactory.save(state);
-        generateServerPackageState(server);
-        return "";
+        try {
+            StateFactory.save(state);
+            generateServerPackageState(server);
+            return GSON.toJson(convertToJSON(state.getPackageStates()));
+        }
+        catch (Throwable t) {
+            response.status(500);
+            return "{}";
+        }
     }
 
     /**
