@@ -20,6 +20,9 @@ import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.SaltUtil;
 import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.utils.salt.MainframeSysinfo;
+import com.suse.manager.webui.utils.salt.SumaUtil;
+import com.suse.manager.webui.utils.salt.Udevdb;
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.calls.WheelResult;
 import com.suse.saltstack.netapi.calls.modules.Cmd;
@@ -327,6 +330,69 @@ public enum SaltAPIService implements SaltService {
         catch (SaltStackException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void syncModules(String target) {
+        try {
+            Map<String, List<String>> result = SALT_CLIENT.callSync(
+                    SaltUtil.syncModules(),
+                    new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Map<String, Object>> getUdevdb(String minionId) {
+        try {
+            Map<String, List<Map<String, Object>>> result = SALT_CLIENT.callSync(
+                    Udevdb.exportdb(),
+                    new MinionList(minionId),
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return result.get(minionId);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getFileContent(String minionId, String path) {
+        try {
+            Map<String, String> result = SALT_CLIENT.callSync(
+                    SumaUtil.cat(path),
+                    new MinionList(minionId),
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return result.get(minionId);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getMainframeSysinfoReadValues(String minionId) {
+        try {
+            Map<String, String> result = SALT_CLIENT.callSync(
+                    MainframeSysinfo.readValues(),
+                    new MinionList(minionId),
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return result.get(minionId);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }

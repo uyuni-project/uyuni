@@ -17,11 +17,15 @@ package com.suse.manager.reactor.test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.suse.manager.webui.utils.salt.Smbios;
+import com.suse.manager.webui.utils.salt.Udevdb;
+import org.apache.commons.lang.StringUtils;
 import org.jmock.Mock;
 
 import com.redhat.rhn.domain.server.InstalledPackage;
@@ -89,6 +93,9 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
         saltServiceMock.stubs().method("getDmiRecords")
                 .with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.BASEBOARD)})
                 .will(returnValue(getDmiBios(minionId, "baseboard")));
+        saltServiceMock.stubs().method("getUdevdb")
+                .with(eq(minionId))
+                .will(returnValue(getUdevRecords()));
 
         SaltService saltService = (SaltService) saltServiceMock.proxy();
 
@@ -145,6 +152,20 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
         assertEquals(2, minion.getPackages().size());
     }
 
+    public void testUdev() throws IOException, ClassNotFoundException {
+//        List<Map<String, Object>> db = getUdevRecords();
+//        System.out.println(db);
+        System.out.println("adsfasds");
+        System.out.println(StringUtils.substring("1234Mgz", 0, -3));
+        System.out.println(StringUtils.substring("i586", -2, "i586".length()));
+        System.out.println(new Date().getTime());
+        String uuid = UUID.randomUUID().toString();
+        System.out.println(uuid.replace("-", ""));
+        System.out.println(uuid);
+//        System.out.println(String.format("x=%05X", 14));
+
+    }
+
     @SuppressWarnings("unchecked")
     private Map<String, Object> getCpuInfo(String minionId) throws IOException, ClassNotFoundException {
         Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
@@ -169,6 +190,11 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
         Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
                 readFile("dummy_dmi_" + type + ".json"));
         return (Map<String, Object>)((List<Map<String, Object>>)grains.get(minionId)).get(0).get("data");
+    }
+
+    public List<Map<String, Object>> getUdevRecords() throws IOException, ClassNotFoundException {
+        return new JsonParser<>(Udevdb.exportdb().getReturnType()).parse(
+                readFile("dummy_udevdb.json"));
     }
 
     private String readFile(String file) throws IOException, ClassNotFoundException {
