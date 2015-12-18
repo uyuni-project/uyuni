@@ -196,9 +196,8 @@ public class MirrorCredentialsManager {
                 log.debug("Downloading subscriptions for " + creds.getUser());
             }
             try {
-                Credentials credentials = new Credentials();
-                credentials.setUsername(creds.getUser());
-                credentials.setPassword(creds.getPassword());
+                Credentials credentials =
+                        CredentialsFactory.lookupCredentialsById(creds.getId());
                 List<SCCSubscription> subscriptions = new ContentSyncManager().
                         getSubscriptions(credentials);
                 SetupWizardSessionCache.storeSubscriptions(
