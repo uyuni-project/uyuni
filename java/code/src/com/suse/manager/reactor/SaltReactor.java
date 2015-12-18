@@ -66,6 +66,8 @@ public class SaltReactor implements EventListener {
                 ChannelChangedEvent.class);
         MessageQueue.registerAction(new ApplyStatesAction(SALT_SERVICE),
                 StateDirtyEvent.class);
+        MessageQueue.registerAction(new GetHardwareInfoEventMessageAction(SALT_SERVICE),
+                GetHardwareInfoEventMessage.class);
 
         // Sync minions to systems in the database
         LOG.debug("Syncing minions to the database");

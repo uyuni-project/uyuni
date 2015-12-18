@@ -19,37 +19,24 @@ import com.suse.saltstack.netapi.calls.LocalCall;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
- * salt.modules.saltutil
+ * Custom Salt module udevdb.
  */
-public class SaltUtil {
+public class Udevdb {
 
-    private SaltUtil() { }
-    /**
-     * Create a call to 'saltutil.sync_grains'
-     * @return a {@link LocalCall} to pass to
-     * {@link com.suse.saltstack.netapi.client.SaltStackClient}
-     */
-    public static LocalCall<List<String>> syncGrains() {
-        LinkedHashMap<String, Object> args = new LinkedHashMap<>();
-        return new LocalCall<>("saltutil.sync_grains", Optional.empty(),
-                Optional.of(args), new TypeToken<List<String>>() {
-                });
-    }
+    private Udevdb() { }
 
     /**
-     * Create a call to 'saltutil.sync_modules'
-     * @return a {@link LocalCall} to pass to
-     * {@link com.suse.saltstack.netapi.client.SaltStackClient}
+     * Call udevdb.exportdb.
+     * @return a {@link LocalCall} to pass to the SaltStackClient
      */
-    public static LocalCall<List<String>> syncModules() {
+    public static LocalCall<List<Map<String, Object>>> exportdb() {
         LinkedHashMap<String, Object> args = new LinkedHashMap<>();
-        return new LocalCall("saltutil.sync_modules", Optional.empty(),
-                Optional.of(args), new TypeToken<List<String>>() {
-        });
+        return new LocalCall<>("udevdb.exportdb", Optional.empty(), Optional.of(args),
+                new TypeToken<List<Map<String, Object>>>() { });
     }
-
 
 }
