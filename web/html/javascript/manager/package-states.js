@@ -107,6 +107,32 @@ class PackageStates extends React.Component {
             packageStates: states
         }),
         contentType: "application/json"
+    }).then((data, textStatus, jqXHR) => {
+      console.log("success: " + data);
+      const newPackageStates = data.map(state => {
+          state.packageStateId = normalizePackageState(state.packageStateId);
+          return state;
+      });
+
+      const newSearchResults = this.state.search.results.map( state => {
+        const changed = this.state.changed.get(packageStateKey(state))
+        if(changed !== undefined) {
+            return changed;
+        } else{
+            return state;
+        }
+      });
+
+      this.setState({
+        changed: new Map(),
+        search: {
+            filter: this.state.search.filter,
+            results: newSearchResults
+        },
+        packageStates: newPackageStates
+      });
+    }, (jqXHR, textStatus, errorThrown) => {
+      console.log("fail: " + textStatus);
     });
   }
 
@@ -241,7 +267,7 @@ class PackageStates extends React.Component {
                         <button className={this.state.view == "search" ? "btn btn-success" : "btn btn-default"} onClick={this.search}>Search</button>
                         <button className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>System</button>
                         <button className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("changes")}>Changes</button>
-                        <button className="btn btn-default" onClick={this.save}>Save</button>
+                        <button className="btn btn-default" disabled={this.state.changed.size == 0} onClick={this.save}>Save</button>
                         <button className="btn btn-default" onClick={this.applyPackageState}>Apply</button>
                     </span>
                 </div>
