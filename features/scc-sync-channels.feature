@@ -26,7 +26,7 @@ Feature: mgr-sync channel listing and enablement
   Scenario: list all products
     When I execute mgr-sync "list products --expand"
     Then I want to get "[ ] SUSE Linux Enterprise Server 12 (x86_64)"
-    And I want to get "[ ] SUSE Manager Server 2.1 (s390x)"
+    And I want to get "[ ] SUSE Manager Proxy 2.1 (x86_64)"
     And I want to get "  [ ] SUSE Cloud 4 (x86_64)"
     And I want to get "  [ ] SUSE Linux Enterprise High Availability Extension 12 (x86_64)"
 
