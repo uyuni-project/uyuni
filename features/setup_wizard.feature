@@ -33,7 +33,7 @@ Feature: I want to verify the Setup Wizard
     And I should see a "Channels" text
     And I should see a "Status" text
     And I should not see a "WebYaST 1.3" text
-    And I select "SUSE Linux Enterprise Server 12" as a product for the "x86_64" architecture
+    And I select "SUSE Linux Enterprise Server 12 SP1" as a product for the "x86_64" architecture
     And I should see a "Legacy Module 12" text
     And I select "Legacy Module 12" as a product for the "x86_64" architecture
     And I click the Add Product button
