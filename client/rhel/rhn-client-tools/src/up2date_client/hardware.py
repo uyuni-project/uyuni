@@ -811,6 +811,36 @@ def get_smbios():
             'smbios.system.version': get_dmi_data('/dmidecode/SystemInfo/Version'),
         }
 
+def get_sysinfo():
+    s = rhnserver.RhnServer()
+    if not s.capabilities.hasCapability('mainframe_sysinfo'):
+        return
+    sysdict = {}
+
+    if os.access("/usr/bin/read_values", os.X_OK):
+        try:
+            lines = os.popen("/usr/bin/read_values -s").readlines()
+            sysvalues = dict()
+            for line in lines:
+                if ':' not in line:
+                    continue
+                k, v = line.split(':', 1)
+                sysvalues[k.strip()] = v.strip()
+            if sysvalues.get("Sequence Code") and sysvalues.get("Type") and \
+                os.uname()[4].lower().startswith("s390"):
+                sysdict["class"] = "SYSINFO"
+                sysdict["identifier"] = "Z-%s" % sysvalues.get("Sequence Code")
+                sysdict["os"] = "z/OS"
+                sysdict["name"] = "IBM Mainframe %s %s" % (sysvalues.get("Type"),
+                        sysvalues.get("Sequence Code"))
+                sysdict["arch"] = os.uname()[4].lower()
+                sysdict["total_ifls"] = sysvalues.get("CPUs IFL", "0")
+                sysdict["total_cpus"] = sysvalues.get("CPUs Total", "0")
+                sysdict["type"] = sysvalues.get("Type")
+        except:
+            pass
+    return sysdict
+
 # this one reads it all
 def Hardware():
     if using_gudev:
@@ -893,6 +923,13 @@ def Hardware():
                 allhw.append(ret)
         except:
             print _("Error reading network interface information:"), sys.exc_type
+
+    try:
+        ret = get_sysinfo()
+        if ret:
+            allhw.append(ret)
+    except:
+        print _("Error reading system info:"), sys.exc_type
 
     # all Done.
     return allhw
