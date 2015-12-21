@@ -2,7 +2,7 @@
 Mon Dec 07 12:45:34 CET 2015 - mc@suse.de
 
 - version 1.0.5-1
-- check postgresql instead of oracle
+- check postgresql instead of oracle (bsc#959848)
 
 -------------------------------------------------------------------
 Mon Jun 22 16:26:53 CEST 2015 - jrenner@suse.de
