@@ -41,12 +41,14 @@ import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -234,37 +236,60 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
     }
 
     private Dmi mapDmiInfo(String minionId, Server server) {
+        String biosVendor = null, biosVersion = null, biosReleseDate = null,
+                productName = null, systemVersion = null, systemSerial = null,
+                chassisSerial = null, chassisTag = null, boardSerial = null;
+
+        try {
+            // TODO get all records at once? less roundtrips but larger response
+            Map<String, Object>  bios = SALT_SERVICE.getDmiRecords(minionId,
+                    Smbios.RecordType.BIOS);
+            Map<String, Object>  system = SALT_SERVICE.getDmiRecords(minionId,
+                    Smbios.RecordType.SYSTEM);
+            Map<String, Object>  chassis = SALT_SERVICE.getDmiRecords(minionId,
+                    Smbios.RecordType.CHASSIS);
+            Map<String, Object>  board = SALT_SERVICE.getDmiRecords(minionId,
+                    Smbios.RecordType.BASEBOARD);
+
+            biosVendor = getValueAsString(bios, "vendor");
+            biosVersion = getValueAsString(bios, "version");
+            biosReleseDate = getValueAsString(bios, "release_date");
+
+            productName = getValueAsString(system, "product_name");
+            systemVersion = getValueAsString(system, "version");
+            systemSerial = getValueAsString(system, "serial_number");
+
+            chassisSerial = getValueAsString(chassis, "serial_number");
+            chassisTag = getValueAsString(chassis, "asset_tag");
+
+            boardSerial = getValueAsString(board, "serial_number");
+        }
+        catch (com.google.gson.JsonSyntaxException e) {
+            LOG.warn("Could not retrieve DMI info from minion '" + minionId +
+                    "'. JSON syntax error.");
+            // In order to behave like the "old style" registration we
+            // go on and persist an empty Dmi bean.
+        }
+
         Dmi dmi = new Dmi();
-
-        Map<String, Object> bios =
-                SALT_SERVICE.getDmiRecords(minionId, Smbios.RecordType.BIOS);
-        Map<String, Object> system =
-                SALT_SERVICE.getDmiRecords(minionId, Smbios.RecordType.SYSTEM);
-        Map<String, Object> chassis =
-                SALT_SERVICE.getDmiRecords(minionId, Smbios.RecordType.CHASSIS);
-        Map<String, Object> board =
-                SALT_SERVICE.getDmiRecords(minionId, Smbios.RecordType.BASEBOARD);
-
-        String biosVendor = getValueAsString(bios, "vendor");
-        String biosVersion = getValueAsString(bios, "version");
-        String biosReleseDate = getValueAsString(bios, "release_date");
-
-        String productName = getValueAsString(system, "product_name");
-        String systemVersion = getValueAsString(system, "version");
-        String systemSerial = getValueAsString(system, "serial_number");
-
-        String chassisSerial = getValueAsString(chassis, "serial_number");
-        String chassisTag = getValueAsString(chassis, "asset_tag");
-
-        String boardSerial = getValueAsString(board, "serial_number");
-
-        dmi.setSystem(productName + " " + systemVersion);
+        StringBuilder system = new StringBuilder();
+        if (StringUtils.isNotBlank(productName)) {
+            system.append(productName);
+        }
+        if (StringUtils.isNotBlank(systemVersion)) {
+            if (system.length() > 0) {
+                system.append(" ");
+            }
+            system.append(systemVersion);
+        }
+        dmi.setSystem(system.length() > 0 ? system.toString().trim() : null);
         dmi.setProduct(productName);
         dmi.setBios(biosVendor, biosVersion, biosReleseDate);
         dmi.setVendor(biosVendor);
 
         dmi.setAsset(String.format("(chassis: %s) (chassis: %s) (board: %s) (system: %s)",
-                chassisSerial, chassisTag, boardSerial, systemSerial));
+                Objects.toString(chassisSerial, ""), Objects.toString(chassisTag, ""),
+                Objects.toString(boardSerial, ""), Objects.toString(systemSerial, "")));
 
         dmi.setServer(server);
         server.setDmi(dmi);
