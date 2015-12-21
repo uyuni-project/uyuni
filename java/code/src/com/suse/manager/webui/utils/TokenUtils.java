@@ -84,6 +84,7 @@ public class TokenUtils {
         claims.setNotBeforeMinutesInThePast(NOT_BEFORE_MINUTES);
 
         claims.setClaim("org", orgId);
+        claims.setGeneratedJwtId();
         onlyChannels.ifPresent(
                 channels -> claims.setStringListClaim("onlyChannels",
                         new ArrayList<String>(channels)));
