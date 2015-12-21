@@ -97,7 +97,7 @@ class PackageStates extends React.Component {
   save() {
     const states = [];
     for(var state of this.state.changed.values()) {
-        states.push(state)
+        states.push(state.value)
     }
     $.ajax({
         type: "POST",
@@ -117,7 +117,7 @@ class PackageStates extends React.Component {
       const newSearchResults = this.state.search.results.map( state => {
         const changed = this.state.changed.get(packageStateKey(state))
         if(changed !== undefined) {
-            return changed;
+            return changed.value;
         } else{
             return state;
         }
@@ -160,17 +160,36 @@ class PackageStates extends React.Component {
     const elements = [];
     var rows = [];
     if(this.state.view === "system") {
-        rows = this.state.packageStates;
+        rows = this.state.packageStates.map(state => {
+            const changed = this.state.changed.get(packageStateKey(state))
+            if(changed !== undefined) {
+                return changed;
+            } else {
+                return {
+                    original: state,
+                };
+            }
+        });
     } else if(this.state.view === "search") {
-        rows = this.state.search.results;
+        rows = this.state.search.results.map(state => {
+            const changed = this.state.changed.get(packageStateKey(state))
+            if(changed !== undefined) {
+                return changed;
+            } else {
+                return {
+                    original: state,
+                };
+            }
+        });
     } else if(this.state.view === "changes") {
         for(var state of this.state.changed.values()) {
             rows.push(state)
         }
     }
     for(var row of rows) {
-      const changed = this.state.changed.get(packageStateKey(row))
-      const currentState = changed === undefined? row : changed;
+      const changed = row.value;
+      const currentState = changed === undefined? row.original : changed;
+
       var versionConstraintSelect = null;
       if(currentState.packageStateId === INSTALLED) {
         //versionConstraintSelect =
@@ -181,15 +200,15 @@ class PackageStates extends React.Component {
       }
       var undoButton = null;
       if(changed !== undefined) {
-        undoButton = <button className="btn btn-default" onClick={this.handleUndo(row)}>Undo</button>
+        undoButton = <button className="btn btn-default" onClick={this.handleUndo(row.original)}>Undo</button>
       }
 
       elements.push(
-        <tr className={currentState !== row ? "warning" : ""}>
+        <tr className={changed !== undefined ? "warning" : ""}>
           <td>{currentState.name}</td>
           <td>
             <div className="form-group">
-              <select className="form-control" value={packageState2selectValue(currentState.packageStateId)} onChange={this.handleStateChange(row)}>
+              <select className="form-control" value={packageState2selectValue(currentState.packageStateId)} onChange={this.handleStateChange(row.original)}>
                 <option value="-1">Unmanaged</option>
                 <option value="0">Installed</option>
                 <option value="1">Removed</option>
@@ -236,13 +255,16 @@ class PackageStates extends React.Component {
             this.state.changed.delete(packageStateKey(packageState))
          } else {
             this.state.changed.set(packageStateKey(packageState), {
-                arch: packageState.arch,
-                epoch: packageState.epoch,
-                version: packageState.version,
-                release: packageState.release,
-                name: packageState.name,
-                packageStateId: newPackageStateId,
-                versionConstraintId: newPackageStateId == INSTALLED ? LATEST :  packageState.versionConstraintId
+                original: packageState,
+                value: {
+                    arch: packageState.arch,
+                    epoch: packageState.epoch,
+                    version: packageState.version,
+                    release: packageState.release,
+                    name: packageState.name,
+                    packageStateId: newPackageStateId,
+                    versionConstraintId: newPackageStateId == INSTALLED ? LATEST :  packageState.versionConstraintId
+                }
             });
          }
          this.setState({
@@ -257,18 +279,24 @@ class PackageStates extends React.Component {
         <h2>
           <i className="fa spacewalk-icon-package-add"></i>
           Package States
+          <span className="btn-group pull-right">
+              <button className="btn btn-default" disabled={this.state.changed.size == 0} onClick={this.save}>Save</button>
+              <button className="btn btn-default" onClick={this.applyPackageState}>Apply</button>
+          </span>
         </h2>
         <div className="row col-md-12">
           <div className="panel panel-default">
             <div className="panel-body">
-                <div className="input-group">
-                    <input className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange}/>
-                    <span className="input-group-btn">
-                        <button className={this.state.view == "search" ? "btn btn-success" : "btn btn-default"} onClick={this.search}>Search</button>
-                        <button className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>System</button>
-                        <button className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("changes")}>Changes</button>
-                        <button className="btn btn-default" disabled={this.state.changed.size == 0} onClick={this.save}>Save</button>
-                        <button className="btn btn-default" onClick={this.applyPackageState}>Apply</button>
+                <div className="row">
+                    <span className="col-md-4 pull-right">
+                        <span className="input-group">
+                            <input className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange}/>
+                            <span className="input-group-btn">
+                                <button className={this.state.view == "search" ? "btn btn-success" : "btn btn-default"} onClick={this.search}>Search</button>
+                                <button className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>System</button>
+                                <button className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("changes")}>Changes</button>
+                            </span>
+                        </span>
                     </span>
                 </div>
                 <table className="table table-striped">
