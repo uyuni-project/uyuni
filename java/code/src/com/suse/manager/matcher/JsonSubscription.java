@@ -16,6 +16,7 @@
 package com.suse.manager.matcher;
 
 import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCSubscription;
 
@@ -75,17 +76,39 @@ public class JsonSubscription {
             sccUsername = "extFile";
         }
         SCCSubscription s = order.getSubscription();
+        productIds = new LinkedList<>();
         if (s != null) {
             name = s.getName();
             status = s.getStatus();
             regcode = s.getRegcode();
             type = s.getType();
-            productIds = s.getProducts().stream()
-                    .map(i -> i.getProductId())
-                    .collect(Collectors.toList());
-        }
-        else {
-            productIds = new LinkedList<>();
+            for (SUSEProduct prd : s.getProducts()) {
+                Long pdid = prd.getProductId();
+                // FIXME: add single and unlimited virt as possible products
+                //        to the same subscription. Which one to use is calculated by
+                //        the matcher.
+                //        Ask SCC/NCC Team to reconfigure the subscriptions to remove
+                //        this code.
+
+                // SUSE-Manager-Mgmt-Single or SUSE-Manager-Mgmt-Unlimited-Virtual
+                if (pdid.equals(1076L) || pdid.equals(1078L)) {
+                    productIds.add(1076L);
+                    productIds.add(1078L);
+                }
+                // SUSE-Manager-Prov-Single or SUSE-Manager-Prov-Unlimited-Virtual
+                else if (pdid.equals(1097L) || pdid.equals(1204L)) {
+                    productIds.add(1097L);
+                    productIds.add(1204L);
+                }
+                // SUSE-Manager-Mon-Single or SUSE-Manager-Mon-Unlimited-Virtual
+                else if (pdid.equals(1201L) || pdid.equals(1202L)) {
+                    productIds.add(1201L);
+                    productIds.add(1202L);
+                }
+                else {
+                    productIds.add(pdid);
+                }
+            }
         }
     }
 
