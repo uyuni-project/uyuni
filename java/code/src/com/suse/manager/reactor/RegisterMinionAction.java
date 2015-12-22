@@ -346,7 +346,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
                                                    Server server) {
 
         String epoch = info.getEpoch().orElse(null);
-        String release = info.getRelease().orElse(null);
+        String release = info.getRelease().orElse("0");
         String version = info.getVersion();
         PackageEvr evr = PackageEvrFactory
                 .lookupOrCreatePackageEvr(epoch, version, release);
