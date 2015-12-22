@@ -101,10 +101,15 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             LOG.info("Cannot find machine id for minion: " + minionId);
             return;
         }
-        if (ServerFactory.findRegisteredMinion(machineId) != null) {
+        Server registeredMinion = ServerFactory.findRegisteredMinion(machineId);
+        if (registeredMinion != null) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Minion already registered, skipping registration: " +
+                LOG.debug("Minion already registered, updating profile: " +
                         minionId + " [" + machineId + "]");
+            }
+            if (!minionId.equals(registeredMinion.getName())) {
+                registeredMinion.setName(minionId);
+                ServerFactory.save(registeredMinion);
             }
             return;
         }
