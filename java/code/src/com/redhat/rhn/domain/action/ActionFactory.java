@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
@@ -59,6 +60,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+
+import com.suse.manager.reactor.ActionScheduledEvent;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -608,6 +611,8 @@ public class ActionFactory extends HibernateFactory {
             }
         }
         singleton.saveObject(actionIn);
+        MessageQueue.publish(new ActionScheduledEvent(actionIn));
+
         return actionIn;
     }
 

@@ -14,14 +14,18 @@
  */
 package com.suse.manager.webui.services;
 
+import com.redhat.rhn.domain.errata.Errata;
+
 import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.datatypes.target.Target;
 import com.suse.saltstack.netapi.event.EventStream;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Service interface for accessing salt via the API.
@@ -187,4 +191,14 @@ public interface SaltService {
      */
     String getMainframeSysinfoReadValues(String minionId);
 
+    /**
+     * Schedule patch installations for a given target.
+     *
+     * @param target the target
+     * @param patches the patches to install
+     * @param scheduleDate schedule date (currently ignored)
+     * @return the result of the patch installation
+     */
+    Map<String, Map<String, Object>> schedulePatchInstallation(Target<?> target,
+            Set<Errata> patches, Date scheduleDate);
 }
