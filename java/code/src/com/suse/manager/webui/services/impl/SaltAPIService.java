@@ -16,6 +16,9 @@ package com.suse.manager.webui.services.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import com.redhat.rhn.domain.errata.Errata;
+
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.SaltUtil;
 import com.suse.manager.webui.utils.salt.Smbios;
@@ -43,9 +46,12 @@ import org.apache.commons.collections.CollectionUtils;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Singleton class acting as a service layer for accessing the salt API.
@@ -392,7 +398,22 @@ public enum SaltAPIService implements SaltService {
         catch (SaltStackException e) {
             throw new RuntimeException(e);
         }
-
     }
 
+    public Map<String, Map<String, Object>> schedulePatchInstallation(Target<?> target,
+            Set<Errata> patches, Date scheduleDate) {
+        // Abuse pkg.install for patches using the "patch:" prefix
+        List<String> pkgs = patches.stream()
+                .map(patch -> "patch:" + patch.getPatchName())
+                .collect(Collectors.toList());
+        try {
+            Map<String, Map<String, Object>> result = SALT_CLIENT.callSync(
+                    com.suse.manager.webui.utils.salt.Pkg.install(true, pkgs), target,
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return result;
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
