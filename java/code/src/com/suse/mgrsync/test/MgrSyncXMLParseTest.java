@@ -141,6 +141,6 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      */
     public void testReadUpgradePaths() throws Exception {
         List<XMLUpgradePath> paths = readUpgradePaths();
-        assertEquals(98, paths.size());
+        assertEquals(99, paths.size());
     }
 }
