@@ -61,7 +61,7 @@ import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
-import com.suse.manager.reactor.ActionScheduledEvent;
+import com.suse.manager.reactor.ActionScheduledEventMessage;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -611,7 +611,7 @@ public class ActionFactory extends HibernateFactory {
             }
         }
         singleton.saveObject(actionIn);
-        MessageQueue.publish(new ActionScheduledEvent(actionIn));
+        MessageQueue.publish(new ActionScheduledEventMessage(actionIn));
 
         return actionIn;
     }

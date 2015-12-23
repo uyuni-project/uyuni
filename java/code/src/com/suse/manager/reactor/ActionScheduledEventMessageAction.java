@@ -15,43 +15,24 @@
 package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 
-public class ActionScheduledEvent implements EventMessage {
+import com.suse.manager.webui.services.SaltServerActionService;
 
-    private final Action action;
+import org.apache.log4j.Logger;
 
-    /**
-     * Create a new event about an action that was stored.
-     *
-     * @param minionIdIn minion to register
-     */
-    public ActionScheduledEvent(Action actionIn) {
-        action = actionIn;
-    }
+public class ActionScheduledEventMessageAction extends AbstractDatabaseAction {
 
-    /**
-     * Get the action.
-     *
-     * @return the action
-     */
-    public Action getAction() {
-        return action;
-    }
+    /* Logger for this class */
+    private static final Logger LOG = Logger.getLogger(ActionScheduledEventMessageAction.class);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String toText() {
-        return "ActionStoredEvent[action: " + action.toString() + "]";
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long getUserId() {
-        return action.getSchedulerUser().getId();
+    protected void doExecute(EventMessage eventMessage) {
+        ActionScheduledEventMessage event = (ActionScheduledEventMessage) eventMessage;
+        LOG.debug("Action stored: " + event.getAction().getName());
+        SaltServerActionService.INSTANCE.execute(event.getAction());
     }
 }
