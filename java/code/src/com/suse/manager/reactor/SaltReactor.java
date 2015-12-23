@@ -63,6 +63,8 @@ public class SaltReactor implements EventListener {
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionAction(),
                 RegisterMinionEvent.class);
+        MessageQueue.registerAction(new UpdatePackageProfileEventMessageAction(),
+                UpdatePackageProfileEventMessage.class);
         MessageQueue.registerAction(new GenerateRepoFileAction(),
                 ChannelChangedEvent.class);
         MessageQueue.registerAction(new ApplyStatesAction(SALT_SERVICE),
