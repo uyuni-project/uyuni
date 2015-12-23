@@ -34,7 +34,7 @@ public class SaltUtil {
      */
     public static LocalCall<List<String>> syncGrains() {
         LinkedHashMap<String, Object> args = new LinkedHashMap<>();
-        return new LocalCall("saltutil.sync_grains", Optional.empty(),
+        return new LocalCall<>("saltutil.sync_grains", Optional.empty(),
                 Optional.of(args), new TypeToken<List<String>>() {
                 });
     }

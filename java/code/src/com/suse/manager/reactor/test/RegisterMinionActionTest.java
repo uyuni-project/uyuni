@@ -145,6 +145,7 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
         assertEquals(2, minion.getPackages().size());
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, Object> getCpuInfo(String minionId) throws IOException, ClassNotFoundException {
         Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
                 readFile("dummy_cpuinfo.json"));
@@ -156,12 +157,14 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
                 readFile("dummy_package.json"));
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, Object> getGrains(String minionId) throws ClassNotFoundException, IOException {
     	Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
                 readFile("dummy_grains.json"));
     	return (Map<String, Object>)((List<Map<String, Object>>)grains.get("return")).get(0).get(minionId);
     }
 
+    @SuppressWarnings("unchecked")
     public Map<String, Object> getDmiBios(String minionId, String type) throws IOException, ClassNotFoundException {
         Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
                 readFile("dummy_dmi_" + type + ".json"));
