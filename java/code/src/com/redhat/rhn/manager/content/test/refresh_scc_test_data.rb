@@ -40,3 +40,10 @@ save_json(products, "products.json")
 
 repositories = get_paginated("https://scc.suse.com/connect/organizations/repositories")
 save_json(repositories, "repositories.json")
+
+subscriptions = get_paginated("https://scc.suse.com/connect/organizations/subscriptions")
+save_json(subscriptions, "organizations_subscriptions.json")
+
+orders = get_paginated("https://scc.suse.com/connect/organizations/orders")
+save_json(orders, "organizations_orders.json")
+
