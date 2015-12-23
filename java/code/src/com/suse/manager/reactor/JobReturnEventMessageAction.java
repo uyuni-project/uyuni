@@ -37,9 +37,17 @@ public class JobReturnEventMessageAction implements MessageAction {
         JobReturnEventMessage jobReturnEventMessage = (JobReturnEventMessage) msg;
         JobReturnEvent jobReturnEvent = jobReturnEventMessage.getJobReturnEvent();
 
+        // React according to the function the minion ran
+        String function = (String) jobReturnEvent.getData().get("fun");
+
         if (LOG.isDebugEnabled()) {
             LOG.debug("Job return event for minion: " +
-                    jobReturnEvent.getMinionId() + "/" + jobReturnEvent.getJobId());
+                    jobReturnEvent.getMinionId() + "/" + jobReturnEvent.getJobId() +
+                    " (" + function + ")");
+        }
+
+        if (function.startsWith("pkg.")) {
+            // TODO: update the package profile in case of a positive retcode
         }
     }
 }
