@@ -77,8 +77,9 @@ class PackageStates extends React.Component {
         this.setState({
             view: "search"
         });
+        return Promise.resolve();
     } else {
-        $.get("/rhn/manager/api/states/packages/match?sid=" + serverId + "&target=" + this.state.filter, data => {
+       return $.get("/rhn/manager/api/states/packages/match?sid=" + serverId + "&target=" + this.state.filter, data => {
           console.log(data);
           this.setState({
             view: "search",
@@ -99,7 +100,7 @@ class PackageStates extends React.Component {
     for(var state of this.state.changed.values()) {
         states.push(state.value)
     }
-    $.ajax({
+    const request = $.ajax({
         type: "POST",
         url: "/rhn/manager/api/states/packages/save",
         data: JSON.stringify({
@@ -125,6 +126,7 @@ class PackageStates extends React.Component {
 
       this.setState({
         changed: new Map(),
+        view: "system",
         search: {
             filter: this.state.search.filter,
             results: newSearchResults
@@ -134,10 +136,11 @@ class PackageStates extends React.Component {
     }, (jqXHR, textStatus, errorThrown) => {
       console.log("fail: " + textStatus);
     });
+    return Promise.resolve(request);
   }
 
   applyPackageState() {
-    $.ajax({
+    const request = $.ajax({
         type: "POST",
         url: "/rhn/manager/api/states/apply",
         data: JSON.stringify({
@@ -146,6 +149,7 @@ class PackageStates extends React.Component {
         }),
         contentType: "application/json"
     });
+    return Promise.resolve(request);
   }
 
   setView(view) {
@@ -280,8 +284,8 @@ class PackageStates extends React.Component {
           <i className="fa spacewalk-icon-package-add"></i>
           Package States
           <span className="btn-group pull-right">
-              <button className="btn btn-default" disabled={this.state.changed.size == 0} onClick={this.save}>Save</button>
-              <button className="btn btn-default" onClick={this.applyPackageState}>Apply</button>
+              <Button action={this.save} name="Save" disabled={this.state.changed.size == 0}/>
+              <Button action={this.applyPackageState} name="Apply" />
           </span>
         </h2>
         <div className="row col-md-12">
@@ -292,9 +296,11 @@ class PackageStates extends React.Component {
                         <span className="input-group">
                             <input className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange}/>
                             <span className="input-group-btn">
-                                <button className={this.state.view == "search" ? "btn btn-success" : "btn btn-default"} onClick={this.search}>Search</button>
+                                <Button action={this.applyPackageState} name="Search" action={this.search} />
                                 <button className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>System</button>
-                                <button className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("changes")}>Changes</button>
+                                <button className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
+                                    {this.state.changed.size > 0 ? this.state.changed.size : "No"} Changes
+                                </button>
                             </span>
                         </span>
                     </span>
@@ -314,6 +320,52 @@ class PackageStates extends React.Component {
       </div>
     );
   }
+}
+
+const waiting = "waiting";
+const success = "success";
+const initial = "initial";
+const failure = "failure";
+
+class Button extends React.Component {
+
+
+  constructor(props) {
+    ["trigger"].forEach(method => this[method] = this[method].bind(this));
+    this.state = {
+        value: initial
+    };
+  }
+
+  trigger() {
+    this.setState({
+        value: waiting
+    });
+    const future = this.props.action();
+    future.then(
+      () => {
+        this.setState({
+            value: success
+        });
+      },
+      () => {
+        this.setState({
+            value: failure
+        });
+      }
+    );
+  }
+
+  render() {
+    const style = this.state.value == failure ? "btn btn-danger" : "btn btn-default";
+    return (
+        <button className={style} disabled={this.state.value == waiting || this.props.disabled} onClick={this.trigger}>
+           {this.state.value == waiting ? <i className="fa fa-circle-o-notch fa-spin"></i> : undefined}
+           {this.props.name}
+        </button>
+    );
+  }
+
 }
 
 React.render(
