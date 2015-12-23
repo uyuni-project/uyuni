@@ -90,9 +90,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         try {
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
 
+            SUSEProductFactory.clearAllProducts();
+            SUSEProductTestUtils.createVendorSUSEProducts();
             ContentSyncManager cm = new ContentSyncManager();
             Collection<SCCSubscription> s = cm.getSubscriptions();
-            HibernateFactory.getSession().flush();
             assertNotNull(s);
 
             for (com.redhat.rhn.domain.scc.SCCSubscription dbs : SCCCachingFactory.lookupSubscriptions()) {
@@ -100,8 +101,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 assertEquals("EMEA SLES x86/x86_64 Standard Support & Training", dbs.getName());
                 assertEquals(1234, dbs.getSccId());
                 assertEquals("ACTIVE", dbs.getStatus());
-                assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1212));
-                assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1307));
+                assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1322));
+                assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1324));
                 assertEquals(702, dbs.getSystemLimit().longValue());
                 assertEquals(DatatypeConverter.parseDateTime("2017-12-31T00:00:00.000Z").getTime(),
                         dbs.getExpiresAt());
