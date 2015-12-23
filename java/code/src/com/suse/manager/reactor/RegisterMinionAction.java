@@ -19,12 +19,6 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageArch;
-import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageName;
-import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -36,8 +30,8 @@ import com.suse.manager.reactor.hardware.CpuMapper;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-
 import com.suse.saltstack.netapi.calls.modules.Pkg;
+
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
@@ -47,7 +41,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Event handler to create system records for salt minions.
@@ -150,19 +143,6 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             mapHardwareDetails(minionId, machineId, server, grains);
             // TODO network details
 
-            try {
-                Map<String, Pkg.Info> saltPackages =
-                        SALT_SERVICE.getInstalledPackageDetails(minionId);
-                Set<InstalledPackage> packages = saltPackages.entrySet().stream().map(
-                        entry -> createPackageFromSalt(entry.getKey(),
-                                entry.getValue(), server)
-                ).collect(Collectors.toSet());
-
-                server.setPackages(packages);
-            }
-            catch (com.google.gson.JsonSyntaxException e) {
-                LOG.warn("Could not get packages", e);
-            }
             //HACK: set installed product depending on the grains
             // to get access to suse channels
             String key = osfullname + osrelease + osarch;
@@ -196,6 +176,10 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             data.put("machineId", machineId);
             SALT_SERVICE.sendEvent("susemanager/minion/registered", data);
             LOG.info("Finished minion registration: " + minionId);
+
+            // Trigger an update of the package profile
+            MessageQueue.publish(new UpdatePackageProfileEventMessage(
+                    server.getId(), minionId));
         }
         catch (Throwable t) {
             LOG.error("Error registering minion for event: " + event, t);
@@ -212,36 +196,5 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         // get the rest of hardware info in an async way
         MessageQueue.publish(
                 new GetHardwareInfoEventMessage(minionId, machineId, true));
-    }
-
-    /**
-     * Creates a new InstalledPackage object from package name and info
-     * @param name name of the package
-     * @param info package info from salt
-     * @param server server this package will be added to
-     * @return The InstalledPackage object
-     */
-    private InstalledPackage createPackageFromSalt(String name, Pkg.Info info,
-                                                   Server server) {
-
-        String epoch = info.getEpoch().orElse(null);
-        String release = info.getRelease().orElse("0");
-        String version = info.getVersion();
-        PackageEvr evr = PackageEvrFactory
-                .lookupOrCreatePackageEvr(epoch, version, release);
-
-        PackageName pkgName = PackageFactory.lookupOrCreatePackageByName(name);
-
-        String arch = info.getArchitecture();
-        PackageArch packageArch = PackageFactory.lookupPackageArchByLabel(arch);
-
-        InstalledPackage pkg = new InstalledPackage();
-        pkg.setEvr(evr);
-        pkg.setArch(packageArch);
-
-        pkg.setInstallTime(Date.from(info.getInstallDate().toInstant()));
-        pkg.setName(pkgName);
-        pkg.setServer(server);
-        return pkg;
     }
 }
