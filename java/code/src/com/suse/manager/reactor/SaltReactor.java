@@ -20,6 +20,7 @@ import com.suse.manager.webui.events.ManagedFileChangedEvent;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.sse.SSEServlet;
+import com.suse.manager.webui.utils.salt.JobReturnEvent;
 import com.suse.saltstack.netapi.datatypes.Event;
 import com.suse.saltstack.netapi.event.BeaconEvent;
 import com.suse.saltstack.netapi.event.EventListener;
@@ -123,7 +124,8 @@ public class SaltReactor implements EventListener {
         // Setup handlers for different event types
         Runnable runnable =
                 MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
-                BeaconEvent.parse(event).map(this::onBeaconEvent).orElse(() -> { }));
+                JobReturnEvent.parse(event).map(this::onJobReturnEvent).orElseGet(() ->
+                BeaconEvent.parse(event).map(this::onBeaconEvent).orElse(() -> { })));
         executorService.submit(runnable);
     }
 
@@ -161,6 +163,12 @@ public class SaltReactor implements EventListener {
     private Runnable onMinionStartEvent(MinionStartEvent minionStartEvent) {
         return () -> {
             triggerMinionRegistration((String) minionStartEvent.getData().get("id"));
+        };
+    }
+
+    private Runnable onJobReturnEvent(JobReturnEvent jobReturnEvent) {
+        return () -> {
+            LOG.debug("Job return for minion: " + jobReturnEvent.getMinionId() + "/" + jobReturnEvent.getJobId());
         };
     }
 
