@@ -94,19 +94,20 @@ public class StatesAPI {
      * @return JSON result of the API call
      */
     public static String match(Request request, Response response) {
-        String target = ".*" + request.queryParams("target") + ".*";
+        String target = request.queryParams("target");
+        String targetLowerCase = target.toLowerCase();
         String serverId = request.queryParams("sid");
 
         // Find matches among this server's current packages states
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         Set<JSONPackageState> matching = latestPackageStatesJSON(server).stream()
-                .filter(p -> p.getName().matches(target))
+                .filter(p -> p.getName().toLowerCase().contains(targetLowerCase))
                 .collect(Collectors.toSet());
 
         // Find matches among available packages and convert to JSON objects
         Set<JSONPackageState> matchingAvailable = PackageManager
                 .systemTotalPackages(Long.valueOf(serverId), null).stream()
-                .filter(p -> p.getName().matches(target))
+                .filter(p -> p.getName().toLowerCase().contains(targetLowerCase))
                 .map(p -> new JSONPackageState(p.getName(), new PackageEvr(
                         p.getEpoch(), p.getVersion(), p.getRelease()), p.getArch()))
                 .collect(Collectors.toSet());
