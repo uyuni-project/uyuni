@@ -23,8 +23,7 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- *
- * @author bo
+ * Helper class for generating salt SLS files.
  */
 public class SaltStateGenerator {
     private final Writer destination;
