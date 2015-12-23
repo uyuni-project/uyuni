@@ -500,14 +500,14 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 p.setProductId(814);
                 TestUtils.saveAndFlush(p);
             }
-            if (SUSEProductFactory.lookupByProductId(1001) == null) {
+            if (SUSEProductFactory.lookupByProductId(1002) == null) {
                 p = SUSEProductTestUtils.createTestSUSEProduct(family);
-                p.setProductId(1001);
+                p.setProductId(1002);
                 TestUtils.saveAndFlush(p);
             }
-            if (SUSEProductFactory.lookupByProductId(1119) == null) {
+            if (SUSEProductFactory.lookupByProductId(1141) == null) {
                 p = SUSEProductTestUtils.createTestSUSEProduct(family);
-                p.setProductId(1119);
+                p.setProductId(1141);
                 TestUtils.saveAndFlush(p);
             }
             if (SUSEProductFactory.lookupByProductId(1193) == null) {
@@ -594,7 +594,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 paths.add(ident);
             }
             assertTrue(paths.contains("690-814"));
-            assertTrue(paths.contains("1001-1119"));
+            assertTrue(paths.contains("1002-1141"));
             assertTrue(paths.contains("1193-1198"));
             assertTrue(paths.contains("10012345-10012346"));
         }
