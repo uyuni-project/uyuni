@@ -71,6 +71,8 @@ public class SaltReactor implements EventListener {
                 GetHardwareInfoEventMessage.class);
         MessageQueue.registerAction(new ActionScheduledAction(),
                 ActionScheduledEvent.class);
+        MessageQueue.registerAction(new JobReturnEventMessageAction(),
+                JobReturnEventMessage.class);
 
         // Sync minions to systems in the database
         LOG.debug("Syncing minions to the database");
@@ -166,9 +168,15 @@ public class SaltReactor implements EventListener {
         };
     }
 
+    /**
+     * Trigger handling of job return events.
+     *
+     * @param jobReturnEvent the job return event as we get it from salt
+     * @return event handler runnable
+     */
     private Runnable onJobReturnEvent(JobReturnEvent jobReturnEvent) {
         return () -> {
-            LOG.debug("Job return for minion: " + jobReturnEvent.getMinionId() + "/" + jobReturnEvent.getJobId());
+            MessageQueue.publish(new JobReturnEventMessage(jobReturnEvent));
         };
     }
 
