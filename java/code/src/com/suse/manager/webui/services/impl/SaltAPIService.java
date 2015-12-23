@@ -321,8 +321,7 @@ public enum SaltAPIService implements SaltService {
      */
     public void syncGrains(String target) {
         try {
-            Map<String, List<String>> result = SALT_CLIENT.callSync(
-                    SaltUtil.syncGrains(),
+            SALT_CLIENT.callSync(SaltUtil.syncGrains(),
                     new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
         }
         catch (SaltStackException e) {
