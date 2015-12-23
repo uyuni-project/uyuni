@@ -71,7 +71,7 @@ public class JsonSystem {
         else {
             cpus = s.getCpu().getNrsocket();
         }
-        physical = !s.isVirtualGuest() && !s.isVirtualHost();
+        physical = !s.isVirtualGuest();
 
         SUSEProductSet productSet = s.getInstalledProductSet();
         SUSEProduct baseProduct = null;
