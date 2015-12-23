@@ -17,6 +17,13 @@ package com.suse.manager.reactor;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.action.Action;
 
+/**
+ * Event message for the {@link com.redhat.rhn.common.messaging.MessageQueue;} to signal
+ * that a new {@link com.redhat.rhn.domain.action.server.ServerAction} has been stored.
+ *
+ * This event would then be handled by {@link ActionScheduledEventMessageAction} to
+ * act on it and execute the action using Salt.
+ */
 public class ActionScheduledEventMessage implements EventMessage {
 
     private final Action action;
