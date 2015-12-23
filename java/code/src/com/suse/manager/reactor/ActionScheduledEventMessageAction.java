@@ -21,6 +21,14 @@ import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.apache.log4j.Logger;
 
+/**
+ * {@link com.redhat.rhn.common.messaging.MessageQueue;} handler for
+ * {@link ActionScheduledEventMessage} events signaling that a new
+ * {@link com.redhat.rhn.domain.action.server.ServerAction} has been stored.
+ *
+ * The handler looks which servers are Salt systems and start the necessary
+ * Salt jobs for the actions.
+ */
 public class ActionScheduledEventMessageAction extends AbstractDatabaseAction {
 
     /* Logger for this class */
