@@ -29,6 +29,6 @@
     </query>
     <query name="SCCSubscription.deleteByCredential">
         <![CDATA[delete from com.redhat.rhn.domain.scc.SCCSubscription as s
-                  where s.credentials = :creds]]>
+                  where s.credentials = :creds or s.credentials is null]]>
     </query>
 </hibernate-mapping>
