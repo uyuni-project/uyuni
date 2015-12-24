@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.credentials;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
@@ -183,6 +185,34 @@ public class Credentials extends BaseDomainHelper {
         return StringUtils.isEmpty(username) &&
                 StringUtils.isEmpty(encodedPassword) &&
                 StringUtils.isEmpty(url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Credentials)) {
+            return false;
+        }
+        Credentials otherCredentials = (Credentials) other;
+        return new EqualsBuilder()
+            .append(getType(), otherCredentials.getType())
+            .append(getUsername(), otherCredentials.getUsername())
+            .append(getPassword(), otherCredentials.getPassword())
+            .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+            .append(getType())
+            .append(getUsername())
+            .append(getPassword())
+            .toHashCode();
     }
 
     /**

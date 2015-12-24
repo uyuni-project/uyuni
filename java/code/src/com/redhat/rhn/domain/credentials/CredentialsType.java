@@ -16,6 +16,9 @@ package com.redhat.rhn.domain.credentials;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 /**
  * CredentialsType
  * @version $Rev$
@@ -68,26 +71,27 @@ public class CredentialsType extends BaseDomainHelper {
         this.name = n;
     }
 
-    /** {@inheritDoc} */
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof CredentialsType)) {
             return false;
         }
-
-        CredentialsType credsType = (CredentialsType) o;
-
-        if (id != null ? !id.equals(credsType.id) : credsType.id != null) {
-            return false;
-        }
-
-        return true;
+        CredentialsType otherCredentialsType = (CredentialsType) other;
+        return new EqualsBuilder()
+            .append(getLabel(), otherCredentialsType.getLabel())
+            .isEquals();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return new HashCodeBuilder()
+            .append(getLabel())
+            .toHashCode();
     }
 }
