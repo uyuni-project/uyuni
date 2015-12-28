@@ -46,8 +46,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -83,7 +82,7 @@ public class StatesAPI {
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
 
         response.type("application/json");
-        return GSON.toJson(currentPackageStates(server));
+        return GSON.toJson(latestPackageStatesJSON(server));
     }
 
     /**
@@ -95,19 +94,20 @@ public class StatesAPI {
      * @return JSON result of the API call
      */
     public static String match(Request request, Response response) {
-        String target = ".*" + request.queryParams("target") + ".*";
+        String target = request.queryParams("target");
+        String targetLowerCase = target.toLowerCase();
         String serverId = request.queryParams("sid");
 
         // Find matches among this server's current packages states
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
-        Set<JSONPackageState> matching = currentPackageStates(server).stream()
-                .filter(p -> p.getName().matches(target))
+        Set<JSONPackageState> matching = latestPackageStatesJSON(server).stream()
+                .filter(p -> p.getName().toLowerCase().contains(targetLowerCase))
                 .collect(Collectors.toSet());
 
         // Find matches among available packages and convert to JSON objects
         Set<JSONPackageState> matchingAvailable = PackageManager
                 .systemTotalPackages(Long.valueOf(serverId), null).stream()
-                .filter(p -> p.getName().matches(target))
+                .filter(p -> p.getName().toLowerCase().contains(targetLowerCase))
                 .map(p -> new JSONPackageState(p.getName(), new PackageEvr(
                         p.getEpoch(), p.getVersion(), p.getRelease()), p.getArch()))
                 .collect(Collectors.toSet());
@@ -137,13 +137,8 @@ public class StatesAPI {
         state.setServer(server);
         state.setCreator(user);
 
-        // Get the latest package states, convert to JSON and merge with the changes
-        Set<JSONPackageState> jsonLatestStates = new HashSet<>();
-        Optional<Set<PackageState>> latestStates = StateFactory.latestPackageStates(server);
-        if (latestStates.isPresent()) {
-            jsonLatestStates = convertToJSON(latestStates.get());
-        }
-        json.getPackageStates().addAll(jsonLatestStates);
+        // Merge the latest package states with the changes (converted to JSON objects)
+        json.getPackageStates().addAll(latestPackageStatesJSON(server));
 
         // Add only valid states to the new revision, unmanaged packages will be skipped
         json.getPackageStates().stream().forEach(pkgState ->
@@ -151,9 +146,15 @@ public class StatesAPI {
                      s.setStateRevision(state);
                      state.addPackageState(s);
                  }));
-        StateFactory.save(state);
-        generateServerPackageState(server);
-        return "";
+        try {
+            StateFactory.save(state);
+            generateServerPackageState(server);
+            return GSON.toJson(convertToJSON(state.getPackageStates()));
+        }
+        catch (Throwable t) {
+            response.status(500);
+            return "{}";
+        }
     }
 
     /**
@@ -175,21 +176,15 @@ public class StatesAPI {
     }
 
     /**
-     * Get the current set of package states for a given server.
+     * Get the current set of package states for a given server as {@link JSONPackageState}
+     * objects ready for serialization.
      *
      * @param server the server
      * @return the current set of package states
      */
-    private static Set<JSONPackageState> currentPackageStates(Server server) {
-        // Lookup all revisions and take package states from the latest one
-        List<ServerStateRevision> stateRevisions =
-                StateFactory.lookupServerStateRevisions(server);
-        Set<PackageState> packageStates = new HashSet<>();
-        if (stateRevisions != null && !stateRevisions.isEmpty()) {
-            packageStates = stateRevisions.get(0).getPackageStates();
-        }
-
-        return convertToJSON(packageStates);
+    private static Set<JSONPackageState> latestPackageStatesJSON(Server server) {
+        return convertToJSON(StateFactory.latestPackageStates(server)
+                .orElse(Collections.emptySet()));
     }
 
     /**
