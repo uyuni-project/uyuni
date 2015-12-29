@@ -67,7 +67,7 @@ public class JsonSubscription {
         partNumber = order.getSku();
         endDate = order.getEndDate();
         startDate = order.getStartDate();
-        quantity = order.getQuantity();
+        quantity = order.getQuantity() == null ? 0 : order.getQuantity();
         Credentials c = order.getCredentials();
         if (c != null) {
             sccUsername = c.getUsername();
