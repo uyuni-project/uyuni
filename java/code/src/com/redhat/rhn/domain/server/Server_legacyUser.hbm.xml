@@ -188,6 +188,13 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <many-to-one name="version" class="com.redhat.rhn.domain.rhnpackage.PackageEvr"
                 column="evr_id" cascade="none" access="field"/>
         </joined-subclass>
+
+        <joined-subclass name="com.redhat.rhn.domain.server.MinionServer"
+                         table="suseMinionInfo">
+            <key column="server_id"/>
+            <property name="minionId" column="minion_id" />
+            <property name="machineId" column="machine_id" />
+        </joined-subclass>
     </class>
 
     <query name="Server.findByIdandOrgId">
