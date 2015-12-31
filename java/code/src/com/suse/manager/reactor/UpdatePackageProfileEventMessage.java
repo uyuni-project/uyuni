@@ -22,15 +22,12 @@ import com.redhat.rhn.common.messaging.EventMessage;
 public class UpdatePackageProfileEventMessage implements EventMessage {
 
     private Long serverId;
-    private String minionId;
 
     /**
-     * TODO: We want to change this to expect only the serverId as soon as we store the
-     * minion ID in the database.
+     *
      */
-    public UpdatePackageProfileEventMessage(Long serverIdIn, String minionIdIn) {
+    public UpdatePackageProfileEventMessage(Long serverIdIn) {
         serverId = serverIdIn;
-        minionId = minionIdIn;
     }
 
     /**
@@ -40,15 +37,6 @@ public class UpdatePackageProfileEventMessage implements EventMessage {
      */
     public Long getServerId() {
         return serverId;
-    }
-
-    /**
-     * Return the minion id.
-     *
-     * @return minion id
-     */
-    public String getMinionId() {
-        return minionId;
     }
 
     /**
@@ -71,6 +59,6 @@ public class UpdatePackageProfileEventMessage implements EventMessage {
      * {@inheritDoc}
      */
     public String toString() {
-        return "UpdatePackageProfileEvent[minionId: " + minionId + "]";
+        return "UpdatePackageProfileEvent[serverId: " + serverId + "]";
     }
 }
