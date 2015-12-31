@@ -20,6 +20,8 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
+import com.redhat.rhn.domain.server.MinionFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
@@ -94,21 +96,25 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             LOG.info("Cannot find machine id for minion: " + minionId);
             return;
         }
-        Server registeredMinion = ServerFactory.findRegisteredMinion(machineId);
-        if (registeredMinion != null) {
+        Optional<MinionServer> optMinion = MinionFactory.findByMachineId(machineId);
+        if (optMinion.isPresent()) {
+            MinionServer registeredMinion = optMinion.get();
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Minion already registered, updating profile: " +
                         minionId + " [" + machineId + "]");
             }
             if (!minionId.equals(registeredMinion.getName())) {
                 registeredMinion.setName(minionId);
+                registeredMinion.setMinionId(minionId);
                 ServerFactory.save(registeredMinion);
             }
             return;
         }
         try {
             // Create the server
-            Server server = ServerFactory.createServer();
+            MinionServer server = new MinionServer();
+            server.setMachineId(machineId);
+            server.setMinionId(minionId);
             server.setName(minionId);
             server.setDigitalServerId(machineId);
 
@@ -178,8 +184,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             LOG.info("Finished minion registration: " + minionId);
 
             // Trigger an update of the package profile
-            MessageQueue.publish(new UpdatePackageProfileEventMessage(
-                    server.getId(), minionId));
+            MessageQueue.publish(new UpdatePackageProfileEventMessage(server.getId()));
         }
         catch (Throwable t) {
             LOG.error("Error registering minion for event: " + event, t);
