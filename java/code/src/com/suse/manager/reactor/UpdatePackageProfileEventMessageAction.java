@@ -69,11 +69,13 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
         MinionFactory.lookupById(eventMessage.getServerId()).ifPresent(server -> {
             Map<String, Pkg.Info> saltPackages =
                     SALT_SERVICE.getInstalledPackageDetails(server.getMinionId());
-            Set<InstalledPackage> packages = saltPackages.entrySet().stream().map(
+            Set<InstalledPackage> newPackages = saltPackages.entrySet().stream().map(
                     entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
             ).collect(Collectors.toSet());
 
-            server.setPackages(packages);
+            Set<InstalledPackage> oldPackages = server.getPackages();
+            oldPackages.addAll(newPackages);
+            oldPackages.retainAll(newPackages);
             ServerFactory.save(server);
         });
     }
