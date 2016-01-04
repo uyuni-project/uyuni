@@ -367,7 +367,7 @@ public class DevicesMapper extends AbstractHardwareMapper<Server> {
 
     private int getScsiDevType(String minionId, String sysfsPath) {
         try {
-            String content = SALT_SERVICE.getFileContent(minionId, sysfsPath + "/type");
+            String content = SALT_SERVICE.getFileContent(minionId, "/sys" + sysfsPath + "/type");
             return Integer.parseInt(StringUtils.trim(content));
         }
         catch (Exception e) { // TODO handle specific exceptions and logging
