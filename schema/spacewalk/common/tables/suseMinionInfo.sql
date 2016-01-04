@@ -17,8 +17,8 @@ CREATE TABLE suseMinionInfo
 (
     server_id          NUMBER NOT NULL
                            CONSTRAINT suse_minion_info_sid_fk
-                               REFERENCES rhnServer (id),
-                                ON DELETE CASCADE
+                               REFERENCES rhnServer (id)
+                               ON DELETE CASCADE,
     minion_id          VARCHAR2(256) NOT NULL,
     machine_id         VARCHAR2(256) NOT NULL
 )
