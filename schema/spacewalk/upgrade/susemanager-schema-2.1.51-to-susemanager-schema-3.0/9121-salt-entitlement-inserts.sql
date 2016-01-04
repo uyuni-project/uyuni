@@ -10,6 +10,11 @@ insert into rhnServerGroupType (id, label, name, permanent, is_base)
 
 insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
                                        created, modified)
+values (lookup_sg_type('saltstack_entitled'), lookup_feature_type('ftr_errata_updates'),
+        current_timestamp,current_timestamp);
+
+insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
+                                       created, modified)
 values (lookup_sg_type('saltstack_entitled'), lookup_feature_type('ftr_daily_summary'),
         current_timestamp,current_timestamp);
 
