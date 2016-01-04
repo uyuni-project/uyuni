@@ -34,7 +34,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * TODO: Write a comment.
+ * Perform a package profile update when an {@link UpdatePackageProfileEventMessage} is
+ * received via the MessageQueue.
  */
 public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseAction {
 
@@ -50,7 +51,7 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
 
     /**
      * Constructor expecting a {@link SaltService} instance.
-     * 
+     *
      * @param saltService the salt service instance to use
      */
     public UpdatePackageProfileEventMessageAction(SaltService saltService) {
