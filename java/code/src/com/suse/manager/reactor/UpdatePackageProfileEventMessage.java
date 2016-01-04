@@ -17,14 +17,17 @@ package com.suse.manager.reactor;
 import com.redhat.rhn.common.messaging.EventMessage;
 
 /**
- * TODO: Write a comment.
+ * Event message to trigger a package profile update for a server via the MessageQueue.
  */
 public class UpdatePackageProfileEventMessage implements EventMessage {
 
+    /* The id of the server to update the package profile */
     private Long serverId;
 
     /**
+     * Construct a message to trigger a package profile update for a server given by id.
      *
+     * @param serverIdIn the server id
      */
     public UpdatePackageProfileEventMessage(Long serverIdIn) {
         serverId = serverIdIn;

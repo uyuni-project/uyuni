@@ -15,13 +15,12 @@
 package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageQueue;
 
 import com.suse.manager.webui.utils.salt.JobReturnEvent;
 
 /**
- * Event message for the {@link MessageQueue} to handle job return events as we get them
- * from the salt event bus.
+ * Event message to handle job return events via the MessageQueue as we get them from the
+ * salt event bus.
  */
 public class JobReturnEventMessage implements EventMessage {
 
