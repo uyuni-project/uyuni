@@ -209,8 +209,6 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
                 new GetHardwareInfoEventMessage(minionId, machineId, true));
     }
 
-
-
     /**
      * Creates a new InstalledPackage object from package name and info
      * @param name name of the package
