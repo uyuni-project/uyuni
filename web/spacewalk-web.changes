@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue Jan 05 15:45:06 CET 2016 - mc@suse.de
+
+- version 2.5.6.2-1
+- Fix list-key-name (decoding of [] is broken in commons-beanutils.jar > 1.7)
+  (bsc#956613)
+- Add feedback for failure/success and waiting states
+- Fix changed view behavior
+- update package states in all views after save
+- Reuse local search results if search term does not change
+
+-------------------------------------------------------------------
 Wed Dec 16 11:11:40 CET 2015 - mc@suse.de
 
 - version 2.5.6.1-1
