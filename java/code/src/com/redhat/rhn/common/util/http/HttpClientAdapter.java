@@ -31,7 +31,9 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.AuthSchemes;
+import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.config.RequestConfig.Builder;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -89,6 +91,9 @@ public class HttpClientAdapter {
     public HttpClientAdapter() {
         HttpClientBuilder clientBuilder = HttpClientBuilder.create();
         clientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+        Builder requestConfigBuilder = RequestConfig.custom()
+                .setCookieSpec(CookieSpecs.IGNORE_COOKIES);
+
         // Store the proxy settings
         String proxyHostname = ConfigDefaults.get().getProxyHost();
         if (!StringUtils.isBlank(proxyHostname)) {
@@ -109,11 +114,8 @@ public class HttpClientAdapter {
             }
 
             // Explicitly exclude the NTLM authentication scheme
-            requestConfig =
-                    RequestConfig.custom()
-                            .setProxyPreferredAuthSchemes(
-                                    Arrays.asList(AuthSchemes.DIGEST, AuthSchemes.BASIC))
-                            .build();
+            requestConfigBuilder =  requestConfigBuilder.setProxyPreferredAuthSchemes(
+                                    Arrays.asList(AuthSchemes.DIGEST, AuthSchemes.BASIC));
 
             clientBuilder.setProxyAuthenticationStrategy(new ProxyAuthenticationStrategy());
 
@@ -128,6 +130,7 @@ public class HttpClientAdapter {
             }
         }
 
+        requestConfig = requestConfigBuilder.build();
         httpClient = clientBuilder.build();
     }
 
