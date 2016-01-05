@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Jan 05 15:56:53 CET 2016 - mc@suse.de
+
+- version 3.0.4-1
+- add IBM-DLPAR repos to SLES12 SP1
+- add support for SUSE-Manager-Proxy-3 (bsc#959560)
+- remove SUSE Manager Server 2.1 (bsc#959560)
+- Add Containers Module for s390x and ppc64le (bsc#956724)
+
+-------------------------------------------------------------------
 Thu Oct 22 16:34:21 CEST 2015 - mc@suse.de
 
 - version 3.0.3-1
