@@ -16,16 +16,11 @@ package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
-
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.server.MinionFactory;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.services.impl.SaltAPIService;
+
 import com.suse.manager.webui.utils.salt.JobReturnEvent;
 
-import com.suse.saltstack.netapi.calls.modules.Grains;
-import com.suse.saltstack.netapi.datatypes.target.Glob;
 import org.apache.log4j.Logger;
 
 /**
