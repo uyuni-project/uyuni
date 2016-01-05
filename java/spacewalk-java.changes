@@ -1,4 +1,28 @@
 -------------------------------------------------------------------
+Tue Jan 05 15:59:05 CET 2016 - mc@suse.de
+
+- version 2.5.26.2-1
+- Fix list-key-name (decoding of [] is broken in commons-beanutils.jar > 1.7)
+  (bsc#956613)
+- Ignore cookies from SCC (bsc#959585)
+- SP migration: use correct CSS path (bsc#956613)
+- Add/Refactor equals() and hashCode() for Credentials and CredentialsType
+- Fix hibernate exception when refreshing subscriptions
+- Delete also subscriptions with null credentials on refresh
+- Make available packages search case insensitive
+- Add subscriptions and orders data files
+- Package release cannot be NULL. Use "0" if none is provided by salt
+  (bsc#960035)
+- set a generated jid to the tokens
+- Minion crashes on reg if getting DMI fails (bsc#959670)
+- Add "Manage Package States" to the packages index page
+- Enable the "Software Channels" tab for all salt clients
+- return empty map if no dmi records
+- Fix markup after merge error
+- Fill General and DMI hw info on minion reg
+- fix internal Server Error for Schedule > Completed Actions (bsc#956002)
+
+-------------------------------------------------------------------
 Wed Dec 16 12:35:08 CET 2015 - mc@suse.de
 
 - version 2.5.26.1-1
