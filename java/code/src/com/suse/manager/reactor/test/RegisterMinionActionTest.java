@@ -17,15 +17,10 @@ package com.suse.manager.reactor.test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.suse.manager.webui.utils.salt.Smbios;
-import com.suse.manager.webui.utils.salt.Udevdb;
-import org.apache.commons.lang.StringUtils;
 import org.jmock.Mock;
 
 import com.redhat.rhn.domain.server.InstalledPackage;
@@ -40,7 +35,6 @@ import com.suse.manager.webui.services.SaltService;
 import com.suse.saltstack.netapi.calls.modules.Grains;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.parser.JsonParser;
-import org.jmock.core.Constraint;
 
 /**
  * Tests for {@link RegisterMinionAction}.
@@ -81,21 +75,7 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
                 returnValue(this.getMinionPackages()));
         saltServiceMock.stubs().method("sendEvent").will(returnValue(true));
         saltServiceMock.stubs().method("syncGrains");
-        saltServiceMock.stubs().method("getDmiRecords")
-                .with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.BIOS)})
-                .will(returnValue(getDmiBios(minionId, "bios")));
-        saltServiceMock.stubs().method("getDmiRecords")
-                .with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.SYSTEM)})
-                .will(returnValue(getDmiBios(minionId, "system")));
-        saltServiceMock.stubs().method("getDmiRecords")
-                .with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.CHASSIS)})
-                .will(returnValue(getDmiBios(minionId, "chassis")));
-        saltServiceMock.stubs().method("getDmiRecords")
-                .with(new Constraint[]{eq(minionId), eq(Smbios.RecordType.BASEBOARD)})
-                .will(returnValue(getDmiBios(minionId, "baseboard")));
-        saltServiceMock.stubs().method("getUdevdb")
-                .with(eq(minionId))
-                .will(returnValue(getUdevRecords()));
+        saltServiceMock.stubs().method("syncModules");
 
         SaltService saltService = (SaltService) saltServiceMock.proxy();
 
@@ -139,7 +119,8 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
             if (pkg.getName().getName().equals("aaa_base")) {
                 release = "3.1";
                 version = "13.2+git20140911.61c1681";
-            } else if (pkg.getName().getName().equals("bash")) {
+            }
+            else if (pkg.getName().getName().equals("bash")) {
                 release = "75.2";
                 version = "4.2";
             }
@@ -150,20 +131,6 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
             assertEquals("x86_64", pkg.getArch().getName());
         }
         assertEquals(2, minion.getPackages().size());
-    }
-
-    public void testUdev() throws IOException, ClassNotFoundException {
-//        List<Map<String, Object>> db = getUdevRecords();
-//        System.out.println(db);
-        System.out.println("adsfasds");
-        System.out.println(StringUtils.substring("1234Mgz", 0, -3));
-        System.out.println(StringUtils.substring("i586", -2, "i586".length()));
-        System.out.println(new Date().getTime());
-        String uuid = UUID.randomUUID().toString();
-        System.out.println(uuid.replace("-", ""));
-        System.out.println(uuid);
-//        System.out.println(String.format("x=%05X", 14));
-
     }
 
     @SuppressWarnings("unchecked")
@@ -183,18 +150,6 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
     	Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
                 readFile("dummy_grains.json"));
     	return (Map<String, Object>)((List<Map<String, Object>>)grains.get("return")).get(0).get(minionId);
-    }
-
-    @SuppressWarnings("unchecked")
-    public Map<String, Object> getDmiBios(String minionId, String type) throws IOException, ClassNotFoundException {
-        Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
-                readFile("dummy_dmi_" + type + ".json"));
-        return (Map<String, Object>)((List<Map<String, Object>>)grains.get(minionId)).get(0).get("data");
-    }
-
-    public List<Map<String, Object>> getUdevRecords() throws IOException, ClassNotFoundException {
-        return new JsonParser<>(Udevdb.exportdb().getReturnType()).parse(
-                readFile("dummy_udevdb.json"));
     }
 
     private String readFile(String file) throws IOException, ClassNotFoundException {
