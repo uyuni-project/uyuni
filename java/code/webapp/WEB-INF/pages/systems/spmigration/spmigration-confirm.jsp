@@ -81,11 +81,11 @@
     </div>
     <html:hidden property="baseProduct" value="${baseProduct.id}" />
     <c:forEach items="${addonProducts}" var="current">
-      <html:hidden property="addonProducts[]" value="${current.id}" />
+      <html:hidden property="addonProducts" value="${current.id}" />
     </c:forEach>
     <html:hidden property="baseChannel" value="${baseChannel.id}" />
     <c:forEach items="${childChannels}" var="current">
-      <html:hidden property="childChannels[]" value="${current.id}" />
+      <html:hidden property="childChannels" value="${current.id}" />
     </c:forEach>
     <html:hidden property="step" value="confirm" />
     <html:hidden property="submitted" value="true" />
