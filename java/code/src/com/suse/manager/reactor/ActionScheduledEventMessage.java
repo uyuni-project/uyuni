@@ -51,7 +51,7 @@ public class ActionScheduledEventMessage implements EventMessage {
      */
     @Override
     public String toText() {
-        return "ActionStoredEvent[action: " + action.toString() + "]";
+        return "ActionScheduledEventMessage[action: " + action.toString() + "]";
     }
 
     /**
