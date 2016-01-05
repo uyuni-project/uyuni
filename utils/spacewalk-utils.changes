@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 05 15:54:59 CET 2016 - mc@suse.de
+
+- version 2.5.3.2-1
+- Add delimiter option for spacewalk-manage-channel-lifecycle
+
+-------------------------------------------------------------------
 Wed Dec 16 11:16:50 CET 2015 - mc@suse.de
 
 - version 2.5.3.1-1
