@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Jan 05 15:57:59 CET 2016 - mc@suse.de
+
+- version 2.5.8.2-1
+- update CPU only if it has changed
+- set "last_boot" and "os" for the host
+- read SystemInfomation, create a foreign mainframe system
+  and link to virtual instance
+- add "mainframe_sysinfo" capability
+
+-------------------------------------------------------------------
 Wed Dec 16 11:18:47 CET 2015 - mc@suse.de
 
 - version 2.5.8.1-1
