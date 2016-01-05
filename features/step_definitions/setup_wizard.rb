@@ -41,6 +41,16 @@ When /^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/ do |pr
   end
 end
 
+When /^I select the addon "(.*?)" for the product "(.*?)" with arch "(.*?)"$/ do |addon, product, arch|
+  # xpath query is too long, so breaking up on multiple lines.
+  xpath =  "//span[contains(text(), '#{product}')]/"
+  xpath += "ancestor::tr[td[contains(text(), '#{arch}')]]/following::span"
+  xpath += "[contains(text(), '#{addon}')]/../.."
+  within(:xpath, "#{xpath}") do
+      fail if not find("button.product-add-btn").click
+  end
+end
+
 When /^I click the Add Product button$/ do
   fail if not find("button#synchronize").click
 end
@@ -51,9 +61,9 @@ end
 
 When /^I verify the products were added$/ do 
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  fail if not output[:stdout].include? '[I] SLES12-Pool for x86_64 SUSE Linux Enterprise Server 12 x86_64 [sles12-pool-x86_64]'
-  fail if not output[:stdout].include? '[I] SLE-Manager-Tools12-Pool x86_64 SUSE Manager Tools [sle-manager-tools12-pool-x86_64]'
-  fail if not output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64]'
+  fail if not output[:stdout].include? '[I] SLES12-SP1-Pool for x86_64 SUSE Linux Enterprise Server 12 SP1 x86_64 [sles12-sp1-pool-x86_64]'
+  fail if not output[:stdout].include? '[I] SLE-Manager-Tools12-Pool x86_64 SP1 SUSE Manager Tools [sle-manager-tools12-pool-x86_64-sp1]'
+  fail if not output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 SP1 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp1]'
 end
 
 When(/^I click the channel list of product "(.*?)" for the "(.*?)" architecture$/) do |product, architecture|
