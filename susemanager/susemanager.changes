@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 05 15:53:20 CET 2016 - mc@suse.de
+
+- version 3.0.7-1
+- remove reference to mgr-sync on setup finish screen (bsc#955577)
+
+-------------------------------------------------------------------
 Wed Dec 16 11:15:04 CET 2015 - mc@suse.de
 
 - version 3.0.6-1
