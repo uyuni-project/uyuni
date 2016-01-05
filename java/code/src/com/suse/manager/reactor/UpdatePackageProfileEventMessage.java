@@ -62,6 +62,6 @@ public class UpdatePackageProfileEventMessage implements EventMessage {
      * {@inheritDoc}
      */
     public String toString() {
-        return "UpdatePackageProfileEvent[serverId: " + serverId + "]";
+        return "UpdatePackageProfileEventMessage[serverId: " + serverId + "]";
     }
 }
