@@ -22,6 +22,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * MinionFactory - the singleton class used to fetch and store
@@ -68,6 +69,14 @@ public class MinionFactory extends HibernateFactory {
         Criteria criteria = session.createCriteria(MinionServer.class);
         criteria.add(Restrictions.eq("minionId", minionId));
         return Optional.ofNullable((MinionServer) criteria.uniqueResult());
+    }
+
+    public static Optional<MinionServer> asMinionServer(Server server) {
+       if (server instanceof MinionServer) {
+          return Optional.of((MinionServer) server);
+       } else {
+          return Optional.empty();
+       }
     }
 
     /**
