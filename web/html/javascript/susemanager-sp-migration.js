@@ -7,7 +7,7 @@ $(function() {
 
   // Create hidden inputs to submit channel IDs
   function prepareSubmitChannels() {
-    $('#migrationForm input[type="hidden", name="childChannels[]"]').remove();
+    $('#migrationForm input[type="hidden", name="childChannels"]').remove();
     // Submit all checked child channel's IDs
     $('.channels-tree:visible input:checked').each(function() {
       $('#migrationForm').append(
