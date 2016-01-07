@@ -18,20 +18,20 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.action.Action;
 
 /**
- * Event message for the {@link com.redhat.rhn.common.messaging.MessageQueue;} to signal
- * that a new {@link com.redhat.rhn.domain.action.server.ServerAction} has been stored.
+ * Event message for the {@link com.redhat.rhn.common.messaging.MessageQueue} to signal
+ * that a new {@link com.redhat.rhn.domain.action.server.ServerAction} has been scheduled.
  *
- * This event would then be handled by {@link ActionScheduledEventMessageAction} to
- * act on it and execute the action using Salt.
+ * This event would then be handled by {@link ActionScheduledEventMessageAction} to act on
+ * it and execute the action using Salt.
  */
 public class ActionScheduledEventMessage implements EventMessage {
 
     private final Action action;
 
     /**
-     * Create a new event about an action that was stored.
+     * Create a new event about a recently scheduled action.
      *
-     * @param minionIdIn minion to register
+     * @param actionIn the action that has been scheduled
      */
     public ActionScheduledEventMessage(Action actionIn) {
         action = actionIn;
@@ -46,19 +46,18 @@ public class ActionScheduledEventMessage implements EventMessage {
         return action;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toText() {
-        return "ActionScheduledEventMessage[action: " + action.toString() + "]";
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Long getUserId() {
         return action.getSchedulerUser().getId();
+    }
+
+    @Override
+    public String toText() {
+        return toString();
+    }
+
+    @Override
+    public String toString() {
+        return "ActionScheduledEventMessage[action=" + action + "]";
     }
 }
