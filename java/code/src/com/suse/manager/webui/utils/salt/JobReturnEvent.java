@@ -21,6 +21,9 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Representation of job return events fired each time a minion returns data for a job.
+ */
 public class JobReturnEvent {
 
     private static final Pattern PATTERN =
@@ -32,14 +35,14 @@ public class JobReturnEvent {
 
     /**
      * Creates a new JobReturnEvent
-     * @param jobId the id of the job
-     * @param minionId the id of the minion returning the job
-     * @param data data containing more information about this event
+     * @param jobIdIn the id of the job
+     * @param minionIdIn the id of the minion returning the job
+     * @param dataIn data containing more information about this event
      */
-    public JobReturnEvent(String jobId, String minionId, Map<String, Object> data) {
-        this.jobId = jobId;
-        this.minionId = minionId;
-        this.data = data;
+    public JobReturnEvent(String jobIdIn, String minionIdIn, Map<String, Object> dataIn) {
+        this.jobId = jobIdIn;
+        this.minionId = minionIdIn;
+        this.data = dataIn;
     }
 
     /**
@@ -47,7 +50,9 @@ public class JobReturnEvent {
      *
      * @return job id
      */
-    public String getJobId() { return jobId; }
+    public String getJobId() {
+        return jobId;
+    }
 
     /**
      * The id of the minion that returned the ob
@@ -78,7 +83,8 @@ public class JobReturnEvent {
             JobReturnEvent result = new JobReturnEvent(matcher.group(1), matcher.group(2),
                     event.getData());
             return Optional.of(result);
-        } else {
+        }
+        else {
             return Optional.empty();
         }
     }
