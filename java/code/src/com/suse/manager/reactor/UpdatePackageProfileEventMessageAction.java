@@ -28,6 +28,8 @@ import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 
+import org.apache.log4j.Logger;
+
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -38,6 +40,10 @@ import java.util.stream.Collectors;
  * received via the MessageQueue.
  */
 public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseAction {
+
+    /* Logger for this class */
+    private static final Logger LOG = Logger
+            .getLogger(UpdatePackageProfileEventMessageAction.class);
 
     /* Reference to the SaltService instance */
     private final SaltService SALT_SERVICE;
@@ -78,6 +84,9 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
             oldPackages.addAll(newPackages);
             oldPackages.retainAll(newPackages);
             ServerFactory.save(server);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Package profile updated for minion: " + server.getMinionId());
+            }
         });
     }
 
