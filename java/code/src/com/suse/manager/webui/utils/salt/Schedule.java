@@ -17,49 +17,78 @@ package com.suse.manager.webui.utils.salt;
 import com.google.gson.reflect.TypeToken;
 import com.suse.saltstack.netapi.calls.LocalCall;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * salt.modules.schedule
+ */
 public class Schedule {
 
-    private Schedule(){
+    private Schedule() {
     }
 
+    /**
+     * Common result structure for scheduling functions
+     */
     public static class Result {
 
         private String comment;
         private boolean result;
 
-        public Result(String comment, boolean result) {
-            this.comment = comment;
-            this.result = result;
+        /**
+         * Construct a new Result
+         * @param commentIn Human readable comment
+         * @param resultIn boolean indicating success
+         */
+        public Result(String commentIn, boolean resultIn) {
+            this.comment = commentIn;
+            this.result = resultIn;
         }
 
+        /**
+         * boolean indicating success
+         * @return boolean indicating success
+         */
         public boolean getResult() {
             return result;
         }
 
+        /**
+         * Human readable comment
+         * @return Human readable comment
+         */
         public String getComment() {
             return comment;
         }
 
     }
 
-    public static class Splay {
-
-
-
-    }
-
+    /**
+     * Delete a schedule entry
+     * @param name job name
+     * @return the result
+     */
     public static LocalCall<Result> delete(String name) {
         LinkedHashMap<String, Object> args = new LinkedHashMap<>();
         args.put("name", name);
         return new LocalCall<>("schedule.delete", Optional.empty(), Optional.of(args),
-                new TypeToken<Result>(){ });
+                new TypeToken<Result>() { });
     }
 
-    public static LocalCall<Result> add(String name, LocalCall<?> call, int seconds, boolean enabled, int maxrunning, Map<String, ?> metadata, boolean jidInclude) {
+    /**
+     * Schedule a salt call for later execution on the minion
+     * @param name job name
+     * @param call salt call schedule
+     * @param once when to execute it once
+     * @param metadata additional metadata
+     * @return call object to execute via the client
+     */
+    public static LocalCall<Result> add(String name, LocalCall<?> call,
+                                        LocalDateTime once, Map<String, ?> metadata) {
         LinkedHashMap<String, Object> args = new LinkedHashMap<>();
         Map<String, Object> payload = call.getPayload();
         args.put("function", payload.get("fun"));
@@ -67,13 +96,10 @@ public class Schedule {
         args.put("job_kwargs", payload.get("kwarg"));
 
         args.put("name", name);
-        args.put("seconds", seconds);
-        args.put("enabled", enabled);
-        args.put("maxrunning", maxrunning);
+        args.put("once", once.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         args.put("metadata", metadata);
-        args.put("jid_include", jidInclude);
         return new LocalCall<>("schedule.add", Optional.empty(), Optional.of(args),
-                new TypeToken<Result>(){ });
+                new TypeToken<Result>() { });
     }
 
 }
