@@ -49,6 +49,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ServerFactory - the singleton class used to fetch and store
@@ -544,6 +546,31 @@ public class ServerFactory extends HibernateFactory {
             servers.add(lookupById(id.longValue()));
         }
         return servers;
+    }
+
+    public static Map<Long, Set<String>> listErrataNamesForServer(long serverId, Set<Long> errataIds) {
+        Map<Long, Map<Long, Set<String>>> results = listErrataNamesForServers(Collections.singleton(serverId), errataIds);
+        Map<Long, Set<String>> result = results.get(serverId);
+        return result != null? result : Collections.emptyMap();
+    }
+
+    public static Map<Long, Map<Long, Set<String>>> listErrataNamesForServers(Set<Long> serverIds, Set<Long> errataIds) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("serverIds", serverIds);
+        params.put("errataIds", errataIds);
+        List<Object[]> result = singleton.listObjectsByNamedQuery(
+                "Server.listErrataNamesForServers", params);
+        return result.stream().collect(
+                Collectors.groupingBy(row -> (Long) row[1], Collectors.groupingBy(row -> (Long) row[0], Collectors.mapping(row -> {
+                    String name = (String) row[2];
+                    String tag = (String) row[3];
+                    if (name.startsWith("SUSE-")) {
+                        return name.replaceFirst("SUSE", "SUSE-" + tag);
+                    } else {
+                        return name;
+                    }
+                }, Collectors.toSet())))
+        );
     }
 
     /**
