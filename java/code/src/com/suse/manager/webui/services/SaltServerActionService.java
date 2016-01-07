@@ -18,15 +18,25 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.server.MinionFactory;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.saltstack.netapi.datatypes.target.MinionList;
 
+import com.suse.saltstack.netapi.datatypes.target.Target;
 import org.apache.log4j.Logger;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Takes {@link ServerAction} objects to be executed via salt.
@@ -39,10 +49,6 @@ public enum SaltServerActionService {
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
 
-    /* Prevent instantiation */
-    SaltServerActionService() {
-    }
-
     /**
      * Execute a given {@link Action} via salt.
      *
@@ -51,18 +57,29 @@ public enum SaltServerActionService {
     public void execute(Action actionIn) {
         if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
             ErrataAction errataAction = (ErrataAction) actionIn;
-
-            // FIXME: Store the minion ID in the database instead of using server name
-            List<String> minionIds = actionIn.getServerActions().stream()
-                    .filter(serverAction -> serverAction.getServer()
-                            .hasEntitlement(EntitlementManager.SALTSTACK))
-                    .map(serverAction -> serverAction.getServer().getName())
+            List<MinionServer> minions = actionIn.getServerActions().stream()
+                    .flatMap(action ->
+                            MinionFactory.asMinionServer(action.getServer())
+                                    .map(Stream::of)
+                                    .orElse(Stream.empty()))
+                    .filter(minion -> minion.hasEntitlement(EntitlementManager.SALTSTACK))
                     .collect(Collectors.toList());
-            MinionList target = new MinionList(minionIds);
 
-            LOG.debug("Scheduling errata action for: " + target.getTarget());
-            SaltAPIService.INSTANCE.schedulePatchInstallation(target,
-                    errataAction.getErrata(), null);
+            Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory.listErrataNamesForServers(
+                    minions.stream().map(MinionServer::getId).collect(Collectors.toSet()),
+                    errataAction.getErrata().stream().map(Errata::getId).collect(Collectors.toSet())
+            );
+
+            minions.forEach(minion -> {
+                Target<?> target = new MinionList(minion.getMinionId());
+                LOG.debug("Scheduling errata action for: ");
+                Set<String> patches = errataNames.get(minion.getId()).entrySet().stream()
+                        .map(Map.Entry::getValue)
+                        .flatMap(Set::stream)
+                        .collect(Collectors.toSet());
+                LocalDateTime earliestAction = actionIn.getEarliestAction().toInstant().atZone(ZoneId.of("UTC")).toLocalDateTime();
+                SaltAPIService.INSTANCE.schedulePatchInstallation(target, patches, earliestAction);
+            });
         }
     }
 }
