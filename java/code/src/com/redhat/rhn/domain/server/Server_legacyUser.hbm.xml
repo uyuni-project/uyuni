@@ -247,6 +247,25 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <return alias="wc" class="com.redhat.rhn.domain.user.legacy.UserImpl"/>
     </sql-query>
 
+
+    <sql-query name="Server.listErrataNamesForServers">
+        <return-scalar column="errataId" type="long"/>
+        <return-scalar column="serverId" type="long"/>
+        <return-scalar column="advisoryName" type="string"/>
+        <return-scalar column="updateTag" type="string"/>
+        <![CDATA[select distinct e.id as errataId, sc.server_id as serverId, e.advisory_name as advisoryName, c.update_tag as updateTag
+                 FROM rhnErrata e,
+                      rhnServerChannel sc,
+                      rhnChannelErrata ce,
+                      rhnChannel c
+                 WHERE e.id in (:errataIds) AND
+                       sc.server_id in (:serverIds) AND
+                       e.id = ce.errata_id AND
+                       sc.channel_id = c.id AND
+                       ce.channel_id = c.id
+                                ]]>
+    </sql-query>
+
     <sql-query name="Server.listProxies">
         <![CDATA[select S.id
                                         from rhnServer S
