@@ -453,30 +453,34 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </sql-query>
 
     <sql-query name="Channel.packageByFileName">
-      <![CDATA[SELECT {p.*}
-          FROM rhnPackage {p},
-             rhnChannelPackage CP,
-             rhnChannel C
-             WHERE (C.id = :channel_id OR C.parent_channel = :channel_id)
-               AND (CP.channel_id = C.id  OR CP.channel_id = C.parent_channel)
-               AND CP.package_id = P.id
-               AND P.path LIKE :pathlike
-          ORDER BY p.build_time
+	    <![CDATA[
+	        SELECT {p.*},
+	               (CASE WHEN C.id = 698 THEN 1 ELSE 0 end) as chanprio
+                  FROM rhnPackage {p},
+                       rhnChannelPackage CP,
+                       rhnChannel C
+                 WHERE (C.id = :channel_id OR C.parent_channel = :channel_id)
+                   AND CP.channel_id = C.id
+                   AND CP.package_id = P.id
+                   AND P.path LIKE :pathlike
+              ORDER BY chanprio DESC, p.build_time
         ]]>
     <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
     </sql-query>
 
     <sql-query name="Channel.packageByFileNameAndRange">
-      <![CDATA[SELECT {p.*}
-          FROM rhnPackage {p},
-             rhnChannelPackage CP,
-             rhnChannel C
-             WHERE (C.id = :channel_id OR C.parent_channel = :channel_id)
-               AND (CP.channel_id = C.id  OR CP.channel_id = C.parent_channel)
-               AND CP.package_id = P.id
-               AND P.path LIKE :pathlike
-               AND P.header_start = :headerStart
-               AND P.header_end   = :headerEnd
+	    <![CDATA[SELECT {p.*},
+                            (CASE WHEN C.id = 698 THEN 1 ELSE 0 end) as chanprio
+                       FROM rhnPackage {p},
+                            rhnChannelPackage CP,
+                            rhnChannel C
+                      WHERE (C.id = :channel_id OR C.parent_channel = :channel_id)
+                        AND CP.channel_id = C.id
+                        AND CP.package_id = P.id
+                        AND P.path LIKE :pathlike
+                        AND P.header_start = :headerStart
+	                AND P.header_end   = :headerEnd
+                   ORDER BY chanprio DESC, p.build_time
         ]]>
     <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
     </sql-query>
