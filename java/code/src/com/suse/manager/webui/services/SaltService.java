@@ -14,15 +14,14 @@
  */
 package com.suse.manager.webui.services;
 
-import com.redhat.rhn.domain.errata.Errata;
-
+import com.suse.manager.webui.utils.salt.Schedule;
 import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.datatypes.target.Target;
 import com.suse.saltstack.netapi.event.EventStream;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -199,6 +198,6 @@ public interface SaltService {
      * @param scheduleDate schedule date (currently ignored)
      * @return the result of the patch installation
      */
-    Map<String, Map<String, Object>> schedulePatchInstallation(Target<?> target,
-            Set<Errata> patches, Date scheduleDate);
+    Map<String, Schedule.Result> schedulePatchInstallation(Target<?> target,
+                                                    Set<String> patches, LocalDateTime scheduleDate);
 }

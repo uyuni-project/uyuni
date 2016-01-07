@@ -17,16 +17,16 @@ package com.suse.manager.webui.services.impl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import com.redhat.rhn.domain.errata.Errata;
-
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.SaltUtil;
+import com.suse.manager.webui.utils.salt.Schedule;
 import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.manager.webui.utils.salt.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.SumaUtil;
 import com.suse.manager.webui.utils.salt.Udevdb;
 import com.suse.saltstack.netapi.AuthModule;
+import com.suse.saltstack.netapi.calls.LocalCall;
 import com.suse.saltstack.netapi.calls.WheelResult;
 import com.suse.saltstack.netapi.calls.modules.Cmd;
 import com.suse.saltstack.netapi.calls.modules.Grains;
@@ -45,8 +45,8 @@ import com.suse.saltstack.netapi.exception.SaltStackException;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -400,15 +400,14 @@ public enum SaltAPIService implements SaltService {
         }
     }
 
-    public Map<String, Map<String, Object>> schedulePatchInstallation(Target<?> target,
-            Set<Errata> patches, Date scheduleDate) {
-        // Abuse pkg.install for patches using the "patch:" prefix
-        List<String> pkgs = patches.stream()
-                .map(patch -> "patch:" + patch.getPatchName())
-                .collect(Collectors.toList());
+    public Map<String, Schedule.Result> schedulePatchInstallation(Target<?> target,
+            Set<String> patches, LocalDateTime scheduleDate) {
         try {
-            Map<String, Map<String, Object>> result = SALT_CLIENT.callSync(
-                    com.suse.manager.webui.utils.salt.Pkg.install(true, pkgs), target,
+            LocalCall<Map<String, Object>> install = com.suse.manager.webui.utils.salt.Pkg.install(
+                    true, patches.stream().map(patch -> "patch:" + patch).collect(Collectors.toList())
+            );
+            Map<String, Schedule.Result> result = SALT_CLIENT.callSync(
+                    Schedule.add("patch_job", install, scheduleDate, Collections.emptyMap()), target,
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result;
         }
