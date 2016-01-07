@@ -132,7 +132,7 @@
                     <html:hidden property="baseProduct"
                         value="${targetProducts.baseProduct.id}" />
                     <c:forEach items="${targetProducts.addonProducts}" var="current">
-                        <html:hidden property="addonProducts[]" value="${current.id}" />
+                        <html:hidden property="addonProducts" value="${current.id}" />
                     </c:forEach>
                     <html:hidden property="step" value="setup" />
                     <html:hidden property="submitted" value="true" />
