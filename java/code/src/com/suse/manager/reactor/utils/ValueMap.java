@@ -52,6 +52,16 @@ public class ValueMap {
     }
 
     /**
+     * Get an optional string.
+     * @param key the key
+     * @return an {@link Optional} containing the values
+     * as a string
+     */
+    public Optional<String> getOptionalAsString(String key) {
+        return get(key).flatMap(this::toString);
+    }
+
+    /**
      * Get a value as a long (if possible)
      * @param key the key
      * @return an {@link Optional} containing the long value
@@ -125,6 +135,16 @@ public class ValueMap {
      */
     public Optional<Object> get(String key) {
         return Optional.ofNullable(valueMap.get(key));
+    }
+
+    public Optional<ValueMap> getOptionalAsValueMap(String key) {
+        Object value = valueMap.get(key);
+        if (value instanceof Map) {
+            return Optional.of(new ValueMap(((Map<String, ?>)value)));
+        }
+        else {
+            return Optional.empty();
+        }
     }
 
 }
