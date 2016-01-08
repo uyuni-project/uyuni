@@ -93,13 +93,13 @@ public class MatcherJsonIOTest extends TestCase {
         assertNotNull(result);
 
         JsonSystem resultH1 =
-                result.stream().filter(s -> s.getId() == h1.getId()).findFirst().get();
+                result.stream().filter(s -> s.getId().equals(h1.getId())).findFirst().get();
         assertNotNull(resultH1);
         assertEquals("host1.example.com", resultH1.getName());
         assertEquals(0, resultH1.getProductIds().size());
 
         JsonSystem resultG1 =
-                result.stream().filter(s -> s.getId() == g1.getId()).findFirst().get();
+                result.stream().filter(s -> s.getId().equals(g1.getId())).findFirst().get();
         assertNotNull(resultG1);
         assertEquals("guest1.example.com", resultG1.getName());
         assertEquals(4, resultG1.getProductIds().size());
@@ -109,7 +109,7 @@ public class MatcherJsonIOTest extends TestCase {
         assertTrue(resultG1.getProductIds().contains(1324L));
 
         JsonSystem resultG2 =
-                result.stream().filter(s -> s.getId() == g2.getId()).findFirst().get();
+                result.stream().filter(s -> s.getId().equals(g2.getId())).findFirst().get();
         assertNotNull(resultG2);
         assertEquals("guest2.example.com", resultG2.getName());
         assertEquals(4, resultG2.getProductIds().size());
@@ -143,11 +143,11 @@ public class MatcherJsonIOTest extends TestCase {
         assertNotNull(result);
 
         assertEquals("SUSE Linux Enterprise Server 12 SP1",
-                result.stream().filter(p -> p.getId() == 1322L)
+                result.stream().filter(p -> p.getId().equals(1322L))
                     .findFirst().get().getName());
 
         assertEquals("SUSE Linux Enterprise High Availability Extension 12 SP1",
-                result.stream().filter(p -> p.getId() == 1324L)
+                result.stream().filter(p -> p.getId().equals(1324L))
                     .findFirst().get().getName());
     }
 
@@ -177,7 +177,7 @@ public class MatcherJsonIOTest extends TestCase {
                     .getJsonSubscriptions();
 
             JsonSubscription resultSubscription1 = result.stream()
-                    .filter(rs -> rs.getId() == 9998L)
+                    .filter(rs -> rs.getId().equals( 9998L))
                     .findFirst().get();
 
             assertEquals("662644474670", resultSubscription1.getPartNumber());
@@ -188,7 +188,7 @@ public class MatcherJsonIOTest extends TestCase {
             assertEquals("extFile", resultSubscription1.getSccUsername());
 
             JsonSubscription resultSubscription2 = result.stream()
-                    .filter(rs -> rs.getId() == 9999L)
+                    .filter(rs -> rs.getId().equals(9999L))
                     .findFirst().get();
 
             assertEquals("874-005117", resultSubscription2.getPartNumber());

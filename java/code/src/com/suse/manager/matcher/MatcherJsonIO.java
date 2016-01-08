@@ -100,8 +100,8 @@ public class MatcherJsonIO {
      */
     public List<JsonProduct> getJsonProducts() {
         return SUSEProductFactory.findAllSUSEProducts().stream()
-            .map(p -> new JsonProduct(p.getProductId(), p.getFriendlyName()))
-            .collect(toList());
+                .map(p -> new JsonProduct(p.getProductId(), p.getFriendlyName()))
+                .collect(toList());
     }
 
     /**
@@ -110,8 +110,8 @@ public class MatcherJsonIO {
      */
     public List<JsonSubscription> getJsonSubscriptions() {
         return SCCCachingFactory.lookupOrderItems().stream()
-            .map(s -> new JsonSubscription(s))
-            .collect(toList());
+                .map(s -> new JsonSubscription(s))
+                .collect(toList());
     }
 
     /**
