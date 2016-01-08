@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.utils.salt.Network;
 import com.suse.manager.webui.utils.salt.SaltUtil;
 import com.suse.manager.webui.utils.salt.Schedule;
 import com.suse.manager.webui.utils.salt.Smbios;
@@ -32,6 +31,7 @@ import com.suse.saltstack.netapi.calls.WheelResult;
 import com.suse.saltstack.netapi.calls.modules.Cmd;
 import com.suse.saltstack.netapi.calls.modules.Grains;
 import com.suse.saltstack.netapi.calls.modules.Match;
+import com.suse.manager.webui.utils.salt.Network;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.modules.Status;
 import com.suse.saltstack.netapi.calls.runner.Manage;
@@ -440,9 +440,9 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, Map<String, Object>> getNetworkInterfacesInfo(String minionId) {
+    public Map<String, Network.Interface> getNetworkInterfacesInfo(String minionId) {
         try {
-            Map<String, Map<String, Map<String, Object>>> interfaces = SALT_CLIENT.callSync(Network.interfaces(),
+            Map<String, Map<String, Network.Interface>> interfaces = SALT_CLIENT.callSync(Network.interfaces(),
                     new MinionList(minionId), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return interfaces.get(minionId);
         }
