@@ -81,7 +81,7 @@ public enum SaltServerActionService {
                 LocalDateTime earliestAction = actionIn.getEarliestAction().toInstant().atZone(ZoneId.of("UTC")).toLocalDateTime();
                 Map<String, Long> metadata = new HashMap<>();
                 metadata.put("suma-action-id", actionIn.getId());
-                SaltAPIService.INSTANCE.schedulePatchInstallation(target, patches,
+                SaltAPIService.INSTANCE.schedulePatchInstallation("scheduled-action-" + actionIn.getId(), target, patches,
                         earliestAction, metadata);
             });
         }
