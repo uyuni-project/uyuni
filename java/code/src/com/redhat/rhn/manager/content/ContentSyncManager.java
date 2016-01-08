@@ -806,7 +806,7 @@ public class ContentSyncManager {
             ChannelFamily family = createOrUpdateChannelFamily(
                     channelFamily.getLabel(), channelFamily.getName());
             // Create rhnPrivateChannelFamily entry if it doesn't exist
-            if (family != null && family.getPrivateChannelFamilies().isEmpty()) {
+            if (family.getPrivateChannelFamilies().isEmpty()) {
                 PrivateChannelFamily pcf = new PrivateChannelFamily();
                 pcf.setCreated(new Date());
                 // Set the default organization (id = 1)
