@@ -610,8 +610,12 @@ public class ActionFactory extends HibernateFactory {
                 }
             }
         }
+        boolean newAction = actionIn.getId() == null ? true :
+                lookupById(actionIn.getId()) == null;
         singleton.saveObject(actionIn);
-        MessageQueue.publish(new ActionScheduledEventMessage(actionIn));
+        if (newAction) {
+            MessageQueue.publish(new ActionScheduledEventMessage(actionIn));
+        }
 
         return actionIn;
     }
