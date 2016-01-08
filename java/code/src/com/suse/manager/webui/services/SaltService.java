@@ -198,6 +198,6 @@ public interface SaltService {
      * @param scheduleDate schedule date (currently ignored)
      * @return the result of the patch installation
      */
-    Map<String, Schedule.Result> schedulePatchInstallation(Target<?> target,
+    Map<String, Schedule.Result> schedulePatchInstallation(String name, Target<?> target,
             Set<String> patches, LocalDateTime scheduleDate, Map<String, ?> metadata);
 }
