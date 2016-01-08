@@ -56,6 +56,8 @@ import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesAction;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
 
+import com.suse.manager.reactor.GetNetworkInfoEventMessage;
+import com.suse.manager.reactor.GetNetworkInfoEventMessageAction;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -315,6 +317,7 @@ public class MessageQueue {
         // Deploy configuration files
         MessageQueue.registerAction(new SsmConfigFilesAction(),
                                     SsmConfigFilesEvent.class);
+
     }
 }
 

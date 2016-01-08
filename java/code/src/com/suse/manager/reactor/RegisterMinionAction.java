@@ -144,8 +144,8 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             serverInfo.setServer(server);
             server.setServerInfo(serverInfo);
 
-            mapHardwareDetails(server, grains);
-            // TODO network details
+            mapHardwareDetails(minionId, machineId, server, grains);
+            mapNetworkDetails(minionId, machineId);
 
             //HACK: set installed product depending on the grains
             // to get access to suse channels
@@ -189,7 +189,13 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         }
     }
 
-    private void mapHardwareDetails(MinionServer server, ValueMap grains) {
+    private void mapNetworkDetails(String minionId, String machineId) {
+        MessageQueue.publish(
+               new GetNetworkInfoEventMessage(machineId, minionId));
+    }
+
+    private void mapHardwareDetails(String minionId, String machineId, MinionServer server,
+                                    ValueMap grains) {
         server.setRam(grains.getValueAsLong("mem_total").orElse(0L));
 
         CpuMapper cpuMapper = new CpuMapper(SALT_SERVICE);

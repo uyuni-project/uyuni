@@ -211,4 +211,6 @@ public interface SaltService {
      * @return the result
      */
     Map<String, Schedule.Result> deleteSchedule(String name, Target<?> target);
+    Map<String, Map<String, Object>> getNetworkInterfacesInfo(String minionId);
+
 }
