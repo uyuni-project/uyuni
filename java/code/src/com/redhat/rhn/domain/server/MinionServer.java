@@ -33,20 +33,32 @@ public class MinionServer extends Server {
         super();
     }
 
+    /**
+     * @return the minion id
+     */
     public String getMinionId() {
         return minionId;
     }
 
-    public void setMinionId(String minionId) {
-        this.minionId = minionId;
+    /**
+     * @param minionIdIn the minion id to set
+     */
+    public void setMinionId(String minionIdIn) {
+        this.minionId = minionIdIn;
     }
 
+    /**
+     * @return the machine id
+     */
     public String getMachineId() {
         return machineId;
     }
 
-    public void setMachineId(String machineId) {
-        this.machineId = machineId;
+    /**
+     * @param machineIdIn the machine id to set
+     */
+    public void setMachineId(String machineIdIn) {
+        this.machineId = machineIdIn;
     }
 
     /**

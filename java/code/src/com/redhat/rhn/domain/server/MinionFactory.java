@@ -22,7 +22,6 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * MinionFactory - the singleton class used to fetch and store
@@ -30,23 +29,15 @@ import java.util.Set;
  */
 public class MinionFactory extends HibernateFactory {
 
-    private static MinionFactory singleton = new MinionFactory();
     private static Logger log = Logger.getLogger(MinionFactory.class);
 
-    private MinionFactory() {
-        super();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Logger getLogger() {
         return log;
     }
 
     /**
-     * Find a registered minion by matching the machineId in the suseMinionInfo table
+     * Find a registered minion by matching the machineId in the suseMinionInfo table.
      *
      * @param machineId minion machine_id from the grains
      * @return server corresponding to the given machine_id
@@ -59,7 +50,7 @@ public class MinionFactory extends HibernateFactory {
     }
 
     /**
-     * Find a registered minion by matching the minionId in the suseMinionInfo table
+     * Find a registered minion by matching the minionId in the suseMinionInfo table.
      *
      * @param minionId minion machine_id from the grains
      * @return server corresponding to the given machine_id
@@ -71,15 +62,24 @@ public class MinionFactory extends HibernateFactory {
         return Optional.ofNullable((MinionServer) criteria.uniqueResult());
     }
 
+    /**
+     * Conversion of server objects into optionals of type MinionServer.
+     *
+     * @param server a server object
+     * @return optional of MinionServer
+     */
     public static Optional<MinionServer> asMinionServer(Server server) {
        if (server instanceof MinionServer) {
           return Optional.of((MinionServer) server);
-       } else {
+       }
+       else {
           return Optional.empty();
        }
     }
 
     /**
+     * List all minions.
+     *
      * @return a list of all minions
      */
     @SuppressWarnings("unchecked")
@@ -90,12 +90,12 @@ public class MinionFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup a minion by their id
-     * @param id the id to search for
+     * Lookup minions by their id.
+     *
+     * @param id the id to lookup
      * @return the minion found
      */
     public static Optional<MinionServer> lookupById(Long id) {
-        return Optional.ofNullable((MinionServer) HibernateFactory.getSession().get(MinionServer.class, id));
+        return Optional.ofNullable((MinionServer) getSession().get(MinionServer.class, id));
     }
-
 }
