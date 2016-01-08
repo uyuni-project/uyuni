@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
-import com.redhat.rhn.domain.server.MinionFactory;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -96,7 +96,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             LOG.info("Cannot find machine id for minion: " + minionId);
             return;
         }
-        Optional<MinionServer> optMinion = MinionFactory.findByMachineId(machineId);
+        Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         if (optMinion.isPresent()) {
             MinionServer registeredMinion = optMinion.get();
             if (LOG.isDebugEnabled()) {

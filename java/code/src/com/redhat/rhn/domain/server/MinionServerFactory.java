@@ -27,9 +27,9 @@ import java.util.Optional;
  * MinionFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.server.MinionServer objects from the database.
  */
-public class MinionFactory extends HibernateFactory {
+public class MinionServerFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(MinionFactory.class);
+    private static Logger log = Logger.getLogger(MinionServerFactory.class);
 
     @Override
     protected Logger getLogger() {

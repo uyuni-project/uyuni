@@ -20,7 +20,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.server.MinionFactory;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.utils.salt.JobReturnEvent;
@@ -66,7 +66,7 @@ public class JobReturnEventMessageAction implements MessageAction {
             }
 
             Action action = ActionFactory.lookupById(id);
-            Optional<MinionServer> minionServerOpt = MinionFactory
+            Optional<MinionServer> minionServerOpt = MinionServerFactory
                     .findByMinionId(jobReturnEvent.getMinionId());
             if (minionServerOpt.isPresent()) {
                 MinionServer minionServer = minionServerOpt.get();
@@ -86,7 +86,7 @@ public class JobReturnEventMessageAction implements MessageAction {
         }
 
         if (packagesChanged(jobReturnEvent)) {
-            MinionFactory.findByMinionId(jobReturnEvent.getMinionId()).ifPresent(minionServer -> {
+            MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId()).ifPresent(minionServer -> {
                 MessageQueue.publish(new UpdatePackageProfileEventMessage(minionServer.getId()));
             });
         }

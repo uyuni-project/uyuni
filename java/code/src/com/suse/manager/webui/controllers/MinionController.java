@@ -15,7 +15,7 @@
 package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.security.CSRFTokenValidator;
-import com.redhat.rhn.domain.server.MinionFactory;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 
 import com.redhat.rhn.domain.server.MinionServer;
@@ -121,7 +121,7 @@ public class MinionController {
      */
     public static String show(Request request, Response response) {
         String minionId = request.params("id");
-        long id = MinionFactory.findByMinionId(minionId).map(MinionServer::getId).orElse(-1L);
+        long id = MinionServerFactory.findByMinionId(minionId).map(MinionServer::getId).orElse(-1L);
         response.redirect("/rhn/systems/details/Overview.do?sid=" + id);
         return "";
     }
