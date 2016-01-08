@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.redhat.rhn.manager.errata.ErrataManager;
 
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
@@ -87,6 +88,9 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Package profile updated for minion: " + server.getMinionId());
             }
+
+            // Trigger update of errata cache for this server
+            ErrataManager.insertErrataCacheTask(server);
         });
     }
 
