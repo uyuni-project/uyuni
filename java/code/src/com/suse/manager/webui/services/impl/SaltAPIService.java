@@ -401,13 +401,13 @@ public enum SaltAPIService implements SaltService {
     }
 
     public Map<String, Schedule.Result> schedulePatchInstallation(Target<?> target,
-            Set<String> patches, LocalDateTime scheduleDate) {
+            Set<String> patches, LocalDateTime scheduleDate, Map<String, ?> metadata) {
         try {
             LocalCall<Map<String, Object>> install = com.suse.manager.webui.utils.salt.Pkg.install(
                     true, patches.stream().map(patch -> "patch:" + patch).collect(Collectors.toList())
             );
             Map<String, Schedule.Result> result = SALT_CLIENT.callSync(
-                    Schedule.add("patch_job", install, scheduleDate, Collections.emptyMap()), target,
+                    Schedule.add("patch_job", install, scheduleDate, metadata), target,
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result;
         }

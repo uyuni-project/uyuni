@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -78,7 +79,10 @@ public enum SaltServerActionService {
                         .flatMap(Set::stream)
                         .collect(Collectors.toSet());
                 LocalDateTime earliestAction = actionIn.getEarliestAction().toInstant().atZone(ZoneId.of("UTC")).toLocalDateTime();
-                SaltAPIService.INSTANCE.schedulePatchInstallation(target, patches, earliestAction);
+                Map<String, Long> metadata = new HashMap<>();
+                metadata.put("suma-action-id", actionIn.getId());
+                SaltAPIService.INSTANCE.schedulePatchInstallation(target, patches,
+                        earliestAction, metadata);
             });
         }
     }

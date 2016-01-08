@@ -17,11 +17,20 @@ package com.suse.manager.reactor;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.utils.salt.JobReturnEvent;
 
 import org.apache.log4j.Logger;
+
+import java.util.Collections;
+import java.util.Date;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Handler class for {@link JobReturnEventMessage}.
@@ -48,11 +57,57 @@ public class JobReturnEventMessageAction implements MessageAction {
                     " (" + function + ")");
         }
 
+        // Adjust action status if the job was scheduled by us
+        Optional<Long> actionId = getActionId(jobReturnEvent);
+        if (actionId.isPresent()) {
+            long id = actionId.get();
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Matched salt job with action (id=" + id + ")");
+            }
+
+            Action action = ActionFactory.lookupById(id);
+            Optional<MinionServer> minionServerOpt = MinionFactory
+                    .findByMinionId(jobReturnEvent.getMinionId());
+            if (minionServerOpt.isPresent()) {
+                MinionServer minionServer = minionServerOpt.get();
+                Optional<ServerAction> serverAction = action.getServerActions().stream()
+                        .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
+                serverAction.ifPresent(sa -> {
+                    LOG.debug("Setting action status for server: " + minionServer.getId());
+
+                    // TODO: Set all these correctly according to the job data
+                    sa.setPickupTime(new Date());
+                    sa.setStatus(ActionFactory.STATUS_COMPLETED);
+                    sa.setResultMsg("FIXME");
+                    sa.setResultCode(0L);
+                    ActionFactory.save(action);
+                });
+            }
+        }
+
         if (packagesChanged(jobReturnEvent)) {
             MinionFactory.findByMinionId(jobReturnEvent.getMinionId()).ifPresent(minionServer -> {
                 MessageQueue.publish(new UpdatePackageProfileEventMessage(minionServer.getId()));
             });
         }
+    }
+
+    /**
+     * Find the action id corresponding to a given job return event in the job metadata.
+     *
+     * @param event the job return event
+     * @return the corresponding action id or empty optional
+     */
+    @SuppressWarnings("unchecked")
+    private Optional<Long> getActionId(JobReturnEvent event) {
+        Map<String, Object> metadata = (Map<String, Object>) event.getData()
+                .getOrDefault("metadata", Collections.EMPTY_MAP);
+        Optional<Long> actionId = Optional.empty();
+        Double actionIdDouble = (Double) metadata.get("suma-action-id");
+        if (actionIdDouble != null) {
+            actionId = Optional.ofNullable(actionIdDouble.longValue());
+        }
+        return actionId;
     }
 
     private boolean packagesChanged(JobReturnEvent event) {
