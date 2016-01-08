@@ -17,7 +17,6 @@ package com.suse.manager.webui.services;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
-import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -40,7 +39,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Takes {@link ServerAction} objects to be executed via salt.
+ * Takes {@link Action} objects to be executed via salt.
  */
 public enum SaltServerActionService {
 
