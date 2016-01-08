@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.redhat.rhn.domain.server.MinionFactory;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import org.jmock.Mock;
 
@@ -60,7 +60,7 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
         Mock saltServiceMock = mock(SaltService.class);
         String minionId = MINION_ID;
 
-        MinionFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
 
         // Register a minion via RegisterMinionAction and mocked SaltService
 
@@ -85,7 +85,7 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
 
         // Verify the resulting system entry
         String machineId = saltService.getMachineId(minionId);
-        Optional<MinionServer> optMinion = MinionFactory.findByMachineId(machineId);
+        Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         assertTrue(optMinion.isPresent());
         MinionServer minion = optMinion.get();
         assertEquals(minionId, minion.getName());

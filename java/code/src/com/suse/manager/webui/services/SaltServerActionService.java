@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.server.MinionFactory;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -60,7 +60,7 @@ public enum SaltServerActionService {
             ErrataAction errataAction = (ErrataAction) actionIn;
             List<MinionServer> minions = actionIn.getServerActions().stream()
                     .flatMap(action ->
-                            MinionFactory.asMinionServer(action.getServer())
+                            MinionServerFactory.asMinionServer(action.getServer())
                                     .map(Stream::of)
                                     .orElse(Stream.empty()))
                     .filter(minion -> minion.hasEntitlement(EntitlementManager.SALTSTACK))

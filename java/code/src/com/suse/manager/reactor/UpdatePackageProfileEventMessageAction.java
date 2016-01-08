@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
-import com.redhat.rhn.domain.server.MinionFactory;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
@@ -73,7 +73,7 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
                 (UpdatePackageProfileEventMessage) msg;
 
         // Query info about installed packages and save the server
-        MinionFactory.lookupById(eventMessage.getServerId()).ifPresent(server -> {
+        MinionServerFactory.lookupById(eventMessage.getServerId()).ifPresent(server -> {
             Map<String, Pkg.Info> saltPackages =
                     SALT_SERVICE.getInstalledPackageDetails(server.getMinionId());
             Set<InstalledPackage> newPackages = saltPackages.entrySet().stream().map(
