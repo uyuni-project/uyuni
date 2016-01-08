@@ -123,7 +123,7 @@ public class MatcherJsonIO {
             .map(s -> s.getPinnedSubscriptions().stream()
                .map(p -> new JsonPinnedMatch(s.getId(), p.getOrderitemId()))
             )
-            .reduce(Stream::concat).get()
+            .reduce(Stream::concat).orElse(Stream.empty())
             .collect(toList());
     }
 
