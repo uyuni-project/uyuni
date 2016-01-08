@@ -22,7 +22,7 @@ import com.suse.manager.webui.services.SaltServerActionService;
 import org.apache.log4j.Logger;
 
 /**
- * {@link com.redhat.rhn.common.messaging.MessageQueue;} handler for
+ * {@link com.redhat.rhn.common.messaging.MessageQueue} handler for
  * {@link ActionScheduledEventMessage} events signaling that a new
  * {@link com.redhat.rhn.domain.action.server.ServerAction} has been stored.
  *
@@ -32,7 +32,8 @@ import org.apache.log4j.Logger;
 public class ActionScheduledEventMessageAction extends AbstractDatabaseAction {
 
     /* Logger for this class */
-    private static final Logger LOG = Logger.getLogger(ActionScheduledEventMessageAction.class);
+    private static final Logger LOG = Logger
+            .getLogger(ActionScheduledEventMessageAction.class);
 
     /**
      * {@inheritDoc}
@@ -40,7 +41,7 @@ public class ActionScheduledEventMessageAction extends AbstractDatabaseAction {
     @Override
     protected void doExecute(EventMessage eventMessage) {
         ActionScheduledEventMessage event = (ActionScheduledEventMessage) eventMessage;
-        LOG.debug("Action stored: " + event.getAction().getName());
+        LOG.debug("Action scheduled: " + event.getAction().getName());
         SaltServerActionService.INSTANCE.execute(event.getAction());
     }
 }
