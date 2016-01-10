@@ -16,10 +16,13 @@
 
 import os
 import rpm
-import transaction
+from up2date_client import transaction
 
 import gettext
 t = gettext.translation('rhn-client-tools', fallback=True)
+# Python 3 translations don't have a ugettext method
+if not hasattr(t, 'ugettext'):
+    t.ugettext = t.gettext
 _ = t.ugettext
 
 def installedHeaderByKeyword(**kwargs):
@@ -169,4 +172,4 @@ def setDebugVerbosity():
     try:
         rpm.setVerbosity(rpm.RPMLOG_DEBUG)
     except AttributeError:
-        print "extra verbosity not supported in this version of rpm"
+        print("extra verbosity not supported in this version of rpm")

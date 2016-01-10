@@ -33,7 +33,6 @@
 
 import sys
 import os
-import xmlrpclib
 import socket
 
 from optparse import Option
@@ -42,10 +41,19 @@ from optparse import OptionParser
 from OpenSSL import SSL
 from OpenSSL import crypto
 
+from rhn import i18n
 from rhn import rpclib
+
+try: # python2
+    import xmlrpclib
+except ImportError: # python3
+    import xmlrpc.client as xmlrpclib
 
 import gettext
 t = gettext.translation('rhn-client-tools', fallback=True)
+# Python 3 translations don't have a ugettext method
+if not hasattr(t, 'ugettext'):
+    t.ugettext = t.gettext
 _ = t.ugettext
 
 sys.path.append("/usr/share/rhn/")
@@ -61,9 +69,7 @@ def utf8_encode(msg):
     """ python 2.6- (i.e. RHEL6 and older) could not write unicode to stderr,
         encode it to utf-8.
     """
-    if isinstance(msg, unicode):
-        msg = msg.encode('utf-8')
-    return(msg)
+    return(i18n.bstr(msg))
 
 _optionsTable = [
     Option("-v", "--verbose", action="count", default=0,
@@ -152,7 +158,7 @@ class RhnCli(object):
             up2dateAuth.updateLoginInfo()
             return True
         except up2dateErrors.ServerCapabilityError:
-            print sys.exc_info()[1]
+            print(sys.exc_info()[1])
             return False
         except up2dateErrors.AuthenticationError:
             return False
@@ -168,10 +174,10 @@ class RhnCli(object):
                 from up2date_client import gui
                 gui.errorWindow(message)
             except:
-                print _("Unable to open gui. Try `up2date --nox`")
-                print message
+                print(_("Unable to open gui. Try `up2date --nox`"))
+                print(message)
         else:
-            print message
+            print(message)
 
     def __updateProxyConfig(self):
         """Update potential proxy configuration.
@@ -203,10 +209,10 @@ class RhnCli(object):
                 from up2date_client import gui
                 gui.errorWindow(errMsg)
             except:
-                print _("Unable to open gui. Try `up2date --nox`")
-                print errMsg
+                print(_("Unable to open gui. Try `up2date --nox`"))
+                print(errMsg)
         else:
-            print errMsg
+            print(errMsg)
 
     @staticmethod
     def __versionString():

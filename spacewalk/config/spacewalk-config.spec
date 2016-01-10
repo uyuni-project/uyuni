@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.5.1.1
+Version: 2.5.2
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -174,6 +174,10 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Thu Dec 17 2015 Jan Dobes 2.5.2-1
+- removing unused enable_solaris_support configuration parameter
+- removing unused force_unentitlement configuration parameter
+
 * Tue Nov 24 2015 Jan Dobes 2.5.1-1
 - rhn-satellite-activate: manual references removed
 - Bumping package versions for 2.5.

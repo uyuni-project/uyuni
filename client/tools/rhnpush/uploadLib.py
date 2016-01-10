@@ -497,7 +497,7 @@ class UploadClass:
 
         # set whether we should use checksum paths or not (if upstream supports
         # it we should).
-        self.use_checksum_paths = hasChannelChecksumCapability(self.server, self.ca_chain)
+        self.use_checksum_paths = hasChannelChecksumCapability(self.server)
 
     @staticmethod
     def _processFile(filename, relativeDir=None, source=None, nosig=None):
@@ -734,22 +734,18 @@ def getServer(uri, proxy=None, username=None, password=None, ca_chain=None):
     return s
 
 
-def hasChannelChecksumCapability(rpc_server, caChain=None):
+def hasChannelChecksumCapability(rpc_server):
     """ check whether server supports getPackageChecksumBySession function"""
-    server = rhnserver.RhnServer(caChain=caChain)
-    # pylint: disable=W0212
-    server._server = rpc_server
+    server = rhnserver.RhnServer(rpcServerOverride=rpc_server)
     return server.capabilities.hasCapability('xmlrpc.packages.checksums')
 
 
-def exists_getPackageChecksumBySession(rpc_server, caChain=None):
+def exists_getPackageChecksumBySession(rpc_server):
     """ check whether server supports getPackageChecksumBySession function"""
     # unfortunatelly we do not have capability for getPackageChecksumBySession function,
     # but extended_profile in version 2 has been created just 2 months before
     # getPackageChecksumBySession lets use it instead
-    server = rhnserver.RhnServer(caChain=caChain)
-    # pylint: disable=W0212
-    server._server = rpc_server
+    server = rhnserver.RhnServer(rpcServerOverride=rpc_server)
     result = server.capabilities.hasCapability('xmlrpc.packages.extended_profile', 2)
     return result
 

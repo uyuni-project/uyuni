@@ -11,20 +11,31 @@ import os
 import sys
 import dbus
 
-import up2dateUtils
-import up2dateErrors
-import rhnserver
-import pkgUtils
-import up2dateLog
-import urlparse
-import rhnreg_constants
-import hardware
+from up2date_client import up2dateUtils
+from up2date_client import up2dateErrors
+from up2date_client import rhnserver
+from up2date_client import pkgUtils
+from up2date_client import up2dateLog
+from up2date_client import rhnreg_constants
+from up2date_client import hardware
 from rhnPackageInfo import convertPackagesFromHashToList
 from suseRegister.info import getProductProfile;
-from types import ListType, TupleType, StringType, UnicodeType, DictType, DictionaryType
 from pkgplatform import getPlatform
+from rhn.i18n import ustr
 
-import xmlrpclib
+try: # python2
+    import urlparse
+    import xmlrpclib
+    from types import ListType, TupleType, StringType, UnicodeType, DictType, DictionaryType
+except ImportError: # python3
+    import urllib.parse as urlparse
+    import xmlrpc.client as xmlrpclib
+    ListType = list
+    TupleType = tuple
+    StringType = bytes
+    UnicodeType = str
+    DictType = dict
+    DictionaryType = dict
 
 try:
     from virtualization import support
@@ -33,6 +44,9 @@ except ImportError:
 
 import gettext
 t = gettext.translation('rhn-client-tools', fallback=True)
+# Python 3 translations don't have a ugettext method
+if not hasattr(t, 'ugettext'):
+    t.ugettext = t.gettext
 _ = t.ugettext
 
 # global variables
@@ -43,7 +57,7 @@ REMIND_FILE = "%s/rhn_register_remind" % SYSID_DIR
 HW_CODE_FILE = "%s/hw-activation-code" % SYSID_DIR
 RHSM_FILE = "/etc/pki/consumer/cert.pem"
 
-import config
+from up2date_client import config
 cfg = config.initUp2dateConfig()
 log = up2dateLog.initLog()
 
@@ -57,13 +71,13 @@ def startRhnsd():
                 os.system("/usr/bin/systemctl enable rhnsd > /dev/null");
                 os.system("/usr/bin/systemctl start rhnsd > /dev/null");
             else:
-                print _("Warning: unable to enable rhnsd with systemd")
+                print(_("Warning: unable to enable rhnsd with systemd"))
         else:
             # SysV init scripts
             if os.access("/sbin/chkconfig", os.R_OK|os.X_OK):
                 os.system("/sbin/chkconfig rhnsd on > /dev/null");
             else:
-                print _("Warning: unable to enable rhnsd with chkconfig")
+                print(_("Warning: unable to enable rhnsd with chkconfig"))
 
             service_path = "/sbin/service"
             if not os.access(service_path, os.R_OK|os.X_OK):
@@ -132,7 +146,7 @@ def _write_secure_file(secure_file, file_contents):
         except:
             return False
 
-    fd = os.open(secure_file, os.O_WRONLY | os.O_CREAT, 0600)
+    fd = os.open(secure_file, os.O_WRONLY | os.O_CREAT, 0o600)
     fd_file = os.fdopen(fd, 'w')
     try:
         fd_file.write(file_contents)
@@ -485,7 +499,7 @@ def sendVirtInfo(systemId):
 
 def listPackages(systemId):
     s = rhnserver.RhnServer()
-    print s.registration.list_packages,systemId()
+    print(s.registration.list_packages,systemId())
 
 def makeNiceServerUrl(server):
     """Raises up2dateErrors.InvalidProtocolError if the server url has a
@@ -553,7 +567,7 @@ def _encode_characters(*args):
         for item in args:
             item_type = type(item)
             if item_type == StringType:
-                item = unicode(item, 'utf-8')
+                item = ustr(item)
             elif item_type == TupleType:
                 item = tuple(map(_encode_characters, item))
             elif item_type == ListType:

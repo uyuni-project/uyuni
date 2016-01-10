@@ -13,13 +13,19 @@
 import os
 import sys
 import time
-from types import IntType, StringType, ListType
-from SmartIO import SmartIO
+from rhn import connections
+from rhn.i18n import sstr
+from rhn.SmartIO import SmartIO
+from rhn.UserDictCase import UserDictCase
 
-from UserDictCase import UserDictCase
-
-import connections
-import xmlrpclib
+try: # python2
+    import xmlrpclib
+    from types import IntType, StringType, ListType
+except ImportError: # python3
+    import xmlrpc.client as xmlrpclib
+    IntType = int
+    StringType = bytes
+    ListType = list
 
 __version__ = "$Revision$"
 
@@ -35,6 +41,7 @@ class Transport(xmlrpclib.Transport):
 
     def __init__(self, transfer=0, encoding=0, refreshCallback=None,
             progressCallback=None, use_datetime=None, timeout=None):
+        xmlrpclib.Transport.__init__(self)
         self._transport_flags = {'transfer' : 0, 'encoding' : 0}
         self.set_transport_flags(transfer=transfer, encoding=encoding)
         self._headers = UserDictCase()
@@ -111,7 +118,7 @@ class Transport(xmlrpclib.Transport):
             self._headers[name] = str(arg)
 
     def add_header(self, name, arg):
-        if self._headers.has_key(name):
+        if name in self._headers:
             vlist = self._headers[name]
             if not isinstance(vlist, ListType):
                 vlist = [ vlist ]
@@ -151,11 +158,11 @@ class Transport(xmlrpclib.Transport):
             connection.set_debuglevel(self.verbose - 1)
         # Get the output object to push data with
         req = Output(connection=connection, method=self.method)
-        apply(req.set_transport_flags, (), self._transport_flags)
+        req.set_transport_flags(**self._transport_flags)
 
         # Add the extra headers
         req.set_header('User-Agent', self.user_agent)
-        for header, value in self._headers.items() + extra_headers:
+        for header, value in list(self._headers.items()) + extra_headers:
             # Output.set_header correctly deals with multivalued headers now
             req.set_header(header, value)
 
@@ -364,17 +371,17 @@ class Input:
 
         if not headers:
             # we need to get them from environment
-            if os.environ.has_key("HTTP_CONTENT_TRANSFER_ENCODING"):
+            if "HTTP_CONTENT_TRANSFER_ENCODING" in os.environ:
                 self.transfer = os.environ["HTTP_CONTENT_TRANSFER_ENCODING"].lower()
-            if os.environ.has_key("HTTP_CONTENT_ENCODING"):
+            if "HTTP_CONTENT_ENCODING" in os.environ:
                 self.encoding = os.environ["HTTP_CONTENT_ENCODING"].lower()
-            if os.environ.has_key("CONTENT-TYPE"):
+            if "CONTENT-TYPE" in os.environ:
                 self.type = os.environ["CONTENT-TYPE"].lower()
-            if os.environ.has_key("CONTENT_LENGTH"):
+            if "CONTENT_LENGTH" in os.environ:
                 self.length = int(os.environ["CONTENT_LENGTH"])
-            if os.environ.has_key("HTTP_ACCEPT_LANGUAGE"):
+            if "HTTP_ACCEPT_LANGUAGE" in os.environ:
                 self.lang = os.environ["HTTP_ACCEPT_LANGUAGE"]
-            if os.environ.has_key("HTTP_X_PACKAGE_FILENAME"):
+            if "HTTP_X_PACKAGE_FILENAME" in os.environ:
                 self.name = os.environ["HTTP_X_PACKAGE_FILENAME"]
         else:
             # The stupid httplib screws up the headers from the HTTP repsonse
@@ -460,7 +467,7 @@ class Input:
             del obj
             self.length = len(data)
             self.io = SmartIO(max_mem_size=self.max_mem_size)
-            self.io.write(data)
+            self.io.write(sstr(data))
         elif self.encoding in ("x-gzip", "gzip"):
             import gzip
             self.io.seek(0, 0)
@@ -469,7 +476,7 @@ class Input:
             data = gz.read()
             self.length = len(data)
             self.io = SmartIO(max_mem_size=self.max_mem_size)
-            self.io.write(data)
+            self.io.write(sstr(data))
         elif self.encoding == "x-gpg":
             # XXX: should be written
             raise NotImplementedError(self.transfer, self.encoding)
@@ -498,7 +505,7 @@ def _smart_total_read(fd, bufferSize=1024, max_mem_size=16384):
         if not chunk:
             # EOF reached
             break
-        io.write(chunk)
+        io.write(sstr(chunk))
 
     return io
 
@@ -533,7 +540,7 @@ def _smart_read(fd, amt, bufferSize=1024, progressCallback=None,
 
         # And since the original l was smaller than amt, we know amt >= 0
         amt = amt - l
-        buf.write(chunk)
+        buf.write(sstr(chunk))
         if progressCallback is None:
             # No progress callback, so don't do fancy computations
             continue
@@ -648,7 +655,7 @@ class BaseOutput:
             self.headers[name] = str(arg)
 
     def clear_header(self, name):
-        if self.headers.has_key(name):
+        if name in self.headers:
             del self.headers[name]
 
     def process(self, data):
@@ -663,7 +670,7 @@ class BaseOutput:
             f = SmartIO(force_mem=1)
             gz = gzip.GzipFile(mode="wb", compresslevel=COMPRESS_LEVEL,
                                fileobj = f)
-            gz.write(data)
+            gz.write(sstr(data))
             gz.close()
             self.data = f.getvalue()
             f.close()
@@ -822,7 +829,7 @@ class File:
             buf = fd.read(self.bufferSize)
             if not buf:
                 break
-            file.write(buf)
+            file.write(sstr(buf))
         return file
 
     def _get_file(self):

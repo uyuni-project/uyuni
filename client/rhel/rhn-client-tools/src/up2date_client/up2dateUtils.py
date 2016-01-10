@@ -8,11 +8,15 @@
 
 import os
 import string
-import up2dateErrors
-import config
 import gettext
-from pkgplatform import getPlatform
+from up2date_client import up2dateErrors
+from up2date_client import config
+from up2date_client.pkgplatform import getPlatform
+
 t = gettext.translation('rhn-client-tools', fallback=True)
+# Python 3 translations don't have a ugettext method
+if not hasattr(t, 'ugettext'):
+    t.ugettext = t.gettext
 _ = t.ugettext
 
 if getPlatform() == 'deb':
@@ -27,7 +31,7 @@ if getPlatform() == 'deb':
         return os_name, os_version, os_release
 
 else:
-    import transaction
+    from up2date_client import transaction
     def _getOSVersionAndRelease():
         osVersionRelease = None
         ts = transaction.initReadOnlyTransaction()
@@ -106,7 +110,7 @@ def getArch():
         #bz 216225
         #handle some replacements..
         replace = {"ia32e-redhat-linux": "x86_64-redhat-linux"}
-        if replace.has_key(platform):
+        if platform in replace:
             platform = replace[platform]
         return platform
     arch = os.uname()[4]

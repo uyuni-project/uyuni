@@ -14,16 +14,15 @@
  */
 package com.redhat.rhn.testing;
 
-import java.io.IOException;
+import com.redhat.rhn.frontend.servlets.LegacyServletOutputStream;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
+import java.io.IOException;
 
 /**
  * RhnMockServletOutputStream - simple mock of an output stream
  * @version $Rev$
  */
-public class RhnMockServletOutputStream extends ServletOutputStream {
+public class RhnMockServletOutputStream extends LegacyServletOutputStream {
     private StringBuffer contents;
 
     /**
@@ -71,19 +70,4 @@ public class RhnMockServletOutputStream extends ServletOutputStream {
         contents.append(bytes.toCharArray(), off, len);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isReady() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setWriteListener(WriteListener arg0) {
-        // Do nothing
-    }
 }

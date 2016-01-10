@@ -1,19 +1,22 @@
 #
 
-import rhnserver
-import config
 import os
-import up2dateErrors
-import up2dateUtils
 import string
-import up2dateLog
-import clientCaps
 import pickle
 import time
 
-from types import DictType
+try: # python2
+    from types import DictType
+except ImportError: # python3
+    DictType = dict
 
 from rhn import rpclib
+from up2date_client import clientCaps
+from up2date_client import config
+from up2date_client import rhnserver
+from up2date_client import up2dateErrors
+from up2date_client import up2dateLog
+from up2date_client import up2dateUtils
 
 loginInfo = None
 pcklAuthFileName = "/var/spool/up2date/loginAuth.pkl"
@@ -82,7 +85,7 @@ def maybeUpdateVersion():
               os.chown(path, statinfo.st_uid, statinfo.st_gid)
           else:
               # new file
-              os.chmod(path, int('0600', 8))
+              os.chmod(path, int('0o600', 8))
       except:
           pass
 
@@ -106,12 +109,12 @@ def writeCachedLogin():
     if not os.access(pcklDir, os.W_OK):
         try:
             os.mkdir(pcklDir)
-            os.chmod(pcklDir, int('0700', 8))
+            os.chmod(pcklDir, int('0o700', 8))
         except:
             log.log_me("Unable to write pickled loginInfo to %s" % pcklDir)
             return False
     pcklAuth = open(pcklAuthFileName, 'wb')
-    os.chmod(pcklAuthFileName, int('0600', 8))
+    os.chmod(pcklAuthFileName, int('0o600', 8))
     pickle.dump(data, pcklAuth)
     pcklAuth.close()
     expireTime = data['time'] + float(loginInfo['X-RHN-Auth-Expire-Offset'])
@@ -132,7 +135,7 @@ def readCachedLogin():
     pcklAuth = open(pcklAuthFileName, 'rb')
     try:
         data = pickle.load(pcklAuth)
-    except EOFError:
+    except (EOFError, ValueError):
         log.log_debug("Unexpected EOF. Probably an empty file, \
                        regenerate auth file")
         pcklAuth.close()

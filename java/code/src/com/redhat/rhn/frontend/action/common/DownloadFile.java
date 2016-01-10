@@ -255,9 +255,6 @@ public class DownloadFile extends DownloadAction {
 
 
         KickstartSession ksession = null;
-        KickstartSessionState newState = null;
-
-
         if (map.containsKey("session")) {
             String sessionId = SessionSwap.extractData(map.get("session"))[0];
             ksession = KickstartFactory.

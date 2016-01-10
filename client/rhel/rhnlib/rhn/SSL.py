@@ -62,7 +62,7 @@ class SSLSocket:
         # Position, for tell()
         self._pos = 0
         # Buffer
-        self._buffer = ""
+        self._buffer = b""
 
         # Flag to show if makefile() was called
         self._makefile_called = 0
@@ -207,10 +207,14 @@ class SSLSocket:
             self._buffer = self._buffer[amt:]
         else:
             ret = self._buffer
-            self._buffer = ""
+            self._buffer = b""
 
         self._pos = self._pos + len(ret)
         return ret
+
+    def readinto(self, buf):
+        buf[:] = self.read(len(buf))
+        return len(buf)
 
     def _poll(self, filter_type, caller_name):
         poller = select.poll()
@@ -258,7 +262,7 @@ class SSLSocket:
             # charcount contains the number of chars to be outputted (or None
             # if none to be outputted at this time)
             charcount = None
-            i = self._buffer.find('\n')
+            i = self._buffer.find(b'\n')
             if i >= 0:
                 # Go one char past newline
                 charcount = i + 1

@@ -17,11 +17,16 @@ import getpass
 import os
 import re
 import sys
-import urlparse
-import xmlrpclib
 from rhn import rpclib
 
 from optparse import Option, OptionParser
+
+try: # python2
+    import urlparse
+    import xmlrpclib
+except ImportError: # python3
+    import urllib.parse as urlparse
+    import xmlrpc.client as xmlrpclib
 
 import gettext
 _ = gettext.translation('rhn-client-tools', fallback=True).ugettext
@@ -70,7 +75,7 @@ VERBOSE = False
 
 def info(text):
     if VERBOSE:
-        print text
+        print(text)
 
 
 def systemExit(code, msgs=None):
@@ -193,13 +198,13 @@ def list_channels(only_base_channels=False):
 
     for channel in sorted(channels):
         if not (only_base_channels and channel['parent_channel']):
-            print channel['label']
+            print(channel['label'])
 
 
 def list_available_channels(credentials):
     channels = get_available_channels(credentials.user, credentials.password)
     channels.sort()
-    print '\n'.join(channels)
+    print('\n'.join(channels))
 
 
 def main():

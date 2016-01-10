@@ -20,8 +20,10 @@ import socket
 import re
 import os
 import sys
-import config
-import rhnserver
+from up2date_client import config
+from up2date_client import rhnserver
+
+from rhn.i18n import ustr
 
 try:
     import ethtool
@@ -32,6 +34,9 @@ except ImportError:
 
 import gettext
 t = gettext.translation('rhn-client-tools', fallback=True)
+# Python 3 translations don't have a ugettext method
+if not hasattr(t, 'ugettext'):
+    t.ugettext = t.gettext
 _ = t.ugettext
 
 import dbus
@@ -43,7 +48,7 @@ if platform.processor() not in ['s390', 's390x']:
 else:
     _dmi_not_available = 1
 
-import up2dateLog
+from up2date_client import up2dateLog
 
 try: # F13 and EL6
     from hardware_gudev import get_devices, get_computer_info
@@ -233,7 +238,7 @@ def __get_number_sockets():
 def read_cpuinfo():
     def get_entry(a, entry):
         e = entry.lower()
-        if not a.has_key(e):
+        if not e in a:
             return ""
         return a[e]
 
@@ -465,7 +470,7 @@ def read_memory_2_6():
         key = blobs[0]
         if len(blobs) == 1:
             continue
-        #print blobs
+        #print(blobs)
         value = blobs[1].strip()
         meminfo_dict[key] = value
 
@@ -784,7 +789,7 @@ def get_hal_system_and_smbios():
 
     for key in props:
         if key.startswith('system'):
-            system_and_smbios[unicode(key)] = unicode(props[key])
+            system_and_smbios[ustr(key)] = ustr(props[key])
 
     system_and_smbios.update(get_smbios())
     return system_and_smbios
@@ -876,14 +881,14 @@ def Hardware():
         ret = read_cpuinfo()
         if ret: allhw.append(ret)
     except:
-        print _("Error reading cpu information:"), sys.exc_type
+        print(_("Error reading cpu information:"), sys.exc_type)
 
     # memory size info
     try:
         ret = read_memory()
         if ret: allhw.append(ret)
     except:
-        print _("Error reading system memory information:"), sys.exc_type
+        print(_("Error reading system memory information:"), sys.exc_type)
 
     cfg = config.initUp2dateConfig()
     if not cfg["skipNetwork"]:
@@ -893,7 +898,7 @@ def Hardware():
             if ret:
                 allhw.append(ret)
         except:
-            print _("Error reading networking information:"), sys.exc_type
+            print(_("Error reading networking information:"), sys.exc_type)
     # dont like catchall exceptions but theres not
     # really anything useful we could do at this point
     # and its been trouble prone enough
@@ -914,7 +919,7 @@ def Hardware():
         if ret:
             allhw.append(ret)
     except:
-        print _("Error reading install method information:"), sys.exc_type
+        print(_("Error reading install method information:"), sys.exc_type)
 
     if not cfg["skipNetwork"]:
         try:
@@ -922,7 +927,7 @@ def Hardware():
             if ret:
                 allhw.append(ret)
         except:
-            print _("Error reading network interface information:"), sys.exc_type
+            print(_("Error reading network interface information:"), sys.exc_type)
 
     try:
         ret = get_sysinfo()
@@ -945,5 +950,5 @@ def Hardware():
 if __name__ == '__main__':
     for hw in Hardware():
         for k in hw.keys():
-            print "'%s' : '%s'" % (k, hw[k])
+            print("'%s' : '%s'" % (k, hw[k]))
         print

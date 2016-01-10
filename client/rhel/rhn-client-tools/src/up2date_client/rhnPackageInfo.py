@@ -6,10 +6,10 @@
 import os
 import tempfile
 import ConfigParser
-import up2dateAuth
-import up2dateLog
-import rhnserver
-import pkgUtils
+from up2date_client import up2dateAuth
+from up2date_client import up2dateLog
+from up2date_client import rhnserver
+from up2date_client import pkgUtils
 
 from suseRegister.info import getProductProfile
 
@@ -56,10 +56,10 @@ def convertPackagesFromHashToList(packages):
     """
     result = []
     for package in packages:
-        if package.has_key('arch') and package.has_key('cookie'):
+        if 'arch' in package and 'cookie' in package:
             result.append([package['name'], package['version'], package['release'],
                 package['epoch'], package['arch'], package['cookie']])
-        elif package.has_key('arch'):
+        elif 'arch' in package:
             result.append([package['name'], package['version'], package['release'],
                 package['epoch'], package['arch']])
         else:

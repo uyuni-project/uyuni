@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.5.1.1
+Version: 2.5.2
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -38,7 +38,11 @@ Requires: javapackages-tools
 %else
 Requires: jpackage-utils >= 1.5
 %endif
+%if 0%{?fedora} && 0%{?fedora} >= 21
+Requires: log4j12
+%else
 Requires: log4j
+%endif
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires: jakarta-oro
 %else
@@ -76,7 +80,11 @@ BuildRequires: jakarta-commons-lang >= 0:2.1
 BuildRequires: jakarta-commons-logging
 %endif
 BuildRequires: java-devel >= 1.6.0
+%if 0%{?fedora} && 0%{?fedora} >= 21
+BuildRequires: log4j12
+%else
 BuildRequires: log4j
+%endif
 %if 0%{?fedora} || 0%{?rhel} >=7
 BuildRequires: jakarta-oro
 %else
@@ -270,6 +278,9 @@ fi
 %doc licenses/*
 
 %changelog
+* Fri Jan 08 2016 Jan Dobes 2.5.2-1
+- require log4j12, it will not download in build time on Fedora 23 otherwise
+
 * Thu Oct 22 2015 Tomas Kasparek <tkasparek@redhat.com> 2.5.1-1
 - run indexing tasks only after previous one finishes
 - Bumping package versions for 2.5.
