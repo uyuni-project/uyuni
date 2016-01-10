@@ -1,11 +1,18 @@
 
-import UserDict
-import config
-import up2dateErrors
+from up2date_client import config
+from up2date_client import up2dateErrors
 import string
+
+try: # python2
+    import UserDict
+except ImportError: # python3
+    import collections as UserDict
 
 import gettext
 t = gettext.translation('rhn-client-tools', fallback=True)
+# Python 3 translations don't have a ugettext method
+if not hasattr(t, 'ugettext'):
+    t.ugettext = t.gettext
 _ = t.ugettext
 
 # a dict with "capability name" as the key, and the version
@@ -37,7 +44,7 @@ def parseCap(capstring):
 
         # just to be paranoid
         if version[-1] != ")":
-            print "something broke in parsing the capabilited headers"
+            print("something broke in parsing the capabilited headers")
         #FIXME: raise an approriate exception here...
 
         # trim off the trailing paren
@@ -84,7 +91,7 @@ class Capabilities(UserDict.UserDict):
         return [int(versionString)]
 
     def validateCap(self, cap, capvalue):
-        if not self.data.has_key(cap):
+        if not cap in self.data:
             errstr = _("This client requires the server to support %s, which the current " \
                        "server does not support") % cap
             self.missingCaps[cap] = None
@@ -102,7 +109,7 @@ class Capabilities(UserDict.UserDict):
         self.workaroundMissingCaps()
 
     def setConfig(self, key, configItem):
-        if self.tmpCaps.has_key(key):
+        if key in self.tmpCaps:
             self.cfg[configItem] = 0
             del self.tmpCaps[key]
         else:
@@ -116,7 +123,7 @@ class Capabilities(UserDict.UserDict):
 
         # this is an example of how to work around it
         key = 'caneatCheese'
-        if self.tmpCaps.has_key(key):
+        if key in self.tmpCaps:
             # do whatevers needed to workaround
             del self.tmpCaps[key]
         else:
@@ -185,7 +192,7 @@ class Capabilities(UserDict.UserDict):
         """
         assert version is None or str(version).isdigit()
 
-        if not self.data.has_key(capability):
+        if not capability in self.data:
             return False
         if version:
             data = self.data[capability]

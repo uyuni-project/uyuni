@@ -2,28 +2,37 @@
 
 import os
 import sys
-import config
 import socket
 import time
-import httplib
-import urllib2
 
-import clientCaps
-import up2dateLog
-import up2dateErrors
-import up2dateUtils
-import up2dateAuth
-import urlparse
+from up2date_client import config
+from up2date_client import clientCaps
+from up2date_client import up2dateLog
+from up2date_client import up2dateErrors
+from up2date_client import up2dateUtils
 
-import xmlrpclib
 from rhn import rpclib
+
+try: # python2
+     import httplib
+     import urllib2
+     import urlparse
+     import xmlrpclib
+except ImportError: # python3
+     import http.client as httplib
+     import urllib.request as urllib2
+     import urllib.parse as urlparse
+     import xmlrpc.client as xmlrpclib
 
 import gettext
 t = gettext.translation('rhn-client-tools', fallback=True)
+# Python 3 translations don't have a ugettext method
+if not hasattr(t, 'ugettext'):
+    t.ugettext = t.gettext
 _ = t.ugettext
 
 def stdoutMsgCallback(msg):
-    print msg
+    print(msg)
 
 
 class RetryServer(rpclib.Server):
@@ -117,10 +126,10 @@ def getServer(refreshCallback=None, serverOverride=None, timeout=None, caChain=N
         # The servers we're talking to need to have their certs
         # signed by one of these CA.
         ca = cfg["sslCACert"]
-    if isinstance(ca, basestring):
+    if not isinstance(ca, list):
         ca = [ca]
-    rhns_ca_certs = ca or ["/usr/share/rhn/RHNS-CA-CERT"]
 
+    rhns_ca_certs = ca or ["/usr/share/rhn/RHNS-CA-CERT"]
     if cfg["enableProxy"]:
         proxyHost = config.getProxySetting()
     else:
@@ -140,7 +149,7 @@ def getServer(refreshCallback=None, serverOverride=None, timeout=None, caChain=N
 
     lang = None
     for env in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
-        if os.environ.has_key(env):
+        if env in os.environ:
             if not os.environ[env]:
                 # sometimes unset
                 continue
@@ -220,7 +229,7 @@ def doCall(method, *args, **kwargs):
             else:
                 failure = 1
         except httplib.IncompleteRead:
-            print "httplib.IncompleteRead"
+            print("httplib.IncompleteRead")
             raise (up2dateErrors.CommunicationError("httplib.IncompleteRead"), None, sys.exc_info()[2])
 
         except urllib2.HTTPError:
@@ -248,6 +257,7 @@ def doCall(method, *args, **kwargs):
                 # this function) but login should never get a 34, so
                 # should be safe from recursion
 
+                from up2date_client import up2dateAuth
                 up2dateAuth.updateLoginInfo()
 
             # the servers are being throttle to pay users only, catch the

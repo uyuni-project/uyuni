@@ -1,13 +1,12 @@
 Summary: DNF plugin for Spacewalk
 Name: dnf-plugin-spacewalk
-Version: 2.5.0.1
+Version: 2.5.2
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
 BuildArch: noarch
-BuildRequires: python-devel
 
 BuildRequires: python-devel
 %if 0%{?fedora}
@@ -16,7 +15,7 @@ BuildRequires: python3-devel
 Requires: dnf >= 0.5.3
 Requires: dnf-plugins-core
 Requires: librepo >= 1.7.15
-Requires: rhn-client-tools >= 1.10.3-1
+Requires: rhn-client-tools >= 2.5.5
 Conflicts: yum-rhn-plugin
 
 %description
@@ -68,6 +67,13 @@ install -m 644 man/dnf.plugin.spacewalk.8 %{buildroot}%{_mandir}/man8/
 %endif
 
 %changelog
+* Fri Jan 08 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.2-1
+- updated dnf / rhnlib / rhn-client-tools dependencies
+
+* Fri Jan 08 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.1-1
+- 1286555 - updated to work in python3
+- Bumping package versions for 2.5.
+
 * Thu Aug 20 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.15-1
 - 1254551 - fixed error message output
 

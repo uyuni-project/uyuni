@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.5.2.2
+Version: 2.5.6
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -27,7 +27,11 @@ Obsoletes: rhn-client-tools < %{version}-%{release}
 %if %{without_rhn_register}
 Obsoletes: rhn-setup-gnome
 %endif
-Requires: rhnlib >= 2.5.74
+%if 0%{?fedora} >= 23
+Requires: python3-rhnlib >= 2.5.78
+%else
+Requires: rhnlib >= 2.5.78
+%endif
 Requires: rpm >= 4.2.3-24_nonptl
 Requires: rpm-python 
 Requires: python-ethtool >= 0.4
@@ -100,8 +104,12 @@ BuildRequires: redhat-logos
 # The following BuildRequires are for check only
 %if 0%{?fedora}
 BuildRequires: python-coverage
-BuildRequires: rhnlib
 BuildRequires: rpm-python
+%endif
+%if 0%{?fedora} >= 23
+Requires: python3-rhnlib >= 2.5.78
+%else
+Requires: rhnlib >= 2.5.78
 %endif
 
 %description
@@ -477,6 +485,19 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Fri Jan 08 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.6-1
+- updated dnf / rhnlib / rhn-client-tools dependencies
+- fixed rpmbuild tests
+
+* Fri Jan 08 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.5-1
+- 1259884, 1286555 - updated to work in python3
+
+* Fri Jan 08 2016 Tomas Lestach <tlestach@redhat.com> 2.5.4-1
+- 1260454 - clean up channels to subscribe before processing results
+
+* Thu Dec 17 2015 Jan Dobes 2.5.3-1
+- 1262780 - alow to use existing rpcServer when creating RhnServer
+
 * Tue Nov 24 2015 Jan Dobes 2.5.2-1
 - rhel client tools: po files updated
 - rhel client tools: remove virtualization host platform entitlement references

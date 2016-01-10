@@ -60,9 +60,10 @@ public class ConfigDefaults {
     public static final String ERRATA_CACHE_COMPUTE_THRESHOLD
     = "errata_cache_compute_threshold";
 
-    public static final String DOWNLOAD_URL_LIFETIME = "download_url_lifetime";
+    public static final String DOWNLOAD_URL_LIFETIME = "java.download_url_lifetime";
 
-    public static final String NON_EXPIRABLE_PACKAGE_URLS = "non_expirable_package_urls";
+    public static final String NON_EXPIRABLE_PACKAGE_URLS =
+        "java.non_expirable_package_urls";
 
     public static final String SATELLITE_PARENT = "server.satellite.rhn_parent";
 
@@ -78,9 +79,7 @@ public class ConfigDefaults {
 
     public static final String DEFAULT_SAT_PARENT = "satellite.rhn.redhat.com";
 
-    public static final String FORCE_UNENTITLEMENT = "web.force_unentitlement";
-
-    public static final String PRODUCT_NAME = "product_name";
+    public static final String PRODUCT_NAME = "web.product_name";
     public static final String VENDOR_NAME = "java.vendor_name";
     public static final String ENTERPRISE_LINUX_NAME = "java.enterprise_linux_name";
     public static final String VENDOR_SERVICE_NAME = "java.vendor_service_name";
@@ -417,15 +416,6 @@ public class ConfigDefaults {
      */
     public boolean isSSLAvailable() {
         return Config.get().getBoolean(SSL_AVAILABLE);
-    }
-
-    /**
-     *
-     * @return if we should force unentitlement of systems
-     * when setting entitlements below current usage for multiorg
-     */
-    public boolean forceUnentitlement() {
-        return Config.get().getBoolean(FORCE_UNENTITLEMENT);
     }
 
     /**

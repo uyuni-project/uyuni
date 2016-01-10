@@ -4,7 +4,7 @@ Summary: Python libraries for the Spacewalk project
 Name: rhnlib
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 2.5.77.2
+Version: 2.5.78
 Release: 1%{?dist}
 
 Group: Development/Libraries
@@ -34,6 +34,21 @@ rhnlib is a collection of python modules used by the
 Spacewalk software.
 
 
+%package -n python3-rhnlib
+Summary: Python libraries for the Spacewalk project
+Group: Development/Libraries
+Requires: python3-pyOpenSSL
+Conflicts: rhncfg < 5.10.45
+Conflicts: spacewalk-proxy-installer < 1.3.2
+Conflicts: rhn-client-tools < 1.3.3
+Conflicts: rhn-custom-info < 5.4.7
+Conflicts: rhnpush < 5.5.10
+Conflicts: rhnclient < 0.10
+Conflicts: spacewalk-proxy < 1.3.6
+
+%description -n python3-rhnlib
+rhnlib is a collection of python modules used by the Spacewalk (http://spacewalk.redhat.com) software.
+
 %prep
 %setup -q
 if [ ! -e setup.py ]; then
@@ -52,6 +67,7 @@ make -f Makefile.rhnlib
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix=%{_prefix}
+%{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix=%{_prefix}
 
 
 %clean
@@ -61,10 +77,16 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %doc ChangeLog COPYING README TODO
-
 %{python_sitelib}/*
 
+%files -n python3-rhnlib
+%doc ChangeLog COPYING README TODO
+%{python3_sitelib}/*
+
 %changelog
+* Fri Jan 08 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.78-1
+- 1259884, 1286555 - updated to work in python3
+
 * Thu Sep 24 2015 Jan Dobes 2.5.77-1
 - Bumping copyright year.
 

@@ -8,16 +8,25 @@
 
 
 import base64
-import SSL
-import nonblocking
-import httplib
-import xmlrpclib
 import encodings.idna
 import socket
 from platform import python_version
+from rhn import SSL
+from rhn import nonblocking
+from rhn import i18n
 
-# Import into the local namespace some httplib-related names
-from httplib import _CS_REQ_SENT, _CS_IDLE, ResponseNotReady
+try: # python2
+    import httplib
+    # Import into the local namespace some httplib-related names
+    from httplib import _CS_REQ_SENT, _CS_IDLE, ResponseNotReady
+
+    import xmlrpclib
+except ImportError: # python3
+    import http.client as httplib
+    # Import into the local namespace some httplib-related names
+    from http.client import _CS_REQ_SENT, _CS_IDLE, ResponseNotReady
+
+    import xmlrpc.client as xmlrpclib
 
 class HTTPResponse(httplib.HTTPResponse):
     def set_callback(self, rs, ws, ex, user_data, callback):
@@ -259,6 +268,5 @@ def idn_ascii_to_puny(hostname):
     if hostname is None:
         return None
     else:
-        if not isinstance(hostname, unicode):
-            hostname = unicode(hostname, 'utf-8')
+        hostname = i18n.ustr(hostname)
         return hostname.encode('idna')

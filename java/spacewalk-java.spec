@@ -25,7 +25,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.26.2
+Version: 2.5.34
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -78,11 +78,11 @@ BuildRequires: httpcomponents-client
 %else
 Requires: cobbler20
 Requires: dojo
-Requires: java >= 1:1.6.0
-Requires: java-devel >= 1:1.6.0
+Requires: java >= 1:1.7.0
+Requires: java-devel >= 1:1.7.0
 Requires: jpam
 Requires: oscache
-BuildRequires: java-devel >= 1:1.6.0
+BuildRequires: java-devel >= 1:1.7.0
 BuildRequires: jpam
 BuildRequires: oscache
 
@@ -129,7 +129,7 @@ BuildRequires: hibernate3 = 0:3.2.4
 Requires: struts >= 0:1.3.0
 Requires: tomcat >= 7
 Requires: tomcat-lib >= 7
-Requires: tomcat-servlet-3.0-api >= 7
+Requires: servlet >= 3.0
 BuildRequires: struts >= 0:1.3.0
 BuildRequires: tomcat >= 7
 BuildRequires: tomcat-lib >= 7
@@ -378,7 +378,7 @@ Requires: pam-modules
 Requires: jsch
 %else
 Requires: cobbler20
-Requires: java >= 0:1.6.0
+Requires: java >= 0:1.7.0
 Requires: java-devel >= 0:1.7.0
 Requires: jpam
 Requires: oscache
@@ -549,9 +549,16 @@ ln -s -f %{_javadir}/jboss-logging/jboss-logging.jar $RPM_BUILD_ROOT%{_javadir}/
 %endif
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
-ant -Dprefix=$RPM_BUILD_ROOT install-tomcat7
+ant -Dprefix=$RPM_BUILD_ROOT install-tomcat
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
-install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+
+# Need to use 2 versions of rhn.xml, Tomcat 8 changed syntax
+%if 0%{?fedora} >= 23
+install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+%else
+install -m 755 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+%endif
+
 %else
 %if 0%{?suse_version}
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat8-suse
@@ -560,7 +567,7 @@ install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalin
 %else
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat6
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/
-install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
+install -m 755 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
 %endif
 %endif
 
@@ -970,6 +977,39 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Jan 07 2016 Jan Dobes 2.5.34-1
+- Tomcat 8 requires different syntax of rhn.xml
+- change dependency to match Tomcat 8 Servlet API 3.1
+
+* Thu Jan 07 2016 Jan Dobes 2.5.33-1
+- start to compile with Java 1.7 because Jasper in Tomcat 8 generates 1.5
+  incompatible code
+- disable checkstyle on Fedora 23 for now due to regression
+- implement methods needed by Tomcat 8 Servlet API 3.1
+
+* Wed Jan 06 2016 Grant Gainey 2.5.32-1
+- 1296234 - Fix edge-case in kickstart-profile-gen-ordering and
+  post_install_network_config
+- we have new year
+
+* Mon Jan 04 2016 Grant Gainey 2.5.31-1
+- 1282474 - checkstyle fixes
+
+* Mon Jan 04 2016 Grant Gainey 2.5.30-1
+- 1282474 - Add hack to deal with RHEL7's differing redhat-release-protocol
+
+* Fri Dec 18 2015 Tomas Lestach <tlestach@redhat.com> 2.5.29-1
+- 1287829 - make sure we can find the child channel
+- fix checkstyle issue
+
+* Thu Dec 17 2015 Jan Dobes 2.5.28-1
+- moving non_expirable_package_urls parameter to java
+- moving download_url_lifetime parameter to java
+- removing unused force_unentitlement configuration parameter
+
+* Wed Dec 16 2015 Jan Dobes 2.5.27-1
+- get the default organization before we create any
+
 * Thu Dec 10 2015 Jan Dobes 2.5.26-1
 - 1274282 - Teach CobblerSyncProfile that profiles might disappear in mid-run
 

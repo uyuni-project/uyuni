@@ -1,15 +1,18 @@
 #!/usr/bin/python
 
-import sys
-import unittest
 
-from rhn import rpclib
+
+import sys
 
 import settestpath
-from up2date_client import config, rpcServer
-from up2date_client import up2dateErrors
 
-test_up2date = "etc-sysconfig-rhn/up2date"
+from up2date_client import config
+from up2date_client import rpcServer
+
+import unittest
+from rhn import rpclib
+
+test_up2date = "../etc-conf/up2date.config"
 
 def write(blip):
     sys.stdout.write("\n%s\n" % blip)
@@ -116,7 +119,7 @@ class TestGetServer(unittest.TestCase):
         try:
             s = rpcServer.getServer()
             write(s)
-        except up2dateErrors.SSLCertificateFileNotFound:
+        except SystemExit:
             pass
         else:
             self.fail("Expected to get an SSLCertificateFileNotFound error")

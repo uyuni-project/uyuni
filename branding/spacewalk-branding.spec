@@ -9,7 +9,7 @@
 %if  0%{?rhel} && 0%{?rhel} < 6
 %global tomcat tomcat5
 %else
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %global tomcat tomcat
 %else
 %global tomcat tomcat6
@@ -21,7 +21,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.5.1.3
+Version:    2.5.2
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -149,6 +149,9 @@ rm -rf %{buildroot}
 /%{wwwdocroot}/css/*.less
 
 %changelog
+* Tue Dec 15 2015 Jan Dobes 2.5.2-1
+- fix %%tomcat in spacewalk-branding.spec for EL7
+
 * Tue Nov 24 2015 Jan Dobes 2.5.1-1
 - Remove unused load_satellite_certificate function and satellite-cert-file
   parameter
