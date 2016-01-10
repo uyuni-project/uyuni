@@ -317,9 +317,9 @@ def get_device_pcitype(node):
     PCI_TYPE_PCI = 1
     PCI_TYPE_NOT_PCI = -1
 
-    if (('info.bus' in (node.properties
-            and node.properties['info.bus'] == 'pci')) or
-        ('info.subsystem' in (node.properties
+    if (('info.bus' in node.properties
+            and node.properties['info.bus'] == 'pci') or
+        ('info.subsystem' in node.properties
             and node.properties['info.subsystem'] == 'pci')):
         parent = node.parent
         if ('pci.device_class' in parent.properties
