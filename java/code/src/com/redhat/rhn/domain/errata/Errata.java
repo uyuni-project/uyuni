@@ -431,4 +431,5 @@ public interface Errata {
      * @return Returns Cves
      */
     Set<Cve> getCves();
+
 }
