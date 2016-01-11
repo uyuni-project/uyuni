@@ -39,6 +39,8 @@ public class ChannelFamily extends BaseDomainHelper {
     private Set<PrivateChannelFamily> privateChannelFamilies =
                                     new HashSet<PrivateChannelFamily>();
 
+    private PublicChannelFamily publicChannelFamily;
+
     /**
      * @return Returns the channels.
      */
@@ -196,6 +198,20 @@ public class ChannelFamily extends BaseDomainHelper {
         this.privateChannelFamilies.add(pcfIn);
     }
 
+    /**
+     * Gets the public channel family.
+     * @return the public channel family
+     */
+    public PublicChannelFamily getPublicChannelFamily() {
+        return publicChannelFamily;
+    }
 
+    /**
+     * Sets the public channel family.
+     * @param publicChannelFamilyIn the new public channel family
+     */
+    public void setPublicChannelFamily(PublicChannelFamily publicChannelFamilyIn) {
+        publicChannelFamily = publicChannelFamilyIn;
+    }
 }
 

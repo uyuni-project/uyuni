@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
-import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -438,11 +437,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertNotNull(family);
             assertEquals(cf.getLabel(), family.getLabel());
             assertEquals(cf.getName(), family.getName());
-            // There is always one private channel family for org one
-            assertEquals(1, family.getPrivateChannelFamilies().size());
-            for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
-                assertEquals(new Long(1), pcf.getOrg().getId());
-            }
+            assertNotNull(family.getPublicChannelFamily());
         }
     }
 
@@ -473,10 +468,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertNotNull(family);
             assertEquals(cf.getLabel(), family.getLabel());
             assertEquals(cf.getName(), family.getName());
-            assertEquals(1, family.getPrivateChannelFamilies().size());
-            for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
-                assertEquals(new Long(1), pcf.getOrg().getId());
-            }
+            assertNotNull(family.getPublicChannelFamily());
         }
     }
 
