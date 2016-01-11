@@ -18,5 +18,5 @@
 -->
 
 <Context path="/rhn" docBase="/srv/tomcat/webapps/rhn/"
-         debug="0" reloadable="false" allowLinking="true">
+         debug="0" reloadable="false" allowLinking="true" sessionCookiePath="/">
 </Context>
