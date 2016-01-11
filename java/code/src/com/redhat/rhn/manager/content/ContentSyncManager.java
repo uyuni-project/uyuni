@@ -811,6 +811,7 @@ public class ContentSyncManager {
                 // save the public channel family
                 pcf.setChannelFamily(family);
                 ChannelFamilyFactory.save(pcf);
+                family.setPublicChannelFamily(pcf);
             }
         }
     }
