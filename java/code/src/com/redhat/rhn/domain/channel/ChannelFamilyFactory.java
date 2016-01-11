@@ -194,6 +194,14 @@ public class ChannelFamilyFactory extends HibernateFactory {
     }
 
     /**
+     * Insert or Update a PublicChannelFamily.
+     * @param pcf PublicChannelFamily to be stored in database.
+     */
+    public static void save(PublicChannelFamily pcf) {
+        singleton.saveObject(pcf);
+    }
+
+    /**
      * Lookup the List of ChannelFamily objects that are labled starting
      * with the passed in label param
      * @param label to query against
