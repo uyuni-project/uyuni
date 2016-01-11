@@ -415,4 +415,16 @@ public enum SaltAPIService implements SaltService {
             throw new RuntimeException(e);
         }
     }
+
+    public Map<String, Schedule.Result> deleteSchedule(String name, Target<?> target) {
+        try {
+            Map<String, Schedule.Result> result = SALT_CLIENT.callSync(
+                    Schedule.delete(name), target,
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return result;
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
