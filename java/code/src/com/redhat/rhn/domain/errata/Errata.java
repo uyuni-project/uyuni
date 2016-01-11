@@ -431,9 +431,4 @@ public interface Errata {
      * @return Returns Cves
      */
     Set<Cve> getCves();
-
-    /**
-     * Return the patch name as used by zypper.
-     */
-    String getPatchName();
 }
