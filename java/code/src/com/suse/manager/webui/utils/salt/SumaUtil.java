@@ -18,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import com.suse.saltstack.netapi.calls.LocalCall;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -40,5 +41,16 @@ public class SumaUtil {
                 Optional.of(args), new TypeToken<String>() {
         });
     }
+
+    /**
+     * Call 'sumautil.primary_ips'
+     * @return a {@link LocalCall} to pass to the SaltStackClient
+     */
+    public static LocalCall<List<String>> primaryIps() {
+        return new LocalCall("sumautil.primary_ips", Optional.empty(),
+                Optional.empty(), new TypeToken<List<String>>() {
+        });
+    }
+
 
 }
