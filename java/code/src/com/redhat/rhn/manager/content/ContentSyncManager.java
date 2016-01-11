@@ -23,11 +23,10 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.DistChannelMap;
-import com.redhat.rhn.domain.channel.PrivateChannelFamily;
+import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -50,6 +49,7 @@ import com.suse.mgrsync.XMLUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
+import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrder;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
@@ -73,7 +73,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -805,20 +804,13 @@ public class ContentSyncManager {
         for (XMLChannelFamily channelFamily : channelFamilies) {
             ChannelFamily family = createOrUpdateChannelFamily(
                     channelFamily.getLabel(), channelFamily.getName());
-            // Create rhnPrivateChannelFamily entry if it doesn't exist
-            if (family.getPrivateChannelFamilies().isEmpty()) {
-                PrivateChannelFamily pcf = new PrivateChannelFamily();
-                pcf.setCreated(new Date());
-                // Set the default organization (id = 1)
-                pcf.setOrg(OrgFactory.getSatelliteOrg());
+            // Create rhnPublicChannelFamily entry if it doesn't exist
+            if (family.getPublicChannelFamily() == null) {
+                PublicChannelFamily pcf = new PublicChannelFamily();
 
-                // save the private channel family
+                // save the public channel family
                 pcf.setChannelFamily(family);
                 ChannelFamilyFactory.save(pcf);
-
-                // Update the channel family accordingly
-                family.addPrivateChannelFamily(pcf);
-                ChannelFamilyFactory.save(family);
             }
         }
     }
