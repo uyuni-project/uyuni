@@ -193,9 +193,11 @@ public interface SaltService {
     /**
      * Schedule patch installations for a given target.
      *
+     * @param name the name to use for the scheduled job
      * @param target the target
      * @param patches the patches to install
-     * @param scheduleDate schedule date (currently ignored)
+     * @param scheduleDate schedule date
+     * @param metadata metadata to pass to the salt job
      * @return the result of the patch installation
      */
     Map<String, Schedule.Result> schedulePatchInstallation(String name, Target<?> target,
@@ -204,6 +206,7 @@ public interface SaltService {
     /**
      * Remove a scheduled job from the minion
      *
+     * @param name the name of the job to delete from the schedule
      * @param target the target
      * @return the result
      */

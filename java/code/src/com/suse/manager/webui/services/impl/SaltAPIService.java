@@ -400,12 +400,16 @@ public enum SaltAPIService implements SaltService {
         }
     }
 
-    public Map<String, Schedule.Result> schedulePatchInstallation(String name, Target<?> target,
-            Set<String> patches, LocalDateTime scheduleDate, Map<String, ?> metadata) {
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Schedule.Result> schedulePatchInstallation(String name,
+            Target<?> target, Set<String> patches, LocalDateTime scheduleDate,
+            Map<String, ?> metadata) {
         try {
-            LocalCall<Map<String, Object>> install = com.suse.manager.webui.utils.salt.Pkg.install(
-                    true, patches.stream().map(patch -> "patch:" + patch).collect(Collectors.toList())
-            );
+            LocalCall<Map<String, Object>> install =
+                    com.suse.manager.webui.utils.salt.Pkg.install(true, patches.stream()
+                    .map(patch -> "patch:" + patch).collect(Collectors.toList()));
             Map<String, Schedule.Result> result = SALT_CLIENT.callSync(
                     Schedule.add(name, install, scheduleDate, metadata), target,
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
@@ -416,6 +420,9 @@ public enum SaltAPIService implements SaltService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Map<String, Schedule.Result> deleteSchedule(String name, Target<?> target) {
         try {
             Map<String, Schedule.Result> result = SALT_CLIENT.callSync(

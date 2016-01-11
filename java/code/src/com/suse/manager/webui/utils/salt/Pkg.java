@@ -31,11 +31,17 @@ public class Pkg {
 
     private Pkg() { }
 
-    public static LocalCall<Map<String, Object>> install(boolean refresh, List<String> pkgs) {
+    /**
+     * @param refresh refresh repos before installation
+     * @param pkgs list of packages
+     * @return the call
+     */
+    public static LocalCall<Map<String, Object>> install(boolean refresh,
+            List<String> pkgs) {
         LinkedHashMap<String, Object> kwargs = new LinkedHashMap<>();
         kwargs.put("refresh", refresh);
         kwargs.put("pkgs", pkgs);
         return new LocalCall<>("pkg.install", Optional.empty(), Optional.of(kwargs),
-                new TypeToken<Map<String, Object>>(){});
+                new TypeToken<Map<String, Object>>() { });
     }
 }
