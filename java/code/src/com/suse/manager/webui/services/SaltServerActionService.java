@@ -65,10 +65,14 @@ public enum SaltServerActionService {
                     .filter(minion -> minion.hasEntitlement(EntitlementManager.SALTSTACK))
                     .collect(Collectors.toList());
 
-            Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory.listErrataNamesForServers(
-                    minions.stream().map(MinionServer::getId).collect(Collectors.toSet()),
-                    errataAction.getErrata().stream().map(Errata::getId).collect(Collectors.toSet())
-            );
+            Set<Long> serverIds = minions.stream()
+                    .map(MinionServer::getId)
+                    .collect(Collectors.toSet());
+            Set<Long> errataIds = errataAction.getErrata().stream()
+                    .map(Errata::getId)
+                    .collect(Collectors.toSet());
+            Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory
+                    .listErrataNamesForServers(serverIds, errataIds);
 
             minions.forEach(minion -> {
                 Target<?> target = new MinionList(minion.getMinionId());
@@ -77,10 +81,12 @@ public enum SaltServerActionService {
                         .map(Map.Entry::getValue)
                         .flatMap(Set::stream)
                         .collect(Collectors.toSet());
-                LocalDateTime earliestAction = actionIn.getEarliestAction().toInstant().atZone(ZoneId.of("UTC")).toLocalDateTime();
+                LocalDateTime earliestAction = actionIn.getEarliestAction().toInstant()
+                        .atZone(ZoneId.of("UTC")).toLocalDateTime();
                 Map<String, Long> metadata = new HashMap<>();
                 metadata.put("suma-action-id", actionIn.getId());
-                SaltAPIService.INSTANCE.schedulePatchInstallation("scheduled-action-" + actionIn.getId(), target, patches,
+                SaltAPIService.INSTANCE.schedulePatchInstallation(
+                        "scheduled-action-" + actionIn.getId(), target, patches,
                         earliestAction, metadata);
             });
         }

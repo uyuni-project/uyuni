@@ -71,7 +71,8 @@ public class JobReturnEventMessageAction implements MessageAction {
             minionServerOpt.ifPresent(minionServer -> {
                 Optional<ServerAction> serverAction = action.getServerActions().stream()
                         .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
-                SaltAPIService.INSTANCE.deleteSchedule("scheduled-action-" + id, new MinionList(jobReturnEvent.getMinionId()));
+                SaltAPIService.INSTANCE.deleteSchedule("scheduled-action-" + id,
+                        new MinionList(jobReturnEvent.getMinionId()));
                 serverAction.ifPresent(sa -> {
                     LOG.debug("Setting action status for server: " + minionServer.getId());
 
@@ -86,8 +87,11 @@ public class JobReturnEventMessageAction implements MessageAction {
         });
 
         if (packagesChanged(jobReturnEvent)) {
-            MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId()).ifPresent(minionServer -> {
-                MessageQueue.publish(new UpdatePackageProfileEventMessage(minionServer.getId()));
+            MinionServerFactory
+                    .findByMinionId(jobReturnEvent.getMinionId())
+                    .ifPresent(minionServer -> {
+                MessageQueue.publish(
+                        new UpdatePackageProfileEventMessage(minionServer.getId()));
             });
         }
     }

@@ -121,7 +121,8 @@ public class MinionController {
      */
     public static String show(Request request, Response response) {
         String minionId = request.params("id");
-        long id = MinionServerFactory.findByMinionId(minionId).map(MinionServer::getId).orElse(-1L);
+        long id = MinionServerFactory.findByMinionId(minionId)
+                .map(MinionServer::getId).orElse(-1L);
         response.redirect("/rhn/systems/details/Overview.do?sid=" + id);
         return "";
     }
