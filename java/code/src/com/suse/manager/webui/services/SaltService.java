@@ -200,4 +200,12 @@ public interface SaltService {
      */
     Map<String, Schedule.Result> schedulePatchInstallation(String name, Target<?> target,
             Set<String> patches, LocalDateTime scheduleDate, Map<String, ?> metadata);
+
+    /**
+     * Remove a scheduled job from the minion
+     *
+     * @param target the target
+     * @return the result
+     */
+    Map<String, Schedule.Result> deleteSchedule(String name, Target<?> target);
 }

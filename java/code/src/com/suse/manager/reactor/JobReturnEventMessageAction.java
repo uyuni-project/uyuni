@@ -23,8 +23,10 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 
+import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.salt.JobReturnEvent;
 
+import com.suse.saltstack.netapi.datatypes.target.MinionList;
 import org.apache.log4j.Logger;
 
 import java.util.Collections;
@@ -58,9 +60,7 @@ public class JobReturnEventMessageAction implements MessageAction {
         }
 
         // Adjust action status if the job was scheduled by us
-        Optional<Long> actionId = getActionId(jobReturnEvent);
-        if (actionId.isPresent()) {
-            long id = actionId.get();
+        getActionId(jobReturnEvent).ifPresent(id -> {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Matched salt job with action (id=" + id + ")");
             }
@@ -68,10 +68,10 @@ public class JobReturnEventMessageAction implements MessageAction {
             Action action = ActionFactory.lookupById(id);
             Optional<MinionServer> minionServerOpt = MinionServerFactory
                     .findByMinionId(jobReturnEvent.getMinionId());
-            if (minionServerOpt.isPresent()) {
-                MinionServer minionServer = minionServerOpt.get();
+            minionServerOpt.ifPresent(minionServer -> {
                 Optional<ServerAction> serverAction = action.getServerActions().stream()
                         .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
+                SaltAPIService.INSTANCE.deleteSchedule("scheduled-action-" + id, new MinionList(jobReturnEvent.getMinionId()));
                 serverAction.ifPresent(sa -> {
                     LOG.debug("Setting action status for server: " + minionServer.getId());
 
@@ -82,8 +82,8 @@ public class JobReturnEventMessageAction implements MessageAction {
                     sa.setResultCode(0L);
                     ActionFactory.save(action);
                 });
-            }
-        }
+            });
+        });
 
         if (packagesChanged(jobReturnEvent)) {
             MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId()).ifPresent(minionServer -> {
