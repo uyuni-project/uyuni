@@ -725,17 +725,4 @@ public abstract class AbstractErrata extends BaseDomainHelper implements
         eb.append(this.getOrg());
         return eb.toHashCode();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getPatchName() {
-        String patchName = advisoryName;
-        // FIXME: Implement this correctly as to be seen in getErrataNamesById()
-        // (see ./backend/server/handlers/xmlrpc/errata.py)
-        if (patchName.startsWith("SUSE")) {
-            patchName = patchName.replaceAll("SUSE", "SUSE-SLE-SERVER");
-        }
-        return patchName;
-    }
 }
