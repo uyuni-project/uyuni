@@ -15,6 +15,6 @@
   allowLinking - true to allow Tomcat to follow symlinks.
 -->
 
-<Context path="/rhn" reloadable="false">
+<Context path="/rhn" reloadable="false" sessionCookiePath="/">
   <Resources allowLinking="true" />
 </Context>
