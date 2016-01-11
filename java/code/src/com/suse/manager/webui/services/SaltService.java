@@ -192,6 +192,12 @@ public interface SaltService {
     String getMainframeSysinfoReadValues(String minionId);
 
     /**
+     * Get the network interfaces from a minion.
+     * @param minionId the minion id
+     * @return a map containing information about each network interface
+     */
+    Map<String, Network.Interface> getNetworkInterfacesInfo(String minionId);
+    /**
      * Schedule patch installations for a given target.
      *
      * @param name the name to use for the scheduled job
@@ -212,6 +218,14 @@ public interface SaltService {
      * @return the result
      */
     Map<String, Schedule.Result> deleteSchedule(String name, Target<?> target);
-    Map<String, Map<String, Object>> getNetworkInterfacesInfo(String minionId);
+
+
+    /**
+     * Get the source IPs on the minion used to connect to the master.
+     * @param minionId the minion id
+     * @return a list with two IP address, first is the IPv4 address,
+     * second is the IPv6 address (or null if not present).
+     */
+    List<String> getPrimaryIps(String minionId);
 
 }

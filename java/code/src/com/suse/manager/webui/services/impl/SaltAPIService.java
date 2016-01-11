@@ -442,9 +442,26 @@ public enum SaltAPIService implements SaltService {
      */
     public Map<String, Network.Interface> getNetworkInterfacesInfo(String minionId) {
         try {
-            Map<String, Map<String, Network.Interface>> interfaces = SALT_CLIENT.callSync(Network.interfaces(),
+            Map<String, Map<String, Network.Interface>> interfaces = SALT_CLIENT.callSync(
+                    Network.interfaces(),
                     new MinionList(minionId), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return interfaces.get(minionId);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<String> getPrimaryIps(String minionId) {
+        try {
+            Map<String, List<String>> result = SALT_CLIENT.callSync(
+                    SumaUtil.primaryIps(),
+                    new MinionList(minionId),
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return result.get(minionId);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
