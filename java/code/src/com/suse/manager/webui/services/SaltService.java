@@ -228,4 +228,12 @@ public interface SaltService {
      */
     List<String> getPrimaryIps(String minionId);
 
+    /**
+     * Get the kernel modules used for each network interface.
+     * @param minionId the minion id
+     * @return a map with the network interface name as key and
+     * the kernel module name or null as a value
+     */
+    Map<String, String> getNetModules(String minionId);
+
 }

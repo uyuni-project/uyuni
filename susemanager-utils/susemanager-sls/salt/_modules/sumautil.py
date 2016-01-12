@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-Utility commands for Suse Manager
+Utility module for Suse Manager
 
 '''
 from __future__ import absolute_import
@@ -10,6 +10,7 @@ import salt.utils
 import salt.modules.cmdmod
 import salt.modules.network
 import socket
+import os
 from salt.exceptions import CommandExecutionError
 
 __salt__ = {
@@ -72,9 +73,6 @@ def primary_ips():
                 ip, port, flow_info, scope_id = sockaddr
 
             return ip
-            # s.settimeout(5)
-            # s.connect((master, 8012))
-            # sourceip = s.getsockname()[0]
 
         except Exception:
             return None
@@ -104,12 +102,45 @@ def primary_ips():
 
     return srcipv4, srcipv6
 
-# ip = salt.utils.network.host_to_ip(master)
-#     if ip:
-#         route = __salt__['network.get_route'](ip)
-#         log.debug("network.get_route({0}): ".format(ip, str(route)))
-#         # network.get_route $IP -> the source ip is the primary ip
-#         return route.get('source', None)
-#     else:
-#         log.warn("Could not resolve '{0}' to IP address".format(master))
-#     return None
+
+def get_net_module(iface):
+    '''
+    Returns the kernel module used for the give interface
+    or None if the module could not be determined of if the
+    interface name is wrong.
+    Uses '/sys/class/net' to find out the module.
+
+    CLI Example:
+
+    .. code-block:: bash
+
+        salt '*' sumautil.get_net_module eth0
+    '''
+    sysfspath = '/sys/class/net/{0}/device/driver'.format(iface)
+    log.debug("Looking for '{0}'".format(sysfspath))
+    if os.path.exists(sysfspath):
+        try:
+            driverpath = os.readlink(sysfspath)
+            driver = driverpath.rsplit('/', 1)[1]
+            return driver
+        except:
+            log.exception('')
+    return None
+
+
+def get_net_modules():
+    '''
+    Returns a dictionary of all network interfaces and their
+    corresponding kernel module (if it could be determined).
+
+    CLI Example:
+
+    .. code-block:: bash
+
+        salt '*' sumautil.get_net_modules
+    '''
+    drivers = {}
+    for e in os.listdir('/sys/class/net/'):
+        drivers[e] = get_net_module(e)
+
+    return drivers
