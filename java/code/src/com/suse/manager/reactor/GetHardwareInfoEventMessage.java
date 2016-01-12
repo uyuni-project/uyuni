@@ -27,8 +27,7 @@ public class GetHardwareInfoEventMessage implements EventMessage {
     /**
      * Create a new event to trigger retrieving the hardware information.
      *
-     * @param minionIdIn minion to register
-     * @param machineIdIn the machine id
+     * @param serverIdIn minion to register
      * @param skipCpuIn don't retrieve CPU info from minion
      */
     public GetHardwareInfoEventMessage(Long serverIdIn, boolean skipCpuIn) {
