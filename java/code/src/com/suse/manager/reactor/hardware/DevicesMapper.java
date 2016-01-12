@@ -15,7 +15,7 @@
 package com.suse.manager.reactor.hardware;
 
 import com.redhat.rhn.domain.server.Device;
-import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.PciClassCodes;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * Maps the devices information. This is roughly a port of
  * the client side python code (hardware_gudev.py).
  */
-public class DevicesMapper extends AbstractHardwareMapper<Server> {
+public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
 
     private static final Pattern PRINTER_REGEX = Pattern.compile(".*/lp\\d+$");
 
@@ -43,7 +43,8 @@ public class DevicesMapper extends AbstractHardwareMapper<Server> {
     }
 
     @Override
-    public Server map(String minionId, Server server, ValueMap grains) {
+    public MinionServer map(MinionServer server, ValueMap grains) {
+        String minionId = server.getMinionId();
         List<Map<String, Object>> db = SALT_SERVICE.getUdevdb(minionId);
 
         db.forEach(dbdev -> {

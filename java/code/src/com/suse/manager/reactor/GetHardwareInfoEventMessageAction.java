@@ -18,9 +18,11 @@ import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.SysinfoMapper;
 import org.apache.log4j.Logger;
 
+import java.util.Optional;
+
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.suse.manager.reactor.hardware.CpuMapper;
 import com.suse.manager.reactor.hardware.DevicesMapper;
@@ -51,36 +53,41 @@ public class GetHardwareInfoEventMessageAction extends AbstractDatabaseAction {
     @Override
     protected void doExecute(EventMessage msg) {
         GetHardwareInfoEventMessage event = (GetHardwareInfoEventMessage) msg;
-        String minionId = event.getMinionId();
-        String machineId = event.getMachineId();
-        boolean skipCpu = event.isSkipCpu();
-        ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId));
 
-        Server server = ServerFactory.findRegisteredMinion(machineId);
+        Optional<MinionServer> optionalServer = MinionServerFactory
+                .lookupById(event.getServerId());
+        optionalServer.ifPresent(server -> {
+            String minionId = server.getMinionId();
+            boolean skipCpu = event.isSkipCpu();
+            ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId));
 
-        if (!skipCpu) {
-            CpuMapper cpuMapper = new CpuMapper(SALT_SERVICE);
-            cpuMapper.map(minionId, server, grains);
+            if (!skipCpu) {
+                CpuMapper cpuMapper = new CpuMapper(SALT_SERVICE);
+                cpuMapper.map(server, grains);
+            }
+            String cpuarch = grains.getValueAsString("cpuarch");
+            boolean dmiAvailable = true;
+
+            if (CpuArchUtil.isS390(cpuarch)) {
+                dmiAvailable = false;
+            }
+
+            if (dmiAvailable) {
+                DmiMapper dmiMapper = new DmiMapper(SALT_SERVICE);
+                dmiMapper.map(server, grains);
+            }
+
+            DevicesMapper devicesMapper = new DevicesMapper(SALT_SERVICE);
+            devicesMapper.map(server, grains);
+
+            SysinfoMapper sysinfoMapper = new SysinfoMapper(SALT_SERVICE);
+            sysinfoMapper.map(server, grains);
+
+            LOG.info("Finished getting hardware info for: " + minionId);            
+        });
+
+        if (!optionalServer.isPresent()) {
+            LOG.warn("Server entry not found: " + event.getServerId());
         }
-        String cpuarch = grains.getValueAsString("cpuarch");
-        boolean dmiAvailable = true;
-
-        if (CpuArchUtil.isS390(cpuarch)) {
-            dmiAvailable = false;
-        }
-
-        if (dmiAvailable) {
-            DmiMapper dmiMapper = new DmiMapper(SALT_SERVICE);
-            dmiMapper.map(minionId, server, grains);
-        }
-
-        DevicesMapper devicesMapper = new DevicesMapper(SALT_SERVICE);
-        devicesMapper.map(minionId, server, grains);
-
-        SysinfoMapper sysinfoMapper = new SysinfoMapper(SALT_SERVICE);
-        sysinfoMapper.map(minionId, server, grains);
-
-        LOG.info("Finished getting hardware info for: " + minionId);
     }
-
 }
