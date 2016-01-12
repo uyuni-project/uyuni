@@ -202,9 +202,6 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
     }
 
     private void triggerGetHardwareInfo(MinionServer server, ValueMap grains) {
-        CpuMapper cpuMapper = new CpuMapper(SALT_SERVICE);
-        cpuMapper.map(server, grains);
-        // get the rest of hardware info in an async way
-        MessageQueue.publish(new GetHardwareInfoEventMessage(server.getId(), true));
+        MessageQueue.publish(new GetHardwareInfoEventMessage(server.getId()));
     }
 }
