@@ -151,6 +151,12 @@ public interface SaltService {
     void syncGrains(String target);
 
     /**
+     * Call 'saltutil.sync_modules' to sync the grains to the target minion(s).
+     * @param target a target glob
+     */
+    void syncModules(String target);
+
+    /**
      * Get DMI records from a minion.
      * @param minionId the minion id
      * @param recordType the record type to get
@@ -158,5 +164,27 @@ public interface SaltService {
      * imutable map is returned if there is no data.
      */
     Map<String, Object> getDmiRecords(String minionId, Smbios.RecordType recordType);
+
+    /**
+     * Get the udev database from a minion.
+     * @param minionId the minion id
+     * @return the udev db as a list of maps, where each map is a db entry.
+     */
+    List<Map<String, Object>> getUdevdb(String minionId);
+
+    /**
+     * Get the content of file from a minion.
+     * @param minionId the minion id
+     * @param path the path of the file
+     * @return the content of a file as a string
+     */
+    String getFileContent(String minionId, String path);
+
+    /**
+     * Get the output of the '/usr/bin/read_values' if available.
+     * @param minionId the minion id
+     * @return the output of command as a string.
+     */
+    String getMainframeSysinfoReadValues(String minionId);
 
 }
