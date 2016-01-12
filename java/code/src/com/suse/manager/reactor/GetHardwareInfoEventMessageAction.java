@@ -83,7 +83,7 @@ public class GetHardwareInfoEventMessageAction extends AbstractDatabaseAction {
             SysinfoMapper sysinfoMapper = new SysinfoMapper(SALT_SERVICE);
             sysinfoMapper.map(server, grains);
 
-            LOG.info("Finished getting hardware info for: " + minionId);            
+            LOG.info("Finished getting hardware info for: " + minionId);
         });
 
         if (!optionalServer.isPresent()) {
