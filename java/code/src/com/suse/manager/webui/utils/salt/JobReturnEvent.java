@@ -73,7 +73,7 @@ public class JobReturnEvent {
     }
 
     /**
-     * Utility method to parse e generic event to a more specific one
+     * Utility method to parse a generic event into a more specific one.
      * @param event the generic event to parse
      * @return an option containing the parsed value or non if it could not be parsed
      */
