@@ -22,13 +22,16 @@ import com.suse.manager.reactor.utils.ValueMap;
  */
 public class GetNetworkInfoEventMessage implements EventMessage {
 
-    private String machineId;
-    private String minionId;
+    private Long serverId;
     private ValueMap grains;
 
-    public GetNetworkInfoEventMessage(String machineIdIn, String minionIdIn, ValueMap grainsIn) {
-        machineId = machineIdIn;
-        minionId = minionIdIn;
+    /**
+     * The constructor.
+     * @param serverIdIn the sever id
+     * @param grainsIn the minion grains
+     */
+    public GetNetworkInfoEventMessage(Long serverIdIn, ValueMap grainsIn) {
+        serverId = serverIdIn;
         grains = grainsIn;
     }
 
@@ -42,15 +45,19 @@ public class GetNetworkInfoEventMessage implements EventMessage {
         return null;
     }
 
-    public String getMachineId() {
-        return machineId;
-    }
-
-    public String getMinionId() {
-        return minionId;
-    }
-
+    /**
+     * Get the minion grains.
+     * @return a {@link ValueMap} containing the grains
+     */
     public ValueMap getGrains() {
         return grains;
+    }
+
+    /**
+     * Get server id.
+     * @return the id
+     */
+    public Long getServerId() {
+        return serverId;
     }
 }
