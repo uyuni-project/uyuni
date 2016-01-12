@@ -22,17 +22,14 @@ import com.redhat.rhn.common.messaging.EventMessage;
 public class GetHardwareInfoEventMessage implements EventMessage {
 
     private Long serverId;
-    private boolean skipCpu;
 
     /**
      * Create a new event to trigger retrieving the hardware information.
      *
      * @param serverIdIn minion to register
-     * @param skipCpuIn don't retrieve CPU info from minion
      */
-    public GetHardwareInfoEventMessage(Long serverIdIn, boolean skipCpuIn) {
+    public GetHardwareInfoEventMessage(Long serverIdIn) {
         this.serverId = serverIdIn;
-        this.skipCpu = skipCpuIn;
     }
 
     @Override
@@ -59,10 +56,4 @@ public class GetHardwareInfoEventMessage implements EventMessage {
         return serverId;
     }
 
-    /**
-     * @return don't get the CPU information from the minion.
-     */
-    public boolean isSkipCpu() {
-        return skipCpu;
-    }
 }

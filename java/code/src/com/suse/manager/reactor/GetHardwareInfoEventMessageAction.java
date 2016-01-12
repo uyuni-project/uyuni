@@ -58,13 +58,11 @@ public class GetHardwareInfoEventMessageAction extends AbstractDatabaseAction {
                 .lookupById(event.getServerId());
         optionalServer.ifPresent(server -> {
             String minionId = server.getMinionId();
-            boolean skipCpu = event.isSkipCpu();
             ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId));
 
-            if (!skipCpu) {
-                CpuMapper cpuMapper = new CpuMapper(SALT_SERVICE);
-                cpuMapper.map(server, grains);
-            }
+            CpuMapper cpuMapper = new CpuMapper(SALT_SERVICE);
+            cpuMapper.map(server, grains);
+
             String cpuarch = grains.getValueAsString("cpuarch");
             boolean dmiAvailable = true;
 
