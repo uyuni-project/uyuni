@@ -8,6 +8,7 @@ import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetAddress6;
 import com.redhat.rhn.domain.server.ServerNetworkFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.Network;
 import org.apache.commons.lang3.ObjectUtils;
@@ -34,6 +35,7 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
         GetNetworkInfoEventMessage event = (GetNetworkInfoEventMessage)msg;
         String machineId = event.getMachineId();
         String minionId = event.getMinionId();
+        ValueMap grains = event.getGrains();
 
         Server server = ServerFactory.findRegisteredMinion(machineId);
 
@@ -43,7 +45,7 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
         String primaryIPv6 = primaryIps.get(1);
 
         com.redhat.rhn.domain.server.Network network = new com.redhat.rhn.domain.server.Network();
-        network.setHostname(null); // TODO
+        network.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
         network.setIpaddr(primaryIPv4);
         network.setIp6addr(primaryIPv6);
 
