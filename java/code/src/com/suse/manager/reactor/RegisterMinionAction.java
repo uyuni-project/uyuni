@@ -145,7 +145,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setServerInfo(serverInfo);
 
             mapHardwareDetails(minionId, machineId, server, grains);
-            mapNetworkDetails(minionId, machineId);
+            mapNetworkDetails(minionId, machineId, grains);
 
             //HACK: set installed product depending on the grains
             // to get access to suse channels
@@ -189,9 +189,9 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         }
     }
 
-    private void mapNetworkDetails(String minionId, String machineId) {
+    private void mapNetworkDetails(String minionId, String machineId, ValueMap grains) {
         MessageQueue.publish(
-               new GetNetworkInfoEventMessage(machineId, minionId));
+               new GetNetworkInfoEventMessage(machineId, minionId, grains));
     }
 
     private void mapHardwareDetails(String minionId, String machineId, MinionServer server,
