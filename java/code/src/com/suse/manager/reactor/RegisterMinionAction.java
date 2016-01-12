@@ -144,8 +144,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             serverInfo.setServer(server);
             server.setServerInfo(serverInfo);
 
-            mapHardwareDetails(minionId, machineId, server, grains);
-            mapNetworkDetails(minionId, machineId, grains);
+            mapHardwareGrains(server, grains);
 
             //HACK: set installed product depending on the grains
             // to get access to suse channels
@@ -171,6 +170,9 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
 
             ServerFactory.save(server);
 
+            triggerGetHardwareInfo(server, grains);
+            triggerGetNetworkInfo(server, grains);
+
             // Assign the SaltStack base entitlement by default
             server.setBaseEntitlement(
                     EntitlementManager.getByName(EntitlementManager.SALTSTACK_ENTITLED));
@@ -189,18 +191,19 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         }
     }
 
-    private void mapNetworkDetails(String minionId, String machineId, ValueMap grains) {
-        MessageQueue.publish(
-               new GetNetworkInfoEventMessage(machineId, minionId, grains));
+    private void mapHardwareGrains(MinionServer server, ValueMap grains) {
+        // for efficiency do this here
+        server.setRam(grains.getValueAsLong("mem_total").orElse(0L));
     }
 
-    private void mapHardwareDetails(String minionId, String machineId, MinionServer server,
-                                    ValueMap grains) {
-        server.setRam(grains.getValueAsLong("mem_total").orElse(0L));
+    private void triggerGetNetworkInfo(MinionServer server, ValueMap grains) {
+        MessageQueue.publish(
+               new GetNetworkInfoEventMessage(server.getId(), grains));
+    }
 
+    private void triggerGetHardwareInfo(MinionServer server, ValueMap grains) {
         CpuMapper cpuMapper = new CpuMapper(SALT_SERVICE);
         cpuMapper.map(server, grains);
-
         // get the rest of hardware info in an async way
         MessageQueue.publish(new GetHardwareInfoEventMessage(server.getId(), true));
     }

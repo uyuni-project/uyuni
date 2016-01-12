@@ -1,8 +1,9 @@
 package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetAddress6;
@@ -36,89 +37,93 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
     @Override
     protected void doExecute(EventMessage msg) {
         GetNetworkInfoEventMessage event = (GetNetworkInfoEventMessage)msg;
-        String machineId = event.getMachineId();
-        String minionId = event.getMinionId();
-        ValueMap grains = event.getGrains();
 
-        Server server = ServerFactory.findRegisteredMinion(machineId);
+        Optional<MinionServer> minionServer = MinionServerFactory
+                .lookupById(event.getServerId());
 
-        Map<String, Network.Interface> interfaces = SALT_SERVICE
-                .getNetworkInterfacesInfo(minionId);
-        List<String> primaryIps = SALT_SERVICE.getPrimaryIps(minionId);
-        Map<String, String> netModules = SALT_SERVICE.getNetModules(minionId);
+        minionServer.ifPresent(server -> {
 
-        String primaryIPv4 = primaryIps.get(0);
-        String primaryIPv6 = primaryIps.get(1);
+            String minionId = server.getMinionId();
+            ValueMap grains = event.getGrains();
 
-        com.redhat.rhn.domain.server.Network network =
-                new com.redhat.rhn.domain.server.Network();
-        network.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
-        network.setIpaddr(primaryIPv4);
-        network.setIp6addr(primaryIPv6);
+            Map<String, Network.Interface> interfaces = SALT_SERVICE
+                    .getNetworkInterfacesInfo(minionId);
+            List<String> primaryIps = SALT_SERVICE.getPrimaryIps(minionId);
+            Map<String, String> netModules = SALT_SERVICE.getNetModules(minionId);
 
-        server.addNetwork(network);
+            String primaryIPv4 = primaryIps.get(0);
+            String primaryIPv6 = primaryIps.get(1);
 
-        interfaces.forEach((name, saltIface) -> {
-            NetworkInterface iface = server.getNetworkInterface(name);
-            if (iface == null) {
-                // we got a new interface
-                iface = new NetworkInterface();
-            }
-            // else update the existing interface
+            com.redhat.rhn.domain.server.Network network =
+                    new com.redhat.rhn.domain.server.Network();
+            network.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
+            network.setIpaddr(primaryIPv4);
+            network.setIp6addr(primaryIPv6);
 
-            iface.setHwaddr(saltIface.getHWAddr());
-            iface.setModule(netModules.get(name));
-            iface.setServer(server);
-            iface.setName(name);
+            server.addNetwork(network);
 
-            server.addNetworkInterface(iface);
+            interfaces.forEach((name, saltIface) -> {
+                NetworkInterface iface = server.getNetworkInterface(name);
+                if (iface == null) {
+                    // we got a new interface
+                    iface = new NetworkInterface();
+                }
+                // else update the existing interface
 
-            // we have to do this because we need the id of the interface afterwards
-            ServerFactory.saveNetworkInterface(iface);
+                iface.setHwaddr(saltIface.getHWAddr());
+                iface.setModule(netModules.get(name));
+                iface.setServer(server);
+                iface.setName(name);
 
-            // set IPv4 network info
-            ServerNetAddress4 ipv4 = ServerNetworkFactory
-                    .findServerNetAddress4(iface.getInterfaceId());
-            if (ipv4 == null) {
-                ipv4 = new ServerNetAddress4();
-            }
+                server.addNetworkInterface(iface);
 
-            ipv4.setInterfaceId(iface.getInterfaceId());
+                // we have to do this because we need the id of the interface afterwards
+                ServerFactory.saveNetworkInterface(iface);
 
-            Optional<Network.INet> inet = saltIface.getInet().stream().findFirst();
-            ipv4.setAddress(inet.map(Network.INet::getAddress)
-                    .orElse(null));
-            ipv4.setNetmask(inet.map(Network.INet::getNetmask)
-                    .orElse(null));
-            ipv4.setBroadcast(inet.map(Network.INet::getBroadcast)
-                    .orElse(null));
-            ServerNetworkFactory.saveServerNetAddress4(ipv4);
+                // set IPv4 network info
+                ServerNetAddress4 ipv4 = ServerNetworkFactory
+                        .findServerNetAddress4(iface.getInterfaceId());
+                if (ipv4 == null) {
+                    ipv4 = new ServerNetAddress4();
+                }
 
-            if (StringUtils.equals(ipv4.getAddress(), primaryIPv4)) {
-                iface.setPrimary("Y");
-            }
+                ipv4.setInterfaceId(iface.getInterfaceId());
 
-            // set IPv6 network info
-            ServerNetAddress6 ipv6 = ServerNetworkFactory
-                    .findServerNetAddress6(iface.getInterfaceId());
-            if (ipv6 == null) {
-                ipv6 = new ServerNetAddress6();
-            }
-            ipv6.setInterfaceId(iface.getInterfaceId());
+                Optional<Network.INet> inet = saltIface.getInet().stream().findFirst();
+                ipv4.setAddress(inet.map(Network.INet::getAddress)
+                        .orElse(null));
+                ipv4.setNetmask(inet.map(Network.INet::getNetmask)
+                        .orElse(null));
+                ipv4.setBroadcast(inet.map(Network.INet::getBroadcast)
+                        .orElse(null));
+                ServerNetworkFactory.saveServerNetAddress4(ipv4);
 
-            Optional<Network.INet6> inet6 = saltIface.getInet6().stream().findFirst();
-            ipv6.setAddress(inet6.map(Network.INet6::getAddress)
-                    .orElse(null));
-            ipv6.setNetmask(inet6.map(Network.INet6::getPrefixlen).orElse(null));
-            // scope is part of the entity's composite-id
-            // so if it's null we'll get a list with null on namedQuery.list()
-            // therefore we need a default value
-            ipv6.setScope(inet6.map(Network.INet6::getScope).orElse("unknown"));
-            ServerNetworkFactory.saveServerNetAddress6(ipv6);
+                if (StringUtils.equals(ipv4.getAddress(), primaryIPv4)) {
+                    iface.setPrimary("Y");
+                }
 
-            if (StringUtils.equals(ipv6.getAddress(), primaryIPv6)) {
-                iface.setPrimary("Y");
-            }
+                // set IPv6 network info
+                ServerNetAddress6 ipv6 = ServerNetworkFactory
+                        .findServerNetAddress6(iface.getInterfaceId());
+                if (ipv6 == null) {
+                    ipv6 = new ServerNetAddress6();
+                }
+                ipv6.setInterfaceId(iface.getInterfaceId());
+
+                Optional<Network.INet6> inet6 = saltIface.getInet6().stream().findFirst();
+                ipv6.setAddress(inet6.map(Network.INet6::getAddress)
+                        .orElse(null));
+                ipv6.setNetmask(inet6.map(Network.INet6::getPrefixlen).orElse(null));
+                // scope is part of the entity's composite-id
+                // so if it's null we'll get a list with null on namedQuery.list()
+                // therefore we need a default value
+                ipv6.setScope(inet6.map(Network.INet6::getScope).orElse("unknown"));
+                ServerNetworkFactory.saveServerNetAddress6(ipv6);
+
+                if (StringUtils.equals(ipv6.getAddress(), primaryIPv6)) {
+                    iface.setPrimary("Y");
+                }
+            });
         });
     }
 }
