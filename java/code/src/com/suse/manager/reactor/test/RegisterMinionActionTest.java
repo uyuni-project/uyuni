@@ -19,12 +19,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import org.jmock.Mock;
 
 import com.redhat.rhn.domain.server.InstalledPackage;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
@@ -58,10 +60,7 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
         Mock saltServiceMock = mock(SaltService.class);
         String minionId = MINION_ID;
 
-        Server server = ServerFactory.findRegisteredMinion(MACHINE_ID);
-        if (server != null) {
-            ServerFactory.delete(server);
-        }
+        MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
 
         // Register a minion via RegisterMinionAction and mocked SaltService
 
@@ -86,8 +85,9 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
 
         // Verify the resulting system entry
         String machineId = saltService.getMachineId(minionId);
-        Server minion = ServerFactory.findRegisteredMinion(machineId);
-        assertNotNull(minion);
+        Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
+        assertTrue(optMinion.isPresent());
+        MinionServer minion = optMinion.get();
         assertEquals(minionId, minion.getName());
         assertEquals(machineId, minion.getDigitalServerId());
         assertEquals("3.12.48-52.27-default", minion.getRunningKernel());

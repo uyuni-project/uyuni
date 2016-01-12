@@ -161,7 +161,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <one-to-many class="com.redhat.rhn.domain.server.ServerHistoryEvent" />
         </set>
 
-        <set name="packages" inverse="true" cascade="all">
+        <set name="packages" inverse="true" cascade="all-delete-orphan">
             <key column="server_id"/>
             <one-to-many class="com.redhat.rhn.domain.server.InstalledPackage"/>
         </set>
@@ -187,6 +187,13 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <property name="expiration" column="expiration_string" />
                 <many-to-one name="version" class="com.redhat.rhn.domain.rhnpackage.PackageEvr"
                 column="evr_id" cascade="none" access="field"/>
+        </joined-subclass>
+
+        <joined-subclass name="com.redhat.rhn.domain.server.MinionServer"
+                         table="suseMinionInfo">
+            <key column="server_id"/>
+            <property name="minionId" column="minion_id" />
+            <property name="machineId" column="machine_id" />
         </joined-subclass>
     </class>
 
@@ -268,4 +275,21 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return alias="S" class="com.redhat.rhn.domain.server.Server" />
     </sql-query>
 
+    <sql-query name="Server.listErrataNamesForServers">
+        <return-scalar column="errataId" type="long"/>
+        <return-scalar column="serverId" type="long"/>
+        <return-scalar column="advisoryName" type="string"/>
+        <return-scalar column="updateTag" type="string"/>
+        <![CDATA[select distinct e.id as errataId, sc.server_id as serverId, e.advisory_name as advisoryName, c.update_tag as updateTag
+                 FROM rhnErrata e,
+                      rhnServerChannel sc,
+                      rhnChannelErrata ce,
+                      rhnChannel c
+                 WHERE e.id in (:errataIds) AND
+                       sc.server_id in (:serverIds) AND
+                       e.id = ce.errata_id AND
+                       sc.channel_id = c.id AND
+                       ce.channel_id = c.id
+                                ]]>
+    </sql-query>
 </hibernate-mapping>

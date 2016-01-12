@@ -64,11 +64,13 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -1830,5 +1832,22 @@ public class ErrataManager extends BaseManager {
             }
         }
         return needed;
+    }
+
+    /**
+     * Insert an errata cache task for a given server, will be picked up by taskomatic on
+     * the next run (runs every minute per default).
+     *
+     * @param server the server
+     */
+    public static void insertErrataCacheTask(Server server) {
+        WriteMode mode = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
+                "insert_into_task_queue");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("org_id", server.getOrg().getId());
+        params.put("task_name", "update_server_errata_cache");
+        params.put("task_data", server.getId());
+        params.put("earliest", new Timestamp(System.currentTimeMillis()));
+        mode.executeUpdate(params);
     }
 }

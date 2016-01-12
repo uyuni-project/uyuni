@@ -49,6 +49,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ServerFactory - the singleton class used to fetch and store
@@ -920,19 +922,6 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * Find a registered minion: check if digital server id matches a given machine_id.
-     *
-     * @param machineId minion machine_id from the grains
-     * @return server corresponding to the given machine_id
-     */
-    public static Server findRegisteredMinion(String machineId) {
-        Session session = getSession();
-        Criteria criteria = session.createCriteria(Server.class);
-        criteria.add(Restrictions.eq("digitalServerId", machineId));
-        return (Server) criteria.uniqueResult();
-    }
-
-    /**
      * @return a list of all systems
      */
     @SuppressWarnings("unchecked")
@@ -940,5 +929,39 @@ public class ServerFactory extends HibernateFactory {
         return getSession().createCriteria(Server.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .list();
+    }
+
+    /**
+     * List errata names for a given set of servers and errata.
+     *
+     * @param serverIds set of server ids
+     * @param errataIds set of errata ids
+     * @return map from server id to map from errata id to patch name
+     */
+    @SuppressWarnings("unchecked")
+    public static Map<Long, Map<Long, Set<String>>> listErrataNamesForServers(
+            Set<Long> serverIds, Set<Long> errataIds) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("serverIds", serverIds);
+        params.put("errataIds", errataIds);
+        List<Object[]> result = singleton.listObjectsByNamedQuery(
+                "Server.listErrataNamesForServers", params);
+        return result.stream().collect(
+                // Group by server id
+                Collectors.groupingBy(row -> (Long) row[1],
+                // Group by errata id
+                Collectors.groupingBy(row -> (Long) row[0],
+                // Generate names including the update tag
+                Collectors.mapping(row -> {
+                    String name = (String) row[2];
+                    String tag = (String) row[3];
+                    if (name.startsWith("SUSE-")) {
+                        return name.replaceFirst("SUSE", "SUSE-" + tag);
+                    }
+                    else {
+                        return name;
+                    }
+                }, Collectors.toSet())))
+        );
     }
 }
