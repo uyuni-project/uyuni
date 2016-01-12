@@ -100,7 +100,7 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
         cpu.setNrCPU(grains.getValueAsLong("num_cpus").orElse(0L));
 
         if (arch != null) {
-            // should not happen but arh is not nullable so if we don't have
+            // should not happen but arch is not nullable so if we don't have
             // the arch we cannot insert the cpu data
             cpu.setServer(server);
             server.setCpu(cpu);
@@ -108,7 +108,4 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
 
         return cpu;
     }
-
-
-
 }
