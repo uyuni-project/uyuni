@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
@@ -32,7 +31,6 @@ import com.suse.manager.reactor.hardware.CpuMapper;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.saltstack.netapi.calls.modules.Pkg;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
@@ -146,7 +144,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             serverInfo.setServer(server);
             server.setServerInfo(serverInfo);
 
-            mapHardwareDetails(minionId, machineId, server, grains);
+            mapHardwareDetails(server, grains);
             // TODO network details
 
             //HACK: set installed product depending on the grains
@@ -191,15 +189,13 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         }
     }
 
-    private void mapHardwareDetails(String minionId, String machineId, Server server,
-                ValueMap grains) {
+    private void mapHardwareDetails(MinionServer server, ValueMap grains) {
         server.setRam(grains.getValueAsLong("mem_total").orElse(0L));
 
         CpuMapper cpuMapper = new CpuMapper(SALT_SERVICE);
-        cpuMapper.map(minionId, server, grains);
+        cpuMapper.map(server, grains);
 
         // get the rest of hardware info in an async way
-        MessageQueue.publish(
-                new GetHardwareInfoEventMessage(minionId, machineId, true));
+        MessageQueue.publish(new GetHardwareInfoEventMessage(server.getId(), true));
     }
 }

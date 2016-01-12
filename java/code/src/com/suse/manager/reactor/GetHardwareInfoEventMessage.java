@@ -21,8 +21,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
  */
 public class GetHardwareInfoEventMessage implements EventMessage {
 
-    private String minionId;
-    private String machineId;
+    private Long serverId;
     private boolean skipCpu;
 
     /**
@@ -32,16 +31,8 @@ public class GetHardwareInfoEventMessage implements EventMessage {
      * @param machineIdIn the machine id
      * @param skipCpuIn don't retrieve CPU info from minion
      */
-    public GetHardwareInfoEventMessage(String minionIdIn, String machineIdIn,
-               boolean skipCpuIn) {
-        if (minionIdIn == null) {
-            throw new IllegalArgumentException("minionId cannot be null");
-        }
-        if (machineIdIn == null) {
-            throw new IllegalArgumentException("machineId cannot be null");
-        }
-        this.minionId = minionIdIn;
-        this.machineId = machineIdIn;
+    public GetHardwareInfoEventMessage(Long serverIdIn, boolean skipCpuIn) {
+        this.serverId = serverIdIn;
         this.skipCpu = skipCpuIn;
     }
 
@@ -59,21 +50,14 @@ public class GetHardwareInfoEventMessage implements EventMessage {
      * @return The string representation of this object.
      */
     public String toString() {
-        return "GetHardwareInfoEventMessage[minionId: " + minionId + "]";
+        return "GetHardwareInfoEventMessage[serverId: " + serverId + "]";
     }
 
     /**
-     * @return the minionId
+     * @return the serverId
      */
-    public String getMinionId() {
-        return minionId;
-    }
-
-    /**
-     * @return the machine id
-     */
-    public String getMachineId() {
-        return machineId;
+    public Long getServerId() {
+        return serverId;
     }
 
     /**

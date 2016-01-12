@@ -15,7 +15,7 @@
 package com.suse.manager.reactor.hardware;
 
 import com.redhat.rhn.domain.server.Dmi;
-import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.Smbios;
@@ -41,10 +41,11 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
     }
 
     @Override
-    public Dmi map(String minionId, Server server, ValueMap grains) {
+    public Dmi map(MinionServer server, ValueMap grains) {
         String biosVendor = null, biosVersion = null, biosReleseDate = null,
                 productName = null, systemVersion = null, systemSerial = null,
                 chassisSerial = null, chassisTag = null, boardSerial = null;
+        String minionId = server.getMinionId();
 
         try {
             // TODO get all records at once? less roundtrips but larger response

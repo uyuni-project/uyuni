@@ -17,12 +17,15 @@ package com.suse.manager.reactor.hardware;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.domain.server.CPU;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
@@ -49,10 +52,10 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
     }
 
     @Override
-    public VirtualInstance map(String minionId, Server server, ValueMap grains) {
+    public VirtualInstance map(MinionServer server, ValueMap grains) {
         String cpuarch = grains.getValueAsString("cpuarch").toLowerCase();
+        String minionId = server.getMinionId();
         try {
-
             // call custom minion to get read_values info (if available)
             // original code: hardware.py get_sysinfo()
             String readValuesOutput = SALT_SERVICE.getMainframeSysinfoReadValues(minionId);
@@ -92,32 +95,32 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                 // register the info about the S390 host in the db
 
                 // original code: server_hardware.py class SystemInformation
-                Server zhost = ServerFactory.findRegisteredMinion(identifier);
-                if (zhost == null) {
-                    // create a new host entry
-                    zhost = ServerFactory.createServer();
+                Optional<MinionServer> optionalMinionServer = MinionServerFactory
+                        .findByMachineId(identifier);
+                MinionServer zhost = optionalMinionServer.orElseGet(() -> {
+                    // create a new minion server entry
+                    MinionServer minionServer = new MinionServer();
                     String cpurch = grains.getValueAsString("cpuarch");
-                    zhost.setServerArch(ServerFactory
+                    minionServer.setServerArch(ServerFactory
                             .lookupServerArchByLabel(cpurch + "-redhat-linux"));
-                    zhost.setName(name);
-                    zhost.setOs(os);
-                    zhost.setRelease(type);
-                    zhost.setLastBoot(System.currentTimeMillis() / 1000);
-                    // TODO zhost.setDescription();
-                    zhost.setDigitalServerId(identifier);
+                    minionServer.setName(name);
+                    minionServer.setOs(os);
+                    minionServer.setRelease(type);
+                    minionServer.setLastBoot(System.currentTimeMillis() / 1000);
+                    // TODO minionServer.setDescription();
+                    minionServer.setDigitalServerId(identifier);
 
-                    ServerFactory.save(zhost);
+                    ServerFactory.save(minionServer);
 
                     server.setBaseEntitlement(EntitlementManager
                             .getByName(EntitlementManager.FOREIGN_ENTITLED));
                     LOG.debug("New host created: " + identifier);
-                }
-                else {
-                    // host already exists, update checkin
-                    updateServerInfo(zhost);
-                    LOG.debug("Found host: " + identifier);
-                }
+                    return minionServer;
+                });
 
+                // update checkin for new as well as already existing servers
+                LOG.debug("Update server info for: " + identifier);
+                updateServerInfo(zhost);
 
                 CPU hostcpu = zhost.getCpu();
                 if (hostcpu == null || (hostcpu.getNrsocket() != null &&

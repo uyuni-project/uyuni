@@ -14,7 +14,7 @@
  */
 package com.suse.manager.reactor.hardware;
 
-import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
 
@@ -36,11 +36,10 @@ public abstract class AbstractHardwareMapper<T> {
 
     /**
      * Get the hardware information from the minion and store it in our db.
-     * @param minionId the minion id
-     * @param server the {@link Server} bean
+     * @param server the {@link MinionServer} bean
      * @param grains the Salt grains
      * @return the persisted bean(s)
      */
-    public abstract T map(String minionId, Server server, ValueMap grains);
+    public abstract T map(MinionServer server, ValueMap grains);
 
 }
