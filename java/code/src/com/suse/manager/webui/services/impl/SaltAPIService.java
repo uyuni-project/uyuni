@@ -468,4 +468,20 @@ public enum SaltAPIService implements SaltService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, String> getNetModules(String minionId) {
+        try {
+            Map<String, Map<String, String>> result = SALT_CLIENT.callSync(
+                    SumaUtil.getNetModules(),
+                    new MinionList(minionId),
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return result.get(minionId);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

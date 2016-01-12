@@ -137,14 +137,4 @@ public class ValueMap {
         return Optional.ofNullable(valueMap.get(key));
     }
 
-    public Optional<ValueMap> getOptionalAsValueMap(String key) {
-        Object value = valueMap.get(key);
-        if (value instanceof Map) {
-            return Optional.of(new ValueMap(((Map<String, ?>)value)));
-        }
-        else {
-            return Optional.empty();
-        }
-    }
-
 }

@@ -52,5 +52,13 @@ public class SumaUtil {
         });
     }
 
-
+    /**
+     * Call 'sumautil.get_net_modules'
+     * @return a {@link LocalCall} to pass to the SaltStackClient
+     */
+    public static LocalCall<Map<String, String>> getNetModules() {
+        return new LocalCall("sumautil.get_net_modules", Optional.empty(),
+                Optional.empty(), new TypeToken<Map<String, String>>() {
+        });
+    }
 }

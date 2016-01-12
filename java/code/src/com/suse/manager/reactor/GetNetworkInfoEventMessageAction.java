@@ -11,7 +11,6 @@ import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.Network;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -19,15 +18,19 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Created by matei on 1/7/16.
+ * Get and process network information from a minion.
  */
 public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
 
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
 
-    public GetNetworkInfoEventMessageAction(SaltService SALT_SERVICE) {
-        this.SALT_SERVICE = SALT_SERVICE;
+    /**
+     * The constructor.
+     * @param saltService a {@link SaltService} instance
+     */
+    public GetNetworkInfoEventMessageAction(SaltService saltService) {
+        this.SALT_SERVICE = saltService;
     }
 
     @Override
@@ -39,12 +42,16 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
 
         Server server = ServerFactory.findRegisteredMinion(machineId);
 
-        Map<String, Network.Interface> interfaces = SALT_SERVICE.getNetworkInterfacesInfo(minionId);
+        Map<String, Network.Interface> interfaces = SALT_SERVICE
+                .getNetworkInterfacesInfo(minionId);
         List<String> primaryIps = SALT_SERVICE.getPrimaryIps(minionId);
+        Map<String, String> netModules = SALT_SERVICE.getNetModules(minionId);
+
         String primaryIPv4 = primaryIps.get(0);
         String primaryIPv6 = primaryIps.get(1);
 
-        com.redhat.rhn.domain.server.Network network = new com.redhat.rhn.domain.server.Network();
+        com.redhat.rhn.domain.server.Network network =
+                new com.redhat.rhn.domain.server.Network();
         network.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
         network.setIpaddr(primaryIPv4);
         network.setIp6addr(primaryIPv6);
@@ -53,14 +60,14 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
 
         interfaces.forEach((name, saltIface) -> {
             NetworkInterface iface = server.getNetworkInterface(name);
-            if(iface == null) {
+            if (iface == null) {
                 // we got a new interface
                 iface = new NetworkInterface();
             }
             // else update the existing interface
 
             iface.setHwaddr(saltIface.getHWAddr());
-            iface.setModule(null); // TODO custom grains/module to find this out
+            iface.setModule(netModules.get(name));
             iface.setServer(server);
             iface.setName(name);
 
@@ -70,7 +77,8 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
             ServerFactory.saveNetworkInterface(iface);
 
             // set IPv4 network info
-            ServerNetAddress4 ipv4 = ServerNetworkFactory.findServerNetAddress4(iface.getInterfaceId());
+            ServerNetAddress4 ipv4 = ServerNetworkFactory
+                    .findServerNetAddress4(iface.getInterfaceId());
             if (ipv4 == null) {
                 ipv4 = new ServerNetAddress4();
             }
@@ -84,14 +92,15 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
                     .orElse(null));
             ipv4.setBroadcast(inet.map(Network.INet::getBroadcast)
                     .orElse(null));
-            ServerFactory.saveServerNetAddress4(ipv4);
+            ServerNetworkFactory.saveServerNetAddress4(ipv4);
 
             if (StringUtils.equals(ipv4.getAddress(), primaryIPv4)) {
                 iface.setPrimary("Y");
             }
 
             // set IPv6 network info
-            ServerNetAddress6 ipv6 = ServerNetworkFactory.findServerNetAddress6(iface.getInterfaceId());
+            ServerNetAddress6 ipv6 = ServerNetworkFactory
+                    .findServerNetAddress6(iface.getInterfaceId());
             if (ipv6 == null) {
                 ipv6 = new ServerNetAddress6();
             }
@@ -105,14 +114,11 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
             // so if it's null we'll get a list with null on namedQuery.list()
             // therefore we need a default value
             ipv6.setScope(inet6.map(Network.INet6::getScope).orElse("unknown"));
-            ServerFactory.saveServerNetAddress6(ipv6);
+            ServerNetworkFactory.saveServerNetAddress6(ipv6);
 
             if (StringUtils.equals(ipv6.getAddress(), primaryIPv6)) {
                 iface.setPrimary("Y");
             }
-
         });
-
-
     }
 }

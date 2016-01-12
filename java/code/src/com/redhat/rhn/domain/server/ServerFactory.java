@@ -973,11 +973,5 @@ public class ServerFactory extends HibernateFactory {
         singleton.saveObject(networkInterfaceIn);
     }
 
-    public static void saveServerNetAddress4(ServerNetAddress4 serverNetAddress4) {
-        singleton.saveObject(serverNetAddress4);
-    }
 
-    public static void saveServerNetAddress6(ServerNetAddress6 serverNetAddress6) {
-        singleton.saveObject(serverNetAddress6);
-    }
 }
