@@ -15,9 +15,10 @@
 package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.security.CSRFTokenValidator;
-import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 
+import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.saltstack.netapi.calls.wheel.Key;
@@ -120,9 +121,9 @@ public class MinionController {
      */
     public static String show(Request request, Response response) {
         String minionId = request.params("id");
-        String machineId = SaltAPIService.INSTANCE.getMachineId(minionId);
-        Server server = ServerFactory.findRegisteredMinion(machineId);
-        response.redirect("/rhn/systems/details/Overview.do?sid=" + server.getId());
+        long id = MinionServerFactory.findByMinionId(minionId)
+                .map(MinionServer::getId).orElse(-1L);
+        response.redirect("/rhn/systems/details/Overview.do?sid=" + id);
         return "";
     }
 

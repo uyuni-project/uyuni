@@ -930,17 +930,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test ServerFactory.findRegisteredMinion().
-     *
-     * @throws Exception in case of an error
-     */
-    public void testFindRegisteredMinion() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        Server minion = ServerFactory.findRegisteredMinion(server.getDigitalServerId());
-        assertEquals(server, minion);
-    }
-
-    /**
      * Test pinning Subscriptions to Systems
      *
      * @throws Exception

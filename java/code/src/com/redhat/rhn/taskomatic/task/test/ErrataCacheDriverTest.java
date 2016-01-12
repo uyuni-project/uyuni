@@ -14,20 +14,14 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.task.Task;
-import com.redhat.rhn.taskomatic.task.TaskConstants;
+import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheDriver;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.apache.log4j.Logger;
-
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Tests for ErrataCacheDriver class.
@@ -41,10 +35,10 @@ public class ErrataCacheDriverTest extends BaseTestCaseWithUser {
      */
     public void testGetCandidates() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
-        insertErrataCacheTask(server);
-        insertErrataCacheTask(server);
-        insertErrataCacheTask(server);
-        insertErrataCacheTask(server);
+        ErrataManager.insertErrataCacheTask(server);
+        ErrataManager.insertErrataCacheTask(server);
+        ErrataManager.insertErrataCacheTask(server);
+        ErrataManager.insertErrataCacheTask(server);
 
         // Get the candidates and verify
         ErrataCacheDriver driver = new ErrataCacheDriver();
@@ -56,21 +50,5 @@ public class ErrataCacheDriverTest extends BaseTestCaseWithUser {
             }
         }
         assertEquals(1, candidateCount);
-    }
-
-    /**
-     * Insert an errata cache task for a given server.
-     *
-     * @param server the server
-     */
-    private void insertErrataCacheTask(Server server) {
-        WriteMode mode = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
-                "insert_into_task_queue");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("org_id", server.getOrg().getId());
-        params.put("task_name", "update_server_errata_cache");
-        params.put("task_data", server.getId());
-        params.put("earliest", new Timestamp(System.currentTimeMillis()));
-        mode.executeUpdate(params);
     }
 }

@@ -16,7 +16,7 @@ package com.suse.manager.reactor.hardware;
 
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.CPUArch;
-import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
@@ -36,14 +36,14 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
     }
 
     @Override
-    public CPU map(String minionId, Server server, ValueMap grains) {
+    public CPU map(MinionServer server, ValueMap grains) {
 
         CPU cpu = new CPU();
 
         // os.uname[4]
         String cpuarch = grains.getValueAsString("cpuarch").toLowerCase();
 
-        ValueMap cpuinfo = new ValueMap(SALT_SERVICE.getCpuInfo(minionId));
+        ValueMap cpuinfo = new ValueMap(SALT_SERVICE.getCpuInfo(server.getMinionId()));
         // salt returns /proc/cpuinfo data
 
         // See hardware.py read_cpuinfo()
@@ -100,7 +100,7 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
         cpu.setNrCPU(grains.getValueAsLong("num_cpus").orElse(0L));
 
         if (arch != null) {
-            // should not happen but arh is not nullable so if we don't have
+            // should not happen but arch is not nullable so if we don't have
             // the arch we cannot insert the cpu data
             cpu.setServer(server);
             server.setCpu(cpu);
@@ -108,7 +108,4 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
 
         return cpu;
     }
-
-
-
 }

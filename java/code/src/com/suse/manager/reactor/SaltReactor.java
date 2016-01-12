@@ -20,6 +20,7 @@ import com.suse.manager.webui.events.ManagedFileChangedEvent;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.sse.SSEServlet;
+import com.suse.manager.webui.utils.salt.JobReturnEvent;
 import com.suse.saltstack.netapi.datatypes.Event;
 import com.suse.saltstack.netapi.event.BeaconEvent;
 import com.suse.saltstack.netapi.event.EventListener;
@@ -62,12 +63,18 @@ public class SaltReactor implements EventListener {
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionAction(),
                 RegisterMinionEvent.class);
+        MessageQueue.registerAction(new UpdatePackageProfileEventMessageAction(),
+                UpdatePackageProfileEventMessage.class);
         MessageQueue.registerAction(new GenerateRepoFileAction(),
                 ChannelChangedEvent.class);
         MessageQueue.registerAction(new ApplyStatesAction(SALT_SERVICE),
                 StateDirtyEvent.class);
         MessageQueue.registerAction(new GetHardwareInfoEventMessageAction(SALT_SERVICE),
                 GetHardwareInfoEventMessage.class);
+        MessageQueue.registerAction(new ActionScheduledEventMessageAction(),
+                ActionScheduledEventMessage.class);
+        MessageQueue.registerAction(new JobReturnEventMessageAction(),
+                JobReturnEventMessage.class);
 
         // Sync minions to systems in the database
         LOG.debug("Syncing minions to the database");
@@ -121,7 +128,8 @@ public class SaltReactor implements EventListener {
         // Setup handlers for different event types
         Runnable runnable =
                 MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
-                BeaconEvent.parse(event).map(this::onBeaconEvent).orElse(() -> { }));
+                JobReturnEvent.parse(event).map(this::onJobReturnEvent).orElseGet(() ->
+                BeaconEvent.parse(event).map(this::onBeaconEvent).orElse(() -> { })));
         executorService.submit(runnable);
     }
 
@@ -159,6 +167,18 @@ public class SaltReactor implements EventListener {
     private Runnable onMinionStartEvent(MinionStartEvent minionStartEvent) {
         return () -> {
             triggerMinionRegistration((String) minionStartEvent.getData().get("id"));
+        };
+    }
+
+    /**
+     * Trigger handling of job return events.
+     *
+     * @param jobReturnEvent the job return event as we get it from salt
+     * @return event handler runnable
+     */
+    private Runnable onJobReturnEvent(JobReturnEvent jobReturnEvent) {
+        return () -> {
+            MessageQueue.publish(new JobReturnEventMessage(jobReturnEvent));
         };
     }
 

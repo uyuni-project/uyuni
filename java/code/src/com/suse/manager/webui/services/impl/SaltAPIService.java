@@ -16,14 +16,17 @@ package com.suse.manager.webui.services.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.SaltUtil;
+import com.suse.manager.webui.utils.salt.Schedule;
 import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.manager.webui.utils.salt.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.SumaUtil;
 import com.suse.manager.webui.utils.salt.Udevdb;
 import com.suse.saltstack.netapi.AuthModule;
+import com.suse.saltstack.netapi.calls.LocalCall;
 import com.suse.saltstack.netapi.calls.WheelResult;
 import com.suse.saltstack.netapi.calls.modules.Cmd;
 import com.suse.saltstack.netapi.calls.modules.Grains;
@@ -42,10 +45,13 @@ import com.suse.saltstack.netapi.exception.SaltStackException;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Singleton class acting as a service layer for accessing the salt API.
@@ -392,7 +398,40 @@ public enum SaltAPIService implements SaltService {
         catch (SaltStackException e) {
             throw new RuntimeException(e);
         }
-
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Schedule.Result> schedulePatchInstallation(String name,
+            Target<?> target, Set<String> patches, LocalDateTime scheduleDate,
+            Map<String, ?> metadata) {
+        try {
+            LocalCall<Map<String, Object>> install =
+                    com.suse.manager.webui.utils.salt.Pkg.install(true, patches.stream()
+                    .map(patch -> "patch:" + patch).collect(Collectors.toList()));
+            Map<String, Schedule.Result> result = SALT_CLIENT.callSync(
+                    Schedule.add(name, install, scheduleDate, metadata), target,
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return result;
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Schedule.Result> deleteSchedule(String name, Target<?> target) {
+        try {
+            Map<String, Schedule.Result> result = SALT_CLIENT.callSync(
+                    Schedule.delete(name), target,
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return result;
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
