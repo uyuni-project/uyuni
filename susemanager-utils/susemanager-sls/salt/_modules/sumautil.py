@@ -20,15 +20,6 @@ __salt__ = {
 
 log = logging.getLogger(__name__)
 
-
-# def __virtual__():
-#     '''
-#     Only works when cat is installed.
-#     '''
-#     # cat should always be available
-#     return salt.utils.which_bin(['cat']) is not None
-
-
 def cat(path):
     '''
     Cat the specified file.
