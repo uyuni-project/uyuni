@@ -39,6 +39,9 @@ public class MatcherJsonIOTest extends TestCase {
     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
     private static final String ORDERS_JSON = "organizations_orders.json";
 
+    private static final long SUMA_SRV_ID = Long.MAX_VALUE;
+    private static final String AMD64_ARCH = "amd64";
+
     public void testSystemsToJson() throws Exception {
         SUSEProductFactory.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
@@ -84,17 +87,19 @@ public class MatcherJsonIOTest extends TestCase {
         VirtualInstance refGuest2 = createVirtualInstance(h1, g2, uuid2);
         h1.addGuest(refGuest2);
 
-        List<JsonSystem> result = new MatcherJsonIO().getJsonSystems();
+        // tell MatcherJsonIO to include self system in the JSON output, which would happen
+        // if the running SUMA is an ISS Master
+        List<JsonSystem> result = new MatcherJsonIO(true, AMD64_ARCH).getJsonSystems();
         assertNotNull(result);
 
         JsonSystem resultH1 =
-                result.stream().filter(s -> s.getId() == h1.getId()).findFirst().get();
+                result.stream().filter(s -> s.getId().equals(h1.getId())).findFirst().get();
         assertNotNull(resultH1);
         assertEquals("host1.example.com", resultH1.getName());
         assertEquals(0, resultH1.getProductIds().size());
 
         JsonSystem resultG1 =
-                result.stream().filter(s -> s.getId() == g1.getId()).findFirst().get();
+                result.stream().filter(s -> s.getId().equals(g1.getId())).findFirst().get();
         assertNotNull(resultG1);
         assertEquals("guest1.example.com", resultG1.getName());
         assertEquals(4, resultG1.getProductIds().size());
@@ -104,7 +109,7 @@ public class MatcherJsonIOTest extends TestCase {
         assertTrue(resultG1.getProductIds().contains(1324L));
 
         JsonSystem resultG2 =
-                result.stream().filter(s -> s.getId() == g2.getId()).findFirst().get();
+                result.stream().filter(s -> s.getId().equals(g2.getId())).findFirst().get();
         assertNotNull(resultG2);
         assertEquals("guest2.example.com", resultG2.getName());
         assertEquals(4, resultG2.getProductIds().size());
@@ -112,6 +117,21 @@ public class MatcherJsonIOTest extends TestCase {
         assertTrue(resultG2.getProductIds().contains(1076L));
         assertTrue(resultG2.getProductIds().contains(1097L));
         assertTrue(resultG2.getProductIds().contains(1324L));
+
+        // ISS Master should add itself
+        JsonSystem sumaItself = result.stream().filter(s -> s.getId().equals(SUMA_SRV_ID))
+                .findFirst().get();
+        assertNotNull(sumaItself);
+        assertEquals(1L, sumaItself.getCpus().longValue());
+        assertEquals("SUSE Manager Server system", sumaItself.getName());
+        assertTrue(sumaItself.getPhysical());
+        assertTrue(sumaItself.getProductIds().contains(1349L));
+        assertTrue(sumaItself.getProductIds().contains(1322L));
+    }
+
+    public void testSystemsToJsonIssSlave() {
+        List<JsonSystem> result = new MatcherJsonIO(false, AMD64_ARCH).getJsonSystems();
+        assertTrue(result.stream().noneMatch(s -> s.getId().equals(SUMA_SRV_ID)));
     }
 
     public void testProductsToJson() throws Exception {
@@ -119,15 +139,15 @@ public class MatcherJsonIOTest extends TestCase {
         SUSEProductTestUtils.createVendorSUSEProducts();
         LoggingFactory.clearLogId();
 
-        List<JsonProduct> result = new MatcherJsonIO().getJsonProducts();
+        List<JsonProduct> result = new MatcherJsonIO(true, AMD64_ARCH).getJsonProducts();
         assertNotNull(result);
 
         assertEquals("SUSE Linux Enterprise Server 12 SP1",
-                result.stream().filter(p -> p.getId() == 1322L)
+                result.stream().filter(p -> p.getId().equals(1322L))
                     .findFirst().get().getName());
 
         assertEquals("SUSE Linux Enterprise High Availability Extension 12 SP1",
-                result.stream().filter(p -> p.getId() == 1324L)
+                result.stream().filter(p -> p.getId().equals(1324L))
                     .findFirst().get().getName());
     }
 
@@ -153,10 +173,11 @@ public class MatcherJsonIOTest extends TestCase {
             Collection<SCCSubscription> s = cm.getSubscriptions();
             HibernateFactory.getSession().flush();
             assertNotNull(s);
-            List<JsonSubscription> result = new MatcherJsonIO().getJsonSubscriptions();
+            List<JsonSubscription> result = new MatcherJsonIO(true, AMD64_ARCH)
+                    .getJsonSubscriptions();
 
             JsonSubscription resultSubscription1 = result.stream()
-                    .filter(rs -> rs.getId() == 9998L)
+                    .filter(rs -> rs.getId().equals( 9998L))
                     .findFirst().get();
 
             assertEquals("662644474670", resultSubscription1.getPartNumber());
@@ -167,7 +188,7 @@ public class MatcherJsonIOTest extends TestCase {
             assertEquals("extFile", resultSubscription1.getSccUsername());
 
             JsonSubscription resultSubscription2 = result.stream()
-                    .filter(rs -> rs.getId() == 9999L)
+                    .filter(rs -> rs.getId().equals(9999L))
                     .findFirst().get();
 
             assertEquals("874-005117", resultSubscription2.getPartNumber());
@@ -240,7 +261,8 @@ public class MatcherJsonIOTest extends TestCase {
             TestUtils.saveAndFlush(pin);
             HibernateFactory.getSession().clear();
 
-            List<JsonPinnedMatch> result = new MatcherJsonIO().getJsonPinnedMatches();
+            List<JsonPinnedMatch> result = new MatcherJsonIO(true, AMD64_ARCH)
+                    .getJsonPinnedMatches();
             Optional<JsonPinnedMatch> resultPin = result.stream()
                 .filter(p -> p.getSystemId().equals(h1.getId()) &&
                     p.getSubscriptionId().equals(9999L))

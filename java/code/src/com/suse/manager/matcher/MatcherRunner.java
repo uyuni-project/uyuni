@@ -15,6 +15,7 @@
 
 package com.suse.manager.matcher;
 
+import com.redhat.rhn.domain.iss.IssFactory;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -53,7 +54,9 @@ public class MatcherRunner {
         try {
             Process p = r.exec(args.toArray(new String[0]));
             PrintWriter stdin = new PrintWriter(p.getOutputStream());
-            String s = new MatcherJsonIO().getMatcherInput();
+            boolean isISSMaster = IssFactory.getCurrentMaster() == null;
+            String arch = System.getProperty("os.arch");
+            String s = new MatcherJsonIO(isISSMaster, arch).getMatcherInput();
             stdin.println(s);
             stdin.flush();
             stdin.close();
