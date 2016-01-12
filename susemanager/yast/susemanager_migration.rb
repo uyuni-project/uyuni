@@ -63,7 +63,7 @@ module Yast
             Id("SATELLITE_HOST"),
             Opt(:hstretch),
             # text entry label
-            _("&Hostname of the Satellite Server"),
+            _("&Hostname of source SUSE Manager Server"),
             Ops.get(@settings, "SATELLITE_HOST", "")
           ),
           # text entry label
@@ -77,21 +77,21 @@ module Yast
           InputField(
             Id("SATELLITE_DB_USER"),
             Opt(:hstretch),
-            _("Satellite Database &User Name"),
+            _("Source SUSE Manager Database &User Name"),
             Ops.get(@settings, "SATELLITE_DB_USER", "")
           ),
           # text entry label
           InputField(
             Id("SATELLITE_DB_PASS"),
             Opt(:hstretch),
-            _("Satellite Database &Password"),
+            _("Source SUSE Manager Database &Password"),
             Ops.get(@settings, "SATELLITE_DB_PASS", "")
           ),
           # text entry label
           InputField(
             Id("SATELLITE_DB_SID"),
             Opt(:hstretch),
-            _("Satellite Database &Name"),
+            _("Source SUSE Manager Database &Name"),
             Ops.get(@settings, "SATELLITE_DB_SID", "")
           ),
           VSpacing(0.5)
@@ -104,7 +104,7 @@ module Yast
 
       # dialog caption
       Wizard.SetContents(
-        _("Migration from Red Hat Satellite to SUSE Manager"),
+        _("Migration from previous SUSE Manager to new SUSE Manager"),
         @contents,
         @help_text,
         Ops.get_boolean(@args, "enable_back", true),
