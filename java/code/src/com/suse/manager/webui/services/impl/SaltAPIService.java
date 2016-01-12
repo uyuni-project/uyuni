@@ -236,11 +236,15 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, Pkg.Info> getInstalledPackageDetails(String minionId) {
+    public Map<String, com.suse.manager.webui.utils.salt.Pkg.Info>
+        getInstalledPackageDetails(String minionId, List<String> attributes) {
         try {
-            Map<String, Map<String, Pkg.Info>> packages = SALT_CLIENT.callSync(
-                    Pkg.infoInstalled(), new MinionList(minionId),
-                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            Map<String, Map<String, com.suse.manager.webui.utils.salt.Pkg.Info>> packages =
+                SALT_CLIENT.callSync(
+                    com.suse.manager.webui.utils.salt.Pkg.infoInstalled(attributes),
+                    new MinionList(minionId),
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE
+                );
             return packages.get(minionId);
         }
         catch (SaltStackException e) {
