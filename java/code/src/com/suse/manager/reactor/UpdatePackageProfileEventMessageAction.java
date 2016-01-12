@@ -27,11 +27,14 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.saltstack.netapi.calls.modules.Pkg;
+import com.suse.manager.webui.utils.salt.Pkg;
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.apache.log4j.Logger;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -56,6 +59,10 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
         this(SaltAPIService.INSTANCE);
     }
 
+    private static final List<String> pkgAttrs = Collections.unmodifiableList(Arrays.asList(
+            "arch", "version", "release", "install_date", "epoch"
+    ));
+
     /**
      * Constructor expecting a {@link SaltService} instance.
      *
@@ -76,7 +83,7 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
         // Query info about installed packages and save the server
         MinionServerFactory.lookupById(eventMessage.getServerId()).ifPresent(server -> {
             Map<String, Pkg.Info> saltPackages =
-                    SALT_SERVICE.getInstalledPackageDetails(server.getMinionId());
+                    SALT_SERVICE.getInstalledPackageDetails(server.getMinionId(), pkgAttrs);
             Set<InstalledPackage> newPackages = saltPackages.entrySet().stream().map(
                     entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
             ).collect(Collectors.toSet());
@@ -102,18 +109,18 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
      * @param server server this package will be added to
      * @return the InstalledPackage object
      */
-    private InstalledPackage createPackageFromSalt(String name, Pkg.Info info,
-            Server server) {
+    private InstalledPackage createPackageFromSalt(
+            String name, Pkg.Info info, Server server) {
         String epoch = info.getEpoch().orElse(null);
         String release = info.getRelease().orElse("0");
-        String version = info.getVersion();
+        String version = info.getVersion().get();
         PackageEvr evr = PackageEvrFactory
                 .lookupOrCreatePackageEvr(epoch, version, release);
 
         InstalledPackage pkg = new InstalledPackage();
         pkg.setEvr(evr);
-        pkg.setArch(PackageFactory.lookupPackageArchByLabel(info.getArchitecture()));
-        pkg.setInstallTime(Date.from(info.getInstallDate().toInstant()));
+        pkg.setArch(PackageFactory.lookupPackageArchByLabel(info.getArchitecture().get()));
+        pkg.setInstallTime(Date.from(info.getInstallDate().get().toInstant()));
         pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
         pkg.setServer(server);
         return pkg;
