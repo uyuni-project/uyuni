@@ -92,8 +92,7 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
         CPUArch arch = ServerFactory.lookupCPUArchByName(cpuarch);
         cpu.setArch(arch);
 
-        // TODO update grains to behave exactly like hardware.py __get_number_sockets()
-        cpu.setNrsocket(grains.getValueAsLong("cpusockets").orElse(0L));
+        cpu.setNrsocket(grains.getValueAsLong("cpusockets").orElse(null));
         // TODO Old code uses /sys/devices/system/cpu/cpu* to get the number of CPUs
         // Beware that it can be different from number
         // of active CPU (e.g. on s390x architecture
