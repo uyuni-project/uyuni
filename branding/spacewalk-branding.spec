@@ -48,12 +48,9 @@ Requires:      susemanager(momentjs)
 Requires:      susemanager(jquery-ui)
 Requires:      susemanager(select2)
 Requires:      susemanager(select2-bootstrap-css)
-Requires:      susemanager-manuals_en
-Requires:      susemanager-client-config_en-pdf
-Requires:      susemanager-install_en-pdf
-Requires:      susemanager-proxy-quick_en-pdf
-Requires:      susemanager-user_en-pdf
+Requires:      susemanager-docs_en
 Requires:      susemanager-reference_en-pdf
+Requires:      susemanager-getting-started_en-pdf
 
 %description
 Spacewalk specific branding, CSS, and images.
@@ -103,13 +100,8 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}/srv/tomcat/webapps/rhn/
 
 %if  0%{?suse_version}
 cat > %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf <<-ENDOFCONFIG
-docs.quick_start=/rhn/help/quick/index.jsp
-docs.proxy_guide=/rhn/help/proxy-quick/index.jsp
-docs.reference_guide=/rhn/help/reference/index.jsp
-docs.install_guide=/rhn/help/install/index.jsp
-docs.user_guide=/rhn/help/user/index.jsp
-docs.client_config_guide=/rhn/help/client-config/index.jsp
-docs.channel_mgmt_guide=http://www.suse.com/documentation/suse_manager/
+docs.reference_guide=/rhn/help/ref/en-US/index.jsp
+#docs.getting-started_guide=
 docs.release_notes=/rhn/help/release-notes/manager/en-US/index.jsp
 docs.proxy_release_notes=http://www.suse.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/%{version_major}/
 ENDOFCONFIG
