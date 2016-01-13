@@ -15,8 +15,8 @@
     <ul id="help-url-list">
 
         <li>
-            <a style="font-size:12pt" href=/rhn/help/dispatcher/proxy_guide>
-                <bean:message key="help.jsp.proxy.title"/>
+            <a style="font-size:12pt" href=/rhn/help/dispatcher/getting_started_guide>
+                <bean:message key="help.jsp.gettingstarted.title"/>
             </a>
             <br />
             <bean:message key="help.jsp.proxy"/>
@@ -26,52 +26,30 @@
             <a style="font-size:12pt" href=/rhn/help/dispatcher/reference_guide>
                 <bean:message key="help.jsp.refguide"/>
             </a>
-            <!-- strong><bean:message key="help.jsp.translation"/></strong -->
             <br />
             <bean:message key="help.jsp.detailed"/>
         </li>
 
         <li>
-            <a style="font-size:12pt" href=/rhn/help/dispatcher/install_guide>
-                <bean:message key="help.jsp.install.title"/>
+            <a style="font-size:12pt" href=/rhn/help/dispatcher/best_practices_guide>
+                <bean:message key="help.jsp.bestpractices.title"/>
             </a>
-            <!-- strong><bean:message key="help.jsp.translation"/></strong -->
             <br />
-            <bean:message key="help.jsp.install"/>
+            <bean:message key="help.jsp.bestpractices"/>
         </li>
 
         <li>
-            <a style="font-size:12pt" href=/rhn/help/dispatcher/client_config_guide>
-                <bean:message key="help.jsp.clients.title"/>
-            </a>
-            <!-- strong><bean:message key="help.jsp.translation"/></strong -->
-            <br />
-            <bean:message key="help.jsp.clients"/>
-        </li>
-
-        <li>
-            <a style="font-size:12pt" href=/rhn/help/dispatcher/user_guide>
-                <bean:message key="help.jsp.user.title"/>
+            <a style="font-size:12pt" href=/rhn/help/dispatcher/advanced_topics_guide>
+                <bean:message key="help.jsp.advancedtopics.title"/>
             </a>
             <br />
-            <bean:message key="help.jsp.user"/>
+            <bean:message key="help.jsp.advancedtopics"/>
         </li>
-
-<!--
-        <li>
-            <a style="font-size:12pt" href=/rhn/help/dispatcher/getting_started_guide>
-                <bean:message key="help.jsp.start.title"/>
-            </a>
-            <br />
-            <bean:message key="help.jsp.start"/>
-        </li>
--->
 
         <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/release_notes>
                 <bean:message key="help.jsp.release.title"/>
             </a>
-            <!-- strong><bean:message key="help.jsp.translation"/></strong -->
             <br />
         </li>
 

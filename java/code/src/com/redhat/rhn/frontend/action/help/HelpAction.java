@@ -44,31 +44,26 @@ public class HelpAction extends RhnAction {
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
 
-        String doc = Config.get().getString(ConfigDefaults.DOC_REFERENCE_GUIDE);
+        String doc = Config.get().getString(ConfigDefaults.DOC_GETTING_STARTED_GUIDE);
+        if (doc != null && doc.trim().length() > 0) {
+            request.setAttribute("getting_started_guide", doc);
+        }
+
+        doc = Config.get().getString(ConfigDefaults.DOC_REFERENCE_GUIDE);
         if (doc != null && doc.trim().length() > 0) {
             request.setAttribute("reference_guide", doc);
         }
 
-        doc = Config.get().getString(ConfigDefaults.DOC_INSTALL_GUIDE);
+        doc = Config.get().getString(ConfigDefaults.DOC_BEST_PRACTICES_GUIDE);
         if (doc != null && doc.trim().length() > 0) {
-            request.setAttribute("install_guide", doc);
+            request.setAttribute("best_practices_guide", doc);
         }
-/*
- *       doc = Config.get().getString(ConfigDefaults.DOC_PROXY_GUIDE);
- *       if (doc != null && doc.trim().length() > 0) {
- *           request.setAttribute("proxy_guide", doc);
- *       }
- */
-        doc = Config.get().getString(ConfigDefaults.DOC_CLIENT_CONFIG_GUIDE);
+
+        doc = Config.get().getString(ConfigDefaults.DOC_ADVANCED_TOPICS_GUIDE);
         if (doc != null && doc.trim().length() > 0) {
-            request.setAttribute("client_config_guide", doc);
+            request.setAttribute("advanced_topics_guide", doc);
         }
-/*
- *       doc = Config.get().getString(ConfigDefaults.DOC_CHANNEL_MGMT_GUIDE);
- *       if (doc != null && doc.trim().length() > 0) {
- *           request.setAttribute("channel_mgmt_guide", doc);
- *       }
- */
+
         doc = Config.get().getString(ConfigDefaults.DOC_RELEASE_NOTES);
         if (doc != null && doc.trim().length() > 0) {
             request.setAttribute("release_notes", doc);
