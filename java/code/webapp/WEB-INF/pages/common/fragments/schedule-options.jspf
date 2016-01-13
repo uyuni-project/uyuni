@@ -2,8 +2,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 
-<script type="text/javascript" src="/javascript/schedule-options.js"></script>
-
+<rhn:require acl="not system_has_salt_entitlement()">
+   <script type="text/javascript" src="/javascript/schedule-options.js"></script>
+</rhn:require>
 <div class="form-horizontal">
     <div class="form-group">
         <div class="col-sm-3 control-label">
@@ -16,15 +17,17 @@
             </jsp:include>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-sm-3 control-label">
-            <input type="radio" name="use_date" value="false" id="schedule-by-action-chain"/>
-            <label for="schedule-by-action-chain"><bean:message key="schedule-options.action-chain"/></label>
+    <rhn:require acl="not system_has_salt_entitlement()">
+        <div class="form-group">
+            <div class="col-sm-3 control-label">
+                <input type="radio" name="use_date" value="false" id="schedule-by-action-chain"/>
+                <label for="schedule-by-action-chain"><bean:message key="schedule-options.action-chain"/></label>
+            </div>
+            <div class="col-sm-6">
+                <input type="hidden" id="action-chain" name="action_chain"
+                    data-existing-action-chains='${existingActionChains}'
+                />
+            </div>
         </div>
-        <div class="col-sm-6">
-            <input type="hidden" id="action-chain" name="action_chain"
-                data-existing-action-chains='${existingActionChains}'
-            />
-        </div>
-    </div>
+    </rhn:require>
 </div>
