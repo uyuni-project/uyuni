@@ -124,7 +124,7 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
 
                 // update checkin for new as well as already existing servers
                 LOG.debug("Update server info for: " + identifier);
-                updateServerInfo(zhost);
+                zhost.updateServerInfo();
 
                 CPU hostcpu = zhost.getCpu();
                 if (hostcpu == null || (hostcpu.getNrsocket() != null &&
@@ -187,17 +187,4 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
         return null;
     }
 
-    // TODO extract this to a common utility. Is also needed in VirtualHostManagerProcessor
-    private void updateServerInfo(Server server) {
-        ServerInfo serverInfo = server.getServerInfo();
-        if (serverInfo == null) {
-            serverInfo = new ServerInfo();
-            serverInfo.setServer(server);
-            server.setServerInfo(serverInfo);
-            serverInfo.setCheckinCounter(0L);
-        }
-
-        serverInfo.setCheckin(new Date());
-        serverInfo.setCheckinCounter(serverInfo.getCheckinCounter() + 1);
-    }
 }
