@@ -20,6 +20,7 @@ import com.suse.manager.reactor.PciClassCodes;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,9 @@ import java.util.regex.Pattern;
  * the client side python code (hardware_gudev.py).
  */
 public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
+
+    // Logger for this class
+    private static final Logger LOG = Logger.getLogger(DevicesMapper.class);
 
     private static final Pattern PRINTER_REGEX = Pattern.compile(".*/lp\\d+$");
 
@@ -367,12 +371,14 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
     }
 
     private int getScsiDevType(String minionId, String sysfsPath) {
+        String path = "/sys" + sysfsPath + "/type";
         try {
             String content = SALT_SERVICE
-                    .getFileContent(minionId, "/sys" + sysfsPath + "/type");
+                    .getFileContent(minionId, path);
             return Integer.parseInt(StringUtils.trim(content));
         }
-        catch (Exception e) { // TODO handle specific exceptions and logging
+        catch (Exception e) {
+            LOG.warn("Could not get content of file " + path, e);
             return -1;
         }
     }
