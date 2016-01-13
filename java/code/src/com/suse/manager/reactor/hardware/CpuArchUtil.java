@@ -28,7 +28,7 @@ public class CpuArchUtil {
      * @return true if the given cpuarch is PPC64.
      */
     public static boolean isPPC64(String cpuarch) {
-        return "ppc64".equals(cpuarch);
+        return "ppc64".equals(cpuarch) || "ppc64le".equals(cpuarch);
     }
 
     /**
