@@ -100,6 +100,6 @@ def total_num_cpus():
     re_cpu = re.compile(r"^cpu[0-9]+$")
     grains = {}
 
-    grains['total_num_cpus'] = len([i for i in cpu_dir if re_cpu.match(i)])
+    grains['total_num_cpus'] = len([dir for dir in cpu_dir if re_cpu.match(dir)])
 
     return grains
