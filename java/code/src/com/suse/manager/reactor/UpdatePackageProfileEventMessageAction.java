@@ -59,6 +59,9 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
         this(SaltAPIService.INSTANCE);
     }
 
+    /**
+     * The package "name" comes as a key of the set of these attributes, hence is implicit.
+     */
     private static final List<String> pkgAttrs = Collections.unmodifiableList(Arrays.asList(
             "arch", "version", "release", "install_date", "epoch"
     ));

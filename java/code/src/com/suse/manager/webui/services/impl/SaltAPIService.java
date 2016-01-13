@@ -239,6 +239,7 @@ public enum SaltAPIService implements SaltService {
     public Map<String, com.suse.manager.webui.utils.salt.Pkg.Info>
         getInstalledPackageDetails(String minionId, List<String> attributes) {
         try {
+            // TODO: Move this package to the salt-client library
             Map<String, Map<String, com.suse.manager.webui.utils.salt.Pkg.Info>> packages =
                 SALT_CLIENT.callSync(
                     com.suse.manager.webui.utils.salt.Pkg.infoInstalled(attributes),
