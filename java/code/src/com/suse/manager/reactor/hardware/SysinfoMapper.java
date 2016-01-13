@@ -105,7 +105,13 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                     minionServer.setOs(os);
                     minionServer.setRelease(type);
                     minionServer.setLastBoot(System.currentTimeMillis() / 1000);
-                    // TODO minionServer.setDescription();
+                    // see server_hardware.py SystemInformation.__init__()
+                    minionServer.setDescription(
+                        String.format("Initial Registration Parameters:\n" +
+                        "OS: %s\n" +
+                        "Release: %s\n" +
+                        "CPU Arch: %s", os, sysvalues.get("type"), cpuarch));
+
                     minionServer.setDigitalServerId(identifier);
 
                     ServerFactory.save(minionServer);
