@@ -8,8 +8,7 @@ Version: 2.5.0.1
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
-BuildRequires: susemanager-client-config_en-pdf
-BuildRequires: susemanager-proxy-quick_en-pdf
+BuildRequires: susemanager-getting-started_en-pdf
 BuildRequires: susemanager-reference_en-pdf
 BuildRequires: xerces-j2
 Obsoletes: rhns-proxy-docs < 5.3.0
@@ -30,21 +29,12 @@ User Reference guides.
 rm -rf $RPM_BUILD_ROOT
 install -m 755 -d $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%_defaultdocdir/%{name}
-if [ -e %{_datadir}/doc/manual/susemanager-client-config_en-pdf/susemanager-client-config_en.pdf ]; then
-cp %{_datadir}/doc/manual/susemanager-client-config_en-pdf/susemanager-client-config_en.pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
-else
-cp susemanager-client-config_en.pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
-fi
-if [ -e %{_datadir}/doc/manual/susemanager-proxy-quick_en-pdf/susemanager-proxy-quick_en.pdf ]; then
-cp %{_datadir}/doc/manual/susemanager-proxy-quick_en-pdf/susemanager-proxy-quick_en.pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
-else
-cp susemanager-proxy-quick_en.pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
-fi
-if [ -e %{_datadir}/doc/manual/susemanager-reference_en-pdf/susemanager-reference_en.pdf ]; then
-cp %{_datadir}/doc/manual/susemanager-reference_en-pdf/susemanager-reference_en.pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
-else
-cp susemanager-reference_en.pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
-fi
+
+for book in reference getting-started; do
+  pdf="%{_datadir}/doc/manual/susemanager-${book}_en-pdf/susemanager-${book}_en.pdf"
+  test -f $pdf && \
+    cp -av $pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
+done
 
 install -m 644 LICENSE $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
 install -m 644 squid.conf.sample $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
