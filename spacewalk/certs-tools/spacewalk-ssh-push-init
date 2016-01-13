@@ -3,12 +3,6 @@
 # Print a message
 echo "* Setup a client to be managed via SSH push"
 
-# Check if we are root
-if [ 0$UID -gt 0 ]; then
-  echo "ERROR: You need to be root in order to run this!"
-  exit 1
-fi
-
 # This script's name
 ME=`basename $0`
 
@@ -63,9 +57,27 @@ if [ ${?} -ne '0' ]; then
   exit 1
 fi
 
-# Read tunnel ports from configuration
+# Paths to the configuration
 PATH_RHN_CONF=/etc/rhn/rhn.conf
 PATH_RHN_DEFAULTS=/usr/share/rhn/config-defaults/rhn_web.conf
+
+# Setup sudo user from the config
+SUDO_USER_KEY=ssh_push_sudo_user
+
+SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+if [ -z "${SUDO_USER}" ]; then
+  SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+fi
+
+# Set the sudo command, it'll be blank if no sudo user was set
+# Set the user variable, defaults to root if no sudo user is set
+if [ -z "${SUDO_USER}" ]; then
+  SUDO_CMD=
+  USER=root
+else
+  SUDO_CMD=sudo
+  USER=${SUDO_USER}
+fi
 
 # Init tunnel setup
 if [ "${USE_TUNNEL}" = "Y" ]; then
@@ -125,33 +137,14 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   # Create a tunnel version of client-config-overrides.txt
   PATH_OVERRIDES=/srv/www/htdocs/pub/bootstrap/client-config-overrides-tunnel.txt
   echo "* Creating tunnel version of client-config-overrides.txt"
-  cp /srv/www/htdocs/pub/bootstrap/client-config-overrides.txt ${PATH_OVERRIDES}
-  sed -i "s/\(enableProxy=\).*/\10/" ${PATH_OVERRIDES}
-  sed -i "s/\(enableProxyAuth=\).*/\10/" ${PATH_OVERRIDES}
-  sed -i "s/\(httpProxy=\).*/\1/" ${PATH_OVERRIDES}
-  sed -i "s/\(noSSLServerURL=\).*/\1http:\/\/${HOSTNAME}:${PORT_HTTP}/" ${PATH_OVERRIDES}
-  sed -i "s/\(proxyPassword=\).*/\1/" ${PATH_OVERRIDES}
-  sed -i "s/\(proxyUser=\).*/\1/" ${PATH_OVERRIDES}
-  sed -i "s/\(serverURL=\).*/\1https:\/\/${HOSTNAME}:${PORT_HTTPS}\/XMLRPC/" ${PATH_OVERRIDES}
-fi
-
-# ssh-push sudo user
-SUDO_USER_KEY=ssh_push_sudo_user
-
-# Same for sudo user
-SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
-if [ -z "${SUDO_USER}" ]; then
-  SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
-fi
-
-# Set the sudo command, it'll be blank if no sudo user was set
-# Set the user variable, defaults to root if no sudo user is set
-if [ -z "${SUDO_USER}" ]; then
-  SUDO_CMD=
-  USER=root
-else
-  SUDO_CMD=sudo
-  USER=${SUDO_USER}
+  ${SUDO_CMD} cp /srv/www/htdocs/pub/bootstrap/client-config-overrides.txt ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(enableProxy=\).*/\10/" ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(enableProxyAuth=\).*/\10/" ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(httpProxy=\).*/\1/" ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(noSSLServerURL=\).*/\1http:\/\/${HOSTNAME}:${PORT_HTTP}/" ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(proxyPassword=\).*/\1/" ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(proxyUser=\).*/\1/" ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(serverURL=\).*/\1https:\/\/${HOSTNAME}:${PORT_HTTPS}\/XMLRPC/" ${PATH_OVERRIDES}
 fi
 
 # Prepare the bootstrap script used for registration
@@ -202,7 +195,7 @@ if [ -f ~/.ssh/known_hosts ];then
 fi
 
 # Copy public key to the client, require 'ssh-rsa' as host key algorithm
-echo "* Pushing SSH key to '${CLIENT}', please login as ${user}:"
+echo "* Pushing SSH key to '${CLIENT}', please login as ${USER}:"
 ssh-copy-id -o HostKeyAlgorithms=ssh-rsa -i ${SSH_IDENTITY}.pub ${USER}@${CLIENT} 2>&1
 exit_in_case_of_error
 
@@ -214,9 +207,9 @@ if [ -n "${SUDO_USER}" ]; then
 fi
 
 # Remove duplicate entries from authorized keys
-echo "* Removing duplicate host keys remotely"
-AUTH_KEYS=~/.ssh/authorized_keys
-AUTH_KEYS2=~/.ssh/authorized_keys2
+echo "* Removing duplicate host keys remotely for ${USER}"
+AUTH_KEYS='~/.ssh/authorized_keys'
+AUTH_KEYS2='~/.ssh/authorized_keys2'
 ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "[ -f ${AUTH_KEYS} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS} && echo 'Cleaned: ${AUTH_KEYS}' || echo 'Skipping: ${AUTH_KEYS} (not found)'"
 ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "[ -f ${AUTH_KEYS2} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS2} && echo 'Cleaned: ${AUTH_KEYS2}' || echo 'Skipping: ${AUTH_KEYS2} (not found)'"
 exit_in_case_of_error
