@@ -1981,4 +1981,23 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public Boolean existsActiveInterfaceWithName(String interfaceName) {
         return findActiveIfaceWithName(interfaceName, false) != null;
     }
+
+    /**
+     * Update the corresponding {@link ServerInfo} with the current
+     * time and increment the checkin counter.
+     * If {@link ServerInfo} does not exist it is created.
+     */
+    public void updateServerInfo() {
+        ServerInfo serverInfo = getServerInfo();
+        if (serverInfo == null) {
+            serverInfo = new ServerInfo();
+            serverInfo.setServer(this);
+            setServerInfo(serverInfo);
+            serverInfo.setCheckinCounter(0L);
+        }
+
+        serverInfo.setCheckin(new Date());
+        serverInfo.setCheckinCounter(serverInfo.getCheckinCounter() + 1);
+    }
+
 }
