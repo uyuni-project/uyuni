@@ -4,6 +4,7 @@ import logging
 import salt.modules.cmdmod
 import salt.utils
 import os
+import re
 
 __salt__ = {
     'cmd.run_all': salt.modules.cmdmod.run_all,
@@ -11,7 +12,11 @@ __salt__ = {
 
 log = logging.getLogger(__name__)
 
+
 def cpusockets():
+    """
+    Returns the number of CPU sockets.
+    """
     grains = {}
     physids = {}
 
@@ -78,4 +83,23 @@ def cpusockets():
             pass
 
     log.warn("Could not determine CPU socket count")
+    return grains
+
+
+def total_num_cpus():
+    """ returns the total number of CPU in system.
+    /proc/cpuinfo shows the number of active CPUs
+    On s390x this can be different from the number of present CPUs in a system
+    See IBM redbook: "Using z/VM for Test and Development Environments: A Roundup" chapter 3.5
+    """
+    try:
+        cpu_dir = os.listdir('/sys/devices/system/cpu/')
+    except OSError:
+        cpu_dir = []
+
+    re_cpu = re.compile(r"^cpu[0-9]+$")
+    grains = {}
+
+    grains['total_num_cpus'] = len([i for i in cpu_dir if re_cpu.match(i)])
+
     return grains
