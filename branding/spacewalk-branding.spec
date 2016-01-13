@@ -49,8 +49,9 @@ Requires:      susemanager(jquery-ui)
 Requires:      susemanager(select2)
 Requires:      susemanager(select2-bootstrap-css)
 Requires:      susemanager-docs_en
-Requires:      susemanager-reference_en-pdf
 Requires:      susemanager-getting-started_en-pdf
+Requires:      susemanager-reference_en-pdf
+Requires:      susemanager-best-practices_en-pdf
 
 %description
 Spacewalk specific branding, CSS, and images.
@@ -100,8 +101,10 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}/srv/tomcat/webapps/rhn/
 
 %if  0%{?suse_version}
 cat > %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf <<-ENDOFCONFIG
+docs.getting-started_guide=/rhn/help/quick/en-US/index.jsp
 docs.reference_guide=/rhn/help/ref/en-US/index.jsp
-#docs.getting-started_guide=
+docs.best-practices_guide=/rhn/help/bp/en-US/index.jsp
+docs.advanced_guide=/rhn/help/adv/en-US/index.jsp
 docs.release_notes=/rhn/help/release-notes/manager/en-US/index.jsp
 docs.proxy_release_notes=http://www.suse.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/%{version_major}/
 ENDOFCONFIG
