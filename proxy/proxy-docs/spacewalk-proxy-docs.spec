@@ -8,7 +8,7 @@ Version: 2.5.0.1
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
-BuildRequires: susemanager-getting-started_en-pdf
+BuildRequires: susemanager-advanced-topics_en-pdf
 BuildRequires: susemanager-reference_en-pdf
 BuildRequires: xerces-j2
 Obsoletes: rhns-proxy-docs < 5.3.0
@@ -30,7 +30,7 @@ rm -rf $RPM_BUILD_ROOT
 install -m 755 -d $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%_defaultdocdir/%{name}
 
-for book in reference getting-started; do
+for book in reference advanced-topics; do
   pdf="%{_datadir}/doc/manual/susemanager-${book}_en-pdf/susemanager-${book}_en.pdf"
   test -f $pdf && \
     cp -av $pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
