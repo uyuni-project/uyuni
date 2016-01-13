@@ -81,13 +81,11 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                 String name = String.format("IBM Mainframe %s %s", sysvalues.get("Type"),
                         sysvalues.get("Sequence Code"));
                 String arch = cpuarch;
-                long totalIfls = 0;
+                Long totalIfls = null;
                 try {
                     totalIfls = Long.parseLong(sysvalues.getOrDefault("CPUs IFL", "0"));
                 }
                 catch (NumberFormatException e) {
-                    // TODO clarify if it's ok to only log the error because
-                    // this will end up in the nrSocket
                     LOG.warn("Invalid 'CPUs IFL' value: " + e.getMessage());
                 }
                 String type = sysvalues.get("Type");
