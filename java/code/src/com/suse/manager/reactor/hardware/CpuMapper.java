@@ -68,7 +68,7 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
             cpu.setVersion(cpuinfo.getValueAsString("model"));
 
         }
-        else if (CpuArchUtil.isPPC64(cpuarch)) { // TODO what about ppc64le ?
+        else if (CpuArchUtil.isPPC64(cpuarch)) {
             cpu.setModel(cpuinfo.getValueAsString("cpu"));
             cpu.setVersion(cpuinfo.getValueAsString("revision"));
             cpu.setBogomips(cpuinfo.getValueAsString("bogompis"));
