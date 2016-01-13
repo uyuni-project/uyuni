@@ -148,9 +148,8 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                 }
 
                 VirtualInstanceFactory vinstFactory = VirtualInstanceFactory.getInstance();
-                // TODO lookup only by server.getId()
                 VirtualInstance vinst = vinstFactory
-                        .lookupByGuestId(server.getOrg(), server.getId());
+                        .lookupByGuestId(server.getId());
                 if (vinst == null || vinst.getHostSystem() == null) {
 
                     // first create the host

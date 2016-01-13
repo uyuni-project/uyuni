@@ -75,7 +75,7 @@ public class VirtualInstanceFactory extends HibernateFactory {
     }
 
     /**
-     * Gets the virtual Instance for a given Sid for a guest
+     * Gets the virtual Instance for a given Sid and Org for a guest
      * @param id the system id of the guest
      * @param org the org to check against
      * @return the guest's virtual instance
@@ -83,8 +83,23 @@ public class VirtualInstanceFactory extends HibernateFactory {
     public VirtualInstance lookupByGuestId(Org org, Long id) {
         Session session = HibernateFactory.getSession();
         VirtualInstance results = (VirtualInstance) session.getNamedQuery(
-                "VirtualInstance.lookupGuestBySid").
+                "VirtualInstance.lookupGuestBySidAndOrg").
                 setParameter("org", org).setParameter("sid", id).uniqueResult();
+
+        return results;
+
+    }
+
+    /**
+     * Gets the virtual Instance for a given Sid for a guest
+     * @param id the system id of the guest
+     * @return the guest's virtual instance
+     */
+    public VirtualInstance lookupByGuestId(Long id) {
+        Session session = HibernateFactory.getSession();
+        VirtualInstance results = (VirtualInstance) session.getNamedQuery(
+                "VirtualInstance.lookupGuestBySid").
+                setParameter("sid", id).uniqueResult();
 
         return results;
 
