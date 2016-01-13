@@ -93,6 +93,10 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
 
                 // we have to do this because we need the id of the interface afterwards
                 ServerFactory.saveNetworkInterface(iface);
+                // flush & refresh iface because generated="insert"
+                // on interfaceId does not seem to work
+                ServerFactory.getSession().flush();
+                ServerFactory.getSession().refresh(iface);
 
                 // set IPv4 network info
                 ServerNetAddress4 ipv4 = ServerNetworkFactory
