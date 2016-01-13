@@ -1176,18 +1176,24 @@ As a Channel Administrator, you may change the base channels your systems are su
       <trans-unit id="help.jsp.detailed">
         <source>Detailed instructions for using @@PRODUCT_NAME@@.</source>
       </trans-unit>
-      <trans-unit id="help.jsp.proxy.title">
-        <source>@@PRODUCT_NAME@@ Proxy Quick Start</source>
+      <trans-unit id="help.jsp.gettingstarted.title">
+        <source>@@PRODUCT_NAME@@ Getting Started Guide</source>
       </trans-unit>
-      <trans-unit id="help.jsp.clients.title">
-        <source>@@PRODUCT_NAME@@ Client Configuration Guide</source>
+      <trans-unit id="help.jsp.gettingstarted">
+        <source>Detailed instructions on how to start with @@PRODUCT_NAME@@</source>
       </trans-unit>
-    <trans-unit id="help.jsp.quickstart.title">
-        <source>@@PRODUCT_NAME@@ Quick Start</source>
-    </trans-unit>
-    <trans-unit id="help.jsp.quickstart.detailed">
-        <source>Guides you step-by-step through the installation and basic configuration of @@PRODUCT_NAME@@.</source>
-    </trans-unit>
+      <trans-unit id="help.jsp.bestpractices.title">
+        <source>@@PRODUCT_NAME@@ Best Practices Guide</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.bestpractices">
+        <source>Best Practices on @@PRODUCT_NAME@@</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.advancedtopics.title">
+        <source>@@PRODUCT_NAME@@ Advanced Guide</source>
+      </trans-unit>
+      <trans-unit id="help.jsp.advancedtopics">
+        <source>Advanced Topics on @@PRODUCT_NAME@@</source>
+      </trans-unit>
       <trans-unit id="channel.jsp.package.remove">
          <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the patches which are applicable to it.
         </source>
