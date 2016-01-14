@@ -102,10 +102,10 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}/srv/tomcat/webapps/rhn/
 
 %if  0%{?suse_version}
 cat > %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf <<-ENDOFCONFIG
-docs.getting_started_guide=/rhn/help/quick/en-US/index.jsp
-docs.reference_guide=/rhn/help/ref/en-US/index.jsp
-docs.best_practices_guide=/rhn/help/bp/en-US/index.jsp
-docs.advanced_topics_guide=/rhn/help/adv/en-US/index.jsp
+docs.getting_started_guide=/rhn/help/getting-started/index.jsp
+docs.reference_guide=/rhn/help/reference/index.jsp
+docs.best_practices_guide=/rhn/help/best-practices/index.jsp
+docs.advanced_topics_guide=/rhn/help/advanced-topics/index.jsp
 docs.release_notes=/rhn/help/release-notes/manager/en-US/index.jsp
 docs.proxy_release_notes=http://www.suse.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/%{version_major}/
 ENDOFCONFIG
