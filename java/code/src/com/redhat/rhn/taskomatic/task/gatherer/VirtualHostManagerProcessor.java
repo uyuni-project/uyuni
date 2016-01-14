@@ -239,7 +239,7 @@ public class VirtualHostManagerProcessor {
         }
 
         updateServerCpu(server, jsonHost);
-        updateServerInfo(server);
+        server.updateServerInfo();
         updateServerNetwork(server, hostId);
 
         if (server.getBaseEntitlement() == null) {
@@ -314,19 +314,6 @@ public class VirtualHostManagerProcessor {
 
         cpu.setServer(server);
         server.setCpu(cpu);
-    }
-
-    private void updateServerInfo(Server server) {
-        ServerInfo serverInfo = server.getServerInfo();
-        if (serverInfo == null) {
-            serverInfo = new ServerInfo();
-            serverInfo.setServer(server);
-            server.setServerInfo(serverInfo);
-            serverInfo.setCheckinCounter(0L);
-        }
-
-        serverInfo.setCheckin(new Date());
-        serverInfo.setCheckinCounter(serverInfo.getCheckinCounter() + 1);
     }
 
     private void updateServerNetwork(Server server, String hostId) {
