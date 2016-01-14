@@ -1985,19 +1985,19 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * Update the corresponding {@link ServerInfo} with the current
      * time and increment the checkin counter.
-     * If {@link ServerInfo} does not exist it is created.
+     * If {@link ServerInfo} does not exist it will create it.
      */
     public void updateServerInfo() {
-        ServerInfo serverInfo = getServerInfo();
-        if (serverInfo == null) {
-            serverInfo = new ServerInfo();
-            serverInfo.setServer(this);
-            setServerInfo(serverInfo);
-            serverInfo.setCheckinCounter(0L);
+        ServerInfo srvInfo = getServerInfo();
+        if (srvInfo == null) {
+            srvInfo = new ServerInfo();
+            srvInfo.setServer(this);
+            setServerInfo(srvInfo);
+            srvInfo.setCheckinCounter(0L);
         }
 
-        serverInfo.setCheckin(new Date());
-        serverInfo.setCheckinCounter(serverInfo.getCheckinCounter() + 1);
+        srvInfo.setCheckin(new Date());
+        srvInfo.setCheckinCounter(srvInfo.getCheckinCounter() + 1);
     }
 
 }
