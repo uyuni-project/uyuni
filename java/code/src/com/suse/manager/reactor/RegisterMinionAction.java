@@ -181,6 +181,9 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             SALT_SERVICE.sendEvent("susemanager/minion/registered", data);
             LOG.info("Finished minion registration: " + minionId);
 
+            // Trigger certification deployment
+            MessageQueue.publish(
+                    new StateDirtyEvent(server.getId(), null, StateDirtyEvent.CERTIFICATE));
             // Trigger an update of the package profile
             MessageQueue.publish(new UpdatePackageProfileEventMessage(server.getId()));
         }

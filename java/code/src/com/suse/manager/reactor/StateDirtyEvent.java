@@ -26,8 +26,12 @@ import java.util.stream.Collectors;
  */
 public class StateDirtyEvent implements EventMessage {
 
+    public static final String CERTIFICATE = "certs";
+    public static final String PACKAGES = "packages";
+    public static final String CHANNELS = "channels";
+
     private final long serverId;
-    private final long userId;
+    private final Long userId;
     private final List<String> stateNames;
 
     /**
@@ -37,7 +41,7 @@ public class StateDirtyEvent implements EventMessage {
      * @param userIdIn the user id
      * @param stateNamesIn state names that need to be applied to the server
      */
-    public StateDirtyEvent(long serverIdIn, long userIdIn, String... stateNamesIn) {
+    public StateDirtyEvent(long serverIdIn, Long userIdIn, String... stateNamesIn) {
         this.serverId = serverIdIn;
         this.userId = userIdIn;
         this.stateNames = Arrays.asList(stateNamesIn);

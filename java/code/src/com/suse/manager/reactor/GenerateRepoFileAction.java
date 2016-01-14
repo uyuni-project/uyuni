@@ -46,7 +46,8 @@ public class GenerateRepoFileAction implements MessageAction {
             try {
                 RepoFileUtils.generateRepositoryFile(server);
                 MessageQueue.publish(
-                        new StateDirtyEvent(serverId, event.getUserId(), "channels"));
+                        new StateDirtyEvent(serverId, event.getUserId(),
+                                StateDirtyEvent.CHANNELS));
             }
             catch (IOException | JoseException e) {
                 LOG.error(String.format(
