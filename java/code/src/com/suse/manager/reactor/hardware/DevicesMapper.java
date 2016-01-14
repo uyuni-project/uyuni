@@ -43,7 +43,7 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
     }
 
     @Override
-    public MinionServer map(MinionServer server, ValueMap grains) {
+    public MinionServer doMap(MinionServer server, ValueMap grains) {
         String minionId = server.getMinionId();
         List<Map<String, Object>> db = SALT_SERVICE.getUdevdb(minionId);
 

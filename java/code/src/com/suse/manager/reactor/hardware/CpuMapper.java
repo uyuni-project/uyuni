@@ -36,7 +36,7 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
     }
 
     @Override
-    public CPU map(MinionServer server, ValueMap grains) {
+    public CPU doMap(MinionServer server, ValueMap grains) {
 
         CPU cpu = new CPU();
 
