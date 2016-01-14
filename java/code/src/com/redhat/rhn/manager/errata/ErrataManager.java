@@ -1753,8 +1753,7 @@ public class ErrataManager extends BaseManager {
 
         List<ErrataAction> errataActions = new ArrayList<>();
         for (Server s : updateStackForServers.keySet()) {
-            if (PackageFactory.lookupByNameAndServer(
-                    "zypp-plugin-spacewalk", s) != null) {
+            if (PackageFactory.lookupByNameAndServer("zypper", s) != null) {
                 errataActions.addAll(createErrataActionsForZypp(user,
                         updateStackForServers.get(s), earliest, actionChain, s, true));
             }
@@ -1765,8 +1764,7 @@ public class ErrataManager extends BaseManager {
         }
 
         for (Server s : errataForServers.keySet()) {
-            if (PackageFactory.lookupByNameAndServer(
-                    "zypp-plugin-spacewalk", s) != null) {
+            if (PackageFactory.lookupByNameAndServer("zypper", s) != null) {
                 errataActions.addAll(createErrataActionsForZypp(user,
                         errataForServers.get(s), earliest, actionChain, s, false));
             }
