@@ -17,12 +17,17 @@ package com.suse.manager.reactor.hardware;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
+import org.apache.log4j.Logger;
 
 /**
  * Base mapper that processes hardware info from a minion and stores it in the SUMA db.
  * @param <T> the return type of the map method.
  */
 public abstract class AbstractHardwareMapper<T> {
+
+    // Logger for this class
+    private static final Logger LOG = Logger
+            .getLogger(AbstractHardwareMapper.class);
 
     protected final SaltService SALT_SERVICE;
 
@@ -40,6 +45,15 @@ public abstract class AbstractHardwareMapper<T> {
      * @param grains the Salt grains
      * @return the persisted bean(s)
      */
-    public abstract T map(MinionServer server, ValueMap grains);
+    public T map(MinionServer server, ValueMap grains) {
+        try {
+            return doMap(server, grains);
+        } catch (Exception e) {
+            LOG.error("Error executing mapper " + getClass().getName(), e);
+        }
+        return null;
+    }
+
+    protected abstract T doMap(MinionServer server, ValueMap grains);
 
 }
