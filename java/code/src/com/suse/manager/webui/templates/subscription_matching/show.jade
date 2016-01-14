@@ -1,0 +1,12 @@
+#subscription_matching
+
+if isDevMode
+  script(src='/javascript/reactjs/react-with-addons.js')
+  script(src='/javascript/reactjs/JSXTransformer.js')
+else
+  script(src='/javascript/reactjs/react-with-addons.min.js')
+  script(src='/javascript/reactjs/JSXTransformer.js')
+
+script(type='text/jsx;harmony=true').
+    const csrfToken = "#{csrf_token}";
+script(src='/javascript/manager/subscription_matching.js', type='text/jsx;harmony=true')

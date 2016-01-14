@@ -2184,7 +2184,10 @@ tree will not be usable for autoinstalling.
         </source>
       </trans-unit>
 
-      <!-- Subscription Counting -->
+      <!-- Subscription Matching -->
+      <trans-unit id="subscriptionmatching.nav.title">
+        <source>Subscription Matching</source>
+      </trans-unit>
       <trans-unit id="foreign_entitled">
         <source>Foreign</source>
       </trans-unit>

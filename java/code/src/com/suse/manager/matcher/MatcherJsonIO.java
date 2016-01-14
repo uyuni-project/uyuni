@@ -36,15 +36,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.matcher.json.JsonInput;
 import com.suse.matcher.json.JsonMatch;
+import com.suse.matcher.json.JsonOutput;
 import com.suse.matcher.json.JsonProduct;
 import com.suse.matcher.json.JsonSubscription;
 import com.suse.matcher.json.JsonSystem;
 
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -170,6 +175,21 @@ public class MatcherJsonIO {
             getJsonSubscriptions(),
             getJsonMatches())
         );
+    }
+
+    /**
+     * Gets the latest matcher output data
+     * @return the output or empty in case the matcher did not run yet
+     */
+    public Optional<JsonOutput> getMatcherOutput() {
+        try {
+            FileReader reader =
+                    new FileReader(new File(MatcherRunner.OUT_DIRECTORY, "output.json"));
+            return Optional.of(gson.fromJson(reader, JsonOutput.class));
+        }
+        catch (FileNotFoundException e) {
+            return Optional.empty();
+        }
     }
 
     /**

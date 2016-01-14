@@ -29,8 +29,10 @@ import java.util.List;
  */
 public class MatcherRunner {
 
+    /** Path where output from subscription-matcher is stored */
+    public static final String OUT_DIRECTORY = "/var/lib/spacewalk/subscription-matcher";
+
     private static final String MATCHER_CMD = "/usr/bin/subscription-matcher";
-    private static final String OUT_DIRECTORY = "/var/lib/spacewalk/subscription-matcher";
 
     /**
      * Logger for this class
