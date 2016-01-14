@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jan 14 13:26:12 CET 2016 - mc@suse.de
+
+- version 2.5.2.1-1
+- require log4j12, it will not download in build time on
+  Fedora 23 otherwise
+
+-------------------------------------------------------------------
 Mon Nov 30 10:46:32 CET 2015 - mc@suse.de
 
 - version 2.5.1.1-1
