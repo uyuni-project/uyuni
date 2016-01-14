@@ -1,0 +1,6 @@
+//- Common mixins for JADE pages
+
+//- CSRF token to be used in forms
+mixin csrfToken
+  input(type="hidden", name="csrf_token", value="#{csrf_token}")
+
