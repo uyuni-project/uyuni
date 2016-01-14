@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jan 14 13:35:25 CET 2016 - mc@suse.de
+
+- version 2.5.2.1-1
+- removing unused enable_solaris_support configuration parameter
+- removing unused force_unentitlement configuration parameter
+
+-------------------------------------------------------------------
 Mon Nov 30 11:17:49 CET 2015 - mc@suse.de
 
 - version 2.5.1.1-1
