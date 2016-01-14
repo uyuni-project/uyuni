@@ -19,7 +19,7 @@
                 <bean:message key="help.jsp.gettingstarted.title"/>
             </a>
             <br />
-            <bean:message key="help.jsp.proxy"/>
+            <bean:message key="help.jsp.gettingstarted"/>
         </li>
 
         <li>
