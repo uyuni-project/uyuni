@@ -4,7 +4,7 @@ Summary: Python libraries for the Spacewalk project
 Name: rhnlib
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 2.5.78
+Version: 2.5.81
 Release: 1%{?dist}
 
 Group: Development/Libraries
@@ -33,10 +33,12 @@ Conflicts: spacewalk-proxy < 1.3.6
 rhnlib is a collection of python modules used by the
 Spacewalk software.
 
-%if 0%{?with_python3}
+
+%if 0%{?fedora}
 %package -n python3-rhnlib
 Summary: Python libraries for the Spacewalk project
 Group: Development/Libraries
+BuildRequires: python3-devel
 Requires: python3-pyOpenSSL
 Conflicts: rhncfg < 5.10.45
 Conflicts: spacewalk-proxy-installer < 1.3.2
@@ -68,9 +70,10 @@ make -f Makefile.rhnlib
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix=%{_prefix}
-%if 0%{?with_python3}
+%if 0%{?fedora}
 %{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix=%{_prefix}
 %endif
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -81,13 +84,22 @@ rm -rf $RPM_BUILD_ROOT
 %doc ChangeLog COPYING README TODO
 %{python_sitelib}/*
 
-%if 0%{?with_python3}
+%if 0%{?fedora}
 %files -n python3-rhnlib
 %doc ChangeLog COPYING README TODO
 %{python3_sitelib}/*
 %endif
 
 %changelog
+* Tue Jan 12 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.81-1
+- 1259884, 1286555 - more python3 fixes
+
+* Mon Jan 11 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.80-1
+- 1259884, 1286555 - fixed python3 BuildRequires
+
+* Mon Jan 11 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.79-1
+- 1259884 - build python3-rhnlib only on fedora
+
 * Fri Jan 08 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.78-1
 - 1259884, 1286555 - updated to work in python3
 

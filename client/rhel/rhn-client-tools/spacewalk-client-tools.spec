@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.5.6
+Version: 2.5.8
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -27,21 +27,22 @@ Obsoletes: rhn-client-tools < %{version}-%{release}
 %if %{without_rhn_register}
 Obsoletes: rhn-setup-gnome
 %endif
-%if 0%{?fedora} >= 23
-Requires: python3-rhnlib >= 2.5.78
-%else
-Requires: rhnlib >= 2.5.78
-%endif
 Requires: rpm >= 4.2.3-24_nonptl
 Requires: rpm-python 
 Requires: python-ethtool >= 0.4
 Requires: gnupg
 Requires: sh-utils
-%if 0%{?suse_version}
-Requires: dbus-1-python
+%if 0%{?fedora} >= 23
+BuildRequires: python3-devel
+Requires: libgudev
+Requires: python3-gobject-base
+Requires: python3-dmidecode
+Requires: python3-hwdata
+Requires: python3-rhnlib >= 2.5.78
 %else
-Requires: dbus-python
-%endif
+BuildRequires: python-devel
+Requires: python-dmidecode
+Requires: rhnlib >= 2.5.78
 %if 0%{?fedora}
 Requires: pygobject3-base libgudev1
 Requires: python-hwdata
@@ -51,7 +52,13 @@ Requires: python-gudev
 Requires: python-hwdata
 %else
 Requires: hal >= 0.5.8.1-52
-%endif
+%endif # 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
+%endif # 0%{?fedora}
+%endif # 0%{?fedora} >= 23
+%if 0%{?suse_version}
+Requires: dbus-1-python
+%else
+Requires: dbus-python
 %endif
 %if 0%{?suse_version}
 Requires: python-newt
@@ -74,8 +81,8 @@ Requires: zypper
 Requires: dnf
 %else
 Requires: yum
-%endif
-%endif
+%endif # 0%{?fedora} >= 22
+%endif # 0%{?suse_version}
 
 Conflicts: up2date < 5.0.0
 Conflicts: yum-rhn-plugin < 1.6.4-1
@@ -84,7 +91,6 @@ Conflicts: spacewalk-koan < 0.2.7-1
 Conflicts: rhn-kickstart < 5.4.3-1
 Conflicts: rhn-virtualization-host < 5.4.36-2
 
-BuildRequires: python-devel
 BuildRequires: gettext
 BuildRequires: intltool
 BuildRequires: desktop-file-utils
@@ -485,6 +491,12 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Tue Jan 12 2016 Grant Gainey 2.5.8-1
+- 875728 - Clarify useNoSSLForPackages comment to match reality
+
+* Tue Jan 12 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.7-1
+- 1259884, 1286555 - more python3 fixes
+
 * Fri Jan 08 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.6-1
 - updated dnf / rhnlib / rhn-client-tools dependencies
 - fixed rpmbuild tests
