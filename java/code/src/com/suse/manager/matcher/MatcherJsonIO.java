@@ -16,18 +16,36 @@
 package com.suse.manager.matcher;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.concat;
+import static java.util.stream.Stream.empty;
+import static java.util.stream.Stream.of;
 
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
+import com.redhat.rhn.domain.scc.SCCSubscription;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.matcher.json.JsonInput;
+import com.suse.matcher.json.JsonMatch;
+import com.suse.matcher.json.JsonProduct;
+import com.suse.matcher.json.JsonSubscription;
+import com.suse.matcher.json.JsonSystem;
+
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -38,8 +56,10 @@ public class MatcherJsonIO {
     /** (De)serializer instance. */
     private Gson gson;
 
+    /** true if this SUSE Manager instance is to be passed to subscription-matcher. */
     private final boolean includeSelf;
 
+    /** This system's architecture label. */
     private final String arch;
 
     /**
@@ -76,22 +96,24 @@ public class MatcherJsonIO {
      * about systems on this Server
      */
     public List<JsonSystem> getJsonSystems() {
-        List<JsonSystem> systems = ServerFactory.list().stream()
-                .map(s -> new JsonSystem(s))
-                .collect(toList());
+        Stream<JsonSystem> systems = ServerFactory.list().stream()
+            .map(system -> {
+                Long cpus = system.getCpu() == null ? null : system.getCpu().getNrsocket();
+                Set<Long> productIds = productIdsForServer(system).collect(toSet());
+                return new JsonSystem(
+                    system.getId(),
+                    system.getName(),
+                    cpus == null ? null : cpus.intValue(),
+                    !system.isVirtualGuest() && !system.isVirtualHost(),
+                    system.getGuests().stream()
+                        .filter(vi -> vi.getGuestSystem() != null)
+                        .map(vi -> vi.getGuestSystem().getId())
+                        .collect(toSet()),
+                    productIds
+                );
+            });
 
-        if (includeSelf) {
-            JsonSystem sumaServer = new JsonSystem();
-            sumaServer.setId(Long.MAX_VALUE);
-            sumaServer.setCpus(1L);
-            sumaServer.setName("SUSE Manager Server system");
-            sumaServer.setPhysical(true);
-            sumaServer.setProductIds(computeSelfProductIds());
-
-            systems.add(sumaServer);
-        }
-
-        return systems;
+        return concat(systems, jsonSystemForSelf()).collect(toList());
     }
 
     /**
@@ -110,18 +132,34 @@ public class MatcherJsonIO {
      */
     public List<JsonSubscription> getJsonSubscriptions() {
         return SCCCachingFactory.lookupOrderItems().stream()
-                .map(s -> new JsonSubscription(s))
-                .collect(toList());
+            .map(order -> {
+                SCCSubscription subscription = order.getSubscription();
+                Credentials credentials = order.getCredentials();
+                return new JsonSubscription(
+                    order.getSccId(),
+                    order.getSku(),
+                    subscription == null ? null : subscription.getName(),
+                    order.getQuantity() == null ? null : order.getQuantity().intValue(),
+                    order.getStartDate(),
+                    order.getEndDate(),
+                    credentials == null ? "extFile" : credentials.getUsername(),
+                    subscription == null ? new HashSet<>() :
+                        subscription.getProducts().stream()
+                            .map(i -> i.getProductId())
+                            .collect(toSet())
+                );
+            })
+            .collect(toList());
     }
 
     /**
      * @return an object representation of the JSON input for the matcher
      * about pinned matches
      */
-    public List<JsonPinnedMatch> getJsonPinnedMatches() {
+    public List<JsonMatch> getJsonMatches() {
         return ServerFactory.list().stream()
             .map(s -> s.getPinnedSubscriptions().stream()
-               .map(p -> new JsonPinnedMatch(s.getId(), p.getOrderitemId()))
+               .map(p -> new JsonMatch(s.getId(), p.getOrderitemId(), null, null))
             )
             .reduce(Stream::concat).orElse(Stream.empty())
             .collect(toList());
@@ -131,12 +169,12 @@ public class MatcherJsonIO {
      * @return an object representation of the JSON input for the matcher
      */
     public String getMatcherInput() {
-        JsonInput result = new JsonInput();
-        result.setSystems(getJsonSystems());
-        result.setProducts(getJsonProducts());
-        result.setSubscriptions(getJsonSubscriptions());
-        result.setPinnedMatches(getJsonPinnedMatches());
-        return gson.toJson(result);
+        return gson.toJson(new JsonInput(
+            getJsonSystems(),
+            getJsonProducts(),
+            getJsonSubscriptions(),
+            getJsonMatches())
+        );
     }
 
     /**
@@ -145,8 +183,8 @@ public class MatcherJsonIO {
      *
      * @return list of product ids with product installed on self
      */
-    private List<Long> computeSelfProductIds() {
-        List<Long> result = new ArrayList<>();
+    private Set<Long> computeSelfProductIds() {
+        Set<Long> result = new LinkedHashSet<>();
         if (arch.contains("amd64")) {
             result.add(1349L); // SUSE Manager Server 3.0 x86_64
             result.add(1322L); // SUSE Linux Enterprise Server 12 SP1 x86_64
@@ -164,4 +202,84 @@ public class MatcherJsonIO {
         return result;
     }
 
+    /**
+     * Returns SUSE product ids for a server, including ids
+     * for SUSE Manager entitlements.
+     */
+    private Stream<Long> productIdsForServer(Server server) {
+        SUSEProductSet productSet = server.getInstalledProductSet();
+
+        if (productSet != null) {
+            SUSEProduct baseProduct = productSet.getBaseProduct();
+            if (baseProduct != null) {
+                Stream<Long> addonProductIds = concat(
+                    of(baseProduct.getProductId()),
+                    productSet.getAddonProducts().stream()
+                        .map(p -> p.getProductId())
+                );
+
+                Stream<Long> managerEntitlementIds = entitlementIdsForServer(server);
+
+                return concat(addonProductIds, managerEntitlementIds);
+            }
+        }
+        return empty();
+    }
+
+    /**
+     * Returns SUSE Manager entitlement product ids for a server.
+     */
+    private Stream<Long> entitlementIdsForServer(Server server) {
+        if (server.hasEntitlement(EntitlementManager.MANAGEMENT) ||
+                server.hasEntitlement(EntitlementManager.SALTSTACK)) {
+            if (server.getServerArch()
+                    .equals(ServerFactory.lookupServerArchByLabel("s390x"))) {
+                return of(
+                    productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual-Z"),
+                    productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual-Z")
+                );
+            }
+            else if (server.hasVirtualizationEntitlement()) {
+                return of(
+                    productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual"),
+                    productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual")
+                );
+            }
+            else {
+                return of(
+                    productIdForEntitlement("SUSE-Manager-Mgmt-Single"),
+                    productIdForEntitlement("SUSE-Manager-Prov-Single")
+                );
+            }
+        }
+        return empty();
+    }
+
+    /**
+     * Returns a single SUSE Manager entitlement product ids given the name.
+     */
+    private Long productIdForEntitlement(String productName) {
+        SUSEProduct ent = SUSEProductFactory.findSUSEProduct(productName, "1.2", null,
+                null, true);
+        return ent.getProductId();
+    }
+
+    /**
+     * Returns an optional JsonSystem for the SUSE Manager server.
+     */
+    private Stream<JsonSystem> jsonSystemForSelf() {
+        if (includeSelf) {
+            return of(new JsonSystem(
+                Long.MAX_VALUE,
+                "SUSE Manager Server system",
+                1,
+                true,
+                new HashSet<>(),
+                computeSelfProductIds()
+            ));
+        }
+        else {
+            return empty();
+        }
+    }
 }
