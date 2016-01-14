@@ -34,10 +34,17 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                     cascade="all"/>
     </class>
 
-    <query name="VirtualInstance.lookupGuestBySid">
+    <query name="VirtualInstance.lookupGuestBySidAndOrg">
         <![CDATA[
           from VirtualInstance guest
           where guest.guestSystem.id = :sid and guest.guestSystem.org = :org
+        ]]>
+    </query>
+
+    <query name="VirtualInstance.lookupGuestBySid">
+        <![CDATA[
+          from VirtualInstance guest
+          where guest.guestSystem.id = :sid
         ]]>
     </query>
 

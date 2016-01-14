@@ -81,13 +81,11 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                 String name = String.format("IBM Mainframe %s %s", sysvalues.get("Type"),
                         sysvalues.get("Sequence Code"));
                 String arch = cpuarch;
-                long totalIfls = 0;
+                Long totalIfls = null;
                 try {
                     totalIfls = Long.parseLong(sysvalues.getOrDefault("CPUs IFL", "0"));
                 }
                 catch (NumberFormatException e) {
-                    // TODO clarify if it's ok to only log the error because
-                    // this will end up in the nrSocket
                     LOG.warn("Invalid 'CPUs IFL' value: " + e.getMessage());
                 }
                 String type = sysvalues.get("Type");
@@ -107,7 +105,13 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                     minionServer.setOs(os);
                     minionServer.setRelease(type);
                     minionServer.setLastBoot(System.currentTimeMillis() / 1000);
-                    // TODO minionServer.setDescription();
+                    // see server_hardware.py SystemInformation.__init__()
+                    minionServer.setDescription(
+                        String.format("Initial Registration Parameters:\n" +
+                        "OS: %s\n" +
+                        "Release: %s\n" +
+                        "CPU Arch: %s", os, sysvalues.get("type"), cpuarch));
+
                     minionServer.setDigitalServerId(identifier);
 
                     ServerFactory.save(minionServer);
@@ -120,7 +124,7 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
 
                 // update checkin for new as well as already existing servers
                 LOG.debug("Update server info for: " + identifier);
-                updateServerInfo(zhost);
+                zhost.updateServerInfo();
 
                 CPU hostcpu = zhost.getCpu();
                 if (hostcpu == null || (hostcpu.getNrsocket() != null &&
@@ -144,9 +148,8 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                 }
 
                 VirtualInstanceFactory vinstFactory = VirtualInstanceFactory.getInstance();
-                // TODO lookup only by server.getId()
                 VirtualInstance vinst = vinstFactory
-                        .lookupByGuestId(server.getOrg(), server.getId());
+                        .lookupByGuestId(server.getId());
                 if (vinst == null || vinst.getHostSystem() == null) {
 
                     // first create the host
@@ -184,17 +187,4 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
         return null;
     }
 
-    // TODO extract this to a common utility. Is also needed in VirtualHostManagerProcessor
-    private void updateServerInfo(Server server) {
-        ServerInfo serverInfo = server.getServerInfo();
-        if (serverInfo == null) {
-            serverInfo = new ServerInfo();
-            serverInfo.setServer(server);
-            server.setServerInfo(serverInfo);
-            serverInfo.setCheckinCounter(0L);
-        }
-
-        serverInfo.setCheckin(new Date());
-        serverInfo.setCheckinCounter(serverInfo.getCheckinCounter() + 1);
-    }
 }

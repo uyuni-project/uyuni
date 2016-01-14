@@ -41,5 +41,4 @@ def read_values():
     if result['retcode'] != 0:
         raise CommandExecutionError(result['stderr'])
 
-    # TODO any output parsing needed here?
     return result['stdout']
