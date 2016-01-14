@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Jan 14 13:37:12 CET 2016 - mc@suse.de
+
+- version 2.5.9.1-1
+- removing old duplicate template file
+- allow client responses to be in Unicode
+- cut string after full characters (bsc#960801)
+
+-------------------------------------------------------------------
 Tue Jan 05 15:57:59 CET 2016 - mc@suse.de
 
 - version 2.5.8.2-1
