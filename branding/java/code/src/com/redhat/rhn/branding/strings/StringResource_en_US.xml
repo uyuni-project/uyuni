@@ -1180,19 +1180,31 @@ As a Channel Administrator, you may change the base channels your systems are su
         <source>@@PRODUCT_NAME@@ Getting Started Guide</source>
       </trans-unit>
       <trans-unit id="help.jsp.gettingstarted">
-        <source>Detailed instructions on how to start with @@PRODUCT_NAME@@</source>
+        <source>Get started with setting up a @@PRODUCT_NAME@@ server</source>
       </trans-unit>
       <trans-unit id="help.jsp.bestpractices.title">
         <source>@@PRODUCT_NAME@@ Best Practices Guide</source>
       </trans-unit>
       <trans-unit id="help.jsp.bestpractices">
-        <source>Best Practices on @@PRODUCT_NAME@@</source>
+        <source>This document describes SUSE recommended best practices for @@PRODUCT_NAME@@</source>
       </trans-unit>
       <trans-unit id="help.jsp.advancedtopics.title">
-        <source>@@PRODUCT_NAME@@ Advanced Guide</source>
+        <source>@@PRODUCT_NAME@@ Advanced Topics Guide</source>
       </trans-unit>
       <trans-unit id="help.jsp.advancedtopics">
         <source>Advanced Topics on @@PRODUCT_NAME@@</source>
+      </trans-unit>
+      <trans-unit id="Best Practices Guide">
+        <source>Best Practices Guide</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Advanced Topics Guide">
+        <source>Advanced Topics Guide</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="channel.jsp.package.remove">
          <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the patches which are applicable to it.
