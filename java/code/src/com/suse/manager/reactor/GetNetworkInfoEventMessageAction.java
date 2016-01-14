@@ -77,12 +77,13 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
             server.addNetwork(network);
 
             interfaces.forEach((name, saltIface) -> {
-                NetworkInterface iface = server.getNetworkInterface(name);
-                if (iface == null) {
+                NetworkInterface ifaceEntity = server.getNetworkInterface(name);
+                if (ifaceEntity == null) {
                     // we got a new interface
-                    iface = new NetworkInterface();
+                    ifaceEntity = new NetworkInterface();
                 }
                 // else update the existing interface
+                final NetworkInterface iface = ifaceEntity;
 
                 iface.setHwaddr(saltIface.getHWAddr());
                 iface.setModule(netModules.get(name));
@@ -98,49 +99,51 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
                 ServerFactory.getSession().flush();
                 ServerFactory.getSession().refresh(iface);
 
-                // set IPv4 network info
-                ServerNetAddress4 ipv4 = ServerNetworkFactory
-                        .findServerNetAddress4(iface.getInterfaceId());
-                if (ipv4 == null) {
-                    ipv4 = new ServerNetAddress4();
-                }
+                Optional<Network.INet> inet = Optional.ofNullable(saltIface.getInet())
+                        .flatMap(addr -> addr.stream().findFirst());
 
-                ipv4.setInterfaceId(iface.getInterfaceId());
+                inet.ifPresent( addr4 -> {
+                    // set IPv4 network info
+                    ServerNetAddress4 ipv4 = ServerNetworkFactory
+                            .findServerNetAddress4(iface.getInterfaceId());
+                    if (ipv4 == null) {
+                        ipv4 = new ServerNetAddress4();
+                    }
+                    ipv4.setInterfaceId(iface.getInterfaceId());
+                    ipv4.setAddress(addr4.getAddress());
+                    ipv4.setNetmask(addr4.getNetmask());
+                    ipv4.setBroadcast(addr4.getBroadcast());
 
-                Optional<Network.INet> inet = saltIface.getInet().stream().findFirst();
-                ipv4.setAddress(inet.map(Network.INet::getAddress)
-                        .orElse(null));
-                ipv4.setNetmask(inet.map(Network.INet::getNetmask)
-                        .orElse(null));
-                ipv4.setBroadcast(inet.map(Network.INet::getBroadcast)
-                        .orElse(null));
-                ServerNetworkFactory.saveServerNetAddress4(ipv4);
+                    ServerNetworkFactory.saveServerNetAddress4(ipv4);
 
-                if (StringUtils.equals(ipv4.getAddress(), primaryIPv4)) {
-                    iface.setPrimary("Y");
-                }
+                    if (StringUtils.equals(ipv4.getAddress(), primaryIPv4)) {
+                        iface.setPrimary("Y");
+                    }
+                });
 
-                // set IPv6 network info
-                ServerNetAddress6 ipv6 = ServerNetworkFactory
-                        .findServerNetAddress6(iface.getInterfaceId());
-                if (ipv6 == null) {
-                    ipv6 = new ServerNetAddress6();
-                }
-                ipv6.setInterfaceId(iface.getInterfaceId());
+                Optional<Network.INet6> inet6 = Optional.ofNullable(saltIface.getInet6())
+                        .flatMap(addr -> addr.stream().findFirst());
+                inet6.ifPresent( addr6 -> {
+                    // set IPv6 network info
+                    ServerNetAddress6 ipv6 = ServerNetworkFactory
+                            .findServerNetAddress6(iface.getInterfaceId());
+                    if (ipv6 == null) {
+                        ipv6 = new ServerNetAddress6();
+                    }
+                    ipv6.setInterfaceId(iface.getInterfaceId());
+                    ipv6.setAddress(addr6.getAddress());
+                    ipv6.setNetmask(addr6.getPrefixlen());
+                    // scope is part of the entity's composite-id
+                    // so if it's null we'll get a list with null on namedQuery.list()
+                    // therefore we need a default value
+                    ipv6.setScope(Optional.ofNullable(addr6.getScope()).orElse("unknown"));
 
-                Optional<Network.INet6> inet6 = saltIface.getInet6().stream().findFirst();
-                ipv6.setAddress(inet6.map(Network.INet6::getAddress)
-                        .orElse(null));
-                ipv6.setNetmask(inet6.map(Network.INet6::getPrefixlen).orElse(null));
-                // scope is part of the entity's composite-id
-                // so if it's null we'll get a list with null on namedQuery.list()
-                // therefore we need a default value
-                ipv6.setScope(inet6.map(Network.INet6::getScope).orElse("unknown"));
-                ServerNetworkFactory.saveServerNetAddress6(ipv6);
+                    ServerNetworkFactory.saveServerNetAddress6(ipv6);
 
-                if (StringUtils.equals(ipv6.getAddress(), primaryIPv6)) {
-                    iface.setPrimary("Y");
-                }
+                    if (StringUtils.equals(ipv6.getAddress(), primaryIPv6)) {
+                        iface.setPrimary("Y");
+                    }
+                });
             });
         });
     }
