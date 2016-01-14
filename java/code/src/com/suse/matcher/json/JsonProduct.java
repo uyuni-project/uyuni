@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,24 +12,24 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
-package com.suse.manager.matcher;
+package com.suse.matcher.json;
 
 /**
- * JSON representation of a product
+ * JSON representation of a product.
  */
 public class JsonProduct {
 
     /** The id. */
     private Long id;
 
-    /** A friendly name. */
+    /** The friendly name. */
     private String name;
 
     /**
-     * Constructor
+     * Standard constructor.
+     *
      * @param idIn the id
-     * @param nameIn the friendly name
+     * @param nameIn the name
      */
     public JsonProduct(Long idIn, String nameIn) {
         id = idIn;
@@ -37,33 +37,38 @@ public class JsonProduct {
     }
 
     /**
+     * Gets the id.
+     *
      * @return the id
      */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Sets the id.
+     *
+     * @param idIn the new id
+     */
+    public void setId(Long idIn) {
+        id = idIn;
+    }
 
     /**
-     * @return the name
+     * Gets the friendly name.
+     *
+     * @return the friendly name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param idIn the id to set
-     */
-    public void setId(Long idIn) {
-        this.id = idIn;
-    }
-
-
-    /**
-     * @param nameIn the name to set
+     * Sets the friendly name.
+     *
+     * @param nameIn the new friendly name
      */
     public void setName(String nameIn) {
-        this.name = nameIn;
+        name = nameIn;
     }
 }
-

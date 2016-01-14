@@ -16,11 +16,11 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.matcher.JsonPinnedMatch;
-import com.suse.manager.matcher.JsonProduct;
-import com.suse.manager.matcher.JsonSubscription;
-import com.suse.manager.matcher.JsonSystem;
 import com.suse.manager.matcher.MatcherJsonIO;
+import com.suse.matcher.json.JsonMatch;
+import com.suse.matcher.json.JsonProduct;
+import com.suse.matcher.json.JsonSubscription;
+import com.suse.matcher.json.JsonSystem;
 import com.suse.scc.model.SCCSubscription;
 
 import java.io.File;
@@ -177,12 +177,11 @@ public class MatcherJsonIOTest extends TestCase {
                     .getJsonSubscriptions();
 
             JsonSubscription resultSubscription1 = result.stream()
-                    .filter(rs -> rs.getId().equals( 9998L))
+                    .filter(rs -> rs.getId().equals(9998L))
                     .findFirst().get();
 
             assertEquals("662644474670", resultSubscription1.getPartNumber());
-            assertEquals(new Long(10), resultSubscription1.getQuantity());
-            assertEquals("55REGCODE180", resultSubscription1.getRegcode());
+            assertEquals(new Integer(10), resultSubscription1.getQuantity());
             assertTrue(resultSubscription1.getProductIds().contains(1322L));
             assertTrue(resultSubscription1.getProductIds().contains(1324L));
             assertEquals("extFile", resultSubscription1.getSccUsername());
@@ -192,8 +191,7 @@ public class MatcherJsonIOTest extends TestCase {
                     .findFirst().get();
 
             assertEquals("874-005117", resultSubscription2.getPartNumber());
-            assertEquals(new Long(100), resultSubscription2.getQuantity());
-            assertEquals("55REGCODE180", resultSubscription2.getRegcode());
+            assertEquals(new Integer(100), resultSubscription2.getQuantity());
             assertTrue(resultSubscription2.getProductIds().contains(1322L));
             assertTrue(resultSubscription2.getProductIds().contains(1324L));
             assertEquals("extFile", resultSubscription2.getSccUsername());
@@ -261,9 +259,9 @@ public class MatcherJsonIOTest extends TestCase {
             TestUtils.saveAndFlush(pin);
             HibernateFactory.getSession().clear();
 
-            List<JsonPinnedMatch> result = new MatcherJsonIO(true, AMD64_ARCH)
-                    .getJsonPinnedMatches();
-            Optional<JsonPinnedMatch> resultPin = result.stream()
+            List<JsonMatch> result = new MatcherJsonIO(true, AMD64_ARCH)
+                    .getJsonMatches();
+            Optional<JsonMatch> resultPin = result.stream()
                 .filter(p -> p.getSystemId().equals(h1.getId()) &&
                     p.getSubscriptionId().equals(9999L))
                 .findFirst();
