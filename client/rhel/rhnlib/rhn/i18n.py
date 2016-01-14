@@ -22,6 +22,7 @@ try:
 except AttributeError:
     PY3 = False
 
+
 def ustr(obj):
     # converts object to unicode like object
     if PY3: # python3

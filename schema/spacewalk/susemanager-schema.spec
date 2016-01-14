@@ -37,7 +37,7 @@ Oracle tablespace name conversions have NOT been applied.
 %setup -q
 
 %build
-%if 0%{?fedora} || 0%{?suse_version} >= 1110
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1110
 find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
 %endif
 make -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
@@ -78,6 +78,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Mon Jan 11 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.6-1
+- purge duplicate uuid records during upgrade process
+
 * Fri Jan 08 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.5-1
 - purge uuid records after deleting a system
 
