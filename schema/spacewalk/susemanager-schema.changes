@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Jan 14 13:24:08 CET 2016 - mc@suse.de
+
+- version 3.0.6-1
+- Update copyright headers to 2016 for all new files
+- Add 'ftr_errata_updates' to saltstack entitled systems
+- Add MinionServer as subclass of Server
+- purge duplicate uuid records during upgrade process
+- Use public channel families for SUSE channels (bsc#958708)
+- purge uuid records after deleting a system
+
+-------------------------------------------------------------------
 Wed Dec 16 11:22:39 CET 2015 - mc@suse.de
 
 - version 3.0.5-1
