@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jan 14 13:30:59 CET 2016 - mc@suse.de
+
+- version 0.1.5-1
+- Port client python HW handling to server side java
+- CPU socket count: try also lscpu and dmidecode
+
+-------------------------------------------------------------------
 Tue Jan 05 15:55:57 CET 2016 - mc@suse.de
 
 - version 0.1.4-1
