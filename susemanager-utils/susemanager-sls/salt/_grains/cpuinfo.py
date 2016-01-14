@@ -92,14 +92,7 @@ def total_num_cpus():
     On s390x this can be different from the number of present CPUs in a system
     See IBM redbook: "Using z/VM for Test and Development Environments: A Roundup" chapter 3.5
     """
-    try:
-        cpu_dir = os.listdir('/sys/devices/system/cpu/')
-    except OSError:
-        cpu_dir = []
-
     re_cpu = re.compile(r"^cpu[0-9]+$")
-    grains = {}
-
-    grains['total_num_cpus'] = len([cpud for cpud in cpu_dir if re_cpu.match(cpud)])
-
-    return grains
+    sysdev = '/sys/devices/system/cpu/'
+    return {'total_num_cpus': len([cpud for cpud in (os.path.exists(sysdev) and os.listdir(sysdev) or list())
+                                   if re_cpu.match(cpud)])}
