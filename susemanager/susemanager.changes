@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jan 14 13:27:22 CET 2016 - mc@suse.de
+
+- version 3.0.8-1
+- conditional restart of firewall only
+- Use term 'SUSE Manager' during migration
+
+-------------------------------------------------------------------
 Tue Jan 05 15:53:20 CET 2016 - mc@suse.de
 
 - version 3.0.7-1
