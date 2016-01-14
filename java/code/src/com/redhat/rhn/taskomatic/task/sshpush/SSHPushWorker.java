@@ -278,7 +278,7 @@ public class SSHPushWorker implements QueueWorker {
         if (proxy != null) {
             StringBuilder sb = new StringBuilder("ssh");
             if (sudoUser != null) {
-                sb.append(" -l  ");
+                sb.append(" -l ");
                 sb.append(sudoUser);
             }
             sb.append(" -i ");
