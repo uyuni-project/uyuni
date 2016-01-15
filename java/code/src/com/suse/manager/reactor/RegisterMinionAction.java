@@ -24,6 +24,9 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
+import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.server.VirtualInstanceFactory;
+import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
@@ -32,6 +35,7 @@ import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -206,4 +210,41 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
     private void triggerGetHardwareInfo(MinionServer server, ValueMap grains) {
         MessageQueue.publish(new GetHardwareInfoEventMessage(server.getId()));
     }
+
+    private void handleVirtualization(MinionServer server, ValueMap grains) {
+        String virtType = grains.getValueAsString("virtual");
+
+        if (StringUtils.isNotBlank(virtType) && !"physical".equals(virtType)) {
+            String virtUuid = grains.getValueAsString("uuid");
+            if (StringUtils.isNotBlank(virtUuid)) {
+
+                // TODO clarify   # Check to see if this uuid has already been registered to a
+                //       # host and is confirmed.
+
+                VirtualInstance virtualInstance = new VirtualInstance();
+                virtualInstance.setUuid(virtUuid);
+                virtualInstance.setConfirmed(1L);
+                virtualInstance.setGuestSystem(server);
+                virtualInstance.setState(VirtualInstanceFactory.getInstance().getStoppedState());
+                virtualInstance.setName(null);
+                virtualInstance.setHostSystem(null);
+
+                // TODO convert virtType to types avaliable in rhnvirtualinstancetype
+                VirtualInstanceType type =
+                        VirtualInstanceFactory.getInstance().getVirtualInstanceType(virtType);
+                if (type == null) { // fallback
+                    type = VirtualInstanceFactory.getInstance().getParaVirtType();
+                    LOG.warn(String.format("Can't find virtual instance type for string '%s'. " +
+                            "Defaulting to '%s'", virtType, type));
+                }
+
+                virtualInstance.setType(type);
+                virtualInstance.setState(VirtualInstanceFactory.getInstance().getUnknownState());
+
+            }
+        }
+
+
+    }
+
 }
