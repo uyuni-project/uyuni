@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -31,6 +32,7 @@ import org.apache.http.HttpStatus;
 import java.util.HashMap;
 import java.util.Map;
 
+import spark.ModelAndView;
 import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
@@ -107,6 +109,32 @@ public class SparkApplicationHelper {
                 throw new PermissionException("no perms");
             }
             return route.handle(request, response, user);
+        };
+    }
+
+    /**
+     * Returns a route that adds a CSRF token to model.
+     *
+     * The model associated with the input route must contain the data in the form of a Map
+     * instance. The token will be inserted into this Map.
+     * Otherwise exception will be thrown.
+     *
+     * @param route the route
+     * @return the route that adds the CSRF token to the ModelAndView
+     */
+    public static TemplateViewRoute withCsrfToken(TemplateViewRoute route) {
+        return (request, response) -> {
+            ModelAndView modelAndView = route.handle(request, response);
+            Object model = modelAndView.getModel();
+            if (model instanceof Map) {
+                ((Map) model).put("csrf_token",
+                        CSRFTokenValidator.getToken(request.session().raw()));
+            }
+            else {
+                throw new UnsupportedOperationException("CSRF token can be added only to" +
+                        " a Map!");
+            }
+            return modelAndView;
         };
     }
 

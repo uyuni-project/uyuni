@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers;
 
-import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 
@@ -56,7 +55,6 @@ public class MinionController {
         data.put("unaccepted_minions", keys.getUnacceptedMinions());
         data.put("rejected_minions", keys.getRejectedMinions());
         data.put("present", present);
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         return new ModelAndView(data, "minion/list.jade");
     }
 
@@ -107,9 +105,7 @@ public class MinionController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView cmd(Request request, Response response) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
-        return new ModelAndView(data, "minion/cmd.jade");
+        return new ModelAndView(new HashMap<>(), "minion/cmd.jade");
     }
 
     /**
@@ -137,7 +133,6 @@ public class MinionController {
     public static ModelAndView packages(Request request, Response response) {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         data.put("serverId", serverId);
         data.put("serverName", ServerFactory.lookupById(new Long(serverId)).getName());
         return new ModelAndView(data, "minion/packages.jade");
