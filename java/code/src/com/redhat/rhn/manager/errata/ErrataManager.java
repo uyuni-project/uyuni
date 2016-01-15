@@ -1697,8 +1697,8 @@ public class ErrataManager extends BaseManager {
     private static List<Long> applyErrata(User user, List errataIds, Date earliest,
         ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant) {
 
-        List<Errata> updateStackErrata = new ArrayList<>();
-        List<Errata> otherErrata = new ArrayList<>();
+        List<Errata> updateStackErrata = new ArrayList<Errata>();
+        List<Errata> otherErrata = new ArrayList<Errata>();
 
         // Divide errata in two lists: one updateStack updates and others
         for (Object errataIdObject : errataIds) {
@@ -1718,8 +1718,10 @@ public class ErrataManager extends BaseManager {
         // For every Server prepare a list of relevant errata which needs to be applied
         // devide them into update stack updates, which needs to be applied first and
         // other updates which can be applied later
-        Map<Server, List<Errata>> updateStackForServers = new HashMap<>();
-        Map<Server, List<Errata>> errataForServers = new HashMap<>();
+        Map<Server, List<Errata>> updateStackForServers =
+                new HashMap<Server, List<Errata>>();
+        Map<Server, List<Errata>> errataForServers =
+                new HashMap<Server, List<Errata>>();
         for (Long serverId : serverIds) {
             Server server = SystemManager.lookupByIdAndOrg(serverId, user.getOrg());
             updateStackForServers.put(server, new ArrayList<Errata>());
@@ -1756,7 +1758,7 @@ public class ErrataManager extends BaseManager {
 
         // create the required actions to apply the errata
         // the handling differs depending on the used installer
-        List<ErrataAction> errataActions = new ArrayList<>();
+        List<ErrataAction> errataActions = new ArrayList<ErrataAction>();
         for (Server s : updateStackForServers.keySet()) {
             if (PackageFactory.lookupByNameAndServer("zypper", s) != null) {
                 errataActions.addAll(createErrataActionsForZypp(user,
