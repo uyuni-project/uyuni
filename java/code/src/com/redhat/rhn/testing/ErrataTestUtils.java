@@ -413,7 +413,6 @@ public class ErrataTestUtils {
         result.setServer(server);
         Set<InstalledPackage> serverPackages = server.getPackages();
         serverPackages.add(result);
-        server.setPackages(serverPackages);
         ServerFactory.save(server);
 
         return result;

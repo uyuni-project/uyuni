@@ -123,9 +123,8 @@ public class ServerTestUtils {
 
         testInstPack.setName(redhatRelease);
         testInstPack.setServer(addTo);
-        Set<InstalledPackage> serverPackages = new HashSet<InstalledPackage>();
+        Set<InstalledPackage> serverPackages = addTo.getPackages();
         serverPackages.add(testInstPack);
-        addTo.setPackages(serverPackages);
 
         ServerFactory.save(addTo);
         return (Server) TestUtils.reload(addTo);
