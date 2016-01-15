@@ -1,3 +1,5 @@
+include ../common.jade
+
 .spacewalk-toolbar-h1
   h1
     i.fa.fa-desktop
@@ -12,7 +14,7 @@
             i.fa.fa-plus
             | #{size(unaccepted_minions)} #{l.t("Pending")}
           form(method="post")
-            input(type="hidden", name="csrf_token", value="#{csrf_token}")
+            +csrfToken
             .pull-right.btn-group
               button(type="submit", formaction="/rhn/manager/minions/*/accept").btn.btn-default
                 i.fa.fa-check.no-margin
@@ -30,7 +32,7 @@
               b #{minion}
             td.col-md-5
               form(method="post")
-                input(type="hidden", name="csrf_token", value="#{csrf_token}")
+                +csrfToken
                 .pull-right.btn-group
                   button(type="submit", formaction="/rhn/manager/minions/#{minion}/accept").btn.btn-default
                     i.fa.fa-check.no-margin
@@ -53,7 +55,7 @@
               b #{minion}
             td.col-md-2
               form(method="post" action="/rhn/manager/minions/#{minion}/delete")
-                input(type="hidden", name="csrf_token", value="#{csrf_token}")
+                +csrfToken
                 .pull-right
                   button(type="submit").btn.btn-default: i.fa.fa-trash-o.no-margin
         else
