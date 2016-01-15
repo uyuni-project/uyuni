@@ -2446,7 +2446,7 @@ You may grant provisioning entitlements _here_.
         </context-group>
       </trans-unit>
       <trans-unit id="Unentitled">
-        <source>None</source>
+        <source>Without System Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/systems/SystemList</context>
           <context context-type="sourcefile">
