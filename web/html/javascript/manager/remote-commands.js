@@ -32,19 +32,19 @@ class MinionResultView extends React.Component {
     return (
       <div className="panel panel-default" style={style}>
         <div className="panel-heading" onClick={this.onClick}>
-           <span>{id}</span>
+           <span>{t("id")}</span>
            {(() => {
               if(props.started){
                 if(result == null) {
                     return(
                       <div className="badge pull-right">
-                         pending
+                         {t("pending")}
                       </div>
                     );
                 } else {
                     return(
                       <div className="badge pull-right">
-                         done
+                         {t("done")}
                       </div>
                     );
                 }
@@ -53,7 +53,7 @@ class MinionResultView extends React.Component {
         </div>
         {this.state.open && result != null ?
         <div className="panel-body">
-           <pre>{result}</pre>
+           <pre>{t(result)}</pre>
         </div>
         : undefined }
       </div>
@@ -83,7 +83,7 @@ class RemoteCommand extends React.Component {
           <div id="remote-root" className="spacewalk-toolbar-h1">
             <h1>
               <i className="fa fa-desktop"></i>
-              Remote Commands
+              {t("Remote Commands")}
             </h1>
           </div>
           <div className="panel panel-default">
@@ -96,8 +96,8 @@ class RemoteCommand extends React.Component {
                       <input className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged} />
                       <div className="input-group-btn">{
                           this.state.previewed ?
-                            <button className="btn btn-success" onClick={this.onRun}>Run</button> :
-                            <button className="btn btn-success" onClick={this.onPreview}>Preview</button>
+                            <button className="btn btn-success" onClick={this.onRun}>{t("Run")}</button> :
+                            <button className="btn btn-success" onClick={this.onPreview}>{t("Preview")}</button>
                       }</div>
                   </div>
                 </div>
