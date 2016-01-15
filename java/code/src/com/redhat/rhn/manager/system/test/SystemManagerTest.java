@@ -1030,9 +1030,8 @@ public class SystemManagerTest extends RhnBaseTestCase {
         p.setName(PackageFactory.lookupOrCreatePackageByName("kernel"));
         p.setEvr(PackageEvrFactoryTest.createTestPackageEvr());
         p.setServer(s);
-        Set<InstalledPackage> set = new HashSet<InstalledPackage>();
+        Set<InstalledPackage> set = s.getPackages();
         set.add(p);
-        s.setPackages(set);
 
         ServerFactory.save(s);
 

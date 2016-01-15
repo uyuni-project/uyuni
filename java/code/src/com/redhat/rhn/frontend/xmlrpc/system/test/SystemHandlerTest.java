@@ -1787,7 +1787,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         testChannel.addPackage(testPackage);
 
-        Set instPackages = new HashSet();
+        Set<InstalledPackage> instPackages = testServer.getPackages();
         InstalledPackage testInstPack = new InstalledPackage();
         testInstPack.setArch(testPackage.getPackageArch());
         testInstPack.setEvr(testPackage.getPackageEvr());
@@ -1795,7 +1795,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         testInstPack.setServer(testServer);
 
         instPackages.add(testInstPack);
-        testServer.setPackages(instPackages);
         Integer serverId = testServer.getId().intValue();
         Map<String, Object> returned = handler
             .listPackagesFromChannel(admin, serverId,
@@ -1886,10 +1885,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         testInstPack.setName(testPackage.getPackageName());
         testInstPack.setServer(testServer);
 
-        Set serverPackages = new HashSet();
+        Set<InstalledPackage> serverPackages = testServer.getPackages();
         serverPackages.add(testInstPack);
-
-        testServer.setPackages(serverPackages);
 
         String profileLabel = TestUtils.randomString();
 
@@ -1925,9 +1922,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         testInstPack.setName(testPackage.getPackageName());
         testInstPack.setServer(testServer);
 
-        Set serverPackages = new HashSet();
+        Set<InstalledPackage> serverPackages = testServer.getPackages();
         serverPackages.add(testInstPack);
-        testServer.setPackages(serverPackages);
 
         String profileLabel = TestUtils.randomString();
 
@@ -2052,9 +2048,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         iPack.setEvr(pack.getPackageEvr());
         iPack.setArch(pack.getPackageArch());
         iPack.setServer(srv1);
-        Set set = new HashSet();
+        Set<InstalledPackage> set = srv1.getPackages();
         set.add(iPack);
-        srv1.setPackages(set);
 
         PackageFactory.getSession().save(pack);
 

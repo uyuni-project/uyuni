@@ -109,9 +109,8 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         ipkg.setEvr(this.pkg.getPackageEvr());
         ipkg.setName(this.pkg.getPackageName());
         ipkg.setServer(this.server);
-        Set<InstalledPackage> serverPkgs = new HashSet<InstalledPackage>();
+        Set<InstalledPackage> serverPkgs = server.getPackages();
         serverPkgs.add(ipkg);
-        this.server.setPackages(serverPkgs);
 
         ServerFactory.save(this.server);
         this.server = (Server) ActionChainHandlerTest.reload(this.server);

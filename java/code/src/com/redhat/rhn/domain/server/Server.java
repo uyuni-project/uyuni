@@ -111,7 +111,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private final ConfigChannelListProcessor configListProc =
         new ConfigChannelListProcessor();
     private Set<ServerHistoryEvent> history;
-    private Set<InstalledPackage> packages;
+    private Set<InstalledPackage> packages = new HashSet<>();
     private ProxyInfo proxyInfo;
     private Set<? extends ServerGroup> groups;
     private Set<Capability> capabilities;
@@ -1774,11 +1774,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return packages;
     }
 
-
     /**
+     * @deprecated This function does not behave the way you would expect due to
+     * hibernate magic. To change server packages manipulate the result of getPackages
+     * instead.
      * @param packagesIn The packages to set.
      */
-    public void setPackages(Set<InstalledPackage> packagesIn) {
+    private void setPackages(Set<InstalledPackage> packagesIn) {
         this.packages = packagesIn;
     }
 

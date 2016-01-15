@@ -79,9 +79,8 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         testInstPack.setEvr(testPackage.getPackageEvr());
         testInstPack.setName(testPackage.getPackageName());
         testInstPack.setServer(testServer);
-        Set<InstalledPackage> serverPackages = new HashSet<InstalledPackage>();
+        Set<InstalledPackage> serverPackages = testServer.getPackages();
         serverPackages.add(testInstPack);
-        testServer.setPackages(serverPackages);
 
         ServerFactory.save(testServer);
         testServer = (Server) reload(testServer);
