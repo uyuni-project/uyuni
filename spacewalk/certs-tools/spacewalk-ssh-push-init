@@ -116,6 +116,7 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   # Generating the enablement script
   ENABLE=`mktemp`
   echo "* Generating tunnel setup script (${ENABLE})"
+  echo "#!/bin/bash" >> ${ENABLE}
   echo "if [[ \`grep ^127.0.0.1 /etc/hosts\` != *${HOSTNAME}* ]]; then" >> ${ENABLE}
   echo "sed -i 's/\(127\.0\.0\.1.*\)/& ${HOSTNAME}/' /etc/hosts" >> ${ENABLE}
   echo "fi" >> ${ENABLE}
@@ -228,11 +229,13 @@ fi
 # Enablement, registration and cleanup
 if [ "${USE_TUNNEL}" = "Y" ]; then
   echo "* Enabling client for SSH Push via tunnel"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} bash enable.sh"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "chmod +x enable.sh"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} ~/enable.sh"
   exit_in_case_of_error
 
   echo "* Registering client with SUSE Manager: ${CLIENT}"
-  ssh -i ${SSH_IDENTITY} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 ${USER}@${CLIENT} "${SUDO_CMD} bash bootstrap.sh"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "chmod +x bootstrap.sh"
+  ssh -i ${SSH_IDENTITY} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 ${USER}@${CLIENT} "${SUDO_CMD} ~/bootstrap.sh"
   exit_in_case_of_error
 
   echo "* Cleaning up temporary files"
