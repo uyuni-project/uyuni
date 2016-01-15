@@ -1697,9 +1697,6 @@ public class ErrataManager extends BaseManager {
             List<Errata> errata, Date earliest, ActionChain actionChain, Server server,
             boolean updateStack) {
         List<ErrataAction> actions = new ArrayList<>();
-        if (errata.isEmpty()) {
-            return actions;
-        }
         for (Errata erratum : errata) {
             ErrataAction errataUpdate = (ErrataAction) ActionManager.createErrataAction(
                     user, erratum);
