@@ -93,10 +93,10 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
         cpu.setArch(arch);
 
         cpu.setNrsocket(grains.getValueAsLong("cpusockets").orElse(null));
-        // TODO Old code uses /sys/devices/system/cpu/cpu* to get the number of CPUs
-        // Beware that it can be different from number
-        // of active CPU (e.g. on s390x architecture
-        cpu.setNrCPU(grains.getValueAsLong("num_cpus").orElse(0L));
+        // Use our custom grain. Salt has a 'num_cpus' grain but it gives
+        // the number of active CPUs not the total num of CPUs in the system.
+        // On s390x this number of active and actual CPUs can be different.
+        cpu.setNrCPU(grains.getValueAsLong("total_num_cpus").orElse(0L));
 
         if (arch != null) {
             // should not happen but arch is not nullable so if we don't have
