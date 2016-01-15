@@ -281,7 +281,7 @@ function t(key) {
 
   // Minimal implementation of https://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html
   for (var i=1; i<arguments.length; i++) {
-    result = result.replace('{' + i + '}', arguments[i]);
+    result = result.replace('{' + (i-1) + '}', arguments[i]);
   }
 
   return result;
