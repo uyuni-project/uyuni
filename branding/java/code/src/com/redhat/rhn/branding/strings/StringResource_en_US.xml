@@ -430,7 +430,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Below is a list of systems affected by this patch.</source>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summarywithacl">
-        <source>You can select one or more systems and apply this patch to them.  Only Management Service entitled systems can be selected.</source>
+        <source>You can select one or more systems and apply this patch to them.  Only systems with Management system type can be selected.</source>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.apply">
         <source>Apply Patches</source>
@@ -616,7 +616,7 @@ organization management tools if you choose to remove this role from your login.
       </trans-unit>
       <trans-unit id="general.jsp.org.summary2">
         <source>Organizations are a way to place boundaries between sets of systems, system
-groups, software channels, subscriptions and entitlements, autoinstallation profiles,
+groups, software channels, autoinstallation profiles,
 activation keys, configuration channels and files, users - everything
 you manage using @@PRODUCT_NAME@@. Each organization is managed by at least one
 organization administrator, and the entire @@PRODUCT_NAME@@ is managed by a @@PRODUCT_NAME@@
@@ -1319,7 +1319,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
-        <source>A single Management (Base) entitlement is required for all systems registered to SUSE Manager</source>
+        <source>A single base type is required for all systems registered to SUSE Manager</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
@@ -2187,6 +2187,318 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="Virtual Host Managers">
         <source>Virtual Host Managers</source>
+      </trans-unit>
+
+      <!-- rename system entitlements to system types -->
+      <trans-unit id="system-legend.jsp.unentitled">
+        <source>No System Types</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="affectedsystems.jsp.entitle">
+        <source>System Types</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ssm.overview.misc.entitlements">
+        <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On System Types</source>
+      </trans-unit>
+      <trans-unit id="ssm.misc.index.entitle.header">
+        <source>Add Or Remove Add-On System Types</source>
+      </trans-unit>
+      <trans-unit id="ssm.misc.index.entitle.summary">
+        <source>Please use the &lt;a href="/rhn/systems/SystemEntitlements.do"&gt;System Types Page&lt;/a&gt; to manage your system types.</source>
+      </trans-unit>
+      <trans-unit id="ssm.misc.setcustom.provisioning">
+        <source>Caution: this will overwrite or remove all values for this key on selected systems with a Provisioning System Type.</source>
+      </trans-unit>
+      <trans-unit id="systemlist.jsp.entitlement">
+        <source>System Type</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="systemlist.jsp.unentitled">
+        <source>System without System Type</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="unentitledlist.jsp.header">
+        <source>Systems without System Type</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/Unentitled</context>
+        </context-group>
+      </trans-unit>
+      <!--System Entitlements Page - entitlements.jsp -->
+      <trans-unit id="systementitlements.jsp.header">
+        <source>System Types</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="systementitlements.jsp.para1">
+        <source>System Types define the set of functionalities available for each system in @@PRODUCT_NAME@@ such as the ability of installing software or creating guest virtual machines.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="systementitlements.jsp.para2">
+        <source>A list of your profiled systems follows, with their base and add-on system types shown in the appropriate columns. To change system types, select the systems you wish to modify, and choose the appropriate action below.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="systementitlements.jsp.baseentitlement">
+        <source>Base System Type</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="systementitlements.jsp.addonentitlement">
+        <source>Add-On System Type</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="systementitlements.jsp.set_to_manage_entitled">
+        <source>Set to Management Type</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="systementitlements.jsp.set_to_unentitled">
+        <source>none</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="systementitlements.jsp.add_entitlement">
+        <source>Add System Type</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="systementitlements.jsp.remove_entitlement">
+        <source>Remove System Type</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="systementitlements.jsp.entitlement_counts">
+        <source>System Type Counts</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
+        </context-group>
+        <trans-unit id="systementitlements.jsp.entitlement_counts_message">
+          <source>{0} system type(s).</source>
+        </trans-unit>
+      </group>
+      <trans-unit id="systementitlements.jsp.base_entitlements">
+        <source>Base System Types</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system_entitlements.unentitle.success">
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s)  &lt;strong&gt;without types&lt;/strong&gt;.</source>
+      </trans-unit>
+      <trans-unit id="system_entitlements.unentitle.failure">
+        <source>Unable to &lt;strong&gt;remove&lt;/strong&gt; system types for &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
+      </trans-unit>
+      <trans-unit id="system_entitlements.unknown.error">
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add system types.  This was caused by an unknown error.  Please contact support.</source>
+      </trans-unit>
+      <trans-unit id="systemsearch.jsp.entitlement">
+        <source>System Type</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/Search</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="message.entitlement.missing">
+        <source>One or more of the selected systems lack the {0} system type.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="compare.jsp.noprovisioning">
+        <source>You need to add the Provisioning System Type to '{0}' in order to sync the packages to the list above.  Click here to edit the system types for this system: &lt;a href="/rhn/systems/details/Edit.do?sid={1}"&gt;Edit System Types&lt;/a&gt;</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">NOTFILLEDOUT</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="general.jsp.org.tbl.description1">
+        <source>Create and manage organizations on your @@PRODUCT_NAME@@.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/config/Orgs.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ssm.provisioning.rollback.summary1">
+        <source>You may rollback rollback-capable selected systems to a previous system snapshot marked with a tag.</source>
+      </trans-unit>
+      <trans-unit id="kickstart.activationkeys.jsp.summary">
+        <source>You can associate one or more activation keys with this kickstart profile.  Activation keys will allow systems kickstarted with this profile to automatically register to @@PRODUCT_NAME@@, gain @@PRODUCT_NAME@@ system types, subscribe to specified software and configuration channels, and subscribe to specified system groups.  Activation keys can also specify packages to be installed on a system.  Please consider how this may affect your package selection in this profile's &lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;Software&lt;/a&gt; tab.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="yourrhn.jsp.tasks.subscriptions">
+        <source>Manage &lt;strong&gt;System Types&lt;/strong&gt;</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/YourRhn.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="yourrhn.jsp.task.manage_subscriptions">
+        <source>&lt;strong&gt;Manage System Types&lt;/strong&gt;:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/YourRhn.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="activation-key.jsp.addon-entitlements">
+        <source>Add-On System Types</source>
+      </trans-unit>
+      <trans-unit id="targetsystems.jsp.summary">
+        <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular rhncfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
+      </trans-unit>
+      <trans-unit id="targetsystems.jsp.descr">
+        <source>The systems listed below are capable of being managed by @@PRODUCT_NAME@@ configuration management
+(meaning they have the required client software installed)
+but are not subscribed to {0}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/TargetSystems.do</context>
+          <context context-type="paramnotes">The systems listed below are capable of being managed by @@PRODUCT_NAME@@ configuration management
+(meaning they have the required client software installed)
+but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="deployglobal.jspf.tip.configadmin">
+        <source>&lt;strong&gt;Tip:&lt;/strong&gt; If you would like to deploy this file to a system not in this list, you'll need to first subscribe that system to the {0} configuration channel using the &lt;a href="{1}"&gt;'Target Systems' tab&lt;/a&gt; for that channel, then return to this screen.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
+          <context context-type="paramnotes">
+Tip: If you would like to deploy this file to a system not in this list, you'll need to first subscribe that system to the _Configgy_ configuration channel using the _'Target Systems' tab_ for that channel, then return to this screen.
+          </context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="deployglobal.jspf.tip.orgadmin">
+        <source> </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
+          <context context-type="paramnotes">
+You may grant provisioning entitlements _here_.
+          </context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ssmenable.jsp.summary">
+        <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular rhncfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
+      </trans-unit>
+      <trans-unit id="ssm.overview.management.notice">
+        <source>At least one system in the set does not have the management system type: some actions will not be available.</source>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.entitlement">
+        <source>System Types:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.unentitled">
+        <source>&lt;strong&gt;System not assigned to a system type&lt;/strong&gt; (&lt;a href="{0}"&gt;add it here&lt;/a&gt;)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.edit.baseentitlement">
+        <source>Base System Type:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.edit.addonentitlements">
+        <source>Add-On System Types:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.edit.nobase">
+        <source>A system must have a base system type to have add-on types.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.edit.notifications.unentitled">
+        <source>Notifications not available for systems without system types.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="System Entitlements">
+        <source>System Types</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Unentitled">
+        <source>None</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">rhn/systems/SystemList</context>
+          <context context-type="sourcefile">
+            Shown in the System Types column of system lists if the
+            system has none.
+          </context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.edit.unentitle">
+        <source>Remove System Types</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Edit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.alreadyentitled">
+        <source>The system already has the {0} system type.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.addedvirtualization">
+        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.  See &lt;a href="{0}"&gt;here&lt;/a&gt; for more info.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.addedvirtualization.nodoc">
+        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.invalid_addon_entitlement">
+        <source>Invalid add-on system type [{0}] provided. No such system type exists.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system.entitle.guestcantvirt">
+        <source>The system cannot have a Virtualization system type because it is a virtual guest.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="entitlement">
+        <source>System Types</source>
+      </trans-unit>
+      <trans-unit id="entitlementLevel">
+        <source>System Type Level</source>
+      </trans-unit>
+      <trans-unit id="snapshots.entitlements">
+        <source>System Types Updated</source>
       </trans-unit>
 
       <!-- Salt -->
