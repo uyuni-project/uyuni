@@ -419,6 +419,13 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="errata.edit.packages.remove.success.singular">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
       </trans-unit>
+      <trans-unit id="errata.multi">
+        <source>Combined Patch Update: {0} - {1} (and {2} more patches)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
+          <context context-type="paramnotes">Combined Patch Update: RHSA-2004:577 - Security Advisory (and 4 more patches)</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="affectedsystems.jsp.summary">
         <source>Below is a list of systems affected by this patch.</source>
       </trans-unit>
