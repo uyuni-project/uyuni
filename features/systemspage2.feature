@@ -15,7 +15,7 @@ Feature: Explore the main landing page
     And The table should have a column named "Packages"
     And The table should have a column named "Configs"
     And The table should have a column named "Base Channel"
-    And The table should have a column named "Entitlement"
+    And The table should have a column named "System Type"
 
   Scenario: Completeness of the All Systems table
     Given I am on the Systems page
@@ -26,7 +26,7 @@ Feature: Explore the main landing page
     And The table should have a column named "Packages"
     And The table should have a column named "Configs"
     And The table should have a column named "Base Channel"
-    And The table should have a column named "Entitlement"
+    And The table should have a column named "System Type"
 
   Scenario: Completeness of the Virtual System table
     Given I am on the Systems page
@@ -47,7 +47,7 @@ Feature: Explore the main landing page
     And The table should have a column named "Packages"
     And The table should have a column named "Configs"
     And The table should have a column named "Base Channel"
-    And The table should have a column named "Entitlement"
+    And The table should have a column named "System Type"
 
   Scenario: Completeness of the Requiring Reeboot System table
     Given I am on the Systems page
@@ -59,7 +59,7 @@ Feature: Explore the main landing page
     And The table should have a column named "Packages"
     And The table should have a column named "Configs"
     And The table should have a column named "Base Channel"
-    And The table should have a column named "Entitlement"
+    And The table should have a column named "System Type"
 
   Scenario: Completeness of the Non Compliant System table
     Given I am on the Systems page
@@ -70,17 +70,17 @@ Feature: Explore the main landing page
     And The table should have a column named "Base Channel"
     And I should see this client as link
 
-  Scenario: Completeness of the Unentitled System table
+  Scenario: Completeness of the Without System Type table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "Unentitled" in the left menu
+    When I follow "Without System Type" in the left menu
     Then The table should have a column named "System"
     And The table should have a column named "Updates"
     And The table should have a column named "Patches"
     And The table should have a column named "Packages"
     And The table should have a column named "Configs"
     And The table should have a column named "Base Channel"
-    And The table should have a column named "Entitlement"
+    And The table should have a column named "System Type"
 
   Scenario: Completeness of the Ungrouped System table
     Given I am on the Systems page
@@ -92,7 +92,7 @@ Feature: Explore the main landing page
     And The table should have a column named "Packages"
     And The table should have a column named "Configs"
     And The table should have a column named "Base Channel"
-    And The table should have a column named "Entitlement"
+    And The table should have a column named "System Type"
 
   Scenario: Completeness of the Inactive System table
     Given I am on the Systems page
@@ -104,7 +104,7 @@ Feature: Explore the main landing page
     And The table should have a column named "Packages"
     And The table should have a column named "Configs"
     And The table should have a column named "Base Channel"
-    And The table should have a column named "Entitlement"
+    And The table should have a column named "System Type"
 
   Scenario: Completeness of the Recently Registered System table
     Given I am on the Systems page
@@ -115,7 +115,7 @@ Feature: Explore the main landing page
     And The table should have a column named "Base Channel"
     And The table should have a column named "Date Registered"
     And The table should have a column named "Registered by"
-    And The table should have a column named "Entitlement"
+    And The table should have a column named "System Type"
 
   Scenario: Completeness of the Proxy System table
     Given I am on the Systems page
@@ -127,7 +127,7 @@ Feature: Explore the main landing page
     And The table should have a column named "Packages"
     And The table should have a column named "Configs"
     And The table should have a column named "Base Channel"
-    And The table should have a column named "Entitlement"
+    And The table should have a column named "System Type"
 
   Scenario: Completeness of the Duplicate System table
     Given I am on the Systems page

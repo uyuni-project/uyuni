@@ -46,7 +46,7 @@ Feature: Explore the main landing page
     And I should see a "Out of Date" link in the left menu
     And I should see a "Requiring Reboot" link in the left menu
     And I should see a "Non Compliant" link in the left menu
-    And I should see a "Unentitled" link in the left menu
+    And I should see a "Without System Type" link in the left menu
     And I should see a "Ungrouped" link in the left menu
     And I should see a "Inactive" link in the left menu
     And I should see a "Recently Registered" link in the left menu
@@ -95,11 +95,11 @@ Feature: Explore the main landing page
     And I should see a "No systems." text
     And the current path is "/rhn/systems/ExtraPackagesSystems.do"
 
-  Scenario: Check sidebar link destination for Systems => Unentitled
+  Scenario: Check sidebar link destination for Systems => Without System Type
     Given I am on the Systems page
     And I follow "Systems" in the left menu
-    And I follow "Unentitled" in the left menu
-    Then I should see a "Unentitled Systems" text
+    And I follow "Without System Type" in the left menu
+    Then I should see a "Systems without System Type" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/Unentitled.do"
 
