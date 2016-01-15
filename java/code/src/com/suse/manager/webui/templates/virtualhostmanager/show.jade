@@ -1,3 +1,5 @@
+include ../common.jade
+
 .spacewalk-toolbar-h1
   h1
     i.fa.spacewalk-icon-virtual-host-manager
@@ -21,7 +23,7 @@
             td.col-md-9 #{config.value}
 
 form(method="post")
-  input(type="hidden", name="csrf_token", value="#{csrf_token}")
+  +csrfToken
   .col-offset-3.col-md-9
     button(type="submit" formaction="#{virtualHostManager.id}/delete").btn.btn-danger
       i.fa.fa-trash

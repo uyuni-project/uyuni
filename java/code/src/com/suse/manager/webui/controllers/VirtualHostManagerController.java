@@ -15,7 +15,6 @@
 
 package com.suse.manager.webui.controllers;
 
-import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
@@ -62,7 +61,6 @@ public class VirtualHostManagerController {
      */
     public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         data.put("virtualHostManagers", getFactory()
                 .listVirtualHostManagers(user.getOrg()));
         data.put("modules", gathererRunner.listModules().keySet());
@@ -84,7 +82,6 @@ public class VirtualHostManagerController {
         Map<String, Object> data = new HashMap<>();
         data.put("virtualHostManager", getFactory().lookupByIdAndOrg(id,
                 user.getOrg()));
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         data.put("satAdmin", user.hasRole(RoleFactory.SAT_ADMIN));
 
         return new ModelAndView(data, "virtualhostmanager/show.jade");
@@ -106,7 +103,6 @@ public class VirtualHostManagerController {
         data.put("virtualHostManager",
                 getFactory().createVirtualHostManager("", user.getOrg(), module,
                         gathererModule.getParameters()));
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         return new ModelAndView(data, "virtualhostmanager/add.jade");
     }
 
@@ -148,7 +144,6 @@ public class VirtualHostManagerController {
         else {
             Map<String, Object> data = new HashMap<>();
             data.put("virtualHostManager", vhm);
-            data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
             data.put("errors", errors);
             return new ModelAndView(data, "virtualhostmanager/add.jade");
         }

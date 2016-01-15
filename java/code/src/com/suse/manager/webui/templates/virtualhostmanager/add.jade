@@ -1,3 +1,5 @@
+include ../common.jade
+
 .spacewalk-toolbar-h1
   h1
     i.fa.spacewalk-icon-virtual-host-manager
@@ -9,7 +11,7 @@ if errors
 
 .row.col-md-12
   form(action="/rhn/manager/vhms", method="post", class="form-horizontal")
-    input(type="hidden", name="csrf_token", value="#{csrf_token}")
+    +csrfToken
     input(type="hidden", name="module", value="#{virtualHostManager.gathererModule}")
     .form-group
       label.col-md-3.control-label #{l.t("Label")}:
