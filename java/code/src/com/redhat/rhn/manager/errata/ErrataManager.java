@@ -1531,13 +1531,10 @@ public class ErrataManager extends BaseManager {
     private static List<Long> applyErrata(User user, List errataIds, Date earliest,
         ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant) {
 
-        // not all errata applies to all systems, so we will filter them
-        Map<Server, List<Errata>> updateStackForServers = new HashMap<>();
-        Map<Server, List<Errata>> errataForServers = new HashMap<>();
         List<Errata> updateStackErrata = new ArrayList<>();
         List<Errata> otherErrata = new ArrayList<>();
 
-        // Prepare empty list of systems for each errata
+        // Divide errata in two lists: one updateStack updates and others
         for (Object errataIdObject : errataIds) {
             // HACK: ugly conversion needed because in some cases errataIds contains
             // Integers, in other cases Longs
@@ -1551,6 +1548,12 @@ public class ErrataManager extends BaseManager {
                 otherErrata.add(erratum);
             }
         }
+
+        // For every Server prepare a list of relevant errata which needs to be applied
+        // devide them into update stack updates, which needs to be applied first and
+        // other updates which can be applied later
+        Map<Server, List<Errata>> updateStackForServers = new HashMap<>();
+        Map<Server, List<Errata>> errataForServers = new HashMap<>();
         for (Long serverId : serverIds) {
             Server server = SystemManager.lookupByIdAndOrg(serverId, user.getOrg());
             updateStackForServers.put(server, new ArrayList<Errata>());
@@ -1585,6 +1588,8 @@ public class ErrataManager extends BaseManager {
             }
         }
 
+        // create the required actions to apply the errata
+        // the handling differs depending on the used installer
         List<ErrataAction> errataActions = new ArrayList<>();
         for (Server s : updateStackForServers.keySet()) {
             if (PackageFactory.lookupByNameAndServer("zypper", s) != null) {
