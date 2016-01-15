@@ -198,24 +198,24 @@ class PackageStates extends React.Component {
       if(currentState.packageStateId === INSTALLED) {
         //versionConstraintSelect =
         //    <select className="form-control" value={versionConstraints2selectValue(currentState.versionConstraintId)}>
-        //      <option value="0">Latest</option>
-        //      //<option value="1">Equal</option>
+        //      <option value="0">{t("Latest")}</option>
+        //      //<option value="1">{t("Equal")}</option>
         //    </select>;
       }
       var undoButton = null;
       if(changed !== undefined) {
-        undoButton = <button className="btn btn-default" onClick={this.handleUndo(row.original)}>Undo</button>
+        undoButton = <button className="btn btn-default" onClick={this.handleUndo(row.original)}>{t("Undo")}</button>
       }
 
       elements.push(
         <tr className={changed !== undefined ? "warning" : ""}>
-          <td>{currentState.name}</td>
+          <td>{t(currentState.name)}</td>
           <td>
             <div className="form-group">
               <select className="form-control" value={packageState2selectValue(currentState.packageStateId)} onChange={this.handleStateChange(row.original)}>
-                <option value="-1">Unmanaged</option>
-                <option value="0">Installed</option>
-                <option value="1">Removed</option>
+                <option value="-1">{t("Unmanaged")}</option>
+                <option value="0">{t("Installed")}</option>
+                <option value="1">{t("Removed")}</option>
               </select>
               { versionConstraintSelect }
               { undoButton }
@@ -229,7 +229,7 @@ class PackageStates extends React.Component {
         {elements.length > 0 ? elements :
             <tr>
                 <td colSpan="2">
-                    <div>No package states.</div>
+                    <div>{t("No package states.")}</div>
                 </td>
             </tr>
         }
@@ -282,10 +282,10 @@ class PackageStates extends React.Component {
       <div>
         <h2>
           <i className="fa spacewalk-icon-package-add"></i>
-          Package States
+          {t("Package States")}
           <span className="btn-group pull-right">
-              <Button action={this.save} name="Save" disabled={this.state.changed.size == 0}/>
-              <Button action={this.applyPackageState} name="Apply" />
+              <Button action={this.save} name={t("Save")} disabled={this.state.changed.size == 0}/>
+              <Button action={this.applyPackageState} name={t("Apply")} />
           </span>
         </h2>
         <div className="row col-md-12">
@@ -296,10 +296,10 @@ class PackageStates extends React.Component {
                         <span className="input-group">
                             <input className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange}/>
                             <span className="input-group-btn">
-                                <Button action={this.applyPackageState} name="Search" action={this.search} />
-                                <button className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>System</button>
+                                <Button action={this.applyPackageState} name={t("Search")} action={this.search} />
+                                <button className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
                                 <button className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
-                                    {this.state.changed.size > 0 ? this.state.changed.size : "No"} Changes
+                                    {this.state.changed.size > 0 ? this.state.changed.size : t("No")} {t("Changes")}
                                 </button>
                             </span>
                         </span>
@@ -308,8 +308,8 @@ class PackageStates extends React.Component {
                 <table className="table table-striped">
                   <thead>
                     <tr>
-                      <th>Package Name</th>
-                      <th>State</th>
+                      <th>{t("Package Name")}</th>
+                      <th>{t("State")}</th>
                     </tr>
                   </thead>
                   {this.tableBody()}
@@ -361,7 +361,7 @@ class Button extends React.Component {
     return (
         <button className={style} disabled={this.state.value == waiting || this.props.disabled} onClick={this.trigger}>
            {this.state.value == waiting ? <i className="fa fa-circle-o-notch fa-spin"></i> : undefined}
-           {this.props.name}
+           {t(this.props.name)}
         </button>
     );
   }
