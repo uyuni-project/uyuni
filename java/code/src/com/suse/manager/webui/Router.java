@@ -15,6 +15,7 @@
 package com.suse.manager.webui;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
@@ -43,16 +44,18 @@ public class Router implements SparkApplication {
         JadeTemplateEngine jade = setup();
 
         // Salt Master pages
-        get("/manager/minions", MinionController::list, jade);
+        get("/manager/minions", withCsrfToken(MinionController::list), jade);
         // Remote command page
-        get("/manager/minions/cmd", MinionController::cmd, jade);
+        get("/manager/minions/cmd", withCsrfToken(MinionController::cmd), jade);
         get("/manager/minions/:id", MinionController::show);
         post("/manager/minions/:id/accept", MinionController::accept);
         post("/manager/minions/:id/reject", MinionController::reject);
         post("/manager/minions/:id/delete", MinionController::destroy);
 
         // Package Management
-        get("/manager/systems/details/packages", MinionController::packages, jade);
+        get("/manager/systems/details/packages",
+                withCsrfToken(MinionController::packages),
+                jade);
 
         // Minion APIs
         post("/manager/api/minions/cmd", MinionsAPI::run);
@@ -75,10 +78,18 @@ public class Router implements SparkApplication {
                 DownloadController::downloadMetadata);
 
         // Virtual Host Managers
-        get("/manager/vhms", withOrgAdmin(VirtualHostManagerController::list), jade);
-        get("/manager/vhms/add", withOrgAdmin(VirtualHostManagerController::add), jade);
-        post("/manager/vhms", withUser(VirtualHostManagerController::create), jade);
-        get("/manager/vhms/:id", withOrgAdmin(VirtualHostManagerController::show), jade);
+        get("/manager/vhms",
+                withCsrfToken(withOrgAdmin(VirtualHostManagerController::list)),
+                jade);
+        get("/manager/vhms/add",
+                withCsrfToken(withOrgAdmin(VirtualHostManagerController::add)),
+                jade);
+        post("/manager/vhms",
+                withCsrfToken(withUser(VirtualHostManagerController::create)),
+                jade);
+        get("/manager/vhms/:id",
+                withCsrfToken(withOrgAdmin(VirtualHostManagerController::show)),
+                jade);
         post("/manager/vhms/:id/delete",
                 withOrgAdmin(VirtualHostManagerController::delete));
         post("/manager/vhms/:id/refresh",
