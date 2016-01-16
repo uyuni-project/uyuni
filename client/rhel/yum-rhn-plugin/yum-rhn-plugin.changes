@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Sat Jan 16 11:30:00 CET 2016 - mc@suse.de
+
+- version 2.5.1.1-1
+- allow client responses to be in Unicode
+- get retrieveOnly out of the way of package-remove
+
+-------------------------------------------------------------------
 Wed Oct 07 15:26:43 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
