@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Sat Jan 16 11:33:54 CET 2016 - mc@suse.de
+
+- version 2.5.8.1-1
+- Clarify useNoSSLForPackages comment to match reality
+- make compatible with python 2 and 3
+- updated dnf / rhnlib / rhn-client-tools dependencies
+- removing outdated tests
+- breaking toplevel cyclic import
+- clean up channels to subscribe before processing results
+- Provide OS info and and guarantee identifier and type
+- limit SYSINFO to s390 Architecture
+- read sysinfo file on mainframe and send values as HW info
+- allow to use existing rpcServer when creating RhnServer
+
+-------------------------------------------------------------------
 Wed Dec 16 11:17:48 CET 2015 - mc@suse.de
 
 - version 2.5.2.2-1
