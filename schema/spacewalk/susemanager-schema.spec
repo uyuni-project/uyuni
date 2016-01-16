@@ -78,6 +78,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Jan 14 2016 Jan Dobes 2.5.7-1
+- delete one more table
+
 * Mon Jan 11 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.6-1
 - purge duplicate uuid records during upgrade process
 
