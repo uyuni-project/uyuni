@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Sat Jan 16 11:29:10 CET 2016 - mc@suse.de
+
+- version 5.5.91.1-1
+- alow to use existing rpcServer when creating RhnServer
+
+-------------------------------------------------------------------
 Mon Nov 30 10:59:38 CET 2015 - mc@suse.de
 
 - version 5.5.90.1-1
