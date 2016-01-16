@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Sat Jan 16 11:36:42 CET 2016 - mc@suse.de
+
+- version 2.5.2.2-1
+- Rename "entitlements" to "system types"
+- In case the installer is zypp add all patches into one errata
+  action (bsc#960997)
+
+-------------------------------------------------------------------
 Thu Jan 14 13:33:18 CET 2016 - mc@suse.de
 
 - version 2.5.2.1-1
