@@ -1,4 +1,37 @@
 -------------------------------------------------------------------
+Sat Jan 16 11:20:57 CET 2016 - mc@suse.de
+
+- version 2.5.34.1-1
+- Align About page to SUSE Manager
+- In case the installer is zypp add all patches into one errata action
+  (bsc#960997)
+- improve setting Hardware data for minions (cpu, devices, network, etc.)
+- create virtual hosts for s390x minions
+- Implement scheduling of patches for salt minions
+- Report SUMA server system itself with its products to the subscription
+  matcher
+- Update copyright headers to 2016 for all new files
+- Adjust action status on salt jobs that we scheduled
+- Unhide the "Events" tab for minion systems
+- Use public channel families for SUSE channels (bsc#958708)
+- Set the rhn session-cookie-path global
+- Explicitly ask Tomcat to compile .jsp files (bsc#954417)
+- Additional fixes for bsc#956613 (decoding [] is broken for list-key-name)
+- fix kickstart with multiple packages having same NEVRA (bsc#959987,
+  bsc#960855)
+- get the default organization before we create any
+- Revert "List global available CryptoKeys"
+- Port client python HW handling to server side java
+- change dependency to match Tomcat 8 Servlet API 3.1
+- Fix edge-case in kickstart-profile-gen-ordering and
+  post_install_network_config
+- Add hack to deal with RHEL7's differing redhat-release-protocol
+- make sure we can find the child channel
+- moving non_expirable_package_urls parameter to java
+- moving download_url_lifetime parameter to java
+- removing unused force_unentitlement configuration parameter
+
+-------------------------------------------------------------------
 Tue Jan 05 15:59:05 CET 2016 - mc@suse.de
 
 - version 2.5.26.2-1
