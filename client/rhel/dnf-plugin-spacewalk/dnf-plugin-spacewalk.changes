@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Sat Jan 16 11:30:48 CET 2016 - mc@suse.de
+
+- version 2.5.2.1-1
+- updated dnf / rhnlib / rhn-client-tools dependencies
+- handle unicode in python2 / python3 compatible way
+- dict.iteritems() is not in python3
+- replaced has_key() with 'in' operator for python3
+  compatibility
+
+-------------------------------------------------------------------
 Wed Oct 07 15:02:31 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
