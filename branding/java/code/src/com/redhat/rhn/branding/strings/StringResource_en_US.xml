@@ -2501,6 +2501,18 @@ You may grant provisioning entitlements _here_.
         <source>System Types Updated</source>
       </trans-unit>
 
+      <trans-unit id="Salt Entitled Servers">
+        <source>Salt</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Foreign Entitled Servers">
+        <source>Foreign</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+        </context-group>
+      </trans-unit>
       <!-- Salt -->
       <trans-unit id="Salt Master">
           <source>Salt Master</source>

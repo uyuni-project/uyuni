@@ -108,8 +108,16 @@
                 </div>
                 <table class="table">
                 <tr>
-                <td><bean:message key="Spacewalk Management Entitled Servers"/>:</td>
-                <td>${requestScope.managementCountsMessage}</td>
+                        <td><bean:message key="Spacewalk Management Entitled Servers"/>:</td>
+                        <td>${requestScope.managementCountsMessage}</td>
+                </tr>
+                <tr>
+                        <td><bean:message key="Salt Entitled Servers"/>:</td>
+                        <td>${requestScope.saltCountsMessage}</td>
+                </tr>
+                <tr>
+                        <td><bean:message key="Foreign Entitled Servers"/>:</td>
+                        <td>${requestScope.foreignCountsMessage}</td>
                 </tr>
        </table>
         </div>
