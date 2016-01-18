@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+// CHECKSTYLE:OFF
+
 /**
  * TODO: Merge this method into the Pkg class in saltstack-netapi-client.
  */
