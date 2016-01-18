@@ -20,6 +20,18 @@ __salt__ = {
 
 log = logging.getLogger(__name__)
 
+__virtualname__ = 'sumautil'
+
+
+def __virtual__():
+    '''
+    Only run on Linux systems
+    '''
+    if __grains__['kernel'] != 'Linux':
+        return (False, 'The sumautil module only works on Linux systems.')
+    return __virtualname__
+
+
 def cat(path):
     '''
     Cat the specified file.
@@ -51,47 +63,20 @@ def primary_ips():
         salt '*' sumautil.primary_ip
     '''
 
-    def get_master_ip(family, host):
-        try:
-            s = socket.socket(family)
-
-            sockfamily, socktype, proto, canonname, sockaddr = socket.getaddrinfo(
-                    host, 0, family, socket.SOCK_STREAM)[0]
-
-            if family == socket.AF_INET:
-                ip, port = sockaddr
-            elif family == socket.AF_INET6:
-                ip, port, flow_info, scope_id = sockaddr
-
-            return ip
-
-        except Exception:
-            return None
-        finally:
-            if s:
-                s.close()
+    get_master_ip = lambda family, host: socket.getaddrinfo(host, 0, family)[0][-1][0]
 
     master = __opts__.get('master', '')
     log.debug('Using master: {0}'.format(str(master)))
 
-    ipv4 = get_master_ip(socket.AF_INET, master)
-    ipv6 = get_master_ip(socket.AF_INET6, master)
+    ret = dict()
+    for sock_family, sock_descr in {socket.AF_INET: 'IPv4', socket.AF_INET6: 'IPv6'}.iteritems():
+        try:
+            ret['{0}'.format(sock_descr)] = __salt__['network.get_route'](get_master_ip(sock_family, master))
+            log.debug("network.get_route({0}): ".format(ret['{0} source'.format(sock_descr)]))
+        except Exception as err:
+            log.debug('{0} is not available? {1}'.format(sock_descr, err))
 
-    srcipv4 = None
-    srcipv6 = None
-
-    # 'ip route get $ip' should be as good as opening a socket to the master
-    if ipv4:
-        route = __salt__['network.get_route'](ipv4)
-        log.debug("network.get_route({0}): ".format(ipv4, str(route)))
-        srcipv4 = route.get('source', None)
-
-    if ipv6:
-        route = __salt__['network.get_route'](ipv6)
-        log.debug("network.get_route({0}): ".format(ipv6, str(route)))
-        srcipv6 = route.get('source', None)
-
-    return srcipv4, srcipv6
+    return ret
 
 
 def get_net_module(iface):
@@ -108,15 +93,8 @@ def get_net_module(iface):
         salt '*' sumautil.get_net_module eth0
     '''
     sysfspath = '/sys/class/net/{0}/device/driver'.format(iface)
-    log.debug("Looking for '{0}'".format(sysfspath))
-    if os.path.exists(sysfspath):
-        try:
-            driverpath = os.readlink(sysfspath)
-            driver = driverpath.rsplit('/', 1)[1]
-            return driver
-        except:
-            log.exception('')
-    return None
+
+    return os.path.exists(sysfspath) and os.path.split(os.readlink(sysfspath))[-1] or None
 
 
 def get_net_modules():
@@ -130,8 +108,10 @@ def get_net_modules():
 
         salt '*' sumautil.get_net_modules
     '''
-    drivers = {}
+    drivers = dict()
     for e in os.listdir('/sys/class/net/'):
-        drivers[e] = get_net_module(e)
-
-    return drivers
+        try:
+            drivers[e] = get_net_module(e)
+        except OSError as e:
+            log.warn("An error occurred getting net driver for {0}".format(e), exc_info=True)
+    return drivers or None
