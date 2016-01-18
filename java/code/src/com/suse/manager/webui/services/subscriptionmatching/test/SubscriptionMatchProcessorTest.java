@@ -1,7 +1,22 @@
-package com.suse.manager.webui.services.test;
+/**
+ * Copyright (c) 2016 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.suse.manager.webui.services.subscriptionmatching.test;
 
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.suse.manager.webui.services.SubscriptionMatchProcessor;
+import com.suse.manager.webui.services.subscriptionmatching.MatcherUiData;
+import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
 import com.suse.matcher.json.JsonInput;
 import com.suse.matcher.json.JsonMessage;
 import com.suse.matcher.json.JsonOutput;
@@ -39,7 +54,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         messageData.put("any", "arbitrary_data");
         output.setMessages(messages);
 
-        List<JsonMessage> jsonMessages = ((SubscriptionMatchProcessor.MatcherUiData)
+        List<JsonMessage> jsonMessages = ((MatcherUiData)
                 processor.getData(of(input), of(output))).getMessages();
         List<JsonMessage> outputList = jsonMessages.stream()
                 .filter(m -> m.getType().equals("some_arbitrary_type"))
@@ -49,8 +64,8 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testSystemIdAdjustment() throws Exception {
-        input.getSystems()
-                .add(new JsonSystem(1L, "Sys1", null, true, new HashSet<>(), new HashSet<>()));
+        input.getSystems().add(new JsonSystem(1L, "Sys1", null, true, new HashSet<>(),
+                new HashSet<>()));
 
         LinkedList<JsonMessage> messages = new LinkedList<>();
         Map<String, String> messageData = new HashMap<>();
@@ -58,7 +73,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         messageData.put("id", "1");
         output.setMessages(messages);
 
-        List<JsonMessage> jsonMessages = ((SubscriptionMatchProcessor.MatcherUiData)
+        List<JsonMessage> jsonMessages = ((MatcherUiData)
                 processor.getData(of(input), of(output))).getMessages();
         List<JsonMessage> outputList = jsonMessages.stream()
                 .filter(m -> m.getType().equals("unknown_cpu_count"))
@@ -89,8 +104,8 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testUnsatisfiedMatchAdjustment() throws Exception {
-        input.getSystems()
-                .add(new JsonSystem(1L, "Sys1", null, true, new HashSet<>(), new HashSet<>()));
+        input.getSystems().add(new JsonSystem(1L, "Sys1", null, true, new HashSet<>(),
+                new HashSet<>()));
         input.getSubscriptions().add(new JsonSubscription(100L, "123456", "subs name", 1,
                 new Date(), new Date(), "user", new HashSet<>()));
 
@@ -101,7 +116,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         messageData.put("subscription_id", "100");
         output.setMessages(messages);
 
-        List<JsonMessage> jsonMessages = ((SubscriptionMatchProcessor.MatcherUiData)
+        List<JsonMessage> jsonMessages = ((MatcherUiData)
                 processor.getData(of(input), of(output))).getMessages();
         List<JsonMessage> outputList = jsonMessages.stream()
                 .filter(m -> m.getType().equals("unsatisfied_pinned_match"))

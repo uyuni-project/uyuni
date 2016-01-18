@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.user.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.matcher.MatcherJsonIO;
-import com.suse.manager.webui.services.SubscriptionMatchProcessor;
+import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
 
 import java.util.HashMap;
 import java.util.Map;
