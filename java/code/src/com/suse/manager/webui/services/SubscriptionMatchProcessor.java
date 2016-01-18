@@ -28,6 +28,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Optional.ofNullable;
+
 /**
  * Processes data from the matcher to a form that's displayable by the UI.
  */
@@ -87,21 +89,30 @@ public class SubscriptionMatchProcessor {
 
         Map<String, String> data = new HashMap<>();
         if (typesWithSystemId.contains(message.getType())) {
-            data.put("name", input.getSystems().stream()
-                    .filter(s -> s.getId().equals(Long.parseLong(message.getData().get("id"))))
-                    .findFirst()
-                    .get().getName());
+            long systemId = Long.parseLong(message.getData().get("id"));
+            data.put("name", ofNullable(
+                    input.getSystems().stream()
+                            .filter(s -> s.getId().equals(systemId))
+                            .findFirst()
+                            .get().getName())
+                    .orElse("System id: " + systemId));
             return new JsonMessage(message.getType(), data);
         }
         else if (message.getType().equals("unsatisfied_pinned_match")) {
-            data.put("system_name", input.getSystems().stream()
-                    .filter(s -> s.getId().equals(Long.parseLong(message.getData().get("system_id"))))
-                    .findFirst()
-                    .get().getName());
-            data.put("subscription_name", input.getSubscriptions().stream()
-                    .filter(s -> s.getId().equals(Long.parseLong(message.getData().get("subscription_id"))))
-                    .findFirst()
-                    .get().getName());
+            long systemId = Long.parseLong(message.getData().get("system_id"));
+            data.put("system_name", ofNullable(
+                    input.getSystems().stream()
+                            .filter(s -> s.getId().equals(systemId))
+                            .findFirst()
+                            .get().getName())
+                    .orElse("System id: " + systemId));
+            long subscriptionId = Long.parseLong(message.getData().get("subscription_id"));
+            data.put("subscription_name", ofNullable(
+                    input.getSubscriptions().stream()
+                            .filter(s -> s.getId().equals(subscriptionId))
+                            .findFirst()
+                            .get().getName())
+                    .orElse("Subscription id: " + subscriptionId));
             return new JsonMessage(message.getType(), data);
         }
         else { // pass it through

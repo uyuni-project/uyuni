@@ -67,6 +67,27 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals("Sys1", outputList.get(0).getData().get("name"));
     }
 
+    public void testSystemIdAdjustmentNameMissing() throws Exception {
+        // system with a null name
+        input.getSystems().add(new JsonSystem(1L, null, null, true, new HashSet<>(),
+                new HashSet<>()));
+
+        LinkedList<JsonMessage> messages = new LinkedList<>();
+        Map<String, String> messageData = new HashMap<>();
+        messages.add(new JsonMessage("unknown_cpu_count", messageData));
+        messageData.put("id", "1");
+        output.setMessages(messages);
+
+        List<JsonMessage> jsonMessages = ((MatcherUiData)
+                processor.getData(of(input), of(output))).getMessages();
+        List<JsonMessage> outputList = jsonMessages.stream()
+                .filter(m -> m.getType().equals("unknown_cpu_count"))
+                .collect(toList());
+        assertEquals(1, outputList.size());
+        // we expect a "fallback" name
+        assertEquals("System id: 1", outputList.get(0).getData().get("name"));
+    }
+
     public void testUnsatisfiedMatchAdjustment() throws Exception {
         input.getSystems()
                 .add(new JsonSystem(1L, "Sys1", null, true, new HashSet<>(), new HashSet<>()));
@@ -88,5 +109,31 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals(1, outputList.size());
         assertEquals("Sys1", outputList.get(0).getData().get("system_name"));
         assertEquals("subs name", outputList.get(0).getData().get("subscription_name"));
+    }
+
+    public void testUnsatisfiedMatchAdjustmentNamesMissing() throws Exception {
+        // system with a null name
+        input.getSystems().add(new JsonSystem(1L, null, null, true, new HashSet<>(),
+                new HashSet<>()));
+        // subscriptions with a null name
+        input.getSubscriptions().add(new JsonSubscription(100L, "123456", null, 1,
+                new Date(), new Date(), "user", new HashSet<>()));
+
+        LinkedList<JsonMessage> messages = new LinkedList<>();
+        Map<String, String> messageData = new HashMap<>();
+        messages.add(new JsonMessage("unsatisfied_pinned_match", messageData));
+        messageData.put("system_id", "1");
+        messageData.put("subscription_id", "100");
+        output.setMessages(messages);
+
+        List<JsonMessage> jsonMessages = ((MatcherUiData)
+                processor.getData(of(input), of(output))).getMessages();
+        List<JsonMessage> outputList = jsonMessages.stream()
+                .filter(m -> m.getType().equals("unsatisfied_pinned_match"))
+                .collect(toList());
+        assertEquals(1, outputList.size());
+        assertEquals("System id: 1", outputList.get(0).getData().get("system_name"));
+        assertEquals("Subscription id: 100",
+                outputList.get(0).getData().get("subscription_name"));
     }
 }
