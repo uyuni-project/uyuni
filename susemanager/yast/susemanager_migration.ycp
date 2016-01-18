@@ -52,18 +52,18 @@
     term contents = `HBox (`HSpacing (1), `VBox (
 	`InputField (`id ("SATELLITE_HOST"), `opt (`hstretch),
 	    // text entry label
-	    _("&Hostname of the Satellite Server"), settings["SATELLITE_HOST"]:""),
+	    _("&Hostname of source SUSE Manager Server"), settings["SATELLITE_HOST"]:""),
 	// text entry label
 	`InputField (`id ("SATELLITE_DOMAIN"), `opt (`hstretch), _("&Domain name"),
 	    settings["SATELLITE_DOMAIN"]:""),
 	// text entry label
-	`InputField (`id ("SATELLITE_DB_USER"), `opt (`hstretch), _("Satellite Database &User Name"),
+	`InputField (`id ("SATELLITE_DB_USER"), `opt (`hstretch), _("Source SUSE Manager Database &User Name"),
 	    settings["SATELLITE_DB_USER"]:""),
 	// text entry label
-	`InputField (`id ("SATELLITE_DB_PASS"), `opt (`hstretch), _("Satellite Database &Password"),
+	`InputField (`id ("SATELLITE_DB_PASS"), `opt (`hstretch), _("Source SUSE Manager Database &Password"),
 	    settings["SATELLITE_DB_PASS"]:""),
 	// text entry label
-	`InputField (`id ("SATELLITE_DB_SID"), `opt (`hstretch), _("Satellite Database &SID"),
+	`InputField (`id ("SATELLITE_DB_SID"), `opt (`hstretch), _("Source SUSE Manager Database &Name"),
 	    settings["SATELLITE_DB_SID"]:""),
 	`VSpacing (0.5)
     ), `HSpacing (1));
@@ -72,7 +72,7 @@
     string help_text	= "";
 
     // dialog caption
-    Wizard::SetContents (_("Migration from Red Hat Satellite to SUSE Manager"),
+    Wizard::SetContents (_("Migration from previous SUSE Manager to new SUSE Manager"),
 	contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
     UI::SetFocus (`id ("SATELLITE_HOST"));
 
