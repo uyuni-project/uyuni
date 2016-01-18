@@ -12,9 +12,8 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.services;
+package com.suse.manager.webui.services.subscriptionmatching;
 
-import com.google.gson.annotations.SerializedName;
 import com.suse.matcher.json.JsonInput;
 import com.suse.matcher.json.JsonMessage;
 import com.suse.matcher.json.JsonOutput;
@@ -22,7 +21,6 @@ import com.suse.matcher.json.JsonOutput;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -35,47 +33,20 @@ import static java.util.Optional.ofNullable;
  */
 public class SubscriptionMatchProcessor {
 
-    public class MatcherUiData {
-
-        @SerializedName("matcher_data_available")
-        private boolean matcherDataAvailable;
-
-        /** The messages */
-        private List<JsonMessage> messages = new LinkedList<>();
-
-        public MatcherUiData(boolean matcherDataAvailable, List<JsonMessage> messages) {
-            this.matcherDataAvailable = matcherDataAvailable;
-            this.messages = messages;
-        }
-
-        public List<JsonMessage> getMessages() {
-            return messages;
-        }
-
-        public void setMessages(List<JsonMessage> messages) {
-            this.messages = messages;
-        }
-
-        public boolean isMatcherDataAvailable() {
-            return matcherDataAvailable;
-        }
-
-        public void setMatcherDataAvailable(boolean matcherDataAvailable) {
-            this.matcherDataAvailable = matcherDataAvailable;
-        }
-    }
-
     /**
      * Gets UI-ready data.
      *
+     * @param input matcher input
+     * @param output matcher output
      * @return the data
      */
     public Object getData(Optional<JsonInput> input, Optional<JsonOutput> output) {
-        if (input.isPresent() && output.isPresent())
+        if (input.isPresent() && output.isPresent()) {
             return new MatcherUiData(true,
                     output.get().getMessages().stream()
-                        .map(m -> adjustMessage(m, input.get()))
-                        .collect(Collectors.toList()));
+                            .map(m -> adjustMessage(m, input.get()))
+                            .collect(Collectors.toList()));
+        }
         else {
             return new MatcherUiData(false, new LinkedList<>());
         }
