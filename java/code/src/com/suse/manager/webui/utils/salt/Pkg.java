@@ -61,7 +61,6 @@ public class Pkg {
         private Optional<String> relocations = Optional.empty();
         private Optional<String> signature = Optional.empty();
         private Optional<String> size = Optional.empty();
-        @SerializedName("source")
         private Optional<String> source = Optional.empty();
         private Optional<String> summary = Optional.empty();
         private Optional<String> url = Optional.empty();
