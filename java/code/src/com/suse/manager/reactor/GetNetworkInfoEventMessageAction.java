@@ -102,7 +102,7 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
                 Optional<Network.INet> inet = Optional.ofNullable(saltIface.getInet())
                         .flatMap(addr -> addr.stream().findFirst());
 
-                inet.ifPresent( addr4 -> {
+                inet.ifPresent(addr4 -> {
                     // set IPv4 network info
                     ServerNetAddress4 ipv4 = ServerNetworkFactory
                             .findServerNetAddress4(iface.getInterfaceId());
@@ -123,7 +123,7 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
 
                 Optional<Network.INet6> inet6 = Optional.ofNullable(saltIface.getInet6())
                         .flatMap(addr -> addr.stream().findFirst());
-                inet6.ifPresent( addr6 -> {
+                inet6.ifPresent(addr6 -> {
                     // set IPv6 network info
                     ServerNetAddress6 ipv6 = ServerNetworkFactory
                             .findServerNetAddress6(iface.getInterfaceId());
