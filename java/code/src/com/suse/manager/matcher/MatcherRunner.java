@@ -58,7 +58,7 @@ public class MatcherRunner {
             PrintWriter stdin = new PrintWriter(p.getOutputStream());
             boolean isISSMaster = IssFactory.getCurrentMaster() == null;
             String arch = System.getProperty("os.arch");
-            String s = new MatcherJsonIO().getMatcherInput(isISSMaster, arch);
+            String s = new MatcherJsonIO().generateMatcherInput(isISSMaster, arch);
             stdin.println(s);
             stdin.flush();
             stdin.close();
