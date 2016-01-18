@@ -153,7 +153,13 @@ public class Pkg {
         }
     }
 
-
+    /**
+     * Call 'pkg.info_installed' API.
+     *
+     * @param args
+     * @param packages
+     * @return
+     */
     public static LocalCall<Map<String, Info>> infoInstalled(
             List<String> args, String... packages) {
         return new LocalCall<>("pkg.info_installed", Optional.of(Arrays.asList(packages)),
@@ -161,6 +167,8 @@ public class Pkg {
     }
 
     /**
+     * Call 'pkg.install' API.
+     *
      * @param refresh refresh repos before installation
      * @param pkgs list of packages
      * @return the call
