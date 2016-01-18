@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.user.User;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.manager.webui.services.SubscriptionMatchProcessor;
 
 import java.util.HashMap;
@@ -61,7 +62,10 @@ public class SubscriptionMatchingController {
      * @return JSON result of the API call
      */
     public static String data(Request request, Response response, User user) {
-        Object data = new SubscriptionMatchProcessor().getData();
+        MatcherJsonIO matcherJsonIO = new MatcherJsonIO();
+        Object data = new SubscriptionMatchProcessor().getData(
+                matcherJsonIO.getMatcherInput(),
+                matcherJsonIO.getMatcherOutput());
         response.type("application/json");
         return GSON.toJson(data);
     }

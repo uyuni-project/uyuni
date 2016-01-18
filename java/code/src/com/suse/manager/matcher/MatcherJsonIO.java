@@ -168,13 +168,28 @@ public class MatcherJsonIO {
      *               product ID computation in case includeSelf == true.
      * @return an object representation of the JSON input for the matcher
      */
-    public String getMatcherInput(boolean includeSelf, String arch) {
+    public String generateMatcherInput(boolean includeSelf, String arch) {
         return gson.toJson(new JsonInput(
             getJsonSystems(includeSelf, arch),
             getJsonProducts(),
             getJsonSubscriptions(),
             getJsonMatches())
         );
+    }
+
+    /**
+     * Returns the matcher input data read from file
+     * @return the input data or empty in case the file with the input data was not found
+     */
+    public Optional<JsonInput> getMatcherInput() {
+        try {
+            FileReader reader =
+                    new FileReader(new File(MatcherRunner.OUT_DIRECTORY, "input.json"));
+            return Optional.of(gson.fromJson(reader, JsonInput.class));
+        }
+        catch (FileNotFoundException e) {
+            return Optional.empty();
+        }
     }
 
     /**
