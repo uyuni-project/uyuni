@@ -28,11 +28,11 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.salt.Pkg;
-import java.util.Arrays;
-import java.util.Collections;
 
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
