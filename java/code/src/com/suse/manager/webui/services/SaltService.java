@@ -197,6 +197,7 @@ public interface SaltService {
      * @return a map containing information about each network interface
      */
     Map<String, Network.Interface> getNetworkInterfacesInfo(String minionId);
+
     /**
      * Schedule patch installations for a given target.
      *
