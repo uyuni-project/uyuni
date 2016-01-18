@@ -233,7 +233,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
                 String virtTypeLabel = null;
                 switch(virtType) {
                     case "xen":
-                        if("Xen PV DomU".equals(virtSubtype)) {
+                        if ("Xen PV DomU".equals(virtSubtype)) {
                             virtTypeLabel = "para_virtualized";
                         } else {
                             virtTypeLabel = "fully_virtualized";
@@ -254,7 +254,9 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
                         break;
                     // TODO detect Hitachi LPAR (virtage)
                     default:
-                        LOG.warn(String.format("Unsupported virtual instance type '%s' for minion '%s'",virtType, server.getMinionId()));
+                        LOG.warn(String.
+                                format("Unsupported virtual instance type '%s' for minion '%s'",
+                                virtType, server.getMinionId()));
                         // TODO do what with other virt types ?
 //                    case "Parallels":
 //                    case "oracle":
@@ -270,8 +272,8 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
 //                    case "gce": // Google
 //                    case "OpenStack":
                 }
-                VirtualInstanceType type = null;
-                        VirtualInstanceFactory.getInstance().getVirtualInstanceType(virtType);
+                VirtualInstanceType type = VirtualInstanceFactory.getInstance()
+                        .getVirtualInstanceType(virtTypeLabel);
 
                 if (type == null) { // fallback
                     type = VirtualInstanceFactory.getInstance().getParaVirtType();
