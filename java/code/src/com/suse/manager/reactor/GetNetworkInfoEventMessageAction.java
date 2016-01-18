@@ -26,9 +26,10 @@ import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.Network;
+import com.suse.manager.webui.utils.salt.SumaUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
@@ -62,11 +63,17 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
 
             Map<String, Network.Interface> interfaces = SALT_SERVICE
                     .getNetworkInterfacesInfo(minionId);
-            List<String> primaryIps = SALT_SERVICE.getPrimaryIps(minionId);
-            Map<String, String> netModules = SALT_SERVICE.getNetModules(minionId);
+            Map<SumaUtil.IPVersion, SumaUtil.IPRoute> primaryIps = SALT_SERVICE
+                    .getPrimaryIps(minionId);
+            Map<String, String> netModules = Optional.ofNullable(SALT_SERVICE
+                    .getNetModules(minionId)).orElse(Collections.emptyMap());
 
-            String primaryIPv4 = primaryIps.get(0);
-            String primaryIPv6 = primaryIps.get(1);
+            String primaryIPv4 = Optional.ofNullable(primaryIps
+                    .get(SumaUtil.IPVersion.IPV4))
+                    .map(SumaUtil.IPRoute::getSource).orElse(null);
+            String primaryIPv6 = Optional.ofNullable(primaryIps
+                    .get(SumaUtil.IPVersion.IPV6))
+                    .map(SumaUtil.IPRoute::getSource).orElse(null);
 
             com.redhat.rhn.domain.server.Network network =
                     new com.redhat.rhn.domain.server.Network();

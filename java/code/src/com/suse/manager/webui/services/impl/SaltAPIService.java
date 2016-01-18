@@ -455,10 +455,10 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public List<String> getPrimaryIps(String minionId) {
+    public Map<SumaUtil.IPVersion, SumaUtil.IPRoute> getPrimaryIps(String minionId) {
         try {
-            Map<String, List<String>> result = SALT_CLIENT.callSync(
-                    SumaUtil.primaryIps(),
+            Map<String, Map<SumaUtil.IPVersion, SumaUtil.IPRoute>> result = SALT_CLIENT
+                    .callSync(SumaUtil.primaryIps(),
                     new MinionList(minionId),
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result.get(minionId);

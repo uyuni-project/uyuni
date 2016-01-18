@@ -17,6 +17,7 @@ package com.suse.manager.webui.services;
 import com.suse.manager.webui.utils.salt.Schedule;
 import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.manager.webui.utils.salt.Network;
+import com.suse.manager.webui.utils.salt.SumaUtil;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.datatypes.target.Target;
@@ -227,7 +228,7 @@ public interface SaltService {
      * @return a list with two IP address, first is the IPv4 address,
      * second is the IPv6 address (or null if not present).
      */
-    List<String> getPrimaryIps(String minionId);
+    Map<SumaUtil.IPVersion, SumaUtil.IPRoute> getPrimaryIps(String minionId);
 
     /**
      * Get the kernel modules used for each network interface.
