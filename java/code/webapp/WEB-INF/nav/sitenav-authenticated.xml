@@ -24,9 +24,6 @@
         <rhn-tab-url>/rhn/multiorg/channels/Provided.do</rhn-tab-url>
       </rhn-tab>
     </rhn-tab>
-    <rhn-tab name="Subscription Management" url="/rhn/systems/SystemEntitlements.do" acl="user_role(org_admin)" >
-      <rhn-tab name="System Entitlements" url="/rhn/systems/SystemEntitlements.do" acl="user_role(org_admin)" />
-    </rhn-tab>
   </rhn-tab>
   <rhn-tab name="Systems" url="/rhn/systems/Overview.do">
     <rhn-tab name="Overview" url="/rhn/systems/Overview.do"/>
@@ -57,6 +54,7 @@
           <rhn-tab-url>/rhn/systems/DuplicateSystemsDeleteConfirm.do</rhn-tab-url>
       </rhn-tab>
       <rhn-tab name="System Currency" url="/rhn/systems/SystemCurrency.do"/>
+      <rhn-tab name="System Entitlements" url="/rhn/systems/SystemEntitlements.do" acl="user_role(org_admin)" />
     </rhn-tab>
     <rhn-tab name="System Groups">
      <rhn-tab-directory>/rhn/groups</rhn-tab-directory>
