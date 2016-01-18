@@ -24,6 +24,9 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -37,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.DatatypeConverter;
+
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import org.apache.commons.collections.CollectionUtils;
 
 /**
@@ -223,8 +228,12 @@ public class ActionChainHandler extends BaseHandler {
     public Integer addSystemReboot(User loggedInUser,
                                    Integer serverId,
                                    String chainLabel) {
+
+        Server server = this.acUtil.getServerById(serverId, loggedInUser);
+        this.acUtil.ensureNotSalt(server);
+
         return ActionChainManager.scheduleRebootAction(
-                loggedInUser, this.acUtil.getServerById(serverId, loggedInUser),
+                loggedInUser, server,
                 new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
         ).getId().intValue();
     }
@@ -254,8 +263,11 @@ public class ActionChainHandler extends BaseHandler {
             throw new InvalidParameterException("No specified packages.");
         }
 
+        Server server = this.acUtil.getServerById(serverId, loggedInUser);
+        this.acUtil.ensureNotSalt(server);
+
         return ActionChainManager.schedulePackageRemoval(loggedInUser,
-                this.acUtil.getServerById(serverId, loggedInUser),
+                server,
                 this.acUtil.resolvePackages(packages, loggedInUser),
                 new Date(),
                 this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
@@ -286,8 +298,11 @@ public class ActionChainHandler extends BaseHandler {
             throw new InvalidParameterException("No specified packages.");
         }
 
+        Server server = this.acUtil.getServerById(serverId, loggedInUser);
+        this.acUtil.ensureNotSalt(server);
+
         return ActionChainManager.schedulePackageInstall(loggedInUser,
-                this.acUtil.getServerById(serverId, loggedInUser),
+                server,
                 this.acUtil.resolvePackages(packages, loggedInUser), new Date(),
                 this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
         ).getId().intValue();
@@ -319,6 +334,8 @@ public class ActionChainHandler extends BaseHandler {
         }
 
         Server server = this.acUtil.getServerById(serverId, loggedInUser);
+        this.acUtil.ensureNotSalt(server);
+
         return ActionChainManager.schedulePackageVerify(
                 loggedInUser, server, this.acUtil.resolvePackages(packages, loggedInUser),
                 new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
@@ -351,6 +368,8 @@ public class ActionChainHandler extends BaseHandler {
         }
 
         Server server = this.acUtil.getServerById(serverId, loggedInUser);
+        this.acUtil.ensureNotSalt(server);
+
         return ActionChainManager.schedulePackageUpgrade(
                 loggedInUser, server, this.acUtil.resolvePackages(packages, loggedInUser),
                 new Date(),
@@ -386,6 +405,10 @@ public class ActionChainHandler extends BaseHandler {
      */
     public Integer addScriptRun(User loggedInUser, Integer serverId, String chainLabel,
             String uid, String gid, Integer timeout, String scriptBody) {
+
+        Server server = this.acUtil.getServerById(serverId, loggedInUser);
+        this.acUtil.ensureNotSalt(server);
+
         List<Long> systems = new ArrayList<Long>();
         systems.add((long) serverId);
 
@@ -444,6 +467,8 @@ public class ActionChainHandler extends BaseHandler {
         if (revisions.isEmpty()) {
             throw new InvalidParameterException("At least one revision should be given.");
         }
+
+        this.acUtil.ensureNotSalt(this.acUtil.getServerById(serverId, loggedInUser));
 
         List<Long> server = new ArrayList<Long>();
         server.add(serverId.longValue());
