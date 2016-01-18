@@ -2,7 +2,7 @@
 
 var SubscriptionMatching = React.createClass({
    getInitialState: function() {
-     return { "messages" : [] };
+     return { "matcher_data_available": true, "messages" : [] };
    },
 
   componentWillMount: function() {
@@ -12,16 +12,34 @@ var SubscriptionMatching = React.createClass({
   },
 
   render: function() {
+    var body;
+    if (this.state.matcher_data_available) {
+      body = (
+        <div className="row col-md-12">
+          <p>{t("Please review warning and information messages from last matching below.")}</p>
+          <Table headers={[t("Message"), t("Additional information")]} data={humanReadable(this.state.messages)} />
+        </div>
+      );
+    }
+    else {
+      body = (
+        <div className="row col-md-12">
+          <p>{t("Matcher has not run yet, you can ")}
+            <a href="/rhn/admin/BunchDetail.do?label=gatherer-matcher-bunch">
+              {t("schedule a one-time run")}
+            </a> in the bunch page.
+          </p>
+        </div>
+      );
+    }
+
     return (
       <div>
         <div className="spacewalk-toolbar-h1">
           <h1><i className="fa spacewalk-icon-subscription-counting"></i>{t("Subscription Matching")}</h1>
         </div>
         <div>
-          <div className="row col-md-12">
-            <p>{t("Please review warning and information messages from last matching below.")}</p>
-            <Table headers={[t("Message"), t("Additional information")]} data={humanReadable(this.state.messages)} />
-          </div>
+          {body}
         </div>
       </div>
     );
