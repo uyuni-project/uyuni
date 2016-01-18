@@ -213,6 +213,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
 
     private void handleVirtualization(MinionServer server, ValueMap grains) {
         String virtType = grains.getValueAsString("virtual");
+        String virtSubtype = grains.getValueAsString("virtual_subtype");
 
         if (StringUtils.isNotBlank(virtType) && !"physical".equals(virtType)) {
             String virtUuid = grains.getValueAsString("uuid");
@@ -222,20 +223,60 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
                 //       # host and is confirmed.
 
                 VirtualInstance virtualInstance = new VirtualInstance();
-                virtualInstance.setUuid(virtUuid);
+                virtualInstance.setUuid(StringUtils.remove(virtUuid, '-'));
                 virtualInstance.setConfirmed(1L);
                 virtualInstance.setGuestSystem(server);
                 virtualInstance.setState(VirtualInstanceFactory.getInstance().getStoppedState());
                 virtualInstance.setName(null);
                 virtualInstance.setHostSystem(null);
 
-                // TODO convert virtType to types avaliable in rhnvirtualinstancetype
-                VirtualInstanceType type =
+                String virtTypeLabel = null;
+                switch(virtType) {
+                    case "xen":
+                        if("Xen PV DomU".equals(virtSubtype)) {
+                            virtTypeLabel = "para_virtualized";
+                        } else {
+                            virtTypeLabel = "fully_virtualized";
+                        }
+                        break;
+                    case "qemu":
+                    case "kvm":
+                        virtTypeLabel = "qemu";
+                        break;
+                    case "VMware":
+                        virtTypeLabel = "qemu";
+                        break;
+                    case "HyperV":
+                        virtTypeLabel = "hyperv";
+                        break;
+                    case "VirtualBox":
+                        virtTypeLabel = "virtualbox";
+                        break;
+                    // TODO detect Hitachi LPAR (virtage)
+                    default:
+                        LOG.warn(String.format("Unsupported virtual instance type '%s' for minion '%s'",virtType, server.getMinionId()));
+                        // TODO do what with other virt types ?
+//                    case "Parallels":
+//                    case "oracle":
+//                    case "bochs":
+//                    case "chroot":
+//                    case "uml":
+//                    case "systemd-nspawn":
+//                    case "VirtualPC":
+//                    case "LXC":
+//                    case "bhyve":
+//                    case "openvzhn":
+//                    case "openvzve":
+//                    case "gce": // Google
+//                    case "OpenStack":
+                }
+                VirtualInstanceType type = null;
                         VirtualInstanceFactory.getInstance().getVirtualInstanceType(virtType);
+
                 if (type == null) { // fallback
                     type = VirtualInstanceFactory.getInstance().getParaVirtType();
                     LOG.warn(String.format("Can't find virtual instance type for string '%s'. " +
-                            "Defaulting to '%s'", virtType, type));
+                            "Defaulting to '%s' for minion '%s'", virtType, type.getLabel(), server.getMinionId()));
                 }
 
                 virtualInstance.setType(type);
@@ -243,7 +284,6 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
 
             }
         }
-
 
     }
 
