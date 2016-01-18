@@ -62,7 +62,7 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
     /**
      * The package "name" comes as a key of the set of these attributes, hence is implicit.
      */
-    private static final List<String> pkgAttrs = Collections.unmodifiableList(Arrays.asList(
+    private static final List<String> PKGATTR = Collections.unmodifiableList(Arrays.asList(
             "arch", "version", "release", "install_date", "epoch"
     ));
 
@@ -86,7 +86,7 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
         // Query info about installed packages and save the server
         MinionServerFactory.lookupById(eventMessage.getServerId()).ifPresent(server -> {
             Map<String, Pkg.Info> saltPackages =
-                    SALT_SERVICE.getInstalledPackageDetails(server.getMinionId(), pkgAttrs);
+                    SALT_SERVICE.getInstalledPackageDetails(server.getMinionId(), PKGATTR);
             Set<InstalledPackage> newPackages = saltPackages.entrySet().stream().map(
                     entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
             ).collect(Collectors.toSet());
