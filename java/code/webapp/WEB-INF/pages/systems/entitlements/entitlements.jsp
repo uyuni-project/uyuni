@@ -67,7 +67,9 @@
         <hr/>
         <div class="panel panel-default">
                   <table class="table">
+                        <!-- On SUSE Manager doing a mass change of base entitlement will not work -->
                         <!--  Base Entitlement Section -->
+                        <!--
                         <tr>
                           <th><bean:message key="systementitlements.jsp.baseentitlement" /></th>
                           <td class="text-right">
@@ -80,6 +82,7 @@
                               </html:submit>
                           </td>
                         </tr>
+                        -->
                         <!--  Add On Entitlement Section -->
                         <tr>
                             <th><bean:message key="systementitlements.jsp.addonentitlement" /></th>
