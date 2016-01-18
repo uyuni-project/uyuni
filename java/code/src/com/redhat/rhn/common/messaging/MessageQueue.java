@@ -315,7 +315,6 @@ public class MessageQueue {
         // Deploy configuration files
         MessageQueue.registerAction(new SsmConfigFilesAction(),
                                     SsmConfigFilesEvent.class);
-
     }
 }
 
