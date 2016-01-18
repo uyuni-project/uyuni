@@ -79,7 +79,7 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
      * {@inheritDoc}
      */
     @Override
-    protected void doExecute(EventMessage msg) {
+    public void doExecute(EventMessage msg) {
         UpdatePackageProfileEventMessage eventMessage =
                 (UpdatePackageProfileEventMessage) msg;
 

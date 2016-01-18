@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.messaging.test.MessageQueueTest;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import org.jmock.Mock;
@@ -58,20 +60,17 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
 
         // cleanup
         Mock saltServiceMock = mock(SaltService.class);
-        String minionId = MINION_ID;
 
         MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
 
         // Register a minion via RegisterMinionAction and mocked SaltService
 
-        saltServiceMock.stubs().method("getMachineId").with(eq(minionId)).will(
+        saltServiceMock.stubs().method("getMachineId").with(eq(MINION_ID)).will(
                 returnValue(MACHINE_ID));
-        saltServiceMock.stubs().method("getGrains").with(eq(minionId)).will(
-                returnValue(getGrains(minionId)));
-        saltServiceMock.stubs().method("getCpuInfo").with(eq(minionId)).will(
-                returnValue(getCpuInfo(minionId)));
-        saltServiceMock.stubs().method("getInstalledPackageDetails").with(eq(minionId)).will(
-                returnValue(this.getMinionPackages()));
+        saltServiceMock.stubs().method("getGrains").with(eq(MINION_ID)).will(
+                returnValue(getGrains(MINION_ID)));
+        saltServiceMock.stubs().method("getCpuInfo").with(eq(MINION_ID)).will(
+                returnValue(getCpuInfo(MINION_ID)));
         saltServiceMock.stubs().method("sendEvent").will(returnValue(true));
         saltServiceMock.stubs().method("syncGrains");
         saltServiceMock.stubs().method("syncModules");
@@ -79,16 +78,15 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
         SaltService saltService = (SaltService) saltServiceMock.proxy();
 
 
-        RegisterMinionAction action = new RegisterMinionAction(saltService) {
-        };
-        action.doExecute(new RegisterMinionEvent(minionId));
+        RegisterMinionAction action = new RegisterMinionAction(saltService);
+        action.doExecute(new RegisterMinionEvent(MINION_ID));
 
         // Verify the resulting system entry
-        String machineId = saltService.getMachineId(minionId);
+        String machineId = saltService.getMachineId(MINION_ID);
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         assertTrue(optMinion.isPresent());
         MinionServer minion = optMinion.get();
-        assertEquals(minionId, minion.getName());
+        assertEquals(MINION_ID, minion.getName());
         assertEquals(machineId, minion.getDigitalServerId());
         assertEquals("3.12.48-52.27-default", minion.getRunningKernel());
         assertEquals("SLES", minion.getOs());
@@ -112,25 +110,6 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
 
         // Verify the entitlement
         assertEquals(EntitlementManager.SALTSTACK, minion.getBaseEntitlement());
-
-        for (InstalledPackage pkg : minion.getPackages()) {
-            String release = null;
-            String version = null;
-            if (pkg.getName().getName().equals("aaa_base")) {
-                release = "3.1";
-                version = "13.2+git20140911.61c1681";
-            }
-            else if (pkg.getName().getName().equals("bash")) {
-                release = "75.2";
-                version = "4.2";
-            }
-
-            assertEquals(release, pkg.getEvr().getRelease());
-            assertEquals(version, pkg.getEvr().getVersion());
-            assertNull(pkg.getEvr().getEpoch());
-            assertEquals("x86_64", pkg.getArch().getName());
-        }
-        assertEquals(2, minion.getPackages().size());
     }
 
     @SuppressWarnings("unchecked")
@@ -138,11 +117,6 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
         Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
                 readFile("dummy_cpuinfo.json"));
         return (Map<String, Object>)((List<Map<String, Object>>)grains.get("return")).get(0).get(minionId);
-    }
-
-    private Map<String, Pkg.Info> getMinionPackages() throws IOException, ClassNotFoundException {
-        return new JsonParser<>(Pkg.infoInstalled("").getReturnType()).parse(
-                readFile("dummy_package.json"));
     }
 
     @SuppressWarnings("unchecked")
