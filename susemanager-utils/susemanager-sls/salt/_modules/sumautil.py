@@ -22,14 +22,14 @@ log = logging.getLogger(__name__)
 
 __virtualname__ = 'sumautil'
 
+SYSFS_NET_PATH = '/sys/class/net'
+
 
 def __virtual__():
     '''
     Only run on Linux systems
     '''
-    if __grains__['kernel'] != 'Linux':
-        return (False, 'The sumautil module only works on Linux systems.')
-    return __virtualname__
+    return __grains__['kernel'] == 'Linux' and __virtualname__ or False
 
 
 def cat(path):
@@ -92,7 +92,7 @@ def get_net_module(iface):
 
         salt '*' sumautil.get_net_module eth0
     '''
-    sysfspath = '/sys/class/net/{0}/device/driver'.format(iface)
+    sysfspath = '{0}/{1}/device/driver'.format(SYSFS_NET_PATH, iface)
 
     return os.path.exists(sysfspath) and os.path.split(os.readlink(sysfspath))[-1] or None
 
@@ -109,9 +109,10 @@ def get_net_modules():
         salt '*' sumautil.get_net_modules
     '''
     drivers = dict()
-    for e in os.listdir('/sys/class/net/'):
+    for e in os.listdir(SYSFS_NET_PATH):
         try:
             drivers[e] = get_net_module(e)
         except OSError as e:
             log.warn("An error occurred getting net driver for {0}".format(e), exc_info=True)
+
     return drivers or None
