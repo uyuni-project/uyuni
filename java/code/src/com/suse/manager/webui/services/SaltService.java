@@ -223,10 +223,9 @@ public interface SaltService {
 
 
     /**
-     * Get the source IPs on the minion used to connect to the master.
+     * Get the IP routing that the minion uses to connect to the master.
      * @param minionId the minion id
-     * @return a list with two IP address, first is the IPv4 address,
-     * second is the IPv6 address (or null if not present).
+     * @return a map of IPv4 and IPv6 (if available) {@link SumaUtil.IPRoute}
      */
     Map<SumaUtil.IPVersion, SumaUtil.IPRoute> getPrimaryIps(String minionId);
 
