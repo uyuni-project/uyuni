@@ -195,9 +195,9 @@ if [ -f ~/.ssh/known_hosts ];then
   ssh-keygen -R ${CLIENT}
 fi
 
-# Copy public key to the client, require 'ssh-rsa' as host key algorithm
+# Copy public key to the client
 echo "* Pushing SSH key to '${CLIENT}', please login as ${USER}:"
-ssh-copy-id -o HostKeyAlgorithms=ssh-rsa -i ${SSH_IDENTITY}.pub ${USER}@${CLIENT} 2>&1
+ssh-copy-id -i ${SSH_IDENTITY}.pub ${USER}@${CLIENT} 2>&1
 exit_in_case_of_error
 
 # Check if sudo exists or if user has sudo access
