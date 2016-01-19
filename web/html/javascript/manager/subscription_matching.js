@@ -17,6 +17,11 @@ var SubscriptionMatching = React.createClass({
     var latestEnd = data == null ? null : data.latestEnd;
     var messages = data == null ? null : data.messages;
 
+    var body;
+    if (data != null && data.matcherDataAvailable) {
+      body = <SubscriptionMessages messages={messages} />
+    }
+
     return (
       <div>
         <div className="spacewalk-toolbar-h1">
@@ -24,7 +29,7 @@ var SubscriptionMatching = React.createClass({
         </div>
         <div>
           <MatcherStatus dataAvailable={data != null} latestStart={latestStart} latestEnd={latestEnd} />
-          <SubscriptionMessages messages={messages} />
+          {body}
         </div>
       </div>
     );

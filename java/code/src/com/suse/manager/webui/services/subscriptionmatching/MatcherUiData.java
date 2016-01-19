@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.services.subscriptionmatching;
 
-import com.google.gson.annotations.SerializedName;
 import com.suse.matcher.json.JsonMessage;
 
 import java.util.Date;
@@ -27,7 +26,6 @@ import java.util.List;
 public class MatcherUiData {
 
     /** True if we have any data from subscription-matcher. */
-    @SerializedName("matcher_data_available")
     private boolean matcherDataAvailable;
 
     /** The latest start date of subscription-matcher's run. */
