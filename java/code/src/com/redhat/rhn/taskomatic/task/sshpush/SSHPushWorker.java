@@ -21,6 +21,7 @@ import java.net.InetAddress;
 import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.IOUtils;
@@ -28,6 +29,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.HostKey;
+import com.jcraft.jsch.HostKeyRepository;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -50,7 +53,7 @@ public class SSHPushWorker implements QueueWorker {
     private static final String KNOWN_HOSTS = "/root/.ssh/known_hosts";
     private static final String PRIVATE_KEY = "/root/.ssh/id_susemanager";
     private static final String REMOTE_USER = "root";
-    private static final String RHN_CHECK = "rhn_check";
+    private static final String RHN_CHECK = "/usr/sbin/rhn_check";
     private static final int SSL_PORT = 443;
 
     // Message text used for error detection
@@ -208,6 +211,10 @@ public class SSHPushWorker implements QueueWorker {
             // Setup session
             session = ssh.getSession(sudoUser != null ? sudoUser : REMOTE_USER,
                     proxy != null ? proxy : client);
+            Optional<String> hostKeyType = hostKeyType(session.getHost());
+            if (hostKeyType.isPresent()) {
+                session.setConfig("server_host_key", hostKeyType.get());
+            }
             session.connect();
 
             // Setup port forwarding if needed
@@ -267,6 +274,36 @@ public class SSHPushWorker implements QueueWorker {
     }
 
     /**
+     * Lookup the host key type to use for a given hostname or ip address (in known_hosts).
+     * @param host the hostname or ip address to lookup
+     * @return the host key type or empty optional
+     */
+    private Optional<String> hostKeyType(String host) {
+        HostKeyRepository hostKeyRepo = ssh.getHostKeyRepository();
+        HostKey[] hostKeys = hostKeyRepo.getHostKey();
+        if (hostKeys != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Looking up host key in: " +
+                        hostKeyRepo.getKnownHostsRepositoryID());
+            }
+
+            for (HostKey hostKey : hostKeys) {
+                for (String hostString: hostKey.getHost().split(",")) {
+                    if (hostString.matches(host)) {
+                        if (log.isDebugEnabled()) {
+                            log.debug("Host key type for " + hostString + ": " +
+                                    hostKey.getType());
+                        }
+                        return Optional.of(hostKey.getType());
+                    }
+                }
+            }
+        }
+        log.warn("Unknown host: " + host);
+        return Optional.empty();
+    }
+
+    /**
      * Construct command to be run via ssh on either the proxy or the client.
      * @return command as string
      */
@@ -278,11 +315,11 @@ public class SSHPushWorker implements QueueWorker {
         if (proxy != null) {
             StringBuilder sb = new StringBuilder("ssh");
             if (sudoUser != null) {
-                sb.append(" -l  ");
+                sb.append(" -l ");
                 sb.append(sudoUser);
             }
             sb.append(" -i ");
-            sb.append(PRIVATE_KEY);
+            sb.append("~/.ssh/id_susemanager");
             sb.append(" ");
             sb.append(client);
             if (system.getContactMethodLabel().equals(SSH_PUSH_TUNNEL)) {
