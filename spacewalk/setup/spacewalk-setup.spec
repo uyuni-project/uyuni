@@ -170,7 +170,7 @@ if [ -e /etc/zypp/credentials.d/NCCcredentials ]; then
 fi
 if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/SCCcredentials
-    chown g+r /etc/zypp/credentials.d/SCCcredentials
+    chmod g+r /etc/zypp/credentials.d/SCCcredentials
 fi
 for name in /etc/sysconfig/tomcat{5,6,} /etc/tomcat*/tomcat*.conf; do
   test -f $name \
