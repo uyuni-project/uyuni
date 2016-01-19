@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
-import com.suse.manager.reactor.hardware.CpuMapper;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
@@ -144,8 +143,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             serverInfo.setServer(server);
             server.setServerInfo(serverInfo);
 
-            mapHardwareDetails(server, grains);
-            // TODO network details
+            mapHardwareGrains(server, grains);
 
             //HACK: set installed product depending on the grains
             // to get access to suse channels
@@ -171,6 +169,9 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
 
             ServerFactory.save(server);
 
+            triggerGetHardwareInfo(server, grains);
+            triggerGetNetworkInfo(server, grains);
+
             // Assign the SaltStack base entitlement by default
             server.setBaseEntitlement(
                     EntitlementManager.getByName(EntitlementManager.SALTSTACK_ENTITLED));
@@ -192,13 +193,17 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         }
     }
 
-    private void mapHardwareDetails(MinionServer server, ValueMap grains) {
+    private void mapHardwareGrains(MinionServer server, ValueMap grains) {
+        // for efficiency do this here
         server.setRam(grains.getValueAsLong("mem_total").orElse(0L));
+    }
 
-        CpuMapper cpuMapper = new CpuMapper(SALT_SERVICE);
-        cpuMapper.map(server, grains);
+    private void triggerGetNetworkInfo(MinionServer server, ValueMap grains) {
+        MessageQueue.publish(
+               new GetNetworkInfoEventMessage(server.getId(), grains));
+    }
 
-        // get the rest of hardware info in an async way
-        MessageQueue.publish(new GetHardwareInfoEventMessage(server.getId(), true));
+    private void triggerGetHardwareInfo(MinionServer server, ValueMap grains) {
+        MessageQueue.publish(new GetHardwareInfoEventMessage(server.getId()));
     }
 }

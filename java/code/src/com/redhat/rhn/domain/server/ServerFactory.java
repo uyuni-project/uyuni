@@ -964,4 +964,14 @@ public class ServerFactory extends HibernateFactory {
                 }, Collectors.toSet())))
         );
     }
+
+    /**
+     * Save NetworkInterface
+     * @param networkInterfaceIn the interface to save
+     */
+    public static void saveNetworkInterface(NetworkInterface networkInterfaceIn) {
+        singleton.saveObject(networkInterfaceIn);
+    }
+
+
 }

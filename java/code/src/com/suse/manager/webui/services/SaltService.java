@@ -16,6 +16,8 @@ package com.suse.manager.webui.services;
 
 import com.suse.manager.webui.utils.salt.Schedule;
 import com.suse.manager.webui.utils.salt.Smbios;
+import com.suse.manager.webui.utils.salt.Network;
+import com.suse.manager.webui.utils.salt.SumaUtil;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.datatypes.target.Target;
@@ -191,6 +193,13 @@ public interface SaltService {
     String getMainframeSysinfoReadValues(String minionId);
 
     /**
+     * Get the network interfaces from a minion.
+     * @param minionId the minion id
+     * @return a map containing information about each network interface
+     */
+    Map<String, Network.Interface> getNetworkInterfacesInfo(String minionId);
+
+    /**
      * Schedule patch installations for a given target.
      *
      * @param name the name to use for the scheduled job
@@ -211,4 +220,21 @@ public interface SaltService {
      * @return the result
      */
     Map<String, Schedule.Result> deleteSchedule(String name, Target<?> target);
+
+
+    /**
+     * Get the IP routing that the minion uses to connect to the master.
+     * @param minionId the minion id
+     * @return a map of IPv4 and IPv6 (if available) {@link SumaUtil.IPRoute}
+     */
+    Map<SumaUtil.IPVersion, SumaUtil.IPRoute> getPrimaryIps(String minionId);
+
+    /**
+     * Get the kernel modules used for each network interface.
+     * @param minionId the minion id
+     * @return a map with the network interface name as key and
+     * the kernel module name or null as a value
+     */
+    Map<String, String> getNetModules(String minionId);
+
 }

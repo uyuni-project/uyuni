@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.utils.salt;
 
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.suse.saltstack.netapi.calls.LocalCall;
 
@@ -25,6 +26,61 @@ import java.util.Optional;
  * Custom Salt module sumautil.
  */
 public class SumaUtil {
+
+    /**
+     * IP protocol version
+     */
+    public enum IPVersion {
+        @SerializedName("IPv4")
+        IPV4,
+        @SerializedName("IPv6")
+        IPV6
+    }
+
+    /**
+     * IP route information
+     */
+    public static class IPRoute {
+
+        private String destination;
+        private String gateway;
+        @SerializedName("interface")
+        private String netInterface;
+        private String source;
+
+        /**
+         * The destination IP.
+         * @return an IPv4 or IPv6 address
+         */
+        public String getDestination() {
+            return destination;
+        }
+
+        /**
+         * Gateway, if any.
+         * @return an IPv4 or IPv6 address
+         */
+        public String getGateway() {
+            return gateway;
+        }
+
+        /**
+         * The source network interface
+         * @return the name of the network interface
+         */
+        public String getInterface() {
+            return netInterface;
+        }
+
+        /**
+         * The source IP.
+         * @return an IPv4 or IPv6 address
+         */
+        public String getSource() {
+            return source;
+        }
+
+    }
 
     private SumaUtil() { }
 
@@ -41,4 +97,23 @@ public class SumaUtil {
         });
     }
 
+    /**
+     * Call 'sumautil.primary_ips'
+     * @return a {@link LocalCall} to pass to the SaltStackClient
+     */
+    public static LocalCall<Map<IPVersion, IPRoute>> primaryIps() {
+        return new LocalCall("sumautil.primary_ips", Optional.empty(),
+                Optional.empty(), new TypeToken<Map<IPVersion, IPRoute>>() {
+        });
+    }
+
+    /**
+     * Call 'sumautil.get_net_modules'
+     * @return a {@link LocalCall} to pass to the SaltStackClient
+     */
+    public static LocalCall<Map<String, String>> getNetModules() {
+        return new LocalCall("sumautil.get_net_modules", Optional.empty(),
+                Optional.empty(), new TypeToken<Map<String, String>>() {
+        });
+    }
 }

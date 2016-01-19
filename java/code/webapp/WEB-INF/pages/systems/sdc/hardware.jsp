@@ -139,7 +139,7 @@
                         <td>${network_ip6_addr}</td>
                     </tr>
 
-                    <rhn:require acl="system_has_management_entitlement()">
+                    <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
                         <tr>
                             <th><c:out value="Primary network interface:" /></th>
                             <td><html:select property="primaryInterface" styleId="primaryInterface">
@@ -153,7 +153,7 @@
         </div>
         <rhn:csrf />
 
-        <rhn:require acl="system_has_management_entitlement()">
+        <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
             <div class="text-right margin-bottom-sm">
                 <html:submit property="update_interface" styleClass="btn btn-default">
                     <bean:message key="sdc.details.edit.update" />
