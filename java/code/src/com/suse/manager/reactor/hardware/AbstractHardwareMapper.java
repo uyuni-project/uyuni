@@ -48,7 +48,8 @@ public abstract class AbstractHardwareMapper<T> {
     public T map(MinionServer server, ValueMap grains) {
         try {
             return doMap(server, grains);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Error executing mapper " + getClass().getName(), e);
         }
         return null;
