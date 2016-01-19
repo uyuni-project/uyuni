@@ -53,6 +53,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -2000,7 +2001,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
         }
 
         srvInfo.setCheckin(new Date());
-        srvInfo.setCheckinCounter(srvInfo.getCheckinCounter() + 1);
+        srvInfo.setCheckinCounter(
+                Optional.ofNullable(srvInfo.getCheckinCounter()).orElse(0L) + 1);
+
     }
 
 }
