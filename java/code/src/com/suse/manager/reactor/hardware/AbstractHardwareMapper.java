@@ -29,14 +29,14 @@ public abstract class AbstractHardwareMapper<T> {
     private static final Logger LOG = Logger
             .getLogger(AbstractHardwareMapper.class);
 
-    protected final SaltService SALT_SERVICE;
+    protected SaltServiceInvoker saltInvoker;
 
     /**
      * The constructor.
-     * @param saltService a {@link SaltService} instance
+     * @param saltInvokerIn a {@link SaltServiceInvoker} instance
      */
-    public AbstractHardwareMapper(SaltService saltService) {
-        this.SALT_SERVICE = saltService;
+    public AbstractHardwareMapper(SaltServiceInvoker saltInvokerIn) {
+        this.saltInvoker = saltInvokerIn;
     }
 
     /**

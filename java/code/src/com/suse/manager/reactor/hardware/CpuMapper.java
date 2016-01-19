@@ -29,10 +29,10 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
 
     /**
      * The constructor
-     * @param saltService a {@link SaltService} instance
+     * @param saltServiceInvoker a {@link SaltServiceInvoker} instance
      */
-    public CpuMapper(SaltService saltService) {
-        super(saltService);
+    public CpuMapper(SaltServiceInvoker saltServiceInvoker) {
+        super(saltServiceInvoker);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
         // os.uname[4]
         String cpuarch = grains.getValueAsString("cpuarch").toLowerCase();
 
-        ValueMap cpuinfo = new ValueMap(SALT_SERVICE.getCpuInfo(server.getMinionId()));
+        ValueMap cpuinfo = new ValueMap(saltInvoker.getCpuInfo(server.getMinionId()));
         // salt returns /proc/cpuinfo data
 
         // See hardware.py read_cpuinfo()

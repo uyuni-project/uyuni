@@ -42,10 +42,10 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
 
     /**
      * The constructor.
-     * @param saltService a {@link SaltService} instance
+     * @param saltServiceInvoker a {@link SaltServiceInvoker} instance
      */
-    public SysinfoMapper(SaltService saltService) {
-        super(saltService);
+    public SysinfoMapper(SaltServiceInvoker saltServiceInvoker) {
+        super(saltServiceInvoker);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
         try {
             // call custom minion to get read_values info (if available)
             // original code: hardware.py get_sysinfo()
-            String readValuesOutput = SALT_SERVICE.getMainframeSysinfoReadValues(minionId);
+            String readValuesOutput = saltInvoker.getMainframeSysinfoReadValues(minionId);
             Map<String, String> sysvalues = new HashMap<>();
             for (String line : readValuesOutput.split("\\r?\\n")) {
                 if (!line.contains(":")) {
