@@ -501,6 +501,7 @@ public class TaskoFactory extends HibernateFactory {
             .add(Restrictions.in("status",
                     new Object[] {TaskoRun.STATUS_RUNNING, TaskoRun.STATUS_FINISHED}))
             .addOrder(Order.desc("startTime"))
+            .addOrder(Order.desc("id"))
             .setFirstResult(0)
             .setMaxResults(1)
             .uniqueResult();
