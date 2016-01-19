@@ -6,17 +6,9 @@ Utility module for Suse Manager
 from __future__ import absolute_import
 
 import logging
-import salt.utils
-import salt.modules.cmdmod
-import salt.modules.network
 import socket
 import os
 from salt.exceptions import CommandExecutionError
-
-__salt__ = {
-    'cmd.run_all': salt.modules.cmdmod.run_all,
-    'network.get_route': salt.modules.network.get_route
-}
 
 log = logging.getLogger(__name__)
 
