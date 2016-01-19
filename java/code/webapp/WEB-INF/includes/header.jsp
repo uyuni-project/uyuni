@@ -91,7 +91,6 @@
               renderer="com.redhat.rhn.frontend.nav.TopnavRenderer" />
   </rhn:require>
 
-</div>
 <rhn:require acl="not user_authenticated()">
   <nav class="option">
     <rhn:menu mindepth="0" maxdepth="0"
@@ -99,4 +98,5 @@
             renderer="com.redhat.rhn.frontend.nav.TopnavRenderer" />
   </nav>
 </rhn:require>
+</div>
 <!-- end header.jsp -->
