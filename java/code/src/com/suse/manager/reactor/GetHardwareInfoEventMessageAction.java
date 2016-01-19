@@ -76,8 +76,10 @@ public class GetHardwareInfoEventMessageAction extends AbstractDatabaseAction {
             DevicesMapper devicesMapper = new DevicesMapper(saltInvoker);
             devicesMapper.map(server, grains);
 
-            SysinfoMapper sysinfoMapper = new SysinfoMapper(saltInvoker);
-            sysinfoMapper.map(server, grains);
+            if (CpuArchUtil.isS390(cpuarch)) {
+                SysinfoMapper sysinfoMapper = new SysinfoMapper(saltInvoker);
+                sysinfoMapper.map(server, grains);
+            }
 
             VirtualizationMapper virtMapper = new VirtualizationMapper(saltInvoker);
             virtMapper.map(server, grains);
