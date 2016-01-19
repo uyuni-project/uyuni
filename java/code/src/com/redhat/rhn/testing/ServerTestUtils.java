@@ -45,7 +45,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import org.hibernate.Session;
 
-import java.util.HashSet;
 import java.util.Set;
 
 

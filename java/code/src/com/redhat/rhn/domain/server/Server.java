@@ -1780,6 +1780,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * instead.
      * @param packagesIn The packages to set.
      */
+    @Deprecated
     private void setPackages(Set<InstalledPackage> packagesIn) {
         this.packages = packagesIn;
     }
