@@ -192,12 +192,17 @@ else
   echo "* SUSE Manager key found: ${SSH_IDENTITY}"
 fi
 
+# Cleanup temp files locally
+function cleanup_temp_files() {
+  rm -fv ${ENABLE} ${BOOTSTRAP}
+}
+
 # Function to cleanup temp files in case a previous command failed
 function exit_in_case_of_error() {
   if [ ${?} -ne '0' ]; then
     echo "ERROR: Connection to client (${CLIENT}) failed, exiting..."
     if [ "${USE_TUNNEL}" = "Y" ]; then
-      rm -fv ${ENABLE} ${BOOTSTRAP}
+      cleanup_temp_files
     fi
     exit 1
   fi
@@ -253,12 +258,15 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   exit_in_case_of_error
 
   echo "* Cleaning up temporary files"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "rm -f enable.sh bootstrap.sh client-config-overrides-tunnel.txt client_config_update.py"
-  rm -fv ${ENABLE} ${BOOTSTRAP}
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "rm -fv enable.sh bootstrap.sh client-config-overrides-tunnel.txt client_config_update.py"
+  cleanup_temp_files
 elif [ -n "${BOOTSTRAP}" ]; then
   # Simple registration with given bootstrap script
   echo "* Registering client with SUSE Manager: ${CLIENT}"
   ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "chmod +x bootstrap.sh"
   ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} ~/bootstrap.sh"
   exit_in_case_of_error
+
+  echo "* Cleaning up temporary files remotely"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "rm -fv bootstrap.sh client-config-overrides.txt client_config_update.py"
 fi
