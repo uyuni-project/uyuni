@@ -14,10 +14,16 @@
  */
 package com.suse.manager.webui.services.subscriptionmatching;
 
+import static java.util.Optional.ofNullable;
+
+import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.TaskoRun;
+
 import com.suse.matcher.json.JsonInput;
 import com.suse.matcher.json.JsonMessage;
 import com.suse.matcher.json.JsonOutput;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -25,8 +31,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static java.util.Optional.ofNullable;
 
 /**
  * Processes data from the matcher to a form that's displayable by the UI.
@@ -41,14 +45,19 @@ public class SubscriptionMatchProcessor {
      * @return the data
      */
     public Object getData(Optional<JsonInput> input, Optional<JsonOutput> output) {
+        TaskoRun latestRun = TaskoFactory.getLatestRun("gatherer-matcher-bunch");
+        Date latestStart = latestRun == null ? null : latestRun.getStartTime();
+        Date latestEnd = latestRun == null ? null : latestRun.getEndTime();
         if (input.isPresent() && output.isPresent()) {
             return new MatcherUiData(true,
+                    latestStart,
+                    latestEnd,
                     output.get().getMessages().stream()
                             .map(m -> adjustMessage(m, input.get()))
                             .collect(Collectors.toList()));
         }
         else {
-            return new MatcherUiData(false, new LinkedList<>());
+            return new MatcherUiData(false, latestStart, latestEnd, new LinkedList<>());
         }
     }
 

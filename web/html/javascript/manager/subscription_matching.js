@@ -2,31 +2,20 @@
 
 var SubscriptionMatching = React.createClass({
    getInitialState: function() {
-     return { "matcher_data_available": true, "messages" : [] };
+     return {};
    },
 
   componentWillMount: function() {
     $.get("/rhn/manager/subscription_matching/data", data => {
-      this.setState(data);
+      this.setState({"serverData" : data});
     });
   },
 
   render: function() {
-    var body;
-    if (this.state.matcher_data_available) {
-      body = <SubscriptionMessages messages={this.state.messages} />
-    }
-    else {
-      body = (
-        <div className="row col-md-12">
-          <p>{t("Matcher has not run yet, you can ")}
-            <a href="/rhn/admin/BunchDetail.do?label=gatherer-matcher-bunch">
-              {t("schedule a one-time run")}
-            </a> in the bunch page.
-          </p>
-        </div>
-      );
-    }
+    var data = this.state.serverData;
+    var latestStart = data == null ? null : data.latestStart;
+    var latestEnd = data == null ? null : data.latestEnd;
+    var messages = data == null ? null : data.messages;
 
     return (
       <div>
@@ -34,7 +23,8 @@ var SubscriptionMatching = React.createClass({
           <h1><i className="fa spacewalk-icon-subscription-counting"></i>{t("Subscription Matching")}</h1>
         </div>
         <div>
-          {body}
+          <MatcherStatus dataAvailable={data != null} latestStart={latestStart} latestEnd={latestEnd} />
+          <SubscriptionMessages messages={messages} />
         </div>
       </div>
     );
@@ -43,17 +33,70 @@ var SubscriptionMatching = React.createClass({
 
 var SubscriptionMessages = React.createClass({
   render: function() {
-    if (this.props.messages.length > 0) {
-      return (
-        <div className="row col-md-12">
-          <h2>{t("Matching messages")}</h2>
-          <p>{t("Please review warning and information messages from last matching below.")}</p>
-          <Table headers={[t("Message"), t("Additional information")]} data={humanReadable(this.props.messages)} />
-          <CsvLink name="message_report.csv" />
-        </div>
-      );
+    var body;
+    if (this.props.messages != null) {
+      if (this.props.messages.length > 0) {
+        body = (
+          <div>
+            <p>{t("Please review warning and information messages from last matching below.")}</p>
+            <Table headers={[t("Message"), t("Additional information")]} data={humanReadable(this.props.messages)} />
+            <CsvLink name="message_report.csv" />
+          </div>
+        );
+      }
+      else {
+        body = <p>{t("No matcher messages.")}</p>
+      }
     }
-    return null;
+    else {
+      body = <p>{t("Loading matcher data...")}</p>
+    }
+
+    return (
+      <div className="row col-md-12">
+        <h2>{t("Matching messages")}</h2>
+        {body}
+      </div>
+    );
+  }
+});
+
+var MatcherStatus = React.createClass({
+  render: function() {
+    var body;
+    if (this.props.dataAvailable) {
+      if (this.props.latestStart == null) {
+        body = <p>{t("Matcher has not run yet, you can ")} <MatcherScheduleLink />.</p>
+      }
+      else {
+        if (this.props.latestEnd == null) {
+          body = <p>{t("Matcher is currently running, it was started on {0}.", this.props.latestStart)}</p>
+        }
+        else {
+          body = <p>{t("Matcher last ran on {0}, you can ", this.props.latestEnd)} <MatcherScheduleLink />.</p>
+        }
+      }
+    }
+    else {
+      body = <p>{t("Loading matcher data...")}</p>
+    }
+
+    return (
+      <div className="row col-md-12">
+        <h2>{t("Matcher status")}</h2>
+        {body}
+      </div>
+    );
+  }
+});
+
+var MatcherScheduleLink = React.createClass({
+  render: function() {
+    return (
+      <a href="/rhn/admin/BunchDetail.do?label=gatherer-matcher-bunch">
+        {t("schedule a new run manually")}
+      </a>
+    );
   }
 });
 
