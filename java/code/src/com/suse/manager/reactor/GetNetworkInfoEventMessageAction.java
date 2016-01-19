@@ -27,7 +27,7 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.Network;
 import com.suse.manager.webui.utils.salt.SumaUtil;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Collections;
 import java.util.Map;
