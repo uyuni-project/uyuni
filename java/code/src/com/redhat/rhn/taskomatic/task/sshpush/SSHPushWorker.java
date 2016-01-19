@@ -50,7 +50,7 @@ public class SSHPushWorker implements QueueWorker {
     private static final String KNOWN_HOSTS = "/root/.ssh/known_hosts";
     private static final String PRIVATE_KEY = "/root/.ssh/id_susemanager";
     private static final String REMOTE_USER = "root";
-    private static final String RHN_CHECK = "rhn_check";
+    private static final String RHN_CHECK = "/usr/sbin/rhn_check";
     private static final int SSL_PORT = 443;
 
     // Message text used for error detection
@@ -278,11 +278,11 @@ public class SSHPushWorker implements QueueWorker {
         if (proxy != null) {
             StringBuilder sb = new StringBuilder("ssh");
             if (sudoUser != null) {
-                sb.append(" -l  ");
+                sb.append(" -l ");
                 sb.append(sudoUser);
             }
             sb.append(" -i ");
-            sb.append(PRIVATE_KEY);
+            sb.append("~/.ssh/id_susemanager");
             sb.append(" ");
             sb.append(client);
             if (system.getContactMethodLabel().equals(SSH_PUSH_TUNNEL)) {

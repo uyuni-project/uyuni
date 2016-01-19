@@ -3,12 +3,6 @@
 # Print a message
 echo "* Setup a client to be managed via SSH push"
 
-# Check if we are root
-if [ 0$UID -gt 0 ]; then
-  echo "ERROR: You need to be root in order to run this!"
-  exit 1
-fi
-
 # This script's name
 ME=`basename $0`
 
@@ -63,9 +57,27 @@ if [ ${?} -ne '0' ]; then
   exit 1
 fi
 
-# Read tunnel ports from configuration
+# Paths to the configuration
 PATH_RHN_CONF=/etc/rhn/rhn.conf
 PATH_RHN_DEFAULTS=/usr/share/rhn/config-defaults/rhn_web.conf
+
+# Setup sudo user from the config
+SUDO_USER_KEY=ssh_push_sudo_user
+
+SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+if [ -z "${SUDO_USER}" ]; then
+  SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+fi
+
+# Set the sudo command, it'll be blank if no sudo user was set
+# Set the user variable, defaults to root if no sudo user is set
+if [ -z "${SUDO_USER}" ]; then
+  SUDO_CMD=
+  USER=root
+else
+  SUDO_CMD=sudo
+  USER=${SUDO_USER}
+fi
 
 # Init tunnel setup
 if [ "${USE_TUNNEL}" = "Y" ]; then
@@ -104,54 +116,49 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   # Generating the enablement script
   ENABLE=`mktemp`
   echo "* Generating tunnel setup script (${ENABLE})"
+  echo "#!/bin/bash" >> ${ENABLE}
   echo "if [[ \`grep ^127.0.0.1 /etc/hosts\` != *${HOSTNAME}* ]]; then" >> ${ENABLE}
   echo "sed -i 's/\(127\.0\.0\.1.*\)/& ${HOSTNAME}/' /etc/hosts" >> ${ENABLE}
   echo "fi" >> ${ENABLE}
   # Restart name service caching
-  echo "if [ -x '/etc/init.d/nscd' ]; then" >> ${ENABLE}
+  echo "if [ -e '/usr/lib/systemd/system/nscd.service' ]; then" >> ${ENABLE}
+  echo "systemctl restart nscd" >> ${ENABLE}
+  echo "elif [ -x '/etc/init.d/nscd' ]; then" >> ${ENABLE}
   echo "/etc/init.d/nscd restart" >> ${ENABLE}
   echo "fi" >> ${ENABLE}
   # Disable osad completely
-  echo "if [ -x '/etc/init.d/osad' ]; then" >> ${ENABLE}
+  echo "if [ -e '/usr/lib/systemd/system/osad.service' ]; then" >> ${ENABLE}
+  echo "systemctl stop osad" >> ${ENABLE}
+  echo "systemctl disable osad" >> ${ENABLE}
+  echo "elif [ -x '/etc/init.d/osad' ]; then" >> ${ENABLE}
   echo "/etc/init.d/osad stop" >> ${ENABLE}
   echo "chkconfig --del osad" >> ${ENABLE}
   echo "fi" >> ${ENABLE}
   # Disable rhnsd completely
-  echo "if [ -x '/etc/init.d/rhnsd' ]; then" >> ${ENABLE}
+  echo "if [ -e '/usr/lib/systemd/system/rhnsd.service' ]; then" >> ${ENABLE}
+  echo "systemctl stop rhnsd" >> ${ENABLE}
+  echo "systemctl disable rhnsd" >> ${ENABLE}
+  echo "elif [ -x '/etc/init.d/rhnsd' ]; then" >> ${ENABLE}
   echo "/etc/init.d/rhnsd stop" >> ${ENABLE}
   echo "chkconfig --del rhnsd" >> ${ENABLE}
+  echo "fi" >> ${ENABLE}
+  # Disable spacewalk-status-update (only on newer systems)
+  echo "if [ -e '/usr/lib/systemd/system/spacewalk-update-status.service' ]; then" >> ${ENABLE}
+  echo "systemctl stop spacewalk-update-status" >> ${ENABLE}
+  echo "systemctl disable spacewalk-update-status" >> ${ENABLE}
   echo "fi" >> ${ENABLE}
 
   # Create a tunnel version of client-config-overrides.txt
   PATH_OVERRIDES=/srv/www/htdocs/pub/bootstrap/client-config-overrides-tunnel.txt
   echo "* Creating tunnel version of client-config-overrides.txt"
-  cp /srv/www/htdocs/pub/bootstrap/client-config-overrides.txt ${PATH_OVERRIDES}
-  sed -i "s/\(enableProxy=\).*/\10/" ${PATH_OVERRIDES}
-  sed -i "s/\(enableProxyAuth=\).*/\10/" ${PATH_OVERRIDES}
-  sed -i "s/\(httpProxy=\).*/\1/" ${PATH_OVERRIDES}
-  sed -i "s/\(noSSLServerURL=\).*/\1http:\/\/${HOSTNAME}:${PORT_HTTP}/" ${PATH_OVERRIDES}
-  sed -i "s/\(proxyPassword=\).*/\1/" ${PATH_OVERRIDES}
-  sed -i "s/\(proxyUser=\).*/\1/" ${PATH_OVERRIDES}
-  sed -i "s/\(serverURL=\).*/\1https:\/\/${HOSTNAME}:${PORT_HTTPS}\/XMLRPC/" ${PATH_OVERRIDES}
-fi
-
-# ssh-push sudo user
-SUDO_USER_KEY=ssh_push_sudo_user
-
-# Same for sudo user
-SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
-if [ -z "${SUDO_USER}" ]; then
-  SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
-fi
-
-# Set the sudo command, it'll be blank if no sudo user was set
-# Set the user variable, defaults to root if no sudo user is set
-if [ -z "${SUDO_USER}" ]; then
-  SUDO_CMD=
-  USER=root
-else
-  SUDO_CMD=sudo
-  USER=${SUDO_USER}
+  ${SUDO_CMD} cp /srv/www/htdocs/pub/bootstrap/client-config-overrides.txt ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(enableProxy=\).*/\10/" ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(enableProxyAuth=\).*/\10/" ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(httpProxy=\).*/\1/" ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(noSSLServerURL=\).*/\1http:\/\/${HOSTNAME}:${PORT_HTTP}/" ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(proxyPassword=\).*/\1/" ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(proxyUser=\).*/\1/" ${PATH_OVERRIDES}
+  ${SUDO_CMD} sed -i "s/\(serverURL=\).*/\1https:\/\/${HOSTNAME}:${PORT_HTTPS}\/XMLRPC/" ${PATH_OVERRIDES}
 fi
 
 # Prepare the bootstrap script used for registration
@@ -162,6 +169,7 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   sed -i "s/\(CLIENT_OVERRIDES=\).*/\1client-config-overrides-tunnel.txt/" ${BOOTSTRAP}
   sed -i "s/\(HOSTNAME=\).*/\1${HOSTNAME}:${PORT_HTTPS}/" ${BOOTSTRAP}
   sed -i "s/\(HTTP_PUB_DIRECTORY=\).*/\1http:\/\/${HOSTNAME}:${PORT_HTTP}\/pub/" ${BOOTSTRAP}
+  sed -i "s/\(\/usr\/sbin\/rhnreg_ks .*\)/\1 --norhnsd/" ${BOOTSTRAP}
 elif [ -n "${BOOTSTRAP_ORIG}" ]; then
   # Otherwise just use the given file
   BOOTSTRAP=${BOOTSTRAP_ORIG}
@@ -184,12 +192,17 @@ else
   echo "* SUSE Manager key found: ${SSH_IDENTITY}"
 fi
 
+# Cleanup temp files locally
+function cleanup_temp_files() {
+  rm -fv ${ENABLE} ${BOOTSTRAP}
+}
+
 # Function to cleanup temp files in case a previous command failed
 function exit_in_case_of_error() {
   if [ ${?} -ne '0' ]; then
     echo "ERROR: Connection to client (${CLIENT}) failed, exiting..."
     if [ "${USE_TUNNEL}" = "Y" ]; then
-      rm -fv ${ENABLE} ${BOOTSTRAP}
+      cleanup_temp_files
     fi
     exit 1
   fi
@@ -202,7 +215,7 @@ if [ -f ~/.ssh/known_hosts ];then
 fi
 
 # Copy public key to the client, require 'ssh-rsa' as host key algorithm
-echo "* Pushing SSH key to '${CLIENT}', please login as ${user}:"
+echo "* Pushing SSH key to '${CLIENT}', please login as ${USER}:"
 ssh-copy-id -o HostKeyAlgorithms=ssh-rsa -i ${SSH_IDENTITY}.pub ${USER}@${CLIENT} 2>&1
 exit_in_case_of_error
 
@@ -214,9 +227,9 @@ if [ -n "${SUDO_USER}" ]; then
 fi
 
 # Remove duplicate entries from authorized keys
-echo "* Removing duplicate host keys remotely"
-AUTH_KEYS=~/.ssh/authorized_keys
-AUTH_KEYS2=~/.ssh/authorized_keys2
+echo "* Removing duplicate host keys remotely for ${USER}"
+AUTH_KEYS='~/.ssh/authorized_keys'
+AUTH_KEYS2='~/.ssh/authorized_keys2'
 ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "[ -f ${AUTH_KEYS} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS} && echo 'Cleaned: ${AUTH_KEYS}' || echo 'Skipping: ${AUTH_KEYS} (not found)'"
 ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "[ -f ${AUTH_KEYS2} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS2} && echo 'Cleaned: ${AUTH_KEYS2}' || echo 'Skipping: ${AUTH_KEYS2} (not found)'"
 exit_in_case_of_error
@@ -235,19 +248,25 @@ fi
 # Enablement, registration and cleanup
 if [ "${USE_TUNNEL}" = "Y" ]; then
   echo "* Enabling client for SSH Push via tunnel"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} bash enable.sh"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "chmod +x enable.sh"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} ~/enable.sh"
   exit_in_case_of_error
 
   echo "* Registering client with SUSE Manager: ${CLIENT}"
-  ssh -i ${SSH_IDENTITY} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 ${USER}@${CLIENT} "${SUDO_CMD} bash bootstrap.sh"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "chmod +x bootstrap.sh"
+  ssh -i ${SSH_IDENTITY} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 ${USER}@${CLIENT} "${SUDO_CMD} ~/bootstrap.sh"
   exit_in_case_of_error
 
   echo "* Cleaning up temporary files"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "rm -f enable.sh bootstrap.sh client-config-overrides-tunnel.txt client_config_update.py"
-  rm -fv ${ENABLE} ${BOOTSTRAP}
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "rm -fv enable.sh bootstrap.sh client-config-overrides-tunnel.txt client_config_update.py"
+  cleanup_temp_files
 elif [ -n "${BOOTSTRAP}" ]; then
   # Simple registration with given bootstrap script
   echo "* Registering client with SUSE Manager: ${CLIENT}"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} bash bootstrap.sh"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "chmod +x bootstrap.sh"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} ~/bootstrap.sh"
   exit_in_case_of_error
+
+  echo "* Cleaning up temporary files remotely"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "rm -fv bootstrap.sh client-config-overrides.txt client_config_update.py"
 fi
