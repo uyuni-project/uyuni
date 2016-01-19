@@ -14,15 +14,7 @@ var SubscriptionMatching = React.createClass({
   render: function() {
     var body;
     if (this.state.matcher_data_available) {
-      if (this.state.messages.length > 0) {
-        body = (
-          <div className="row col-md-12">
-            <p>{t("Please review warning and information messages from last matching below.")}</p>
-            <Table headers={[t("Message"), t("Additional information")]} data={humanReadable(this.state.messages)} />
-            <CsvLink name="message_report.csv" />
-          </div>
-        );
-      }
+      body = <SubscriptionMessages messages={this.state.messages} />
     }
     else {
       body = (
@@ -46,6 +38,21 @@ var SubscriptionMatching = React.createClass({
         </div>
       </div>
     );
+  }
+});
+
+var SubscriptionMessages = React.createClass({
+  render: function() {
+    if (this.props.messages.length > 0) {
+      return (
+        <div className="row col-md-12">
+          <p>{t("Please review warning and information messages from last matching below.")}</p>
+          <Table headers={[t("Message"), t("Additional information")]} data={humanReadable(this.props.messages)} />
+          <CsvLink name="message_report.csv" />
+        </div>
+      );
+    }
+    return null;
   }
 });
 
