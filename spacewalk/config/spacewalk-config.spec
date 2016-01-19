@@ -31,6 +31,7 @@ Requires(post): aaa_base
 Requires(preun): aaa_base
 # will not work with apache 2.1
 Requires(pre): %{apachepkg} >= 2.2
+Requires: apache2-mod_xsendfile
 %else
 Requires(post): chkconfig
 Requires(preun): chkconfig
@@ -168,6 +169,7 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_ajp
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES xsendfile
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 
