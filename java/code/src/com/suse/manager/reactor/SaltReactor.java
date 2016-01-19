@@ -75,6 +75,8 @@ public class SaltReactor implements EventListener {
                 ActionScheduledEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(),
                 JobReturnEventMessage.class);
+        MessageQueue.registerAction(new GetNetworkInfoEventMessageAction(SALT_SERVICE),
+                GetNetworkInfoEventMessage.class);
 
         // Sync minions to systems in the database
         LOG.debug("Syncing minions to the database");

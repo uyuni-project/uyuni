@@ -15,26 +15,29 @@
 package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.suse.manager.reactor.utils.ValueMap;
 
 /**
- * Trigger getting the hardware information from a minion.
+ * Triggers getting the network information from a minion.
  */
-public class GetHardwareInfoEventMessage implements EventMessage {
+public class GetNetworkInfoEventMessage implements EventMessage {
 
     private Long serverId;
+    private ValueMap grains;
 
     /**
-     * Create a new event to trigger retrieving the hardware information.
-     *
-     * @param serverIdIn minion to register
+     * The constructor.
+     * @param serverIdIn the sever id
+     * @param grainsIn the minion grains
      */
-    public GetHardwareInfoEventMessage(Long serverIdIn) {
-        this.serverId = serverIdIn;
+    public GetNetworkInfoEventMessage(Long serverIdIn, ValueMap grainsIn) {
+        serverId = serverIdIn;
+        grains = grainsIn;
     }
 
     @Override
     public String toText() {
-        return toString();
+        return null;
     }
 
     @Override
@@ -43,17 +46,18 @@ public class GetHardwareInfoEventMessage implements EventMessage {
     }
 
     /**
-     * @return The string representation of this object.
+     * Get the minion grains.
+     * @return a {@link ValueMap} containing the grains
      */
-    public String toString() {
-        return "GetHardwareInfoEventMessage[serverId: " + serverId + "]";
+    public ValueMap getGrains() {
+        return grains;
     }
 
     /**
-     * @return the serverId
+     * Get server id.
+     * @return the id
      */
     public Long getServerId() {
         return serverId;
     }
-
 }
