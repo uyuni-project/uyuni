@@ -92,7 +92,7 @@ def get_net_module(iface):
 
         salt '*' sumautil.get_net_module eth0
     '''
-    sysfspath = '{0}/{1}/device/driver'.format(SYSFS_NET_PATH, iface)
+    sysfspath = os.path.join(SYSFS_NET_PATH, iface, 'device/driver')
 
     return os.path.exists(sysfspath) and os.path.split(os.readlink(sysfspath))[-1] or None
 
@@ -109,10 +109,10 @@ def get_net_modules():
         salt '*' sumautil.get_net_modules
     '''
     drivers = dict()
-    for e in os.listdir(SYSFS_NET_PATH):
+    for devdir in os.listdir(SYSFS_NET_PATH):
         try:
-            drivers[e] = get_net_module(e)
-        except OSError as e:
-            log.warn("An error occurred getting net driver for {0}".format(e), exc_info=True)
+            drivers[devdir] = get_net_module(devdir)
+        except OSError as devdir:
+            log.warn("An error occurred getting net driver for {0}".format(devdir), exc_info=True)
 
     return drivers or None
