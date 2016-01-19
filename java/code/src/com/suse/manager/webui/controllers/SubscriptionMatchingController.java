@@ -20,6 +20,8 @@ import com.redhat.rhn.domain.user.User;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
 
@@ -98,5 +100,18 @@ public class SubscriptionMatchingController {
         DownloadController.downloadMatcherCsv(request, response, filename);
         halt(HttpStatus.SC_OK);
         return null;
+    }
+
+    /**
+     * Schedule run of gatherer-matcher-bunch.
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return null
+     */
+    public static String scheduleMatcherRun(Request request, Response response, User user) {
+        new TaskomaticApi().scheduleSingleSatBunch(user, "gatherer-matcher-bunch",
+                new HashMap<>());
+        return "";
     }
 }
