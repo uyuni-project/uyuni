@@ -19,6 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.suse.manager.matcher.MatcherRunner;
 import com.suse.manager.webui.utils.TokenUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -180,6 +181,12 @@ public class DownloadController {
                  String.format("Token is not valid to access %s in %s: %s",
                                filename, channel, e.getMessage()));
         }
+    }
+
+    public static void downloadMatcherCsv(Request request, Response response,
+            String filename) {
+        response.raw().setContentType("application/csv");
+        downloadFile(request, response, new File(MatcherRunner.OUT_DIRECTORY, filename));
     }
 
     /**
