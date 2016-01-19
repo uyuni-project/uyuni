@@ -41,7 +41,7 @@ import static spark.Spark.halt;
  */
 public class SubscriptionMatchingController {
 
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
     private SubscriptionMatchingController() { }
 
