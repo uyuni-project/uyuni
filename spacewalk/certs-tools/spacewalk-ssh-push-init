@@ -121,18 +121,31 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   echo "sed -i 's/\(127\.0\.0\.1.*\)/& ${HOSTNAME}/' /etc/hosts" >> ${ENABLE}
   echo "fi" >> ${ENABLE}
   # Restart name service caching
-  echo "if [ -x '/etc/init.d/nscd' ]; then" >> ${ENABLE}
+  echo "if [ -e '/usr/lib/systemd/system/nscd.service' ]; then" >> ${ENABLE}
+  echo "systemctl restart nscd" >> ${ENABLE}
+  echo "elif [ -x '/etc/init.d/nscd' ]; then" >> ${ENABLE}
   echo "/etc/init.d/nscd restart" >> ${ENABLE}
   echo "fi" >> ${ENABLE}
   # Disable osad completely
-  echo "if [ -x '/etc/init.d/osad' ]; then" >> ${ENABLE}
+  echo "if [ -e '/usr/lib/systemd/system/osad.service' ]; then" >> ${ENABLE}
+  echo "systemctl stop osad" >> ${ENABLE}
+  echo "systemctl disable osad" >> ${ENABLE}
+  echo "elif [ -x '/etc/init.d/osad' ]; then" >> ${ENABLE}
   echo "/etc/init.d/osad stop" >> ${ENABLE}
   echo "chkconfig --del osad" >> ${ENABLE}
   echo "fi" >> ${ENABLE}
   # Disable rhnsd completely
-  echo "if [ -x '/etc/init.d/rhnsd' ]; then" >> ${ENABLE}
+  echo "if [ -e '/usr/lib/systemd/system/rhnsd.service' ]; then" >> ${ENABLE}
+  echo "systemctl stop rhnsd" >> ${ENABLE}
+  echo "systemctl disable rhnsd" >> ${ENABLE}
+  echo "elif [ -x '/etc/init.d/rhnsd' ]; then" >> ${ENABLE}
   echo "/etc/init.d/rhnsd stop" >> ${ENABLE}
   echo "chkconfig --del rhnsd" >> ${ENABLE}
+  echo "fi" >> ${ENABLE}
+  # Disable spacewalk-status-update (only on newer systems)
+  echo "if [ -e '/usr/lib/systemd/system/spacewalk-update-status.service' ]; then" >> ${ENABLE}
+  echo "systemctl stop spacewalk-update-status" >> ${ENABLE}
+  echo "systemctl disable spacewalk-update-status" >> ${ENABLE}
   echo "fi" >> ${ENABLE}
 
   # Create a tunnel version of client-config-overrides.txt
@@ -156,6 +169,7 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   sed -i "s/\(CLIENT_OVERRIDES=\).*/\1client-config-overrides-tunnel.txt/" ${BOOTSTRAP}
   sed -i "s/\(HOSTNAME=\).*/\1${HOSTNAME}:${PORT_HTTPS}/" ${BOOTSTRAP}
   sed -i "s/\(HTTP_PUB_DIRECTORY=\).*/\1http:\/\/${HOSTNAME}:${PORT_HTTP}\/pub/" ${BOOTSTRAP}
+  sed -i "s/\(\/usr\/sbin\/rhnreg_ks .*\)/\1 --norhnsd/" ${BOOTSTRAP}
 elif [ -n "${BOOTSTRAP_ORIG}" ]; then
   # Otherwise just use the given file
   BOOTSTRAP=${BOOTSTRAP_ORIG}
