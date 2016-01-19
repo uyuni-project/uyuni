@@ -5,53 +5,49 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltService;
-import org.apache.commons.lang3.StringUtils;
+import com.suse.manager.webui.utils.salt.Smbios;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Created by matei on 1/19/16.
+ * Detect if minion is running in a VM and which VM type.
  */
 public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance> {
 
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(VirtualizationMapper.class);
 
+    private SaltServiceInvoker saltInvoker;
     /**
      * The constructor.
      *
-     * @param saltService a {@link SaltService} instance
+     * @param saltServiceInvoker a {@link SaltServiceInvoker} instance
      */
-    public VirtualizationMapper(SaltService saltService) {
-        super(saltService);
+    public VirtualizationMapper(SaltServiceInvoker saltServiceInvoker) {
+        super(saltServiceInvoker);
     }
 
     @Override
-    public VirtualInstance map(MinionServer server, ValueMap grains) {
+    public VirtualInstance doMap(MinionServer server, ValueMap grains) {
         String virtType = grains.getValueAsString("virtual");
         String virtSubtype = grains.getValueAsString("virtual_subtype");
+        String virtUuid = grains.getValueAsString("uuid");
+        String cpuarch = grains.getValueAsString("cpuarch");
+
+        VirtualInstanceType type = null;
 
         if (StringUtils.isNotBlank(virtType) && !"physical".equals(virtType)) {
-            String virtUuid = grains.getValueAsString("uuid");
             if (StringUtils.isNotBlank(virtUuid)) {
 
-                // TODO clarify   # Check to see if this uuid has already been registered to a
-                //       # host and is confirmed.
-
-                VirtualInstance virtualInstance = new VirtualInstance();
-                virtualInstance.setUuid(StringUtils.remove(virtUuid, '-'));
-                virtualInstance.setConfirmed(1L);
-                virtualInstance.setGuestSystem(server);
-                virtualInstance.setState(VirtualInstanceFactory.getInstance().getStoppedState());
-                virtualInstance.setName(null);
-                virtualInstance.setHostSystem(null);
+                virtUuid = StringUtils.remove(virtUuid, '-');
 
                 String virtTypeLabel = null;
-                switch(virtType) {
+                switch (virtType) {
                     case "xen":
                         if ("Xen PV DomU".equals(virtSubtype)) {
                             virtTypeLabel = "para_virtualized";
-                        } else {
+                        }
+                        else {
                             virtTypeLabel = "fully_virtualized";
                         }
                         break;
@@ -60,7 +56,7 @@ public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance
                         virtTypeLabel = "qemu";
                         break;
                     case "VMware":
-                        virtTypeLabel = "qemu";
+                        virtTypeLabel = "vmware";
                         break;
                     case "HyperV":
                         virtTypeLabel = "hyperv";
@@ -68,42 +64,62 @@ public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance
                     case "VirtualBox":
                         virtTypeLabel = "virtualbox";
                         break;
-                    // TODO detect Hitachi LPAR (virtage)
                     default:
                         LOG.warn(String.
-                                format("Unsupported virtual instance type '%s' for minion '%s'",
-                                        virtType, server.getMinionId()));
-                        // TODO do what with other virt types ?
-//                    case "Parallels":
-//                    case "oracle":
-//                    case "bochs":
-//                    case "chroot":
-//                    case "uml":
-//                    case "systemd-nspawn":
-//                    case "VirtualPC":
-//                    case "LXC":
-//                    case "bhyve":
-//                    case "openvzhn":
-//                    case "openvzve":
-//                    case "gce": // Google
-//                    case "OpenStack":
+                                format("Unsupported virtual instance " +
+                                        "type '%s' for minion '%s'",
+                                virtType, server.getMinionId()));
+                        // TODO what to do with other virt types ?
                 }
-                VirtualInstanceType type = VirtualInstanceFactory.getInstance()
+                type = VirtualInstanceFactory.getInstance()
                         .getVirtualInstanceType(virtTypeLabel);
 
                 if (type == null) { // fallback
                     type = VirtualInstanceFactory.getInstance().getParaVirtType();
-                    LOG.warn(String.format("Can't find virtual instance type for string '%s'. " +
-                            "Defaulting to '%s' for minion '%s'", virtType, type.getLabel(), server.getMinionId()));
+                    LOG.warn(String.format(
+                            "Can't find virtual instance type for string '%s'. " +
+                            "Defaulting to '%s' for minion '%s'",
+                            virtType, type.getLabel(), server.getMinionId()));
                 }
 
-                virtualInstance.setType(type);
-                virtualInstance.setState(VirtualInstanceFactory.getInstance().getUnknownState());
-
-                return virtualInstance;
             }
         }
-        return null;
+        else if (!CpuArchUtil.isS390(cpuarch)) {
+            // there's not DMI on S390
+            ValueMap dmiSystem = new ValueMap(saltInvoker
+                    .getDmiRecords(server.getMinionId(), Smbios.RecordType.SYSTEM));
+            String manufacturer = dmiSystem.getValueAsString("manufacturer");
+            String productName = dmiSystem.getValueAsString("product_name");
+            if ("HITACHI".equalsIgnoreCase(manufacturer) &&
+                    productName.endsWith(" HVM LPAR")) {
+                if (StringUtils.isEmpty(virtUuid)) {
+                    virtUuid = "flex-guest";
+                }
+                type = VirtualInstanceFactory.getInstance()
+                        .getVirtualInstanceType("virtage");
+            }
+        }
 
+        if (type != null) {
+            VirtualInstance virtualInstance = server.getVirtualInstance();
+            if (virtualInstance == null) {
+                virtualInstance = new VirtualInstance();
+                virtualInstance.setUuid(virtUuid);
+                virtualInstance.setConfirmed(1L);
+                virtualInstance.setHostSystem(null);
+                virtualInstance.setGuestSystem(server); // this also sets the inverse relation
+                virtualInstance.setName(null);
+                virtualInstance.setType(type);
+                virtualInstance.setState(VirtualInstanceFactory
+                        .getInstance().getUnknownState());
+            }
+            else if (virtualInstance.getConfirmed() != 1L) {
+                virtualInstance.setConfirmed(1L);
+            }
+
+            return virtualInstance;
+        }
+
+        return null;
     }
 }
