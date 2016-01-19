@@ -14,23 +14,24 @@
  */
 package com.suse.manager.webui.services.subscriptionmatching;
 
-import static java.util.Optional.ofNullable;
-
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
-
 import com.suse.matcher.json.JsonInput;
 import com.suse.matcher.json.JsonMessage;
 import com.suse.matcher.json.JsonOutput;
+import com.suse.matcher.json.JsonSubscription;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * Processes data from the matcher to a form that's displayable by the UI.
@@ -49,16 +50,50 @@ public class SubscriptionMatchProcessor {
         Date latestStart = latestRun == null ? null : latestRun.getStartTime();
         Date latestEnd = latestRun == null ? null : latestRun.getEndTime();
         if (input.isPresent() && output.isPresent()) {
-            return new MatcherUiData(true,
+            MatcherUiData matcherUiData = new MatcherUiData(true,
                     latestStart,
                     latestEnd,
-                    output.get().getMessages().stream()
-                            .map(m -> adjustMessage(m, input.get()))
-                            .collect(Collectors.toList()));
+                    messages(input.get(), output.get()),
+                    subscriptions(input.get(), output.get()));
+            return matcherUiData;
         }
         else {
-            return new MatcherUiData(false, latestStart, latestEnd, new LinkedList<>());
+            return new MatcherUiData(false, latestStart, latestEnd, new LinkedList<>(),
+                    new LinkedList<>());
         }
+    }
+
+    private List<JsonMessage> messages(JsonInput input, JsonOutput output) {
+        return output.getMessages().stream()
+                .map(m -> adjustMessage(m, input))
+                .collect(Collectors.toList());
+    }
+
+    private List<Subscription> subscriptions(JsonInput input, JsonOutput output) {
+        Map<Long, Integer> matchedQuantity = matchedQuantity(output);
+        return input.getSubscriptions().stream()
+                .map(js -> new Subscription(js.getPartNumber(),
+                        js.getName(),
+                        js.getQuantity(),
+                        matchedQuantity.getOrDefault(js.getId(), 0),
+                        js.getStartDate(), js.getEndDate()))
+                .collect(Collectors.toList());
+    }
+
+    private Map<Long, Integer> matchedQuantity(JsonOutput output) {
+        // check what about ids which are in input, but not in output (currently we set them
+        // to 0)
+        // compute cents by subscription id
+        Map<Long, Integer> matchedCents = new HashMap<>();
+        Map<Long, Integer> matchedQuantity = new HashMap<>();
+        output.getConfirmedMatches()
+                .forEach(m -> matchedCents.merge(m.getSubscriptionId(), m.getCents(),
+                        Math::addExact));
+
+        matchedCents.forEach((sid, cents)
+                -> matchedQuantity.put(sid, (cents + 100 - 1) / 100));
+
+        return matchedQuantity;
     }
 
     private static JsonMessage adjustMessage(JsonMessage message, JsonInput input) {
@@ -87,16 +122,20 @@ public class SubscriptionMatchProcessor {
                             .get().getName())
                     .orElse("System id: " + systemId));
             long subscriptionId = Long.parseLong(message.getData().get("subscription_id"));
-            data.put("subscription_name", ofNullable(
-                    input.getSubscriptions().stream()
-                            .filter(s -> s.getId().equals(subscriptionId))
-                            .findFirst()
-                            .get().getName())
-                    .orElse("Subscription id: " + subscriptionId));
+            data.put("subscription_name", subscriptionNameById(input.getSubscriptions(),
+                    subscriptionId));
             return new JsonMessage(message.getType(), data);
         }
         else { // pass it through
             return new JsonMessage(message.getType(), message.getData());
         }
+    }
+
+    private static String subscriptionNameById(List<JsonSubscription> subscriptions,
+            Long id) {
+        return ofNullable(subscriptions.stream()
+                .filter(s -> s.getId().equals(id))
+                .findFirst()
+                .get().getName()).orElse("Subscription id: " + id);
     }
 }

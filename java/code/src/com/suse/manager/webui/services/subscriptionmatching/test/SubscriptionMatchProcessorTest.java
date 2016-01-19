@@ -16,8 +16,10 @@ package com.suse.manager.webui.services.subscriptionmatching.test;
 
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.webui.services.subscriptionmatching.MatcherUiData;
+import com.suse.manager.webui.services.subscriptionmatching.Subscription;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
 import com.suse.matcher.json.JsonInput;
+import com.suse.matcher.json.JsonMatch;
 import com.suse.matcher.json.JsonMessage;
 import com.suse.matcher.json.JsonOutput;
 import com.suse.matcher.json.JsonSubscription;
@@ -150,5 +152,24 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals("System id: 1", outputList.get(0).getData().get("system_name"));
         assertEquals("Subscription id: 100",
                 outputList.get(0).getData().get("subscription_name"));
+    }
+
+    public void testSubscriptions() {
+        input.getSubscriptions().add(new JsonSubscription(1L, "123456", "subs name", 3,
+                new Date(0), new Date(1000), "user", new HashSet<>()));
+
+        JsonMatch match = new JsonMatch(20L, 1L, 100L, 200);
+        output.getConfirmedMatches().add(match);
+
+        MatcherUiData data = (MatcherUiData) processor.getData(of(input), of(output));
+
+        assertEquals(1, data.getSubscriptions().size());
+        Subscription actual = data.getSubscriptions().get(0);
+        assertEquals("123456", actual.getPartNumber());
+        assertEquals("subs name", actual.getDescription());
+        assertEquals(3, actual.getTotalQuantity());
+        assertEquals(2, actual.getMatchedQuantity());
+        assertEquals(new Date(0), actual.getStartDate());
+        assertEquals(new Date(1000), actual.getEndDate());
     }
 }

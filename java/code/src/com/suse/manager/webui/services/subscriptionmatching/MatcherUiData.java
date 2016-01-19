@@ -34,6 +34,9 @@ public class MatcherUiData {
     /** The latest end date of subscription-matcher's run. */
     private Date latestEnd;
 
+    /** The subscriptions. */
+    private List<Subscription> subscriptions = new LinkedList<>();
+
     /** The messages. */
     private List<JsonMessage> messages = new LinkedList<>();
 
@@ -44,13 +47,24 @@ public class MatcherUiData {
      * @param latestStartIn the latest start date of subscription-matcher's run
      * @param latestEndIn the latest end date of subscription-matcher's run
      * @param messagesIn - list of messages
+     * @param subscriptionsIn - list of subscriptions
      */
     public MatcherUiData(boolean matcherDataAvailableIn, Date latestStartIn,
-            Date latestEndIn, List<JsonMessage> messagesIn) {
+            Date latestEndIn, List<JsonMessage> messagesIn,
+            List<Subscription> subscriptionsIn) {
         matcherDataAvailable = matcherDataAvailableIn;
         latestStart = latestStartIn;
         latestEnd = latestEndIn;
         messages = messagesIn;
+        subscriptions = subscriptionsIn;
+    }
+
+    public List<Subscription> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(List<Subscription> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 
     /**
