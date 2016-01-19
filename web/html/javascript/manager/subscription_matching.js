@@ -27,11 +27,96 @@ var SubscriptionMatching = React.createClass({
         <div className="spacewalk-toolbar-h1">
           <h1><i className="fa spacewalk-icon-subscription-counting"></i>{t("Subscription Matching")}</h1>
         </div>
-        <div>
-          <MatcherStatus dataAvailable={data != null} latestStart={latestStart} latestEnd={latestEnd} />
-          {body}
-        </div>
+        {body}
+        <MatcherRunPanel initialDataAvailable={data != null} initialLatestStart={latestStart} initialLatestEnd={latestEnd} />
       </div>
+    );
+  }
+});
+
+var MatcherRunPanel = React.createClass({
+  getInitialState: function() {
+    return {
+      "dataAvailable": this.props.initialDataAvailable,
+      "latestStart": this.props.initialLatestStart,
+      "latestEnd": this.props.initialLatestEnd,
+    }
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      "dataAvailable": nextProps.initialDataAvailable,
+      "latestStart": nextProps.initialLatestStart,
+      "latestEnd": nextProps.initialLatestEnd,
+    });
+  },
+
+  onMatcherRunScheduled: function() {
+    this.setState(
+      {
+        "latestStart": new Date(),
+        "latestEnd": null,
+      }
+    );
+  },
+
+  render: function() {
+    if (!this.state.dataAvailable) {
+      return null;
+    }
+
+    if (this.state.latestStart == null) {
+      return (
+        <div className="row col-md-12">
+        <h2>{t("Matcher status")}</h2>
+          <p>{t("The matcher has not run yet. You can trigger a first run by clicking the button below.", this.state.latestEnd)}</p>
+          <MatcherScheduleButton matcherRunning={false} onMatcherRunScheduled={this.onMatcherRunScheduled} />
+        </div>
+      );
+    }
+    else {
+      if (this.state.latestEnd == null) {
+        return (
+          <div className="row col-md-12">
+            <h2>{t("Matcher status")}</h2>
+            <p>{t("Matcher is currently running, it was started on {0}.", this.state.latestStart)}</p>
+            <MatcherScheduleButton matcherRunning={true} onMatcherRunScheduled={this.onMatcherRunScheduled}/>
+          </div>
+        );
+      }
+      else {
+        return (
+          <div className="row col-md-12">
+            <h2>{t("Matcher status")}</h2>
+            <p>{t("Latest successful matcher run was on {0}, you can trigger a new run by clicking the button below.", this.state.latestEnd)}</p>
+            <MatcherScheduleButton matcherRunning={false} onMatcherRunScheduled={this.onMatcherRunScheduled}/>
+          </div>
+        );
+      }
+    }
+  }
+});
+
+var MatcherScheduleButton = React.createClass({
+  onClick: function() {
+    $.post("/rhn/manager/subscription_matching/schedule_matcher_run");
+    this.props.onMatcherRunScheduled();
+  },
+
+  render: function() {
+    var buttonClass = "btn spacewalk-btn-margin-vertical " +
+      (!this.props.matcherRunning ? "btn-success" : "btn-default");
+
+    return (
+      <button
+        type="button"
+        key="matcherScheduleButton"
+        className={buttonClass}
+        disabled={this.props.matcherRunning}
+        onClick={this.onClick}
+      >
+        <i className="fa fa-refresh"></i>{t("Run the matcher")}
+      </button>
     );
   }
 });
@@ -62,45 +147,6 @@ var SubscriptionMessages = React.createClass({
         <h2>{t("Matching messages")}</h2>
         {body}
       </div>
-    );
-  }
-});
-
-var MatcherStatus = React.createClass({
-  render: function() {
-    var body;
-    if (this.props.dataAvailable) {
-      if (this.props.latestStart == null) {
-        body = <p>{t("Matcher has not run yet, you can ")} <MatcherScheduleLink />.</p>
-      }
-      else {
-        if (this.props.latestEnd == null) {
-          body = <p>{t("Matcher is currently running, it was started on {0}.", this.props.latestStart)}</p>
-        }
-        else {
-          body = <p>{t("Matcher last ran on {0}, you can ", this.props.latestEnd)} <MatcherScheduleLink />.</p>
-        }
-      }
-    }
-    else {
-      body = <p>{t("Loading matcher data...")}</p>
-    }
-
-    return (
-      <div className="row col-md-12">
-        <h2>{t("Matcher status")}</h2>
-        {body}
-      </div>
-    );
-  }
-});
-
-var MatcherScheduleLink = React.createClass({
-  render: function() {
-    return (
-      <a href="/rhn/admin/BunchDetail.do?label=gatherer-matcher-bunch">
-        {t("schedule a new run manually")}
-      </a>
     );
   }
 });
