@@ -19,6 +19,7 @@ var SubscriptionMatching = React.createClass({
           <div className="row col-md-12">
             <p>{t("Please review warning and information messages from last matching below.")}</p>
             <Table headers={[t("Message"), t("Additional information")]} data={humanReadable(this.state.messages)} />
+            <CsvLink name="message_report.csv" />
           </div>
         );
       }
@@ -122,6 +123,19 @@ var TableRow = React.createClass({
           })}
         </tr>
       </tbody>
+    );
+  }
+});
+
+var CsvLink = React.createClass({
+  render: function() {
+    return (
+      <div className="spacewalk-csv-download">
+        <a className="btn btn-link" href={"/rhn/manager/subscription_matching/" + this.props.name}>
+          <i className="fa spacewalk-icon-download-csv"></i>
+          {t("Download CSV")}
+        </a>
+      </div>
     );
   }
 });
