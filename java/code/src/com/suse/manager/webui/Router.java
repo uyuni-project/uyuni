@@ -102,5 +102,7 @@ public class Router implements SparkApplication {
                 withProductAdmin(SubscriptionMatchingController::show), jade);
         get("/manager/subscription_matching/data",
                 withProductAdmin(SubscriptionMatchingController::data));
+        get("/manager/subscription_matching/:filename",
+                withProductAdmin(SubscriptionMatchingController::csv));
     }
 }
