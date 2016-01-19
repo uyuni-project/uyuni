@@ -2513,6 +2513,19 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
+
+      <trans-unit id="help.jsp.about.summary">
+        <source>@@PRODUCT_NAME@@ allows administrators to efficiently manage the systems on their network. Through a simple user interface, administrators can perform patch management, updates and maintenance. And because @@PRODUCT_NAME@@ is Web-based, it can be accessed from anywhere. @@PRODUCT_NAME@@ or Proxy server options provide advanced capabilities and the ability to get updates directly from SUSE with even greater levels of security and reduced network bandwidth.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/about</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="help.jsp.about.learnmore">
+        <source>&lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;Click here&lt;/a&gt; to learn more about SUSE Manager</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/about</context>
+        </context-group>
+      </trans-unit>
       <!-- Salt -->
       <trans-unit id="Salt Master">
           <source>Salt Master</source>
