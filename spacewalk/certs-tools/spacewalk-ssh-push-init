@@ -258,6 +258,7 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
 elif [ -n "${BOOTSTRAP}" ]; then
   # Simple registration with given bootstrap script
   echo "* Registering client with SUSE Manager: ${CLIENT}"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} bash bootstrap.sh"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "chmod +x bootstrap.sh"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} ~/bootstrap.sh"
   exit_in_case_of_error
 fi
