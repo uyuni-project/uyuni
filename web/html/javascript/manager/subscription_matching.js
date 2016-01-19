@@ -46,6 +46,7 @@ var SubscriptionMessages = React.createClass({
     if (this.props.messages.length > 0) {
       return (
         <div className="row col-md-12">
+          <h2>{t("Matching messages")}</h2>
           <p>{t("Please review warning and information messages from last matching below.")}</p>
           <Table headers={[t("Message"), t("Additional information")]} data={humanReadable(this.props.messages)} />
           <CsvLink name="message_report.csv" />
