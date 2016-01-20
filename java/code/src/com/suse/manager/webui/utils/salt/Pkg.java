@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 // CHECKSTYLE:OFF
 
@@ -158,14 +159,18 @@ public class Pkg {
     /**
      * Call 'pkg.info_installed' API.
      *
-     * @param args
-     * @param packages
-     * @return
+     * @param attributes list of attributes that should be included in the result
+     * @param errors set this to "report" in order to get "N/A" on erroneous data
+     * @param packages optional give package names, otherwise return info about all packages
+     * @return the call
      */
-    public static LocalCall<Map<String, Info>> infoInstalled(
-            List<String> args, String... packages) {
+    public static LocalCall<Map<String, Info>> infoInstalled(List<String> attributes,
+            String errors, String... packages) {
+        LinkedHashMap<String, Object> kwargs = new LinkedHashMap<>();
+        kwargs.put("attr", attributes.stream().collect(Collectors.joining(",")));
+        kwargs.put("errors", errors);
         return new LocalCall<>("pkg.info_installed", Optional.of(Arrays.asList(packages)),
-                Optional.empty(), new TypeToken<Map<String, Info>>(){});
+                Optional.of(kwargs), new TypeToken<Map<String, Info>>(){});
     }
 
     /**
