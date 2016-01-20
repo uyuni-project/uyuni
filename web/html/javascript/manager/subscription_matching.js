@@ -23,7 +23,7 @@ var SubscriptionMatching = React.createClass({
       body = (
         <div>
           <Subscriptions subscriptions={subscriptions} />
-          <SubscriptionMessages messages={messages} />
+          <Messages messages={messages} />
         </div>
       );
     }
@@ -131,7 +131,7 @@ var MatcherScheduleButton = React.createClass({
   }
 });
 
-var SubscriptionMessages = React.createClass({
+var Messages = React.createClass({
   render: function() {
     var body;
     if (this.props.messages != null) {
