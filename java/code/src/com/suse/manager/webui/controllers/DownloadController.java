@@ -183,6 +183,13 @@ public class DownloadController {
         }
     }
 
+    /**
+     * Download a matcher csv file.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param filename the name of the matcher file to download
+     */
     public static void downloadMatcherCsv(Request request, Response response,
             String filename) {
         response.raw().setContentType("application/csv");
