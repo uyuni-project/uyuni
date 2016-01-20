@@ -10,7 +10,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-user" imgAlt="users.jsp.imgAlt"
- helpUrl="/rhn/help/user/en-US/s1-sm-users.jsp#s2-sm-user-active"
+ helpUrl="/rhn/help/reference/en-US/ref.webui.users.jsp#ref.webui.users.list.active"
  creationUrl="/rhn/users/CreateUser.do"
  creationType="user">
   <bean:message key="activelist.jsp.title"/>

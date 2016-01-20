@@ -9,7 +9,7 @@
 <body>
 <rhn:toolbar base="h1" icon="header-action"
                            imgAlt="actions.jsp.imgAlt"
-               helpUrl="/rhn/help/user/en-US/s1-sm-actions.jsp#s2-sm-action-pend">
+               helpUrl="/rhn/help/reference/en-US/ref.webui.schedule.jsp#ref.webui.schedule.pending">
     <bean:message key="pendingactions.jsp.pending_actions"/>
   </rhn:toolbar>
 
