@@ -77,6 +77,7 @@ public class SubscriptionMatchProcessor {
                         js.getQuantity(),
                         matchedQuantity.getOrDefault(js.getId(), 0),
                         js.getStartDate(), js.getEndDate()))
+                .filter(s -> s.getTotalQuantity() > 0)
                 .collect(Collectors.toList());
     }
 
