@@ -16,7 +16,6 @@ package com.suse.manager.reactor.hardware;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltService;
 import org.apache.log4j.Logger;
 
 /**

@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.server.CPUArch;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltService;
 import org.apache.commons.lang.StringUtils;
 
 /**

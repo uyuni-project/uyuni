@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltService;
 
 /**
  * Check virtual host information in case of a S390 minion.

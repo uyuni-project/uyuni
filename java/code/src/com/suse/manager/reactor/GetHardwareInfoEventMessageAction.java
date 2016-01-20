@@ -58,6 +58,7 @@ public class GetHardwareInfoEventMessageAction extends AbstractDatabaseAction {
 
         Optional<MinionServer> optionalServer = MinionServerFactory
                 .lookupById(event.getServerId());
+        // TODO test refresh hardware case once the refresh btn works
         optionalServer.ifPresent(server -> {
             String minionId = server.getMinionId();
             SaltServiceInvoker saltInvoker = new SaltServiceInvoker(SALT_SERVICE);
