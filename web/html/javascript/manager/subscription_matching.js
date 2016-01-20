@@ -137,7 +137,7 @@ var Messages = React.createClass({
     if (this.props.messages != null) {
       if (this.props.messages.length > 0) {
         body = (
-          <div>
+          <div className="spacewalk-list">
             <p>{t("Please review warning and information messages from last matching below.")}</p>
             <Table headers={[t("Message"), t("Additional information")]} data={humanReadable(this.props.messages)} />
             <CsvLink name="message_report.csv" />
@@ -202,9 +202,9 @@ var Subscriptions = React.createClass({
     if (this.props.subscriptions != null) {
       if (this.props.subscriptions.length > 0) {
         body = (
-          <div>
+          <div className="spacewalk-list">
             <Table headers={[t("Part number"), t("Description"), t("Total quantity"), t("Matched quantity"), t("Start date"), t("End date")]}
-                data={subscriptionsToRows(this.props.subscriptions)} />
+              data={subscriptionsToRows(this.props.subscriptions)} />
             <CsvLink name="subscription_report.csv" />
           </div>
         );
@@ -231,16 +231,75 @@ function subscriptionsToRows(subscriptions){
 }
 
 var Table = React.createClass({
+  getInitialState: function(){
+    var totItems = this.props.data.length;
+    var ipp = 10;
+    var lastPage = totItems <= ipp ? 1 : (totItems%ipp == 0 ? totItems/ipp : Math.floor(totItems/ipp) +1);
+    return {"currentPage":1, "ipp": ipp, "lastPage": lastPage}
+  },
+
+  goToPage:function(p){
+    this.setState({"currentPage": p});
+  },
+
   render: function() {
+    var currentPage = this.state.currentPage;
+    var ipp = this.state.ipp;
+    var totItems = this.props.data.length;
+    var offset = (currentPage-1)*ipp;
+    var firstItem = offset +1;
+    var lastItem = firstItem + ipp < totItems ? firstItem + ipp -1 : totItems;
+    var paginatedItems = [];
+    for(var i = 0; i<ipp; i++){
+      if ((offset+i) < totItems) {
+          paginatedItems[i] = this.props.data[offset + i];
+      }
+    }
     return (
       <div className="panel panel-default">
-        <table className="table table-striped">
-          <TableHeader headers={this.props.headers} />
-          {this.props.data.map(function(columns){
-            return (<TableRow columns={columns}/>);
-          })}
-        </table>
+        <div className="panel-heading">
+          <div className="spacewalk-list-head-addons">
+            <div className="spacewalk-list-filter">{firstItem} - {lastItem} of {totItems} {t("items")}</div>
+            <div className="spacewalk-list-head-addons-extra">{this.state.ipp} {t("items per page")}</div>
+          </div>
+        </div>
+        <div className="table-responsive">
+          <table className="table table-striped">
+            <TableHeader headers={this.props.headers} />
+            {paginatedItems.map(function(columns){
+              return (<TableRow columns={columns}/>);
+            })}
+          </table>
+        </div>
+        <div className="panel-footer">
+          <div className="spacewalk-list-bottom-addons">
+            {this.state.currentPage} of {this.state.lastPage} {t("pages")}
+            <div className="spacewalk-list-pagination">
+              <div className="spacewalk-list-pagination-btns btn-group">
+                <ButtonPage onClick={this.goToPage} toPage={1} disabled={this.state.currentPage == 1} text={t("FirstPage")} />
+                <ButtonPage onClick={this.goToPage} toPage={this.state.currentPage -1} disabled={this.state.currentPage == 1} text={t("PrevPage")} />
+                <ButtonPage onClick={this.goToPage} toPage={this.state.currentPage + 1} disabled={this.state.currentPage == this.state.lastPage} text={t("NextPage")} />
+                <ButtonPage onClick={this.goToPage} toPage={this.state.lastPage} disabled={this.state.currentPage == this.state.lastPage} text={t("LastPage")} />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    );
+  }
+});
+
+var ButtonPage = React.createClass({
+  onClick: function(){
+    this.props.onClick(this.props.toPage);
+  },
+
+  render: function(){
+    return (
+      <button type="button" className="btn btn-default"
+        disabled={this.props.disabled} onClick={this.onClick}>
+        {this.props.text}
+      </button>
     );
   }
 });
