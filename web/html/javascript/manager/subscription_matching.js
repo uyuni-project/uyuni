@@ -210,7 +210,7 @@ var Subscriptions = React.createClass({
         );
       }
       else {
-        body = <p>{t("No subscriptions matched.")}</p>
+        body = <p>{t("No subscriptions found.")}</p>
       }
     }
     else {
