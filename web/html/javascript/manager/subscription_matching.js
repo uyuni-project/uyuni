@@ -45,6 +45,7 @@ var MatcherRunPanel = React.createClass({
     return {
       "latestStart": this.props.initialLatestStart,
       "latestEnd": this.props.initialLatestEnd,
+      "error": false,
     }
   },
 
@@ -55,12 +56,17 @@ var MatcherRunPanel = React.createClass({
     });
   },
 
-  onMatcherRunScheduled: function() {
+  onScheduled: function() {
     this.setState({
         "latestStart": new Date(),
         "latestEnd": null,
+        "error": false,
       }
     );
+  },
+
+  onError: function() {
+    this.setState({"error" : true});
   },
 
   render: function() {
@@ -71,8 +77,12 @@ var MatcherRunPanel = React.createClass({
     return (
       <div className="row col-md-12">
         <h2>{t("Matcher status")}</h2>
-        <MatcherRunDescription latestStart={this.state.latestStart} latestEnd={this.state.latestEnd} />
-        <MatcherScheduleButton matcherRunning={this.state.latestStart != null && this.state.latestEnd == null} onMatcherRunScheduled={this.onMatcherRunScheduled} />
+        <MatcherRunDescription latestStart={this.state.latestStart} latestEnd={this.state.latestEnd} error={this.state.error} />
+        <MatcherScheduleButton
+          matcherRunning={!this.state.error && this.state.latestStart != null && this.state.latestEnd == null}
+          onScheduled={this.onScheduled}
+          onError={this.onError}
+        />
       </div>
     );
   }
@@ -80,6 +90,10 @@ var MatcherRunPanel = React.createClass({
 
 var MatcherRunDescription  = React.createClass({
   render: function() {
+    if (this.props.error) {
+      return <p className="text-danger">{t("Could not start a matching run. Please check that Taskomatic is running correctly.")}</p>
+    }
+
     if (this.props.latestStart == null) {
       return <p>{t("The matcher has not run yet. You can trigger a first run by clicking the button below.")}</p>
     }
@@ -94,8 +108,9 @@ var MatcherRunDescription  = React.createClass({
 
 var MatcherScheduleButton = React.createClass({
   onClick: function() {
-    $.post("/rhn/manager/subscription_matching/schedule_matcher_run");
-    this.props.onMatcherRunScheduled();
+    $.post("/rhn/manager/subscription_matching/schedule_matcher_run")
+      .error(() => { this.props.onError(); });
+    this.props.onScheduled();
   },
 
   render: function() {
