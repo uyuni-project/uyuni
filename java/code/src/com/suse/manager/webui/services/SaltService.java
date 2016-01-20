@@ -71,10 +71,10 @@ public interface SaltService {
     Map<String, List<String>> getPackages(String minionId);
 
     /**
-     *  Get the installed packages from a minion with package info
+     * Get the installed packages from a minion with package info.
      *
      * @param minionId id of the target minion
-     * @param attributes Package attributes
+     * @param attributes package attributes that should be returned
      * @return a map from package names to package info objects
      */
     Map<String, com.suse.manager.webui.utils.salt.Pkg.Info> getInstalledPackageDetails(
