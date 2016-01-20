@@ -81,10 +81,17 @@ module Yast
             Ops.get(@settings, "SATELLITE_DB_USER", "")
           ),
           # text entry label
-          InputField(
+          Password(
             Id("SATELLITE_DB_PASS"),
             Opt(:hstretch),
             _("Source SUSE Manager Database &Password"),
+            Ops.get(@settings, "SATELLITE_DB_PASS", "")
+          ),
+          # text entry label
+          Password(
+            Id("SATELLITE_DB_PASS2"),
+            Opt(:hstretch),
+            _("&Repeat Password"),
             Ops.get(@settings, "SATELLITE_DB_PASS", "")
           ),
           # text entry label
@@ -134,6 +141,11 @@ module Yast
                 @invalid_pw_chars
               )
             )
+            UI.SetFocus(Id("SATELLITE_DB_PASS"))
+            next
+          end
+          if @pw1 != UI.QueryWidget(Id("SATELLITE_DB_PASS2"), :Value)
+            Popup.Error(_("Passwords do not match."))
             UI.SetFocus(Id("SATELLITE_DB_PASS"))
             next
           end
