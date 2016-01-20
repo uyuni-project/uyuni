@@ -48,7 +48,7 @@
         <td colspan="3">
           <p>
             <small>
-              <bean:message key="general.jsp.org.summary4"/><a href="/rhn/help/user/en-US/s2-sattools-config.jsp#s3-sattools-config-orgs">
+              <bean:message key="general.jsp.org.summary4"/><a href="/rhn/help/reference/en-US/ref.webui.admin.config.jsp#s3-sattools-config-orgs">
               <bean:message key="general.jsp.org.tbl.link4"/></a>.
             </small>
           </p>
