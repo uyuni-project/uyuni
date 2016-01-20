@@ -223,7 +223,7 @@ var Subscriptions = React.createClass({
 });
 
 function subscriptionsToRows(subscriptions){
-  return subscriptions.map((s) => [s.partNumber, s.productDescription, s.totalQuantity, s.matchedQuantity, s.startDate, s.endDate]);
+  return subscriptions.map((s) => [s.partNumber, s.description, s.totalQuantity, s.matchedQuantity, s.startDate, s.endDate]);
 }
 
 var Table = React.createClass({
