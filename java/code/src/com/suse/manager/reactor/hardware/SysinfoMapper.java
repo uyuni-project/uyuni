@@ -16,15 +16,14 @@ package com.suse.manager.reactor.hardware;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
+import com.redhat.rhn.domain.server.Server;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
@@ -90,34 +89,35 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                 // register the info about the S390 host in the db
 
                 // original code: server_hardware.py class SystemInformation
-                Optional<MinionServer> optionalMinionServer = MinionServerFactory
-                        .findByMachineId(identifier);
-                MinionServer zhost = optionalMinionServer.orElseGet(() -> {
-                    // create a new minion server entry
-                    MinionServer minionServer = new MinionServer();
+                Server zhost = ServerFactory
+                        .lookupForeignSystemByDigitalServerId(identifier);
+
+                if (zhost == null) {
+                    // create a new z/OS host server entry
+                    zhost = ServerFactory.createServer();
                     String cpurch = grains.getValueAsString("cpuarch");
-                    minionServer.setServerArch(ServerFactory
+                    // TODO extract this cpuarch + "-redhat-linux" in some common util
+                    zhost.setServerArch(ServerFactory
                             .lookupServerArchByLabel(cpurch + "-redhat-linux"));
-                    minionServer.setName(name);
-                    minionServer.setOs(os);
-                    minionServer.setRelease(type);
-                    minionServer.setLastBoot(System.currentTimeMillis() / 1000);
+                    zhost.setName(name);
+                    zhost.setOs(os);
+                    zhost.setRelease(type);
+                    zhost.setLastBoot(System.currentTimeMillis() / 1000);
                     // see server_hardware.py SystemInformation.__init__()
-                    minionServer.setDescription(
-                        String.format("Initial Registration Parameters:\n" +
-                        "OS: %s\n" +
-                        "Release: %s\n" +
-                        "CPU Arch: %s", os, sysvalues.get("type"), cpuarch));
+                    zhost.setDescription(
+                            String.format("Initial Registration Parameters:\n" +
+                                    "OS: %s\n" +
+                                    "Release: %s\n" +
+                                    "CPU Arch: %s", os, sysvalues.get("type"), cpuarch));
 
-                    minionServer.setDigitalServerId(identifier);
+                    zhost.setDigitalServerId(identifier);
 
-                    ServerFactory.save(minionServer);
+                    ServerFactory.save(zhost);
 
-                    server.setBaseEntitlement(EntitlementManager
+                    zhost.setBaseEntitlement(EntitlementManager
                             .getByName(EntitlementManager.FOREIGN_ENTITLED));
                     LOG.debug("New host created: " + identifier);
-                    return minionServer;
-                });
+                }
 
                 // update checkin for new as well as already existing servers
                 LOG.debug("Update server info for: " + identifier);
@@ -140,7 +140,7 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                     hostcpu.setStepping(null);
                     hostcpu.setModel(arch);
                     hostcpu.setVendor(type);
-                    zhost.setCpu(hostcpu);
+                    zhost.setCpu(hostcpu); // TODO test if this deletes any existing CPU
                     hostcpu.setServer(zhost);
                 }
 
@@ -167,7 +167,7 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                     vinst.setState(vinstFactory.getUnknownState());
                     vinstFactory.saveVirtualInstance(vinst);
                 }
-                else if (vinst.getHostSystem().getId().equals(zhost.getId())) {
+                else if (!vinst.getHostSystem().getId().equals(zhost.getId())) {
                     LOG.debug("Updating virtual instance " + vinst.getId() +
                             " with " + zhost.getId());
                     vinst.setHostSystem(zhost);
