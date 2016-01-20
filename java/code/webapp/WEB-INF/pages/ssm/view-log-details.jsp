@@ -10,7 +10,7 @@
 <rhn:toolbar base="h1"
     icon="header-system-groups"
         imgAlt="ssm.jsp.imgAlt"
-        helpUrl="/rhn/help/user/en-US/s2-sm-ssm.jsp">
+        helpUrl="/rhn/help/reference/en-US/ref.webui.systems.ssm.jsp">
         <bean:message key="ssm.jsp.header" />
 </rhn:toolbar>
 
