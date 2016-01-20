@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jan 20 12:09:10 CET 2016 - mantel@suse.de
+
+- do not display database credentials during
+  migration setup (bsc#962338)
+
+-------------------------------------------------------------------
 Thu Jan 14 13:27:22 CET 2016 - mc@suse.de
 
 - version 3.0.8-1
