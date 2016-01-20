@@ -24,11 +24,11 @@
     string invalid_pw_chars	= "\"$'!";
 
     map<string,string> settings	= $[
-	"SATELLITE_HOST"	: "satellite",
+	"SATELLITE_HOST"	: "susemanager",
 	"SATELLITE_DOMAIN"	: Hostname::CurrentDomain (),
-	"SATELLITE_DB_USER"	: "rhnsat",
-	"SATELLITE_DB_PASS"	: "rhnsat",
-	"SATELLITE_DB_SID"	: "rhnsat"
+	"SATELLITE_DB_USER"	: "susemanager",
+	"SATELLITE_DB_PASS"	: "susemanager",
+	"SATELLITE_DB_SID"	: "susemanager"
     ];
 
     string env_file	= Directory::tmpdir + "/env_migration";
@@ -60,7 +60,10 @@
 	`InputField (`id ("SATELLITE_DB_USER"), `opt (`hstretch), _("Source SUSE Manager Database &User Name"),
 	    settings["SATELLITE_DB_USER"]:""),
 	// text entry label
-	`InputField (`id ("SATELLITE_DB_PASS"), `opt (`hstretch), _("Source SUSE Manager Database &Password"),
+	`Password (`id ("SATELLITE_DB_PASS"), `opt (`hstretch), _("Source SUSE Manager Database &Password"),
+	    settings["SATELLITE_DB_PASS"]:""),
+	// text entry label
+	`Password (`id ("SATELLITE_DB_PASS2"), `opt (`hstretch), _("&Repeat Password"),
 	    settings["SATELLITE_DB_PASS"]:""),
 	// text entry label
 	`InputField (`id ("SATELLITE_DB_SID"), `opt (`hstretch), _("Source SUSE Manager Database &Name"),
@@ -103,6 +106,12 @@ The invalid characters are: %1"), invalid_pw_chars));
 		UI::SetFocus (`id ("SATELLITE_DB_PASS"));
 		continue;
 	    }
+        if (pw1 != UI::QueryWidget (`id ("SATELLITE_DB_PASS2"), `Value))
+        {
+        Popup::Error (_("Passwords do not match."));
+        UI::SetFocus (`id ("SATELLITE_DB_PASS"));
+        continue;
+        }
 
 	    string domain = (string) UI::QueryWidget (`id ("SATELLITE_DOMAIN"), `Value);
 	    if (!Hostname::CheckDomain (domain))
