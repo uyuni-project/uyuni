@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.user.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
 

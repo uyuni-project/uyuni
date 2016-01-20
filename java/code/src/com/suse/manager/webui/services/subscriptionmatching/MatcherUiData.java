@@ -59,12 +59,20 @@ public class MatcherUiData {
         subscriptions = subscriptionsIn;
     }
 
+    /**
+     * Gets the subscriptions.
+     * @return the subscriptions
+     */
     public List<Subscription> getSubscriptions() {
         return subscriptions;
     }
 
-    public void setSubscriptions(List<Subscription> subscriptions) {
-        this.subscriptions = subscriptions;
+    /**
+     * Sets the subscriptions
+     * @param subscriptionsIn - the subscriptions
+     */
+    public void setSubscriptions(List<Subscription> subscriptionsIn) {
+        subscriptions = subscriptionsIn;
     }
 
     /**
