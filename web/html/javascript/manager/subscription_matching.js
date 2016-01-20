@@ -22,8 +22,8 @@ var SubscriptionMatching = React.createClass({
     if (data != null && data.matcherDataAvailable) {
       body = (
         <div>
-          <SubscriptionMessages messages={messages} />
           <Subscriptions subscriptions={subscriptions} />
+          <SubscriptionMessages messages={messages} />
         </div>
       );
     }
