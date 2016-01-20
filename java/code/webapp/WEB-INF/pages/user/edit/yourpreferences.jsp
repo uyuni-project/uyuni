@@ -8,7 +8,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-preferences"
- helpUrl="/rhn/help/user/en-US/s2-sm-your-rhn-prefs.jsp">
+ helpUrl="/rhn/help/reference/en-US/ref.webui.overview.prefs.jsp">
 <bean:message key="Your Preferences"/>
 </rhn:toolbar>
 <html:form action="/account/PrefSubmit">
