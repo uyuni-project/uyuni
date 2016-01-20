@@ -34,7 +34,7 @@ var SubscriptionMatching = React.createClass({
           <h1><i className="fa spacewalk-icon-subscription-counting"></i>{t("Subscription Matching")}</h1>
         </div>
         {body}
-        <MatcherRunPanel initialDataAvailable={data != null} initialLatestStart={latestStart} initialLatestEnd={latestEnd} />
+        <MatcherRunPanel dataAvailable={data != null} initialLatestStart={latestStart} initialLatestEnd={latestEnd} />
       </div>
     );
   }
@@ -43,7 +43,6 @@ var SubscriptionMatching = React.createClass({
 var MatcherRunPanel = React.createClass({
   getInitialState: function() {
     return {
-      "dataAvailable": this.props.initialDataAvailable,
       "latestStart": this.props.initialLatestStart,
       "latestEnd": this.props.initialLatestEnd,
     }
@@ -51,15 +50,13 @@ var MatcherRunPanel = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     this.setState({
-      "dataAvailable": nextProps.initialDataAvailable,
       "latestStart": nextProps.initialLatestStart,
       "latestEnd": nextProps.initialLatestEnd,
     });
   },
 
   onMatcherRunScheduled: function() {
-    this.setState(
-      {
+    this.setState({
         "latestStart": new Date(),
         "latestEnd": null,
       }
@@ -67,39 +64,31 @@ var MatcherRunPanel = React.createClass({
   },
 
   render: function() {
-    if (!this.state.dataAvailable) {
+    if (!this.props.dataAvailable) {
       return null;
     }
 
-    if (this.state.latestStart == null) {
-      return (
-        <div className="row col-md-12">
+    return (
+      <div className="row col-md-12">
         <h2>{t("Matcher status")}</h2>
-          <p>{t("The matcher has not run yet. You can trigger a first run by clicking the button below.", this.state.latestEnd)}</p>
-          <MatcherScheduleButton matcherRunning={false} onMatcherRunScheduled={this.onMatcherRunScheduled} />
-        </div>
-      );
+        <MatcherRunDescription latestStart={this.state.latestStart} latestEnd={this.state.latestEnd} />
+        <MatcherScheduleButton matcherRunning={this.state.latestStart != null && this.state.latestEnd == null} onMatcherRunScheduled={this.onMatcherRunScheduled} />
+      </div>
+    );
+  }
+});
+
+var MatcherRunDescription  = React.createClass({
+  render: function() {
+    if (this.props.latestStart == null) {
+      return <p>{t("The matcher has not run yet. You can trigger a first run by clicking the button below.")}</p>
     }
-    else {
-      if (this.state.latestEnd == null) {
-        return (
-          <div className="row col-md-12">
-            <h2>{t("Matcher status")}</h2>
-            <p>{t("Matcher is currently running, it was started on {0}.", this.state.latestStart)}</p>
-            <MatcherScheduleButton matcherRunning={true} onMatcherRunScheduled={this.onMatcherRunScheduled}/>
-          </div>
-        );
-      }
-      else {
-        return (
-          <div className="row col-md-12">
-            <h2>{t("Matcher status")}</h2>
-            <p>{t("Latest successful matcher run was on {0}, you can trigger a new run by clicking the button below.", this.state.latestEnd)}</p>
-            <MatcherScheduleButton matcherRunning={false} onMatcherRunScheduled={this.onMatcherRunScheduled}/>
-          </div>
-        );
-      }
+
+    if (this.props.latestEnd == null) {
+      return <p>{t("Matcher is currently running, it was started on {0}.", this.props.latestStart)}</p>
     }
+
+    return <p>{t("Latest successful matcher run was on {0}, you can trigger a new run by clicking the button below.", this.props.latestEnd)}</p>
   }
 });
 
