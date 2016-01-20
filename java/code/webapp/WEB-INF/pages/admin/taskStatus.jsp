@@ -7,7 +7,7 @@
 <html>
 <body>
 <rhn:toolbar base="h1" icon="header-taskomatic"
-             helpUrl="/rhn/help/user/en-US/s2-sm-categories-pages.jsp">
+             helpUrl="/rhn/help/reference/en-US/s2-sattools-task-engine.jsp">
     <bean:message key="task.status.title"/>
   </rhn:toolbar>
 
