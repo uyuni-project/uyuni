@@ -8206,7 +8206,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>システムに仮想化エンタイトルメントが追加されたため、ご使用のシステムが仮想ゲストをよりよく管理できるよう一部の手順が追加されました。詳細については、&lt;a href=&quot;/rhn/help/reference/en/s1-sm-systems.jsp&quot;&gt;ここ&lt;/a&gt;をご覧ください。</target>
+        <target>システムに仮想化エンタイトルメントが追加されたため、ご使用のシステムが仮想ゲストをよりよく管理できるよう一部の手順が追加されました。詳細については、&lt;a href=&quot;/rhn/help/reference/en/ref.webui.systems.systems.jsp&quot;&gt;ここ&lt;/a&gt;をご覧ください。</target>
       </trans-unit>
       <trans-unit id="system.entitle.addedvirtualization.nodoc">
         <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>

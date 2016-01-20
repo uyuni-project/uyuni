@@ -10,7 +10,7 @@
     <body>
         <rhn:toolbar base="h1" icon="header-configuration"
                      iconAlt="config.common.globalAlt"
-                     helpUrl="/rhn/help/user/en-US/configuration-channels.jsp">
+                     helpUrl="/rhn/help/reference/en-US/ref.webui.config.channels.jsp">
             <bean:message key="channelOverview.jsp.newToolbar" />
         </rhn:toolbar>
 

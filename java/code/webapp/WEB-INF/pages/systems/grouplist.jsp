@@ -10,7 +10,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-system-groups" imgAlt="system.common.groupAlt"
- helpUrl="/rhn/help/user/en-US/s2-sm-system-group-list.jsp"
+ helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systemgroups.jsp"
  creationUrl="/rhn/groups/EditGroup.do"
  creationType="group"
  creationAcl="user_role(system_group_admin)">

@@ -10,7 +10,7 @@
 <body>
 <rhn:toolbar base="h1" icon="header-action"
                            imgAlt="actions.jsp.imgAlt"
-               helpUrl="/rhn/help/user/en-US/s2-sm-action-comp.jsp">
+               helpUrl="/rhn/help/reference/en-US/ref.webui.schedule.compl.jsp">
     <bean:message key="completedactions.jsp.completed_actions"/>
   </rhn:toolbar>
 

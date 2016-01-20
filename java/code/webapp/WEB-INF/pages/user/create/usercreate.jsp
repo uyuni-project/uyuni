@@ -9,7 +9,7 @@
 <%@ include file="/WEB-INF/pages/common/fragments/user/user_attribute_sizes.jspf"%>
 
   <rhn:toolbar base="h1" icon="header-user" imgAlt="user.common.userAlt"
-       helpUrl="/rhn/help/user/en-US/s1-sm-users.jsp">
+       helpUrl="/rhn/help/reference/en-US/ref.webui.users.jsp">
   <bean:message key="usercreate.toolbar" />
   </rhn:toolbar>
 
