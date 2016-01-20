@@ -16,10 +16,16 @@ var SubscriptionMatching = React.createClass({
     var latestStart = data == null ? null : data.latestStart;
     var latestEnd = data == null ? null : data.latestEnd;
     var messages = data == null ? null : data.messages;
+    var subscriptions = data == null ? null : data.subscriptions;
 
     var body;
     if (data != null && data.matcherDataAvailable) {
-      body = <SubscriptionMessages messages={messages} />
+      body = (
+        <div>
+          <SubscriptionMessages messages={messages} />
+          <Subscriptions subscriptions={subscriptions} />
+        </div>
+      );
     }
 
     return (
@@ -184,6 +190,40 @@ function humanReadable(raw_messages){
     return [message, additionalInformation];
   });
   return result;
+}
+
+var Subscriptions = React.createClass({
+  render: function() {
+    var body;
+    if (this.props.subscriptions != null) {
+      if (this.props.subscriptions.length > 0) {
+        body = (
+          <div>
+            <Table headers={[t("Part number"), t("Description"), t("Total quantity"), t("Matched quantity"), t("Start date"), t("End date")]}
+                data={subscriptionsToRows(this.props.subscriptions)} />
+            <CsvLink name="subscription_report.csv" />
+          </div>
+        );
+      }
+      else {
+        body = <p>{t("No subscriptions matched.")}</p>
+      }
+    }
+    else {
+      body = <p>{t("Loading matcher data...")}</p>
+    }
+
+    return (
+      <div className="row col-md-12">
+        <h2>{t("Your subscriptions")}</h2>
+        {body}
+      </div>
+    );
+  }
+});
+
+function subscriptionsToRows(subscriptions){
+  return subscriptions.map((s) => [s.partNumber, s.productDescription, s.totalQuantity, s.matchedQuantity, s.startDate, s.endDate]);
 }
 
 var Table = React.createClass({
