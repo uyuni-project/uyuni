@@ -17,7 +17,6 @@ package com.suse.manager.reactor.hardware;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.Smbios;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -84,17 +83,17 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
         }
 
         Dmi dmi = new Dmi();
-        StringBuilder system = new StringBuilder();
+        StringBuilder dmiSystem = new StringBuilder();
         if (StringUtils.isNotBlank(productName)) {
-            system.append(productName);
+            dmiSystem.append(productName);
         }
         if (StringUtils.isNotBlank(systemVersion)) {
-            if (system.length() > 0) {
-                system.append(" ");
+            if (dmiSystem.length() > 0) {
+                dmiSystem.append(" ");
             }
-            system.append(systemVersion);
+            dmiSystem.append(systemVersion);
         }
-        dmi.setSystem(system.length() > 0 ? system.toString().trim() : null);
+        dmi.setSystem(dmiSystem.length() > 0 ? dmiSystem.toString().trim() : null);
         dmi.setProduct(productName);
         dmi.setBios(biosVendor, biosVersion, biosReleseDate);
         dmi.setVendor(biosVendor);

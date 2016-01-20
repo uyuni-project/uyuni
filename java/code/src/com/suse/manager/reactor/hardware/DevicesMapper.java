@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.PciClassCodes;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
