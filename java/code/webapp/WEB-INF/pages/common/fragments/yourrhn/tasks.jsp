@@ -54,8 +54,8 @@
       <c:if test="${documentation == 'true'}">
         <li class="list-group-item">
         <rhn:icon type="nav-bullet" /> <a
-            href="/rhn/help/client-config/en-US/index.jsp"> <bean:message
-                key="yourrhn.jsp.tasks.registersystem" />
+            href="/rhn/help/getting-started/en-US/preparing.and.registering.clients.jsp">
+                <bean:message key="yourrhn.jsp.tasks.registersystem" />
           </a>
         </li>
       </c:if>

@@ -91,7 +91,7 @@
         </div>
 
         <div class="responsive-wizard">
-            <rhn:toolbar base="h1" icon="header-preferences" helpUrl="/rhn/help/user/en-US/s1-sm-sattools.jsp#s2-sattools-wizard">
+            <rhn:toolbar base="h1" icon="header-preferences" helpUrl="/rhn/help/reference/en-US/ref.webui.admin.jsp#ref.webui.admin.wizard">
                 Setup Wizard
             </rhn:toolbar>
             <rhn:dialogmenu mindepth="0" maxdepth="1"

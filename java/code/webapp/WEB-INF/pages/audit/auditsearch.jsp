@@ -11,7 +11,7 @@
 <body>
 
 <rhn:toolbar base="h1" icon="header-system"
- helpUrl="/rhn/help/user/en-US/s1-sm-systems.jsp#s2-sm-system-overview">
+ helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#ref.webui.systems.overview">
   <bean:message key="auditsearch.jsp.header"/>
 </rhn:toolbar>
 

@@ -6,7 +6,7 @@
 <html>
 <body>
 <rhn:toolbar base="h1" icon="header-globe"
- helpUrl="/rhn/help/user/en-US/s2-yourrhn-locale.jsp">
+ helpUrl="/rhn/help/reference/en-US/ref.webui.overview.locale.jsp">
 <bean:message key="Locale Preferences"/>
 </rhn:toolbar>
 <html:form action="/account/LocalePreferences" method="post" styleClass="form-horizontal">
