@@ -77,8 +77,8 @@ public interface SaltService {
      * @param attributes Package attributes
      * @return a map from package names to package info objects
      */
-    Map<String, com.suse.manager.webui.utils.salt.Pkg.Info>
-        getInstalledPackageDetails(String minionId, List<String> attributes);
+    Map<String, com.suse.manager.webui.utils.salt.Pkg.Info> getInstalledPackageDetails(
+            String minionId, List<String> attributes);
 
     /**
      * Accept a given minion's key.

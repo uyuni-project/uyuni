@@ -237,7 +237,7 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public Map<String, com.suse.manager.webui.utils.salt.Pkg.Info>
-        getInstalledPackageDetails(String minionId, List<String> attributes) {
+            getInstalledPackageDetails(String minionId, List<String> attributes) {
         try {
             // TODO: Move this package to the salt-client library
             Map<String, Map<String, com.suse.manager.webui.utils.salt.Pkg.Info>> packages =
