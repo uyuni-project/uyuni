@@ -207,17 +207,12 @@ public class DownloadController {
         HttpServletResponse raw = response.raw();
         raw.setContentType("application/octet-stream");
         raw.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
-
-        try (BufferedInputStream bufferedInputStream =
-                new BufferedInputStream(new FileInputStream(file))) {
+        raw.setHeader("X-Sendfile", file.getAbsolutePath());
+        try {
+            // we need to write some dummy body or mod_proxy
+            // will prevent mod_xsendfile from working
             OutputStream out = raw.getOutputStream();
-
-            byte[] buffer = new byte[BUF_SIZE];
-            int len;
-            while ((len = bufferedInputStream.read(buffer)) > 0) {
-                out.write(buffer, 0, len);
-            }
-
+            out.write(new byte[] {42});
             out.flush();
             out.close();
         }
