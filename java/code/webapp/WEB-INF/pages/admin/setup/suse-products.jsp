@@ -25,6 +25,9 @@
         <div class="panel panel-default" id="products-content" data-refresh-needed="${refreshNeeded}">
             <div class="panel-body">
                 <c:choose>
+                    <c:when test='${refreshRunning}'>
+                        <div class="alert alert-warning" role="alert"><bean:message key="suse-products.jsp.refresh-running"/></div>
+                    </c:when>
                     <c:when test='${issMaster}'>
                         <div class="row" id="suse-products">
                             <div class="col-sm-9">
@@ -81,6 +84,7 @@
 
                 <jsp:include page="/WEB-INF/pages/common/fragments/admin/scc-refresh-dialog.jspf"/>
                 <div class="hidden" id="iss-master" data-iss-master="${issMaster}"></div>
+                <div class="hidden" id="refresh-running" data-refresh-running="${refreshRunning}"></div>
                 <div class="hidden" id="sccconfig.jsp.refresh"><bean:message key="sccconfig.jsp.refresh"/></div>
             </div>
             <jsp:include page="/WEB-INF/pages/common/fragments/setup/setup-tab-footer.jspf" />

@@ -4,7 +4,7 @@ $(function() {
 
   // Refresh the cache if needed
   if ($("#products-content").data("refresh-needed")) {
-    var refresh = $("#iss-master").data("iss-master");
+    var refresh = $("#iss-master").data("iss-master") && !$("#refresh-running").data("refresh-running");
     document.getElementById("scc-migration-dialog").refreshContent(
         $("#sccconfig\\.jsp\\.refresh").html(), refresh, function() {
       showProducts();
