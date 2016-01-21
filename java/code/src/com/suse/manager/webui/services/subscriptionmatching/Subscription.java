@@ -24,6 +24,7 @@ public class Subscription {
 
     private String partNumber;
     private String description;
+    private String policy;
     private int totalQuantity;
     private int matchedQuantity;
     private Date startDate;
@@ -39,10 +40,11 @@ public class Subscription {
      * @param startDateIn - start date
      * @param endDateIn - end date
      */
-    public Subscription(String partNumberIn, String productDescriptionIn,
+    public Subscription(String partNumberIn, String productDescriptionIn, String policyIn,
             int totalQuantityIn, int matchedQuantityIn, Date startDateIn, Date endDateIn) {
         partNumber = partNumberIn;
         description = productDescriptionIn;
+        policy = policyIn;
         totalQuantity = totalQuantityIn;
         matchedQuantity = matchedQuantityIn;
         startDate = startDateIn;
@@ -79,6 +81,22 @@ public class Subscription {
      */
     public void setDescription(String descriptionIn) {
         description = descriptionIn;
+    }
+
+    /**
+     * Gets the policy description
+     * @return the policy description
+     */
+    public String getPolicy() {
+        return policy;
+    }
+
+    /**
+     * Sets the policy description
+     * @param policyIn - the policy description
+     */
+    public void setPolicy(String policyIn) {
+        policy = policyIn;
     }
 
     /**

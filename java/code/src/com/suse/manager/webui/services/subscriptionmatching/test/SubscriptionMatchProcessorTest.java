@@ -46,7 +46,8 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         processor = new SubscriptionMatchProcessor();
         input = new JsonInput(new LinkedList<>(), new LinkedList<>(), new LinkedList<>(),
                 new LinkedList<>());
-        output = new JsonOutput(new Date(), new LinkedList<>(), new LinkedList<>());
+        output = new JsonOutput(new Date(), new LinkedList<>(), new LinkedList<>(),
+                new HashMap<>());
     }
 
     public void testArbitraryMessagePassthrough() {
@@ -160,6 +161,8 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
 
         JsonMatch match = new JsonMatch(20L, 1L, 100L, 200);
         output.getConfirmedMatches().add(match);
+        // subscriptions with null policy will be filtered out
+        setSubscriptionPolicy(1L, "my policy");
 
         MatcherUiData data = (MatcherUiData) processor.getData(of(input), of(output));
 
@@ -171,5 +174,33 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals(2, actual.getMatchedQuantity());
         assertEquals(new Date(0), actual.getStartDate());
         assertEquals(new Date(1000), actual.getEndDate());
+    }
+
+    public void testSubscriptionPolicy() {
+        input.getSubscriptions().add(new JsonSubscription(1L, "123456", "subs name", 3,
+                new Date(0), new Date(1000), "user", new HashSet<>()));
+        setSubscriptionPolicy(1L, "my policy");
+
+        Subscription subscription = ((MatcherUiData) processor
+                .getData(of(input), of(output))).getSubscriptions().get(0);
+
+        assertEquals("my policy", subscription.getPolicy());
+    }
+
+    public void testSubscriptionNullPolicy() {
+        input.getSubscriptions().add(new JsonSubscription(1L, "123456", "subs name", 3,
+                new Date(0), new Date(1000), "user", new HashSet<>()));
+        setSubscriptionPolicy(1L, null);
+
+        List<Subscription> subscriptions = ((MatcherUiData) processor
+                .getData(of(input), of(output))).getSubscriptions();
+
+        assertTrue(subscriptions.isEmpty());
+    }
+
+    private void setSubscriptionPolicy(Long subId, String policy) {
+        Map<Long,String> mapping = new HashMap<>();
+        mapping.put(subId, policy);
+        output.setSubscriptionPolicies(mapping);
     }
 }
