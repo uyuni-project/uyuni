@@ -44,9 +44,15 @@
     <!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
     <module name="Translation"/>
 
+    <!-- Allows bypass checkstyle for certain places -->
+    <module name="SuppressionCommentFilter"/>
+
     <module name="TreeWalker">
 
         <property name="cacheFile" value="${checkstyle.cache.file}"/>
+
+	<!-- Allows bypass checkstyle for certain places -->
+        <module name="FileContentsHolder" />
 
         <!-- ************************************************************** -->
         <!-- Checks that are different from the sun coding conventions ones -->
