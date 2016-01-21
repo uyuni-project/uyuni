@@ -165,10 +165,12 @@ public class Pkg {
      * @return the call
      */
     public static LocalCall<Map<String, Info>> infoInstalled(List<String> attributes,
-            String errors, String... packages) {
+            boolean reportErrors, String... packages) {
         LinkedHashMap<String, Object> kwargs = new LinkedHashMap<>();
         kwargs.put("attr", attributes.stream().collect(Collectors.joining(",")));
-        kwargs.put("errors", errors);
+        if (reportErrors) {
+            kwargs.put("errors", "report");
+        }
         return new LocalCall<>("pkg.info_installed", Optional.of(Arrays.asList(packages)),
                 Optional.of(kwargs), new TypeToken<Map<String, Info>>(){});
     }
