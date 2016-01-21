@@ -18,19 +18,23 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.webui.services.subscriptionmatching.MatcherUiData;
 import com.suse.manager.webui.services.subscriptionmatching.Subscription;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
+import com.suse.manager.webui.services.subscriptionmatching.System;
 import com.suse.matcher.json.JsonInput;
 import com.suse.matcher.json.JsonMatch;
 import com.suse.matcher.json.JsonMessage;
 import com.suse.matcher.json.JsonOutput;
 import com.suse.matcher.json.JsonSubscription;
 import com.suse.matcher.json.JsonSystem;
+import org.hibernate.mapping.Collection;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
@@ -196,6 +200,34 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 .getData(of(input), of(output))).getSubscriptions();
 
         assertTrue(subscriptions.isEmpty());
+    }
+
+    public void testUnmatchedSystems() {
+        input.setSystems(Collections.singletonList(
+                new JsonSystem(1L, "system name", 1, true, Collections.emptySet(),
+                        Collections.singleton(100L))));
+
+        List<System> unmatchedSystems = ((MatcherUiData) processor
+                .getData(of(input), of(output))).getUnmatchedSystems();
+
+        assertEquals(1, unmatchedSystems.get(0).getProducts().size());
+    }
+
+    public void testPartiallyMatchedSystems() {
+        Set<Long> products = new HashSet<>();
+        products.add(100L);
+        products.add(101L);
+        input.setSystems(Collections.singletonList(
+                new JsonSystem(1L, "system name", 1, true, Collections.emptySet(),
+                        products)));
+        output.getConfirmedMatches().add(new JsonMatch(1L, 10L, 100L, 100));
+
+        List<System> unmatchedSystems = ((MatcherUiData) processor
+                .getData(of(input), of(output))).getUnmatchedSystems();
+
+        assertEquals(1, unmatchedSystems.size());
+        assertEquals(1, unmatchedSystems.get(0).getProducts().size());
+        assertEquals("Unknown product (101)", unmatchedSystems.get(0).getProducts().get(0));
     }
 
     private void setSubscriptionPolicy(Long subId, String policy) {

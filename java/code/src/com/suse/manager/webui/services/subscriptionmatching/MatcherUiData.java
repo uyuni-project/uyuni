@@ -40,6 +40,9 @@ public class MatcherUiData {
     /** The messages. */
     private List<JsonMessage> messages = new LinkedList<>();
 
+    /** Unmatched systems */
+    private List<System> unmatchedSystems = new LinkedList<>();
+
     /**
      * Standard constructor.
      *
@@ -51,12 +54,14 @@ public class MatcherUiData {
      */
     public MatcherUiData(boolean matcherDataAvailableIn, Date latestStartIn,
             Date latestEndIn, List<JsonMessage> messagesIn,
-            List<Subscription> subscriptionsIn) {
+            List<Subscription> subscriptionsIn,
+            List<System> unmatchedSystemsIn) {
         matcherDataAvailable = matcherDataAvailableIn;
         latestStart = latestStartIn;
         latestEnd = latestEndIn;
         messages = messagesIn;
         subscriptions = subscriptionsIn;
+        unmatchedSystems = unmatchedSystemsIn;
     }
 
     /**
@@ -145,5 +150,23 @@ public class MatcherUiData {
      */
     public void setLatestEnd(Date latestEndIn) {
         latestEnd = latestEndIn;
+    }
+
+    /**
+     * Gets the unmatchedSystems.
+     *
+     * @return unmatchedSystems
+     */
+    public List<System> getUnmatchedSystems() {
+        return unmatchedSystems;
+    }
+
+    /**
+     * Sets the unmatchedSystems.
+     *
+     * @param unmatchedSystemsIn - the unmatchedSystems
+     */
+    public void setUnmatchedSystems(List<System> unmatchedSystemsIn) {
+        unmatchedSystems = unmatchedSystemsIn;
     }
 }

@@ -19,8 +19,10 @@ import com.redhat.rhn.taskomatic.TaskoRun;
 import com.suse.matcher.json.JsonInput;
 import com.suse.matcher.json.JsonMessage;
 import com.suse.matcher.json.JsonOutput;
+import com.suse.matcher.json.JsonProduct;
 import com.suse.matcher.json.JsonSubscription;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,9 +34,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Stream.concat;
 
 /**
  * Processes data from the matcher to a form that's displayable by the UI.
+ * todo consider caching immediate lookup values to maps to improve performance
  */
 public class SubscriptionMatchProcessor {
 
@@ -54,19 +58,19 @@ public class SubscriptionMatchProcessor {
                     latestStart,
                     latestEnd,
                     messages(input.get(), output.get()),
-                    subscriptions(input.get(), output.get()));
+                    subscriptions(input.get(), output.get()),
+                    unmatchedSystems(input.get(), output.get()));
             return matcherUiData;
         }
         else {
             return new MatcherUiData(false, latestStart, latestEnd, new LinkedList<>(),
-                    new LinkedList<>());
+                    new LinkedList<>(), new LinkedList<>());
         }
     }
 
     private List<JsonMessage> messages(JsonInput input, JsonOutput output) {
         return output.getMessages().stream()
-                .map(m -> adjustMessage(m, input))
-                .collect(Collectors.toList());
+                .map(m -> adjustMessage(m, input)) .collect(Collectors.toList());
     }
 
     private List<Subscription> subscriptions(JsonInput input, JsonOutput output) {
@@ -143,5 +147,49 @@ public class SubscriptionMatchProcessor {
                 .filter(s -> s.getId().equals(id))
                 .findFirst()
                 .get().getName()).orElse("Subscription id: " + id);
+    }
+
+    private List<System> unmatchedSystems(JsonInput input, JsonOutput output) {
+        Map<Long, Set<Long>> systemMatchedProducts = output.getConfirmedMatches().stream()
+                .collect(Collectors.toMap(
+                        m -> m.getSystemId(),
+                        m -> Collections.singleton(m.getProductId()),
+                        (old, newV) -> concat(old.stream(), newV.stream())
+                                .collect(Collectors.toSet())));
+
+        // for each system, subtract the matched products from its products
+        return input.getSystems().stream()
+                .map(s -> {
+                    Set<Long> unmatchedProductIds = minus(
+                            s.getProductIds(), systemMatchedProducts.get(s.getId()));
+                    List<String> unmatchedProductNames = unmatchedProductIds.stream()
+                            .map(id -> productNameById(id, input))
+                            .sorted()
+                            .collect(Collectors.toList());
+                    return new System(
+                            s.getName(),
+                            s.getCpus(),
+                            unmatchedProductNames);
+                })
+                .filter(s -> !s.getProducts().isEmpty())
+                .collect(Collectors.toList());
+    }
+
+    private String productNameById(Long id, JsonInput input) {
+        return input.getProducts().stream()
+                .filter(p -> p.getId().equals(id))
+                .map(JsonProduct::getName)
+                .findFirst()
+                .orElse("Unknown product (" + id + ")");
+    }
+
+    // a - b in a sane way
+    private Set<Long> minus(Set<Long> a, Set<Long> b) {
+        if (b == null) {
+            return a;
+        }
+        return a.stream()
+                .filter(e -> !b.contains(e))
+                .collect(Collectors.toSet());
     }
 }
