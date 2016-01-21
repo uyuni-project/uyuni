@@ -2096,6 +2096,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="suse-products.jsp.iss-slave">
         <source>This server is configured as an Inter-Server Synchronisation (ISS) slave. SUSE Products can only be managed on the ISS master.</source>
       </trans-unit>
+      <trans-unit id="suse-products.jsp.refresh-running">
+        <source>A refresh of the product data is currently running in the background. Please try again later.</source>
+      </trans-unit>
       <trans-unit id="setupwizard.syncstatus.scheduled">
         <source>Scheduled</source>
       </trans-unit>

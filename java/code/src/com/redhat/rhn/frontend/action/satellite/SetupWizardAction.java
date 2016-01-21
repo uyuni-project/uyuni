@@ -21,6 +21,8 @@ import com.redhat.rhn.frontend.nav.NavNode;
 import com.redhat.rhn.frontend.nav.NavTree;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.TaskoRun;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -46,6 +48,7 @@ public class SetupWizardAction extends RhnAction {
     private static final String CURRENT_STEP_ATTRIBUTE = "currentStep";
     private static final String REFRESH_NEEDED = "refreshNeeded";
     private static final String ISS_MASTER = "issMaster";
+    private static final String REFRESH_RUNNING = "refreshRunning";
 
     // Logger for this class
     private static Logger logger = Logger.getLogger(SetupWizardAction.class);
@@ -93,6 +96,10 @@ public class SetupWizardAction extends RhnAction {
 
         request.setAttribute(ISS_MASTER, IssFactory.getCurrentMaster() == null);
         request.setAttribute(REFRESH_NEEDED, SCCCachingFactory.refreshNeeded());
+
+        TaskoRun latestRun = TaskoFactory.getLatestRun("mgr-sync-refresh-bunch");
+        request.setAttribute(REFRESH_RUNNING,
+                latestRun != null && latestRun.getEndTime() == null);
     }
 
     /**
