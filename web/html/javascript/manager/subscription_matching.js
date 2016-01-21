@@ -277,9 +277,11 @@ var Table = React.createClass({
         <div className="table-responsive">
           <table className="table table-striped">
             <TableHeader headers={this.props.headers} />
-            {this.props.data
-              .filter((element, i) => i >= firstItemIndex && i < firstItemIndex + itemsPerPage)
-              .map((columns) => <TableRow columns={columns}/>)}
+            <tbody className="table-content">
+              {this.props.data
+                .filter((element, i) => i >= firstItemIndex && i < firstItemIndex + itemsPerPage)
+                .map((columns) => <TableRow key={columns["id"]} columns={columns}/>)}
+              </tbody>
           </table>
         </div>
         <div className="panel-footer">
@@ -332,13 +334,11 @@ var TableHeader = React.createClass({
 var TableRow = React.createClass({
   render: function() {
     return (
-      <tbody className="table-content">
-        <tr>
-          {this.props.columns.map(function(column){
-            return (<td>{column}</td>);
-          })}
-        </tr>
-      </tbody>
+      <tr>
+        {this.props.columns.map(function(column){
+          return (<td>{column}</td>);
+        })}
+      </tr>
     );
   }
 });
