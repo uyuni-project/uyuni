@@ -107,10 +107,10 @@ var MatcherRunDescription  = React.createClass({
     }
 
     if (this.props.latestEnd == null) {
-      return <p>{t("Matcher is currently running, it was started on {0}.", this.props.latestStart)}</p>
+      return <p>{t("Matcher is currently running, it was started {0}.", moment(this.props.latestStart).fromNow())}</p>
     }
 
-    return <p>{t("Latest successful matcher run was on {0}, you can trigger a new run by clicking the button below.", this.props.latestEnd)}</p>
+    return <p>{t("Latest successful matcher run was {0}, you can trigger a new run by clicking the button below.", moment(this.props.latestEnd).fromNow())}</p>
   }
 });
 
@@ -236,7 +236,8 @@ var Subscriptions = React.createClass({
 });
 
 function subscriptionsToRows(subscriptions){
-  return subscriptions.map((s) => [s.partNumber, s.description, humanReadablePolicy(s.policy), s.matchedQuantity + "/" + s.totalQuantity, s.startDate, s.endDate]);
+  return subscriptions.map((s) => [s.partNumber, s.description, humanReadablePolicy(s.policy), s.matchedQuantity + "/" + s.totalQuantity, moment(s.startDate).fromNow(), moment(s.endDate).fromNow()]);
+  });
 }
 
 function humanReadablePolicy(raw_policy){
