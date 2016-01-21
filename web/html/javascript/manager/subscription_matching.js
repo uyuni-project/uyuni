@@ -359,7 +359,7 @@ var Table = React.createClass({
         </div>
         <div className="panel-footer">
           <div className="spacewalk-list-bottom-addons">
-            {t("Page {0} of {1}", currentPage, lastPage)}
+            <div className="table-page-information">{t("Page {0} of {1}", currentPage, lastPage)}</div>
             <div className="spacewalk-list-pagination">
               <div className="spacewalk-list-pagination-btns btn-group">
                 <PaginationButton onClick={this.goToPage} toPage={1} disabled={currentPage == 1} text={t("First")} />
