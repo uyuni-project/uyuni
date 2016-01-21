@@ -55,6 +55,8 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
@@ -63,12 +65,16 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
 import com.suse.manager.reactor.ActionScheduledEventMessage;
 
+import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.salt.Schedule;
+import com.suse.saltstack.netapi.datatypes.target.MinionList;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -77,6 +83,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ActionFactory - the singleton class used to fetch and store
@@ -134,10 +141,10 @@ public class ActionFactory extends HibernateFactory {
     public static int removeAction(Long actionId) {
 
         Session session = HibernateFactory.getSession();
-        List<Number> ids = session.getNamedQuery("Action.findServerIds")
+        List<Long> ids = session.getNamedQuery("Action.findServerIds")
                 .setLong("action_id", actionId).list();
         int failed = 0;
-        for (Number id : ids) {
+        for (long id : ids) {
             try {
                 removeActionForSystem(actionId, id);
             }
@@ -149,17 +156,44 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Tries to remove a scheduled task on a list of servers
+     * @param sids server ids
+     * @param aid action id
+     * @return the list of server ids that successfully removed the action
+     */
+    public static List<Long> removeSaltSchedule(List<Long> sids, long aid) {
+        List<MinionServer> minions = MinionServerFactory
+                .lookupByIds(sids)
+                .collect(Collectors.toList());
+
+        Map<String, Schedule.Result> results = SaltAPIService.INSTANCE.deleteSchedule(
+                "scheduled-action-" + aid,
+                new MinionList(
+                        minions.stream()
+                               .map(MinionServer::getMinionId)
+                               .collect(Collectors.toList())
+                )
+        );
+        return minions.stream().filter(minionServer -> {
+            Schedule.Result result = results.get(minionServer.getMinionId());
+            return result != null && result.getResult();
+        })
+          .map(MinionServer::getId)
+          .collect(Collectors.toList());
+    }
+
+    /**
      * Remove an action for an rhnset of system ids with the given label
      * @param actionId the action to remove
      * @param setLabel the set label to pull the ids from
      * @param user the user witht he set
      * @return the number of failed systems to remove an action for.
      */
-    public static int removeActionForSystemSet(Number actionId,
+    public static int removeActionForSystemSet(long actionId,
             String setLabel, User user) {
 
         RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
-        Set<Long> ids = set.getElementValues();
+        List<Long> ids = removeSaltSchedule(new ArrayList<>(set.getElementValues()), actionId);
         int failed = 0;
         for (Long sid : ids) {
             try {
