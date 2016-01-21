@@ -5,10 +5,15 @@ var SubscriptionMatching = React.createClass({
      return {};
    },
 
+  refreshServerData: function() {
+   $.get("/rhn/manager/subscription_matching/data", data => {
+     this.setState({"serverData" : data});
+   });
+ },
+
   componentWillMount: function() {
-    $.get("/rhn/manager/subscription_matching/data", data => {
-      this.setState({"serverData" : data});
-    });
+    this.refreshServerData();
+    setInterval(this.refreshServerData, this.props.refreshInterval);
   },
 
   render: function() {
@@ -50,15 +55,18 @@ var MatcherRunPanel = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      "latestStart": nextProps.initialLatestStart,
-      "latestEnd": nextProps.initialLatestEnd,
-    });
+    if (this.state.latestStart == null || nextProps.initialLatestStart >= this.state.latestStart) {
+      this.setState({
+        "latestStart": nextProps.initialLatestStart,
+        "latestEnd": nextProps.initialLatestEnd,
+        "error": false,
+      });
+    }
   },
 
   onScheduled: function() {
     this.setState({
-        "latestStart": new Date(),
+        "latestStart": new Date().toJSON(),
         "latestEnd": null,
         "error": false,
       }
@@ -236,15 +244,26 @@ var Table = React.createClass({
     return { "currentPage":1 };
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    var lastPage = this.lastPage(nextProps.itemsPerPage, nextProps.data.length);
+    if (this.state.currentPage > lastPage) {
+      this.setState({"currentPage": lastPage});
+    }
+  },
+
   goToPage:function(p){
     this.setState({"currentPage": p});
   },
 
+  lastPage: function(ipp, totItems) {
+    return totItems <= ipp ? 1 : (totItems%ipp == 0 ? totItems/ipp : Math.floor(totItems/ipp) +1);
+  },
+
   render: function() {
-    var currentPage = this.state.currentPage;
     var ipp = this.props.itemsPerPage;
     var totItems = this.props.data.length;
-    var lastPage = totItems <= ipp ? 1 : (totItems%ipp == 0 ? totItems/ipp : Math.floor(totItems/ipp) +1);
+    var currentPage = this.state.currentPage;
+    var lastPage = this.lastPage(ipp, totItems);
     var offset = (currentPage-1)*ipp;
     var firstItem = offset +1;
     var lastItem = firstItem + ipp < totItems ? firstItem + ipp -1 : totItems;
@@ -345,6 +364,6 @@ var CsvLink = React.createClass({
 });
 
 React.render(
-  <SubscriptionMatching />,
+  <SubscriptionMatching refreshInterval={5000} />,
   document.getElementById('subscription_matching')
 );
