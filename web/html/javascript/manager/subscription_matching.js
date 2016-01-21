@@ -241,63 +241,56 @@ function subscriptionsToRows(subscriptions){
 
 var Table = React.createClass({
   getInitialState: function(){
-    return { "currentPage":1 };
+    return { "currentPage": 1 };
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var lastPage = this.lastPage(nextProps.itemsPerPage, nextProps.data.length);
+    var lastPage = Math.ceil(nextProps.data.length / nextProps.itemsPerPage);
     if (this.state.currentPage > lastPage) {
       this.setState({"currentPage": lastPage});
     }
   },
 
-  goToPage:function(p){
-    this.setState({"currentPage": p});
-  },
-
-  lastPage: function(ipp, totItems) {
-    return totItems <= ipp ? 1 : (totItems%ipp == 0 ? totItems/ipp : Math.floor(totItems/ipp) +1);
+  goToPage:function(page){
+    this.setState({"currentPage": page});
   },
 
   render: function() {
-    var ipp = this.props.itemsPerPage;
-    var totItems = this.props.data.length;
+    var itemsPerPage = this.props.itemsPerPage;
+    var itemCount = this.props.data.length;
+    var lastPage = Math.ceil(itemCount / itemsPerPage);
     var currentPage = this.state.currentPage;
-    var lastPage = this.lastPage(ipp, totItems);
-    var offset = (currentPage-1)*ipp;
-    var firstItem = offset +1;
-    var lastItem = firstItem + ipp < totItems ? firstItem + ipp -1 : totItems;
-    var paginatedItems = [];
-    for(var i = 0; i<ipp; i++){
-      if ((offset+i) < totItems) {
-          paginatedItems[i] = this.props.data[offset + i];
-      }
-    }
+
+    var firstItemIndex = (currentPage - 1) * itemsPerPage;
+
+    var fromItem = firstItemIndex +1;
+    var toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
+
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
           <div className="spacewalk-list-head-addons">
-            <div className="spacewalk-list-filter">{firstItem} - {lastItem} of {totItems} {t("items")}</div>
-            <div className="spacewalk-list-head-addons-extra">{ipp} {t("items per page")}</div>
+            <div className="spacewalk-list-filter">{t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)}</div>
+            <div className="spacewalk-list-head-addons-extra">{itemsPerPage} {t("items per page")}</div>
           </div>
         </div>
         <div className="table-responsive">
           <table className="table table-striped">
             <TableHeader headers={this.props.headers} />
-            {paginatedItems.map(function(columns){
-              return (<TableRow columns={columns}/>);
-            })}
+            {this.props.data
+              .filter((element, i) => i >= firstItemIndex && i < firstItemIndex + itemsPerPage)
+              .map((columns) => <TableRow columns={columns}/>)}
           </table>
         </div>
         <div className="panel-footer">
           <div className="spacewalk-list-bottom-addons">
-            {this.state.currentPage} of {lastPage} {t("pages")}
+            {t("Page {0} of {1}", currentPage, lastPage)}
             <div className="spacewalk-list-pagination">
               <div className="spacewalk-list-pagination-btns btn-group">
-                <ButtonPage onClick={this.goToPage} toPage={1} disabled={this.state.currentPage == 1} text={t("FirstPage")} />
-                <ButtonPage onClick={this.goToPage} toPage={this.state.currentPage -1} disabled={this.state.currentPage == 1} text={t("PrevPage")} />
-                <ButtonPage onClick={this.goToPage} toPage={this.state.currentPage + 1} disabled={this.state.currentPage == lastPage} text={t("NextPage")} />
-                <ButtonPage onClick={this.goToPage} toPage={lastPage} disabled={this.state.currentPage == lastPage} text={t("LastPage")} />
+                <PaginationButton onClick={this.goToPage} toPage={1} disabled={currentPage == 1} text={t("First")} />
+                <PaginationButton onClick={this.goToPage} toPage={currentPage -1} disabled={currentPage == 1} text={t("Prev")} />
+                <PaginationButton onClick={this.goToPage} toPage={currentPage + 1} disabled={currentPage == lastPage} text={t("Next")} />
+                <PaginationButton onClick={this.goToPage} toPage={lastPage} disabled={currentPage == lastPage} text={t("Last")} />
               </div>
             </div>
           </div>
@@ -307,7 +300,7 @@ var Table = React.createClass({
   }
 });
 
-var ButtonPage = React.createClass({
+var PaginationButton = React.createClass({
   onClick: function(){
     this.props.onClick(this.props.toPage);
   },
