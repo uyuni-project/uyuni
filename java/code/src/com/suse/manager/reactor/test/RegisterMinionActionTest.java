@@ -22,13 +22,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.messaging.test.MessageQueueTest;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import org.jmock.Mock;
 
-import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
@@ -37,7 +34,6 @@ import com.suse.manager.reactor.RegisterMinionAction;
 import com.suse.manager.reactor.RegisterMinionEvent;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.saltstack.netapi.calls.modules.Grains;
-import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.parser.JsonParser;
 
 /**
