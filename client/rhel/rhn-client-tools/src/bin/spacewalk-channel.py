@@ -18,7 +18,7 @@ import os
 import re
 import sys
 from rhn import rpclib
-
+from rhn.i18n import sstr
 from optparse import Option, OptionParser
 
 try: # python2
@@ -29,7 +29,11 @@ except ImportError: # python3
     import xmlrpc.client as xmlrpclib
 
 import gettext
-_ = gettext.translation('rhn-client-tools', fallback=True).ugettext
+t = gettext.translation('rhn-client-tools', fallback=True)
+# Python 3 translations don't have a ugettext method
+if not hasattr(t, 'ugettext'):
+    t.ugettext = t.gettext
+_ = t.ugettext
 
 _LIBPATH = "/usr/share/rhn"
 # add to the path if need be
@@ -86,7 +90,7 @@ def systemExit(code, msgs=None):
         for msg in msgs:
             if hasattr(msg, 'value'):
                 msg = msg.value
-            sys.stderr.write(rhncli.utf8_encode(msg) + "\n")
+            sys.stderr.write(sstr(msg) + "\n")
     sys.exit(code)
 
 

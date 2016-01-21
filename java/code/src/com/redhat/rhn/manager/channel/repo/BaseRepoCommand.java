@@ -177,8 +177,8 @@ public class BaseRepoCommand {
         SslCryptoKey clientCert = lookupSslCryptoKey(sslClientCertId, org);
         SslCryptoKey clientKey = lookupSslCryptoKey(sslClientKeyId, org);
 
+        // create new repository
         if (repo == null) {
-            // create cmd
             if (caCert != null) {
                 this.repo = ChannelFactory.createSslRepo(caCert, clientCert, clientKey);
             }
@@ -186,7 +186,15 @@ public class BaseRepoCommand {
                 this.repo = ChannelFactory.createRepo();
             }
         }
+
+        // update existing repository
         else {
+
+            if (clientCert == null && clientKey != null) {
+                throw new InvalidCertificateException("client key is provided " +
+                        "but client certificate is missing");
+            }
+
             if (repo.isSsl() && caCert == null) {
                 ContentSource cs = new ContentSource(repo);
                 ChannelFactory.remove(repo);
@@ -205,10 +213,6 @@ public class BaseRepoCommand {
                 SslContentSource sslRepo = (SslContentSource) repo;
                 sslRepo.setCaCert(caCert);
                 sslRepo.setClientCert(clientCert);
-                // in case client cert isn't set, it makes no sense to set the client key
-                if (sslRepo.getClientCert() == null && clientKey != null) {
-                    throw new InvalidCertificateException("");
-                }
                 sslRepo.setClientKey(clientKey);
             }
         }
@@ -216,14 +220,14 @@ public class BaseRepoCommand {
         repo.setOrg(org);
         repo.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
 
-        if (!this.label.equals(repo.getLabel())) {
+        if (this.label != null && !this.label.equals(repo.getLabel())) {
             if (ChannelFactory.lookupContentSourceByOrgAndLabel(org, label) != null) {
                 throw new InvalidRepoLabelException(label);
             }
             repo.setLabel(this.label);
         }
 
-        if (!this.url.equals(repo.getSourceUrl())) {
+        if (this.url != null && !this.url.equals(repo.getSourceUrl())) {
             if (!ChannelFactory.lookupContentSourceByOrgAndRepo(org,
                     ChannelFactory.CONTENT_SOURCE_TYPE_YUM, url).isEmpty()) {
                 throw new InvalidRepoUrlException(url);

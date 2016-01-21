@@ -18,10 +18,11 @@ from up2date_client import pkgUtils
 from up2date_client import up2dateLog
 from up2date_client import rhnreg_constants
 from up2date_client import hardware
-from rhnPackageInfo import convertPackagesFromHashToList
-from suseRegister.info import getProductProfile;
-from pkgplatform import getPlatform
-from rhn.i18n import ustr
+from up2date_client.rhnPackageInfo import convertPackagesFromHashToList
+from up2date_client.pkgplatform import getPlatform
+from rhn.i18n import ustr, sstr
+from rhn.tb import raise_with_tb
+from suseRegister.info import getProductProfile
 
 try: # python2
     import urlparse
@@ -36,6 +37,7 @@ except ImportError: # python3
     UnicodeType = str
     DictType = dict
     DictionaryType = dict
+    long = int
 
 try:
     from virtualization import support
@@ -105,7 +107,7 @@ def getOemInfo():
         try:
             (key, value) = i.split(':')
         except ValueError:
-            raise up2dateErrors.OemInfoFileError(i), None, sys.exc_info()[2]
+            raise_with_tb(up2dateErrors.OemInfoFileError(i))
 
         info[key] = value.strip()
 
@@ -149,7 +151,7 @@ def _write_secure_file(secure_file, file_contents):
     fd = os.open(secure_file, os.O_WRONLY | os.O_CREAT, int('0o600', 8))
     fd_file = os.fdopen(fd, 'w')
     try:
-        fd_file.write(file_contents)
+        fd_file.write(sstr(file_contents))
     finally:
         fd_file.close()
 
@@ -249,7 +251,7 @@ def get_fully_virt_info():
 
 def _is_host_uuid(uuid):
     uuid = eval('0x%s' % uuid)
-    return long(uuid) == 0L
+    return long(uuid) == long(0)
 
 def welcomeText():
     s = rhnserver.RhnServer()
@@ -295,10 +297,10 @@ class RegistrationResult:
         return self._systemSlots
 
     def getSystemSlotDescriptions(self):
-        return map(self._getSlotDescription, self._systemSlots)
+        return [self._getSlotDescription(s) for s in self._systemSlots]
 
     def getFailedSystemSlotDescriptions(self):
-        return map(self._getFailedSlotDescription, self._failedSystemSlots)
+        return [self._getFailedSlotDescription(s) for s in self._failedSystemSlots]
 
     def getUniversalActivationKey(self):
         """Returns None if no universal activation key was used."""
@@ -402,7 +404,7 @@ def getAvailableChannels(username, password):
     except xmlrpclib.Fault:
         f = sys.exc_info()[1]
         if f.faultCode == 99:
-            raise up2dateErrors.DelayError(f.faultString), None, sys.exc_info()[2]
+            raise_with_tb(up2dateErrors.DelayError(f.faultString))
         else:
             raise
 
@@ -483,7 +485,7 @@ def sendHardware(systemId, hardwareList):
         return x
     s = rhnserver.RhnServer()
     if not s.capabilities.hasCapability('ipv6', 1):
-        hardwareList = map(remove_ip6addr, hardwareList)
+        hardwareList = [remove_ip6addr(i) for i in hardwareList]
     s.registration.add_hw_profile(systemId, _encode_characters(hardwareList))
 
 def sendPackages(systemId, packageList):
@@ -569,11 +571,11 @@ def _encode_characters(*args):
             if item_type == StringType:
                 item = ustr(item)
             elif item_type == TupleType:
-                item = tuple(map(_encode_characters, item))
+                item = tuple(_encode_characters(i) for i in item)
             elif item_type == ListType:
-                item = map(_encode_characters, item)
+                item = [_encode_characters(i) for i in item]
             elif item_type == DictType or item_type == DictionaryType:
-                item = dict([(_encode_characters(name, val)) for name, val in item.iteritems()])
+                item = dict([(_encode_characters(name, val)) for name, val in item.items()])
             # else: numbers or UnicodeType - are safe
             result.append(item)
         if len(result) == 1:
@@ -658,5 +660,5 @@ if getPlatform() == 'deb':
         """On Debian no extra action for plugin is needed"""
         return 1, 0
 else:
-    from pmPlugin import pluginEnable
+    from up2date_client.pmPlugin import pluginEnable
 

@@ -4,7 +4,6 @@
 
 import glob
 import os
-import string
 
 from up2date_client.capabilities import parseCap
 
@@ -52,7 +51,7 @@ def loadLocalCaps(capsDir = "/etc/sysconfig/rhn/clientCaps.d"):
 
         fd = open(capsFile, "r")
         for line in fd.readlines():
-            string.strip(line)
+            line = line.strip()
             if line[0] == "#":
                 continue
             caplist = parseCap(line)

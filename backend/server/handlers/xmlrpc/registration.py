@@ -1020,6 +1020,7 @@ class Registration(rhnHandler):
             primif = None
             ipaddr=row['ipaddr']
             ip6addr=row['ip6addr']
+            primif=None
             if ipaddr:
                 h = rhnSQL.prepare("""
                     select interface_id from rhnServerNetAddress4 where address = :address
