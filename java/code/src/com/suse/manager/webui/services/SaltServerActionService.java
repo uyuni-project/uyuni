@@ -59,7 +59,7 @@ public enum SaltServerActionService {
             ErrataAction errataAction = (ErrataAction) actionIn;
             List<MinionServer> minions = actionIn.getServerActions().stream()
                     .flatMap(action ->
-                            MinionServerFactory.asMinionServer(action.getServer())
+                            action.getServer().asMinionServer()
                                     .map(Stream::of)
                                     .orElse(Stream.empty()))
                     .filter(minion -> minion.hasEntitlement(EntitlementManager.SALTSTACK))
