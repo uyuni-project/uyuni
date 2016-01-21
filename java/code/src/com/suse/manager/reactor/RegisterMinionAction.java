@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
@@ -139,9 +138,8 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
-            ServerInfo serverInfo = new ServerInfo();
-            serverInfo.setServer(server);
-            server.setServerInfo(serverInfo);
+
+            server.updateServerInfo();
 
             mapHardwareGrains(server, grains);
 

@@ -94,6 +94,14 @@ public class JobReturnEventMessageAction implements MessageAction {
                         new UpdatePackageProfileEventMessage(minionServer.getId()));
             });
         }
+
+        // for all jobs, update minion last checkin
+        MinionServerFactory
+                .findByMinionId(jobReturnEvent.getMinionId())
+                .ifPresent(minionServer -> {
+                    MessageQueue.publish
+                            (new CheckinEventMessage(minionServer.getId()));
+                });
     }
 
     /**
