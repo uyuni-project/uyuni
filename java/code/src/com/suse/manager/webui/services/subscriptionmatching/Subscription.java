@@ -22,6 +22,7 @@ import java.util.Date;
  */
 public class Subscription {
 
+    private Long id;
     private String partNumber;
     private String description;
     private String policy;
@@ -33,6 +34,7 @@ public class Subscription {
     /**
      * Standard constructor.
      *
+     * @param idIn - id
      * @param partNumberIn - part number
      * @param productDescriptionIn - product description
      * @param totalQuantityIn - total quantity
@@ -40,8 +42,10 @@ public class Subscription {
      * @param startDateIn - start date
      * @param endDateIn - end date
      */
-    public Subscription(String partNumberIn, String productDescriptionIn, String policyIn,
-            int totalQuantityIn, int matchedQuantityIn, Date startDateIn, Date endDateIn) {
+    public Subscription(Long idIn, String partNumberIn, String productDescriptionIn,
+            String policyIn, int totalQuantityIn, int matchedQuantityIn, Date startDateIn,
+            Date endDateIn) {
+        id = idIn;
         partNumber = partNumberIn;
         description = productDescriptionIn;
         policy = policyIn;
@@ -49,6 +53,22 @@ public class Subscription {
         matchedQuantity = matchedQuantityIn;
         startDate = startDateIn;
         endDate = endDateIn;
+    }
+
+    /**
+     * Gets the id.
+     * @return id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id.
+     * @param idIn - the id
+     */
+    public void setId(Long idIn) {
+        id = idIn;
     }
 
     /**
