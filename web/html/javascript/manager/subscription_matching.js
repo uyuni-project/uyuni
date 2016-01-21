@@ -169,7 +169,7 @@ var Messages = React.createClass({
   }
 });
 
-function humanReadable(raw_messages){
+function messagesToRows(raw_messages){
   var result= raw_messages.map(function(raw_message){
     var data = raw_message["data"];
     var message;
@@ -199,7 +199,7 @@ function humanReadable(raw_messages){
         message = raw_message["type"];
         additionalInformation = data;
     }
-    return [message, additionalInformation];
+    return <TableRow columns={[message, additionalInformation]} />;
   });
   return result;
 }
@@ -211,9 +211,9 @@ var Subscriptions = React.createClass({
       if (this.props.subscriptions.length > 0) {
         body = (
           <div className="spacewalk-list">
-            <Table headers={[t("Part number"), t("Description"), t("Policy"), t("Matched / Total"), t("Start date"), t("End date")]}
-              data={subscriptionsToRows(this.props.subscriptions)}
-              itemsPerPage={10} />
+            <Table headers={[t("Part number"), t("Description"), t("Policy"), t("Matched/Total"), t("Start date"), t("End date")]}
+              rows={subscriptionsToRows(this.props.subscriptions)}
+              itemsPerPage={15} />
             <CsvLink name="subscription_report.csv" />
           </div>
         );
@@ -236,7 +236,24 @@ var Subscriptions = React.createClass({
 });
 
 function subscriptionsToRows(subscriptions){
-  return subscriptions.map((s) => [s.partNumber, s.description, humanReadablePolicy(s.policy), s.matchedQuantity + "/" + s.totalQuantity, moment(s.startDate).fromNow(), moment(s.endDate).fromNow()]);
+  return subscriptions.map((s) => {
+    var now = moment();
+    var className = moment(s.endDate).isBefore(now) ?
+      "text-muted" :
+        moment(s.endDate).isBefore(now.add(3, "months")) ?
+        "text-danger" :
+        null;
+
+    var columns = [
+      s.partNumber,
+      s.description,
+      humanReadablePolicy(s.policy),
+      s.matchedQuantity + "/" + s.totalQuantity,
+      moment(s.startDate).fromNow(),
+      moment(s.endDate).fromNow(),
+    ];
+
+    return <TableRow className={className} columns={columns} />
   });
 }
 
@@ -267,7 +284,7 @@ var Table = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var lastPage = Math.ceil(nextProps.data.length / nextProps.itemsPerPage);
+    var lastPage = Math.ceil(nextProps.rows.length / nextProps.itemsPerPage);
     if (this.state.currentPage > lastPage) {
       this.setState({"currentPage": lastPage});
     }
@@ -279,7 +296,7 @@ var Table = React.createClass({
 
   render: function() {
     var itemsPerPage = this.props.itemsPerPage;
-    var itemCount = this.props.data.length;
+    var itemCount = this.props.rows.length;
     var lastPage = Math.ceil(itemCount / itemsPerPage);
     var currentPage = this.state.currentPage;
 
@@ -300,9 +317,9 @@ var Table = React.createClass({
           <table className="table table-striped">
             <TableHeader headers={this.props.headers} />
             <tbody className="table-content">
-              {this.props.data
+              {this.props.rows
                 .filter((element, i) => i >= firstItemIndex && i < firstItemIndex + itemsPerPage)
-                .map((columns) => <TableRow key={columns["id"]} columns={columns}/>)}
+              }
               </tbody>
           </table>
         </div>
@@ -356,7 +373,7 @@ var TableHeader = React.createClass({
 var TableRow = React.createClass({
   render: function() {
     return (
-      <tr>
+      <tr className={this.props.className}>
         {this.props.columns.map(function(column){
           return (<td>{column}</td>);
         })}
