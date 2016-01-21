@@ -14,11 +14,18 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.frontend.dto.SystemEventDto;
+import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.salt.Schedule;
+import com.suse.saltstack.netapi.datatypes.target.MinionList;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -64,7 +71,21 @@ public class SystemPendingEventsCancelAction extends RhnAction {
         if (context.wasDispatched("system.event.pending.cancel")) {
             createSuccessMessage(request, "system.event.pending.canceled",
                     new Integer(set.size()).toString());
-            for (SystemPendingEventDto action : result) {
+
+            Optional<List<SystemPendingEventDto>> systemPendingEventDtos = server.asMinionServer().map(minionServer -> {
+                List<SystemPendingEventDto> actions = new LinkedList<>();
+                for (SystemPendingEventDto action : result) {
+                    Map<String, Schedule.Result> stringResultMap = SaltAPIService.INSTANCE
+                            .deleteSchedule("scheduled-action-" + action.getId(), new MinionList(minionServer.getMinionId()));
+                    Schedule.Result result1 = stringResultMap.get(minionServer.getMinionId());
+                    if (result1 != null && result1.getResult()) {
+                        actions.add(action);
+                    }
+                }
+                return actions;
+            });
+
+            for (SystemPendingEventDto action : systemPendingEventDtos.orElse(result)) {
                 ActionFactory.removeActionForSystem(action.getId(), sid);
             }
             set.clear();
