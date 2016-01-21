@@ -63,21 +63,6 @@ public class MinionServerFactory extends HibernateFactory {
     }
 
     /**
-     * Conversion of server objects into optionals of type MinionServer.
-     *
-     * @param server a server object
-     * @return optional of MinionServer
-     */
-    public static Optional<MinionServer> asMinionServer(Server server) {
-       if (server instanceof MinionServer) {
-          return Optional.of((MinionServer) server);
-       }
-       else {
-          return Optional.empty();
-       }
-    }
-
-    /**
      * List all minions.
      *
      * @return a list of all minions
