@@ -211,7 +211,7 @@ var Subscriptions = React.createClass({
       if (this.props.subscriptions.length > 0) {
         body = (
           <div className="spacewalk-list">
-            <Table headers={[t("Part number"), t("Description"), t("Policy"), t("Total quantity"), t("Matched quantity"), t("Start date"), t("End date")]}
+            <Table headers={[t("Part number"), t("Description"), t("Policy"), t("Matched / Total"), t("Start date"), t("End date")]}
               data={subscriptionsToRows(this.props.subscriptions)}
               itemsPerPage={10} />
             <CsvLink name="subscription_report.csv" />
@@ -236,7 +236,7 @@ var Subscriptions = React.createClass({
 });
 
 function subscriptionsToRows(subscriptions){
-  return subscriptions.map((s) => [s.partNumber, s.description, humanReadablePolicy(s.policy), s.totalQuantity, s.matchedQuantity, s.startDate, s.endDate]);
+  return subscriptions.map((s) => [s.partNumber, s.description, humanReadablePolicy(s.policy), s.matchedQuantity + "/" + s.totalQuantity, s.startDate, s.endDate]);
 }
 
 function humanReadablePolicy(raw_policy){
