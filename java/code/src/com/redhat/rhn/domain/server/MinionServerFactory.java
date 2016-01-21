@@ -22,6 +22,9 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * MinionFactory - the singleton class used to fetch and store
@@ -82,5 +85,11 @@ public class MinionServerFactory extends HibernateFactory {
      */
     public static Optional<MinionServer> lookupById(Long id) {
         return Optional.ofNullable((MinionServer) getSession().get(MinionServer.class, id));
+    }
+
+    public static Stream<MinionServer> lookupByIds(List<Long> ids) {
+        return ServerFactory.lookupByIds(ids).stream().flatMap(server ->
+           server.asMinionServer().map(Stream::of).orElseGet(Stream::empty)
+        );
     }
 }
