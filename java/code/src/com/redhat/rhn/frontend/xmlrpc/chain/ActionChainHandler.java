@@ -24,9 +24,6 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
-import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -41,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 import javax.xml.bind.DatatypeConverter;
 
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import org.apache.commons.collections.CollectionUtils;
 
 /**
