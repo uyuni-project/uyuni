@@ -48,13 +48,14 @@ smdba system-check autotuning
 #fi
 
 # guessing the link
-for v in `seq 20 -1 13`; do
-    minusone=$(($v-1))
-    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-2.1.50.$minusone-to-susemanager-schema-2.1.50.$v ]; then
-        mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-2.1.50.$v-to-susemanager-schema-2.1.51
-        break
-    fi
-done
+# obsolete: we have this link now in the package.
+#for v in `seq 20 -1 13`; do
+#    minusone=$(($v-1))
+#    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-2.1.50.$minusone-to-susemanager-schema-2.1.50.$v ]; then
+#        mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-2.1.50.$v-to-susemanager-schema-2.1.51
+#        break
+#    fi
+#done
 export SUMA_TEST_SCHEMA_VERSION="3.0"
 
 # run the schema upgrade from git repo
