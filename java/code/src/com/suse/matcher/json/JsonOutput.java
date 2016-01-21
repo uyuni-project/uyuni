@@ -30,8 +30,10 @@
 package com.suse.matcher.json;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * JSON representation of the matcher's output.
@@ -44,6 +46,9 @@ public class JsonOutput {
     /** The confirmed matches. */
     private List<JsonMatch> confirmedMatches = new LinkedList<>();
 
+    /** Mapping from subscription id to its policy */
+    private Map<Long, String> subscriptionPolicies = new HashMap<>();
+
     /** The messages. */
     private List<JsonMessage> messages = new LinkedList<>();
 
@@ -55,10 +60,11 @@ public class JsonOutput {
      * @param messagesIn the messages
      */
     public JsonOutput(Date timestampIn, List<JsonMatch> confirmedMatchesIn,
-            List<JsonMessage> messagesIn) {
+            List<JsonMessage> messagesIn, Map<Long, String> subscriptionPoliciesIn) {
         timestamp = timestampIn;
         confirmedMatches = confirmedMatchesIn;
         messages = messagesIn;
+        subscriptionPolicies = subscriptionPoliciesIn;
     }
 
     /**
@@ -95,6 +101,22 @@ public class JsonOutput {
      */
     public void setConfirmedMatches(List<JsonMatch> confirmedMatchesIn) {
         confirmedMatches = confirmedMatchesIn;
+    }
+
+    /**
+     * Gets the subscription to policy mapping.
+     * @return the subscription to policy mapping.
+     */
+    public Map<Long, String> getSubscriptionPolicies() {
+        return subscriptionPolicies;
+    }
+
+    /**
+     * Sets the subscription to policy mapping.
+     * @param subscriptionPolicies subscription to policy map
+     */
+    public void setSubscriptionPolicies(Map<Long, String> subscriptionPolicies) {
+        this.subscriptionPolicies = subscriptionPolicies;
     }
 
     /**
