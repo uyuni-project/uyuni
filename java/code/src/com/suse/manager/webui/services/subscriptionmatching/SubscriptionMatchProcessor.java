@@ -72,7 +72,8 @@ public class SubscriptionMatchProcessor {
     private List<Subscription> subscriptions(JsonInput input, JsonOutput output) {
         Map<Long, Integer> matchedQuantity = matchedQuantity(output);
         return input.getSubscriptions().stream()
-                .map(js -> new Subscription(js.getPartNumber(),
+                .map(js -> new Subscription(js.getId(),
+                        js.getPartNumber(),
                         js.getName(),
                         output.getSubscriptionPolicies().get(js.getId()),
                         js.getQuantity(),
