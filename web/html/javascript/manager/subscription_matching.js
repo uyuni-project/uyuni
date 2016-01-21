@@ -91,7 +91,7 @@ var MatcherRunPanel = React.createClass({
 var MatcherRunDescription  = React.createClass({
   render: function() {
     if (this.props.error) {
-      return <p className="text-danger">{t("Could not start a matching run. Please check that Taskomatic is running correctly.")}</p>
+      return <p className="text-danger">{t("Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running.")}</p>
     }
 
     if (this.props.latestStart == null) {
