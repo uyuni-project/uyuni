@@ -139,7 +139,7 @@ var Messages = React.createClass({
         body = (
           <div className="spacewalk-list">
             <p>{t("Please review warning and information messages from last matching below.")}</p>
-            <Table headers={[t("Message"), t("Additional information")]} data={humanReadable(this.props.messages)} />
+            <Table headers={[t("Message"), t("Additional information")]} data={humanReadable(this.props.messages)} itemsPerPage={10} />
             <CsvLink name="message_report.csv" />
           </div>
         );
@@ -204,7 +204,8 @@ var Subscriptions = React.createClass({
         body = (
           <div className="spacewalk-list">
             <Table headers={[t("Part number"), t("Description"), t("Total quantity"), t("Matched quantity"), t("Start date"), t("End date")]}
-              data={subscriptionsToRows(this.props.subscriptions)} />
+              data={subscriptionsToRows(this.props.subscriptions)}
+              itemsPerPage={10} />
             <CsvLink name="subscription_report.csv" />
           </div>
         );
@@ -232,10 +233,7 @@ function subscriptionsToRows(subscriptions){
 
 var Table = React.createClass({
   getInitialState: function(){
-    var totItems = this.props.data.length;
-    var ipp = 10;
-    var lastPage = totItems <= ipp ? 1 : (totItems%ipp == 0 ? totItems/ipp : Math.floor(totItems/ipp) +1);
-    return {"currentPage":1, "ipp": ipp, "lastPage": lastPage}
+    return { "currentPage":1 };
   },
 
   goToPage:function(p){
@@ -244,8 +242,9 @@ var Table = React.createClass({
 
   render: function() {
     var currentPage = this.state.currentPage;
-    var ipp = this.state.ipp;
+    var ipp = this.props.itemsPerPage;
     var totItems = this.props.data.length;
+    var lastPage = totItems <= ipp ? 1 : (totItems%ipp == 0 ? totItems/ipp : Math.floor(totItems/ipp) +1);
     var offset = (currentPage-1)*ipp;
     var firstItem = offset +1;
     var lastItem = firstItem + ipp < totItems ? firstItem + ipp -1 : totItems;
@@ -260,7 +259,7 @@ var Table = React.createClass({
         <div className="panel-heading">
           <div className="spacewalk-list-head-addons">
             <div className="spacewalk-list-filter">{firstItem} - {lastItem} of {totItems} {t("items")}</div>
-            <div className="spacewalk-list-head-addons-extra">{this.state.ipp} {t("items per page")}</div>
+            <div className="spacewalk-list-head-addons-extra">{ipp} {t("items per page")}</div>
           </div>
         </div>
         <div className="table-responsive">
@@ -273,13 +272,13 @@ var Table = React.createClass({
         </div>
         <div className="panel-footer">
           <div className="spacewalk-list-bottom-addons">
-            {this.state.currentPage} of {this.state.lastPage} {t("pages")}
+            {this.state.currentPage} of {lastPage} {t("pages")}
             <div className="spacewalk-list-pagination">
               <div className="spacewalk-list-pagination-btns btn-group">
                 <ButtonPage onClick={this.goToPage} toPage={1} disabled={this.state.currentPage == 1} text={t("FirstPage")} />
                 <ButtonPage onClick={this.goToPage} toPage={this.state.currentPage -1} disabled={this.state.currentPage == 1} text={t("PrevPage")} />
-                <ButtonPage onClick={this.goToPage} toPage={this.state.currentPage + 1} disabled={this.state.currentPage == this.state.lastPage} text={t("NextPage")} />
-                <ButtonPage onClick={this.goToPage} toPage={this.state.lastPage} disabled={this.state.currentPage == this.state.lastPage} text={t("LastPage")} />
+                <ButtonPage onClick={this.goToPage} toPage={this.state.currentPage + 1} disabled={this.state.currentPage == lastPage} text={t("NextPage")} />
+                <ButtonPage onClick={this.goToPage} toPage={lastPage} disabled={this.state.currentPage == lastPage} text={t("LastPage")} />
               </div>
             </div>
           </div>
