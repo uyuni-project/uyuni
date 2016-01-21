@@ -22,12 +22,14 @@ var SubscriptionMatching = React.createClass({
     var latestEnd = data == null ? null : data.latestEnd;
     var messages = data == null ? null : data.messages;
     var subscriptions = data == null ? null : data.subscriptions;
+    var unmatchedSystems = data == null ? null : data.unmatchedSystems;
 
     var body;
     if (data != null && data.matcherDataAvailable) {
       body = (
         <div>
           <Subscriptions subscriptions={subscriptions} />
+          <UnmatchedSystems unmatchedSystems={unmatchedSystems} />
           <Messages messages={messages} />
         </div>
       );
@@ -138,6 +140,38 @@ var MatcherScheduleButton = React.createClass({
     );
   }
 });
+
+
+var UnmatchedSystems = React.createClass({
+  render: function() {
+    if (this.props.unmatchedSystems != null && this.props.unmatchedSystems.length > 0) {
+      return (
+        <div className="row col-md-12">
+          <h2>{t("Unmatched Systems")}</h2>
+          <div className="spacewalk-list">
+            <Table headers={[t("Name"), t("Socket/IFL count"), t("Products")]}
+              rows={unmatchedSystemsToRows(this.props.unmatchedSystems)}
+              itemsPerPage={15} />
+            <CsvLink name="unmatched_system_report.csv" />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  }
+});
+
+function unmatchedSystemsToRows(systems){
+  return systems.map((s) => {
+    var columns = [
+      s.name,
+      s.cpuCount,
+      s.products.map((product) => <span>{product}, </span>),
+    ];
+
+    return <TableRow columns={columns} />
+  });
+}
 
 var Messages = React.createClass({
   render: function() {
