@@ -15,34 +15,39 @@
 
 package com.suse.manager.webui.controllers;
 
+import static spark.Spark.halt;
+
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpStatus;
+
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpStatus;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-
-import static spark.Spark.halt;
 
 /**
  * Controller class providing backend code for subscription-matcher pages.
  */
 public class SubscriptionMatchingController {
 
-    private static final Gson GSON = new GsonBuilder().serializeNulls().create();
+    private static final Gson GSON = new GsonBuilder()
+        .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
+        .serializeNulls()
+        .create();
 
     private SubscriptionMatchingController() { }
 
