@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.5.8.1
+Version: 2.5.9
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -35,15 +35,21 @@ Requires: sh-utils
 %if 0%{?fedora} >= 23
 BuildRequires: python3-devel
 Requires: libgudev
+Requires: newt-python3
 Requires: python3-gobject-base
+%ifnarch s390 s390x
 Requires: python3-dmidecode
+%endif
 Requires: python3-hwdata
 Requires: python3-rhnlib >= 2.5.78
 %else
 BuildRequires: python-devel
+%ifnarch s390 s390x
 Requires: python-dmidecode
+%endif
 Requires: rhnlib >= 2.5.78
 %if 0%{?fedora}
+Requires: newt-python
 Requires: pygobject3-base libgudev1
 Requires: python-hwdata
 %else
@@ -53,6 +59,15 @@ Requires: python-hwdata
 %else
 Requires: hal >= 0.5.8.1-52
 %endif # 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
+%if 0%{?suse_version}
+Requires: python-newt
+%endif
+%if 0%{?rhel} == 5
+Requires: newt
+%endif
+%if 0%{?rhel} > 5
+Requires: newt-python
+%endif
 %endif # 0%{?fedora}
 %endif # 0%{?fedora} >= 23
 %if 0%{?suse_version}
@@ -60,20 +75,6 @@ Requires: dbus-1-python
 %else
 Requires: dbus-python
 %endif
-%if 0%{?suse_version}
-Requires: python-newt
-%endif
-%if 0%{?rhel} == 5
-Requires: newt
-%endif
-%if 0%{?fedora} || 0%{?rhel} > 5
-Requires: newt-python
-%endif
-Requires: logrotate
-%ifnarch s390 s390x
-Requires: python-dmidecode
-%endif
-Requires: suseRegisterInfo
 %if 0%{?suse_version}
 Requires: zypper
 %else
@@ -83,6 +84,9 @@ Requires: dnf
 Requires: yum
 %endif # 0%{?fedora} >= 22
 %endif # 0%{?suse_version}
+
+Requires: suseRegisterInfo
+Requires: logrotate
 
 Conflicts: up2date < 5.0.0
 Conflicts: yum-rhn-plugin < 1.6.4-1
@@ -206,6 +210,9 @@ patch -p1 < patches/rhel4-static.dif
 for i in po/*.po; do sed -i -n '/^msgctxt/,/^$/d;p' "$i"; done
 %endif
 make -f Makefile.rhn-client-tools
+%if 0%{?fedora} >= 23
+    sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/actions/*.py src/bin/*.py test/*.py
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -491,6 +498,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Tue Jan 19 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.9-1
+- yet another python3 fixes
+
 * Tue Jan 12 2016 Grant Gainey 2.5.8-1
 - 875728 - Clarify useNoSSLForPackages comment to match reality
 

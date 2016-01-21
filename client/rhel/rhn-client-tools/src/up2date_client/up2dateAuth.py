@@ -1,7 +1,6 @@
 #
 
 import os
-import string
 import pickle
 import time
 
@@ -56,7 +55,7 @@ def maybeUpdateVersion():
           newSystemId = s.registration.upgrade_version(getSystemId(), systemVer)
 
       path = cfg["systemIdPath"]
-      dir = path[:string.rfind(path, "/")]
+      dir = path[:path.rfind("/")]
       if not os.access(dir, os.W_OK):
           try:
               os.mkdir(dir)

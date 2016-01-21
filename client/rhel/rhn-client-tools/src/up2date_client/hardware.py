@@ -26,6 +26,11 @@ from up2date_client import rhnserver
 from rhn.i18n import ustr
 
 try:
+    long
+except NameError: # long is not defined in python3
+    long = int
+
+try:
     import ethtool
     ethtool_present = True
 except ImportError:
@@ -51,10 +56,10 @@ else:
 from up2date_client import up2dateLog
 
 try: # F13 and EL6
-    from hardware_gudev import get_devices, get_computer_info
+    from up2date_client.hardware_gudev import get_devices, get_computer_info
     using_gudev = 1
 except ImportError:
-    from hardware_hal import check_hal_dbus_status, get_hal_computer, read_hal
+    from up2date_client.hardware_hal import check_hal_dbus_status, get_hal_computer, read_hal
     using_gudev = 0
 
 # Some systems don't have the _locale module installed
@@ -766,7 +771,7 @@ def read_dmi():
                                                      "system", system_serial)
 
     # Clean up empty entries
-    for k in dmidict.keys()[:]:
+    for k in list(dmidict.keys()):
         if dmidict[k] is None:
             del dmidict[k]
             # Finished
@@ -871,7 +876,7 @@ def Hardware():
             except:
                 # bz253596 : Logging Dbus Error messages instead of printing on stdout
                 log = up2dateLog.initLog()
-                msg = "Error reading hardware information: %s\n" % (sys.exc_type)
+                msg = "Error reading hardware information: %s\n" % (sys.exc_info()[0])
                 log.log_me(msg)
 
     # all others return individual arrays
@@ -881,14 +886,14 @@ def Hardware():
         ret = read_cpuinfo()
         if ret: allhw.append(ret)
     except:
-        print(_("Error reading cpu information:"), sys.exc_type)
+        print(_("Error reading cpu information:"), sys.exc_info()[0])
 
     # memory size info
     try:
         ret = read_memory()
         if ret: allhw.append(ret)
     except:
-        print(_("Error reading system memory information:"), sys.exc_type)
+        print(_("Error reading system memory information:"), sys.exc_info()[0])
 
     cfg = config.initUp2dateConfig()
     if not cfg["skipNetwork"]:
@@ -898,7 +903,7 @@ def Hardware():
             if ret:
                 allhw.append(ret)
         except:
-            print(_("Error reading networking information:"), sys.exc_type)
+            print(_("Error reading networking information:"), sys.exc_info()[0])
     # dont like catchall exceptions but theres not
     # really anything useful we could do at this point
     # and its been trouble prone enough
@@ -911,7 +916,7 @@ def Hardware():
     except:
         # bz253596 : Logging Dbus Error messages instead of printing on stdout
         log = up2dateLog.initLog()
-        msg = "Error reading DMI information: %s\n" % (sys.exc_type)
+        msg = "Error reading DMI information: %s\n" % (sys.exc_info()[0])
         log.log_me(msg)
 
     try:
@@ -919,7 +924,7 @@ def Hardware():
         if ret:
             allhw.append(ret)
     except:
-        print(_("Error reading install method information:"), sys.exc_type)
+        print(_("Error reading install method information:"), sys.exc_info()[0])
 
     if not cfg["skipNetwork"]:
         try:
@@ -927,7 +932,7 @@ def Hardware():
             if ret:
                 allhw.append(ret)
         except:
-            print(_("Error reading network interface information:"), sys.exc_type)
+            print(_("Error reading network interface information:"), sys.exc_info()[0])
 
     try:
         ret = get_sysinfo()

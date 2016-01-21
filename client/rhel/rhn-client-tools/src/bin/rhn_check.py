@@ -39,7 +39,7 @@ if not hasattr(t, 'ugettext'):
     t.ugettext = t.gettext
 _ = t.ugettext
 
-from OpenSSL import SSL
+import OpenSSL
 sys.path.append("/usr/share/rhn/")
 
 # disable sgmlop module
@@ -58,12 +58,14 @@ from up2date_client import rhncli, rhnserver
 
 from rhn import SSL
 from rhn import rhnLockfile
-from rhn.i18n import bstr
+from rhn.i18n import bstr, sstr
+from rhn.tb import raise_with_tb
 
 try: # python2
     import xmlrpclib
 except ImportError: # python3
     import xmlrpc.client as xmlrpclib
+    long = int
 
 del sys.modules['sgmlop']
 
@@ -116,7 +118,7 @@ class CheckCli(rhncli.RhnCli):
         except xmlrpclib.Fault:
             f = sys.exc_info()[1]
             if f.faultCode == -31:
-                raise up2dateErrors.InsuffMgmntEntsError(f.faultString), None, sys.exc_info()[2]
+                raise_with_tb(up2dateErrors.InsuffMgmntEntsError(f.faultString))
             else:
                 print("Could not retrieve action item from server %s" % self.server)
                 print("Error code: %d%s" % (f.faultCode, f.faultString))
@@ -137,7 +139,7 @@ class CheckCli(rhncli.RhnCli):
         except up2dateErrors.ServerCapabilityError:
             print(sys.exc_info()[1])
             sys.exit(1)
-        except SSL.Error:
+        except OpenSSL.SSL.Error:
             print("ERROR: SSL errors detected")
             print("%s" % sys.exc_info()[1])
             sys.exit(-1)
@@ -150,7 +152,7 @@ class CheckCli(rhncli.RhnCli):
         except xmlrpclib.Fault:
             f = sys.exc_info()[1]
             if f.faultCode == -31:
-                raise up2dateErrors.InsuffMgmntEntsError(f.faultString), None, sys.exc_info()[2]
+                raise_with_tb(up2dateErrors.InsuffMgmntEntsError(f.faultString))
             else:
                 print("Could not retrieve action item from server %s" % self.server)
                 print("Error code: %d%s" % (f.faultCode, f.faultString))
@@ -322,19 +324,19 @@ class CheckCli(rhncli.RhnCli):
     @staticmethod
     def __build_status_report():
         status_report = {}
-        status_report["uname"] = os.uname()
+        status_report["uname"] = list(os.uname())
 
         if os.access("/proc/uptime", os.R_OK):
             uptime = open("/proc/uptime", "r").read().split()
             try:
-                status_report["uptime"] = map(int, map(float, uptime))
+                status_report["uptime"] = [int(float(a)) for a in uptime]
             except (TypeError, ValueError):
-                status_report["uptime"] = map(lambda a: a[:-3], uptime)
+                status_report["uptime"] = [a[:-3] for a in uptime]
             except:
                 pass
 
         # We need to fit into xmlrpc's integer limits
-        if status_report['uptime'][1] > 2L**31-1:
+        if status_report['uptime'][1] > long(2)**31-1:
             status_report['uptime'][1] = -1
 
         return status_report
@@ -401,7 +403,7 @@ class CheckCli(rhncli.RhnCli):
         try:
             lock = rhnLockfile.Lockfile('/var/run/rhn_check.pid')
         except rhnLockfile.LockfileLockedException:
-            sys.stderr.write(rhncli.utf8_encode(_("Attempting to run more than one instance of rhn_check. Exiting.\n")))
+            sys.stderr.write(sstr(_("Attempting to run more than one instance of rhn_check. Exiting.\n")))
             sys.exit(0)
 
 if __name__ == "__main__":

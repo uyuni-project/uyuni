@@ -25,7 +25,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.34.1
+Version: 2.5.36
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -977,6 +977,14 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Jan 19 2016 Gennadii Altukhov <galt@redhat.com> 2.5.36-1
+- 1287246 - Added fixes to API methods
+
+* Mon Jan 18 2016 Gennadii Altukhov <galt@redhat.com> 2.5.35-1
+- 1287246 - Added new API methods to add new repository with SSL certificates
+  or update existing one
+- BugFix: fixed comparison with null pointer
+
 * Thu Jan 07 2016 Jan Dobes 2.5.34-1
 - Tomcat 8 requires different syntax of rhn.xml
 - change dependency to match Tomcat 8 Servlet API 3.1
