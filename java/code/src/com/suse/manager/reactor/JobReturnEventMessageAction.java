@@ -74,14 +74,11 @@ public class JobReturnEventMessageAction implements MessageAction {
                 SaltAPIService.INSTANCE.deleteSchedule("scheduled-action-" + id,
                         new MinionList(jobReturnEvent.getMinionId()));
                 serverAction.ifPresent(sa -> {
-                    LOG.debug("Setting action status for server: " + minionServer.getId());
-
-                    // TODO: Set all these correctly according to the job data
-                    sa.setPickupTime(new Date());
-                    sa.setStatus(ActionFactory.STATUS_COMPLETED);
-                    sa.setResultMsg("FIXME");
-                    sa.setResultCode(0L);
-                    ActionFactory.save(action);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Updating action for server: " + minionServer.getId());
+                    }
+                    updateServerAction(sa, jobReturnEvent);
+                    ActionFactory.save(sa);
                 });
             });
         });
@@ -102,6 +99,33 @@ public class JobReturnEventMessageAction implements MessageAction {
                     MessageQueue.publish
                             (new CheckinEventMessage(minionServer.getId()));
                 });
+    }
+
+    /**
+     * Update a given server action based on data from the corresponding job return event.
+     *
+     * @param serverAction the server action to update
+     * @param event the event to read the update data from
+     */
+    private void updateServerAction(ServerAction serverAction, JobReturnEvent event) {
+        Map<String, Object> eventData = event.getData();
+        serverAction.setCompletionTime(new Date());
+
+        // Set the result code defaulting to 0
+        long retcode = ((Double) eventData.getOrDefault("retcode", 0.0)).longValue();
+        serverAction.setResultCode(retcode);
+
+        // The final status of the action depends on "success" and "retcode"
+        if ((Boolean) eventData.getOrDefault("success", false) && retcode == 0) {
+            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+        }
+        else {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+        }
+
+        // Dump the "return" map as result message, contains info about what has been done
+        serverAction.setResultMsg(
+                eventData.getOrDefault("return", Collections.EMPTY_MAP).toString());
     }
 
     /**
