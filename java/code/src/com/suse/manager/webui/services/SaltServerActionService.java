@@ -35,6 +35,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -61,13 +62,16 @@ public enum SaltServerActionService {
     public void execute(Action actionIn) {
         if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
             ErrataAction errataAction = (ErrataAction) actionIn;
-            List<MinionServer> minions = actionIn.getServerActions().stream()
-                    .flatMap(action ->
-                            action.getServer().asMinionServer()
-                                    .map(Stream::of)
-                                    .orElse(Stream.empty()))
-                    .filter(minion -> minion.hasEntitlement(EntitlementManager.SALTSTACK))
-                    .collect(Collectors.toList());
+            List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
+                    .map(serverActions -> serverActions.stream()
+                        .flatMap(action ->
+                                action.getServer().asMinionServer()
+                                        .map(Stream::of)
+                                        .orElse(Stream.empty()))
+                        .filter(minion -> minion.hasEntitlement(EntitlementManager.SALTSTACK))
+                        .collect(Collectors.toList())
+                    )
+                    .orElse(new LinkedList<>());
 
             Set<Long> serverIds = minions.stream()
                     .map(MinionServer::getId)
