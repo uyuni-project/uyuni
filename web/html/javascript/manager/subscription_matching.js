@@ -166,7 +166,7 @@ function unmatchedSystemsToRows(systems){
     var columns = [
       s.name,
       s.cpuCount,
-      s.products.map((product) => <span>{product}, </span>),
+      s.products.reduce((a,b) => a+", "+b),
     ];
 
     return <TableRow columns={columns} />
