@@ -53,6 +53,7 @@ Feature: Explore the main landing page
     And I should see a "Proxy" link in the left menu
     And I should see a "Duplicate Systems" link in the left menu
     And I should see a "System Currency" link in the left menu
+    And I should see a "System Types" link in the left menu
     And I should see a "Systems" text
 
   Scenario: Check sidebar link destination for Systems => Physical Systems
@@ -155,6 +156,17 @@ Feature: Explore the main landing page
     Then I should see a "System Currency Report" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/SystemCurrency.do"
+
+  Scenario: Check sidebar link destination for Systems => System Types
+    Given I am on the Systems page
+    And I follow "Systems" in the left menu
+    And I follow "System Types" in the left menu
+    Then I should see a "System Types" text
+    And I should see a "Management:" text
+    And I should see a "Salt:" text
+    And I should see a "Foreign:" text
+    And I should see a "Virtualization:" text
+    And the current path is "/rhn/systems/SystemEntitlements.do"
 
   Scenario: Check sidebar link destination for Systems => System Groups
     Given I am on the Systems page

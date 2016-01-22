@@ -31,7 +31,6 @@ Feature: Explore the main landing page
     Then I should see a "Your Account" link in the left menu
     And I should see a "Your Preferences" link in the left menu
     And I should see a "Locale Preferences" link in the left menu
-    And I should see a "Subscription Management" link in the left menu
     And I should see a "Your Organization" link in the left menu
 
   Scenario: Completeness of the main content
