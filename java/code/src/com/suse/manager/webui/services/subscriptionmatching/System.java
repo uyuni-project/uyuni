@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class System {
 
+    private Long id;
     private String name;
     private Integer cpuCount;
     private List<String> products;
@@ -35,10 +36,29 @@ public class System {
      * @param cpuCountIn
      * @param productsIn
      */
-    public System(String nameIn, Integer cpuCountIn, List<String> productsIn) {
+    public System(Long idIn, String nameIn, Integer cpuCountIn, List<String> productsIn) {
+        id = idIn;
         name = nameIn;
         cpuCount = cpuCountIn;
         products = productsIn;
+    }
+
+    /**
+     * Gets the id.
+     *
+     * @return id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id.
+     *
+     * @param idIn - the id
+     */
+    public void setId(Long idIn) {
+        id = idIn;
     }
 
     /**
