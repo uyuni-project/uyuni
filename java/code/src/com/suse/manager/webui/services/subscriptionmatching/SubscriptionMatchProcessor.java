@@ -167,6 +167,7 @@ public class SubscriptionMatchProcessor {
                             .sorted()
                             .collect(Collectors.toList());
                     return new System(
+                            s.getId(),
                             s.getName(),
                             s.getCpus(),
                             unmatchedProductNames);
