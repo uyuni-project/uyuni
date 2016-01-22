@@ -15,7 +15,9 @@
 package com.suse.manager.reactor;
 
 import com.suse.manager.reactor.hardware.CpuArchUtil;
+import com.suse.manager.reactor.hardware.SaltServiceInvoker;
 import com.suse.manager.reactor.hardware.SysinfoMapper;
+import com.suse.manager.reactor.hardware.VirtualizationMapper;
 import org.apache.log4j.Logger;
 
 import java.util.Optional;
@@ -56,30 +58,32 @@ public class GetHardwareInfoEventMessageAction extends AbstractDatabaseAction {
 
         Optional<MinionServer> optionalServer = MinionServerFactory
                 .lookupById(event.getServerId());
+        // TODO test refresh hardware case once the refresh btn works
         optionalServer.ifPresent(server -> {
             String minionId = server.getMinionId();
-            ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId));
+            SaltServiceInvoker saltInvoker = new SaltServiceInvoker(SALT_SERVICE);
+            ValueMap grains = new ValueMap(saltInvoker.getGrains(minionId));
 
-            CpuMapper cpuMapper = new CpuMapper(SALT_SERVICE);
+            CpuMapper cpuMapper = new CpuMapper(saltInvoker);
             cpuMapper.map(server, grains);
 
             String cpuarch = grains.getValueAsString("cpuarch");
-            boolean dmiAvailable = true;
 
-            if (CpuArchUtil.isS390(cpuarch)) {
-                dmiAvailable = false;
-            }
-
-            if (dmiAvailable) {
-                DmiMapper dmiMapper = new DmiMapper(SALT_SERVICE);
+            if (!CpuArchUtil.isS390(cpuarch)) {
+                DmiMapper dmiMapper = new DmiMapper(saltInvoker);
                 dmiMapper.map(server, grains);
             }
 
-            DevicesMapper devicesMapper = new DevicesMapper(SALT_SERVICE);
+            DevicesMapper devicesMapper = new DevicesMapper(saltInvoker);
             devicesMapper.map(server, grains);
 
-            SysinfoMapper sysinfoMapper = new SysinfoMapper(SALT_SERVICE);
-            sysinfoMapper.map(server, grains);
+            if (CpuArchUtil.isS390(cpuarch)) {
+                SysinfoMapper sysinfoMapper = new SysinfoMapper(saltInvoker);
+                sysinfoMapper.map(server, grains);
+            }
+
+            VirtualizationMapper virtMapper = new VirtualizationMapper(saltInvoker);
+            virtMapper.map(server, grains);
 
             LOG.info("Finished getting hardware info for: " + minionId);
         });

@@ -29,7 +29,6 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltService;
 
 /**
  * Check virtual host information in case of a S390 minion.
@@ -41,10 +40,10 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
 
     /**
      * The constructor.
-     * @param saltService a {@link SaltService} instance
+     * @param saltServiceInvoker a {@link SaltServiceInvoker} instance
      */
-    public SysinfoMapper(SaltService saltService) {
-        super(saltService);
+    public SysinfoMapper(SaltServiceInvoker saltServiceInvoker) {
+        super(saltServiceInvoker);
     }
 
     @Override
@@ -54,7 +53,7 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
         try {
             // call custom minion to get read_values info (if available)
             // original code: hardware.py get_sysinfo()
-            String readValuesOutput = SALT_SERVICE.getMainframeSysinfoReadValues(minionId);
+            String readValuesOutput = saltInvoker.getMainframeSysinfoReadValues(minionId);
             Map<String, String> sysvalues = new HashMap<>();
             for (String line : readValuesOutput.split("\\r?\\n")) {
                 if (!line.contains(":")) {

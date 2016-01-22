@@ -17,7 +17,6 @@ package com.suse.manager.reactor.hardware;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.Smbios;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -32,12 +31,16 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(DmiMapper.class);
 
+    private ValueMap bios;
+
+    private ValueMap system;
+
     /**
      * The constructor.
-     * @param saltService a {@link SaltService} instance
+     * @param saltServiceInvoker a {@link SaltServiceInvoker} instance
      */
-    public DmiMapper(SaltService saltService) {
-        super(saltService);
+    public DmiMapper(SaltServiceInvoker saltServiceInvoker) {
+        super(saltServiceInvoker);
     }
 
     @Override
@@ -50,13 +53,13 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
         try {
             // TODO get all records at once? less roundtrips but larger response
             // TODO there is a 1MB limit to message size
-            ValueMap bios = new ValueMap(SALT_SERVICE.getDmiRecords(minionId,
+            bios = new ValueMap(saltInvoker.getDmiRecords(minionId,
                     Smbios.RecordType.BIOS));
-            ValueMap system = new ValueMap(SALT_SERVICE.getDmiRecords(minionId,
+            system = new ValueMap(saltInvoker.getDmiRecords(minionId,
                     Smbios.RecordType.SYSTEM));
-            ValueMap chassis = new ValueMap(SALT_SERVICE.getDmiRecords(minionId,
+            ValueMap chassis = new ValueMap(saltInvoker.getDmiRecords(minionId,
                     Smbios.RecordType.CHASSIS));
-            ValueMap board = new ValueMap(SALT_SERVICE.getDmiRecords(minionId,
+            ValueMap board = new ValueMap(saltInvoker.getDmiRecords(minionId,
                     Smbios.RecordType.BASEBOARD));
 
             biosVendor = bios.getValueAsString("vendor");
@@ -80,17 +83,17 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
         }
 
         Dmi dmi = new Dmi();
-        StringBuilder system = new StringBuilder();
+        StringBuilder dmiSystem = new StringBuilder();
         if (StringUtils.isNotBlank(productName)) {
-            system.append(productName);
+            dmiSystem.append(productName);
         }
         if (StringUtils.isNotBlank(systemVersion)) {
-            if (system.length() > 0) {
-                system.append(" ");
+            if (dmiSystem.length() > 0) {
+                dmiSystem.append(" ");
             }
-            system.append(systemVersion);
+            dmiSystem.append(systemVersion);
         }
-        dmi.setSystem(system.length() > 0 ? system.toString().trim() : null);
+        dmi.setSystem(dmiSystem.length() > 0 ? dmiSystem.toString().trim() : null);
         dmi.setProduct(productName);
         dmi.setBios(biosVendor, biosVersion, biosReleseDate);
         dmi.setVendor(biosVendor);
