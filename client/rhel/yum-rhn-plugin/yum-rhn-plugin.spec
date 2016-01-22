@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.5.1.1
+Version: 2.5.2
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,9 @@ fi
 
 
 %changelog
+* Thu Jan 21 2016 Tomas Lestach <tlestach@redhat.com> 2.5.2-1
+- 1206227 - allow client responses to be in Unicode
+
 * Fri Jan 08 2016 Grant Gainey 2.5.1-1
 - 1297028 - get retrieveOnly out of the way of package-remove
 - Bumping package versions for 2.5.

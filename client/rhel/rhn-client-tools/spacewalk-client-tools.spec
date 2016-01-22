@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.5.9
+Version: 2.5.10
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -498,6 +498,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Thu Jan 21 2016 Grant Gainey 2.5.10-1
+- Bug 1300251 - clientCaps.py : IndexError: string index out of range
+
 * Tue Jan 19 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.9-1
 - yet another python3 fixes
 
