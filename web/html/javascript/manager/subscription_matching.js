@@ -1,15 +1,15 @@
 'use strict';
 
 var SubscriptionMatching = React.createClass({
-   getInitialState: function() {
-     return {};
-   },
+  getInitialState: function() {
+    return {};
+  },
 
   refreshServerData: function() {
-   $.get("/rhn/manager/subscription_matching/data", data => {
-     this.setState({"serverData" : data});
-   });
- },
+    $.get("/rhn/manager/subscription_matching/data", data => {
+      this.setState({"serverData" : data});
+    });
+  },
 
   componentWillMount: function() {
     this.refreshServerData();
@@ -141,7 +141,6 @@ var MatcherScheduleButton = React.createClass({
   }
 });
 
-
 var UnmatchedSystems = React.createClass({
   render: function() {
     if (this.props.unmatchedSystems != null && this.props.unmatchedSystems.length > 0) {
@@ -168,7 +167,6 @@ function unmatchedSystemsToRows(systems){
       s.cpuCount,
       s.products.reduce((a,b) => a+", "+b),
     ];
-
     return <TableRow columns={columns} />
   });
 }
