@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import org.apache.commons.collections.Transformer;
 
 import com.redhat.rhn.domain.action.ActionChain;
@@ -108,5 +110,16 @@ public class ActionChainRPCCommon {
      */
     public Server getServerById(Integer serverId, User user) {
         return SystemManager.lookupByIdAndUser((long) serverId, user);
+    }
+
+    /**
+     * Checks if a server is a salt minion and throws an exception when it is.
+     * @param server Server object.
+     */
+    public void ensureNotSalt(Server server) {
+        if (server.hasEntitlement(EntitlementManager.SALTSTACK)) {
+            throw new InvalidParameterException(
+                    "Action chaining is not supported for salt minions");
+        }
     }
 }

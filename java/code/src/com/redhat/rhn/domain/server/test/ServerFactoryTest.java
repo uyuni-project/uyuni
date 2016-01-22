@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
@@ -86,6 +87,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final int TYPE_SERVER_PROXY = 1;
     public static final int TYPE_SERVER_NORMAL = 2;
     public static final int TYPE_SERVER_VIRTUAL = 3;
+    public static final int TYPE_SERVER_MINION = 4;
     public static final String RUNNING_KERNEL = "2.6.9-55.EL";
 
     @Override
@@ -616,6 +618,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             info.setServer(s);
             s.setProxyInfo(info);
         }
+        else if (type == TYPE_SERVER_MINION) {
+            MinionServer minionServer = (MinionServer) s;
+            minionServer.setMinionId(s.getName());
+            minionServer.setMachineId(TestUtils.randomString());
+        }
     }
 
     private static ProvisionState createProvisionState(Server srvr,
@@ -652,6 +659,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             case TYPE_SERVER_PROXY:
             case TYPE_SERVER_NORMAL:
                 return ServerFactory.createServer();
+            case TYPE_SERVER_MINION:
+                return new MinionServer();
 
             default:
                 return null;

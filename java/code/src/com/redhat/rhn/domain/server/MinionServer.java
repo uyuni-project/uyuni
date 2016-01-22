@@ -18,6 +18,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import java.util.Optional;
+
 /**
  * MinionServer
  */
@@ -99,5 +101,14 @@ public class MinionServer extends Server {
                 .append("machineId", getMachineId())
                 .append("minionId", getMinionId())
                 .toString();
+    }
+
+    /**
+     * Converts this server to a MinionServer if it is one.
+     *
+     * @return optional of MinionServer
+     */
+    public Optional<MinionServer> asMinionServer() {
+        return Optional.of(this);
     }
 }
