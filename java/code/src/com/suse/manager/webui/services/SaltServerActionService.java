@@ -115,6 +115,8 @@ public enum SaltServerActionService {
                             // There is no result when scheduling has failed
                             LOG.debug("Failed to schedule action for minion '" +
                                     minion.getMinionId() + "'");
+                            serverAction.setCompletionTime(new Date());
+                            serverAction.setResultCode(-1L);
                             serverAction.setResultMsg("Failed to schedule action.");
                             serverAction.setStatus(ActionFactory.STATUS_FAILED);
                         }
@@ -122,6 +124,8 @@ public enum SaltServerActionService {
                     catch (SaltStackException saltException) {
                         LOG.warn("Failed to schedule action for minion '" +
                                 minion.getMinionId() + "': " + saltException.getMessage());
+                        serverAction.setCompletionTime(new Date());
+                        serverAction.setResultCode(-1L);
                         serverAction.setResultMsg("Failed to schedule action: " +
                                 saltException.getMessage());
                         serverAction.setStatus(ActionFactory.STATUS_FAILED);
