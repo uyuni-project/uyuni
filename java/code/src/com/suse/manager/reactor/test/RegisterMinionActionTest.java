@@ -90,15 +90,6 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
         assertEquals("N", minion.getAutoUpdate());
         assertEquals(489, minion.getRam());
 
-        assertNotNull(minion.getCpu());
-        assertEquals("GenuineIntel", minion.getCpu().getVendor());
-        assertEquals("6", minion.getCpu().getFamily());
-        assertEquals("2", minion.getCpu().getStepping());
-        assertEquals("2593.994", minion.getCpu().getMHz());
-        assertEquals("4096 KB", minion.getCpu().getCache());
-        assertEquals(new Long(1L), minion.getCpu().getNrsocket());
-        // TODO add more assertions
-
         assertEquals(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"),
                 minion.getServerArch());
         assertEquals(ServerFactory.findContactMethodByLabel("default"),
