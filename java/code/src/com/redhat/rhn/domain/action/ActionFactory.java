@@ -835,7 +835,6 @@ public class ActionFactory extends HibernateFactory {
         singleton.saveObject(serverActionIn);
     }
 
-
     /**
      * The constant representing the Action Status QUEUED
      */
