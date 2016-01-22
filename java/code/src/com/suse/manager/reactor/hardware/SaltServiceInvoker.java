@@ -105,7 +105,7 @@ public class SaltServiceInvoker {
      * @return the grains as a map.
      */
     public Map<String, Object> getGrains(String minionId) {
-        return getOrInvoke("cpu", () -> saltService.getGrains(minionId));
+        return getOrInvoke("grains", () -> saltService.getGrains(minionId));
     }
 
     /**
