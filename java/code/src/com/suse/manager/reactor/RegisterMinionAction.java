@@ -204,4 +204,5 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
     private void triggerGetHardwareInfo(MinionServer server, ValueMap grains) {
         MessageQueue.publish(new GetHardwareInfoEventMessage(server.getId()));
     }
+
 }

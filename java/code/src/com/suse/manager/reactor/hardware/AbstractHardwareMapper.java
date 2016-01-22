@@ -16,7 +16,6 @@ package com.suse.manager.reactor.hardware;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltService;
 import org.apache.log4j.Logger;
 
 /**
@@ -29,14 +28,14 @@ public abstract class AbstractHardwareMapper<T> {
     private static final Logger LOG = Logger
             .getLogger(AbstractHardwareMapper.class);
 
-    protected final SaltService SALT_SERVICE;
+    protected SaltServiceInvoker saltInvoker;
 
     /**
      * The constructor.
-     * @param saltService a {@link SaltService} instance
+     * @param saltInvokerIn a {@link SaltServiceInvoker} instance
      */
-    public AbstractHardwareMapper(SaltService saltService) {
-        this.SALT_SERVICE = saltService;
+    public AbstractHardwareMapper(SaltServiceInvoker saltInvokerIn) {
+        this.saltInvoker = saltInvokerIn;
     }
 
     /**

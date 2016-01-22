@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.PciClassCodes;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.SaltService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -40,16 +39,16 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
 
     /**
      * The constructor.
-     * @param saltService a {@link SaltService} instance
+     * @param saltServiceInvoker a {@link SaltServiceInvoker} instance
      */
-    public DevicesMapper(SaltService saltService) {
-        super(saltService);
+    public DevicesMapper(SaltServiceInvoker saltServiceInvoker) {
+        super(saltServiceInvoker);
     }
 
     @Override
     public MinionServer doMap(MinionServer server, ValueMap grains) {
         String minionId = server.getMinionId();
-        List<Map<String, Object>> db = SALT_SERVICE.getUdevdb(minionId);
+        List<Map<String, Object>> db = saltInvoker.getUdevdb(minionId);
 
         db.forEach(dbdev -> {
             String devpath = (String)dbdev.get("P"); // sysfs path without /sys
@@ -373,7 +372,7 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
     private int getScsiDevType(String minionId, String sysfsPath) {
         String path = "/sys" + sysfsPath + "/type";
         try {
-            String content = SALT_SERVICE
+            String content = saltInvoker
                     .getFileContent(minionId, path);
             return Integer.parseInt(StringUtils.trim(content));
         }
