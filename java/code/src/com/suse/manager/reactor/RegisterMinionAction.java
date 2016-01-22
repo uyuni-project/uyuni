@@ -68,7 +68,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
      *
      * @param saltService the salt service to use
      */
-    protected RegisterMinionAction(SaltService saltService) {
+    public RegisterMinionAction(SaltService saltService) {
         SALT_SERVICE = saltService;
         productIdMap.put("SLES12x86_64", 1117L);
         productIdMap.put("SLES12.1x86_64", 1322L);

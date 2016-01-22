@@ -2006,4 +2006,12 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     }
 
+    /**
+     * Converts this server to a MinionServer if it is one.
+     *
+     * @return optional of MinionServer
+     */
+    public Optional<MinionServer> asMinionServer() {
+        return Optional.empty();
+    }
 }

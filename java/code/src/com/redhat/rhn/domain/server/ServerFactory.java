@@ -941,6 +941,9 @@ public class ServerFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static Map<Long, Map<Long, Set<String>>> listErrataNamesForServers(
             Set<Long> serverIds, Set<Long> errataIds) {
+        if (serverIds.isEmpty() || errataIds.isEmpty()) {
+            return new HashMap<>();
+        }
         Map<String, Object> params = new HashMap<>();
         params.put("serverIds", serverIds);
         params.put("errataIds", errataIds);
