@@ -465,7 +465,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <sql-query name="Channel.packageByFileName">
 	    <![CDATA[
 	        SELECT {p.*},
-	               (CASE WHEN C.id = 698 THEN 1 ELSE 0 end) as chanprio
+	               (CASE WHEN C.id = :channel_id THEN 1 ELSE 0 end) as chanprio
                   FROM rhnPackage {p}
              left join rhnSolarisPatchSet P_2_ on p.id = P_2_.package_id
              left join rhnSolarisPatch P_1_ on p.id = P_1_.package_id,
@@ -482,7 +482,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     <sql-query name="Channel.packageByFileNameAndRange">
 	    <![CDATA[SELECT {p.*},
-                            (CASE WHEN C.id = 698 THEN 1 ELSE 0 end) as chanprio
+                            (CASE WHEN C.id = :channel_id THEN 1 ELSE 0 end) as chanprio
                        FROM rhnPackage {p}
              left join rhnSolarisPatchSet P_2_ on p.id = P_2_.package_id
              left join rhnSolarisPatch P_1_ on p.id = P_1_.package_id,
