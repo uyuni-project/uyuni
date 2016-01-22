@@ -51,6 +51,7 @@ public class MatcherUiData {
      * @param latestEndIn the latest end date of subscription-matcher's run
      * @param messagesIn - list of messages
      * @param subscriptionsIn - list of subscriptions
+     * @param unmatchedSystemsIn - list of unmatched systems
      */
     public MatcherUiData(boolean matcherDataAvailableIn, Date latestStartIn,
             Date latestEndIn, List<JsonMessage> messagesIn,
