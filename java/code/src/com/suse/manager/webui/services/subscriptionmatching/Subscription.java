@@ -37,6 +37,7 @@ public class Subscription {
      * @param idIn - id
      * @param partNumberIn - part number
      * @param productDescriptionIn - product description
+     * @param policyIn - policy
      * @param totalQuantityIn - total quantity
      * @param matchedQuantityIn - matched quantity
      * @param startDateIn - start date

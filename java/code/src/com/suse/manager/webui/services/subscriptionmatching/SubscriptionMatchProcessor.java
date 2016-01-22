@@ -85,7 +85,7 @@ public class SubscriptionMatchProcessor {
                         js.getStartDate(), js.getEndDate()))
                 .filter(s -> s.getTotalQuantity() > 0)
                 .filter(s -> s.getPolicy() != null)
-                .filter(s -> s.getStartDate() != null && s.getEndDate() != null) // ignoreNotActiveSubscriptions
+                .filter(s -> s.getStartDate() != null && s.getEndDate() != null)
                 .sorted((s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()))
                 .collect(Collectors.toList());
     }
