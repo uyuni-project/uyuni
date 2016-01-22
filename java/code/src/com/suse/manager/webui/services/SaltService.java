@@ -21,6 +21,7 @@ import com.suse.manager.webui.utils.salt.SumaUtil;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.datatypes.target.Target;
 import com.suse.saltstack.netapi.event.EventStream;
+import com.suse.saltstack.netapi.exception.SaltStackException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -208,10 +209,12 @@ public interface SaltService {
      * @param patches the patches to install
      * @param scheduleDate schedule date
      * @param metadata metadata to pass to the salt job
-     * @return the result of the patch installation
+     * @return the result of the schedule call
+     * @throws SaltStackException in case there is an error scheduling the job
      */
     Map<String, Schedule.Result> schedulePatchInstallation(String name, Target<?> target,
-            Set<String> patches, LocalDateTime scheduleDate, Map<String, ?> metadata);
+            Set<String> patches, LocalDateTime scheduleDate, Map<String, ?> metadata)
+            throws SaltStackException;
 
     /**
      * Remove a scheduled job from the minion

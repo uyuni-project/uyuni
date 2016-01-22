@@ -827,6 +827,14 @@ public class ActionFactory extends HibernateFactory {
         }
     }
 
+    /**
+     * Save a {@link ServerAction} object.
+     * @param serverActionIn the server action to save
+     */
+    public static void save(ServerAction serverActionIn) {
+        singleton.saveObject(serverActionIn);
+    }
+
 
     /**
      * The constant representing the Action Status QUEUED
