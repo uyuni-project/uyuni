@@ -22,8 +22,6 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -87,6 +85,11 @@ public class MinionServerFactory extends HibernateFactory {
         return Optional.ofNullable((MinionServer) getSession().get(MinionServer.class, id));
     }
 
+    /**
+     * Lookup multiple minions by id.
+     * @param ids minion ids
+     * @return the minions found
+     */
     public static Stream<MinionServer> lookupByIds(List<Long> ids) {
         return ServerFactory.lookupByIds(ids).stream().flatMap(server ->
            server.asMinionServer().map(Stream::of).orElseGet(Stream::empty)

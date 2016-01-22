@@ -193,7 +193,8 @@ public class ActionFactory extends HibernateFactory {
             String setLabel, User user) {
 
         RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
-        List<Long> ids = removeSaltSchedule(new ArrayList<>(set.getElementValues()), actionId);
+        List<Long> ids = removeSaltSchedule(
+                new ArrayList<>(set.getElementValues()), actionId);
         int failed = 0;
         for (Long sid : ids) {
             try {
