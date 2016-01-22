@@ -148,8 +148,8 @@ public class JobReturnEventMessageAction implements MessageAction {
 
     private boolean packagesChanged(JobReturnEvent event) {
         String function = (String) event.getData().get("fun");
-        //TODO: add more events that change packages
-        //TODO: this can be further optimized by inspecting the event content
+        // Add more events that change packages here
+        // This can also be further optimized by inspecting the event contents
         switch (function) {
             case "pkg.install": return true;
             case "pkg.remove": return true;
