@@ -339,6 +339,20 @@ var Table = React.createClass({
     var fromItem = firstItemIndex +1;
     var toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
 
+    var pagination;
+    if (lastPage > 1) {
+      pagination = (
+        <div className="spacewalk-list-pagination">
+          <div className="spacewalk-list-pagination-btns btn-group">
+            <PaginationButton onClick={this.goToPage} toPage={1} disabled={currentPage == 1} text={t("First")} />
+            <PaginationButton onClick={this.goToPage} toPage={currentPage -1} disabled={currentPage == 1} text={t("Prev")} />
+            <PaginationButton onClick={this.goToPage} toPage={currentPage + 1} disabled={currentPage == lastPage} text={t("Next")} />
+            <PaginationButton onClick={this.goToPage} toPage={lastPage} disabled={currentPage == lastPage} text={t("Last")} />
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
@@ -360,14 +374,7 @@ var Table = React.createClass({
         <div className="panel-footer">
           <div className="spacewalk-list-bottom-addons">
             <div className="table-page-information">{t("Page {0} of {1}", currentPage, lastPage)}</div>
-            <div className="spacewalk-list-pagination">
-              <div className="spacewalk-list-pagination-btns btn-group">
-                <PaginationButton onClick={this.goToPage} toPage={1} disabled={currentPage == 1} text={t("First")} />
-                <PaginationButton onClick={this.goToPage} toPage={currentPage -1} disabled={currentPage == 1} text={t("Prev")} />
-                <PaginationButton onClick={this.goToPage} toPage={currentPage + 1} disabled={currentPage == lastPage} text={t("Next")} />
-                <PaginationButton onClick={this.goToPage} toPage={lastPage} disabled={currentPage == lastPage} text={t("Last")} />
-              </div>
-            </div>
+            {pagination}
           </div>
         </div>
       </div>
