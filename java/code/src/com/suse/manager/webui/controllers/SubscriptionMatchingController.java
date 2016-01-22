@@ -24,11 +24,15 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.matcher.MatcherJsonIO;
+import com.suse.manager.matcher.MatcherRunner;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -88,9 +92,9 @@ public class SubscriptionMatchingController {
      * @param request the request
      * @param response the response
      * @param user the user
-     * @return null
+     * @return the contents of the given csv file
      */
-    public static String csv(Request request, Response response, User user)  {
+    public static String csv(Request request, Response response, User user) {
         String filename = request.params("filename");
         List<String> validFilenames = Arrays.asList("message_report.csv",
                 "subscription_report.csv",
@@ -101,9 +105,13 @@ public class SubscriptionMatchingController {
                     " filename: " + filename);
         }
 
-        DownloadController.downloadMatcherCsv(request, response, filename);
-        halt(HttpStatus.SC_OK);
-        return null;
+        try {
+            response.raw().setContentType("application/csv");
+            return FileUtils.readFileToString(new File(MatcherRunner.OUT_DIRECTORY, filename));
+        } catch (IOException e) {
+            halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
     }
 
     /**
