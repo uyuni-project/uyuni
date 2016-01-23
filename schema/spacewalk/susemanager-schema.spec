@@ -78,6 +78,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Jan 22 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.8-1
+- fix oracle sha1 for 017-drop_monitoring_tables.sql
+
 * Thu Jan 14 2016 Jan Dobes 2.5.7-1
 - delete one more table
 

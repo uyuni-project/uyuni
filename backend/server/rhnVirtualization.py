@@ -63,13 +63,13 @@ class ServerStateType:
 
 
 class VirtualizationType:
-    PARA        = 'para_virtualized'
-    FULLY       = 'fully_virtualized'
-    QEMU        = 'qemu'
-    HYPERV      = 'hyperv'
-    VMWARE      = 'vmware'
-    VIRTAGE     = 'virtage'
-    VBOX        = 'virtualbox'
+    PARA = 'para_virtualized'
+    FULLY = 'fully_virtualized'
+    QEMU = 'qemu'
+    HYPERV = 'hyperv'
+    VMWARE = 'vmware'
+    VIRTAGE = 'virtage'
+    VBOX = 'virtualbox'
 
 class IdentityType:
     HOST = 'host'
@@ -241,7 +241,7 @@ class VirtualizationEventHandler:
         if not row:
             self.__db_insert_system(identity, system_id, uuid, virt_type)
         else:
-            self.__db_update_system(identity, system_id, row)
+            self.__db_update_system(identity, system_id, uuid, row)
 
             self.__notify_listeners(ListenerEvent.GUEST_REGISTERED,
                                     row['host_system_id'],
@@ -326,18 +326,16 @@ class VirtualizationEventHandler:
             """
         elif identity == IdentityType.GUEST:
             condition = """
-                vi.uuid=:uuid
-                AND (vi.virtual_system_id is null or
-                     vi.virtual_system_id = :system_id)
-                and exists (
-                    select 1
-                    from
-                        rhnServer sguest,
-                        rhnServer shost
-                    where
-                        shost.id is not null
-                        and shost.id = vi.host_system_id
-                        and sguest.id = :system_id )
+                (
+                  vi.uuid=:uuid
+                  AND (vi.virtual_system_id is null or
+                       vi.virtual_system_id = :system_id)
+                )
+                OR
+                (
+                  vi.uuid is not null and
+                  vi.virtual_system_id = :system_id
+                )
             """
         else:
             raise VirtualizationEventError(
@@ -449,7 +447,7 @@ class VirtualizationEventHandler:
                       state=ServerStateType.UNKNOWN,
                       virt_type=virt_type)
 
-    def __db_update_system(self, identity, system_id, existing_row):
+    def __db_update_system(self, identity, system_id, uuid, existing_row):
         """ Updates a system in the database. """
 
         new_values_array = []
@@ -466,6 +464,12 @@ class VirtualizationEventHandler:
             if existing_row['virtual_system_id'] != system_id:
                 new_values_array.append("virtual_system_id=:sysid")
                 bindings['sysid'] = system_id
+                # note, at this point, it's still possible to have
+                # an entry in rhnVirtualInstance for this uuid w/out
+                # a virtual_system_id; it'd be for a different org
+            if existing_row['uuid'] != uuid:
+                new_values_array.append("uuid=:uuid")
+                bindings['uuid'] = uuid
 
         # Only touch the database if something changed.
         if new_values_array:

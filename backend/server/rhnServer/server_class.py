@@ -168,8 +168,8 @@ class Server(ServerWrapper):
             raise rhnException("Server %s subscribed to multiple base channels"
                                % (self.server["id"], ))
 
-        #bz 442355
-        #Leave custom base channels alone, don't alter any of the channel subscriptions
+        # bz 442355
+        # Leave custom base channels alone, don't alter any of the channel subscriptions
         if not CFG.RESET_BASE_CHANNEL and old_base and rhnChannel.isCustomChannel(old_base["id"]):
             log_debug(3,
                       "Custom base channel detected, will not alter channel subscriptions")
@@ -192,13 +192,16 @@ class Server(ServerWrapper):
         if suse_products:
             s.suse_products = suse_products
         # Let get_server_channels deal with the errors and raise rhnFault
-        target_channels = rhnChannel.guess_channels_for_server(s)
-        target_base = filter(lambda x: not x['parent_channel'],
-                             target_channels)[0]
+        target_channels = rhnChannel.guess_channels_for_server(s, none_ok=True)
+        if target_channels:
+            target_base = filter(lambda x: not x['parent_channel'],
+                                 target_channels)[0]
+        else:
+            target_base = None
 
         channels_to_subscribe = []
         channels_to_unsubscribe = []
-        if old_base and old_base['id'] == target_base['id']:
+        if old_base and target_base and old_base['id'] == target_base['id']:
             # Same base channel. Preserve the currently subscribed child
             # channels, just add the ones that are missing
             hash = {}
@@ -506,12 +509,6 @@ class Server(ServerWrapper):
 
             have_reg_token = rhnFlags.test("registration_token")
 
-            # Handle virtualization specific bits
-            if self.virt_uuid is not None and \
-               self.virt_type is not None:
-                rhnVirtualization._notify_guest(self.getid(),
-                                                self.virt_uuid, self.virt_type)
-
             # if we're using a token, then the following channel
             # subscription request can allow no matches since the
             # token code will fix up or fail miserably later.
@@ -542,6 +539,12 @@ class Server(ServerWrapper):
                 self.join_groups()
 
             server_lib.join_rhn(org_id)
+
+        # Handle virtualization specific bits
+        if self.virt_uuid is not None and \
+           self.virt_type is not None:
+            rhnVirtualization._notify_guest(self.getid(),
+                                            self.virt_uuid, self.virt_type)
         # Update the uuid - but don't commit yet
         self.update_uuid(self.uuid, commit=0)
 

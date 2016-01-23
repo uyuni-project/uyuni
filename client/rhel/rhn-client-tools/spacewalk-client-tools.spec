@@ -498,7 +498,7 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
-* Thu Jan 21 2016 Grant Gainey 2.5.10-1
+* Fri Jan 22 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.10-1
 - Bug 1300251 - clientCaps.py : IndexError: string index out of range
 
 * Tue Jan 19 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.9-1
