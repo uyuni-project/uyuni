@@ -161,9 +161,9 @@ public class NavTest extends RhnBaseTestCase {
             NavDigester.buildTree(TestUtils.findTestData("sitenav.xml"));
 
         NavTreeIndex nti = new NavTreeIndex(nt);
-        nti.computeActiveNodes("/rhn/help/satellite", "");
+        nti.computeActiveNodes("/rhn/help/getting-started", "");
         NavNode bestNode = nti.getBestNode();
-        assertEquals("/rhn/help/dispatcher/install_guide", bestNode.getPrimaryURL());
+        assertEquals("/rhn/help/dispatcher/getting_started_guide", bestNode.getPrimaryURL());
     }
 }
 
