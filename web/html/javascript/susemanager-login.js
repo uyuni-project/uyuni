@@ -11,6 +11,6 @@ $(document).on("ready", function() {
   $('footer').wrapInner('<div class="wrap"><div class="row"></div></div>');
   $('header').wrapInner('<div class="wrap"><div class="row"></div></div>');
   $bottomLine.appendTo('footer');
-  $('header .wrap .navbar-collapse').remove();
+  //$('header .wrap .navbar-collapse').remove();
   $('header .wrap .navbar-header .navbar-brand:first-of-type').remove();
 });
