@@ -508,7 +508,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Patches</source>
       </trans-unit>
       <trans-unit id="ssm.overview.errata.schedule">
-        <source>&lt;a href="/rhn/systems/ssm/ListPatches.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source>
+        <source>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source>
       </trans-unit>
       <trans-unit id="ssm.patches.list.header">
         <source>Relevant Patches List</source>
