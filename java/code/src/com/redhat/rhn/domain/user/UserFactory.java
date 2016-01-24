@@ -548,16 +548,20 @@ public  class UserFactory extends HibernateFactory {
                         }
 
                         if (offSet1 <= -18000000 && offSet1 >= -36000000 &&
-                                offSet2 <= -18000000 && offSet2 >= -36000000) {
+                                offSet2 <= -18000000 && offSet2 >= -36000000 &&
+                                t1.getOlsonName().startsWith("America") &&
+                                t2.getOlsonName().startsWith("America")) {
                             //both in America
                             return offSet2 - offSet1;
                         }
 
-                        if (offSet1 <= -18000000 && offSet1 >= -36000000) {
+                        if (offSet1 <= -18000000 && offSet1 >= -36000000 &&
+                                t1.getOlsonName().startsWith("America")) {
                             //first timezone in America
                             return -1;
                         }
-                        if (offSet2 <= -18000000 && offSet2 >= -36000000) {
+                        if (offSet2 <= -18000000 && offSet2 >= -36000000 &&
+                                t2.getOlsonName().startsWith("America")) {
                             //second timezone in America
                             return 1;
                         }
