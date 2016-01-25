@@ -35,6 +35,7 @@ import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.RepoFileUtils;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
+import com.suse.manager.webui.utils.SaltPkgLatest;
 import com.suse.manager.webui.utils.SaltPkgRemoved;
 import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.gson.JSONPackageState;
@@ -47,6 +48,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -213,34 +215,35 @@ public class StatesAPI {
      *
      * @param server the server
      */
-    private static void generateServerPackageState(Server server) {
+    public static void generateServerPackageState(Server server) {
         LOG.debug("Generating SLS file for: " + server.getId());
-        StateFactory.latestPackageStates(server).ifPresent(packageStates -> {
-            SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
-            SaltPkgRemoved pkgRemoved = new SaltPkgRemoved();
-            for (PackageState state : packageStates) {
-                if (state.getPackageState() == PackageStates.INSTALLED) {
-                    pkgInstalled.addPackage(state.getName().getName());
-                }
-                else if (state.getPackageState() == PackageStates.REMOVED) {
-                    pkgRemoved.addPackage(state.getName().getName());
-                }
+        Set<PackageState> packageStates = StateFactory
+                .latestPackageStates(server)
+                .orElseGet(HashSet::new);
+        SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
+        SaltPkgRemoved pkgRemoved = new SaltPkgRemoved();
+        for (PackageState state : packageStates) {
+            if (state.getPackageState() == PackageStates.INSTALLED) {
+                pkgInstalled.addPackage(state.getName().getName());
             }
+            else if (state.getPackageState() == PackageStates.REMOVED) {
+                pkgRemoved.addPackage(state.getName().getName());
+            }
+        }
 
-            try {
-                Path baseDir = Paths.get(
-                        RepoFileUtils.GENERATED_SLS_ROOT, SALT_PACKAGE_FILES);
-                Files.createDirectories(baseDir);
-                Path filePath = baseDir.resolve(
-                        "packages_" + server.getDigitalServerId() + ".sls");
-                SaltStateGenerator saltStateGenerator =
-                        new SaltStateGenerator(filePath.toFile());
-                saltStateGenerator.generate(pkgInstalled, pkgRemoved);
-            }
-            catch (IOException e) {
-                LOG.error(e.getMessage(), e);
-            }
-        });
+        try {
+            Path baseDir = Paths.get(
+                    RepoFileUtils.GENERATED_SLS_ROOT, SALT_PACKAGE_FILES);
+            Files.createDirectories(baseDir);
+            Path filePath = baseDir.resolve(
+                    "packages_" + server.getDigitalServerId() + ".sls");
+            SaltStateGenerator saltStateGenerator =
+                    new SaltStateGenerator(filePath.toFile());
+            saltStateGenerator.generate(pkgInstalled, pkgRemoved);
+        }
+        catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+        }
     }
 
     /**
