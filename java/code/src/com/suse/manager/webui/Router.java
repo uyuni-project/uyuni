@@ -17,6 +17,7 @@ package com.suse.manager.webui;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.head;
@@ -25,6 +26,7 @@ import static spark.Spark.post;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.StatesAPI;
+import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 
@@ -94,5 +96,15 @@ public class Router implements SparkApplication {
                 withOrgAdmin(VirtualHostManagerController::delete));
         post("/manager/vhms/:id/refresh",
                 withOrgAdmin(VirtualHostManagerController::refresh));
+
+        // Subscription Matching
+        get("/manager/subscription_matching",
+                withProductAdmin(SubscriptionMatchingController::show), jade);
+        get("/manager/subscription_matching/data",
+                withProductAdmin(SubscriptionMatchingController::data));
+        get("/manager/subscription_matching/:filename",
+                withProductAdmin(SubscriptionMatchingController::csv));
+        post("/manager/subscription_matching/schedule_matcher_run",
+                withProductAdmin(SubscriptionMatchingController::scheduleMatcherRun));
     }
 }

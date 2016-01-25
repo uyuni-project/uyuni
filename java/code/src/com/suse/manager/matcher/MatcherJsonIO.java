@@ -36,15 +36,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.matcher.json.JsonInput;
 import com.suse.matcher.json.JsonMatch;
+import com.suse.matcher.json.JsonOutput;
 import com.suse.matcher.json.JsonProduct;
 import com.suse.matcher.json.JsonSubscription;
 import com.suse.matcher.json.JsonSystem;
 
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -56,12 +61,6 @@ public class MatcherJsonIO {
     /** (De)serializer instance. */
     private Gson gson;
 
-    /** true if this SUSE Manager instance is to be passed to subscription-matcher. */
-    private final boolean includeSelf;
-
-    /** This system's architecture label. */
-    private final String arch;
-
     /**
      * Logger for this class
      */
@@ -69,33 +68,22 @@ public class MatcherJsonIO {
 
     /**
      * Constructor
-     *
-     * @param includeSelfIn - true if we want to add the products of the SUMA instance
-     *                      running Matcher to the JSON output. Since SUMA Server is not
-     *                      typically a SUMA Client at the same time, its system (with
-     *                      products) wouldn't reported in the matcher input.
-     *
-     *                      Typically this flag is true if this SUMA instance is an ISS
-     *                      Master.
-     *
-     * @param archIn - cpu architecture of this SUMA instance. This is important for correct
-     *               product ID computation in case includeSelf == true.
      */
-    public MatcherJsonIO(boolean includeSelfIn, String archIn) {
+    public MatcherJsonIO() {
         gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .setPrettyPrinting()
             .create();
-        includeSelf = includeSelfIn;
-        arch = archIn;
     }
 
     /**
+     * @param includeSelf - true if we want to add SUMa products and host
+     * @param arch - cpu architecture of this SUMa
      * @return an object representation of the JSON input for the matcher
      * about systems on this Server
      */
-    public List<JsonSystem> getJsonSystems() {
+    public List<JsonSystem> getJsonSystems(boolean includeSelf, String arch) {
         Stream<JsonSystem> systems = ServerFactory.list().stream()
             .map(system -> {
                 Long cpus = system.getCpu() == null ? null : system.getCpu().getNrsocket();
@@ -113,7 +101,7 @@ public class MatcherJsonIO {
                 );
             });
 
-        return concat(systems, jsonSystemForSelf()).collect(toList());
+        return concat(systems, jsonSystemForSelf(includeSelf, arch)).collect(toList());
     }
 
     /**
@@ -122,7 +110,8 @@ public class MatcherJsonIO {
      */
     public List<JsonProduct> getJsonProducts() {
         return SUSEProductFactory.findAllSUSEProducts().stream()
-                .map(p -> new JsonProduct(p.getProductId(), p.getFriendlyName()))
+                .map(p -> new JsonProduct(p.getProductId(), p.getFriendlyName(),
+                        p.getFree()))
                 .collect(toList());
     }
 
@@ -166,11 +155,23 @@ public class MatcherJsonIO {
     }
 
     /**
+     * Returns input data for subscription-matcher as a string.
+     *
+     * @param includeSelf - true if we want to add the products of the SUMA instance
+     *                      running Matcher to the JSON output. Since SUMA Server is not
+     *                      typically a SUMA Client at the same time, its system (with
+     *                      products) wouldn't reported in the matcher input.
+     *
+     *                      Typically this flag is true if this SUMA instance is an ISS
+     *                      Master.
+     *
+     * @param arch - cpu architecture of this SUMA instance. This is important for correct
+     *               product ID computation in case includeSelf == true.
      * @return an object representation of the JSON input for the matcher
      */
-    public String getMatcherInput() {
+    public String generateMatcherInput(boolean includeSelf, String arch) {
         return gson.toJson(new JsonInput(
-            getJsonSystems(),
+            getJsonSystems(includeSelf, arch),
             getJsonProducts(),
             getJsonSubscriptions(),
             getJsonMatches())
@@ -178,12 +179,40 @@ public class MatcherJsonIO {
     }
 
     /**
+     * Returns the matcher input data read from file
+     * @return the input data or empty in case the file with the input data was not found
+     */
+    public Optional<JsonInput> getMatcherInput() {
+        try {
+            FileReader reader =
+                    new FileReader(new File(MatcherRunner.OUT_DIRECTORY, "input.json"));
+            return Optional.of(gson.fromJson(reader, JsonInput.class));
+        }
+        catch (FileNotFoundException e) {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Gets the latest matcher output data
+     * @return the output or empty in case the matcher did not run yet
+     */
+    public Optional<JsonOutput> getMatcherOutput() {
+        try {
+            FileReader reader =
+                    new FileReader(new File(MatcherRunner.OUT_DIRECTORY, "output.json"));
+            return Optional.of(gson.fromJson(reader, JsonOutput.class));
+        }
+        catch (FileNotFoundException e) {
+            return Optional.empty();
+        }
+    }
+
+    /**
      * Computes the product ids of the the SUSE Manager Server product and the SUSE Linux
      * Enterprise product running on this machine.
-     *
-     * @return list of product ids with product installed on self
      */
-    private Set<Long> computeSelfProductIds() {
+    private Set<Long> computeSelfProductIds(String arch) {
         Set<Long> result = new LinkedHashSet<>();
         if (arch.contains("amd64")) {
             result.add(1349L); // SUSE Manager Server 3.0 x86_64
@@ -267,7 +296,7 @@ public class MatcherJsonIO {
     /**
      * Returns an optional JsonSystem for the SUSE Manager server.
      */
-    private Stream<JsonSystem> jsonSystemForSelf() {
+    private Stream<JsonSystem> jsonSystemForSelf(boolean includeSelf, String arch) {
         if (includeSelf) {
             return of(new JsonSystem(
                 Long.MAX_VALUE,
@@ -275,7 +304,7 @@ public class MatcherJsonIO {
                 1,
                 true,
                 new HashSet<>(),
-                computeSelfProductIds()
+                computeSelfProductIds(arch)
             ));
         }
         else {

@@ -96,6 +96,40 @@ public class SparkApplicationHelper {
     }
 
     /**
+     * Use in routes to automatically get the current user, which must be the product
+     * admin, in your controller.
+     * Example: <code>Spark.get("/url", withProductAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static TemplateViewRoute withProductAdmin(TemplateViewRouteWithUser route) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            if (user == null || !user.hasRole(RoleFactory.SAT_ADMIN)) {
+                throw new PermissionException("no perms");
+            }
+            return route.handle(request, response, user);
+        };
+    }
+
+    /**
+     * Use in routes to automatically get the current user, which must be the product
+     * admin, in your controller.
+     * Example: <code>Spark.get("/url", withProductAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static Route withProductAdmin(RouteWithUser route) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            if (user == null || !user.hasRole(RoleFactory.SAT_ADMIN)) {
+                throw new PermissionException("no perms");
+            }
+            return route.handle(request, response, user);
+        };
+    }
+
+    /**
      * Use in routes to automatically get the current user, which must be an Org
      * admin, in your controller.
      * Example: <code>Spark.get("/url", withOrgAdmin(Controller::method));</code>

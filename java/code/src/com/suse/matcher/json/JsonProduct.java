@@ -25,15 +25,20 @@ public class JsonProduct {
     /** The friendly name. */
     private String name;
 
+    /** true if this is a free product. */
+    private Boolean free;
+
     /**
      * Standard constructor.
      *
      * @param idIn the id
      * @param nameIn the name
+     * @param freeIn true if this is a free product
      */
-    public JsonProduct(Long idIn, String nameIn) {
+    public JsonProduct(Long idIn, String nameIn, Boolean freeIn) {
         id = idIn;
         name = nameIn;
+        free = freeIn;
     }
 
     /**
@@ -70,5 +75,23 @@ public class JsonProduct {
      */
     public void setName(String nameIn) {
         name = nameIn;
+    }
+
+    /**
+     * Checks if the product is free.
+     *
+     * @return true if this is a free product
+     */
+    public Boolean getFree() {
+        return free;
+    }
+
+    /**
+     * Changes whether this is a free product or not.
+     *
+     * @param freeIn true if this is a free product
+     */
+    public void setFree(Boolean freeIn) {
+        free = freeIn;
     }
 }

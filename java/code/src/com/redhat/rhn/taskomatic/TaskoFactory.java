@@ -18,6 +18,11 @@ package com.redhat.rhn.taskomatic;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 
 import java.io.File;
 import java.util.Date;
@@ -474,6 +479,32 @@ public class TaskoFactory extends HibernateFactory {
         params.put("bunch_name", bunchName);
         return singleton.listObjectsByNamedQuery(
                 "TaskoRun.listByBunch", params);
+    }
+
+    /**
+     * Returns the latest run from the specified bunch
+     * @param bunchName the bunch name
+     * @return the latest run or null if none exists
+     */
+    public static TaskoRun getLatestRun(String bunchName) {
+        DetachedCriteria bunchIds = DetachedCriteria.forClass(TaskoBunch.class)
+                .add(Restrictions.eq("name", bunchName))
+                .setProjection(Projections.id());
+
+        DetachedCriteria templateIds = DetachedCriteria.forClass(TaskoTemplate.class)
+                .add(Subqueries.propertyIn("bunch", bunchIds))
+                .setProjection(Projections.id());
+
+        return (TaskoRun) getSession()
+            .createCriteria(TaskoRun.class)
+            .add(Subqueries.propertyIn("template.id", templateIds))
+            .add(Restrictions.in("status",
+                    new Object[] {TaskoRun.STATUS_RUNNING, TaskoRun.STATUS_FINISHED}))
+            .addOrder(Order.desc("startTime"))
+            .addOrder(Order.desc("id"))
+            .setFirstResult(0)
+            .setMaxResults(1)
+            .uniqueResult();
     }
 
     /**
