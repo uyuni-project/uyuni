@@ -160,12 +160,13 @@ public class SubscriptionMatchProcessor {
         // for each system, subtract the matched products from its products
         return input.getSystems().stream()
                 .map(s -> {
-                    Set<Long> unmatchedProductIds = minus(
-                            s.getProductIds(), systemMatchedProducts.get(s.getId()));
-                    List<String> unmatchedProductNames = unmatchedProductIds.stream()
+                    List<String> unmatchedProductNames = s.getProductIds().stream()
+                            .filter(e -> !systemMatchedProducts.getOrDefault(s.getId(),
+                                Collections.emptySet()).contains(e))
                             .map(id -> productNameById(id, input))
                             .sorted()
                             .collect(Collectors.toList());
+
                     return new System(
                             s.getId(),
                             s.getName(),
@@ -182,15 +183,5 @@ public class SubscriptionMatchProcessor {
                 .map(JsonProduct::getName)
                 .findFirst()
                 .orElse("Unknown product (" + id + ")");
-    }
-
-    // a - b in a sane way
-    private Set<Long> minus(Set<Long> a, Set<Long> b) {
-        if (b == null) {
-            return a;
-        }
-        return a.stream()
-                .filter(e -> !b.contains(e))
-                .collect(Collectors.toSet());
     }
 }
