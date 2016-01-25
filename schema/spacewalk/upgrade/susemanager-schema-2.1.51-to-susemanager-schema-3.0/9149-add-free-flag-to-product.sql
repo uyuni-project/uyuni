@@ -1,2 +1,2 @@
 ALTER TABLE suseProducts
-ADD COLUMN free CHAR(1);
+ADD COLUMN free CHAR(1) DEFAULT 'N';
