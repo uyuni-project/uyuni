@@ -435,6 +435,9 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="affectedsystems.jsp.apply">
         <source>Apply Patches</source>
       </trans-unit>
+      <trans-unit id="system.event.affectedErrata">
+        <source>Patches Affected:</source>
+      </trans-unit>
       <trans-unit id="confirm.jsp.header">
         <source>Confirm Patch Update:</source>
       </trans-unit>
