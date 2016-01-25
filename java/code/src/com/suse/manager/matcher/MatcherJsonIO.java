@@ -111,7 +111,7 @@ public class MatcherJsonIO {
     public List<JsonProduct> getJsonProducts() {
         return SUSEProductFactory.findAllSUSEProducts().stream()
                 .map(p -> new JsonProduct(p.getProductId(), p.getFriendlyName(),
-                        p.getFree()))
+                        "T".equals(p.getFree())))
                 .collect(toList());
     }
 
