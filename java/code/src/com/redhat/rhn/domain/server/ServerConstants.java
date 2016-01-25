@@ -69,10 +69,10 @@ public class ServerConstants {
     }
 
     /**
-     * Static representing the saltstack entitled server group type
+     * Static representing the salt entitled server group type
      * @return ServerGroupType
      */
-    public static final ServerGroupType getServerGroupTypeSaltStackEntitled() {
-        return ServerFactory.lookupServerGroupTypeByLabel("saltstack_entitled");
+    public static final ServerGroupType getServerGroupTypeSaltEntitled() {
+        return ServerFactory.lookupServerGroupTypeByLabel("salt_entitled");
     }
 }
