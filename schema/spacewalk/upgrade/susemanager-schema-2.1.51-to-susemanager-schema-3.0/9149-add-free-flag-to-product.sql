@@ -1,0 +1,3 @@
+ALTER TABLE suseProducts
+ADD COLUMN free BOOLEAN;
+
