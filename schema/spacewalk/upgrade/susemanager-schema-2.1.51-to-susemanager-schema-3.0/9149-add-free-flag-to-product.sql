@@ -1,3 +1,2 @@
 ALTER TABLE suseProducts
-ADD COLUMN free BOOLEAN;
-
+ADD COLUMN free CHAR(1);

@@ -23,7 +23,7 @@ suseProducts
                   REFERENCES rhnPackageArch (id),
     release       varchar2(256),
     product_id    NUMBER NOT NULL,
-    free          BOOLEAN,
+    free          CHAR(1),
     created   timestamp with local time zone
                   DEFAULT (current_timestamp) NOT NULL,
     modified  timestamp with local time zone
@@ -35,4 +35,3 @@ CREATE SEQUENCE suse_products_id_seq START WITH 100;
 CREATE INDEX suseprod_pdid_idx
 ON suseProducts (product_id)
 TABLESPACE [[64k_tbs]];
-
