@@ -27,6 +27,7 @@ import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 
@@ -180,6 +181,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             SALT_SERVICE.sendEvent("susemanager/minion/registered", data);
             LOG.info("Finished minion registration: " + minionId);
 
+            StatesAPI.generateServerPackageState(server);
             // Trigger certification deployment
             MessageQueue.publish(
                     new StateDirtyEvent(server.getId(), null, StateDirtyEvent.CERTIFICATE));
