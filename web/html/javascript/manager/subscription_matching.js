@@ -24,15 +24,13 @@ var SubscriptionMatching = React.createClass({
     var subscriptions = data == null ? null : data.subscriptions;
     var unmatchedSystems = data == null ? null : data.unmatchedSystems;
 
-    var body;
+    var tabLabels = [t("Subscriptions"), t("Unmatched Systems"), t("Messages")];
     if (data != null && data.matcherDataAvailable) {
-      body = (
-        <div>
-          <Subscriptions subscriptions={subscriptions} />
-          <UnmatchedSystems unmatchedSystems={unmatchedSystems} />
-          <Messages messages={messages} />
-        </div>
-      );
+      var tabPanels = [
+        <Subscriptions subscriptions={subscriptions} />,
+        <UnmatchedSystems unmatchedSystems={unmatchedSystems} />,
+        <Messages messages={messages} />
+      ];
     }
 
     return (
@@ -46,9 +44,54 @@ var SubscriptionMatching = React.createClass({
           </div>
           <h1><i className="fa spacewalk-icon-subscription-counting"></i>{t("Subscription Matching")}</h1>
         </div>
-        {body}
+        <TabContainer labels={tabLabels} panels={tabPanels} />
         <MatcherRunPanel dataAvailable={data != null} initialLatestStart={latestStart} initialLatestEnd={latestEnd} />
       </div>
+    );
+  }
+});
+
+var TabContainer = React.createClass({
+  getInitialState: function() {
+    return {"tab" : 0};
+  },
+
+  show: function(tabIndex) {
+    this.setState({"tab": tabIndex});
+  },
+
+  render: function() {
+    var container = this;
+
+    var tabLabels = this.props.labels.map(function(label, index) {
+      return (<TabLabel onClick={container.show} tab={index} text={label} active={index == container.state.tab} />);
+    });
+
+    var tabPanels = (this.props.panels != null && this.props.panels.length > 0 ? this.props.panels[this.state.tab] : t("Loading..."));
+
+    return (
+      <div>
+        <div className="spacewalk-content-nav">
+          <ul className="nav nav-tabs">
+            {tabLabels}
+          </ul>
+        </div>
+        {tabPanels}
+      </div>
+    );
+  }
+});
+
+var TabLabel = React.createClass({
+  onClick: function() {
+    this.props.onClick(this.props.tab);
+  },
+
+  render: function() {
+    return(
+      <li className={this.props.active ? "active" : ""}>
+        <a href="#" onClick={this.onClick}>{this.props.text}</a>
+      </li>
     );
   }
 });
