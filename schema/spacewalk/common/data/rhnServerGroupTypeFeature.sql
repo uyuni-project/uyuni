@@ -117,19 +117,19 @@ insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
 values (lookup_sg_type('bootstrap_entitled'), lookup_feature_type('ftr_system_grouping'),
         current_timestamp,current_timestamp);
 
--- saltstack entitlement features
+-- salt entitlement features
 
 insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
                                        created, modified)
-values (lookup_sg_type('saltstack_entitled'), lookup_feature_type('ftr_errata_updates'),
+values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_errata_updates'),
         current_timestamp,current_timestamp);
 
 insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
                                        created, modified)
-values (lookup_sg_type('saltstack_entitled'), lookup_feature_type('ftr_daily_summary'),
+values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_daily_summary'),
         current_timestamp,current_timestamp);
 
 insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
                                        created, modified)
-values (lookup_sg_type('saltstack_entitled'), lookup_feature_type('ftr_custom_info'),
+values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_custom_info'),
         current_timestamp,current_timestamp);
