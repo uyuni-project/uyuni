@@ -162,7 +162,7 @@ begin
                 select rhn_server_group_id_seq.nextval, sgt.name, sgt.name,
                         sgt.id, new_org_id
                 from rhnServerGroupType sgt
-                where sgt.label = 'saltstack_entitled';
+                where sgt.label = 'salt_entitled';
 
         insert into rhnServerGroup
                 ( id, name, description, group_type, org_id )

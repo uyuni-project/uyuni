@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 5749b633fb352607472487df4263bfb6e5ac0ff6
+-- oracle equivalent source sha1 e1a57838075bad7608f5bb75d53aaae442f84337
 --
 -- Copyright (c) 2008--2015 Red Hat, Inc.
 --
@@ -63,7 +63,7 @@ language plpgsql;
 as $$
     begin
         if service_level_in = 'management' then
-            if entitlement_in = 'enterprise_entitled' or entitlement_in = 'saltstack_entitled' then
+            if entitlement_in = 'enterprise_entitled' or entitlement_in = 'salt_entitled' then
                 return 1;
             else
                 return 0;
@@ -224,7 +224,7 @@ as $$
                       case type_label_in
                        when 'enterprise_entitled' then 'Management'
                        when 'bootstrap_entitled' then 'Bootstrap'
-                       when 'saltstack_entitled' then 'SaltStack'
+                       when 'salt_entitled' then 'Salt'
                        when 'foreign_entitled' then 'Foreign'
                        when 'virtualization_host' then 'Virtualization'
                       end  );
@@ -278,7 +278,7 @@ as $$
                    case type_label_in
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
-                    when 'saltstack_entitled' then 'SaltStack'
+                    when 'salt_entitled' then 'Salt'
                     when 'foreign_entitled' then 'Foreign'
                     when 'virtualization_host' then 'Virtualization'
                    end  );
@@ -317,7 +317,7 @@ as $$
                    case servergroup.label
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
-                    when 'saltstack_entitled' then 'SaltStack'
+                    when 'salt_entitled' then 'Salt'
                     when 'foreign_entitled' then 'Foreign'
                     when 'virtualization_host' then 'Virtualization'
                    end  );
