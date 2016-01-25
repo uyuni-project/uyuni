@@ -249,12 +249,15 @@ public class Access extends BaseHandler {
         @SuppressWarnings("unchecked")
         Map<String, Object> map = (Map<String, Object>) ctx;
         Long sid = getAsLong(map.get("sid"));
-        User user = (User) map.get("user");
-        Server server = SystemManager.lookupByIdAndUser(sid, user);
-        if (server == null) {
-            return false;
+        boolean ret = false;
+        if (sid != null) {
+            User user = (User) map.get("user");
+            Server server = SystemManager.lookupByIdAndUser(sid, user);
+            if (server != null) {
+                ret = server.hasEntitlement(EntitlementManager.SALTSTACK);
+            }
         }
-        return server.hasEntitlement(EntitlementManager.SALTSTACK);
+        return ret;
     }
 
     /**
