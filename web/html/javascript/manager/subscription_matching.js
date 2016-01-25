@@ -24,14 +24,14 @@ var SubscriptionMatching = React.createClass({
     var subscriptions = data == null ? null : data.subscriptions;
     var unmatchedSystems = data == null ? null : data.unmatchedSystems;
 
-    var tabLabels = [t("Subscriptions"), t("Unmatched Systems"), t("Messages")];
-    if (data != null && data.matcherDataAvailable) {
-      var tabPanels = [
+    var tabContainer = data == null || !data.matcherDataAvailable ? null :
+      <TabContainer labels={[t("Subscriptions"), t("Unmatched Systems"), t("Messages")]}
+      panels={[
         <Subscriptions subscriptions={subscriptions} />,
         <UnmatchedSystems unmatchedSystems={unmatchedSystems} />,
         <Messages messages={messages} />
-      ];
-    }
+      ]} />
+    ;
 
     return (
       <div>
@@ -44,7 +44,7 @@ var SubscriptionMatching = React.createClass({
           </div>
           <h1><i className="fa spacewalk-icon-subscription-counting"></i>{t("Subscription Matching")}</h1>
         </div>
-        <TabContainer labels={tabLabels} panels={tabPanels} />
+        {tabContainer}
         <MatcherRunPanel dataAvailable={data != null} initialLatestStart={latestStart} initialLatestEnd={latestEnd} />
       </div>
     );
