@@ -25,12 +25,26 @@ var SubscriptionMatching = React.createClass({
     var unmatchedSystems = data == null ? null : data.unmatchedSystems;
 
     var tabContainer = data == null || !data.matcherDataAvailable ? null :
-      <TabContainer labels={[t("Subscriptions"), t("Unmatched Systems"), t("Messages")]}
-      panels={[
-        <Subscriptions subscriptions={subscriptions} />,
-        <UnmatchedSystems unmatchedSystems={unmatchedSystems} />,
-        <Messages messages={messages} />
-      ]} />
+      <TabContainer
+        labels={[t("Subscriptions"), t("Unmatched Systems"), t("Messages")]}
+        panels={[
+          <Subscriptions
+            subscriptions={subscriptions}
+            saveState={(state) => {this.state["subscriptionTableState"] = state;}}
+            loadState={() => this.state["subscriptionTableState"]}
+          />,
+          <UnmatchedSystems
+            unmatchedSystems={unmatchedSystems}
+            saveState={(state) => {this.state["unmatchedSystemTableState"] = state;}}
+            loadState={() => this.state["unmatchedSystemTableState"]}
+          />,
+          <Messages
+            messages={messages}
+            saveState={(state) => {this.state["messageTableState"] = state;}}
+            loadState={() => this.state["messageTableState"]}
+          />
+        ]}
+      />
     ;
 
     return (
@@ -203,7 +217,25 @@ var MatcherScheduleButton = React.createClass({
   }
 });
 
+var StatePersistedMixin = {
+  componentWillMount: function() {
+    if (this.props.loadState) {
+      if (this.props.loadState()) {
+        this.state = this.props.loadState();
+        console.log(this.state);
+      }
+    }
+  },
+  componentWillUnmount: function() {
+    if (this.props.saveState) {
+      this.props.saveState(this.state);
+    }
+  },
+};
+
 var UnmatchedSystems = React.createClass({
+  mixins: [StatePersistedMixin],
+
   render: function() {
     if (this.props.unmatchedSystems != null && this.props.unmatchedSystems.length > 0) {
       return (
@@ -212,7 +244,9 @@ var UnmatchedSystems = React.createClass({
           <div className="spacewalk-list">
             <Table headers={[t("Name"), t("Socket/IFL count"), t("Products")]}
               rows={unmatchedSystemsToRows(this.props.unmatchedSystems)}
-              itemsPerPage={15} />
+              itemsPerPage={15}
+              loadState={this.props.loadState}
+              saveState={this.props.saveState} />
             <CsvLink name="unmatched_system_report.csv" />
           </div>
         </div>
@@ -234,6 +268,8 @@ function unmatchedSystemsToRows(systems){
 }
 
 var Messages = React.createClass({
+  mixins: [StatePersistedMixin],
+
   render: function() {
     var body;
     if (this.props.messages != null) {
@@ -241,7 +277,13 @@ var Messages = React.createClass({
         body = (
           <div className="spacewalk-list">
             <p>{t("Please review warning and information messages below.")}</p>
-            <Table headers={[t("Message"), t("Additional information")]} rows={messagesToRows(this.props.messages)} itemsPerPage={15} />
+            <Table
+              headers={[t("Message"), t("Additional information")]}
+              rows={messagesToRows(this.props.messages)}
+              itemsPerPage={15}
+              loadState={this.props.loadState}
+              saveState={this.props.saveState}
+            />
             <CsvLink name="message_report.csv" />
           </div>
         );
@@ -299,6 +341,8 @@ function messagesToRows(raw_messages){
 }
 
 var Subscriptions = React.createClass({
+  mixins: [StatePersistedMixin],
+
   render: function() {
     var body;
     if (this.props.subscriptions != null) {
@@ -307,7 +351,10 @@ var Subscriptions = React.createClass({
           <div className="spacewalk-list">
             <Table headers={[t("Part number"), t("Description"), t("Policy"), t("Matched/Total"), t("Start date"), t("End date")]}
               rows={subscriptionsToRows(this.props.subscriptions)}
-              itemsPerPage={15} />
+              itemsPerPage={15}
+              loadState={this.props.loadState}
+              saveState={this.props.saveState}
+            />
             <CsvLink name="subscription_report.csv" />
           </div>
         );
@@ -373,6 +420,8 @@ function humanReadablePolicy(raw_policy){
 }
 
 var Table = React.createClass({
+  mixins: [StatePersistedMixin],
+
   getInitialState: function(){
     return { "currentPage": 1 };
   },
