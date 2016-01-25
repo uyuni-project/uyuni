@@ -107,8 +107,10 @@ public class SubscriptionMatchingController {
 
         try {
             response.raw().setContentType("application/csv");
-            return FileUtils.readFileToString(new File(MatcherRunner.OUT_DIRECTORY, filename));
-        } catch (IOException e) {
+            return FileUtils.readFileToString(
+                    new File(MatcherRunner.OUT_DIRECTORY, filename));
+        }
+        catch (IOException e) {
             halt(HttpStatus.SC_NOT_FOUND);
             return null;
         }
