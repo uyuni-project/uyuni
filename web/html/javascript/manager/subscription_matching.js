@@ -144,6 +144,8 @@ var MatcherRunPanel = React.createClass({
 
   render: function() {
     if (!this.props.dataAvailable) {
+      // no data available from the backend yet, avoid
+      // a flash of unwanted content
       return null;
     }
 
