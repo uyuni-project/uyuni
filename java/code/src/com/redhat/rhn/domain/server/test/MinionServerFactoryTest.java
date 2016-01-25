@@ -77,7 +77,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
      */
     private MinionServer createTestMinionServer() throws Exception {
         return (MinionServer) ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeSaltStackEntitled(),
+                ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
     }
 }

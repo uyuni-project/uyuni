@@ -117,7 +117,7 @@ public class ActionChainRPCCommon {
      * @param server Server object.
      */
     public void ensureNotSalt(Server server) {
-        if (server.hasEntitlement(EntitlementManager.SALTSTACK)) {
+        if (server.hasEntitlement(EntitlementManager.SALT)) {
             throw new InvalidParameterException(
                     "Action chaining is not supported for salt minions");
         }

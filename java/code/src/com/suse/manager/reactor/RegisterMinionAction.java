@@ -170,9 +170,9 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             triggerGetHardwareInfo(server, grains);
             triggerGetNetworkInfo(server, grains);
 
-            // Assign the SaltStack base entitlement by default
+            // Assign the Salt base entitlement by default
             server.setBaseEntitlement(
-                    EntitlementManager.getByName(EntitlementManager.SALTSTACK_ENTITLED));
+                    EntitlementManager.getByName(EntitlementManager.SALT_ENTITLED));
 
             Map<String, String> data = new HashMap<>();
             data.put("minionId", minionId);

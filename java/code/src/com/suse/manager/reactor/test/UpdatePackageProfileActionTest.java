@@ -50,7 +50,7 @@ public class UpdatePackageProfileActionTest extends JMockBaseTestCaseWithUser {
         Mock saltServiceMock = mock(SaltService.class);
 
         MinionServer minion = (MinionServer) ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeSaltStackEntitled(),
+                ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
 
         final String minionId = minion.getMinionId();

@@ -2551,8 +2551,8 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="saltstack_entitled">
-        <source>SaltStack</source>
+      <trans-unit id="salt_entitled">
+        <source>Salt</source>
       </trans-unit>
       <trans-unit id="packagesindex.jsp.states">
         <source>Manage Package States</source>
