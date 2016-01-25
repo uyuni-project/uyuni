@@ -136,6 +136,7 @@ var MatcherRunPanel = React.createClass({
     return (
       <div className="row col-md-12">
         <h2>{t("Match data status")}</h2>
+        <MatcherTaskDescription />
         <MatcherRunDescription latestStart={this.state.latestStart} latestEnd={this.state.latestEnd} error={this.state.error} />
         <MatcherScheduleButton
           matcherRunning={!this.state.error && this.state.latestStart != null && this.state.latestEnd == null}
@@ -150,28 +151,21 @@ var MatcherRunPanel = React.createClass({
 var MatcherRunDescription = React.createClass({
   render: function() {
     if (this.props.error) {
-      return <p className="text-danger">{t("Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running.")}</p>
+      return <div className="text-danger">{t("Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running.")}</div>
     }
 
     if (this.props.latestStart == null) {
-      return (<p>
+      return (<div>
         {t("No match data is currently available.")}<br/>
-        <MatcherTaskDescription />
         {t("You can also trigger a first run now by clicking the button below.")}
-      </p>);
+      </div>);
     }
 
     if (this.props.latestEnd == null) {
-      return (<p>
-        <MatcherTaskDescription />
-        {t("Matching data is currently being recomputed, it was started {0}.", moment(this.props.latestStart).fromNow())}
-      </p>);
+      return <div>{t("Matching data is currently being recomputed, it was started {0}.", moment(this.props.latestStart).fromNow())}</div>;
     }
 
-    return (<p>
-      <MatcherTaskDescription />
-      {t("Latest successful match data was computed on {0}, you can trigger a new run by clicking the button below.", moment(this.props.latestEnd).fromNow())}
-    </p>);
+    return <div>{t("Latest successful match data was computed on {0}, you can trigger a new run by clicking the button below.", moment(this.props.latestEnd).fromNow())}</div>;
   }
 });
 
