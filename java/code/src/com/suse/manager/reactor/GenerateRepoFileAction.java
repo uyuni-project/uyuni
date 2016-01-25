@@ -42,7 +42,7 @@ public class GenerateRepoFileAction implements MessageAction {
         Server server = ServerFactory.lookupById(serverId);
 
         // Generate repo files only for salt minions
-        if (server.hasEntitlement(EntitlementManager.SALTSTACK)) {
+        if (server.hasEntitlement(EntitlementManager.SALT)) {
             try {
                 RepoFileUtils.generateRepositoryFile(server);
                 MessageQueue.publish(

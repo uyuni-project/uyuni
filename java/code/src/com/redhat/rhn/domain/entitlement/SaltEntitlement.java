@@ -17,15 +17,15 @@ package com.redhat.rhn.domain.entitlement;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 /**
- * SaltStackEntitlement
+ * Salt Entitlement
  */
-public class SaltStackEntitlement extends Entitlement {
+public class SaltEntitlement extends Entitlement {
 
     /**
      * Default constructor.
      */
-    public SaltStackEntitlement() {
-        super(EntitlementManager.SALTSTACK_ENTITLED);
+    public SaltEntitlement() {
+        super(EntitlementManager.SALT_ENTITLED);
     }
 
     /**

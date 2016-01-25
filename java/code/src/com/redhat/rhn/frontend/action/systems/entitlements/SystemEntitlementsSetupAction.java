@@ -118,7 +118,7 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
     private void setupCounts(HttpServletRequest request, User user) {
         setupCountsMessage(request, user, EntitlementManager.MANAGEMENT,
                 MANAGEMENT_COUNTS_MESSAGE);
-        setupCountsMessage(request, user, EntitlementManager.SALTSTACK,
+        setupCountsMessage(request, user, EntitlementManager.SALT,
                 SALT_COUNTS_MESSAGE);
         setupCountsMessage(request, user, EntitlementManager.FOREIGN,
                 FOREIGN_COUNTS_MESSAGE);

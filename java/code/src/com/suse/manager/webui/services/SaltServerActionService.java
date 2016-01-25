@@ -68,7 +68,7 @@ public enum SaltServerActionService {
                                 action.getServer().asMinionServer()
                                         .map(Stream::of)
                                         .orElse(Stream.empty()))
-                        .filter(m -> m.hasEntitlement(EntitlementManager.SALTSTACK))
+                        .filter(m -> m.hasEntitlement(EntitlementManager.SALT))
                         .collect(Collectors.toList())
                     )
                     .orElse(new LinkedList<>());
