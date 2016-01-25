@@ -86,7 +86,7 @@ var MatcherRunPanel = React.createClass({
 
     return (
       <div className="row col-md-12">
-        <h2>{t("Matcher status")}</h2>
+        <h2>{t("Match data status")}</h2>
         <MatcherRunDescription latestStart={this.state.latestStart} latestEnd={this.state.latestEnd} error={this.state.error} />
         <MatcherScheduleButton
           matcherRunning={!this.state.error && this.state.latestStart != null && this.state.latestEnd == null}
@@ -98,21 +98,41 @@ var MatcherRunPanel = React.createClass({
   }
 });
 
-var MatcherRunDescription  = React.createClass({
+var MatcherRunDescription = React.createClass({
   render: function() {
     if (this.props.error) {
       return <p className="text-danger">{t("Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running.")}</p>
     }
 
     if (this.props.latestStart == null) {
-      return <p>{t("The matcher has not run yet. You can trigger a first run by clicking the button below.")}</p>
+      return (<p>
+        {t("No match data is currently available.")}<br/>
+        <MatcherTaskDescription />
+        {t("You can also trigger a first run now by clicking the button below.")}
+      </p>);
     }
 
     if (this.props.latestEnd == null) {
-      return <p>{t("Matcher is currently running, it was started {0}.", moment(this.props.latestStart).fromNow())}</p>
+      return (<p>
+        <MatcherTaskDescription />
+        {t("Matching data is currently being recomputed, it was started {0}.", moment(this.props.latestStart).fromNow())}
+      </p>);
     }
 
-    return <p>{t("Latest successful matcher run was {0}, you can trigger a new run by clicking the button below.", moment(this.props.latestEnd).fromNow())}</p>
+    return (<p>
+      <MatcherTaskDescription />
+      {t("Latest successful match data was computed on {0}, you can trigger a new run by clicking the button below.", moment(this.props.latestEnd).fromNow())}
+    </p>);
+  }
+});
+
+var MatcherTaskDescription = React.createClass({
+  render: function() {
+    return (<div>
+      {t("Match data is computed via a task schedule, nightly by default (you can ")}
+      <a href="/rhn/admin/BunchDetail.do?label=gatherer-matcher-bunch">{t("change the task schedule from the administration page")}</a>
+      {t("). ")}
+    </div>);
   }
 });
 
@@ -135,7 +155,7 @@ var MatcherScheduleButton = React.createClass({
         disabled={this.props.matcherRunning}
         onClick={this.onClick}
       >
-        <i className="fa fa-refresh"></i>{t("Run the matcher")}
+        <i className="fa fa-refresh"></i>{t("Refresh matching data")}
       </button>
     );
   }
@@ -178,23 +198,23 @@ var Messages = React.createClass({
       if (this.props.messages.length > 0) {
         body = (
           <div className="spacewalk-list">
-            <p>{t("Please review warning and information messages from last matching below.")}</p>
+            <p>{t("Please review warning and information messages below.")}</p>
             <Table headers={[t("Message"), t("Additional information")]} rows={messagesToRows(this.props.messages)} itemsPerPage={5} />
             <CsvLink name="message_report.csv" />
           </div>
         );
       }
       else {
-        body = <p>{t("No matcher messages.")}</p>
+        body = <p>{t("No messages from the last match run.")}</p>
       }
     }
     else {
-      body = <p>{t("Loading matcher data...")}</p>
+      body = <p>{t("Loading...")}</p>
     }
 
     return (
       <div className="row col-md-12">
-        <h2>{t("Matching messages")}</h2>
+        <h2>{t("Messages")}</h2>
         {body}
       </div>
     );
@@ -255,7 +275,7 @@ var Subscriptions = React.createClass({
       }
     }
     else {
-      body = <p>{t("Loading matcher data...")}</p>
+      body = <p>{t("Loading...")}</p>
     }
 
     return (
