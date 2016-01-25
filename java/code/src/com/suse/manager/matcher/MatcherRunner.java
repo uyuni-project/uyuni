@@ -29,8 +29,10 @@ import java.util.List;
  */
 public class MatcherRunner {
 
+    /** Path where output from subscription-matcher is stored */
+    public static final String OUT_DIRECTORY = "/var/lib/spacewalk/subscription-matcher";
+
     private static final String MATCHER_CMD = "/usr/bin/subscription-matcher";
-    private static final String OUT_DIRECTORY = "/var/lib/spacewalk/subscription-matcher";
 
     /**
      * Logger for this class
@@ -56,7 +58,7 @@ public class MatcherRunner {
             PrintWriter stdin = new PrintWriter(p.getOutputStream());
             boolean isISSMaster = IssFactory.getCurrentMaster() == null;
             String arch = System.getProperty("os.arch");
-            String s = new MatcherJsonIO(isISSMaster, arch).getMatcherInput();
+            String s = new MatcherJsonIO().generateMatcherInput(isISSMaster, arch);
             stdin.println(s);
             stdin.flush();
             stdin.close();

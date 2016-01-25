@@ -89,7 +89,7 @@ public class MatcherJsonIOTest extends TestCase {
 
         // tell MatcherJsonIO to include self system in the JSON output, which would happen
         // if the running SUMA is an ISS Master
-        List<JsonSystem> result = new MatcherJsonIO(true, AMD64_ARCH).getJsonSystems();
+        List<JsonSystem> result = new MatcherJsonIO().getJsonSystems(true, AMD64_ARCH);
         assertNotNull(result);
 
         JsonSystem resultH1 =
@@ -130,7 +130,7 @@ public class MatcherJsonIOTest extends TestCase {
     }
 
     public void testSystemsToJsonIssSlave() {
-        List<JsonSystem> result = new MatcherJsonIO(false, AMD64_ARCH).getJsonSystems();
+        List<JsonSystem> result = new MatcherJsonIO().getJsonSystems(false, AMD64_ARCH);
         assertTrue(result.stream().noneMatch(s -> s.getId().equals(SUMA_SRV_ID)));
     }
 
@@ -139,7 +139,7 @@ public class MatcherJsonIOTest extends TestCase {
         SUSEProductTestUtils.createVendorSUSEProducts();
         LoggingFactory.clearLogId();
 
-        List<JsonProduct> result = new MatcherJsonIO(true, AMD64_ARCH).getJsonProducts();
+        List<JsonProduct> result = new MatcherJsonIO().getJsonProducts();
         assertNotNull(result);
 
         assertEquals("SUSE Linux Enterprise Server 12 SP1",
@@ -173,7 +173,7 @@ public class MatcherJsonIOTest extends TestCase {
             Collection<SCCSubscription> s = cm.getSubscriptions();
             HibernateFactory.getSession().flush();
             assertNotNull(s);
-            List<JsonSubscription> result = new MatcherJsonIO(true, AMD64_ARCH)
+            List<JsonSubscription> result = new MatcherJsonIO()
                     .getJsonSubscriptions();
 
             JsonSubscription resultSubscription1 = result.stream()
@@ -259,7 +259,7 @@ public class MatcherJsonIOTest extends TestCase {
             TestUtils.saveAndFlush(pin);
             HibernateFactory.getSession().clear();
 
-            List<JsonMatch> result = new MatcherJsonIO(true, AMD64_ARCH)
+            List<JsonMatch> result = new MatcherJsonIO()
                     .getJsonMatches();
             Optional<JsonMatch> resultPin = result.stream()
                 .filter(p -> p.getSystemId().equals(h1.getId()) &&
