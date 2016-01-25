@@ -150,7 +150,6 @@ var MatcherScheduleButton = React.createClass({
     return (
       <button
         type="button"
-        key="matcherScheduleButton"
         className={buttonClass}
         disabled={this.props.matcherRunning}
         onClick={this.onClick}
