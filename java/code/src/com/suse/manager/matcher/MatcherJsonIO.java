@@ -260,7 +260,7 @@ public class MatcherJsonIO {
      */
     private Stream<Long> entitlementIdsForServer(Server server) {
         if (server.hasEntitlement(EntitlementManager.MANAGEMENT) ||
-                server.hasEntitlement(EntitlementManager.SALTSTACK)) {
+                server.hasEntitlement(EntitlementManager.SALT)) {
             if (server.getServerArch()
                     .equals(ServerFactory.lookupServerArchByLabel("s390x"))) {
                 return of(

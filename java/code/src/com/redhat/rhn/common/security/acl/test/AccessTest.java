@@ -205,14 +205,14 @@ public class AccessTest extends BaseTestCaseWithUser {
      * Test ACL: system_has_salt_entitlement()
      * @throws Exception in case of an error
      */
-    public void testAclSystemHasSaltStackEntitlement() throws Exception {
+    public void testAclSystemHasSaltEntitlement() throws Exception {
         Map<String, Object> context = new HashMap<>();
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
 
         // Check with a salt entitled system
         Server s = ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeSaltStackEntitled());
+                ServerConstants.getServerGroupTypeSaltEntitled());
         context.put("sid", new String[] {s.getId().toString()});
         context.put("user", user);
         assertTrue(acl.evalAcl(context, "system_has_salt_entitlement()"));

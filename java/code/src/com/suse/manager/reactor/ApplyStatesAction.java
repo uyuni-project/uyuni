@@ -59,7 +59,7 @@ public class ApplyStatesAction implements MessageAction {
         Server server = ServerFactory.lookupById(stateDirtyEvent.getServerId());
 
         // Update state only for salt systems
-        if (server.hasEntitlement(EntitlementManager.SALTSTACK)) {
+        if (server.hasEntitlement(EntitlementManager.SALT)) {
             try {
                 SALT_SERVICE.applyState(
                         new Grains("machine_id", server.getDigitalServerId()),

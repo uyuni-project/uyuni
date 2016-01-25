@@ -18,7 +18,7 @@ import com.redhat.rhn.domain.entitlement.BootstrapEntitlement;
 import com.redhat.rhn.domain.entitlement.ForeignEntitlement;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.entitlement.ManagementEntitlement;
-import com.redhat.rhn.domain.entitlement.SaltStackEntitlement;
+import com.redhat.rhn.domain.entitlement.SaltEntitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.manager.BaseManager;
 
@@ -43,14 +43,14 @@ public class EntitlementManager extends BaseManager {
     public static final Entitlement MANAGEMENT = new ManagementEntitlement();
     public static final Entitlement VIRTUALIZATION = new VirtualizationEntitlement();
     public static final Entitlement BOOTSTRAP = new BootstrapEntitlement();
-    public static final Entitlement SALTSTACK = new SaltStackEntitlement();
+    public static final Entitlement SALT = new SaltEntitlement();
     public static final Entitlement FOREIGN = new ForeignEntitlement();
 
     public static final String UNENTITLED = "unentitled";
     public static final String ENTERPRISE_ENTITLED = "enterprise_entitled";
     public static final String VIRTUALIZATION_ENTITLED = "virtualization_host";
     public static final String BOOTSTRAP_ENTITLED = "bootstrap_entitled";
-    public static final String SALTSTACK_ENTITLED = "saltstack_entitled";
+    public static final String SALT_ENTITLED = "salt_entitled";
     public static final String FOREIGN_ENTITLED = "foreign_entitled";
 
     private static final Set<Entitlement> ADDON_ENTITLEMENTS;
@@ -61,7 +61,7 @@ public class EntitlementManager extends BaseManager {
 
         BASE_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         BASE_ENTITLEMENTS.add(MANAGEMENT);
-        BASE_ENTITLEMENTS.add(SALTSTACK);
+        BASE_ENTITLEMENTS.add(SALT);
     }
 
     /**
@@ -79,8 +79,8 @@ public class EntitlementManager extends BaseManager {
         else if (BOOTSTRAP_ENTITLED.equals(name)) {
             return BOOTSTRAP;
         }
-        else if (SALTSTACK_ENTITLED.equals(name)) {
-            return SALTSTACK;
+        else if (SALT_ENTITLED.equals(name)) {
+            return SALT;
         }
         else if (FOREIGN_ENTITLED.equals(name)) {
             return FOREIGN;

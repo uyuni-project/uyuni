@@ -96,7 +96,7 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
                 minion.getContactMethod());
 
         // Verify the entitlement
-        assertEquals(EntitlementManager.SALTSTACK, minion.getBaseEntitlement());
+        assertEquals(EntitlementManager.SALT, minion.getBaseEntitlement());
     }
 
     @SuppressWarnings("unchecked")

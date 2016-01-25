@@ -240,7 +240,7 @@ public class Access extends BaseHandler {
     }
 
     /**
-     * Check if any system has a SaltStack entitlement.
+     * Check if any system has a Salt entitlement.
      * @param ctx Context map to pass in.
      * @param params Parameters to use to fetch from context.
      * @return True if system has salt entitlement, false otherwise.
@@ -254,7 +254,7 @@ public class Access extends BaseHandler {
             User user = (User) map.get("user");
             Server server = SystemManager.lookupByIdAndUser(sid, user);
             if (server != null) {
-                ret = server.hasEntitlement(EntitlementManager.SALTSTACK);
+                ret = server.hasEntitlement(EntitlementManager.SALT);
             }
         }
         return ret;
