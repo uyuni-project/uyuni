@@ -264,10 +264,10 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
      */
     public void testComplete() throws ParseException {
         List<JsonProduct> products = new LinkedList<>();
-        products.add(new JsonProduct(1000L, "product id 1000"));
-        products.add(new JsonProduct(1001L, "product id 1001"));
-        products.add(new JsonProduct(1003L, "product id 1003"));
-        products.add(new JsonProduct(1004L, "product id 1004, with expired subsription"));
+        products.add(new JsonProduct(1000L, "product id 1000", false));
+        products.add(new JsonProduct(1001L, "product id 1001", false));
+        products.add(new JsonProduct(1003L, "product id 1003", false));
+        products.add(new JsonProduct(1004L, "product id 1004, with expired subsription", false));
         input.setProducts(products);
 
         List<JsonSubscription> subscriptions = new LinkedList<>();
