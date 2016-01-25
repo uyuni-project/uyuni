@@ -850,7 +850,7 @@ public class ContentSyncManager {
                 // depends on IBS
                 product.setProductId(p.getId());
                 product.setFriendlyName(p.getFriendlyName());
-                product.setFree(p.isFree() ? "T" : "F");
+                product.setFree(p.isFree());
             }
             else {
                 // Otherwise create a new SUSE product and save it
@@ -865,7 +865,7 @@ public class ContentSyncManager {
                 product.setRelease(p.getReleaseType() != null ?
                                    p.getReleaseType().toLowerCase() : null);
                 product.setFriendlyName(p.getFriendlyName());
-                product.setFree(p.isFree() ? "T" : "F");
+                product.setFree(p.isFree());
 
                 PackageArch pArch = PackageFactory.lookupPackageArchByLabel(p.getArch());
                 if (pArch == null && p.getArch() != null) {

@@ -48,8 +48,8 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     /** The product id. */
     private long productId;
 
-    /** 'T' if the product is 'free' */
-    private String free;
+    /** True if the product is 'free' */
+    private boolean free;
 
     /**
      * Gets the id.
@@ -167,7 +167,7 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      * Is the product free?
      * @return the state of the free flag
      */
-    public String getFree() {
+    public boolean getFree() {
         return free;
     }
 
@@ -175,7 +175,7 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      * Sets the free flag.
      * @param freeIn - the free flag
      */
-    public void setFree(String freeIn) {
+    public void setFree(boolean freeIn) {
         free = freeIn;
     }
 

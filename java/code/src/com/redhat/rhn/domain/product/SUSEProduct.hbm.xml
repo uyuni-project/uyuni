@@ -19,7 +19,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <property name="friendlyName" column="friendly_name" type="string" />
     <property name="release" column="release" type="string" />
     <property name="productId" column="product_id" type="long" />
-    <property name="free" column="free" type="string" length="1" />
+    <property name="free" column="free" type="yes_no" not-null="true" />
   </class>
 
   <query name="SUSEProduct.clear">
