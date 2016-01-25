@@ -222,9 +222,16 @@ public class StatesAPI {
                 .orElseGet(HashSet::new);
         SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
         SaltPkgRemoved pkgRemoved = new SaltPkgRemoved();
+        SaltPkgLatest pkgLatest = new SaltPkgLatest();
+
         for (PackageState state : packageStates) {
             if (state.getPackageState() == PackageStates.INSTALLED) {
-                pkgInstalled.addPackage(state.getName().getName());
+                if (state.getVersionConstraint() == VersionConstraints.LATEST){
+                    pkgLatest.addPackage(state.getName().getName());
+                }
+                else {
+                    pkgInstalled.addPackage(state.getName().getName());
+                }
             }
             else if (state.getPackageState() == PackageStates.REMOVED) {
                 pkgRemoved.addPackage(state.getName().getName());
@@ -239,7 +246,7 @@ public class StatesAPI {
                     "packages_" + server.getDigitalServerId() + ".sls");
             SaltStateGenerator saltStateGenerator =
                     new SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(pkgInstalled, pkgRemoved);
+            saltStateGenerator.generate(pkgInstalled, pkgRemoved, pkgLatest);
         }
         catch (IOException e) {
             LOG.error(e.getMessage(), e);

@@ -29,6 +29,10 @@ function normalizePackageState(ps) {
     return selectValue2PackageState(packageState2selectValue(ps));
 }
 
+function normalizePackageVersionConstraint(vc) {
+    return selectValue2VersionConstraints(versionConstraints2selectValue(vc))
+}
+
 function selectValue2VersionConstraints(value) {
     switch(value){
         case 0: return LATEST;
@@ -45,7 +49,7 @@ function packageStateKey(packageState) {
 class PackageStates extends React.Component {
 
   constructor() {
-    ["init", "tableBody", "handleStateChange", "onSearchChange", "search", "save", "setView"]
+    ["init", "tableBody", "handleStateChange", "onSearchChange", "search", "save", "setView", "addChanged"]
     .forEach(method => this[method] = this[method].bind(this));
     this.state = {
         filter: "",
@@ -66,6 +70,7 @@ class PackageStates extends React.Component {
       this.setState({
         packageStates: data.map(state => {
           state.packageStateId = normalizePackageState(state.packageStateId);
+          state.versionConstraintId = normalizePackageVersionConstraint(state.versionConstraintId);
           return state;
         })
       });
@@ -196,11 +201,11 @@ class PackageStates extends React.Component {
 
       var versionConstraintSelect = null;
       if(currentState.packageStateId === INSTALLED) {
-        //versionConstraintSelect =
-        //    <select className="form-control" value={versionConstraints2selectValue(currentState.versionConstraintId)}>
-        //      <option value="0">{t("Latest")}</option>
-        //      //<option value="1">{t("Equal")}</option>
-        //    </select>;
+        versionConstraintSelect =
+            <select className="form-control" value={versionConstraints2selectValue(currentState.versionConstraintId)} onChange={this.handleConstraintChange(row.original)}>
+              <option value="0">{t("Latest")}</option>
+              <option value="1">{t("Equal")}</option>
+            </select>;
       }
       var undoButton = null;
       if(changed !== undefined) {
@@ -252,30 +257,57 @@ class PackageStates extends React.Component {
       }
   }
 
-  handleStateChange(packageState) {
-      return event => {
-         const newPackageStateId = selectValue2PackageState(parseInt(event.target.value));
-         if(packageState.packageStateId == newPackageStateId) {
-            this.state.changed.delete(packageStateKey(packageState))
-         } else {
-            this.state.changed.set(packageStateKey(packageState), {
-                original: packageState,
+  addChanged(original, newPackageStateId, newVersionConstraintId) {
+      const key = packageStateKey(original);
+      const currentState = this.state.changed.get(key);
+      if (currentState != undefined &&
+          newPackageStateId ==  currentState.original.packageStateId &&
+          newVersionConstraintId ==  currentState.original.versionConstraintId) {
+            this.state.changed.delete(key);
+      } else {
+            this.state.changed.set(key, {
+                original: original,
                 value: {
-                    arch: packageState.arch,
-                    epoch: packageState.epoch,
-                    version: packageState.version,
-                    release: packageState.release,
-                    name: packageState.name,
+                    arch: original.arch,
+                    epoch: original.epoch,
+                    version: original.version,
+                    release: original.release,
+                    name: original.name,
                     packageStateId: newPackageStateId,
-                    versionConstraintId: newPackageStateId == INSTALLED ? LATEST :  packageState.versionConstraintId
+                    versionConstraintId: newVersionConstraintId
                 }
             });
-         }
-         this.setState({
-            changed: this.state.changed
-         });
+      }
+      this.setState({
+         changed: this.state.changed
+      });
+  }
+
+  handleStateChange(original) {
+      return event => {
+         const newPackageStateId = selectValue2PackageState(parseInt(event.target.value));
+         this.addChanged(
+            original,
+            newPackageStateId,
+            newPackageStateId == INSTALLED ? LATEST :  original.versionConstraintId
+         );
       }
   }
+
+  handleConstraintChange(original) {
+      return event => {
+         const newPackageConstraintId = selectValue2VersionConstraints(parseInt(event.target.value));
+         const key = packageStateKey(original);
+         const currentState = this.state.changed.get(key);
+         const currentPackageStateId = currentState != undefined ? currentState.value.packageStateId : original.packageStateId;
+         this.addChanged(
+            original,
+            currentPackageStateId,
+            newPackageConstraintId
+         );
+      }
+  }
+
 
   render() {
     return (
