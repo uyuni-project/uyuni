@@ -38,6 +38,12 @@ var SubscriptionMatching = React.createClass({
     return (
       <div>
         <div className="spacewalk-toolbar-h1">
+          <div className="spacewalk-toolbar">
+            <a href="/rhn/manager/vhms">
+              <i className="fa spacewalk-icon-virtual-host-manager"></i>
+              {t("Manage Virtual Host Manager")}
+            </a>
+          </div>
           <h1><i className="fa spacewalk-icon-subscription-counting"></i>{t("Subscription Matching")}</h1>
         </div>
         {body}
