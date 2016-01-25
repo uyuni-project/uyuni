@@ -247,7 +247,7 @@ var Messages = React.createClass({
         body = (
           <div className="spacewalk-list">
             <p>{t("Please review warning and information messages below.")}</p>
-            <Table headers={[t("Message"), t("Additional information")]} rows={messagesToRows(this.props.messages)} itemsPerPage={5} />
+            <Table headers={[t("Message"), t("Additional information")]} rows={messagesToRows(this.props.messages)} itemsPerPage={15} />
             <CsvLink name="message_report.csv" />
           </div>
         );
