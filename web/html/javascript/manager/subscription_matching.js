@@ -261,9 +261,9 @@ var UnmatchedSystems = React.createClass({
 function unmatchedSystemsToRows(systems){
   return systems.map((s) => {
     var columns = [
-      s.name,
-      s.cpuCount,
-      s.products.reduce((a,b) => a+", "+b),
+      <TableCell content={s.name} />,
+      <TableCell content={s.cpuCount} />,
+      <TableCell content={s.products.reduce((a,b) => a+", "+b)} />,
     ];
     return <TableRow columns={columns} />
   });
@@ -337,7 +337,11 @@ function messagesToRows(raw_messages){
         message = raw_message["type"];
         additionalInformation = data;
     }
-    return <TableRow columns={[message, additionalInformation]} />;
+    var columns = [
+      <TableCell content={message} />,
+      <TableCell content={additionalInformation} />
+    ];
+    return <TableRow columns={columns} />;
   });
   return result;
 }
@@ -388,12 +392,12 @@ function subscriptionsToRows(subscriptions){
         null;
 
     var columns = [
-      s.partNumber,
-      s.description,
-      humanReadablePolicy(s.policy),
-      s.matchedQuantity + "/" + s.totalQuantity,
-      moment(s.startDate).fromNow(),
-      moment(s.endDate).fromNow(),
+      <TableCell content={s.partNumber} />,
+      <TableCell content={s.description} />,
+      <TableCell content={humanReadablePolicy(s.policy)} />,
+      <TableCell content={s.matchedQuantity + "/" + s.totalQuantity} />,
+      <TableCell content={moment(s.startDate).fromNow()} />,
+      <TableCell content={moment(s.endDate).fromNow()} />,
     ];
 
     return <TableRow className={className} columns={columns} />
@@ -526,10 +530,18 @@ var TableRow = React.createClass({
   render: function() {
     return (
       <tr className={this.props.className}>
-        {this.props.columns.map(function(column){
-          return (<td>{column}</td>);
-        })}
+        {this.props.columns}
       </tr>
+    );
+  }
+});
+
+var TableCell = React.createClass({
+  render: function() {
+    return (
+      <td>
+        {this.props.content}
+      </td>
     );
   }
 });
