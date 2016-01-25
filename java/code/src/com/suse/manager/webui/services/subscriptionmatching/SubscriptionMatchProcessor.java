@@ -150,6 +150,11 @@ public class SubscriptionMatchProcessor {
     }
 
     private List<System> unmatchedSystems(JsonInput input, JsonOutput output) {
+        Set<Long> freeProducts = input.getProducts().stream()
+                .filter(p -> p.getFree())
+                .map(p -> p.getId())
+                .collect(Collectors.toSet());
+
         Map<Long, Set<Long>> systemMatchedProducts = output.getConfirmedMatches().stream()
                 .collect(Collectors.toMap(
                         m -> m.getSystemId(),
@@ -158,11 +163,13 @@ public class SubscriptionMatchProcessor {
                                 .collect(Collectors.toSet())));
 
         // for each system, subtract the matched products from its products
+        // ignore free products
         return input.getSystems().stream()
                 .map(s -> {
                     List<String> unmatchedProductNames = s.getProductIds().stream()
                             .filter(e -> !systemMatchedProducts.getOrDefault(s.getId(),
                                 Collections.emptySet()).contains(e))
+                            .filter(id -> !freeProducts.contains(id))
                             .map(id -> productNameById(id, input))
                             .sorted()
                             .collect(Collectors.toList());
