@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Jan 26 13:59:41 CET 2016 - mc@suse.de
+
+- version 2.5.0.4-1
+- ssh-push: Improvements regarding the clean up
+- ssh-push: Improve sudo support for simple registrations
+- ssh-push: Disable relevant services via systemd as well
+- ssh-push: ssh-rsa finally seems to be no longer required
+- Allow for a more restrictive sudo configuration (bsc#961521)
+- Fix script to work with sudo user (bsc#961521)
+- remove client bootstrap repo after installing needed packages
+
+-------------------------------------------------------------------
 Mon Nov 30 10:56:28 CET 2015 - mc@suse.de
 
 - version 2.5.0.3-1
