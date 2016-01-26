@@ -34,6 +34,26 @@ public class MatcherRunData {
     private String unmatchedSystemReport;
 
     /**
+     * Gets the contents of the MatcherRunData that corresponds to the given
+     * CSV filename.
+     *
+     * @param filename - name of the corresponding csv file (including the extension)
+     * @return string corresponding to the CSV output of the matcher
+     */
+    public String getCSVContentsByFilename(String filename) {
+        switch (filename) {
+            case "message_report.csv":
+                return messageReport;
+            case "subscription_report.csv":
+                return subscriptionReport;
+            case "unmatched_system_report.csv":
+                return unmatchedSystemReport;
+            default:
+                throw new IllegalArgumentException("Illegal csv filename " + filename);
+        }
+    }
+
+    /**
      * Gets the id.
      *
      * @return id
