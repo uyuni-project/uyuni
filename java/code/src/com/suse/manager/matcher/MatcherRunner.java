@@ -16,8 +16,12 @@
 package com.suse.manager.matcher;
 
 import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.matcher.MatcherRunData;
+import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
@@ -67,15 +71,37 @@ public class MatcherRunner {
             if (exitCode != 0) {
                 logger.error("Error while calling the subscription-matcher, exit code " +
                         exitCode);
-                //logger.error("Please check the subscription-matcher logfile.");
                 return;
             }
+
+            MatcherRunData data = new MatcherRunData();
+            data.setInput(readMatcherFile("input.json"));
+            data.setOutput(readMatcherFile("output.json"));
+            data.setSubscriptionReport(readMatcherFile("subscription_report.csv"));
+            data.setMessageReport(readMatcherFile("message_report.csv"));
+            data.setUnmatchedSystemReport(readMatcherFile("unmatched_system_report.csv"));
+            MatcherRunDataFactory.updateData(data);
         }
         catch (IOException ioe) {
             logger.error("execute(String[])", ioe);
         }
         catch (InterruptedException e) {
             logger.error("execute(String[])", e);
+        }
+    }
+
+    /**
+     * Returns the matcher input data read from file.
+     * @param filename the file name
+     * @return the input data or empty in case the file with the input data was not found
+     */
+    private static String readMatcherFile(String filename) {
+        try {
+            return FileUtils.readFileToString(new File(MatcherRunner.OUT_DIRECTORY,
+                    filename));
+        } catch (IOException e) {
+            throw new IllegalStateException("Matcher ran successfully, but it's not" +
+                    " possible to read its input/output file: " + filename);
         }
     }
 }
