@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 26 14:01:05 CET 2016 - mc@suse.de
+
+- version 3.0.9-1
+- fix comments about Salt
+
+-------------------------------------------------------------------
 Wed Jan 20 12:09:10 CET 2016 - mantel@suse.de
 
 - do not display database credentials during
