@@ -26,7 +26,7 @@ CREATE TABLE suseSCCOrderItem
     sku            VARCHAR2(256),
     start_date     timestamp with local time zone,
     end_date       timestamp with local time zone,
-    quantity       NUMBER NOT NULL DEFAULT(0),
+    quantity       NUMBER DEFAULT(0),
     subscription_id NUMBER NOT NULL,
     created        timestamp with local time zone
                        DEFAULT (current_timestamp) NOT NULL,
