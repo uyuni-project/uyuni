@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Tue Jan 26 14:19:55 CET 2016 - mc@suse.de
+
+- version 2.5.13.1-1
+- update guest also on re-registration
+- allow to change uuid of already registered guests
+- there can be guests without hypervisor registered
+- fixing exception when reactivating system without base channel and without
+  any available
+- use 2048MB as default for taskomatic max java memory
+- add comment about taskomatic jvm max memory to rhn.conf (bsc#957653)
+- Added filename in the error message of satellite-sync, in case file
+  has wrong size
+- Added processing of ValueError exception, during spacewalk-data-
+  fsck
+- local variable 'primif' referenced before assignment
+
+-------------------------------------------------------------------
 Sat Jan 16 11:39:21 CET 2016 - mc@suse.de
 
 - version 2.5.10.1-1
