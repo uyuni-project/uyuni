@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Jan 26 14:09:42 CET 2016 - mc@suse.de
+
+- version 3.0.8-1
+- Fix the SCCOrderItem null quantity issue by dropping the 'not null'
+  constraint
+- Rename 'equal' to 'any' in the database
+- schema: rename saltstack_entitled to salt_entitled
+- Add the free flag to SUSEProduct
+- move the migration for bsc#959055 fix into the right schema version
+- add support for schema migration from 2.1 to 3.0
+- add schema upgrade for bsc#959055 to susemanager-schema-3.0 migration
+- add Chile to the list of timezones (bsc#959055)
+
+-------------------------------------------------------------------
 Sat Jan 16 11:37:29 CET 2016 - mc@suse.de
 
 - version 3.0.7-1
