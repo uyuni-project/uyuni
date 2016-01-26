@@ -350,8 +350,7 @@ public enum SaltAPIService implements SaltService {
      */
     public void syncModules(String target) {
         try {
-            Map<String, List<String>> result = SALT_CLIENT.callSync(
-                    SaltUtil.syncModules(),
+            SALT_CLIENT.callSync(SaltUtil.syncModules(),
                     new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
         }
         catch (SaltStackException e) {
