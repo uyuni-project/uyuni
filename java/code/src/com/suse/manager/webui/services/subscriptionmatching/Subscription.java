@@ -26,7 +26,7 @@ public class Subscription {
     private String partNumber;
     private String description;
     private String policy;
-    private int totalQuantity;
+    private Integer totalQuantity;
     private int matchedQuantity;
     private Date startDate;
     private Date endDate;
@@ -44,8 +44,8 @@ public class Subscription {
      * @param endDateIn - end date
      */
     public Subscription(Long idIn, String partNumberIn, String productDescriptionIn,
-            String policyIn, int totalQuantityIn, int matchedQuantityIn, Date startDateIn,
-            Date endDateIn) {
+            String policyIn, Integer totalQuantityIn, int matchedQuantityIn,
+            Date startDateIn, Date endDateIn) {
         id = idIn;
         partNumber = partNumberIn;
         description = productDescriptionIn;
@@ -124,7 +124,7 @@ public class Subscription {
      * Gets the total quantity.
      * @return the total quantity
      */
-    public int getTotalQuantity() {
+    public Integer getTotalQuantity() {
         return totalQuantity;
     }
 
@@ -132,7 +132,7 @@ public class Subscription {
      * Sets the total quantity.
      * @param totalQuantityIn - total quantity
      */
-    public void setTotalQuantity(int totalQuantityIn) {
+    public void setTotalQuantity(Integer totalQuantityIn) {
         totalQuantity = totalQuantityIn;
     }
 

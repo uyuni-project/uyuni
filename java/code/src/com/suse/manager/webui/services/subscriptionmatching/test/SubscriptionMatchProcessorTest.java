@@ -196,7 +196,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         Subscription actual = data.getSubscriptions().get(0);
         assertEquals("123456", actual.getPartNumber());
         assertEquals("subs name", actual.getDescription());
-        assertEquals(3, actual.getTotalQuantity());
+        assertEquals(Integer.valueOf(3), actual.getTotalQuantity());
         assertEquals(2, actual.getMatchedQuantity());
         assertEquals(new Date(0), actual.getStartDate());
         assertEquals(new Date(1000), actual.getEndDate());
