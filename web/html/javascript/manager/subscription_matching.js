@@ -396,8 +396,14 @@ function subscriptionsToRows(subscriptions){
       <TableCell content={s.description} />,
       <TableCell content={humanReadablePolicy(s.policy)} />,
       <QuantityCell matched={s.matchedQuantity} total={s.totalQuantity} />,
-      <TableCell content={moment(s.startDate).fromNow()} />,
-      <TableCell content={moment(s.endDate).fromNow()} />,
+      <TableCell content={
+        <ToolTip content={moment(s.startDate).fromNow()}
+          title={moment(s.startDate).format("LL")} />}
+      />,
+      <TableCell content={
+        <ToolTip content={moment(s.endDate).fromNow()}
+          title={moment(s.endDate).format("LL")} />}
+      />,
     ];
 
     return <TableRow className={className} columns={columns} />
