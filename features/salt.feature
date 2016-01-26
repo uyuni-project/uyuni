@@ -1,8 +1,8 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: SaltStack is configured and running
-  In order to operate SUSE Manager based on SaltStack
+Feature: Salt is configured and running
+  In order to operate SUSE Manager based on Salt
   I want to verify general salt functionality and system registration
 
   Scenario: salt-api is properly configured

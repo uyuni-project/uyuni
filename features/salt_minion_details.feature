@@ -5,9 +5,9 @@ Feature: Verify the minion registration
   In order to validate the completeness of minion registration
   I want to see minion details and installed packages
 
-  Scenario: Check for the SaltStack entitlement
+  Scenario: Check for the Salt entitlement
     Given I am on the Systems overview page of this client
-    Then I should see a "[SaltStack]" text
+    Then I should see a "[Salt]" text
 
   Scenario: Check installed packages are visible
     Given I am on the Systems overview page of this client
