@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 public enum VersionConstraints {
 
-    LATEST(0), EQUAL(1);
+    LATEST(0), ANY(1);
 
     /** This ID corresponds to the id column in the database */
     private final int ID;

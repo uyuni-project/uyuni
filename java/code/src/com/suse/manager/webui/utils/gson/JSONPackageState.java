@@ -26,6 +26,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -161,7 +162,8 @@ public class JSONPackageState {
             if (PackageStates.requiresVersionConstraint(ps)) {
                 if (versionConstraint.isPresent()) {
                     VersionConstraints vc = versionConstraint.get();
-                    if (vc != VersionConstraints.LATEST) {
+                    if (!Arrays.asList(VersionConstraints.LATEST, VersionConstraints.ANY)
+                            .contains(vc)) {
                         packageState.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
                                 getEpoch(), getVersion(), getRelease()));
                     }
