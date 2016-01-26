@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Jan 26 13:53:44 CET 2016 - mc@suse.de
+
+- version 2.5.83.1-1
+- change encoding for python 2
+- os.write wants buffer
+- xmlrpc can't convert map objects
+- dict.iteritems() is not in python3
+- perform decoding on byte string
+- modified exception raising to work in python2/3
+- fixed string module calls to work in python3
+
+-------------------------------------------------------------------
 Sat Jan 16 11:31:43 CET 2016 - mc@suse.de
 
 - version 2.5.81.1-1
