@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Jan 26 14:03:16 CET 2016 - mc@suse.de
+
+- version 2.5.6.1-1
+- Extended allowed delimiters to include '.'
+- Added UEK4 channels for Oracle Linux 6 and 7.
+- add openSUSE Leap 42.1 (bsc#961353)
+- remove outdated openSUSE distribution 13.1
+
+-------------------------------------------------------------------
 Sat Jan 16 11:19:15 CET 2016 - mc@suse.de
 
 - version 2.5.4.1-1
