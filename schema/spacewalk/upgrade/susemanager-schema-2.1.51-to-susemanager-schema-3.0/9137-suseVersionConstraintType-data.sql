@@ -14,5 +14,5 @@
 --
 
 insert into suseVersionConstraintType (id, label) values (0, 'latest');
-insert into suseVersionConstraintType (id, label) values (1, 'equal');
+insert into suseVersionConstraintType (id, label) values (1, 'any');
 commit;
