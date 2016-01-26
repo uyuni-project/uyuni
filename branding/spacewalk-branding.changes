@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Tue Jan 26 14:12:17 CET 2016 - mc@suse.de
+
+- version 2.5.2.3-1
+- Do not refresh the SCC data while the taskomatic job does the same
+  (bsc#962323)
+- branding: rename saltstack into salt
+- Subscription Matcher UI: fix alignment for text in table footers
+- add another translation for Errata
+- fix broken link in SSM page
+- Introduce a "States" tab for minions
+- Make second level sidebar menu readable (bsc#962571)
+- update link to pam documentation
+- add texts for about page
+- add Salt and Foreign Entitled Systems count to types page
+
+-------------------------------------------------------------------
 Sat Jan 16 11:36:42 CET 2016 - mc@suse.de
 
 - version 2.5.2.2-1
