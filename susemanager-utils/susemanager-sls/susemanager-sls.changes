@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Jan 26 14:07:41 CET 2016 - mc@suse.de
+
+- version 0.1.7-1
+- cleanup python code according to PR review
+- reworked sumautil network utils to be more pythonic
+- remove commented code
+- get network if modules, checkstyle cleanup
+- get minion primary ips
+
+-------------------------------------------------------------------
 Sat Jan 16 11:38:17 CET 2016 - mc@suse.de
 
 - version 0.1.6-1
