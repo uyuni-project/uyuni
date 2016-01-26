@@ -1,0 +1,3 @@
+ALTER TABLE suseSCCOrderItem
+ALTER COLUMN quantity DROP NOT NULL;
+
