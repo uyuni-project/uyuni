@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Jan 26 13:56:40 CET 2016 - mc@suse.de
+
+- version 2.5.7.2-1
+- add latest state support to ui and generator
+- Do not refresh the SCC data while the taskomatic job does the same
+  (bsc#962323)
+- update version number in UI footer to 3.0
+- Subscription Matching: add UI to display results of the matching
+- Bring the About link on the login page back
+- Adds a translation function per RFC #16
+
+-------------------------------------------------------------------
 Sat Jan 16 11:20:04 CET 2016 - mc@suse.de
 
 - version 2.5.7.1-1
