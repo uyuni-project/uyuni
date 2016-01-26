@@ -42,6 +42,7 @@ import com.suse.manager.webui.utils.gson.JSONPackageState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
 import com.suse.manager.webui.utils.salt.Grains;
+import com.suse.saltstack.netapi.calls.LocalAsyncResult;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -170,11 +171,11 @@ public class StatesAPI {
         JSONServerApplyStates json = GSON.fromJson(request.body(),
                 JSONServerApplyStates.class);
         Server server = ServerFactory.lookupById(json.getServerId());
-        Map<String, Map<String, Object>> results = SALT_SERVICE.applyState(
+        LocalAsyncResult<Map<String, Object>> results = SALT_SERVICE.applyState(
                 new Grains("machine_id", server.getDigitalServerId()), json.getStates());
 
         response.type("application/json");
-        return GSON.toJson(results);
+        return GSON.toJson(results.getJid());
     }
 
     /**

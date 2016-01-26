@@ -18,6 +18,7 @@ import com.suse.manager.webui.utils.salt.Schedule;
 import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.manager.webui.utils.salt.Network;
 import com.suse.manager.webui.utils.salt.SumaUtil;
+import com.suse.saltstack.netapi.calls.LocalAsyncResult;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.datatypes.target.Target;
 import com.suse.saltstack.netapi.event.EventStream;
@@ -110,7 +111,7 @@ public interface SaltService {
      *             states will be applied.
      * @return the result of applying the states
      */
-    Map<String, Map<String, Object>> applyState(Target<?> target, List<String> mods);
+    LocalAsyncResult<Map<String, Object>> applyState(Target<?> target, List<String> mods);
 
     /**
      * Return the stream of events happening in salt.

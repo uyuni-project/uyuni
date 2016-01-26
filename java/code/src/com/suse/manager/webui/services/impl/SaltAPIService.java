@@ -26,6 +26,7 @@ import com.suse.manager.webui.utils.salt.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.SumaUtil;
 import com.suse.manager.webui.utils.salt.Udevdb;
 import com.suse.saltstack.netapi.AuthModule;
+import com.suse.saltstack.netapi.calls.LocalAsyncResult;
 import com.suse.saltstack.netapi.calls.LocalCall;
 import com.suse.saltstack.netapi.calls.WheelResult;
 import com.suse.saltstack.netapi.calls.modules.Cmd;
@@ -186,10 +187,10 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, Map<String, Object>> applyState(Target<?> target,
+    public LocalAsyncResult<Map<String, Object>> applyState(Target<?> target,
                                                        List<String> mods) {
         try {
-            return SALT_CLIENT.callSync(State.apply(mods), target,
+            return SALT_CLIENT.callAsync(State.apply(mods), target,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
