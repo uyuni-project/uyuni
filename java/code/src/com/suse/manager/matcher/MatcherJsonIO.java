@@ -15,6 +15,7 @@
 
 package com.suse.manager.matcher;
 
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.concat;
@@ -22,6 +23,8 @@ import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.of;
 
 import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.matcher.MatcherRunData;
+import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
@@ -43,9 +46,6 @@ import com.suse.matcher.json.JsonSystem;
 
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -179,33 +179,25 @@ public class MatcherJsonIO {
     }
 
     /**
-     * Returns the matcher input data read from file
-     * @return the input data or empty in case the file with the input data was not found
+     * Returns the latest matcher input (that was used for the latest matcher run)
+     * @return the input data or empty in case the corresponding data is missing
      */
-    public Optional<JsonInput> getMatcherInput() {
-        try {
-            FileReader reader =
-                    new FileReader(new File(MatcherRunner.OUT_DIRECTORY, "input.json"));
-            return Optional.of(gson.fromJson(reader, JsonInput.class));
-        }
-        catch (FileNotFoundException e) {
-            return Optional.empty();
-        }
+    public Optional<JsonInput> getLastMatcherInput() {
+        MatcherRunData data = MatcherRunDataFactory.getSingle();
+        return ofNullable(gson.fromJson(
+                data == null ? null : data.getInput(),
+                JsonInput.class));
     }
 
     /**
      * Gets the latest matcher output data
      * @return the output or empty in case the matcher did not run yet
      */
-    public Optional<JsonOutput> getMatcherOutput() {
-        try {
-            FileReader reader =
-                    new FileReader(new File(MatcherRunner.OUT_DIRECTORY, "output.json"));
-            return Optional.of(gson.fromJson(reader, JsonOutput.class));
-        }
-        catch (FileNotFoundException e) {
-            return Optional.empty();
-        }
+    public Optional<JsonOutput> getLastMatcherOutput() {
+        MatcherRunData data = MatcherRunDataFactory.getSingle();
+        return ofNullable(gson.fromJson(
+                data == null ? null : data.getOutput(),
+                JsonOutput.class));
     }
 
     /**
