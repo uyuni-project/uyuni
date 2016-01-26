@@ -391,11 +391,27 @@ function subscriptionsToRows(subscriptions){
         "text-danger" :
         null;
 
+    var quantityColumn;
+    if (s.matchedQuantity == s.totalQuantity) {
+      quantityColumn = (
+        <TableCell content={
+          <StrongText
+            content={s.matchedQuantity + "/" + s.totalQuantity}
+          />}
+        />
+      );
+    }
+    else {
+      quantityColumn = (
+        <TableCell content={s.matchedQuantity + "/" + s.totalQuantity} />
+      );
+    }
+
     var columns = [
       <TableCell content={s.partNumber} />,
       <TableCell content={s.description} />,
       <TableCell content={humanReadablePolicy(s.policy)} />,
-      <TableCell content={s.matchedQuantity + "/" + s.totalQuantity} />,
+      quantityColumn,
       <TableCell content={moment(s.startDate).fromNow()} />,
       <TableCell content={moment(s.endDate).fromNow()} />,
     ];
@@ -542,6 +558,16 @@ var TableCell = React.createClass({
       <td>
         {this.props.content}
       </td>
+    );
+  }
+});
+
+var StrongText = React.createClass({
+  render: function() {
+    return (
+      <strong className={this.props.className}>
+        {this.props.content}
+      </strong>
     );
   }
 });
