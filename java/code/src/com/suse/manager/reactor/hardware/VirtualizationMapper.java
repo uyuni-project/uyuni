@@ -31,7 +31,6 @@ public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(VirtualizationMapper.class);
 
-    private SaltServiceInvoker saltInvoker;
     /**
      * The constructor.
      *
