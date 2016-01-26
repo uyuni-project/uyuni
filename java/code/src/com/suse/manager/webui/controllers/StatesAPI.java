@@ -226,7 +226,7 @@ public class StatesAPI {
 
         for (PackageState state : packageStates) {
             if (state.getPackageState() == PackageStates.INSTALLED) {
-                if (state.getVersionConstraint() == VersionConstraints.LATEST){
+                if (state.getVersionConstraint() == VersionConstraints.LATEST) {
                     pkgLatest.addPackage(state.getName().getName());
                 }
                 else {
