@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Jan 26 14:02:05 CET 2016 - mc@suse.de
+
+- version 2.5.2.1-1
+- spacecmd: repo_details show 'None' if repository doesn't have SSL
+  Certtificate
+- spacecmd: Added functions to add/edit SSL certificates for
+  repositories
+
+-------------------------------------------------------------------
 Tue Jan 05 15:54:16 CET 2016 - mc@suse.de
 
 - version 2.5.1.2-1
