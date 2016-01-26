@@ -1,4 +1,49 @@
 -------------------------------------------------------------------
+Tue Jan 26 14:21:31 CET 2016 - mc@suse.de
+
+- version 2.5.43.1-1
+- Fix the SCCOrderItem null quantity issue by dropping the 'not null'
+  constraint
+- Rename package state for version from EQUAL to ANY
+- add latest state support to ui and generator
+- Generate package sls files on registration
+- Do not refresh the SCC data while the taskomatic job does the same
+  (bsc#962323)
+- Make it compile against servlet API < 3.0
+- Render nav menu by either request or page context
+- java: rename saltstack to salt
+- Add the free flag to SUSEProduct, set it from the SCC data, pass it to the
+  matcher JSON
+- SubscriptionMatchProcessor: performance fix
+- Simplify downloading of the matcher CSVs
+- Include only subscriptions with a positive total quantity in the UI data
+- Subscription Matcher UI: show Taskomatic status properly
+- Subscription Matching: implement UI to show matching results
+- Fix timezone sorting after adding Chile (Pacific/Ester)
+- SystemHandler: throw exception when permanent/nonSatellite entitlements are
+  changed via API
+- handle salt schedule correctly and align with SUSE Manager actions
+- disable action chaining API for salt minions
+- Introduce a "States" tab for minions
+- fix typo in SQL statement (bsc#959987, bsc#960855)
+- implement checkin timestamp update on salt job return
+- use 2048MB as default for taskomatic max java memory
+- Send data with mod_xsendfile
+- change help url references to new manuals
+- improve getting hardware and network data from minions
+- Support host key algorithms other than ssh-rsa
+- Fix ssh push via proxy using sudo (bsc#961521)
+- fix page style when not authenticated (bsc#962573)
+- add Chile to the list of timezones (bsc#959055)
+- add Salt and Foreign Entitled Systems count to types page
+- Disable changing Base System Type in SUSE Manager
+- deploy certificate on minion registration
+- Added new API methods to add new repository with SSL certificates
+  or update existing one
+- catch and log any exceptions in the hardware mappers (bsc#960039)
+- handle IPv4 or IPv6 info missing from network.interfaces response
+
+-------------------------------------------------------------------
 Sat Jan 16 11:20:57 CET 2016 - mc@suse.de
 
 - version 2.5.34.1-1
