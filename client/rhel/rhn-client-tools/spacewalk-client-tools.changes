@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Jan 26 14:15:03 CET 2016 - mc@suse.de
+
+- version 2.5.10.1-1
+- clientCaps.py : IndexError: string index out of range
+- more python2/3 changes
+- prefer dnf to yum if both plugins are installed
+- WindowSkipException must inherit from BaseException
+- write() needs always string
+- fixed requirements for newt
+- compatible syntax for long int
+
+-------------------------------------------------------------------
 Sat Jan 16 11:33:54 CET 2016 - mc@suse.de
 
 - version 2.5.8.1-1
