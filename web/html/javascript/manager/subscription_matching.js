@@ -246,7 +246,6 @@ var UnmatchedSystems = React.createClass({
           <div className="spacewalk-list">
             <Table headers={[t("Name"), t("Socket/IFL count"), t("Products")]}
               rows={unmatchedSystemsToRows(this.props.unmatchedSystems)}
-              itemsPerPage={15}
               loadState={this.props.loadState}
               saveState={this.props.saveState} />
             <CsvLink name="unmatched_system_report.csv" />
@@ -282,7 +281,6 @@ var Messages = React.createClass({
             <Table
               headers={[t("Message"), t("Additional information")]}
               rows={messagesToRows(this.props.messages)}
-              itemsPerPage={15}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
             />
@@ -357,7 +355,6 @@ var Subscriptions = React.createClass({
           <div className="spacewalk-list">
             <Table headers={[t("Part number"), t("Description"), t("Policy"), t("Matched/Total"), t("Start date"), t("End date")]}
               rows={subscriptionsToRows(this.props.subscriptions)}
-              itemsPerPage={15}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
             />
@@ -435,7 +432,7 @@ var Table = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function(){
-    return { "currentPage": 1 };
+    return { "currentPage": 1, "itemsPerPage": 15 };
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -449,11 +446,19 @@ var Table = React.createClass({
     this.setState({"currentPage": page});
   },
 
+  changeItemsPerPage: function(itemsPerPage) {
+    this.setState({"itemsPerPage": itemsPerPage});
+    var lastPage = Math.ceil(this.props.rows.length / itemsPerPage);
+    if (this.state.currentPage > lastPage) {
+      this.setState({"currentPage": lastPage });
+    }
+  },
+
   render: function() {
-    var itemsPerPage = this.props.itemsPerPage;
-    var itemCount = this.props.rows.length;
+    var itemsPerPage = parseInt(this.state.itemsPerPage);
+    var itemCount = parseInt(this.props.rows.length);
     var lastPage = Math.ceil(itemCount / itemsPerPage);
-    var currentPage = this.state.currentPage;
+    var currentPage = parseInt(this.state.currentPage);
 
     var firstItemIndex = (currentPage - 1) * itemsPerPage;
 
@@ -479,7 +484,13 @@ var Table = React.createClass({
         <div className="panel-heading">
           <div className="spacewalk-list-head-addons">
             <div className="spacewalk-list-filter">{t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)}</div>
-            <div className="spacewalk-list-head-addons-extra">{itemsPerPage} {t("items per page")}</div>
+            <div className="spacewalk-list-head-addons-extra">
+              <Select className="display-number"
+                options={[5,10,15,25,50,100,250,500]}
+                currentValue={itemsPerPage}
+                onChange={this.changeItemsPerPage}
+              /> {t("items per page")}
+            </div>
           </div>
         </div>
         <div className="table-responsive">
@@ -514,6 +525,24 @@ var PaginationButton = React.createClass({
         disabled={this.props.disabled} onClick={this.onClick}>
         {this.props.text}
       </button>
+    );
+  }
+});
+
+var Select = React.createClass({
+  handleOnChange: function(e) {
+    this.props.onChange(e.target.value);
+  },
+
+  render: function() {
+    return (
+      <select className={this.props.className}
+        defaultValue={this.props.currentValue}
+        onChange={this.handleOnChange}>
+        {this.props.options.map(function(o){
+          return (<option value={o}>{o}</option>);
+        })}
+      </select>
     );
   }
 });
