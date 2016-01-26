@@ -570,6 +570,16 @@ var StrongText = React.createClass({
   }
 });
 
+var ToolTip = React.createClass({
+  render: function() {
+    return (
+      <span title={this.props.title}>
+        {this.props.content}
+      </span>
+    );
+  }
+});
+
 var CsvLink = React.createClass({
   render: function() {
     return (
