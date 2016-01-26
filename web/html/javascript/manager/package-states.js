@@ -6,7 +6,7 @@ const REMOVED = {value: 1};
 const PURGED = {value: 2};
 
 const LATEST = {value: 0};
-const EQUAL = {value: 1};
+const ANY = {value: 1};
 
 function selectValue2PackageState(value) {
     switch(value){
@@ -36,7 +36,7 @@ function normalizePackageVersionConstraint(vc) {
 function selectValue2VersionConstraints(value) {
     switch(value){
         case 0: return LATEST;
-        case 1: return EQUAL;
+        case 1: return ANY;
     }
 }
 
@@ -204,7 +204,7 @@ class PackageStates extends React.Component {
         versionConstraintSelect =
             <select className="form-control" value={versionConstraints2selectValue(currentState.versionConstraintId)} onChange={this.handleConstraintChange(row.original)}>
               <option value="0">{t("Latest")}</option>
-              <option value="1">{t("Equal")}</option>
+              <option value="1">{t("Any")}</option>
             </select>;
       }
       var undoButton = null;

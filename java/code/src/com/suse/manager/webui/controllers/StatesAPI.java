@@ -269,7 +269,7 @@ public class StatesAPI {
             packageState.setEvr(pkg.getEvr());
             packageState.setArch(pkg.getArch());
             packageState.setPackageState(PackageStates.INSTALLED);
-            packageState.setVersionConstraint(VersionConstraints.EQUAL);
+            packageState.setVersionConstraint(VersionConstraints.ANY);
             return packageState;
         });
         serverRev.setPackageStates(packageStateStream.collect(Collectors.toSet()));
