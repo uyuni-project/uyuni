@@ -397,6 +397,7 @@ function subscriptionsToRows(subscriptions){
         <TableCell content={
           <StrongText
             content={s.matchedQuantity + "/" + s.totalQuantity}
+            className="bg-danger"
           />}
         />
       );
