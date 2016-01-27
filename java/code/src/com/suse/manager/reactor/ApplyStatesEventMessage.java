@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * An event to signal that a set of states is dirty and needs
  * to be applied to a particular server
  */
-public class StateDirtyEvent implements EventMessage {
+public class ApplyStatesEventMessage implements EventMessage {
 
     public static final String CERTIFICATE = "certs";
     public static final String PACKAGES = "packages";
@@ -35,13 +35,13 @@ public class StateDirtyEvent implements EventMessage {
     private final List<String> stateNames;
 
     /**
-     * Constructor for creating a {@link StateDirtyEvent} for a given server.
+     * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
      *
      * @param serverIdIn the server id
      * @param userIdIn the user id
      * @param stateNamesIn state names that need to be applied to the server
      */
-    public StateDirtyEvent(long serverIdIn, Long userIdIn, String... stateNamesIn) {
+    public ApplyStatesEventMessage(long serverIdIn, Long userIdIn, String... stateNamesIn) {
         this.serverId = serverIdIn;
         this.userId = userIdIn;
         this.stateNames = Arrays.asList(stateNamesIn);

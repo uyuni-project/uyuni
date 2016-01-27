@@ -29,15 +29,15 @@ import java.util.stream.Collectors;
 /**
  * Applies states to a server
  */
-public class ApplyStatesAction implements MessageAction {
+public class ApplyStatesEventMessageAction implements MessageAction {
 
-    private static final Logger LOG = Logger.getLogger(ApplyStatesAction.class);
+    private static final Logger LOG = Logger.getLogger(ApplyStatesEventMessageAction.class);
     private final SaltService SALT_SERVICE;
 
     /**
      * Default constructor.
      */
-    public ApplyStatesAction() {
+    public ApplyStatesEventMessageAction() {
         SALT_SERVICE = SaltAPIService.INSTANCE;
     }
 
@@ -46,7 +46,7 @@ public class ApplyStatesAction implements MessageAction {
      *
      * @param saltService the salt service to use
      */
-    public ApplyStatesAction(SaltService saltService) {
+    public ApplyStatesEventMessageAction(SaltService saltService) {
         SALT_SERVICE = saltService;
     }
 
@@ -55,7 +55,7 @@ public class ApplyStatesAction implements MessageAction {
      */
     @Override
     public void execute(EventMessage event) {
-        StateDirtyEvent stateDirtyEvent = ((StateDirtyEvent) event);
+        ApplyStatesEventMessage stateDirtyEvent = ((ApplyStatesEventMessage) event);
         Server server = ServerFactory.lookupById(stateDirtyEvent.getServerId());
 
         // Update state only for salt systems
