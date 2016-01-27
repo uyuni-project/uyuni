@@ -12,52 +12,57 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.reactor;
+package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.domain.action.Action;
 
 /**
- * Event message for the {@link com.redhat.rhn.common.messaging.MessageQueue} to signal
- * that a new {@link com.redhat.rhn.domain.action.server.ServerAction} has been scheduled.
- *
- * This event would then be handled by {@link ActionScheduledEventMessageAction} to act on
- * it and execute the action using Salt.
+ * Event message for the {@link com.redhat.rhn.common.messaging.MessageQueue}
+ * to handle checkin events as we get them from the salt event bus.
  */
-public class ActionScheduledEventMessage implements EventMessage {
+public class CheckinEventMessage implements EventMessage {
 
-    private final Action action;
+    private Long serverId;
 
     /**
-     * Create a new event about a recently scheduled action.
+     * Constructor that takes the CheckinCustomEvent object from salt.
      *
-     * @param actionIn the action that has been scheduled
+     * @param serverIdIn the server id
      */
-    public ActionScheduledEventMessage(Action actionIn) {
-        action = actionIn;
+    public CheckinEventMessage(Long serverIdIn) {
+        serverId = serverIdIn;
     }
 
     /**
-     * Get the action.
+     * Return the server id.
      *
-     * @return the action
+     * @return server id
      */
-    public Action getAction() {
-        return action;
+    public Long getServerId() {
+        return serverId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getUserId() {
-        return action.getSchedulerUser().getId();
+        return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toText() {
         return toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
-        return "ActionScheduledEventMessage[action=" + action + "]";
+        return "CheckinEventMessage[Id: " + serverId + "]";
     }
 }

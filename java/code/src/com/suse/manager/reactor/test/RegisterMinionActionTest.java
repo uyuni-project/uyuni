@@ -30,8 +30,9 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
-import com.suse.manager.reactor.RegisterMinionEventMessageAction;
-import com.suse.manager.reactor.RegisterMinionEventMessage;
+
+import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
+import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.saltstack.netapi.calls.modules.Grains;
 import com.suse.saltstack.netapi.parser.JsonParser;

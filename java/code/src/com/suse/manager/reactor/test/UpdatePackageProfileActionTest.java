@@ -20,9 +20,10 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
-import com.suse.manager.reactor.RegisterMinionEventMessageAction;
-import com.suse.manager.reactor.UpdatePackageProfileEventMessage;
-import com.suse.manager.reactor.UpdatePackageProfileEventMessageAction;
+
+import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessage;
+import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.Pkg;
 import com.suse.saltstack.netapi.parser.JsonParser;
