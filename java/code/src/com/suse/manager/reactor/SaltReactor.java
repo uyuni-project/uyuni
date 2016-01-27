@@ -65,8 +65,8 @@ public class SaltReactor implements EventListener {
                 RegisterMinionEventMessage.class);
         MessageQueue.registerAction(new UpdatePackageProfileEventMessageAction(),
                 UpdatePackageProfileEventMessage.class);
-        MessageQueue.registerAction(new GenerateRepoFileAction(),
-                ChannelChangedEvent.class);
+        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
+                ChannelsChangedEventMessage.class);
         MessageQueue.registerAction(new ApplyStatesAction(SALT_SERVICE),
                 StateDirtyEvent.class);
         MessageQueue.registerAction(new GetHardwareInfoEventMessageAction(SALT_SERVICE),

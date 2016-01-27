@@ -29,16 +29,16 @@ import java.io.IOException;
 /**
  * Generate repo files for managed systems whenever their channel assignments have changed.
  */
-public class GenerateRepoFileAction implements MessageAction {
+public class ChannelsChangedEventMessageAction implements MessageAction {
 
-    private static final Logger LOG = Logger.getLogger(GenerateRepoFileAction.class);
+    private static final Logger LOG = Logger.getLogger(ChannelsChangedEventMessageAction.class);
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void execute(EventMessage event) {
-        long serverId = ((ChannelChangedEvent) event).getServerId();
+        long serverId = ((ChannelsChangedEventMessage) event).getServerId();
         Server server = ServerFactory.lookupById(serverId);
 
         // Generate repo files only for salt minions

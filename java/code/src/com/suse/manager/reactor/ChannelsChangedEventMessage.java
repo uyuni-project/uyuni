@@ -24,19 +24,19 @@ import org.hibernate.Transaction;
  * action will wait until the current transaction has been committed as we are implementing
  * {@link EventDatabaseMessage}).
  */
-public class ChannelChangedEvent implements EventDatabaseMessage {
+public class ChannelsChangedEventMessage implements EventDatabaseMessage {
 
     private final long serverId;
     private final long userId;
     private final Transaction transaction;
 
     /**
-     * Constructor for creating a {@link ChannelChangedEvent} for a given server.
+     * Constructor for creating a {@link ChannelsChangedEventMessage} for a given server.
      *
      * @param serverIdIn the server id
      * @param userIdIn the user id
      */
-    public ChannelChangedEvent(long serverIdIn, long userIdIn) {
+    public ChannelsChangedEventMessage(long serverIdIn, long userIdIn) {
         this.serverId = serverIdIn;
         this.userId = userIdIn;
         this.transaction = HibernateFactory.getSession().getTransaction();

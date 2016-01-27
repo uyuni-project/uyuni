@@ -24,7 +24,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
-import com.suse.manager.reactor.ChannelChangedEvent;
+import com.suse.manager.reactor.ChannelsChangedEventMessage;
 
 import org.apache.commons.collections.ListUtils;
 
@@ -124,7 +124,7 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
             }
         }
 
-        MessageQueue.publish(new ChannelChangedEvent(server.getId(), user.getId()));
+        MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId()));
         return super.store();
     }
 
