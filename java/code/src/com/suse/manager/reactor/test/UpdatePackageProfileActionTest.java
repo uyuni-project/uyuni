@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
-import com.suse.manager.reactor.RegisterMinionAction;
+import com.suse.manager.reactor.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.UpdatePackageProfileEventMessage;
 import com.suse.manager.reactor.UpdatePackageProfileEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Tests for {@link RegisterMinionAction}.
+ * Tests for {@link RegisterMinionEventMessageAction}.
  */
 public class UpdatePackageProfileActionTest extends JMockBaseTestCaseWithUser {
 
