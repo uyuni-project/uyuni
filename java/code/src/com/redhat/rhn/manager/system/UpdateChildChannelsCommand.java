@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
-import com.suse.manager.reactor.ChannelChangedEvent;
+import com.suse.manager.reactor.ChannelsChangedEventMessage;
 
 import org.apache.log4j.Logger;
 
@@ -111,7 +111,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
         unsubscribeFromOldChannels(user, remove, server);
 
         if (!skipChannelChangedEvent) {
-            MessageQueue.publish(new ChannelChangedEvent(server.getId(), user.getId()));
+            MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId()));
         }
         super.store();
 
@@ -202,7 +202,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
     }
 
     /**
-     * Set true here to skip sending the {@link ChannelChangedEvent} for this command. This
+     * Set true here to skip sending the {@link ChannelsChangedEventMessage} for this command. This
      * makes sense in case the child channels were removed as part of a base channel change.
      *
      * @param skip the value to set: true if sending the event should be skipped
