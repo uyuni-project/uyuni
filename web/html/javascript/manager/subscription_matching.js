@@ -246,7 +246,8 @@ var UnmatchedSystems = React.createClass({
             <Table headers={[t("Name"), t("Socket/IFL count"), t("Products")]}
               rows={unmatchedSystemsToRows(this.props.unmatchedSystems)}
               loadState={this.props.loadState}
-              saveState={this.props.saveState} />
+              saveState={this.props.saveState}
+            />
             <CsvLink name="unmatched_system_report.csv" />
           </div>
         </div>
@@ -356,6 +357,8 @@ var Subscriptions = React.createClass({
               rows={subscriptionsToRows(this.props.subscriptions)}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
+              dataFilter={(tableRow, searchValue) => tableRow.props["raw_data"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
+              searchPlaceholder={t("Filter by Description:")}
             />
             <CsvLink name="subscription_report.csv" />
           </div>
@@ -402,7 +405,7 @@ function subscriptionsToRows(subscriptions) {
       />,
     ];
 
-    return <TableRow className={className} columns={columns} />
+    return <TableRow className={className} columns={columns} raw_data={s} />
   });
 }
 
@@ -431,7 +434,7 @@ var Table = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
-    return { "currentPage": 1, "itemsPerPage": 15 };
+    return { "currentPage": 1, "itemsPerPage": 15, "searchField": ""};
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -441,27 +444,51 @@ var Table = React.createClass({
     }
   },
 
+  getRows: function(unfiltered_rows, searchValue) {
+    var rows = this.props.dataFilter && searchValue.length > 0 ?
+      unfiltered_rows.filter((row) => this.props.dataFilter(row, searchValue)) :
+      unfiltered_rows;
+    return rows;
+  },
+
+  lastPage: function(rows, itemsPerPage) {
+    var lastPage = Math.ceil(rows.length / itemsPerPage);
+    if (lastPage == 0) {
+      return 1;
+    }
+    return lastPage;
+  },
+
   goToPage:function(page) {
     this.setState({"currentPage": page});
   },
 
   changeItemsPerPage: function(itemsPerPage) {
     this.setState({"itemsPerPage": itemsPerPage});
-    var lastPage = Math.ceil(this.props.rows.length / itemsPerPage);
+    var lastPage = this.lastPage(this.getRows(this.props.rows, this.state.searchField), itemsPerPage);
+    if (this.state.currentPage > lastPage) {
+      this.setState({"currentPage": lastPage });
+    }
+  },
+
+  changeSearchField: function(searchValue) {
+    this.setState({"searchField": searchValue});
+    var lastPage =  this.lastPage(this.getRows(this.props.rows, searchValue), this.state.itemsPerPage);
     if (this.state.currentPage > lastPage) {
       this.setState({"currentPage": lastPage });
     }
   },
 
   render: function() {
+    var rows = this.getRows(this.props.rows, this.state.searchField);
     var itemsPerPage = parseInt(this.state.itemsPerPage);
-    var itemCount = parseInt(this.props.rows.length);
-    var lastPage = Math.ceil(itemCount / itemsPerPage);
+    var itemCount = parseInt(rows.length);
+    var lastPage = this.lastPage(rows, itemsPerPage);
     var currentPage = parseInt(this.state.currentPage);
 
     var firstItemIndex = (currentPage - 1) * itemsPerPage;
 
-    var fromItem = firstItemIndex +1;
+    var fromItem = itemCount > 0 ? firstItemIndex +1 : 0;
     var toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
 
     var pagination;
@@ -478,12 +505,25 @@ var Table = React.createClass({
       );
     }
 
+    var searchField;
+    if (this.props.dataFilter) {
+      searchField = (
+        <SearchField
+          onChange={this.changeSearchField}
+          defaultValue={this.state.searchField}
+          placeholder={this.props.searchPlaceholder}
+        />
+      );
+    }
+
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
           <div className="spacewalk-list-head-addons">
-            <div className="spacewalk-list-filter">{t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)}</div>
-            <div className="spacewalk-list-head-addons-extra">
+            <div className="spacewalk-list-filter table-search-wrapper">
+              {searchField} {t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)}
+            </div>
+            <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
               <Select className="display-number"
                 options={[5,10,15,25,50,100,250,500]}
                 currentValue={itemsPerPage}
@@ -496,7 +536,7 @@ var Table = React.createClass({
           <table className="table table-striped">
             <TableHeader headers={this.props.headers} />
             <tbody className="table-content">
-              {this.props.rows
+              {rows
                 .filter((element, i) => i >= firstItemIndex && i < firstItemIndex + itemsPerPage)
               }
               </tbody>
@@ -590,6 +630,22 @@ var QuantityCell = React.createClass({
       matched == total ?
         <TableCell content={<StrongText className="bg-danger" content={content} />} /> :
         <TableCell content={content} />
+    );
+  }
+});
+
+var SearchField = React.createClass({
+  handleChange: function(e) {
+    this.props.onChange(e.target.value);
+  },
+
+  render: function() {
+    return (
+      <input className="form-control table-input-search"
+        value={this.props.defaultValue}
+        placeholder={this.props.placeholder}
+        type="text"
+        onChange={this.handleChange} />
     );
   }
 });
