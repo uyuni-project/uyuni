@@ -44,10 +44,10 @@ import java.util.Set;
 /**
  * Event handler to create system records for salt minions.
  */
-public class RegisterMinionAction extends AbstractDatabaseAction {
+public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(RegisterMinionAction.class);
+    private static final Logger LOG = Logger.getLogger(RegisterMinionEventMessageAction.class);
 
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
@@ -60,7 +60,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
     /**
      * Default constructor.
      */
-    public RegisterMinionAction() {
+    public RegisterMinionEventMessageAction() {
         this(SaltAPIService.INSTANCE);
     }
 
@@ -69,7 +69,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
      *
      * @param saltService the salt service to use
      */
-    public RegisterMinionAction(SaltService saltService) {
+    public RegisterMinionEventMessageAction(SaltService saltService) {
         SALT_SERVICE = saltService;
         productIdMap.put("SLES12x86_64", 1117L);
         productIdMap.put("SLES12.1x86_64", 1322L);
@@ -84,7 +84,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
      * {@inheritDoc}
      */
     public void doExecute(EventMessage msg) {
-        RegisterMinionEvent event = (RegisterMinionEvent) msg;
+        RegisterMinionEventMessage event = (RegisterMinionEventMessage) msg;
         String minionId = event.getMinionId();
 
         // Match minions via their machine id
