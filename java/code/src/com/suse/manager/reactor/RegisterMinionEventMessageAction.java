@@ -184,7 +184,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             StatesAPI.generateServerPackageState(server);
             // Trigger certification deployment
             MessageQueue.publish(
-                    new StateDirtyEvent(server.getId(), null, StateDirtyEvent.CERTIFICATE));
+                    new ApplyStatesEventMessage(server.getId(), null, ApplyStatesEventMessage.CERTIFICATE));
             // Trigger an update of the package profile
             MessageQueue.publish(new UpdatePackageProfileEventMessage(server.getId()));
         }

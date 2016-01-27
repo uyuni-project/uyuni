@@ -46,8 +46,8 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
             try {
                 RepoFileUtils.generateRepositoryFile(server);
                 MessageQueue.publish(
-                        new StateDirtyEvent(serverId, event.getUserId(),
-                                StateDirtyEvent.CHANNELS));
+                        new ApplyStatesEventMessage(serverId, event.getUserId(),
+                                ApplyStatesEventMessage.CHANNELS));
             }
             catch (IOException | JoseException e) {
                 LOG.error(String.format(
