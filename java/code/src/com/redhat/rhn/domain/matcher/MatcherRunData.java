@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.domain.matcher;
 
+import static com.redhat.rhn.common.hibernate.HibernateFactory.getByteArrayContents;
+import static com.redhat.rhn.common.hibernate.HibernateFactory.stringToByteArray;
+
 /**
  * Data corresponding to one Subscription Matcher run (contents of I/O files).
  */
@@ -23,15 +26,15 @@ public class MatcherRunData {
     /** db id */
     private Long id;
     /** input.json contents */
-    private String input;
+    private byte[] inputBinary;
     /** output.json contents */
-    private String output;
+    private byte[] outputBinary;
     /** subscription_report.csv contents */
-    private String subscriptionReport;
+    private byte[] subscriptionReportBinary;
     /** message_report.csv contents */
-    private String messageReport;
+    private byte[] messageReportBinary;
     /** unmatched_system_report.csv contents */
-    private String unmatchedSystemReport;
+    private byte[] unmatchedSystemReportBinary;
 
     /**
      * Gets the contents of the MatcherRunData that corresponds to the given
@@ -43,11 +46,11 @@ public class MatcherRunData {
     public String getCSVContentsByFilename(String filename) {
         switch (filename) {
             case "message_report.csv":
-                return messageReport;
+                return getMessageReport();
             case "subscription_report.csv":
-                return subscriptionReport;
+                return getSubscriptionReport();
             case "unmatched_system_report.csv":
-                return unmatchedSystemReport;
+                return getUnmatchedSystemReport();
             default:
                 throw new IllegalArgumentException("Illegal csv filename " + filename);
         }
@@ -55,7 +58,6 @@ public class MatcherRunData {
 
     /**
      * Gets the id.
-     *
      * @return id
      */
     public Long getId() {
@@ -64,7 +66,6 @@ public class MatcherRunData {
 
     /**
      * Sets the id.
-     *
      * @param idIn - the id
      */
     public void setId(Long idIn) {
@@ -72,92 +73,162 @@ public class MatcherRunData {
     }
 
     /**
-     * Gets the input.
-     *
+     * Gets the input
      * @return input
      */
     public String getInput() {
-        return input;
+        return getByteArrayContents(getInputBinary());
     }
 
     /**
-     * Sets the input.
-     *
-     * @param inputIn - the input
+     * Sets the input
+     * @param inputIn the input
      */
     public void setInput(String inputIn) {
-        input = inputIn;
+        setInputBinary(stringToByteArray(inputIn));
     }
 
     /**
-     * Gets the output.
-     *
-     * @return output
+     * Gets the output
+     * @return the output
      */
     public String getOutput() {
-        return output;
+        return getByteArrayContents(getOutputBinary());
     }
 
     /**
-     * Sets the output.
-     *
-     * @param outputIn - the output
+     * Sets the output
+     * @param outputIn the output
      */
     public void setOutput(String outputIn) {
-        output = outputIn;
+        setOutputBinary(stringToByteArray(outputIn));
     }
 
     /**
-     * Gets the subscriptionReport.
-     *
-     * @return subscriptionReport
+     * Gets the subscriptionReport
+     * @return the subscriptionReport
      */
     public String getSubscriptionReport() {
-        return subscriptionReport;
+        return getByteArrayContents(getSubscriptionReportBinary());
     }
 
     /**
-     * Sets the subscriptionReport.
-     *
-     * @param subscriptionReportIn - the subscriptionReport
+     * Sets the subscriptionReport
+     * @param subscriptionReportIn the subscriptionReport
      */
     public void setSubscriptionReport(String subscriptionReportIn) {
-        subscriptionReport = subscriptionReportIn;
+        setSubscriptionReportBinary(stringToByteArray(subscriptionReportIn));
     }
 
     /**
-     * Gets the messageReport.
-     *
-     * @return messageReport
+     * Gets the messageReport
+     * @return the messageReport
      */
     public String getMessageReport() {
-        return messageReport;
+        return getByteArrayContents(getMessageReportBinary());
     }
 
     /**
-     * Sets the messageReport.
-     *
-     * @param messageReportIn - the messageReport
+     * Sets the messageReport
+     * @param messageReportIn the matcherReport
      */
     public void setMessageReport(String messageReportIn) {
-        messageReport = messageReportIn;
+        setMessageReportBinary(stringToByteArray(messageReportIn));
     }
 
     /**
-     * Gets the unmatchedSystemReport.
-     *
-     * @return unmatchedSystemReport
+     * Gets the unmatchedSystemReport
+     * @return the unmatchedSystemReport
      */
-    public String getUnmatchedSystemReport(){
-        return unmatchedSystemReport;
+    public String getUnmatchedSystemReport() {
+        return getByteArrayContents(getUnmatchedSystemReportBinary());
     }
 
     /**
-     * Sets the unmatchedSystemReport.
-     *
-     * @param unmatchedSystemReportIn - the unmatchedSystemReport
+     * Sets the unmatchedSystemReport
+     * @param unmatchedSystemReportIn the unmatchedSystemReport
      */
-   public void setUnmatchedSystemReport(String unmatchedSystemReportIn) {
-        unmatchedSystemReport = unmatchedSystemReportIn;
+    public void setUnmatchedSystemReport(String unmatchedSystemReportIn) {
+        setUnmatchedSystemReportBinary(stringToByteArray(unmatchedSystemReportIn));
+    }
+
+    /**
+     * Gets the inputBinary.
+     * @return inputBinary
+     */
+    protected byte[] getInputBinary() {
+        return inputBinary;
+    }
+
+    /**
+     * Sets the inputBinary.
+     * @param inputIn - the inputBinary
+     */
+    protected void setInputBinary(byte[] inputIn) {
+        inputBinary = inputIn;
+    }
+
+    /**
+     * Gets the outputBinary.
+     * @return outputBinary
+     */
+    protected byte[] getOutputBinary() {
+        return outputBinary;
+    }
+
+    /**
+     * Sets the outputBinary.
+     * @param outputIn - the outputBinary
+     */
+    protected void setOutputBinary(byte[] outputIn) {
+        outputBinary = outputIn;
+    }
+
+    /**
+     * Gets the subscriptionReportBinary.
+     * @return subscriptionReportBinary
+     */
+    protected byte[] getSubscriptionReportBinary() {
+        return subscriptionReportBinary;
+    }
+
+    /**
+     * Sets the subscriptionReportBinary.
+     * @param subscriptionReportIn - the subscriptionReportBinary
+     */
+    protected void setSubscriptionReportBinary(byte[] subscriptionReportIn) {
+        subscriptionReportBinary = subscriptionReportIn;
+    }
+
+    /**
+     * Gets the messageReportBinary.
+     * @return messageReportBinary
+     */
+    protected byte[] getMessageReportBinary() {
+        return messageReportBinary;
+    }
+
+    /**
+     * Sets the messageReportBinary.
+     * @param messageReportIn - the messageReportBinary
+     */
+    protected void setMessageReportBinary(byte[] messageReportIn) {
+        messageReportBinary = messageReportIn;
+    }
+
+    /**
+     * Gets the unmatchedSystemReportBinary.
+     * @return unmatchedSystemReportBinary
+     */
+    protected byte[] getUnmatchedSystemReportBinary() {
+        return unmatchedSystemReportBinary;
+    }
+
+    /**
+     * Sets the unmatchedSystemReportBinary.
+     * @param unmatchedSystemReportIn - the unmatchedSystemReportBinary
+     */
+    protected void setUnmatchedSystemReportBinary(byte[] unmatchedSystemReportIn) {
+        unmatchedSystemReportBinary = unmatchedSystemReportIn;
     }
 }

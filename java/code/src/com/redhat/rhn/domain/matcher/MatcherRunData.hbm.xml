@@ -11,11 +11,11 @@
             </generator>
         </id>
 
-        <property name="input" type="string"/>
-        <property name="output" type="string"/>
-        <property name="subscriptionReport" type="string"/>
-        <property name="messageReport" type="string"/>
-        <property name="unmatchedSystemReport" type="string"/>
+        <property name="inputBinary" type="binary"/>
+        <property name="outputBinary" type="binary"/>
+        <property name="subscriptionReportBinary" type="binary"/>
+        <property name="messageReportBinary" type="binary"/>
+        <property name="unmatchedSystemReportBinary" type="binary"/>
     </class>
 
     <query name="MatcherRunData.deleteAll">

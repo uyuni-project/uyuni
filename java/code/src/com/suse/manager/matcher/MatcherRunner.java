@@ -99,7 +99,8 @@ public class MatcherRunner {
         try {
             return FileUtils.readFileToString(new File(MatcherRunner.OUT_DIRECTORY,
                     filename));
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new IllegalStateException("Matcher ran successfully, but it's not" +
                     " possible to read its input/output file: " + filename);
         }
