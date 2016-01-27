@@ -257,7 +257,7 @@ var UnmatchedSystems = React.createClass({
   }
 });
 
-function unmatchedSystemsToRows(systems){
+function unmatchedSystemsToRows(systems) {
   return systems.map((s) => {
     var columns = [
       <TableCell content={s.name} />,
@@ -305,8 +305,8 @@ var Messages = React.createClass({
   }
 });
 
-function messagesToRows(raw_messages){
-  var result= raw_messages.map(function(raw_message){
+function messagesToRows(raw_messages) {
+  var result= raw_messages.map(function(raw_message) {
     var data = raw_message["data"];
     var message;
     var additionalInformation;
@@ -379,7 +379,7 @@ var Subscriptions = React.createClass({
   }
 });
 
-function subscriptionsToRows(subscriptions){
+function subscriptionsToRows(subscriptions) {
   return subscriptions.map((s) => {
     var now = moment();
     var className = moment(s.endDate).isBefore(now) ?
@@ -407,7 +407,7 @@ function subscriptionsToRows(subscriptions){
   });
 }
 
-function humanReadablePolicy(raw_policy){
+function humanReadablePolicy(raw_policy) {
   var message;
   switch(raw_policy) {
     case "physical_only" :
@@ -431,7 +431,7 @@ function humanReadablePolicy(raw_policy){
 var Table = React.createClass({
   mixins: [StatePersistedMixin],
 
-  getInitialState: function(){
+  getInitialState: function() {
     return { "currentPage": 1, "itemsPerPage": 15 };
   },
 
@@ -442,7 +442,7 @@ var Table = React.createClass({
     }
   },
 
-  goToPage:function(page){
+  goToPage:function(page) {
     this.setState({"currentPage": page});
   },
 
@@ -515,11 +515,11 @@ var Table = React.createClass({
 });
 
 var PaginationButton = React.createClass({
-  onClick: function(){
+  onClick: function() {
     this.props.onClick(this.props.toPage);
   },
 
-  render: function(){
+  render: function() {
     return (
       <button type="button" className="btn btn-default"
         disabled={this.props.disabled} onClick={this.onClick}>
@@ -539,7 +539,7 @@ var Select = React.createClass({
       <select className={this.props.className}
         defaultValue={this.props.currentValue}
         onChange={this.handleOnChange}>
-        {this.props.options.map(function(o){
+        {this.props.options.map(function(o) {
           return (<option value={o}>{o}</option>);
         })}
       </select>
@@ -552,7 +552,7 @@ var TableHeader = React.createClass({
     return (
       <thead>
         <tr>
-          {this.props.headers.map(function(header){
+          {this.props.headers.map(function(header) {
             return (<th>{header}</th>);
           })}
         </tr>
