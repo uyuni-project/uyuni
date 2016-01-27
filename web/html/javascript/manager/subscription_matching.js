@@ -224,7 +224,6 @@ var StatePersistedMixin = {
     if (this.props.loadState) {
       if (this.props.loadState()) {
         this.state = this.props.loadState();
-        console.log(this.state);
       }
     }
   },
