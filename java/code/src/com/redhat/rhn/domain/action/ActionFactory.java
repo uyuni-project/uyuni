@@ -63,8 +63,7 @@ import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
-import com.suse.manager.reactor.ActionScheduledEventMessage;
-
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.salt.Schedule;
 import com.suse.saltstack.netapi.datatypes.target.MinionList;

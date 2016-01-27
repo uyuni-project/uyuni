@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
-import com.suse.manager.reactor.ChannelsChangedEventMessage;
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 
 import org.apache.log4j.Logger;
 
