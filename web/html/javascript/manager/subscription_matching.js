@@ -391,28 +391,11 @@ function subscriptionsToRows(subscriptions){
         "text-danger" :
         null;
 
-    var quantityColumn;
-    if (s.matchedQuantity == s.totalQuantity) {
-      quantityColumn = (
-        <TableCell content={
-          <StrongText
-            content={s.matchedQuantity + "/" + s.totalQuantity}
-            className="bg-danger"
-          />}
-        />
-      );
-    }
-    else {
-      quantityColumn = (
-        <TableCell content={s.matchedQuantity + "/" + s.totalQuantity} />
-      );
-    }
-
     var columns = [
       <TableCell content={s.partNumber} />,
       <TableCell content={s.description} />,
       <TableCell content={humanReadablePolicy(s.policy)} />,
-      quantityColumn,
+      <QuantityCell matched={s.matchedQuantity} total={s.totalQuantity} />,
       <TableCell content={moment(s.startDate).fromNow()} />,
       <TableCell content={moment(s.endDate).fromNow()} />,
     ];
@@ -559,6 +542,20 @@ var TableCell = React.createClass({
       <td>
         {this.props.content}
       </td>
+    );
+  }
+});
+
+var QuantityCell = React.createClass({
+  render: function() {
+    var matched = this.props.matched;
+    var total = this.props.total;
+    var content = matched + "/" + total;
+
+    return (
+      matched == total ?
+        <TableCell content={<StrongText className="bg-danger" content={content} />} /> :
+        <TableCell content={content} />
     );
   }
 });
