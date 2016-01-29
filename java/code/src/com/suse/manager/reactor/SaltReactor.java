@@ -38,13 +38,13 @@ import com.suse.manager.webui.events.ManagedFileChangedEvent;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.sse.SSEServlet;
-import com.suse.manager.webui.utils.salt.JobReturnEvent;
 import com.suse.saltstack.netapi.datatypes.Event;
+
 import com.suse.saltstack.netapi.event.BeaconEvent;
 import com.suse.saltstack.netapi.event.EventListener;
 import com.suse.saltstack.netapi.event.EventStream;
+import com.suse.saltstack.netapi.event.JobReturnEvent;
 import com.suse.saltstack.netapi.event.MinionStartEvent;
-
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
