@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.utils.salt.SaltUtil;
 import com.suse.manager.webui.utils.salt.Schedule;
 import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.manager.webui.utils.salt.State;
@@ -34,6 +33,7 @@ import com.suse.saltstack.netapi.calls.modules.Grains;
 import com.suse.saltstack.netapi.calls.modules.Match;
 import com.suse.saltstack.netapi.calls.modules.Network;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
+import com.suse.saltstack.netapi.calls.modules.SaltUtil;
 import com.suse.saltstack.netapi.calls.modules.Status;
 import com.suse.saltstack.netapi.calls.runner.Manage;
 import com.suse.saltstack.netapi.calls.wheel.Key;
@@ -52,6 +52,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -337,7 +338,7 @@ public enum SaltAPIService implements SaltService {
      */
     public void syncGrains(String target) {
         try {
-            SaltUtil.syncGrains().callSync(SALT_CLIENT,
+            SaltUtil.syncGrains(Optional.empty(), Optional.empty()).callSync(SALT_CLIENT,
                     new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
         }
         catch (SaltStackException e) {
@@ -350,7 +351,7 @@ public enum SaltAPIService implements SaltService {
      */
     public void syncModules(String target) {
         try {
-            SaltUtil.syncModules().callSync(SALT_CLIENT,
+            SaltUtil.syncModules(Optional.empty(), Optional.empty()).callSync(SALT_CLIENT,
                     new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
         }
         catch (SaltStackException e) {
