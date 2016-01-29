@@ -181,7 +181,7 @@ var MatcherRunDescription = React.createClass({
       return <div>{t("Matching data is currently being recomputed, it was started {0}.", moment(this.props.latestStart).fromNow())}</div>;
     }
 
-    return <div>{t("Latest successful match data was computed on {0}, you can trigger a new run by clicking the button below.", moment(this.props.latestEnd).fromNow())}</div>;
+    return <div>{t("Latest successful match data was computed {0}, you can trigger a new run by clicking the button below.", moment(this.props.latestEnd).fromNow())}</div>;
   }
 });
 
