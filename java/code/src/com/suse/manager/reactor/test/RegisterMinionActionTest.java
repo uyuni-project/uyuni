@@ -30,14 +30,15 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
-import com.suse.manager.reactor.RegisterMinionAction;
-import com.suse.manager.reactor.RegisterMinionEvent;
+
+import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
+import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.saltstack.netapi.calls.modules.Grains;
 import com.suse.saltstack.netapi.parser.JsonParser;
 
 /**
- * Tests for {@link RegisterMinionAction}.
+ * Tests for {@link RegisterMinionEventMessageAction}.
  */
 public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
 
@@ -74,8 +75,8 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
         SaltService saltService = (SaltService) saltServiceMock.proxy();
 
 
-        RegisterMinionAction action = new RegisterMinionAction(saltService);
-        action.doExecute(new RegisterMinionEvent(MINION_ID));
+        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltService);
+        action.doExecute(new RegisterMinionEventMessage(MINION_ID));
 
         // Verify the resulting system entry
         String machineId = saltService.getMachineId(MINION_ID);

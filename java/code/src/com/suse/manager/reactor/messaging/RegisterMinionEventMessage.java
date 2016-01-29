@@ -12,14 +12,14 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.reactor;
+package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 
 /**
  * Event for triggering creation of system records for salt minions.
  */
-public class RegisterMinionEvent implements EventMessage {
+public class RegisterMinionEventMessage implements EventMessage {
 
     private String minionId;
 
@@ -28,7 +28,7 @@ public class RegisterMinionEvent implements EventMessage {
      *
      * @param minionIdIn minion to register
      */
-    public RegisterMinionEvent(String minionIdIn) {
+    public RegisterMinionEventMessage(String minionIdIn) {
         if (minionIdIn == null) {
             throw new IllegalArgumentException("minionId cannot be null");
         }
