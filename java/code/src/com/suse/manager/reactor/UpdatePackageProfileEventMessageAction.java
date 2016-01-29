@@ -62,7 +62,7 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
     /**
      * The package "name" comes as a key of the set of these attributes, hence is implicit.
      */
-    private static final List<String> PKGATTR = Collections.unmodifiableList(Arrays.asList(
+    public static final List<String> PKGATTR = Collections.unmodifiableList(Arrays.asList(
             "arch", "version", "release", "install_date", "epoch"
     ));
 
