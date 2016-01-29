@@ -14,12 +14,12 @@
  */
 package com.suse.manager.webui.services;
 
-import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.saltstack.netapi.calls.LocalAsyncResult;
 import com.suse.saltstack.netapi.calls.modules.Network;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.modules.Schedule;
+import com.suse.saltstack.netapi.calls.modules.Smbios;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.datatypes.target.Target;
 import com.suse.saltstack.netapi.event.EventStream;

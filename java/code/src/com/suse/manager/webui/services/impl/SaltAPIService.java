@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.utils.salt.Smbios;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
@@ -34,6 +33,8 @@ import com.suse.saltstack.netapi.calls.modules.Network;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.modules.SaltUtil;
 import com.suse.saltstack.netapi.calls.modules.Schedule;
+import com.suse.saltstack.netapi.calls.modules.Smbios;
+import com.suse.saltstack.netapi.calls.modules.State;
 import com.suse.saltstack.netapi.calls.modules.Status;
 import com.suse.saltstack.netapi.calls.runner.Manage;
 import com.suse.saltstack.netapi.calls.wheel.Key;
