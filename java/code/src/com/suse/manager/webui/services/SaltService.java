@@ -16,9 +16,9 @@ package com.suse.manager.webui.services;
 
 import com.suse.manager.webui.utils.salt.Schedule;
 import com.suse.manager.webui.utils.salt.Smbios;
-import com.suse.manager.webui.utils.salt.Network;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.saltstack.netapi.calls.LocalAsyncResult;
+import com.suse.saltstack.netapi.calls.modules.Network;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.datatypes.target.Target;

@@ -32,7 +32,7 @@ import com.suse.saltstack.netapi.calls.WheelResult;
 import com.suse.saltstack.netapi.calls.modules.Cmd;
 import com.suse.saltstack.netapi.calls.modules.Grains;
 import com.suse.saltstack.netapi.calls.modules.Match;
-import com.suse.manager.webui.utils.salt.Network;
+import com.suse.saltstack.netapi.calls.modules.Network;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.modules.Status;
 import com.suse.saltstack.netapi.calls.runner.Manage;
@@ -441,9 +441,10 @@ public enum SaltAPIService implements SaltService {
      */
     public Map<String, Network.Interface> getNetworkInterfacesInfo(String minionId) {
         try {
-            Map<String, Map<String, Network.Interface>> interfaces = Network.interfaces().callSync(
-                    SALT_CLIENT,
-                    new MinionList(minionId), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            Map<String, Map<String, Network.Interface>> interfaces = Network.interfaces()
+                    .callSync(SALT_CLIENT,
+                        new MinionList(minionId),
+                        SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return interfaces.get(minionId);
         }
         catch (SaltStackException e) {
