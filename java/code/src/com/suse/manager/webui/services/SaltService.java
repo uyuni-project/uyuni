@@ -30,6 +30,7 @@ import com.suse.salt.netapi.exception.SaltException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -260,5 +261,13 @@ public interface SaltService {
      * @return a set of minion ids
      */
     Set<String> getAllowedMinions(User user, String target);
+
+    void storeOrgState(long orgId, String name, String content);
+
+    void deleteOrgState(long orgId, String name);
+
+    List<String> getOrgStates(long orgId);
+
+    Optional<String> getOrgStateContent(long orgId, String name);
 
 }
