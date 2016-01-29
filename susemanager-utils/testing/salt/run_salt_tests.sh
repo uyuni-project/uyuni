@@ -1,3 +1,5 @@
+#! /bin/bash
+
 #########################################
 # docker
 # docker run -t -i --rm -v "/path/to/git:/manager" suma-docker-registry.suse.de/suma-head-salt /bin/bash
@@ -6,6 +8,8 @@
 # zypper ar http://download.opensuse.org/repositories/systemsmanagement:/saltstack:/testing:/testpackages/SLE_12/ testpackages
 #--------------------------------------
 # update packages
+
+set -ex
 
 zypper ref
 
