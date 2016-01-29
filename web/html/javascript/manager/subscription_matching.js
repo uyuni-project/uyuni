@@ -481,10 +481,10 @@ var Table = React.createClass({
 
   render: function() {
     var rows = this.getRows(this.props.rows, this.state.searchField);
-    var itemsPerPage = parseInt(this.state.itemsPerPage);
-    var itemCount = parseInt(rows.length);
+    var itemsPerPage = this.state.itemsPerPage;
+    var itemCount = rows.length;
     var lastPage = this.lastPage(rows, itemsPerPage);
-    var currentPage = parseInt(this.state.currentPage);
+    var currentPage = this.state.currentPage;
 
     var firstItemIndex = (currentPage - 1) * itemsPerPage;
 
@@ -570,7 +570,7 @@ var PaginationButton = React.createClass({
 
 var Select = React.createClass({
   handleOnChange: function(e) {
-    this.props.onChange(e.target.value);
+    this.props.onChange(parseInt(e.target.value));
   },
 
   render: function() {
