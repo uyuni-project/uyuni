@@ -14,6 +14,7 @@ zypper -n in  --no-recommends util-linux-systemd \
                               python-pyOpenSSL \
                               postfix \
                               dmidecode \
-                              psmisc
+                              psmisc \
+                              udev
 
 zypper -n in vim less
