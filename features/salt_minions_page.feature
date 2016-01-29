@@ -22,8 +22,10 @@ Feature: Explore the Minions page
 
   Scenario: Pending minion shows up in the Overview dashboard
     Given this minion key is unaccepted
-    Then I should see a "Manage Pending Minions (1)" link
-    When I follow "Manage Pending Minions (1)"
+# Temp work around
+#   Then I should see a "Manage Pending Minions (1)" text
+#   When I follow "Manage Pending Minions (1)"
+    And I go to the minion onboarding page
     Then I should see this client in the Pending section
 
   Scenario: Reject pending minion key
@@ -50,3 +52,9 @@ Feature: Explore the Minions page
     And I wait for "15" seconds
     And I follow first "Systems"
     Then I should see this client as link
+
+  Scenario: The minion communicates with the master
+    # It takes a while before we can get the grains and registration is done
+    Given that the master can reach this client
+    When I get OS information of the Minion from the Master
+    Then it should contain a "SLES" text
