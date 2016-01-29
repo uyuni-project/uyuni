@@ -370,7 +370,9 @@ var Subscriptions = React.createClass({
     }
 
     if (result == 0) {
-      result = a_raw["id"] > b_raw["id"];
+      var aId = a_raw["id"];
+      var bId = b_raw["id"];
+      result = aId > bId ? 1 : (aId < bId ? -1 : 0);
     }
     return result * orderCondition;
   },
