@@ -13,15 +13,15 @@ end
 
 # Perform actions
 When(/^I reject this client from the Pending section$/) do
-  click_link('', :href => "/rhn/manager/minions/reject/#{$myhostname}")
+  find("button[formaction='/rhn/manager/minions/#{$myhostname}/reject']").click
 end
 
 When(/^I delete this client from the Rejected section$/) do
-  click_link('', :href => "/rhn/manager/minions/delete/#{$myhostname}")
+  find("form[action='/rhn/manager/minions/#{$myhostname}/delete'] button").click
 end
 
 When(/^I accept this client's minion key$/) do
-  click_link('', :href => "/rhn/manager/minions/accept/#{$myhostname}")
+  find("button[formaction='/rhn/manager/minions/#{$myhostname}/accept']").click
 end
 
 When(/^I go to the minion onboarding page$/) do
@@ -31,5 +31,3 @@ When(/^I go to the minion onboarding page$/) do
     And I follow "Onboarding"
   }
 end
-
-
