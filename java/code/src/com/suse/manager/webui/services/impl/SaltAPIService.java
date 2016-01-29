@@ -237,12 +237,12 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, com.suse.manager.webui.utils.salt.Pkg.Info>
+    public Map<String, Pkg.Info>
             getInstalledPackageDetails(String minionId, List<String> attributes) {
         try {
             // TODO: Move this package to the salt-client library
-            Map<String, Map<String, com.suse.manager.webui.utils.salt.Pkg.Info>> packages =
-                com.suse.manager.webui.utils.salt.Pkg.infoInstalled(attributes, true).callSync(
+            Map<String, Map<String, Pkg.Info>> packages =
+                Pkg.infoInstalled(attributes, true).callSync(
                     SALT_CLIENT,
                     new MinionList(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE
@@ -412,8 +412,7 @@ public enum SaltAPIService implements SaltService {
     public Map<String, Schedule.Result> schedulePatchInstallation(String name,
         Target<?> target, Set<String> patches, LocalDateTime scheduleDate,
         Map<String, ?> metadata) throws SaltStackException {
-        LocalCall<Map<String, Object>> install =
-                com.suse.manager.webui.utils.salt.Pkg.install(true, patches.stream()
+        LocalCall<Map<String, Object>> install = Pkg.install(true, patches.stream()
                 .map(patch -> "patch:" + patch).collect(Collectors.toList()));
         Map<String, Schedule.Result> result =
                 Schedule.add(name, install, scheduleDate, metadata)
