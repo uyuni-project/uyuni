@@ -525,6 +525,7 @@ var Table = React.createClass({
             </div>
             <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
               <Select className="display-number"
+                type="number"
                 options={[5,10,15,25,50,100,250,500]}
                 currentValue={itemsPerPage}
                 onChange={this.onItemsPerPageChange}
@@ -570,7 +571,12 @@ var PaginationButton = React.createClass({
 
 var Select = React.createClass({
   handleOnChange: function(e) {
-    this.props.onChange(parseInt(e.target.value));
+    if (this.props.type && this.props.type == "number") {
+      this.props.onChange(parseInt(e.target.value));
+    }
+    else {
+      this.props.onChange(e.target.value);
+    }
   },
 
   render: function() {
