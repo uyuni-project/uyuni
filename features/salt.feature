@@ -17,21 +17,10 @@ Feature: Salt is configured and running
     And salt-master should be listening on public port 4506
 
   Scenario: The minion is running
-   Given the Salt Minion is configured
+    Given the Salt Minion is configured
     And I restart salt-minion
     Then the Salt Minion should be running
 
-  Scenario: The minion key can be accepted
+  Scenario: The minion appears in the master's incoming queue
     When I list unaccepted keys at Salt Master
     Then the list of the keys should contain this client's hostname
-    And I accept all Salt unaccepted keys
-    And I list accepted keys at Salt Master
-    Then the list of the keys should contain this client's hostname
-
-  Scenario: The minion communicates with the master and can register
-    # It takes a while before we can get the grains and registration is done
-    Given that the master can reach this client
-    When I get OS information of the Minion from the Master
-    Then it should contain a "SLES" text
-    And this client should appear in spacewalk
-
