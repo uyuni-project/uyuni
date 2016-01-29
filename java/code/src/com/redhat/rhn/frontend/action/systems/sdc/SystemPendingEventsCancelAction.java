@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.manager.webui.utils.salt.Schedule;
+import com.suse.saltstack.netapi.calls.modules.Schedule;
 import com.suse.saltstack.netapi.datatypes.target.MinionList;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
