@@ -24,7 +24,7 @@ import com.suse.manager.reactor.RegisterMinionAction;
 import com.suse.manager.reactor.UpdatePackageProfileEventMessage;
 import com.suse.manager.reactor.UpdatePackageProfileEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
-import com.suse.saltstack.netapi.calls.modules.Pkg;
+import com.suse.manager.webui.utils.salt.Pkg;
 import com.suse.saltstack.netapi.parser.JsonParser;
 import org.jmock.Mock;
 
@@ -56,8 +56,9 @@ public class UpdatePackageProfileActionTest extends JMockBaseTestCaseWithUser {
         final String minionId = minion.getMinionId();
 
         //mock out test relevant apis
-        saltServiceMock.stubs().method("getInstalledPackageDetails").with(eq(minionId)).will(
-                returnValue(this.getMinionPackages()));
+        saltServiceMock.stubs().method("getInstalledPackageDetails")
+                .with(eq(minionId), eq(UpdatePackageProfileEventMessageAction.PKGATTR))
+                .will(returnValue(this.getMinionPackages()));
 
         SaltService saltService = (SaltService) saltServiceMock.proxy();
 
@@ -69,7 +70,7 @@ public class UpdatePackageProfileActionTest extends JMockBaseTestCaseWithUser {
             String release = null;
             String version = null;
             if (pkg.getName().getName().equals("aaa_base")) {
-                release = "3.1";
+                release = "12.1";
                 version = "13.2+git20140911.61c1681";
             }
             else if (pkg.getName().getName().equals("bash")) {
@@ -86,8 +87,8 @@ public class UpdatePackageProfileActionTest extends JMockBaseTestCaseWithUser {
     }
 
     private Map<String, Pkg.Info> getMinionPackages() throws IOException, ClassNotFoundException {
-        return new JsonParser<>(Pkg.infoInstalled("").getReturnType()).parse(
-                readFile("dummy_package.json"));
+        return new JsonParser<>(Pkg.infoInstalled(UpdatePackageProfileEventMessageAction.PKGATTR, true)
+                .getReturnType()).parse(readFile("dummy_package.json"));
     }
 
     private String readFile(String file) throws IOException, ClassNotFoundException {
