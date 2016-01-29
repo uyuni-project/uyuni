@@ -111,7 +111,8 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
         unsubscribeFromOldChannels(user, remove, server);
 
         if (!skipChannelChangedEvent) {
-            MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId()));
+            MessageQueue.publish(new ChannelsChangedEventMessage(
+                    server.getId(), user.getId()));
         }
         super.store();
 
@@ -202,8 +203,9 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
     }
 
     /**
-     * Set true here to skip sending the {@link ChannelsChangedEventMessage} for this command. This
-     * makes sense in case the child channels were removed as part of a base channel change.
+     * Set true here to skip sending the {@link ChannelsChangedEventMessage} for this
+     * command. This makes sense in case the child channels were removed as part of a base
+     * channel change.
      *
      * @param skip the value to set: true if sending the event should be skipped
      */

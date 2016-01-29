@@ -31,7 +31,8 @@ import java.io.IOException;
  */
 public class ChannelsChangedEventMessageAction implements MessageAction {
 
-    private static final Logger LOG = Logger.getLogger(ChannelsChangedEventMessageAction.class);
+    private static final Logger LOG = Logger.getLogger(
+            ChannelsChangedEventMessageAction.class);
 
     /**
      * {@inheritDoc}

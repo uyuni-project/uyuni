@@ -47,7 +47,8 @@ import java.util.Set;
 public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(RegisterMinionEventMessageAction.class);
+    private static final Logger LOG = Logger.getLogger(
+            RegisterMinionEventMessageAction.class);
 
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
@@ -183,8 +184,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             StatesAPI.generateServerPackageState(server);
             // Trigger certification deployment
-            MessageQueue.publish(
-                    new ApplyStatesEventMessage(server.getId(), null, ApplyStatesEventMessage.CERTIFICATE));
+            MessageQueue.publish(new ApplyStatesEventMessage(
+                    server.getId(), null, ApplyStatesEventMessage.CERTIFICATE));
             // Trigger an update of the package profile
             MessageQueue.publish(new UpdatePackageProfileEventMessage(server.getId()));
         }
