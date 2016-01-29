@@ -32,7 +32,7 @@ class MinionResultView extends React.Component {
     return (
       <div className="panel panel-default" style={style}>
         <div className="panel-heading" onClick={this.onClick}>
-           <span>{t("id")}</span>
+           <span>{id}</span>
            {(() => {
               if(props.started){
                 if(result == null) {
@@ -53,7 +53,7 @@ class MinionResultView extends React.Component {
         </div>
         {this.state.open && result != null ?
         <div className="panel-body">
-           <pre>{t(result)}</pre>
+           <pre>{result}</pre>
         </div>
         : undefined }
       </div>
