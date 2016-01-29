@@ -64,7 +64,7 @@ salt-key -L
 salt-key -a $HOST_MINION -y
 sleep 2
 for x in 1 2 3 4 5 6 7 8 9 0; do
-    if salt "$HOST_MINION" test.ping | grep -v "Minion did not return"; then
+    if salt "$HOST_MINION" test.ping | grep -i "true"; then
         break
     fi
     sleep 2
@@ -97,9 +97,11 @@ salt "$HOST_MINION" pkg.info_installed test-package errors=report | grep UTF-8 |
 #--------------------------------------
 # get hardware grains
 
+HDDEVICE=`salt "$HOST_MINION" disk.blkid | grep dev | head -1 | sed 's|[[:space:]]*\(/dev/.\+\):$|\1|'`
+
 salt "$HOST_MINION" grains.get cpuarch | grep x86_64 || false
 
-salt "$HOST_MINION" udev.info /dev/vda | grep vda || false
+salt "$HOST_MINION" udev.info $HDDEVICE | grep dev || false
 
 salt "$HOST_MINION" grains.get total_num_cpus | grep 2 || false
 
@@ -113,7 +115,7 @@ salt "$HOST_MINION" network.hw_addr eth0 | grep fa:16 || false
 
 # https://docs.saltstack.com/en/latest/ref/modules/all/salt.modules.status.html
 
-salt "$HOST_MINION" status.diskusage /dev/vda1 | grep vda  || false
+salt "$HOST_MINION" status.diskusage $HDDEVICE | grep dev  || false
 
 # Testing pkg.latest
 
