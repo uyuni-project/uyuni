@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.utils.salt.Smbios;
+import com.suse.saltstack.netapi.calls.modules.Smbios;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
