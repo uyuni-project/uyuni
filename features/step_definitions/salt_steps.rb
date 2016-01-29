@@ -112,11 +112,15 @@ Then(/^the list of the keys should contain this client's hostname$/) do
 end
 
 Given(/^this minion key is unaccepted$/) do
-  steps %{
-    Then I delete this minion key in the Salt master
-    And I restart salt-minion
-    And we wait till Salt master sees this minion as unaccepted
-  }
+  step "I list unaccepted keys at Salt Master"
+  @output = @action.call
+  if ! @output[:stdout].include? $myhostname
+    steps %{
+      Then I delete this minion key in the Salt master
+      And I restart salt-minion
+      And we wait till Salt master sees this minion as unaccepted
+    }
+  end
 end
 
 When(/^we wait till Salt master sees this minion as unaccepted$/) do
@@ -127,10 +131,14 @@ When(/^we wait till Salt master sees this minion as unaccepted$/) do
 end
 
 Given(/^this minion key is accepted$/) do
-  steps %{
-    Then I accept this minion key in the Salt master
-    And we wait till Salt master sees this minion as accepted
-  }
+  step "I list accepted keys at Salt Master"
+  @output = @action.call
+  if ! @output[:stdout].include? $myhostname
+    steps %{
+      Then I accept this minion key in the Salt master
+      And we wait till Salt master sees this minion as accepted
+    }
+  end
 end
 
 When(/^we wait till Salt master sees this minion as accepted$/) do
@@ -141,10 +149,14 @@ When(/^we wait till Salt master sees this minion as accepted$/) do
 end
 
 Given(/^this minion key is rejected$/) do
-  steps %{
-    Then I reject this minion key in the Salt master
-    And we wait till Salt master sees this minion as rejected
-  }
+  step "I list rejected keys at Salt Master"
+  @output = @action.call
+  if ! @output[:stdout].include? $myhostname
+    steps %{
+      Then I reject this minion key in the Salt master
+      And we wait till Salt master sees this minion as rejected
+    }
+  end
 end
 
 When(/^we wait till Salt master sees this minion as rejected$/) do
@@ -209,6 +221,7 @@ end
 And(/^this minion is not registered in Spacewalk$/) do
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
-  @rpc.deleteSystem($myhostname)
+  sid = @rpc.listSystems.select { |s| s['name'] == $myhostname }.map{ |s| s['id'] }.first
+  @rpc.deleteSystem(sid) if sid
   refute_includes(@rpc.listSystems.map {|s| s['id']}, $myhostname)
 end
