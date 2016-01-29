@@ -16,6 +16,24 @@ package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessageAction;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
+import com.suse.manager.reactor.messaging.CheckinEventMessage;
+import com.suse.manager.reactor.messaging.CheckinEventMessageAction;
+import com.suse.manager.reactor.messaging.GetHardwareInfoEventMessage;
+import com.suse.manager.reactor.messaging.GetHardwareInfoEventMessageAction;
+import com.suse.manager.reactor.messaging.GetNetworkInfoEventMessage;
+import com.suse.manager.reactor.messaging.GetNetworkInfoEventMessageAction;
+import com.suse.manager.reactor.messaging.JobReturnEventMessage;
+import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
+import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessage;
+import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessageAction;
 import com.suse.manager.webui.events.ManagedFileChangedEvent;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
@@ -61,14 +79,14 @@ public class SaltReactor implements EventListener {
      */
     public void start() {
         // Configure message queue to handle minion registrations
-        MessageQueue.registerAction(new RegisterMinionAction(),
-                RegisterMinionEvent.class);
+        MessageQueue.registerAction(new RegisterMinionEventMessageAction(),
+                RegisterMinionEventMessage.class);
         MessageQueue.registerAction(new UpdatePackageProfileEventMessageAction(),
                 UpdatePackageProfileEventMessage.class);
-        MessageQueue.registerAction(new GenerateRepoFileAction(),
-                ChannelChangedEvent.class);
-        MessageQueue.registerAction(new ApplyStatesAction(SALT_SERVICE),
-                StateDirtyEvent.class);
+        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
+                ChannelsChangedEventMessage.class);
+        MessageQueue.registerAction(new ApplyStatesEventMessageAction(SALT_SERVICE),
+                ApplyStatesEventMessage.class);
         MessageQueue.registerAction(new GetHardwareInfoEventMessageAction(SALT_SERVICE),
                 GetHardwareInfoEventMessage.class);
         MessageQueue.registerAction(new ActionScheduledEventMessageAction(),
@@ -195,6 +213,6 @@ public class SaltReactor implements EventListener {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Trigger registration for minion: " + minionId);
         }
-        MessageQueue.publish(new RegisterMinionEvent(minionId));
+        MessageQueue.publish(new RegisterMinionEventMessage(minionId));
     }
 }
