@@ -2,11 +2,8 @@
 
 #########################################
 # docker
-# docker run -t -i --rm -v "/path/to/git:/manager" suma-docker-registry.suse.de/suma-head-salt /bin/bash
-# install
-# zypper ar http://download.opensuse.org/repositories/systemsmanagement:/saltstack:/testing/SLE_12 salt
-# zypper ar http://download.opensuse.org/repositories/systemsmanagement:/saltstack:/testing:/testpackages/SLE_12/ testpackages
-#--------------------------------------
+# docker run -t -i --privileged --device /dev/mem --rm -v "/path/to/git:/manager" suma-docker-registry.suse.de/suma-head-salt /bin/bash
+#########################################
 # update packages
 
 set -ex
