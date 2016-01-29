@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils.salt;
+package com.suse.manager.webui.utils.salt.custom;
 
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -92,7 +92,7 @@ public class SumaUtil {
     public static LocalCall<String> cat(String path) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("path", path);
-        return new LocalCall("sumautil.cat", Optional.empty(),
+        return new LocalCall<>("sumautil.cat", Optional.empty(),
                 Optional.of(args), new TypeToken<String>() {
         });
     }
@@ -102,7 +102,7 @@ public class SumaUtil {
      * @return a {@link LocalCall} to pass to the SaltStackClient
      */
     public static LocalCall<Map<IPVersion, IPRoute>> primaryIps() {
-        return new LocalCall("sumautil.primary_ips", Optional.empty(),
+        return new LocalCall<>("sumautil.primary_ips", Optional.empty(),
                 Optional.empty(), new TypeToken<Map<IPVersion, IPRoute>>() {
         });
     }
@@ -112,7 +112,7 @@ public class SumaUtil {
      * @return a {@link LocalCall} to pass to the SaltStackClient
      */
     public static LocalCall<Map<String, String>> getNetModules() {
-        return new LocalCall("sumautil.get_net_modules", Optional.empty(),
+        return new LocalCall<>("sumautil.get_net_modules", Optional.empty(),
                 Optional.empty(), new TypeToken<Map<String, String>>() {
         });
     }
