@@ -25,6 +25,7 @@ import static spark.Spark.post;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
+import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.MinionController;
@@ -106,5 +107,12 @@ public class Router implements SparkApplication {
                 withProductAdmin(SubscriptionMatchingController::csv));
         post("/manager/subscription_matching/schedule_matcher_run",
                 withProductAdmin(SubscriptionMatchingController::scheduleMatcherRun));
+
+        // Salt state catalog
+        get("/manager/state_catalog",
+                withOrgAdmin(StateCatalogController::show), jade);
+        get("/manager/state_catalog/data",
+                withOrgAdmin(StateCatalogController::data));
+
     }
 }
