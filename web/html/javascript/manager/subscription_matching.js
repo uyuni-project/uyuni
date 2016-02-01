@@ -284,6 +284,17 @@ function unmatchedSystemsToRows(systems) {
 var Messages = React.createClass({
   mixins: [StatePersistedMixin],
 
+  rowFilter: function(a, b, columnIndex, order) {
+    var columnKeyInRawData=["type"];
+    var columnKey = columnKeyInRawData[columnIndex];
+    var orderCondition = order == "asc" ? 1 : -1;
+    var result = 0;
+    var aValue = a.props["raw_data"][columnKey];
+    var bValue = b.props["raw_data"][columnKey];
+    result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+    return result * orderCondition;
+  },
+
   render: function() {
     var body;
     if (this.props.messages != null) {
@@ -296,6 +307,8 @@ var Messages = React.createClass({
               rows={messagesToRows(this.props.messages)}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
+              rowComparator={this.rowFilter}
+              sortableColumns={[0]}
             />
             <CsvLink name="message_report.csv" />
           </div>
@@ -352,7 +365,7 @@ function messagesToRows(raw_messages) {
       <TableCell content={message} />,
       <TableCell content={additionalInformation} />
     ];
-    return <TableRow columns={columns} />;
+    return <TableRow columns={columns}  raw_data={raw_message}/>;
   });
   return result;
 }
