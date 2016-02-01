@@ -26,7 +26,7 @@ public class SaltStateStorageManager {
     }
 
     // TODO should it be synchronized ?
-    public void storeState(long orgId, String name, String content) throws IOException {
+    public synchronized void storeState(long orgId, String name, String content) throws IOException {
         // TODO sanitize name
         Path orgPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId);
         File orgDir = orgPath.toFile();
