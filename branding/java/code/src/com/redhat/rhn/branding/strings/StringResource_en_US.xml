@@ -1429,6 +1429,24 @@ As a Channel Administrator, you may change the base channels your systems are su
       <trans-unit id="errata.update">
         <source>Patch Update</source>
       </trans-unit>
+      <trans-unit id="sdc.details.overview.errataupdate">
+        <source>Auto Patch Update:</source>
+      </trans-unit>
+      <trans-unit id="sdc.details.edit.autoerrataupdate">
+        <source>Auto Patch Update:</source>
+      </trans-unit>
+      <trans-unit id="sdc.details.edit.autoupdate.unentitled">
+        <source>Auto Patch Update not available for this system.</source>
+      </trans-unit>
+      <trans-unit id="sdc.details.edit.autoupdate">
+        <source>Automatic application of relevant patches</source>
+      </trans-unit>
+      <trans-unit id="ssm.misc.index.syspref.update">
+          <source>Automatic application of relevant patches</source>
+        </trans-unit>
+      <trans-unit id="task.status.auto-errata">
+        <source>Auto Patch Updates</source>
+      </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage">
         <source>&lt;div style="text-align: left;"&gt;
 &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
