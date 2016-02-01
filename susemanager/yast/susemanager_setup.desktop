@@ -2,7 +2,7 @@
 X-SuSE-translate=true
 X-SuSE-DocTeamID=ycc_susemanager_setup
 Type=Application
-Categories=Settings;System;Qt;X-SuSE-YaST;
+Categories=Settings;System;Qt;X-SuSE-YaST;X-SuSE-YaST-Net_advanced;
 
 X-KDE-HasReadOnlyMode=false
 X-KDE-Library=yast2
@@ -14,7 +14,7 @@ X-SuSE-YaST-RootOnly=true
 X-SuSE-YaST-Geometry=
 X-SuSE-YaST-SortKey=
 
-Icon=
+Icon=yast-network_services
 Exec=/sbin/yast2 susemanager_setup
 
 Name=SUSE Manager Setup
