@@ -24,6 +24,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
@@ -60,81 +62,119 @@ public enum SaltServerActionService {
      * @param actionIn the action to execute
      */
     public void execute(Action actionIn) {
-        if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
-            ErrataAction errataAction = (ErrataAction) actionIn;
-            List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
-                    .map(serverActions -> serverActions.stream()
+        List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
+                .map(serverActions -> serverActions.stream()
                         .flatMap(action ->
                                 action.getServer().asMinionServer()
                                         .map(Stream::of)
                                         .orElse(Stream.empty()))
                         .filter(m -> m.hasEntitlement(EntitlementManager.SALT))
                         .collect(Collectors.toList())
-                    )
-                    .orElse(new LinkedList<>());
+                )
+                .orElse(new LinkedList<>());
 
-            Set<Long> serverIds = minions.stream()
-                    .map(MinionServer::getId)
-                    .collect(Collectors.toSet());
-            Set<Long> errataIds = errataAction.getErrata().stream()
-                    .map(Errata::getId)
-                    .collect(Collectors.toSet());
-            Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory
-                    .listErrataNamesForServers(serverIds, errataIds);
+        Map<LocalCall<?>, List<MinionServer>> allCalls;
+        if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
+            allCalls = errataAction(minions, (ErrataAction) (actionIn));
+        }
+        else {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Action  " + actionIn.getActionType() + " is not supported with Salt");
+            }
+            return;
+        }
 
-            minions.forEach(minion -> {
-                Target<?> target = new MinionList(minion.getMinionId());
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Scheduling errata action for: " + target.getTarget());
-                }
-                Set<String> patches = errataNames.get(minion.getId()).entrySet().stream()
-                        .map(Map.Entry::getValue)
-                        .flatMap(Set::stream)
-                        .collect(Collectors.toSet());
-                LocalDateTime earliestAction = actionIn.getEarliestAction().toInstant()
-                        .atZone(ZoneId.of("UTC")).toLocalDateTime();
-                Map<String, Long> metadata = new HashMap<>();
-                metadata.put("suma-action-id", actionIn.getId());
+        // now prepare each call
+        for (Map.Entry<LocalCall<?>, List<MinionServer>> entry : allCalls.entrySet()) {
+            LocalCall<?> call = entry.getKey();
+            List<MinionServer> targetMinions = entry.getValue();
+            Target<?> target = new MinionList(
+                    targetMinions.stream()
+                            .map(MinionServer::getMinionId)
+                            .collect(Collectors.toList()));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Scheduling errata action for: " + target.getTarget());
+            }
+
+            LocalDateTime earliestAction = actionIn.getEarliestAction().toInstant()
+                    .atZone(ZoneId.of("UTC")).toLocalDateTime();
+            Map<String, Long> metadata = new HashMap<>();
+            metadata.put("suma-action-id", actionIn.getId());
+
+            try {
+                Map<String, Schedule.Result> resultMap = SaltAPIService.INSTANCE
+                        .schedule(
+                                "scheduled-action-" + actionIn.getId(),
+                                call, target, earliestAction, metadata);
 
                 // Update the server action based on the result of the schedule call
-                Optional<ServerAction> optionalServerAction = actionIn.getServerActions()
-                        .stream().filter(sa -> sa.getServerId().equals(minion.getId()))
-                        .findFirst();
-                optionalServerAction.ifPresent(serverAction -> {
-                    try {
-                        Map<String, Schedule.Result> resultMap = SaltAPIService.INSTANCE
-                                .schedulePatchInstallation(
-                                "scheduled-action-" + actionIn.getId(),
-                                target, patches, earliestAction, metadata);
-                        Schedule.Result result = resultMap.get(minion.getMinionId());
+                for (MinionServer targetMinion : targetMinions) {
+                    Optional<ServerAction> optionalServerAction = actionIn.getServerActions()
+                            .stream().filter(sa -> sa.getServerId().equals(targetMinion.getId()))
+                            .findFirst();
+                    optionalServerAction.ifPresent(serverAction -> {
+                        Schedule.Result result = resultMap.get(targetMinion.getMinionId());
 
                         if (result != null && result.getResult()) {
                             serverAction.setPickupTime(new Date());
-                        }
-                        else {
+                        } else {
                             // There is no result when scheduling has failed
                             LOG.debug("Failed to schedule action for minion '" +
-                                    minion.getMinionId() + "'");
+                                    targetMinion.getMinionId() + "'");
                             serverAction.setCompletionTime(new Date());
                             serverAction.setResultCode(-1L);
                             serverAction.setResultMsg("Failed to schedule action.");
                             serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            ActionFactory.save(serverAction);
                         }
-                    }
-                    catch (SaltException saltException) {
-                        LOG.warn("Failed to schedule action for minion '" +
-                                minion.getMinionId() + "': " + saltException.getMessage());
+                    });
+                }
+            }
+            catch (SaltException saltException) {
+                // in a general exception we need to fail all minions (we don't have a result)
+                for (MinionServer targetMinion : targetMinions) {
+                    Optional<ServerAction> optionalServerAction = actionIn.getServerActions()
+                            .stream().filter(sa -> sa.getServerId().equals(targetMinion.getId()))
+                            .findFirst();
+                    optionalServerAction.ifPresent(serverAction -> {
+                        LOG.debug("Failed to schedule action for minion '" +
+                                targetMinion.getMinionId() + "': " + saltException.getMessage());
                         serverAction.setCompletionTime(new Date());
                         serverAction.setResultCode(-1L);
-                        serverAction.setResultMsg("Failed to schedule action: " +
-                                saltException.getMessage());
+                        serverAction.setResultMsg("Failed to schedule action.");
                         serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                    }
-                    finally {
                         ActionFactory.save(serverAction);
-                    }
-                });
-            });
+                    });
+                }
+            }
         }
+    }
+
+    public Map<LocalCall<?>, List<MinionServer>> errataAction(List<MinionServer> minions, ErrataAction errataAction) {
+        Set<Long> serverIds = minions.stream()
+                .map(MinionServer::getId)
+                .collect(Collectors.toSet());
+        Set<Long> errataIds = errataAction.getErrata().stream()
+                .map(Errata::getId)
+                .collect(Collectors.toSet());
+        Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory
+                .listErrataNamesForServers(serverIds, errataIds);
+        // Group targeted minions by errata names
+        Map<Set<String>, List<MinionServer>> collect = minions.stream().collect(Collectors.groupingBy(minion ->
+                errataNames.get(minion.getId())
+                        .entrySet().stream()
+                        .map(Map.Entry::getValue)
+                        .flatMap(Set::stream)
+                        .collect(Collectors.toSet())
+        ));
+        // Convert errata names to LocalCall objects of type Pkg.install
+        return collect.entrySet().stream().collect(Collectors.toMap(
+                entry -> Pkg.install(true, entry.getKey()
+                        .stream()
+                        .map(patch -> "patch:" + patch)
+                        .collect(Collectors.toList()))
+                ,
+                Map.Entry::getValue
+        ));
     }
 }
