@@ -16,6 +16,7 @@ package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.RebootAction;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.Errata;
@@ -75,7 +76,10 @@ public enum SaltServerActionService {
 
         Map<LocalCall<?>, List<MinionServer>> allCalls;
         if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
-            allCalls = errataAction(minions, (ErrataAction) (actionIn));
+            allCalls = errataAction(minions, (ErrataAction) actionIn);
+        }
+        else if (actionIn.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+            allCalls = rebootAction(minions);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -176,5 +180,11 @@ public enum SaltServerActionService {
                 ,
                 Map.Entry::getValue
         ));
+    }
+
+    public Map<LocalCall<?>, List<MinionServer>> rebootAction(List<MinionServer> minions) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        ret.put(com.suse.manager.webui.utils.salt.System.reboot(Optional.empty()), minions);
+        return ret;
     }
 }
