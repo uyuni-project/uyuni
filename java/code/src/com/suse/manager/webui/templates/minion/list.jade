@@ -54,10 +54,11 @@ include ../common.jade
             td
               b #{minion}
             td.col-md-2
-              form(method="post" action="/rhn/manager/minions/#{minion}/delete")
+              form(method="post")
                 +csrfToken
                 .pull-right
-                  button(type="submit").btn.btn-default: i.fa.fa-trash-o.no-margin
+                  button(type="submit", formaction="/rhn/manager/minions/#{minion}/delete").btn.btn-default
+                    i.fa.fa-trash-o.no-margin
         else
           tr
             td #{l.t("No rejected minions.")}
