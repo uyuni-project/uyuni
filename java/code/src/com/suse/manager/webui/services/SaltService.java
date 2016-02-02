@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Schedule;
@@ -207,19 +208,18 @@ public interface SaltService {
     Map<String, Network.Interface> getNetworkInterfacesInfo(String minionId);
 
     /**
-     * Schedule patch installations for a given target.
+     * Schedule a function call for a given target.
      *
      * @param name the name to use for the scheduled job
+     * @param call the module call to schedule
      * @param target the target
-     * @param patches the patches to install
      * @param scheduleDate schedule date
      * @param metadata metadata to pass to the salt job
      * @return the result of the schedule call
      * @throws SaltException in case there is an error scheduling the job
      */
-    Map<String, Schedule.Result> schedulePatchInstallation(String name, Target<?> target,
-            Set<String> patches, LocalDateTime scheduleDate, Map<String, ?> metadata)
-            throws SaltException;
+    Map<String, Schedule.Result> schedule(String name, LocalCall<?> call, Target<?> target,
+            LocalDateTime scheduleDate, Map<String, ?> metadata) throws SaltException;
 
     /**
      * Remove a scheduled job from the minion

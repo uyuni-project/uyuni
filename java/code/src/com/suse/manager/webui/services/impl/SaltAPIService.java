@@ -417,20 +417,6 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, Schedule.Result> schedulePatchInstallation(String name,
-        Target<?> target, Set<String> patches, LocalDateTime scheduleDate,
-        Map<String, ?> metadata) throws SaltException {
-        LocalCall<Map<String, Object>> install = Pkg.install(true, patches.stream()
-                .map(patch -> "patch:" + patch).collect(Collectors.toList()));
-        Map<String, Schedule.Result> result =
-                Schedule.add(name, install, scheduleDate, metadata)
-                .callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public Map<String, Schedule.Result> schedule(String name, LocalCall<?> call,
                                                  Target<?> target, LocalDateTime scheduleDate,
                                                  Map<String, ?> metadata) throws SaltException {
