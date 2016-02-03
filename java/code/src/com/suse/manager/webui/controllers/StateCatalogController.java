@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.FlashScopeHelper;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -26,8 +27,14 @@ public class StateCatalogController {
 
     public static ModelAndView show(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
+
         return new ModelAndView(data, "state_catalog/show.jade");
+    }
+
+    public static ModelAndView add(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
+        return new ModelAndView(data, "state_catalog/add.jade");
     }
 
     public static String data(Request request, Response response, User user) {
@@ -36,6 +43,16 @@ public class StateCatalogController {
 
         response.type("application/json");
         return GSON.toJson(data);
+    }
+
+    public static Object create(Request request, Response response, User user) {
+        String message = "";
+        String name = request.params("name");
+        String content = request.params("content");
+
+        FlashScopeHelper.flash(request, message);
+        response.redirect("/rhn/manager/state_catalog");
+        return "";
     }
 
 }
