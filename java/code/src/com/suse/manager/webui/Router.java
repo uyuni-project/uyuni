@@ -114,5 +114,9 @@ public class Router implements SparkApplication {
         get("/manager/state_catalog/data",
                 withOrgAdmin(StateCatalogController::data));
 
+        get("/manager/state_catalog/add",
+                withOrgAdmin(StateCatalogController::add), jade);
+        post("/manager/state_catalog/create",
+                withOrgAdmin(StateCatalogController::create));
     }
 }

@@ -25,8 +25,8 @@ public class SaltStateStorageManager {
         return RepoFileUtils.GENERATED_SLS_ROOT;
     }
 
-    // TODO should it be synchronized ?
     public synchronized void storeState(long orgId, String name, String content) throws IOException {
+        // TODO synchronize on file not on the this instance
         // TODO sanitize name
         Path orgPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId);
         File orgDir = orgPath.toFile();
