@@ -2593,6 +2593,9 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="packagesindex.jsp.states">
         <source>Manage Package States</source>
       </trans-unit>
+      <trans-unit id="salt.job">
+        <source>Salt Job</source>
+      </trans-unit>
       <trans-unit id="virtualization_host">
         <source>Virtualization Host</source>
       </trans-unit>
