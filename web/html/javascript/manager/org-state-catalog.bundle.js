@@ -430,14 +430,9 @@ var StateCatalog = React.createClass({displayName: "StateCatalog",
     componentWillMount: function() {
         this.refreshServerData();
     },
-//            <ul>
-//               { this.state.serverData.map( (e) => {
-//                    return <li>{e}</li>
-//                })
-//               }
-//            </ul>
+
     render: function() {
-        var button = React.createElement(PanelButton, {text: "Create state", icon: "fa-plus", action: "/rhn/manager/state_catalog/add"})
+        var button = React.createElement(PanelButton, {text: "Create state", icon: "fa-plus", action: "/rhn/manager/state_catalog/state"})
 
         return (
             React.createElement(Panel, {title: "State catalog", icon: "spacewalk-icon-virtual-host-manager", button: button}, 
@@ -460,8 +455,10 @@ var StateCatalog = React.createClass({displayName: "StateCatalog",
 
 function statesToRows(serverData) {
   return serverData.map((s) => {
+    //    var name = s.replace(/\.[^/.]+$/, "")
+    var link = React.createElement("a", {href: "/rhn/manager/state_catalog/state/" + s}, s)
     var columns = [
-      React.createElement(TableCell, {content: s}),
+      React.createElement(TableCell, {content: link}),
     ];
     return React.createElement(TableRow, {columns: columns, raw_data: s})
   });

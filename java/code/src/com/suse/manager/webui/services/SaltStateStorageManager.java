@@ -2,6 +2,7 @@ package com.suse.manager.webui.services;
 
 import com.suse.manager.webui.utils.RepoFileUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -33,18 +34,22 @@ public class SaltStateStorageManager {
         if (!orgDir.exists()) {
             orgDir.mkdir();
         }
-        File stateFile = new File(orgDir, name + ".sls");
+        File stateFile = new File(orgDir, ext(name));
         // TODO clarify encoding
         FileUtils.writeStringToFile(stateFile, content, "US-ASCII");
     }
 
+    private String ext(String name) {
+        return StringUtils.endsWith(name, ".sls") ? name : name + ".sls";
+    }
+
     public void deleteState(long orgId, String name) throws IOException {
-        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, name);
+        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, ext(name));
         Files.delete(slsPath);
     }
 
-    public Optional<String> get(long orgId, String name) throws IOException {
-        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, name);
+    public Optional<String> getContent(long orgId, String name) throws IOException {
+        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, ext(name));
         File slsFile = slsPath.toFile();
         if (!slsFile.exists()) {
             return Optional.empty();
