@@ -28,16 +28,12 @@ Feature: Explore the Minions page
     And I go to the minion onboarding page
     Then I should see this client in the Pending section
 
-  Scenario: Reject pending minion key
+  Scenario: Reject and delete the pending minion key
     Given this minion key is unaccepted
     And I go to the minion onboarding page
     And I reject this client from the Pending section
     And we wait till Salt master sees this minion as rejected
     Then I should see this client in the Rejected section
-
-  Scenario: Delete rejected minion key
-    Given this minion key is rejected
-    And I go to the minion onboarding page
     And I delete this client from the Rejected section
     Then I should not see this client as a Minion anywhere
 
