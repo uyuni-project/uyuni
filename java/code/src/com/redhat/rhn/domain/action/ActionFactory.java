@@ -1126,5 +1126,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_DIST_UPGRADE =
             lookupActionTypeByLabel("distupgrade.upgrade");
+
+    /**
+     * The constant representing salt job action.  [ID:503]
+     */
+    public static final ActionType TYPE_SALT_JOB =
+            lookupActionTypeByLabel("salt.job");
 }
 
