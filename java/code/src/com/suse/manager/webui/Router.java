@@ -19,9 +19,11 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.head;
 import static spark.Spark.post;
+import static spark.Spark.put;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
@@ -114,9 +116,15 @@ public class Router implements SparkApplication {
         get("/manager/state_catalog/data",
                 withOrgAdmin(StateCatalogController::data));
 
-        get("/manager/state_catalog/add",
+        get("/manager/state_catalog/state",
                 withOrgAdmin(StateCatalogController::add), jade);
-        post("/manager/state_catalog/create",
+        get("/manager/state_catalog/state/:name",
+                withOrgAdmin(StateCatalogController::edit), jade);
+        post("/manager/state_catalog/state",
                 withOrgAdmin(StateCatalogController::create));
+        put("/manager/state_catalog/state/:name",
+                withOrgAdmin(StateCatalogController::update));
+        delete("/manager/state_catalog/state/:name",
+                withOrgAdmin(StateCatalogController::delete));
     }
 }

@@ -546,7 +546,7 @@ public enum SaltAPIService implements SaltService {
         try {
             storageManager.storeState(orgId, name, content);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); // TODO throw IOException or a more specific
         }
     }
 
@@ -564,7 +564,7 @@ public enum SaltAPIService implements SaltService {
 
     public Optional<String> getOrgStateContent(long orgId, String name) {
         try {
-            return storageManager.get(orgId, name);
+            return storageManager.getContent(orgId, name);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
