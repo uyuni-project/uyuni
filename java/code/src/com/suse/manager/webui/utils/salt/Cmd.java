@@ -18,7 +18,7 @@ public class Cmd {
 
     public static LocalCall<String> exec_code_all(String lang, String code) {
         LinkedHashMap<String, Object> args = new LinkedHashMap<>();
-        return new LocalCall<>("exec_code_all", Optional.of(Arrays.asList(lang, code)), Optional.of(args),
+        return new LocalCall<>("cmd.exec_code_all", Optional.of(Arrays.asList(lang, code)), Optional.of(args),
                 new TypeToken<String>() {
                 });
     }
