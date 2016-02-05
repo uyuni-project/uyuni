@@ -5,8 +5,8 @@ var gutil = require('gulp-util');
 var source = require('vinyl-source-stream'); // Used to stream bundle for further handling
 var browserify = require('browserify');
 var watchify = require('watchify');
-//var babelify = require('babelify');
-var reactify = require('reactify'); // TODO investigate why babelify hangs
+var babelify = require('babelify');
+//var reactify = require('reactify'); // TODO investigate why babelify hangs
 var concat = require('gulp-concat');
 var glob  = require('glob');
 var es = require('event-stream');
@@ -43,12 +43,14 @@ gulp.task('browserify', function(done) {
         var tasks = files.map(function(entry) {
             var bundler = browserify({
                 entries: [entry], // Only need initial file, browserify finds the deps
-                transform: [reactify], // We want to convert JSX to normal javascript
+//                transform: [reactify], // We want to convert JSX to normal javascript
+//                transform: [babelify], // We want to convert JSX to normal javascript
                 debug: false, // Gives us sourcemapping
                 cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
             });
 
             return bundler
+                .transform("babelify", {presets: ["es2015", "react"]})
                 .external("react") // exclude react from these bundles
                 .bundle() // Create the initial bundle when starting the task
                 .pipe(source(entry)) // this is a surrogate file name //'org-state-catalog-app.js'

@@ -542,11 +542,11 @@ public enum SaltAPIService implements SaltService {
         return allowed;
     }
 
-    public void storeOrgState(long orgId, String name, String content) {
+    public void storeOrgState(long orgId, String name, String oldName, String content) {
         try {
-            storageManager.storeState(orgId, name, content);
+            storageManager.storeState(orgId, name, oldName, content);
         } catch (IOException e) {
-            throw new RuntimeException(e); // TODO throw IOException or a more specific
+            throw new RuntimeException(e); // TODO throw IOException or smth more specific
         }
     }
 
@@ -568,5 +568,9 @@ public enum SaltAPIService implements SaltService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean orgStateExists(long orgId, String name) {
+        return storageManager.exists(orgId, name);
     }
 }
