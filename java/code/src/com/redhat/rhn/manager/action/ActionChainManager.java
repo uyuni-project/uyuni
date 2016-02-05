@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.action;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -27,6 +29,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import org.hibernate.Transaction;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -440,6 +444,11 @@ public class ActionChainManager {
             Action action = ActionManager.createAction(user, type, name, earliest);
             ActionManager.scheduleForExecution(action, serverIds);
             result.add(action);
+
+            //HibernateFactory.getSession().flush();
+            HibernateFactory.getSession().refresh(action);
+            MessageQueue.publish(new ActionScheduledEventMessage(action));
+
         }
         else {
             Integer nextSortOrder = sortOrder;
