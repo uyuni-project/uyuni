@@ -16,8 +16,8 @@ package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.RebootAction;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -80,6 +80,11 @@ public enum SaltServerActionService {
         }
         else if (actionIn.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
             allCalls = rebootAction(minions);
+        }
+        else if (actionIn.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
+            ScriptAction scriptAction = (ScriptAction) actionIn;
+            String script = scriptAction.getScriptActionDetails().getScriptContents();
+            allCalls = remoteCommandAction(minions, script);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -185,6 +190,12 @@ public enum SaltServerActionService {
     public Map<LocalCall<?>, List<MinionServer>> rebootAction(List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         ret.put(com.suse.manager.webui.utils.salt.System.reboot(Optional.empty()), minions);
+        return ret;
+    }
+
+    public Map<LocalCall<?>, List<MinionServer>> remoteCommandAction(List<MinionServer> minions, String script) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        ret.put(com.suse.manager.webui.utils.salt.Cmd.exec_code_all("bash", script), minions);
         return ret;
     }
 }
