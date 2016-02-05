@@ -324,7 +324,7 @@ class PackageStates extends React.Component {
           <div className="panel panel-default">
             <div className="panel-body">
                 <div className="row">
-                    <span className="col-md-4 pull-right">
+                    <span className="col-md-8 pull-right">
                         <span className="input-group">
                             <input className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange}/>
                             <span className="input-group-btn">
