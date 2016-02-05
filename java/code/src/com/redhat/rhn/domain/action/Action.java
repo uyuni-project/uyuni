@@ -50,7 +50,7 @@ public class Action extends BaseDomainHelper implements Serializable {
     private Action prerequisite;
     private ActionType actionType;
 
-    private Set serverActions;
+    private Set<ServerAction> serverActions = new HashSet<ServerAction>();
     private User schedulerUser;
     private Org org;
 
