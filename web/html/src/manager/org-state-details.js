@@ -2,6 +2,7 @@
 
 var React = require("react")
 var Panel = require("../components/panel.js").Panel
+var Messages = require("../components/messages.js").Messages
 
 var Button = React.createClass({
 
@@ -75,16 +76,20 @@ var StateDetail = React.createClass({
     render: function() {
         var errs = null;
         if (this.state.errors) {
-            errs = this.state.errors.map( function(e) {
-                    return (<div className="alert alert-danger">{t(e)}</div>)
-                   })
+            errs = <Messages items={this.state.errors.map(function(e) {
+                return {severity: "error", text: e};
+            })}/>;
+//            errs = this.state.errors.map( function(e) {
+//                    return (<div className="alert alert-danger">{t(e)}</div>)
+//                   })
+
         }
 
-        if (this.state.messages) {
-            errs = this.state.messages.map( function(e) {
-                    return (<div className="alert alert-info">{t(e)}</div>)
-                   });
-        }
+//        if (this.state.messages) {
+//            errs = this.state.messages.map( function(e) {
+//                    return (<div className="alert alert-info">{t(e)}</div>)
+//                   });
+//        }
 
         var buttons = [];
         if (this.props.sls.action == "edit") {
@@ -113,7 +118,7 @@ var StateDetail = React.createClass({
                 <div className="form-group">
                     <label className="col-md-3 control-label">Content:</label>
                     <div className="col-md-6">
-                        <textarea className="form-control" name="content" ref="stateContent"
+                        <textarea className="form-control" rows="20" name="content" ref="stateContent"
                             defaultValue={this.props.sls.content}/>
                     </div>
                 </div>

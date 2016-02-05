@@ -22,12 +22,12 @@ public class SaltStateStorageManager {
 
     private static final Logger LOG = Logger.getLogger(SaltStateStorageManager.class);
 
-    private String getBaseDirPath() {
+    public String getBaseDirPath() {
         return RepoFileUtils.GENERATED_SLS_ROOT;
     }
 
-    public synchronized void storeState(long orgId, String name, String content) throws IOException {
-        // TODO synchronize on file not on the this instance
+    public synchronized void storeState(long orgId, String name, String oldName, String content) throws IOException {
+        // TODO synchronize at file level not on the class instance
         // TODO sanitize name
         Path orgPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId);
         File orgDir = orgPath.toFile();
@@ -35,8 +35,20 @@ public class SaltStateStorageManager {
             orgDir.mkdir();
         }
         File stateFile = new File(orgDir, ext(name));
+        assertStateInOrgDir(orgDir, stateFile);
+
+        if (StringUtils.isNotBlank(oldName)) {
+            Files.move(orgPath.resolve(ext(oldName)), stateFile.toPath());
+        }
+
         // TODO clarify encoding
         FileUtils.writeStringToFile(stateFile, content, "US-ASCII");
+    }
+
+    private void assertStateInOrgDir(File orgDir, File stateFile) throws IOException {
+        if (!stateFile.getCanonicalFile().getParentFile().equals(orgDir.getCanonicalFile())) {
+            throw new IllegalArgumentException("Trying to write state into another directory");
+        }
     }
 
     private String ext(String name) {
@@ -44,8 +56,10 @@ public class SaltStateStorageManager {
     }
 
     public void deleteState(long orgId, String name) throws IOException {
-        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, ext(name));
-        Files.delete(slsPath);
+        File orgDir = new File(getBaseDirPath(), "manager_org_" + orgId);
+        File stateFile = new File(orgDir, ext(name));
+        assertStateInOrgDir(orgDir, stateFile);
+        Files.delete(stateFile.toPath());
     }
 
     public Optional<String> getContent(long orgId, String name) throws IOException {
@@ -65,7 +79,11 @@ public class SaltStateStorageManager {
             return Collections.emptyList();
         }
         return Arrays.asList(orgDir.list((dir, name) -> name.endsWith(".sls")));
+    }
 
+    public boolean exists(long orgId, String name) {
+        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, ext(name));
+        return slsPath.toFile().exists();
     }
 
 }

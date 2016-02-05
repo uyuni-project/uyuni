@@ -262,7 +262,7 @@ public interface SaltService {
      */
     Set<String> getAllowedMinions(User user, String target);
 
-    void storeOrgState(long orgId, String name, String content);
+    void storeOrgState(long orgId, String name, String oldName, String content);
 
     void deleteOrgState(long orgId, String name);
 
