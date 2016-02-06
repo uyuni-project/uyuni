@@ -38,14 +38,21 @@ smdba system-check autotuning
 # this copy the latest schema from the git into the system
 ./build-schema.sh
 
-#RPMVERSION=`rpm -q --qf "%{version}" --specfile /manager/schema/spacewalk/susemanager-schema.spec`
-#NEXTVERSION=`echo $RPMVERSION | awk '{ pre=post=$0; gsub("[0-9]+$","",pre); gsub(".*\\\\.","",post); print pre post+1; }'`
+################################################
+####### START COMMENT OUT
+####### IF A FIXED DESTINATION IS WANTED
+################################################
 
-#if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-$RPMVERSION-to-susemanager-schema-$NEXTVERSION ]; then
-#    export SUMA_TEST_SCHEMA_VERSION=$NEXTVERSION
-#else
-#    export SUMA_TEST_SCHEMA_VERSION=$RPMVERSION
-#fi
+RPMVERSION=`rpm -q --qf "%{version}" --specfile /manager/schema/spacewalk/susemanager-schema.spec`
+NEXTVERSION=`echo $RPMVERSION | awk '{ pre=post=$0; gsub("[0-9]+$","",pre); gsub(".*\\\\.","",post); print pre post+1; }'`
+
+RPMVERSION='3.0'
+if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-$RPMVERSION-to-susemanager-schema-$NEXTVERSION ]; then
+    export SUMA_TEST_SCHEMA_VERSION=$NEXTVERSION
+
+else
+    export SUMA_TEST_SCHEMA_VERSION=$RPMVERSION
+fi
 
 # guessing the link
 # obsolete: we have this link now in the package.
@@ -56,7 +63,10 @@ smdba system-check autotuning
 #        break
 #    fi
 #done
-export SUMA_TEST_SCHEMA_VERSION="3.0"
+###############################################
+####### END
+#export SUMA_TEST_SCHEMA_VERSION="3.0"
+###############################################
 
 # run the schema upgrade from git repo
 if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
