@@ -25,7 +25,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.43.1
+Version: 2.5.49
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -977,6 +977,31 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Feb 04 2016 Grant Gainey 2.5.49-1
+- 1304863 - add scheduled-by to SSM action-history-list
+
+* Thu Feb 04 2016 Grant Gainey 2.5.48-1
+- 1122974 - ISE in case no system is selected
+
+* Wed Feb 03 2016 Tomas Lestach <tlestach@redhat.com> 2.5.47-1
+- for Channel.packageByFileName query prefer packages from the actual channel,
+  sort the rest accoring to build_time
+
+* Tue Feb 02 2016 Jiri Dostal <jdostal@redhat.com> 2.5.46-1
+- 1250572 - Text description missing for remote command by API -> function
+  scheduleLabelScriptRun()
+
+* Fri Jan 29 2016 Gennadii Altukhov <galt@redhat.com> 2.5.45-1
+- 1302996 Added/changed API-methods to work with package installation/removing
+  using it's nevra
+- 1302996 Added additional information to package metadata, returned by
+  serializer
+
+* Wed Jan 27 2016 Tomas Lestach <tlestach@redhat.com> 2.5.44-1
+- additionaly sort results according to build_time, when searching for packages
+  by filename
+- 1287829 - reverting original changes
+
 * Mon Jan 25 2016 Grant Gainey 2.5.43-1
 - Make it compile against servlet API < 3.0
 - Avoid the diamond operator

@@ -29,8 +29,7 @@ Obsoletes:      rhn-satellite-schema <= 5.1.0
 %define postgres %{rhnroot}/postgres
 
 %description
-rhn-satellite-schema is the Oracle SQL schema for the Spacewalk server.
-Oracle tablespace name conversions have NOT been applied.
+susemanager-schema is the SQL schema for the SUSE Manager server.
 
 %prep
 
@@ -78,6 +77,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Tue Feb 02 2016 Grant Gainey 2.5.10-1
+- When deleting a server, delete all associated rhnSet entries
+- 1303886 - update %%description of spacewalk-schema package
+
+* Fri Jan 29 2016 Jan Dobes 2.5.9-1
+- 1301611 - no need to lock table since we don't update entitlements
+
 * Fri Jan 22 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.8-1
 - fix oracle sha1 for 017-drop_monitoring_tables.sql
 

@@ -32,6 +32,11 @@ if [ -x /usr/sbin/update-ca-certificates ]; then
 fi
 
 
+# Not on EL5
+if [ ! -d $TRUST_DIR ]; then
+    exit 0
+fi
+
 if [ -f $CERT_DIR/$CERT_FILE ]; then
     ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
 else
