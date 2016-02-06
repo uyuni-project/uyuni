@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 30a43893b81e5a8ebfd61a64aebc1e9413f24c7f
+-- oracle equivalent source sha1 0035c8d72f80273e082e8927b7db48b8eaec39b6
 --
 -- Copyright (c) 2008--2015 Red Hat, Inc.
 --
@@ -21,17 +21,6 @@
 
 --update pg_setting
 update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_path';
-
-    create or replace function obtain_read_lock(channel_family_id_in in numeric, org_id_in in numeric)
-    returns void as $$
-    declare
-        read_lock timestamptz;
-    begin
-        select created into read_lock
-          from rhnPrivateChannelFamily
-         where channel_family_id = channel_family_id_in and org_id = org_id_in
-           for update;
-    end$$ language plpgsql;
 
     -- this "emulates" cursor server_base_subscriptions defined in oracle/rhn_channel.pks
     create or replace function server_base_subscriptions(server_id_in NUMERIC)
@@ -59,7 +48,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         server_has_base_chan    BOOLEAN;
         server_already_in_chan  BOOLEAN;
         channel_family_id_val   NUMERIC;
-        server_org_id_val       NUMERIC;
         allowed                 numeric;
     BEGIN
         if user_id_in is not null then
@@ -106,22 +94,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         THEN
             perform rhn_exception.raise_exception('channel_subscribe_no_family');
         END IF;
-
-        --
-        -- Use the org_id of the server only if the org_id of the channel = NULL.
-        -- This is required for subscribing to shared channels.
-        --
-        SELECT COALESCE(org_id, (SELECT org_id FROM rhnServer WHERE id = server_id_in))
-          INTO server_org_id_val
-          FROM rhnChannel
-         WHERE id = channel_id_in;
-
-        begin
-            perform rhn_channel.obtain_read_lock(channel_family_id_val, server_org_id_val);
-        exception
-            when no_data_found then
-                perform rhn_exception.raise_exception('channel_subscribe_no_family');
-        end;
 
         insert into rhnServerHistory (id,server_id,summary,details) (
             select  nextval('rhn_event_id_seq'),
