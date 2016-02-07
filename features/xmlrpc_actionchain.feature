@@ -40,6 +40,6 @@ Feature: Test XML-RPC "Action Chain" functionality.
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
     Then there should be no more my action chain
-    And I should see scheduled action, called "System reboot"
+    And I should see scheduled action, called "System reboot scheduled by admin"
     Then I cancel all scheduled actions
     And there should be no more any scheduled actions
