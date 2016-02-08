@@ -30,7 +30,7 @@ public class MainframeSysinfo {
 
     /**
      * Call mainframesysinfo.read_values
-     * @return a {@link LocalCall} to pass to the SaltStackClient
+     * @return a {@link LocalCall} to pass to the SaltClient
      */
     public static LocalCall<String> readValues() {
         Map<String, Object> args = new LinkedHashMap<>();

@@ -31,7 +31,7 @@ public class Udevdb {
 
     /**
      * Call udevdb.exportdb.
-     * @return a {@link LocalCall} to pass to the SaltStackClient
+     * @return a {@link LocalCall} to pass to the SaltClient
      */
     public static LocalCall<List<Map<String, Object>>> exportdb() {
         LinkedHashMap<String, Object> args = new LinkedHashMap<>();
