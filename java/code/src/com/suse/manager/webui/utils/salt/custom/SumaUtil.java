@@ -87,7 +87,7 @@ public class SumaUtil {
     /**
      * Call 'sumautil.cat'
      * @param path path of the file.
-     * @return a {@link LocalCall} to pass to the SaltStackClient
+     * @return a {@link LocalCall} to pass to the SaltClient
      */
     public static LocalCall<String> cat(String path) {
         Map<String, Object> args = new LinkedHashMap<>();
@@ -99,7 +99,7 @@ public class SumaUtil {
 
     /**
      * Call 'sumautil.primary_ips'
-     * @return a {@link LocalCall} to pass to the SaltStackClient
+     * @return a {@link LocalCall} to pass to the SaltClient
      */
     public static LocalCall<Map<IPVersion, IPRoute>> primaryIps() {
         return new LocalCall<>("sumautil.primary_ips", Optional.empty(),
@@ -109,7 +109,7 @@ public class SumaUtil {
 
     /**
      * Call 'sumautil.get_net_modules'
-     * @return a {@link LocalCall} to pass to the SaltStackClient
+     * @return a {@link LocalCall} to pass to the SaltClient
      */
     public static LocalCall<Map<String, String>> getNetModules() {
         return new LocalCall<>("sumautil.get_net_modules", Optional.empty(),
