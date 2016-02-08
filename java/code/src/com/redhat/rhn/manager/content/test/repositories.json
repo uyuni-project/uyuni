@@ -8811,6 +8811,42 @@
     "autorefresh": false
   },
   {
+    "id": 1937,
+    "name": "SLE-12-SP1-SAP-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-12-SP1-SAP-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SAP/12-SP1/x86_64/update/?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1938,
+    "name": "SLE-12-SP1-SAP-Debuginfo-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-12-SP1-SAP-Debuginfo-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SAP/12-SP1/x86_64/update_debug/?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1939,
+    "name": "SLE12-SP1-SAP-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE12-SP1-SAP-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP1/x86_64/product/?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1940,
+    "name": "SLE12-SP1-SAP-Debuginfo-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE12-SP1-SAP-Debuginfo-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP1/x86_64/product_debug/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
     "id": 1949,
     "name": "SUSE-Manager-Server-3.0-Updates",
     "distro_target": "sle-12-x86_64",
@@ -8852,6 +8888,51 @@
     "distro_target": "sle-12-x86_64",
     "description": "SLE-Module-Containers12-Source-Pool for sle-12-x86_64",
     "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Containers/12/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1958,
+    "name": "SUSE-Enterprise-Storage-2.1-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2.1-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/Storage/2.1/x86_64/update/?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1959,
+    "name": "SUSE-Enterprise-Storage-2.1-Debuginfo-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2.1-Debuginfo-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/Storage/2.1/x86_64/update_debug/?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1960,
+    "name": "SUSE-Enterprise-Storage-2.1-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2.1-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/2.1/x86_64/product/?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1961,
+    "name": "SUSE-Enterprise-Storage-2.1-Debuginfo-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2.1-Debuginfo-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/2.1/x86_64/product_debug/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1962,
+    "name": "SUSE-Enterprise-Storage-2.1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2.1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/2.1/x86_64/product_source/?my-fake-token",
     "enabled": false,
     "autorefresh": false
   },
