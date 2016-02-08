@@ -15,28 +15,20 @@
 
 package com.suse.manager.webui.controllers;
 
-import static spark.Spark.halt;
 
 import com.redhat.rhn.common.security.CSRFTokenValidator;
+import com.redhat.rhn.domain.matcher.MatcherRunData;
+import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.matcher.MatcherJsonIO;
-import com.suse.manager.matcher.MatcherRunner;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpStatus;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import spark.ModelAndView;
@@ -80,8 +72,8 @@ public class SubscriptionMatchingController {
     public static String data(Request request, Response response, User user) {
         MatcherJsonIO matcherJsonIO = new MatcherJsonIO();
         Object data = new SubscriptionMatchProcessor().getData(
-                matcherJsonIO.getMatcherInput(),
-                matcherJsonIO.getMatcherOutput());
+                matcherJsonIO.getLastMatcherInput(),
+                matcherJsonIO.getLastMatcherOutput());
         response.type("application/json");
         return GSON.toJson(data);
     }
@@ -96,24 +88,13 @@ public class SubscriptionMatchingController {
      */
     public static String csv(Request request, Response response, User user) {
         String filename = request.params("filename");
-        List<String> validFilenames = Arrays.asList("message_report.csv",
-                "subscription_report.csv",
-                "unmatched_system_report.csv");
-
-        if (StringUtils.isBlank(filename) || !validFilenames.contains(filename)) {
-            throw new IllegalArgumentException("Tried to download csv with illegal" +
-                    " filename: " + filename);
+        response.raw().setContentType("application/csv");
+        MatcherRunData data = MatcherRunDataFactory.getSingle();
+        if (data == null) {
+            throw new IllegalStateException("File with subscription matcher data not" +
+                    " found.");
         }
-
-        try {
-            response.raw().setContentType("application/csv");
-            return FileUtils.readFileToString(
-                    new File(MatcherRunner.OUT_DIRECTORY, filename));
-        }
-        catch (IOException e) {
-            halt(HttpStatus.SC_NOT_FOUND);
-            return null;
-        }
+        return data.getCSVContentsByFilename(filename);
     }
 
     /**
