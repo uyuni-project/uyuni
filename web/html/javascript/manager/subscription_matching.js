@@ -463,7 +463,7 @@ var Table = React.createClass({
     this.setState({"currentPage": page});
   },
 
-  changeItemsPerPage: function(itemsPerPage) {
+  onItemsPerPageChange: function(itemsPerPage) {
     this.setState({"itemsPerPage": itemsPerPage});
     var lastPage = this.lastPage(this.getRows(this.props.rows, this.state.searchField), itemsPerPage);
     if (this.state.currentPage > lastPage) {
@@ -471,7 +471,7 @@ var Table = React.createClass({
     }
   },
 
-  changeSearchField: function(searchValue) {
+  onSearchFieldChange: function(searchValue) {
     this.setState({"searchField": searchValue});
     var lastPage =  this.lastPage(this.getRows(this.props.rows, searchValue), this.state.itemsPerPage);
     if (this.state.currentPage > lastPage) {
@@ -509,7 +509,7 @@ var Table = React.createClass({
     if (this.props.dataFilter) {
       searchField = (
         <SearchField
-          onChange={this.changeSearchField}
+          onChange={this.onSearchFieldChange}
           defaultValue={this.state.searchField}
           placeholder={this.props.searchPlaceholder}
         />
@@ -527,7 +527,7 @@ var Table = React.createClass({
               <Select className="display-number"
                 options={[5,10,15,25,50,100,250,500]}
                 currentValue={itemsPerPage}
-                onChange={this.changeItemsPerPage}
+                onChange={this.onItemsPerPageChange}
               /> {t("items per page")}
             </div>
           </div>
