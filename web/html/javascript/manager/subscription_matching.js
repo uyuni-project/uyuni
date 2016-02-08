@@ -237,10 +237,10 @@ var StatePersistedMixin = {
 var UnmatchedSystems = React.createClass({
   mixins: [StatePersistedMixin],
 
-  rowFilter: function(a, b, columnIndex, order) {
+  rowFilter: function(a, b, columnIndex, ascending) {
     var columnKeyInRawData=["name"];
     var columnKey = columnKeyInRawData[columnIndex];
-    var orderCondition = order == "asc" ? 1 : -1;
+    var orderCondition = ascending ? 1 : -1;
     var result = 0;
     var aValue = a.props["raw_data"][columnKey];
     var bValue = b.props["raw_data"][columnKey];
@@ -284,10 +284,10 @@ function unmatchedSystemsToRows(systems) {
 var Messages = React.createClass({
   mixins: [StatePersistedMixin],
 
-  rowFilter: function(a, b, columnIndex, order) {
+  rowFilter: function(a, b, columnIndex, ascending) {
     var columnKeyInRawData=["type"];
     var columnKey = columnKeyInRawData[columnIndex];
-    var orderCondition = order == "asc" ? 1 : -1;
+    var orderCondition = ascending ? 1 : -1;
     var result = 0;
     var aValue = a.props["raw_data"][columnKey];
     var bValue = b.props["raw_data"][columnKey];
@@ -373,10 +373,10 @@ function messagesToRows(raw_messages) {
 var Subscriptions = React.createClass({
   mixins: [StatePersistedMixin],
 
-  rowFilter: function(a, b, columnIndex, order) {
+  rowFilter: function(a, b, columnIndex, ascending) {
     var columnKeyInRawData=["partNumber", "description", "policy", "quantity", "startDate", "endDate"];
     var columnKey = columnKeyInRawData[columnIndex];
-    var orderCondition = order == "asc" ? 1 : -1;
+    var orderCondition = ascending ? 1 : -1;
     var a_raw = a.props["raw_data"];
     var b_raw = b.props["raw_data"];
     var result = 0;
@@ -495,7 +495,7 @@ var Table = React.createClass({
     return {
       "currentPage": 1, "itemsPerPage": 15,
       "searchField": "",
-      "columnIndex": 0, "order": "asc"
+      "columnIndex": 0, "ascending": true
     };
   },
 
@@ -511,14 +511,14 @@ var Table = React.createClass({
   },
 
   orderByColumn: function(columnIndex) {
-    var order = this.state.order;
+    var ascending = this.state.ascending;
     if (this.state.columnIndex == columnIndex) {
-      order = order == "asc" ? "desc" : "asc";
+      ascending = !ascending;
     }
     else {
-      order = "asc";
+      ascending = true;
     }
-    this.setState({"columnIndex": columnIndex, "order": order});
+    this.setState({"columnIndex": columnIndex, "ascending": ascending});
   },
 
   getRows: function(unfiltered_rows, searchValue) {
@@ -527,8 +527,8 @@ var Table = React.createClass({
       unfiltered_rows;
       if (this.props.rowComparator) {
         var columnIndex = this.state.columnIndex;
-        var order = this.state.order;
-        rows.sort((a, b) => this.props.rowComparator(a, b, columnIndex, order));
+        var ascending = this.state.ascending;
+        rows.sort((a, b) => this.props.rowComparator(a, b, columnIndex, ascending));
       }
     return rows;
   },
@@ -622,7 +622,7 @@ var Table = React.createClass({
                 this.props.headers.map((header, index) => {
                   var className;
                   if (index == this.state.columnIndex) {
-                    className = this.state.order + "Sort";
+                    className = (this.state.ascending ? "asc" : "desc") + "Sort";
                   }
                   return (
                       (this.props.sortableColumns &&
