@@ -181,7 +181,7 @@ var MatcherRunDescription = React.createClass({
       return <div>{t("Matching data is currently being recomputed, it was started {0}.", moment(this.props.latestStart).fromNow())}</div>;
     }
 
-    return <div>{t("Latest successful match data was computed on {0}, you can trigger a new run by clicking the button below.", moment(this.props.latestEnd).fromNow())}</div>;
+    return <div>{t("Latest successful match data was computed {0}, you can trigger a new run by clicking the button below.", moment(this.props.latestEnd).fromNow())}</div>;
   }
 });
 
@@ -237,6 +237,17 @@ var StatePersistedMixin = {
 var UnmatchedSystems = React.createClass({
   mixins: [StatePersistedMixin],
 
+  rowFilter: function(a, b, columnIndex, ascending) {
+    var columnKeyInRawData=["name"];
+    var columnKey = columnKeyInRawData[columnIndex];
+    var orderCondition = ascending ? 1 : -1;
+    var result = 0;
+    var aValue = a.props["rawData"][columnKey];
+    var bValue = b.props["rawData"][columnKey];
+    result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+    return result * orderCondition;
+  },
+
   render: function() {
     if (this.props.unmatchedSystems != null && this.props.unmatchedSystems.length > 0) {
       return (
@@ -247,6 +258,8 @@ var UnmatchedSystems = React.createClass({
               rows={unmatchedSystemsToRows(this.props.unmatchedSystems)}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
+              rowComparator={this.rowFilter}
+              sortableColumns={[0]}
             />
             <CsvLink name="unmatched_system_report.csv" />
           </div>
@@ -264,12 +277,23 @@ function unmatchedSystemsToRows(systems) {
       <TableCell content={s.cpuCount} />,
       <TableCell content={s.products.reduce((a,b) => a+", "+b)} />,
     ];
-    return <TableRow columns={columns} />
+    return <TableRow columns={columns} rawData={s} />
   });
 }
 
 var Messages = React.createClass({
   mixins: [StatePersistedMixin],
+
+  rowFilter: function(a, b, columnIndex, ascending) {
+    var columnKeyInRawData=["type"];
+    var columnKey = columnKeyInRawData[columnIndex];
+    var orderCondition = ascending ? 1 : -1;
+    var result = 0;
+    var aValue = a.props["rawData"][columnKey];
+    var bValue = b.props["rawData"][columnKey];
+    result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+    return result * orderCondition;
+  },
 
   render: function() {
     var body;
@@ -283,6 +307,8 @@ var Messages = React.createClass({
               rows={messagesToRows(this.props.messages)}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
+              rowComparator={this.rowFilter}
+              sortableColumns={[0]}
             />
             <CsvLink name="message_report.csv" />
           </div>
@@ -305,12 +331,12 @@ var Messages = React.createClass({
   }
 });
 
-function messagesToRows(raw_messages) {
-  var result= raw_messages.map(function(raw_message) {
-    var data = raw_message["data"];
+function messagesToRows(rawMessages) {
+  var result= rawMessages.map(function(rawMessage) {
+    var data = rawMessage["data"];
     var message;
     var additionalInformation;
-    switch(raw_message["type"]) {
+    switch(rawMessage["type"]) {
       case "unknown_part_number" :
         message = t("Unsupported part number detected");
         additionalInformation = data["part_number"];
@@ -332,20 +358,50 @@ function messagesToRows(raw_messages) {
         additionalInformation = t("{0} to system {1}", data["subscription_name"], data["system_name"]);
         break;
       default:
-        message = raw_message["type"];
+        message = rawMessage["type"];
         additionalInformation = data;
     }
     var columns = [
       <TableCell content={message} />,
       <TableCell content={additionalInformation} />
     ];
-    return <TableRow columns={columns} />;
+    return <TableRow columns={columns}  rawData={rawMessage}/>;
   });
   return result;
 }
 
 var Subscriptions = React.createClass({
   mixins: [StatePersistedMixin],
+
+  rowFilter: function(a, b, columnIndex, ascending) {
+    var columnKeyInRawData=["partNumber", "description", "policy", "quantity", "startDate", "endDate"];
+    var columnKey = columnKeyInRawData[columnIndex];
+    var orderCondition = ascending ? 1 : -1;
+    var aRaw = a.props["rawData"];
+    var bRaw = b.props["rawData"];
+    var result = 0;
+    if (columnKey == "quantity") {
+      var aMatched = aRaw["matchedQuantity"];
+      var aTotal = aRaw["totalQuantity"];
+      var bMatched = bRaw["matchedQuantity"];
+      var bTotal = bRaw["totalQuantity"];
+      var aValue =  aMatched / aTotal;
+      var bValue =  bMatched / bTotal;
+      result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
+    }
+    else {
+      var aValue = aRaw[columnKey];
+      var bValue = bRaw[columnKey];
+      result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+    }
+
+    if (result == 0) {
+      var aId = aRaw["id"];
+      var bId = bRaw["id"];
+      result = aId > bId ? 1 : (aId < bId ? -1 : 0);
+    }
+    return result * orderCondition;
+  },
 
   render: function() {
     var body;
@@ -357,8 +413,10 @@ var Subscriptions = React.createClass({
               rows={subscriptionsToRows(this.props.subscriptions)}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
-              dataFilter={(tableRow, searchValue) => tableRow.props["raw_data"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
+              dataFilter={(tableRow, searchValue) => tableRow.props["rawData"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
               searchPlaceholder={t("Filter by description")}
+              rowComparator={this.rowFilter}
+              sortableColumns={[0,1,2,3,4,5]}
             />
             <CsvLink name="subscription_report.csv" />
           </div>
@@ -405,13 +463,13 @@ function subscriptionsToRows(subscriptions) {
       />,
     ];
 
-    return <TableRow className={className} columns={columns} raw_data={s} />
+    return <TableRow className={className} columns={columns} rawData={s} />
   });
 }
 
-function humanReadablePolicy(raw_policy) {
+function humanReadablePolicy(rawPolicy) {
   var message;
-  switch(raw_policy) {
+  switch(rawPolicy) {
     case "physical_only" :
       message = t("Physical deployment only");
       break;
@@ -425,7 +483,7 @@ function humanReadablePolicy(raw_policy) {
       message = t("Per-instance");
       break;
     default:
-      message = raw_policy;
+      message = rawPolicy;
   }
   return message;
 }
@@ -434,20 +492,44 @@ var Table = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
-    return { "currentPage": 1, "itemsPerPage": 15, "searchField": ""};
+    return {
+      "currentPage": 1, "itemsPerPage": 15,
+      "searchField": "",
+      "columnIndex": 0, "ascending": true
+    };
   },
 
   componentWillReceiveProps: function(nextProps) {
+    var columnIndex;
+    if (this.props.sortableColumns) {
+      columnIndex = this.props.sortableColumns[0];
+    }
     var lastPage = Math.ceil(nextProps.rows.length / nextProps.itemsPerPage);
     if (this.state.currentPage > lastPage) {
-      this.setState({"currentPage": lastPage});
+      this.setState({"currentPage": lastPage, "columnIndex" : columnIndex});
     }
   },
 
-  getRows: function(unfiltered_rows, searchValue) {
+  orderByColumn: function(columnIndex) {
+    var ascending = this.state.ascending;
+    if (this.state.columnIndex == columnIndex) {
+      ascending = !ascending;
+    }
+    else {
+      ascending = true;
+    }
+    this.setState({"columnIndex": columnIndex, "ascending": ascending});
+  },
+
+  getRows: function(unfilteredRows, searchValue) {
     var rows = this.props.dataFilter && searchValue.length > 0 ?
-      unfiltered_rows.filter((row) => this.props.dataFilter(row, searchValue)) :
-      unfiltered_rows;
+      unfilteredRows.filter((row) => this.props.dataFilter(row, searchValue)) :
+      unfilteredRows;
+      if (this.props.rowComparator) {
+        var columnIndex = this.state.columnIndex;
+        var ascending = this.state.ascending;
+        rows.sort((a, b) => this.props.rowComparator(a, b, columnIndex, ascending));
+      }
     return rows;
   },
 
@@ -481,10 +563,10 @@ var Table = React.createClass({
 
   render: function() {
     var rows = this.getRows(this.props.rows, this.state.searchField);
-    var itemsPerPage = parseInt(this.state.itemsPerPage);
-    var itemCount = parseInt(rows.length);
+    var itemsPerPage = this.state.itemsPerPage;
+    var itemCount = rows.length;
     var lastPage = this.lastPage(rows, itemsPerPage);
-    var currentPage = parseInt(this.state.currentPage);
+    var currentPage = this.state.currentPage;
 
     var firstItemIndex = (currentPage - 1) * itemsPerPage;
 
@@ -524,7 +606,7 @@ var Table = React.createClass({
               {searchField} {t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)}
             </div>
             <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
-              <Select className="display-number"
+              <PageSelector className="display-number"
                 options={[5,10,15,25,50,100,250,500]}
                 currentValue={itemsPerPage}
                 onChange={this.onItemsPerPageChange}
@@ -534,7 +616,22 @@ var Table = React.createClass({
         </div>
         <div className="table-responsive">
           <table className="table table-striped">
-            <TableHeader headers={this.props.headers} />
+            <TableHeader
+              content={
+                this.props.headers.map((header, index) => {
+                  var className;
+                  if (index == this.state.columnIndex) {
+                    className = (this.state.ascending ? "asc" : "desc") + "Sort";
+                  }
+                  return (
+                      (this.props.sortableColumns &&
+                        this.props.sortableColumns.filter((element) => element == index).length > 0) ?
+                      <TableHeaderCellOrder className={className} content={header}
+                        orderBy={this.orderByColumn} columnIndex={index} /> :
+                      <TableHeaderCell className={className} content={header} />
+                  );
+                })}
+            />
             <tbody className="table-content">
               {rows
                 .filter((element, i) => i >= firstItemIndex && i < firstItemIndex + itemsPerPage)
@@ -568,9 +665,9 @@ var PaginationButton = React.createClass({
   }
 });
 
-var Select = React.createClass({
+var PageSelector = React.createClass({
   handleOnChange: function(e) {
-    this.props.onChange(e.target.value);
+    this.props.onChange(parseInt(e.target.value));
   },
 
   render: function() {
@@ -589,14 +686,27 @@ var Select = React.createClass({
 var TableHeader = React.createClass({
   render: function() {
     return (
-      <thead>
-        <tr>
-          {this.props.headers.map(function(header) {
-            return (<th>{header}</th>);
-          })}
-        </tr>
-      </thead>
+      <thead><tr>{this.props.content}</tr></thead>
     );
+  }
+});
+
+var TableHeaderCellOrder = React.createClass({
+  handleClick: function() {
+    if (this.props.columnIndex != null) {
+      this.props.orderBy(this.props.columnIndex);
+    }
+  },
+
+  render: function () {
+    return (<th className={this.props.className}><a className="orderBy" onClick={this.handleClick}>{this.props.content}</a></th>);
+  }
+});
+
+
+var TableHeaderCell = React.createClass({
+  render: function () {
+    return (<th className={this.props.className}>{this.props.content}</th>);
   }
 });
 
