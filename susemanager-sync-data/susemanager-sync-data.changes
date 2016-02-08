@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Feb 08 18:01:37 CET 2016 - mc@suse.de
+
+- version 2.1.13-1
+- Add support for SUSE-Enterprise-Storage 2.1 (bsc#963784)
+- Add support for SLE12-SP1-SAP (bsc#959548)
+- Add support for SLES11-SP3-LTSS-Updates (bsc#965652)
+
+-------------------------------------------------------------------
 Mon Jan 18 10:55:07 CET 2016 - mc@suse.de
 
 - version 2.1.12-1
