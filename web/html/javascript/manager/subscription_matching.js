@@ -358,7 +358,7 @@ var Subscriptions = React.createClass({
               loadState={this.props.loadState}
               saveState={this.props.saveState}
               dataFilter={(tableRow, searchValue) => tableRow.props["raw_data"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-              searchPlaceholder={t("Filter by Description:")}
+              searchPlaceholder={t("Filter by description")}
             />
             <CsvLink name="subscription_report.csv" />
           </div>
