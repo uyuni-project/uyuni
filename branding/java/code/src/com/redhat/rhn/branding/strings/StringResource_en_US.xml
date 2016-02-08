@@ -1447,6 +1447,12 @@ As a Channel Administrator, you may change the base channels your systems are su
       <trans-unit id="task.status.auto-errata">
         <source>Auto Patch Updates</source>
       </trans-unit>
+      <trans-unit id="ssm.misc.index.syspref.notify">
+        <source>Receive Notifications of Updates/Patches</source>
+      </trans-unit>
+      <trans-unit id="sdc.details.edit.updates">
+        <source>Receive Notifications of Updates/Patches.</source>
+      </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage">
         <source>&lt;div style="text-align: left;"&gt;
 &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
