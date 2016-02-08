@@ -242,8 +242,8 @@ var UnmatchedSystems = React.createClass({
     var columnKey = columnKeyInRawData[columnIndex];
     var orderCondition = ascending ? 1 : -1;
     var result = 0;
-    var aValue = a.props["raw_data"][columnKey];
-    var bValue = b.props["raw_data"][columnKey];
+    var aValue = a.props["rawData"][columnKey];
+    var bValue = b.props["rawData"][columnKey];
     result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
     return result * orderCondition;
   },
@@ -277,7 +277,7 @@ function unmatchedSystemsToRows(systems) {
       <TableCell content={s.cpuCount} />,
       <TableCell content={s.products.reduce((a,b) => a+", "+b)} />,
     ];
-    return <TableRow columns={columns} raw_data={s} />
+    return <TableRow columns={columns} rawData={s} />
   });
 }
 
@@ -289,8 +289,8 @@ var Messages = React.createClass({
     var columnKey = columnKeyInRawData[columnIndex];
     var orderCondition = ascending ? 1 : -1;
     var result = 0;
-    var aValue = a.props["raw_data"][columnKey];
-    var bValue = b.props["raw_data"][columnKey];
+    var aValue = a.props["rawData"][columnKey];
+    var bValue = b.props["rawData"][columnKey];
     result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
     return result * orderCondition;
   },
@@ -331,12 +331,12 @@ var Messages = React.createClass({
   }
 });
 
-function messagesToRows(raw_messages) {
-  var result= raw_messages.map(function(raw_message) {
-    var data = raw_message["data"];
+function messagesToRows(rawMessages) {
+  var result= rawMessages.map(function(rawMessage) {
+    var data = rawMessage["data"];
     var message;
     var additionalInformation;
-    switch(raw_message["type"]) {
+    switch(rawMessage["type"]) {
       case "unknown_part_number" :
         message = t("Unsupported part number detected");
         additionalInformation = data["part_number"];
@@ -358,14 +358,14 @@ function messagesToRows(raw_messages) {
         additionalInformation = t("{0} to system {1}", data["subscription_name"], data["system_name"]);
         break;
       default:
-        message = raw_message["type"];
+        message = rawMessage["type"];
         additionalInformation = data;
     }
     var columns = [
       <TableCell content={message} />,
       <TableCell content={additionalInformation} />
     ];
-    return <TableRow columns={columns}  raw_data={raw_message}/>;
+    return <TableRow columns={columns}  rawData={rawMessage}/>;
   });
   return result;
 }
@@ -377,27 +377,27 @@ var Subscriptions = React.createClass({
     var columnKeyInRawData=["partNumber", "description", "policy", "quantity", "startDate", "endDate"];
     var columnKey = columnKeyInRawData[columnIndex];
     var orderCondition = ascending ? 1 : -1;
-    var a_raw = a.props["raw_data"];
-    var b_raw = b.props["raw_data"];
+    var aRaw = a.props["rawData"];
+    var bRaw = b.props["rawData"];
     var result = 0;
     if (columnKey == "quantity") {
-      var aMatched = a_raw["matchedQuantity"];
-      var aTotal = a_raw["totalQuantity"];
-      var bMatched = b_raw["matchedQuantity"];
-      var bTotal = b_raw["totalQuantity"];
+      var aMatched = aRaw["matchedQuantity"];
+      var aTotal = aRaw["totalQuantity"];
+      var bMatched = bRaw["matchedQuantity"];
+      var bTotal = bRaw["totalQuantity"];
       var aValue =  aMatched / aTotal;
       var bValue =  bMatched / bTotal;
       result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
     }
     else {
-      var aValue = a_raw[columnKey];
-      var bValue = b_raw[columnKey];
+      var aValue = aRaw[columnKey];
+      var bValue = bRaw[columnKey];
       result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
     }
 
     if (result == 0) {
-      var aId = a_raw["id"];
-      var bId = b_raw["id"];
+      var aId = aRaw["id"];
+      var bId = bRaw["id"];
       result = aId > bId ? 1 : (aId < bId ? -1 : 0);
     }
     return result * orderCondition;
@@ -413,7 +413,7 @@ var Subscriptions = React.createClass({
               rows={subscriptionsToRows(this.props.subscriptions)}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
-              dataFilter={(tableRow, searchValue) => tableRow.props["raw_data"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
+              dataFilter={(tableRow, searchValue) => tableRow.props["rawData"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
               searchPlaceholder={t("Filter by description")}
               rowComparator={this.rowFilter}
               sortableColumns={[0,1,2,3,4,5]}
@@ -463,13 +463,13 @@ function subscriptionsToRows(subscriptions) {
       />,
     ];
 
-    return <TableRow className={className} columns={columns} raw_data={s} />
+    return <TableRow className={className} columns={columns} rawData={s} />
   });
 }
 
-function humanReadablePolicy(raw_policy) {
+function humanReadablePolicy(rawPolicy) {
   var message;
-  switch(raw_policy) {
+  switch(rawPolicy) {
     case "physical_only" :
       message = t("Physical deployment only");
       break;
@@ -483,7 +483,7 @@ function humanReadablePolicy(raw_policy) {
       message = t("Per-instance");
       break;
     default:
-      message = raw_policy;
+      message = rawPolicy;
   }
   return message;
 }
@@ -521,10 +521,10 @@ var Table = React.createClass({
     this.setState({"columnIndex": columnIndex, "ascending": ascending});
   },
 
-  getRows: function(unfiltered_rows, searchValue) {
+  getRows: function(unfilteredRows, searchValue) {
     var rows = this.props.dataFilter && searchValue.length > 0 ?
-      unfiltered_rows.filter((row) => this.props.dataFilter(row, searchValue)) :
-      unfiltered_rows;
+      unfilteredRows.filter((row) => this.props.dataFilter(row, searchValue)) :
+      unfilteredRows;
       if (this.props.rowComparator) {
         var columnIndex = this.state.columnIndex;
         var ascending = this.state.ascending;
