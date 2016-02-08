@@ -29,7 +29,7 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import com.suse.saltstack.netapi.datatypes.target.Grains;
+import com.suse.salt.netapi.datatypes.target.Grains;
 import org.apache.log4j.Logger;
 
 import com.suse.manager.webui.services.SaltService;
@@ -42,7 +42,7 @@ import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.gson.JSONPackageState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
-import com.suse.saltstack.netapi.calls.LocalAsyncResult;
+import com.suse.salt.netapi.calls.LocalAsyncResult;
 
 import java.io.IOException;
 import java.nio.file.Files;

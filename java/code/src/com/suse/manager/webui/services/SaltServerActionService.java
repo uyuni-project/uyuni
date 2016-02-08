@@ -24,10 +24,10 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.saltstack.netapi.calls.modules.Schedule;
-import com.suse.saltstack.netapi.datatypes.target.MinionList;
-import com.suse.saltstack.netapi.datatypes.target.Target;
-import com.suse.saltstack.netapi.exception.SaltStackException;
+import com.suse.salt.netapi.calls.modules.Schedule;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.exception.SaltException;
 
 import org.apache.log4j.Logger;
 
@@ -121,7 +121,7 @@ public enum SaltServerActionService {
                             serverAction.setStatus(ActionFactory.STATUS_FAILED);
                         }
                     }
-                    catch (SaltStackException saltException) {
+                    catch (SaltException saltException) {
                         LOG.warn("Failed to schedule action for minion '" +
                                 minion.getMinionId() + "': " + saltException.getMessage());
                         serverAction.setCompletionTime(new Date());

@@ -34,8 +34,8 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
-import com.suse.saltstack.netapi.calls.modules.Grains;
-import com.suse.saltstack.netapi.parser.JsonParser;
+import com.suse.salt.netapi.calls.modules.Grains;
+import com.suse.salt.netapi.parser.JsonParser;
 
 /**
  * Tests for {@link RegisterMinionEventMessageAction}.

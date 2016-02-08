@@ -26,7 +26,7 @@ import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
-import com.suse.saltstack.netapi.calls.modules.Network;
+import com.suse.salt.netapi.calls.modules.Network;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Collections;
