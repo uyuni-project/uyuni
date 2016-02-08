@@ -15,15 +15,15 @@
 package com.suse.manager.webui.services;
 
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
-import com.suse.saltstack.netapi.calls.LocalAsyncResult;
-import com.suse.saltstack.netapi.calls.modules.Network;
-import com.suse.saltstack.netapi.calls.modules.Pkg;
-import com.suse.saltstack.netapi.calls.modules.Schedule;
-import com.suse.saltstack.netapi.calls.modules.Smbios;
-import com.suse.saltstack.netapi.calls.wheel.Key;
-import com.suse.saltstack.netapi.datatypes.target.Target;
-import com.suse.saltstack.netapi.event.EventStream;
-import com.suse.saltstack.netapi.exception.SaltStackException;
+import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
+import com.suse.salt.netapi.calls.LocalAsyncResult;
+import com.suse.salt.netapi.calls.modules.Network;
+import com.suse.salt.netapi.calls.modules.Pkg;
+import com.suse.salt.netapi.calls.modules.Schedule;
+import com.suse.salt.netapi.calls.wheel.Key;
+import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.event.EventStream;
+import com.suse.salt.netapi.exception.SaltException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -172,7 +172,7 @@ public interface SaltService {
      * @return the DMI data as a map. An empty
      * imutable map is returned if there is no data.
      */
-    Map<String, Object> getDmiRecords(String minionId, Smbios.RecordType recordType);
+    Map<String, Object> getDmiRecords(String minionId, RecordType recordType);
 
     /**
      * Get the udev database from a minion.
@@ -216,7 +216,7 @@ public interface SaltService {
      */
     Map<String, Schedule.Result> schedulePatchInstallation(String name, Target<?> target,
             Set<String> patches, LocalDateTime scheduleDate, Map<String, ?> metadata)
-            throws SaltStackException;
+            throws SaltException;
 
     /**
      * Remove a scheduled job from the minion

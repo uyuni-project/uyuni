@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.saltstack.netapi.calls.wheel.Key;
+import com.suse.salt.netapi.calls.wheel.Key;
 
 import java.util.HashMap;
 import java.util.List;

@@ -15,7 +15,8 @@
 package com.suse.manager.reactor.hardware;
 
 import com.suse.manager.webui.services.SaltService;
-import com.suse.saltstack.netapi.calls.modules.Smbios;
+import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
+import com.suse.salt.netapi.calls.modules.Smbios;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,8 +55,7 @@ public class SaltServiceInvoker {
      * @param recordType the smbios record type
      * @return the DMI data as a map.
      */
-    public Map<String, Object> getDmiRecords(String minionId,
-                                             Smbios.RecordType recordType) {
+    public Map<String, Object> getDmiRecords(String minionId, RecordType recordType) {
         return getOrInvoke("dmi_" + recordType.getType(),
                 () -> saltService.getDmiRecords(minionId, recordType));
     }

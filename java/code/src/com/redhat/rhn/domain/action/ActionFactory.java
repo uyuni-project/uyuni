@@ -65,8 +65,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.saltstack.netapi.calls.modules.Schedule;
-import com.suse.saltstack.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.calls.modules.Schedule;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;

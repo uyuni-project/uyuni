@@ -21,29 +21,29 @@ import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
-import com.suse.saltstack.netapi.AuthModule;
-import com.suse.saltstack.netapi.calls.LocalAsyncResult;
-import com.suse.saltstack.netapi.calls.LocalCall;
-import com.suse.saltstack.netapi.calls.WheelResult;
-import com.suse.saltstack.netapi.calls.modules.Cmd;
-import com.suse.saltstack.netapi.calls.modules.Grains;
-import com.suse.saltstack.netapi.calls.modules.Match;
-import com.suse.saltstack.netapi.calls.modules.Network;
-import com.suse.saltstack.netapi.calls.modules.Pkg;
-import com.suse.saltstack.netapi.calls.modules.SaltUtil;
-import com.suse.saltstack.netapi.calls.modules.Schedule;
-import com.suse.saltstack.netapi.calls.modules.Smbios;
-import com.suse.saltstack.netapi.calls.modules.State;
-import com.suse.saltstack.netapi.calls.modules.Status;
-import com.suse.saltstack.netapi.calls.runner.Manage;
-import com.suse.saltstack.netapi.calls.wheel.Key;
-import com.suse.saltstack.netapi.client.SaltStackClient;
-import com.suse.saltstack.netapi.config.ClientConfig;
-import com.suse.saltstack.netapi.datatypes.target.Glob;
-import com.suse.saltstack.netapi.datatypes.target.MinionList;
-import com.suse.saltstack.netapi.datatypes.target.Target;
-import com.suse.saltstack.netapi.event.EventStream;
-import com.suse.saltstack.netapi.exception.SaltStackException;
+import com.suse.salt.netapi.AuthModule;
+import com.suse.salt.netapi.calls.LocalAsyncResult;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.WheelResult;
+import com.suse.salt.netapi.calls.modules.Cmd;
+import com.suse.salt.netapi.calls.modules.Grains;
+import com.suse.salt.netapi.calls.modules.Match;
+import com.suse.salt.netapi.calls.modules.Network;
+import com.suse.salt.netapi.calls.modules.Pkg;
+import com.suse.salt.netapi.calls.modules.SaltUtil;
+import com.suse.salt.netapi.calls.modules.Schedule;
+import com.suse.salt.netapi.calls.modules.Smbios;
+import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.calls.modules.Status;
+import com.suse.salt.netapi.calls.runner.Manage;
+import com.suse.salt.netapi.calls.wheel.Key;
+import com.suse.salt.netapi.client.SaltClient;
+import com.suse.salt.netapi.config.ClientConfig;
+import com.suse.salt.netapi.datatypes.target.Glob;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.event.EventStream;
+import com.suse.salt.netapi.exception.SaltException;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.net.URI;
@@ -73,7 +73,7 @@ public enum SaltAPIService implements SaltService {
     private static final Gson GSON = new GsonBuilder().create();
 
     // Shared salt client instance
-    private final SaltStackClient SALT_CLIENT = new SaltStackClient(SALT_MASTER_URI);
+    private final SaltClient SALT_CLIENT = new SaltClient(SALT_MASTER_URI);
 
     // Prevent instantiation
     SaltAPIService() {
@@ -90,7 +90,7 @@ public enum SaltAPIService implements SaltService {
                     .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return result.getData().getResult();
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -105,7 +105,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return grains.getOrDefault(minionId, new HashMap<>());
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -126,7 +126,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return present;
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -141,7 +141,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return packages.get(minionId);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -154,7 +154,7 @@ public enum SaltAPIService implements SaltService {
             Key.accept(minionId).callSync(SALT_CLIENT,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -167,7 +167,7 @@ public enum SaltAPIService implements SaltService {
             Key.delete(minionId).callSync(SALT_CLIENT,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -180,7 +180,7 @@ public enum SaltAPIService implements SaltService {
             Key.reject(minionId).callSync(SALT_CLIENT,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -194,7 +194,7 @@ public enum SaltAPIService implements SaltService {
             return State.apply(mods).callAsync(SALT_CLIENT, target,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -206,12 +206,12 @@ public enum SaltAPIService implements SaltService {
      */
     public EventStream getEventStream() {
         try {
-            SaltStackClient client = new SaltStackClient(SALT_MASTER_URI);
+            SaltClient client = new SaltClient(SALT_MASTER_URI);
             client.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
             return client.events();
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -230,7 +230,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return grains.getOrDefault(minionId, new HashMap<>()).get(grain);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -241,7 +241,6 @@ public enum SaltAPIService implements SaltService {
     public Map<String, Pkg.Info>
             getInstalledPackageDetails(String minionId, List<String> attributes) {
         try {
-            // TODO: Move this package to the salt-client library
             Map<String, Map<String, Pkg.Info>> packages =
                 Pkg.infoInstalled(attributes, true).callSync(
                     SALT_CLIENT,
@@ -250,7 +249,7 @@ public enum SaltAPIService implements SaltService {
                 );
             return packages.get(minionId);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -265,7 +264,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result;
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -280,7 +279,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result;
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -290,12 +289,12 @@ public enum SaltAPIService implements SaltService {
      */
     public boolean sendEvent(String tag, Object data) {
         try {
-            SaltStackClient client = new SaltStackClient(SALT_MASTER_URI);
+            SaltClient client = new SaltClient(SALT_MASTER_URI);
             client.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 30000);
             return client.sendEvent(tag, GSON.toJson(data));
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -310,7 +309,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return stats.get(minionId);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -328,7 +327,7 @@ public enum SaltAPIService implements SaltService {
             return CollectionUtils.isNotEmpty(col) ? col.get(0).getData() :
                     Collections.emptyMap();
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -341,7 +340,7 @@ public enum SaltAPIService implements SaltService {
             SaltUtil.syncGrains(Optional.empty(), Optional.empty()).callSync(SALT_CLIENT,
                     new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -354,7 +353,7 @@ public enum SaltAPIService implements SaltService {
             SaltUtil.syncModules(Optional.empty(), Optional.empty()).callSync(SALT_CLIENT,
                     new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -370,7 +369,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result.get(minionId);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -386,7 +385,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result.get(minionId);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -402,7 +401,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result.get(minionId);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -412,7 +411,7 @@ public enum SaltAPIService implements SaltService {
      */
     public Map<String, Schedule.Result> schedulePatchInstallation(String name,
         Target<?> target, Set<String> patches, LocalDateTime scheduleDate,
-        Map<String, ?> metadata) throws SaltStackException {
+        Map<String, ?> metadata) throws SaltException {
         LocalCall<Map<String, Object>> install = Pkg.install(true, patches.stream()
                 .map(patch -> "patch:" + patch).collect(Collectors.toList()));
         Map<String, Schedule.Result> result =
@@ -431,7 +430,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result;
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
 
@@ -448,7 +447,7 @@ public enum SaltAPIService implements SaltService {
                         SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return interfaces.get(minionId);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -464,7 +463,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result.get(minionId);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
@@ -480,7 +479,7 @@ public enum SaltAPIService implements SaltService {
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result.get(minionId);
         }
-        catch (SaltStackException e) {
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }

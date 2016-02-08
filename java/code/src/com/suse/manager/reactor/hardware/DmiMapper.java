@@ -17,7 +17,7 @@ package com.suse.manager.reactor.hardware;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.saltstack.netapi.calls.modules.Smbios;
+import com.suse.salt.netapi.calls.modules.Smbios;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
