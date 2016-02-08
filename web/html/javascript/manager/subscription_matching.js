@@ -347,6 +347,34 @@ function messagesToRows(raw_messages) {
 var Subscriptions = React.createClass({
   mixins: [StatePersistedMixin],
 
+  rowFilter: function(a, b, columnIndex, order) {
+    var columnKeyInRawData=["partNumber", "description", "policy", "quantity", "startDate", "endDate"];
+    var columnKey = columnKeyInRawData[columnIndex];
+    var orderCondition = order == "asc" ? 1 : -1;
+    var a_raw = a.props["raw_data"];
+    var b_raw = b.props["raw_data"];
+    var result = 0;
+    if (columnKey == "quantity") {
+      var aMatched = a_raw["matchedQuantity"];
+      var aTotal = a_raw["totalQuantity"];
+      var bMatched = b_raw["matchedQuantity"];
+      var bTotal = b_raw["totalQuantity"];
+      var aValue =  aMatched / aTotal;
+      var bValue =  bMatched / bTotal;
+      result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
+    }
+    else {
+      var aValue = a_raw[columnKey];
+      var bValue = b_raw[columnKey];
+      result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+    }
+
+    if (result == 0) {
+      result = a_raw["id"] > b_raw["id"];
+    }
+    return result * orderCondition;
+  },
+
   render: function() {
     var body;
     if (this.props.subscriptions != null) {
@@ -359,6 +387,7 @@ var Subscriptions = React.createClass({
               saveState={this.props.saveState}
               dataFilter={(tableRow, searchValue) => tableRow.props["raw_data"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
               searchPlaceholder={t("Filter by description")}
+              rowComparator={this.rowFilter}
             />
             <CsvLink name="subscription_report.csv" />
           </div>
@@ -434,7 +463,11 @@ var Table = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
-    return { "currentPage": 1, "itemsPerPage": 15, "searchField": ""};
+    return {
+      "currentPage": 1, "itemsPerPage": 15,
+      "searchField": "",
+      "columnIndex": 0, "order": "asc"
+    };
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -444,10 +477,26 @@ var Table = React.createClass({
     }
   },
 
+  orderByColumn: function(columnIndex) {
+    var order = this.state.order;
+    if (this.state.columnIndex == columnIndex) {
+      order = order == "asc" ? "desc" : "asc";
+    }
+    else {
+      order = "asc";
+    }
+    this.setState({"columnIndex": columnIndex, "order": order});
+  },
+
   getRows: function(unfiltered_rows, searchValue) {
     var rows = this.props.dataFilter && searchValue.length > 0 ?
       unfiltered_rows.filter((row) => this.props.dataFilter(row, searchValue)) :
       unfiltered_rows;
+      if (this.props.rowComparator) {
+        var columnIndex = this.state.columnIndex;
+        var order = this.state.order;
+        rows.sort((a, b) => this.props.rowComparator(a, b, columnIndex, order));
+      }
     return rows;
   },
 
@@ -535,7 +584,19 @@ var Table = React.createClass({
         </div>
         <div className="table-responsive">
           <table className="table table-striped">
-            <TableHeader headers={this.props.headers} />
+            <TableHeader
+              content={
+                this.props.headers.map((header, index) => {
+                  var className;
+                  if (index == this.state.columnIndex) {
+                    className = this.state.order + "Sort";
+                  }
+                  return (
+                    <TableHeaderCell className={className} content={header}
+                      orderBy={this.orderByColumn} columnIndex={index} />
+                  );
+                })}
+            />
             <tbody className="table-content">
               {rows
                 .filter((element, i) => i >= firstItemIndex && i < firstItemIndex + itemsPerPage)
@@ -595,14 +656,20 @@ var Select = React.createClass({
 var TableHeader = React.createClass({
   render: function() {
     return (
-      <thead>
-        <tr>
-          {this.props.headers.map(function(header) {
-            return (<th>{header}</th>);
-          })}
-        </tr>
-      </thead>
+      <thead><tr>{this.props.content}</tr></thead>
     );
+  }
+});
+
+var TableHeaderCell = React.createClass({
+  handleClick: function() {
+    if (this.props.columnIndex != null) {
+      this.props.orderBy(this.props.columnIndex);
+    }
+  },
+
+  render: function () {
+    return (<th className={this.props.className}><a className="orderBy" onClick={this.handleClick}>{this.props.content}</a></th>);
   }
 });
 
