@@ -388,6 +388,7 @@ var Subscriptions = React.createClass({
               dataFilter={(tableRow, searchValue) => tableRow.props["raw_data"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
               searchPlaceholder={t("Filter by description")}
               rowComparator={this.rowFilter}
+              sortableColumns={[0,1,2,3,4,5]}
             />
             <CsvLink name="subscription_report.csv" />
           </div>
@@ -592,8 +593,11 @@ var Table = React.createClass({
                     className = this.state.order + "Sort";
                   }
                   return (
-                    <TableHeaderCell className={className} content={header}
-                      orderBy={this.orderByColumn} columnIndex={index} />
+                      (this.props.sortableColumns &&
+                        this.props.sortableColumns.filter((element) => element == index).length > 0) ?
+                      <TableHeaderCellOrder className={className} content={header}
+                        orderBy={this.orderByColumn} columnIndex={index} /> :
+                      <TableHeaderCell className={className} content={header} />
                   );
                 })}
             />
@@ -661,7 +665,7 @@ var TableHeader = React.createClass({
   }
 });
 
-var TableHeaderCell = React.createClass({
+var TableHeaderCellOrder = React.createClass({
   handleClick: function() {
     if (this.props.columnIndex != null) {
       this.props.orderBy(this.props.columnIndex);
@@ -670,6 +674,13 @@ var TableHeaderCell = React.createClass({
 
   render: function () {
     return (<th className={this.props.className}><a className="orderBy" onClick={this.handleClick}>{this.props.content}</a></th>);
+  }
+});
+
+
+var TableHeaderCell = React.createClass({
+  render: function () {
+    return (<th className={this.props.className}>{this.props.content}</th>);
   }
 });
 
