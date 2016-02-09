@@ -31,10 +31,11 @@ var SubscriptionMatching = React.createClass({
     var messages = data == null ? null : data.messages;
     var subscriptions = data == null ? null : data.subscriptions;
     var unmatchedSystems = data == null ? null : data.unmatchedSystems;
+    var pinnedMatches = data == null ? null : data.pinnedMatches;
 
     var tabContainer = data == null || !data.matcherDataAvailable ? null :
       <TabContainer
-        labels={[t("Subscriptions"), t("Unmatched Systems"), t("Messages")]}
+        labels={[t("Subscriptions"), t("Unmatched Systems"), t("Pin Status"), t("Messages")]}
         panels={[
           <Subscriptions
             subscriptions={subscriptions}
@@ -45,6 +46,11 @@ var SubscriptionMatching = React.createClass({
             unmatchedSystems={unmatchedSystems}
             saveState={(state) => {this.state["unmatchedSystemTableState"] = state;}}
             loadState={() => this.state["unmatchedSystemTableState"]}
+          />,
+          <PinnedMatches
+            pinnedMatches={pinnedMatches}
+            saveState={(state) => {this.state["pinnedMatchesTableState"] = state;}}
+            loadState={() => this.state["pinnedMatchesTableState"]}
           />,
           <Messages
             messages={messages}
@@ -450,6 +456,134 @@ function humanReadablePolicy(rawPolicy) {
   }
   return message;
 }
+
+var PinnedMatches = React.createClass({
+  mixins: [StatePersistedMixin],
+
+  getInitialState: function() {
+    return {"system": null};
+  },
+
+  rowFilter: function(a, b, columnIndex, ascending) {
+    var columnKeyInRawData=["system_name", "subscription_name", "status"];
+    var columnKey = columnKeyInRawData[columnIndex];
+    var orderCondition = ascending ? 1 : -1;
+    var aRaw = a.props["rawData"];
+    var bRaw = b.props["rawData"];
+    var result = 0;
+    var aValue = aRaw[columnKey];
+    var bValue = bRaw[columnKey];
+    result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+
+    if (result == 0) {
+      var aId = aRaw["id"];
+      var bId = bRaw["id"];
+      result = aId > bId ? 1 : (aId < bId ? -1 : 0);
+    }
+
+    return result * orderCondition;
+  },
+
+  removePin: function(pinId) {
+    console.log("REMOVE PIN [" + pinId + "]");
+  },
+
+  addPin: function(systemId) {
+    console.log("PIN SYSTEM [" + systemId + "]");
+    this.setState({"system": systemId});
+  },
+
+  render: function() {
+    if (this.props.pinnedMatches != null && this.props.pinnedMatches.length > 0) {
+      return (
+        <div className="row col-md-12">
+          <div className="spacewalk-toolbar">
+            <button type="button" className="btn btn-default" data-toggle="modal" data-target="#addPinPopUp">
+              <i className="fa fa-map-pin"></i>{t("Add a Pin")}
+            </button>
+            <PopUp
+              title={t("Systems")}
+              className={this.state.system ? "modal-lg" : ""}
+              popUpId="addPinPopUp"
+              content={
+                <div className="spacewalk-list">
+                  <Table headers={[t("System"), t("")]} rows={possibleMatchesSystemsToRow(this.props.possibleMatches, this.addPin)} />
+                </div>
+              }
+            />
+          </div>
+          <h2>{t("Pins Status")}</h2>
+          <div className="spacewalk-list">
+            <Table headers={[t("System"), t("Subscription"), t("Pin Status"), t("Unpin")]}
+              rows={pinnedMatchesToRows(this.props.pinnedMatches, this.removePin)}
+              loadState={this.props.loadState}
+              saveState={this.props.saveState}
+              rowComparator={this.rowFilter}
+              sortableColumns={[0, 1, 2]}
+            />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  }
+});
+
+function pinnedMatchesToRows(pins, onClickAction) {
+  return pins.map((p) => {
+    var columns = [
+      <TableCell content={p.system_name} />,
+      <TableCell content={p.subscription_name} />,
+      <TableCell content={<PinStatus status={p.status} />} />,
+      <TableCell content={
+        <PinButton
+          onClick={onClickAction}
+          elementId={p.id}
+          content={<span><i className="fa fa-trash-o"></i>{t("remove")}</span>}
+         />
+        }
+      />
+    ];
+    return <TableRow columns={columns} rawData={p} />
+  });
+}
+
+function possibleMatchesSystemsToRow(possibleMatches) {
+  return possibleMatches.map((s) => {
+    var columns = [
+      <TableCell content={s.system_name} />,
+      <TableCell content={<button type="button" className="btn btn-default btn-cell"><i className="fa fa-map-pin"></i>{t("Pin this system")}</button>} />
+    ];
+    return <TableRow columns={columns} rawData={s} />
+  });
+}
+
+var PinStatus = React.createClass({
+  render: function() {
+    return (
+      this.props.status == "pending" ?
+      <span><i className="fa fa-hourglass-start pin-report-icon"></i><em>{t("pending for the next run")}</em></span> :
+        this.props.status == "satisfied" ?
+        <span><i className="fa fa-check text-success pin-report-icon"></i>{t("satisfied in the last run")}</span> :
+        <span><i className="fa fa-times text-danger pin-report-icon"></i><StrongText content={t("unsatisfied in the last run!!")} /></span>
+    );
+  }
+});
+
+var RemovePinButton = React.createClass({
+  onClick: function() {
+    // TODO: implementing the removal of a pin, calling the backend
+    console.log("Remove this pin: " + this.props.pinId);
+  },
+
+  render: function() {
+    return (
+      <button className="btn btn-default btn-cell" onClick={this.onClick}>
+        <i className="fa fa-trash-o"></i>{this.props.content}
+      </button>
+    );
+  }
+});
 
 var QuantityCell = React.createClass({
   render: function() {
