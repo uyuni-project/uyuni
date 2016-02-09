@@ -41,9 +41,21 @@ public class ApplyStatesEventMessage implements EventMessage {
      * @param userIdIn the user id
      * @param stateNamesIn state names that need to be applied to the server
      */
-    public ApplyStatesEventMessage(long serverIdIn, Long userIdIn, String... stateNamesIn) {
+    public ApplyStatesEventMessage(long serverIdIn, long userIdIn, String... stateNamesIn) {
         this.serverId = serverIdIn;
         this.userId = userIdIn;
+        this.stateNames = Arrays.asList(stateNamesIn);
+    }
+
+    /**
+     * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
+     *
+     * @param serverIdIn the server id
+     * @param stateNamesIn state names that need to be applied to the server
+     */
+    public ApplyStatesEventMessage(long serverIdIn, String... stateNamesIn) {
+        this.serverId = serverIdIn;
+        this.userId = null;
         this.stateNames = Arrays.asList(stateNamesIn);
     }
 

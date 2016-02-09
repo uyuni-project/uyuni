@@ -27,7 +27,7 @@ import org.hibernate.Transaction;
 public class ChannelsChangedEventMessage implements EventDatabaseMessage {
 
     private final long serverId;
-    private final long userId;
+    private final Long userId;
     private final Transaction transaction;
 
     /**
@@ -39,6 +39,17 @@ public class ChannelsChangedEventMessage implements EventDatabaseMessage {
     public ChannelsChangedEventMessage(long serverIdIn, long userIdIn) {
         this.serverId = serverIdIn;
         this.userId = userIdIn;
+        this.transaction = HibernateFactory.getSession().getTransaction();
+    }
+
+    /**
+     * Constructor for creating a {@link ChannelsChangedEventMessage} for a given server.
+     *
+     * @param serverIdIn the server id
+     */
+    public ChannelsChangedEventMessage(long serverIdIn) {
+        this.serverId = serverIdIn;
+        this.userId = null;
         this.transaction = HibernateFactory.getSession().getTransaction();
     }
 
