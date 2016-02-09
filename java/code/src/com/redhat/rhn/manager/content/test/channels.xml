@@ -134,11 +134,6 @@
 			<product_id name="Open_Enterprise_Server" version="11">1232</product_id>
 		</products>
 	</channel>
-	<channel arch="i386" description="RES 4" family="RES" is_signed="N" label="res4-as-i386" name="RES4 AS for i386" optional="N" parent="rhel-i386-as-4" product_name="RES" product_version="4" source_url="https://updates.suse.com/repo/$RCE/RES4/i386/" summary="RES 4" update_tag="">
-		<products>
-			<product_id name="RES" version="4">1127</product_id>
-		</products>
-	</channel>
 	<channel arch="i386" description="SUSE-Manager-Tools" family="RES" is_signed="Y" label="res4-as-suse-manager-tools-i386" name="RES4 AS SUSE-Manager-Tools i386" optional="N" parent="rhel-i386-as-4" product_name="RES" product_version="4" source_url="https://updates.suse.com/repo/$RCE/RES4-SUSE-Manager-Tools/i386/" summary="SUSE-Manager-Tools" update_tag="res4ct">
 		<products>
 			<product_id name="RES" version="4">1127</product_id>
@@ -149,27 +144,12 @@
 			<product_id name="RES" version="4">1127</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="RES 4" family="RES" is_signed="N" label="res4-as-x86_64" name="RES4 AS for x86_64" optional="N" parent="rhel-x86_64-as-4" product_name="RES" product_version="4" source_url="https://updates.suse.com/repo/$RCE/RES4/x86_64/" summary="RES 4" update_tag="">
-		<products>
-			<product_id name="RES" version="4">1127</product_id>
-		</products>
-	</channel>
-	<channel arch="i386" description="RES 4" family="RES" is_signed="N" label="res4-es-i386" name="RES4 ES for i386" optional="N" parent="rhel-i386-es-4" product_name="RES" product_version="4" source_url="https://updates.suse.com/repo/$RCE/RES4/i386/" summary="RES 4" update_tag="">
-		<products>
-			<product_id name="RES" version="4">1127</product_id>
-		</products>
-	</channel>
 	<channel arch="i386" description="SUSE-Manager-Tools" family="RES" is_signed="Y" label="res4-es-suse-manager-tools-i386" name="RES4 ES SUSE-Manager-Tools i386" optional="N" parent="rhel-i386-es-4" product_name="RES" product_version="4" source_url="https://updates.suse.com/repo/$RCE/RES4-SUSE-Manager-Tools/i386/" summary="SUSE-Manager-Tools" update_tag="res4ct">
 		<products>
 			<product_id name="RES" version="4">1127</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE-Manager-Tools" family="RES" is_signed="Y" label="res4-es-suse-manager-tools-x86_64" name="RES4 ES SUSE-Manager-Tools x86_64" optional="N" parent="rhel-x86_64-es-4" product_name="RES" product_version="4" source_url="https://updates.suse.com/repo/$RCE/RES4-SUSE-Manager-Tools/x86_64/" summary="SUSE-Manager-Tools" update_tag="res4ct">
-		<products>
-			<product_id name="RES" version="4">1127</product_id>
-		</products>
-	</channel>
-	<channel arch="x86_64" description="RES 4" family="RES" is_signed="N" label="res4-es-x86_64" name="RES4 ES for x86_64" optional="N" parent="rhel-x86_64-es-4" product_name="RES" product_version="4" source_url="https://updates.suse.com/repo/$RCE/RES4/x86_64/" summary="RES 4" update_tag="">
 		<products>
 			<product_id name="RES" version="4">1127</product_id>
 		</products>
@@ -239,18 +219,6 @@
 			<product_id name="RES" version="7">1251</product_id>
 		</products>
 	</channel>
-	<channel arch="i386" description="RES 4" family="RES" is_signed="N" label="rhel-i386-as-4" name="RHEL i386 AS 4" optional="N" parent="BASE" product_name="RES" product_version="4" source_url="" summary="RES 4" update_tag="">
-		<products>
-			<product_id name="RES" version="4">1127</product_id>
-		</products>
-		<dist os="Red Hat Linux" release="4AS"/>
-	</channel>
-	<channel arch="i386" description="RES 4" family="RES" is_signed="N" label="rhel-i386-es-4" name="RHEL i386 ES 4" optional="N" parent="BASE" product_name="RES" product_version="4" source_url="" summary="RES 4" update_tag="">
-		<products>
-			<product_id name="RES" version="4">1127</product_id>
-		</products>
-		<dist os="Red Hat Linux" release="4ES"/>
-	</channel>
 	<channel arch="i386" description="RES 5" family="RES" is_signed="N" label="rhel-i386-server-5" name="RHEL i386 Server 5" optional="N" parent="BASE" product_name="RES" product_version="5" source_url="" summary="RES 5" update_tag="">
 		<products>
 			<product_id name="RES" version="5">1122</product_id>
@@ -262,18 +230,6 @@
 			<product_id name="RES" version="6">1138</product_id>
 		</products>
 		<dist os="RHEL Server" release="6Server"/>
-	</channel>
-	<channel arch="x86_64" description="RES 4" family="RES" is_signed="N" label="rhel-x86_64-as-4" name="RHEL x86_64 AS 4" optional="N" parent="BASE" product_name="RES" product_version="4" source_url="" summary="RES 4" update_tag="">
-		<products>
-			<product_id name="RES" version="4">1127</product_id>
-		</products>
-		<dist os="Red Hat Linux" release="4AS"/>
-	</channel>
-	<channel arch="x86_64" description="RES 4" family="RES" is_signed="N" label="rhel-x86_64-es-4" name="RHEL x86_64 ES 4" optional="N" parent="BASE" product_name="RES" product_version="4" source_url="" summary="RES 4" update_tag="">
-		<products>
-			<product_id name="RES" version="4">1127</product_id>
-		</products>
-		<dist os="Red Hat Linux" release="4ES"/>
 	</channel>
 	<channel arch="x86_64" description="RES 5" family="RES" is_signed="N" label="rhel-x86_64-server-5" name="RHEL x86_64 Server 5" optional="N" parent="BASE" product_name="RES" product_version="5" source_url="" summary="RES 5" update_tag="">
 		<products>
