@@ -137,4 +137,14 @@ public class ValueMap {
         return Optional.ofNullable(valueMap.get(key));
     }
 
+    /**
+     * Get the value for a key as an {@link Optional} of ValueMap
+     * @param key the key
+     * @return a ValueMap
+     */
+    @SuppressWarnings("unchecked")
+    public Optional<ValueMap> getMap(String key) {
+        return get(key).map(value -> new ValueMap((Map<String, Object>) value));
+    }
+
 }
