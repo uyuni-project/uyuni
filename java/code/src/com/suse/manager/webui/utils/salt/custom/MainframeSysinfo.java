@@ -12,31 +12,31 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils.salt;
+package com.suse.manager.webui.utils.salt.custom;
 
 import com.google.gson.reflect.TypeToken;
-import com.suse.saltstack.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * Custom Salt module udevdb.
+ * Custom Salt module mainframesysinfo.
  */
-public class Udevdb {
+public class MainframeSysinfo {
 
-    private Udevdb() { }
+    private MainframeSysinfo() { }
 
     /**
-     * Call udevdb.exportdb.
-     * @return a {@link LocalCall} to pass to the SaltStackClient
+     * Call mainframesysinfo.read_values
+     * @return a {@link LocalCall} to pass to the SaltClient
      */
-    public static LocalCall<List<Map<String, Object>>> exportdb() {
-        LinkedHashMap<String, Object> args = new LinkedHashMap<>();
-        return new LocalCall<>("udevdb.exportdb", Optional.empty(), Optional.of(args),
-                new TypeToken<List<Map<String, Object>>>() { });
+    public static LocalCall<String> readValues() {
+        Map<String, Object> args = new LinkedHashMap<>();
+        return new LocalCall("mainframesysinfo.read_values", Optional.empty(),
+                Optional.of(args), new TypeToken<String>() {
+        });
     }
 
 }

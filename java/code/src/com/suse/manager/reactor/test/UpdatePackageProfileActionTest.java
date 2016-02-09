@@ -25,8 +25,8 @@ import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessage;
 import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.utils.salt.Pkg;
-import com.suse.saltstack.netapi.parser.JsonParser;
+import com.suse.salt.netapi.calls.modules.Pkg;
+import com.suse.salt.netapi.parser.JsonParser;
 import org.jmock.Mock;
 
 import java.io.File;

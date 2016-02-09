@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.manager.webui.utils.salt.Grains;
+import com.suse.salt.netapi.datatypes.target.Grains;
 import org.apache.log4j.Logger;
 
 import java.util.stream.Collectors;

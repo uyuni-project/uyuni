@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.utils.salt.Smbios;
+import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -101,7 +101,7 @@ public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance
         else if (!CpuArchUtil.isS390(cpuarch)) {
             // there's not DMI on S390
             ValueMap dmiSystem = new ValueMap(saltInvoker
-                    .getDmiRecords(server.getMinionId(), Smbios.RecordType.SYSTEM));
+                    .getDmiRecords(server.getMinionId(), RecordType.SYSTEM));
             String manufacturer = dmiSystem.getValueAsString("manufacturer");
             String productName = dmiSystem.getValueAsString("product_name");
             if ("HITACHI".equalsIgnoreCase(manufacturer) &&

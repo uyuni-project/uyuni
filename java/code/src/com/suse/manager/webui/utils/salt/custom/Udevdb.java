@@ -12,43 +12,31 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils.salt;
+package com.suse.manager.webui.utils.salt.custom;
 
 import com.google.gson.reflect.TypeToken;
-import com.suse.saltstack.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.LocalCall;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * salt.modules.state
+ * Custom Salt module udevdb.
  */
-public class State {
+public class Udevdb {
 
-    private State() { }
+    private Udevdb() { }
 
     /**
-     * this function will move to the saltstack-netapi library
-     * @param mods modules
-     * @return salt call
+     * Call udevdb.exportdb.
+     * @return a {@link LocalCall} to pass to the SaltClient
      */
-    public static LocalCall<Map<String, Object>> apply(List<String> mods) {
+    public static LocalCall<List<Map<String, Object>>> exportdb() {
         LinkedHashMap<String, Object> args = new LinkedHashMap<>();
-        args.put("mods", mods);
-        return new LocalCall<>("state.apply", Optional.empty(), Optional.of(args),
-                new TypeToken<Map<String, Object>>() { });
-    }
-
-    /**
-     * this function will move to the saltstack-netapi library
-     * @param mods modules
-     * @return salt call
-     */
-    public static LocalCall<Map<String, Object>> apply(String... mods) {
-        return apply(Arrays.asList(mods));
+        return new LocalCall<>("udevdb.exportdb", Optional.empty(), Optional.of(args),
+                new TypeToken<List<Map<String, Object>>>() { });
     }
 
 }
