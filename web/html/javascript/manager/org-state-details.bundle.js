@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/vagrant/work/src/components/messages.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/matei/workspace-suma3/spacewalk/web/html/src/components/messages.js":[function(require,module,exports){
 'use strict';
 
 var React = require("react");
@@ -38,7 +38,7 @@ module.exports = {
     Messages: Messages
 };
 
-},{"react":"react"}],"/vagrant/work/src/components/panel.js":[function(require,module,exports){
+},{"react":"react"}],"/home/matei/workspace-suma3/spacewalk/web/html/src/components/panel.js":[function(require,module,exports){
 'use strict';
 
 var React = require("react");
@@ -97,7 +97,7 @@ module.exports = {
   PanelButton: PanelButton
 };
 
-},{"./react-translation":"/vagrant/work/src/components/react-translation.js","react":"react"}],"/vagrant/work/src/components/react-translation.js":[function(require,module,exports){
+},{"./react-translation":"/home/matei/workspace-suma3/spacewalk/web/html/src/components/react-translation.js","react":"react"}],"/home/matei/workspace-suma3/spacewalk/web/html/src/components/react-translation.js":[function(require,module,exports){
 'use strict';
 
 // TODO copied from spacewalk-essentials.js. find a way to share this
@@ -117,7 +117,7 @@ module.exports = function (key) {
   return result;
 };
 
-},{}],"/vagrant/work/src/manager/org-state-details.js":[function(require,module,exports){
+},{}],"/home/matei/workspace-suma3/spacewalk/web/html/src/manager/org-state-details.js":[function(require,module,exports){
 'use strict';
 
 var React = require("react");
@@ -275,4 +275,4 @@ var StateDetail = React.createClass({
 
 React.render(React.createElement(StateDetail, { sls: stateData() }), document.getElementById('state-details'));
 
-},{"../components/messages.js":"/vagrant/work/src/components/messages.js","../components/panel.js":"/vagrant/work/src/components/panel.js","react":"react"}]},{},["/vagrant/work/src/manager/org-state-details.js"]);
+},{"../components/messages.js":"/home/matei/workspace-suma3/spacewalk/web/html/src/components/messages.js","../components/panel.js":"/home/matei/workspace-suma3/spacewalk/web/html/src/components/panel.js","react":"react"}]},{},["/home/matei/workspace-suma3/spacewalk/web/html/src/manager/org-state-details.js"]);
