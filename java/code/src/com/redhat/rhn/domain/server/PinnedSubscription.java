@@ -24,7 +24,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class PinnedSubscription {
 
     private Long id;
-    private Server server;
+    private Server systemId;
     private Long subscriptionId;
 
     /**
@@ -35,11 +35,11 @@ public class PinnedSubscription {
     }
 
     /**
-     * Getter for server
-     * @return the server associated with the subscription id
+     * Getter for systemId
+     * @return the systemId associated with the subscription id
      */
-    public Server getServer() {
-        return server;
+    public Server getSystemId() {
+        return systemId;
     }
 
     /**
@@ -57,11 +57,11 @@ public class PinnedSubscription {
     }
 
     /**
-     * associate a server with a subscription id
-     * @param serverIn the Server to associate
+     * associate a systemId with a subscription id
+     * @param systemIdIn the System to associate
      */
-    public void setServer(Server serverIn) {
-        this.server = serverIn;
+    public void setSystemId(Server systemIdIn) {
+        this.systemId = systemIdIn;
     }
 
     /**
@@ -79,7 +79,7 @@ public class PinnedSubscription {
             return false;
         }
         PinnedSubscription castOther = (PinnedSubscription) other;
-        return new EqualsBuilder().append(getServer(), castOther.getServer())
+        return new EqualsBuilder().append(getSystemId(), castOther.getSystemId())
                 .append(getSubscriptionId(), castOther.getSubscriptionId())
                 .isEquals();
     }
@@ -88,7 +88,7 @@ public class PinnedSubscription {
      * {@inheritDoc}
      */
     public int hashCode() {
-        return new HashCodeBuilder().append(getServer())
+        return new HashCodeBuilder().append(getSystemId())
                 .append(getSubscriptionId())
                 .toHashCode();
     }
