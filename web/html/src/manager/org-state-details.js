@@ -37,17 +37,20 @@ var StateDetail = React.createClass({
     },
 
     handleDelete: function(e) {
-        this._save(e, "DELETE")
-
+        var r = confirm(t("Are you sure you want do delete?"));
+        if (r == true) {
+            this._save(e, "DELETE")
+        }
     },
 
     _save: function(e, httpMethod) {
         var formData = {};
         formData['name'] = React.findDOMNode(this.refs.stateName).value.trim();
         formData['content'] = React.findDOMNode(this.refs.stateContent).value.trim();
+        //formData['csrf_token'] = csrfToken;
 
         $.ajax({
-          url: window.location.href,
+          url: window.location.href + (csrfToken ? "?csrf_token=" + csrfToken : ""),
           dataType: 'json',
           contentType: "application/json",
           type: httpMethod,
