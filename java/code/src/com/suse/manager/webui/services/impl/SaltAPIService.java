@@ -542,34 +542,53 @@ public enum SaltAPIService implements SaltService {
         return allowed;
     }
 
-    public void storeOrgState(long orgId, String name, String oldName, String oldChecksum, String content) {
+    /**
+     * {@inheritDoc}
+     */
+    public void storeOrgState(long orgId, String name, String content,
+                              String oldName, String oldChecksum) {
         try {
-            storageManager.storeState(orgId, name, oldName, oldChecksum, content);
-        } catch (IOException e) {
+            storageManager.storeState(orgId, name, content, oldName, oldChecksum);
+        }
+        catch (IOException e) {
             throw new RuntimeException(e); // TODO throw IOException or smth more specific
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void deleteOrgState(long orgId, String name) {
         try {
             storageManager.deleteState(orgId, name);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public List<String> getOrgStates(long orgId) {
         return storageManager.listByOrg(orgId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Optional<String> getOrgStateContent(long orgId, String name) {
         try {
             return storageManager.getContent(orgId, name);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean orgStateExists(long orgId, String name) {
         return storageManager.exists(orgId, name);
     }
