@@ -52,6 +52,7 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
 
         db.forEach(dbdev -> {
             String devpath = (String)dbdev.get("P"); // sysfs path without /sys
+            @SuppressWarnings("unchecked")
             ValueMap props = new ValueMap((Map<String, Object>)dbdev.get("E"));
             String subsys = props.getValueAsString("SUBSYSTEM");
 
@@ -232,6 +233,7 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
 
     private String clasifyClass(String minionId, Map<String, Object> device) {
         String sysfsPath = (String)device.get("P");
+        @SuppressWarnings("unchecked")
         ValueMap attrs = new ValueMap((Map<String, Object>)device.get("E"));
 
         String subsys = attrs.getValueAsString("SUBSYSTEM");
