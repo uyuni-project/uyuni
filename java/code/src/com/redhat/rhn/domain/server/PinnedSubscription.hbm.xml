@@ -14,6 +14,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                      class="com.redhat.rhn.domain.server.Server"
                      column="server_id" insert="true" update="true" />
 
-        <property name="orderitemId" type="long" column="orderitem_id"/>
+        <property name="subscriptionId" type="long" column="subscription_id"/>
     </class>
 </hibernate-mapping>

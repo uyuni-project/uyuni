@@ -148,7 +148,7 @@ public class MatcherJsonIO {
     public List<JsonMatch> getJsonMatches() {
         return ServerFactory.list().stream()
             .map(s -> s.getPinnedSubscriptions().stream()
-               .map(p -> new JsonMatch(s.getId(), p.getOrderitemId(), null, null))
+               .map(p -> new JsonMatch(s.getId(), p.getSubscriptionId(), null, null))
             )
             .reduce(Stream::concat).orElse(Stream.empty())
             .collect(toList());
