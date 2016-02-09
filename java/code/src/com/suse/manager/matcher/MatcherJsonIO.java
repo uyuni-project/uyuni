@@ -22,6 +22,7 @@ import static java.util.stream.Stream.concat;
 import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.of;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
@@ -30,6 +31,7 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCSubscription;
+import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -146,12 +148,10 @@ public class MatcherJsonIO {
      * about pinned matches
      */
     public List<JsonMatch> getJsonMatches() {
-        return ServerFactory.list().stream()
-            .map(s -> s.getPinnedSubscriptions().stream()
-               .map(p -> new JsonMatch(s.getId(), p.getSubscriptionId(), null, null))
-            )
-            .reduce(Stream::concat).orElse(Stream.empty())
-            .collect(toList());
+        return ((List<PinnedSubscription>) HibernateFactory.getSession()
+                .createCriteria(PinnedSubscription.class).list()).stream()
+                .map(p -> new JsonMatch(p.getSystemId(), p.getSubscriptionId(), null, null))
+                .collect(toList());
     }
 
     /**
