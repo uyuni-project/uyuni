@@ -542,9 +542,9 @@ public enum SaltAPIService implements SaltService {
         return allowed;
     }
 
-    public void storeOrgState(long orgId, String name, String oldName, String content) {
+    public void storeOrgState(long orgId, String name, String oldName, String oldChecksum, String content) {
         try {
-            storageManager.storeState(orgId, name, oldName, content);
+            storageManager.storeState(orgId, name, oldName, oldChecksum, content);
         } catch (IOException e) {
             throw new RuntimeException(e); // TODO throw IOException or smth more specific
         }

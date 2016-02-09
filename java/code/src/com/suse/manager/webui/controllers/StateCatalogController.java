@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.suse.manager.webui.services.subscriptionmatching.StateExistsException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -20,15 +22,16 @@ import spark.Spark;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
 /**
- * Created by matei on 2/1/16.
+ * Controller class for the state catalog page.
  */
 public class StateCatalogController {
+
+    private static Logger LOG = Logger.getLogger(StateCatalogController.class);
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -45,7 +48,6 @@ public class StateCatalogController {
 
     public static ModelAndView add(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         Map<String, String> stateData = new HashMap<>();
         stateData.put("action", "add");
         data.put("stateData", GSON.toJson(stateData));
@@ -62,7 +64,6 @@ public class StateCatalogController {
         }
 
         Map<String, Object> data = new HashMap<>();
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         Map<String, String> stateData = new HashMap<>();
         stateData.put("action", "edit");
         stateData.put("name", StringUtils.removeEnd(stateName, ".sls"));
@@ -79,6 +80,7 @@ public class StateCatalogController {
 
     public static String data(Request request, Response response, User user) {
         List<String> data = SaltAPIService.INSTANCE.getOrgStates(user.getOrg().getId());
+        data.replaceAll( e -> StringUtils.substringBeforeLast(e, "."));
         response.type("application/json");
         return GSON.toJson(data);
     }
@@ -98,37 +100,32 @@ public class StateCatalogController {
         try {
             SaltAPIService.INSTANCE.deleteOrgState(user.getOrg().getId(), name);
         } catch (RuntimeException e) {
+            LOG.error("Could not delete state " + name, e);
             halt(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         }
-        return ok(request, response, "State deleted");
+        return ok(request, response, String.format("State '%s' deleted", name));
     }
 
-    public static String save(Request request, Response response, User user, String previousName) {
+    private static String save(Request request, Response response, User user, String previousName) {
         Map<String, String> map = GSON.fromJson(request.body(), Map.class);
         String name = map.get("name");
         String content = map.get("content");
-
-        // TODO move overwrite checking to SaltStateStorageManager
-        if (StringUtils.isNotBlank(previousName)) {
-            previousName = StringUtils.removeEnd(previousName, ".sls");
-            if (!previousName.equals(name) && exists(user, name)) {
-                return errorResponse(response, Arrays.asList("A state with the same name already exists"));
-            }
-        } else if (exists(user, name)) {
-            return errorResponse(response, Arrays.asList("A state with the same name already exists"));
-        }
-
+        String previousChecksum = map.get("prevChecksum");
         List<String> errs = validateStateParams(name, content);
         if (!errs.isEmpty()) {
             return errorResponse(response, errs);
         }
-        // TODO sanitize content
+        // TODO validate content?
+
         try {
-            SaltAPIService.INSTANCE.storeOrgState(user.getOrg().getId(), name, previousName, content);
+            SaltAPIService.INSTANCE.storeOrgState(user.getOrg().getId(), name, previousName, previousChecksum, content);
+        } catch (StateExistsException e) {
+            return errorResponse(response, Arrays.asList("A state with the same name already exists"));
         } catch (RuntimeException e) {
+            LOG.error("Could not save state " + name, e);
             halt(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         }
-        return ok(request, response, "State saved");
+        return ok(request, response, String.format("State '%s' saved", name));
     }
 
     private static String ok(Request request, Response response, String message) {

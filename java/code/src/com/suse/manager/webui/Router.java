@@ -117,9 +117,9 @@ public class Router implements SparkApplication {
                 withOrgAdmin(StateCatalogController::data));
 
         get("/manager/state_catalog/state",
-                withOrgAdmin(StateCatalogController::add), jade);
+                withCsrfToken(withOrgAdmin(StateCatalogController::add)), jade);
         get("/manager/state_catalog/state/:name",
-                withOrgAdmin(StateCatalogController::edit), jade);
+                withCsrfToken(withOrgAdmin(StateCatalogController::edit)), jade);
         post("/manager/state_catalog/state",
                 withOrgAdmin(StateCatalogController::create));
         put("/manager/state_catalog/state/:name",
