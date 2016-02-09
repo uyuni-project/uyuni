@@ -16,7 +16,6 @@ package com.suse.manager.reactor.hardware;
 
 import com.suse.manager.webui.services.SaltService;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
-import com.suse.salt.netapi.calls.modules.Smbios;
 
 import java.util.HashMap;
 import java.util.List;
