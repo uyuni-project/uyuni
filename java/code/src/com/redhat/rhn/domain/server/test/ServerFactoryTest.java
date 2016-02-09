@@ -949,7 +949,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set<PinnedSubscription> pins = new HashSet<>();
         PinnedSubscription pin = new PinnedSubscription();
         pin.setSubscriptionId(42L);
-        pin.setServer(s);
+        pin.setSystemId(s);
         pins.add(pin);
         TestUtils.saveAndFlush(pin);
 
