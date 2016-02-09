@@ -948,7 +948,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         Set<PinnedSubscription> pins = new HashSet<>();
         PinnedSubscription pin = new PinnedSubscription();
-        pin.setOrderitemId(42L);
+        pin.setSubscriptionId(42L);
         pin.setServer(s);
         pins.add(pin);
         TestUtils.saveAndFlush(pin);
@@ -960,7 +960,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(s.getId());
         Set<PinnedSubscription> newPins = s.getPinnedSubscriptions();
         for (PinnedSubscription p : newPins) {
-            assertEquals(p.getOrderitemId(), pin.getOrderitemId());
+            assertEquals(p.getSubscriptionId(), pin.getSubscriptionId());
         }
     }
 }
