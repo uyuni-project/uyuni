@@ -39,6 +39,7 @@ public class SaltServiceInvoker {
         this.saltService = saltServiceIn;
     }
 
+    @SuppressWarnings("unchecked")
     private <T> T getOrInvoke(String key, Supplier<T> supplier) {
         return (T)cache.computeIfAbsent(key, k -> {
             Object saltValue = supplier.get();
