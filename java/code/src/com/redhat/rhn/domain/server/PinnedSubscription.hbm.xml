@@ -10,10 +10,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <param name="sequence">suse_pinsub_id_seq</param>
             </generator>
         </id>
-        <many-to-one name="server"
-                     class="com.redhat.rhn.domain.server.Server"
-                     column="server_id" insert="true" update="true" />
-
+        <property name="systemId" type="long" column="system_id"/>
         <property name="subscriptionId" type="long" column="subscription_id"/>
     </class>
 </hibernate-mapping>

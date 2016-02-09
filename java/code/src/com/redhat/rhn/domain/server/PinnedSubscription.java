@@ -24,7 +24,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class PinnedSubscription {
 
     private Long id;
-    private Server systemId;
+    private Long systemId;
     private Long subscriptionId;
 
     /**
@@ -38,7 +38,7 @@ public class PinnedSubscription {
      * Getter for systemId
      * @return the systemId associated with the subscription id
      */
-    public Server getSystemId() {
+    public Long getSystemId() {
         return systemId;
     }
 
@@ -60,7 +60,7 @@ public class PinnedSubscription {
      * associate a systemId with a subscription id
      * @param systemIdIn the System to associate
      */
-    public void setSystemId(Server systemIdIn) {
+    public void setSystemId(Long systemIdIn) {
         this.systemId = systemIdIn;
     }
 
