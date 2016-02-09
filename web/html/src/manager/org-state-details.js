@@ -47,7 +47,9 @@ var StateDetail = React.createClass({
         var formData = {};
         formData['name'] = React.findDOMNode(this.refs.stateName).value.trim();
         formData['content'] = React.findDOMNode(this.refs.stateContent).value.trim();
-        //formData['csrf_token'] = csrfToken;
+        if (this.props.sls.checksum) {
+            formData['checksum'] = this.props.sls.checksum;
+        }
 
         $.ajax({
           url: window.location.href + (csrfToken ? "?csrf_token=" + csrfToken : ""),

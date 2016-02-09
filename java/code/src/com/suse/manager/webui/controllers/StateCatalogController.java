@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2016 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.webui.controllers;
 
 import static spark.Spark.halt;
@@ -10,7 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.suse.manager.webui.services.subscriptionmatching.StateExistsException;
+import com.suse.manager.webui.services.StaleSaltStateException;
+import com.suse.manager.webui.services.SaltStateExistsException;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -31,21 +47,37 @@ import com.suse.manager.webui.utils.FlashScopeHelper;
  */
 public class StateCatalogController {
 
-    private static Logger LOG = Logger.getLogger(StateCatalogController.class);
+    private static final Logger LOG = Logger.getLogger(StateCatalogController.class);
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .serializeNulls()
             .create();
 
-    private static Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z0-9_]*");
+    private static final Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z0-9_]*");
 
+    private StateCatalogController() { }
+
+    /**
+     * Show the list of states.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the page that will show the list of states
+     */
     public static ModelAndView show(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("info", FlashScopeHelper.flash(request));
         return new ModelAndView(data, "state_catalog/show.jade");
     }
 
+    /**
+     * Show the details page for an empty new state.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the detail page
+     */
     public static ModelAndView add(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         Map<String, String> stateData = new HashMap<>();
@@ -55,6 +87,13 @@ public class StateCatalogController {
         return new ModelAndView(data, "state_catalog/state.jade");
     }
 
+    /**
+     * Show the details page for an existing state and allow to edit it.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the detail page
+     */
     public static ModelAndView edit(Request request, Response response, User user) {
         String stateName = request.params("name");
 
@@ -67,8 +106,10 @@ public class StateCatalogController {
         Map<String, String> stateData = new HashMap<>();
         stateData.put("action", "edit");
         stateData.put("name", StringUtils.removeEnd(stateName, ".sls"));
-        stateData.put("content", SaltAPIService.INSTANCE
-                .getOrgStateContent(user.getOrg().getId(), stateName).orElse(""));
+        String content = SaltAPIService.INSTANCE
+                .getOrgStateContent(user.getOrg().getId(), stateName).orElse("");
+        stateData.put("content", content);
+        stateData.put("checksum", DigestUtils.md5Hex(content));
         data.put("stateData", GSON.toJson(stateData));
 
         return new ModelAndView(data, "state_catalog/state.jade");
@@ -78,50 +119,88 @@ public class StateCatalogController {
         return SaltAPIService.INSTANCE.orgStateExists(user.getOrg().getId(), stateName);
     }
 
+    /**
+     * Return the JSON data to render in the state list page.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the JSON data
+     */
     public static String data(Request request, Response response, User user) {
         List<String> data = SaltAPIService.INSTANCE.getOrgStates(user.getOrg().getId());
-        data.replaceAll( e -> StringUtils.substringBeforeLast(e, "."));
+        data.replaceAll(e -> StringUtils.substringBeforeLast(e, "."));
         response.type("application/json");
         return GSON.toJson(data);
     }
 
+    /**
+     * Update an .sls file.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the response JSON
+     */
     public static String update(Request request, Response response, User user) {
         // check if name changed and if so do not allow overwriting
         String previousName = request.params("name");
         return save(request, response, user, previousName);
     }
 
+    /**
+     * Create an .sls file.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the response JSON
+     */
     public static String create(Request request, Response response, User user) {
         return save(request, response, user, null);
     }
 
+    /**
+     * Delete an .sls file.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the response JSON
+     */
     public static String delete(Request request, Response response, User user) {
         String name = request.params("name");
         try {
             SaltAPIService.INSTANCE.deleteOrgState(user.getOrg().getId(), name);
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e) {
             LOG.error("Could not delete state " + name, e);
             halt(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         }
         return ok(request, response, String.format("State '%s' deleted", name));
     }
 
-    private static String save(Request request, Response response, User user, String previousName) {
+    private static String save(Request request, Response response,
+                               User user, String previousName) {
         Map<String, String> map = GSON.fromJson(request.body(), Map.class);
         String name = map.get("name");
         String content = map.get("content");
-        String previousChecksum = map.get("prevChecksum");
+        String previousChecksum = map.get("checksum");
         List<String> errs = validateStateParams(name, content);
         if (!errs.isEmpty()) {
             return errorResponse(response, errs);
         }
         // TODO validate content?
-
         try {
-            SaltAPIService.INSTANCE.storeOrgState(user.getOrg().getId(), name, previousName, previousChecksum, content);
-        } catch (StateExistsException e) {
-            return errorResponse(response, Arrays.asList("A state with the same name already exists"));
-        } catch (RuntimeException e) {
+            SaltAPIService.INSTANCE.storeOrgState(user.getOrg().getId(), name,
+                    content, previousName, previousChecksum);
+        }
+        catch (SaltStateExistsException e) {
+            return errorResponse(response,
+                    Arrays.asList("A state with the same name already exists"));
+        }
+        catch (StaleSaltStateException e) {
+            return errorResponse(response,
+                    Arrays.asList("Another user has changed this file. " +
+                            "Please reload the page."));
+        }
+        catch (RuntimeException e) {
             LOG.error("Could not save state " + name, e);
             halt(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         }
