@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.saltstack.netapi.datatypes.target.Glob;
+import com.suse.salt.netapi.datatypes.target.Glob;
 import spark.Request;
 import spark.Response;
 

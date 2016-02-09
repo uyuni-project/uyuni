@@ -24,9 +24,9 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.manager.webui.utils.salt.JobReturnEvent;
 
-import com.suse.saltstack.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.event.JobReturnEvent;
 import org.apache.log4j.Logger;
 
 import java.util.Collections;
