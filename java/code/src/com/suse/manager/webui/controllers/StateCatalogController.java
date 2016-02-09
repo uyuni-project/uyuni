@@ -65,10 +65,10 @@ public class StateCatalogController {
      * @param user the current user
      * @return the page that will show the list of states
      */
-    public static ModelAndView show(Request request, Response response, User user) {
+    public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("info", FlashScopeHelper.flash(request));
-        return new ModelAndView(data, "state_catalog/show.jade");
+        return new ModelAndView(data, "state_catalog/list.jade");
     }
 
     /**
@@ -230,6 +230,10 @@ public class StateCatalogController {
         if (StringUtils.isBlank(name)) {
             errs.add("Name is missing");
         }
+        else if (name.length() > 250) {
+            errs.add("Name is too long (max. 250 characters)");
+        }
+
         if (StringUtils.isBlank(content)) {
             errs.add("Content is missing");
         }

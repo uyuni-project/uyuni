@@ -112,7 +112,7 @@ public class Router implements SparkApplication {
 
         // Salt state catalog
         get("/manager/state_catalog",
-                withOrgAdmin(StateCatalogController::show), jade);
+                withOrgAdmin(StateCatalogController::list), jade);
         get("/manager/state_catalog/data",
                 withOrgAdmin(StateCatalogController::data));
 

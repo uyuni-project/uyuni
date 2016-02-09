@@ -1,15 +1,17 @@
 'use strict';
 
 var React = require("react");
-var TableComponent = require("../components/table.js");
-var PanelComponent = require("../components/panel.js");
-var Messages = require("../components/messages.js").Messages;
+var t = require("../components/translation")
+var TableComponent = require("../components/table");
+var PanelComponent = require("../components/panel");
+var Messages = require("../components/messages").Messages;
 
 var Table = TableComponent.Table;
 var TableCell = TableComponent.TableCell;
 var TableRow = TableComponent.TableRow;
 var Panel = PanelComponent.Panel;
 var PanelButton = PanelComponent.PanelButton;
+
 
 var StateCatalog = React.createClass({
 
@@ -46,12 +48,11 @@ var StateCatalog = React.createClass({
 //            this.state.flashMessagesViews > 1;
 //    },
 
-    sortRow: function(a, b, columnIndex, order) {
-        var orderCondition = order == "asc" ? 1 : -1;
-        var result = 0;
+    compareRows: function(a, b, columnIndex, order) {
+        var orderCondition = order ? 1 : -1;
         var aValue = a.props["raw_data"];
         var bValue = b.props["raw_data"];
-        result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+        var result = aValue.localeCompare(bValue);
         return result * orderCondition;
     },
 
@@ -76,7 +77,7 @@ var StateCatalog = React.createClass({
                           rows={statesToRows(this.state.serverData)}
                           loadState={this.props.loadState}
                           saveState={this.props.saveState}
-                          sortRow={this.sortRow}
+                          rowComparator={this.compareRows}
                           sortableColumns={[0]}
                           dataFilter={(tableRow, searchValue) => tableRow.props["raw_data"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
                           searchPlaceholder={t("Filter by state name:")}
@@ -91,7 +92,6 @@ var StateCatalog = React.createClass({
 
 function statesToRows(serverData) {
   return serverData.map((s) => {
-    //    var name = s.replace(/\.[^/.]+$/, "")
     var link = <a href={"/rhn/manager/state_catalog/state/" + s}>{s}</a>
     var columns = [
       <TableCell content={link} />,
