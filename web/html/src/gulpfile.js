@@ -4,14 +4,14 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var source = require('vinyl-source-stream'); // Used to stream bundle for further handling
 var browserify = require('browserify');
-var watchify = require('watchify');
+//var watchify = require('watchify');
 var babelify = require('babelify');
-//var reactify = require('reactify'); // TODO investigate why babelify hangs
 var concat = require('gulp-concat');
 var glob  = require('glob');
 var es = require('event-stream');
 var rename = require('gulp-rename')
 
+// TODO check why watchify doesn't work properly
 //gulp.task('browserify', function() {
 //    var bundler = browserify({
 //        entries: ['./manager/*.js'], // Only need initial file, browserify finds the deps
@@ -36,6 +36,8 @@ var rename = require('gulp-rename')
 //        .pipe(gulp.dest('../javascript/manager'));
 //});
 
+// TODO browserify react
+
 gulp.task('browserify', function(done) {
     glob('./manager/*.js', function(err, files) {
         if(err) done(err);
@@ -43,8 +45,6 @@ gulp.task('browserify', function(done) {
         var tasks = files.map(function(entry) {
             var bundler = browserify({
                 entries: [entry], // Only need initial file, browserify finds the deps
-//                transform: [reactify], // We want to convert JSX to normal javascript
-//                transform: [babelify], // We want to convert JSX to normal javascript
                 debug: false, // Gives us sourcemapping
                 cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
             });
