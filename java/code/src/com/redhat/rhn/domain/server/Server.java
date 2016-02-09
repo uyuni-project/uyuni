@@ -102,7 +102,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private NetworkInterface primaryInterface;
     private Set<NetworkInterface> networkInterfaces;
     private Set<CustomDataValue> customDataValues;
-    private Set<Channel> channels;
+    private Set<Channel> channels = new HashSet<>();
     private List<ConfigChannel> configChannels = new ArrayList<ConfigChannel>();
     private Set<ConfigChannel> localChannels = new HashSet<ConfigChannel>();
     private Location serverLocation;
