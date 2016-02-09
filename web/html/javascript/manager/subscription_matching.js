@@ -488,6 +488,8 @@ function humanReadablePolicy(rawPolicy) {
   return message;
 }
 
+// --- start extracted to table.js
+
 var Table = React.createClass({
   mixins: [StatePersistedMixin],
 
@@ -730,6 +732,8 @@ var TableCell = React.createClass({
   }
 });
 
+// --- end extracted to table.js
+
 var QuantityCell = React.createClass({
   render: function() {
     var matched = this.props.matched;
@@ -743,6 +747,8 @@ var QuantityCell = React.createClass({
     );
   }
 });
+
+// --- start extracted to table.js
 
 var SearchField = React.createClass({
   handleChange: function(e) {
@@ -759,6 +765,8 @@ var SearchField = React.createClass({
     );
   }
 });
+
+// --- end extracted to table.js
 
 var StrongText = React.createClass({
   render: function() {

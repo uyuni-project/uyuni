@@ -11,7 +11,7 @@ var glob  = require('glob');
 var es = require('event-stream');
 var rename = require('gulp-rename')
 
-// TODO check why watchify doesn't work properly
+// TODO use watchify for devel mode
 //gulp.task('browserify', function() {
 //    var bundler = browserify({
 //        entries: ['./manager/*.js'], // Only need initial file, browserify finds the deps
@@ -30,24 +30,40 @@ var rename = require('gulp-rename')
 ////                .pipe(gulp.dest('../javascript/manager'));
 ////            gutil.log('Updated in', (Date.now() - updateStart) + 'ms');
 ////        })
-//    return bundler
-//        .bundle() // Create the initial bundle when starting the task
-//        .pipe(source()) // this is a surrogate file name //'org-state-catalog-app.js'
-//        .pipe(gulp.dest('../javascript/manager'));
 //});
 
-// TODO browserify react
+var bundlerOpts = null;
 
-gulp.task('browserify', function(done) {
+gulp.task('devel-opts', function(done) {
+    bundlerOpts = {
+        debug: true, // Gives us sourcemapping
+        cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
+    };
+});
+
+gulp.task('prod-opts', function(done) {
+    bundlerOpts = {
+        debug: false,
+        cache: {}, packageCache: {}, fullPaths: false
+    };
+});
+
+gulp.task('bundle-react', function(done) {
+    var bundler = browserify(bundlerOpts);
+
+    return bundler.require("react")
+        .bundle()
+        .pipe(source("react.bundle.js")) // this is a surrogate file name
+        .pipe(gulp.dest('../javascript/manager'));
+});
+
+gulp.task('bundle-manager', function(done) {
     glob('./manager/*.js', function(err, files) {
         if(err) done(err);
 
         var tasks = files.map(function(entry) {
-            var bundler = browserify({
-                entries: [entry], // Only need initial file, browserify finds the deps
-                debug: false, // Gives us sourcemapping
-                cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
-            });
+            bundlerOpts['entries'] = [entry]
+            var bundler = browserify(bundlerOpts);
 
             return bundler
                 .transform("babelify", {presets: ["es2015", "react"]})
@@ -66,5 +82,6 @@ gulp.task('browserify', function(done) {
     })
 });
 
-// Just running the two tasks
-gulp.task('default', ['browserify']);
+gulp.task('default', ['prod-opts', 'bundle-react', 'bundle-manager']);
+
+gulp.task('devel', ['devel-opts', 'bundle-manager']);

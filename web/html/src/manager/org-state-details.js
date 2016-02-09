@@ -1,8 +1,10 @@
 'use strict';
 
 var React = require("react")
-var Panel = require("../components/panel.js").Panel
-var Messages = require("../components/messages.js").Messages
+var t = require("../components/translation")
+
+var Panel = require("../components/panel").Panel
+var Messages = require("../components/messages").Messages
 
 var Button = React.createClass({
 
@@ -37,7 +39,7 @@ var StateDetail = React.createClass({
     },
 
     handleDelete: function(e) {
-        var r = confirm(t("Are you sure you want do delete?"));
+        var r = confirm(t("Are you sure you want to delete state '{0}' ?", this.props.sls.name));
         if (r == true) {
             this._save(e, "DELETE")
         }

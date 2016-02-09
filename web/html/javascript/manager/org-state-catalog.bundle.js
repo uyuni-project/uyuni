@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/matei/workspace-suma3/spacewalk/web/html/src/components/messages.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
 var React = require("react");
@@ -38,11 +38,11 @@ module.exports = {
     Messages: Messages
 };
 
-},{"react":"react"}],"/home/matei/workspace-suma3/spacewalk/web/html/src/components/panel.js":[function(require,module,exports){
+},{"react":"react"}],2:[function(require,module,exports){
 'use strict';
 
 var React = require("react");
-var t = require("./react-translation");
+var t = require("./translation");
 
 var PanelButton = React.createClass({
   displayName: "PanelButton",
@@ -97,31 +97,203 @@ module.exports = {
   PanelButton: PanelButton
 };
 
-},{"./react-translation":"/home/matei/workspace-suma3/spacewalk/web/html/src/components/react-translation.js","react":"react"}],"/home/matei/workspace-suma3/spacewalk/web/html/src/components/react-translation.js":[function(require,module,exports){
-'use strict';
-
-// TODO copied from spacewalk-essentials.js. find a way to share this
-/**
- * Translates a string, implemented now as a 'true-bypass',
- * with placeholder replacement like Java's MessageFormat class.
- * Accepts any number of arguments after key.
- */
-module.exports = function (key) {
-  var result = key;
-
-  // Minimal implementation of https://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html
-  for (var i = 1; i < arguments.length; i++) {
-    result = result.replace('{' + (i - 1) + '}', arguments[i]);
-  }
-
-  return result;
-};
-
-},{}],"/home/matei/workspace-suma3/spacewalk/web/html/src/components/table.js":[function(require,module,exports){
+},{"./translation":4,"react":"react"}],3:[function(require,module,exports){
 'use strict';
 
 var React = require("react");
-var t = require("./react-translation");
+var t = require("./translation");
+var StatePersistedMixin = require("./util").StatePersistedMixin;
+
+var Table = React.createClass({
+  displayName: "Table",
+
+  mixins: [StatePersistedMixin],
+
+  getInitialState: function getInitialState() {
+    return {
+      "currentPage": 1, "itemsPerPage": 15,
+      "searchField": "",
+      "columnIndex": 0, "ascending": true
+    };
+  },
+
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    var columnIndex;
+    if (this.props.sortableColumns) {
+      columnIndex = this.props.sortableColumns[0];
+    }
+    var lastPage = Math.ceil(nextProps.rows.length / nextProps.itemsPerPage);
+    if (this.state.currentPage > lastPage) {
+      this.setState({ "currentPage": lastPage, "columnIndex": columnIndex });
+    }
+  },
+
+  orderByColumn: function orderByColumn(columnIndex) {
+    var ascending = this.state.ascending;
+    if (this.state.columnIndex == columnIndex) {
+      ascending = !ascending;
+    } else {
+      ascending = true;
+    }
+    this.setState({ "columnIndex": columnIndex, "ascending": ascending });
+  },
+
+  getRows: function getRows(unfilteredRows, searchValue) {
+    var _this = this;
+
+    var rows = this.props.dataFilter && searchValue.length > 0 ? unfilteredRows.filter(function (row) {
+      return _this.props.dataFilter(row, searchValue);
+    }) : unfilteredRows;
+    if (this.props.rowComparator) {
+      var columnIndex = this.state.columnIndex;
+      var ascending = this.state.ascending;
+      rows.sort(function (a, b) {
+        return _this.props.rowComparator(a, b, columnIndex, ascending);
+      });
+    }
+    return rows;
+  },
+
+  lastPage: function lastPage(rows, itemsPerPage) {
+    var lastPage = Math.ceil(rows.length / itemsPerPage);
+    if (lastPage == 0) {
+      return 1;
+    }
+    return lastPage;
+  },
+
+  goToPage: function goToPage(page) {
+    this.setState({ "currentPage": page });
+  },
+
+  onItemsPerPageChange: function onItemsPerPageChange(itemsPerPage) {
+    this.setState({ "itemsPerPage": itemsPerPage });
+    var lastPage = this.lastPage(this.getRows(this.props.rows, this.state.searchField), itemsPerPage);
+    if (this.state.currentPage > lastPage) {
+      this.setState({ "currentPage": lastPage });
+    }
+  },
+
+  onSearchFieldChange: function onSearchFieldChange(searchValue) {
+    this.setState({ "searchField": searchValue });
+    var lastPage = this.lastPage(this.getRows(this.props.rows, searchValue), this.state.itemsPerPage);
+    if (this.state.currentPage > lastPage) {
+      this.setState({ "currentPage": lastPage });
+    }
+  },
+
+  render: function render() {
+    var _this2 = this;
+
+    var rows = this.getRows(this.props.rows, this.state.searchField);
+    var itemsPerPage = this.state.itemsPerPage;
+    var itemCount = rows.length;
+    var lastPage = this.lastPage(rows, itemsPerPage);
+    var currentPage = this.state.currentPage;
+
+    var firstItemIndex = (currentPage - 1) * itemsPerPage;
+
+    var fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
+    var toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
+
+    var pagination;
+    if (lastPage > 1) {
+      pagination = React.createElement(
+        "div",
+        { className: "spacewalk-list-pagination" },
+        React.createElement(
+          "div",
+          { className: "spacewalk-list-pagination-btns btn-group" },
+          React.createElement(PaginationButton, { onClick: this.goToPage, toPage: 1, disabled: currentPage == 1, text: t("First") }),
+          React.createElement(PaginationButton, { onClick: this.goToPage, toPage: currentPage - 1, disabled: currentPage == 1, text: t("Prev") }),
+          React.createElement(PaginationButton, { onClick: this.goToPage, toPage: currentPage + 1, disabled: currentPage == lastPage, text: t("Next") }),
+          React.createElement(PaginationButton, { onClick: this.goToPage, toPage: lastPage, disabled: currentPage == lastPage, text: t("Last") })
+        )
+      );
+    }
+
+    var searchField;
+    if (this.props.dataFilter) {
+      searchField = React.createElement(SearchField, {
+        onChange: this.onSearchFieldChange,
+        defaultValue: this.state.searchField,
+        placeholder: this.props.searchPlaceholder
+      });
+    }
+
+    return React.createElement(
+      "div",
+      { className: "panel panel-default" },
+      React.createElement(
+        "div",
+        { className: "panel-heading" },
+        React.createElement(
+          "div",
+          { className: "spacewalk-list-head-addons" },
+          React.createElement(
+            "div",
+            { className: "spacewalk-list-filter table-search-wrapper" },
+            searchField,
+            " ",
+            t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)
+          ),
+          React.createElement(
+            "div",
+            { className: "spacewalk-list-head-addons-extra table-items-per-page-wrapper" },
+            React.createElement(PageSelector, { className: "display-number",
+              options: [5, 10, 15, 25, 50, 100, 250, 500],
+              currentValue: itemsPerPage,
+              onChange: this.onItemsPerPageChange
+            }),
+            " ",
+            t("items per page")
+          )
+        )
+      ),
+      React.createElement(
+        "div",
+        { className: "table-responsive" },
+        React.createElement(
+          "table",
+          { className: "table table-striped" },
+          React.createElement(TableHeader, {
+            content: this.props.headers.map(function (header, index) {
+              var className;
+              if (index == _this2.state.columnIndex) {
+                className = (_this2.state.ascending ? "asc" : "desc") + "Sort";
+              }
+              return _this2.props.sortableColumns && _this2.props.sortableColumns.filter(function (element) {
+                return element == index;
+              }).length > 0 ? React.createElement(TableHeaderCellOrder, { className: className, content: header,
+                orderBy: _this2.orderByColumn, columnIndex: index }) : React.createElement(TableHeaderCell, { className: className, content: header });
+            })
+          }),
+          React.createElement(
+            "tbody",
+            { className: "table-content" },
+            rows.filter(function (element, i) {
+              return i >= firstItemIndex && i < firstItemIndex + itemsPerPage;
+            })
+          )
+        )
+      ),
+      React.createElement(
+        "div",
+        { className: "panel-footer" },
+        React.createElement(
+          "div",
+          { className: "spacewalk-list-bottom-addons" },
+          React.createElement(
+            "div",
+            { className: "table-page-information" },
+            t("Page {0} of {1}", currentPage, lastPage)
+          ),
+          pagination
+        )
+      )
+    );
+  }
+});
 
 var PaginationButton = React.createClass({
   displayName: "PaginationButton",
@@ -140,15 +312,11 @@ var PaginationButton = React.createClass({
   }
 });
 
-var Select = React.createClass({
-  displayName: "Select",
+var PageSelector = React.createClass({
+  displayName: "PageSelector",
 
   handleOnChange: function handleOnChange(e) {
-    if (this.props.type && this.props.type == "number") {
-      this.props.onChange(parseInt(e.target.value));
-    } else {
-      this.props.onChange(e.target.value);
-    }
+    this.props.onChange(parseInt(e.target.value));
   },
 
   render: function render() {
@@ -242,18 +410,6 @@ var TableCell = React.createClass({
   }
 });
 
-var QuantityCell = React.createClass({
-  displayName: "QuantityCell",
-
-  render: function render() {
-    var matched = this.props.matched;
-    var total = this.props.total;
-    var content = matched + "/" + total;
-
-    return matched == total ? React.createElement(TableCell, { content: React.createElement(StrongText, { className: "bg-danger", content: content }) }) : React.createElement(TableCell, { content: content });
-  }
-});
-
 var SearchField = React.createClass({
   displayName: "SearchField",
 
@@ -270,238 +426,39 @@ var SearchField = React.createClass({
   }
 });
 
-var StrongText = React.createClass({
-  displayName: "StrongText",
+module.exports = {
+  Table: Table,
+  TableCell: TableCell,
+  TableRow: TableRow,
+  SearchField: SearchField,
+  TableHeaderCell: TableHeaderCell,
+  TableHeaderCellOrder: TableHeaderCellOrder,
+  PageSelector: PageSelector,
+  PaginationButton: PaginationButton
+};
 
-  render: function render() {
-    return React.createElement(
-      "strong",
-      { className: this.props.className },
-      this.props.content
-    );
+},{"./translation":4,"./util":5,"react":"react"}],4:[function(require,module,exports){
+'use strict';
+
+// TODO copied from spacewalk-essentials.js. find a way to share this
+/**
+ * Translates a string, implemented now as a 'true-bypass',
+ * with placeholder replacement like Java's MessageFormat class.
+ * Accepts any number of arguments after key.
+ */
+module.exports = function (key) {
+  var result = key;
+
+  // Minimal implementation of https://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html
+  for (var i = 1; i < arguments.length; i++) {
+    result = result.replace('{' + (i - 1) + '}', arguments[i]);
   }
-});
 
-var ToolTip = React.createClass({
-  displayName: "ToolTip",
+  return result;
+};
 
-  render: function render() {
-    return React.createElement(
-      "span",
-      { title: this.props.title },
-      this.props.content
-    );
-  }
-});
-
-var CsvLink = React.createClass({
-  displayName: "CsvLink",
-
-  render: function render() {
-    return React.createElement(
-      "div",
-      { className: "spacewalk-csv-download" },
-      React.createElement(
-        "a",
-        { className: "btn btn-link", href: "/rhn/manager/subscription_matching/" + this.props.name },
-        React.createElement("i", { className: "fa spacewalk-icon-download-csv" }),
-        t("Download CSV")
-      )
-    );
-  }
-});
-
-var Table = React.createClass({
-  displayName: "Table",
-
-  mixins: [StatePersistedMixin],
-
-  getInitialState: function getInitialState() {
-    return {
-      "currentPage": 1, "itemsPerPage": 15,
-      "searchField": "",
-      "columnIndex": 0, "order": "asc"
-    };
-  },
-
-  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-    var columnIndex;
-    if (this.props.sortableColumns) {
-      columnIndex = this.props.sortableColumns[0];
-    }
-    var lastPage = Math.ceil(nextProps.rows.length / nextProps.itemsPerPage);
-    if (this.state.currentPage > lastPage) {
-      this.setState({ "currentPage": lastPage, "columnIndex": columnIndex });
-    }
-  },
-
-  orderByColumn: function orderByColumn(columnIndex) {
-    var order = this.state.order;
-    if (this.state.columnIndex == columnIndex) {
-      order = order == "asc" ? "desc" : "asc";
-    } else {
-      order = "asc";
-    }
-    this.setState({ "columnIndex": columnIndex, "order": order });
-  },
-
-  getRows: function getRows(unfiltered_rows, searchValue) {
-    var _this = this;
-
-    var rows = this.props.dataFilter && searchValue.length > 0 ? unfiltered_rows.filter(function (row) {
-      return _this.props.dataFilter(row, searchValue);
-    }) : unfiltered_rows;
-    if (this.props.sortRow) {
-      var columnIndex = this.state.columnIndex;
-      var order = this.state.order;
-      rows.sort(function (a, b) {
-        return _this.props.sortRow(a, b, columnIndex, order);
-      });
-    }
-    return rows;
-  },
-
-  lastPage: function lastPage(rows, itemsPerPage) {
-    var lastPage = Math.ceil(rows.length / itemsPerPage);
-    if (lastPage == 0) {
-      return 1;
-    }
-    return lastPage;
-  },
-
-  goToPage: function goToPage(page) {
-    this.setState({ "currentPage": page });
-  },
-
-  changeItemsPerPage: function changeItemsPerPage(itemsPerPage) {
-    this.setState({ "itemsPerPage": itemsPerPage });
-    var lastPage = this.lastPage(this.getRows(this.props.rows, this.state.searchField), itemsPerPage);
-    if (this.state.currentPage > lastPage) {
-      this.setState({ "currentPage": lastPage });
-    }
-  },
-
-  changeSearchField: function changeSearchField(searchValue) {
-    this.setState({ "searchField": searchValue });
-    var lastPage = this.lastPage(this.getRows(this.props.rows, searchValue), this.state.itemsPerPage);
-    if (this.state.currentPage > lastPage) {
-      this.setState({ "currentPage": lastPage });
-    }
-  },
-
-  render: function render() {
-    var rows = this.getRows(this.props.rows, this.state.searchField);
-    var itemsPerPage = this.state.itemsPerPage;
-    var itemCount = rows.length;
-    var lastPage = this.lastPage(rows, itemsPerPage);
-    var currentPage = this.state.currentPage;
-
-    var firstItemIndex = (currentPage - 1) * itemsPerPage;
-
-    var fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
-    var toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
-
-    var pagination;
-    if (lastPage > 1) {
-      pagination = React.createElement(
-        "div",
-        { className: "spacewalk-list-pagination" },
-        React.createElement(
-          "div",
-          { className: "spacewalk-list-pagination-btns btn-group" },
-          React.createElement(PaginationButton, { onClick: this.goToPage, toPage: 1, disabled: currentPage == 1, text: t("First") }),
-          React.createElement(PaginationButton, { onClick: this.goToPage, toPage: currentPage - 1, disabled: currentPage == 1, text: t("Prev") }),
-          React.createElement(PaginationButton, { onClick: this.goToPage, toPage: currentPage + 1, disabled: currentPage == lastPage, text: t("Next") }),
-          React.createElement(PaginationButton, { onClick: this.goToPage, toPage: lastPage, disabled: currentPage == lastPage, text: t("Last") })
-        )
-      );
-    }
-
-    var searchField;
-    if (this.props.dataFilter) {
-      searchField = React.createElement(SearchField, {
-        onChange: this.changeSearchField,
-        defaultValue: this.state.searchField,
-        placeholder: this.props.searchPlaceholder
-      });
-    }
-
-    var component = this;
-
-    return React.createElement(
-      "div",
-      { className: "panel panel-default" },
-      React.createElement(
-        "div",
-        { className: "panel-heading" },
-        React.createElement(
-          "div",
-          { className: "spacewalk-list-head-addons" },
-          React.createElement(
-            "div",
-            { className: "spacewalk-list-filter table-search-wrapper" },
-            searchField,
-            " ",
-            t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)
-          ),
-          React.createElement(
-            "div",
-            { className: "spacewalk-list-head-addons-extra table-items-per-page-wrapper" },
-            React.createElement(Select, { className: "display-number",
-              type: "number",
-              options: [5, 10, 15, 25, 50, 100, 250, 500],
-              currentValue: itemsPerPage,
-              onChange: this.changeItemsPerPage
-            }),
-            " ",
-            t("items per page")
-          )
-        )
-      ),
-      React.createElement(
-        "div",
-        { className: "table-responsive" },
-        React.createElement(
-          "table",
-          { className: "table table-striped" },
-          React.createElement(TableHeader, {
-            content: this.props.headers.map(function (header, index) {
-              var className;
-              if (index == component.state.columnIndex) {
-                className = component.state.order + "Sort";
-              }
-              return component.props.sortableColumns && component.props.sortableColumns.filter(function (element) {
-                return element == index;
-              }).length > 0 ? React.createElement(TableHeaderCellOrder, { className: className, content: header,
-                orderBy: component.orderByColumn, columnIndex: index }) : React.createElement(TableHeaderCell, { className: className, content: header });
-            })
-          }),
-          React.createElement(
-            "tbody",
-            { className: "table-content" },
-            rows.filter(function (element, i) {
-              return i >= firstItemIndex && i < firstItemIndex + itemsPerPage;
-            })
-          )
-        )
-      ),
-      React.createElement(
-        "div",
-        { className: "panel-footer" },
-        React.createElement(
-          "div",
-          { className: "spacewalk-list-bottom-addons" },
-          React.createElement(
-            "div",
-            { className: "table-page-information" },
-            t("Page {0} of {1}", currentPage, lastPage)
-          ),
-          pagination
-        )
-      )
-    );
-  }
-});
+},{}],5:[function(require,module,exports){
+'use strict';
 
 var StatePersistedMixin = {
   componentWillMount: function componentWillMount() {
@@ -518,17 +475,18 @@ var StatePersistedMixin = {
   }
 };
 
-module.exports.Table = Table;
-module.exports.TableCell = TableCell;
-module.exports.TableRow = TableRow;
+module.exports = {
+  StatePersistedMixin: StatePersistedMixin
+};
 
-},{"./react-translation":"/home/matei/workspace-suma3/spacewalk/web/html/src/components/react-translation.js","react":"react"}],"/home/matei/workspace-suma3/spacewalk/web/html/src/manager/org-state-catalog.js":[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var React = require("react");
-var TableComponent = require("../components/table.js");
-var PanelComponent = require("../components/panel.js");
-var Messages = require("../components/messages.js").Messages;
+var t = require("../components/translation");
+var TableComponent = require("../components/table");
+var PanelComponent = require("../components/panel");
+var Messages = require("../components/messages").Messages;
 
 var Table = TableComponent.Table;
 var TableCell = TableComponent.TableCell;
@@ -574,12 +532,11 @@ var StateCatalog = React.createClass({
     //            this.state.flashMessagesViews > 1;
     //    },
 
-    sortRow: function sortRow(a, b, columnIndex, order) {
-        var orderCondition = order == "asc" ? 1 : -1;
-        var result = 0;
+    compareRows: function compareRows(a, b, columnIndex, order) {
+        var orderCondition = order ? 1 : -1;
         var aValue = a.props["raw_data"];
         var bValue = b.props["raw_data"];
-        result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+        var result = aValue.localeCompare(bValue);
         return result * orderCondition;
     },
 
@@ -609,7 +566,7 @@ var StateCatalog = React.createClass({
                         rows: statesToRows(this.state.serverData),
                         loadState: this.props.loadState,
                         saveState: this.props.saveState,
-                        sortRow: this.sortRow,
+                        rowComparator: this.compareRows,
                         sortableColumns: [0],
                         dataFilter: function dataFilter(tableRow, searchValue) {
                             return tableRow.props["raw_data"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
@@ -625,7 +582,6 @@ var StateCatalog = React.createClass({
 
 function statesToRows(serverData) {
     return serverData.map(function (s) {
-        //    var name = s.replace(/\.[^/.]+$/, "")
         var link = React.createElement(
             "a",
             { href: "/rhn/manager/state_catalog/state/" + s },
@@ -638,4 +594,4 @@ function statesToRows(serverData) {
 
 React.render(React.createElement(StateCatalog, { flashMessages: flashMessage() }), document.getElementById('state-catalog'));
 
-},{"../components/messages.js":"/home/matei/workspace-suma3/spacewalk/web/html/src/components/messages.js","../components/panel.js":"/home/matei/workspace-suma3/spacewalk/web/html/src/components/panel.js","../components/table.js":"/home/matei/workspace-suma3/spacewalk/web/html/src/components/table.js","react":"react"}]},{},["/home/matei/workspace-suma3/spacewalk/web/html/src/manager/org-state-catalog.js"]);
+},{"../components/messages":1,"../components/panel":2,"../components/table":3,"../components/translation":4,"react":"react"}]},{},[6]);
