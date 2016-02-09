@@ -212,7 +212,7 @@ public interface SaltService {
      * @param scheduleDate schedule date
      * @param metadata metadata to pass to the salt job
      * @return the result of the schedule call
-     * @throws SaltStackException in case there is an error scheduling the job
+     * @throws SaltException in case there is an error scheduling the job
      */
     Map<String, Schedule.Result> schedulePatchInstallation(String name, Target<?> target,
             Set<String> patches, LocalDateTime scheduleDate, Map<String, ?> metadata)
