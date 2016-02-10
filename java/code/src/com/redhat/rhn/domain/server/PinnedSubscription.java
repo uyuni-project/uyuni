@@ -65,15 +65,16 @@ public class PinnedSubscription {
     }
 
     /**
-     * @param subscriptionId the subscriptionId to set
+     * @param subscriptionIdIn the subscriptionId to set
      */
-    public void setSubscriptionId(Long subscriptionId) {
-        this.subscriptionId = subscriptionId;
+    public void setSubscriptionId(Long subscriptionIdIn) {
+        this.subscriptionId = subscriptionIdIn;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof PinnedSubscription)) {
             return false;
@@ -87,6 +88,7 @@ public class PinnedSubscription {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getSystemId())
                 .append(getSubscriptionId())
