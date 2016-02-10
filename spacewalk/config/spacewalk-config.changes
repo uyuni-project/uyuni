@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 10 08:41:42 CET 2016 - mc@suse.de
+
+- version 2.5.2.3-1
+- provide empty no_proxy variable for reference in rhn.conf
+
+-------------------------------------------------------------------
 Tue Jan 26 14:14:15 CET 2016 - mc@suse.de
 
 - version 2.5.2.2-1
