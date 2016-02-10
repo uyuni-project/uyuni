@@ -43,6 +43,9 @@ public class MatcherUiData {
     /** Unmatched systems */
     private List<System> unmatchedSystems = new LinkedList<>();
 
+    /** Pinned matches */
+    private List<PinnedMatch> pinnedMatches = new LinkedList<>();
+
     /**
      * Standard constructor.
      *
@@ -56,13 +59,15 @@ public class MatcherUiData {
     public MatcherUiData(boolean matcherDataAvailableIn, Date latestStartIn,
             Date latestEndIn, List<JsonMessage> messagesIn,
             List<Subscription> subscriptionsIn,
-            List<System> unmatchedSystemsIn) {
+            List<System> unmatchedSystemsIn,
+            List<PinnedMatch> pinnedMatchesIn) {
         matcherDataAvailable = matcherDataAvailableIn;
         latestStart = latestStartIn;
         latestEnd = latestEndIn;
         messages = messagesIn;
         subscriptions = subscriptionsIn;
         unmatchedSystems = unmatchedSystemsIn;
+        pinnedMatches = pinnedMatchesIn;
     }
 
     /**
@@ -169,5 +174,23 @@ public class MatcherUiData {
      */
     public void setUnmatchedSystems(List<System> unmatchedSystemsIn) {
         unmatchedSystems = unmatchedSystemsIn;
+    }
+
+    /**
+     * Gets the pinnedMatches.
+     *
+     * @return pinnedMatches
+     */
+    public List<PinnedMatch> getPinnedMatches() {
+        return pinnedMatches;
+    }
+
+    /**
+     * Sets the pinnedMatches.
+     *
+     * @param pinnedMatchesIn - the pinnedMatches
+     */
+    public void setPinnedMatches(List<PinnedMatch> pinnedMatchesIn) {
+        pinnedMatches = pinnedMatchesIn;
     }
 }

@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.services.subscriptionmatching;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
 import com.suse.matcher.json.JsonInput;
@@ -21,6 +24,7 @@ import com.suse.matcher.json.JsonMessage;
 import com.suse.matcher.json.JsonOutput;
 import com.suse.matcher.json.JsonProduct;
 import com.suse.matcher.json.JsonSubscription;
+import com.suse.matcher.json.JsonSystem;
 
 import java.util.Collections;
 import java.util.Date;
@@ -34,6 +38,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.concat;
 
 /**
@@ -59,18 +64,65 @@ public class SubscriptionMatchProcessor {
                     latestEnd,
                     messages(input.get(), output.get()),
                     subscriptions(input.get(), output.get()),
-                    unmatchedSystems(input.get(), output.get()));
+                    unmatchedSystems(input.get(), output.get()),
+                    pinnedMatches(input.get(), output.get()));
             return matcherUiData;
         }
         else {
             return new MatcherUiData(false, latestStart, latestEnd, new LinkedList<>(),
-                    new LinkedList<>(), new LinkedList<>());
+                    new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
         }
+    }
+
+    private List<PinnedMatch> pinnedMatches(JsonInput input, JsonOutput output) {
+        return PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions().stream()
+                .map(ps -> new PinnedMatch(
+                        ps.getId(),
+                        subscriptionNameById(input.getSubscriptions(), ps.getSubscriptionId()),
+                        systemNameById(input.getSystems(), ps.getSystemId()),
+                        deriveMatchStatus(ps, input, output)))
+                .collect(toList());
+    }
+
+    private static int deriveMatchStatus(PinnedSubscription ps, JsonInput input,
+            JsonOutput output) {
+        // when the pin is in confirmed matches of the output -> return 1
+        boolean satisfied = output.getConfirmedMatches().stream()
+                .filter(m -> m.getSystemId().equals(ps.getSystemId())
+                        && m.getSubscriptionId().equals(ps.getSubscriptionId()))
+                .findAny()
+                .isPresent();
+
+        if (satisfied) {
+            return 1;
+        }
+
+        // if the pin is not in the confirmed matches, but is in the input, then it's
+        // unsatisfied, hence return 0
+        boolean unsatisfied = input.getPinnedMatches().stream()
+                .filter(p -> p.getSystemId().equals(ps.getSystemId())
+                        && p.getSubscriptionId().equals(ps.getSubscriptionId()))
+                .findAny()
+                .isPresent();
+
+        if (unsatisfied) {
+            return 0;
+        }
+
+        // otherwise we have a new pin -> -1
+        return -1;
+    }
+
+    private static String systemNameById(List<JsonSystem> systems, Long systemId) {
+        Optional<JsonSystem> first = systems.stream()
+                .filter(s -> s.getId().equals(systemId))
+                .findFirst();
+        return first.isPresent() ? first.get().getName() : "Unknown system id: " + systemId;
     }
 
     private List<JsonMessage> messages(JsonInput input, JsonOutput output) {
         return output.getMessages().stream()
-                .map(m -> adjustMessage(m, input)) .collect(Collectors.toList());
+                .map(m -> adjustMessage(m, input)) .collect(toList());
     }
 
     private List<Subscription> subscriptions(JsonInput input, JsonOutput output) {
@@ -88,7 +140,7 @@ public class SubscriptionMatchProcessor {
                 .filter(s -> s.getPolicy() != null)
                 .filter(s -> s.getStartDate() != null && s.getEndDate() != null)
                 .sorted((s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     private Map<Long, Integer> matchedQuantity(JsonOutput output) {
@@ -144,10 +196,10 @@ public class SubscriptionMatchProcessor {
 
     private static String subscriptionNameById(List<JsonSubscription> subscriptions,
             Long id) {
-        return ofNullable(subscriptions.stream()
+        Optional<JsonSubscription> first = subscriptions.stream()
                 .filter(s -> s.getId().equals(id))
-                .findFirst()
-                .get().getName()).orElse("Subscription id: " + id);
+                .findFirst();
+        return first.isPresent() ? first.get().getName() : "Subscription id: " + id;
     }
 
     private List<System> unmatchedSystems(JsonInput input, JsonOutput output) {
@@ -173,7 +225,7 @@ public class SubscriptionMatchProcessor {
                             .filter(id -> !freeProducts.contains(id))
                             .map(id -> productNameById(id, input))
                             .sorted()
-                            .collect(Collectors.toList());
+                            .collect(toList());
 
                     return new System(
                             s.getId(),
@@ -182,7 +234,7 @@ public class SubscriptionMatchProcessor {
                             unmatchedProductNames);
                 })
                 .filter(s -> !s.getProducts().isEmpty())
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     private String productNameById(Long id, JsonInput input) {
