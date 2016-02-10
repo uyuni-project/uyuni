@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.services.subscriptionmatching;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.taskomatic.TaskoFactory;
@@ -199,7 +198,11 @@ public class SubscriptionMatchProcessor {
         Optional<JsonSubscription> first = subscriptions.stream()
                 .filter(s -> s.getId().equals(id))
                 .findFirst();
-        return first.isPresent() ? first.get().getName() : "Subscription id: " + id;
+        if (first.isPresent() && first.get().getName() != null) {
+            return first.get().getName();
+        } else {
+            return "Subscription id: " + id;
+        }
     }
 
     private List<System> unmatchedSystems(JsonInput input, JsonOutput output) {
