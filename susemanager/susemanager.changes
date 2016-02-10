@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Feb 10 08:28:52 CET 2016 - mc@suse.de
+
+- version 3.0.10-1
+- Show yast module for SUSE Manager Setup also in gnome control-center
+  (bsc#961513)
+- add dependencies of python-cryptography to bootstrap package list
+  (bsc#959987)
+
+-------------------------------------------------------------------
 Tue Jan 26 14:01:05 CET 2016 - mc@suse.de
 
 - version 3.0.9-1
