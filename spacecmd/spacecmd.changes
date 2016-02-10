@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Feb 10 08:40:17 CET 2016 - mc@suse.de
+
+- version 2.5.5.1-1
+- mimetype detection to set the binary flag requires 'file' tool
+- Text description missing for remote command by Spacecmd
+
+-------------------------------------------------------------------
 Tue Jan 26 14:02:05 CET 2016 - mc@suse.de
 
 - version 2.5.2.1-1
