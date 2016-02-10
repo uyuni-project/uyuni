@@ -188,12 +188,28 @@
     </exec>
   </target>
 
-  <target name="bundle-javascript" description="Transpile and bundle JavaScript files">
+  <target name="is-npm-installed">
+    <property environment="env" />
+    <available file="npm"
+               filepath="${env.PATH}"
+               property="npm.installed"/>
+  </target>
+
+  <target name="if-npm-not-installed" depends="is-npm-installed" unless="npm.installed">
+    <fail>npm is not in the PATH. Please install npm first.</fail>
+  </target>
+
+  <target name="setup-frontend-devenv" depends="if-npm-not-installed" description="Setup the tools needed for JavaScript development">
     <property name="js.src.dir" value="${basedir}/../web/html/src"/>
-    <exec executable="${js.src.dir}/gulp">
-
+    <exec executable="npm" dir="${js.src.dir}">
+      <arg line="install"/>
     </exec>
-
+    <echo file="${js.src.dir}/setenv.sh" append="false">#!/usr/bin/env bash
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &amp;&amp; pwd )"
+export PATH=$PATH:$$SCRIPT_DIR/node_modules/.bin
+export PS1="\u@\h:\w [frontend]> "
+echo "Added ./node_modules/.bin to PATH"
+    </echo>
   </target>
 
   <target name="deploy-static-resources" depends="open-ssh-socket" description="Deploy css/js/img/font files">
