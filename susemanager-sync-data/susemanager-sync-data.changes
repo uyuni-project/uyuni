@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Feb 10 08:30:19 CET 2016 - mc@suse.de
+
+- version 3.0.5-1
+- remove RES 4 and SUSE Manager Server 2.1
+- Add support for SUSE-Enterprise-Storage 2.1 (bsc#963784)
+- Add support for SLE12-SP1-SAP (bsc#959548)
+- Add support for SLES11-SP3-LTSS-Updates (bsc#965652)
+
+-------------------------------------------------------------------
 Tue Jan 05 15:56:53 CET 2016 - mc@suse.de
 
 - version 3.0.4-1
