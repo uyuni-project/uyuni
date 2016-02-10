@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed Feb 10 08:38:56 CET 2016 - mc@suse.de
+
+- version 2.5.18.1-1
+- provide empty no_proxy variable for reference in rhn.conf
+- do not import errata to all synced channels because some may not
+  have all packages synced
+- advise users to purge satsync cache on IntegrityError
+- making sure packages without errata are included
+- fixing invalid query
+
+-------------------------------------------------------------------
 Tue Jan 26 14:19:55 CET 2016 - mc@suse.de
 
 - version 2.5.13.1-1
