@@ -14,8 +14,11 @@
  */
 package com.suse.manager.webui.services.subscriptionmatching.test;
 
+import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.webui.services.subscriptionmatching.MatcherUiData;
+import com.suse.manager.webui.services.subscriptionmatching.PinnedMatch;
 import com.suse.manager.webui.services.subscriptionmatching.Subscription;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
 import com.suse.manager.webui.services.subscriptionmatching.System;
@@ -256,6 +259,77 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals(1, unmatchedSystems.size());
         assertEquals(1, unmatchedSystems.get(0).getProducts().size());
         assertEquals("Unknown product (101)", unmatchedSystems.get(0).getProducts().get(0));
+    }
+
+    public void testNewPin() throws Exception {
+        input.setSystems(Arrays.asList(new JsonSystem(100L, "my system", 1, true,
+                new HashSet<>(), new HashSet<>())));
+
+        PinnedSubscription newPinDb = new PinnedSubscription();
+        newPinDb.setSubscriptionId(10L);
+        newPinDb.setSystemId(100L);
+        PinnedSubscriptionFactory.getInstance().save(newPinDb);
+
+        List<PinnedMatch> pinnedMatches = ((MatcherUiData) processor
+                .getData(of(input), of(output))).getPinnedMatches();
+
+        assertEquals(1, pinnedMatches.size());
+        PinnedMatch pinnedMatch = pinnedMatches.get(0);
+        assertEquals("my system", pinnedMatch.getSystemName());
+        assertEquals(-1, pinnedMatch.getMatch());
+    }
+
+    public void testConfirmedPin() throws Exception {
+        // setup a confirmed match of one system and one subscription
+        input.setSystems(Arrays.asList(new JsonSystem(100L, "my system", 1, true,
+                new HashSet<>(), new HashSet<>())));
+        JsonSubscription subscription = new JsonSubscription(10L, "10",
+                "subscritption id 10, pn 10",
+                1, date("2009-03-01T00:00:00.000Z"), date("2018-02-28T00:00:00.000Z"), "",
+                Collections.singleton(1004L));
+        input.setSubscriptions(Arrays.asList(subscription));
+        output.setConfirmedMatches(Arrays.asList(new JsonMatch(100L, 10L, 1000L, 100)));
+
+        // create a corresponding pin
+        PinnedSubscription newPinDb = new PinnedSubscription();
+        newPinDb.setSubscriptionId(10L);
+        newPinDb.setSystemId(100L);
+        PinnedSubscriptionFactory.getInstance().save(newPinDb);
+
+        List<PinnedMatch> pinnedMatches = ((MatcherUiData) processor
+                .getData(of(input), of(output))).getPinnedMatches();
+
+        assertEquals(1, pinnedMatches.size());
+        PinnedMatch pinnedMatch = pinnedMatches.get(0);
+        assertEquals("my system", pinnedMatch.getSystemName());
+        assertEquals(1, pinnedMatch.getMatch());
+    }
+
+
+    public void testUnsatisfiedPin() throws Exception {
+        // setup a  of one system and one subscription
+        input.setSystems(Arrays.asList(new JsonSystem(100L, "my system", 1, true,
+                new HashSet<>(), new HashSet<>())));
+        JsonSubscription subscription = new JsonSubscription(10L, "10",
+                "subscritption id 10, pn 10",
+                1, date("2009-03-01T00:00:00.000Z"), date("2018-02-28T00:00:00.000Z"), "",
+                Collections.singleton(1004L));
+        input.setSubscriptions(Arrays.asList(subscription));
+        input.setPinnedMatches(Arrays.asList(new JsonMatch(100L, 10L, 1L, 100)));
+
+        // create a corresponding pin
+        PinnedSubscription newPinDb = new PinnedSubscription();
+        newPinDb.setSubscriptionId(10L);
+        newPinDb.setSystemId(100L);
+        PinnedSubscriptionFactory.getInstance().save(newPinDb);
+
+        List<PinnedMatch> pinnedMatches = ((MatcherUiData) processor
+                .getData(of(input), of(output))).getPinnedMatches();
+
+        assertEquals(1, pinnedMatches.size());
+        PinnedMatch pinnedMatch = pinnedMatches.get(0);
+        assertEquals("my system", pinnedMatch.getSystemName());
+        assertEquals(0, pinnedMatch.getMatch());
     }
 
     /**
