@@ -188,6 +188,14 @@
     </exec>
   </target>
 
+  <target name="bundle-javascript" description="Transpile and bundle JavaScript files">
+    <property name="js.src.dir" value="${basedir}/../web/html/src"/>
+    <exec executable="${js.src.dir}/gulp">
+
+    </exec>
+
+  </target>
+
   <target name="deploy-static-resources" depends="open-ssh-socket" description="Deploy css/js/img/font files">
     <condition property="spacewalk.upstream">
       <not>
