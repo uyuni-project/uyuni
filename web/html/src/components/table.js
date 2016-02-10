@@ -272,3 +272,4 @@ module.exports = {
     PageSelector : PageSelector,
     PaginationButton : PaginationButton
 }
+

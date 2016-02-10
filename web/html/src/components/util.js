@@ -18,3 +18,4 @@ var StatePersistedMixin = {
 module.exports = {
     StatePersistedMixin : StatePersistedMixin
 }
+
