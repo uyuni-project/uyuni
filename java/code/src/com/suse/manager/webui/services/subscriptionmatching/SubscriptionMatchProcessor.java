@@ -134,7 +134,6 @@ public class SubscriptionMatchProcessor {
                 .filter(s -> s.getTotalQuantity() != null && s.getTotalQuantity() > 0)
                 .filter(s -> s.getPolicy() != null)
                 .filter(s -> s.getStartDate() != null && s.getEndDate() != null)
-                .sorted((s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()))
                 .collect(toList());
     }
 
