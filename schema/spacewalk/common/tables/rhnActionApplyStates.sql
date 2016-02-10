@@ -15,27 +15,25 @@
 
 CREATE TABLE rhnActionApplyStates
 (
+
+    id               NUMBER NOT NULL
+                         CONSTRAINT rhn_act_apply_states_id_pk PRIMARY KEY,
     action_id        NUMBER NOT NULL
                          CONSTRAINT rhn_act_apply_states_act_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    jid              VARCHAR2(2048) NOT NULL,
-    data             BLOB
+    states           VARCHAR2(1024) NOT NULL,
+    created          timestamp with local time zone
+                         DEFAULT (current_timestamp) NOT NULL,
+    modified         timestamp with local time zone
+                         DEFAULT (current_timestamp) NOT NULL
 )
-TABLESPACE [[blob]]
 ENABLE ROW MOVEMENT
 ;
 
 CREATE UNIQUE INDEX rhn_act_apply_states_aid_idx
     ON rhnActionApplyStates (action_id)
-    TABLESPACE [[4m_tbs]]
     NOLOGGING;
 
-ALTER TABLE rhnActionApplyStates
-    ADD CONSTRAINT rhn_apply_states_aid_pk PRIMARY KEY (action_id);
-
-CREATE INDEX rhn_act_apply_states_jid_idx
-    ON rhnActionApplyStates (jid)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+CREATE SEQUENCE rhn_act_apply_states_id_seq;
 

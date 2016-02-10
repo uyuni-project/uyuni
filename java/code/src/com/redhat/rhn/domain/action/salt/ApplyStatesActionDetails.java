@@ -16,60 +16,71 @@ package com.redhat.rhn.domain.action.salt;
 
 import com.redhat.rhn.domain.action.ActionChild;
 
+import java.util.Set;
+
 /**
  * ApplyStatesActionDetails - Class representation of the table rhnActionApplyStates.
  */
 public class ApplyStatesActionDetails extends ActionChild {
 
-    private Long actionId;
-    private String jid;
-    private String data;
+    private long id;
+    private long actionId;
+    private String states;
+    private Set<ApplyStatesResult> results;
 
     /**
-     * Get the action ID.
-     * @return
+     * @return the id
      */
-    public Long getActionId() {
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * @param idIn the id to set
+     */
+    public void setId(long idIn) {
+        this.id = idIn;
+    }
+
+    /**
+     * @return the action id
+     */
+    public long getActionId() {
         return actionId;
     }
 
     /**
-     * Set the action ID.
-     * @param actionId
+     * @param actionId the action id to set
      */
-    public void setActionId(Long actionId) {
+    public void setActionId(long actionId) {
         this.actionId = actionId;
     }
 
     /**
-     * Get the data.
-     * @return data
+     * @return the states
      */
-    public String getData() {
-        return data;
+    public String getStates() {
+        return states;
     }
 
     /**
-     * Set the data.
-     * @param data the data of this job
+     * @param states the states to set
      */
-    public void setData(String data) {
-        this.data = data;
+    public void setStates(String statesIn) {
+        this.states = statesIn;
     }
 
     /**
-     * Return the jid.
-     * @return jid
+     * @return the results
      */
-    public String getJid() {
-        return jid;
+    public Set<ApplyStatesResult> getResults() {
+        return results;
     }
 
     /**
-     * Set the jid.
-     * @param jidIn jid
+     * @param results the results to set
      */
-    public void setJid(String jidIn) {
-        jid = jidIn;
+    public void setResults(Set<ApplyStatesResult> resultsIn) {
+        this.results = resultsIn;
     }
 }
