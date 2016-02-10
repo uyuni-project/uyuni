@@ -83,9 +83,8 @@ public class SubscriptionMatchProcessor {
                 .collect(toList());
     }
 
-    private static int deriveMatchStatus(PinnedSubscription ps, JsonInput input,
+    private static String deriveMatchStatus(PinnedSubscription ps, JsonInput input,
             JsonOutput output) {
-        // when the pin is in confirmed matches of the output -> return 1
         boolean satisfied = output.getConfirmedMatches().stream()
                 .filter(m -> m.getSystemId().equals(ps.getSystemId()) &&
                     m.getSubscriptionId().equals(ps.getSubscriptionId()))
@@ -93,11 +92,9 @@ public class SubscriptionMatchProcessor {
                 .isPresent();
 
         if (satisfied) {
-            return 1;
+            return "satisfied";
         }
 
-        // if the pin is not in the confirmed matches, but is in the input, then it's
-        // unsatisfied, hence return 0
         boolean unsatisfied = input.getPinnedMatches().stream()
                 .filter(p -> p.getSystemId().equals(ps.getSystemId()) &&
                     p.getSubscriptionId().equals(ps.getSubscriptionId()))
@@ -105,11 +102,10 @@ public class SubscriptionMatchProcessor {
                 .isPresent();
 
         if (unsatisfied) {
-            return 0;
+            return "unsatisfied";
         }
 
-        // otherwise we have a new pin -> -1
-        return -1;
+        return "pending";
     }
 
     private static String systemNameById(List<JsonSystem> systems, Long systemId) {
