@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Feb 10 08:25:16 CET 2016 - mc@suse.de
+
+- version 2.5.7.3-1
+- Subscription Matcher UI: add order-by-column feature
+- Subscription Matcher UI: add full date in case of hover
+- Subscription Matcher UI: add alert color on fully matched quantity
+  of a subscription
+- fix usage of localization
+
+-------------------------------------------------------------------
 Tue Jan 26 13:56:40 CET 2016 - mc@suse.de
 
 - version 2.5.7.2-1
