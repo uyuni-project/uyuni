@@ -32,23 +32,23 @@ public class PinnedMatch {
     @SerializedName("system_name")
     private String systemName;
 
-    /** The match. */
-    private int match;
+    /** The pin status. */
+    private String status;
 
     /**
      * Instantiates a new pinned match.
      *
-     * @param idIn the id in
-     * @param subscriptionNameIn the subscription name in
-     * @param systemNameIn the system name in
-     * @param matchIn the match in
+     * @param idIn the id
+     * @param subscriptionNameIn the subscription name
+     * @param systemNameIn the system name
+     * @param statusIn the status
      */
     public PinnedMatch(Long idIn, String subscriptionNameIn, String systemNameIn,
-            int matchIn) {
+            String statusIn) {
         this.id = idIn;
         this.subscriptionName = subscriptionNameIn;
         this.systemName = systemNameIn;
-        this.match = matchIn;
+        this.status = statusIn;
     }
 
     /**
@@ -106,20 +106,20 @@ public class PinnedMatch {
     }
 
     /**
-     * Gets the match.
+     * Gets the status.
      *
-     * @return the match
+     * @return the status
      */
-    public int getMatch() {
-        return match;
+    public String getStatus() {
+        return status;
     }
 
     /**
-     * Sets the match.
+     * Sets the status.
      *
-     * @param matchIn the new match
+     * @param statusIn the new status
      */
-    public void setMatch(int matchIn) {
-        this.match = matchIn;
+    public void setMatch(String statusIn) {
+        this.status = statusIn;
     }
 }
