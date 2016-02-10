@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.scc.SCCOrderItem;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 
 import java.util.List;
@@ -98,14 +99,19 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public void cleanStalePins() {
-        // todo this should be probably rewritten as a named query in HQL
-        for (PinnedSubscription pin : listPinnedSubscriptions()) {
-            if (SCCCachingFactory
-                    .lookupSubscriptionBySccId(pin.getSubscriptionId()) == null ||
-                    ServerFactory.lookupById(pin.getSystemId()) == null) {
-                remove(pin);
-            }
-        }
-    }
+        DetachedCriteria systemIds = DetachedCriteria.forClass(Server.class)
+                .setProjection(Projections.id());
 
+        DetachedCriteria subscriptionIds = DetachedCriteria.forClass(SCCOrderItem.class)
+                .setProjection(Projections.id());
+
+        getSession()
+            .createCriteria(PinnedSubscription.class)
+            .add(Restrictions.disjunction()
+                .add(Subqueries.propertyNotIn("systemId", systemIds))
+                .add(Subqueries.propertyNotIn("subscriptionId", subscriptionIds))
+            )
+            .list()
+            .forEach(stalePin -> remove((PinnedSubscription)stalePin));
+    }
 }
