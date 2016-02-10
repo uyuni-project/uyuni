@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require("react")
-var t = require("./translation")
 
 var PanelButton = React.createClass({
 

@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require("react");
-var t = require("../components/translation")
 var TableComponent = require("../components/table");
 var PanelComponent = require("../components/panel");
 var Messages = require("../components/messages").Messages;
