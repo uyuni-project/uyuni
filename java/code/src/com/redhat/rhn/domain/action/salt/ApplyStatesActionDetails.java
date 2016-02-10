@@ -17,9 +17,9 @@ package com.redhat.rhn.domain.action.salt;
 import com.redhat.rhn.domain.action.ActionChild;
 
 /**
- * SaltJobActionDetails - Class representation of the table rhnActionSaltJob.
+ * ApplyStatesActionDetails - Class representation of the table rhnActionApplyStates.
  */
-public class SaltJobActionDetails extends ActionChild {
+public class ApplyStatesActionDetails extends ActionChild {
 
     private Long actionId;
     private String jid;

@@ -13,10 +13,10 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE rhnActionSaltJob
+CREATE TABLE rhnActionApplyStates
 (
     action_id        NUMBER NOT NULL
-                         CONSTRAINT rhn_act_saltjob_act_fk
+                         CONSTRAINT rhn_act_apply_states_act_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
     jid              VARCHAR2(2048) NOT NULL,
@@ -26,16 +26,16 @@ TABLESPACE [[blob]]
 ENABLE ROW MOVEMENT
 ;
 
-CREATE UNIQUE INDEX rhn_act_saltjob_aid_idx
-    ON rhnActionSaltJob (action_id)
+CREATE UNIQUE INDEX rhn_act_apply_states_aid_idx
+    ON rhnActionApplyStates (action_id)
     TABLESPACE [[4m_tbs]]
     NOLOGGING;
 
-ALTER TABLE rhnActionSaltJob
-    ADD CONSTRAINT rhn_saltjob_aid_pk PRIMARY KEY (action_id);
+ALTER TABLE rhnActionApplyStates
+    ADD CONSTRAINT rhn_apply_states_aid_pk PRIMARY KEY (action_id);
 
-CREATE INDEX rhn_act_saltjob_jid_idx
-    ON rhnActionSaltJob (jid)
+CREATE INDEX rhn_act_apply_states_jid_idx
+    ON rhnActionApplyStates (jid)
     TABLESPACE [[4m_tbs]]
     NOLOGGING;
 
