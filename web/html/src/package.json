@@ -2,12 +2,10 @@
   "name": "sumaFrontend",
   "description": "Suse manager frontend",
   "dependencies": {
-    "react": "0.13.3"
   },
   "devDependencies": {
     "gulp": "3.8.x",
     "gulp-util": "3.0.x",
-    "gulp-concat": "2.6.0",
     "gulp-rename": "1.2.2",
     "vinyl-source-stream": "1.1.0",
     "glob": "6.0.4",
