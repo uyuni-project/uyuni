@@ -137,7 +137,8 @@ public class SubscriptionMatchProcessor {
         // compute cents by subscription id
         Map<Long, Integer> matchedCents = new HashMap<>();
         Map<Long, Integer> matchedQuantity = new HashMap<>();
-        output.getConfirmedMatches()
+        output.getMatches().stream()
+                .filter(m -> m.getConfirmed())
                 .forEach(m -> matchedCents.merge(m.getSubscriptionId(), m.getCents(),
                         Math::addExact));
 
@@ -173,7 +174,8 @@ public class SubscriptionMatchProcessor {
                 .map(p -> p.getId())
                 .collect(Collectors.toSet());
 
-        Map<Long, Set<Long>> systemMatchedProducts = output.getConfirmedMatches().stream()
+        Map<Long, Set<Long>> systemMatchedProducts = output.getMatches().stream()
+                .filter(m -> m.getConfirmed())
                 .collect(Collectors.toMap(
                         m -> m.getSystemId(),
                         m -> Collections.singleton(m.getProductId()),
