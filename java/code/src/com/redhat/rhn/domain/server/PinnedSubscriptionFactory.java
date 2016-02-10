@@ -1,6 +1,7 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -43,6 +44,17 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
 
     public void remove(PinnedSubscription subscription) {
         removeObject(subscription);
+    }
+
+    public void cleanStalePins() {
+        // todo this should be probably rewritten as a named query in HQL
+        for (PinnedSubscription pin : listPinnedSubscriptions()) {
+            if (SCCCachingFactory
+                    .lookupSubscriptionBySccId(pin.getSubscriptionId()) == null ||
+                    ServerFactory.lookupById(pin.getSystemId()) == null) {
+                remove(pin);
+            }
+        }
     }
 
 }
