@@ -74,7 +74,7 @@ insert into rhnActionType values (51, 'clientcert.update_client_cert', 'Update C
 insert into rhnActionType values (500, 'image.deploy', 'Deploy an image to a virtual host.', 'N', 'N');
 insert into rhnActionType values (501, 'distupgrade.upgrade', 'Service Pack Migration', 'N', 'N');
 insert into rhnActionType values (502, 'packages.setLocks', 'Lock packages', 'N', 'N');
-insert into rhnActionType values (503, 'salt.job', 'Salt Job', 'N', 'N');
+insert into rhnActionType values (503, 'states.apply', 'Apply states', 'N', 'N');
 --
 --
 -- Revision 1.25  2004/10/29 05:07:52  pjones

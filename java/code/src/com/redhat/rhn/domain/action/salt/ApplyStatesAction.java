@@ -17,17 +17,17 @@ package com.redhat.rhn.domain.action.salt;
 import com.redhat.rhn.domain.action.Action;
 
 /**
- * SaltJobAction - Action representation of a job that is executed by salt.
+ * SaltStateApplyAction - Action class representing the application of a Salt state.
  */
-public class SaltJobAction extends Action {
+public class ApplyStatesAction extends Action {
 
-    private SaltJobActionDetails details;
+    private ApplyStatesActionDetails details;
 
     /**
      * Return the details.
      * @return details
      */
-    public SaltJobActionDetails getDetails() {
+    public ApplyStatesActionDetails getDetails() {
         return details;
     }
 
@@ -35,7 +35,7 @@ public class SaltJobAction extends Action {
      * Set the details.
      * @param detailsIn details
      */
-    public void setDetails(SaltJobActionDetails detailsIn) {
+    public void setDetails(ApplyStatesActionDetails detailsIn) {
         detailsIn.setParentAction(this);
         this.details = detailsIn;
     }

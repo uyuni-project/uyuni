@@ -398,11 +398,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 outer-join="false" cascade="all" constrained="false" property-ref="parentAction"/>
         </subclass>
 
-        <!-- SaltJobAction -->
-        <subclass name="com.redhat.rhn.domain.action.salt.SaltJobAction"
+        <!-- ApplyStatesAction -->
+        <subclass name="com.redhat.rhn.domain.action.salt.ApplyStatesAction"
             lazy="true" discriminator-value="503">
             <one-to-one name="details"
-                class="com.redhat.rhn.domain.action.salt.SaltJobActionDetails"
+                class="com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails"
                 outer-join="false" cascade="all" constrained="false" property-ref="parentAction"/>
         </subclass>
     </class>

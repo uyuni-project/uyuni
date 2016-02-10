@@ -1128,9 +1128,9 @@ public class ActionFactory extends HibernateFactory {
             lookupActionTypeByLabel("distupgrade.upgrade");
 
     /**
-     * The constant representing salt job action.  [ID:503]
+     * The constant representing application of salt states.  [ID:503]
      */
-    public static final ActionType TYPE_SALT_JOB =
-            lookupActionTypeByLabel("salt.job");
+    public static final ActionType TYPE_APPLY_STATES =
+            lookupActionTypeByLabel("states.apply");
 }
 
