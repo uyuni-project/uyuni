@@ -388,15 +388,14 @@ public class UserManagerTest extends RhnBaseTestCase {
     }
 
     public void testLookupTimeZoneAll() {
-        List lst = UserManager.lookupAllTimeZones();
+        List<RhnTimeZone> lst = UserManager.lookupAllTimeZones();
         assertTrue(lst.size() > 30);
         assertTrue(lst.get(0) instanceof RhnTimeZone);
         assertTrue(lst.get(5) instanceof RhnTimeZone);
         assertTrue(lst.get(34) instanceof RhnTimeZone);
 
-        assertTrue(((RhnTimeZone)lst.get(5)).equals(UserManager
-                .getTimeZone("America/Denver")));
-        assertTrue(((RhnTimeZone)lst.get(5)).getOlsonName().equals("America/Denver"));
+        assertEquals("America/Phoenix", ((RhnTimeZone)lst.get(5)).getOlsonName());
+        assertEquals(lst.get(5), UserManager.getTimeZone("America/Phoenix"));
     }
 
    public void testUsersInSet() throws Exception {
