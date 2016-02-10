@@ -17,11 +17,8 @@ package com.suse.manager.reactor.messaging;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.server.InstalledProduct;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
@@ -45,11 +42,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -68,11 +63,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
        Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host")
     );
 
-
-    //HACK: set installed product depending on the grains
-    // to get access to suse channels
-    private final HashMap<String, Long> productIdMap = new HashMap<>();
-
     /**
      * Default constructor.
      */
@@ -87,13 +77,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      */
     public RegisterMinionEventMessageAction(SaltService saltService) {
         SALT_SERVICE = saltService;
-        productIdMap.put("SLES12x86_64", 1117L);
-        productIdMap.put("SLES12.1x86_64", 1322L);
-        productIdMap.put("SLES11x86_64", 824L);
-        productIdMap.put("SLES11.1x86_64", 769L);
-        productIdMap.put("SLES11.2x86_64", 690L);
-        productIdMap.put("SLES11.3x86_64", 814L);
-        productIdMap.put("SLES11.4x86_64", 1300L);
     }
 
     /**
@@ -168,28 +151,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.updateServerInfo();
 
             mapHardwareGrains(server, grains);
-
-            //HACK: set installed product depending on the grains
-            // to get access to suse channels
-            String key = osfullname + osrelease + osarch;
-            Optional.ofNullable(productIdMap.get(key)).ifPresent(productId -> {
-                SUSEProduct product =  SUSEProductFactory.lookupByProductId(productId);
-                if (product != null) {
-                    // Insert into suseInstalledProduct
-                    InstalledProduct prd = new InstalledProduct();
-                    prd.setName(product.getName());
-                    prd.setVersion(product.getVersion());
-                    prd.setRelease(product.getRelease());
-                    prd.setArch(product.getArch());
-                    prd.setBaseproduct(true);
-
-                    Set<InstalledProduct> products = new HashSet<>();
-                    products.add(prd);
-
-                    // Insert into suseServerInstalledProduct
-                    server.setInstalledProducts(products);
-                }
-            });
 
             ServerFactory.save(server);
 
