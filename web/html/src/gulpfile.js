@@ -2,35 +2,12 @@
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var source = require('vinyl-source-stream'); // Used to stream bundle for further handling
+var source = require('vinyl-source-stream');
 var browserify = require('browserify');
-//var watchify = require('watchify');
 var babelify = require('babelify');
-var concat = require('gulp-concat');
 var glob  = require('glob');
 var es = require('event-stream');
 var rename = require('gulp-rename')
-
-// TODO use watchify for devel mode
-//gulp.task('browserify', function() {
-//    var bundler = browserify({
-//        entries: ['./manager/*.js'], // Only need initial file, browserify finds the deps
-//        transform: [reactify], // We want to convert JSX to normal javascript
-//        debug: false, // Gives us sourcemapping
-//        cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
-//    });
-////    var watcher  = watchify(bundler);
-//
-////    return watcher
-////        .on('update', function (ids) { // When any files update
-////            var updateStart = Date.now();
-////            gutil.log('Updating', ids);
-////            watcher.bundle() // Create new bundle that uses the cache for high performance
-////                .pipe(source('org-state-catalog-app.js'))
-////                .pipe(gulp.dest('../javascript/manager'));
-////            gutil.log('Updated in', (Date.now() - updateStart) + 'ms');
-////        })
-//});
 
 var bundlerOpts = null;
 
@@ -46,15 +23,6 @@ gulp.task('prod-opts', function(done) {
         debug: false,
         cache: {}, packageCache: {}, fullPaths: false
     };
-});
-
-gulp.task('bundle-react', function(done) {
-    var bundler = browserify(bundlerOpts);
-
-    return bundler.require("react")
-        .bundle()
-        .pipe(source("react.bundle.js")) // this is a surrogate file name
-        .pipe(gulp.dest('../javascript/manager'));
 });
 
 gulp.task('bundle-manager', function(done) {
@@ -82,6 +50,6 @@ gulp.task('bundle-manager', function(done) {
     })
 });
 
-gulp.task('default', ['prod-opts', 'bundle-react', 'bundle-manager']);
+gulp.task('default', ['prod-opts', 'bundle-manager']);
 
 gulp.task('devel', ['devel-opts', 'bundle-manager']);
