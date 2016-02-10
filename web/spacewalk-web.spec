@@ -21,7 +21,9 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 BuildRequires: perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}
-BuildRequires: apache2
+BuildRequires:  apache2
+BuildRequires:  susemanager-nodejs-sdk-devel
+BuildRequires:  nodejs-packaging
 %endif
 
 %description
@@ -114,6 +116,12 @@ database.
 
 %build
 make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
+%if 0%{?suse_version}
+pushd html/src
+ln -sf %{nodejs_sitelib} .
+gulp
+popd
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
