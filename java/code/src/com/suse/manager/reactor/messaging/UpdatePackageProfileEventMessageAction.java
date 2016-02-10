@@ -15,10 +15,13 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -36,8 +39,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Perform a package profile update when an {@link UpdatePackageProfileEventMessage} is
@@ -94,6 +99,9 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
             Set<InstalledPackage> oldPackages = server.getPackages();
             oldPackages.addAll(newPackages);
             oldPackages.retainAll(newPackages);
+
+            server.setInstalledProducts(getInstalledProducts(server.getMinionId()));
+
             ServerFactory.save(server);
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Package profile updated for minion: " + server.getMinionId());
@@ -102,6 +110,41 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
             // Trigger update of errata cache for this server
             ErrataManager.insertErrataCacheTask(server);
         });
+    }
+
+    /**
+     * Query the installed products on a minion
+     *
+     * @param minionId the id of the minion
+     * @return a list of installed products
+     */
+    private Set<InstalledProduct> getInstalledProducts(String minionId) {
+        return SALT_SERVICE.getInstalledProducts(minionId).stream().flatMap(saltProduct -> {
+            String name = saltProduct.getName();
+            String version = saltProduct.getVersion();
+            String release = saltProduct.getRelease();
+            String arch = saltProduct.getArch();
+            boolean isbase = saltProduct.getIsbase();
+
+            Optional<SUSEProduct> product = Optional.ofNullable(
+                SUSEProductFactory.findSUSEProduct(
+                        name, version, release, arch, true
+                )
+            );
+            if (!product.isPresent()) {
+                LOG.info(String.format("No product match found for: %s %s %s %s",
+                        name, version, release, arch));
+            }
+            return product.map(prod -> {
+                InstalledProduct prd = new InstalledProduct();
+                prd.setName(prod.getName());
+                prd.setVersion(prod.getVersion());
+                prd.setRelease(prod.getRelease());
+                prd.setArch(prod.getArch());
+                prd.setBaseproduct(isbase);
+                return Stream.of(prd);
+            }).orElseGet(Stream::empty);
+        }).collect(Collectors.toSet());
     }
 
     /**
