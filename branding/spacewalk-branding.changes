@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Feb 10 08:31:46 CET 2016 - mc@suse.de
+
+- version 2.5.2.4-1
+- Subscription Matcher UI: add order-by-column feature
+- Subscription Matcher UI: add search filter for subscriptions table
+- rename errata to patches on systems details page (bsc#964412)
+
+-------------------------------------------------------------------
 Tue Jan 26 14:12:17 CET 2016 - mc@suse.de
 
 - version 2.5.2.3-1
