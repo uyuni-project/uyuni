@@ -138,8 +138,8 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         input.getSubscriptions().add(new JsonSubscription(1L, "123456", "subs name", 3,
                 new Date(0), new Date(1000), "user", new HashSet<>()));
 
-        JsonMatch match = new JsonMatch(20L, 1L, 100L, 200);
-        output.getConfirmedMatches().add(match);
+        JsonMatch match = new JsonMatch(20L, 1L, 100L, 200, true);
+        output.getMatches().add(match);
         // subscriptions with null policy will be filtered out
         setSubscriptionPolicy(1L, "my policy");
 
@@ -202,7 +202,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         input.setSystems(Collections.singletonList(
                 new JsonSystem(1L, "system name", 1, true, Collections.emptySet(),
                         products)));
-        output.getConfirmedMatches().add(new JsonMatch(1L, 10L, 100L, 100));
+        output.getMatches().add(new JsonMatch(1L, 10L, 100L, 100, true));
 
         List<System> unmatchedSystems = ((MatcherUiData) processor
                 .getData(of(input), of(output))).getUnmatchedSystems();
@@ -239,7 +239,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 1, date("2009-03-01T00:00:00.000Z"), date("2018-02-28T00:00:00.000Z"), "",
                 Collections.singleton(1004L));
         input.setSubscriptions(Arrays.asList(subscription));
-        output.setConfirmedMatches(Arrays.asList(new JsonMatch(100L, 10L, 1000L, 100)));
+        output.setMatches(Arrays.asList(new JsonMatch(100L, 10L, 1000L, 100)));
 
         // create a corresponding pin
         PinnedSubscription newPinDb = new PinnedSubscription();
@@ -371,15 +371,15 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         policies.put(103L, "unlimited_virtualization");
         policies.put(104L, "one_two");
 
-        List<JsonMatch> confirmedMatches = output.getConfirmedMatches();
-        confirmedMatches.add(new JsonMatch(10L, 100L, 1000L, 100));
-        confirmedMatches.add(new JsonMatch(20L, 100L, 1000L, 100));
-        confirmedMatches.add(new JsonMatch(30L, 103L, 1003L, 100));
-        confirmedMatches.add(new JsonMatch(31L, 103L, 1003L, 0));
-        confirmedMatches.add(new JsonMatch(32L, 103L, 1003L, 0));
-        confirmedMatches.add(new JsonMatch(33L, 100L, 1000L, 50));
-        confirmedMatches.add(new JsonMatch(33L, 103L, 1003L, 0));
-        confirmedMatches.add(new JsonMatch(34L, 100L, 1000L, 100));
+        List<JsonMatch> confirmedMatches = output.getMatches();
+        confirmedMatches.add(new JsonMatch(10L, 100L, 1000L, 100, true));
+        confirmedMatches.add(new JsonMatch(20L, 100L, 1000L, 100, true));
+        confirmedMatches.add(new JsonMatch(30L, 103L, 1003L, 100, true));
+        confirmedMatches.add(new JsonMatch(31L, 103L, 1003L, 0, true));
+        confirmedMatches.add(new JsonMatch(32L, 103L, 1003L, 0, true));
+        confirmedMatches.add(new JsonMatch(33L, 100L, 1000L, 50, true));
+        confirmedMatches.add(new JsonMatch(33L, 103L, 1003L, 0, true));
+        confirmedMatches.add(new JsonMatch(34L, 100L, 1000L, 100, true));
 
         MatcherUiData data = (MatcherUiData) processor.getData(of(input), of(output));
 

@@ -151,7 +151,8 @@ public class MatcherJsonIO {
     public List<JsonMatch> getJsonMatches() {
         return ((List<PinnedSubscription>) HibernateFactory.getSession()
                 .createCriteria(PinnedSubscription.class).list()).stream()
-                .map(p -> new JsonMatch(p.getSystemId(), p.getSubscriptionId(), null, null))
+                .map(p -> new JsonMatch(
+                    p.getSystemId(), p.getSubscriptionId(), null, null, null))
                 .collect(toList());
     }
 
