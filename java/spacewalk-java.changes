@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Wed Feb 10 08:38:05 CET 2016 - mc@suse.de
+
+- version 2.5.49.1-1
+- Update spec file to require renamed salt-netapi-client
+- adjust to new netapi call syntax
+- Move suse manager custom salt functions into a custom namespace
+- remove RES4 from expected products
+- test support for SUSE-Enterprise-Storage 2.1 (bsc#963784), SLE12-SP1-SAP
+  (bsc#959548) and SLES11-SP3-LTSS-Updates (bsc#965652)
+- Filter null quantity subscriptions
+- Store the matcher run result to the DB
+- add scheduled-by to SSM action-history-list
+- fix ISE in case no system is selected
+- for Channel.packageByFileName query prefer packages from the actual channel,
+  sort the rest accoring to build_time
+- Text description missing for remote command by API -> function
+  scheduleLabelScriptRun()
+- Added/changed API-methods to work with package installation/removing
+  using it's nevra
+- Added additional information to package metadata, returned by
+  serializer
+
+-------------------------------------------------------------------
 Tue Jan 26 14:21:31 CET 2016 - mc@suse.de
 
 - version 2.5.43.1-1
