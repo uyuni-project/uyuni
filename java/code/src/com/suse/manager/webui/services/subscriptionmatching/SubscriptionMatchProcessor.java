@@ -36,7 +36,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.concat;
 
@@ -77,7 +76,7 @@ public class SubscriptionMatchProcessor {
         return PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions().stream()
                 .map(ps -> new PinnedMatch(
                     ps.getId(),
-                    subscriptionNameById(input.getSubscriptions(), ps.getSubscriptionId()),
+                    subscriptionNameById(input, ps.getSubscriptionId()),
                     systemNameById(input.getSystems(), ps.getSystemId()),
                     deriveMatchStatus(ps, input, output)))
                 .collect(toList());
@@ -162,25 +161,16 @@ public class SubscriptionMatchProcessor {
         Map<String, String> data = new HashMap<>();
         if (typesWithSystemId.contains(message.getType())) {
             long systemId = Long.parseLong(message.getData().get("id"));
-            data.put("name", ofNullable(
-                    input.getSystems().stream()
-                            .filter(s -> s.getId().equals(systemId))
-                            .findFirst()
-                            .get().getName())
-                    .orElse("System id: " + systemId));
+            data.put("name", systemNameById(input, systemId));
             return new JsonMessage(message.getType(), data);
         }
         else if (message.getType().equals("unsatisfied_pinned_match")) {
             long systemId = Long.parseLong(message.getData().get("system_id"));
-            data.put("system_name", ofNullable(
-                    input.getSystems().stream()
-                            .filter(s -> s.getId().equals(systemId))
-                            .findFirst()
-                            .get().getName())
-                    .orElse("System id: " + systemId));
+            data.put("system_name", systemNameById(input, systemId));
+
             long subscriptionId = Long.parseLong(message.getData().get("subscription_id"));
-            data.put("subscription_name", subscriptionNameById(input.getSubscriptions(),
-                    subscriptionId));
+            data.put("subscription_name", subscriptionNameById(input, subscriptionId));
+
             return new JsonMessage(message.getType(), data);
         }
         else { // pass it through
@@ -188,17 +178,19 @@ public class SubscriptionMatchProcessor {
         }
     }
 
-    private static String subscriptionNameById(List<JsonSubscription> subscriptions,
-            Long id) {
-        Optional<JsonSubscription> first = subscriptions.stream()
+    private static String systemNameById(JsonInput input, long id) {
+        Optional<JsonSystem> system = input.getSystems().stream()
                 .filter(s -> s.getId().equals(id))
                 .findFirst();
-        if (first.isPresent() && first.get().getName() != null) {
-            return first.get().getName();
-        }
-        else {
-            return "Subscription id: " + id;
-        }
+        return system.isPresent() ? system.get().getName() : "" + id;
+    }
+
+    private static String subscriptionNameById(JsonInput input,
+            Long id) {
+        Optional<JsonSubscription> subscription = input.getSubscriptions().stream()
+                .filter(s -> s.getId().equals(id))
+                .findFirst();
+        return subscription.isPresent() ? subscription.get().getName() : "" + id;
     }
 
     private List<System> unmatchedSystems(JsonInput input, JsonOutput output) {
