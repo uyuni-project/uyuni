@@ -76,10 +76,10 @@ public class SubscriptionMatchProcessor {
     private List<PinnedMatch> pinnedMatches(JsonInput input, JsonOutput output) {
         return PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions().stream()
                 .map(ps -> new PinnedMatch(
-                        ps.getId(),
-                        subscriptionNameById(input.getSubscriptions(), ps.getSubscriptionId()),
-                        systemNameById(input.getSystems(), ps.getSystemId()),
-                        deriveMatchStatus(ps, input, output)))
+                    ps.getId(),
+                    subscriptionNameById(input.getSubscriptions(), ps.getSubscriptionId()),
+                    systemNameById(input.getSystems(), ps.getSystemId()),
+                    deriveMatchStatus(ps, input, output)))
                 .collect(toList());
     }
 
@@ -87,8 +87,8 @@ public class SubscriptionMatchProcessor {
             JsonOutput output) {
         // when the pin is in confirmed matches of the output -> return 1
         boolean satisfied = output.getConfirmedMatches().stream()
-                .filter(m -> m.getSystemId().equals(ps.getSystemId())
-                        && m.getSubscriptionId().equals(ps.getSubscriptionId()))
+                .filter(m -> m.getSystemId().equals(ps.getSystemId()) &&
+                    m.getSubscriptionId().equals(ps.getSubscriptionId()))
                 .findAny()
                 .isPresent();
 
@@ -99,8 +99,8 @@ public class SubscriptionMatchProcessor {
         // if the pin is not in the confirmed matches, but is in the input, then it's
         // unsatisfied, hence return 0
         boolean unsatisfied = input.getPinnedMatches().stream()
-                .filter(p -> p.getSystemId().equals(ps.getSystemId())
-                        && p.getSubscriptionId().equals(ps.getSubscriptionId()))
+                .filter(p -> p.getSystemId().equals(ps.getSystemId()) &&
+                    p.getSubscriptionId().equals(ps.getSubscriptionId()))
                 .findAny()
                 .isPresent();
 
@@ -200,7 +200,8 @@ public class SubscriptionMatchProcessor {
                 .findFirst();
         if (first.isPresent() && first.get().getName() != null) {
             return first.get().getName();
-        } else {
+        }
+        else {
             return "Subscription id: " + id;
         }
     }

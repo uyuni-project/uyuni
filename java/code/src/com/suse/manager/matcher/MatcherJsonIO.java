@@ -147,6 +147,7 @@ public class MatcherJsonIO {
      * @return an object representation of the JSON input for the matcher
      * about pinned matches
      */
+    @SuppressWarnings("unchecked")
     public List<JsonMatch> getJsonMatches() {
         return ((List<PinnedSubscription>) HibernateFactory.getSession()
                 .createCriteria(PinnedSubscription.class).list()).stream()
