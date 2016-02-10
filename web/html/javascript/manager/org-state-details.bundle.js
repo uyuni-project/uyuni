@@ -42,7 +42,6 @@ module.exports = {
 'use strict';
 
 var React = require("react");
-var t = require("./translation");
 
 var PanelButton = React.createClass({
   displayName: "PanelButton",
@@ -97,31 +96,10 @@ module.exports = {
   PanelButton: PanelButton
 };
 
-},{"./translation":3,"react":"react"}],3:[function(require,module,exports){
-'use strict';
-
-// TODO copied from spacewalk-essentials.js. find a way to share this
-/**
- * Translates a string, implemented now as a 'true-bypass',
- * with placeholder replacement like Java's MessageFormat class.
- * Accepts any number of arguments after key.
- */
-module.exports = function (key) {
-  var result = key;
-
-  // Minimal implementation of https://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html
-  for (var i = 1; i < arguments.length; i++) {
-    result = result.replace('{' + (i - 1) + '}', arguments[i]);
-  }
-
-  return result;
-};
-
-},{}],4:[function(require,module,exports){
+},{"react":"react"}],3:[function(require,module,exports){
 'use strict';
 
 var React = require("react");
-var t = require("../components/translation");
 
 var Panel = require("../components/panel").Panel;
 var Messages = require("../components/messages").Messages;
@@ -279,4 +257,4 @@ var StateDetail = React.createClass({
 
 React.render(React.createElement(StateDetail, { sls: stateData() }), document.getElementById('state-details'));
 
-},{"../components/messages":1,"../components/panel":2,"../components/translation":3,"react":"react"}]},{},[4]);
+},{"../components/messages":1,"../components/panel":2,"react":"react"}]},{},[3]);
