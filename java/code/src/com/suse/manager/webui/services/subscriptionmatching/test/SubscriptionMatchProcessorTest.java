@@ -266,7 +266,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 1, date("2009-03-01T00:00:00.000Z"), date("2018-02-28T00:00:00.000Z"), "",
                 Collections.singleton(1004L));
         input.setSubscriptions(Arrays.asList(subscription));
-        input.setPinnedMatches(Arrays.asList(new JsonMatch(100L, 10L, 1L, 100)));
+        input.setPinnedMatches(Arrays.asList(new JsonMatch(100L, 10L, 1L, 100, null)));
 
         // create a corresponding pin
         PinnedSubscription newPinDb = new PinnedSubscription();

@@ -61,13 +61,33 @@ public class SubscriptionMatchProcessor {
                     messages(input.get(), output.get()),
                     subscriptions(input.get(), output.get()),
                     unmatchedSystems(input.get(), output.get()),
-                    pinnedMatches(input.get(), output.get()));
+                    pinnedMatches(input.get(), output.get()),
+                    systems(input.get(), output.get()));
             return matcherUiData;
         }
         else {
             return new MatcherUiData(false, latestStart, latestEnd, new LinkedList<>(),
-                    new HashMap<>(), new LinkedList<>(), new LinkedList<>());
+                    new HashMap<>(), new LinkedList<>(), new LinkedList<>(),
+                    new HashMap<>());
         }
+    }
+
+    private Map<String, System> systems(JsonInput input, JsonOutput output) {
+        return input.getSystems().stream()
+                .map(s -> new System(
+                    s.getId(),
+                    s.getName(),
+                    s.getCpus(),
+                    null,
+                    output.getMatches().stream()
+                        .map(m -> m.getSubscriptionId())
+                        .distinct()
+                        .collect(toList())
+                ))
+                .collect(toMap(
+                    s -> "" + s.getId(),
+                    s -> s
+                 ));
     }
 
     private List<PinnedMatch> pinnedMatches(JsonInput input, JsonOutput output) {
@@ -198,7 +218,8 @@ public class SubscriptionMatchProcessor {
                             s.getId(),
                             s.getName(),
                             s.getCpus(),
-                            unmatchedProductNames);
+                            unmatchedProductNames,
+                            null);
                 })
                 .filter(s -> !s.getProducts().isEmpty())
                 .collect(toList());

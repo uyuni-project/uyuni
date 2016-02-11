@@ -24,10 +24,20 @@ import java.util.List;
  */
 public class System {
 
+    /** The id. */
     private Long id;
+
+    /** The name. */
     private String name;
+
+    /** The cpu count. */
     private Integer cpuCount;
+
+    /** The products. */
     private List<String> products;
+
+    /** The possible subscription ids. */
+    private List<Long> possibleSubscriptionIds;
 
     /**
      * Standard constructor.
@@ -36,12 +46,15 @@ public class System {
      * @param nameIn - name
      * @param cpuCountIn - cpu count
      * @param productsIn - products
+     * @param possibleSubscriptionIdsIn - possible subscription ids
      */
-    public System(Long idIn, String nameIn, Integer cpuCountIn, List<String> productsIn) {
+    public System(Long idIn, String nameIn, Integer cpuCountIn, List<String> productsIn,
+            List<Long> possibleSubscriptionIdsIn) {
         id = idIn;
         name = nameIn;
         cpuCount = cpuCountIn;
         products = productsIn;
+        setPossibleSubscriptionIds(possibleSubscriptionIdsIn);
     }
 
     /**
@@ -114,5 +127,23 @@ public class System {
      */
     public void setProducts(List<String> productsIn) {
         products = productsIn;
+    }
+
+    /**
+     * Gets the possible subscription ids.
+     *
+     * @return the possible subscription ids
+     */
+    public List<Long> getPossibleSubscriptionIds() {
+        return possibleSubscriptionIds;
+    }
+
+    /**
+     * Sets the possible subscription ids.
+     *
+     * @param possibleSubscriptionIdsIn the new possible subscription ids
+     */
+    public void setPossibleSubscriptionIds(List<Long> possibleSubscriptionIdsIn) {
+        possibleSubscriptionIds = possibleSubscriptionIdsIn;
     }
 }
