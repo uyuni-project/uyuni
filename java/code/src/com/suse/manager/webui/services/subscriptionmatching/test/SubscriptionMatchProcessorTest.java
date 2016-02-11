@@ -226,7 +226,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
 
         assertEquals(1, pinnedMatches.size());
         PinnedMatch pinnedMatch = pinnedMatches.get(0);
-        assertEquals("my system", pinnedMatch.getSystemName());
+        assertEquals(100L, pinnedMatch.getSystemId().longValue());
         assertEquals("pending", pinnedMatch.getStatus());
     }
 
@@ -252,7 +252,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
 
         assertEquals(1, pinnedMatches.size());
         PinnedMatch pinnedMatch = pinnedMatches.get(0);
-        assertEquals("my system", pinnedMatch.getSystemName());
+        assertEquals(100L, pinnedMatch.getSystemId().longValue());
         assertEquals("satisfied", pinnedMatch.getStatus());
     }
 
@@ -279,7 +279,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
 
         assertEquals(1, pinnedMatches.size());
         PinnedMatch pinnedMatch = pinnedMatches.get(0);
-        assertEquals("my system", pinnedMatch.getSystemName());
+        assertEquals(100L, pinnedMatch.getSystemId().longValue());
         assertEquals("unsatisfied", pinnedMatch.getStatus());
     }
 

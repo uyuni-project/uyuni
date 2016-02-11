@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.services.subscriptionmatching;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * JSON representation of a pinned match for the matcher UI.
  */
@@ -24,13 +22,11 @@ public class PinnedMatch {
     /** The id. */
     private Long id;
 
-    /** The subscription name. */
-    @SerializedName("subscription_name")
-    private String subscriptionName;
+    /** The subscription id. */
+    private Long subscriptionId;
 
-    /** The system name. */
-    @SerializedName("system_name")
-    private String systemName;
+    /** The system id. */
+    private Long systemId;
 
     /** The pin status. */
     private String status;
@@ -39,15 +35,15 @@ public class PinnedMatch {
      * Instantiates a new pinned match.
      *
      * @param idIn the id
-     * @param subscriptionNameIn the subscription name
-     * @param systemNameIn the system name
+     * @param subscriptionIdIn the subscription id
+     * @param systemIdIn the system id
      * @param statusIn the status
      */
-    public PinnedMatch(Long idIn, String subscriptionNameIn, String systemNameIn,
+    public PinnedMatch(Long idIn, Long subscriptionIdIn, Long systemIdIn,
             String statusIn) {
         this.id = idIn;
-        this.subscriptionName = subscriptionNameIn;
-        this.systemName = systemNameIn;
+        this.subscriptionId = subscriptionIdIn;
+        this.systemId = systemIdIn;
         this.status = statusIn;
     }
 
@@ -70,39 +66,39 @@ public class PinnedMatch {
     }
 
     /**
-     * Gets the subscription name.
+     * Gets the subscription id.
      *
-     * @return the subscription name
+     * @return the subscription id
      */
-    public String getSubscriptionName() {
-        return subscriptionName;
+    public Long getSubscriptionId() {
+        return subscriptionId;
     }
 
     /**
-     * Sets the subscription name.
+     * Sets the subscription id.
      *
-     * @param subscriptionNameIn the new subscription name
+     * @param subscriptionIdIn the new subscription id
      */
-    public void setSubscriptionName(String subscriptionNameIn) {
-        this.subscriptionName = subscriptionNameIn;
+    public void setSubscriptionId(Long subscriptionIdIn) {
+        subscriptionId = subscriptionIdIn;
     }
 
     /**
-     * Gets the system name.
+     * Gets the system id.
      *
-     * @return the system name
+     * @return the system id
      */
-    public String getSystemName() {
-        return systemName;
+    public Long getSystemId() {
+        return systemId;
     }
 
     /**
-     * Sets the system name.
+     * Sets the system id.
      *
-     * @param systemNameIn the new system name
+     * @param systemIdIn the new system id
      */
-    public void setSystemName(String systemNameIn) {
-        this.systemName = systemNameIn;
+    public void setSystemId(Long systemIdIn) {
+        systemId = systemIdIn;
     }
 
     /**
@@ -119,7 +115,7 @@ public class PinnedMatch {
      *
      * @param statusIn the new status
      */
-    public void setMatch(String statusIn) {
+    public void setStatus(String statusIn) {
         this.status = statusIn;
     }
 }
