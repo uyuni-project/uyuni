@@ -167,20 +167,6 @@ When(/^we wait till Salt master sees this minion as rejected$/) do
 end
 
 When(/^I delete this minion key in the Salt master$/) do
-  # workaround https://github.com/saltstack/salt/issues/27796
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        sshcmd("stat /var/cache/salt/master/.dfn")
-        puts "Waiting for /var/cache/salt/master/.dfn to go away (issue#27796)"
-        sleep(1)
-      end
-    end
-  rescue RuntimeError => e
-    puts ".dfn should be gone"
-  rescue Timeout::Error => e
-    puts "timeout witing for .dfn to vanish"
-  end
   sshcmd("salt-key -y -d #{$myhostname}")
 end
 
