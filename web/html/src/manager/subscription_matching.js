@@ -32,6 +32,7 @@ var SubscriptionMatching = React.createClass({
     var subscriptions = data == null ? null : data.subscriptions;
     var unmatchedSystems = data == null ? null : data.unmatchedSystems;
     var pinnedMatches = data == null ? null : data.pinnedMatches;
+    var systems = data == null ? null : data.systems;
 
     var tabContainer = data == null || !data.matcherDataAvailable ? null :
       <TabContainer
@@ -49,6 +50,7 @@ var SubscriptionMatching = React.createClass({
           />,
           <PinnedMatches
             pinnedMatches={pinnedMatches}
+            systems={systems}
             saveState={(state) => {this.state["pinnedMatchesTableState"] = state;}}
             loadState={() => this.state["pinnedMatchesTableState"]}
           />,
@@ -461,7 +463,7 @@ var PinnedMatches = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
-    return {"system": null};
+    return {"showPopUp": false};
   },
 
   rowFilter: function(a, b, columnIndex, ascending) {
@@ -484,38 +486,49 @@ var PinnedMatches = React.createClass({
     return result * orderCondition;
   },
 
-  removePin: function(pinId) {
+  onRemovePin: function(pinId) {
     console.log("REMOVE PIN [" + pinId + "]");
   },
 
-  addPin: function(systemId) {
-    console.log("PIN SYSTEM [" + systemId + "]");
-    this.setState({"system": systemId});
+  showPopUp: function() {
+    this.setState({"showPopUp" : true});
+  },
+
+  closePopUp: function() {
+    this.setState({"showPopUp" : false});
+  },
+
+  savePin: function(systemId, subscriptionId) {
+    console.log("SAVE PIN: " + systemId + "-" + subscriptionId);
+    $("#addPinPopUp").modal('hide'); //to trigger popup close action
+    this.closePopUp();
   },
 
   render: function() {
     if (this.props.pinnedMatches != null && this.props.pinnedMatches.length > 0) {
+      var popUpContent = this.state.showPopUp ? <AddPinPopUp systems={this.props.systems} onSavePin={this.savePin} /> : null;
       return (
         <div className="row col-md-12">
           <div className="spacewalk-toolbar">
-            <button type="button" className="btn btn-default" data-toggle="modal" data-target="#addPinPopUp">
+            <button type="button" className="btn btn-default" onClick={this.showPopUp} data-toggle="modal" data-target="#addPinPopUp">
               <i className="fa fa-map-pin"></i>{t("Add a Pin")}
             </button>
             <PopUp
-              title={t("Systems")}
-              className={this.state.system ? "modal-lg" : ""}
-              popUpId="addPinPopUp"
+              title={t("Pin a Systems to a Subscription")}
+              className={this.state.systemId ? "modal-lg" : ""}
+              id="addPinPopUp"
               content={
                 <div className="spacewalk-list">
-                  <Table headers={[t("System"), t("")]} rows={possibleMatchesSystemsToRow(this.props.possibleMatches, this.addPin)} />
+                  {popUpContent}
                 </div>
               }
+              onClosePopUp={this.closePopUp}
             />
           </div>
-          <h2>{t("Pins Status")}</h2>
+          <h2>{t("Pin Status")}</h2>
           <div className="spacewalk-list">
             <Table headers={[t("System"), t("Subscription"), t("Pin Status"), t("Unpin")]}
-              rows={pinnedMatchesToRows(this.props.pinnedMatches, this.removePin)}
+              rows={pinnedMatchesToRows(this.props.pinnedMatches, this.onRemovePin)}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
               rowComparator={this.rowFilter}
@@ -548,16 +561,6 @@ function pinnedMatchesToRows(pins, onClickAction) {
   });
 }
 
-function possibleMatchesSystemsToRow(possibleMatches) {
-  return possibleMatches.map((s) => {
-    var columns = [
-      <TableCell content={s.system_name} />,
-      <TableCell content={<button type="button" className="btn btn-default btn-cell"><i className="fa fa-map-pin"></i>{t("Pin this system")}</button>} />
-    ];
-    return <TableRow columns={columns} rawData={s} />
-  });
-}
-
 var PinStatus = React.createClass({
   render: function() {
     return (
@@ -570,17 +573,121 @@ var PinStatus = React.createClass({
   }
 });
 
-var RemovePinButton = React.createClass({
+var PinButton = React.createClass({
   onClick: function() {
-    // TODO: implementing the removal of a pin, calling the backend
-    console.log("Remove this pin: " + this.props.pinId);
+    this.props.onClick(this.props.elementId);
   },
 
   render: function() {
     return (
       <button className="btn btn-default btn-cell" onClick={this.onClick}>
-        <i className="fa fa-trash-o"></i>{this.props.content}
+        {this.props.content}
       </button>
+    );
+  }
+})
+
+var AddPinPopUp = React.createClass({
+  getInitialState:function() {
+    return {"systemId":null};
+  },
+
+  onSystemSelected:function(systemId) {
+    console.log("system for new pin = " + systemId);
+    this.setState({"systemId": systemId});
+  },
+
+  onSubscriptionSelected: function(subscriptionId) {
+    console.log("subscrpition for new pin = " + subscriptionId);
+    this.props.onSavePin(this.state.systemId, subscriptionId);
+  },
+
+  render:function() {
+    var popUpContent;
+    if (this.state.systemId) {
+      popUpContent = (
+        <Table headers={[t("Description"), t("")]}
+          rows={possibleSubscriptionToRow(this.props.systems[this.state.systemId].possibleSubscriptionIds, this.onSubscriptionSelected)}
+        />
+      );
+    }
+    else {
+      popUpContent = (
+        <Table headers={[t("System"), t("")]} rows={systemsForPinningToRow(this.props.systems, this.onSystemSelected)}
+          dataFilter={(tableRow, searchValue) => tableRow.props["rawData"]["name"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
+          searchPlaceholder={t("Filter by name")}
+        />
+      );
+    }
+    return (popUpContent);
+  }
+});
+
+function systemsForPinningToRow(systems, onClickAction) {
+  return Object.keys(systems).map((k) => {
+    var s = systems[k];
+    var columns = [
+      <TableCell content={s.name} />,
+      <TableCell content={
+        <PinButton
+          onClick={onClickAction}
+          elementId={k}
+          content={<span><i className="fa fa-map-pin"></i>{t("Pin this system")}</span>}
+        />}
+      />
+    ];
+    return <TableRow columns={columns} rawData={s} />
+  });
+}
+
+function possibleSubscriptionToRow(possibleSubscription, onClickAction) {
+  return possibleSubscription.map((s) => {
+    var columns = [
+      // <TableCell content={s.partNumber} />,
+      // <TableCell content={s.description} />,
+      // <TableCell content={humanReadablePolicy(s.policy)} />,
+      // <TableCell content={
+      //   <ToolTip content={moment(s.startDate).fromNow()}
+      //     title={moment(s.startDate).format("LL")} />}
+      // />,
+      // <TableCell content={
+      //   <ToolTip content={moment(s.endDate).fromNow()}
+      //     title={moment(s.endDate).format("LL")} />}
+      // />,
+      <TableCell content={s} />,
+      <TableCell content={
+        <PinButton
+          onClick={onClickAction}
+          elementId={s}
+          content={<span><i className="fa fa-map-pin"></i>{t("Pin this subscription")}</span>}
+        />}
+      />
+    ];
+    return <TableRow columns={columns} rawData={s} />
+  });
+}
+
+var PopUp = React.createClass({
+  onClose: function() {
+    this.props.onClosePopUp();
+  },
+
+  render: function() {
+    return (
+      <div className="modal fade" tabindex="-1" role="dialog" aria-labelledby="addPinPopUpLabel" id={this.props.id} >
+        <div className={"modal-dialog " + this.props.className}>
+          <div className="modal-content">
+            <div className="modal-header">
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.onClose}>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 className="modal-title">{this.props.title}</h4>
+            </div>
+            <div className="modal-body">{this.props.content}</div>
+            {this.props.footer ? <div className="modal-footer">{this.props.footer}</div> : null}
+          </div>
+        </div>
+      </div>
     );
   }
 });
