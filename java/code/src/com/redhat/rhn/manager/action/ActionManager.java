@@ -1268,7 +1268,8 @@ public class ActionManager extends BaseManager {
             if (!SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT) &&
                     !SystemManager.hasEntitlement(sid, EntitlementManager.SALT)) {
                 throw new MissingEntitlementException(
-                    EntitlementManager.MANAGEMENT.getHumanReadableLabel());
+                    EntitlementManager.MANAGEMENT.getHumanReadableLabel() + " or " +
+                    EntitlementManager.SALT.getHumanReadableLabel());
             }
         }
     }
