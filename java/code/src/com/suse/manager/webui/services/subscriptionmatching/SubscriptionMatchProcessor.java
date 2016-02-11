@@ -35,6 +35,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.concat;
 
@@ -67,7 +68,7 @@ public class SubscriptionMatchProcessor {
         }
         else {
             return new MatcherUiData(false, latestStart, latestEnd, new LinkedList<>(),
-                    new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
+                    new HashMap<>(), new LinkedList<>(), new LinkedList<>());
         }
     }
 
@@ -119,7 +120,7 @@ public class SubscriptionMatchProcessor {
                 .map(m -> translateMessage(m, input)) .collect(toList());
     }
 
-    private List<Subscription> subscriptions(JsonInput input, JsonOutput output) {
+    private Map<String, Subscription> subscriptions(JsonInput input, JsonOutput output) {
         Map<Long, Integer> matchedQuantity = matchedQuantity(output);
         return input.getSubscriptions().stream()
                 .filter(s -> s.getQuantity() != null)
@@ -133,7 +134,10 @@ public class SubscriptionMatchProcessor {
                 .filter(s -> s.getTotalQuantity() != null && s.getTotalQuantity() > 0)
                 .filter(s -> s.getPolicy() != null)
                 .filter(s -> s.getStartDate() != null && s.getEndDate() != null)
-                .collect(toList());
+                .collect(toMap(
+                    s -> "" + s.getId(),
+                    s -> s
+                 ));
     }
 
     private Map<Long, Integer> matchedQuantity(JsonOutput output) {
