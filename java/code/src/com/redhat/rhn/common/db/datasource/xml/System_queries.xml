@@ -2382,4 +2382,11 @@ SELECT SP.server_id ID, S.name
   <elaborator name="entitlements"/>
 </mode>
 
+<write-mode name="add_to_client_capabilities">
+  <query params="sid, capability, version">
+    insert into rhnClientCapability (server_id, capability_name_id, version)
+      values (:sid, LOOKUP_CLIENT_CAPABILITY(:capability), :version)
+  </query>
+</write-mode>
+
 </datasource_modes>

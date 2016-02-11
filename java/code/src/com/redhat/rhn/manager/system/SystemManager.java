@@ -88,6 +88,7 @@ import org.hibernate.Session;
 
 import java.net.IDN;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -117,6 +118,7 @@ public class SystemManager extends BaseManager {
     public static final String CAP_PACKAGES_VERIFY = "packages.verify";
     public static final String CAP_CONFIGFILES_BASE64_ENC =
             "configfiles.base64_enc";
+    public static final String CAP_SCRIPT_RUN = "script.run";
 
     private SystemManager() {
     }
@@ -3316,5 +3318,28 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
         Map<String, Object> elabParams = new HashMap<String, Object>();
         return makeDataResult(params, elabParams, null, m, SystemOverview.class);
+    }
+
+    /**
+     * Associates a particular system with a given
+     * capability.
+     * This is done also by the python backend code for rhn clients.
+     * For other type of clients, it can be done with this method.
+     * @param sid Server id
+     * @param capability Capability to add
+     * @param version version number
+     * @throws SQLException thrown if there's a problem which should cause
+     * the test to fail.
+     */
+    public static void giveCapability(Long sid, String capability, Long version)
+            throws SQLException {
+
+        WriteMode m = ModeFactory.getWriteMode("System_queries",
+                "add_to_client_capabilities");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("sid", sid);
+        params.put("capability", capability);
+        params.put("version", version);
+        m.executeUpdate(params);
     }
 }
