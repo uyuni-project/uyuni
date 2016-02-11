@@ -56,6 +56,7 @@ var SubscriptionMatching = React.createClass({
           />,
           <Messages
             messages={messages}
+            systems={systems}
             saveState={(state) => {this.state["messageTableState"] = state;}}
             loadState={() => this.state["messageTableState"]}
           />
@@ -275,7 +276,7 @@ var Messages = React.createClass({
             <p>{t("Please review warning and information messages below.")}</p>
             <Table
               headers={[t("Message"), t("Additional information")]}
-              rows={messagesToRows(this.props.messages)}
+              rows={messagesToRows(this.props.messages, this.props.systems)}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
               rowComparator={this.rowFilter}
@@ -302,31 +303,27 @@ var Messages = React.createClass({
   }
 });
 
-function messagesToRows(rawMessages) {
+function messagesToRows(rawMessages, systems) {
   var result= rawMessages.map(function(rawMessage) {
     var data = rawMessage["data"];
     var message;
     var additionalInformation;
     switch(rawMessage["type"]) {
-      case "unknown_part_number" :
+      case "unknownPartNumber" :
         message = t("Unsupported part number detected");
-        additionalInformation = data["part_number"];
+        additionalInformation = data["partNumber"];
         break;
-      case "physical_guest" :
+      case "physicalGuest" :
         message = t("Physical system is reported as virtual guest, please check hardware data");
-        additionalInformation = data["name"];
+        additionalInformation = systems[data["id"]].name;
         break;
-      case "guest_with_unknown_host" :
+      case "guestWithUnknownHost" :
         message = t("Virtual guest has unknown host, assuming it is a physical system");
-        additionalInformation = data["name"];
+        additionalInformation = systems[data["id"]].name;
         break;
-      case "unknown_cpu_count" :
+      case "unknownCpuCount" :
         message = t("System has an unknown number of sockets, assuming 16");
-        additionalInformation = data["name"];
-        break;
-      case "unsatisfied_pinned_match" :
-        message = t("Matcher was not able to satisfy a pinned subscription");
-        additionalInformation = t("{0} to system {1}", data["subscription_name"], data["system_name"]);
+        additionalInformation = systems[data["id"]].name;
         break;
       default:
         message = rawMessage["type"];
