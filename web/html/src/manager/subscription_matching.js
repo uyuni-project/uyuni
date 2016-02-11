@@ -51,6 +51,7 @@ var SubscriptionMatching = React.createClass({
           <PinnedMatches
             pinnedMatches={pinnedMatches}
             systems={systems}
+            subscriptions={subscriptions}
             saveState={(state) => {this.state["pinnedMatchesTableState"] = state;}}
             loadState={() => this.state["pinnedMatchesTableState"]}
           />,
@@ -374,7 +375,7 @@ var Subscriptions = React.createClass({
   render: function() {
     var body;
     if (this.props.subscriptions != null) {
-      if (this.props.subscriptions.length > 0) {
+      if (Object.keys(this.props.subscriptions).length > 0) {
         body = (
           <div className="spacewalk-list">
             <Table headers={[t("Part number"), t("Description"), t("Policy"), t("Matched/Total"), t("Start date"), t("End date")]}
@@ -408,7 +409,8 @@ var Subscriptions = React.createClass({
 });
 
 function subscriptionsToRows(subscriptions) {
-  return subscriptions.map((s) => {
+  return Object.keys(subscriptions).map((k) => {
+    var s = subscriptions[k];
     var now = moment();
     var className = moment(s.endDate).isBefore(now) ?
       "text-muted" :
@@ -503,7 +505,7 @@ var PinnedMatches = React.createClass({
 
   render: function() {
     if (this.props.pinnedMatches != null && this.props.pinnedMatches.length > 0) {
-      var popUpContent = this.state.showPopUp ? <AddPinPopUp systems={this.props.systems} onSavePin={this.savePin} /> : null;
+      var popUpContent = this.state.showPopUp ? <AddPinPopUp systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
       return (
         <div className="row col-md-12">
           <div className="spacewalk-toolbar">
@@ -603,8 +605,14 @@ var AddPinPopUp = React.createClass({
     var popUpContent;
     if (this.state.systemId) {
       popUpContent = (
-        <Table headers={[t("Description"), t("")]}
-          rows={possibleSubscriptionToRow(this.props.systems[this.state.systemId].possibleSubscriptionIds, this.onSubscriptionSelected)}
+        <Table headers={[t("Part number"),t("Description"), t("Policy"), t("Start date"), t("End date"), t("")]}
+          rows={
+            possibleSubscriptionToRow(
+              this.props.systems[this.state.systemId]
+                .possibleSubscriptionIds.map((p) => {
+                  return this.props.subscriptions[p]}),
+              this.onSubscriptionSelected)
+            }
         />
       );
     }
@@ -637,25 +645,24 @@ function systemsForPinningToRow(systems, onClickAction) {
   });
 }
 
-function possibleSubscriptionToRow(possibleSubscription, onClickAction) {
-  return possibleSubscription.map((s) => {
+function possibleSubscriptionToRow(possibleSubscriptions, onClickAction) {
+  return possibleSubscriptions.map((s) => {
     var columns = [
-      // <TableCell content={s.partNumber} />,
-      // <TableCell content={s.description} />,
-      // <TableCell content={humanReadablePolicy(s.policy)} />,
-      // <TableCell content={
-      //   <ToolTip content={moment(s.startDate).fromNow()}
-      //     title={moment(s.startDate).format("LL")} />}
-      // />,
-      // <TableCell content={
-      //   <ToolTip content={moment(s.endDate).fromNow()}
-      //     title={moment(s.endDate).format("LL")} />}
-      // />,
-      <TableCell content={s} />,
+      <TableCell content={s.partNumber} />,
+      <TableCell content={s.description} />,
+      <TableCell content={humanReadablePolicy(s.policy)} />,
+      <TableCell content={
+        <ToolTip content={moment(s.startDate).fromNow()}
+          title={moment(s.startDate).format("LL")} />}
+      />,
+      <TableCell content={
+        <ToolTip content={moment(s.endDate).fromNow()}
+          title={moment(s.endDate).format("LL")} />}
+      />,
       <TableCell content={
         <PinButton
           onClick={onClickAction}
-          elementId={s}
+          elementId={s.id}
           content={<span><i className="fa fa-map-pin"></i>{t("Pin this subscription")}</span>}
         />}
       />
