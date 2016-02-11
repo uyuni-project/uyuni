@@ -28,7 +28,6 @@ import com.suse.matcher.json.JsonSystem;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +115,8 @@ public class SubscriptionMatchProcessor {
 
     private List<JsonMessage> messages(JsonInput input, JsonOutput output) {
         return output.getMessages().stream()
-                .map(m -> adjustMessage(m, input)) .collect(toList());
+                .filter(m -> !m.getType().equals("unsatisfied_pinned_match"))
+                .map(m -> translateMessage(m, input)) .collect(toList());
     }
 
     private List<Subscription> subscriptions(JsonInput input, JsonOutput output) {
@@ -152,37 +152,24 @@ public class SubscriptionMatchProcessor {
         return matchedQuantity;
     }
 
-    private static JsonMessage adjustMessage(JsonMessage message, JsonInput input) {
-        final Set<String> typesWithSystemId = new HashSet<>();
-        typesWithSystemId.add("guest_with_unknown_host");
-        typesWithSystemId.add("unknown_cpu_count");
-        typesWithSystemId.add("physical_guest");
-
-        Map<String, String> data = new HashMap<>();
-        if (typesWithSystemId.contains(message.getType())) {
-            long systemId = Long.parseLong(message.getData().get("id"));
-            data.put("name", systemNameById(input, systemId));
-            return new JsonMessage(message.getType(), data);
+    private static JsonMessage translateMessage(JsonMessage message, JsonInput input) {
+        if (message.getType().equals("unknown_part_number")) {
+            return new JsonMessage("unknownPartNumber", new HashMap<String, String>() { {
+                put("partNumber", message.getData().get("part_number"));
+            } });
         }
-        else if (message.getType().equals("unsatisfied_pinned_match")) {
-            long systemId = Long.parseLong(message.getData().get("system_id"));
-            data.put("system_name", systemNameById(input, systemId));
-
-            long subscriptionId = Long.parseLong(message.getData().get("subscription_id"));
-            data.put("subscription_name", subscriptionNameById(input, subscriptionId));
-
-            return new JsonMessage(message.getType(), data);
+        if (message.getType().equals("physical_guest")) {
+            return new JsonMessage("physicalGuest", message.getData());
         }
-        else { // pass it through
-            return new JsonMessage(message.getType(), message.getData());
+        if (message.getType().equals("guest_with_unknown_host")) {
+            return new JsonMessage("guestWithUnknownHost", message.getData());
         }
-    }
+        if (message.getType().equals("unknown_cpu_count")) {
+            return new JsonMessage("unknownCpuCount", message.getData());
+        }
 
-    private static String systemNameById(JsonInput input, long id) {
-        Optional<JsonSystem> system = input.getSystems().stream()
-                .filter(s -> s.getId().equals(id))
-                .findFirst();
-        return system.isPresent() ? system.get().getName() : "" + id;
+        // pass it through
+        return new JsonMessage(message.getType(), message.getData());
     }
 
     private static String subscriptionNameById(JsonInput input,
