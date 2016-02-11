@@ -22,8 +22,6 @@ import com.suse.matcher.json.JsonInput;
 import com.suse.matcher.json.JsonMessage;
 import com.suse.matcher.json.JsonOutput;
 import com.suse.matcher.json.JsonProduct;
-import com.suse.matcher.json.JsonSubscription;
-import com.suse.matcher.json.JsonSystem;
 
 import java.util.Collections;
 import java.util.Date;
@@ -76,8 +74,8 @@ public class SubscriptionMatchProcessor {
         return PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions().stream()
                 .map(ps -> new PinnedMatch(
                     ps.getId(),
-                    subscriptionNameById(input, ps.getSubscriptionId()),
-                    systemNameById(input.getSystems(), ps.getSystemId()),
+                    ps.getSubscriptionId(),
+                    ps.getSystemId(),
                     deriveMatchStatus(ps, input, output)))
                 .collect(toList());
     }
@@ -105,13 +103,6 @@ public class SubscriptionMatchProcessor {
         }
 
         return "pending";
-    }
-
-    private static String systemNameById(List<JsonSystem> systems, Long systemId) {
-        Optional<JsonSystem> first = systems.stream()
-                .filter(s -> s.getId().equals(systemId))
-                .findFirst();
-        return first.isPresent() ? first.get().getName() : "Unknown system id: " + systemId;
     }
 
     private List<JsonMessage> messages(JsonInput input, JsonOutput output) {
@@ -174,14 +165,6 @@ public class SubscriptionMatchProcessor {
 
         // pass it through
         return new JsonMessage(message.getType(), message.getData());
-    }
-
-    private static String subscriptionNameById(JsonInput input,
-            Long id) {
-        Optional<JsonSubscription> subscription = input.getSubscriptions().stream()
-                .filter(s -> s.getId().equals(id))
-                .findFirst();
-        return subscription.isPresent() ? subscription.get().getName() : "" + id;
     }
 
     private List<System> unmatchedSystems(JsonInput input, JsonOutput output) {
