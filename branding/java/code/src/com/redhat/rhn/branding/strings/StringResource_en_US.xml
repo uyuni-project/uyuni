@@ -1142,7 +1142,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
 
        <trans-unit id="basesub.jsp.summary">
          <source>
-As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default Red Hat base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels.
+As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default @@VENDOR_NAME@@ base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels.
 &lt;p/&gt;
 &lt;strong&gt;This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution.&lt;/strong&gt;
           </source>
