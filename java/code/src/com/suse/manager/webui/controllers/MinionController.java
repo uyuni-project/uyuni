@@ -105,6 +105,7 @@ public class MinionController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView cmd(Request request, Response response) {
+        request.session().removeAttribute(MinionsAPI.SALT_CMD_RUN_TARGETS);
         return new ModelAndView(new HashMap<>(), "minion/cmd.jade");
     }
 

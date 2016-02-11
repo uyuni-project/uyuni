@@ -73,13 +73,21 @@ class RemoteCommand extends React.Component {
       result: {
         minions: new Map()
       },
-      previewed: false
+      previewed: false,
+      errors: []
     };
   }
 
   render() {
+    var errs = null;
+    if (this.state.errors) {
+        this.state.errors.map( msg => {
+            errs = <div className="alert alert-danger">{msg}</div>
+        })
+    }
     return (
       <div>
+          {errs}
           <div id="remote-root" className="spacewalk-toolbar-h1">
             <h1>
               <i className="fa fa-desktop"></i>
@@ -152,12 +160,19 @@ class RemoteCommand extends React.Component {
         target: target
       },
       data => {
-      console.log(data);
-      this.setState({
-        result: {
-          minions: object2map(data)
+          console.log(data);
+          this.setState({
+            result: {
+              minions: object2map(data)
+            }
+          });
+    })
+    .fail((jqXHR, textStatus, errorThrown) => {
+        try {
+            this.setState({errors: $.parseJSON(jqXHR.responseText)})
+        } catch (err) {
         }
-      });
+
     });
   }
 

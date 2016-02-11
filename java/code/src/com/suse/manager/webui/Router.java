@@ -60,8 +60,8 @@ public class Router implements SparkApplication {
                 jade);
 
         // Minion APIs
-        post("/manager/api/minions/cmd", MinionsAPI::run);
-        get("/manager/api/minions/match", MinionsAPI::match);
+        post("/manager/api/minions/cmd", withUser(MinionsAPI::run));
+        get("/manager/api/minions/match", withUser(MinionsAPI::match));
 
         // States API
         post("/manager/api/states/apply", StatesAPI::apply);
