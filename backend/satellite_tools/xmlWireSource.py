@@ -31,6 +31,7 @@ from syncLib import log, log2, RhnSyncException
 
 from rhn import rpclib
 
+from spacewalk.common.suseLib import get_proxy
 
 class BaseWireSource:
 
@@ -105,8 +106,9 @@ class BaseWireSource:
     def _set_connection(self, url):
         "Instantiates a connection object"
 
-        serverObj = connection.StreamConnection(url, proxy=CFG.HTTP_PROXY,
-                                                username=CFG.HTTP_PROXY_USERNAME, password=CFG.HTTP_PROXY_PASSWORD,
+        proxy, puser, ppass = get_proxy(url)
+        serverObj = connection.StreamConnection(url, proxy=proxy,
+                                                username=CFG.puser, password=ppass,
                                                 xml_dump_version=self.xml_dump_version, timeout=CFG.timeout)
         BaseWireSource.serverObj = serverObj
         return serverObj
@@ -384,8 +386,9 @@ class RPCGetWireSource(BaseWireSource):
         # Force a login otherwise
         self._set_login_token(self._login())
         url = self.url + self.handler
-        get_server_obj = connection.GETServer(url, proxy=CFG.HTTP_PROXY,
-                                              username=CFG.HTTP_PROXY_USERNAME, password=CFG.HTTP_PROXY_PASSWORD,
+        proxy, puser, ppass = get_proxy(url)
+        get_server_obj = connection.GETServer(url, proxy=proxy,
+                                              username=puser, password=ppass,
                                               headers=self.login_token, timeout=CFG.timeout)
         # Add SSL trusted cert
         self._set_ssl_trusted_certs(get_server_obj)
