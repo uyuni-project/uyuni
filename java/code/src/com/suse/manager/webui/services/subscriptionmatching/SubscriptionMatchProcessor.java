@@ -102,27 +102,23 @@ public class SubscriptionMatchProcessor {
 
     private static String deriveMatchStatus(PinnedSubscription ps, JsonInput input,
             JsonOutput output) {
-        boolean satisfied = output.getConfirmedMatches().stream()
-                .filter(m -> m.getSystemId().equals(ps.getSystemId()) &&
-                    m.getSubscriptionId().equals(ps.getSubscriptionId()))
-                .findAny()
-                .isPresent();
+        boolean known = input.getPinnedMatches().stream()
+                .anyMatch(m -> m.getSystemId().equals(ps.getSystemId()) &&
+                          m.getSubscriptionId().equals(ps.getSubscriptionId()));
+
+        if (!known) {
+            return "pending";
+        }
+
+        boolean satisfied = output.getMatches().stream()
+                .anyMatch(m -> m.getSystemId() == ps.getSystemId() &&
+                    m.getSubscriptionId() == ps.getSubscriptionId());
 
         if (satisfied) {
             return "satisfied";
         }
 
-        boolean unsatisfied = input.getPinnedMatches().stream()
-                .filter(p -> p.getSystemId().equals(ps.getSystemId()) &&
-                    p.getSubscriptionId().equals(ps.getSubscriptionId()))
-                .findAny()
-                .isPresent();
-
-        if (unsatisfied) {
-            return "unsatisfied";
-        }
-
-        return "pending";
+        return "unsatisfied";
     }
 
     private List<JsonMessage> messages(JsonInput input, JsonOutput output) {
