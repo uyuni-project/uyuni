@@ -21,7 +21,7 @@ JOIN suseProductChannel spc ON sp.id = spc.product_id
 WHERE spc.channel_id IS NOT NULL
 """)
 
-_sql = rhnSQL.Statement("""
+_sql_find_pkgs = rhnSQL.Statement("""
 SELECT distinct
         pkg.id AS id,
         PN.name || '-' || evr_t_as_vre_simple(full_list.evr) || '.' || full_list.arch_label AS nvrea,
@@ -49,6 +49,42 @@ SELECT distinct
        join rhnChannelPackage CP on CP.package_id = pkg.id
        join suseProductChannel PC on PC.channel_id = CP.channel_id
        join suseProducts SP on SP.id = PC.product_id
+ WHERE full_list.name_id = pkg.name_id
+   AND full_list.evr = pevr.evr
+   AND full_list.arch_id = pkg.package_arch_id
+   AND SP.product_id = :pdid
+   AND pn.name = :pkgname
+order by pkg.id
+""");
+
+_sql_find_pkgs_with_custom_channels = rhnSQL.Statement("""
+SELECT  distinct
+        pkg.id AS id,
+        PN.name || '-' || evr_t_as_vre_simple(full_list.evr) || '.' || full_list.arch_label AS nvrea,
+        full_list.arch_label AS arch,
+        pkg.path
+  FROM  (
+         SELECT  I_P.name_id name_id,
+                 max(I_PE.evr) evr,
+                 I_PA.id as arch_id,
+                 I_PA.label as arch_label
+           FROM  suseProducts I_SP
+           JOIN  suseProductChannel I_PC ON I_SP.id = I_PC.product_id
+           JOIN  rhnChannel I_C ON I_PC.channel_id = I_C.id or I_PC.channel_id = I_C.parent_channel
+           JOIN  rhnChannelNewestPackage I_CNP ON I_C.id = I_CNP.channel_id
+           JOIN  rhnPackage I_P ON I_CNP.package_id = I_P.id
+           JOIN  rhnPackageEVR I_PE ON I_P.evr_id = I_PE.id
+           JOIN  rhnPackageArch I_PA ON I_P.package_arch_id = I_PA.id
+          WHERE  I_SP.product_id = :pdid
+       GROUP BY  I_P.name_id, I_PA.label, I_PA.id
+       ) full_list,
+       suseProducts SP
+  join suseProductChannel PC ON sp.id = pc.product_id
+  join rhnChannel C ON pc.channel_id = c.id or pc.channel_id = c.parent_channel
+  join rhnChannelPackage CP ON CP.channel_id = C.id
+  join rhnPackage pkg ON CP.package_id = pkg.id
+  join rhnPackageEVR pevr on pkg.evr_id = pevr.id
+  join rhnPackageName pn on pkg.name_id = pn.id
  WHERE full_list.name_id = pkg.name_id
    AND full_list.evr = pevr.evr
    AND full_list.arch_id = pkg.package_arch_id
@@ -89,7 +125,10 @@ def create_repo(label):
         else:
             os.makedirs(destdir)
 
-    h = rhnSQL.prepare(_sql)
+    if options.usecustomchannels:
+        h = rhnSQL.prepare(_sql_find_pkgs_with_custom_channels)
+    else:
+        h = rhnSQL.prepare(_sql_find_pkgs)
     for pkgname in mgr_bootstrap_data.DATA[label]['PKGLIST']:
         h.execute(pdid=pdid, pkgname=pkgname)
         p = h.fetchone_dict() or None
@@ -120,6 +159,8 @@ parser.add_option('-c', '--create', action='store', dest='create',
                   help='create bootstrap repo for given distribution label')
 parser.add_option('', '--datamodule', action="store", dest='datamodule',
                   help='Use an own datamodule (Default: mgr_bootstrap_data)')
+parser.add_option('', '--with-custom-channels', action='store_true', dest='usecustomchannels',
+                  help='Take custom channels into account when searching for newest package versions')
 
 (options, args) = parser.parse_args()
 
