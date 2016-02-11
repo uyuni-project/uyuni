@@ -514,7 +514,7 @@ var PinnedMatches = React.createClass({
             </button>
             <PopUp
               title={t("Pin a Systems to a Subscription")}
-              className={this.state.systemId ? "modal-lg" : ""}
+              className="modal-lg"
               id="addPinPopUp"
               content={
                 <div className="spacewalk-list">
