@@ -2528,7 +2528,7 @@ You may grant provisioning entitlements _here_.
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.guestcantvirt">
-        <source>The system cannot have a Virtualization system type because it is a virtual guest.</source>
+        <source>The system cannot have a Virtualization Host system type because it is a virtual guest.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -2592,6 +2592,9 @@ You may grant provisioning entitlements _here_.
       </trans-unit>
       <trans-unit id="packagesindex.jsp.states">
         <source>Manage Package States</source>
+      </trans-unit>
+      <trans-unit id="virtualization_host">
+        <source>Virtualization Host</source>
       </trans-unit>
     </body>
   </file>
