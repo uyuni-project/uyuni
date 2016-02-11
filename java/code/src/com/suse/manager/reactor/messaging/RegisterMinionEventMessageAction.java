@@ -43,15 +43,16 @@ import com.suse.manager.webui.services.impl.SaltAPIService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Event handler to create system records for salt minions.
@@ -64,6 +65,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
+
+    private static final List<String> BLACKLIST = Collections.unmodifiableList(
+        Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host")
+    );
 
 
     //HACK: set installed product depending on the grains
@@ -205,7 +210,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 serverStateRevision.setServer(server);
                 serverStateRevision.setCreator(ak.getCreator());
                 serverStateRevision.setPackageStates(
-                    ak.getPackages().stream().map(tp -> {
+                    ak.getPackages().stream()
+                            .filter(p -> !BLACKLIST.contains(p.getPackageName().getName()))
+                            .map(tp -> {
                         PackageState state = new PackageState();
                         state.setArch(tp.getPackageArch());
                         state.setName(tp.getPackageName());
