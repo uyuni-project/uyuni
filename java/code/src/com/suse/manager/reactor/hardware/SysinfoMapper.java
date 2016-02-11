@@ -113,7 +113,7 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                             String.format("Initial Registration Parameters:\n" +
                                     "OS: %s\n" +
                                     "Release: %s\n" +
-                                    "CPU Arch: %s", os, sysvalues.get("type"), cpuarch));
+                                    "CPU Arch: %s", os, sysvalues.get("Type"), cpuarch));
 
                     zhost.setDigitalServerId(identifier);
                     zhost.setOrg(OrgFactory.getSatelliteOrg()); // TODO clarify this
