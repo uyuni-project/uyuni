@@ -146,7 +146,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         MatcherUiData data = (MatcherUiData) processor.getData(of(input), of(output));
 
         assertEquals(1, data.getSubscriptions().size());
-        Subscription actual = data.getSubscriptions().get(0);
+        Subscription actual = data.getSubscriptions().values().iterator().next();
         assertEquals("123456", actual.getPartNumber());
         assertEquals("subs name", actual.getDescription());
         assertEquals(Integer.valueOf(3), actual.getTotalQuantity());
@@ -161,7 +161,8 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         setSubscriptionPolicy(1L, "my policy");
 
         Subscription subscription = ((MatcherUiData) processor
-                .getData(of(input), of(output))).getSubscriptions().get(0);
+                .getData(of(input), of(output))).getSubscriptions()
+                .values().iterator().next();
 
         assertEquals("my policy", subscription.getPolicy());
     }
@@ -171,7 +172,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 new Date(0), new Date(1000), "user", new HashSet<>()));
         setSubscriptionPolicy(1L, null);
 
-        List<Subscription> subscriptions = ((MatcherUiData) processor
+        Map<String, Subscription> subscriptions = ((MatcherUiData) processor
                 .getData(of(input), of(output))).getSubscriptions();
 
         assertTrue(subscriptions.isEmpty());
@@ -391,7 +392,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         // expired or 0 quantity subscription shouldn't be in the output
         assertEquals(
                 Arrays.asList(100L, 101L, 103L),
-                data.getSubscriptions().stream()
+                data.getSubscriptions().values().stream()
                         .map(s -> s.getId())
                         .collect(Collectors.toList()));
 
