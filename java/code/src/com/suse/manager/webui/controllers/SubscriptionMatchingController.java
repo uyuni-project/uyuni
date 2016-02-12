@@ -138,4 +138,27 @@ public class SubscriptionMatchingController {
         response.type("application/json");
         return GSON.toJson(data);
     }
+
+    /**
+     * Delete a pin.
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the new pin table data as json
+     */
+    public static String deletePin(Request request, Response response, User user) {
+        Long pinId = Long.parseLong(request.params("id"));
+        PinnedSubscription pin = PinnedSubscriptionFactory.getInstance().lookupById(pinId);
+        if (pin != null) {
+            PinnedSubscriptionFactory.getInstance().remove(pin);
+        }
+
+        MatcherJsonIO matcherJsonIO = new MatcherJsonIO();
+        Object data = new SubscriptionMatchProcessor().pinnedMatches(
+                matcherJsonIO.getLastMatcherInput().get(),
+                matcherJsonIO.getLastMatcherOutput().get());
+
+        response.type("application/json");
+        return GSON.toJson(data);
+    }
 }
