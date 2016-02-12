@@ -505,7 +505,7 @@ var PinnedMatches = React.createClass({
   },
 
   render: function() {
-    if (this.props.pinnedMatches != null && this.props.pinnedMatches.length > 0) {
+    if (this.props.pinnedMatches.length > 0) {
       var popUpContent = this.state.showPopUp ? <AddPinPopUp systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
       return (
         <div className="row col-md-12">
