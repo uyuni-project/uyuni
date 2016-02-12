@@ -116,6 +116,18 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
     }
 
     /**
+     * Looks up PinnedSubscription by id
+     * @param id the id
+     * @return PinnedSubscription object
+     */
+    public PinnedSubscription lookupById(Long id) {
+        return (PinnedSubscription) getSession()
+                .createCriteria(PinnedSubscription.class)
+                .add(Restrictions.eq("id", id))
+                .uniqueResult();
+    }
+
+    /**
      * Looks up PinnedSubscription by systemId and subscriptionId
      * @param systemId the system id
      * * @param subscriptionId the subscription id

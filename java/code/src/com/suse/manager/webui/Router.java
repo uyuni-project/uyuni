@@ -111,6 +111,8 @@ public class Router implements SparkApplication {
                 withProductAdmin(SubscriptionMatchingController::scheduleMatcherRun));
         post("/manager/subscription_matching/pins",
                 withProductAdmin(SubscriptionMatchingController::createPin));
+        post("/manager/subscription_matching/pins/:id/delete",
+                withProductAdmin(SubscriptionMatchingController::deletePin));
 
         // Salt state catalog
         get("/manager/state_catalog",
