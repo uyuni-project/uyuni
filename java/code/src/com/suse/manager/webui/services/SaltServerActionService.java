@@ -199,11 +199,13 @@ public enum SaltServerActionService {
         return ret;
     }
 
-    private Map<LocalCall<?>, List<MinionServer>> remoteCommandAction(
-            List<MinionServer> minions, String script) {
-        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        // FIXME: This supports only bash at the moment
-        ret.put(com.suse.manager.webui.utils.salt.Cmd.execCodeAll("bash", script), minions);
+    public Map<LocalCall<?>, List<MinionServer>> remoteCommandAction(List<MinionServer> minions, String script) {
+      Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+            // FIXME: This supports only bash at the moment
+            ret.put(com.suse.manager.webui.utils.salt.Cmd.execCodeAll(
+                "bash",
+                // remove \r or bash will fail
+                script.replaceAll("\r\n", "\n")), minions);
         return ret;
     }
 }
