@@ -133,7 +133,8 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      * * @param subscriptionId the subscription id
      * @return PinnedSubscription object
      */
-    public PinnedSubscription lookupBySystemIdAndSubscriptionId(Long systemId, Long subscriptionId) {
+    public PinnedSubscription lookupBySystemIdAndSubscriptionId(Long systemId,
+            Long subscriptionId) {
         return (PinnedSubscription) getSession()
                 .createCriteria(PinnedSubscription.class)
                 .add(Restrictions.eq("systemId", systemId))
