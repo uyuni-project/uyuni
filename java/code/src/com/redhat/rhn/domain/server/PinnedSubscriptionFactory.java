@@ -103,7 +103,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
                 .setProjection(Projections.id());
 
         DetachedCriteria subscriptionIds = DetachedCriteria.forClass(SCCOrderItem.class)
-                .setProjection(Projections.id());
+                .setProjection(Projections.property("sccId"));
 
         getSession()
             .createCriteria(PinnedSubscription.class)
