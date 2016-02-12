@@ -472,7 +472,7 @@ var PinnedMatches = React.createClass({
   rowComparator: function(a, b, columnIndex, ascending) {
     var aRaw = a.props["rawData"];
     var bRaw = b.props["rawData"];
-    var columnKeyInRawData=["systemName", "subscriptionDescription", "status"];
+    var columnKeyInRawData=["systemName", "subscriptionDescription", "subscriptionPartNumber", "status"];
     var columnKey = columnKeyInRawData[columnIndex];
     var orderCondition = ascending ? 1 : -1;
 
@@ -536,12 +536,12 @@ var PinnedMatches = React.createClass({
         <h2>{t("Pin Status")}</h2>
         <div className="spacewalk-list">
           {this.state.pinnedMatches.length > 0 ?
-            <Table headers={[t("System"), t("Subscription"), t("Pin Status"), t("Unpin")]}
+            <Table headers={[t("System"), t("Subscription"), t("Part number"), t("Pin Status"), t("Unpin")]}
               rows={pinnedMatchesToRows(this.state.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
               loadState={() => this.state["table"]}
               saveState={(state) => {this.state["table"] = state;}}
               rowComparator={this.rowComparator}
-              sortableColumns={[0, 1, 2]}
+              sortableColumns={[0, 1, 2, 3]}
             /> :
             t("No saved pin at the moment.")}
         </div>
@@ -556,9 +556,11 @@ function pinnedMatchesToRows(pins, systems, subscriptions, onClickAction) {
     var systemName = system == null ? "System " + p.systemId : system.name;
     var subscription = subscriptions[p.subscriptionId];
     var subscriptionDescription = subscription == null ? "Subscription " + p.subscriptionId : subscription.description;
+    var subscriptionPartNumber = subscription == null ? "" : subscription.partNumber;
     var columns = [
       <TableCell content={systemName} />,
       <TableCell content={subscriptionDescription} />,
+      <TableCell content={subscriptionPartNumber} />,
       <TableCell content={<PinStatus status={p.status} />} />,
       <TableCell content={
         <PinButton
@@ -569,7 +571,7 @@ function pinnedMatchesToRows(pins, systems, subscriptions, onClickAction) {
         }
       />
     ];
-    return <TableRow columns={columns} rawData={{"id": p.id,"systemName": systemName, "subscriptionDescription": subscriptionDescription,"status": p.status}} />
+    return <TableRow columns={columns} rawData={{"id": p.id,"systemName": systemName, "subscriptionDescription": subscriptionDescription, "subscriptionPartNumber": subscriptionPartNumber, "status": p.status}} />
   });
 }
 
