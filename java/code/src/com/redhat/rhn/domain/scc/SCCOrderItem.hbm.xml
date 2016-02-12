@@ -8,11 +8,11 @@
             </generator>
         </id>
         <property name="sccId" column="scc_id" type="long"/>
-	<property name="sku" column="sku" type="string"/>
-	<property name="startDate" column="start_date" type="timestamp"/>
-	<property name="endDate" column="end_date" type="timestamp"/>
-	<property name="quantity" column="quantity" type="long"/>
-	<property name="subscriptionId" column="subscription_id" type="long"/>
+        <property name="sku" column="sku" type="string"/>
+        <property name="startDate" column="start_date" type="timestamp"/>
+        <property name="endDate" column="end_date" type="timestamp"/>
+        <property name="quantity" column="quantity" type="long"/>
+        <property name="subscriptionId" column="subscription_id" type="long"/>
         <property name="created" column="created" type="timestamp" insert="false" update="false"/>
         <property name="modified" column="modified" type="timestamp"/>
         <many-to-one name="credentials" column="credentials_id" class="com.redhat.rhn.domain.credentials.Credentials"/>
