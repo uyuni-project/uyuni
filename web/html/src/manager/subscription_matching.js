@@ -52,8 +52,8 @@ var SubscriptionMatching = React.createClass({
             pinnedMatches={pinnedMatches}
             systems={systems}
             subscriptions={subscriptions}
-            saveState={(state) => {this.state["pinnedMatchesTableState"] = state;}}
-            loadState={() => this.state["pinnedMatchesTableState"]}
+            saveState={(state) => {this.state["pinnedMatchesState"] = state;}}
+            loadState={() => this.state["pinnedMatchesState"]}
           />,
           <Messages
             messages={messages}
@@ -529,8 +529,8 @@ var PinnedMatches = React.createClass({
           <div className="spacewalk-list">
             <Table headers={[t("System"), t("Subscription"), t("Pin Status"), t("Unpin")]}
               rows={pinnedMatchesToRows(this.props.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
-              loadState={this.props.loadState}
-              saveState={this.props.saveState}
+              loadState={() => this.state["table"]}
+              saveState={(state) => {this.state["table"] = state;}}
               rowComparator={this.rowComparator}
               sortableColumns={[0, 1, 2]}
             />
