@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
-import org.hibernate.Transaction;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -445,10 +444,8 @@ public class ActionChainManager {
             ActionManager.scheduleForExecution(action, serverIds);
             result.add(action);
 
-            //HibernateFactory.getSession().flush();
             HibernateFactory.getSession().refresh(action);
             MessageQueue.publish(new ActionScheduledEventMessage(action));
-
         }
         else {
             Integer nextSortOrder = sortOrder;

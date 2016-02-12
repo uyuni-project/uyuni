@@ -1,3 +1,6 @@
+/**
+ * CHECKSTYLE:OFF
+ */
 package com.suse.manager.webui.utils.salt;
 
 import com.suse.salt.netapi.calls.LocalCall;
@@ -16,10 +19,9 @@ public class Cmd {
     private Cmd() {
     }
 
-    public static LocalCall<String> exec_code_all(String lang, String code) {
+    public static LocalCall<String> execCodeAll(String lang, String code) {
         LinkedHashMap<String, Object> args = new LinkedHashMap<>();
-        return new LocalCall<>("cmd.exec_code_all", Optional.of(Arrays.asList(lang, code)), Optional.of(args),
-                new TypeToken<String>() {
-                });
+        return new LocalCall<>("cmd.exec_code_all", Optional.of(Arrays.asList(lang, code)),
+                Optional.of(args), new TypeToken<String>(){});
     }
 }

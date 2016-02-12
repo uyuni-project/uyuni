@@ -88,7 +88,8 @@ public enum SaltServerActionService {
         }
         else {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Action  " + actionIn.getActionType() + " is not supported with Salt");
+                LOG.debug("Action type " + actionIn.getActionType().getName() +
+                        " is not supported with Salt");
             }
             return;
         }
@@ -118,15 +119,17 @@ public enum SaltServerActionService {
 
                 // Update the server action based on the result of the schedule call
                 for (MinionServer targetMinion : targetMinions) {
-                    Optional<ServerAction> optionalServerAction = actionIn.getServerActions()
-                            .stream().filter(sa -> sa.getServerId().equals(targetMinion.getId()))
+                    Optional<ServerAction> optionalServerAction = actionIn
+                            .getServerActions().stream()
+                            .filter(sa -> sa.getServerId().equals(targetMinion.getId()))
                             .findFirst();
                     optionalServerAction.ifPresent(serverAction -> {
                         Schedule.Result result = resultMap.get(targetMinion.getMinionId());
 
                         if (result != null && result.getResult()) {
                             serverAction.setPickupTime(new Date());
-                        } else {
+                        }
+                        else {
                             // There is no result when scheduling has failed
                             LOG.debug("Failed to schedule action for minion '" +
                                     targetMinion.getMinionId() + "'");
@@ -140,14 +143,16 @@ public enum SaltServerActionService {
                 }
             }
             catch (SaltException saltException) {
-                // in a general exception we need to fail all minions (we don't have a result)
+                // In case of exception we need to fail all minions (we don't have a result)
                 for (MinionServer targetMinion : targetMinions) {
-                    Optional<ServerAction> optionalServerAction = actionIn.getServerActions()
-                            .stream().filter(sa -> sa.getServerId().equals(targetMinion.getId()))
+                    Optional<ServerAction> optionalServerAction = actionIn
+                            .getServerActions().stream()
+                            .filter(sa -> sa.getServerId().equals(targetMinion.getId()))
                             .findFirst();
                     optionalServerAction.ifPresent(serverAction -> {
                         LOG.debug("Failed to schedule action for minion '" +
-                                targetMinion.getMinionId() + "': " + saltException.getMessage());
+                                targetMinion.getMinionId() + "': " +
+                                saltException.getMessage());
                         serverAction.setCompletionTime(new Date());
                         serverAction.setResultCode(-1L);
                         serverAction.setResultMsg("Failed to schedule action.");
@@ -159,7 +164,8 @@ public enum SaltServerActionService {
         }
     }
 
-    public Map<LocalCall<?>, List<MinionServer>> errataAction(List<MinionServer> minions, ErrataAction errataAction) {
+    private Map<LocalCall<?>, List<MinionServer>> errataAction(List<MinionServer> minions,
+            ErrataAction errataAction) {
         Set<Long> serverIds = minions.stream()
                 .map(MinionServer::getId)
                 .collect(Collectors.toSet());
@@ -169,8 +175,8 @@ public enum SaltServerActionService {
         Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory
                 .listErrataNamesForServers(serverIds, errataIds);
         // Group targeted minions by errata names
-        Map<Set<String>, List<MinionServer>> collect = minions.stream().collect(Collectors.groupingBy(minion ->
-                errataNames.get(minion.getId())
+        Map<Set<String>, List<MinionServer>> collect = minions.stream()
+                .collect(Collectors.groupingBy(minion -> errataNames.get(minion.getId())
                         .entrySet().stream()
                         .map(Map.Entry::getValue)
                         .flatMap(Set::stream)
@@ -187,15 +193,17 @@ public enum SaltServerActionService {
         ));
     }
 
-    public Map<LocalCall<?>, List<MinionServer>> rebootAction(List<MinionServer> minions) {
+    private Map<LocalCall<?>, List<MinionServer>> rebootAction(List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         ret.put(com.suse.manager.webui.utils.salt.System.reboot(Optional.empty()), minions);
         return ret;
     }
 
-    public Map<LocalCall<?>, List<MinionServer>> remoteCommandAction(List<MinionServer> minions, String script) {
+    private Map<LocalCall<?>, List<MinionServer>> remoteCommandAction(
+            List<MinionServer> minions, String script) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(com.suse.manager.webui.utils.salt.Cmd.exec_code_all("bash", script), minions);
+        // FIXME: This supports only bash at the moment
+        ret.put(com.suse.manager.webui.utils.salt.Cmd.execCodeAll("bash", script), minions);
         return ret;
     }
 }
