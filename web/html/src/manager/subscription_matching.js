@@ -522,7 +522,7 @@ var PinnedMatches = React.createClass({
             <i className="fa fa-map-pin"></i>{t("Add a Pin")}
           </button>
           <PopUp
-            title={t("Pin a Systems to a Subscription")}
+            title={t("Pin a System to a Subscription")}
             className="modal-lg"
             id="addPinPopUp"
             content={
