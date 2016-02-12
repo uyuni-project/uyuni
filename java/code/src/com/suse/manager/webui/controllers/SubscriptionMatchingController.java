@@ -121,9 +121,14 @@ public class SubscriptionMatchingController {
      */
     public static String createPin(Request request, Response response, User user) {
         PinnedSubscription pin = new PinnedSubscription();
-        pin.setSubscriptionId(Long.parseLong(request.queryParams("subscription_id")));
-        pin.setSystemId(Long.parseLong(request.queryParams("system_id")));
-        PinnedSubscriptionFactory.getInstance().save(pin);
+        Long subscriptionId = Long.parseLong(request.queryParams("subscription_id"));
+        Long systemId = Long.parseLong(request.queryParams("system_id"));
+        pin.setSubscriptionId(subscriptionId);
+        pin.setSystemId(systemId);
+        if (PinnedSubscriptionFactory.getInstance()
+                .lookupBySystemIdAndSubscriptionId(systemId, subscriptionId) == null) {
+            PinnedSubscriptionFactory.getInstance().save(pin);
+        }
 
         MatcherJsonIO matcherJsonIO = new MatcherJsonIO();
         Object data = new SubscriptionMatchProcessor().pinnedMatches(
