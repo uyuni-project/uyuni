@@ -230,6 +230,15 @@ public interface SaltService {
      */
     Map<String, Schedule.Result> deleteSchedule(String name, Target<?> target);
 
+    /**
+     * Exeutes a synchornus call on the default Salt client
+     * @param call the call to execute
+     * @param target minions targetted by the call
+     * @param metadata extra metadata to add to the job
+     * @return call result
+     */
+    public <T> Map<String, T> callSync(LocalCall<T> call, Target<?> target,
+                                   Map<String, ?> metadata)  throws SaltException;
 
     /**
      * Get the IP routing that the minion uses to connect to the master.
