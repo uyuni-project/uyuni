@@ -165,7 +165,7 @@ Feature: Explore the main landing page
     And I should see a "Management:" text
     And I should see a "Salt:" text
     And I should see a "Foreign:" text
-    And I should see a "Virtualization:" text
+    And I should see a "Virtualization Host:" text
     And the current path is "/rhn/systems/SystemEntitlements.do"
 
   Scenario: Check sidebar link destination for Systems => System Groups
