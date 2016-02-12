@@ -49,7 +49,7 @@ var SubscriptionMatching = React.createClass({
             loadState={() => this.state["unmatchedSystemTableState"]}
           />,
           <PinnedMatches
-            pinnedMatches={pinnedMatches}
+            initialPinnedMatches={pinnedMatches}
             systems={systems}
             subscriptions={subscriptions}
             saveState={(state) => {this.state["pinnedMatchesState"] = state;}}
@@ -462,7 +462,11 @@ var PinnedMatches = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
-    return {"showPopUp": false};
+    return {"showPopUp": false, "pinnedMatches": this.props.initialPinnedMatches};
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({"pinnedMatches": nextProps.initialPinnedMatches});
   },
 
   rowComparator: function(a, b, columnIndex, ascending) {
@@ -499,13 +503,16 @@ var PinnedMatches = React.createClass({
   },
 
   savePin: function(systemId, subscriptionId) {
-    console.log("SAVE PIN: " + systemId + "-" + subscriptionId);
+    $.post("/rhn/manager/subscription_matching/pins",
+      {"system_id": systemId, "subscription_id": subscriptionId},
+      data => {this.setState({"pinnedMatches" : data});}
+    );
     $("#addPinPopUp").modal('hide'); //to trigger popup close action
     this.closePopUp();
   },
 
   render: function() {
-    if (this.props.pinnedMatches.length > 0) {
+    if (this.state.pinnedMatches.length > 0) {
       var popUpContent = this.state.showPopUp ? <AddPinPopUp systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
       return (
         <div className="row col-md-12">
@@ -528,7 +535,7 @@ var PinnedMatches = React.createClass({
           <h2>{t("Pin Status")}</h2>
           <div className="spacewalk-list">
             <Table headers={[t("System"), t("Subscription"), t("Pin Status"), t("Unpin")]}
-              rows={pinnedMatchesToRows(this.props.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
+              rows={pinnedMatchesToRows(this.state.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
               loadState={() => this.state["table"]}
               saveState={(state) => {this.state["table"] = state;}}
               rowComparator={this.rowComparator}
@@ -597,12 +604,10 @@ var AddPinPopUp = React.createClass({
   },
 
   onSystemSelected:function(systemId) {
-    console.log("system for new pin = " + systemId);
     this.setState({"systemId": systemId});
   },
 
   onSubscriptionSelected: function(subscriptionId) {
-    console.log("subscrpition for new pin = " + subscriptionId);
     this.props.onSavePin(this.state.systemId, subscriptionId);
   },
 
