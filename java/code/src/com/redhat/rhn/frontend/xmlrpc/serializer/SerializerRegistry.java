@@ -120,6 +120,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(XMLChannelSerializer.class);
         SERIALIZER_CLASSES.add(MirrorCredentialsDtoSerializer.class);
         SERIALIZER_CLASSES.add(VirtualHostManagerSerializer.class);
+        SERIALIZER_CLASSES.add(PinnedSubscriptionSerializer.class);
     }
 
     /**
