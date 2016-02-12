@@ -491,7 +491,9 @@ var PinnedMatches = React.createClass({
   },
 
   onRemovePin: function(pinId) {
-    console.log("REMOVE PIN [" + pinId + "]");
+    $.post("/rhn/manager/subscription_matching/pins/"+pinId+"/delete",
+      data => {this.setState({"pinnedMatches" : data});}
+    );
   },
 
   showPopUp: function() {
