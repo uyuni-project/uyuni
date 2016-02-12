@@ -14,29 +14,28 @@
  */
 package com.suse.manager.webui.utils;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.security.CSRFTokenValidator;
-import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.common.security.PermissionException;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.suse.manager.webui.Languages;
-
-import de.neuland.jade4j.JadeConfiguration;
-
-import org.apache.http.HttpStatus;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.http.HttpStatus;
+
 import spark.ModelAndView;
+import spark.Response;
 import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.jade.JadeTemplateEngine;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.security.CSRFTokenValidator;
+import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.suse.manager.webui.Languages;
+import de.neuland.jade4j.JadeConfiguration;
 
 /**
  * Utility methods to integrate Spark with SUSE Manager's infrastructure.
@@ -216,5 +215,16 @@ public class SparkApplicationHelper {
         });
 
         return jade;
+    }
+
+    /**
+     * Serialize the result and set the response content type to JSON.
+     * @param response the http response
+     * @param result the object to serialize to JSON
+     * @return a JSON string
+     */
+    public static String json(Response response, Object result) {
+        response.type("application/json");
+        return GSON.toJson(result);
     }
 }

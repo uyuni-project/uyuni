@@ -14,22 +14,17 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.http.HttpStatus;
 
 import spark.Request;
 import spark.Response;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
@@ -42,9 +37,7 @@ public class MinionsAPI {
 
     public static final String SALT_CMD_RUN_TARGETS = "salt_cmd_run_targets";
 
-    private static final Gson GSON = new GsonBuilder().create();
     private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
-
 
     private MinionsAPI() { }
 
@@ -58,18 +51,17 @@ public class MinionsAPI {
     public static String run(Request request, Response response, User user) {
         String cmd = request.queryParams("cmd");
 
-        Set<String> minionTargets = getSessionTarget(request, false);
+        Set<String> minionTargets = request.session().attribute(SALT_CMD_RUN_TARGETS);
         if (minionTargets == null) {
             response.status(HttpStatus.SC_BAD_REQUEST);
-            response.type("application/json");
-            return GSON.toJson(Arrays.asList("Click preview first"));
+            return json(response, Arrays.asList("Click preview first"));
         }
 
         MinionList minionList = new MinionList(minionTargets
                 .toArray(new String[minionTargets.size()]));
         Map<String, String> result = SALT_SERVICE.runRemoteCommand(minionList, cmd);
-        response.type("application/json");
-        return GSON.toJson(result);
+
+        return json(response, result);
     }
 
     /**
@@ -81,42 +73,14 @@ public class MinionsAPI {
      */
     public static String match(Request request, Response response, User user) {
         String target = request.queryParams("target");
-        Set<String> result = SALT_SERVICE.match(target).keySet();
 
-        filterMinions(request, user, result);
+        Set<String> minions = SALT_SERVICE.getAllowedMinions(user, target);
 
-        response.type("application/json");
-        return GSON.toJson(result);
-    }
+        // Keep the list of allowed minions in the session to make sure
+        // the user cannot tamper with it and also for scalability reasons.
+        request.session().attribute(SALT_CMD_RUN_TARGETS, minions);
 
-    /**
-     * Keep only the minions belonging to the users's organization.
-     * Keep list of filtered minions in the session to make sure user cannot temper
-     * with the list and also for scalability reasons.
-     *
-     * @param request the request object
-     * @param user the response object
-     * @param saltMatches all the minions that Salt matched
-     */
-    private static void filterMinions(Request request, User user, Set<String> saltMatches) {
-        Set<String> targets = getSessionTarget(request, true);
-
-        targets.clear();
-        targets.addAll(saltMatches);
-        List<MinionServer> minionServers = MinionServerFactory
-                .findByGroupId(user.getOrg().getId());
-        Set<String> minionIds = minionServers.stream()
-                .map(s -> s.getMinionId()).collect(Collectors.toSet());
-        targets.retainAll(minionIds);
-    }
-
-    private static Set<String> getSessionTarget(Request request, boolean createIfAbsent) {
-        Set<String> targets = request.session().attribute(SALT_CMD_RUN_TARGETS);
-        if (createIfAbsent && targets == null) {
-            targets = new HashSet<>();
-            request.session().attribute(SALT_CMD_RUN_TARGETS, targets);
-        }
-        return targets;
+        return json(response, minions);
     }
 
 }

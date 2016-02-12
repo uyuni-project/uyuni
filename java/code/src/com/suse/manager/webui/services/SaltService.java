@@ -15,6 +15,7 @@
 package com.suse.manager.webui.services;
 
 import com.suse.manager.webui.utils.salt.Zypper;
+import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
@@ -250,4 +251,14 @@ public interface SaltService {
      * @return a list of installed products
      */
     List<Zypper.RealProductInfo> getInstalledProducts(String minionId);
+    /**
+     * Find all minions matching the target expression and
+     * retain only those allowed for the given user.
+     *
+     * @param user the user
+     * @param target the Salt target expression
+     * @return a set of minion ids
+     */
+    Set<String> getAllowedMinions(User user, String target);
+
 }
