@@ -114,4 +114,18 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
             .list()
             .forEach(stalePin -> remove((PinnedSubscription)stalePin));
     }
+
+    /**
+     * Looks up PinnedSubscription by systemId and subscriptionId
+     * @param systemId the system id
+     * * @param subscriptionId the subscription id
+     * @return PinnedSubscription object
+     */
+    public PinnedSubscription lookupBySystemIdAndSubscriptionId(Long systemId, Long subscriptionId) {
+        return (PinnedSubscription) getSession()
+                .createCriteria(PinnedSubscription.class)
+                .add(Restrictions.eq("systemId", systemId))
+                .add(Restrictions.eq("subscriptionId", subscriptionId))
+                .uniqueResult();
+    }
 }
