@@ -465,16 +465,17 @@ var PinnedMatches = React.createClass({
     return {"showPopUp": false};
   },
 
-  rowFilter: function(a, b, columnIndex, ascending) {
-    var columnKeyInRawData=["system_name", "subscription_name", "status"];
-    var columnKey = columnKeyInRawData[columnIndex];
-    var orderCondition = ascending ? 1 : -1;
+  rowComparator: function(a, b, columnIndex, ascending) {
     var aRaw = a.props["rawData"];
     var bRaw = b.props["rawData"];
+    var columnKeyInRawData=["systemName", "subscriptionDescription", "status"];
+    var columnKey = columnKeyInRawData[columnIndex];
+    var orderCondition = ascending ? 1 : -1;
+
     var result = 0;
     var aValue = aRaw[columnKey];
     var bValue = bRaw[columnKey];
-    result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+    result = aValue.localeCompare(bValue);
 
     if (result == 0) {
       var aId = aRaw["id"];
@@ -527,10 +528,10 @@ var PinnedMatches = React.createClass({
           <h2>{t("Pin Status")}</h2>
           <div className="spacewalk-list">
             <Table headers={[t("System"), t("Subscription"), t("Pin Status"), t("Unpin")]}
-              rows={pinnedMatchesToRows(this.props.pinnedMatches, this.onRemovePin)}
+              rows={pinnedMatchesToRows(this.props.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
-              rowComparator={this.rowFilter}
+              rowComparator={this.rowComparator}
               sortableColumns={[0, 1, 2]}
             />
           </div>
@@ -541,11 +542,15 @@ var PinnedMatches = React.createClass({
   }
 });
 
-function pinnedMatchesToRows(pins, onClickAction) {
+function pinnedMatchesToRows(pins, systems, subscriptions, onClickAction) {
   return pins.map((p) => {
+    var system = systems[p.systemId];
+    var systemName = system == null ? "System " + p.systemId : system.name;
+    var subscription = subscriptions[p.subscriptionId];
+    var subscriptionDescription = subscription == null ? "Subscription " + p.subscriptionId : subscription.description;
     var columns = [
-      <TableCell content={p.system_name} />,
-      <TableCell content={p.subscription_name} />,
+      <TableCell content={systemName} />,
+      <TableCell content={subscriptionDescription} />,
       <TableCell content={<PinStatus status={p.status} />} />,
       <TableCell content={
         <PinButton
@@ -556,7 +561,7 @@ function pinnedMatchesToRows(pins, onClickAction) {
         }
       />
     ];
-    return <TableRow columns={columns} rawData={p} />
+    return <TableRow columns={columns} rawData={{"id": p.id,"systemName": systemName, "subscriptionDescription": subscriptionDescription,"status": p.status}} />
   });
 }
 
