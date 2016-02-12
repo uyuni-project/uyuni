@@ -90,7 +90,14 @@ public class SubscriptionMatchProcessor {
                  ));
     }
 
-    private List<PinnedMatch> pinnedMatches(JsonInput input, JsonOutput output) {
+    /**
+     * Gets UI-ready pin data.
+     *
+     * @param input matcher input
+     * @param output matcher output
+     * @return the data
+     */
+    public List<PinnedMatch> pinnedMatches(JsonInput input, JsonOutput output) {
         return PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions().stream()
                 .map(ps -> new PinnedMatch(
                     ps.getId(),

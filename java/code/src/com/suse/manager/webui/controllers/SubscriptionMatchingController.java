@@ -19,6 +19,8 @@ package com.suse.manager.webui.controllers;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
+import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
@@ -108,5 +110,27 @@ public class SubscriptionMatchingController {
         new TaskomaticApi().scheduleSingleSatBunch(user, "gatherer-matcher-bunch",
                 new HashMap<>());
         return "";
+    }
+
+    /**
+     * Adds a pin.
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the new pin table data as json
+     */
+    public static String createPin(Request request, Response response, User user) {
+        PinnedSubscription pin = new PinnedSubscription();
+        pin.setSubscriptionId(Long.parseLong(request.queryParams("subscription_id")));
+        pin.setSystemId(Long.parseLong(request.queryParams("system_id")));
+        PinnedSubscriptionFactory.getInstance().save(pin);
+
+        MatcherJsonIO matcherJsonIO = new MatcherJsonIO();
+        Object data = new SubscriptionMatchProcessor().pinnedMatches(
+                matcherJsonIO.getLastMatcherInput().get(),
+                matcherJsonIO.getLastMatcherOutput().get());
+
+        response.type("application/json");
+        return GSON.toJson(data);
     }
 }
