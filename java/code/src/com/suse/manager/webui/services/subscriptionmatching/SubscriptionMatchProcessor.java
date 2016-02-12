@@ -118,8 +118,9 @@ public class SubscriptionMatchProcessor {
         }
 
         boolean satisfied = output.getMatches().stream()
-                .anyMatch(m -> m.getSystemId() == ps.getSystemId() &&
-                    m.getSubscriptionId() == ps.getSubscriptionId());
+                .filter(m -> m.getConfirmed())
+                .anyMatch(m -> m.getSystemId().equals(ps.getSystemId()) &&
+                    m.getSubscriptionId().equals(ps.getSubscriptionId()));
 
         if (satisfied) {
             return "satisfied";
