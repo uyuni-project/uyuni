@@ -73,7 +73,7 @@ class RemoteCommand extends React.Component {
       result: {
         minions: new Map()
       },
-      previewed: false,
+      action: "none",
       errors: []
     };
   }
@@ -85,6 +85,23 @@ class RemoteCommand extends React.Component {
             errs = <div className="alert alert-danger">{msg}</div>
         })
     }
+    var button = null;
+    switch (this.state.action) {
+        case "none":
+            button = <button className="btn btn-success" onClick={this.onPreview}>{t("Preview")}</button>
+            break;
+        case "matching":
+            button = <button className="btn btn-default">{t("Previewing...")}</button>
+            break;
+        case "matched":
+        case "runned":
+            button = <button className="btn btn-success" onClick={this.onRun}>{t("Run")}</button>
+            break;
+        case "running":
+            button = <button className="btn btn-default">{t("Running...")}</button>
+            break;
+    }
+
     return (
       <div>
           {errs}
@@ -102,11 +119,7 @@ class RemoteCommand extends React.Component {
                       <input className="form-control" type="text" defaultValue={this.state.command} onChange={this.commandChanged} />
                       <span className="input-group-addon">@</span>
                       <input className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged} />
-                      <div className="input-group-btn">{
-                          this.state.previewed ?
-                            <button className="btn btn-success" onClick={this.onRun}>{t("Run")}</button> :
-                            <button className="btn btn-success" onClick={this.onPreview}>{t("Preview")}</button>
-                      }</div>
+                      <div className="input-group-btn">{button}</div>
                   </div>
                 </div>
               </div>
@@ -125,10 +138,10 @@ class RemoteCommand extends React.Component {
     const cmd = this.state.command;
     const target = this.state.target;
     console.log(cmd);
+    this.setState({action: "matching"});
     $.get("/rhn/manager/api/minions/match?target=" + target, data => {
       console.log(data);
       this.setState({
-        previewed: true,
         started: false,
         result: {
           minions: data.reduce((acc, id) => {
@@ -137,6 +150,9 @@ class RemoteCommand extends React.Component {
           }, new Map())
         }
       });
+    })
+    .always(() => {
+       this.setState({action: "matched"});
     });
   }
 
@@ -154,6 +170,7 @@ class RemoteCommand extends React.Component {
       },
       started: true
     });
+    this.setState({action: "running"})
     $.post("/rhn/manager/api/minions/cmd", {
         csrf_token: csrfToken,
         cmd: cmd,
@@ -172,12 +189,15 @@ class RemoteCommand extends React.Component {
             this.setState({errors: $.parseJSON(jqXHR.responseText)})
         } catch (err) {
         }
-
+    })
+    .always(() => {
+        this.setState({action: "runned"});
     });
   }
 
   targetChanged(event) {
     this.setState({
+      action: "none",
       target: event.target.value,
       previewed: false
     });
