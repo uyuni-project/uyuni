@@ -16,18 +16,18 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
+import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.impl.SaltAPIService;
+import spark.Request;
+import spark.Response;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.http.HttpStatus;
 
-import spark.Request;
-import spark.Response;
-
 import com.redhat.rhn.domain.user.User;
-import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
 /**
