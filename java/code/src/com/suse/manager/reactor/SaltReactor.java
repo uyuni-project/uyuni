@@ -30,6 +30,8 @@ import com.suse.manager.reactor.messaging.GetNetworkInfoEventMessage;
 import com.suse.manager.reactor.messaging.GetNetworkInfoEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.reactor.messaging.MinionStartEventMessage;
+import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessage;
@@ -81,6 +83,8 @@ public class SaltReactor implements EventListener {
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionEventMessageAction(),
                 RegisterMinionEventMessage.class);
+        MessageQueue.registerAction(new MinionStartEventMessageAction(),
+                MinionStartEventMessage.class);
         MessageQueue.registerAction(new UpdatePackageProfileEventMessageAction(),
                 UpdatePackageProfileEventMessage.class);
         MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
@@ -188,6 +192,7 @@ public class SaltReactor implements EventListener {
      */
     private Runnable onMinionStartEvent(MinionStartEvent minionStartEvent) {
         return () -> {
+            triggerMinionStart((String) minionStartEvent.getData().get("id"));
             triggerMinionRegistration((String) minionStartEvent.getData().get("id"));
         };
     }
@@ -214,5 +219,18 @@ public class SaltReactor implements EventListener {
             LOG.debug("Trigger registration for minion: " + minionId);
         }
         MessageQueue.publish(new RegisterMinionEventMessage(minionId));
+    }
+
+    /**
+     * Stuff that needs to be done on minion start like cleaning up
+     * reboot actions.
+     *
+     * @param minionId the minion id of the minion starting
+     */
+    private void triggerMinionStart(String minionId) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Trigger start for minion: " + minionId);
+        }
+        MessageQueue.publish(new MinionStartEventMessage(minionId));
     }
 }

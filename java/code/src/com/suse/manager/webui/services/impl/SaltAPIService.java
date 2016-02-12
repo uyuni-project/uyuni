@@ -429,6 +429,18 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
+    public <T> Map<String, T> callSync(LocalCall<T> call,
+                                   Target<?> target, Map<String, ?> metadata)
+            throws SaltException {
+        // FIXME wrap into LocalCall with metadata
+        Map<String, T> result =
+                call.callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Map<String, Schedule.Result> deleteSchedule(String name, Target<?> target) {
         try {
             Map<String, Schedule.Result> result = Schedule.delete(name).callSync(
