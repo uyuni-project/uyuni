@@ -512,40 +512,39 @@ var PinnedMatches = React.createClass({
   },
 
   render: function() {
-    if (this.state.pinnedMatches.length > 0) {
-      var popUpContent = this.state.showPopUp ? <AddPinPopUp systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
-      return (
-        <div className="row col-md-12">
-          <div className="spacewalk-toolbar">
-            <button type="button" className="btn btn-default" onClick={this.showPopUp} data-toggle="modal" data-target="#addPinPopUp">
-              <i className="fa fa-map-pin"></i>{t("Add a Pin")}
-            </button>
-            <PopUp
-              title={t("Pin a Systems to a Subscription")}
-              className="modal-lg"
-              id="addPinPopUp"
-              content={
-                <div className="spacewalk-list">
-                  {popUpContent}
-                </div>
-              }
-              onClosePopUp={this.closePopUp}
-            />
-          </div>
-          <h2>{t("Pin Status")}</h2>
-          <div className="spacewalk-list">
+    var popUpContent = this.state.showPopUp ? <AddPinPopUp systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
+    return (
+      <div className="row col-md-12">
+        <div className="spacewalk-toolbar">
+          <button type="button" className="btn btn-primary" onClick={this.showPopUp} data-toggle="modal" data-target="#addPinPopUp">
+            <i className="fa fa-map-pin"></i>{t("Add a Pin")}
+          </button>
+          <PopUp
+            title={t("Pin a Systems to a Subscription")}
+            className="modal-lg"
+            id="addPinPopUp"
+            content={
+              <div className="spacewalk-list">
+                {popUpContent}
+              </div>
+            }
+            onClosePopUp={this.closePopUp}
+          />
+        </div>
+        <h2>{t("Pin Status")}</h2>
+        <div className="spacewalk-list">
+          {this.state.pinnedMatches.length > 0 ?
             <Table headers={[t("System"), t("Subscription"), t("Pin Status"), t("Unpin")]}
               rows={pinnedMatchesToRows(this.state.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
               loadState={() => this.state["table"]}
               saveState={(state) => {this.state["table"] = state;}}
               rowComparator={this.rowComparator}
               sortableColumns={[0, 1, 2]}
-            />
-          </div>
+            /> :
+            t("No saved pin at the moment.")}
         </div>
-      );
-    }
-    return null;
+      </div>
+    );
   }
 });
 
