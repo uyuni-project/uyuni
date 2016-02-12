@@ -210,7 +210,7 @@ var StatePersistedMixin = {
 var UnmatchedSystems = React.createClass({
   mixins: [StatePersistedMixin],
 
-  rowFilter: function(a, b, columnIndex, ascending) {
+  rowComparator: function(a, b, columnIndex, ascending) {
     var columnKeyInRawData=["name"];
     var columnKey = columnKeyInRawData[columnIndex];
     var orderCondition = ascending ? 1 : -1;
@@ -231,7 +231,7 @@ var UnmatchedSystems = React.createClass({
               rows={unmatchedSystemsToRows(this.props.unmatchedSystems)}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
-              rowComparator={this.rowFilter}
+              rowComparator={this.rowComparator}
               sortableColumns={[0]}
             />
             <CsvLink name="unmatched_system_report.csv" />
@@ -257,7 +257,7 @@ function unmatchedSystemsToRows(systems) {
 var Messages = React.createClass({
   mixins: [StatePersistedMixin],
 
-  rowFilter: function(a, b, columnIndex, ascending) {
+  rowComparator: function(a, b, columnIndex, ascending) {
     var columnKeyInRawData=["type"];
     var columnKey = columnKeyInRawData[columnIndex];
     var orderCondition = ascending ? 1 : -1;
@@ -280,7 +280,7 @@ var Messages = React.createClass({
               rows={messagesToRows(this.props.messages, this.props.systems)}
               loadState={this.props.loadState}
               saveState={this.props.saveState}
-              rowComparator={this.rowFilter}
+              rowComparator={this.rowComparator}
               sortableColumns={[0]}
             />
             <CsvLink name="message_report.csv" />
@@ -342,7 +342,7 @@ function messagesToRows(rawMessages, systems) {
 var Subscriptions = React.createClass({
   mixins: [StatePersistedMixin],
 
-  rowFilter: function(a, b, columnIndex, ascending) {
+  rowComparator: function(a, b, columnIndex, ascending) {
     var columnKeyInRawData=["partNumber", "description", "policy", "quantity", "startDate", "endDate"];
     var columnKey = columnKeyInRawData[columnIndex];
     var orderCondition = ascending ? 1 : -1;
@@ -384,7 +384,7 @@ var Subscriptions = React.createClass({
               saveState={this.props.saveState}
               dataFilter={(tableRow, searchValue) => tableRow.props["rawData"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
               searchPlaceholder={t("Filter by description")}
-              rowComparator={this.rowFilter}
+              rowComparator={this.rowComparator}
               sortableColumns={[0,1,2,3,4,5]}
             />
             <CsvLink name="subscription_report.csv" />
