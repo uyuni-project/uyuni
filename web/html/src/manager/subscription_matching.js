@@ -541,7 +541,7 @@ var Pins = React.createClass({
           <i className="fa fa-plus"></i>{t("Add a Pin")}
         </button>
         <PopUp
-          title={t("Pin a System to a Subscription")}
+          title={t("Add a Pin")}
           className="modal-lg"
           id="addPinPopUp"
           content={
@@ -657,23 +657,29 @@ var AddPinPopUp = React.createClass({
     var popUpContent;
     if (this.state.systemId) {
       popUpContent = (
-        <Table headers={[t("Part number"),t("Description"), t("Policy"), t("Start date"), t("End date"), t("")]}
-          rows={
-            possibleSubscriptionToRow(
-              this.props.systems[this.state.systemId]
-                .possibleSubscriptionIds.map((p) => {
-                  return this.props.subscriptions[p]}),
-              this.onSubscriptionSelected)
-            }
-        />
+        <div>
+          <p>{t("Step 2/2: pick a subscription for system ")}<strong>{this.props.systems[this.state.systemId].name}</strong></p>
+          <Table headers={[t("Part number"),t("Description"), t("Policy"), t("Start date"), t("End date"), t("")]}
+            rows={
+              possibleSubscriptionToRow(
+                this.props.systems[this.state.systemId]
+                  .possibleSubscriptionIds.map((p) => {
+                    return this.props.subscriptions[p]}),
+                this.onSubscriptionSelected)
+              }
+          />
+        </div>
       );
     }
     else {
       popUpContent = (
-        <Table headers={[t("System"), t("")]} rows={systemsForPinningToRow(this.props.systems, this.onSystemSelected)}
-          dataFilter={(tableRow, searchValue) => tableRow.props["rawData"]["name"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-          searchPlaceholder={t("Filter by name")}
-        />
+        <div>
+          <p>{t("Step 1/2: pick the system to pin from the table below.")}</p>
+          <Table headers={[t("System"), t("Socket/IFL count"), t("")]} rows={systemsForPinningToRow(this.props.systems, this.onSystemSelected)}
+            dataFilter={(tableRow, searchValue) => tableRow.props["rawData"]["name"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
+            searchPlaceholder={t("Filter by name")}
+          />
+        </div>
       );
     }
     return (popUpContent);
@@ -685,6 +691,7 @@ function systemsForPinningToRow(systems, onClickAction) {
     var s = systems[k];
     var columns = [
       <TableCell content={<SystemLabel id={k} name={s.name} type={s.type} />} />,
+      <TableCell content={s.cpuCount} />,
       <TableCell content={
         <PinButton
           onClick={onClickAction}
@@ -715,7 +722,7 @@ function possibleSubscriptionToRow(possibleSubscriptions, onClickAction) {
         <PinButton
           onClick={onClickAction}
           elementId={s.id}
-          content={<span><i className="fa fa-map-pin"></i>{t("Pin this subscription")}</span>}
+          content={<span><i className="fa fa-map-pin"></i>{t("Pin")}</span>}
         />}
       />
     ];
