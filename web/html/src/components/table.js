@@ -114,50 +114,52 @@ var Table = React.createClass({
     }
 
     return (
-      <div className="panel panel-default">
-        <div className="panel-heading">
-          <div className="spacewalk-list-head-addons">
-            <div className="spacewalk-list-filter table-search-wrapper">
-              {searchField} {t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)}
-            </div>
-            <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
-              <PageSelector className="display-number"
-                options={[5,10,15,25,50,100,250,500]}
-                currentValue={itemsPerPage}
-                onChange={this.onItemsPerPageChange}
-              /> {t("items per page")}
+      <div className="spacewalk-list">
+        <div className="panel panel-default">
+          <div className="panel-heading">
+            <div className="spacewalk-list-head-addons">
+              <div className="spacewalk-list-filter table-search-wrapper">
+                {searchField} {t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)}
+              </div>
+              <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
+                <PageSelector className="display-number"
+                  options={[5,10,15,25,50,100,250,500]}
+                  currentValue={itemsPerPage}
+                  onChange={this.onItemsPerPageChange}
+                /> {t("items per page")}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="table-responsive">
-          <table className="table table-striped">
-            <TableHeader
-              content={
-                this.props.headers.map((header, index) => {
-                  var className;
-                  if (index == this.state.columnIndex) {
-                    className = (this.state.ascending ? "asc" : "desc") + "Sort";
-                  }
-                  return (
-                      (this.props.sortableColumns &&
-                        this.props.sortableColumns.filter((element) => element == index).length > 0) ?
-                      <TableHeaderCellOrder className={className} content={header}
-                        orderBy={this.orderByColumn} columnIndex={index} /> :
-                      <TableHeaderCell className={className} content={header} />
-                  );
-                })}
-            />
-            <tbody className="table-content">
-              {rows
-                .filter((element, i) => i >= firstItemIndex && i < firstItemIndex + itemsPerPage)
-              }
-              </tbody>
-          </table>
-        </div>
-        <div className="panel-footer">
-          <div className="spacewalk-list-bottom-addons">
-            <div className="table-page-information">{t("Page {0} of {1}", currentPage, lastPage)}</div>
-            {pagination}
+          <div className="table-responsive">
+            <table className="table table-striped">
+              <TableHeader
+                content={
+                  this.props.headers.map((header, index) => {
+                    var className;
+                    if (index == this.state.columnIndex) {
+                      className = (this.state.ascending ? "asc" : "desc") + "Sort";
+                    }
+                    return (
+                        (this.props.sortableColumns &&
+                          this.props.sortableColumns.filter((element) => element == index).length > 0) ?
+                        <TableHeaderCellOrder className={className} content={header}
+                          orderBy={this.orderByColumn} columnIndex={index} /> :
+                        <TableHeaderCell className={className} content={header} />
+                    );
+                  })}
+              />
+              <tbody className="table-content">
+                {rows
+                  .filter((element, i) => i >= firstItemIndex && i < firstItemIndex + itemsPerPage)
+                }
+                </tbody>
+            </table>
+          </div>
+          <div className="panel-footer">
+            <div className="spacewalk-list-bottom-addons">
+              <div className="table-page-information">{t("Page {0} of {1}", currentPage, lastPage)}</div>
+              {pagination}
+            </div>
           </div>
         </div>
       </div>
@@ -272,4 +274,3 @@ module.exports = {
     PageSelector : PageSelector,
     PaginationButton : PaginationButton
 }
-

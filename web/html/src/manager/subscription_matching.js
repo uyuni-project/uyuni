@@ -232,16 +232,14 @@ var UnmatchedSystems = React.createClass({
       return (
         <div className="row col-md-12">
           <h2>{t("Unmatched Systems")}</h2>
-          <div className="spacewalk-list">
-            <Table headers={[t("Name"), t("Socket/IFL count"), t("Products")]}
-              rows={unmatchedSystemsToRows(this.props.unmatchedSystems)}
-              loadState={this.props.loadState}
-              saveState={this.props.saveState}
-              rowComparator={this.rowComparator}
-              sortableColumns={[0]}
-            />
-            <CsvLink name="unmatched_system_report.csv" />
-          </div>
+          <Table headers={[t("Name"), t("Socket/IFL count"), t("Products")]}
+            rows={unmatchedSystemsToRows(this.props.unmatchedSystems)}
+            loadState={this.props.loadState}
+            saveState={this.props.saveState}
+            rowComparator={this.rowComparator}
+            sortableColumns={[0]}
+          />
+          <CsvLink name="unmatched_system_report.csv" />
         </div>
       );
     }
@@ -279,7 +277,7 @@ var Messages = React.createClass({
     if (this.props.messages != null) {
       if (this.props.messages.length > 0) {
         body = (
-          <div className="spacewalk-list">
+          <div>
             <p>{t("Please review warning and information messages below.")}</p>
             <Table
               headers={[t("Message"), t("Additional information")]}
@@ -383,7 +381,7 @@ var Subscriptions = React.createClass({
     if (this.props.subscriptions != null) {
       if (Object.keys(this.props.subscriptions).length > 0) {
         body = (
-          <div className="spacewalk-list">
+          <div>
             <Table headers={[t("Part number"), t("Description"), t("Policy"), t("Matched/Total"), t("Start date"), t("End date")]}
               rows={subscriptionsToRows(this.props.subscriptions)}
               loadState={this.props.loadState}
@@ -532,17 +530,17 @@ var Pins = React.createClass({
           {t("Note that the algorithm might determine that a certain pin cannot be respected, ")}
           {t("depending on a subscription's availablility and applicability rules, in that case it will be shown as not satisfied. ")}
         </p>
-        <div className="spacewalk-list">
-          {this.state.pinnedMatches.length > 0 ?
-            <Table headers={[t("System"), t("Subscription"), t("Policy"), t("End date"), t("Part number"), t("Status"), t("")]}
-              rows={pinnedMatchesToRows(this.state.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
-              loadState={() => this.state["table"]}
-              saveState={(state) => {this.state["table"] = state;}}
-              rowComparator={this.rowComparator}
-              sortableColumns={[0, 1, 2, 3, 4, 5]}
-            /> :
-            <p>{t("No pins defined. You can create one with the button below.")}</p>}
-        </div>
+
+        {this.state.pinnedMatches.length > 0 ?
+          <Table headers={[t("System"), t("Subscription"), t("Policy"), t("End date"), t("Part number"), t("Status"), t("")]}
+            rows={pinnedMatchesToRows(this.state.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
+            loadState={() => this.state["table"]}
+            saveState={(state) => {this.state["table"] = state;}}
+            rowComparator={this.rowComparator}
+            sortableColumns={[0, 1, 2, 3, 4, 5]}
+          /> :
+          <p>{t("No pins defined. You can create one with the button below.")}</p>}
+
         <button type="button" className="btn btn-primary" onClick={this.showPopUp} data-toggle="modal" data-target="#addPinPopUp">
           <i className="fa fa-plus"></i>{t("Add a Pin")}
         </button>
@@ -550,11 +548,7 @@ var Pins = React.createClass({
           title={t("Add a Pin")}
           className="modal-lg"
           id="addPinPopUp"
-          content={
-            <div className="spacewalk-list">
-              {popUpContent}
-            </div>
-          }
+          content={popUpContent}
           onClosePopUp={this.closePopUp}
         />
       </div>
