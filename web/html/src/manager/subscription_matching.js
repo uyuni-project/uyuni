@@ -662,7 +662,7 @@ var AddPinPopUp = React.createClass({
       popUpContent = (
         <div>
           <p>{t("Step 2/2: pick a subscription for system ")}<strong>{this.props.systems[this.state.systemId].name}</strong></p>
-          <Table headers={[t("Part number"),t("Description"), t("Policy"), t("Start date"), t("End date"), t("")]}
+          <Table headers={[t("Part number"),t("Description"), t("Policy"), t("End date"), t("")]}
             rows={
               possibleSubscriptionToRow(
                 this.props.systems[this.state.systemId]
@@ -713,10 +713,6 @@ function possibleSubscriptionToRow(possibleSubscriptions, onClickAction) {
       <TableCell content={s.partNumber} />,
       <TableCell content={s.description} />,
       <TableCell content={humanReadablePolicy(s.policy)} />,
-      <TableCell content={
-        <ToolTip content={moment(s.startDate).fromNow()}
-          title={moment(s.startDate).format("LL")} />}
-      />,
       <TableCell content={
         <ToolTip content={moment(s.endDate).fromNow()}
           title={moment(s.endDate).format("LL")} />}
