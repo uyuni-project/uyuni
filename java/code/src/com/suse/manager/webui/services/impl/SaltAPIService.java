@@ -551,7 +551,7 @@ public enum SaltAPIService implements SaltService {
             storageManager.storeState(orgId, name, content, oldName, oldChecksum);
         }
         catch (IOException e) {
-            throw new RuntimeException(e); // TODO throw IOException or smth more specific
+            throw new RuntimeException(e);
         }
     }
 
