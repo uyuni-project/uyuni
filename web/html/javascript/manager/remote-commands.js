@@ -85,20 +85,25 @@ class RemoteCommand extends React.Component {
             errs = <div className="alert alert-danger">{msg}</div>
         })
     }
+    // TODO reuse Button class from package-states
     var button = null;
     switch (this.state.action) {
         case "none":
             button = <button className="btn btn-success" onClick={this.onPreview}>{t("Preview")}</button>
             break;
         case "matching":
-            button = <button className="btn btn-default">{t("Previewing...")}</button>
+            button = <button className="btn btn-default" disabled="true">
+                <i className="fa fa-circle-o-notch fa-spin"></i>{t("Preview")}
+            </button>
             break;
         case "matched":
         case "runned":
             button = <button className="btn btn-success" onClick={this.onRun}>{t("Run")}</button>
             break;
         case "running":
-            button = <button className="btn btn-default">{t("Running...")}</button>
+            button = <button disabled="true" className="btn btn-default">
+                <i className="fa fa-circle-o-notch fa-spin"></i>{t("Running")}
+            </button>
             break;
     }
 
