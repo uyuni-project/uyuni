@@ -524,7 +524,7 @@ var Pins = React.createClass({
           {t("Next time a matching is attempted, the algorithm will try to produce a result that applies the subscription to the system you specified. ")}
           <br />
           {t("Note that the algorithm might determine that a certain pin cannot be respected, ")}
-          {t("depending on a subscription's availablility and applicability rules, in that case it will be shown as unsatisfied. ")}
+          {t("depending on a subscription's availablility and applicability rules, in that case it will be shown as not satisfied. ")}
         </p>
         <div className="spacewalk-list">
           {this.state.pinnedMatches.length > 0 ?
@@ -618,10 +618,10 @@ var PinStatus = React.createClass({
   render: function() {
     return (
       this.props.status == "pending" ?
-      <span><i className="fa fa-hourglass-start pin-report-icon"></i><em>{t("pending for the next run")}</em></span> :
+      <span><i className="fa fa-hourglass-start pin-report-icon"></i><em>{t("pending next run")}</em></span> :
         this.props.status == "satisfied" ?
-        <span><i className="fa fa-check text-success pin-report-icon"></i>{t("satisfied in the last run")}</span> :
-        <span><i className="fa fa-exclamation-triangle text-warning pin-report-icon"></i>{t("unsatisfied in the last run!!")}</span>
+        <span><i className="fa fa-check text-success pin-report-icon"></i>{t("satisfied")}</span> :
+        <span><i className="fa fa-exclamation-triangle text-warning pin-report-icon"></i>{t("not satisfied")}</span>
     );
   }
 });
