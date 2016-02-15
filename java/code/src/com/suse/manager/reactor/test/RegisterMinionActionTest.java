@@ -17,18 +17,35 @@ package com.suse.manager.reactor.test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.state.PackageState;
+import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.VersionConstraints;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.domain.token.test.ActivationKeyTest;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import org.jmock.Mock;
 
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
@@ -40,7 +57,7 @@ import com.suse.salt.netapi.parser.JsonParser;
 /**
  * Tests for {@link RegisterMinionEventMessageAction}.
  */
-public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
+public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     private static final String MINION_ID = "suma3pg.vagrant.local";
 	private static final String MACHINE_ID = "003f13081ddd408684503111e066f921";
@@ -52,20 +69,33 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
      * @throws java.lang.ClassNotFoundException
      */
     public void testDoExecute()
-            throws IOException,
-            ClassNotFoundException {
+            throws Exception {
 
         // cleanup
         Mock saltServiceMock = mock(SaltService.class);
 
         MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        key.setBaseChannel(baseChannel);
+        key.setOrg(user.getOrg());
+        Arrays.asList(
+            "rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host"
+        ).forEach(blacklisted ->
+            key.addPackage(PackageFactory.lookupOrCreatePackageByName(blacklisted), null)
+        );
+        key.addPackage(PackageFactory.lookupOrCreatePackageByName("vim"), null);
+        ManagedServerGroup testGroup = ServerGroupFactory.create(
+                "TestGroup", "group for tests", user.getOrg());
+        key.setServerGroups(Collections.singleton(testGroup));
+        ActivationKeyFactory.save(key);
 
         // Register a minion via RegisterMinionAction and mocked SaltService
 
         saltServiceMock.stubs().method("getMachineId").with(eq(MINION_ID)).will(
                 returnValue(MACHINE_ID));
         saltServiceMock.stubs().method("getGrains").with(eq(MINION_ID)).will(
-                returnValue(getGrains(MINION_ID)));
+                returnValue(getGrains(MINION_ID, key.getKey())));
         saltServiceMock.stubs().method("getCpuInfo").with(eq(MINION_ID)).will(
                 returnValue(getCpuInfo(MINION_ID)));
         saltServiceMock.stubs().method("sendEvent").will(returnValue(true));
@@ -98,6 +128,27 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
 
         // Verify the entitlement
         assertEquals(EntitlementManager.SALT, minion.getBaseEntitlement());
+
+        // Verify activation key
+        Optional<Set<PackageState>> packageStates = StateFactory.latestPackageStates(minion);
+        assertTrue(packageStates.isPresent());
+        packageStates.ifPresent(states -> {
+            assertEquals(1, states.size());
+            states.stream().forEach(state -> {
+                assertEquals(state.getName().getName(), "vim");
+                assertEquals(state.getPackageState(), PackageStates.INSTALLED);
+                assertEquals(state.getVersionConstraint(), VersionConstraints.ANY);
+            });
+        });
+        assertEquals(baseChannel, minion.getBaseChannel());
+        assertTrue("Server should have the testGroup ServerGroup",
+                ServerGroupFactory.listServers(testGroup).contains(minion));
+        assertEquals(key.getOrg(), minion.getOrg());
+        Optional<Server> server = key.getToken().getActivatedServers().stream()
+                .findFirst()
+                .filter(minion::equals);
+        assertTrue("Server should be a activated system on the activation key", server.isPresent());
+
     }
 
     @SuppressWarnings("unchecked")
@@ -108,10 +159,14 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getGrains(String minionId) throws ClassNotFoundException, IOException {
-    	Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
+    private Map<String, Object> getGrains(String minionId, String akey) throws ClassNotFoundException, IOException {
+    	Map<String, Object> file = new JsonParser<>(Grains.items(false).getReturnType()).parse(
                 readFile("dummy_grains.json"));
-    	return (Map<String, Object>)((List<Map<String, Object>>)grains.get("return")).get(0).get(minionId);
+    	Map<String, Object> grains = (Map<String, Object>)((List<Map<String, Object>>)file.get("return")).get(0).get(minionId);
+        Map<String, String> susemanager = new HashMap<>();
+        susemanager.put("activation_key", akey);
+        grains.put("susemanager", susemanager);
+        return grains;
     }
 
     private String readFile(String file) throws IOException, ClassNotFoundException {
