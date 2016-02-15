@@ -25,6 +25,7 @@ import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessage;
 import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.parser.JsonParser;
 import org.jmock.Mock;
@@ -32,6 +33,7 @@ import org.jmock.Mock;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -61,6 +63,10 @@ public class UpdatePackageProfileActionTest extends JMockBaseTestCaseWithUser {
                 .with(eq(minionId), eq(UpdatePackageProfileEventMessageAction.PKGATTR))
                 .will(returnValue(this.getMinionPackages()));
 
+        saltServiceMock.stubs().method("getInstalledProducts")
+                .with(eq(minionId))
+                .will(returnValue(this.getInstalledProducts()));
+
         SaltService saltService = (SaltService) saltServiceMock.proxy();
 
         UpdatePackageProfileEventMessage message = new UpdatePackageProfileEventMessage(minion.getId());
@@ -85,11 +91,47 @@ public class UpdatePackageProfileActionTest extends JMockBaseTestCaseWithUser {
             assertEquals("x86_64", pkg.getArch().getName());
         }
         assertEquals(2, minion.getPackages().size());
+
+
+        minion.getInstalledProducts().stream().forEach(product -> {
+            assertEquals("sles", product.getName());
+            assertEquals("12.1", product.getVersion());
+            assertEquals(null, product.getRelease());
+            assertEquals("x86_64", product.getArch().getName());
+        });
+        assertEquals(1, minion.getInstalledProducts().size());
     }
 
     private Map<String, Pkg.Info> getMinionPackages() throws IOException, ClassNotFoundException {
         return new JsonParser<>(Pkg.infoInstalled(UpdatePackageProfileEventMessageAction.PKGATTR, true)
                 .getReturnType()).parse(readFile("dummy_package.json"));
+    }
+
+    private List<Zypper.RealProductInfo> getInstalledProducts() throws IOException, ClassNotFoundException {
+        List<Map<String, Zypper.ProductInfo>> parse = new JsonParser<>(Zypper.listProducts(false)
+                .getReturnType()).parse(readFile("dummy_installed_products.json"));
+        return parse.stream().flatMap(map -> map.entrySet().stream())
+                .map(productEntry -> {
+            Zypper.ProductInfo value = productEntry.getValue();
+            return new Zypper.RealProductInfo(
+                productEntry.getKey(),
+                value.getArch(),
+                value.getDescription(),
+                value.getEol(),
+                value.getEpoch(),
+                value.getFlavor(),
+                value.getInstalled(),
+                value.getIsbase(),
+                value.getProductline(),
+                value.getRegisterrelease(),
+                value.getRelease(),
+                value.getRepo(),
+                value.getShortname(),
+                value.getSummary(),
+                value.getVendor(),
+                value.getVersion()
+            );
+         }).collect(Collectors.toList());
     }
 
     private String readFile(String file) throws IOException, ClassNotFoundException {
