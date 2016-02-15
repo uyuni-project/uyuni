@@ -36,7 +36,7 @@ var SubscriptionMatching = React.createClass({
 
     var tabContainer = data == null || !data.matcherDataAvailable ? null :
       <TabContainer
-        labels={[t("Subscriptions"), t("Unmatched Systems"), t("Pin Status"), t("Messages")]}
+        labels={[t("Subscriptions"), t("Unmatched Systems"), t("Pins"), t("Messages")]}
         panels={[
           <Subscriptions
             subscriptions={subscriptions}
@@ -533,10 +533,10 @@ var PinnedMatches = React.createClass({
             onClosePopUp={this.closePopUp}
           />
         </div>
-        <h2>{t("Pin Status")}</h2>
+        <h2>{t("Pins")}</h2>
         <div className="spacewalk-list">
           {this.state.pinnedMatches.length > 0 ?
-            <Table headers={[t("System"), t("Subscription"), t("Policy"), t("End date"), t("Part number"), t("Pin Status"), t("Unpin")]}
+            <Table headers={[t("System"), t("Subscription"), t("Policy"), t("End date"), t("Part number"), t("Status"), t("Unpin")]}
               rows={pinnedMatchesToRows(this.state.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
               loadState={() => this.state["table"]}
               saveState={(state) => {this.state["table"] = state;}}
