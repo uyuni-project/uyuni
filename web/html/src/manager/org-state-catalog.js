@@ -18,9 +18,6 @@ var StateCatalog = React.createClass({
         var st = {
             "serverData": []
         };
-//        if (this.props.flashMessages) {
-//            st["flashMessages"] = this.props.flashMessages;
-//        }
         return st;
     },
 
@@ -34,19 +31,6 @@ var StateCatalog = React.createClass({
         this.refreshServerData();
     },
 
-//    componentDidMount: function() {
-//        var views = 1;
-//        if(this.state.flashMessagesViews) {
-//            views = this.state.flashMessagesViews + 1;
-//        }
-//        this.setState({ "flashMessagesViews": views });
-//    },
-//
-//    shouldComponentUpdate: function() {
-//        return typeof this.state.flashMessagesViews === "undefined" ||
-//            this.state.flashMessagesViews > 1;
-//    },
-
     compareRows: function(a, b, columnIndex, order) {
         var orderCondition = order ? 1 : -1;
         var aValue = a.props["raw_data"];
@@ -59,12 +43,8 @@ var StateCatalog = React.createClass({
         var button = <PanelButton text="Create state" icon="fa-plus" action="/rhn/manager/state_catalog/state"/>;
 
         var msg = null;
-//        if(typeof this.state.flashMessages !== "undefined" && this.state.flashMessages.length > 0) {
-//            msg = <Messages items={this.props.flashMessages}/>
-//        }
 
         if(typeof this.props.flashMessages !== "undefined") {
-//            var items = {severity: "error", text: "alalalal"};
             msg = <Messages items={this.props.flashMessages}/>;
         }
         return (
