@@ -51,17 +51,15 @@ var StateCatalog = React.createClass({
             <Panel title="States Catalog" icon="spacewalk-icon-virtual-host-manager" button={button}>
                 {msg}
                 <div>
-                    <div className="spacewalk-list">
-                        <Table headers={[t("State")]}
-                          rows={statesToRows(this.state.serverData)}
-                          loadState={this.props.loadState}
-                          saveState={this.props.saveState}
-                          rowComparator={this.compareRows}
-                          sortableColumns={[0]}
-                          dataFilter={(tableRow, searchValue) => tableRow.props["raw_data"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-                          searchPlaceholder={t("Filter by state name:")}
-                        />
-                    </div>
+                    <Table headers={[t("State")]}
+                      rows={statesToRows(this.state.serverData)}
+                      loadState={this.props.loadState}
+                      saveState={this.props.saveState}
+                      rowComparator={this.compareRows}
+                      sortableColumns={[0]}
+                      dataFilter={(tableRow, searchValue) => tableRow.props["raw_data"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
+                      searchPlaceholder={t("Filter by state name:")}
+                    />
                 </div>
             </Panel>
         );
@@ -83,5 +81,3 @@ React.render(
   <StateCatalog flashMessages={flashMessage()}/>,
   document.getElementById('state-catalog')
 );
-
-
