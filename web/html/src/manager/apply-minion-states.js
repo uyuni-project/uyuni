@@ -1,6 +1,9 @@
 'use strict';
 
-var React = require("react");
+const React = require("react");
+const Buttons = require("../components/buttons");
+
+const AsyncButton = Buttons.AsyncButton;
 
 class ApplyState extends React.Component {
 
@@ -21,7 +24,7 @@ class ApplyState extends React.Component {
           <i className="fa spacewalk-icon-package-add"></i>
           {t("Apply States")}
           <span className="btn-group pull-right">
-              <Button action={this.applySaltState} name={t("Apply")} />
+              <AsyncButton action={this.applySaltState} name={t("Apply")} />
           </span>
         </h2>
         <div className="row col-md-12">
