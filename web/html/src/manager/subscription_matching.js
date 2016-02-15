@@ -517,22 +517,6 @@ var Pins = React.createClass({
     var popUpContent = this.state.showPopUp ? <AddPinPopUp systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
     return (
       <div className="row col-md-12">
-        <div className="spacewalk-toolbar">
-          <button type="button" className="btn btn-primary" onClick={this.showPopUp} data-toggle="modal" data-target="#addPinPopUp">
-            <i className="fa fa-map-pin"></i>{t("Add a Pin")}
-          </button>
-          <PopUp
-            title={t("Pin a System to a Subscription")}
-            className="modal-lg"
-            id="addPinPopUp"
-            content={
-              <div className="spacewalk-list">
-                {popUpContent}
-              </div>
-            }
-            onClosePopUp={this.closePopUp}
-          />
-        </div>
         <h2>{t("Pins")}</h2>
         <p>
           {t("You can pin a subscription to a system to suggest a certain association to the matching algorithm. ")}
@@ -551,8 +535,22 @@ var Pins = React.createClass({
               rowComparator={this.rowComparator}
               sortableColumns={[0, 1, 2, 3, 4, 5]}
             /> :
-            t("No saved pin at the moment.")}
+            <p>{t("No pins defined. You can create one with the button below.")}</p>}
         </div>
+        <button type="button" className="btn btn-primary" onClick={this.showPopUp} data-toggle="modal" data-target="#addPinPopUp">
+          <i className="fa fa-plus"></i>{t("Add a Pin")}
+        </button>
+        <PopUp
+          title={t("Pin a System to a Subscription")}
+          className="modal-lg"
+          id="addPinPopUp"
+          content={
+            <div className="spacewalk-list">
+              {popUpContent}
+            </div>
+          }
+          onClosePopUp={this.closePopUp}
+        />
       </div>
     );
   }
