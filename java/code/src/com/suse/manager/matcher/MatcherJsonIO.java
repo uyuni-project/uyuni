@@ -94,7 +94,8 @@ public class MatcherJsonIO {
                     system.getId(),
                     system.getName(),
                     cpus == null ? null : cpus.intValue(),
-                    !system.isVirtualGuest() && !system.isVirtualHost(),
+                    !system.isVirtualGuest(),
+                    system.isVirtualHost(),
                     system.getGuests().stream()
                         .filter(vi -> vi.getGuestSystem() != null)
                         .map(vi -> vi.getGuestSystem().getId())
@@ -297,6 +298,7 @@ public class MatcherJsonIO {
                 "SUSE Manager Server system",
                 1,
                 true,
+                false,
                 new HashSet<>(),
                 computeSelfProductIds(arch)
             ));

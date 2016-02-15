@@ -36,6 +36,9 @@ public class System {
     /** The products. */
     private List<String> products;
 
+    /** The system type. */
+    private String type;
+
     /** The possible subscription ids. */
     private List<Long> possibleSubscriptionIds;
 
@@ -46,14 +49,16 @@ public class System {
      * @param nameIn - name
      * @param cpuCountIn - cpu count
      * @param productsIn - products
+     * @param typeIn - type
      * @param possibleSubscriptionIdsIn - possible subscription ids
      */
     public System(Long idIn, String nameIn, Integer cpuCountIn, List<String> productsIn,
-            List<Long> possibleSubscriptionIdsIn) {
+            String typeIn, List<Long> possibleSubscriptionIdsIn) {
         id = idIn;
         name = nameIn;
         cpuCount = cpuCountIn;
         products = productsIn;
+        type = typeIn;
         setPossibleSubscriptionIds(possibleSubscriptionIdsIn);
     }
 
@@ -127,6 +132,24 @@ public class System {
      */
     public void setProducts(List<String> productsIn) {
         products = productsIn;
+    }
+
+    /**
+     * Gets the system type.
+     *
+     * @return the system type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * Sets the system type.
+     *
+     * @param typeIn the new system type
+     */
+    public void setType(String typeIn) {
+        type = typeIn;
     }
 
     /**
