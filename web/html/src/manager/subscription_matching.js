@@ -528,7 +528,7 @@ var Pins = React.createClass({
         </p>
         <div className="spacewalk-list">
           {this.state.pinnedMatches.length > 0 ?
-            <Table headers={[t("System"), t("Subscription"), t("Policy"), t("End date"), t("Part number"), t("Status"), t("Unpin")]}
+            <Table headers={[t("System"), t("Subscription"), t("Policy"), t("End date"), t("Part number"), t("Status"), t("")]}
               rows={pinnedMatchesToRows(this.state.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
               loadState={() => this.state["table"]}
               saveState={(state) => {this.state["table"] = state;}}
@@ -580,7 +580,7 @@ function pinnedMatchesToRows(pins, systems, subscriptions, onClickAction) {
         <PinButton
           onClick={onClickAction}
           elementId={p.id}
-          content={<span><i className="fa fa-trash-o"></i>{t("remove")}</span>}
+          content={<span><i className="fa fa-trash-o"></i>{t("Delete Pin")}</span>}
          />
         }
       />
