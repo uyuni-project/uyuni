@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltStateStorageManager;
 import com.suse.manager.webui.utils.salt.Zypper;
+import com.suse.manager.webui.utils.salt.LocalCallWithMetadata;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
@@ -429,12 +430,24 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public <T> Map<String, T> callSync(LocalCall<T> call,
-                                   Target<?> target, Map<String, ?> metadata)
-            throws SaltException {
-        // FIXME wrap into LocalCall with metadata
-        Map<String, T> result =
-                call.callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+    public <T> Map<String, T> callSync(LocalCall<T> call, Target<?> target,
+            Map<String, ?> metadata) throws SaltException {
+        LocalCallWithMetadata<T> callWithMetadata =
+                new LocalCallWithMetadata<>(call, metadata);
+        Map<String, T> result = callWithMetadata
+                .callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target,
+            Map<String, ?> metadata) throws SaltException {
+        LocalCallWithMetadata<T> callWithMetadata =
+                new LocalCallWithMetadata<>(call, metadata);
+        LocalAsyncResult<T> result = callWithMetadata
+                .callAsync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
         return result;
     }
 
