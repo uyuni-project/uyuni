@@ -615,7 +615,7 @@ var PinStatus = React.createClass({
       <span><i className="fa fa-hourglass-start pin-report-icon"></i><em>{t("pending for the next run")}</em></span> :
         this.props.status == "satisfied" ?
         <span><i className="fa fa-check text-success pin-report-icon"></i>{t("satisfied in the last run")}</span> :
-        <span><i className="fa fa-times text-danger pin-report-icon"></i><StrongText content={t("unsatisfied in the last run!!")} /></span>
+        <span><i className="fa fa-exclamation-triangle text-warning pin-report-icon"></i>{t("unsatisfied in the last run!!")}</span>
     );
   }
 });
