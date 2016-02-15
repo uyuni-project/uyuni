@@ -202,6 +202,9 @@
     <rhn-tab name="Packages">
       <rhn-tab-url>/rhn/manager/systems/details/packages</rhn-tab-url>
     </rhn-tab>
+    <rhn-tab name="Apply States">
+      <rhn-tab-url>/rhn/manager/systems/details/applystates</rhn-tab-url>
+     </rhn-tab>
   </rhn-tab>
 
   <rhn-tab name="Events" acl="system_has_management_entitlement() or system_has_salt_entitlement()">
