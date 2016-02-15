@@ -1,0 +1,20 @@
+.spacewalk-toolbar-h1
+  .spacewalk-toolbar
+    a(href="/rhn/systems/details/DeleteConfirm.do?sid=#{serverId}")
+        i.fa.fa-trash-o(title='Delete System')
+        | #{l.t("Delete System")}
+  h1
+    i.fa.fa-desktop
+    | #{" " + serverName + " "}
+    a(href="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#s3-sm-system-details", target="_blank")
+      i.fa.fa-question-circle.spacewalk-help-link
+
+!{h.renderNavigationMenu(request, "/WEB-INF/nav/system_detail.xml")}
+#apply-states
+
+script(type='text/javascript').
+    var csrfToken = "#{csrf_token}";
+    var serverId = "#{serverId}";
+
+script(src='/javascript/reactjs/react.bundle.js')
+script(src='/javascript/manager/apply-minion-states.bundle.js', type='text/javascript')
