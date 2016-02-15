@@ -82,7 +82,7 @@ public class MinionServerFactory extends HibernateFactory {
      * @param orgId the organization id
      * @return a list of minions belonging to the given organization
      */
-    public static List<MinionServer> findByGroupId(Long orgId) {
+    public static List<MinionServer> findByOrgId(Long orgId) {
         Session session = HibernateFactory.getSession();
         Query query = session.getNamedQuery("MinionServer.findByOrgId")
                 .setParameter("orgId", orgId);
