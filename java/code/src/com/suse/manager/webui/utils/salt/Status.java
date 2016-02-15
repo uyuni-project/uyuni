@@ -1,3 +1,6 @@
+/**
+ * CHECKSTYLE:OFF
+ */
 package com.suse.manager.webui.utils.salt;
 
 import com.google.gson.reflect.TypeToken;
@@ -12,7 +15,7 @@ public class Status {
     public static LocalCall<Float> uptime() {
         LinkedHashMap<String, Object> args = new LinkedHashMap<>();
         args.put("human_readable", false);
-        return new LocalCall("status.uptime",
+        return new LocalCall<Float>("status.uptime",
                 Optional.empty(), Optional.of(args), new TypeToken<Float>() {
         });
     }
