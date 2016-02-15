@@ -108,7 +108,7 @@ class BaseWireSource:
 
         proxy, puser, ppass = get_proxy(url)
         serverObj = connection.StreamConnection(url, proxy=proxy,
-                                                username=CFG.puser, password=ppass,
+                                                username=puser, password=ppass,
                                                 xml_dump_version=self.xml_dump_version, timeout=CFG.timeout)
         BaseWireSource.serverObj = serverObj
         return serverObj
