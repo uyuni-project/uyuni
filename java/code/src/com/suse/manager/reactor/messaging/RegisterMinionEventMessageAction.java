@@ -20,12 +20,21 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.state.PackageState;
+import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.VersionConstraints;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltService;
@@ -34,12 +43,16 @@ import com.suse.manager.webui.services.impl.SaltAPIService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Event handler to create system records for salt minions.
@@ -52,6 +65,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
+
+    private static final List<String> BLACKLIST = Collections.unmodifiableList(
+       Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host")
+    );
 
 
     //HACK: set installed product depending on the grains
@@ -116,13 +133,22 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setName(minionId);
             server.setDigitalServerId(machineId);
 
-            // All registered minions initially belong to the default organization
-            server.setOrg(OrgFactory.getSatelliteOrg());
 
             SALT_SERVICE.syncGrains(minionId);
             SALT_SERVICE.syncModules(minionId);
 
             ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId));
+
+            //apply activation key properties that can be set before saving the server
+            Optional<ActivationKey> activationKey = grains
+                    .getMap("susemanager")
+                    .flatMap(suma -> suma.getOptionalAsString("activation_key"))
+                    .map(ActivationKeyFactory::lookupByKey);
+            server.setOrg(activationKey
+                    .map(ActivationKey::getOrg)
+                    .orElse(OrgFactory.getSatelliteOrg()));
+            activationKey.map(ActivationKey::getChannels)
+                    .ifPresent(channels -> channels.forEach(server::addChannel));
 
             String osfullname = grains.getValueAsString("osfullname");
             String osrelease = grains.getValueAsString("osrelease");
@@ -169,6 +195,36 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             ServerFactory.save(server);
 
+            // apply activation key properties that need to be set after saving the server
+            activationKey.ifPresent(ak -> {
+                ak.getToken().getActivatedServers().add(server);
+                ActivationKeyFactory.save(ak);
+
+                Set<Server> servers = Collections.singleton(server);
+                ServerGroupManager sgm = ServerGroupManager.getInstance();
+                ak.getServerGroups().forEach(group -> {
+                    ServerFactory.addServerToGroup(server, group);
+                });
+
+                ServerStateRevision serverStateRevision = new ServerStateRevision();
+                serverStateRevision.setServer(server);
+                serverStateRevision.setCreator(ak.getCreator());
+                serverStateRevision.setPackageStates(
+                    ak.getPackages().stream()
+                            .filter(p -> !BLACKLIST.contains(p.getPackageName().getName()))
+                            .map(tp -> {
+                        PackageState state = new PackageState();
+                        state.setArch(tp.getPackageArch());
+                        state.setName(tp.getPackageName());
+                        state.setPackageState(PackageStates.INSTALLED);
+                        state.setVersionConstraint(VersionConstraints.ANY);
+                        state.setStateRevision(serverStateRevision);
+                        return state;
+                    }).collect(Collectors.toSet())
+                );
+                StateFactory.save(serverStateRevision);
+            });
+
             triggerGetHardwareInfo(server, grains);
             triggerGetNetworkInfo(server, grains);
 
@@ -184,10 +240,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             StatesAPI.generateServerPackageState(server);
             // Trigger certification deployment
+            MessageQueue.publish(new ChannelsChangedEventMessage(server.getId()));
             MessageQueue.publish(new ApplyStatesEventMessage(
-                    server.getId(), null, ApplyStatesEventMessage.CERTIFICATE));
-            // Trigger an update of the package profile
-            MessageQueue.publish(new UpdatePackageProfileEventMessage(server.getId()));
+                    server.getId(),
+                    ApplyStatesEventMessage.CERTIFICATE,
+                    ApplyStatesEventMessage.PACKAGES
+            ));
         }
         catch (Throwable t) {
             LOG.error("Error registering minion for event: " + event, t);

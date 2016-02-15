@@ -46,9 +46,16 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
         if (server.hasEntitlement(EntitlementManager.SALT)) {
             try {
                 RepoFileUtils.generateRepositoryFile(server);
-                MessageQueue.publish(
-                        new ApplyStatesEventMessage(serverId, event.getUserId(),
-                                ApplyStatesEventMessage.CHANNELS));
+                if (event.getUserId() != null) {
+                    MessageQueue.publish(new ApplyStatesEventMessage(
+                        serverId, event.getUserId(), ApplyStatesEventMessage.CHANNELS)
+                    );
+                }
+                else {
+                    MessageQueue.publish(new ApplyStatesEventMessage(
+                        serverId, ApplyStatesEventMessage.CHANNELS)
+                    );
+                }
             }
             catch (IOException | JoseException e) {
                 LOG.error(String.format(
