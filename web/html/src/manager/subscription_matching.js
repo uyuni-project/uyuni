@@ -554,11 +554,12 @@ function pinnedMatchesToRows(pins, systems, subscriptions, onClickAction) {
   return pins.map((p) => {
     var system = systems[p.systemId];
     var systemName = system == null ? "System " + p.systemId : system.name;
+    var systemType = system == null ? null : system.type;
     var subscription = subscriptions[p.subscriptionId];
     var subscriptionDescription = subscription == null ? "Subscription " + p.subscriptionId : subscription.description;
     var subscriptionPartNumber = subscription == null ? "" : subscription.partNumber;
     var columns = [
-      <TableCell content={systemName} />,
+      <TableCell content={<SystemLabel id={p.systemId} name={systemName} type={systemType} />} />,
       <TableCell content={subscriptionDescription} />,
       <TableCell content={subscriptionPartNumber} />,
       <TableCell content={<PinStatus status={p.status} />} />,
@@ -574,6 +575,26 @@ function pinnedMatchesToRows(pins, systems, subscriptions, onClickAction) {
     return <TableRow columns={columns} rawData={{"id": p.id,"systemName": systemName, "subscriptionDescription": subscriptionDescription, "subscriptionPartNumber": subscriptionPartNumber, "status": p.status}} />
   });
 }
+
+var SystemLabel = React.createClass({
+  render: function() {
+    var icon;
+    if (this.props.type == "nonVirtual") {
+      icon = <i className="fa fa-desktop"></i>;
+    }
+    else if (this.props.type == "virtualHost") {
+      icon = <i className="fa spacewalk-icon-virtual-host"></i>;
+    }
+    else if (this.props.type == "virtualGuest") {
+      icon = <i className="fa spacewalk-icon-virtual-guest"></i>;
+    }
+    else {
+      icon = null;
+    }
+
+    return <span>{icon} {this.props.name}</span>;
+  }
+});
 
 var PinStatus = React.createClass({
   render: function() {
@@ -645,7 +666,7 @@ function systemsForPinningToRow(systems, onClickAction) {
   return Object.keys(systems).map((k) => {
     var s = systems[k];
     var columns = [
-      <TableCell content={s.name} />,
+      <TableCell content={<SystemLabel id={k} name={s.name} type={s.type} />} />,
       <TableCell content={
         <PinButton
           onClick={onClickAction}

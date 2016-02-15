@@ -79,6 +79,11 @@ public class SubscriptionMatchProcessor {
                     s.getName(),
                     s.getCpus(),
                     null,
+                    // see https://github.com/SUSE/spacewalk/wiki/
+                    // Subscription-counting#definitions
+                    s.getPhysical() ?
+                        (s.getVirtualHost() ? "virtualHost" : "nonVirtual") :
+                        "virtualGuest",
                     output.getMatches().stream()
                         .map(m -> m.getSubscriptionId())
                         .distinct()
@@ -223,6 +228,7 @@ public class SubscriptionMatchProcessor {
                             s.getName(),
                             s.getCpus(),
                             unmatchedProductNames,
+                            null,
                             null);
                 })
                 .filter(s -> !s.getProducts().isEmpty())

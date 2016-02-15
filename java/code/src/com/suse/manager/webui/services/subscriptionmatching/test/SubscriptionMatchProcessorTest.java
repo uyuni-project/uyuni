@@ -96,8 +96,8 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testSystemIdAdjustment() throws Exception {
-        input.getSystems().add(new JsonSystem(1L, "Sys1", null, true, new HashSet<>(),
-                new HashSet<>()));
+        input.getSystems().add(new JsonSystem(1L, "Sys1", null, true,
+                false, new HashSet<>(), new HashSet<>()));
 
         LinkedList<JsonMessage> messages = new LinkedList<>();
         Map<String, String> messageData = new HashMap<>();
@@ -115,8 +115,8 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testUnsatisfiedMatchAdjustment() throws Exception {
-        input.getSystems().add(new JsonSystem(1L, "Sys1", null, true, new HashSet<>(),
-                new HashSet<>()));
+        input.getSystems().add(new JsonSystem(1L, "Sys1", null, true,
+                false, new HashSet<>(), new HashSet<>()));
         input.getSubscriptions().add(new JsonSubscription(100L, "123456", "subs name", 1,
                 new Date(), new Date(), "user", new HashSet<>()));
 
@@ -186,7 +186,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
 
     public void testUnmatchedSystems() {
         input.setSystems(Collections.singletonList(
-                new JsonSystem(1L, "system name", 1, true, Collections.emptySet(),
+                new JsonSystem(1L, "system name", 1, true, false, Collections.emptySet(),
                         Collections.singleton(100L))));
 
         List<System> unmatchedSystems = ((MatcherUiData) processor
@@ -200,7 +200,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         products.add(100L);
         products.add(101L);
         input.setSystems(Collections.singletonList(
-                new JsonSystem(1L, "system name", 1, true, Collections.emptySet(),
+                new JsonSystem(1L, "system name", 1, true, false, Collections.emptySet(),
                         products)));
         output.getMatches().add(new JsonMatch(1L, 10L, 100L, 100, true));
 
@@ -213,7 +213,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testNewPin() throws Exception {
-        input.setSystems(Arrays.asList(new JsonSystem(100L, "my system", 1, true,
+        input.setSystems(Arrays.asList(new JsonSystem(100L, "my system", 1, true, false,
                 new HashSet<>(), new HashSet<>())));
 
         PinnedSubscription newPinDb = new PinnedSubscription();
@@ -232,7 +232,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
 
     public void testConfirmedPin() throws Exception {
         // setup a confirmed match of one system and one subscription
-        input.setSystems(Arrays.asList(new JsonSystem(100L, "my system", 1, true,
+        input.setSystems(Arrays.asList(new JsonSystem(100L, "my system", 1, true, false,
                 new HashSet<>(), new HashSet<>())));
         JsonSubscription subscription = new JsonSubscription(10L, "10",
                 "subscritption id 10, pn 10",
@@ -261,7 +261,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
 
     public void testUnsatisfiedPin() throws Exception {
         // setup a  of one system and one subscription
-        input.setSystems(Arrays.asList(new JsonSystem(100L, "my system", 1, true,
+        input.setSystems(Arrays.asList(new JsonSystem(100L, "my system", 1, true, false,
                 new HashSet<>(), new HashSet<>())));
         JsonSubscription subscription = new JsonSubscription(10L, "10",
                 "subscritption id 10, pn 10",
@@ -331,7 +331,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
 
         // SYSTEMS
         List<JsonSystem> systems = new LinkedList<>();
-        systems.add(new JsonSystem(10L, "system 10", 1, true, new HashSet<>(),
+        systems.add(new JsonSystem(10L, "system 10", 1, true, false, new HashSet<>(),
                 Collections.singleton(1000L)));
 
         Set prods = new HashSet<>();
@@ -339,30 +339,29 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         prods.add(1004L);
         systems.add(new JsonSystem(20L,
                 "partially compliant system 20, has product with expired subs",
-                1, true, new HashSet<>(), prods));
+                1, true, false, new HashSet<>(), prods));
         systems.add(new JsonSystem(21L,
                 "partially compliant system 21, has product with 0-quantity subs",
-                1, true, new HashSet<>(), Collections.singleton(1001L)));
+                1, true, false, new HashSet<>(), Collections.singleton(1001L)));
 
         Set<Long> virtGuests = new HashSet<>();
         virtGuests.add(31L);
         virtGuests.add(32L);
         virtGuests.add(33L);
         virtGuests.add(33L);
-        systems.add(new JsonSystem(30L, "virtual host 30", 1, true, virtGuests,
+        systems.add(new JsonSystem(30L, "virtual host 30", 1, true, true, virtGuests,
                 new HashSet<>()));
-        systems.add(new JsonSystem(31L, "virtual guest 31", 1, false, new HashSet<>(),
-                Collections.singleton(1003L)));
-        systems.add(new JsonSystem(32L, "virtual guest 32", 1, false, new HashSet<>(),
-                Collections.singleton(1003L)));
+        systems.add(new JsonSystem(31L, "virtual guest 31", 1, false, false,
+                new HashSet<>(), Collections.singleton(1003L)));
+        systems.add(new JsonSystem(32L, "virtual guest 32", 1, false, false,
+                new HashSet<>(), Collections.singleton(1003L)));
         prods = new HashSet<>();
         prods.add(1000L);
         prods.add(1003L);
         systems.add(new JsonSystem(33L, "virtual guest 33, has also prod 1000 installed", 1,
-                false, new HashSet<>(), prods));
-        systems.add(new JsonSystem(34L, "virtual guest 34," +
-                " has also prod 1000 installed, reported falsely as physical", 1, true,
-                new HashSet<>(), prods));
+                false, false, new HashSet<>(), prods));
+        systems.add(new JsonSystem(34L, "virtual guest 34, has also prod 1000 installed, " +
+                "reported falsely as physical", 1, false, false, new HashSet<>(), prods));
         input.setSystems(systems);
 
         // OUTPUT
