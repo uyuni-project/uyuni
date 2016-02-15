@@ -37,9 +37,12 @@ var SubscriptionMatching = React.createClass({
     var pinLabelIcon = data != null && data.pinnedMatches.filter((p) => p.status == "unsatisfied").length > 0 ?
       <i className="fa fa-exclamation-triangle text-warning"></i> : null;
 
+    var messageLabelIcon = data != null && data.messages.length > 0 ?
+      <i className="fa fa-exclamation-circle text-danger"></i> : null;
+
     var tabContainer = data == null || !data.matcherDataAvailable ? null :
       <TabContainer
-        labels={[t("Subscriptions"), t("Unmatched Systems"), <span>{t("Pins ")}{pinLabelIcon}</span>, t("Messages")]}
+        labels={[t("Subscriptions"), t("Unmatched Systems"), <span>{t("Pins ")}{pinLabelIcon}</span>, <span>{t("Messages ")}{messageLabelIcon}</span>]}
         panels={[
           <Subscriptions
             subscriptions={subscriptions}
