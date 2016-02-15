@@ -146,3 +146,4 @@ React.render(
   <StateDetail sls={stateData()}/>,
   document.getElementById('state-details')
 );
+
