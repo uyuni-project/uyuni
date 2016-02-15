@@ -124,8 +124,11 @@ public class JobReturnEventMessageAction implements MessageAction {
         }
 
         // Dump the "return" map as result message, contains info about what has been done
-        serverAction.setResultMsg(
-                eventData.getOrDefault("return", Collections.EMPTY_MAP).toString());
+        // TODO: Write this elsewhere for certain actions + pretty print using gson
+        String returnString = eventData
+                .getOrDefault("return", Collections.EMPTY_MAP).toString();
+        serverAction.setResultMsg(returnString.length() > 1024 ?
+                returnString.substring(0, 1023) : returnString);
     }
 
     /**
