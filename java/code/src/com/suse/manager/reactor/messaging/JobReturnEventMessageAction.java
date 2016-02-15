@@ -71,8 +71,18 @@ public class JobReturnEventMessageAction implements MessageAction {
             minionServerOpt.ifPresent(minionServer -> {
                 Optional<ServerAction> serverAction = action.getServerActions().stream()
                         .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
-                SaltAPIService.INSTANCE.deleteSchedule("scheduled-action-" + id,
+
+                // Delete schedule on the minion if we created it
+                if (jobReturnEvent.getData().containsKey("schedule")) {
+                    String scheduleName = (String) jobReturnEvent.getData().get("schedule");
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Deleting schedule '" + scheduleName +
+                                "' from minion: " + minionServer.getMinionId());
+                    }
+                    SaltAPIService.INSTANCE.deleteSchedule(scheduleName,
                         new MinionList(jobReturnEvent.getMinionId()));
+                }
+
                 serverAction.ifPresent(sa -> {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Updating action for server: " + minionServer.getId());
