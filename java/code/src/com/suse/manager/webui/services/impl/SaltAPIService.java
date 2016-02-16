@@ -17,7 +17,6 @@ package com.suse.manager.webui.services.impl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
