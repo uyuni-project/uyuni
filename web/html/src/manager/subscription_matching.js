@@ -534,6 +534,14 @@ var PinnedMatches = React.createClass({
           />
         </div>
         <h2>{t("Pins")}</h2>
+        <p>
+          {t("You can pin a subscription to a system to suggest a certain association to the matching algorithm. ")}
+          <br />
+          {t("Next time a matching is attempted, the algorithm will try to produce a result that applies the subscription to the system you specified. ")}
+          <br />
+          {t("Note that the algorithm might determine that a certain pin cannot be respected, ")}
+          {t("depending on a subscription's availablility and applicability rules, in that case it will be shown as unsatisfied. ")}
+        </p>
         <div className="spacewalk-list">
           {this.state.pinnedMatches.length > 0 ?
             <Table headers={[t("System"), t("Subscription"), t("Policy"), t("End date"), t("Part number"), t("Status"), t("Unpin")]}
