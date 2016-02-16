@@ -32,6 +32,7 @@
   <property name="branding.css.dir" value="${branding.dir}/css"/>
   <property name="branding.fonts.dir" value="${branding.dir}/fonts"/>
   <property name="js.dir" value="${basedir}/../web/html/javascript"/>
+  <property name="js.components.dir" value="${basedir}/../web/html/src"/>
 
   <property name="ssh.socket.file" value="${user.home}/.ssh/manager-build-tunnel-${deploy.host}-${deploy.user}"/>
   <property name="ssh.socket.option" value="-o ControlPath=${ssh.socket.file}"/>
@@ -195,18 +196,23 @@
                property="npm.installed"/>
   </target>
 
-  <target name="if-npm-not-installed" depends="is-npm-installed" unless="npm.installed">
+  <target name="warn-if-npm-not-installed" depends="is-npm-installed" unless="npm.installed">
     <fail>npm is not in the PATH. Please install npm first.</fail>
   </target>
 
-  <target name="setup-frontend-devenv" depends="if-npm-not-installed" description="Setup the tools needed for JavaScript development">
-    <property name="js.src.dir" value="${basedir}/../web/html/src"/>
-    <exec executable="npm" dir="${js.src.dir}">
+  <target name="is-gulp-installed" depends="warn-if-npm-not-installed">
+    <available file="node_modules"
+               filepath="${js.components.dir}"
+               property="gulp.installed"/>
+  </target>
+
+  <target name="install-gulp" depends="is-gulp-installed" unless="gulp.installed">
+    <exec executable="npm" dir="${js.components.dir}">
       <arg line="install"/>
     </exec>
   </target>
 
-  <target name="deploy-static-resources" depends="open-ssh-socket" description="Deploy css/js/img/font files">
+  <target name="deploy-static-resources" depends="open-ssh-socket,install-gulp" description="Deploy css/js/img/font files">
     <condition property="spacewalk.upstream">
       <not>
         <available file="${basedir}/../susemanager" type="dir"/>
@@ -215,6 +221,9 @@
     <condition property="static.files.dir" value="/var/www/html" else="/srv/www/htdocs">
       <isset property="spacewalk.upstream"/>
     </condition>
+    <echo message="Calling gulp..."/>
+    <exec executable="./node_modules/gulp/bin/gulp.js" dir="${js.components.dir}"/>
+
     <echo message="Copying css/js files to remote host...${static.files.dir}"/>
     <exec executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.css.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/css/" />
