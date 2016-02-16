@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Schedule;
@@ -34,6 +35,7 @@ import com.suse.salt.netapi.exception.SaltException;
 
 import org.apache.log4j.Logger;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -112,33 +114,69 @@ public enum SaltServerActionService {
             metadata.put("suma-action-id", actionIn.getId());
 
             try {
-                Map<String, Schedule.Result> resultMap = SaltAPIService.INSTANCE
-                        .schedule(
-                                "scheduled-action-" + actionIn.getId(),
-                                call, target, earliestAction, metadata);
+                // We aim to have one of these optional result objects present
+                final Optional<Map<String, Schedule.Result>> scheduleResults;
+                final Optional<LocalAsyncResult<?>> asyncResults;
 
-                // Update the server action based on the result of the schedule call
+                // Don't use schedule if this action should happen right now
+                LocalDateTime now = LocalDateTime
+                        .ofInstant(Instant.now(), ZoneId.systemDefault());
+                if (earliestAction.isBefore(now) || earliestAction.equals(now)) {
+                    LOG.debug("Action will be executed directly using callAsync()");
+                    asyncResults = Optional.of(SaltAPIService.INSTANCE
+                            .callAsync(call, target, metadata));
+                    scheduleResults = Optional.empty();
+                }
+                else {
+                    LOG.debug("Action will be scheduled for later using schedule()");
+                    asyncResults = Optional.empty();
+                    scheduleResults = Optional.of(SaltAPIService.INSTANCE
+                            .schedule("scheduled-action-" + actionIn.getId(), call, target,
+                                    earliestAction, metadata));
+                }
+
+                // Update server actions based on the results of schedule() or callAsync()
                 for (MinionServer targetMinion : targetMinions) {
                     Optional<ServerAction> optionalServerAction = actionIn
                             .getServerActions().stream()
                             .filter(sa -> sa.getServerId().equals(targetMinion.getId()))
                             .findFirst();
                     optionalServerAction.ifPresent(serverAction -> {
-                        Schedule.Result result = resultMap.get(targetMinion.getMinionId());
+                        // Figure out if we were successful on this particular minion
+                        boolean success = false;
 
-                        if (result != null && result.getResult()) {
+                        if (scheduleResults.isPresent()) {
+                            Schedule.Result result = scheduleResults.get()
+                                    .get(targetMinion.getMinionId());
+                            if (result != null && result.getResult()) {
+                                success = true;
+                            }
+                        }
+                        else if (asyncResults.isPresent()) {
+                            LocalAsyncResult<?> result =  asyncResults.get();
+                            if (result.getMinions().contains(targetMinion.getMinionId())) {
+                                success = true;
+                            }
+                        }
+
+                        // Set the pickup time or let the action fail in case of no success
+                        if (success) {
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("Successfully scheduled action for minion: " +
+                                        targetMinion.getMinionId());
+                            }
                             serverAction.setPickupTime(new Date());
+                            serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
                         }
                         else {
-                            // There is no result when scheduling has failed
-                            LOG.debug("Failed to schedule action for minion '" +
-                                    targetMinion.getMinionId() + "'");
+                            LOG.warn("Failed to schedule action for minion: " +
+                                    targetMinion.getMinionId());
                             serverAction.setCompletionTime(new Date());
                             serverAction.setResultCode(-1L);
                             serverAction.setResultMsg("Failed to schedule action.");
                             serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                            ActionFactory.save(serverAction);
                         }
+                        ActionFactory.save(serverAction);
                     });
                 }
             }
