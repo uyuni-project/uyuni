@@ -19,12 +19,15 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.head;
 import static spark.Spark.post;
+import static spark.Spark.put;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
+import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.MinionController;
@@ -106,5 +109,22 @@ public class Router implements SparkApplication {
                 withProductAdmin(SubscriptionMatchingController::csv));
         post("/manager/subscription_matching/schedule_matcher_run",
                 withProductAdmin(SubscriptionMatchingController::scheduleMatcherRun));
+
+        // Salt state catalog
+        get("/manager/state_catalog",
+                withOrgAdmin(StateCatalogController::list), jade);
+        get("/manager/state_catalog/data",
+                withOrgAdmin(StateCatalogController::data));
+
+        get("/manager/state_catalog/state",
+                withCsrfToken(withOrgAdmin(StateCatalogController::add)), jade);
+        get("/manager/state_catalog/state/:name",
+                withCsrfToken(withOrgAdmin(StateCatalogController::edit)), jade);
+        post("/manager/state_catalog/state",
+                withOrgAdmin(StateCatalogController::create));
+        put("/manager/state_catalog/state/:name",
+                withOrgAdmin(StateCatalogController::update));
+        delete("/manager/state_catalog/state/:name",
+                withOrgAdmin(StateCatalogController::delete));
     }
 }

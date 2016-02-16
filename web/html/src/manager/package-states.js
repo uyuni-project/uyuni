@@ -1,5 +1,10 @@
 'use strict';
 
+const React = require("react");
+const Buttons = require("../components/buttons");
+
+const AsyncButton = Buttons.AsyncButton;
+
 const UNMANAGED = {};
 const INSTALLED = {value: 0};
 const REMOVED = {value: 1};
@@ -49,6 +54,7 @@ function packageStateKey(packageState) {
 class PackageStates extends React.Component {
 
   constructor() {
+    super();
     ["init", "tableBody", "handleStateChange", "onSearchChange", "search", "save", "setView", "addChanged"]
     .forEach(method => this[method] = this[method].bind(this));
     this.state = {
@@ -316,8 +322,8 @@ class PackageStates extends React.Component {
           <i className="fa spacewalk-icon-package-add"></i>
           {t("Package States")}
           <span className="btn-group pull-right">
-              <Button action={this.save} name={t("Save")} disabled={this.state.changed.size == 0}/>
-              <Button action={this.applyPackageState} name={t("Apply")} />
+              <AsyncButton action={this.save} name={t("Save")} disabled={this.state.changed.size == 0}/>
+              <AsyncButton action={this.applyPackageState} name={t("Apply")} />
           </span>
         </h2>
         <div className="row col-md-12">
@@ -328,7 +334,7 @@ class PackageStates extends React.Component {
                         <span className="input-group">
                             <input className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange}/>
                             <span className="input-group-btn">
-                                <Button action={this.applyPackageState} name={t("Search")} action={this.search} />
+                                <AsyncButton action={this.applyPackageState} name={t("Search")} action={this.search} />
                                 <button className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
                                 <button className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
                                     {this.state.changed.size > 0 ? this.state.changed.size : t("No")} {t("Changes")}
@@ -352,52 +358,6 @@ class PackageStates extends React.Component {
       </div>
     );
   }
-}
-
-const waiting = "waiting";
-const success = "success";
-const initial = "initial";
-const failure = "failure";
-
-class Button extends React.Component {
-
-
-  constructor(props) {
-    ["trigger"].forEach(method => this[method] = this[method].bind(this));
-    this.state = {
-        value: initial
-    };
-  }
-
-  trigger() {
-    this.setState({
-        value: waiting
-    });
-    const future = this.props.action();
-    future.then(
-      () => {
-        this.setState({
-            value: success
-        });
-      },
-      () => {
-        this.setState({
-            value: failure
-        });
-      }
-    );
-  }
-
-  render() {
-    const style = this.state.value == failure ? "btn btn-danger" : "btn btn-default";
-    return (
-        <button className={style} disabled={this.state.value == waiting || this.props.disabled} onClick={this.trigger}>
-           {this.state.value == waiting ? <i className="fa fa-circle-o-notch fa-spin"></i> : undefined}
-           {t(this.props.name)}
-        </button>
-    );
-  }
-
 }
 
 React.render(
