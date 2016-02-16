@@ -30,6 +30,7 @@ import com.suse.salt.netapi.exception.SaltException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -261,4 +262,40 @@ public interface SaltService {
      */
     Set<String> getAllowedMinions(User user, String target);
 
+    /**
+     * Save a Salt .sls file.
+     * @param orgId the organization id
+     * @param name the name of the file
+     * @param content the content of the file
+     * @param oldName the previous name of the file,
+     *                when the file already exists
+     * @param oldChecksum the checksum of the file at
+     *                    the time of showing it to the user
+     */
+    void storeOrgState(long orgId, String name, String content,
+                       String oldName, String oldChecksum);
+
+    /**
+     * Delete a Salt .sls file.
+     * @param orgId the organization id
+     * @param name the name of the file
+     */
+    void deleteOrgState(long orgId, String name);
+
+    /**
+     * Get a list of all Salt .sls files
+     * for a given organization.
+     *
+     * @param orgId the organization id
+     * @return a list of names without the .sls extension
+     */
+    List<String> getOrgStates(long orgId);
+
+    /**
+     * Get the content of the give Salt .sls file.
+     * @param orgId the organization id
+     * @param name the name of the file
+     * @return the content of the file if the file exists
+     */
+    Optional<String> getOrgStateContent(long orgId, String name);
 }

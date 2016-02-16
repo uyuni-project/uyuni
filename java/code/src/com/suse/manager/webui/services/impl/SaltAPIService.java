@@ -20,6 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.SaltStateStorageManager;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
@@ -49,6 +50,7 @@ import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import org.apache.commons.collections.CollectionUtils;
 
+import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -78,6 +80,8 @@ public enum SaltAPIService implements SaltService {
 
     // Shared salt client instance
     private final SaltClient SALT_CLIENT = new SaltClient(SALT_MASTER_URI);
+
+    private SaltStateStorageManager storageManager = new SaltStateStorageManager();
 
     // Prevent instantiation
     SaltAPIService() {
@@ -538,4 +542,54 @@ public enum SaltAPIService implements SaltService {
         return allowed;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void storeOrgState(long orgId, String name, String content,
+                              String oldName, String oldChecksum) {
+        try {
+            storageManager.storeState(orgId, name, content, oldName, oldChecksum);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void deleteOrgState(long orgId, String name) {
+        try {
+            storageManager.deleteState(orgId, name);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<String> getOrgStates(long orgId) {
+        return storageManager.listByOrg(orgId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Optional<String> getOrgStateContent(long orgId, String name) {
+        try {
+            return storageManager.getContent(orgId, name);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean orgStateExists(long orgId, String name) {
+        return storageManager.exists(orgId, name);
+    }
 }

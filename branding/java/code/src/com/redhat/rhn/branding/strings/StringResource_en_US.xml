@@ -2578,6 +2578,9 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="Remote Commands">
         <source>Remote Commands</source>
       </trans-unit>
+      <trans-unit id="States Catalog">
+        <source>States Catalog</source>
+      </trans-unit>
       <trans-unit id="States">
         <source>States</source>
       </trans-unit>

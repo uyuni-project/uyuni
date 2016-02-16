@@ -1,0 +1,18 @@
+{
+  "name": "sumaFrontend",
+  "description": "Suse manager frontend",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gulp": "3.8.x",
+    "gulp-util": "3.0.x",
+    "gulp-rename": "1.2.2",
+    "vinyl-source-stream": "1.1.0",
+    "glob": "6.0.4",
+    "event-stream": "3.3.2",
+    "babelify": "7.2.0",
+    "babel-preset-es2015": "*",
+    "babel-preset-react": "*",
+    "browserify": "^13.0.0"
+  }
+}

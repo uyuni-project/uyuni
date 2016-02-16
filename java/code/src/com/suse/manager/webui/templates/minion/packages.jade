@@ -12,14 +12,9 @@
 !{h.renderNavigationMenu(request, "/WEB-INF/nav/system_detail.xml")}
 #package-states
 
-if isDevMode
-  script(src='/javascript/reactjs/react-with-addons.js')
-  script(src='/javascript/reactjs/JSXTransformer.js')
-else
-  script(src='/javascript/reactjs/react-with-addons.min.js')
-  script(src='/javascript/reactjs/JSXTransformer.js')
+script(src='/javascript/reactjs/react.bundle.js')
 
-script(type='text/jsx;harmony=true').
+script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
     const serverId = "#{serverId}";
-script(src='/javascript/manager/package-states.js', type='text/jsx;harmony=true')
+script(src='/javascript/manager/package-states.bundle.js', type='text/javascript')
