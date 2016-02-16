@@ -7,6 +7,7 @@ import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.scc.model.SCCSubscription;
 
 import java.util.Collections;
@@ -76,12 +77,17 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
         pin.setSystemId(server.getId());
         PinnedSubscriptionFactory.getInstance().save(pin);
 
-        assertEquals(1, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions()
+        PinnedSubscription selfPin = new PinnedSubscription();
+        selfPin.setSubscriptionId(item.getSccId());
+        selfPin.setSystemId(MatcherJsonIO.SELF_SYSTEM_ID);
+        PinnedSubscriptionFactory.getInstance().save(selfPin);
+
+        assertEquals(2, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions()
                 .size());
 
         PinnedSubscriptionFactory.getInstance().cleanStalePins();
 
-        assertEquals(1, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions()
+        assertEquals(2, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions()
                 .size());
     }
 }
