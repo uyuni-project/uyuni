@@ -662,18 +662,14 @@ var AddPinPopUp = React.createClass({
   render:function() {
     var popUpContent;
     if (this.state.systemId) {
+      var system = this.props.systems[this.state.systemId];
       popUpContent = (
         <div>
-          <p>{t("Step 2/2: pick a subscription for system ")}<strong>{this.props.systems[this.state.systemId].name}</strong></p>
-          <Table headers={[t("Part number"),t("Description"), t("Policy"), t("End date"), t("")]}
-            rows={
-              possibleSubscriptionToRow(
-                this.props.systems[this.state.systemId]
-                  .possibleSubscriptionIds.map((p) => {
-                    return this.props.subscriptions[p]}),
-                this.onSubscriptionSelected)
-              }
-          />
+          <p>{t("Step 2/2: pick a subscription for system ")}<strong>{system.name}</strong></p>
+          <PinSubscriptionSelector onSubscriptionSelected={this.onSubscriptionSelected}
+            subscriptions={system.possibleSubscriptionIds.map(
+            p => this.props.subscriptions[p]
+          )} />
           <p>
             <button className="btn btn-default" onClick={this.onBackClicked}>
               <i className="fa fa-arrow-left"></i>
@@ -695,6 +691,23 @@ var AddPinPopUp = React.createClass({
       );
     }
     return (popUpContent);
+  }
+});
+
+var PinSubscriptionSelector = React.createClass({
+  render: function(){
+    if (this.props.subscriptions.length > 0) {
+      return <Table headers={[t("Part number"),t("Description"), t("Policy"), t("End date"), t("")]}
+          rows={
+            possibleSubscriptionToRow(
+              this.props.subscriptions,
+              this.props.onSubscriptionSelected)
+            }
+        />;
+    }
+    else {
+      return <p>{t("No matching subscriptions for this systems have been found.")}</p>
+    }
   }
 });
 
@@ -730,7 +743,7 @@ function possibleSubscriptionToRow(possibleSubscriptions, onClickAction) {
         <PinButton
           onClick={onClickAction}
           elementId={s.id}
-          content={<span><i className="fa fa-map-pin"></i>{t("Pin")}</span>}
+          content={<span><i className="fa fa-map-pin"></i>{t("Save Pin")}</span>}
         />}
       />
     ];
