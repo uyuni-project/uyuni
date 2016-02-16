@@ -48,7 +48,7 @@ var SubscriptionMatching = React.createClass({
             saveState={(state) => {this.state["unmatchedSystemTableState"] = state;}}
             loadState={() => this.state["unmatchedSystemTableState"]}
           />,
-          <PinnedMatches
+          <Pins
             initialPinnedMatches={pinnedMatches}
             systems={systems}
             subscriptions={subscriptions}
@@ -458,7 +458,7 @@ function humanReadablePolicy(rawPolicy) {
   return message;
 }
 
-var PinnedMatches = React.createClass({
+var Pins = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
