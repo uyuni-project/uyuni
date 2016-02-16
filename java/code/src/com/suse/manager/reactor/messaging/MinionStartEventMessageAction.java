@@ -1,14 +1,28 @@
+/**
+ * Copyright (c) 2016 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.exception.SaltException;
@@ -20,6 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Event message handler for {@link MinionStartEventMessage}.
+ */
 public class MinionStartEventMessageAction extends AbstractDatabaseAction {
 
     /* Logger for this class */
@@ -38,7 +55,8 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
             LocalCall<Float> uptimeCall = com.suse.manager.webui.utils.salt.Status.uptime();
             try {
                 Map<String, Object> metadata = new HashMap<String, Object>();
-                Map<String, Float> uptimes = SaltAPIService.INSTANCE.callSync(uptimeCall, target, metadata);
+                Map<String, Float> uptimes = SaltAPIService.INSTANCE
+                        .callSync(uptimeCall, target, metadata);
                 if (uptimes.containsKey(minion.getMinionId())) {
                     Long uptime = uptimes.get(minion.getMinionId()).longValue();
 
@@ -48,15 +66,18 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
                     minion.setLastBoot(bootTime.getTime() / 1000);
 
                     // cleanup old reboot actions
-                    List<ServerAction> serverActions = ActionFactory.listServerActionsForServer(minion);
+                    @SuppressWarnings("unchecked")
+                    List<ServerAction> serverActions = ActionFactory
+                            .listServerActionsForServer(minion);
                     int actionsChanged = 0;
-                    for (ServerAction serverAction : serverActions) {
-                        if (serverAction.getParentAction().getActionType().equals(ActionFactory.TYPE_REBOOT) &&
-                                serverAction.getPickupTime() != null &&
-                                serverAction.getStatus().equals(ActionFactory.STATUS_QUEUED) &&
-                                bootTime.after(serverAction.getPickupTime())) {
-                            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
-                            ActionFactory.save(serverAction);
+                    for (ServerAction sa : serverActions) {
+                        ActionType actionType = sa.getParentAction().getActionType();
+                        if (actionType.equals(ActionFactory.TYPE_REBOOT) &&
+                                sa.getPickupTime() != null &&
+                                sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) &&
+                                bootTime.after(sa.getPickupTime())) {
+                            sa.setStatus(ActionFactory.STATUS_COMPLETED);
+                            ActionFactory.save(sa);
                             actionsChanged += 1;
                         }
                     }
