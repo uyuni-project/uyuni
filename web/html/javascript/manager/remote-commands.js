@@ -73,13 +73,43 @@ class RemoteCommand extends React.Component {
       result: {
         minions: new Map()
       },
-      previewed: false
+      action: "none",
+      errors: []
     };
   }
 
   render() {
+    var errs = null;
+    if (this.state.errors) {
+        this.state.errors.map( msg => {
+            errs = <div className="alert alert-danger">{msg}</div>
+        })
+    }
+    // TODO reuse Button class from package-states
+    var button = null;
+    switch (this.state.action) {
+        case "none":
+            button = <button className="btn btn-success" onClick={this.onPreview}>{t("Preview")}</button>
+            break;
+        case "matching":
+            button = <button className="btn btn-default" disabled="true">
+                <i className="fa fa-circle-o-notch fa-spin"></i>{t("Preview")}
+            </button>
+            break;
+        case "matched":
+        case "runned":
+            button = <button className="btn btn-success" onClick={this.onRun}>{t("Run")}</button>
+            break;
+        case "running":
+            button = <button disabled="true" className="btn btn-default">
+                <i className="fa fa-circle-o-notch fa-spin"></i>{t("Running")}
+            </button>
+            break;
+    }
+
     return (
       <div>
+          {errs}
           <div id="remote-root" className="spacewalk-toolbar-h1">
             <h1>
               <i className="fa fa-desktop"></i>
@@ -94,11 +124,7 @@ class RemoteCommand extends React.Component {
                       <input className="form-control" type="text" defaultValue={this.state.command} onChange={this.commandChanged} />
                       <span className="input-group-addon">@</span>
                       <input className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged} />
-                      <div className="input-group-btn">{
-                          this.state.previewed ?
-                            <button className="btn btn-success" onClick={this.onRun}>{t("Run")}</button> :
-                            <button className="btn btn-success" onClick={this.onPreview}>{t("Preview")}</button>
-                      }</div>
+                      <div className="input-group-btn">{button}</div>
                   </div>
                 </div>
               </div>
@@ -117,10 +143,10 @@ class RemoteCommand extends React.Component {
     const cmd = this.state.command;
     const target = this.state.target;
     console.log(cmd);
+    this.setState({action: "matching"});
     $.get("/rhn/manager/api/minions/match?target=" + target, data => {
       console.log(data);
       this.setState({
-        previewed: true,
         started: false,
         result: {
           minions: data.reduce((acc, id) => {
@@ -129,6 +155,9 @@ class RemoteCommand extends React.Component {
           }, new Map())
         }
       });
+    })
+    .always(() => {
+       this.setState({action: "matched"});
     });
   }
 
@@ -146,23 +175,34 @@ class RemoteCommand extends React.Component {
       },
       started: true
     });
+    this.setState({action: "running"})
     $.post("/rhn/manager/api/minions/cmd", {
         csrf_token: csrfToken,
         cmd: cmd,
         target: target
       },
       data => {
-      console.log(data);
-      this.setState({
-        result: {
-          minions: object2map(data)
+          console.log(data);
+          this.setState({
+            result: {
+              minions: object2map(data)
+            }
+          });
+    })
+    .fail((jqXHR, textStatus, errorThrown) => {
+        try {
+            this.setState({errors: $.parseJSON(jqXHR.responseText)})
+        } catch (err) {
         }
-      });
+    })
+    .always(() => {
+        this.setState({action: "runned"});
     });
   }
 
   targetChanged(event) {
     this.setState({
+      action: "none",
       target: event.target.value,
       previewed: false
     });
