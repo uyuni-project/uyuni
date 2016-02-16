@@ -11,6 +11,15 @@
             <key column="state_revision_id"/>
             <one-to-many class="com.redhat.rhn.domain.state.PackageState"/>
         </set>
+
+        <set name="assignedStates" lazy="true" table="suseAssignedStates"
+             cascade="save-update" >
+            <key column="state_revision_id"/>
+            <many-to-many
+                    class="com.redhat.rhn.domain.state.SaltState"
+                    column="state_id"/>
+        </set>
+
         <property name="created" column="created" type="timestamp" insert="false" update="false"/>
         <many-to-one name="creator" column="creator_id" class="com.redhat.rhn.domain.user.legacy.UserImpl" lazy="proxy"/>
         <joined-subclass name="com.redhat.rhn.domain.state.ServerStateRevision" table="suseServerStateRevision">

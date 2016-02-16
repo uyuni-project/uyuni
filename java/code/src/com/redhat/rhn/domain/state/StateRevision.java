@@ -33,6 +33,7 @@ public class StateRevision {
     private Date created;
     private User creator;
     private Set<PackageState> packageStates = new HashSet<>();
+    private Set<SaltState> assignedStates = new HashSet<>();
 
     /**
      * @return the id
@@ -95,6 +96,14 @@ public class StateRevision {
      */
     public void addPackageState(PackageState packageState) {
         this.packageStates.add(packageState);
+    }
+
+    public Set<SaltState> getAssignedStates() {
+        return assignedStates;
+    }
+
+    public void setAssignedStates(Set<SaltState> assignedStates) {
+        this.assignedStates = assignedStates;
     }
 
     /**
