@@ -13,7 +13,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseServerStateSelection
+CREATE TABLE suseAssignedStates
 (
     state_revision_id NUMBER NOT NULL
                           CONSTRAINT suse_server_state_rev_id_fk
@@ -21,15 +21,14 @@ CREATE TABLE suseServerStateSelection
                               ON DELETE CASCADE,
     state_id NUMBER NOT NULL
                           CONSTRAINT suse_salt_state_id_fk
-                              REFERENCES suseStateRevision (id)
+                              REFERENCES suseSaltState (id)
                               ON DELETE CASCADE,
-
 )
 ENABLE ROW MOVEMENT
 ;
 
-ALTER TABLE suseServerStateSelection
-    ADD CONSTRAINT suse_server_state_selection_id_sid_uq UNIQUE (state_revision_id, state_id);
+ALTER TABLE suseAssignedStates
+    ADD CONSTRAINT suse_assigned_states_id_sid_uq UNIQUE (state_revision_id, state_id);
 
 
 
@@ -46,3 +45,5 @@ CREATE TABLE suseSaltState
 )
 ENABLE ROW MOVEMENT
 ;
+
+CREATE SEQUENCE suse_salt_state_id_seq;

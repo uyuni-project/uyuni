@@ -20,9 +20,11 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.SaltState;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Optional;
 import java.util.Set;
@@ -85,4 +87,22 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, states.get().size());
         assertTrue(states.get().contains(packageState));
     }
+
+    public void testAssignStates() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user);
+        ServerStateRevision serverState = new ServerStateRevision();
+        serverState.setServer(server);
+        serverState.setCreator(user);
+
+        SaltState state1 = new SaltState();
+        state1.setOrg(user.getOrg());
+        state1.setStateName("foo");
+
+        serverState.getAssignedStates().add(state1);
+
+        StateFactory.save(serverState);
+
+
+    }
+
 }
