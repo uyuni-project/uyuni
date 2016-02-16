@@ -151,6 +151,8 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
     cat /var/lib/pgsql/data/pg_hba.conf >> /tmp/pg_hba.conf
     mv /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
     mv /tmp/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf
+    chmod 600 /var/lib/pgsql/data/pg_hba.conf
+    chown postgres:postgres /var/lib/pgsql/data/pg_hba.conf
     systemctl restart postgresql
 }
 
@@ -275,21 +277,15 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
 }
 
 dump_remote_db() {
-    echo "`date +"%H:%M:%S"`   Dumping remote database. Please wait..."
+    echo "`date +"%H:%M:%S"`   Dumping remote database to $TMPDIR/$DBDUMPFILE on target system. Please wait..."
     scp -i $KEYFILE /usr/lib/susemanager/bin/tclfilter root@$SATELLITE_IP:/tmp
-    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"pg_dump $MANAGER_DB_NAME | /tmp/tclfilter | gzip > $TMPDIR/$DBDUMPFILE\""
+    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"pg_dump $MANAGER_DB_NAME | /tmp/tclfilter | gzip\"" > $TMPDIR/$DBDUMPFILE
     if [ $? -eq 0 ]; then
         echo -n "`date +"%H:%M:%S"`   Database successfully dumped. Size is: "
-        ssh -i $KEYFILE root@$SATELLITE_IP "du -h $TMPDIR/$DBDUMPFILE | cut -f 1"
+        du -h $TMPDIR/$DBDUMPFILE | cut -f 1
     else
         echo "`date +"%H:%M:%S"`   FAILURE!"
     fi
-
-    echo "Copy remote database dump to local machine..."
-    scp -i $KEYFILE root@$SATELLITE_IP:$TMPDIR/$DBDUMPFILE $TMPDIR
-
-    echo "Delete remote database dump..."
-    ssh -i $KEYFILE root@$SATELLITE_IP "rm -f $TMPDIR/$DBDUMPFILE /tmp/tclfilter"
 }
 
 import_db() {
@@ -582,9 +578,6 @@ for p in $@; do
         check_remote_type
         copy_remote_files
         remove_ssh_key
-       ;;
-    -s)
-        DO_SETUP=1
        ;;
     -h)
         help
