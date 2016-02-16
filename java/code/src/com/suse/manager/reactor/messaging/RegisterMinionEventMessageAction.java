@@ -200,8 +200,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 ak.getToken().getActivatedServers().add(server);
                 ActivationKeyFactory.save(ak);
 
-                Set<Server> servers = Collections.singleton(server);
-                ServerGroupManager sgm = ServerGroupManager.getInstance();
                 ak.getServerGroups().forEach(group -> {
                     ServerFactory.addServerToGroup(server, group);
                 });
