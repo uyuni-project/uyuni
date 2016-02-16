@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.action;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -444,7 +443,6 @@ public class ActionChainManager {
             ActionManager.scheduleForExecution(action, serverIds);
             result.add(action);
 
-            HibernateFactory.getSession().refresh(action);
             MessageQueue.publish(new ActionScheduledEventMessage(action));
         }
         else {
