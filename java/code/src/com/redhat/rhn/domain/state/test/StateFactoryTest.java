@@ -88,6 +88,10 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         assertTrue(states.get().contains(packageState));
     }
 
+    /**
+     * Test assigning a state
+     * @throws Exception
+     */
     public void testAssignStates() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         ServerStateRevision serverState = new ServerStateRevision();
@@ -98,11 +102,77 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         state1.setOrg(user.getOrg());
         state1.setStateName("foo");
 
+        SaltState state2 = new SaltState();
+        state2.setOrg(user.getOrg());
+        state2.setStateName("bar");
+
         serverState.getAssignedStates().add(state1);
+        serverState.getAssignedStates().add(state2);
 
         StateFactory.save(serverState);
+        clearFlush();
 
+        assertNotNull(serverState.getId());
+        assertNotNull(state1.getId());
+        assertNotNull(state2.getId());
 
+        serverState = (ServerStateRevision) StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
+        state1 = (SaltState)StateFactory.getSession().get(SaltState.class, state1.getId());
+        state2 = (SaltState)StateFactory.getSession().get(SaltState.class, state2.getId());
+
+        assertNotNull(serverState);
+        assertNotNull(state1);
+        assertNotNull(state2);
+        assertEquals(2, serverState.getAssignedStates().size());
+        assertTrue(serverState.getAssignedStates().contains(state1));
+        assertTrue(serverState.getAssignedStates().contains(state2));
     }
+
+    /**
+     * Test removing a state
+     * @throws Exception
+     */
+    public void testRemoveAssignedStates() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user);
+        ServerStateRevision serverState = new ServerStateRevision();
+        serverState.setServer(server);
+        serverState.setCreator(user);
+
+        SaltState state1 = new SaltState();
+        state1.setOrg(user.getOrg());
+        state1.setStateName("foo");
+
+        SaltState state2 = new SaltState();
+        state2.setOrg(user.getOrg());
+        state2.setStateName("bar");
+
+        serverState.getAssignedStates().add(state1);
+        serverState.getAssignedStates().add(state2);
+
+        StateFactory.save(serverState);
+        clearFlush();
+
+        serverState = (ServerStateRevision) StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
+        state1 = (SaltState)StateFactory.getSession().get(SaltState.class, state1.getId());
+        state2 = (SaltState)StateFactory.getSession().get(SaltState.class, state2.getId());
+
+        serverState.getAssignedStates().remove(state1);
+        assertEquals(1, serverState.getAssignedStates().size());
+
+        StateFactory.save(serverState);
+        clearFlush();
+
+        serverState = (ServerStateRevision) StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
+        state2 = (SaltState)StateFactory.getSession().get(SaltState.class, state2.getId());
+
+        assertEquals(1, serverState.getAssignedStates().size());
+        assertTrue(serverState.getAssignedStates().contains(state2));
+    }
+
+    private void clearFlush() {
+        StateFactory.getSession().flush();
+        StateFactory.getSession().clear();
+    }
+
 
 }
