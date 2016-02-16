@@ -100,12 +100,11 @@ public enum SaltServerActionService {
         for (Map.Entry<LocalCall<?>, List<MinionServer>> entry : allCalls.entrySet()) {
             LocalCall<?> call = entry.getKey();
             List<MinionServer> targetMinions = entry.getValue();
-            Target<?> target = new MinionList(
-                    targetMinions.stream()
-                            .map(MinionServer::getMinionId)
-                            .collect(Collectors.toList()));
+            Target<?> target = new MinionList(targetMinions.stream()
+                    .map(MinionServer::getMinionId)
+                    .collect(Collectors.toList()));
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Scheduling errata action for: " + target.getTarget());
+                LOG.debug("Scheduling action for: " + target.getTarget());
             }
 
             LocalDateTime earliestAction = actionIn.getEarliestAction().toInstant()
@@ -237,7 +236,8 @@ public enum SaltServerActionService {
         return ret;
     }
 
-    public Map<LocalCall<?>, List<MinionServer>> remoteCommandAction(List<MinionServer> minions, String script) {
+    private Map<LocalCall<?>, List<MinionServer>> remoteCommandAction(
+            List<MinionServer> minions, String script) {
       Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
             // FIXME: This supports only bash at the moment
             ret.put(com.suse.manager.webui.utils.salt.Cmd.execCodeAll(

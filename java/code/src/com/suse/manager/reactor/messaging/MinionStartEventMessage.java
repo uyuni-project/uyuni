@@ -17,14 +17,17 @@ package com.suse.manager.reactor.messaging;
 import com.redhat.rhn.common.messaging.EventMessage;
 
 /**
- * Event message to handle what needs to be done during minion start
+ * Event message to handle what needs to be done during minion start.
  */
 public class MinionStartEventMessage implements EventMessage {
 
     private String minionId;
 
-    public MinionStartEventMessage(String minionId) {
-        this.minionId = minionId;
+    /**
+     * @param minionIdIn the id of the minion that was started
+     */
+    public MinionStartEventMessage(String minionIdIn) {
+        this.minionId = minionIdIn;
     }
 
     /**
