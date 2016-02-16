@@ -18,7 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.VirtualInstanceState;
+import com.redhat.rhn.domain.server.VirtualInstanceType;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -59,8 +63,10 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                 if (!line.contains(":")) {
                     continue;
                 }
-                String[] split = StringUtils.split(line, ":", 1);
-                sysvalues.put(StringUtils.trim(split[0]), StringUtils.trim(split[1]));
+                String[] split = StringUtils.split(line, ":", 2);
+                if (split.length == 2) {
+                    sysvalues.put(StringUtils.trim(split[0]), StringUtils.trim(split[1]));
+                }
             }
 
             // original code: hardware.py get_sysinfo()
@@ -107,9 +113,15 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                             String.format("Initial Registration Parameters:\n" +
                                     "OS: %s\n" +
                                     "Release: %s\n" +
-                                    "CPU Arch: %s", os, sysvalues.get("type"), cpuarch));
+                                    "CPU Arch: %s", os, sysvalues.get("Type"), cpuarch));
 
                     zhost.setDigitalServerId(identifier);
+                    zhost.setOrg(OrgFactory.getSatelliteOrg()); // TODO clarify this
+                    zhost.setSecret(RandomStringUtils.randomAlphanumeric(64));
+                    zhost.setAutoUpdate("N");
+                    zhost.setContactMethod(ServerFactory
+                            .findContactMethodByLabel("default"));
+                    server.setLastBoot(System.currentTimeMillis() / 1000);
 
                     ServerFactory.save(zhost);
 
@@ -148,23 +160,28 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                         .lookupByGuestId(server.getId());
                 if (vinst == null || vinst.getHostSystem() == null) {
 
+                    VirtualInstanceType fullVirtType = vinstFactory.getFullyVirtType();
+                    VirtualInstanceState unknownState = vinstFactory.getUnknownState();
+
                     // first create the host
-                    vinst = new VirtualInstance();
-                    vinst.setHostSystem(zhost);
-                    vinst.setGuestSystem(null);
-                    vinst.setUuid(null);
-                    vinst.setType(vinstFactory.getFullyVirtType());
-                    vinst.setState(vinstFactory.getUnknownState());
-                    vinstFactory.saveVirtualInstance(vinst);
+                    VirtualInstance vinstHost = new VirtualInstance();
+                    vinstHost.setHostSystem(zhost);
+                    vinstHost.setGuestSystem(null);
+                    vinstHost.setConfirmed(1L);
+                    vinstHost.setUuid(null);
+                    vinstHost.setType(fullVirtType);
+                    vinstHost.setState(unknownState);
+                    vinstFactory.saveVirtualInstance(vinstHost);
 
                     // create the guest
-                    vinst = new VirtualInstance();
-                    vinst.setHostSystem(zhost);
-                    vinst.setGuestSystem(server);
-                    vinst.setUuid(UUID.randomUUID().toString().replace("-", ""));
-                    vinst.setType(vinstFactory.getFullyVirtType());
-                    vinst.setState(vinstFactory.getUnknownState());
-                    vinstFactory.saveVirtualInstance(vinst);
+                    VirtualInstance vinstGuest = new VirtualInstance();
+                    vinstGuest.setHostSystem(zhost);
+                    vinstGuest.setGuestSystem(server);
+                    vinstGuest.setConfirmed(1L);
+                    vinstGuest.setUuid(UUID.randomUUID().toString().replace("-", ""));
+                    vinstGuest.setType(fullVirtType);
+                    vinstGuest.setState(unknownState);
+                    vinstFactory.saveVirtualInstance(vinstGuest);
                 }
                 else if (!vinst.getHostSystem().getId().equals(zhost.getId())) {
                     LOG.debug("Updating virtual instance " + vinst.getId() +
