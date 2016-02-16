@@ -14,7 +14,7 @@ var SubscriptionMatching = React.createClass({
   },
 
   refreshServerData: function() {
-    $.get("/rhn/manager/subscription_matching/data", data => {
+    this.refreshRequest = $.get("/rhn/manager/subscription_matching/data", data => {
       this.setState({"serverData" : data});
     });
   },
@@ -25,6 +25,9 @@ var SubscriptionMatching = React.createClass({
   },
 
   onPinChanged: function(pinnedMatches) {
+    if (this.refreshRequest) {
+      this.refreshRequest.abort();
+    }
     this.state.serverData.pinnedMatches = pinnedMatches;
     this.setState(this.state);
   },
