@@ -19,23 +19,27 @@ import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
 import com.suse.matcher.json.JsonInput;
+import com.suse.matcher.json.JsonMatch;
 import com.suse.matcher.json.JsonMessage;
 import com.suse.matcher.json.JsonOutput;
 import com.suse.matcher.json.JsonProduct;
+import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Stream.concat;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Processes data from the matcher to a form that's displayable by the UI.
@@ -55,20 +59,20 @@ public class SubscriptionMatchProcessor {
         Date latestStart = latestRun == null ? null : latestRun.getStartTime();
         Date latestEnd = latestRun == null ? null : latestRun.getEndTime();
         if (input.isPresent() && output.isPresent()) {
+            Map<String, Product> products = products(input.get(), output.get());
             MatcherUiData matcherUiData = new MatcherUiData(true,
                     latestStart,
                     latestEnd,
                     messages(input.get(), output.get()),
                     subscriptions(input.get(), output.get()),
-                    unmatchedSystems(input.get(), output.get()),
+                    products,
+                    unmatchedProductIds(products),
                     pinnedMatches(input.get(), output.get()),
                     systems(input.get(), output.get()));
             return matcherUiData;
         }
         else {
-            return new MatcherUiData(false, latestStart, latestEnd, new LinkedList<>(),
-                    new HashMap<>(), new LinkedList<>(), new LinkedList<>(),
-                    new HashMap<>());
+            return new MatcherUiData(latestStart, latestEnd);
         }
     }
 
@@ -198,49 +202,44 @@ public class SubscriptionMatchProcessor {
         return new JsonMessage(message.getType(), message.getData());
     }
 
-    private List<System> unmatchedSystems(JsonInput input, JsonOutput output) {
+    private Map<String, Product> products(JsonInput input, JsonOutput output) {
         Set<Long> freeProducts = input.getProducts().stream()
                 .filter(p -> p.getFree())
                 .map(p -> p.getId())
-                .collect(Collectors.toSet());
+                .collect(toSet());
 
-        Map<Long, Set<Long>> systemMatchedProducts = output.getMatches().stream()
-                .filter(m -> m.getConfirmed())
-                .collect(Collectors.toMap(
-                        m -> m.getSystemId(),
-                        m -> Collections.singleton(m.getProductId()),
-                        (old, newV) -> concat(old.stream(), newV.stream())
-                                .collect(Collectors.toSet())));
+        Set<Pair<Long, Long>> confirmedProductSystemPairs = output.getMatches().stream()
+                .filter(JsonMatch::getConfirmed)
+                .map(m -> Pair.of(m.getProductId(), m.getSystemId()))
+                .collect(toSet());
 
-        // for each system, subtract the matched products from its products
-        // ignore free products
-        return input.getSystems().stream()
-                .map(s -> {
-                    List<String> unmatchedProductNames = s.getProductIds().stream()
-                            .filter(e -> !systemMatchedProducts.getOrDefault(s.getId(),
-                                Collections.emptySet()).contains(e))
-                            .filter(id -> !freeProducts.contains(id))
-                            .map(id -> productNameById(id, input))
-                            .sorted()
-                            .collect(toList());
+        Map<Long, Set<Long>> productUnmatchedSystems = input.getSystems().stream()
+                // step 1: stream of Pair<product id, system id> for all systems and their
+                // products
+                .flatMap(s -> s.getProductIds().stream().map(id -> Pair.of(id, s.getId())))
+                // step 2: filter out free products
+                .filter(p -> !freeProducts.contains(p.getKey()))
+                // step 3: filter out matched products
+                .filter(p -> !confirmedProductSystemPairs.contains(p))
+                // step 4: collect them in a map using groupingBy
+                .collect(groupingBy(p -> p.getKey(), mapping(Pair::getValue, toSet())));
 
-                    return new System(
-                            s.getId(),
-                            s.getName(),
-                            s.getCpus(),
-                            unmatchedProductNames,
-                            null,
-                            null);
-                })
-                .filter(s -> !s.getProducts().isEmpty())
-                .collect(toList());
+        return input.getProducts().stream()
+                .collect(toMap(
+                        p -> p.getId().toString(),
+                        p -> new Product(
+                                p.getId(),
+                                p.getName(),
+                                productUnmatchedSystems.getOrDefault(
+                                        p.getId(),
+                                        Collections.emptySet()))));
     }
 
-    private String productNameById(Long id, JsonInput input) {
-        return input.getProducts().stream()
-                .filter(p -> p.getId().equals(id))
-                .map(JsonProduct::getName)
-                .findFirst()
-                .orElse("Unknown product (" + id + ")");
+    private Set<Long> unmatchedProductIds(Map<String, Product> productsMap) {
+        return productsMap.entrySet().stream()
+                .filter(e -> e.getValue().getUnmatchedSystemCount() > 0)
+                .map(Map.Entry::getKey)
+                .map(Long::valueOf)
+                .collect(toSet());
     }
 }
