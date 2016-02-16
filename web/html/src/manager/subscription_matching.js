@@ -24,6 +24,11 @@ var SubscriptionMatching = React.createClass({
     setInterval(this.refreshServerData, this.props.refreshInterval);
   },
 
+  onPinChanged: function(pinnedMatches) {
+    this.state.serverData.pinnedMatches = pinnedMatches;
+    this.setState(this.state);
+  },
+
   render: function() {
     var data = this.state.serverData;
     var latestStart = data == null ? null : data.latestStart;
@@ -55,9 +60,10 @@ var SubscriptionMatching = React.createClass({
             loadState={() => this.state["unmatchedSystemTableState"]}
           />,
           <Pins
-            initialPinnedMatches={pinnedMatches}
+            pinnedMatches={pinnedMatches}
             systems={systems}
             subscriptions={subscriptions}
+            onPinChanged={this.onPinChanged}
             saveState={(state) => {this.state["pinnedMatchesState"] = state;}}
             loadState={() => this.state["pinnedMatchesState"]}
           />,
@@ -466,11 +472,7 @@ var Pins = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
-    return {"showPopUp": false, "pinnedMatches": this.props.initialPinnedMatches};
-  },
-
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({"pinnedMatches": nextProps.initialPinnedMatches});
+    return {"showPopUp": false};
   },
 
   rowComparator: function(a, b, columnIndex, ascending) {
@@ -496,7 +498,7 @@ var Pins = React.createClass({
 
   onRemovePin: function(pinId) {
     $.post("/rhn/manager/subscription_matching/pins/"+pinId+"/delete",
-      data => {this.setState({"pinnedMatches" : data});}
+      data => {this.props.onPinChanged(data);}
     );
   },
 
@@ -511,7 +513,7 @@ var Pins = React.createClass({
   savePin: function(systemId, subscriptionId) {
     $.post("/rhn/manager/subscription_matching/pins",
       {"system_id": systemId, "subscription_id": subscriptionId},
-      data => {this.setState({"pinnedMatches" : data});}
+      data => {this.props.onPinChanged(data);}
     );
     $("#addPinPopUp").modal('hide'); //to trigger popup close action
     this.closePopUp();
@@ -531,9 +533,9 @@ var Pins = React.createClass({
           {t("depending on a subscription's availablility and applicability rules, in that case it will be shown as not satisfied. ")}
         </p>
 
-        {this.state.pinnedMatches.length > 0 ?
+        {this.props.pinnedMatches.length > 0 ?
           <Table headers={[t("System"), t("Subscription"), t("Policy"), t("End date"), t("Part number"), t("Status"), t("")]}
-            rows={pinnedMatchesToRows(this.state.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
+            rows={pinnedMatchesToRows(this.props.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
             loadState={() => this.state["table"]}
             saveState={(state) => {this.state["table"] = state;}}
             rowComparator={this.rowComparator}
