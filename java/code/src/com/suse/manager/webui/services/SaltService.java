@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services;
 
+import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
@@ -243,4 +244,10 @@ public interface SaltService {
      */
     Map<String, String> getNetModules(String minionId);
 
+    /**
+     * Gets the installed products of the minion
+     * @param minionId the minion id
+     * @return a list of installed products
+     */
+    List<Zypper.RealProductInfo> getInstalledProducts(String minionId);
 }
