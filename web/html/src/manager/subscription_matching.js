@@ -729,8 +729,8 @@ function possibleSubscriptionToRow(possibleSubscriptions, onClickAction) {
 }
 
 var PopUp = React.createClass({
-  onClose: function() {
-    this.props.onClosePopUp();
+  componentDidMount: function() {
+    $("#" + this.props.id).on('hidden.bs.modal', this.props.onClosePopUp);
   },
 
   render: function() {
@@ -739,7 +739,7 @@ var PopUp = React.createClass({
         <div className={"modal-dialog " + this.props.className}>
           <div className="modal-content">
             <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.onClose}>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
               <h4 className="modal-title">{this.props.title}</h4>
