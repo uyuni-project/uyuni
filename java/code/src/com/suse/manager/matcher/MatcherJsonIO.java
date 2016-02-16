@@ -60,6 +60,9 @@ import java.util.stream.Stream;
  */
 public class MatcherJsonIO {
 
+    /** Fake ID for the SUSE Manager server system. */
+    public static final long SELF_SYSTEM_ID = 2000010000L;
+
     /** (De)serializer instance. */
     private Gson gson;
 
@@ -294,7 +297,7 @@ public class MatcherJsonIO {
     private Stream<JsonSystem> jsonSystemForSelf(boolean includeSelf, String arch) {
         if (includeSelf) {
             return of(new JsonSystem(
-                Long.MAX_VALUE,
+                SELF_SYSTEM_ID,
                 "SUSE Manager Server system",
                 1,
                 true,

@@ -15,13 +15,11 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.scc.SCCOrderItem;
+
+import com.suse.manager.matcher.MatcherJsonIO;
 
 import org.apache.log4j.Logger;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
 
 import java.util.List;
 
@@ -97,22 +95,11 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
     /**
      * Clean stale pins.
      */
-    @SuppressWarnings("unchecked")
     public void cleanStalePins() {
-        DetachedCriteria systemIds = DetachedCriteria.forClass(Server.class)
-                .setProjection(Projections.id());
-
-        DetachedCriteria subscriptionIds = DetachedCriteria.forClass(SCCOrderItem.class)
-                .setProjection(Projections.property("sccId"));
-
         getSession()
-            .createCriteria(PinnedSubscription.class)
-            .add(Restrictions.disjunction()
-                .add(Subqueries.propertyNotIn("systemId", systemIds))
-                .add(Subqueries.propertyNotIn("subscriptionId", subscriptionIds))
-            )
-            .list()
-            .forEach(stalePin -> remove((PinnedSubscription)stalePin));
+            .getNamedQuery("PinnedSubscription.cleanStalePins")
+            .setLong("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID)
+            .executeUpdate();
     }
 
     /**
