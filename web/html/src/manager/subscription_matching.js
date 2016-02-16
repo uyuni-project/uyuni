@@ -647,6 +647,10 @@ var AddPinPopUp = React.createClass({
     return {"systemId":null};
   },
 
+  onBackClicked: function () {
+    this.setState({"systemId": null});
+  },
+
   onSystemSelected:function(systemId) {
     this.setState({"systemId": systemId});
   },
@@ -670,13 +674,19 @@ var AddPinPopUp = React.createClass({
                 this.onSubscriptionSelected)
               }
           />
+          <p>
+            <button className="btn btn-default" onClick={this.onBackClicked}>
+              <i className="fa fa-arrow-left"></i>
+              {t("Back to sytem selection")}
+            </button>
+          </p>
         </div>
       );
     }
     else {
       popUpContent = (
         <div>
-          <p>{t("Step 1/2: pick the system to pin from the table below.")}</p>
+          <p>{t("Step 1/2: select the system to pin from the table below.")}</p>
           <Table headers={[t("System"), t("Socket/IFL count"), t("")]} rows={systemsForPinningToRow(this.props.systems, this.onSystemSelected)}
             dataFilter={(tableRow, searchValue) => tableRow.props["rawData"]["name"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
             searchPlaceholder={t("Filter by name")}
@@ -698,7 +708,7 @@ function systemsForPinningToRow(systems, onClickAction) {
         <PinButton
           onClick={onClickAction}
           elementId={k}
-          content={<span><i className="fa fa-map-pin"></i>{t("Pin this system")}</span>}
+          content={<span>{t("Select")} <i className="fa fa-arrow-right fa-right"></i></span>}
         />}
       />
     ];
