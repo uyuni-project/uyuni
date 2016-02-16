@@ -64,7 +64,7 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                     continue;
                 }
                 String[] split = StringUtils.split(line, ":", 2);
-                if(split.length == 2) {
+                if (split.length == 2) {
                     sysvalues.put(StringUtils.trim(split[0]), StringUtils.trim(split[1]));
                 }
             }
@@ -119,7 +119,8 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                     zhost.setOrg(OrgFactory.getSatelliteOrg()); // TODO clarify this
                     zhost.setSecret(RandomStringUtils.randomAlphanumeric(64));
                     zhost.setAutoUpdate("N");
-                    zhost.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+                    zhost.setContactMethod(ServerFactory
+                            .findContactMethodByLabel("default"));
                     server.setLastBoot(System.currentTimeMillis() / 1000);
 
                     ServerFactory.save(zhost);
