@@ -17,6 +17,8 @@ package com.suse.manager.webui.services.impl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
@@ -55,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 /**
@@ -519,6 +522,20 @@ public enum SaltAPIService implements SaltService {
         catch (SaltException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Set<String> getAllowedMinions(User user, String target) {
+        Set<String> saltMatches = match(target).keySet();
+        Set<String> allowed = new HashSet<>(saltMatches);
+
+        List<String> minionIds = MinionServerFactory
+                .findMinionIdsByOrgId(user.getOrg().getId());
+        allowed.retainAll(minionIds);
+
+        return allowed;
     }
 
 }

@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
@@ -72,6 +73,20 @@ public class MinionServerFactory extends HibernateFactory {
     public static List<MinionServer> listMinions() {
         return getSession().createCriteria(MinionServer.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .list();
+    }
+
+    /**
+     * Find all minion ids that belong to an organization.
+     *
+     * @param orgId the organization id
+     * @return a list of minions ids belonging to the given organization
+     */
+    public static List<String> findMinionIdsByOrgId(Long orgId) {
+        return getSession().createCriteria(MinionServer.class)
+                .setProjection(Projections.property("minionId"))
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .add(Restrictions.eq("org.id", orgId))
                 .list();
     }
 

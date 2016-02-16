@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import spark.ModelAndView;
+import spark.Response;
 import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
@@ -216,5 +217,16 @@ public class SparkApplicationHelper {
         });
 
         return jade;
+    }
+
+    /**
+     * Serialize the result and set the response content type to JSON.
+     * @param response the http response
+     * @param result the object to serialize to JSON
+     * @return a JSON string
+     */
+    public static String json(Response response, Object result) {
+        response.type("application/json");
+        return GSON.toJson(result);
     }
 }
