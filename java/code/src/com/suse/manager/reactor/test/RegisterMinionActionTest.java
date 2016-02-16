@@ -20,7 +20,6 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -43,6 +42,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.suse.salt.netapi.calls.modules.Status;
 import org.jmock.Mock;
 
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -151,18 +151,15 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     }
 
-    @SuppressWarnings("unchecked")
     private Map<String, Object> getCpuInfo(String minionId) throws IOException, ClassNotFoundException {
-        Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
+        return new JsonParser<>(Status.cpuinfo().getReturnType()).parse(
                 readFile("dummy_cpuinfo.json"));
-        return (Map<String, Object>)((List<Map<String, Object>>)grains.get("return")).get(0).get(minionId);
     }
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> getGrains(String minionId, String akey) throws ClassNotFoundException, IOException {
-    	Map<String, Object> file = new JsonParser<>(Grains.items(false).getReturnType()).parse(
+        Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
                 readFile("dummy_grains.json"));
-    	Map<String, Object> grains = (Map<String, Object>)((List<Map<String, Object>>)file.get("return")).get(0).get(minionId);
         Map<String, String> susemanager = new HashMap<>();
         susemanager.put("activation_key", akey);
         grains.put("susemanager", susemanager);

@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
@@ -478,6 +479,42 @@ public enum SaltAPIService implements SaltService {
                     new MinionList(minionId),
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result.get(minionId);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Zypper.RealProductInfo> getInstalledProducts(String minionId) {
+        try {
+            return Zypper.listProducts(false).callSync(
+                SALT_CLIENT, new MinionList(minionId),
+                SALT_USER, SALT_PASSWORD, AuthModule.AUTO
+            ).get(minionId).stream().flatMap(map -> map.entrySet().stream())
+                    .map(productEntry -> {
+                Zypper.ProductInfo value = productEntry.getValue();
+                return new Zypper.RealProductInfo(
+                    productEntry.getKey(),
+                    value.getArch(),
+                    value.getDescription(),
+                    value.getEol(),
+                    value.getEpoch(),
+                    value.getFlavor(),
+                    value.getInstalled(),
+                    value.getIsbase(),
+                    value.getProductline(),
+                    value.getRegisterrelease(),
+                    value.getRelease(),
+                    value.getRepo(),
+                    value.getShortname(),
+                    value.getSummary(),
+                    value.getVendor(),
+                    value.getVersion()
+                );
+            }).collect(Collectors.toList());
         }
         catch (SaltException e) {
             throw new RuntimeException(e);

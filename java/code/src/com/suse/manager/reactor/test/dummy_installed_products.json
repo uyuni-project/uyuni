@@ -1,0 +1,21 @@
+[
+    {
+      "SLES": {
+        "productline": "sles",
+        "description": "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class.",
+        "installed": "true",
+        "vendor": "SUSE",
+        "summary": "SUSE Linux Enterprise Server 12 SP1",
+        "repo": "@System",
+        "registerrelease": "",
+        "epoch": "0",
+        "version": "12.1",
+        "release": "0",
+        "isbase": "true",
+        "flavor": "DVD",
+        "eol": "2024-10-31T01:00:00+01",
+        "arch": "x86_64",
+        "shortname": "SLES12-SP1"
+      }
+    }
+]
