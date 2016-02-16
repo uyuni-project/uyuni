@@ -85,6 +85,7 @@ public class SubscriptionMatchProcessor {
                         (s.getVirtualHost() ? "virtualHost" : "nonVirtual") :
                         "virtualGuest",
                     output.getMatches().stream()
+                        .filter(m -> m.getSystemId().equals(s.getId()))
                         .map(m -> m.getSubscriptionId())
                         .distinct()
                         .collect(toList())
