@@ -532,10 +532,8 @@ public enum SaltAPIService implements SaltService {
         Set<String> saltMatches = match(target).keySet();
         Set<String> allowed = new HashSet<>(saltMatches);
 
-        List<MinionServer> minionServers = MinionServerFactory
-                .findByOrgId(user.getOrg().getId());
-        Set<String> minionIds = minionServers.stream()
-                .map(s -> s.getMinionId()).collect(Collectors.toSet());
+        List<String> minionIds = MinionServerFactory
+                .findMinionIdsByOrgId(user.getOrg().getId());
         allowed.retainAll(minionIds);
 
         return allowed;
