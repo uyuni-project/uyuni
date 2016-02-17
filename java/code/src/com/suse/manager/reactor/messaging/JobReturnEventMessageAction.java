@@ -29,6 +29,10 @@ import com.suse.manager.webui.services.impl.SaltAPIService;
 
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.event.JobReturnEvent;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.apache.log4j.Logger;
 
 import java.util.Collections;
@@ -171,11 +175,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             }
         }
         else {
-            // Dump the whole return map (or whatever fits into 1024 characters)
-            // TODO: at least pretty print this using gson
-            String mapString = eventDataReturnMap.toString();
-            serverAction.setResultMsg(mapString.length() > 1024 ?
-                    mapString.substring(0, 1023) : mapString);
+            // Pretty-print the whole return map (or whatever fits into 1024 characters)
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String json = gson.toJson(eventDataReturnMap);
+            serverAction.setResultMsg(json.length() > 1024 ?
+                    json.substring(0, 1023) : json);
         }
     }
 
