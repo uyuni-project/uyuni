@@ -74,9 +74,8 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
                     for (ServerAction sa : serverActions) {
                         ActionType actionType = sa.getParentAction().getActionType();
                         if (actionType.equals(ActionFactory.TYPE_REBOOT) &&
-                                sa.getPickupTime() != null &&
                                 sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP) &&
-                                bootTime.after(sa.getPickupTime())) {
+                                bootTime.after(sa.getParentAction().getEarliestAction())) {
                             sa.setStatus(ActionFactory.STATUS_COMPLETED);
                             ActionFactory.save(sa);
                             actionsChanged += 1;
