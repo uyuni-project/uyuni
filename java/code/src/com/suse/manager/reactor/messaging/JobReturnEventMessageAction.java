@@ -19,6 +19,8 @@ import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.script.ScriptResult;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -133,12 +135,51 @@ public class JobReturnEventMessageAction implements MessageAction {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
         }
 
-        // Dump the "return" map as result message, contains info about what has been done
-        // TODO: Write this elsewhere for certain actions + pretty print using gson
-        String returnString = eventData
-                .getOrDefault("return", Collections.EMPTY_MAP).toString();
-        serverAction.setResultMsg(returnString.length() > 1024 ?
-                returnString.substring(0, 1023) : returnString);
+        @SuppressWarnings("unchecked")
+        Map<String, Object> eventDataReturnMap = (Map<String, Object>) eventData
+                .getOrDefault("return", Collections.EMPTY_MAP);
+        if (serverAction.getParentAction().getActionType().equals(
+                ActionFactory.TYPE_SCRIPT_RUN)) {
+            ScriptRunAction scriptAction = (ScriptRunAction) serverAction.getParentAction();
+            ScriptResult scriptResult = new ScriptResult();
+            scriptAction.getScriptActionDetails().addResult(scriptResult);
+            scriptResult.setActionScriptId(scriptAction.getScriptActionDetails().getId());
+            scriptResult.setServerId(serverAction.getServerId());
+            scriptResult.setReturnCode(retcode);
+
+            // Start date should be earliest action in case a schedule was used
+            if (eventData.containsKey("schedule")) {
+                scriptResult.setStartDate(
+                        serverAction.getParentAction().getEarliestAction());
+            }
+            else {
+                scriptResult.setStartDate(serverAction.getPickupTime());
+            }
+            scriptResult.setStopDate(serverAction.getCompletionTime());
+
+            // Depending on the status show stdout or stderr in the output
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+                serverAction.setResultMsg("Failed to execute script. [jid=" +
+                        event.getJobId() + "]");
+                String stderr = (String) eventDataReturnMap.getOrDefault("stderr",
+                        "stderr is not available.");
+                scriptResult.setOutput(stderr.getBytes());
+            }
+            else {
+                serverAction.setResultMsg("Script executed successfully. [jid=" +
+                        event.getJobId() + "]");
+                String stdout = (String) eventDataReturnMap.getOrDefault("stdout",
+                        "stdout is not available.");
+                scriptResult.setOutput(stdout.getBytes());
+            }
+        }
+        else {
+            // Dump the whole return map (or whatever fits into 1024 characters)
+            // TODO: at least pretty print this using gson
+            String mapString = eventDataReturnMap.toString();
+            serverAction.setResultMsg(mapString.length() > 1024 ?
+                    mapString.substring(0, 1023) : mapString);
+        }
     }
 
     /**
