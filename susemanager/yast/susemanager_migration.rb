@@ -30,10 +30,10 @@ module Yast
       @invalid_pw_chars = "\"$'!"
 
       @settings = {
-        "SATELLITE_HOST"    => "susemanager",
+        "SATELLITE_HOST"    => "",
         "SATELLITE_DOMAIN"  => Hostname.CurrentDomain,
         "SATELLITE_DB_USER" => "susemanager",
-        "SATELLITE_DB_PASS" => "susemanager",
+        "SATELLITE_DB_PASS" => "",
         "SATELLITE_DB_SID"  => "susemanager"
       }
 
@@ -124,6 +124,14 @@ module Yast
         break if @ret == :back
         break if @ret == :abort && Popup.ConfirmAbort(:incomplete)
         if @ret == :next
+          @hs1 = Convert.to_string(
+            UI.QueryWidget(Id("SATELLITE_HOST"), :Value)
+          )
+          if @hs1 == ""
+            Popup.Error(_("Hostname is missing."))
+            UI.SetFocus(Id("SATELLITE_HOST"))
+            next
+          end
           @pw1 = Convert.to_string(
             UI.QueryWidget(Id("SATELLITE_DB_PASS"), :Value)
           )

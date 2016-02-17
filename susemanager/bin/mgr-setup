@@ -5,7 +5,7 @@ if [ ! $UID -eq 0 ]; then
     exit 1
 fi
 
-TMPDIR="/var/tmp"
+TMPDIR="/var/spacewalk/tmp"
 DO_MIGRATION=0
 DO_SETUP=0
 LOGFILE=0
@@ -420,6 +420,16 @@ postgres_safe() {
 }
 
 do_migration() {
+    if [ ! -d $TMPDIR ]; then
+        echo "$TMPDIR does not exist; creating it..."
+        umask 0022
+        mkdir -p $TMPDIR
+    fi
+    echo "Ensuring postgresql has read permissions on $TMPDIR for database dump..."
+    chmod go+rx $TMPDIR
+
+    echo
+    echo
     echo "Migration needs to execute several commands on the remote machine."
     create_ssh_key
 
