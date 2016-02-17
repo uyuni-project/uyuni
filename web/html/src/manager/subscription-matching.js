@@ -14,7 +14,7 @@ var SubscriptionMatching = React.createClass({
   },
 
   refreshServerData: function() {
-    this.refreshRequest = $.get("/rhn/manager/subscription_matching/data", data => {
+    this.refreshRequest = $.get("/rhn/manager/subscription-matching/data", data => {
       this.setState({"serverData" : data});
     });
   },
@@ -197,7 +197,7 @@ var MatcherTaskDescription = React.createClass({
 
 var MatcherScheduleButton = React.createClass({
   onClick: function() {
-    $.post("/rhn/manager/subscription_matching/schedule_matcher_run")
+    $.post("/rhn/manager/subscription-matching/schedule_matcher_run")
       .error(() => { this.props.onError(); });
     this.props.onScheduled();
   },
@@ -512,7 +512,7 @@ var Pins = React.createClass({
   },
 
   onRemovePin: function(pinId) {
-    $.post("/rhn/manager/subscription_matching/pins/"+pinId+"/delete",
+    $.post("/rhn/manager/subscription-matching/pins/"+pinId+"/delete",
       data => {this.props.onPinChanged(data);}
     );
   },
@@ -526,7 +526,7 @@ var Pins = React.createClass({
   },
 
   savePin: function(systemId, subscriptionId) {
-    $.post("/rhn/manager/subscription_matching/pins",
+    $.post("/rhn/manager/subscription-matching/pins",
       {"system_id": systemId, "subscription_id": subscriptionId},
       data => {this.props.onPinChanged(data);}
     );
@@ -829,7 +829,7 @@ var CsvLink = React.createClass({
   render: function() {
     return (
       <div className="spacewalk-csv-download">
-        <a className="btn btn-link" href={"/rhn/manager/subscription_matching/" + this.props.name}>
+        <a className="btn btn-link" href={"/rhn/manager/subscription-matching/" + this.props.name}>
           <i className="fa spacewalk-icon-download-csv"></i>
           {t("Download CSV")}
         </a>

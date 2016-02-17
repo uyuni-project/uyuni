@@ -29,8 +29,8 @@ import java.util.List;
  * Important note: The ids of subscriptions in the endpoints correspond to ids
  * in the subscription data available either as a CSV (under [1]) or as a JSON (under [2]).
  *
- * [1]: rhn/manager/subscription_matching/subscription_report.csv
- * [2]: rhn/manager/subscription_matching/data
+ * [1]: rhn/manager/subscription-matching/subscription_report.csv
+ * [2]: rhn/manager/subscription-matching/data
  *
  * @xmlrpc.namespace subscriptionmatching.pinnedsubscription
  * @xmlrpc.doc Provides the namespace for operations on Pinned Subscriptions
