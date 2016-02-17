@@ -222,8 +222,7 @@ public class SaltReactor implements EventListener {
     }
 
     /**
-     * Stuff that needs to be done on minion start like cleaning up
-     * reboot actions.
+     * Stuff that needs to be done on minion start like cleaning up reboot actions.
      *
      * @param minionId the minion id of the minion starting
      */
