@@ -15,7 +15,6 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -23,6 +22,7 @@ import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
@@ -39,16 +39,13 @@ import java.util.Optional;
 /**
  * Handler class for {@link JobReturnEventMessage}.
  */
-public class JobReturnEventMessageAction implements MessageAction {
+public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(JobReturnEventMessageAction.class);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void execute(EventMessage msg) {
+    public void doExecute(EventMessage msg) {
         JobReturnEventMessage jobReturnEventMessage = (JobReturnEventMessage) msg;
         JobReturnEvent jobReturnEvent = jobReturnEventMessage.getJobReturnEvent();
 
