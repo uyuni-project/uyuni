@@ -62,9 +62,9 @@ module Yast
       end
 
       if @migration
-        Ops.set(@settings, "MANAGER_USER", "spacewalk")
-        Ops.set(@settings, "MANAGER_PASS", "spacewalk")
-        Ops.set(@settings, "MANAGER_PASS2", "spacewalk")
+        Ops.set(@settings, "MANAGER_USER", "susemanager")
+        Ops.set(@settings, "MANAGER_PASS", "")
+        Ops.set(@settings, "MANAGER_PASS2", "")
       end
 
       @contents = HBox(
