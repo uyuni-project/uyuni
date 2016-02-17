@@ -5,6 +5,7 @@ if [ ! $UID -eq 0 ]; then
     exit 1
 fi
 
+TMPDIR="/var/spacewalk/tmp"
 DO_MIGRATION=0
 DO_SETUP=0
 LOGFILE=0
@@ -15,6 +16,7 @@ MIGRATION_ENV="/root/migration_env.sh"
 SETUP_ENV="/root/setup_env.sh"
 MANAGER_COMPLETE="/root/.MANAGER_SETUP_COMPLETE"
 MANAGER_COMPLETE_HOOK="/usr/lib/susemanager/hooks/suma_completehook.sh"
+RSYNC_LOG="/var/log/rhn/migration-rsync.log"
 
 SATELLITE_HOST=""
 SATELLITE_DOMAIN=""
@@ -58,6 +60,7 @@ helper script to do migration or setup of SUSE Manager
 
 wait_step() {
     if [ $? -ne 0 ]; then
+        echo "Something didn't work. Migration failed. Please check logs ($LOGFILE)"
         exit 1
     fi
 
@@ -148,6 +151,8 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
     cat /var/lib/pgsql/data/pg_hba.conf >> /tmp/pg_hba.conf
     mv /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
     mv /tmp/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf
+    chmod 600 /var/lib/pgsql/data/pg_hba.conf
+    chown postgres:postgres /var/lib/pgsql/data/pg_hba.conf
     systemctl restart postgresql
 }
 
@@ -272,58 +277,58 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
 }
 
 dump_remote_db() {
-    echo "`date +"%H:%M:%S"`   Dumping remote database. Please wait..."
+    echo "`date +"%H:%M:%S"`   Dumping remote database to $TMPDIR/$DBDUMPFILE on target system. Please wait..."
     scp -i $KEYFILE /usr/lib/susemanager/bin/tclfilter root@$SATELLITE_IP:/tmp
-    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"pg_dump $MANAGER_DB_NAME | /tmp/tclfilter | gzip > /tmp/$DBDUMPFILE\""
+    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"pg_dump $MANAGER_DB_NAME | /tmp/tclfilter | gzip\"" > $TMPDIR/$DBDUMPFILE
     if [ $? -eq 0 ]; then
-        echo "`date +"%H:%M:%S"`   Database successfully dumped."
+        echo -n "`date +"%H:%M:%S"`   Database successfully dumped. Size is: "
+        du -h $TMPDIR/$DBDUMPFILE | cut -f 1
     else
         echo "`date +"%H:%M:%S"`   FAILURE!"
+        exit 1
     fi
-
-    echo "Copy remote database dump to local machine..."
-    scp -i $KEYFILE root@$SATELLITE_IP:/tmp/$DBDUMPFILE /tmp
-
-    echo "Delete remote database dump..."
-    ssh -i $KEYFILE root@$SATELLITE_IP "rm -f /tmp/$DBDUMPFILE /tmp/tclfilter"
 }
 
 import_db() {
     echo "`date +"%H:%M:%S"`   Importing database dump. Please wait..."
-    su -s /bin/bash - postgres -c "zcat /tmp/$DBDUMPFILE | psql $MANAGER_DB_NAME > /dev/null"
+    su -s /bin/bash - postgres -c "zcat $TMPDIR/$DBDUMPFILE | psql $MANAGER_DB_NAME > /dev/null"
     if [ $? -eq 0 ]; then
         echo "`date +"%H:%M:%S"`   Database dump successfully imported."
-        rm -f /tmp/$DBDUMPFILE
+        rm -f $TMPDIR/$DBDUMPFILE
     else
         echo "`date +"%H:%M:%S"`   FAILURE!"
+        exit 1
     fi
 }
 
 upgrade_schema() {
     spacewalk-schema-upgrade -y
-}
-
-backup_files() {
-    DATE=`date +"%Y-%m-%d-%H-%M"`
-    BACKUPDIR="backup-$DATE"
-
-    mkdir -p /root/$BACKUPDIR/pub
-    mkdir -p /root/$BACKUPDIR/ssl/jabberd
-    mv /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /root/$BACKUPDIR/pub/ 2> /dev/null
-    mv /srv/www/htdocs/pub/rhn-org-trusted-ssl-cert*.rpm /root/$BACKUPDIR/pub/ 2> /dev/null
-    mv /root/ssl-build /root/$BACKUPDIR/ 2> /dev/null
-    cp /etc/apache2/ssl.crt/spacewalk.crt /root/$BACKUPDIR/ssl/ 2> /dev/null
-    cp /etc/apache2/ssl.key/spacewalk.key /root/$BACKUPDIR/ssl/ 2> /dev/null
-    cp /etc/pki/spacewalk/jabberd/server.pem /root/$BACKUPDIR/ssl/jabberd/ 2> /dev/null
+    if [ $? -eq 0 ]; then
+        echo "`date +"%H:%M:%S"`   Schema upgrade successful."
+    else
+        echo "`date +"%H:%M:%S"`   FAILURE!"
+        exit 1
+    fi
 }
 
 copy_remote_files_common() {
     # copy only new files (new kickstart profiles, snippets, trigger, etc.)
-    rsync -e "ssh -i $KEYFILE -l root" -avz --ignore-existing root@$SATELLITE_IP:/var/lib/cobbler/ /var/lib/cobbler/
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/lib/rhn/kickstarts /var/lib/rhn/
-    chown -R tomcat.tomcat /var/lib/rhn/kickstarts
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/ssl-build /root/
+    echo "`date +"%H:%M:%S"`   Copy /var/lib/cobbler ..."
+    rsync -e "ssh -i $KEYFILE -l root" -avz --ignore-existing root@$SATELLITE_IP:/var/lib/cobbler/ /var/lib/cobbler/ >> $RSYNC_LOG
+    echo "`date +"%H:%M:%S"`   Copy /var/lib/rhn/kickstarts ..."
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/lib/rhn/kickstarts /var/lib/rhn/ >> $RSYNC_LOG
+    echo "`date +"%H:%M:%S"`   Copy /srv/tftpboot ..."
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/srv/tftpboot /srv >> $RSYNC_LOG
+    echo "`date +"%H:%M:%S"`   Copy /root/ssl-build ..."
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/ssl-build /root/ >> $RSYNC_LOG
+    echo "`date +"%H:%M:%S"`   Copy /var/log/rhn ..."
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/log/rhn /var/log >> $RSYNC_LOG
+    echo "`date +"%H:%M:%S"`   Copy /var/cache/rhn ..."
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/cache/rhn/ /var/cache/rhn >> $RSYNC_LOG
+
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/spacewalk/jabberd/server.pem /etc/pki/spacewalk/jabberd/server.pem
+    scp -i $KEYFILE root@$SATELLITE_IP:/etc/rhn/rhn.conf /etc/rhn/rhn.conf-SUMA21
+    chown -R tomcat.tomcat /var/lib/rhn/kickstarts
     chmod 600 /etc/pki/spacewalk/jabberd/server.pem
     chown jabber:jabber /etc/pki/spacewalk/jabberd/server.pem
 }
@@ -331,9 +336,9 @@ copy_remote_files_common() {
 copy_remote_files_redhat() {
     echo "Copy files from old satellite..."
     # maybe add -H for hardlinks?
-    rsync -e "ssh -i $KEYFILE -l root" -av root@$SATELLITE_IP:/var/satellite/ /var/spacewalk/
+    rsync -e "ssh -i $KEYFILE -l root" -av root@$SATELLITE_IP:/var/satellite/ /var/spacewalk/ >> $RSYNC_LOG
     chown -R wwwrun.www /var/spacewalk
-    rsync -e "ssh -i $KEYFILE -l root" -av --ignore-existing root@$SATELLITE_IP:/var/www/html/pub/ /srv/www/htdocs/pub/
+    rsync -e "ssh -i $KEYFILE -l root" -av --ignore-existing root@$SATELLITE_IP:/var/www/html/pub/ /srv/www/htdocs/pub/ >> $RSYNC_LOG
 
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/tls/certs/spacewalk.crt /etc/apache2/ssl.crt/spacewalk.crt
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/tls/private/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
@@ -342,14 +347,19 @@ copy_remote_files_redhat() {
 copy_remote_files_suse() {
     echo "Copy files from old SUSE Manager..."
     # maybe add -H for hardlinks?
-    rsync -e "ssh -i $KEYFILE -l root" -av root@$SATELLITE_IP:/var/spacewalk/ /var/spacewalk/
-    chown -R wwwrun.www /var/spacewalk
-    rsync -e "ssh -i $KEYFILE -l root" -av --ignore-existing root@$SATELLITE_IP:/srv/www/htdocs/pub/ /srv/www/htdocs/pub/
-    ln -s /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors
-    update-ca-certificates
+    echo "`date +"%H:%M:%S"`   Copy /var/spacewalk ..."
+    rsync -e "ssh -i $KEYFILE -l root" -av root@$SATELLITE_IP:/var/spacewalk/ /var/spacewalk/ >> $RSYNC_LOG
+    echo "`date +"%H:%M:%S"`   Copy /srv/www/htdocs/pub ..."
+    rsync -e "ssh -i $KEYFILE -l root" -av --ignore-existing root@$SATELLITE_IP:/srv/www/htdocs/pub/ /srv/www/htdocs/pub/ >> $RSYNC_LOG
+    echo "`date +"%H:%M:%S"`   Copy /root/.ssh ..."
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/.ssh/ /root/.ssh.new >> $RSYNC_LOG
 
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/apache2/ssl.crt/spacewalk.crt /etc/apache2/ssl.crt/spacewalk.crt
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/apache2/ssl.key/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
+
+    chown -R wwwrun.www /var/spacewalk
+    ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors
+    update-ca-certificates
 }
 
 create_ssh_key() {
@@ -365,6 +375,12 @@ remove_ssh_key() {
     ssh root@$SATELLITE_IP -i $KEYFILE "grep -v spacewalk-migration-key /root/.ssh/authorized_keys > /root/.ssh/authorized_keys.tmp && mv /root/.ssh/authorized_keys.tmp /root/.ssh/authorized_keys"
     rm -f $KEYFILE
     rm -f $KEYFILE.pub
+
+    # migration also copies the ss stuff from the old machine
+    # so remove migration key also from local copy
+    if [ -f /root/.ssh/authorized_keys ]; then
+        grep -v spacewalk-migration-key /root/.ssh/authorized_keys > /root/.ssh/authorized_keys.tmp && mv /root/.ssh/authorized_keys.tmp /root/.ssh/authorized_keys
+    fi
 }
 
 check_remote_type() {
@@ -387,7 +403,6 @@ check_remote_type() {
 }
 
 copy_remote_files() {
-    backup_files
     if [ $SATELLITE_IS_RH = "1" ];then
         copy_remote_files_redhat
         mv /var/spacewalk/redhat /var/spacewalk/packages
@@ -397,8 +412,32 @@ copy_remote_files() {
     copy_remote_files_common
 }
 
+postgres_fast() {
+    cp -a /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.migrate
+    echo "fsync = off" >> /var/lib/pgsql/data/postgresql.conf
+    echo "checkpoint_segments = 256" >> /var/lib/pgsql/data/postgresql.conf
+    echo "checkpoint_completion_target = 0.9" >> /var/lib/pgsql/data/postgresql.conf
+    systemctl restart postgresql
+}
+
+postgres_safe() {
+    if [ -f /var/lib/pgsql/data/postgresql.conf.migrate ]; then
+        mv /var/lib/pgsql/data/postgresql.conf.migrate /var/lib/pgsql/data/postgresql.conf
+        systemctl restart postgresql
+    fi
+}
 
 do_migration() {
+    if [ ! -d $TMPDIR ]; then
+        echo "$TMPDIR does not exist; creating it..."
+        umask 0022
+        mkdir -p $TMPDIR
+    fi
+    echo "Ensuring postgresql has read permissions on $TMPDIR for database dump..."
+    chmod go+rx $TMPDIR
+
+    echo
+    echo
     echo "Migration needs to execute several commands on the remote machine."
     create_ssh_key
 
@@ -438,8 +477,12 @@ do_migration() {
     dump_remote_db
     wait_step
 
+    echo "Reconfigure postgresql for high performance..."
+    postgres_fast
     import_db
     wait_step
+    echo "Reconfigure postgresql for normal safe operation..."
+    postgres_safe
 
     upgrade_schema
     wait_step
@@ -449,6 +492,10 @@ do_migration() {
 
     cleanup_hostname
     remove_ssh_key
+    if [ -d /root/.ssh.new ]; then
+        mv /root/.ssh /root/.ssh.orig
+        mv /root/.ssh.new /root/.ssh
+    fi
 
     sed -i -e "s/^web\.ssl_available.*$/web.ssl_available = 1/" /etc/rhn/rhn.conf
 }
@@ -532,8 +579,12 @@ for p in $@; do
         . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`getent hosts $SATELLITE_FQDN | cut -f 1 -d " "`
+        if [ -z "$SATELLITE_IP" ]; then
+            echo "Something went wrong. IP address of remote host can not be found."
+            exit 1
+        fi
         if [ "$LOGFILE" = "0" ]; then
-            LOGFILE=/tmp/migration.log
+            LOGFILE=/var/log/rhn/migration.log
         fi
        ;;
     -s)
@@ -544,9 +595,9 @@ for p in $@; do
         . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`getent hosts $SATELLITE_FQDN | cut -f 1 -d " "`
+        check_var_spacewalk
         create_ssh_key
         check_remote_type
-        backup_files
         copy_remote_files
         remove_ssh_key
        ;;
@@ -570,9 +621,11 @@ if [ "$LOGFILE" != "0" ]; then
     exec >> >(tee $LOGFILE | sed 's/^/  /' ) 2>&1
 fi
 
-wait_step
-check_var_spacewalk
-open_firewall_ports
+if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
+    wait_step
+    check_var_spacewalk
+    open_firewall_ports
+fi
 
 if [ "$DO_SETUP" = "1" ]; then
     do_setup
@@ -597,7 +650,9 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     if [ "$LOCAL_DB" != "0" ]; then
         /usr/bin/smdba system-check autotuning
         if [ "$DO_SETUP" = "1" ]; then
-            /usr/sbin/spacewalk-service restart
+            /usr/sbin/spacewalk-service stop
+            systemctl restart postgresql
+            /usr/sbin/spacewalk-service start
         fi
     fi
 fi
