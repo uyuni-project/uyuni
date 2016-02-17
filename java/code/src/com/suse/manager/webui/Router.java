@@ -101,17 +101,17 @@ public class Router implements SparkApplication {
                 withOrgAdmin(VirtualHostManagerController::refresh));
 
         // Subscription Matching
-        get("/manager/subscription_matching",
+        get("/manager/subscription-matching",
                 withProductAdmin(SubscriptionMatchingController::show), jade);
-        get("/manager/subscription_matching/data",
+        get("/manager/subscription-matching/data",
                 withProductAdmin(SubscriptionMatchingController::data));
-        get("/manager/subscription_matching/:filename",
+        get("/manager/subscription-matching/:filename",
                 withProductAdmin(SubscriptionMatchingController::csv));
-        post("/manager/subscription_matching/schedule_matcher_run",
+        post("/manager/subscription-matching/schedule_matcher_run",
                 withProductAdmin(SubscriptionMatchingController::scheduleMatcherRun));
-        post("/manager/subscription_matching/pins",
+        post("/manager/subscription-matching/pins",
                 withProductAdmin(SubscriptionMatchingController::createPin));
-        post("/manager/subscription_matching/pins/:id/delete",
+        post("/manager/subscription-matching/pins/:id/delete",
                 withProductAdmin(SubscriptionMatchingController::deletePin));
 
         // Salt state catalog
