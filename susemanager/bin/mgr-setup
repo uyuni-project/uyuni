@@ -561,6 +561,10 @@ for p in $@; do
         . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`getent hosts $SATELLITE_FQDN | cut -f 1 -d " "`
+        if [ -z "$SATELLITE_IP" ]; then
+            echo "Something went wrong. IP address of remote host can not be found."
+            exit 1
+        fi
         if [ "$LOGFILE" = "0" ]; then
             LOGFILE=/var/log/rhn/migration.log
         fi
