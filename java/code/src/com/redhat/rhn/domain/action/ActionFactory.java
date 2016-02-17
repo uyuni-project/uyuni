@@ -20,7 +20,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
@@ -63,7 +62,6 @@ import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -644,13 +642,8 @@ public class ActionFactory extends HibernateFactory {
                 }
             }
         }
-        boolean newAction = actionIn.getId() == null ? true :
-                lookupById(actionIn.getId()) == null;
-        singleton.saveObject(actionIn);
-        if (newAction) {
-            MessageQueue.publish(new ActionScheduledEventMessage(actionIn));
-        }
 
+        singleton.saveObject(actionIn);
         return actionIn;
     }
 
@@ -840,6 +833,13 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionStatus STATUS_QUEUED =
             lookupActionStatusByName("Queued");
+
+    /**
+     * The constant representing the Action Status PICKED_UP
+     */
+    public static final ActionStatus STATUS_PICKED_UP =
+            lookupActionStatusByName("Picked Up");
+
     /**
      * The constant representing the Action Status COMPLETED
      */

@@ -15,18 +15,24 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.script.ScriptResult;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
 
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.event.JobReturnEvent;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.apache.log4j.Logger;
 
 import java.util.Collections;
@@ -37,16 +43,13 @@ import java.util.Optional;
 /**
  * Handler class for {@link JobReturnEventMessage}.
  */
-public class JobReturnEventMessageAction implements MessageAction {
+public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(JobReturnEventMessageAction.class);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void execute(EventMessage msg) {
+    public void doExecute(EventMessage msg) {
         JobReturnEventMessage jobReturnEventMessage = (JobReturnEventMessage) msg;
         JobReturnEvent jobReturnEvent = jobReturnEventMessage.getJobReturnEvent();
 
@@ -71,8 +74,18 @@ public class JobReturnEventMessageAction implements MessageAction {
             minionServerOpt.ifPresent(minionServer -> {
                 Optional<ServerAction> serverAction = action.getServerActions().stream()
                         .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
-                SaltAPIService.INSTANCE.deleteSchedule("scheduled-action-" + id,
+
+                // Delete schedule on the minion if we created it
+                if (jobReturnEvent.getData().containsKey("schedule")) {
+                    String scheduleName = (String) jobReturnEvent.getData().get("schedule");
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Deleting schedule '" + scheduleName +
+                                "' from minion: " + minionServer.getMinionId());
+                    }
+                    SaltAPIService.INSTANCE.deleteSchedule(scheduleName,
                         new MinionList(jobReturnEvent.getMinionId()));
+                }
+
                 serverAction.ifPresent(sa -> {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Updating action for server: " + minionServer.getId());
@@ -123,9 +136,51 @@ public class JobReturnEventMessageAction implements MessageAction {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
         }
 
-        // Dump the "return" map as result message, contains info about what has been done
-        serverAction.setResultMsg(
-                eventData.getOrDefault("return", Collections.EMPTY_MAP).toString());
+        @SuppressWarnings("unchecked")
+        Map<String, Object> eventDataReturnMap = (Map<String, Object>) eventData
+                .getOrDefault("return", Collections.EMPTY_MAP);
+        if (serverAction.getParentAction().getActionType().equals(
+                ActionFactory.TYPE_SCRIPT_RUN)) {
+            ScriptRunAction scriptAction = (ScriptRunAction) serverAction.getParentAction();
+            ScriptResult scriptResult = new ScriptResult();
+            scriptAction.getScriptActionDetails().addResult(scriptResult);
+            scriptResult.setActionScriptId(scriptAction.getScriptActionDetails().getId());
+            scriptResult.setServerId(serverAction.getServerId());
+            scriptResult.setReturnCode(retcode);
+
+            // Start date should be earliest action in case a schedule was used
+            if (eventData.containsKey("schedule")) {
+                scriptResult.setStartDate(
+                        serverAction.getParentAction().getEarliestAction());
+            }
+            else {
+                scriptResult.setStartDate(serverAction.getPickupTime());
+            }
+            scriptResult.setStopDate(serverAction.getCompletionTime());
+
+            // Depending on the status show stdout or stderr in the output
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+                serverAction.setResultMsg("Failed to execute script. [jid=" +
+                        event.getJobId() + "]");
+                String stderr = (String) eventDataReturnMap.getOrDefault("stderr",
+                        "stderr is not available.");
+                scriptResult.setOutput(stderr.getBytes());
+            }
+            else {
+                serverAction.setResultMsg("Script executed successfully. [jid=" +
+                        event.getJobId() + "]");
+                String stdout = (String) eventDataReturnMap.getOrDefault("stdout",
+                        "stdout is not available.");
+                scriptResult.setOutput(stdout.getBytes());
+            }
+        }
+        else {
+            // Pretty-print the whole return map (or whatever fits into 1024 characters)
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String json = gson.toJson(eventDataReturnMap);
+            serverAction.setResultMsg(json.length() > 1024 ?
+                    json.substring(0, 1023) : json);
+        }
     }
 
     /**

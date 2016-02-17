@@ -117,6 +117,7 @@ public class SystemManager extends BaseManager {
     public static final String CAP_PACKAGES_VERIFY = "packages.verify";
     public static final String CAP_CONFIGFILES_BASE64_ENC =
             "configfiles.base64_enc";
+    public static final String CAP_SCRIPT_RUN = "script.run";
 
     private SystemManager() {
     }
@@ -3316,5 +3317,24 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
         Map<String, Object> elabParams = new HashMap<String, Object>();
         return makeDataResult(params, elabParams, null, m, SystemOverview.class);
+    }
+
+    /**
+     * Associate a particular system with a given capability. This is done by the python
+     * backend code for traditional RHN clients. For other type of clients (e.g. Salt
+     * minions), it can be done using this method.
+     *
+     * @param sid the server id
+     * @param capability the capability to add as a string
+     * @param version version number
+     */
+    public static void giveCapability(Long sid, String capability, Long version) {
+        WriteMode m = ModeFactory.getWriteMode("System_queries",
+                "add_to_client_capabilities");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("sid", sid);
+        params.put("capability", capability);
+        params.put("version", version);
+        m.executeUpdate(params);
     }
 }

@@ -15,6 +15,8 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 
 import com.suse.manager.webui.services.SaltServerActionService;
@@ -41,7 +43,13 @@ public class ActionScheduledEventMessageAction extends AbstractDatabaseAction {
     @Override
     protected void doExecute(EventMessage eventMessage) {
         ActionScheduledEventMessage event = (ActionScheduledEventMessage) eventMessage;
-        LOG.debug("Action scheduled: " + event.getAction().getName());
-        SaltServerActionService.INSTANCE.execute(event.getAction());
+        Action action = ActionFactory.lookupById(event.getActionId());
+        if (action != null) {
+            LOG.debug("Action scheduled: " + action.getName());
+            SaltServerActionService.INSTANCE.execute(action);
+        }
+        else {
+            LOG.error("Action not found: " + event.getActionId());
+        }
     }
 }

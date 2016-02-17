@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
+import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltService;
@@ -181,6 +182,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 );
                 StateFactory.save(serverStateRevision);
             });
+
+            // salt systems always have script.run capability
+            SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
             triggerGetHardwareInfo(server, grains);
             triggerGetNetworkInfo(server, grains);
