@@ -285,6 +285,7 @@ dump_remote_db() {
         du -h $TMPDIR/$DBDUMPFILE | cut -f 1
     else
         echo "`date +"%H:%M:%S"`   FAILURE!"
+        exit 1
     fi
 }
 
@@ -296,11 +297,18 @@ import_db() {
         rm -f $TMPDIR/$DBDUMPFILE
     else
         echo "`date +"%H:%M:%S"`   FAILURE!"
+        exit 1
     fi
 }
 
 upgrade_schema() {
     spacewalk-schema-upgrade -y
+    if [ $? -eq 0 ]; then
+        echo "`date +"%H:%M:%S"`   Schema upgrade successful."
+    else
+        echo "`date +"%H:%M:%S"`   FAILURE!"
+        exit 1
+    fi
 }
 
 copy_remote_files_common() {
