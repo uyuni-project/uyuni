@@ -44,7 +44,12 @@ public class ActionScheduledEventMessageAction extends AbstractDatabaseAction {
     protected void doExecute(EventMessage eventMessage) {
         ActionScheduledEventMessage event = (ActionScheduledEventMessage) eventMessage;
         Action action = ActionFactory.lookupById(event.getActionId());
-        LOG.debug("Action scheduled: " + action.getName());
-        SaltServerActionService.INSTANCE.execute(action);
+        if (action != null) {
+            LOG.debug("Action scheduled: " + action.getName());
+            SaltServerActionService.INSTANCE.execute(action);
+        }
+        else {
+            LOG.error("Action not found: " + event.getActionId());
+        }
     }
 }
