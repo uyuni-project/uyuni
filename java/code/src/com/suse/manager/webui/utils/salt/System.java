@@ -17,6 +17,8 @@ import java.util.Optional;
  */
 public class System {
 
+    private System() { }
+
     /**
      * salt.modules.system.reboot
      * @return the result

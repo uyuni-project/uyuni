@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.salt.Status;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
@@ -52,9 +53,9 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
 
             Target<?> target = new MinionList(minion.getMinionId());
             // get uptime
-            LocalCall<Float> uptimeCall = com.suse.manager.webui.utils.salt.Status.uptime();
+            LocalCall<Float> uptimeCall = Status.uptime();
             try {
-                Map<String, Object> metadata = new HashMap<String, Object>();
+                Map<String, Object> metadata = new HashMap<>();
                 Map<String, Float> uptimes = SaltAPIService.INSTANCE
                         .callSync(uptimeCall, target, metadata);
                 if (uptimes.containsKey(minion.getMinionId())) {
