@@ -10,7 +10,7 @@ var TabContainer = TabContainerComponent.TabContainer;
 
 var SubscriptionMatching = React.createClass({
   getInitialState: function() {
-    return {};
+    return {"activeTabHash": document.location.hash};
   },
 
   refreshServerData: function() {
@@ -20,6 +20,10 @@ var SubscriptionMatching = React.createClass({
   },
 
   componentWillMount: function() {
+    window.addEventListener("popstate", () => {
+      this.setState({"activeTabHash": document.location.hash});
+    });
+
     this.refreshServerData();
     setInterval(this.refreshServerData, this.props.refreshInterval);
   },
@@ -30,6 +34,11 @@ var SubscriptionMatching = React.createClass({
     }
     this.state.serverData.pinnedMatches = pinnedMatches;
     this.setState(this.state);
+  },
+
+  onTabHashChange: function(hash) {
+    history.pushState(null, null, hash);
+    this.setState({"activeTabHash": hash});
   },
 
   render: function() {
@@ -51,6 +60,7 @@ var SubscriptionMatching = React.createClass({
     var tabContainer = data == null || !data.matcherDataAvailable ? null :
       <TabContainer
         labels={[t("Subscriptions"), t("Unmatched Systems"), <span>{t("Pins ")}{pinLabelIcon}</span>, <span>{t("Messages ")}{messageLabelIcon}</span>]}
+        hashes={["#subscriptions", "#unmatched-systems", "#pins", "#messages"]}
         panels={[
           <Subscriptions
             subscriptions={subscriptions}
@@ -77,6 +87,8 @@ var SubscriptionMatching = React.createClass({
             loadState={() => this.state["messageTableState"]}
           />
         ]}
+        initialActiveTabHash={this.state.activeTabHash}
+        onTabHashChange={this.onTabHashChange}
       />
     ;
 

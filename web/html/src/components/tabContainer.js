@@ -4,19 +4,31 @@ var React = require("react");
 
 var TabContainer = React.createClass({
   getInitialState: function() {
-    return {"tabIndex" : 0};
+    return {"activeTabHash" : this.sanitizeHash(this.props.initialActiveTabHash)};
   },
 
-  show: function(tabIndex) {
-    this.setState({"tabIndex": tabIndex});
+  sanitizeHash: function(hash) {
+    return this.props.hashes.indexOf(hash) >= 0 ?
+      hash :
+      this.props.hashes[0];
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({"activeTabHash": this.sanitizeHash(nextProps.initialActiveTabHash)});
+  },
+
+  show: function(tabHash) {
+    this.setState({"activeTabHash": tabHash});
+    if (this.props.onTabHashChange) {
+      this.props.onTabHashChange(tabHash);
+    }
   },
 
   render: function() {
-    var tabLabels = this.props.labels.map((label, tabIndex) =>
-      <TabLabel onClick={() => this.show(tabIndex)} text={label} active={tabIndex == this.state.tabIndex} />
-    );
-
-    var tabPanels = (this.props.panels != null && this.props.panels.length > 0 ? this.props.panels[this.state.tabIndex] : t("Loading..."));
+    var tabLabels = this.props.hashes.map((hash, i) => {
+      const label = this.props.labels[i];
+      return <TabLabel onClick={() => this.show(hash)} text={label} active={this.state.activeTabHash == hash} hash={hash} />;
+    });
 
     return (
       <div>
@@ -25,7 +37,7 @@ var TabContainer = React.createClass({
             {tabLabels}
           </ul>
         </div>
-        {tabPanels}
+        {this.props.panels[this.props.hashes.indexOf(this.state.activeTabHash)]}
       </div>
     );
   }
@@ -35,7 +47,7 @@ var TabLabel = React.createClass({
   render: function() {
     return(
       <li className={this.props.active ? "active" : ""}>
-        <a href="#" onClick={this.props.onClick}>{this.props.text}</a>
+        <a href={this.props.hash} onClick={this.props.onClick}>{this.props.text}</a>
       </li>
     );
   }
