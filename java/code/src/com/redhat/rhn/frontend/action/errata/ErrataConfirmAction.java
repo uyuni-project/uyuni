@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -30,6 +31,8 @@ import com.redhat.rhn.frontend.struts.RhnListDispatchAction;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -113,6 +116,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
                  update.setEarliestAction(getStrutsDelegate().readDatePicker(form, "date",
                      DatePicker.YEAR_RANGE_POSITIVE));
                  ActionManager.storeAction(update);
+                 MessageQueue.publish(new ActionScheduledEventMessage(update));
 
                  messageKey = "errataconfirm.schedule";
                  if (systems.size() != 1) {

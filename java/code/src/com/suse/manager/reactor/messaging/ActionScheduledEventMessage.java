@@ -14,19 +14,24 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 import com.redhat.rhn.domain.action.Action;
+
+import org.hibernate.Transaction;
 
 /**
  * Event message for the {@link com.redhat.rhn.common.messaging.MessageQueue} to signal
- * that a new {@link com.redhat.rhn.domain.action.server.ServerAction} has been scheduled.
+ * that a new {@link com.redhat.rhn.domain.action.Action} has been scheduled.
  *
  * This event would then be handled by {@link ActionScheduledEventMessageAction} to act on
  * it and execute the action using Salt.
  */
-public class ActionScheduledEventMessage implements EventMessage {
+public class ActionScheduledEventMessage implements EventDatabaseMessage {
 
-    private final Action action;
+    private final long actionId;
+    private final long userId;
+    private final Transaction txn;
 
     /**
      * Create a new event about a recently scheduled action.
@@ -34,21 +39,23 @@ public class ActionScheduledEventMessage implements EventMessage {
      * @param actionIn the action that has been scheduled
      */
     public ActionScheduledEventMessage(Action actionIn) {
-        action = actionIn;
+        actionId = actionIn.getId();
+        userId = actionIn.getSchedulerUser().getId();
+        txn = HibernateFactory.getSession().getTransaction();
     }
 
     /**
-     * Get the action.
+     * Get the ID of the scheduled action.
      *
-     * @return the action
+     * @return the actionId
      */
-    public Action getAction() {
-        return action;
+    public long getActionId() {
+        return actionId;
     }
 
     @Override
     public Long getUserId() {
-        return action.getSchedulerUser().getId();
+        return userId;
     }
 
     @Override
@@ -58,6 +65,11 @@ public class ActionScheduledEventMessage implements EventMessage {
 
     @Override
     public String toString() {
-        return "ActionScheduledEventMessage[action=" + action + "]";
+        return "ActionScheduledEventMessage[actionId=" + actionId + "]";
+    }
+
+    @Override
+    public Transaction getTransaction() {
+        return txn;
     }
 }

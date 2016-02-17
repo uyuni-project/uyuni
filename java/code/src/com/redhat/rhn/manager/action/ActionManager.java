@@ -1265,9 +1265,11 @@ public class ActionManager extends BaseManager {
                 throw new MissingCapabilityException("script.run", sid);
             }
 
-            if (!SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT)) {
+            if (!SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT) &&
+                    !SystemManager.hasEntitlement(sid, EntitlementManager.SALT)) {
                 throw new MissingEntitlementException(
-                    EntitlementManager.MANAGEMENT.getHumanReadableLabel());
+                    EntitlementManager.MANAGEMENT.getHumanReadableLabel() + " or " +
+                    EntitlementManager.SALT.getHumanReadableLabel());
             }
         }
     }

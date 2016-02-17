@@ -67,6 +67,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -1783,6 +1785,7 @@ public class ErrataManager extends BaseManager {
         List<Long> actionIds = new ArrayList<Long>();
         for (ErrataAction errataAction : errataActions) {
             Action action = ActionManager.storeAction(errataAction);
+            MessageQueue.publish(new ActionScheduledEventMessage(action));
             actionIds.add(action.getId());
         }
         return actionIds;

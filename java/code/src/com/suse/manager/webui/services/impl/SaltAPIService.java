@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltStateStorageManager;
 import com.suse.manager.webui.utils.salt.Zypper;
+import com.suse.manager.webui.utils.salt.LocalCallWithMetadata;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
@@ -417,14 +418,36 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, Schedule.Result> schedulePatchInstallation(String name,
-        Target<?> target, Set<String> patches, LocalDateTime scheduleDate,
-        Map<String, ?> metadata) throws SaltException {
-        LocalCall<Map<String, Object>> install = Pkg.install(true, patches.stream()
-                .map(patch -> "patch:" + patch).collect(Collectors.toList()));
-        Map<String, Schedule.Result> result =
-                Schedule.add(name, install, scheduleDate, metadata)
+    public Map<String, Schedule.Result> schedule(String name, LocalCall<?> call,
+            Target<?> target, LocalDateTime scheduleDate, Map<String, ?> metadata)
+            throws SaltException {
+        Map<String, Schedule.Result> result = Schedule
+                .add(name, call, scheduleDate, metadata)
                 .callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public <T> Map<String, T> callSync(LocalCall<T> call, Target<?> target,
+            Map<String, ?> metadata) throws SaltException {
+        LocalCallWithMetadata<T> callWithMetadata =
+                new LocalCallWithMetadata<>(call, metadata);
+        Map<String, T> result = callWithMetadata
+                .callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target,
+            Map<String, ?> metadata) throws SaltException {
+        LocalCallWithMetadata<T> callWithMetadata =
+                new LocalCallWithMetadata<>(call, metadata);
+        LocalAsyncResult<T> result = callWithMetadata
+                .callAsync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
         return result;
     }
 
