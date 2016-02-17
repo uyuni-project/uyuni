@@ -2,7 +2,7 @@
 
 var React = require("react");
 var TableComponent = require("../components/table");
-var TabContainerComponent = require("../components/tabContainer");
+var TabContainerComponent = require("../components/tab-container");
 var Table = TableComponent.Table;
 var TableCell = TableComponent.TableCell;
 var TableRow = TableComponent.TableRow;
