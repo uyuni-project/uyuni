@@ -4,21 +4,19 @@ var React = require("react");
 
 var TabContainer = React.createClass({
   getInitialState: function() {
-    return {"tab" : 0};
+    return {"tabIndex" : 0};
   },
 
   show: function(tabIndex) {
-    this.setState({"tab": tabIndex});
+    this.setState({"tabIndex": tabIndex});
   },
 
   render: function() {
-    var container = this;
+    var tabLabels = this.props.labels.map((label, tabIndex) =>
+      <TabLabel onClick={() => this.show(tabIndex)} text={label} active={tabIndex == this.state.tabIndex} />
+    );
 
-    var tabLabels = this.props.labels.map(function(label, index) {
-      return (<TabLabel onClick={container.show} tab={index} text={label} active={index == container.state.tab} />);
-    });
-
-    var tabPanels = (this.props.panels != null && this.props.panels.length > 0 ? this.props.panels[this.state.tab] : t("Loading..."));
+    var tabPanels = (this.props.panels != null && this.props.panels.length > 0 ? this.props.panels[this.state.tabIndex] : t("Loading..."));
 
     return (
       <div>
@@ -34,14 +32,10 @@ var TabContainer = React.createClass({
 });
 
 var TabLabel = React.createClass({
-  onClick: function() {
-    this.props.onClick(this.props.tab);
-  },
-
   render: function() {
     return(
       <li className={this.props.active ? "active" : ""}>
-        <a href="#" onClick={this.onClick}>{this.props.text}</a>
+        <a href="#" onClick={this.props.onClick}>{this.props.text}</a>
       </li>
     );
   }
