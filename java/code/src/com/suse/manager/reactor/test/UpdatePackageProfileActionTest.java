@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.test;
 
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -55,6 +56,8 @@ public class UpdatePackageProfileActionTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = (MinionServer) ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
+
+        SUSEProductTestUtils.createVendorSUSEProducts();
 
         final String minionId = minion.getMinionId();
 
