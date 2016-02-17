@@ -93,10 +93,10 @@ var Table = React.createClass({
       pagination = (
         <div className="spacewalk-list-pagination">
           <div className="spacewalk-list-pagination-btns btn-group">
-            <PaginationButton onClick={this.goToPage} toPage={1} disabled={currentPage == 1} text={t("First")} />
-            <PaginationButton onClick={this.goToPage} toPage={currentPage -1} disabled={currentPage == 1} text={t("Prev")} />
-            <PaginationButton onClick={this.goToPage} toPage={currentPage + 1} disabled={currentPage == lastPage} text={t("Next")} />
-            <PaginationButton onClick={this.goToPage} toPage={lastPage} disabled={currentPage == lastPage} text={t("Last")} />
+            <PaginationButton onClick={() => this.goToPage(1)} toPage={1} disabled={currentPage == 1} text={t("First")} />
+            <PaginationButton onClick={() => this.goToPage(currentPage -1)} disabled={currentPage == 1} text={t("Prev")} />
+            <PaginationButton onClick={() => this.goToPage(currentPage +1)} disabled={currentPage == lastPage} text={t("Next")} />
+            <PaginationButton onClick={() => this.goToPage(lastPage)} disabled={currentPage == lastPage} text={t("Last")} />
           </div>
         </div>
       );
@@ -168,14 +168,10 @@ var Table = React.createClass({
 });
 
 var PaginationButton = React.createClass({
-  onClick: function() {
-    this.props.onClick(this.props.toPage);
-  },
-
   render: function() {
     return (
       <button type="button" className="btn btn-default"
-        disabled={this.props.disabled} onClick={this.onClick}>
+        disabled={this.props.disabled} onClick={this.props.onClick}>
         {this.props.text}
       </button>
     );
