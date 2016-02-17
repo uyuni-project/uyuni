@@ -33,8 +33,8 @@ public class MatcherRunData {
     private byte[] subscriptionReportBinary;
     /** message_report.csv contents */
     private byte[] messageReportBinary;
-    /** unmatched_system_report.csv contents */
-    private byte[] unmatchedSystemReportBinary;
+    /** unmatched_product_report.csv contents */
+    private byte[] unmatchedProductReportBinary;
 
     /**
      * Gets the contents of the MatcherRunData that corresponds to the given
@@ -49,8 +49,8 @@ public class MatcherRunData {
                 return getMessageReport();
             case "subscription_report.csv":
                 return getSubscriptionReport();
-            case "unmatched_system_report.csv":
-                return getUnmatchedSystemReport();
+            case "unmatched_product_report.csv":
+                return getUnmatchedProductReport();
             default:
                 throw new IllegalArgumentException("Illegal csv filename " + filename);
         }
@@ -137,19 +137,19 @@ public class MatcherRunData {
     }
 
     /**
-     * Gets the unmatchedSystemReport
-     * @return the unmatchedSystemReport
+     * Gets the unmatchedProductReport
+     * @return the unmatchedProductReport
      */
-    public String getUnmatchedSystemReport() {
-        return getByteArrayContents(getUnmatchedSystemReportBinary());
+    public String getUnmatchedProductReport() {
+        return getByteArrayContents(getUnmatchedProductReportBinary());
     }
 
     /**
-     * Sets the unmatchedSystemReport
-     * @param unmatchedSystemReportIn the unmatchedSystemReport
+     * Sets the unmatchedProductReport
+     * @param unmatchedProductReportIn the unmatchedProductReport
      */
-    public void setUnmatchedSystemReport(String unmatchedSystemReportIn) {
-        setUnmatchedSystemReportBinary(stringToByteArray(unmatchedSystemReportIn));
+    public void setUnmatchedProductReport(String unmatchedProductReportIn) {
+        setUnmatchedProductReportBinary(stringToByteArray(unmatchedProductReportIn));
     }
 
     /**
@@ -217,18 +217,18 @@ public class MatcherRunData {
     }
 
     /**
-     * Gets the unmatchedSystemReportBinary.
-     * @return unmatchedSystemReportBinary
+     * Gets the unmatchedProductReportBinary.
+     * @return unmatchedProductReportBinary
      */
-    protected byte[] getUnmatchedSystemReportBinary() {
-        return unmatchedSystemReportBinary;
+    protected byte[] getUnmatchedProductReportBinary() {
+        return unmatchedProductReportBinary;
     }
 
     /**
-     * Sets the unmatchedSystemReportBinary.
-     * @param unmatchedSystemReportIn - the unmatchedSystemReportBinary
+     * Sets the unmatchedProductReportBinary.
+     * @param unmatchedProductReportIn - the unmatchedProductReportBinary
      */
-    protected void setUnmatchedSystemReportBinary(byte[] unmatchedSystemReportIn) {
-        unmatchedSystemReportBinary = unmatchedSystemReportIn;
+    protected void setUnmatchedProductReportBinary(byte[] unmatchedProductReportIn) {
+        unmatchedProductReportBinary = unmatchedProductReportIn;
     }
 }

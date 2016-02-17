@@ -1,0 +1,3 @@
+ALTER TABLE suseMatcherRunData
+RENAME unmatchedSystemReportBinary TO unmatchedProductReportBinary;
+

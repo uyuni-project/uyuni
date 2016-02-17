@@ -290,7 +290,7 @@ var UnmatchedProducts = React.createClass({
             rowComparator={this.rowComparator}
             sortableColumnIndexes={[0, 1]}
           />
-          <CsvLink name="unmatched_system_report.csv" />
+          <CsvLink name="unmatched_product_report.csv" />
 
 	  <PopUp title={t("Unmatched systems")}
             className="modal-lg"
