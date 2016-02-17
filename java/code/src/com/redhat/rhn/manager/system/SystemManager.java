@@ -88,7 +88,6 @@ import org.hibernate.Session;
 
 import java.net.IDN;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -3321,19 +3320,15 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Associates a particular system with a given
-     * capability.
-     * This is done also by the python backend code for rhn clients.
-     * For other type of clients, it can be done with this method.
-     * @param sid Server id
-     * @param capability Capability to add
+     * Associate a particular system with a given capability. This is done by the python
+     * backend code for traditional RHN clients. For other type of clients (e.g. Salt
+     * minions), it can be done using this method.
+     *
+     * @param sid the server id
+     * @param capability the capability to add as a string
      * @param version version number
-     * @throws SQLException thrown if there's a problem which should cause
-     * the test to fail.
      */
-    public static void giveCapability(Long sid, String capability, Long version)
-            throws SQLException {
-
+    public static void giveCapability(Long sid, String capability, Long version) {
         WriteMode m = ModeFactory.getWriteMode("System_queries",
                 "add_to_client_capabilities");
         Map<String, Object> params = new HashMap<String, Object>();
