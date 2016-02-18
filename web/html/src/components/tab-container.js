@@ -12,9 +12,10 @@ var TabContainer = React.createClass({
   },
 
   sanitizeHash: function(hash) {
-    return this.props.hashes.indexOf(hash) >= 0 ?
-      hash :
-      this.props.hashes[0];
+    if (this.props.hashes.indexOf(hash) >= 0) {
+      return hash;
+    }
+    return this.props.hashes[0];
   },
 
   show: function(tabHash) {
