@@ -334,7 +334,7 @@ class PackageStates extends React.Component {
                         <span className="input-group">
                             <input className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange}/>
                             <span className="input-group-btn">
-                                <AsyncButton action={this.applyPackageState} name={t("Search")} action={this.search} />
+                                <AsyncButton name={t("Search")} action={this.search} />
                                 <button className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
                                 <button className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
                                     {this.state.changed.size > 0 ? this.state.changed.size : t("No")} {t("Changes")}
