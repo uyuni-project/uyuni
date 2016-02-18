@@ -18,17 +18,17 @@ var TabContainer = React.createClass({
     return this.props.hashes[0];
   },
 
-  show: function(tabHash) {
-    this.setState({activeTabHash: tabHash});
+  onActiveTabChange: function(hash) {
+    this.setState({activeTabHash: hash});
     if (this.props.onTabHashChange) {
-      this.props.onTabHashChange(tabHash);
+      this.props.onTabHashChange(hash);
     }
   },
 
   render: function() {
     var tabLabels = this.props.hashes.map((hash, i) => {
       const label = this.props.labels[i];
-      return <TabLabel onClick={() => this.show(hash)} text={label} active={this.state.activeTabHash == hash} hash={hash} />;
+      return <TabLabel onClick={() => this.onActiveTabChange(hash)} text={label} active={this.state.activeTabHash == hash} hash={hash} />;
     });
 
     return (
