@@ -9,8 +9,8 @@ var Table = React.createClass({
   propTypes: {
     headers: React.PropTypes.arrayOf(React.PropTypes.node).isRequired,
     rows: React.PropTypes.arrayOf(React.PropTypes.node).isRequired,
-    dataFilter: React.PropTypes.func, // (row, searchString) -> boolean
-    searchPlaceholder: React.PropTypes.string, // required with dataFilter
+    rowFilter: React.PropTypes.func, // (row, searchString) -> boolean
+    searchPlaceholder: React.PropTypes.string, // required with rowFilter
     rowComparator: React.PropTypes.func, // (row1, row2, columnIndex, ascending) -> -1/0/+1
     sortableColumns: React.PropTypes.arrayOf(React.PropTypes.number), // required with rowComparator
   },
@@ -44,8 +44,8 @@ var Table = React.createClass({
   },
 
   getRows: function(unfilteredRows, searchValue) {
-    var rows = this.props.dataFilter && searchValue.length > 0 ?
-      unfilteredRows.filter((row) => this.props.dataFilter(row, searchValue)) :
+    var rows = this.props.rowFilter && searchValue.length > 0 ?
+      unfilteredRows.filter((row) => this.props.rowFilter(row, searchValue)) :
       unfilteredRows;
       if (this.props.rowComparator) {
         var columnIndex = this.state.columnIndex;
@@ -110,7 +110,7 @@ var Table = React.createClass({
     }
 
     var searchField;
-    if (this.props.dataFilter) {
+    if (this.props.rowFilter) {
       searchField = (
         <SearchField
           onChange={this.onSearchFieldChange}
