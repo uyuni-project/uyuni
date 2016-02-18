@@ -145,7 +145,7 @@ var Table = React.createClass({
                         (this.props.sortableColumns &&
                           this.props.sortableColumns.filter((element) => element == index).length > 0) ?
                         <TableHeaderCellOrder className={className} content={header}
-                          orderBy={this.orderByColumn} columnIndex={index} /> :
+                          orderBy={() => this.orderByColumn(index)} /> :
                         <TableHeaderCell className={className} content={header} />
                     );
                   })}
@@ -169,98 +169,43 @@ var Table = React.createClass({
   }
 });
 
-var PaginationButton = React.createClass({
-  render: function() {
-    return (
-      <button type="button" className="btn btn-default"
-        disabled={this.props.disabled} onClick={this.props.onClick}>
-        {this.props.text}
-      </button>
-    );
-  }
-});
+var PaginationButton = (props) =>
+  <button type="button" className="btn btn-default"
+    disabled={props.disabled} onClick={props.onClick}>
+    {props.text}
+  </button>
+;
 
-var PageSelector = React.createClass({
-  handleOnChange: function(e) {
-    this.props.onChange(parseInt(e.target.value));
-  },
+var PageSelector = (props) =>
+  <select className={props.className}
+    defaultValue={props.currentValue}
+    onChange={(e) => props.onChange(parseInt(e.target.value))}>
+      {props.options.map((o) => <option value={o}>{o}</option>)}
+  </select>
+;
 
-  render: function() {
-    return (
-      <select className={this.props.className}
-        defaultValue={this.props.currentValue}
-        onChange={this.handleOnChange}>
-        {this.props.options.map(function(o) {
-          return (<option value={o}>{o}</option>);
-        })}
-      </select>
-    );
-  }
-});
+var TableHeader = (props) => <thead><tr>{props.content}</tr></thead>;
 
-var TableHeader = React.createClass({
-  render: function() {
-    return (
-      <thead><tr>{this.props.content}</tr></thead>
-    );
-  }
-});
+var TableHeaderCellOrder = (props) =>
+  <th className={props.className}>
+    <a className="orderBy" onClick={props.orderBy}>{props.content}</a>
+  </th>
+;
 
-var TableHeaderCellOrder = React.createClass({
-  handleClick: function() {
-    if (this.props.columnIndex != null) {
-      this.props.orderBy(this.props.columnIndex);
-    }
-  },
+var TableHeaderCell = (props) => <th className={props.className}>{props.content}</th>;
 
-  render: function () {
-    return (<th className={this.props.className}><a className="orderBy" onClick={this.handleClick}>{this.props.content}</a></th>);
-  }
-});
+var TableRow = (props) => <tr className={props.className}>{props.columns}</tr>;
 
+var TableCell = (props) => <td>{props.content}</td>;
 
-var TableHeaderCell = React.createClass({
-  render: function () {
-    return (<th className={this.props.className}>{this.props.content}</th>);
-  }
-});
-
-var TableRow = React.createClass({
-  render: function() {
-    return (
-      <tr className={this.props.className}>
-        {this.props.columns}
-      </tr>
-    );
-  }
-});
-
-var TableCell = React.createClass({
-  render: function() {
-    return (
-      <td>
-        {this.props.content}
-      </td>
-    );
-  }
-});
-
-
-var SearchField = React.createClass({
-  handleChange: function(e) {
-    this.props.onChange(e.target.value);
-  },
-
-  render: function() {
-    return (
-      <input className="form-control table-input-search"
-        value={this.props.defaultValue}
-        placeholder={this.props.placeholder}
-        type="text"
-        onChange={this.handleChange} />
-    );
-  }
-});
+var SearchField = (props) =>
+  <input className="form-control table-input-search"
+    value={props.defaultValue}
+    placeholder={props.placeholder}
+    type="text"
+    onChange={(e) => props.onChange(e.target.value)}
+  />
+;
 
 module.exports = {
     Table : Table,
