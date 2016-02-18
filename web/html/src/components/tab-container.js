@@ -3,6 +3,14 @@
 var React = require("react");
 
 var TabContainer = React.createClass({
+  propTypes: {
+    labels: React.PropTypes.arrayOf(React.PropTypes.node).isRequired,
+    hashes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired, // must start with #
+    tabs: React.PropTypes.arrayOf(React.PropTypes.node).isRequired,
+    initialActiveTabHash: React.PropTypes.string,
+    onTabHashChange: React.PropTypes.func, // takes a hash parameter
+  },
+
   getInitialState: function() {
     return {activeTabHash: this.sanitizeHash(this.props.initialActiveTabHash)};
   },
