@@ -107,7 +107,7 @@ public class Router implements SparkApplication {
                 withProductAdmin(SubscriptionMatchingController::data));
         get("/manager/subscription-matching/:filename",
                 withProductAdmin(SubscriptionMatchingController::csv));
-        post("/manager/subscription-matching/schedule_matcher_run",
+        post("/manager/subscription-matching/schedule-matcher-run",
                 withProductAdmin(SubscriptionMatchingController::scheduleMatcherRun));
         post("/manager/subscription-matching/pins",
                 withProductAdmin(SubscriptionMatchingController::createPin));
