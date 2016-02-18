@@ -8,9 +8,11 @@ var Table = React.createClass({
 
   getInitialState: function() {
     return {
-      "currentPage": 1, "itemsPerPage": 15,
-      "searchField": "",
-      "columnIndex": 0, "ascending": true
+      currentPage: 1,
+      itemsPerPage: 15,
+      searchField: "",
+      columnIndex: 0,
+      ascending: true
     };
   },
 
@@ -21,7 +23,7 @@ var Table = React.createClass({
     }
     var lastPage = Math.ceil(nextProps.rows.length / nextProps.itemsPerPage);
     if (this.state.currentPage > lastPage) {
-      this.setState({"currentPage": lastPage, "columnIndex" : columnIndex});
+      this.setState({currentPage: lastPage, columnIndex: columnIndex});
     }
   },
 
@@ -33,7 +35,7 @@ var Table = React.createClass({
     else {
       ascending = true;
     }
-    this.setState({"columnIndex": columnIndex, "ascending": ascending});
+    this.setState({columnIndex: columnIndex, ascending: ascending});
   },
 
   getRows: function(unfilteredRows, searchValue) {
@@ -57,22 +59,22 @@ var Table = React.createClass({
   },
 
   goToPage:function(page) {
-    this.setState({"currentPage": page});
+    this.setState({currentPage: page});
   },
 
   onItemsPerPageChange: function(itemsPerPage) {
-    this.setState({"itemsPerPage": itemsPerPage});
+    this.setState({itemsPerPage: itemsPerPage});
     var lastPage = this.lastPage(this.getRows(this.props.rows, this.state.searchField), itemsPerPage);
     if (this.state.currentPage > lastPage) {
-      this.setState({"currentPage": lastPage });
+      this.setState({currentPage: lastPage });
     }
   },
 
   onSearchFieldChange: function(searchValue) {
-    this.setState({"searchField": searchValue});
+    this.setState({searchField: searchValue});
     var lastPage =  this.lastPage(this.getRows(this.props.rows, searchValue), this.state.itemsPerPage);
     if (this.state.currentPage > lastPage) {
-      this.setState({"currentPage": lastPage });
+      this.setState({currentPage: lastPage});
     }
   },
 

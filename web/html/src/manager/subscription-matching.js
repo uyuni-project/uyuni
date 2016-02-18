@@ -10,18 +10,18 @@ var TabContainer = TabContainerComponent.TabContainer;
 
 var SubscriptionMatching = React.createClass({
   getInitialState: function() {
-    return {"activeTabHash": document.location.hash};
+    return {activeTabHash: document.location.hash};
   },
 
   refreshServerData: function() {
     this.refreshRequest = $.get("/rhn/manager/subscription-matching/data", data => {
-      this.setState({"serverData" : data});
+      this.setState({serverData: data});
     });
   },
 
   componentWillMount: function() {
     window.addEventListener("popstate", () => {
-      this.setState({"activeTabHash": document.location.hash});
+      this.setState({activeTabHash: document.location.hash});
     });
 
     this.refreshServerData();
@@ -38,7 +38,7 @@ var SubscriptionMatching = React.createClass({
 
   onTabHashChange: function(hash) {
     history.pushState(null, null, hash);
-    this.setState({"activeTabHash": hash});
+    this.setState({activeTabHash: hash});
   },
 
   render: function() {
@@ -113,33 +113,33 @@ var SubscriptionMatching = React.createClass({
 var MatcherRunPanel = React.createClass({
   getInitialState: function() {
     return {
-      "latestStart": this.props.initialLatestStart,
-      "latestEnd": this.props.initialLatestEnd,
-      "error": false,
+      latestStart: this.props.initialLatestStart,
+      latestEnd: this.props.initialLatestEnd,
+      error: false,
     }
   },
 
   componentWillReceiveProps: function(nextProps) {
     if (this.state.latestStart == null || nextProps.initialLatestStart >= this.state.latestStart) {
       this.setState({
-        "latestStart": nextProps.initialLatestStart,
-        "latestEnd": nextProps.initialLatestEnd,
-        "error": false,
+        latestStart: nextProps.initialLatestStart,
+        latestEnd: nextProps.initialLatestEnd,
+        error: false,
       });
     }
   },
 
   onScheduled: function() {
     this.setState({
-        "latestStart": new Date().toJSON(),
-        "latestEnd": null,
-        "error": false,
+        latestStart: new Date().toJSON(),
+        latestEnd: null,
+        error: false,
       }
     );
   },
 
   onError: function() {
-    this.setState({"error" : true});
+    this.setState({error: true});
   },
 
   render: function() {
@@ -487,7 +487,7 @@ var Pins = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
-    return {"showPopUp": false};
+    return {showPopUp: false};
   },
 
   rowComparator: function(a, b, columnIndex, ascending) {
@@ -518,16 +518,16 @@ var Pins = React.createClass({
   },
 
   showPopUp: function() {
-    this.setState({"showPopUp" : true});
+    this.setState({showPopUp: true});
   },
 
   closePopUp: function() {
-    this.setState({"showPopUp" : false});
+    this.setState({showPopUp: false});
   },
 
   savePin: function(systemId, subscriptionId) {
     $.post("/rhn/manager/subscription-matching/pins",
-      {"system_id": systemId, "subscription_id": subscriptionId},
+      {system_id: systemId, subscription_id: subscriptionId},
       data => {this.props.onPinChanged(data);}
     );
     $("#addPinPopUp").modal("hide"); //to trigger popup close action
@@ -580,7 +580,7 @@ function pinnedMatchesToRows(pins, systems, subscriptions, onClickAction) {
     var systemType = system == null ? null : system.type;
     var subscription = subscriptions[p.subscriptionId];
     var subscriptionDescription = subscription == null ? "Subscription " + p.subscriptionId : subscription.description;
-    var subscriptionPolicy = subscription == null ? " ": subscription.policy;
+    var subscriptionPolicy = subscription == null ? " " : subscription.policy;
     var subscriptionEndDate = subscription == null ? " " : subscription.endDate;
     var subscriptionPartNumber = subscription == null ? "" : subscription.partNumber;
     var columns = [
@@ -603,9 +603,13 @@ function pinnedMatchesToRows(pins, systems, subscriptions, onClickAction) {
       />
     ];
     var rawData = {
-      "id": p.id,"systemName": systemName, "subscriptionDescription": subscriptionDescription,
-      "subscriptionPolicy": subscriptionPolicy, "subscriptionEndDate": subscriptionEndDate,
-      "subscriptionPartNumber": subscriptionPartNumber, "status": p.status
+      id: p.id,
+      systemName: systemName,
+      subscriptionDescription: subscriptionDescription,
+      subscriptionPolicy: subscriptionPolicy,
+      subscriptionEndDate: subscriptionEndDate,
+      subscriptionPartNumber: subscriptionPartNumber,
+      status: p.status
    };
     return <TableRow columns={columns} rawData={rawData} />
   });
@@ -659,15 +663,15 @@ var PinButton = React.createClass({
 
 var AddPinPopUp = React.createClass({
   getInitialState:function() {
-    return {"systemId":null};
+    return {systemId: null};
   },
 
   onBackClicked: function () {
-    this.setState({"systemId": null});
+    this.setState({systemId: null});
   },
 
   onSystemSelected:function(systemId) {
-    this.setState({"systemId": systemId});
+    this.setState({systemId: systemId});
   },
 
   onSubscriptionSelected: function(subscriptionId) {

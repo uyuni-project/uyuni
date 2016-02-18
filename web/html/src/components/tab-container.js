@@ -4,7 +4,7 @@ var React = require("react");
 
 var TabContainer = React.createClass({
   getInitialState: function() {
-    return {"activeTabHash" : this.sanitizeHash(this.props.initialActiveTabHash)};
+    return {activeTabHash: this.sanitizeHash(this.props.initialActiveTabHash)};
   },
 
   sanitizeHash: function(hash) {
@@ -14,11 +14,11 @@ var TabContainer = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState({"activeTabHash": this.sanitizeHash(nextProps.initialActiveTabHash)});
+    this.setState({activeTabHash: this.sanitizeHash(nextProps.initialActiveTabHash)});
   },
 
   show: function(tabHash) {
-    this.setState({"activeTabHash": tabHash});
+    this.setState({activeTabHash: tabHash});
     if (this.props.onTabHashChange) {
       this.props.onTabHashChange(tabHash);
     }
