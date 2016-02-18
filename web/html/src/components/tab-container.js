@@ -26,19 +26,21 @@ var TabContainer = React.createClass({
   },
 
   render: function() {
-    var tabLabels = this.props.hashes.map((hash, i) => {
+    const labels = this.props.hashes.map((hash, i) => {
       const label = this.props.labels[i];
       return <TabLabel onClick={() => this.onActiveTabChange(hash)} text={label} active={this.state.activeTabHash == hash} hash={hash} />;
     });
+
+    const tab = this.props.tabs[this.props.hashes.indexOf(this.state.activeTabHash)];
 
     return (
       <div>
         <div className="spacewalk-content-nav">
           <ul className="nav nav-tabs">
-            {tabLabels}
+            {labels}
           </ul>
         </div>
-        {this.props.panels[this.props.hashes.indexOf(this.state.activeTabHash)]}
+        {tab}
       </div>
     );
   }
