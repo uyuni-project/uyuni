@@ -7,14 +7,14 @@ var TabContainer = React.createClass({
     return {activeTabHash: this.sanitizeHash(this.props.initialActiveTabHash)};
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({activeTabHash: this.sanitizeHash(nextProps.initialActiveTabHash)});
+  },
+
   sanitizeHash: function(hash) {
     return this.props.hashes.indexOf(hash) >= 0 ?
       hash :
       this.props.hashes[0];
-  },
-
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({activeTabHash: this.sanitizeHash(nextProps.initialActiveTabHash)});
   },
 
   show: function(tabHash) {

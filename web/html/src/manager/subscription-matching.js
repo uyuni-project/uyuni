@@ -13,12 +13,6 @@ var SubscriptionMatching = React.createClass({
     return {activeTabHash: document.location.hash};
   },
 
-  refreshServerData: function() {
-    this.refreshRequest = $.get("/rhn/manager/subscription-matching/data", data => {
-      this.setState({serverData: data});
-    });
-  },
-
   componentWillMount: function() {
     window.addEventListener("popstate", () => {
       this.setState({activeTabHash: document.location.hash});
@@ -26,6 +20,12 @@ var SubscriptionMatching = React.createClass({
 
     this.refreshServerData();
     setInterval(this.refreshServerData, this.props.refreshInterval);
+  },
+
+  refreshServerData: function() {
+    this.refreshRequest = $.get("/rhn/manager/subscription-matching/data", data => {
+      this.setState({serverData: data});
+    });
   },
 
   onPinChanged: function(pinnedMatches) {
