@@ -53,6 +53,5 @@ var TabLabel = (props) =>
 ;
 
 module.exports = {
-    TabContainer : TabContainer,
-    TabLabel : TabLabel
+    TabContainer : TabContainer
 }
