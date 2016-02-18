@@ -46,15 +46,11 @@ var TabContainer = React.createClass({
   }
 });
 
-var TabLabel = React.createClass({
-  render: function() {
-    return(
-      <li className={this.props.active ? "active" : ""}>
-        <a href={this.props.hash} onClick={this.props.onClick}>{this.props.text}</a>
-      </li>
-    );
-  }
-});
+var TabLabel = (props) =>
+  <li className={props.active ? "active" : ""}>
+    <a href={props.hash} onClick={props.onClick}>{props.text}</a>
+  </li>
+;
 
 module.exports = {
     TabContainer : TabContainer,
