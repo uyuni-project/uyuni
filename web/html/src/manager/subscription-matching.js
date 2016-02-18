@@ -3,10 +3,12 @@
 var React = require("react");
 var TableComponent = require("../components/table");
 var TabContainerComponent = require("../components/tab-container");
+var UtilComponent = require("../components/util");
 var Table = TableComponent.Table;
 var TableCell = TableComponent.TableCell;
 var TableRow = TableComponent.TableRow;
 var TabContainer = TabContainerComponent.TabContainer;
+var StatePersistedMixin = UtilComponent.StatePersistedMixin;
 
 var SubscriptionMatching = React.createClass({
   getInitialState: function() {
@@ -218,21 +220,6 @@ var MatcherScheduleButton = React.createClass({
     );
   }
 });
-
-var StatePersistedMixin = {
-  componentWillMount: function() {
-    if (this.props.loadState) {
-      if (this.props.loadState()) {
-        this.state = this.props.loadState();
-      }
-    }
-  },
-  componentWillUnmount: function() {
-    if (this.props.saveState) {
-      this.props.saveState(this.state);
-    }
-  },
-};
 
 var UnmatchedSystems = React.createClass({
   mixins: [StatePersistedMixin],
