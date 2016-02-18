@@ -173,36 +173,32 @@ var MatcherRunPanel = React.createClass({
   }
 });
 
-var MatcherRunDescription = React.createClass({
-  render: function() {
-    if (this.props.error) {
-      return <div className="text-danger">{t("Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running.")}</div>
-    }
-
-    if (this.props.latestStart == null) {
-      return (<div>
-        {t("No match data is currently available.")}<br/>
-        {t("You can also trigger a first run now by clicking the button below.")}
-      </div>);
-    }
-
-    if (this.props.latestEnd == null) {
-      return <div>{t("Matching data is currently being recomputed, it was started {0}.", moment(this.props.latestStart).fromNow())}</div>;
-    }
-
-    return <div>{t("Latest successful match data was computed {0}, you can trigger a new run by clicking the button below.", moment(this.props.latestEnd).fromNow())}</div>;
+var MatcherRunDescription = (props) => {
+  if (props.error) {
+    return <div className="text-danger">{t("Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running.")}</div>
   }
-});
 
-var MatcherTaskDescription = React.createClass({
-  render: function() {
+  if (props.latestStart == null) {
     return (<div>
-      {t("Match data is computed via a task schedule, nightly by default (you can ")}
-      <a href="/rhn/admin/BunchDetail.do?label=gatherer-matcher-bunch">{t("change the task schedule from the administration page")}</a>
-      {t("). ")}
+      {t("No match data is currently available.")}<br/>
+      {t("You can also trigger a first run now by clicking the button below.")}
     </div>);
   }
-});
+
+  if (props.latestEnd == null) {
+    return <div>{t("Matching data is currently being recomputed, it was started {0}.", moment(props.latestStart).fromNow())}</div>;
+  }
+
+  return <div>{t("Latest successful match data was computed {0}, you can trigger a new run by clicking the button below.", moment(props.latestEnd).fromNow())}</div>;
+}
+
+var MatcherTaskDescription = () =>
+  <div>
+    {t("Match data is computed via a task schedule, nightly by default (you can ")}
+    <a href="/rhn/admin/BunchDetail.do?label=gatherer-matcher-bunch">{t("change the task schedule from the administration page")}</a>
+    {t("). ")}
+  </div>
+;
 
 var MatcherScheduleButton = React.createClass({
   onClick: function() {
@@ -589,8 +585,7 @@ function pinnedMatchesToRows(pins, systems, subscriptions, onClickAction) {
       <TableCell content={<PinStatus status={p.status} />} />,
       <TableCell content={
         <PinButton
-          onClick={onClickAction}
-          elementId={p.id}
+          onClick={() => onClickAction(p.id)}
           content={<span><i className="fa fa-trash-o"></i>{t("Delete Pin")}</span>}
          />
         }
@@ -609,51 +604,39 @@ function pinnedMatchesToRows(pins, systems, subscriptions, onClickAction) {
   });
 }
 
-var SystemLabel = React.createClass({
-  render: function() {
-    var icon;
-    if (this.props.type == "nonVirtual") {
-      icon = <i className="fa fa-desktop"></i>;
-    }
-    else if (this.props.type == "virtualHost") {
-      icon = <i className="fa spacewalk-icon-virtual-host"></i>;
-    }
-    else if (this.props.type == "virtualGuest") {
-      icon = <i className="fa spacewalk-icon-virtual-guest"></i>;
-    }
-    else {
-      icon = null;
-    }
-
-    return <span>{icon} {this.props.name}</span>;
+var SystemLabel = (props) => {
+  var icon;
+  if (props.type == "nonVirtual") {
+    icon = <i className="fa fa-desktop"></i>;
   }
-});
-
-var PinStatus = React.createClass({
-  render: function() {
-    return (
-      this.props.status == "pending" ?
-      <span><i className="fa fa-hourglass-start pin-report-icon"></i><em>{t("pending next run")}</em></span> :
-        this.props.status == "satisfied" ?
-        <span><i className="fa fa-check text-success pin-report-icon"></i>{t("satisfied")}</span> :
-        <span><i className="fa fa-exclamation-triangle text-warning pin-report-icon"></i>{t("not satisfied")}</span>
-    );
+  else if (props.type == "virtualHost") {
+    icon = <i className="fa spacewalk-icon-virtual-host"></i>;
   }
-});
-
-var PinButton = React.createClass({
-  onClick: function() {
-    this.props.onClick(this.props.elementId);
-  },
-
-  render: function() {
-    return (
-      <button className="btn btn-default btn-cell" onClick={this.onClick}>
-        {this.props.content}
-      </button>
-    );
+  else if (props.type == "virtualGuest") {
+    icon = <i className="fa spacewalk-icon-virtual-guest"></i>;
   }
-})
+  else {
+    icon = null;
+  }
+
+  return <span>{icon} {props.name}</span>;
+}
+
+var PinStatus = (props) => {
+  if (props.status == "pending") {
+    return <span><i className="fa fa-hourglass-start pin-report-icon"></i><em>{t("pending next run")}</em></span>;
+  }
+  if (props.status == "satisfied") {
+    return <span><i className="fa fa-check text-success pin-report-icon"></i>{t("satisfied")}</span>;
+  }
+  return <span><i className="fa fa-exclamation-triangle text-warning pin-report-icon"></i>{t("not satisfied")}</span>;
+}
+
+var PinButton = (props) =>
+  <button className="btn btn-default btn-cell" onClick={props.onClick}>
+    {props.content}
+  </button>
+;
 
 var AddPinPopUp = React.createClass({
   getInitialState:function() {
@@ -707,22 +690,20 @@ var AddPinPopUp = React.createClass({
   }
 });
 
-var PinSubscriptionSelector = React.createClass({
-  render: function(){
-    if (this.props.subscriptions.length > 0) {
-      return <Table headers={[t("Part number"),t("Description"), t("Policy"), t("End date"), t("")]}
-          rows={
-            possibleSubscriptionToRow(
-              this.props.subscriptions,
-              this.props.onSubscriptionSelected)
-            }
-        />;
-    }
-    else {
-      return <p>{t("No matching subscriptions for this systems have been found.")}</p>
-    }
+var PinSubscriptionSelector = (props) => {
+  if (props.subscriptions.length > 0) {
+    return <Table headers={[t("Part number"),t("Description"), t("Policy"), t("End date"), t("")]}
+        rows={
+          possibleSubscriptionToRow(
+            props.subscriptions,
+            props.onSubscriptionSelected)
+          }
+      />;
   }
-});
+  else {
+    return <p>{t("No matching subscriptions for this systems have been found.")}</p>
+  }
+}
 
 function systemsForPinningToRow(systems, onClickAction) {
   return Object.keys(systems).map((k) => {
@@ -732,8 +713,7 @@ function systemsForPinningToRow(systems, onClickAction) {
       <TableCell content={s.cpuCount} />,
       <TableCell content={
         <PinButton
-          onClick={onClickAction}
-          elementId={k}
+          onClick={() => onClickAction(k)}
           content={<span>{t("Select")} <i className="fa fa-arrow-right fa-right"></i></span>}
         />}
       />
@@ -754,8 +734,7 @@ function possibleSubscriptionToRow(possibleSubscriptions, onClickAction) {
       />,
       <TableCell content={
         <PinButton
-          onClick={onClickAction}
-          elementId={s.id}
+          onClick={() => onClickAction(s.id)}
           content={<span><i className="fa fa-map-pin"></i>{t("Save Pin")}</span>}
         />}
       />
@@ -789,52 +768,37 @@ var PopUp = React.createClass({
   }
 });
 
-var QuantityCell = React.createClass({
-  render: function() {
-    var matched = this.props.matched;
-    var total = this.props.total;
-    var content = matched + "/" + total;
+var QuantityCell = (props) => {
+  var matched = props.matched;
+  var total = props.total;
+  var content = matched + "/" + total;
 
-    return (
-      matched == total ?
-        <TableCell content={<StrongText className="bg-danger" content={content} />} /> :
-        <TableCell content={content} />
-    );
+  if (matched == total) {
+    return <TableCell content={<StrongText className="bg-danger" content={content} />} />;
   }
-});
+  return <TableCell content={content} />;
+}
 
-var StrongText = React.createClass({
-  render: function() {
-    return (
-      <strong className={this.props.className}>
-        {this.props.content}
-      </strong>
-    );
-  }
-});
+var StrongText = (props) =>
+  <strong className={props.className}>
+    {props.content}
+  </strong>
+;
 
-var ToolTip = React.createClass({
-  render: function() {
-    return (
-      <span title={this.props.title}>
-        {this.props.content}
-      </span>
-    );
-  }
-});
+var ToolTip = (props) =>
+  <span title={props.title}>
+    {props.content}
+  </span>
+;
 
-var CsvLink = React.createClass({
-  render: function() {
-    return (
-      <div className="spacewalk-csv-download">
-        <a className="btn btn-link" href={"/rhn/manager/subscription-matching/" + this.props.name}>
-          <i className="fa spacewalk-icon-download-csv"></i>
-          {t("Download CSV")}
-        </a>
-      </div>
-    );
-  }
-});
+var CsvLink = (props) =>
+  <div className="spacewalk-csv-download">
+    <a className="btn btn-link" href={"/rhn/manager/subscription-matching/" + props.name}>
+      <i className="fa spacewalk-icon-download-csv"></i>
+      {t("Download CSV")}
+    </a>
+  </div>
+;
 
 React.render(
   <SubscriptionMatching refreshInterval={5000} />,
