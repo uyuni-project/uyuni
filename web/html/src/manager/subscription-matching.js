@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var React = require("react");
 var TableComponent = require("../components/table");
@@ -530,7 +530,7 @@ var Pins = React.createClass({
       {"system_id": systemId, "subscription_id": subscriptionId},
       data => {this.props.onPinChanged(data);}
     );
-    $("#addPinPopUp").modal('hide'); //to trigger popup close action
+    $("#addPinPopUp").modal("hide"); //to trigger popup close action
     this.closePopUp();
   },
 
@@ -768,7 +768,7 @@ function possibleSubscriptionToRow(possibleSubscriptions, onClickAction) {
 
 var PopUp = React.createClass({
   componentDidMount: function() {
-    $("#" + this.props.id).on('hidden.bs.modal', this.props.onClosePopUp);
+    $("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
   },
 
   render: function() {
@@ -840,5 +840,5 @@ var CsvLink = React.createClass({
 
 React.render(
   <SubscriptionMatching refreshInterval={5000} />,
-  document.getElementById('subscription-matching')
+  document.getElementById("subscription-matching")
 );
