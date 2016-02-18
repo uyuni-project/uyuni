@@ -265,10 +265,5 @@ var SearchField = React.createClass({
 module.exports = {
     Table : Table,
     TableCell : TableCell,
-    TableRow : TableRow,
-    SearchField : SearchField,
-    TableHeaderCell : TableHeaderCell,
-    TableHeaderCellOrder : TableHeaderCellOrder,
-    PageSelector : PageSelector,
-    PaginationButton : PaginationButton
+    TableRow : TableRow
 }
