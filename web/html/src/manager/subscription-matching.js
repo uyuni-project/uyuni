@@ -4,11 +4,13 @@ var React = require("react");
 var TableComponent = require("../components/table");
 var TabContainerComponent = require("../components/tab-container");
 var UtilComponent = require("../components/util");
+var PopUpComponent = require("../components/popup");
 var Table = TableComponent.Table;
 var TableCell = TableComponent.TableCell;
 var TableRow = TableComponent.TableRow;
 var TabContainer = TabContainerComponent.TabContainer;
 var StatePersistedMixin = UtilComponent.StatePersistedMixin;
+var PopUp = PopUpComponent.PopUp;
 
 var SubscriptionMatching = React.createClass({
   getInitialState: function() {
@@ -742,31 +744,6 @@ function possibleSubscriptionToRow(possibleSubscriptions, onClickAction) {
     return <TableRow columns={columns} rawData={s} />
   });
 }
-
-var PopUp = React.createClass({
-  componentDidMount: function() {
-    $("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
-  },
-
-  render: function() {
-    return (
-      <div className="modal fade" tabindex="-1" role="dialog" aria-labelledby="addPinPopUpLabel" id={this.props.id} >
-        <div className={"modal-dialog " + this.props.className}>
-          <div className="modal-content">
-            <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <h4 className="modal-title">{this.props.title}</h4>
-            </div>
-            <div className="modal-body">{this.props.content}</div>
-            {this.props.footer ? <div className="modal-footer">{this.props.footer}</div> : null}
-          </div>
-        </div>
-      </div>
-    );
-  }
-});
 
 var QuantityCell = (props) => {
   var matched = props.matched;
