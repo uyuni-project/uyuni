@@ -21,7 +21,7 @@ var Table = React.createClass({
     if (this.props.sortableColumns) {
       columnIndex = this.props.sortableColumns[0];
     }
-    var lastPage = Math.ceil(nextProps.rows.length / nextProps.itemsPerPage);
+    var lastPage = Math.ceil(nextProps.rows.length / this.state.itemsPerPage);
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage, columnIndex: columnIndex});
     }
