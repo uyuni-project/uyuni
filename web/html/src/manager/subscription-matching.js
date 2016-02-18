@@ -63,7 +63,7 @@ var SubscriptionMatching = React.createClass({
       <TabContainer
         labels={[t("Subscriptions"), t("Unmatched Systems"), <span>{t("Pins ")}{pinLabelIcon}</span>, <span>{t("Messages ")}{messageLabelIcon}</span>]}
         hashes={["#subscriptions", "#unmatched-systems", "#pins", "#messages"]}
-        panels={[
+        tabs={[
           <Subscriptions
             subscriptions={subscriptions}
             saveState={(state) => {this.state["subscriptionTableState"] = state;}}
