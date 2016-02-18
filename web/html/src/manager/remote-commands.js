@@ -1,5 +1,10 @@
 'use strict';
 
+const React = require("react");
+const Buttons = require("../components/buttons");
+
+const AsyncButton = Buttons.AsyncButton;
+
 function object2map(obj) {
   return Object.keys(obj).reduce((acc, id) => {
     acc.set(id, obj[id]);
@@ -89,21 +94,25 @@ class RemoteCommand extends React.Component {
     var button = null;
     switch (this.state.action) {
         case "none":
-            button = <button className="btn btn-success" onClick={this.onPreview}>{t("Preview")}</button>
+//            button = <button className="btn btn-success" onClick={this.onPreview}>{t("Preview")}</button>
+            button = <AsyncButton name={t("Preview")} action={this.search} />;
             break;
         case "matching":
-            button = <button className="btn btn-default" disabled="true">
-                <i className="fa fa-circle-o-notch fa-spin"></i>{t("Preview")}
-            </button>
+            button = <AsyncButton name={t("Preview")} action={this.search} />;
+
+//          button = <button className="btn btn-default" disabled="true">
+//                <i className="fa fa-circle-o-notch fa-spin"></i>{t("Preview")}
+//            </button>
             break;
-        case "matched":
-        case "runned":
-            button = <button className="btn btn-success" onClick={this.onRun}>{t("Run")}</button>
-            break;
+//        case "matched":
+//        case "runned":
+//            button = <button className="btn btn-success" onClick={this.onRun}>{t("Run")}</button>
+//            break;
         case "running":
-            button = <button disabled="true" className="btn btn-default">
-                <i className="fa fa-circle-o-notch fa-spin"></i>{t("Running")}
-            </button>
+            button = <AsyncButton name={t("Run")} action={this.onRun} />;
+//            button = <button disabled="true" className="btn btn-default">
+//                <i className="fa fa-circle-o-notch fa-spin"></i>{t("Running")}
+//            </button>
             break;
     }
 
@@ -116,7 +125,7 @@ class RemoteCommand extends React.Component {
               {t("Remote Commands")}
             </h1>
           </div>
-          <div className="panel panel-default">
+          <div className="panel panel-default">Search
             <div className="panel-body">
               <div className="row">
                 <div className="col-lg-12">
@@ -144,7 +153,7 @@ class RemoteCommand extends React.Component {
     const target = this.state.target;
     console.log(cmd);
     this.setState({action: "matching"});
-    $.get("/rhn/manager/api/minions/match?target=" + target, data => {
+    return $.get("/rhn/manager/api/minions/match?target=" + target, data => {
       console.log(data);
       this.setState({
         started: false,
@@ -155,10 +164,10 @@ class RemoteCommand extends React.Component {
           }, new Map())
         }
       });
-    })
-    .always(() => {
-       this.setState({action: "matched"});
     });
+//    .always(() => {
+//       this.setState({action: "matched"});
+//    });
   }
 
   onRun() {
@@ -195,9 +204,9 @@ class RemoteCommand extends React.Component {
         } catch (err) {
         }
     })
-    .always(() => {
-        this.setState({action: "runned"});
-    });
+//    .always(() => {
+//        this.setState({action: "runned"});
+//    });
   }
 
   targetChanged(event) {
