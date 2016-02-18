@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var StatePersistedMixin = {
   componentWillMount: function() {
@@ -18,4 +18,3 @@ var StatePersistedMixin = {
 module.exports = {
     StatePersistedMixin : StatePersistedMixin
 }
-
