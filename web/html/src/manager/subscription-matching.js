@@ -197,7 +197,7 @@ var MatcherTaskDescription = React.createClass({
 
 var MatcherScheduleButton = React.createClass({
   onClick: function() {
-    $.post("/rhn/manager/subscription-matching/schedule_matcher_run")
+    $.post("/rhn/manager/subscription-matching/schedule-matcher-run")
       .error(() => { this.props.onError(); });
     this.props.onScheduled();
   },
