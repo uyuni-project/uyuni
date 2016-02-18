@@ -174,6 +174,10 @@ var Table = React.createClass({
   }
 });
 
+var TableRow = (props) => <tr className={props.className}>{props.columns}</tr>;
+
+var TableCell = (props) => <td>{props.content}</td>;
+
 var PaginationButton = (props) =>
   <button type="button" className="btn btn-default"
     disabled={props.disabled} onClick={props.onClick}>
@@ -198,10 +202,6 @@ var TableHeaderCellOrder = (props) =>
 ;
 
 var TableHeaderCell = (props) => <th className={props.className}>{props.content}</th>;
-
-var TableRow = (props) => <tr className={props.className}>{props.columns}</tr>;
-
-var TableCell = (props) => <td>{props.content}</td>;
 
 var SearchField = (props) =>
   <input className="form-control table-input-search"
