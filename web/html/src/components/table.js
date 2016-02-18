@@ -6,6 +6,15 @@ var StatePersistedMixin = require("./util").StatePersistedMixin
 var Table = React.createClass({
   mixins: [StatePersistedMixin],
 
+  propTypes: {
+    headers: React.PropTypes.arrayOf(React.PropTypes.node).isRequired,
+    rows: React.PropTypes.arrayOf(React.PropTypes.node).isRequired,
+    dataFilter: React.PropTypes.func, // (row, searchString) -> boolean
+    searchPlaceholder: React.PropTypes.string, // required with dataFilter
+    rowComparator: React.PropTypes.func, // (row1, row2, columnIndex, ascending) -> -1/0/+1
+    sortableColumns: React.PropTypes.arrayOf(React.PropTypes.number), // required with rowComparator
+  },
+
   getInitialState: function() {
     return {
       currentPage: 1,
