@@ -840,5 +840,5 @@ var CsvLink = React.createClass({
 
 React.render(
   <SubscriptionMatching refreshInterval={5000} />,
-  document.getElementById('subscription_matching')
+  document.getElementById('subscription-matching')
 );
