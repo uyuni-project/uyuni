@@ -43,6 +43,12 @@ var SubscriptionMatching = React.createClass({
     this.setState({activeTabHash: hash});
   },
 
+  onMatcherRunSchedule: function() {
+    if (this.refreshRequest) {
+      this.refreshRequest.abort();
+    }
+  },
+
   render: function() {
     var data = this.state.serverData;
     var latestStart = data == null ? null : data.latestStart;
@@ -106,7 +112,7 @@ var SubscriptionMatching = React.createClass({
           <h1><i className="fa spacewalk-icon-subscription-counting"></i>{t("Subscription Matching")}</h1>
         </div>
         {tabContainer}
-        <MatcherRunPanel dataAvailable={data != null} initialLatestStart={latestStart} initialLatestEnd={latestEnd} />
+        <MatcherRunPanel dataAvailable={data != null} initialLatestStart={latestStart} initialLatestEnd={latestEnd} onMatcherRunSchedule={this.onMatcherRunSchedule} />
       </div>
     );
   }
@@ -138,6 +144,7 @@ var MatcherRunPanel = React.createClass({
         error: false,
       }
     );
+    this.props.onMatcherRunSchedule();
   },
 
   onError: function() {
