@@ -70,7 +70,7 @@ class YumSrcTest(unittest.TestCase):
         mocked_sack = Mock(return_value=[])
         cs.sack.returnPackages = mocked_sack
 
-        self.assertEqual(cs.list_packages(filters=None), [])
+        self.assertEqual(cs.list_packages(filters=None, latest=False), [])
 
     def test_list_packages_with_pack(self):
         cs = self._make_dummy_cs()
