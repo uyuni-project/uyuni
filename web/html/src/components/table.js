@@ -53,8 +53,12 @@ var Table = React.createClass({
     return this.props.rows.filter(filter).sort(comparator);
   },
 
-  lastPage: function(rows, itemsPerPage) {
-    var lastPage = Math.ceil(rows.length / itemsPerPage);
+  lastPage: function() {
+    const rowCount = this.props.rowFilter ?
+      this.props.rows.filter((row) => this.props.rowFilter(row, this.props.filterText)).length :
+      this.props.rows.length;
+
+    const lastPage = Math.ceil(rowCount / this.state.itemsPerPage);
     if (lastPage == 0) {
       return 1;
     }
@@ -67,7 +71,7 @@ var Table = React.createClass({
 
   onItemsPerPageChange: function(itemsPerPage) {
     this.setState({itemsPerPage: itemsPerPage});
-    var lastPage = this.lastPage(this.getProcessedRows(), itemsPerPage);
+    var lastPage = this.lastPage();
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage });
     }
@@ -75,7 +79,7 @@ var Table = React.createClass({
 
   onSearchFieldChange: function(searchValue) {
     this.setState({filterText: searchValue});
-    var lastPage =  this.lastPage(this.getProcessedRows(), this.state.itemsPerPage);
+    var lastPage =  this.lastPage();
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage});
     }
@@ -85,7 +89,7 @@ var Table = React.createClass({
     var rows = this.getProcessedRows();
     var itemsPerPage = this.state.itemsPerPage;
     var itemCount = rows.length;
-    var lastPage = this.lastPage(rows, itemsPerPage);
+    var lastPage = this.lastPage();
     var currentPage = this.state.currentPage;
 
     var firstItemIndex = (currentPage - 1) * itemsPerPage;
