@@ -114,8 +114,7 @@ var Table = React.createClass({
                 {searchField} {itemCounter}
               </div>
               <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
-                <PageSelector className="display-number"
-                  options={[5,10,15,25,50,100,250,500]}
+                <ItemsPerPageSelector
                   currentValue={itemsPerPage}
                   onChange={this.onItemsPerPageChange}
                 /> {t("items per page")}
@@ -124,22 +123,24 @@ var Table = React.createClass({
           </div>
           <div className="table-responsive">
             <table className="table table-striped">
-              <TableHeader
-                content={
-                  this.props.headers.map((header, index) => {
+              <TableHeader content={
+                this.props.headers.map((header, index) => {
+                  const sortable = this.props.sortableColumnIndexes &&
+                    this.props.sortableColumnIndexes.indexOf(index) >= 0;
+
+                  if (sortable) {
                     var className;
                     if (index == this.state.sortColumnIndex) {
                       className = (this.state.sortAscending ? "asc" : "desc") + "Sort";
                     }
-                    return (
-                        (this.props.sortableColumnIndexes &&
-                          this.props.sortableColumnIndexes.filter((element) => element == index).length > 0) ?
-                        <TableHeaderCellOrder className={className} content={header}
-                          orderBy={() => this.onSortColumnIndexChange(index)} /> :
-                        <TableHeaderCell className={className} content={header} />
-                    );
-                  })}
-              />
+                    return <SortableTableHeader className={className} content={header}
+                      orderBy={() => this.onSortColumnIndexChange(index)} />;
+                  }
+                  else {
+                    return <th>{header}</th>;
+                  }
+                })
+              } />
               <tbody className="table-content">
                 {rows
                   .filter((element, i) => i >= firstItemIndex && i < firstItemIndex + itemsPerPage)
@@ -194,23 +195,21 @@ var PaginationButton = (props) =>
   </button>
 ;
 
-var PageSelector = (props) =>
-  <select className={props.className}
+var ItemsPerPageSelector = (props) =>
+  <select className="display-number"
     defaultValue={props.currentValue}
     onChange={(e) => props.onChange(parseInt(e.target.value))}>
-      {props.options.map((o) => <option value={o}>{o}</option>)}
+      {[5,10,15,25,50,100,250,500].map((o) => <option value={o}>{o}</option>)}
   </select>
 ;
 
 var TableHeader = (props) => <thead><tr>{props.content}</tr></thead>;
 
-var TableHeaderCellOrder = (props) =>
+var SortableTableHeader = (props) =>
   <th className={props.className}>
     <a className="orderBy" onClick={props.orderBy}>{props.content}</a>
   </th>
 ;
-
-var TableHeaderCell = (props) => <th className={props.className}>{props.content}</th>;
 
 var SearchField = (props) =>
   <input className="form-control table-input-search"
