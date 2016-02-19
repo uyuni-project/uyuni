@@ -366,7 +366,12 @@ var Subscriptions = React.createClass({
     var aRaw = a.props["rawData"];
     var bRaw = b.props["rawData"];
     var result = 0;
-    if (columnKey == "quantity") {
+    if (columnKey == "policy") {
+      var aValue = humanReadablePolicy(aRaw[columnKey]);
+      var bValue = humanReadablePolicy(bRaw[columnKey]);
+      result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+    }
+    else if (columnKey == "quantity") {
       var aMatched = aRaw["matchedQuantity"];
       var aTotal = aRaw["totalQuantity"];
       var bMatched = bRaw["matchedQuantity"];
