@@ -1,6 +1,6 @@
 # Container used to test cobbler against suse manager head
 #
-# VERSION               1.0.0
+# VERSION               1.0.3
 
 FROM suma-docker-registry.suse.de/sles12sp1:0.1.0
 MAINTAINER Michael Calmer "mc@suse.com"
