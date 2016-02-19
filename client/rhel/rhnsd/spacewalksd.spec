@@ -5,7 +5,7 @@
 %define rhnsd		 spacewalksd
 #
 Name: spacewalksd
-Version: 5.0.17.2
+Version: 5.0.19
 Release: 1%{?dist}
 Summary: Spacewalk query daemon
 License: GPL-2.0
@@ -197,6 +197,15 @@ rm -fr $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Thu Feb 18 2016 Jan Dobes 5.0.19-1
+- do not keep this file in git
+- delete file with input files after template is created
+- pulling *.po translations from Zanata
+- fixing current *.po translations
+
+* Wed Sep 23 2015 Jan Dobes 5.0.18-1
+- Pulling updated *.po translations from Zanata.
+
 * Tue Jun 23 2015 Jan Dobes 5.0.17-1
 - 1138939 - up2date and systemid files are managed by rhnsd itself, no need to
   break init script if they do not exist

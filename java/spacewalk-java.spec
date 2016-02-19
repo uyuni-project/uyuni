@@ -25,7 +25,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.49.1
+Version: 2.5.52
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -977,6 +977,15 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Feb 19 2016 Grant Gainey 2.5.52-1
+- 1309892 - on cancel, only delete actions that haven't been picked up yet
+
+* Fri Feb 19 2016 Jan Dobes 2.5.51-1
+- Fix option names to correspond with rhn_server.conf
+
+* Thu Feb 18 2016 Grant Gainey 2.5.50-1
+- 1304863 - previous overzealous fix, 'fixed' one query too many
+
 * Thu Feb 04 2016 Grant Gainey 2.5.49-1
 - 1304863 - add scheduled-by to SSM action-history-list
 

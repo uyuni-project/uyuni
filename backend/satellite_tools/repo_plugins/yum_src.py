@@ -33,6 +33,7 @@ import yum
 from spacewalk.common import fileutils
 from yum.Errors import RepoMDError
 from yum.config import ConfigParser
+from yum.packageSack import ListPackageSack
 from yum.update_md import UpdateMetadata, UpdateNoticeException, UpdateNotice
 from yum.yumRepo import YumRepository
 from urlgrabber.grabber import URLGrabError
@@ -219,9 +220,12 @@ class ContentSource:
             else:
                 raise
 
-        pkglist = self.sack.returnPackages()
-        pkglist = yum.misc.unique(pkglist)
+        pkglist = ListPackageSack(self.sack.returnPackages())
         self.num_packages = len(pkglist)
+        if latest:
+            pkglist = pkglist.returnNewestByNameArch()
+        pkglist = yum.misc.unique(pkglist)
+        pkglist.sort(self._sort_packages)
 
         if not filters:
             # if there's no include/exclude filter on command line or in database
@@ -253,6 +257,16 @@ class ContentSource:
                 new_pack.checksums[cs[0]] = cs[1]
             to_return.append(new_pack)
         return to_return
+
+    @staticmethod
+    def _sort_packages(pkg1 ,pkg2):
+        """sorts a list of yum package objects by name"""
+        if pkg1.name > pkg2.name:
+            return 1
+        elif pkg1.name == pkg2.name:
+            return 0
+        else:
+            return -1
 
     @staticmethod
     def _filter_packages(packages, filters, exclude_only=False):

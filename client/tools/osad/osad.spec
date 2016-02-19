@@ -18,7 +18,7 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.11.63.2
+Version: 5.11.64
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -448,6 +448,9 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Fri Feb 12 2016 Gennadii Altukhov <galt@redhat.com> 5.11.64-1
+- 1306541 - Add possibility for OSAD to work in failover mode
+
 * Thu Nov 19 2015 Tomas Kasparek <tkasparek@redhat.com> 5.11.63-1
 - osad: re-send subscription stanzas after a while
 

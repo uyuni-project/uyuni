@@ -137,17 +137,6 @@ def getCustomChannels():
 
     return l_custom_ch
 
-def latest_packages(packages):
-    #allows to download only latest packages
-    packages.sort(reverse=True)
-    seen = set()
-    latest = []
-    for pack in packages:
-        if pack.getNRA() not in seen:
-            latest.append(pack)
-            seen.add(pack.getNRA())
-    return latest
-
 class RepoSync(object):
 
     def __init__(self, channel_label, repo_type, url=None, fail=False,
@@ -1033,9 +1022,7 @@ class RepoSync(object):
         else:
             filters = self.filters
 
-        packages = plug.list_packages(filters)
-        if self.latest:
-            packages = latest_packages(packages)
+        packages = plug.list_packages(filters, self.latest)
         to_process = []
         skipped = 0
         saveurl = suseLib.URL(url)
