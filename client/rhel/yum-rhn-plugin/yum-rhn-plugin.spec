@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.5.2.1
+Version: 2.5.4
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,15 @@ fi
 
 
 %changelog
+* Fri Feb 19 2016 Jiri Dostal <jdostal@redhat.com> 2.5.4-1
+- 1302198, 1292288 - remote package upgrade saying newer package is installed,
+  but it is not
+
+* Thu Feb 18 2016 Jan Dobes 2.5.3-1
+- delete file with input files after template is created
+- pulling *.po translations from Zanata
+- fixing current *.po translations
+
 * Thu Jan 21 2016 Tomas Lestach <tlestach@redhat.com> 2.5.2-1
 - 1206227 - allow client responses to be in Unicode
 

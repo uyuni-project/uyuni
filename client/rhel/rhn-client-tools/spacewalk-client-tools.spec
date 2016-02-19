@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.5.10.1
+Version: 2.5.12
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -498,6 +498,16 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Thu Feb 18 2016 Jan Dobes 2.5.12-1
+- delete file with input files after template is created
+- try to generate more similar order of entries in template
+- pulling *.po translations from Zanata
+- fixing current *.po translations
+
+* Fri Feb 12 2016 Michael Mraka <michael.mraka@redhat.com> 2.5.11-1
+- 1259884 - fixed missing method for sorting of rhnChannels
+- 1259884 - open terminal for write only
+
 * Fri Jan 22 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.10-1
 - Bug 1300251 - clientCaps.py : IndexError: string index out of range
 
