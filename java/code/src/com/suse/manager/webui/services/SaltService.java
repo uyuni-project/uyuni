@@ -276,7 +276,7 @@ public interface SaltService {
      * @param minionId the minion id
      * @return a list of installed products
      */
-    List<Zypper.RealProductInfo> getInstalledProducts(String minionId);
+    List<Zypper.ProductInfo> getInstalledProducts(String minionId);
     /**
      * Find all minions matching the target expression and
      * retain only those allowed for the given user.
