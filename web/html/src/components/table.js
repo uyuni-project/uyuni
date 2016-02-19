@@ -39,16 +39,18 @@ var Table = React.createClass({
     });
   },
 
-  getRows: function(unfilteredRows, searchValue) {
-    var rows = this.props.rowFilter && searchValue.length > 0 ?
-      unfilteredRows.filter((row) => this.props.rowFilter(row, searchValue)) :
-      unfilteredRows;
-      if (this.props.rowComparator) {
-        var sortColumnIndex = this.state.sortColumnIndex;
-        var sortAscending = this.state.sortAscending;
-        rows.sort((a, b) => this.props.rowComparator(a, b, sortColumnIndex, sortAscending));
-      }
-    return rows;
+  getProcessedRows: function() {
+    const filter = this.props.rowFilter ?
+      (row) => this.props.rowFilter(row, this.props.filterText) :
+      (row) => true
+    ;
+
+    const comparator = this.props.rowComparator ?
+      (a, b) => this.props.rowComparator(a, b, this.state.sortColumnIndex, this.state.sortAscending) :
+      (a, b) => 0
+    ;
+
+    return this.props.rows.filter(filter).sort(comparator);
   },
 
   lastPage: function(rows, itemsPerPage) {
@@ -65,7 +67,7 @@ var Table = React.createClass({
 
   onItemsPerPageChange: function(itemsPerPage) {
     this.setState({itemsPerPage: itemsPerPage});
-    var lastPage = this.lastPage(this.getRows(this.props.rows, this.state.filterText), itemsPerPage);
+    var lastPage = this.lastPage(this.getProcessedRows(), itemsPerPage);
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage });
     }
@@ -73,14 +75,14 @@ var Table = React.createClass({
 
   onSearchFieldChange: function(searchValue) {
     this.setState({filterText: searchValue});
-    var lastPage =  this.lastPage(this.getRows(this.props.rows, searchValue), this.state.itemsPerPage);
+    var lastPage =  this.lastPage(this.getProcessedRows(), this.state.itemsPerPage);
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage});
     }
   },
 
   render: function() {
-    var rows = this.getRows(this.props.rows, this.state.filterText);
+    var rows = this.getProcessedRows();
     var itemsPerPage = this.state.itemsPerPage;
     var itemCount = rows.length;
     var lastPage = this.lastPage(rows, itemsPerPage);
