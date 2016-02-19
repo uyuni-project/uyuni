@@ -73,12 +73,12 @@ var Table = React.createClass({
     this.setState({itemsPerPage: itemsPerPage});
     var lastPage = this.lastPage();
     if (this.state.currentPage > lastPage) {
-      this.setState({currentPage: lastPage });
+      this.setState({currentPage: lastPage});
     }
   },
 
-  onSearchFieldChange: function(searchValue) {
-    this.setState({filterText: searchValue});
+  onFilterTextChange: function(filterText) {
+    this.setState({filterText: filterText});
     var lastPage =  this.lastPage();
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage});
@@ -115,7 +115,7 @@ var Table = React.createClass({
     if (this.props.rowFilter) {
       searchField = (
         <SearchField
-          onChange={this.onSearchFieldChange}
+          onChange={this.onFilterTextChange}
           defaultValue={this.state.filterText}
           placeholder={this.props.filterPlaceholder}
         />
