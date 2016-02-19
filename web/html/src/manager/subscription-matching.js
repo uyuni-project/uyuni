@@ -245,6 +245,13 @@ var UnmatchedProducts = React.createClass({
     else {
       result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
     }
+
+    if (result == 0) {
+      var aId = a.props["rawData"]["id"];
+      var bId = b.props["rawData"]["id"];
+      result = aId > bId ? 1 : (aId < bId ? -1 : 0);
+    }
+
     return result * orderCondition;
   },
 
@@ -340,6 +347,7 @@ function unmatchedProductsToRows(myParent) {
     ];
 
     var rawData = {
+      id: pid,
       productName: productName,
       systemCount: systemCount
     };
