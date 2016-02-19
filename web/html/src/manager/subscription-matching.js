@@ -294,7 +294,6 @@ var UnmatchedProducts = React.createClass({
           <CsvLink name="unmatched_product_report.csv" />
 
 	  <PopUp title={t("Unmatched systems")}
-            className="modal-lg"
             id="unmatchedProductsPopUp"
             content={popUpContent}
             onClosePopUp={this.closePopUp}
