@@ -76,10 +76,10 @@ class YumSrcTest(unittest.TestCase):
         cs = self._make_dummy_cs()
 
         package_attrs = ['name', 'version', 'release',
-                         'epoch', 'arch', 'checksums']
+                         'epoch', 'arch', 'checksums', 'repoid', 'pkgtup']
         Package = namedtuple('Package', package_attrs)
-        mocked_packs = [Package('n1', 'v1', 'r1', 'e1', 'a1', [('c1', 'cs')]),
-                        Package('n2', 'v2', 'r2', 'e2', 'a2', [('c2', 'cs')])]
+        mocked_packs = [Package('n1', 'v1', 'r1', 'e1', 'a1', [('c1', 'cs')], 'rid1', ('n1', 'a1', 'e1', 'v1', 'r1')),
+                        Package('n2', 'v2', 'r2', 'e2', 'a2', [('c2', 'cs')], 'rid2', ('n2', 'a2', 'e2', 'v2', 'r2'))]
         cs.sack.returnPackages = Mock(return_value=mocked_packs)
 
         listed_packages = cs.list_packages(filters=None, latest=False)
@@ -98,6 +98,8 @@ class YumSrcTest(unittest.TestCase):
                     self.assertEqual(pack.checksums,
                                      {mocked_pack.checksums[0][0]:
                                           mocked_pack.checksums[0][1]})
+                elif attr in ['repoid', 'pkgtup']:
+                    continue
                 else:
                     self.assertEqual(getattr(pack, attr),
                                      getattr(mocked_pack, attr))
