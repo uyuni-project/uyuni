@@ -65,7 +65,7 @@ var Table = React.createClass({
     return lastPage;
   },
 
-  goToPage:function(page) {
+  onPageChange:function(page) {
     this.setState({currentPage: page});
   },
 
@@ -86,41 +86,24 @@ var Table = React.createClass({
   },
 
   render: function() {
-    var rows = this.getProcessedRows();
-    var itemsPerPage = this.state.itemsPerPage;
-    var itemCount = rows.length;
-    var lastPage = this.lastPage();
-    var currentPage = this.state.currentPage;
+    const rows = this.getProcessedRows();
+    const itemsPerPage = this.state.itemsPerPage;
+    const currentPage = this.state.currentPage;
+    const firstItemIndex = (currentPage - 1) * itemsPerPage;
 
-    var firstItemIndex = (currentPage - 1) * itemsPerPage;
+    const itemCount = rows.length;
+    const fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
+    const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
+    const itemCounter = <span>{t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)}</span>
 
-    var fromItem = itemCount > 0 ? firstItemIndex +1 : 0;
-    var toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
-
-    var pagination;
-    if (lastPage > 1) {
-      pagination = (
-        <div className="spacewalk-list-pagination">
-          <div className="spacewalk-list-pagination-btns btn-group">
-            <PaginationButton onClick={() => this.goToPage(1)} toPage={1} disabled={currentPage == 1} text={t("First")} />
-            <PaginationButton onClick={() => this.goToPage(currentPage -1)} disabled={currentPage == 1} text={t("Prev")} />
-            <PaginationButton onClick={() => this.goToPage(currentPage +1)} disabled={currentPage == lastPage} text={t("Next")} />
-            <PaginationButton onClick={() => this.goToPage(lastPage)} disabled={currentPage == lastPage} text={t("Last")} />
-          </div>
-        </div>
-      );
-    }
-
-    var searchField;
-    if (this.props.rowFilter) {
-      searchField = (
-        <SearchField
-          onChange={this.onFilterTextChange}
-          defaultValue={this.state.filterText}
-          placeholder={this.props.filterPlaceholder}
-        />
-      );
-    }
+    const searchField = this.props.rowFilter ?
+      <SearchField
+        onChange={this.onFilterTextChange}
+        defaultValue={this.state.filterText}
+        placeholder={this.props.filterPlaceholder}
+      /> :
+      null
+    ;
 
     return (
       <div className="spacewalk-list">
@@ -128,7 +111,7 @@ var Table = React.createClass({
           <div className="panel-heading">
             <div className="spacewalk-list-head-addons">
               <div className="spacewalk-list-filter table-search-wrapper">
-                {searchField} {t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)}
+                {searchField} {itemCounter}
               </div>
               <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
                 <PageSelector className="display-number"
@@ -166,7 +149,7 @@ var Table = React.createClass({
           </div>
           <div className="panel-footer">
             <div className="spacewalk-list-bottom-addons">
-              <div className="table-page-information">{t("Page {0} of {1}", currentPage, lastPage)}</div>
+              <PaginationBlock currentPage={currentPage} lastPage={this.lastPage()} onPageChange={this.onPageChange} />
               {pagination}
             </div>
           </div>
@@ -179,6 +162,31 @@ var Table = React.createClass({
 var TableRow = (props) => <tr className={props.className}>{props.columns}</tr>;
 
 var TableCell = (props) => <td>{props.content}</td>;
+
+var PaginationBlock = (props) => {
+  const currentPage = props.currentPage;
+  const lastPage = props.lastPage;
+  const onPageChange = props.onPageChange;
+
+  const pagination = lastPage > 1 ?
+    <div className="spacewalk-list-pagination">
+      <div className="spacewalk-list-pagination-btns btn-group">
+        <PaginationButton onClick={() => onPageChange(1)} toPage={1} disabled={currentPage == 1} text={t("First")} />
+        <PaginationButton onClick={() => onPageChange(currentPage - 1)} disabled={currentPage == 1} text={t("Prev")} />
+        <PaginationButton onClick={() => onPageChange(currentPage + 1)} disabled={currentPage == lastPage} text={t("Next")} />
+        <PaginationButton onClick={() => onPageChange(lastPage)} disabled={currentPage == lastPage} text={t("Last")} />
+      </div>
+    </div> :
+    null
+  ;
+
+  return (
+    <div>
+      <div className="table-page-information">{t("Page {0} of {1}", currentPage, lastPage)}</div>
+      {pagination}
+    </div>
+  );
+};
 
 var PaginationButton = (props) =>
   <button type="button" className="btn btn-default"
