@@ -2,15 +2,12 @@
 
 var React = require("react");
 var TableComponent = require("../components/table");
-var TabContainerComponent = require("../components/tab-container");
-var UtilComponent = require("../components/util");
-var PopUpComponent = require("../components/popup");
 var Table = TableComponent.Table;
 var TableCell = TableComponent.TableCell;
 var TableRow = TableComponent.TableRow;
-var TabContainer = TabContainerComponent.TabContainer;
-var StatePersistedMixin = UtilComponent.StatePersistedMixin;
-var PopUp = PopUpComponent.PopUp;
+var TabContainer = require("../components/tab-container").TabContainer;
+var StatePersistedMixin = require("../components/util").StatePersistedMixin;
+var PopUp = require("../components/popup").PopUp;
 
 var SubscriptionMatching = React.createClass({
   getInitialState: function() {
