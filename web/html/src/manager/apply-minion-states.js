@@ -9,7 +9,7 @@ const InnerPanel = Panels.InnerPanel;
 const PanelRow = Panels.PanelRow;
 
 function stateKey(state) {
-    return state.name + "_" + stat.assigned;
+    return state.name;// + "_" + state.assigned;
 }
 
 class ApplyState extends React.Component {
@@ -17,10 +17,13 @@ class ApplyState extends React.Component {
   constructor(props) {
     super();
 
+    ["init", "tableBody", "handleSelectionChange", "onSearchChange", "search", "save", "applyStates", "setView", "addChanged"]
+    .forEach(method => this[method] = this[method].bind(this));
+
     this.state = {
         filter: "",
         view: "system",
-        packageStates: [],
+        saltStates: [],
         search: {
             filter: null,
             results: []
@@ -31,14 +34,10 @@ class ApplyState extends React.Component {
   }
 
   init() {
-    $.get("/rhn/manager/api/states/packages?sid=" + serverId, data => {
+    $.get("/rhn/manager/api/states/match?sid=" + serverId, data => {
       console.log(data);
       this.setState({
-        packageStates: data.map(state => {
-          state.packageStateId = normalizePackageState(state.packageStateId);
-          state.versionConstraintId = normalizePackageVersionConstraint(state.versionConstraintId);
-          return state;
-        })
+        saltStates: data
       });
     });
   }
@@ -49,7 +48,7 @@ class ApplyState extends React.Component {
         url: "/rhn/manager/api/states/apply",
         data: JSON.stringify({
             sid: serverId,
-            states: ["packages"]
+            states: ["apply"]
         }),
         contentType: "application/json"
     });
@@ -57,6 +56,32 @@ class ApplyState extends React.Component {
   }
 
   save() {
+    const states = [];
+    for(var state of this.state.changed.values()) {
+        states.push(state.value)
+    }
+    const request = $.ajax({
+        type: "POST",
+        url: "/rhn/manager/api/states/save",
+        data: JSON.stringify({
+            sid: serverId,
+            saltStates: states
+        }),
+        contentType: "application/json"
+    }).then((data, textStatus, jqXHR) => {
+      console.log("success: " + data);
+      this.setState({
+        changed: new Map(),
+        view: "system",
+        saltStates: data
+      });
+    }, (jqXHR, textStatus, errorThrown) => {
+      console.log("fail: " + textStatus);
+    });
+    return Promise.resolve(request);
+  }
+
+  applyStates() {
 
   }
 
@@ -97,10 +122,10 @@ class ApplyState extends React.Component {
   addChanged(original, name, selected) {
       const currentState = this.state.changed.get(name);
       if (currentState != undefined &&
-          selected ==  currentState.original.selected) {
+          selected == currentState.original.assigned) {
             this.state.changed.delete(name);
       } else {
-            this.state.changed.set(key, {
+            this.state.changed.set(name, {
                 original: original,
                 value: {
                     name: original.name,
@@ -128,7 +153,16 @@ class ApplyState extends React.Component {
     const elements = [];
     var rows = [];
     if(this.state.view === "system") {
-        // TODO
+        rows = this.state.saltStates.map(state => {
+            const changed = this.state.changed.get(stateKey(state))
+            if(changed !== undefined) {
+                return changed;
+            } else {
+                return {
+                    original: state,
+                };
+            }
+        });
     } else if(this.state.view === "search") {
         rows = this.state.search.results.map(state => {
             const changed = this.state.changed.get(stateKey(state))
@@ -173,12 +207,6 @@ class ApplyState extends React.Component {
     );
   }
 
-  onSearchChange(event) {
-    this.setState({
-        filter: event.target.value
-    });
-  }
-
   setView(view) {
     return event => {
       this.setState({
@@ -189,7 +217,7 @@ class ApplyState extends React.Component {
 
   render() {
     const buttons = [<AsyncButton action={this.save} name={t("Save")} disabled={this.state.changed.size == 0}/>,
-                     <AsyncButton action={this.applySaltState} name={t("Apply")} />];
+                     <AsyncButton action={this.applyStates} name={t("Apply")} />];
 
     return (
         <InnerPanel title={t("Apply States")} buttons={buttons}>

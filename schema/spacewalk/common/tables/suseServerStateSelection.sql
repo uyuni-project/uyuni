@@ -45,5 +45,8 @@ CREATE TABLE suseSaltState
 )
 ENABLE ROW MOVEMENT
 ;
+CREATE UNIQUE INDEX suse_salt_state_name_org_uq
+ON suseSaltState (org_id, state_name)
+TABLESPACE [[8m_tbs]];
 
 CREATE SEQUENCE suse_salt_state_id_seq;
