@@ -39,7 +39,6 @@ public class MatcherJsonIOTest extends TestCase {
     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
     private static final String ORDERS_JSON = "organizations_orders.json";
 
-    private static final long SUMA_SRV_ID = Long.MAX_VALUE;
     private static final String AMD64_ARCH = "amd64";
 
     public void testSystemsToJson() throws Exception {
@@ -119,7 +118,8 @@ public class MatcherJsonIOTest extends TestCase {
         assertTrue(resultG2.getProductIds().contains(1324L));
 
         // ISS Master should add itself
-        JsonSystem sumaItself = result.stream().filter(s -> s.getId().equals(SUMA_SRV_ID))
+        JsonSystem sumaItself = result.stream().filter(
+                s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID))
                 .findFirst().get();
         assertNotNull(sumaItself);
         assertEquals(1L, sumaItself.getCpus().longValue());
@@ -131,7 +131,8 @@ public class MatcherJsonIOTest extends TestCase {
 
     public void testSystemsToJsonIssSlave() {
         List<JsonSystem> result = new MatcherJsonIO().getJsonSystems(false, AMD64_ARCH);
-        assertTrue(result.stream().noneMatch(s -> s.getId().equals(SUMA_SRV_ID)));
+        assertTrue(result.stream().noneMatch(
+                s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID)));
     }
 
     public void testProductsToJson() throws Exception {
