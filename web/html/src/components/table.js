@@ -12,7 +12,7 @@ var Table = React.createClass({
     rowFilter: React.PropTypes.func, // (row, searchString) -> boolean
     filterPlaceholder: React.PropTypes.string,
     rowComparator: React.PropTypes.func, // (row1, row2, columnIndex, ascending) -> -1/0/+1
-    sortableColumns: React.PropTypes.arrayOf(React.PropTypes.number), // required with rowComparator
+    sortableColumnIndexes: React.PropTypes.arrayOf(React.PropTypes.number), // required with rowComparator
   },
 
   getInitialState: function() {
@@ -147,8 +147,8 @@ var Table = React.createClass({
                       className = (this.state.ascending ? "asc" : "desc") + "Sort";
                     }
                     return (
-                        (this.props.sortableColumns &&
-                          this.props.sortableColumns.filter((element) => element == index).length > 0) ?
+                        (this.props.sortableColumnIndexes &&
+                          this.props.sortableColumnIndexes.filter((element) => element == index).length > 0) ?
                         <TableHeaderCellOrder className={className} content={header}
                           orderBy={() => this.orderByColumn(index)} /> :
                         <TableHeaderCell className={className} content={header} />
