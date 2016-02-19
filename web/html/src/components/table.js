@@ -41,7 +41,7 @@ var Table = React.createClass({
 
   getProcessedRows: function() {
     const filter = this.props.rowFilter ?
-      (row) => this.props.rowFilter(row, this.props.filterText) :
+      (row) => this.props.rowFilter(row, this.state.filterText) :
       (row) => true
     ;
 
@@ -55,7 +55,7 @@ var Table = React.createClass({
 
   lastPage: function() {
     const rowCount = this.props.rowFilter ?
-      this.props.rows.filter((row) => this.props.rowFilter(row, this.props.filterText)).length :
+      this.props.rows.filter((row) => this.props.rowFilter(row, this.state.filterText)).length :
       this.props.rows.length;
 
     const lastPage = Math.ceil(rowCount / this.state.itemsPerPage);
@@ -96,8 +96,8 @@ var Table = React.createClass({
     const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
     const itemCounter = <span>{t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)}</span>
 
-    const searchField = this.props.rowFilter ?
-      <SearchField
+    const filterField = this.props.rowFilter ?
+      <FilterField
         onChange={this.onFilterTextChange}
         defaultValue={this.state.filterText}
         placeholder={this.props.filterPlaceholder}
@@ -111,7 +111,7 @@ var Table = React.createClass({
           <div className="panel-heading">
             <div className="spacewalk-list-head-addons">
               <div className="spacewalk-list-filter table-search-wrapper">
-                {searchField} {itemCounter}
+                {filterField} {itemCounter}
               </div>
               <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
                 <ItemsPerPageSelector
@@ -211,7 +211,7 @@ var SortableTableHeader = (props) =>
   </th>
 ;
 
-var SearchField = (props) =>
+var FilterField = (props) =>
   <input className="form-control table-input-search"
     value={props.defaultValue}
     placeholder={props.placeholder}
