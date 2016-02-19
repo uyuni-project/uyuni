@@ -58,7 +58,7 @@ var StateCatalog = React.createClass({
                       rowComparator={this.compareRows}
                       sortableColumns={[0]}
                       rowFilter={(tableRow, searchValue) => tableRow.props["raw_data"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-                      searchPlaceholder={t("Filter by state name:")}
+                      filterPlaceholder={t("Filter by state name:")}
                     />
                 </div>
             </Panel>
