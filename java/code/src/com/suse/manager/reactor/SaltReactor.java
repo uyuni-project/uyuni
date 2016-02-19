@@ -89,7 +89,7 @@ public class SaltReactor implements EventListener {
                 UpdatePackageProfileEventMessage.class);
         MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
                 ChannelsChangedEventMessage.class);
-        MessageQueue.registerAction(new ApplyStatesEventMessageAction(SALT_SERVICE),
+        MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
         MessageQueue.registerAction(new GetHardwareInfoEventMessageAction(SALT_SERVICE),
                 GetHardwareInfoEventMessage.class);
