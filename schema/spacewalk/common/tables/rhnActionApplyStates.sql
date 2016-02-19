@@ -15,7 +15,6 @@
 
 CREATE TABLE rhnActionApplyStates
 (
-
     id               NUMBER NOT NULL
                          CONSTRAINT rhn_act_apply_states_id_pk PRIMARY KEY,
     action_id        NUMBER NOT NULL
