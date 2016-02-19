@@ -277,6 +277,7 @@ var UnmatchedProducts = React.createClass({
              rowComparator={this.systemsComparator}
              sortableColumnIndexes={[0]}
              rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["systemName"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
+             filterPlaceholder={t("Filter by name")}
 	   />
 	   );
 
