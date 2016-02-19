@@ -279,40 +279,54 @@ var UnmatchedProducts = React.createClass({
   },
 
   render: function() {
-    if (this.props.unmatchedProductIds != null && this.props.unmatchedProductIds.length > 0) {
-      var popUpContent = this.state.selectedProductId == null ?
-        null :
-        <Table
-          headers={[t("System name")]}
-          rows={unmatchedSystemsToRows(this.props.products[this.state.selectedProductId], this.props.systems)}
-          rowComparator={this.systemsComparator}
-          sortableColumnIndexes={[0]}
-          rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["systemName"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-          filterPlaceholder={t("Filter by name")}
-        />
-      ;
-
-      return (
-        <div className="row col-md-12">
-          <h2>{t("Unmatched Products")}</h2>
-          <Table headers={[t("Product name"), t("Unmatched system count"), ""]}
-            rows={unmatchedProductsToRows(this)}
-            loadState={this.props.loadState}
-            saveState={this.props.saveState}
-            rowComparator={this.rowComparator}
-            sortableColumnIndexes={[0, 1]}
+    var body;
+    if (this.props.unmatchedProductIds != null) {
+      if (this.props.unmatchedProductIds.length > 0) {
+        var popUpContent = this.state.selectedProductId == null ?
+          null :
+          <Table
+            headers={[t("System name")]}
+            rows={unmatchedSystemsToRows(this.props.products[this.state.selectedProductId], this.props.systems)}
+            rowComparator={this.systemsComparator}
+            sortableColumnIndexes={[0]}
+            rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["systemName"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
+            filterPlaceholder={t("Filter by name")}
           />
-          <CsvLink name="unmatched_product_report.csv" />
+        ;
 
-          <PopUp title={t("Unmatched systems")}
-            id="unmatchedProductsPopUp"
-            content={popUpContent}
-            onClosePopUp={this.closePopUp}
-          />
-        </div>
-      );
+        body = (
+          <div>
+            <Table headers={[t("Product name"), t("Unmatched system count"), ""]}
+              rows={unmatchedProductsToRows(this)}
+              loadState={this.props.loadState}
+              saveState={this.props.saveState}
+              rowComparator={this.rowComparator}
+              sortableColumnIndexes={[0, 1]}
+            />
+            <CsvLink name="unmatched_product_report.csv" />
+
+            <PopUp title={t("Unmatched systems")}
+              id="unmatchedProductsPopUp"
+              content={popUpContent}
+              onClosePopUp={this.closePopUp}
+            />
+          </div>
+        );
+      }
+      else {
+        body = <p>{t("No unmatching products are found.")}</p>
+      }
     }
-    return null;
+    else {
+      body = <p>{t("Loading...")}</p>
+    }
+
+    return (
+      <div className="row col-md-12">
+        <h2>{t("Unmatched Products")}</h2>
+        {body}
+      </div>
+    );
   }
 });
 
