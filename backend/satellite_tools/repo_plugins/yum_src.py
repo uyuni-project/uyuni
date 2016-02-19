@@ -208,7 +208,7 @@ class ContentSource:
         else:
             return "sha1"
 
-    def list_packages(self, filters):
+    def list_packages(self, filters, latest):
         """ list packages"""
         try:
             self.sack.populate(self.repo, 'metadata', None, 0)
