@@ -82,7 +82,7 @@ class YumSrcTest(unittest.TestCase):
                         Package('n2', 'v2', 'r2', 'e2', 'a2', [('c2', 'cs')])]
         cs.sack.returnPackages = Mock(return_value=mocked_packs)
 
-        listed_packages = cs.list_packages(filters=None)
+        listed_packages = cs.list_packages(filters=None, latest=False)
 
         self.assertEqual(len(listed_packages), 2)
         for pack, mocked_pack in zip(listed_packages, mocked_packs):
