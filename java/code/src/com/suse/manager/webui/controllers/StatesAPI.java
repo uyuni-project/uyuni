@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.SaltState;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
@@ -32,9 +33,14 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import com.suse.manager.webui.services.SaltStateStorageManager;
+import com.suse.manager.webui.utils.gson.JSONSaltState;
+import com.suse.salt.netapi.datatypes.target.Grains;
 import org.apache.log4j.Logger;
 
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.RepoFileUtils;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPkgLatest;
@@ -43,15 +49,19 @@ import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.gson.JSONPackageState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
+import com.suse.salt.netapi.calls.LocalAsyncResult;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -59,6 +69,8 @@ import java.util.stream.Stream;
 
 import spark.Request;
 import spark.Response;
+
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 /**
  * Controller class providing the backend for API calls to work with states.
@@ -69,6 +81,7 @@ public class StatesAPI {
     private static final Logger LOG = Logger.getLogger(StatesAPI.class);
 
     private static final Gson GSON = new GsonBuilder().create();
+    private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
     public static final String SALT_PACKAGE_FILES = "packages";
 
     private StatesAPI() { }
@@ -96,7 +109,7 @@ public class StatesAPI {
      * @param response the response object
      * @return JSON result of the API call
      */
-    public static String match(Request request, Response response) {
+    public static String matchPackages(Request request, Response response) {
         String target = request.queryParams("target");
         String targetLowerCase = target.toLowerCase();
         String serverId = request.queryParams("sid");
@@ -118,6 +131,30 @@ public class StatesAPI {
         response.type("application/json");
         matching.addAll(matchingAvailable);
         return GSON.toJson(matching);
+    }
+
+    public static String matchStates(Request request, Response response, User user) {
+        String target = request.queryParams("target");
+        String targetLowerCase = target.toLowerCase();
+        String serverId = request.queryParams("sid");
+
+        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
+
+        // Find matches among this server's current salt states
+        List<JSONSaltState> result = new ArrayList<>();
+        Optional<Set<SaltState>> saltStates = StateFactory.latestSaltStates(server);
+        result.addAll(saltStates.orElseGet(Collections::<SaltState>emptySet).stream()
+                .filter(s -> s.getStateName().toLowerCase().contains(targetLowerCase))
+                .map(s -> new JSONSaltState(s.getStateName(), true))
+                .collect(Collectors.toList()));
+
+        // Find matches among available organization states
+        result.addAll(SaltAPIService.INSTANCE.getOrgStates(user.getId()).stream()
+                .filter(s -> s.toLowerCase().contains(targetLowerCase))
+                .map(s -> new JSONSaltState(s, false))
+                .collect(Collectors.toList()));
+
+        return json(response, result);
     }
 
     /**

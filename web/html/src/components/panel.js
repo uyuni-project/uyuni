@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO merge this into panels.js
+
 var React = require("react");
 
 var PanelButton = React.createClass({
@@ -20,6 +22,7 @@ var PanelButton = React.createClass({
   }
 });
 
+// TODO rename this to TopPanel
 var Panel = React.createClass({
   getInitialState: function() {
     return {};
