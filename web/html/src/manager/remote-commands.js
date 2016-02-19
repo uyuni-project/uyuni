@@ -1,5 +1,10 @@
 'use strict';
 
+const React = require("react");
+const Buttons = require("../components/buttons");
+
+const AsyncButton = Buttons.AsyncButton;
+
 function object2map(obj) {
   return Object.keys(obj).reduce((acc, id) => {
     acc.set(id, obj[id]);
@@ -65,6 +70,7 @@ class MinionResultView extends React.Component {
 class RemoteCommand extends React.Component {
 
   constructor() {
+    super();
     ["onPreview", "onRun", "commandChanged", "targetChanged", "commandResult"]
     .forEach(method => this[method] = this[method].bind(this));
     this.state = {
@@ -73,7 +79,7 @@ class RemoteCommand extends React.Component {
       result: {
         minions: new Map()
       },
-      action: "none",
+      previewed: false,
       errors: []
     };
   }
@@ -85,27 +91,9 @@ class RemoteCommand extends React.Component {
             errs = <div className="alert alert-danger">{msg}</div>
         })
     }
-    // TODO reuse Button class from package-states
-    var button = null;
-    switch (this.state.action) {
-        case "none":
-            button = <button className="btn btn-success" onClick={this.onPreview}>{t("Preview")}</button>
-            break;
-        case "matching":
-            button = <button className="btn btn-default" disabled="true">
-                <i className="fa fa-circle-o-notch fa-spin"></i>{t("Preview")}
-            </button>
-            break;
-        case "matched":
-        case "runned":
-            button = <button className="btn btn-success" onClick={this.onRun}>{t("Run")}</button>
-            break;
-        case "running":
-            button = <button disabled="true" className="btn btn-default">
-                <i className="fa fa-circle-o-notch fa-spin"></i>{t("Running")}
-            </button>
-            break;
-    }
+    const button = !this.state.previewed ?
+        <AsyncButton name={t("Preview")} action={this.onPreview} /> :
+        <AsyncButton name={t("Run")} action={this.onRun} />;
 
     return (
       <div>
@@ -143,22 +131,20 @@ class RemoteCommand extends React.Component {
     const cmd = this.state.command;
     const target = this.state.target;
     console.log(cmd);
-    this.setState({action: "matching"});
-    $.get("/rhn/manager/api/minions/match?target=" + target, data => {
-      console.log(data);
-      this.setState({
-        started: false,
-        result: {
-          minions: data.reduce((acc, id) => {
-            acc.set(id, null);
-            return acc;
-          }, new Map())
-        }
-      });
-    })
-    .always(() => {
-       this.setState({action: "matched"});
-    });
+    return $.get("/rhn/manager/api/minions/match?target=" + target)
+        .done(data => {
+            console.log(data);
+            this.setState({
+              previewed: true,
+              started: false,
+              result: {
+                minions: data.reduce((acc, id) => {
+                  acc.set(id, null);
+                  return acc;
+                }, new Map())
+              }
+            });
+        });
   }
 
   onRun() {
@@ -175,34 +161,29 @@ class RemoteCommand extends React.Component {
       },
       started: true
     });
-    this.setState({action: "running"})
-    $.post("/rhn/manager/api/minions/cmd", {
+    return $.post("/rhn/manager/api/minions/cmd", {
         csrf_token: csrfToken,
         cmd: cmd,
         target: target
-      },
-      data => {
-          console.log(data);
-          this.setState({
-            result: {
-              minions: object2map(data)
-            }
-          });
+    })
+    .done(data => {
+        console.log(data);
+        this.setState({
+          result: {
+            minions: object2map(data)
+          }
+        });
     })
     .fail((jqXHR, textStatus, errorThrown) => {
         try {
             this.setState({errors: $.parseJSON(jqXHR.responseText)})
         } catch (err) {
         }
-    })
-    .always(() => {
-        this.setState({action: "runned"});
     });
   }
 
   targetChanged(event) {
     this.setState({
-      action: "none",
       target: event.target.value,
       previewed: false
     });
