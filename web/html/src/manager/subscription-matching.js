@@ -239,7 +239,12 @@ var UnmatchedProducts = React.createClass({
     var result = 0;
     var aValue = a.props["rawData"][columnKey];
     var bValue = b.props["rawData"][columnKey];
-    result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+    if (columnKey == "systemCount") {
+      result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
+    }
+    else {
+      result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+    }
     return result * orderCondition;
   },
 
@@ -336,7 +341,7 @@ function unmatchedProductsToRows(myParent) {
 
     var rawData = {
       productName: productName,
-      systemCount: "" + systemCount
+      systemCount: systemCount
     };
 
     return <TableRow columns={columns} rawData={rawData} />
