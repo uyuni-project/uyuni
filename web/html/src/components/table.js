@@ -10,7 +10,7 @@ var Table = React.createClass({
     headers: React.PropTypes.arrayOf(React.PropTypes.node).isRequired,
     rows: React.PropTypes.arrayOf(React.PropTypes.node).isRequired,
     rowFilter: React.PropTypes.func, // (row, searchString) -> boolean
-    searchPlaceholder: React.PropTypes.string, // required with rowFilter
+    filterPlaceholder: React.PropTypes.string,
     rowComparator: React.PropTypes.func, // (row1, row2, columnIndex, ascending) -> -1/0/+1
     sortableColumns: React.PropTypes.arrayOf(React.PropTypes.number), // required with rowComparator
   },
@@ -115,7 +115,7 @@ var Table = React.createClass({
         <SearchField
           onChange={this.onSearchFieldChange}
           defaultValue={this.state.searchField}
-          placeholder={this.props.searchPlaceholder}
+          placeholder={this.props.filterPlaceholder}
         />
       );
     }

@@ -400,7 +400,7 @@ var Subscriptions = React.createClass({
               loadState={this.props.loadState}
               saveState={this.props.saveState}
               rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-              searchPlaceholder={t("Filter by description")}
+              filterPlaceholder={t("Filter by description")}
               rowComparator={this.rowComparator}
               sortableColumns={[0,1,2,3,4,5]}
             />
@@ -683,7 +683,7 @@ var AddPinPopUp = React.createClass({
           <p>{t("Step 1/2: select the system to pin from the table below.")}</p>
           <Table headers={[t("System"), t("Socket/IFL count"), t("")]} rows={systemsForPinningToRow(this.props.systems, this.onSystemSelected)}
             rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["name"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-            searchPlaceholder={t("Filter by name")}
+            filterPlaceholder={t("Filter by name")}
           />
         </div>
       );
