@@ -268,18 +268,17 @@ var UnmatchedProducts = React.createClass({
 
   render: function() {
     if (this.props.unmatchedProductIds != null && this.props.unmatchedProductIds.length > 0) {
-      var popUpContent = this.state.selectedProductId == null
-        ? null
-        : (
-	   <Table
-	     headers={[t("System name")]}
-	     rows={unmatchedSystemsToRows(this.props.products[this.state.selectedProductId], this.props.systems)}
-             rowComparator={this.systemsComparator}
-             sortableColumnIndexes={[0]}
-             rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["systemName"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-             filterPlaceholder={t("Filter by name")}
-	   />
-	   );
+      var popUpContent = this.state.selectedProductId == null ?
+        null :
+        <Table
+          headers={[t("System name")]}
+          rows={unmatchedSystemsToRows(this.props.products[this.state.selectedProductId], this.props.systems)}
+          rowComparator={this.systemsComparator}
+          sortableColumnIndexes={[0]}
+          rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["systemName"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
+          filterPlaceholder={t("Filter by name")}
+        />
+      ;
 
       return (
         <div className="row col-md-12">
@@ -293,11 +292,11 @@ var UnmatchedProducts = React.createClass({
           />
           <CsvLink name="unmatched_product_report.csv" />
 
-	  <PopUp title={t("Unmatched systems")}
+          <PopUp title={t("Unmatched systems")}
             id="unmatchedProductsPopUp"
             content={popUpContent}
             onClosePopUp={this.closePopUp}
-	  />
+          />
         </div>
       );
     }
