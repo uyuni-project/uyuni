@@ -142,10 +142,8 @@ var Table = React.createClass({
                 })
               } />
               <tbody className="table-content">
-                {rows
-                  .filter((element, i) => i >= firstItemIndex && i < firstItemIndex + itemsPerPage)
-                }
-                </tbody>
+                {rows.slice(firstItemIndex, firstItemIndex + itemsPerPage)}
+              </tbody>
             </table>
           </div>
           <div className="panel-footer">
