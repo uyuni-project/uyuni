@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.services;
 
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.state.SaltState;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.suse.manager.webui.utils.RepoFileUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -95,12 +98,26 @@ public class SaltStateStorageManager {
             }
         }
 
+        boolean move = false;
         if (StringUtils.isNotBlank(oldName)) {
             Files.move(orgPath.resolve(ext(oldName)), stateFile.toPath());
+            move = true;
         }
 
         // TODO clarify encoding
         FileUtils.writeStringToFile(stateFile, content, "US-ASCII");
+
+        String stateName = StringUtils.removeEnd(name, ".sls");
+        if (!move) {
+            SaltState saltState = new SaltState();
+            saltState.setOrg(OrgFactory.lookupById(orgId));
+            saltState.setStateName(stateName);
+            StateFactory.save(saltState);
+        } else {
+            SaltState saltState = StateFactory.getSaltStateByName(name);
+            saltState.setStateName(stateName);
+            StateFactory.save(saltState);
+        }
     }
 
     private void assertStateInOrgDir(File orgDir, File stateFile) throws IOException {

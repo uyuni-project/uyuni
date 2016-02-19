@@ -7,9 +7,11 @@
                 <param name="sequence">suse_salt_state_id_seq</param>
             </generator>
         </id>
-        <many-to-one name="org" class="com.redhat.rhn.domain.org.Org"
-                     column="org_id"/>
-        <property name="stateName" column="state_name" type="string" not-null="true" length="256"/>
+        <properties name="suse_salt_state_name_org_uq" unique="true">
+            <many-to-one name="org" class="com.redhat.rhn.domain.org.Org"
+                         column="org_id"/>
+            <property name="stateName" column="state_name" type="string" not-null="true" length="256"/>
+        </properties>
         <!-- TODO add data created, modified ? -->
     </class>
 </hibernate-mapping>

@@ -46,6 +46,10 @@ public class StateFactory extends HibernateFactory {
         singleton.saveObject(stateRevision);
     }
 
+    public static void save(SaltState saltState) {
+        singleton.saveObject(saltState);
+    }
+
     /**
      * Lookup the latest set of {@link PackageState} objects for a given server.
      *
@@ -80,5 +84,11 @@ public class StateFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         return log;
+    }
+
+    public static SaltState getSaltStateByName(String name) {
+        return (SaltState)getSession().createCriteria(SaltState.class)
+                .add(Restrictions.eq("stateName", name))
+                .uniqueResult();
     }
 }

@@ -33,8 +33,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import com.suse.manager.webui.services.SaltStateStorageManager;
 import com.suse.manager.webui.utils.gson.JSONSaltState;
+import com.suse.manager.webui.utils.gson.JSONServerSaltStates;
 import com.suse.salt.netapi.datatypes.target.Grains;
 import org.apache.log4j.Logger;
 
@@ -57,6 +57,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -157,6 +158,48 @@ public class StatesAPI {
         return json(response, result);
     }
 
+    public static String saveStatesAssignment(Request request, Response response, User user) {
+        JSONServerSaltStates json = GSON.fromJson(request.body(), JSONServerSaltStates.class);
+        Server server = ServerFactory.lookupById(json.getServerId());
+        assertUserHasPermissionsOnServer(server, user);
+
+        ServerStateRevision state = new ServerStateRevision();
+        state.setServer(server);
+        state.setCreator(user);
+
+//        // Merge the latest salt states with the changes (converted to JSON objects)
+//        json.getSaltStates().addAll(latestSaltStatesJSON(server));
+//        json.getSaltStates().stream().forEach( s -> {
+//        });
+//        try {
+//            StateFactory.save(state);
+//            return GSON.toJson(convertToJSON(state.getAssignedStates()));
+//        }
+//        catch (Throwable t) {
+//            response.status(500);
+//            return "{}";
+//        }
+        return "{}";
+    }
+
+    private static Set<JSONSaltState> latestSaltStatesJSON(Server server) {
+
+        return StateFactory.latestSaltStates(server).map(saltStates ->
+            saltStates.stream().map(s -> new JSONSaltState(s.getStateName(), true))
+                    .collect(Collectors.toSet())
+        ).orElse(Collections.emptySet());
+    }
+
+    private static void assertUserHasPermissionsOnServer(Server server, User user) {
+        if (!server.getOrg().getId().equals(user.getOrg().getId())) {
+            // TODO throw a custom exception and return http 403 - forbidden
+            // TODO any other checks needed here ?
+            throw new RuntimeException("User is trying to change a server from a different org");
+        }
+    }
+
+
+
     /**
      * Save a new state revision for a server based on the latest existing revision and an
      * incoming list of changed package states in the request body.
@@ -166,7 +209,7 @@ public class StatesAPI {
      * @param user the user
      * @return null to make spark happy
      */
-    public static Object save(Request request, Response response, User user) {
+    public static Object savePackages(Request request, Response response, User user) {
         response.type("application/json");
         JSONServerPackageStates json = GSON.fromJson(request.body(),
                 JSONServerPackageStates.class);
@@ -186,6 +229,9 @@ public class StatesAPI {
                      s.setStateRevision(state);
                      state.addPackageState(s);
                  }));
+
+        // TODO add latest assigned salt states
+
         try {
             StateFactory.save(state);
             generateServerPackageState(server);
