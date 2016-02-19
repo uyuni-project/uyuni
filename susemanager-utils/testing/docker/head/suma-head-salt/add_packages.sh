@@ -15,6 +15,14 @@ zypper -n in  --no-recommends util-linux-systemd \
                               postfix \
                               dmidecode \
                               psmisc \
-                              udev
+                              udev \
+                              make \
+                              python-mock \
+                              python-pip \
+                              python-salt-testing \
+                              python-unittest2 \
+                              net-tools \
+                              quilt \
+                              bind-utils
 
 zypper -n in vim less
