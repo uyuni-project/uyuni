@@ -21,7 +21,7 @@ var Table = React.createClass({
       itemsPerPage: 15,
       filterText: "",
       sortColumnIndex: 0,
-      ascending: true
+      sortAscending: true
     };
   },
 
@@ -33,14 +33,14 @@ var Table = React.createClass({
   },
 
   orderByColumn: function(sortColumnIndex) {
-    var ascending = this.state.ascending;
+    var sortAscending = this.state.sortAscending;
     if (this.state.sortColumnIndex == sortColumnIndex) {
-      ascending = !ascending;
+      sortAscending = !sortAscending;
     }
     else {
-      ascending = true;
+      sortAscending = true;
     }
-    this.setState({sortColumnIndex: sortColumnIndex, ascending: ascending});
+    this.setState({sortColumnIndex: sortColumnIndex, sortAscending: sortAscending});
   },
 
   getRows: function(unfilteredRows, searchValue) {
@@ -49,8 +49,8 @@ var Table = React.createClass({
       unfilteredRows;
       if (this.props.rowComparator) {
         var sortColumnIndex = this.state.sortColumnIndex;
-        var ascending = this.state.ascending;
-        rows.sort((a, b) => this.props.rowComparator(a, b, sortColumnIndex, ascending));
+        var sortAscending = this.state.sortAscending;
+        rows.sort((a, b) => this.props.rowComparator(a, b, sortColumnIndex, sortAscending));
       }
     return rows;
   },
@@ -144,7 +144,7 @@ var Table = React.createClass({
                   this.props.headers.map((header, index) => {
                     var className;
                     if (index == this.state.sortColumnIndex) {
-                      className = (this.state.ascending ? "asc" : "desc") + "Sort";
+                      className = (this.state.sortAscending ? "asc" : "desc") + "Sort";
                     }
                     return (
                         (this.props.sortableColumnIndexes &&
