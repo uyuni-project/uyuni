@@ -11,7 +11,7 @@ var Table = React.createClass({
     rows: React.PropTypes.arrayOf(React.PropTypes.node).isRequired,
     rowFilter: React.PropTypes.func, // (row, searchString) -> boolean
     filterPlaceholder: React.PropTypes.string,
-    rowComparator: React.PropTypes.func, // (row1, row2, columnIndex, ascending) -> -1/0/+1
+    rowComparator: React.PropTypes.func, // (row1, row2, sortColumnIndex, ascending) -> -1/0/+1
     sortableColumnIndexes: React.PropTypes.arrayOf(React.PropTypes.number), // required with rowComparator
   },
 
@@ -20,7 +20,7 @@ var Table = React.createClass({
       currentPage: 1,
       itemsPerPage: 15,
       filterText: "",
-      columnIndex: 0,
+      sortColumnIndex: 0,
       ascending: true
     };
   },
@@ -32,15 +32,15 @@ var Table = React.createClass({
     }
   },
 
-  orderByColumn: function(columnIndex) {
+  orderByColumn: function(sortColumnIndex) {
     var ascending = this.state.ascending;
-    if (this.state.columnIndex == columnIndex) {
+    if (this.state.sortColumnIndex == sortColumnIndex) {
       ascending = !ascending;
     }
     else {
       ascending = true;
     }
-    this.setState({columnIndex: columnIndex, ascending: ascending});
+    this.setState({sortColumnIndex: sortColumnIndex, ascending: ascending});
   },
 
   getRows: function(unfilteredRows, searchValue) {
@@ -48,9 +48,9 @@ var Table = React.createClass({
       unfilteredRows.filter((row) => this.props.rowFilter(row, searchValue)) :
       unfilteredRows;
       if (this.props.rowComparator) {
-        var columnIndex = this.state.columnIndex;
+        var sortColumnIndex = this.state.sortColumnIndex;
         var ascending = this.state.ascending;
-        rows.sort((a, b) => this.props.rowComparator(a, b, columnIndex, ascending));
+        rows.sort((a, b) => this.props.rowComparator(a, b, sortColumnIndex, ascending));
       }
     return rows;
   },
@@ -143,7 +143,7 @@ var Table = React.createClass({
                 content={
                   this.props.headers.map((header, index) => {
                     var className;
-                    if (index == this.state.columnIndex) {
+                    if (index == this.state.sortColumnIndex) {
                       className = (this.state.ascending ? "asc" : "desc") + "Sort";
                     }
                     return (
