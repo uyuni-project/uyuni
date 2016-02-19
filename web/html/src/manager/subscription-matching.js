@@ -250,7 +250,7 @@ var UnmatchedSystems = React.createClass({
             loadState={this.props.loadState}
             saveState={this.props.saveState}
             rowComparator={this.rowComparator}
-            sortableColumns={[0]}
+            sortableColumnIndexes={[0]}
           />
           <CsvLink name="unmatched_system_report.csv" />
         </div>
@@ -298,7 +298,7 @@ var Messages = React.createClass({
               loadState={this.props.loadState}
               saveState={this.props.saveState}
               rowComparator={this.rowComparator}
-              sortableColumns={[0]}
+              sortableColumnIndexes={[0]}
             />
             <CsvLink name="message_report.csv" />
           </div>
@@ -402,7 +402,7 @@ var Subscriptions = React.createClass({
               rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
               filterPlaceholder={t("Filter by description")}
               rowComparator={this.rowComparator}
-              sortableColumns={[0,1,2,3,4,5]}
+              sortableColumnIndexes={[0,1,2,3,4,5]}
             />
             <CsvLink name="subscription_report.csv" />
           </div>
@@ -546,7 +546,7 @@ var Pins = React.createClass({
             loadState={() => this.state["table"]}
             saveState={(state) => {this.state["table"] = state;}}
             rowComparator={this.rowComparator}
-            sortableColumns={[0, 1, 2, 3, 4, 5]}
+            sortableColumnIndexes={[0, 1, 2, 3, 4, 5]}
           /> :
           <p>{t("No pins defined. You can create one with the button below.")}</p>}
 
