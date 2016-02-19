@@ -32,7 +32,7 @@ var Table = React.createClass({
     }
   },
 
-  orderByColumn: function(sortColumnIndex) {
+  onSortColumnIndexChange: function(sortColumnIndex) {
     this.setState({
       sortColumnIndex: sortColumnIndex,
       sortAscending: this.state.sortColumnIndex != sortColumnIndex || !this.state.sortAscending
@@ -146,7 +146,7 @@ var Table = React.createClass({
                         (this.props.sortableColumnIndexes &&
                           this.props.sortableColumnIndexes.filter((element) => element == index).length > 0) ?
                         <TableHeaderCellOrder className={className} content={header}
-                          orderBy={() => this.orderByColumn(index)} /> :
+                          orderBy={() => this.onSortColumnIndexChange(index)} /> :
                         <TableHeaderCell className={className} content={header} />
                     );
                   })}
