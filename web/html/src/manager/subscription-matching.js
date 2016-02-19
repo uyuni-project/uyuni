@@ -255,15 +255,15 @@ var UnmatchedProducts = React.createClass({
   },
 
   getInitialState: function() {
-    return {"selectedProductId": null};
+    return {selectedProductId: null};
   },
 
   showPopUp: function(id) {
-    this.setState({"selectedProductId": id});
+    this.setState({selectedProductId: id});
   },
 
   closePopUp: function() {
-    this.setState({"selectedProductId": null});
+    this.setState({selectedProductId: null});
   },
 
   render: function() {
@@ -308,7 +308,7 @@ function unmatchedSystemsToRows(product, systems) {
   return product.unmatchedSystemIds.map((sid) => {
     var systemName = systems[sid].name;
     var column = <TableCell content={systemName}/>;
-    var rawData = {"systemName": systemName };
+    var rawData = {systemName: systemName};
 
     return <TableRow columns={[column]} rawData={rawData} />
   });
@@ -335,8 +335,8 @@ function unmatchedProductsToRows(myParent) {
     ];
 
     var rawData = {
-      "productName": productName,
-      "systemCount": "" + systemCount
+      productName: productName,
+      systemCount: "" + systemCount
     };
 
     return <TableRow columns={columns} rawData={rawData} />
