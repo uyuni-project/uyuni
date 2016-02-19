@@ -37,6 +37,8 @@ import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -53,6 +55,7 @@ import com.redhat.rhn.domain.image.ProxyConfig;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageDelta;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -89,6 +92,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ActionManager - the singleton class used to provide Business Operations
@@ -1863,6 +1867,34 @@ public class ActionManager extends BaseManager {
         // Add the details and save
         action.setDetails(details);
         ActionFactory.save(action);
+        return action;
+    }
+
+    /**
+     * Schedule state application given a list of state names. If no state names are given
+     * salt will apply the highstate.
+     *
+     * @param scheduler the user who is scheduling
+     * @param sids list of server ids
+     * @param stateNames list of state names to apply
+     * @param earliest action will not be executed before this date
+     * @return the action object
+     */
+    public static ApplyStatesAction scheduleApplyState(User scheduler, List<Long> sids,
+            List<String> stateNames, Date earliest) {
+        ApplyStatesAction action = (ApplyStatesAction) ActionFactory
+                .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
+        action.setName("Apply states " + stateNames);
+        action.setOrg(scheduler != null ?
+                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
+        action.setSchedulerUser(scheduler);
+
+        ApplyStatesActionDetails actionDetails = new ApplyStatesActionDetails();
+        actionDetails.setStates(stateNames.stream().collect(Collectors.joining(",")));
+        action.setDetails(actionDetails);
+        ActionFactory.save(action);
+
+        scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
 }

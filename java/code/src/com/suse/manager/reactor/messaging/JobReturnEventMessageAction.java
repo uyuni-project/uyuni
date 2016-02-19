@@ -136,11 +136,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
         }
 
-        @SuppressWarnings("unchecked")
-        Map<String, Object> eventDataReturnMap = (Map<String, Object>) eventData
-                .getOrDefault("return", Collections.EMPTY_MAP);
         Action action = serverAction.getParentAction();
         if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> eventDataReturnMap = (Map<String, Object>) eventData
+                    .getOrDefault("return", Collections.EMPTY_MAP);
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = new ScriptResult();
             scriptAction.getScriptActionDetails().addResult(scriptResult);
@@ -172,8 +172,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
+            Object returnObject = eventData.get("return");
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            String json = gson.toJson(eventDataReturnMap);
+            String json = gson.toJson(returnObject);
             serverAction.setResultMsg(json.length() > 1024 ?
                     json.substring(0, 1023) : json);
         }

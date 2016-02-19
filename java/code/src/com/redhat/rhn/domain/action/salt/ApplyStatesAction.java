@@ -15,9 +15,10 @@
 package com.redhat.rhn.domain.action.salt;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFormatter;
 
 /**
- * SaltStateApplyAction - Action class representing the application of a Salt state.
+ * ApplyStatesAction - Action class representing the application of Salt states.
  */
 public class ApplyStatesAction extends Action {
 
@@ -36,7 +37,17 @@ public class ApplyStatesAction extends Action {
      * @param detailsIn details
      */
     public void setDetails(ApplyStatesActionDetails detailsIn) {
-        detailsIn.setParentAction(this);
+        if (detailsIn != null) {
+            detailsIn.setParentAction(this);
+        }
         this.details = detailsIn;
+    }
+
+    @Override
+    public ActionFormatter getFormatter() {
+        if (formatter == null) {
+            formatter = new ApplyStatesActionFormatter(this);
+        }
+        return formatter;
     }
 }
