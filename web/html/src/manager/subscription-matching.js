@@ -284,7 +284,7 @@ var UnmatchedProducts = React.createClass({
       return (
         <div className="row col-md-12">
           <h2>{t("Unmatched Products")}</h2>
-          <Table headers={[t("Product name"), t("Unmatched system count")]}
+          <Table headers={[t("Product name"), t("Unmatched system count"), ""]}
             rows={unmatchedProductsToRows(this)}
             loadState={this.props.loadState}
             saveState={this.props.saveState}
@@ -321,18 +321,19 @@ function unmatchedProductsToRows(myParent) {
   return myParent.props.unmatchedProductIds.map((pid) => {
     var productName = products[pid].productName;
     var systemCount = products[pid].unmatchedSystemCount;
-    var systemCountBtn =
+    var listButton =
         <button
           className="btn btn-default btn-cell"
           onClick={function() {myParent.showPopUp(pid);}}
           data-toggle="modal"
           data-target="#unmatchedProductsPopUp">
-          {systemCount}
+          {t("Show system list")}
         </button>;
 
     var columns = [
       <TableCell content={productName} />,
-      <TableCell content={systemCountBtn} />,
+      <TableCell content={systemCount} />,
+      <TableCell content={listButton} />,
     ];
 
     var rawData = {
