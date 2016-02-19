@@ -24,8 +24,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class PinnedSubscription {
 
     private Long id;
-    private Server server;
-    private Long orderitemId;
+    private Long systemId;
+    private Long subscriptionId;
 
     /**
      * @return the id
@@ -35,18 +35,18 @@ public class PinnedSubscription {
     }
 
     /**
-     * Getter for server
-     * @return the server associated with the orderitem id
+     * Getter for systemId
+     * @return the systemId associated with the subscription id
      */
-    public Server getServer() {
-        return server;
+    public Long getSystemId() {
+        return systemId;
     }
 
     /**
-     * @return the orderitemId
+     * @return the subscriptionId
      */
-    public Long getOrderitemId() {
-        return orderitemId;
+    public Long getSubscriptionId() {
+        return subscriptionId;
     }
 
     /**
@@ -57,39 +57,41 @@ public class PinnedSubscription {
     }
 
     /**
-     * associate a server with a subscription id
-     * @param serverIn the Server to associate
+     * associate a systemId with a subscription id
+     * @param systemIdIn the System to associate
      */
-    public void setServer(Server serverIn) {
-        this.server = serverIn;
+    public void setSystemId(Long systemIdIn) {
+        this.systemId = systemIdIn;
     }
 
     /**
-     * @param orderitemIdIn the orderitemId to set
+     * @param subscriptionIdIn the subscriptionId to set
      */
-    public void setOrderitemId(Long orderitemIdIn) {
-        this.orderitemId = orderitemIdIn;
+    public void setSubscriptionId(Long subscriptionIdIn) {
+        this.subscriptionId = subscriptionIdIn;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof PinnedSubscription)) {
             return false;
         }
         PinnedSubscription castOther = (PinnedSubscription) other;
-        return new EqualsBuilder().append(getServer(), castOther.getServer())
-                .append(getOrderitemId(), castOther.getOrderitemId())
+        return new EqualsBuilder().append(getSystemId(), castOther.getSystemId())
+                .append(getSubscriptionId(), castOther.getSubscriptionId())
                 .isEquals();
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getServer())
-                .append(getOrderitemId())
+        return new HashCodeBuilder().append(getSystemId())
+                .append(getSubscriptionId())
                 .toHashCode();
     }
 }

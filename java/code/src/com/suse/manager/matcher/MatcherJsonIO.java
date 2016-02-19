@@ -22,6 +22,7 @@ import static java.util.stream.Stream.concat;
 import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.of;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
@@ -30,6 +31,7 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCSubscription;
+import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -57,6 +59,9 @@ import java.util.stream.Stream;
  * Serializes and deserializes objects from and to JSON.
  */
 public class MatcherJsonIO {
+
+    /** Fake ID for the SUSE Manager server system. */
+    public static final long SELF_SYSTEM_ID = 2000010000L;
 
     /** (De)serializer instance. */
     private Gson gson;
@@ -92,7 +97,8 @@ public class MatcherJsonIO {
                     system.getId(),
                     system.getName(),
                     cpus == null ? null : cpus.intValue(),
-                    !system.isVirtualGuest() && !system.isVirtualHost(),
+                    !system.isVirtualGuest(),
+                    system.isVirtualHost(),
                     system.getGuests().stream()
                         .filter(vi -> vi.getGuestSystem() != null)
                         .map(vi -> vi.getGuestSystem().getId())
@@ -145,13 +151,13 @@ public class MatcherJsonIO {
      * @return an object representation of the JSON input for the matcher
      * about pinned matches
      */
+    @SuppressWarnings("unchecked")
     public List<JsonMatch> getJsonMatches() {
-        return ServerFactory.list().stream()
-            .map(s -> s.getPinnedSubscriptions().stream()
-               .map(p -> new JsonMatch(s.getId(), p.getOrderitemId(), null, null))
-            )
-            .reduce(Stream::concat).orElse(Stream.empty())
-            .collect(toList());
+        return ((List<PinnedSubscription>) HibernateFactory.getSession()
+                .createCriteria(PinnedSubscription.class).list()).stream()
+                .map(p -> new JsonMatch(
+                    p.getSystemId(), p.getSubscriptionId(), null, null, null))
+                .collect(toList());
     }
 
     /**
@@ -291,10 +297,11 @@ public class MatcherJsonIO {
     private Stream<JsonSystem> jsonSystemForSelf(boolean includeSelf, String arch) {
         if (includeSelf) {
             return of(new JsonSystem(
-                Long.MAX_VALUE,
+                SELF_SYSTEM_ID,
                 "SUSE Manager Server system",
                 1,
                 true,
+                false,
                 new HashSet<>(),
                 computeSelfProductIds(arch)
             ));

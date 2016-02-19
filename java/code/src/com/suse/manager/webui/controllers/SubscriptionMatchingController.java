@@ -19,6 +19,8 @@ package com.suse.manager.webui.controllers;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
+import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
@@ -58,7 +60,7 @@ public class SubscriptionMatchingController {
     public static ModelAndView show(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
-        return new ModelAndView(data, "subscription_matching/show.jade");
+        return new ModelAndView(data, "subscription-matching/show.jade");
     }
 
     /**
@@ -108,5 +110,55 @@ public class SubscriptionMatchingController {
         new TaskomaticApi().scheduleSingleSatBunch(user, "gatherer-matcher-bunch",
                 new HashMap<>());
         return "";
+    }
+
+    /**
+     * Adds a pin.
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the new pin table data as json
+     */
+    public static String createPin(Request request, Response response, User user) {
+        PinnedSubscription pin = new PinnedSubscription();
+        Long subscriptionId = Long.parseLong(request.queryParams("subscription_id"));
+        Long systemId = Long.parseLong(request.queryParams("system_id"));
+        pin.setSubscriptionId(subscriptionId);
+        pin.setSystemId(systemId);
+        if (PinnedSubscriptionFactory.getInstance()
+                .lookupBySystemIdAndSubscriptionId(systemId, subscriptionId) == null) {
+            PinnedSubscriptionFactory.getInstance().save(pin);
+        }
+
+        MatcherJsonIO matcherJsonIO = new MatcherJsonIO();
+        Object data = new SubscriptionMatchProcessor().pinnedMatches(
+                matcherJsonIO.getLastMatcherInput().get(),
+                matcherJsonIO.getLastMatcherOutput().get());
+
+        response.type("application/json");
+        return GSON.toJson(data);
+    }
+
+    /**
+     * Delete a pin.
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the new pin table data as json
+     */
+    public static String deletePin(Request request, Response response, User user) {
+        Long pinId = Long.parseLong(request.params("id"));
+        PinnedSubscription pin = PinnedSubscriptionFactory.getInstance().lookupById(pinId);
+        if (pin != null) {
+            PinnedSubscriptionFactory.getInstance().remove(pin);
+        }
+
+        MatcherJsonIO matcherJsonIO = new MatcherJsonIO();
+        Object data = new SubscriptionMatchProcessor().pinnedMatches(
+                matcherJsonIO.getLastMatcherInput().get(),
+                matcherJsonIO.getLastMatcherOutput().get());
+
+        response.type("application/json");
+        return GSON.toJson(data);
     }
 }

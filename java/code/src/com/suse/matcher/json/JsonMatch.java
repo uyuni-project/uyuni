@@ -31,6 +31,9 @@ public class JsonMatch {
     /** The number of subscription cents used in this match. */
     private Integer cents;
 
+    /** True if this match has been confirmed, false if it is possible but not confirmed. */
+    private Boolean confirmed;
+
     /**
      * Standard constructor.
      *
@@ -38,13 +41,15 @@ public class JsonMatch {
      * @param subscriptionIdIn the subscription id
      * @param productIdIn the product id
      * @param centsIn the number of subscription cents used in this match
+     * @param confirmedIn whether this match has been confirmed or not
      */
     public JsonMatch(Long systemIdIn, Long subscriptionIdIn, Long productIdIn,
-            Integer centsIn) {
+            Integer centsIn, Boolean confirmedIn) {
         systemId = systemIdIn;
         subscriptionId = subscriptionIdIn;
         productId = productIdIn;
         cents = centsIn;
+        confirmed = confirmedIn;
     }
 
     /**
@@ -117,5 +122,23 @@ public class JsonMatch {
      */
     public void setCents(Integer centsIn) {
         cents = centsIn;
+    }
+
+    /**
+     * Checks if is confirmed.
+     *
+     * @return the boolean
+     */
+    public Boolean getConfirmed() {
+        return confirmed;
+    }
+
+    /**
+     * Sets this match confirmed.
+     *
+     * @param confirmedIn the new confirmed value
+     */
+    public void setConfirmed(Boolean confirmedIn) {
+        confirmed = confirmedIn;
     }
 }

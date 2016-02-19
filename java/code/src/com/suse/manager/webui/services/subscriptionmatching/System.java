@@ -24,10 +24,23 @@ import java.util.List;
  */
 public class System {
 
+    /** The id. */
     private Long id;
+
+    /** The name. */
     private String name;
+
+    /** The cpu count. */
     private Integer cpuCount;
+
+    /** The products. */
     private List<String> products;
+
+    /** The system type. */
+    private String type;
+
+    /** The possible subscription ids. */
+    private List<Long> possibleSubscriptionIds;
 
     /**
      * Standard constructor.
@@ -36,12 +49,17 @@ public class System {
      * @param nameIn - name
      * @param cpuCountIn - cpu count
      * @param productsIn - products
+     * @param typeIn - type
+     * @param possibleSubscriptionIdsIn - possible subscription ids
      */
-    public System(Long idIn, String nameIn, Integer cpuCountIn, List<String> productsIn) {
+    public System(Long idIn, String nameIn, Integer cpuCountIn, List<String> productsIn,
+            String typeIn, List<Long> possibleSubscriptionIdsIn) {
         id = idIn;
         name = nameIn;
         cpuCount = cpuCountIn;
         products = productsIn;
+        type = typeIn;
+        setPossibleSubscriptionIds(possibleSubscriptionIdsIn);
     }
 
     /**
@@ -114,5 +132,41 @@ public class System {
      */
     public void setProducts(List<String> productsIn) {
         products = productsIn;
+    }
+
+    /**
+     * Gets the system type.
+     *
+     * @return the system type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * Sets the system type.
+     *
+     * @param typeIn the new system type
+     */
+    public void setType(String typeIn) {
+        type = typeIn;
+    }
+
+    /**
+     * Gets the possible subscription ids.
+     *
+     * @return the possible subscription ids
+     */
+    public List<Long> getPossibleSubscriptionIds() {
+        return possibleSubscriptionIds;
+    }
+
+    /**
+     * Sets the possible subscription ids.
+     *
+     * @param possibleSubscriptionIdsIn the new possible subscription ids
+     */
+    public void setPossibleSubscriptionIds(List<Long> possibleSubscriptionIdsIn) {
+        possibleSubscriptionIds = possibleSubscriptionIdsIn;
     }
 }

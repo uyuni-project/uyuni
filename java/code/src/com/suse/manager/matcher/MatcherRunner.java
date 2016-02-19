@@ -18,6 +18,7 @@ package com.suse.manager.matcher;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
+import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -62,6 +63,7 @@ public class MatcherRunner {
             PrintWriter stdin = new PrintWriter(p.getOutputStream());
             boolean isISSMaster = IssFactory.getCurrentMaster() == null;
             String arch = System.getProperty("os.arch");
+            PinnedSubscriptionFactory.getInstance().cleanStalePins();
             String s = new MatcherJsonIO().generateMatcherInput(isISSMaster, arch);
             stdin.println(s);
             stdin.flush();

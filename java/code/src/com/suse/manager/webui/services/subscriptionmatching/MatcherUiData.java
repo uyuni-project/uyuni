@@ -17,8 +17,10 @@ package com.suse.manager.webui.services.subscriptionmatching;
 import com.suse.matcher.json.JsonMessage;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Backing data for the Subscription Matching UI.
@@ -35,13 +37,19 @@ public class MatcherUiData {
     private Date latestEnd;
 
     /** The subscriptions. */
-    private List<Subscription> subscriptions = new LinkedList<>();
+    private Map<String, Subscription> subscriptions = new HashMap<>();
 
     /** The messages. */
     private List<JsonMessage> messages = new LinkedList<>();
 
-    /** Unmatched systems */
+    /** Unmatched systems. */
     private List<System> unmatchedSystems = new LinkedList<>();
+
+    /** Pinned matches. */
+    private List<PinnedMatch> pinnedMatches = new LinkedList<>();
+
+    /** The systems. */
+    private Map<String, System> systems = new HashMap<>();
 
     /**
      * Standard constructor.
@@ -52,32 +60,39 @@ public class MatcherUiData {
      * @param messagesIn - list of messages
      * @param subscriptionsIn - list of subscriptions
      * @param unmatchedSystemsIn - list of unmatched systems
+     * @param pinnedMatchesIn - list of pinned matches
+     * @param systemsIn - list of systems
      */
     public MatcherUiData(boolean matcherDataAvailableIn, Date latestStartIn,
             Date latestEndIn, List<JsonMessage> messagesIn,
-            List<Subscription> subscriptionsIn,
-            List<System> unmatchedSystemsIn) {
+            Map<String, Subscription> subscriptionsIn,
+            List<System> unmatchedSystemsIn,
+            List<PinnedMatch> pinnedMatchesIn,
+            Map<String, System> systemsIn) {
         matcherDataAvailable = matcherDataAvailableIn;
         latestStart = latestStartIn;
         latestEnd = latestEndIn;
         messages = messagesIn;
         subscriptions = subscriptionsIn;
         unmatchedSystems = unmatchedSystemsIn;
+        pinnedMatches = pinnedMatchesIn;
+        setSystems(systemsIn);
     }
 
     /**
      * Gets the subscriptions.
      * @return the subscriptions
      */
-    public List<Subscription> getSubscriptions() {
+    public Map<String, Subscription> getSubscriptions() {
         return subscriptions;
     }
 
     /**
-     * Sets the subscriptions
+     * Sets the subscriptions.
+     *
      * @param subscriptionsIn - the subscriptions
      */
-    public void setSubscriptions(List<Subscription> subscriptionsIn) {
+    public void setSubscriptions(Map<String, Subscription> subscriptionsIn) {
         subscriptions = subscriptionsIn;
     }
 
@@ -169,5 +184,41 @@ public class MatcherUiData {
      */
     public void setUnmatchedSystems(List<System> unmatchedSystemsIn) {
         unmatchedSystems = unmatchedSystemsIn;
+    }
+
+    /**
+     * Gets the pinnedMatches.
+     *
+     * @return pinnedMatches
+     */
+    public List<PinnedMatch> getPinnedMatches() {
+        return pinnedMatches;
+    }
+
+    /**
+     * Sets the pinnedMatches.
+     *
+     * @param pinnedMatchesIn - the pinnedMatches
+     */
+    public void setPinnedMatches(List<PinnedMatch> pinnedMatchesIn) {
+        pinnedMatches = pinnedMatchesIn;
+    }
+
+    /**
+     * Gets the systems.
+     *
+     * @return the systems
+     */
+    public Map<String, System> getSystems() {
+        return systems;
+    }
+
+    /**
+     * Sets the systems.
+     *
+     * @param systemsIn the new systems
+     */
+    public void setSystems(Map<String, System> systemsIn) {
+        systems = systemsIn;
     }
 }

@@ -10,10 +10,20 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <param name="sequence">suse_pinsub_id_seq</param>
             </generator>
         </id>
-        <many-to-one name="server"
-                     class="com.redhat.rhn.domain.server.Server"
-                     column="server_id" insert="true" update="true" />
-
-        <property name="orderitemId" type="long" column="orderitem_id"/>
+        <property name="systemId" type="long" column="system_id"/>
+        <property name="subscriptionId" type="long" column="subscription_id"/>
     </class>
+
+    <query name="PinnedSubscription.cleanStalePins">
+        <![CDATA[
+            DELETE FROM PinnedSubscription
+                WHERE id IN (
+                    SELECT id FROM PinnedSubscription
+                        WHERE (
+                            systemId NOT IN (SELECT id FROM Server) OR
+                            subscriptionId NOT IN (SELECT sccId FROM SCCOrderItem)
+                        ) AND systemId <> :selfSystemId
+                )
+        ]]>
+    </query>
 </hibernate-mapping>
