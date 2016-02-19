@@ -34,6 +34,9 @@ public class JsonSystem {
     /** True if this system is made of metal. */
     private Boolean physical;
 
+    /** True if this system is a virtual host. */
+    private Boolean virtualHost;
+
     /** Virtual machine ids. */
     private Set<Long> virtualSystemIds = new LinkedHashSet<>();
 
@@ -47,15 +50,17 @@ public class JsonSystem {
      * @param nameIn the name
      * @param cpusIn the cpus
      * @param physicalIn the physical
+     * @param virtualHostIn true if this is a virtual host
      * @param virtualSystemIdsIn the virtual system ids
      * @param productIdsIn the product ids
      */
     public JsonSystem(Long idIn, String nameIn, Integer cpusIn, Boolean physicalIn,
-            Set<Long> virtualSystemIdsIn, Set<Long> productIdsIn) {
+            Boolean virtualHostIn, Set<Long> virtualSystemIdsIn, Set<Long> productIdsIn) {
         id = idIn;
         name = nameIn;
         cpus = cpusIn;
         physical = physicalIn;
+        virtualHost = virtualHostIn;
         virtualSystemIds = virtualSystemIdsIn;
         productIds = productIdsIn;
     }
@@ -130,6 +135,24 @@ public class JsonSystem {
      */
     public void setPhysical(Boolean physicalIn) {
         physical = physicalIn;
+    }
+
+    /**
+     * Returns true if this system is a virtual host.
+     *
+     * @return the true if this system is a virtual host
+     */
+    public Boolean getVirtualHost() {
+        return virtualHost;
+    }
+
+    /**
+     * Set to true if this system is a virtual host.
+     *
+     * @param virtualHostIn true if this system is a virtual host
+     */
+    public void setVirtualHost(Boolean virtualHostIn) {
+        virtualHost = virtualHostIn;
     }
 
     /**

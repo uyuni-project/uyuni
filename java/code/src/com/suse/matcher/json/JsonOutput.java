@@ -28,8 +28,8 @@ public class JsonOutput {
     /** Date and time of the match. */
     private Date timestamp;
 
-    /** The confirmed matches. */
-    private List<JsonMatch> confirmedMatches = new LinkedList<>();
+    /** All matches, possible and confirmed. */
+    private List<JsonMatch> matches = new LinkedList<>();
 
     /** Mapping from subscription id to its policy */
     private Map<Long, String> subscriptionPolicies = new HashMap<>();
@@ -41,14 +41,14 @@ public class JsonOutput {
      * Standard constructor.
      *
      * @param timestampIn the timestamp
-     * @param confirmedMatchesIn the confirmed matches
+     * @param matchesIn the matches
      * @param messagesIn the messages
      * @param subscriptionPoliciesIn mapping from subscription id to its policy
      */
-    public JsonOutput(Date timestampIn, List<JsonMatch> confirmedMatchesIn,
+    public JsonOutput(Date timestampIn, List<JsonMatch> matchesIn,
             List<JsonMessage> messagesIn, Map<Long, String> subscriptionPoliciesIn) {
         timestamp = timestampIn;
-        confirmedMatches = confirmedMatchesIn;
+        matches = matchesIn;
         messages = messagesIn;
         subscriptionPolicies = subscriptionPoliciesIn;
     }
@@ -72,21 +72,21 @@ public class JsonOutput {
     }
 
     /**
-     * Gets the confirmed matches.
+     * Gets all possible and confirmed matches.
      *
-     * @return the confirmed matches
+     * @return the matches
      */
-    public List<JsonMatch> getConfirmedMatches() {
-        return confirmedMatches;
+    public List<JsonMatch> getMatches() {
+        return matches;
     }
 
     /**
-     * Sets the confirmed matches.
+     * Sets the matches.
      *
-     * @param confirmedMatchesIn the new confirmed matches
+     * @param matchesIn the new matches
      */
-    public void setConfirmedMatches(List<JsonMatch> confirmedMatchesIn) {
-        confirmedMatches = confirmedMatchesIn;
+    public void setMatches(List<JsonMatch> matchesIn) {
+        matches = matchesIn;
     }
 
     /**

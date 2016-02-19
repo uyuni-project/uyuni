@@ -254,8 +254,8 @@ public class MatcherJsonIOTest extends TestCase {
             HibernateFactory.getSession().flush();
 
             PinnedSubscription pin = new PinnedSubscription();
-            pin.setServer(h1);
-            pin.setOrderitemId(9999L);
+            pin.setSystemId(h1.getId());
+            pin.setSubscriptionId(9999L);
             TestUtils.saveAndFlush(pin);
             HibernateFactory.getSession().clear();
 

@@ -14,8 +14,11 @@
  */
 package com.suse.manager.webui.services.subscriptionmatching.test;
 
+import com.redhat.rhn.domain.server.PinnedSubscription;
+import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.webui.services.subscriptionmatching.MatcherUiData;
+import com.suse.manager.webui.services.subscriptionmatching.PinnedMatch;
 import com.suse.manager.webui.services.subscriptionmatching.Subscription;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
 import com.suse.manager.webui.services.subscriptionmatching.System;
@@ -93,8 +96,8 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testSystemIdAdjustment() throws Exception {
-        input.getSystems().add(new JsonSystem(1L, "Sys1", null, true, new HashSet<>(),
-                new HashSet<>()));
+        input.getSystems().add(new JsonSystem(1L, "Sys1", null, true,
+                false, new HashSet<>(), new HashSet<>()));
 
         LinkedList<JsonMessage> messages = new LinkedList<>();
         Map<String, String> messageData = new HashMap<>();
@@ -105,36 +108,15 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         List<JsonMessage> jsonMessages = ((MatcherUiData)
                 processor.getData(of(input), of(output))).getMessages();
         List<JsonMessage> outputList = jsonMessages.stream()
-                .filter(m -> m.getType().equals("unknown_cpu_count"))
+                .filter(m -> m.getType().equals("unknownCpuCount"))
                 .collect(toList());
         assertEquals(1, outputList.size());
-        assertEquals("Sys1", outputList.get(0).getData().get("name"));
-    }
-
-    public void testSystemIdAdjustmentNameMissing() throws Exception {
-        // system with a null name
-        input.getSystems().add(new JsonSystem(1L, null, null, true, new HashSet<>(),
-                new HashSet<>()));
-
-        LinkedList<JsonMessage> messages = new LinkedList<>();
-        Map<String, String> messageData = new HashMap<>();
-        messages.add(new JsonMessage("unknown_cpu_count", messageData));
-        messageData.put("id", "1");
-        output.setMessages(messages);
-
-        List<JsonMessage> jsonMessages = ((MatcherUiData)
-                processor.getData(of(input), of(output))).getMessages();
-        List<JsonMessage> outputList = jsonMessages.stream()
-                .filter(m -> m.getType().equals("unknown_cpu_count"))
-                .collect(toList());
-        assertEquals(1, outputList.size());
-        // we expect a "fallback" name
-        assertEquals("System id: 1", outputList.get(0).getData().get("name"));
+        assertEquals("1", outputList.get(0).getData().get("id"));
     }
 
     public void testUnsatisfiedMatchAdjustment() throws Exception {
-        input.getSystems().add(new JsonSystem(1L, "Sys1", null, true, new HashSet<>(),
-                new HashSet<>()));
+        input.getSystems().add(new JsonSystem(1L, "Sys1", null, true,
+                false, new HashSet<>(), new HashSet<>()));
         input.getSubscriptions().add(new JsonSubscription(100L, "123456", "subs name", 1,
                 new Date(), new Date(), "user", new HashSet<>()));
 
@@ -148,52 +130,23 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         List<JsonMessage> jsonMessages = ((MatcherUiData)
                 processor.getData(of(input), of(output))).getMessages();
         List<JsonMessage> outputList = jsonMessages.stream()
-                .filter(m -> m.getType().equals("unsatisfied_pinned_match"))
                 .collect(toList());
-        assertEquals(1, outputList.size());
-        assertEquals("Sys1", outputList.get(0).getData().get("system_name"));
-        assertEquals("subs name", outputList.get(0).getData().get("subscription_name"));
-    }
-
-    public void testUnsatisfiedMatchAdjustmentNamesMissing() throws Exception {
-        // system with a null name
-        input.getSystems().add(new JsonSystem(1L, null, null, true, new HashSet<>(),
-                new HashSet<>()));
-        // subscriptions with a null name
-        input.getSubscriptions().add(new JsonSubscription(100L, "123456", null, 1,
-                new Date(), new Date(), "user", new HashSet<>()));
-
-        LinkedList<JsonMessage> messages = new LinkedList<>();
-        Map<String, String> messageData = new HashMap<>();
-        messages.add(new JsonMessage("unsatisfied_pinned_match", messageData));
-        messageData.put("system_id", "1");
-        messageData.put("subscription_id", "100");
-        output.setMessages(messages);
-
-        List<JsonMessage> jsonMessages = ((MatcherUiData)
-                processor.getData(of(input), of(output))).getMessages();
-        List<JsonMessage> outputList = jsonMessages.stream()
-                .filter(m -> m.getType().equals("unsatisfied_pinned_match"))
-                .collect(toList());
-        assertEquals(1, outputList.size());
-        assertEquals("System id: 1", outputList.get(0).getData().get("system_name"));
-        assertEquals("Subscription id: 100",
-                outputList.get(0).getData().get("subscription_name"));
+        assertEquals(0, outputList.size());
     }
 
     public void testSubscriptions() {
         input.getSubscriptions().add(new JsonSubscription(1L, "123456", "subs name", 3,
                 new Date(0), new Date(1000), "user", new HashSet<>()));
 
-        JsonMatch match = new JsonMatch(20L, 1L, 100L, 200);
-        output.getConfirmedMatches().add(match);
+        JsonMatch match = new JsonMatch(20L, 1L, 100L, 200, true);
+        output.getMatches().add(match);
         // subscriptions with null policy will be filtered out
         setSubscriptionPolicy(1L, "my policy");
 
         MatcherUiData data = (MatcherUiData) processor.getData(of(input), of(output));
 
         assertEquals(1, data.getSubscriptions().size());
-        Subscription actual = data.getSubscriptions().get(0);
+        Subscription actual = data.getSubscriptions().values().iterator().next();
         assertEquals("123456", actual.getPartNumber());
         assertEquals("subs name", actual.getDescription());
         assertEquals(Integer.valueOf(3), actual.getTotalQuantity());
@@ -208,7 +161,8 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         setSubscriptionPolicy(1L, "my policy");
 
         Subscription subscription = ((MatcherUiData) processor
-                .getData(of(input), of(output))).getSubscriptions().get(0);
+                .getData(of(input), of(output))).getSubscriptions()
+                .values().iterator().next();
 
         assertEquals("my policy", subscription.getPolicy());
     }
@@ -218,7 +172,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 new Date(0), new Date(1000), "user", new HashSet<>()));
         setSubscriptionPolicy(1L, null);
 
-        List<Subscription> subscriptions = ((MatcherUiData) processor
+        Map<String, Subscription> subscriptions = ((MatcherUiData) processor
                 .getData(of(input), of(output))).getSubscriptions();
 
         assertTrue(subscriptions.isEmpty());
@@ -232,7 +186,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
 
     public void testUnmatchedSystems() {
         input.setSystems(Collections.singletonList(
-                new JsonSystem(1L, "system name", 1, true, Collections.emptySet(),
+                new JsonSystem(1L, "system name", 1, true, false, Collections.emptySet(),
                         Collections.singleton(100L))));
 
         List<System> unmatchedSystems = ((MatcherUiData) processor
@@ -246,9 +200,9 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         products.add(100L);
         products.add(101L);
         input.setSystems(Collections.singletonList(
-                new JsonSystem(1L, "system name", 1, true, Collections.emptySet(),
+                new JsonSystem(1L, "system name", 1, true, false, Collections.emptySet(),
                         products)));
-        output.getConfirmedMatches().add(new JsonMatch(1L, 10L, 100L, 100));
+        output.getMatches().add(new JsonMatch(1L, 10L, 100L, 100, true));
 
         List<System> unmatchedSystems = ((MatcherUiData) processor
                 .getData(of(input), of(output))).getUnmatchedSystems();
@@ -256,6 +210,79 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         assertEquals(1, unmatchedSystems.size());
         assertEquals(1, unmatchedSystems.get(0).getProducts().size());
         assertEquals("Unknown product (101)", unmatchedSystems.get(0).getProducts().get(0));
+    }
+
+    public void testNewPin() throws Exception {
+        input.setSystems(Arrays.asList(new JsonSystem(100L, "my system", 1, true, false,
+                new HashSet<>(), new HashSet<>())));
+
+        PinnedSubscription newPinDb = new PinnedSubscription();
+        newPinDb.setSubscriptionId(10L);
+        newPinDb.setSystemId(100L);
+        PinnedSubscriptionFactory.getInstance().save(newPinDb);
+
+        List<PinnedMatch> pinnedMatches = ((MatcherUiData) processor
+                .getData(of(input), of(output))).getPinnedMatches();
+
+        assertEquals(1, pinnedMatches.size());
+        PinnedMatch pinnedMatch = pinnedMatches.get(0);
+        assertEquals(100L, pinnedMatch.getSystemId().longValue());
+        assertEquals("pending", pinnedMatch.getStatus());
+    }
+
+    public void testConfirmedPin() throws Exception {
+        // setup a confirmed match of one system and one subscription
+        input.setSystems(Arrays.asList(new JsonSystem(100L, "my system", 1, true, false,
+                new HashSet<>(), new HashSet<>())));
+        JsonSubscription subscription = new JsonSubscription(10L, "10",
+                "subscritption id 10, pn 10",
+                1, date("2009-03-01T00:00:00.000Z"), date("2018-02-28T00:00:00.000Z"), "",
+                Collections.singleton(1004L));
+        input.setSubscriptions(Arrays.asList(subscription));
+        List<JsonMatch> matches = Arrays.asList(new JsonMatch(100L, 10L, 1000L, 100, true));
+        input.setPinnedMatches(matches);
+        output.setMatches(matches);
+
+        // create a corresponding pin
+        PinnedSubscription newPinDb = new PinnedSubscription();
+        newPinDb.setSubscriptionId(10L);
+        newPinDb.setSystemId(100L);
+        PinnedSubscriptionFactory.getInstance().save(newPinDb);
+
+        List<PinnedMatch> pinnedMatches = ((MatcherUiData) processor
+                .getData(of(input), of(output))).getPinnedMatches();
+
+        assertEquals(1, pinnedMatches.size());
+        PinnedMatch pinnedMatch = pinnedMatches.get(0);
+        assertEquals(100L, pinnedMatch.getSystemId().longValue());
+        assertEquals("satisfied", pinnedMatch.getStatus());
+    }
+
+
+    public void testUnsatisfiedPin() throws Exception {
+        // setup a  of one system and one subscription
+        input.setSystems(Arrays.asList(new JsonSystem(100L, "my system", 1, true, false,
+                new HashSet<>(), new HashSet<>())));
+        JsonSubscription subscription = new JsonSubscription(10L, "10",
+                "subscritption id 10, pn 10",
+                1, date("2009-03-01T00:00:00.000Z"), date("2018-02-28T00:00:00.000Z"), "",
+                Collections.singleton(1004L));
+        input.setSubscriptions(Arrays.asList(subscription));
+        input.setPinnedMatches(Arrays.asList(new JsonMatch(100L, 10L, 1L, 100, null)));
+
+        // create a corresponding pin
+        PinnedSubscription newPinDb = new PinnedSubscription();
+        newPinDb.setSubscriptionId(10L);
+        newPinDb.setSystemId(100L);
+        PinnedSubscriptionFactory.getInstance().save(newPinDb);
+
+        List<PinnedMatch> pinnedMatches = ((MatcherUiData) processor
+                .getData(of(input), of(output))).getPinnedMatches();
+
+        assertEquals(1, pinnedMatches.size());
+        PinnedMatch pinnedMatch = pinnedMatches.get(0);
+        assertEquals(100L, pinnedMatch.getSystemId().longValue());
+        assertEquals("unsatisfied", pinnedMatch.getStatus());
     }
 
     /**
@@ -304,7 +331,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
 
         // SYSTEMS
         List<JsonSystem> systems = new LinkedList<>();
-        systems.add(new JsonSystem(10L, "system 10", 1, true, new HashSet<>(),
+        systems.add(new JsonSystem(10L, "system 10", 1, true, false, new HashSet<>(),
                 Collections.singleton(1000L)));
 
         Set prods = new HashSet<>();
@@ -312,30 +339,29 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         prods.add(1004L);
         systems.add(new JsonSystem(20L,
                 "partially compliant system 20, has product with expired subs",
-                1, true, new HashSet<>(), prods));
+                1, true, false, new HashSet<>(), prods));
         systems.add(new JsonSystem(21L,
                 "partially compliant system 21, has product with 0-quantity subs",
-                1, true, new HashSet<>(), Collections.singleton(1001L)));
+                1, true, false, new HashSet<>(), Collections.singleton(1001L)));
 
         Set<Long> virtGuests = new HashSet<>();
         virtGuests.add(31L);
         virtGuests.add(32L);
         virtGuests.add(33L);
         virtGuests.add(33L);
-        systems.add(new JsonSystem(30L, "virtual host 30", 1, true, virtGuests,
+        systems.add(new JsonSystem(30L, "virtual host 30", 1, true, true, virtGuests,
                 new HashSet<>()));
-        systems.add(new JsonSystem(31L, "virtual guest 31", 1, false, new HashSet<>(),
-                Collections.singleton(1003L)));
-        systems.add(new JsonSystem(32L, "virtual guest 32", 1, false, new HashSet<>(),
-                Collections.singleton(1003L)));
+        systems.add(new JsonSystem(31L, "virtual guest 31", 1, false, false,
+                new HashSet<>(), Collections.singleton(1003L)));
+        systems.add(new JsonSystem(32L, "virtual guest 32", 1, false, false,
+                new HashSet<>(), Collections.singleton(1003L)));
         prods = new HashSet<>();
         prods.add(1000L);
         prods.add(1003L);
         systems.add(new JsonSystem(33L, "virtual guest 33, has also prod 1000 installed", 1,
-                false, new HashSet<>(), prods));
-        systems.add(new JsonSystem(34L, "virtual guest 34," +
-                " has also prod 1000 installed, reported falsely as physical", 1, true,
-                new HashSet<>(), prods));
+                false, false, new HashSet<>(), prods));
+        systems.add(new JsonSystem(34L, "virtual guest 34, has also prod 1000 installed, " +
+                "reported falsely as physical", 1, false, false, new HashSet<>(), prods));
         input.setSystems(systems);
 
         // OUTPUT
@@ -346,15 +372,15 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         policies.put(103L, "unlimited_virtualization");
         policies.put(104L, "one_two");
 
-        List<JsonMatch> confirmedMatches = output.getConfirmedMatches();
-        confirmedMatches.add(new JsonMatch(10L, 100L, 1000L, 100));
-        confirmedMatches.add(new JsonMatch(20L, 100L, 1000L, 100));
-        confirmedMatches.add(new JsonMatch(30L, 103L, 1003L, 100));
-        confirmedMatches.add(new JsonMatch(31L, 103L, 1003L, 0));
-        confirmedMatches.add(new JsonMatch(32L, 103L, 1003L, 0));
-        confirmedMatches.add(new JsonMatch(33L, 100L, 1000L, 50));
-        confirmedMatches.add(new JsonMatch(33L, 103L, 1003L, 0));
-        confirmedMatches.add(new JsonMatch(34L, 100L, 1000L, 100));
+        List<JsonMatch> confirmedMatches = output.getMatches();
+        confirmedMatches.add(new JsonMatch(10L, 100L, 1000L, 100, true));
+        confirmedMatches.add(new JsonMatch(20L, 100L, 1000L, 100, true));
+        confirmedMatches.add(new JsonMatch(30L, 103L, 1003L, 100, true));
+        confirmedMatches.add(new JsonMatch(31L, 103L, 1003L, 0, true));
+        confirmedMatches.add(new JsonMatch(32L, 103L, 1003L, 0, true));
+        confirmedMatches.add(new JsonMatch(33L, 100L, 1000L, 50, true));
+        confirmedMatches.add(new JsonMatch(33L, 103L, 1003L, 0, true));
+        confirmedMatches.add(new JsonMatch(34L, 100L, 1000L, 100, true));
 
         MatcherUiData data = (MatcherUiData) processor.getData(of(input), of(output));
 
@@ -367,7 +393,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         // expired or 0 quantity subscription shouldn't be in the output
         assertEquals(
                 Arrays.asList(100L, 101L, 103L),
-                data.getSubscriptions().stream()
+                data.getSubscriptions().values().stream()
                         .map(s -> s.getId())
                         .collect(Collectors.toList()));
 

@@ -499,7 +499,11 @@ public class TaskoFactory extends HibernateFactory {
             .createCriteria(TaskoRun.class)
             .add(Subqueries.propertyIn("template.id", templateIds))
             .add(Restrictions.in("status",
-                    new Object[] {TaskoRun.STATUS_RUNNING, TaskoRun.STATUS_FINISHED}))
+                    new Object[] {
+                            TaskoRun.STATUS_RUNNING,
+                            TaskoRun.STATUS_FINISHED,
+                            TaskoRun.STATUS_INTERRUPTED
+            }))
             .addOrder(Order.desc("startTime"))
             .addOrder(Order.desc("id"))
             .setFirstResult(0)
