@@ -33,14 +33,10 @@ var Table = React.createClass({
   },
 
   orderByColumn: function(sortColumnIndex) {
-    var sortAscending = this.state.sortAscending;
-    if (this.state.sortColumnIndex == sortColumnIndex) {
-      sortAscending = !sortAscending;
-    }
-    else {
-      sortAscending = true;
-    }
-    this.setState({sortColumnIndex: sortColumnIndex, sortAscending: sortAscending});
+    this.setState({
+      sortColumnIndex: sortColumnIndex,
+      sortAscending: this.state.sortColumnIndex != sortColumnIndex || !this.state.sortAscending
+    });
   },
 
   getRows: function(unfilteredRows, searchValue) {
