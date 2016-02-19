@@ -150,7 +150,6 @@ var Table = React.createClass({
           <div className="panel-footer">
             <div className="spacewalk-list-bottom-addons">
               <PaginationBlock currentPage={currentPage} lastPage={this.lastPage()} onPageChange={this.onPageChange} />
-              {pagination}
             </div>
           </div>
         </div>
