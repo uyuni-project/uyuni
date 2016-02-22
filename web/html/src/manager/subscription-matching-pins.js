@@ -263,7 +263,7 @@ var PinSubscriptionSelector = React.createClass({
         />;
     }
     else {
-      return <p>{t("No matching subscriptions for this systems have been found.")}</p>
+      return <p>{t("No subscriptions have been found to match this system, considering all products installed, either directly or in virtual guests.")}</p>
     }
   },
 });
