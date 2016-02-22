@@ -19,9 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by fkobzik-local on 1/21/16.
- * todo maybe rename to UnmatchedSystem
- * todo implement comparable + sort it in the usage
+ * Represents a system in the Subscription Matcher UI.
  */
 public class System {
 
