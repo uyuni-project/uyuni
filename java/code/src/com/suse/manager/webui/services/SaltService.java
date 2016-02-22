@@ -28,7 +28,7 @@ import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -219,7 +219,7 @@ public interface SaltService {
      * @throws SaltException in case there is an error scheduling the job
      */
     Map<String, Schedule.Result> schedule(String name, LocalCall<?> call, Target<?> target,
-            LocalDateTime scheduleDate, Map<String, ?> metadata) throws SaltException;
+            ZonedDateTime scheduleDate, Map<String, ?> metadata) throws SaltException;
 
     /**
      * Remove a scheduled job from the minion

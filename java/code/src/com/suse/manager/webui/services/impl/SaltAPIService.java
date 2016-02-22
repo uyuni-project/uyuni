@@ -53,7 +53,7 @@ import org.apache.commons.collections.CollectionUtils;
 
 import java.io.IOException;
 import java.net.URI;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -418,10 +418,11 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public Map<String, Schedule.Result> schedule(String name, LocalCall<?> call,
-            Target<?> target, LocalDateTime scheduleDate, Map<String, ?> metadata)
+            Target<?> target, ZonedDateTime scheduleDate, Map<String, ?> metadata)
             throws SaltException {
+        // TODO: Convert scheduleDate into the actual timezone of the minion
         Map<String, Schedule.Result> result = Schedule
-                .add(name, call, scheduleDate, metadata)
+                .add(name, call, scheduleDate.toLocalDateTime(), metadata)
                 .callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
         return result;
     }
