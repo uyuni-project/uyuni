@@ -35,9 +35,8 @@ import com.suse.salt.netapi.exception.SaltException;
 
 import org.apache.log4j.Logger;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -107,8 +106,8 @@ public enum SaltServerActionService {
                 LOG.debug("Scheduling action for: " + target.getTarget());
             }
 
-            LocalDateTime earliestAction = actionIn.getEarliestAction().toInstant()
-                    .atZone(ZoneId.of("UTC")).toLocalDateTime();
+            ZonedDateTime earliestAction = actionIn.getEarliestAction().toInstant()
+                    .atZone(ZoneId.systemDefault());
             Map<String, Long> metadata = new HashMap<>();
             metadata.put("suma-action-id", actionIn.getId());
 
@@ -118,8 +117,7 @@ public enum SaltServerActionService {
                 final Optional<LocalAsyncResult<?>> asyncResults;
 
                 // Don't use schedule if this action should happen right now
-                LocalDateTime now = LocalDateTime
-                        .ofInstant(Instant.now(), ZoneId.systemDefault());
+                ZonedDateTime now = ZonedDateTime.now();
                 if (earliestAction.isBefore(now) || earliestAction.equals(now)) {
                     LOG.debug("Action will be executed directly using callAsync()");
                     asyncResults = Optional.of(SaltAPIService.INSTANCE
