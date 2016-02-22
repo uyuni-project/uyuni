@@ -166,6 +166,32 @@ var AddPinPopUp = React.createClass({
     return {systemId: null};
   },
 
+  rowComparator: function(a, b, columnIndex, ascending) {
+    var aRaw = a.props["rawData"];
+    var bRaw = b.props["rawData"];
+    var columnKeyInRawData=["name", "cpuCount"];
+    var columnKey = columnKeyInRawData[columnIndex];
+    var orderCondition = ascending ? 1 : -1;
+
+    var result = 0;
+    var aValue = aRaw[columnKey];
+    var bValue = bRaw[columnKey];
+    if (columnKey == "name") {
+      result = aValue.localeCompare(bValue);
+    }
+    if (columnKey == "cpuCount") {
+      result = aValue - bValue;
+    }
+
+    if (result == 0) {
+      var aId = aRaw["id"];
+      var bId = bRaw["id"];
+      result = aId - bId;
+    }
+
+    return result * orderCondition;
+  },
+
   buildRows: function() {
     return Object.keys(this.props.systems).map((k) => {
       var s = this.props.systems[k];
@@ -205,6 +231,8 @@ var AddPinPopUp = React.createClass({
           <Table headers={[t("System"), t("Socket/IFL count"), t("Products"), t("")]} rows={this.buildRows()}
             rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["name"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
             filterPlaceholder={t("Filter by name")}
+            sortableColumnIndexes={[0, 1]}
+            rowComparator={this.rowComparator}
           />
         </div>
       );
