@@ -117,6 +117,7 @@ var SubscriptionMatchingTabContainer = React.createClass({
           />,
           <Pins
             pinnedMatches={data.pinnedMatches}
+            products={data.products}
             systems={data.systems}
             subscriptions={data.subscriptions}
             onPinChanged={this.props.onPinChanged}

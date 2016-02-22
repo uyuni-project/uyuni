@@ -107,7 +107,7 @@ var Pins = React.createClass({
   },
 
   render: function() {
-    var popUpContent = this.state.showPopUp ? <AddPinPopUp systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
+    var popUpContent = this.state.showPopUp ? <AddPinPopUp products={this.props.products} systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
     return (
       <div className="row col-md-12">
         <h2>{t("Pins")}</h2>
@@ -166,15 +166,16 @@ var AddPinPopUp = React.createClass({
     return {systemId: null};
   },
 
-  buildRows: function(systems, onClickAction) {
-    return Object.keys(systems).map((k) => {
-      var s = systems[k];
+  buildRows: function() {
+    return Object.keys(this.props.systems).map((k) => {
+      var s = this.props.systems[k];
       var columns = [
         <TableCell content={<SystemLabel id={k} name={s.name} type={s.type} />} />,
         <TableCell content={s.cpuCount} />,
+        <ProductTableCell products={this.props.products} productIds={s.productIds} />,
         <TableCell content={
           <PinButton
-            onClick={() => onClickAction(k)}
+            onClick={() => this.onSystemSelected(k)}
             content={<span>{t("Select")} <i className="fa fa-arrow-right fa-right"></i></span>}
           />}
         />
@@ -201,7 +202,7 @@ var AddPinPopUp = React.createClass({
       popUpContent = (
         <div>
           <p>{t("Step 1/2: select the system to pin from the table below.")}</p>
-          <Table headers={[t("System"), t("Socket/IFL count"), t("")]} rows={this.buildRows(this.props.systems, this.onSystemSelected)}
+          <Table headers={[t("System"), t("Socket/IFL count"), t("Products"), t("")]} rows={this.buildRows()}
             rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["name"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
             filterPlaceholder={t("Filter by name")}
           />
@@ -229,6 +230,32 @@ var AddPinPopUp = React.createClass({
     return (popUpContent);
   }
 });
+
+var ProductTableCell = (props) => {
+  const productLength = props.productIds.length;
+
+  if (productLength == 0){
+    return <TableCell />;
+  }
+
+  const firstProductName = props.products[props.productIds[0]].productName;
+  if (productLength == 1) {
+    return <TableCell content={firstProductName} />;
+  }
+
+  const productNames = props.productIds
+    .map(i => props.products[i].productName)
+    .reduce((previousValue, currentValue) => previousValue + ", " + currentValue)
+  ;
+  return (
+    <TableCell content={
+      <ToolTip
+        content={firstProductName + ", ..."}
+        title={productNames}
+      />}
+    />
+  );
+};
 
 var PinSubscriptionSelector = React.createClass({
   buildRows: function(possibleSubscriptions, onClickAction) {
