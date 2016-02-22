@@ -137,11 +137,17 @@ var Table = React.createClass({
                     if (index == this.state.sortColumnIndex) {
                       className = (this.state.sortAscending ? "asc" : "desc") + "Sort";
                     }
-                    return <SortableTableHeader className={className} content={header}
-                      orderBy={() => this.onSortColumnIndexChange(index)} />;
+                    return (
+                      <SortableTableHeader
+                        key={index}
+                        className={className}
+                        content={header}
+                        orderBy={() => this.onSortColumnIndexChange(index)}
+                      />
+                    );
                   }
                   else {
-                    return <th>{header}</th>;
+                    return <th key={index}>{header}</th>;
                   }
                 })
               } />
@@ -205,7 +211,7 @@ var ItemsPerPageSelector = (props) =>
   <select className="display-number"
     defaultValue={props.currentValue}
     onChange={(e) => props.onChange(parseInt(e.target.value))}>
-      {[5,10,15,25,50,100,250,500].map((o) => <option value={o}>{o}</option>)}
+      {[5,10,15,25,50,100,250,500].map((o) => <option value={o} key={o}>{o}</option>)}
   </select>
 ;
 

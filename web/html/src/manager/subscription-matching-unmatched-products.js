@@ -56,9 +56,9 @@ var UnmatchedProducts = React.createClass({
           </button>;
 
       var columns = [
-        <TableCell content={productName} />,
-        <TableCell content={systemCount} />,
-        <TableCell content={listButton} />,
+        <TableCell key="name" content={productName} />,
+        <TableCell key="cpuCount" content={systemCount} />,
+        <TableCell key="button" content={listButton} />,
       ];
 
       var rawData = {
@@ -67,7 +67,7 @@ var UnmatchedProducts = React.createClass({
         systemCount: systemCount
       };
 
-      return <TableRow columns={columns} rawData={rawData} />
+      return <TableRow key={pid} columns={columns} rawData={rawData} />
     });
   },
 
@@ -130,10 +130,10 @@ var UnmatchedSystemPopUp = React.createClass({
   buildRows: function(product, systems) {
     return product.unmatchedSystemIds.map((sid) => {
       var systemName = systems[sid].name;
-      var column = <TableCell content={<SystemLabel type={systems[sid].type} name={systemName} />} />;
+      var column = <TableCell key="system" content={<SystemLabel type={systems[sid].type} name={systemName} />} />;
       var rawData = {systemName: systemName};
 
-      return <TableRow columns={[column]} rawData={rawData} />
+      return <TableRow key={sid} columns={[column]} rawData={rawData} />
     });
   },
 

@@ -53,16 +53,16 @@ var Pins = React.createClass({
       var subscriptionEndDate = subscription == null ? " " : subscription.endDate;
       var subscriptionPartNumber = subscription == null ? "" : subscription.partNumber;
       var columns = [
-        <TableCell content={<SystemLabel id={p.systemId} name={systemName} type={systemType} />} />,
-        <TableCell content={subscriptionDescription} />,
-        <TableCell content={humanReadablePolicy(subscriptionPolicy)} />,
-        <TableCell content={
+        <TableCell key="systemId" content={<SystemLabel id={p.systemId} name={systemName} type={systemType} />} />,
+        <TableCell key="subscription" content={subscriptionDescription} />,
+        <TableCell key="policy" content={humanReadablePolicy(subscriptionPolicy)} />,
+        <TableCell key="endDate" content={
           <ToolTip content={moment(subscriptionEndDate).fromNow()}
             title={moment(subscriptionEndDate).format("LL")} />}
         />,
-        <TableCell content={subscriptionPartNumber} />,
-        <TableCell content={<PinStatus status={p.status} />} />,
-        <TableCell content={
+        <TableCell key="partNumber" content={subscriptionPartNumber} />,
+        <TableCell key="status" content={<PinStatus status={p.status} />} />,
+        <TableCell key="button" content={
           <PinButton
             onClick={() => onClickAction(p.id)}
             content={<span><i className="fa fa-trash-o"></i>{t("Delete Pin")}</span>}
@@ -79,7 +79,7 @@ var Pins = React.createClass({
         subscriptionPartNumber: subscriptionPartNumber,
         status: p.status
      };
-      return <TableRow columns={columns} rawData={rawData} />
+      return <TableRow key={p.id} columns={columns} rawData={rawData} />
     });
   },
 
@@ -196,17 +196,17 @@ var AddPinPopUp = React.createClass({
     return Object.keys(this.props.systems).map((k) => {
       var s = this.props.systems[k];
       var columns = [
-        <TableCell content={<SystemLabel id={k} name={s.name} type={s.type} />} />,
-        <TableCell content={s.cpuCount} />,
-        <ProductTableCell products={this.props.products} productIds={s.productIds} />,
-        <TableCell content={
+        <TableCell key="system" content={<SystemLabel id={k} name={s.name} type={s.type} />} />,
+        <TableCell key="cpuCount" content={s.cpuCount} />,
+        <ProductTableCell key="products" products={this.props.products} productIds={s.productIds} />,
+        <TableCell key="button" content={
           <PinButton
             onClick={() => this.onSystemSelected(k)}
             content={<span>{t("Select")} <i className="fa fa-arrow-right fa-right"></i></span>}
           />}
         />
       ];
-      return <TableRow columns={columns} rawData={s} />
+      return <TableRow key={k} columns={columns} rawData={s} />
     });
   },
 
@@ -289,21 +289,21 @@ var PinSubscriptionSelector = React.createClass({
   buildRows: function(possibleSubscriptions, onClickAction) {
     return possibleSubscriptions.map((s) => {
       var columns = [
-        <TableCell content={s.partNumber} />,
-        <TableCell content={s.description} />,
-        <TableCell content={humanReadablePolicy(s.policy)} />,
-        <TableCell content={
+        <TableCell key="partNumber" content={s.partNumber} />,
+        <TableCell key="description" content={s.description} />,
+        <TableCell key="policy" content={humanReadablePolicy(s.policy)} />,
+        <TableCell key="endDate" content={
           <ToolTip content={moment(s.endDate).fromNow()}
             title={moment(s.endDate).format("LL")} />}
         />,
-        <TableCell content={
+        <TableCell key="button" content={
           <PinButton
             onClick={() => onClickAction(s.id)}
             content={<span><i className="fa fa-map-pin"></i>{t("Save Pin")}</span>}
           />}
         />
       ];
-      return <TableRow columns={columns} rawData={s} />
+      return <TableRow key={s.id} columns={columns} rawData={s} />
     });
   },
 

@@ -19,7 +19,7 @@ var Messages = React.createClass({
   },
 
   buildRows: function(rawMessages, systems) {
-    var result = rawMessages.map(function(rawMessage) {
+    var result = rawMessages.map(function(rawMessage, index) {
       var data = rawMessage["data"];
       var message;
       var additionalInformation;
@@ -45,10 +45,10 @@ var Messages = React.createClass({
           additionalInformation = data;
       }
       var columns = [
-        <TableCell content={message} />,
-        <TableCell content={additionalInformation} />
+        <TableCell key="message" content={message} />,
+        <TableCell key="additionalInformation" content={additionalInformation} />
       ];
-      return <TableRow columns={columns} message={message}/>;
+      return <TableRow key={index} columns={columns} message={message} />;
     });
     return result;
   },
