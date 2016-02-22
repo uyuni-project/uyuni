@@ -40,7 +40,7 @@ public class KickstartInstallType extends BaseDomainHelper {
     public static final String SLES_PREFIX = "sles";
 
     // Cobbler's OS versions
-    public static final String GENERIC_OS_VERSION = "generic26";
+    public static final String GENERIC_OS_VERSION = "virtio26";
 
     // Cobbler's breeds
     public static final String GENERIC_BREED = "generic";
