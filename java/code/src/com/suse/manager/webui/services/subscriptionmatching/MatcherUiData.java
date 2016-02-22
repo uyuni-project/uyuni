@@ -47,7 +47,7 @@ public class MatcherUiData {
     /** Products. */
     private Map<String, Product> products = new HashMap<>();
 
-    /** List of ids of unmatched products. */
+    /** Ids of unmatched products. */
     private Set<Long> unmatchedProductIds;
 
     /** Pinned matches. */
