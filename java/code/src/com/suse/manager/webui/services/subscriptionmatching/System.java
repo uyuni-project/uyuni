@@ -16,6 +16,7 @@
 package com.suse.manager.webui.services.subscriptionmatching;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by fkobzik-local on 1/21/16.
@@ -33,8 +34,8 @@ public class System {
     /** The cpu count. */
     private Integer cpuCount;
 
-    /** The products. */
-    private List<String> products;
+    /** The product ids. */
+    private Set<Long> productIds;
 
     /** The system type. */
     private String type;
@@ -48,16 +49,16 @@ public class System {
      * @param idIn - id
      * @param nameIn - name
      * @param cpuCountIn - cpu count
-     * @param productsIn - products
+     * @param productIdsIn - product ids
      * @param typeIn - type
      * @param possibleSubscriptionIdsIn - possible subscription ids
      */
-    public System(Long idIn, String nameIn, Integer cpuCountIn, List<String> productsIn,
+    public System(Long idIn, String nameIn, Integer cpuCountIn, Set<Long> productIdsIn,
             String typeIn, List<Long> possibleSubscriptionIdsIn) {
         id = idIn;
         name = nameIn;
         cpuCount = cpuCountIn;
-        products = productsIn;
+        productIds = productIdsIn;
         type = typeIn;
         setPossibleSubscriptionIds(possibleSubscriptionIdsIn);
     }
@@ -117,21 +118,21 @@ public class System {
     }
 
     /**
-     * Gets the products.
+     * Gets the product ids.
      *
-     * @return products
+     * @return the product ids
      */
-    public List<String> getProducts() {
-        return products;
+    public Set<Long> getProductIds() {
+        return productIds;
     }
 
     /**
-     * Sets the products.
+     * Sets the product ids.
      *
-     * @param productsIn - the products
+     * @param productIdsIn the new product ids
      */
-    public void setProducts(List<String> productsIn) {
-        products = productsIn;
+    public void setProductIds(Set<Long> productIdsIn) {
+        productIds = productIdsIn;
     }
 
     /**
