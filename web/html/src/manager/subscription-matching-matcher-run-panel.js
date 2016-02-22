@@ -63,10 +63,12 @@ var MatcherRunDescription = (props) => {
   }
 
   if (props.latestStart == null) {
-    return (<div>
-      {t("No match data is currently available.")}<br/>
-      {t("You can also trigger a first run now by clicking the button below.")}
-    </div>);
+    return (
+      <div>
+        {t("No match data is currently available.")}<br/>
+        {t("You can also trigger a first run now by clicking the button below.")}
+      </div>
+    );
   }
 
   if (props.latestEnd == null) {
