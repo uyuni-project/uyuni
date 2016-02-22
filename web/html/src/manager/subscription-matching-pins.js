@@ -147,10 +147,10 @@ var Pins = React.createClass({
 
 var PinStatus = (props) => {
   if (props.status == "pending") {
-    return <span><i className="fa fa-hourglass-start pin-report-icon"></i><em>{t("pending next run")}</em></span>;
+    return <span><i className="fa fa-hourglass-start"></i><em>{t("pending next run")}</em></span>;
   }
   if (props.status == "satisfied") {
-    return <span><i className="fa fa-check text-success pin-report-icon"></i>{t("satisfied")}</span>;
+    return <span><i className="fa fa-check text-success"></i>{t("satisfied")}</span>;
   }
   return <span><WarningIcon />{t("not satisfied")}</span>;
 }
