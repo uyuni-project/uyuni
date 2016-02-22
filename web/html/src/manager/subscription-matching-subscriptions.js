@@ -50,13 +50,42 @@ var Subscriptions = React.createClass({
     return result * orderCondition;
   },
 
+  buildRows: function(subscriptions) {
+    return Object.keys(subscriptions).map((k) => {
+      var s = subscriptions[k];
+      var now = moment();
+      var className = moment(s.endDate).isBefore(now) ?
+        "text-muted" :
+          moment(s.endDate).isBefore(now.add(3, "months")) ?
+          "text-danger" :
+          null;
+
+      var columns = [
+        <TableCell content={s.partNumber} />,
+        <TableCell content={s.description} />,
+        <TableCell content={humanReadablePolicy(s.policy)} />,
+        <QuantityCell matched={s.matchedQuantity} total={s.totalQuantity} />,
+        <TableCell content={
+          <ToolTip content={moment(s.startDate).fromNow()}
+            title={moment(s.startDate).format("LL")} />}
+        />,
+        <TableCell content={
+          <ToolTip content={moment(s.endDate).fromNow()}
+            title={moment(s.endDate).format("LL")} />}
+        />,
+      ];
+
+      return <TableRow className={className} columns={columns} rawData={s} />
+    });
+  },
+
   render: function() {
     var body;
     if (Object.keys(this.props.subscriptions).length > 0) {
       body = (
         <div>
           <Table headers={[t("Part number"), t("Description"), t("Policy"), t("Matched/Total"), t("Start date"), t("End date")]}
-            rows={subscriptionsToRows(this.props.subscriptions)}
+            rows={this.buildRows(this.props.subscriptions)}
             loadState={this.props.loadState}
             saveState={this.props.saveState}
             rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
@@ -80,35 +109,6 @@ var Subscriptions = React.createClass({
     );
   }
 });
-
-function subscriptionsToRows(subscriptions) {
-  return Object.keys(subscriptions).map((k) => {
-    var s = subscriptions[k];
-    var now = moment();
-    var className = moment(s.endDate).isBefore(now) ?
-      "text-muted" :
-        moment(s.endDate).isBefore(now.add(3, "months")) ?
-        "text-danger" :
-        null;
-
-    var columns = [
-      <TableCell content={s.partNumber} />,
-      <TableCell content={s.description} />,
-      <TableCell content={humanReadablePolicy(s.policy)} />,
-      <QuantityCell matched={s.matchedQuantity} total={s.totalQuantity} />,
-      <TableCell content={
-        <ToolTip content={moment(s.startDate).fromNow()}
-          title={moment(s.startDate).format("LL")} />}
-      />,
-      <TableCell content={
-        <ToolTip content={moment(s.endDate).fromNow()}
-          title={moment(s.endDate).format("LL")} />}
-      />,
-    ];
-
-    return <TableRow className={className} columns={columns} rawData={s} />
-  });
-}
 
 var QuantityCell = (props) => {
   var matched = props.matched;
