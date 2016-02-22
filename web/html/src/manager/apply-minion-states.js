@@ -153,7 +153,7 @@ class ApplyState extends React.Component {
     const elements = [];
     var rows = [];
     if(this.state.view === "system") {
-        rows = this.state.saltStates.map(state => {
+        rows = this.state.saltStates.filter(state => state.assigned).map(state => {
             const changed = this.state.changed.get(stateKey(state))
             if(changed !== undefined) {
                 return changed;
@@ -175,7 +175,9 @@ class ApplyState extends React.Component {
             }
         });
     } else if(this.state.view === "changes") {
-        // TODO
+        for(var state of this.state.changed.values()) {
+            rows.push(state)
+        }
     }
 
     for(var row of rows) {
@@ -187,7 +189,7 @@ class ApplyState extends React.Component {
           <td>{currentState.name}</td>
           <td>
             <div className="form-group">
-                <input type="checkbox" value={currentState.name} onClick={this.handleSelectionChange(row.original)}/>
+                <input type="checkbox" checked={currentState.assigned} value={currentState.name} onClick={this.handleSelectionChange(row.original)}/>
             </div>
           </td>
         </tr>
@@ -199,7 +201,7 @@ class ApplyState extends React.Component {
         {elements.length > 0 ? elements :
             <tr>
                 <td colSpan="2">
-                    <div>{t("No states.")}</div>
+                    <div>{t("No states assigned. Use search to find and assign states.")}</div>
                 </td>
             </tr>
         }

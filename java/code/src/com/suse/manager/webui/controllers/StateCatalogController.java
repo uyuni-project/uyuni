@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 import com.suse.manager.webui.services.StaleSaltStateException;
 import com.suse.manager.webui.services.SaltStateExistsException;
+import com.suse.manager.webui.utils.SaltFileUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
@@ -105,7 +106,7 @@ public class StateCatalogController {
         Map<String, Object> data = new HashMap<>();
         Map<String, String> stateData = new HashMap<>();
         stateData.put("action", "edit");
-        stateData.put("name", StringUtils.removeEnd(stateName, ".sls"));
+        stateData.put("name", SaltFileUtils.stripExtension(stateName));
         String content = SaltAPIService.INSTANCE
                 .getOrgStateContent(user.getOrg().getId(), stateName).orElse("");
         stateData.put("content", content);
