@@ -58,15 +58,15 @@ var Subscriptions = React.createClass({
         <WarningIcon iconOnRight={true} /> : null;
 
       var columns = [
-        <TableCell content={s.partNumber} />,
-        <TableCell content={s.description} />,
-        <TableCell content={humanReadablePolicy(s.policy)} />,
-        <QuantityCell matched={s.matchedQuantity} total={s.totalQuantity} />,
-        <TableCell content={
+        <TableCell key="partNumber" content={s.partNumber} />,
+        <TableCell key="description" content={s.description} />,
+        <TableCell key="policy" content={humanReadablePolicy(s.policy)} />,
+        <QuantityCell key="quantity" matched={s.matchedQuantity} total={s.totalQuantity} />,
+        <TableCell key="startDate" content={
           <ToolTip content={moment(s.startDate).fromNow()}
             title={moment(s.startDate).format("LL")} />}
         />,
-        <TableCell content={
+        <TableCell key="endDate" content={
           <span>
             <ToolTip content={moment(s.endDate).fromNow()}
               title={moment(s.endDate).format("LL")} />
@@ -75,7 +75,7 @@ var Subscriptions = React.createClass({
         } />,
       ];
 
-      return <TableRow className={className} columns={columns} rawData={s} />
+      return <TableRow key={k} className={className} columns={columns} rawData={s} />
     });
   },
 
