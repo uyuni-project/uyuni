@@ -110,31 +110,9 @@ public class UpdatePackageProfileActionTest extends JMockBaseTestCaseWithUser {
                 .getReturnType()).parse(readFile("dummy_package.json"));
     }
 
-    private List<Zypper.RealProductInfo> getInstalledProducts() throws IOException, ClassNotFoundException {
-        List<Map<String, Zypper.ProductInfo>> parse = new JsonParser<>(Zypper.listProducts(false)
+    private List<Zypper.ProductInfo> getInstalledProducts() throws IOException, ClassNotFoundException {
+        return new JsonParser<>(Zypper.listProducts(false)
                 .getReturnType()).parse(readFile("dummy_installed_products.json"));
-        return parse.stream().flatMap(map -> map.entrySet().stream())
-                .map(productEntry -> {
-            Zypper.ProductInfo value = productEntry.getValue();
-            return new Zypper.RealProductInfo(
-                productEntry.getKey(),
-                value.getArch(),
-                value.getDescription(),
-                value.getEol(),
-                value.getEpoch(),
-                value.getFlavor(),
-                value.getInstalled(),
-                value.getIsbase(),
-                value.getProductline(),
-                value.getRegisterrelease(),
-                value.getRelease(),
-                value.getRepo(),
-                value.getShortname(),
-                value.getSummary(),
-                value.getVendor(),
-                value.getVersion()
-            );
-         }).collect(Collectors.toList());
     }
 
     private String readFile(String file) throws IOException, ClassNotFoundException {
