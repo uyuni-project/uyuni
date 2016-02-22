@@ -197,7 +197,18 @@ var AddPinPopUp = React.createClass({
 
   render: function() {
     var popUpContent;
-    if (this.state.systemId) {
+    if (this.state.systemId == null) {
+      popUpContent = (
+        <div>
+          <p>{t("Step 1/2: select the system to pin from the table below.")}</p>
+          <Table headers={[t("System"), t("Socket/IFL count"), t("")]} rows={this.buildRows(this.props.systems, this.onSystemSelected)}
+            rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["name"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
+            filterPlaceholder={t("Filter by name")}
+          />
+        </div>
+      );
+    }
+    else {
       var system = this.props.systems[this.state.systemId];
       popUpContent = (
         <div>
@@ -212,17 +223,6 @@ var AddPinPopUp = React.createClass({
               {t("Back to sytem selection")}
             </button>
           </p>
-        </div>
-      );
-    }
-    else {
-      popUpContent = (
-        <div>
-          <p>{t("Step 1/2: select the system to pin from the table below.")}</p>
-          <Table headers={[t("System"), t("Socket/IFL count"), t("")]} rows={this.buildRows(this.props.systems, this.onSystemSelected)}
-            rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["name"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-            filterPlaceholder={t("Filter by name")}
-          />
         </div>
       );
     }
