@@ -97,7 +97,7 @@ var UnmatchedProducts = React.createClass({
             systems={this.props.systems}
             products={this.props.products}
             selectedProductId={this.state.selectedProductId}
-            onClosePopUp={this.onClosePopUp}
+            onClosePopUp={this.closePopUp}
           />
         </div>
       );
@@ -154,7 +154,7 @@ var UnmatchedSystemPopUp = React.createClass({
       <PopUp title={t("Unmatched systems")}
         id="unmatchedProductsPopUp"
         content={popUpContent}
-        onClosePopUp={this.props.closePopUp}
+        onClosePopUp={this.props.onClosePopUp}
       />
     );
   }
