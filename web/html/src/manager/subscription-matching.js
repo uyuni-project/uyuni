@@ -11,6 +11,7 @@ var Pins =  require("./subscription-matching-pins").Pins;
 var Messages =  require("./subscription-matching-messages").Messages;
 var UnmatchedProducts =  require("./subscription-matching-unmatched-products").UnmatchedProducts;
 var MatcherRunPanel =  require("./subscription-matching-matcher-run-panel").MatcherRunPanel;
+var WarningIcon =  require("./subscription-matching-util").WarningIcon;
 
 var SubscriptionMatching = React.createClass({
   getInitialState: function() {
@@ -92,10 +93,10 @@ var SubscriptionMatchingTabContainer = React.createClass({
     }
 
     var pinLabelIcon = data.pinnedMatches.filter((p) => p.status == "unsatisfied").length > 0 ?
-      <i className="fa fa-exclamation-triangle text-warning"></i> : null;
+      <WarningIcon /> : null;
 
     var messageLabelIcon = data.messages.length > 0 ?
-      <i className="fa fa-exclamation-circle text-danger"></i> : null;
+      <WarningIcon /> : null;
 
     return (
       <TabContainer

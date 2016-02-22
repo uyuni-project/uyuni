@@ -7,10 +7,10 @@ var TableCell = TableComponent.TableCell;
 var TableRow = TableComponent.TableRow;
 var StatePersistedMixin = require("../components/util").StatePersistedMixin;
 var UtilComponent = require("./subscription-matching-util");
-var StrongText = UtilComponent.StrongText;
 var ToolTip = UtilComponent.ToolTip;
 var CsvLink = UtilComponent.CsvLink;
 var humanReadablePolicy = UtilComponent.humanReadablePolicy;
+var WarningIcon =  require("./subscription-matching-util").WarningIcon;
 
 var Subscriptions = React.createClass({
   mixins: [StatePersistedMixin],
@@ -53,12 +53,9 @@ var Subscriptions = React.createClass({
   buildRows: function(subscriptions) {
     return Object.keys(subscriptions).map((k) => {
       var s = subscriptions[k];
-      var now = moment();
-      var className = moment(s.endDate).isBefore(now) ?
-        "text-muted" :
-          moment(s.endDate).isBefore(now.add(3, "months")) ?
-          "text-danger" :
-          null;
+      var className = moment(s.endDate).isBefore(moment()) ? "text-muted" : null;
+      var warningIcon = moment(s.endDate).isBefore(moment().add(6, "months")) && moment(s.endDate).isAfter(moment()) ?
+        <WarningIcon /> : null;
 
       var columns = [
         <TableCell content={s.partNumber} />,
@@ -70,9 +67,13 @@ var Subscriptions = React.createClass({
             title={moment(s.startDate).format("LL")} />}
         />,
         <TableCell content={
-          <ToolTip content={moment(s.endDate).fromNow()}
-            title={moment(s.endDate).format("LL")} />}
-        />,
+          <span>
+            <ToolTip content={moment(s.endDate).fromNow()}
+              title={moment(s.endDate).format("LL")} />
+            &nbsp;
+            {warningIcon}
+          </span>
+        } />,
       ];
 
       return <TableRow className={className} columns={columns} rawData={s} />
@@ -116,7 +117,15 @@ var QuantityCell = (props) => {
   var content = matched + "/" + total;
 
   if (matched == total) {
-    return <TableCell content={<StrongText className="bg-danger" content={content} />} />;
+    return (
+      <TableCell content={
+        <span>
+          <strong>{content}</strong>
+          &nbsp;
+          <i className="fa fa-exclamation-triangle text-warning"></i>
+        </span>
+      } />
+    );
   }
   return <TableCell content={content} />;
 }
