@@ -208,22 +208,22 @@ class PackageStates extends React.Component {
       var versionConstraintSelect = null;
       if(currentState.packageStateId === INSTALLED) {
         versionConstraintSelect =
-            <select className="form-control" value={versionConstraints2selectValue(currentState.versionConstraintId)} onChange={this.handleConstraintChange(row.original)}>
+            <select id={currentState.name + "-version-constraint"} className="form-control" value={versionConstraints2selectValue(currentState.versionConstraintId)} onChange={this.handleConstraintChange(row.original)}>
               <option value="0">{t("Latest")}</option>
               <option value="1">{t("Any")}</option>
             </select>;
       }
       var undoButton = null;
       if(changed !== undefined) {
-        undoButton = <button className="btn btn-default" onClick={this.handleUndo(row.original)}>{t("Undo")}</button>
+        undoButton = <button id={currentState.name + "-undo"} className="btn btn-default" onClick={this.handleUndo(row.original)}>{t("Undo")}</button>
       }
 
       elements.push(
-        <tr className={changed !== undefined ? "warning" : ""}>
+        <tr id={currentState.name + "-row"} className={changed !== undefined ? "warning" : ""}>
           <td>{t(currentState.name)}</td>
           <td>
             <div className="form-group">
-              <select className="form-control" value={packageState2selectValue(currentState.packageStateId)} onChange={this.handleStateChange(row.original)}>
+              <select id={currentState.name + "-pkg-state"} className="form-control" value={packageState2selectValue(currentState.packageStateId)} onChange={this.handleStateChange(row.original)}>
                 <option value="-1">{t("Unmanaged")}</option>
                 <option value="0">{t("Installed")}</option>
                 <option value="1">{t("Removed")}</option>
@@ -322,8 +322,8 @@ class PackageStates extends React.Component {
           <i className="fa spacewalk-icon-package-add"></i>
           {t("Package States")}
           <span className="btn-group pull-right">
-              <AsyncButton action={this.save} name={t("Save")} disabled={this.state.changed.size == 0}/>
-              <AsyncButton action={this.applyPackageState} name={t("Apply")} />
+              <AsyncButton id="save" action={this.save} name={t("Save")} disabled={this.state.changed.size == 0}/>
+              <AsyncButton id="apply" action={this.applyPackageState} name={t("Apply")} />
           </span>
         </h2>
         <div className="row col-md-12">
@@ -332,11 +332,11 @@ class PackageStates extends React.Component {
                 <div className="row">
                     <span className="col-md-8 pull-right">
                         <span className="input-group">
-                            <input className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange}/>
+                            <input id="package-search" className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange}/>
                             <span className="input-group-btn">
-                                <AsyncButton name={t("Search")} action={this.search} />
-                                <button className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
-                                <button className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
+                                <AsyncButton id="search" name={t("Search")} action={this.search} />
+                                <button id="system" className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
+                                <button id="changes" className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
                                     {this.state.changed.size > 0 ? this.state.changed.size : t("No")} {t("Changes")}
                                 </button>
                             </span>
