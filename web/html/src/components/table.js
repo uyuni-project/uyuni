@@ -32,13 +32,6 @@ var Table = React.createClass({
     }
   },
 
-  onSortColumnIndexChange: function(sortColumnIndex) {
-    this.setState({
-      sortColumnIndex: sortColumnIndex,
-      sortAscending: this.state.sortColumnIndex != sortColumnIndex || !this.state.sortAscending
-    });
-  },
-
   getProcessedRows: function() {
     const filter = this.props.rowFilter ?
       (row) => this.props.rowFilter(row, this.state.filterText) :
@@ -85,6 +78,13 @@ var Table = React.createClass({
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage});
     }
+  },
+
+  onSortColumnIndexChange: function(sortColumnIndex) {
+    this.setState({
+      sortColumnIndex: sortColumnIndex,
+      sortAscending: this.state.sortColumnIndex != sortColumnIndex || !this.state.sortAscending
+    });
   },
 
   render: function() {
