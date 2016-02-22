@@ -81,7 +81,7 @@ public class SubscriptionMatchProcessor {
                     s.getId(),
                     s.getName(),
                     s.getCpus(),
-                    null,
+                    s.getProductIds(),
                     // see https://github.com/SUSE/spacewalk/wiki/
                     // Subscription-counting#definitions
                     s.getPhysical() ?
