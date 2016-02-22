@@ -94,7 +94,7 @@ var MatcherScheduleButton = React.createClass({
   },
 
   render: function() {
-    var buttonClass = "btn spacewalk-btn-margin-vertical " +
+    const buttonClass = "btn spacewalk-btn-margin-vertical " +
       (!this.props.matcherRunning ? "btn-success" : "btn-default");
 
     return (
