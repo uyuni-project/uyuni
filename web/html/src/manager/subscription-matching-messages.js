@@ -12,14 +12,10 @@ var Messages = React.createClass({
   mixins: [StatePersistedMixin],
 
   rowComparator: function(a, b, columnIndex, ascending) {
-    var columnKeyInRawData=["type"];
-    var columnKey = columnKeyInRawData[columnIndex];
-    var orderCondition = ascending ? 1 : -1;
-    var result = 0;
-    var aValue = a.props["rawData"][columnKey];
-    var bValue = b.props["rawData"][columnKey];
-    result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
-    return result * orderCondition;
+    const orderCondition = ascending ? 1 : -1;
+    const aValue = a.props.message;
+    const bValue = b.props.message;
+    return aValue.toLowerCase().localeCompare(bValue.toLowerCase()) * orderCondition;
   },
 
   render: function() {
@@ -88,7 +84,7 @@ function messagesToRows(rawMessages, systems) {
       <TableCell content={message} />,
       <TableCell content={additionalInformation} />
     ];
-    return <TableRow columns={columns}  rawData={rawMessage}/>;
+    return <TableRow columns={columns} message={message}/>;
   });
   return result;
 }
