@@ -61,7 +61,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 
 /**
  * Singleton class acting as a service layer for accessing the salt API.
@@ -518,33 +517,12 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public List<Zypper.RealProductInfo> getInstalledProducts(String minionId) {
+    public List<Zypper.ProductInfo> getInstalledProducts(String minionId) {
         try {
             return Zypper.listProducts(false).callSync(
                 SALT_CLIENT, new MinionList(minionId),
                 SALT_USER, SALT_PASSWORD, AuthModule.AUTO
-            ).get(minionId).stream().flatMap(map -> map.entrySet().stream())
-                    .map(productEntry -> {
-                Zypper.ProductInfo value = productEntry.getValue();
-                return new Zypper.RealProductInfo(
-                    productEntry.getKey(),
-                    value.getArch(),
-                    value.getDescription(),
-                    value.getEol(),
-                    value.getEpoch(),
-                    value.getFlavor(),
-                    value.getInstalled(),
-                    value.getIsbase(),
-                    value.getProductline(),
-                    value.getRegisterrelease(),
-                    value.getRelease(),
-                    value.getRepo(),
-                    value.getShortname(),
-                    value.getSummary(),
-                    value.getVendor(),
-                    value.getVersion()
-                );
-            }).collect(Collectors.toList());
+            ).get(minionId);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
