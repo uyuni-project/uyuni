@@ -56,7 +56,12 @@ function humanReadablePolicy(rawPolicy) {
   return message;
 }
 
-var WarningIcon = () => <i className="fa fa-exclamation-triangle text-warning"></i>;
+var WarningIcon = (props) =>
+  <i className={
+    "fa fa-exclamation-triangle text-warning" +
+    (props.iconOnRight ? " fa-right" : "")}>
+  </i>
+;
 
 module.exports = {
   ToolTip: ToolTip,
