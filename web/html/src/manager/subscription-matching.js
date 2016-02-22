@@ -14,14 +14,10 @@ var MatcherRunPanel =  require("./subscription-matching-matcher-run-panel").Matc
 
 var SubscriptionMatching = React.createClass({
   getInitialState: function() {
-    return {activeTabHash: document.location.hash};
+    return {serverData: null};
   },
 
   componentWillMount: function() {
-    window.addEventListener("popstate", () => {
-      this.setState({activeTabHash: document.location.hash});
-    });
-
     this.refreshServerData();
     setInterval(this.refreshServerData, this.props.refreshInterval);
   },
@@ -40,11 +36,6 @@ var SubscriptionMatching = React.createClass({
     this.setState(this.state);
   },
 
-  onTabHashChange: function(hash) {
-    history.pushState(null, null, hash);
-    this.setState({activeTabHash: hash});
-  },
-
   onMatcherRunSchedule: function() {
     if (this.refreshRequest) {
       this.refreshRequest.abort();
@@ -52,58 +43,7 @@ var SubscriptionMatching = React.createClass({
   },
 
   render: function() {
-    var data = this.state.serverData;
-    var latestStart = data == null ? null : data.latestStart;
-    var latestEnd = data == null ? null : data.latestEnd;
-    var messages = data == null ? null : data.messages;
-    var subscriptions = data == null ? null : data.subscriptions;
-    var products = data == null ? null : data.products;
-    var unmatchedProductIds = data == null ? null : data.unmatchedProductIds;
-    var pinnedMatches = data == null ? null : data.pinnedMatches;
-    var systems = data == null ? null : data.systems;
-
-    var pinLabelIcon = data != null && data.pinnedMatches.filter((p) => p.status == "unsatisfied").length > 0 ?
-      <i className="fa fa-exclamation-triangle text-warning"></i> : null;
-
-    var messageLabelIcon = data != null && data.messages.length > 0 ?
-      <i className="fa fa-exclamation-circle text-danger"></i> : null;
-
-    var tabContainer = data == null || !data.matcherDataAvailable ? null :
-      <TabContainer
-        labels={[t("Subscriptions"), t("Unmatched Products"), <span>{t("Pins ")}{pinLabelIcon}</span>, <span>{t("Messages ")}{messageLabelIcon}</span>]}
-        hashes={["#subscriptions", "#unmatched-products", "#pins", "#messages"]}
-        tabs={[
-          <Subscriptions
-            subscriptions={subscriptions}
-            saveState={(state) => {this.state["subscriptionTableState"] = state;}}
-            loadState={() => this.state["subscriptionTableState"]}
-          />,
-          <UnmatchedProducts
-            products={products}
-            unmatchedProductIds={unmatchedProductIds}
-            systems={systems}
-            saveState={(state) => {this.state["unmatchedProductTableState"] = state;}}
-            loadState={() => this.state["unmatchedProductTableState"]}
-          />,
-          <Pins
-            pinnedMatches={pinnedMatches}
-            systems={systems}
-            subscriptions={subscriptions}
-            onPinChanged={this.onPinChanged}
-            saveState={(state) => {this.state["pinnedMatchesState"] = state;}}
-            loadState={() => this.state["pinnedMatchesState"]}
-          />,
-          <Messages
-            messages={messages}
-            systems={systems}
-            saveState={(state) => {this.state["messageTableState"] = state;}}
-            loadState={() => this.state["messageTableState"]}
-          />
-        ]}
-        initialActiveTabHash={this.state.activeTabHash}
-        onTabHashChange={this.onTabHashChange}
-      />
-    ;
+    const data = this.state.serverData;
 
     return (
       <div>
@@ -116,11 +56,84 @@ var SubscriptionMatching = React.createClass({
           </div>
           <h1><i className="fa spacewalk-icon-subscription-counting"></i>{t("Subscription Matching")}</h1>
         </div>
-        {tabContainer}
-        <MatcherRunPanel dataAvailable={data != null} initialLatestStart={latestStart} initialLatestEnd={latestEnd} onMatcherRunSchedule={this.onMatcherRunSchedule} />
+        <SubscriptionMatchingTabContainer data={data} onPinChanged={this.onPinChanged} />
+        <MatcherRunPanel
+          dataAvailable={data != null}
+          initialLatestStart={data == null ? null : data.latestStart}
+          initialLatestEnd={data == null ? null : data.latestEnd}
+          onMatcherRunSchedule={this.onMatcherRunSchedule}
+        />
       </div>
     );
   }
+});
+
+var SubscriptionMatchingTabContainer = React.createClass({
+  getInitialState: function() {
+    return {activeTabHash: document.location.hash};
+  },
+
+  componentWillMount: function() {
+    window.addEventListener("popstate", () => {
+      this.setState({activeTabHash: document.location.hash});
+    });
+  },
+
+  onTabHashChange: function(hash) {
+    history.pushState(null, null, hash);
+    this.setState({activeTabHash: hash});
+  },
+
+  render: function() {
+    const data = this.props.data;
+
+    if (data == null || !data.matcherDataAvailable) {
+      return null;
+    }
+
+    var pinLabelIcon = data.pinnedMatches.filter((p) => p.status == "unsatisfied").length > 0 ?
+      <i className="fa fa-exclamation-triangle text-warning"></i> : null;
+
+    var messageLabelIcon = data.messages.length > 0 ?
+      <i className="fa fa-exclamation-circle text-danger"></i> : null;
+
+    return (
+      <TabContainer
+        labels={[t("Subscriptions"), t("Unmatched Products"), <span>{t("Pins ")}{pinLabelIcon}</span>, <span>{t("Messages ")}{messageLabelIcon}</span>]}
+        hashes={["#subscriptions", "#unmatched-products", "#pins", "#messages"]}
+        tabs={[
+          <Subscriptions
+            subscriptions={data.subscriptions}
+            saveState={(state) => {this.state["subscriptionTableState"] = state;}}
+            loadState={() => this.state["subscriptionTableState"]}
+          />,
+          <UnmatchedProducts
+            products={data.products}
+            unmatchedProductIds={data.unmatchedProductIds}
+            systems={data.systems}
+            saveState={(state) => {this.state["unmatchedProductTableState"] = state;}}
+            loadState={() => this.state["unmatchedProductTableState"]}
+          />,
+          <Pins
+            pinnedMatches={data.pinnedMatches}
+            systems={data.systems}
+            subscriptions={data.subscriptions}
+            onPinChanged={this.props.onPinChanged}
+            saveState={(state) => {this.state["pinnedMatchesState"] = state;}}
+            loadState={() => this.state["pinnedMatchesState"]}
+          />,
+          <Messages
+            messages={data.messages}
+            systems={data.systems}
+            saveState={(state) => {this.state["messageTableState"] = state;}}
+            loadState={() => this.state["messageTableState"]}
+          />
+        ]}
+        initialActiveTabHash={this.state.activeTabHash}
+        onTabHashChange={this.onTabHashChange}
+      />
+    );
+  },
 });
 
 React.render(
