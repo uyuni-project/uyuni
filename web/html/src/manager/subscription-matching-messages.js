@@ -20,29 +20,24 @@ var Messages = React.createClass({
 
   render: function() {
     var body;
-    if (this.props.messages != null) {
-      if (this.props.messages.length > 0) {
-        body = (
-          <div>
-            <p>{t("Please review warning and information messages below.")}</p>
-            <Table
-              headers={[t("Message"), t("Additional information")]}
-              rows={messagesToRows(this.props.messages, this.props.systems)}
-              loadState={this.props.loadState}
-              saveState={this.props.saveState}
-              rowComparator={this.rowComparator}
-              sortableColumnIndexes={[0]}
-            />
-            <CsvLink name="message_report.csv" />
-          </div>
-        );
-      }
-      else {
-        body = <p>{t("No messages from the last match run.")}</p>
-      }
+    if (this.props.messages.length > 0) {
+      body = (
+        <div>
+          <p>{t("Please review warning and information messages below.")}</p>
+          <Table
+            headers={[t("Message"), t("Additional information")]}
+            rows={messagesToRows(this.props.messages, this.props.systems)}
+            loadState={this.props.loadState}
+            saveState={this.props.saveState}
+            rowComparator={this.rowComparator}
+            sortableColumnIndexes={[0]}
+          />
+          <CsvLink name="message_report.csv" />
+        </div>
+      );
     }
     else {
-      body = <p>{t("Loading...")}</p>
+      body = <p>{t("No messages from the last match run.")}</p>
     }
 
     return (

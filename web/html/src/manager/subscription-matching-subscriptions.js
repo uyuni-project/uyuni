@@ -52,29 +52,24 @@ var Subscriptions = React.createClass({
 
   render: function() {
     var body;
-    if (this.props.subscriptions != null) {
-      if (Object.keys(this.props.subscriptions).length > 0) {
-        body = (
-          <div>
-            <Table headers={[t("Part number"), t("Description"), t("Policy"), t("Matched/Total"), t("Start date"), t("End date")]}
-              rows={subscriptionsToRows(this.props.subscriptions)}
-              loadState={this.props.loadState}
-              saveState={this.props.saveState}
-              rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-              filterPlaceholder={t("Filter by description")}
-              rowComparator={this.rowComparator}
-              sortableColumnIndexes={[0,1,2,3,4,5]}
-            />
-            <CsvLink name="subscription_report.csv" />
-          </div>
-        );
-      }
-      else {
-        body = <p>{t("No subscriptions found.")}</p>
-      }
+    if (Object.keys(this.props.subscriptions).length > 0) {
+      body = (
+        <div>
+          <Table headers={[t("Part number"), t("Description"), t("Policy"), t("Matched/Total"), t("Start date"), t("End date")]}
+            rows={subscriptionsToRows(this.props.subscriptions)}
+            loadState={this.props.loadState}
+            saveState={this.props.saveState}
+            rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
+            filterPlaceholder={t("Filter by description")}
+            rowComparator={this.rowComparator}
+            sortableColumnIndexes={[0,1,2,3,4,5]}
+          />
+          <CsvLink name="subscription_report.csv" />
+        </div>
+      );
     }
     else {
-      body = <p>{t("Loading...")}</p>
+      body = <p>{t("No subscriptions found.")}</p>
     }
 
     return (
