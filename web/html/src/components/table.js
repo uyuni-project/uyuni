@@ -53,12 +53,12 @@ var Table = React.createClass({
     return this.props.rows.filter(filter).sort(comparator);
   },
 
-  lastPage: function() {
+  lastPage: function(filterText, itemsPerPage) {
     const rowCount = this.props.rowFilter ?
-      this.props.rows.filter((row) => this.props.rowFilter(row, this.state.filterText)).length :
+      this.props.rows.filter((row) => this.props.rowFilter(row, filterText)).length :
       this.props.rows.length;
 
-    const lastPage = Math.ceil(rowCount / this.state.itemsPerPage);
+    const lastPage = Math.ceil(rowCount / itemsPerPage);
     if (lastPage == 0) {
       return 1;
     }
@@ -71,7 +71,8 @@ var Table = React.createClass({
 
   onItemsPerPageChange: function(itemsPerPage) {
     this.setState({itemsPerPage: itemsPerPage});
-    var lastPage = this.lastPage();
+
+    var lastPage = this.lastPage(this.state.filterText, itemsPerPage);
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage});
     }
@@ -79,7 +80,8 @@ var Table = React.createClass({
 
   onFilterTextChange: function(filterText) {
     this.setState({filterText: filterText});
-    var lastPage =  this.lastPage();
+
+    var lastPage = this.lastPage(filterText, this.state.itemsPerPage);
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage});
     }
@@ -96,10 +98,12 @@ var Table = React.createClass({
     const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
     const itemCounter = <span>{t("Items {0} - {1} of {2}", fromItem, toItem, itemCount)}</span>
 
+    const filterText = this.state.filterText;
+
     const filterField = this.props.rowFilter ?
       <FilterField
         onChange={this.onFilterTextChange}
-        defaultValue={this.state.filterText}
+        defaultValue={filterText}
         placeholder={this.props.filterPlaceholder}
       /> :
       null
@@ -148,7 +152,11 @@ var Table = React.createClass({
           </div>
           <div className="panel-footer">
             <div className="spacewalk-list-bottom-addons">
-              <PaginationBlock currentPage={currentPage} lastPage={this.lastPage()} onPageChange={this.onPageChange} />
+              <PaginationBlock
+                currentPage={currentPage}
+                lastPage={this.lastPage(filterText, itemsPerPage)}
+                onPageChange={this.onPageChange}
+              />
             </div>
           </div>
         </div>
