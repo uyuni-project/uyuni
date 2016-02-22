@@ -93,10 +93,10 @@ var SubscriptionMatchingTabContainer = React.createClass({
     }
 
     var pinLabelIcon = data.pinnedMatches.filter((p) => p.status == "unsatisfied").length > 0 ?
-      <WarningIcon /> : null;
+      <WarningIcon iconOnRight={true} /> : null;
 
     var messageLabelIcon = data.messages.length > 0 ?
-      <WarningIcon /> : null;
+      <WarningIcon iconOnRight={true} /> : null;
 
     return (
       <TabContainer

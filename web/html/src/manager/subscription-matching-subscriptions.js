@@ -55,7 +55,7 @@ var Subscriptions = React.createClass({
       var s = subscriptions[k];
       var className = moment(s.endDate).isBefore(moment()) ? "text-muted" : null;
       var warningIcon = moment(s.endDate).isBefore(moment().add(6, "months")) && moment(s.endDate).isAfter(moment()) ?
-        <WarningIcon /> : null;
+        <WarningIcon iconOnRight={true} /> : null;
 
       var columns = [
         <TableCell content={s.partNumber} />,
@@ -70,7 +70,6 @@ var Subscriptions = React.createClass({
           <span>
             <ToolTip content={moment(s.endDate).fromNow()}
               title={moment(s.endDate).format("LL")} />
-            &nbsp;
             {warningIcon}
           </span>
         } />,
