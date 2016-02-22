@@ -9,8 +9,8 @@ var TabContainer = require("../components/tab-container").TabContainer;
 var Subscriptions =  require("./subscription-matching-subscriptions").Subscriptions;
 var Pins =  require("./subscription-matching-pins").Pins;
 var Messages =  require("./subscription-matching-messages").Messages;
-var UnmatchedProducts =  require("./subscription-matching-unmatchedProducts").UnmatchedProducts;
-var MatcherRunPanel =  require("./subscription-matching-matcherRunPanel").MatcherRunPanel;
+var UnmatchedProducts =  require("./subscription-matching-unmatched-products").UnmatchedProducts;
+var MatcherRunPanel =  require("./subscription-matching-matcher-run-panel").MatcherRunPanel;
 
 var SubscriptionMatching = React.createClass({
   getInitialState: function() {
