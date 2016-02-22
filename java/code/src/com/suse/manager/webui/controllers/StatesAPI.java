@@ -136,13 +136,13 @@ public class StatesAPI {
 
     public static String matchStates(Request request, Response response, User user) {
         String target = request.queryParams("target");
-        String targetLowerCase = target.toLowerCase();
+        String targetLowerCase = target != null ? target.toLowerCase() : "";
         String serverId = request.queryParams("sid");
 
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
 
         // Find matches among this server's current salt states
-        List<JSONSaltState> result = new ArrayList<>();
+        Set<JSONSaltState> result = new HashSet<>(); // use a set to avoid duplicates
         Optional<Set<SaltState>> saltStates = StateFactory.latestSaltStates(server);
         result.addAll(saltStates.orElseGet(Collections::<SaltState>emptySet).stream()
                 .filter(s -> s.getStateName().toLowerCase().contains(targetLowerCase))
@@ -163,31 +163,42 @@ public class StatesAPI {
         Server server = ServerFactory.lookupById(json.getServerId());
         assertUserHasPermissionsOnServer(server, user);
 
-        ServerStateRevision state = new ServerStateRevision();
-        state.setServer(server);
-        state.setCreator(user);
+        ServerStateRevision newRevision = new ServerStateRevision();
+        newRevision.setServer(server);
+        newRevision.setCreator(user);
 
-//        // Merge the latest salt states with the changes (converted to JSON objects)
-//        json.getSaltStates().addAll(latestSaltStatesJSON(server));
-//        json.getSaltStates().stream().forEach( s -> {
-//        });
-//        try {
-//            StateFactory.save(state);
-//            return GSON.toJson(convertToJSON(state.getAssignedStates()));
-//        }
-//        catch (Throwable t) {
-//            response.status(500);
-//            return "{}";
-//        }
-        return "{}";
-    }
+        // Merge the latest salt states with the changes
+        Set<String> toAssign = json.getSaltStates().stream()
+                .filter(s -> s.isAssigned()).map(s -> s.getName())
+                .collect(Collectors.toSet());
+        Set<String> toRemove = json.getSaltStates().stream()
+                .filter(s -> !s.isAssigned()).map(s -> s.getName())
+                .collect(Collectors.toSet());
 
-    private static Set<JSONSaltState> latestSaltStatesJSON(Server server) {
+        StateFactory.latestSaltStates(server).ifPresent(oldStates -> {
+            for (SaltState oldState : oldStates) {
+                if (!toRemove.contains(oldState.getStateName())) {
+                    newRevision.getAssignedStates().add(oldState);
+                    toAssign.remove(oldState.getStateName()); // state already assigned
+                }
+            }
+        });
 
-        return StateFactory.latestSaltStates(server).map(saltStates ->
-            saltStates.stream().map(s -> new JSONSaltState(s.getStateName(), true))
-                    .collect(Collectors.toSet())
-        ).orElse(Collections.emptySet());
+        for (String newStateName : toAssign) {
+            SaltState newState = StateFactory.getSaltStateByName(newStateName);
+            newRevision.getAssignedStates().add(newState);
+        }
+
+        try {
+            StateFactory.save(newRevision);
+            return json(response, newRevision.getAssignedStates()
+                    .stream().map(s -> new JSONSaltState(s.getStateName(), true))
+                    .collect(Collectors.toSet()));
+        }
+        catch (Throwable t) {
+            response.status(500);
+            return "{}";
+        }
     }
 
     private static void assertUserHasPermissionsOnServer(Server server, User user) {
@@ -197,8 +208,6 @@ public class StatesAPI {
             throw new RuntimeException("User is trying to change a server from a different org");
         }
     }
-
-
 
     /**
      * Save a new state revision for a server based on the latest existing revision and an

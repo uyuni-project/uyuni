@@ -34,6 +34,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.suse.manager.webui.utils.SaltFileUtils.hasExtension;
+import static com.suse.manager.webui.utils.SaltFileUtils.stripExtension;
+import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
 /**
  * Manages the Salt .sls files on disk.
@@ -71,7 +76,7 @@ public class SaltStateStorageManager {
         // TODO synchronize at file level not on the class instance
 
         if (StringUtils.isNotBlank(oldName)) {
-            oldName = StringUtils.removeEnd(oldName, ".sls");
+            oldName = stripExtension(oldName);
             if (!oldName.equals(name) && exists(orgId, name)) {
                 throw new SaltStateExistsException();
             }
@@ -85,7 +90,7 @@ public class SaltStateStorageManager {
         if (!orgDir.exists()) {
             orgDir.mkdir();
         }
-        File stateFile = new File(orgDir, ext(name));
+        File stateFile = new File(orgDir, defaultExtension(name));
         assertStateInOrgDir(orgDir, stateFile);
 
         if (stateFile.exists()) {
@@ -100,21 +105,21 @@ public class SaltStateStorageManager {
 
         boolean move = false;
         if (StringUtils.isNotBlank(oldName)) {
-            Files.move(orgPath.resolve(ext(oldName)), stateFile.toPath());
+            Files.move(orgPath.resolve(defaultExtension(oldName)), stateFile.toPath());
             move = true;
         }
 
         // TODO clarify encoding
         FileUtils.writeStringToFile(stateFile, content, "US-ASCII");
 
-        String stateName = StringUtils.removeEnd(name, ".sls");
+        String stateName = stripExtension(name);
         if (!move) {
             SaltState saltState = new SaltState();
             saltState.setOrg(OrgFactory.lookupById(orgId));
             saltState.setStateName(stateName);
             StateFactory.save(saltState);
         } else {
-            SaltState saltState = StateFactory.getSaltStateByName(name);
+            SaltState saltState = StateFactory.getSaltStateByName(oldName);
             saltState.setStateName(stateName);
             StateFactory.save(saltState);
         }
@@ -128,10 +133,6 @@ public class SaltStateStorageManager {
         }
     }
 
-    private String ext(String name) {
-        return StringUtils.endsWith(name, ".sls") ? name : name + ".sls";
-    }
-
     /**
      * Delete the .sls file with the give name.
      * @param orgId the organization id
@@ -140,7 +141,7 @@ public class SaltStateStorageManager {
      */
     public void deleteState(long orgId, String name) throws IOException {
         File orgDir = new File(getBaseDirPath(), "manager_org_" + orgId);
-        File stateFile = new File(orgDir, ext(name));
+        File stateFile = new File(orgDir, defaultExtension(name));
         assertStateInOrgDir(orgDir, stateFile);
         Files.delete(stateFile.toPath());
     }
@@ -153,7 +154,7 @@ public class SaltStateStorageManager {
      * @throws IOException in case of an IO error
      */
     public Optional<String> getContent(long orgId, String name) throws IOException {
-        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, ext(name));
+        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, defaultExtension(name));
         File slsFile = slsPath.toFile();
         if (!slsFile.exists()) {
             return Optional.empty();
@@ -173,7 +174,9 @@ public class SaltStateStorageManager {
         if (!orgDir.exists()) {
             return Collections.emptyList();
         }
-        return Arrays.asList(orgDir.list((dir, name) -> name.endsWith(".sls")));
+        return Arrays.asList(orgDir.list((dir, name) -> hasExtension(name)))
+                .stream().map(name -> stripExtension(name))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -183,7 +186,7 @@ public class SaltStateStorageManager {
      * @return true if the file exists, false otherwise
      */
     public boolean exists(long orgId, String name) {
-        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, ext(name));
+        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, defaultExtension(name));
         return slsPath.toFile().exists();
     }
 
