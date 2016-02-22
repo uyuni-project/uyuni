@@ -2,12 +2,6 @@
 
 var React = require("react");
 
-var StrongText = (props) =>
-  <strong className={props.className}>
-    {props.content}
-  </strong>
-;
-
 var ToolTip = (props) =>
   <span title={props.title}>
     {props.content}
@@ -62,10 +56,12 @@ function humanReadablePolicy(rawPolicy) {
   return message;
 }
 
+var WarningIcon = () => <i className="fa fa-exclamation-triangle text-warning"></i>;
+
 module.exports = {
-  StrongText: StrongText,
   ToolTip: ToolTip,
   CsvLink: CsvLink,
   SystemLabel: SystemLabel,
   humanReadablePolicy: humanReadablePolicy,
+  WarningIcon: WarningIcon,
 }

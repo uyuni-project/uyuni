@@ -12,6 +12,7 @@ var StrongText = UtilComponent.StrongText;
 var SystemLabel = UtilComponent.SystemLabel;
 var ToolTip = UtilComponent.ToolTip;
 var humanReadablePolicy = UtilComponent.humanReadablePolicy;
+var WarningIcon =  require("./subscription-matching-util").WarningIcon;
 
 var Pins = React.createClass({
   mixins: [StatePersistedMixin],
@@ -151,7 +152,7 @@ var PinStatus = (props) => {
   if (props.status == "satisfied") {
     return <span><i className="fa fa-check text-success pin-report-icon"></i>{t("satisfied")}</span>;
   }
-  return <span><i className="fa fa-exclamation-triangle text-warning pin-report-icon"></i>{t("not satisfied")}</span>;
+  return <span><WarningIcon />{t("not satisfied")}</span>;
 }
 
 var PinButton = (props) =>
