@@ -6,7 +6,9 @@ var Table = TableComponent.Table;
 var TableCell = TableComponent.TableCell;
 var TableRow = TableComponent.TableRow;
 var StatePersistedMixin = require("../components/util").StatePersistedMixin;
-var CsvLink = require("./subscription-matching-util").CsvLink;
+var UtilComponent = require("./subscription-matching-util");
+var CsvLink = UtilComponent.CsvLink;
+var SystemLabel = UtilComponent.SystemLabel;
 var PopUp = require("../components/popup").PopUp;
 
 var UnmatchedProducts = React.createClass({
@@ -128,7 +130,7 @@ var UnmatchedSystemPopUp = React.createClass({
   buildRows: function(product, systems) {
     return product.unmatchedSystemIds.map((sid) => {
       var systemName = systems[sid].name;
-      var column = <TableCell content={systemName}/>;
+      var column = <TableCell content={<SystemLabel type={systems[sid].type} name={systemName} />} />;
       var rawData = {systemName: systemName};
 
       return <TableRow columns={[column]} rawData={rawData} />
