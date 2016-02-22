@@ -18,6 +18,41 @@ var Messages = React.createClass({
     return aValue.toLowerCase().localeCompare(bValue.toLowerCase()) * orderCondition;
   },
 
+  buildRows: function(rawMessages, systems) {
+    var result = rawMessages.map(function(rawMessage) {
+      var data = rawMessage["data"];
+      var message;
+      var additionalInformation;
+      switch(rawMessage["type"]) {
+        case "unknownPartNumber" :
+          message = t("Unsupported part number detected");
+          additionalInformation = data["partNumber"];
+          break;
+        case "physicalGuest" :
+          message = t("Physical system is reported as virtual guest, please check hardware data");
+          additionalInformation = systems[data["id"]].name;
+          break;
+        case "guestWithUnknownHost" :
+          message = t("Virtual guest has unknown host, assuming it is a physical system");
+          additionalInformation = systems[data["id"]].name;
+          break;
+        case "unknownCpuCount" :
+          message = t("System has an unknown number of sockets, assuming 16");
+          additionalInformation = systems[data["id"]].name;
+          break;
+        default:
+          message = rawMessage["type"];
+          additionalInformation = data;
+      }
+      var columns = [
+        <TableCell content={message} />,
+        <TableCell content={additionalInformation} />
+      ];
+      return <TableRow columns={columns} message={message}/>;
+    });
+    return result;
+  },
+
   render: function() {
     var body;
     if (this.props.messages.length > 0) {
@@ -26,7 +61,7 @@ var Messages = React.createClass({
           <p>{t("Please review warning and information messages below.")}</p>
           <Table
             headers={[t("Message"), t("Additional information")]}
-            rows={messagesToRows(this.props.messages, this.props.systems)}
+            rows={this.buildRows(this.props.messages, this.props.systems)}
             loadState={this.props.loadState}
             saveState={this.props.saveState}
             rowComparator={this.rowComparator}
@@ -48,41 +83,6 @@ var Messages = React.createClass({
     );
   }
 });
-
-function messagesToRows(rawMessages, systems) {
-  var result= rawMessages.map(function(rawMessage) {
-    var data = rawMessage["data"];
-    var message;
-    var additionalInformation;
-    switch(rawMessage["type"]) {
-      case "unknownPartNumber" :
-        message = t("Unsupported part number detected");
-        additionalInformation = data["partNumber"];
-        break;
-      case "physicalGuest" :
-        message = t("Physical system is reported as virtual guest, please check hardware data");
-        additionalInformation = systems[data["id"]].name;
-        break;
-      case "guestWithUnknownHost" :
-        message = t("Virtual guest has unknown host, assuming it is a physical system");
-        additionalInformation = systems[data["id"]].name;
-        break;
-      case "unknownCpuCount" :
-        message = t("System has an unknown number of sockets, assuming 16");
-        additionalInformation = systems[data["id"]].name;
-        break;
-      default:
-        message = rawMessage["type"];
-        additionalInformation = data;
-    }
-    var columns = [
-      <TableCell content={message} />,
-      <TableCell content={additionalInformation} />
-    ];
-    return <TableRow columns={columns} message={message}/>;
-  });
-  return result;
-}
 
 module.exports = {
   Messages: Messages,
