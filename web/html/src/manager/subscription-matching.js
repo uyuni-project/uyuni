@@ -1,6 +1,7 @@
 "use strict";
 
 var React = require("react");
+var ReactDOM = require("react-dom");
 var TableComponent = require("../components/table");
 var Table = TableComponent.Table;
 var TableCell = TableComponent.TableCell;
@@ -138,7 +139,7 @@ var SubscriptionMatchingTabContainer = React.createClass({
   },
 });
 
-React.render(
+ReactDOM.render(
   <SubscriptionMatching refreshInterval={5000} />,
   document.getElementById("subscription-matching")
 );
