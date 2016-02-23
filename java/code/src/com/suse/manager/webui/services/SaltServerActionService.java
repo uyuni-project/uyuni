@@ -145,16 +145,14 @@ public enum SaltServerActionService {
                             // Find schedule results for this minion and check for success
                             Optional<Schedule.Result> minionResult = scheduleResults
                                     .get().values().stream()
-                                    // Results grouped by timezone
-                                    .filter(tr -> tr.containsKey(targetMinion.getMinionId()))
+                                    // Filter for the offset group containing this minion
+                                    .filter(o -> o.containsKey(targetMinion.getMinionId()))
                                     .findFirst()
-                                    .map(tr -> tr.get(targetMinion.getMinionId()));
+                                    .map(o -> o.get(targetMinion.getMinionId()));
 
-                            LOG.debug(String.format("Minion result: %s", minionResult.get()));
                             if (minionResult.isPresent() && minionResult.get().getResult()) {
                                 success = true;
                             }
-                            LOG.debug("SUCCESS ? " + success);
                         }
                         else if (asyncResults.isPresent()) {
                             LocalAsyncResult<?> result =  asyncResults.get();

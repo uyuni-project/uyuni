@@ -56,7 +56,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,7 +75,7 @@ public enum SaltAPIService implements SaltService {
     // Singleton instance of this class
     INSTANCE;
 
-    // XXX
+    // Logger
     private static final Logger LOG = Logger.getLogger(SaltAPIService.class);
 
     // Salt properties
@@ -428,31 +428,31 @@ public enum SaltAPIService implements SaltService {
     public Map<String, Map<String, Schedule.Result>> schedule(String name, LocalCall<?> call,
             Target<?> target, ZonedDateTime scheduleDate, Map<String, ?> metadata)
             throws SaltException {
-        // Get the minion timezones and convert scheduleDate into it
-        Map<String, String> minionTimezones = runRemoteCommand(target, "date +%Z");
-        LOG.debug("XXX: " + minionTimezones);
+        // Get the timezone offset for all target minions
+        Map<String, String> minionOffsets = runRemoteCommand(target, "date +%z");
 
-        // One Salt call per timezone: map of timezones -> list of strings (minion ids)
-        Map<String, List<String>> timezoneMap = minionTimezones.keySet().stream()
-                .collect(Collectors.groupingBy(minion -> minionTimezones.get(minion)));
-        LOG.debug("Map: " + timezoneMap);
+        // We do one schedule call per timezone: group minions by their timezone offsets
+        Map<String, List<String>> offsetMap = minionOffsets.keySet().stream()
+                .collect(Collectors.groupingBy(minion -> minionOffsets.get(minion)));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Minions grouped by timezone offsets: " + offsetMap);
+        }
 
-        // The result type: map from timzeone to map of minion id to result
+        // The result type: map from timezone offset to map of minion id to result
         Map<String, Map<String, Schedule.Result>> resultMap = new HashMap<>();
-        timezoneMap.keySet().stream().forEach(timezone -> {
-            LocalDateTime targetScheduleDate = scheduleDate
-                    .withZoneSameInstant(ZoneId.of(timezone)).toLocalDateTime();
+        offsetMap.keySet().stream().forEach(offset -> {
+            LocalDateTime targetScheduleDate = scheduleDate.toOffsetDateTime()
+                    .withOffsetSameInstant(ZoneOffset.of(offset)).toLocalDateTime();
             try {
-                Target<?> timezoneTarget = new MinionList(timezoneMap.get(timezone));
+                Target<?> timezoneTarget = new MinionList(offsetMap.get(offset));
                 Map<String, Schedule.Result> result = Schedule
                         .add(name, call, targetScheduleDate, metadata)
-                        .callSync(SALT_CLIENT, timezoneTarget, SALT_USER, SALT_PASSWORD,
-                                AuthModule.AUTO);
-                LOG.debug(String.format("Putting results for timezone %s: %s",
-                        timezone, timezoneTarget));
-                resultMap.put(timezone, result);
-            } catch (SaltException e) {
-                LOG.error("Error scheduling: " + e.getMessage());
+                        .callSync(SALT_CLIENT, timezoneTarget,
+                                SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+                resultMap.put(offset, result);
+            }
+            catch (SaltException e) {
+                LOG.error(String.format("Error scheduling actions: %s", e.getMessage()));
             }
         });
 
