@@ -30,13 +30,12 @@ import com.suse.matcher.json.JsonMatch;
 import com.suse.matcher.json.JsonMessage;
 import com.suse.matcher.json.JsonOutput;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -217,11 +216,11 @@ public class SubscriptionMatchProcessor {
                 // products
                 .flatMap(s -> s.getProductIds().stream().map(id -> Pair.of(id, s.getId())))
                 // step 2: filter out free products
-                .filter(p -> !freeProducts.contains(p.getKey()))
+                .filter(p -> !freeProducts.contains(p.getLeft()))
                 // step 3: filter out matched products
                 .filter(p -> !confirmedProductSystemPairs.contains(p))
                 // step 4: collect them in a map using groupingBy
-                .collect(groupingBy(p -> p.getKey(), mapping(Pair::getValue, toSet())));
+                .collect(groupingBy(p -> p.getLeft(), mapping(Pair::getRight, toSet())));
 
         return input.getProducts().stream()
                 .collect(toMap(
@@ -240,5 +239,96 @@ public class SubscriptionMatchProcessor {
                 .map(Map.Entry::getKey)
                 .map(Long::valueOf)
                 .collect(toSet());
+    }
+
+    /**
+     * Immutable class representing a pair.
+     *
+     * @deprecated This class must be replaced by its Apache Commons Lang 3 utils equivalent
+     * as soon as the library is upgraded.
+     *
+     * @param <L> left value type
+     * @param <R> right value type
+     */
+    @Deprecated
+    public static class Pair<L, R> {
+
+        private L left;
+        private R right;
+
+        /**
+         * Standard constructor.
+         * @param leftIn the left value
+         * @param rightIn the right value
+         */
+        private Pair(L leftIn, R rightIn) {
+            left = leftIn;
+            right = rightIn;
+        }
+
+        /**
+         * Return a new Pair instance based on given arguments
+         *
+         * @param left the left value
+         * @param right the right value
+         * @param <L> the type of the left value
+         * @param <R> the type of the right value
+         * @return the new Pair instance
+         */
+        public static <L, R> Pair<L, R> of(L left, R right) {
+            return new Pair<L, R>(left, right);
+        }
+
+        /**
+         * Gets the left.
+         *
+         * @return left
+         */
+        public L getLeft() {
+            return left;
+        }
+
+        /**
+         * Gets the right.
+         *
+         * @return right
+         */
+        public R getRight() {
+            return right;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            return "Pair{" +
+                    "right=" + right +
+                    ", left=" + left +
+                    '}';
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Pair<?, ?> pair = (Pair<?, ?>) o;
+            return Objects.equals(left, pair.left) && Objects.equals(right, pair.right);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            return Objects.hash(left, right);
+        }
     }
 }
