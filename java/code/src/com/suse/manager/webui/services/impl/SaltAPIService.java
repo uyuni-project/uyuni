@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
 
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
+
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltStateStorageManager;
 import com.suse.manager.webui.utils.salt.Zypper;
@@ -50,9 +51,12 @@ import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,6 +64,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.HashSet;
 
 /**
@@ -69,6 +74,9 @@ public enum SaltAPIService implements SaltService {
 
     // Singleton instance of this class
     INSTANCE;
+
+    // XXX
+    private static final Logger LOG = Logger.getLogger(SaltAPIService.class);
 
     // Salt properties
     private final URI SALT_MASTER_URI = URI.create("http://localhost:9080");
@@ -417,14 +425,38 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, Schedule.Result> schedule(String name, LocalCall<?> call,
+    public Map<String, Map<String, Schedule.Result>> schedule(String name, LocalCall<?> call,
             Target<?> target, ZonedDateTime scheduleDate, Map<String, ?> metadata)
             throws SaltException {
-        // TODO: Convert scheduleDate into the actual timezone of the minion
-        Map<String, Schedule.Result> result = Schedule
-                .add(name, call, scheduleDate.toLocalDateTime(), metadata)
-                .callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-        return result;
+        // Get the minion timezones and convert scheduleDate into it
+        Map<String, String> minionTimezones = runRemoteCommand(target, "date +%Z");
+        LOG.debug("XXX: " + minionTimezones);
+
+        // One Salt call per timezone: map of timezones -> list of strings (minion ids)
+        Map<String, List<String>> timezoneMap = minionTimezones.keySet().stream()
+                .collect(Collectors.groupingBy(minion -> minionTimezones.get(minion)));
+        LOG.debug("Map: " + timezoneMap);
+
+        // The result type: map from timzeone to map of minion id to result
+        Map<String, Map<String, Schedule.Result>> resultMap = new HashMap<>();
+        timezoneMap.keySet().stream().forEach(timezone -> {
+            LocalDateTime targetScheduleDate = scheduleDate
+                    .withZoneSameInstant(ZoneId.of(timezone)).toLocalDateTime();
+            try {
+                Target<?> timezoneTarget = new MinionList(timezoneMap.get(timezone));
+                Map<String, Schedule.Result> result = Schedule
+                        .add(name, call, targetScheduleDate, metadata)
+                        .callSync(SALT_CLIENT, timezoneTarget, SALT_USER, SALT_PASSWORD,
+                                AuthModule.AUTO);
+                LOG.debug(String.format("Putting results for timezone %s: %s",
+                        timezone, timezoneTarget));
+                resultMap.put(timezone, result);
+            } catch (SaltException e) {
+                LOG.error("Error scheduling: " + e.getMessage());
+            }
+        });
+
+        return resultMap;
     }
 
     /**
