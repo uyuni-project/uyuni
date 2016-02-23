@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.Server;
@@ -33,6 +34,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.webui.utils.gson.JSONActionScheduled;
 import com.suse.manager.webui.utils.gson.JSONSaltState;
 import com.suse.manager.webui.utils.gson.JSONServerSaltStates;
 import com.suse.salt.netapi.datatypes.target.Grains;
@@ -57,7 +60,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -271,6 +273,28 @@ public class StatesAPI {
 
         response.type("application/json");
         return GSON.toJson(action.getId());
+    }
+
+    public static Object scheduleApply(Request request, Response response, User user) {
+        JSONServerApplyStates json = GSON.fromJson(request.body(),
+                JSONServerApplyStates.class);
+
+        Server server = ServerFactory.lookupById(json.getServerId());
+        Optional<Set<SaltState>> saltStates = StateFactory.latestSaltStates(server);
+        Set<String> stateNames = saltStates.map( states -> states.stream()
+                .map(s -> s.getStateName())
+                .collect(Collectors.toSet()))
+                .orElse(Collections.emptySet());
+
+        stateNames = SaltAPIService.INSTANCE.resolveOrgStates(user.getOrg().getId(), stateNames);
+
+        ApplyStatesEventMessage applyStatesEventMessage = new ApplyStatesEventMessage(
+                json.getServerId(), user.getId(), new ArrayList<>(stateNames));
+        MessageQueue.publish(applyStatesEventMessage);
+
+        // TODO schedule ApplyStatesEventMessageAction here to get the id
+        // TODO See https://github.com/SUSE/spacewalk/blob/Manager-salt-actions/java/code/src/com/suse/manager/reactor/messaging/ApplyStatesEventMessageAction.java#L61
+        return json(response, new JSONActionScheduled(-1));
     }
 
     /**

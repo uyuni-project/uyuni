@@ -3,22 +3,53 @@
 const React = require("react");
 const Buttons = require("../components/buttons");
 const Panels = require("../components/panels");
+const Fields = require("../components/fields");
+const PopUp = require("../components/popup").PopUp;
+const Messages = require("../components/messages").Messages;
 
 const AsyncButton = Buttons.AsyncButton;
 const InnerPanel = Panels.InnerPanel;
 const PanelRow = Panels.PanelRow;
+const TextField = Fields.TextField;
 
 function stateKey(state) {
     return state.name;
 }
 
+function msg(severityIn, textIn) {
+    return [{severity: severityIn, text: textIn}];
+}
+
+class SaltStatePopup extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+      const popUpContent = this.props.saltState ?
+            <textarea className="form-control" rows="20" name="content"
+                defaultValue={this.props.saltState.content} readOnly="true"/>
+                : null;
+
+      return (<PopUp
+                title={t("Salt State")}
+                className="modal-lg"
+                id="saltStatePopUp"
+                content={popUpContent}
+                onClosePopUp={this.props.onClosePopUp}
+              />)
+  }
+
+}
+
 class ApplyState extends React.Component {
 
   constructor(props) {
-    super();
+    super(props);
 
     ["init", "tableBody", "handleSelectionChange", "onSearchChange", "search", "save",
-        "applyStates", "setView", "addChanged", "onSearchKeyPress"]
+        "applySaltState", "setView", "addChanged", "showPopUp", "onClosePopUp"]
     .forEach(method => this[method] = this[method].bind(this));
 
     this.state = {
@@ -29,7 +60,8 @@ class ApplyState extends React.Component {
             filter: null,
             results: []
         },
-        changed: new Map()
+        changed: new Map(),
+        messages: null
     };
     this.init();
   }
@@ -46,12 +78,18 @@ class ApplyState extends React.Component {
   applySaltState() {
     const request = $.ajax({
         type: "POST",
-        url: "/rhn/manager/api/states/apply",
+        url: "/rhn/manager/api/states/scheduleApply",
         data: JSON.stringify({
-            sid: serverId,
-            states: ["apply"]
+            sid: serverId
         }),
-        contentType: "application/json"
+        contentType: "application/json",
+        dataType: "json"
+    })
+    .done( data => {
+        // TODO add link to even page ApplyStatesEvent
+        this.setState({
+            messages: msg('info', t('States applying has been queued.'))
+        });
     });
     return Promise.resolve(request);
   }
@@ -89,27 +127,19 @@ class ApplyState extends React.Component {
             filter: this.state.search.filter,
             results: newSearchResults
         },
+        messages: msg('info', t('State assignments have been saved.'))
       });
     }, (jqXHR, textStatus, errorThrown) => {
       console.log("fail: " + textStatus);
+      messages: msg('error', t('An error occurred on save.'))
     });
     return Promise.resolve(request);
-  }
-
-  applyStates() {
-
   }
 
   onSearchChange(event) {
     this.setState({
         filter: event.target.value
     });
-  }
-
-  onSearchKeyPress(event) {
-    if( event.key == 'Enter' ) {
-        this.search()
-    }
   }
 
   search() {
@@ -126,9 +156,10 @@ class ApplyState extends React.Component {
             search:  {
                 filter: this.state.filter,
                 results: data
-            }
+            },
+            messages: null
           });
-        });
+        })
     }
   }
 
@@ -169,7 +200,6 @@ class ApplyState extends React.Component {
       }
   }
 
-
   tableBody() {
     const elements = [];
     var rows = [];
@@ -207,10 +237,10 @@ class ApplyState extends React.Component {
 
       elements.push(
         <tr className={changed !== undefined ? "warning" : ""}>
-          <td>{currentState.name}</td>
+          <td><a href="#" data-toggle="modal" data-target="#saltStatePopUp" onClick={() => {this.showPopUp(currentState.name);}}>{currentState.name}</a></td>
           <td>
             <div className="form-group">
-                <input type="checkbox" checked={currentState.assigned} value={currentState.name} onClick={this.handleSelectionChange(row.original)}/>
+                <input type="checkbox" checked={currentState.assigned} value={currentState.name} onChange={this.handleSelectionChange(row.original)}/>
             </div>
           </td>
         </tr>
@@ -238,14 +268,41 @@ class ApplyState extends React.Component {
     }
   }
 
+  showPopUp(stateName) {
+    $.get("/rhn/manager/state-catalog/state/" + stateName + "/content", data => {
+        this.setState({
+            showSaltState: {name: stateName, content: data}
+        })
+    });
+
+  }
+
+  onClosePopUp() {
+    this.setState({
+        showSaltState: null
+    })
+  }
+
+  clearMessages() {
+      this.setState({
+          messages: null
+      })
+  }
+
   render() {
     const buttons = [<AsyncButton action={this.save} name={t("Save")} disabled={this.state.changed.size == 0}/>,
-                     <AsyncButton action={this.applyStates} name={t("Apply")} />];
+                     <AsyncButton action={this.applySaltState} name={t("Apply")} />];
 
+    const messages = this.state.messages ?
+            <Messages items={this.state.messages}/>
+            : null;
     return (
+        <span>
+        {messages}
         <InnerPanel title={t("Apply States")} buttons={buttons}>
+
             <PanelRow className="input-group">
-                <input className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange} onKeyPress = {this.onSearchKeyPress}/>
+                <TextField value={this.state.filter} placeholder={t("Search in state catalog")} onChange={this.onSearchChange} onPressEnter={this.search}/>
                 <span className="input-group-btn">
                     <AsyncButton name={t("Search")} action={this.search} />
                     <button className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
@@ -265,7 +322,10 @@ class ApplyState extends React.Component {
               {this.tableBody()}
             </table>
 
+            <SaltStatePopup saltState={this.state.showSaltState} onClosePopUp={this.onClosePopUp}/>
+
         </InnerPanel>
+        </span>
     );
   }
 

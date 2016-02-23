@@ -190,4 +190,8 @@ public class SaltStateStorageManager {
         return slsPath.toFile().exists();
     }
 
+    public String getOrgNamespace(long orgId) {
+        return "manager_org_" + orgId;
+    }
+
 }
