@@ -9,7 +9,7 @@ const InnerPanel = Panels.InnerPanel;
 const PanelRow = Panels.PanelRow;
 
 function stateKey(state) {
-    return state.name;// + "_" + state.assigned;
+    return state.name;
 }
 
 class ApplyState extends React.Component {
@@ -17,7 +17,8 @@ class ApplyState extends React.Component {
   constructor(props) {
     super();
 
-    ["init", "tableBody", "handleSelectionChange", "onSearchChange", "search", "save", "applyStates", "setView", "addChanged"]
+    ["init", "tableBody", "handleSelectionChange", "onSearchChange", "search", "save",
+        "applyStates", "setView", "addChanged", "onSearchKeyPress"]
     .forEach(method => this[method] = this[method].bind(this));
 
     this.state = {
@@ -70,10 +71,24 @@ class ApplyState extends React.Component {
         contentType: "application/json"
     }).then((data, textStatus, jqXHR) => {
       console.log("success: " + data);
+
+      const newSearchResults = this.state.search.results.map( state => {
+          const changed = this.state.changed.get(stateKey(state))
+          if(changed !== undefined) {
+              return changed.value;
+          } else {
+              return state;
+          }
+      });
+
       this.setState({
-        changed: new Map(),
-        view: "system",
-        saltStates: data
+        changed: new Map(), // clear changed
+        view: "system", // switch view to system
+        saltStates: data, // set data for system tab
+        search: {
+            filter: this.state.search.filter,
+            results: newSearchResults
+        },
       });
     }, (jqXHR, textStatus, errorThrown) => {
       console.log("fail: " + textStatus);
@@ -89,6 +104,12 @@ class ApplyState extends React.Component {
     this.setState({
         filter: event.target.value
     });
+  }
+
+  onSearchKeyPress(event) {
+    if( event.key == 'Enter' ) {
+        this.search()
+    }
   }
 
   search() {
@@ -224,7 +245,7 @@ class ApplyState extends React.Component {
     return (
         <InnerPanel title={t("Apply States")} buttons={buttons}>
             <PanelRow className="input-group">
-                <input className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange}/>
+                <input className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange} onKeyPress = {this.onSearchKeyPress}/>
                 <span className="input-group-btn">
                     <AsyncButton name={t("Search")} action={this.search} />
                     <button className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
