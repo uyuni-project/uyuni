@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Tue Feb 23 14:54:25 CET 2016 - mc@suse.de
+
+- version 2.1.165.21-1
+- Unit tests for SLE-RT12-SP1 (bsc#952381) and SUSE-OpenStack-Cloud-6
+  (bsc#964033)
+- test support for SUSE-Enterprise-Storage 2.1 (bsc#963784), SLE12-SP1-SAP
+  (bsc#959548) and SLES11-SP3-LTSS-Updates (bsc#965652)
+- fix typo in SQL statement (bsc#959987, bsc#960855)
+- add Chile to the list of timezones (bsc#959055)
+- Avoid hitting the database twice in case of HTTP errors (bsc#952418)
+- Fix ssh push via proxy using sudo (bsc#961521)
+- update testcase - add Container Module for ppc64le and s390x arch
+- Add Container Module for s390x and ppc64le (bsc#956724)
+- to detect if zypp is used as installer better to check for package zypper
+- In case the installer is zypp add all patches into one errata action
+  (bsc#960997)
+- Set the rhn session-cookie-path global
+- fix kickstart with multiple packages having same NEVRA (bsc#959987,
+  bsc#960855)
+
+-------------------------------------------------------------------
 Mon Dec 07 12:56:40 CET 2015 - mc@suse.de
 
 - version 2.1.165.20-1
