@@ -143,14 +143,14 @@ public enum SaltServerActionService {
 
                         if (scheduleResults.isPresent()) {
                             // Find schedule results for this minion and check for success
-                            Optional<Schedule.Result> minionResult = scheduleResults
+                            Optional<Schedule.Result> result = scheduleResults
                                     .get().values().stream()
                                     // Filter for the offset group containing this minion
                                     .filter(o -> o.containsKey(targetMinion.getMinionId()))
                                     .findFirst()
                                     .map(o -> o.get(targetMinion.getMinionId()));
 
-                            if (minionResult.isPresent() && minionResult.get().getResult()) {
+                            if (result.isPresent() && result.get().getResult()) {
                                 success = true;
                             }
                         }

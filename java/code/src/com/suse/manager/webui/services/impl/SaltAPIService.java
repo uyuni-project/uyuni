@@ -440,9 +440,9 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, Map<String, Schedule.Result>> schedule(String name, LocalCall<?> call,
-            Target<?> target, ZonedDateTime scheduleDate, Map<String, ?> metadata)
-            throws SaltException {
+    public Map<String, Map<String, Schedule.Result>> schedule(String name,
+            LocalCall<?> call, Target<?> target, ZonedDateTime scheduleDate,
+            Map<String, ?> metadata) throws SaltException {
         // Get the timezone offset for all target minions
         Map<String, String> minionOffsets = getTimezoneOffsets(target);
 
