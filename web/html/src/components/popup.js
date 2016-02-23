@@ -18,7 +18,7 @@ var PopUp = React.createClass({
 
   render: function() {
     return (
-      <div className="modal fade" tabindex="-1" role="dialog" aria-labelledby="addPinPopUpLabel" id={this.props.id} >
+      <div className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="addPinPopUpLabel" id={this.props.id} >
         <div className={"modal-dialog " + (this.props.className ? this.props.className : "")}>
           <div className="modal-content">
             <div className="modal-header">
