@@ -36,6 +36,7 @@ gulp.task('bundle-manager', function(done) {
             return bundler
                 .transform("babelify", {presets: ["es2015", "react"]})
                 .external("react") // exclude react from these bundles
+                .external("react-dom") // exclude react-dom from these bundles
                 .bundle() // Create the initial bundle when starting the task
                 .pipe(source(entry)) // this is a surrogate file name //'org-state-catalog-app.js'
                 .pipe(rename({

@@ -8,7 +8,7 @@ var PopUp = React.createClass({
       onClosePopUp: React.PropTypes.func.isRequired, // a callback function with no parameters
       className: React.PropTypes.string, // the css className for the 'modal-dialog' div
       title: React.PropTypes.string,
-      content: React.PropTypes.node.isRequired, // the body of the popup
+      content: React.PropTypes.node, // the body of the popup
       footer: React.PropTypes.node,
     },
 
@@ -18,7 +18,7 @@ var PopUp = React.createClass({
 
   render: function() {
     return (
-      <div className="modal fade" tabindex="-1" role="dialog" aria-labelledby="addPinPopUpLabel" id={this.props.id} >
+      <div className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="addPinPopUpLabel" id={this.props.id} >
         <div className={"modal-dialog " + (this.props.className ? this.props.className : "")}>
           <div className="modal-content">
             <div className="modal-header">

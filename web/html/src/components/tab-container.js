@@ -36,7 +36,7 @@ var TabContainer = React.createClass({
   render: function() {
     const labels = this.props.hashes.map((hash, i) => {
       const label = this.props.labels[i];
-      return <TabLabel onClick={() => this.onActiveTabChange(hash)} text={label} active={this.state.activeTabHash == hash} hash={hash} />;
+      return <TabLabel onClick={() => this.onActiveTabChange(hash)} text={label} active={this.state.activeTabHash == hash} hash={hash} key={hash} />;
     });
 
     const tab = this.props.tabs[this.props.hashes.indexOf(this.state.activeTabHash)];

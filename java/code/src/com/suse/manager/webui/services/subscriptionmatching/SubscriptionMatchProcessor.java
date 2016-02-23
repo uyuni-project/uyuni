@@ -14,18 +14,24 @@
  */
 package com.suse.manager.webui.services.subscriptionmatching;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
+
 import com.suse.matcher.json.JsonInput;
 import com.suse.matcher.json.JsonMatch;
 import com.suse.matcher.json.JsonMessage;
 import com.suse.matcher.json.JsonOutput;
-import com.suse.matcher.json.JsonProduct;
+
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,13 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Processes data from the matcher to a form that's displayable by the UI.
@@ -82,7 +81,7 @@ public class SubscriptionMatchProcessor {
                     s.getId(),
                     s.getName(),
                     s.getCpus(),
-                    null,
+                    s.getProductIds(),
                     // see https://github.com/SUSE/spacewalk/wiki/
                     // Subscription-counting#definitions
                     s.getPhysical() ?
