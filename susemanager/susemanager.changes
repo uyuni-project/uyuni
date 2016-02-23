@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Feb 23 14:39:46 CET 2016 - mc@suse.de
+
+- version 2.1.23-1
+- add dependencies of python-cryptography to bootstrap package list
+  (bsc#959987)
+- don't reference Red Hat Manager during migration (bsc#962127)
+- compress db dump for migration; some additional output during migration
+
+-------------------------------------------------------------------
 Wed Jan 20 12:08:02 CET 2016 - mantel@suse.de
 
 - do not display database credentials during
