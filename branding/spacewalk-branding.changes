@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Feb 23 14:44:20 CET 2016 - mc@suse.de
+
+- version 2.1.33.15-1
+- fix broken link in SSM page
+- In case the installer is zypp add all patches into one errata action
+  (bsc#960997)
+
+-------------------------------------------------------------------
 Mon Dec 07 12:51:55 CET 2015 - mc@suse.de
 
 - version 2.1.33.14-1
