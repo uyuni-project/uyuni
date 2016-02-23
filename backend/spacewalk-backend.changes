@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Feb 23 14:53:50 CET 2016 - mc@suse.de
+
+- version 2.1.55.24-1
+- honor no_proxy variable in InterServerSync (bsc#965651)
+- cut string after full characters (bsc#960801)
+
+-------------------------------------------------------------------
 Mon Dec 14 13:23:56 CET 2015 - mc@suse.de
 
 - version 2.1.55.23-1
