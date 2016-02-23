@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Feb 23 14:40:58 CET 2016 - mc@suse.de
+
+- version 2.1.27.14-1
+- add openSUSE Leap 42.1 (bsc#961353)
+- remove outdated openSUSE distributions 12.3 and 13.1
+
+-------------------------------------------------------------------
 Tue Mar 31 14:39:32 CEST 2015 - mc@suse.de
 
 - version 2.1.27.13-1
