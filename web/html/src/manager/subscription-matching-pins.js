@@ -193,20 +193,20 @@ var AddPinPopUp = React.createClass({
   },
 
   buildRows: function() {
-    return Object.keys(this.props.systems).map((k) => {
-      var s = this.props.systems[k];
+    return Object.keys(this.props.systems).map((id) => {
+      var s = this.props.systems[id];
       var columns = [
-        <TableCell key="system" content={<SystemLabel id={k} name={s.name} type={s.type} />} />,
+        <TableCell key="system" content={<SystemLabel id={id} name={s.name} type={s.type} />} />,
         <TableCell key="cpuCount" content={s.cpuCount} />,
         <ProductTableCell key="products" products={this.props.products} productIds={s.productIds} />,
         <TableCell key="button" content={
           <PinButton
-            onClick={() => this.onSystemSelected(k)}
+            onClick={() => this.onSystemSelected(id)}
             content={<span>{t("Select")} <i className="fa fa-arrow-right fa-right"></i></span>}
           />}
         />
       ];
-      return <TableRow key={k} columns={columns} rawData={s} />
+      return <TableRow key={id} columns={columns} rawData={s} />
     });
   },
 
