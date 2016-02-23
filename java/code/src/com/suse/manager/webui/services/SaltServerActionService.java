@@ -113,7 +113,7 @@ public enum SaltServerActionService {
 
             try {
                 // We aim to have one of these optional result objects present
-                final Optional<Map<String, Schedule.Result>> scheduleResults;
+                final Optional<Map<String, Map<String, Schedule.Result>>> scheduleResults;
                 final Optional<LocalAsyncResult<?>> asyncResults;
 
                 // Don't use schedule if this action should happen right now
@@ -139,15 +139,22 @@ public enum SaltServerActionService {
                             .filter(sa -> sa.getServerId().equals(targetMinion.getId()))
                             .findFirst();
                     optionalServerAction.ifPresent(serverAction -> {
-                        // Figure out if we were successful on this particular minion
                         boolean success = false;
 
                         if (scheduleResults.isPresent()) {
-                            Schedule.Result result = scheduleResults.get()
-                                    .get(targetMinion.getMinionId());
-                            if (result != null && result.getResult()) {
+                            // Find schedule results for this minion and check for success
+                            Optional<Schedule.Result> minionResult = scheduleResults
+                                    .get().values().stream()
+                                    // Results grouped by timezone
+                                    .filter(tr -> tr.containsKey(targetMinion.getMinionId()))
+                                    .findFirst()
+                                    .map(tr -> tr.get(targetMinion.getMinionId()));
+
+                            LOG.debug(String.format("Minion result: %s", minionResult.get()));
+                            if (minionResult.isPresent() && minionResult.get().getResult()) {
                                 success = true;
                             }
+                            LOG.debug("SUCCESS ? " + success);
                         }
                         else if (asyncResults.isPresent()) {
                             LocalAsyncResult<?> result =  asyncResults.get();
