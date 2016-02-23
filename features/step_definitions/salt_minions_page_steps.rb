@@ -17,7 +17,7 @@ When(/^I reject this client from the Pending section$/) do
 end
 
 When(/^I delete this client from the Rejected section$/) do
-  find("form[action='/rhn/manager/minions/#{$myhostname}/delete'] button").click
+  find("button[formaction='/rhn/manager/minions/#{$myhostname}/delete']").click
 end
 
 When(/^I accept this client's minion key$/) do
