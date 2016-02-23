@@ -116,6 +116,21 @@ public class StateCatalogController {
         return new ModelAndView(data, "state_catalog/state.jade");
     }
 
+    /**
+     * Get the content of the state with the give name.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the content of the state as a string
+     */
+    public static String content(Request request, Response response, User user) {
+        String stateName = request.params("name");
+        String content = SaltAPIService.INSTANCE
+                .getOrgStateContent(user.getOrg().getId(), stateName).orElse("");
+        response.type("text/plain");
+        return content;
+    }
+
     private static boolean exists(User user, String stateName) {
         return SaltAPIService.INSTANCE.orgStateExists(user.getOrg().getId(), stateName);
     }

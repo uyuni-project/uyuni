@@ -72,6 +72,7 @@ public class Router implements SparkApplication {
 
         // States API
         post("/manager/api/states/apply", withUser(StatesAPI::apply));
+        post("/manager/api/states/scheduleApply", withUser(StatesAPI::scheduleApply));
         get("/manager/api/states/match", withUser(StatesAPI::matchStates));
         post("/manager/api/states/save", withUser(StatesAPI::saveStatesAssignment));
         get("/manager/api/states/packages", StatesAPI::packages);
@@ -130,6 +131,8 @@ public class Router implements SparkApplication {
                 withCsrfToken(withOrgAdmin(StateCatalogController::add)), jade);
         get("/manager/state_catalog/state/:name",
                 withCsrfToken(withOrgAdmin(StateCatalogController::edit)), jade);
+        get("/manager/state-catalog/state/:name/content",
+                withUser(StateCatalogController::content));
         post("/manager/state_catalog/state",
                 withOrgAdmin(StateCatalogController::create));
         put("/manager/state_catalog/state/:name",

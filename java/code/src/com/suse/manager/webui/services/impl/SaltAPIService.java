@@ -59,6 +59,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +69,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.HashSet;
 import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 /**
  * Singleton class acting as a service layer for accessing the salt API.
@@ -637,5 +639,12 @@ public enum SaltAPIService implements SaltService {
      */
     public boolean orgStateExists(long orgId, String name) {
         return storageManager.exists(orgId, name);
+    }
+
+    public Set<String> resolveOrgStates(long orgId, Set<String> states) {
+        // TODO check if states actually exist ?
+        return states.stream().map(state -> storageManager.getOrgNamespace(orgId) + "." + state)
+                .collect(Collectors.toSet());
+
     }
 }
