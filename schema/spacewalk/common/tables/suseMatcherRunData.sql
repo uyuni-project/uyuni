@@ -5,7 +5,7 @@ CREATE TABLE suseMatcherRunData (
     outputBinary blob,
     subscriptionReportBinary blob,
     messageReportBinary blob,
-    unmatchedSystemReportBinary blob
+    unmatchedProductReportBinary blob
 );
 
 CREATE SEQUENCE suse_matcher_run_data_id_seq;

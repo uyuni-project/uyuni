@@ -21,7 +21,7 @@ import com.suse.manager.webui.services.subscriptionmatching.MatcherUiData;
 import com.suse.manager.webui.services.subscriptionmatching.PinnedMatch;
 import com.suse.manager.webui.services.subscriptionmatching.Subscription;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
-import com.suse.manager.webui.services.subscriptionmatching.System;
+import com.suse.manager.webui.services.subscriptionmatching.Product;
 import com.suse.matcher.json.JsonInput;
 import com.suse.matcher.json.JsonMatch;
 import com.suse.matcher.json.JsonMessage;
@@ -41,7 +41,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -184,32 +183,98 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         output.setSubscriptionPolicies(mapping);
     }
 
-    public void testUnmatchedSystems() {
+    public void testUnmatchedProductsSimpleScenario() {
+        input.getProducts().add(new JsonProduct(100L, "product 100", false));
+        // one system with one product, which is unmatched
         input.setSystems(Collections.singletonList(
-                new JsonSystem(1L, "system name", 1, true, false, Collections.emptySet(),
+                new JsonSystem(1L, "system 1", 1, true, false, Collections.emptySet(),
                         Collections.singleton(100L))));
 
-        List<System> unmatchedSystems = ((MatcherUiData) processor
-                .getData(of(input), of(output))).getUnmatchedSystems();
+        Map<String, Product> products = ((MatcherUiData) processor
+                .getData(of(input), of(output))).getProducts();
 
-        assertEquals(1, unmatchedSystems.get(0).getProducts().size());
+        assertEquals(1, products.size());
+        assertEquals(1, products.get("100").getUnmatchedSystemCount().intValue());
+        assertEquals(
+                new Long(1L),
+                products.get("100").getUnmatchedSystemIds().iterator().next());
     }
 
-    public void testPartiallyMatchedSystems() {
+    public void testUnmatchedProducts() {
+        input.getProducts().add(new JsonProduct(100L, "product 100", false));
+        input.getProducts().add(new JsonProduct(101L, "product 101", false));
+        input.getProducts().add(new JsonProduct(102L, "product 102", false));
+
         Set<Long> products = new HashSet<>();
         products.add(100L);
         products.add(101L);
+        products.add(102L);
+        input.getSystems().add(
+                new JsonSystem(1L, "system 1", 1, true, false, Collections.emptySet(),
+                        products));
+
+        Set<Long> products2 = new HashSet<>();
+        products2.add(100L);
+        products2.add(101L);
+        products2.add(102L);
+        input.getSystems().add(
+                new JsonSystem(2L, "system 2", 1, true, false, Collections.emptySet(),
+                        products2));
+
+        Set<Long> products3 = new HashSet<>();
+        products3.add(100L);
+        products3.add(101L);
+        input.getSystems().add(
+                new JsonSystem(3L, "system 3", 1, true, false, Collections.emptySet(),
+                        products3));
+
+        output.getMatches().add(new JsonMatch(1L, 10L, 100L, 100, true));
+        output.getMatches().add(new JsonMatch(2L, 20L, 100L, 100, true));
+        output.getMatches().add(new JsonMatch(3L, 20L, 100L, 100, true));
+
+        MatcherUiData data = (MatcherUiData) processor.getData(of(input), of(output));
+        Map<String, Product> unmatchedProducts = data.getProducts();
+
+        // product 100 is matched on every system, that's why it's not in the output at all
+        assertTrue(unmatchedProducts.get("100").getUnmatchedSystemIds().isEmpty());
+
+        // product 101 is matched nowhere
+        assertEquals(3, unmatchedProducts.get("101").getUnmatchedSystemCount().intValue());
+
+        // product 102 is matched on 2 systems (id 1 and 2)
+        Set<Long> systems = new HashSet<>();
+        systems.add(1L);
+        systems.add(2L);
+        assertEquals(systems, unmatchedProducts.get("102").getUnmatchedSystemIds());
+
+        assertEquals(2, data.getUnmatchedProductIds().size());
+        assertTrue(data.getUnmatchedProductIds().contains(101L));
+        assertTrue(data.getUnmatchedProductIds().contains(102L));
+    }
+
+    public void testPartiallyMatchedSystems() {
+        input.getProducts().add(new JsonProduct(100L, "prod 1", false));
+        input.getProducts().add(new JsonProduct(101L, "prod 2", false));
+        Set<Long> productsIn = new HashSet<>();
+        productsIn.add(100L);
+        productsIn.add(101L);
         input.setSystems(Collections.singletonList(
                 new JsonSystem(1L, "system name", 1, true, false, Collections.emptySet(),
-                        products)));
+                        productsIn)));
         output.getMatches().add(new JsonMatch(1L, 10L, 100L, 100, true));
 
-        List<System> unmatchedSystems = ((MatcherUiData) processor
-                .getData(of(input), of(output))).getUnmatchedSystems();
+        MatcherUiData data = (MatcherUiData) processor
+                .getData(of(input), of(output));
 
-        assertEquals(1, unmatchedSystems.size());
-        assertEquals(1, unmatchedSystems.get(0).getProducts().size());
-        assertEquals("Unknown product (101)", unmatchedSystems.get(0).getProducts().get(0));
+        Map<String, Product> products = data.getProducts();
+        assertEquals(2, products.size());
+        assertEquals(1, products.get("101").getUnmatchedSystemCount().intValue());
+        assertEquals(
+                Long.valueOf(1L),
+                products.get("101").getUnmatchedSystemIds().iterator().next());
+
+        assertEquals(1, data.getUnmatchedProductIds().size());
+        assertTrue(data.getUnmatchedProductIds().contains(101L));
     }
 
     public void testNewPin() throws Exception {
@@ -290,12 +355,12 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
      * @throws ParseException
      */
     public void testComplete() throws ParseException {
-        List<JsonProduct> products = new LinkedList<>();
-        products.add(new JsonProduct(1000L, "product id 1000", false));
-        products.add(new JsonProduct(1001L, "product id 1001", false));
-        products.add(new JsonProduct(1003L, "product id 1003", false));
-        products.add(new JsonProduct(1004L, "product id 1004, with expired subsription", false));
-        input.setProducts(products);
+        List<JsonProduct> productsIn = new LinkedList<>();
+        productsIn.add(new JsonProduct(1000L, "product id 1000", false));
+        productsIn.add(new JsonProduct(1001L, "product id 1001", false));
+        productsIn.add(new JsonProduct(1003L, "product id 1003", false));
+        productsIn.add(new JsonProduct(1004L, "product id 1004, with expired subscription", false));
+        input.setProducts(productsIn);
 
         List<JsonSubscription> subscriptions = new LinkedList<>();
 
@@ -383,47 +448,31 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         confirmedMatches.add(new JsonMatch(34L, 100L, 1000L, 100, true));
 
         MatcherUiData data = (MatcherUiData) processor.getData(of(input), of(output));
+        Map<String, Product> products = data.getProducts();
 
-        assertEquals(
-                Arrays.asList(20L, 21L, 34L),
-                data.getUnmatchedSystems().stream()
-                        .map(s -> s.getId())
-                        .collect(Collectors.toList()));
+        // product 1000 matched on every system -> mustn't be in the report!
+        assertTrue(products.get("1000").getUnmatchedSystemIds().isEmpty());
 
-        // expired or 0 quantity subscription shouldn't be in the output
+        // product with 0-quantity subscription -> it must be reported
         assertEquals(
-                Arrays.asList(100L, 101L, 103L),
-                data.getSubscriptions().values().stream()
-                        .map(s -> s.getId())
-                        .collect(Collectors.toList()));
+                Collections.singleton(21L),
+                products.get("1001").getUnmatchedSystemIds());
 
-        // unmatched products
-        List<String> unmatchedProducts = data.getUnmatchedSystems().stream()
-                .filter(s -> s.getId().equals(20L))
-                .findFirst()
-                .get().getProducts();
-        assertEquals(1, unmatchedProducts.size());
+        // no confirmed match for system 34 and product 1003 -> this must be reported
         assertEquals(
-                Arrays.asList("product id 1004, with expired subsription"),
-                unmatchedProducts);
+                Collections.singleton(34L),
+                products.get("1003").getUnmatchedSystemIds());
 
-        unmatchedProducts = data.getUnmatchedSystems().stream()
-                .filter(s -> s.getId().equals(21L))
-                .findFirst()
-                .get().getProducts();
-        assertEquals(1, unmatchedProducts.size());
+        // product 1004 has expired subscription -> it must be reported
         assertEquals(
-                Arrays.asList("product id 1001"),
-                unmatchedProducts);
+                Collections.singleton(20L),
+                products.get("1004").getUnmatchedSystemIds());
 
-        unmatchedProducts = data.getUnmatchedSystems().stream()
-                .filter(s -> s.getId().equals(34L))
-                .findFirst()
-                .get().getProducts();
-        assertEquals(1, unmatchedProducts.size());
-        assertEquals(
-                Arrays.asList("product id 1003"),
-                unmatchedProducts);
+        // unmatched product ids
+        assertEquals(3, data.getUnmatchedProductIds().size());
+        assertTrue(data.getUnmatchedProductIds().contains(1001L));
+        assertTrue(data.getUnmatchedProductIds().contains(1003L));
+        assertTrue(data.getUnmatchedProductIds().contains(1004L));
 
         assertTrue(data.getMessages().isEmpty());
     }
