@@ -63,6 +63,14 @@ public interface SaltService {
     String getMachineId(String minionId);
 
     /**
+     * Get the timezone offsets for a target, e.g. a list of minions.
+     *
+     * @param target the targeted minions
+     * @return the timezone offsets of the targeted minions
+     */
+    Map<String, String> getTimezoneOffsets(Target<?> target);
+
+    /**
      * Query all present minions according to salt's presence detection.
      *
      * @return the list of minion keys that are present

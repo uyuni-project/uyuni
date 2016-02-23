@@ -24,6 +24,7 @@ import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltStateStorageManager;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.LocalCallWithMetadata;
+import com.suse.manager.webui.utils.salt.Timezone;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
@@ -131,6 +132,20 @@ public enum SaltAPIService implements SaltService {
      */
     public String getMachineId(String minionId) {
         return (String) getGrain(minionId, "machine_id");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, String> getTimezoneOffsets(Target<?> target) {
+        try {
+            Map<String, String> offsets = Timezone.getOffset().callSync(SALT_CLIENT, target,
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            return offsets;
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -429,7 +444,7 @@ public enum SaltAPIService implements SaltService {
             Target<?> target, ZonedDateTime scheduleDate, Map<String, ?> metadata)
             throws SaltException {
         // Get the timezone offset for all target minions
-        Map<String, String> minionOffsets = runRemoteCommand(target, "date +%z");
+        Map<String, String> minionOffsets = getTimezoneOffsets(target);
 
         // We do one schedule call per timezone: group minions by their timezone offsets
         Map<String, List<String>> offsetMap = minionOffsets.keySet().stream()
