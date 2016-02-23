@@ -51,8 +51,8 @@ var Subscriptions = React.createClass({
   },
 
   buildRows: function(subscriptions) {
-    return Object.keys(subscriptions).map((k) => {
-      var s = subscriptions[k];
+    return Object.keys(subscriptions).map((id) => {
+      var s = subscriptions[id];
       var className = moment(s.endDate).isBefore(moment()) ? "text-muted" : null;
       var warningIcon = moment(s.endDate).isBefore(moment().add(6, "months")) && moment(s.endDate).isAfter(moment()) ?
         <WarningIcon iconOnRight={true} /> : null;
@@ -75,7 +75,7 @@ var Subscriptions = React.createClass({
         } />,
       ];
 
-      return <TableRow key={k} className={className} columns={columns} rawData={s} />
+      return <TableRow key={id} className={className} columns={columns} rawData={s} />
     });
   },
 
