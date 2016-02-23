@@ -18,9 +18,11 @@ import com.suse.matcher.json.JsonMessage;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Backing data for the Subscription Matching UI.
@@ -42,8 +44,11 @@ public class MatcherUiData {
     /** The messages. */
     private List<JsonMessage> messages = new LinkedList<>();
 
-    /** Unmatched systems. */
-    private List<System> unmatchedSystems = new LinkedList<>();
+    /** Products. */
+    private Map<String, Product> products = new HashMap<>();
+
+    /** List of ids of unmatched products. */
+    private Set<Long> unmatchedProductIds;
 
     /** Pinned matches. */
     private List<PinnedMatch> pinnedMatches = new LinkedList<>();
@@ -59,14 +64,16 @@ public class MatcherUiData {
      * @param latestEndIn the latest end date of subscription-matcher's run
      * @param messagesIn - list of messages
      * @param subscriptionsIn - list of subscriptions
-     * @param unmatchedSystemsIn - list of unmatched systems
+     * @param productsIn - products
+     * @param unmatchedProductIdsIn - list of ids of unmatched products
      * @param pinnedMatchesIn - list of pinned matches
      * @param systemsIn - list of systems
      */
     public MatcherUiData(boolean matcherDataAvailableIn, Date latestStartIn,
             Date latestEndIn, List<JsonMessage> messagesIn,
             Map<String, Subscription> subscriptionsIn,
-            List<System> unmatchedSystemsIn,
+            Map<String, Product> productsIn,
+            Set<Long> unmatchedProductIdsIn,
             List<PinnedMatch> pinnedMatchesIn,
             Map<String, System> systemsIn) {
         matcherDataAvailable = matcherDataAvailableIn;
@@ -74,9 +81,22 @@ public class MatcherUiData {
         latestEnd = latestEndIn;
         messages = messagesIn;
         subscriptions = subscriptionsIn;
-        unmatchedSystems = unmatchedSystemsIn;
+        products = productsIn;
+        unmatchedProductIds = unmatchedProductIdsIn;
         pinnedMatches = pinnedMatchesIn;
         setSystems(systemsIn);
+    }
+
+    /**
+     * Shortcut constructor for creating MatcherUiData with matcherDataAvailable = false
+     *
+     * @param latestStartIn the latest start date of subscription-matcher's run
+     * @param latestEndIn the latest end date of subscription-matcher's run
+     */
+    public MatcherUiData(Date latestStartIn, Date latestEndIn) {
+        this(false, latestStartIn, latestEndIn, new LinkedList<>(),
+                new HashMap<>(), new HashMap<>(), new HashSet<>(), new LinkedList<>(),
+                new HashMap<>());
     }
 
     /**
@@ -169,21 +189,39 @@ public class MatcherUiData {
     }
 
     /**
-     * Gets the unmatchedSystems.
+     * Gets the products.
      *
-     * @return unmatchedSystems
+     * @return products
      */
-    public List<System> getUnmatchedSystems() {
-        return unmatchedSystems;
+    public Map<String, Product> getProducts() {
+        return products;
     }
 
     /**
-     * Sets the unmatchedSystems.
+     * Sets the products.
      *
-     * @param unmatchedSystemsIn - the unmatchedSystems
+     * @param productsIn - the products
      */
-    public void setUnmatchedSystems(List<System> unmatchedSystemsIn) {
-        unmatchedSystems = unmatchedSystemsIn;
+    public void setProducts(Map<String, Product> productsIn) {
+        products = productsIn;
+    }
+
+    /**
+     * Gets the unmatchedProductIds.
+     *
+     * @return unmatchedProductIds
+     */
+    public Set<Long> getUnmatchedProductIds() {
+        return unmatchedProductIds;
+    }
+
+    /**
+     * Sets the unmatchedProductIds.
+     *
+     * @param unmatchedProductIdsIn - the unmatchedProductIds
+     */
+    public void setUnmatchedProductIds(Set<Long> unmatchedProductIdsIn) {
+        unmatchedProductIds = unmatchedProductIdsIn;
     }
 
     /**

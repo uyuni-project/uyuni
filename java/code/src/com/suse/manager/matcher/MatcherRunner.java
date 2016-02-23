@@ -81,7 +81,7 @@ public class MatcherRunner {
             data.setOutput(readMatcherFile("output.json"));
             data.setSubscriptionReport(readMatcherFile("subscription_report.csv"));
             data.setMessageReport(readMatcherFile("message_report.csv"));
-            data.setUnmatchedSystemReport(readMatcherFile("unmatched_system_report.csv"));
+            data.setUnmatchedProductReport(readMatcherFile("unmatched_product_report.csv"));
             MatcherRunDataFactory.updateData(data);
         }
         catch (IOException ioe) {

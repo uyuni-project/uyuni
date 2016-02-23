@@ -19,7 +19,7 @@ public class MatcherRunDataFactoryTest extends RhnBaseTestCase {
         data.setOutput("output");
         data.setMessageReport("message");
         data.setSubscriptionReport("subs");
-        data.setUnmatchedSystemReport("unmatched");
+        data.setUnmatchedProductReport("unmatched");
 
         MatcherRunDataFactory.updateData(data);
 
@@ -28,7 +28,7 @@ public class MatcherRunDataFactoryTest extends RhnBaseTestCase {
         assertEquals("output", fromDb.getOutput());
         assertEquals("message", fromDb.getMessageReport());
         assertEquals("subs", fromDb.getSubscriptionReport());
-        assertEquals("unmatched", fromDb.getUnmatchedSystemReport());
+        assertEquals("unmatched", fromDb.getUnmatchedProductReport());
     }
 
     /**

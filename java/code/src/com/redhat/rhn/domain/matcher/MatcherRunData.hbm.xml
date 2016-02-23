@@ -15,7 +15,7 @@
         <property name="outputBinary" type="binary"/>
         <property name="subscriptionReportBinary" type="binary"/>
         <property name="messageReportBinary" type="binary"/>
-        <property name="unmatchedSystemReportBinary" type="binary"/>
+        <property name="unmatchedProductReportBinary" type="binary"/>
     </class>
 
     <query name="MatcherRunData.deleteAll">
