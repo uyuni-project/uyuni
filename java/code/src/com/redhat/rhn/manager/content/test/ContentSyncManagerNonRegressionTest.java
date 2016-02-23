@@ -28,7 +28,6 @@ import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.XMLChannels;
 import com.suse.scc.model.SCCProduct;
 
-import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
@@ -37,10 +36,15 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Tests for {@link ContentSyncManager} against expected output from previous
@@ -115,60 +119,86 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             csm.addDirtyFixes(sccProducts);
 
             csm.updateSUSEProducts(sccProducts);
-            Collection<MgrSyncProductDto> products =
+            Collection<MgrSyncProductDto> baseProducts =
                     csm.listProducts(csm.getAvailableChannels(allChannels));
 
-            Iterator<MgrSyncProductDto> actualProducts = products.iterator();
-            MgrSyncProductDto actualBase = null;
-            Iterator<MgrSyncProductDto> actualExtensions = IteratorUtils.EMPTY_ITERATOR;
+            Collection<MgrSyncProductDto> products = Stream.concat(
+                    baseProducts.stream(),
+                    baseProducts.stream()
+                        .flatMap(p -> p.getExtensions().stream())
+            ).collect(Collectors.toList());
+
+            Set<MgrSyncProductDto> checkedProducts = new LinkedHashSet<>();
             for (String line : (List<String>) FileUtils.readLines(expectedProductsCSV)) {
                 Iterator<String> expected = Arrays.asList(line.split(",")).iterator();
                 String friendlyName = expected.next();
                 String version = expected.next();
                 String arch = expected.next();
-                boolean baseExpected = expected.next().equals("base");
+                boolean base = expected.next().equals("base");
                 SortedSet<String> channelLabels = new TreeSet<String>();
                 while (expected.hasNext()) {
                     channelLabels.add(expected.next());
                 }
 
-                if (baseExpected) {
-                    while (actualExtensions.hasNext()) {
-                        failures.add("Base product " + actualBase.toString() +
-                                " found to have extension " +
-                                actualExtensions.next().toString() +
-                                " which was not expected");
+                Optional<MgrSyncProductDto> actual = products.stream()
+                    .filter(p ->
+                        p.getFriendlyName().equals(friendlyName) &&
+                        p.getVersion().equals(version) &&
+                        p.getArch().equals(arch)
+                    )
+                    .sorted((a, b) ->
+                        // if more than one matching product exist, pick the one with
+                        // most matching channels
+                        (int) b.getChannels().stream()
+                            .filter(c -> channelLabels.contains(toChannelLabel(c)))
+                            .count() -
+                        (int) a.getChannels().stream()
+                            .filter(c -> channelLabels.contains(toChannelLabel(c)))
+                            .count()
+                    ).findFirst();
+
+                if (actual.isPresent()) {
+                    MgrSyncProductDto product = actual.get();
+                    checkedProducts.add(product);
+
+                    boolean actualBase = product.getChannels().stream().anyMatch(c ->
+                        c.getParent().equals(ContentSyncManager.BASE_CHANNEL));
+                    if (actualBase != base) {
+                        failures.add("Product " + product.toString() + " should be " +
+                            (base ? "a base product" : "an extension product") +
+                            " but it's not");
                     }
 
-                    actualBase = actualProducts.next();
+                    List<XMLChannel> unexpectedChannels = product.getChannels().stream()
+                        .filter(c -> !channelLabels.contains(toChannelLabel(c)))
+                        .collect(Collectors.toList());
 
-                    checkProductMatches(friendlyName, version, arch,
-                            channelLabels, actualBase);
+                    unexpectedChannels.forEach(c -> {
+                        failures.add("Product " + product.toString() +
+                                " has unexpected channel " + toChannelLabel(c));
+                    });
 
-                    actualExtensions = actualBase.getExtensions().iterator();
+                    List<String> missingChannels = channelLabels.stream().filter(label ->
+                        !product.getChannels().stream()
+                            .anyMatch(c -> toChannelLabel(c).equals(label))
+                    ).collect(Collectors.toList());
+
+                    missingChannels.forEach(c -> {
+                        failures.add("Product " + product.toString() +
+                                " does not have expected channel " + c);
+                    });
                 }
                 else {
-                    if (!actualExtensions.hasNext()) {
-                        failures.add("Base product " + actualBase.toString() +
-                                " does not have an expected extension named " +
-                                friendlyName);
-                    }
-                    else {
-                        MgrSyncProductDto extension = actualExtensions.next();
-
-                        checkProductMatches(friendlyName, version, arch, channelLabels,
-                                extension);
-                    }
+                    failures.add("Product was expected but not found: " +
+                            friendlyName + ", " + version + ", " +
+                            arch + ", " + channelLabels.first());
                 }
             }
-            while (actualProducts.hasNext()) {
-                failures.add("Found an unexpected base product " +
-                        actualProducts.next().toString());
-            }
-            while (actualExtensions.hasNext()) {
-                failures.add("Found an unexpected extension product " +
-                        actualExtensions.next().toString());
-            }
+
+            products.removeAll(checkedProducts);
+            products.forEach(p -> {
+                failures.add("Product was not expected: " + p);
+            });
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(expectedProductsCSV);
@@ -183,6 +213,10 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             }
             fail("See log for output");
         }
+    }
+
+    private String toChannelLabel(XMLChannel c) {
+        return c.getLabel() + (c.isOptional() ? "" : "*");
     }
 
     /**
@@ -214,58 +248,6 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
-        }
-    }
-
-    /**
-     * Check that a product matches expected attributes.
-     * @param friendlyName the expected friendly name
-     * @param version the expected version
-     * @param arch the expected arch
-     * @param channelLabels the expected channel labels
-     * @param product the actual product
-     */
-    public void checkProductMatches(String friendlyName, String version, String arch,
-            SortedSet<String> channelLabels, MgrSyncProductDto product) {
-        String preamble = "Product " + product.getId() + " (" + friendlyName
-                + ", " + arch + ") ";
-        checkEquals(preamble + "friendly name", friendlyName, product.getFriendlyName());
-        checkEquals(preamble + "version", version, product.getVersion());
-        checkEquals(preamble + "arch", arch, product.getArch());
-        SortedSet<String> actualChannelLabels = new TreeSet<String>();
-        for (XMLChannel channel : product.getChannels()) {
-            String actualLabel = channel.getLabel();
-            // mandatory channels have a trailing * in the CSV file
-            if (!channel.isOptional()) {
-                actualLabel += "*";
-            }
-            actualChannelLabels.add(actualLabel);
-        }
-
-        for (String string : channelLabels) {
-            if (!actualChannelLabels.contains(string)) {
-                failures.add(preamble + " does not have channel " + string);
-            }
-        }
-
-        for (String string : actualChannelLabels) {
-            if (!channelLabels.contains(string)) {
-                failures.add(preamble + " has unexpected channel " + string);
-            }
-        }
-    }
-
-    /**
-     * Checks that two strings are equal, and adds to a messaget failures if they are not.
-     *
-     * @param message the message
-     * @param expected the expected string
-     * @param actual the actual string
-     */
-    private void checkEquals(String message, String expected, String actual) {
-        if (!expected.equals(actual)) {
-            failures.add(message + ": expected \"" +
-                    expected + "\", actual \"" + actual + "\"");
         }
     }
 }
