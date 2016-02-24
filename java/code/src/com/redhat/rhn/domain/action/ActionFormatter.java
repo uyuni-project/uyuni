@@ -182,7 +182,8 @@ public class ActionFormatter {
         retval.append("</br>");
         if (!(server instanceof MinionServer)) {
             if (sa.getPickupTime() != null) {
-                retval.append(ls.getMessage("system.event.details.pickup", sa.getPickupTime()));
+                retval.append(ls.getMessage("system.event.details.pickup",
+                        sa.getPickupTime()));
             }
             else {
                 retval.append(ls.getMessage("system.event.details.notPickedUp"));
