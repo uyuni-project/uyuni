@@ -156,14 +156,12 @@ public enum SaltServerActionService {
                             }
                         }
 
-                        // Set the pickup time or let the action fail in case of no success
+                        // Let the action fail in case of no success
                         if (success) {
                             if (LOG.isDebugEnabled()) {
                                 LOG.debug("Successfully scheduled action for minion: " +
                                         targetMinion.getMinionId());
                             }
-                            serverAction.setPickupTime(new Date());
-                            serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
                         }
                         else {
                             LOG.warn("Failed to schedule action for minion: " +
