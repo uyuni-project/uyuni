@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.controllers;
 
+import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.Server;
@@ -24,16 +26,15 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import com.suse.salt.netapi.datatypes.target.Grains;
 import org.apache.log4j.Logger;
 
-import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.webui.utils.RepoFileUtils;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPkgLatest;
@@ -42,15 +43,15 @@ import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.gson.JSONPackageState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
-import com.suse.salt.netapi.calls.LocalAsyncResult;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -68,7 +69,6 @@ public class StatesAPI {
     private static final Logger LOG = Logger.getLogger(StatesAPI.class);
 
     private static final Gson GSON = new GsonBuilder().create();
-    private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
     public static final String SALT_PACKAGE_FILES = "packages";
 
     private StatesAPI() { }
@@ -161,21 +161,24 @@ public class StatesAPI {
     }
 
     /**
-     * Apply a list of states to a minion and return the results as JSON.
+     * Schedule an {@link ApplyStatesAction} and return its id.
      *
      * @param request the request object
      * @param response the response object
-     * @return JSON results of state application
+     * @param user the user
+     * @return the id of the scheduled action
      */
-    public static Object apply(Request request, Response response) {
+    public static Object apply(Request request, Response response, User user) {
         JSONServerApplyStates json = GSON.fromJson(request.body(),
                 JSONServerApplyStates.class);
-        Server server = ServerFactory.lookupById(json.getServerId());
-        LocalAsyncResult<Map<String, Object>> results = SALT_SERVICE.applyState(
-                new Grains("machine_id", server.getDigitalServerId()), json.getStates());
+
+        // Schedule an ApplyStatesAction to happen right now
+        ApplyStatesAction action = ActionManager.scheduleApplyState(user,
+                Arrays.asList(json.getServerId()), json.getStates(), new Date());
+        MessageQueue.publish(new ActionScheduledEventMessage(action));
 
         response.type("application/json");
-        return GSON.toJson(results.getJid());
+        return GSON.toJson(action.getId());
     }
 
     /**
