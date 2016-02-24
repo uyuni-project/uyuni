@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Schedule;
@@ -37,6 +36,7 @@ import org.apache.log4j.Logger;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -57,6 +58,91 @@ public enum SaltServerActionService {
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
+
+    /**
+     *
+     * @param actionIn the action
+     * @param call the call
+     * @param minions minions to target
+     * @return a map containing all minions partitioned by success
+     */
+    private Map<Boolean, List<MinionServer>> schedule(Action actionIn,
+            LocalCall<?> call, List<MinionServer> minions) {
+        ZonedDateTime earliestAction = actionIn.getEarliestAction().toInstant()
+                .atZone(ZoneId.systemDefault());
+        Map<String, Long> metadata = new HashMap<>();
+        metadata.put("suma-action-id", actionIn.getId());
+        Map<String, MinionServer> minionsById = minions
+                .stream()
+                .collect(Collectors.toMap(MinionServer::getMinionId, Function.identity()));
+        Target<?> target = new MinionList(minionsById.keySet()
+                .stream().collect(Collectors.toList()));
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Scheduling action for: " + target.getTarget());
+        }
+
+        try {
+            ZonedDateTime now = ZonedDateTime.now();
+            if (earliestAction.isBefore(now) || earliestAction.equals(now)) {
+                LOG.debug("Action will be executed directly using callAsync()");
+                List<String> results = SaltAPIService.INSTANCE
+                        .callAsync(call, target, metadata)
+                        .getMinions();
+                return minions.stream()
+                        .collect(Collectors.partitioningBy(minion ->
+                                results.contains(minion.getMinionId())
+                        ));
+            }
+            else {
+                LOG.debug("Action will be scheduled for later using schedule()");
+                Map<String, Schedule.Result> results = SaltAPIService.INSTANCE
+                        .schedule("scheduled-action-" + actionIn.getId(), call, target,
+                                earliestAction, metadata);
+                return minions.stream()
+                        .collect(Collectors.partitioningBy(minion ->
+                                Optional.ofNullable(results.get(minion.getMinionId()))
+                                        .map(Schedule.Result::getResult)
+                                        .orElse(false)
+                        ));
+            }
+        }
+        catch (SaltException ex) {
+            LOG.debug("Failed to schedule action: " + ex.getMessage());
+            Map<Boolean, List<MinionServer>> result = new HashMap<>();
+            result.put(true, Collections.emptyList());
+            result.put(false, minions);
+            return result;
+        }
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> callsForAction(Action actionIn,
+            List<MinionServer> minions) {
+        if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
+            return errataAction(minions, (ErrataAction) actionIn);
+        }
+        else if (actionIn.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+            return rebootAction(minions);
+        }
+        else if (actionIn.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
+            ScriptAction scriptAction = (ScriptAction) actionIn;
+            String script = scriptAction.getScriptActionDetails().getScriptContents();
+            return remoteCommandAction(minions, script);
+        }
+        else {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Action type " + actionIn.getActionType().getName() +
+                        " is not supported with Salt");
+            }
+            return Collections.emptyMap();
+        }
+    }
+
+    private Optional<ServerAction> serverActionFor(Action actionIn, MinionServer minion) {
+        return actionIn.getServerActions().stream()
+                .filter(sa -> sa.getServerId().equals(minion.getId()))
+                .findFirst();
+    }
 
     /**
      * Execute a given {@link Action} via salt.
@@ -75,126 +161,36 @@ public enum SaltServerActionService {
                 )
                 .orElse(new LinkedList<>());
 
-        Map<LocalCall<?>, List<MinionServer>> allCalls;
-        if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
-            allCalls = errataAction(minions, (ErrataAction) actionIn);
-        }
-        else if (actionIn.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
-            allCalls = rebootAction(minions);
-        }
-        else if (actionIn.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            ScriptAction scriptAction = (ScriptAction) actionIn;
-            String script = scriptAction.getScriptActionDetails().getScriptContents();
-            allCalls = remoteCommandAction(minions, script);
-        }
-        else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Action type " + actionIn.getActionType().getName() +
-                        " is not supported with Salt");
-            }
-            return;
-        }
-
         // now prepare each call
-        for (Map.Entry<LocalCall<?>, List<MinionServer>> entry : allCalls.entrySet()) {
-            LocalCall<?> call = entry.getKey();
-            List<MinionServer> targetMinions = entry.getValue();
-            Target<?> target = new MinionList(targetMinions.stream()
-                    .map(MinionServer::getMinionId)
-                    .collect(Collectors.toList()));
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Scheduling action for: " + target.getTarget());
-            }
+        for (Map.Entry<LocalCall<?>, List<MinionServer>> entry :
+                callsForAction(actionIn, minions).entrySet()) {
+            final LocalCall<?> call = entry.getKey();
+            final List<MinionServer> targetMinions = entry.getValue();
 
-            ZonedDateTime earliestAction = actionIn.getEarliestAction().toInstant()
-                    .atZone(ZoneId.systemDefault());
-            Map<String, Long> metadata = new HashMap<>();
-            metadata.put("suma-action-id", actionIn.getId());
+            Map<Boolean, List<MinionServer>> results =
+                    schedule(actionIn, call, targetMinions);
 
-            try {
-                // We aim to have one of these optional result objects present
-                final Optional<Map<String, Schedule.Result>> scheduleResults;
-                final Optional<LocalAsyncResult<?>> asyncResults;
+            results.get(true).stream().forEach(minionServer -> {
+                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Successfully scheduled action for minion: " +
+                                minionServer.getMinionId());
+                    }
+                    ActionFactory.save(serverAction);
+                });
+            });
 
-                // Don't use schedule if this action should happen right now
-                ZonedDateTime now = ZonedDateTime.now();
-                if (earliestAction.isBefore(now) || earliestAction.equals(now)) {
-                    LOG.debug("Action will be executed directly using callAsync()");
-                    asyncResults = Optional.of(SaltAPIService.INSTANCE
-                            .callAsync(call, target, metadata));
-                    scheduleResults = Optional.empty();
-                }
-                else {
-                    LOG.debug("Action will be scheduled for later using schedule()");
-                    asyncResults = Optional.empty();
-                    scheduleResults = Optional.of(SaltAPIService.INSTANCE
-                            .schedule("scheduled-action-" + actionIn.getId(), call, target,
-                                    earliestAction, metadata));
-                }
-
-                // Update server actions based on the results of schedule() or callAsync()
-                for (MinionServer targetMinion : targetMinions) {
-                    Optional<ServerAction> optionalServerAction = actionIn
-                            .getServerActions().stream()
-                            .filter(sa -> sa.getServerId().equals(targetMinion.getId()))
-                            .findFirst();
-                    optionalServerAction.ifPresent(serverAction -> {
-                        boolean success = false;
-
-                        if (scheduleResults.isPresent()) {
-                            // Find schedule results for this minion and check for success
-                            Optional<Schedule.Result> result = scheduleResults.map(
-                                    results -> results.get(targetMinion.getMinionId()));
-
-                            if (result.isPresent() && result.get().getResult()) {
-                                success = true;
-                            }
-                        }
-                        else if (asyncResults.isPresent()) {
-                            LocalAsyncResult<?> result =  asyncResults.get();
-                            if (result.getMinions().contains(targetMinion.getMinionId())) {
-                                success = true;
-                            }
-                        }
-
-                        // Let the action fail in case of no success
-                        if (success) {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("Successfully scheduled action for minion: " +
-                                        targetMinion.getMinionId());
-                            }
-                        }
-                        else {
-                            LOG.warn("Failed to schedule action for minion: " +
-                                    targetMinion.getMinionId());
-                            serverAction.setCompletionTime(new Date());
-                            serverAction.setResultCode(-1L);
-                            serverAction.setResultMsg("Failed to schedule action.");
-                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                        }
-                        ActionFactory.save(serverAction);
-                    });
-                }
-            }
-            catch (SaltException saltException) {
-                // In case of exception we need to fail all minions (we don't have a result)
-                for (MinionServer targetMinion : targetMinions) {
-                    Optional<ServerAction> optionalServerAction = actionIn
-                            .getServerActions().stream()
-                            .filter(sa -> sa.getServerId().equals(targetMinion.getId()))
-                            .findFirst();
-                    optionalServerAction.ifPresent(serverAction -> {
-                        LOG.debug("Failed to schedule action for minion '" +
-                                targetMinion.getMinionId() + "': " +
-                                saltException.getMessage());
-                        serverAction.setCompletionTime(new Date());
-                        serverAction.setResultCode(-1L);
-                        serverAction.setResultMsg("Failed to schedule action.");
-                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                        ActionFactory.save(serverAction);
-                    });
-                }
-            }
+            results.get(false).stream().forEach(minionServer -> {
+                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
+                    LOG.warn("Failed to schedule action for minion: " +
+                            minionServer.getMinionId());
+                    serverAction.setCompletionTime(new Date());
+                    serverAction.setResultCode(-1L);
+                    serverAction.setResultMsg("Failed to schedule action.");
+                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                    ActionFactory.save(serverAction);
+                });
+            });
         }
     }
 
