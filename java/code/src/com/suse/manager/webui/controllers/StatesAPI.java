@@ -86,6 +86,7 @@ public class StatesAPI {
     private static final Gson GSON = new GsonBuilder().create();
     private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
     public static final String SALT_PACKAGE_FILES = "packages";
+    public static final String SALT_CUSTOM_STATES = "custom";
 
     private StatesAPI() { }
 
@@ -136,6 +137,15 @@ public class StatesAPI {
         return GSON.toJson(matching);
     }
 
+    /**
+     * Find matches among this server's current custom states as well as among the
+     * custom states of the organization and convert to JSON.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return JSON result of the API call
+     */
     public static String matchStates(Request request, Response response, User user) {
         String target = request.queryParams("target");
         String targetLowerCase = target != null ? target.toLowerCase() : "";
@@ -145,7 +155,7 @@ public class StatesAPI {
 
         // Find matches among this server's current salt states
         Set<JSONSaltState> result = new HashSet<>(); // use a set to avoid duplicates
-        Optional<Set<SaltState>> saltStates = StateFactory.latestSaltStates(server);
+        Optional<Set<SaltState>> saltStates = StateFactory.latestCustomSaltStates(server);
         result.addAll(saltStates.orElseGet(Collections::<SaltState>emptySet).stream()
                 .filter(s -> s.getStateName().toLowerCase().contains(targetLowerCase))
                 .map(s -> new JSONSaltState(s.getStateName(), true))
@@ -160,8 +170,19 @@ public class StatesAPI {
         return json(response, result);
     }
 
-    public static String saveStatesAssignment(Request request, Response response, User user) {
-        JSONServerSaltStates json = GSON.fromJson(request.body(), JSONServerSaltStates.class);
+    /**
+     * Save a new state revision for a server based on the latest existing revision and an
+     * incoming list of changed custom states assignments.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return null to make spark happy
+     */
+    public static String saveStatesAssignment(Request request, Response response,
+                                              User user) {
+        JSONServerSaltStates json = GSON.fromJson(request.body(),
+                JSONServerSaltStates.class);
         Server server = ServerFactory.lookupById(json.getServerId());
         assertUserHasPermissionsOnServer(server, user);
 
@@ -177,7 +198,7 @@ public class StatesAPI {
                 .filter(s -> !s.isAssigned()).map(s -> s.getName())
                 .collect(Collectors.toSet());
 
-        StateFactory.latestSaltStates(server).ifPresent(oldStates -> {
+        StateFactory.latestCustomSaltStates(server).ifPresent(oldStates -> {
             for (SaltState oldState : oldStates) {
                 if (!toRemove.contains(oldState.getStateName())) {
                     newRevision.getAssignedStates().add(oldState);
@@ -193,6 +214,7 @@ public class StatesAPI {
 
         try {
             StateFactory.save(newRevision);
+            generateServerCustomState(newRevision);
             return json(response, newRevision.getAssignedStates()
                     .stream().map(s -> new JSONSaltState(s.getStateName(), true))
                     .collect(Collectors.toSet()));
@@ -203,11 +225,39 @@ public class StatesAPI {
         }
     }
 
+    private static void generateServerCustomState(ServerStateRevision stateRevision) {
+        Server server = stateRevision.getServer();
+        LOG.debug("Generating custom state SLS file for: " + server.getId());
+
+        Set<String> stateNames = stateRevision.getAssignedStates()
+                .stream().map(s -> s.getStateName())
+                .collect(Collectors.toSet());
+
+        stateNames = SaltAPIService.INSTANCE.resolveOrgStates(
+                server.getOrg().getId(), stateNames);
+
+        try {
+            Path baseDir = Paths.get(
+                    RepoFileUtils.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
+            Files.createDirectories(baseDir);
+            Path filePath = baseDir.resolve(
+                    "custom_" + server.getDigitalServerId() + ".sls");
+            SaltStateGenerator saltStateGenerator =
+                    new SaltStateGenerator(filePath.toFile());
+            saltStateGenerator.generate(new SaltCustomState(server.getId(), stateNames));
+        }
+        catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+        }
+
+    }
+
     private static void assertUserHasPermissionsOnServer(Server server, User user) {
         if (!server.getOrg().getId().equals(user.getOrg().getId())) {
             // TODO throw a custom exception and return http 403 - forbidden
             // TODO any other checks needed here ?
-            throw new RuntimeException("User is trying to change a server from a different org");
+            throw new RuntimeException(
+                    "User is trying to change a server from a different org");
         }
     }
 
@@ -275,27 +325,27 @@ public class StatesAPI {
         return GSON.toJson(action.getId());
     }
 
-    public static Object scheduleApply(Request request, Response response, User user) {
-        JSONServerApplyStates json = GSON.fromJson(request.body(),
-                JSONServerApplyStates.class);
-
-        Server server = ServerFactory.lookupById(json.getServerId());
-        Optional<Set<SaltState>> saltStates = StateFactory.latestSaltStates(server);
-        Set<String> stateNames = saltStates.map( states -> states.stream()
-                .map(s -> s.getStateName())
-                .collect(Collectors.toSet()))
-                .orElse(Collections.emptySet());
-
-        stateNames = SaltAPIService.INSTANCE.resolveOrgStates(user.getOrg().getId(), stateNames);
-
-        ApplyStatesEventMessage applyStatesEventMessage = new ApplyStatesEventMessage(
-                json.getServerId(), user.getId(), new ArrayList<>(stateNames));
-        MessageQueue.publish(applyStatesEventMessage);
-
-        // TODO schedule ApplyStatesEventMessageAction here to get the id
-        // TODO See https://github.com/SUSE/spacewalk/blob/Manager-salt-actions/java/code/src/com/suse/manager/reactor/messaging/ApplyStatesEventMessageAction.java#L61
-        return json(response, new JSONActionScheduled(-1));
-    }
+//    public static Object scheduleApply(Request request, Response response, User user) {
+//        JSONServerApplyStates json = GSON.fromJson(request.body(),
+//                JSONServerApplyStates.class);
+//
+//        Server server = ServerFactory.lookupById(json.getServerId());
+//        Optional<Set<SaltState>> saltStates = StateFactory.latestCustomSaltStates(server);
+//        Set<String> stateNames = saltStates.map( states -> states.stream()
+//                .map(s -> s.getStateName())
+//                .collect(Collectors.toSet()))
+//                .orElse(Collections.emptySet());
+//
+//        stateNames = SaltAPIService.INSTANCE.resolveOrgStates(user.getOrg().getId(), stateNames);
+//
+//        ApplyStatesEventMessage applyStatesEventMessage = new ApplyStatesEventMessage(
+//                json.getServerId(), user.getId(), new ArrayList<>(stateNames));
+//        MessageQueue.publish(applyStatesEventMessage);
+//
+//        // TODO schedule ApplyStatesEventMessageAction here to get the id
+//        // TODO See https://github.com/SUSE/spacewalk/blob/Manager-salt-actions/java/code/src/com/suse/manager/reactor/messaging/ApplyStatesEventMessageAction.java#L61
+//        return json(response, new JSONActionScheduled(-1));
+//    }
 
     /**
      * Get the current set of package states for a given server as {@link JSONPackageState}
@@ -336,7 +386,7 @@ public class StatesAPI {
      * @param server the server
      */
     public static void generateServerPackageState(Server server) {
-        LOG.debug("Generating SLS file for: " + server.getId());
+        LOG.debug("Generating package state SLS file for: " + server.getId());
         Set<PackageState> packageStates = StateFactory
                 .latestPackageStates(server)
                 .orElseGet(HashSet::new);

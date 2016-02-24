@@ -118,8 +118,9 @@ public class SaltStateStorageManager {
             saltState.setOrg(OrgFactory.lookupById(orgId));
             saltState.setStateName(stateName);
             StateFactory.save(saltState);
-        } else {
-            SaltState saltState = StateFactory.getSaltStateByName(oldName);
+        }
+        else {
+            SaltState saltState = StateFactory.getCustomSaltStateByName(oldName);
             saltState.setStateName(stateName);
             StateFactory.save(saltState);
         }
@@ -153,8 +154,10 @@ public class SaltStateStorageManager {
      * @return the content of the file as a string if the file exists
      * @throws IOException in case of an IO error
      */
-    public Optional<String> getContent(long orgId, String name) throws IOException {
-        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, defaultExtension(name));
+    public Optional<String> getContent(long orgId, String name)
+            throws IOException {
+        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId,
+                defaultExtension(name));
         File slsFile = slsPath.toFile();
         if (!slsFile.exists()) {
             return Optional.empty();
@@ -186,10 +189,16 @@ public class SaltStateStorageManager {
      * @return true if the file exists, false otherwise
      */
     public boolean exists(long orgId, String name) {
-        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, defaultExtension(name));
+        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId,
+                defaultExtension(name));
         return slsPath.toFile().exists();
     }
 
+    /**
+     * Get the Salt namespace of the organization.
+     * @param orgId the organization id
+     * @return the Salt namespace
+     */
     public String getOrgNamespace(long orgId) {
         return "manager_org_" + orgId;
     }
