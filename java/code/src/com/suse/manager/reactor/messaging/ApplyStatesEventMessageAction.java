@@ -58,7 +58,7 @@ public class ApplyStatesEventMessageAction extends AbstractDatabaseAction {
                     UserFactory.lookupById(event.getUserId()) : null;
 
             // Schedule a "state.apply" action to happen right now
-            ApplyStatesAction action = ActionManager.scheduleApplyState(
+            ApplyStatesAction action = ActionManager.scheduleApplyStates(
                     scheduler,
                     Arrays.asList(server.getId()),
                     applyStatesEvent.getStateNames(),

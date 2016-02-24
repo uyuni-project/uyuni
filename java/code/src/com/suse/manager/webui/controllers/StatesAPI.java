@@ -173,7 +173,7 @@ public class StatesAPI {
                 JSONServerApplyStates.class);
 
         // Schedule an ApplyStatesAction to happen right now
-        ApplyStatesAction action = ActionManager.scheduleApplyState(user,
+        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
                 Arrays.asList(json.getServerId()), json.getStates(), new Date());
         MessageQueue.publish(new ActionScheduledEventMessage(action));
 
