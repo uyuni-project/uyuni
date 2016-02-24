@@ -139,23 +139,19 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         @SuppressWarnings("unchecked")
         Map<String, Object> eventDataReturnMap = (Map<String, Object>) eventData
                 .getOrDefault("return", Collections.EMPTY_MAP);
-        if (serverAction.getParentAction().getActionType().equals(
-                ActionFactory.TYPE_SCRIPT_RUN)) {
-            ScriptRunAction scriptAction = (ScriptRunAction) serverAction.getParentAction();
+        Action action = serverAction.getParentAction();
+        if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
+            ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = new ScriptResult();
             scriptAction.getScriptActionDetails().addResult(scriptResult);
             scriptResult.setActionScriptId(scriptAction.getScriptActionDetails().getId());
             scriptResult.setServerId(serverAction.getServerId());
             scriptResult.setReturnCode(retcode);
 
-            // Start date should be earliest action in case a schedule was used
-            if (eventData.containsKey("schedule")) {
-                scriptResult.setStartDate(
-                        serverAction.getParentAction().getEarliestAction());
-            }
-            else {
-                scriptResult.setStartDate(serverAction.getPickupTime());
-            }
+            // Start and end dates
+            Date startDate = action.getCreated().before(action.getEarliestAction()) ?
+                    action.getEarliestAction() : action.getCreated();
+            scriptResult.setStartDate(startDate);
             scriptResult.setStopDate(serverAction.getCompletionTime());
 
             // Depending on the status show stdout or stderr in the output
