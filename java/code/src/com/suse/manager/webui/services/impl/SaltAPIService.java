@@ -465,7 +465,8 @@ public enum SaltAPIService implements SaltService {
                         .callSync(SALT_CLIENT, timezoneTarget,
                                 SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
                 return result.entrySet().stream();
-            } catch (SaltException e) {
+            }
+            catch (SaltException e) {
                 LOG.error(String.format("Error scheduling actions: %s", e.getMessage()));
                 return Stream.empty();
             }

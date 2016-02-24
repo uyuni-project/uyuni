@@ -143,8 +143,8 @@ public enum SaltServerActionService {
 
                         if (scheduleResults.isPresent()) {
                             // Find schedule results for this minion and check for success
-                            Optional<Schedule.Result> result = scheduleResults
-                                    .map(results -> results.get(targetMinion.getMinionId()));
+                            Optional<Schedule.Result> result = scheduleResults.map(
+                                    results -> results.get(targetMinion.getMinionId()));
 
                             if (result.isPresent() && result.get().getResult()) {
                                 success = true;
