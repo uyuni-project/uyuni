@@ -1880,7 +1880,7 @@ public class ActionManager extends BaseManager {
      * @param earliest action will not be executed before this date
      * @return the action object
      */
-    public static ApplyStatesAction scheduleApplyState(User scheduler, List<Long> sids,
+    public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids,
             List<String> stateNames, Date earliest) {
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory
                 .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);

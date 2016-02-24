@@ -40,7 +40,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
     public void testScheduleApplyStates() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
-        ApplyStatesAction action = ActionManager.scheduleApplyState(
+        ApplyStatesAction action = ActionManager.scheduleApplyStates(
                 user,
                 Arrays.asList(server.getId()),
                 Arrays.asList(ApplyStatesEventMessage.CHANNELS),
