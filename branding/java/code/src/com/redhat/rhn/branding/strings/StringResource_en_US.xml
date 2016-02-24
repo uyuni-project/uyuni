@@ -2566,8 +2566,8 @@ You may grant provisioning entitlements _here_.
         </context-group>
       </trans-unit>
       <!-- Salt -->
-      <trans-unit id="Salt Master">
-          <source>Salt Master</source>
+      <trans-unit id="Salt">
+          <source>Salt</source>
       </trans-unit>
       <trans-unit id="Onboarding">
         <source>Onboarding</source>
