@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 SUSE
+ * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -50,10 +50,10 @@ public class ApplyStatesActionDetails extends ActionChild {
     }
 
     /**
-     * @param actionId the action id to set
+     * @param actionIdIn the action id to set
      */
-    public void setActionId(long actionId) {
-        this.actionId = actionId;
+    public void setActionId(long actionIdIn) {
+        this.actionId = actionIdIn;
     }
 
     /**
@@ -64,7 +64,7 @@ public class ApplyStatesActionDetails extends ActionChild {
     }
 
     /**
-     * @param states the states to set
+     * @param statesIn the states to set
      */
     public void setStates(String statesIn) {
         this.states = statesIn;
@@ -78,7 +78,7 @@ public class ApplyStatesActionDetails extends ActionChild {
     }
 
     /**
-     * @param results the results to set
+     * @param resultsIn the results to set
      */
     public void setResults(Set<ApplyStatesResult> resultsIn) {
         this.results = resultsIn;
