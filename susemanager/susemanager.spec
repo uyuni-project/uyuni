@@ -7,7 +7,7 @@ License:        GPLv2
 URL:            http://www.suse.com
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-#BuildArch:      noarch - not noarch because of *ycp files
+#BuildArch:      noarch - not noarch because of ifarch usage!!!!
 BuildRequires:  python-devel
 
 # check section
@@ -21,7 +21,16 @@ BuildRequires:  pyxml
 
 PreReq:         %fillup_prereq %insserv_prereq atftp
 Requires:       openslp-server
-Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
+Requires:       spacewalk-setup
+Requires:       spacewalk-admin
+Requires:       cobbler
+%ifarch %ix86 x86_64
+Requires:       syslinux
+%endif
+%ifarch s390x
+Requires:       syslinux-x86_64
+%endif
+Requires:       spacewalk-schema
 Requires:       rsync less
 Requires:       susemanager-tools
 # migration.sh need either sqlplus or psql
