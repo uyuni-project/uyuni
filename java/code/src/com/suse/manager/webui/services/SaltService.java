@@ -223,10 +223,10 @@ public interface SaltService {
      * @param target the target
      * @param scheduleDate schedule date
      * @param metadata metadata to pass to the salt job
-     * @return the result of the schedule call, grouped by timezone
+     * @return the result of the schedule call
      * @throws SaltException in case there is an error scheduling the job
      */
-    Map<String, Map<String, Schedule.Result>> schedule(String name, LocalCall<?> call,
+    Map<String, Schedule.Result> schedule(String name, LocalCall<?> call,
             Target<?> target, ZonedDateTime scheduleDate, Map<String, ?> metadata)
             throws SaltException;
 

@@ -113,7 +113,7 @@ public enum SaltServerActionService {
 
             try {
                 // We aim to have one of these optional result objects present
-                final Optional<Map<String, Map<String, Schedule.Result>>> scheduleResults;
+                final Optional<Map<String, Schedule.Result>> scheduleResults;
                 final Optional<LocalAsyncResult<?>> asyncResults;
 
                 // Don't use schedule if this action should happen right now
@@ -144,11 +144,7 @@ public enum SaltServerActionService {
                         if (scheduleResults.isPresent()) {
                             // Find schedule results for this minion and check for success
                             Optional<Schedule.Result> result = scheduleResults
-                                    .get().values().stream()
-                                    // Filter for the offset group containing this minion
-                                    .filter(o -> o.containsKey(targetMinion.getMinionId()))
-                                    .findFirst()
-                                    .map(o -> o.get(targetMinion.getMinionId()));
+                                    .map(results -> results.get(targetMinion.getMinionId()));
 
                             if (result.isPresent() && result.get().getResult()) {
                                 success = true;
