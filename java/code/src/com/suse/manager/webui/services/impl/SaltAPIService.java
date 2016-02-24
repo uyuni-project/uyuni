@@ -19,10 +19,12 @@ import com.google.gson.GsonBuilder;
 
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
+
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltStateStorageManager;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.LocalCallWithMetadata;
+import com.suse.manager.webui.utils.salt.Timezone;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
@@ -50,9 +52,12 @@ import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,7 +65,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.HashSet;
+import java.util.stream.Stream;
 
 /**
  * Singleton class acting as a service layer for accessing the salt API.
@@ -69,6 +76,9 @@ public enum SaltAPIService implements SaltService {
 
     // Singleton instance of this class
     INSTANCE;
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(SaltAPIService.class);
 
     // Salt properties
     private final URI SALT_MASTER_URI = URI.create("http://localhost:9080");
@@ -123,6 +133,20 @@ public enum SaltAPIService implements SaltService {
      */
     public String getMachineId(String minionId) {
         return (String) getGrain(minionId, "machine_id");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, String> getTimezoneOffsets(Target<?> target) {
+        try {
+            Map<String, String> offsets = Timezone.getOffset().callSync(SALT_CLIENT, target,
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            return offsets;
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -417,14 +441,36 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, Schedule.Result> schedule(String name, LocalCall<?> call,
-            Target<?> target, ZonedDateTime scheduleDate, Map<String, ?> metadata)
-            throws SaltException {
-        // TODO: Convert scheduleDate into the actual timezone of the minion
-        Map<String, Schedule.Result> result = Schedule
-                .add(name, call, scheduleDate.toLocalDateTime(), metadata)
-                .callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-        return result;
+    public Map<String, Schedule.Result> schedule(String name,
+            LocalCall<?> call, Target<?> target, ZonedDateTime scheduleDate,
+            Map<String, ?> metadata) throws SaltException {
+        // Get the timezone offset for all target minions
+        Map<String, String> minionOffsets = getTimezoneOffsets(target);
+
+        // We do one schedule call per timezone: group minions by their timezone offsets
+        Map<String, List<String>> offsetMap = minionOffsets.keySet().stream()
+                .collect(Collectors.groupingBy(minionOffsets::get));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Minions grouped by timezone offsets: " + offsetMap);
+        }
+
+        // The result type: map from timezone offset to map of minion id to result
+        return offsetMap.entrySet().stream().flatMap(entry -> {
+            LocalDateTime targetScheduleDate = scheduleDate.toOffsetDateTime()
+                    .withOffsetSameInstant(ZoneOffset.of(entry.getKey())).toLocalDateTime();
+            try {
+                Target<?> timezoneTarget = new MinionList(entry.getValue());
+                Map<String, Schedule.Result> result = Schedule
+                        .add(name, call, targetScheduleDate, metadata)
+                        .callSync(SALT_CLIENT, timezoneTarget,
+                                SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+                return result.entrySet().stream();
+            }
+            catch (SaltException e) {
+                LOG.error(String.format("Error scheduling actions: %s", e.getMessage()));
+                return Stream.empty();
+            }
+        }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     /**
