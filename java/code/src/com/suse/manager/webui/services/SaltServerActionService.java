@@ -139,13 +139,14 @@ public enum SaltServerActionService {
                             .filter(sa -> sa.getServerId().equals(targetMinion.getId()))
                             .findFirst();
                     optionalServerAction.ifPresent(serverAction -> {
-                        // Figure out if we were successful on this particular minion
                         boolean success = false;
 
                         if (scheduleResults.isPresent()) {
-                            Schedule.Result result = scheduleResults.get()
-                                    .get(targetMinion.getMinionId());
-                            if (result != null && result.getResult()) {
+                            // Find schedule results for this minion and check for success
+                            Optional<Schedule.Result> result = scheduleResults.map(
+                                    results -> results.get(targetMinion.getMinionId()));
+
+                            if (result.isPresent() && result.get().getResult()) {
                                 success = true;
                             }
                         }
