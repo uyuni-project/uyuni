@@ -1871,8 +1871,8 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Schedule state application given a list of state names. If no state names are given
-     * salt will apply the highstate.
+     * Schedule state application given a list of state names. Salt will apply the highstate
+     * if no state names are given.
      *
      * @param scheduler the user who is scheduling
      * @param sids list of server ids
