@@ -77,6 +77,8 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
                                 sa.getStatus().equals(ActionFactory.STATUS_QUEUED) &&
                                 bootTime.after(sa.getParentAction().getEarliestAction())) {
                             sa.setStatus(ActionFactory.STATUS_COMPLETED);
+                            sa.setResultMsg("Reboot completed.");
+                            sa.setResultCode(0L);
                             ActionFactory.save(sa);
                             actionsChanged += 1;
                         }
