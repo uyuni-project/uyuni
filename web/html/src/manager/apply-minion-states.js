@@ -31,9 +31,10 @@ class SaltStatePopup extends React.Component {
             <textarea className="form-control" rows="20" name="content"
                 defaultValue={this.props.saltState.content} readOnly="true"/>
                 : null;
-
+      const title = this.props.saltState ?
+            t("Salt State: {0}", this.props.saltState.name) : null;
       return (<PopUp
-                title={t("Salt State")}
+                title={title}
                 className="modal-lg"
                 id="saltStatePopUp"
                 content={popUpContent}
@@ -85,17 +86,19 @@ class ApplyState extends React.Component {
 
     const request = $.ajax({
         type: "POST",
-        url: "/rhn/manager/api/states/scheduleApply",
+        url: "/rhn/manager/api/states/apply",
         data: JSON.stringify({
-            sid: serverId
+            sid: serverId,
+            states: ["custom"]
         }),
         contentType: "application/json",
         dataType: "json"
     })
     .done( data => {
         // TODO add link to even page ApplyStatesEvent
+        console.log("apply action queued:" + data)
         this.setState({
-            messages: msg('info', t('States applying has been queued.'))
+            messages: msg('info', t('Custom states apply has been scheduled.'))
         });
     });
     return Promise.resolve(request);
@@ -306,7 +309,7 @@ class ApplyState extends React.Component {
     return (
         <span>
         {messages}
-        <InnerPanel title={t("Apply States")} buttons={buttons}>
+        <InnerPanel title={t("Apply Custom States")} buttons={buttons}>
 
             <PanelRow className="input-group">
                 <TextField value={this.state.filter} placeholder={t("Search in state catalog")} onChange={this.onSearchChange} onPressEnter={this.search}/>
@@ -323,7 +326,7 @@ class ApplyState extends React.Component {
               <thead>
                 <tr>
                   <th>{t("State Name")}</th>
-                  <th>{t("Apply")}</th>
+                  <th>{t("Assign")}</th>
                 </tr>
               </thead>
               {this.tableBody()}

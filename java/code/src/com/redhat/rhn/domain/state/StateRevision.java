@@ -98,12 +98,18 @@ public class StateRevision {
         this.packageStates.add(packageState);
     }
 
+    /**
+     * @return the custom states assigned to this server
+     */
     public Set<SaltState> getAssignedStates() {
         return assignedStates;
     }
 
-    public void setAssignedStates(Set<SaltState> assignedStates) {
-        this.assignedStates = assignedStates;
+    /**
+     * @param assignedStatesIn the custom states to assign to this server
+     */
+    public void setAssignedStates(Set<SaltState> assignedStatesIn) {
+        this.assignedStates = assignedStatesIn;
     }
 
     /**

@@ -240,6 +240,8 @@ suseUpgradePath                :: suseProducts
 suseServerVirtualHostManager   :: rhnServer suseVirtualHostManager
 suseVHMConfig                  :: suseVirtualHostManager
 suseVirtualHostManager         :: web_customer suseCredentials rhnServerGroup
+suseSaltState                  :: web_customer
+suseServerAssignedStates       :: suseSaltState suseStateRevision
 web_contact                    :: web_customer
 web_contact_all                :: web_contact
 web_user_contact_permission    :: web_contact

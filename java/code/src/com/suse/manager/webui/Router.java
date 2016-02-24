@@ -72,7 +72,7 @@ public class Router implements SparkApplication {
 
         // States API
         post("/manager/api/states/apply", withUser(StatesAPI::apply));
-        post("/manager/api/states/scheduleApply", withUser(StatesAPI::scheduleApply));
+//        post("/manager/api/states/scheduleApply", withUser(StatesAPI::scheduleApply));
         get("/manager/api/states/match", withUser(StatesAPI::matchStates));
         post("/manager/api/states/save", withUser(StatesAPI::saveStatesAssignment));
         get("/manager/api/states/packages", StatesAPI::packages);
