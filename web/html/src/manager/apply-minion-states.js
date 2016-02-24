@@ -76,6 +76,13 @@ class ApplyState extends React.Component {
   }
 
   applySaltState() {
+    if (this.state.changed.size > 0) {
+        const response = confirm("There are unsaved changes. Do you want to proceed ?")
+        if (response == false) {
+            return null;
+        }
+    }
+
     const request = $.ajax({
         type: "POST",
         url: "/rhn/manager/api/states/scheduleApply",
