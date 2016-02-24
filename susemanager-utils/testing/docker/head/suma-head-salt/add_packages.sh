@@ -22,7 +22,9 @@ zypper -n in  --no-recommends util-linux-systemd \
                               python-salt-testing \
                               python-unittest2 \
                               net-tools \
-                              quilt \
                               bind-utils
+
+# required for unit tests install with recommends
+zypper -n in quilt rpm-build
 
 zypper -n in vim less
