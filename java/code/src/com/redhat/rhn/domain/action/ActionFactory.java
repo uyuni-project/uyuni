@@ -835,12 +835,6 @@ public class ActionFactory extends HibernateFactory {
             lookupActionStatusByName("Queued");
 
     /**
-     * The constant representing the Action Status PICKED_UP
-     */
-    public static final ActionStatus STATUS_PICKED_UP =
-            lookupActionStatusByName("Picked Up");
-
-    /**
      * The constant representing the Action Status COMPLETED
      */
     public static final ActionStatus STATUS_COMPLETED =

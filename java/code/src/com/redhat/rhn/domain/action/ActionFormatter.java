@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.action;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
@@ -179,13 +180,15 @@ public class ActionFormatter {
         retval.append(ls.getMessage("system.event.details.status",
             ls.getMessage("system.event.details.status" + sa.getStatus().getName())));
         retval.append("</br>");
-        if (sa.getPickupTime() != null) {
-            retval.append(ls.getMessage("system.event.details.pickup", sa.getPickupTime()));
+        if (!(server instanceof MinionServer)) {
+            if (sa.getPickupTime() != null) {
+                retval.append(ls.getMessage("system.event.details.pickup", sa.getPickupTime()));
+            }
+            else {
+                retval.append(ls.getMessage("system.event.details.notPickedUp"));
+            }
+            retval.append("</br>");
         }
-        else {
-            retval.append(ls.getMessage("system.event.details.notPickedUp"));
-        }
-        retval.append("</br>");
         if (sa.getCompletionTime() != null) {
             retval.append(ls.getMessage("system.event.details.completed",
                     sa.getCompletionTime()));
