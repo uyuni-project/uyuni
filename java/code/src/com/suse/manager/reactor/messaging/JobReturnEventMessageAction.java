@@ -18,6 +18,8 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesResult;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -137,7 +139,28 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         }
 
         Action action = serverAction.getParentAction();
-        if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
+        if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
+            ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
+            ApplyStatesResult statesResult = new ApplyStatesResult();
+            applyStatesAction.getDetails().addResult(statesResult);
+            statesResult.setActionApplyStatesId(applyStatesAction.getDetails().getId());
+            statesResult.setServerId(serverAction.getServerId());
+            statesResult.setReturnCode(retcode);
+
+            // Set the output to the result
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            statesResult.setOutput(gson.toJson(eventData.get("return")).getBytes());
+
+            // Create the result message depending on the action status
+            String message = "Successfully applied state(s): " +
+                    applyStatesAction.getDetails().getStates();
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+                message = "Failed to apply state(s): " +
+                    applyStatesAction.getDetails().getStates();
+            }
+            serverAction.setResultMsg(message);
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
             @SuppressWarnings("unchecked")
             Map<String, Object> eventDataReturnMap = (Map<String, Object>) eventData
                     .getOrDefault("return", Collections.EMPTY_MAP);
