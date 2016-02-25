@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
-import com.redhat.rhn.domain.state.SaltState;
+import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
@@ -34,14 +34,14 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.webui.utils.gson.JSONActionScheduled;
+import org.apache.http.HttpStatus;
+
 import com.suse.manager.webui.utils.gson.JSONSaltState;
 import com.suse.manager.webui.utils.gson.JSONServerSaltStates;
 import com.suse.salt.netapi.datatypes.target.Grains;
 import org.apache.log4j.Logger;
 
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.RepoFileUtils;
@@ -61,12 +61,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -159,8 +155,8 @@ public class StatesAPI {
 
         // Find matches among this server's current salt states
         Set<JSONSaltState> result = new HashSet<>(); // use a set to avoid duplicates
-        Optional<Set<SaltState>> saltStates = StateFactory.latestCustomSaltStates(server);
-        result.addAll(saltStates.orElseGet(Collections::<SaltState>emptySet).stream()
+        Optional<Set<CustomState>> saltStates = StateFactory.latestCustomSaltStates(server);
+        result.addAll(saltStates.orElseGet(Collections::<CustomState>emptySet).stream()
                 .filter(s -> s.getStateName().toLowerCase().contains(targetLowerCase))
                 .map(s -> new JSONSaltState(s.getStateName(), true))
                 .collect(Collectors.toList()));
@@ -190,11 +186,9 @@ public class StatesAPI {
         Server server = ServerFactory.lookupById(json.getServerId());
         checkUserHasPermissionsOnServer(server, user);
 
-        ServerStateRevision newRevision = new ServerStateRevision();
-        newRevision.setServer(server);
-        newRevision.setCreator(user);
-        newRevision.getPackageStates().addAll(StateFactory
-                .latestPackageStates(server).orElse(Collections.emptySet()));
+        // clone any existing package states
+        ServerStateRevision newRevision = StateRevisionService.INSTANCE
+                .cloneLatest(server, user, true, false);
 
         // Merge the latest salt states with the changes
         Set<String> toAssign = json.getSaltStates().stream()
@@ -205,23 +199,23 @@ public class StatesAPI {
                 .collect(Collectors.toSet());
 
         StateFactory.latestCustomSaltStates(server).ifPresent(oldStates -> {
-            for (SaltState oldState : oldStates) {
+            for (CustomState oldState : oldStates) {
                 if (!toRemove.contains(oldState.getStateName())) {
-                    newRevision.getAssignedStates().add(oldState);
+                    newRevision.getCustomStates().add(oldState);
                     toAssign.remove(oldState.getStateName()); // state already assigned
                 }
             }
         });
 
         for (String newStateName : toAssign) {
-            SaltState newState = StateFactory.getSaltStateByName(newStateName);
-            newRevision.getAssignedStates().add(newState);
+            CustomState newState = StateFactory.getCustomSaltStateByName(newStateName);
+            newRevision.getCustomStates().add(newState);
         }
 
         try {
             StateFactory.save(newRevision);
             generateServerCustomState(newRevision);
-            return json(response, newRevision.getAssignedStates()
+            return json(response, newRevision.getCustomStates()
                     .stream().map(s -> new JSONSaltState(s.getStateName(), true))
                     .collect(Collectors.toSet()));
         }
@@ -235,7 +229,7 @@ public class StatesAPI {
         Server server = stateRevision.getServer();
         LOG.debug("Generating custom state SLS file for: " + server.getId());
 
-        Set<String> stateNames = stateRevision.getAssignedStates()
+        Set<String> stateNames = stateRevision.getCustomStates()
                 .stream().map(s -> s.getStateName())
                 .collect(Collectors.toSet());
 
@@ -282,9 +276,8 @@ public class StatesAPI {
         checkUserHasPermissionsOnServer(server, user);
 
         // Create a new state revision for this server
-        ServerStateRevision state = new ServerStateRevision();
-        state.setServer(server);
-        state.setCreator(user);
+        ServerStateRevision state = StateRevisionService.INSTANCE
+                .cloneLatest(server, user, false, true);
 
         // Merge the latest package states with the changes (converted to JSON objects)
         json.getPackageStates().addAll(latestPackageStatesJSON(server));
@@ -295,10 +288,6 @@ public class StatesAPI {
                      s.setStateRevision(state);
                      state.addPackageState(s);
                  }));
-
-        state.getAssignedStates().addAll(
-                StateFactory.latestCustomSaltStates(server)
-                        .orElse(Collections.emptySet()));
 
         try {
             StateFactory.save(state);
@@ -312,26 +301,23 @@ public class StatesAPI {
     }
 
     /**
-     * Schedule an {@link ApplyStatesAction} and return its id.
+     * Apply a list of states to a minion and return the results as JSON.
      *
      * @param request the request object
      * @param response the response object
-     * @param user the user
-     * @return the id of the scheduled action
+     * @param user the current user
+     * @return JSON results of state application
      */
     public static Object apply(Request request, Response response, User user) {
         JSONServerApplyStates json = GSON.fromJson(request.body(),
                 JSONServerApplyStates.class);
         Server server = ServerFactory.lookupById(json.getServerId());
         checkUserHasPermissionsOnServer(server, user);
-
-        // Schedule an ApplyStatesAction to happen right now
-        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                Arrays.asList(json.getServerId()), json.getStates(), new Date());
-        MessageQueue.publish(new ActionScheduledEventMessage(action));
+        LocalAsyncResult<Map<String, Object>> results = SALT_SERVICE.applyState(
+                new Grains("machine_id", server.getDigitalServerId()), json.getStates());
 
         response.type("application/json");
-        return GSON.toJson(action.getId());
+        return GSON.toJson(results.getJid());
     }
 
     /**
