@@ -185,3 +185,9 @@
 .spacewalk-icon-subscription-counting:before {
   content: "\e63b";
 }
+.spacewalk-icon-salt:before {
+  content: "\e63c";
+}
+.spacewalk-icon-salt-add:before {
+  content: "\e63c";
+}
