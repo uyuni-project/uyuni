@@ -332,4 +332,12 @@ public interface SaltService {
      * @return the content of the file if the file exists
      */
     Optional<String> getOrgStateContent(long orgId, String name);
+
+    /**
+     * Add the organization namespace to the given states.
+     * @param orgId the organization id
+     * @param states the states names
+     * @return a set of names that included the organization namespace
+     */
+    Set<String> resolveOrgStates(long orgId, Set<String> states);
 }
