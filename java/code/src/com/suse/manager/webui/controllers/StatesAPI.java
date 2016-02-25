@@ -179,8 +179,8 @@ public class StatesAPI {
      * @param user the current user
      * @return null to make spark happy
      */
-    public static String saveStatesAssignment(Request request, Response response,
-                                              User user) {
+    public static String saveCustomStates(Request request, Response response,
+                                          User user) {
         JSONServerSaltStates json = GSON.fromJson(request.body(),
                 JSONServerSaltStates.class);
         Server server = ServerFactory.lookupById(json.getServerId());
