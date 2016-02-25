@@ -2,7 +2,7 @@
 
 const React = require("react");
 const Buttons = require("../components/buttons");
-const Panels = require("../components/panels");
+const Panels = require("../components/panel");
 const Fields = require("../components/fields");
 const PopUp = require("../components/popup").PopUp;
 const Messages = require("../components/messages").Messages;
