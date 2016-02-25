@@ -655,17 +655,12 @@ public enum SaltAPIService implements SaltService {
     }
 
     /**
-     * Add the organization namespace to the given states
-     * @param orgId the organization id
-     * @param states the states names
-     * @return a set of names that included the organization namespace
+     * {@inheritDoc}
      */
     public Set<String> resolveOrgStates(long orgId, Set<String> states) {
-        // TODO check if states actually exist ?
-        // TODO preprend namespace only if it does not already exist?
         return states.stream().map(state -> storageManager
                 .getOrgNamespace(orgId) + "." + state)
                 .collect(Collectors.toSet());
-
     }
+
 }
