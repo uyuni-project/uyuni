@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.action.salt;
 
 import com.redhat.rhn.domain.action.ActionChild;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -82,5 +83,18 @@ public class ApplyStatesActionDetails extends ActionChild {
      */
     public void setResults(Set<ApplyStatesResult> resultsIn) {
         this.results = resultsIn;
+    }
+
+    /**
+     * Add {@link ApplyStatesResult} to the results set.
+     *
+     * @param resultIn ApplyStatesResult to add to the set
+     */
+    public void addResult(ApplyStatesResult resultIn) {
+        if (results == null) {
+            results = new HashSet<ApplyStatesResult>();
+        }
+        resultIn.setParentScriptActionDetails(this);
+        results.add(resultIn);
     }
 }
