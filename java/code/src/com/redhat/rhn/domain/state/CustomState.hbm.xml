@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.state.SaltState" table="suseSaltState">
+    <class name="com.redhat.rhn.domain.state.CustomState" table="suseCustomState">
         <id name="id" type="long" column="id">
             <generator class="sequence">
-                <param name="sequence">suse_salt_state_id_seq</param>
+                <param name="sequence">suse_custom_state_id_seq</param>
             </generator>
         </id>
         <properties name="suse_salt_state_name_org_uq" unique="true">

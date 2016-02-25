@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.org.Org;
 /**
  * A Salt sls file from the state catalog of an organization.
  */
-public class SaltState {
+public class CustomState {
 
     private Long id;
     private Org org;
