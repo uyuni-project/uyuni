@@ -20,11 +20,10 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
-import com.redhat.rhn.domain.state.SaltState;
+import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.Optional;
 import java.util.Set;
@@ -98,16 +97,16 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         serverState.setServer(server);
         serverState.setCreator(user);
 
-        SaltState state1 = new SaltState();
+        CustomState state1 = new CustomState();
         state1.setOrg(user.getOrg());
         state1.setStateName("foo");
 
-        SaltState state2 = new SaltState();
+        CustomState state2 = new CustomState();
         state2.setOrg(user.getOrg());
         state2.setStateName("bar");
 
-        serverState.getAssignedStates().add(state1);
-        serverState.getAssignedStates().add(state2);
+        serverState.getCustomStates().add(state1);
+        serverState.getCustomStates().add(state2);
 
         StateFactory.save(serverState);
         clearFlush();
@@ -117,15 +116,15 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(state2.getId());
 
         serverState = (ServerStateRevision) StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
-        state1 = (SaltState)StateFactory.getSession().get(SaltState.class, state1.getId());
-        state2 = (SaltState)StateFactory.getSession().get(SaltState.class, state2.getId());
+        state1 = (CustomState)StateFactory.getSession().get(CustomState.class, state1.getId());
+        state2 = (CustomState)StateFactory.getSession().get(CustomState.class, state2.getId());
 
         assertNotNull(serverState);
         assertNotNull(state1);
         assertNotNull(state2);
-        assertEquals(2, serverState.getAssignedStates().size());
-        assertTrue(serverState.getAssignedStates().contains(state1));
-        assertTrue(serverState.getAssignedStates().contains(state2));
+        assertEquals(2, serverState.getCustomStates().size());
+        assertTrue(serverState.getCustomStates().contains(state1));
+        assertTrue(serverState.getCustomStates().contains(state2));
     }
 
     /**
@@ -138,35 +137,35 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         serverState.setServer(server);
         serverState.setCreator(user);
 
-        SaltState state1 = new SaltState();
+        CustomState state1 = new CustomState();
         state1.setOrg(user.getOrg());
         state1.setStateName("foo");
 
-        SaltState state2 = new SaltState();
+        CustomState state2 = new CustomState();
         state2.setOrg(user.getOrg());
         state2.setStateName("bar");
 
-        serverState.getAssignedStates().add(state1);
-        serverState.getAssignedStates().add(state2);
+        serverState.getCustomStates().add(state1);
+        serverState.getCustomStates().add(state2);
 
         StateFactory.save(serverState);
         clearFlush();
 
         serverState = (ServerStateRevision) StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
-        state1 = (SaltState)StateFactory.getSession().get(SaltState.class, state1.getId());
-        state2 = (SaltState)StateFactory.getSession().get(SaltState.class, state2.getId());
+        state1 = (CustomState)StateFactory.getSession().get(CustomState.class, state1.getId());
+        state2 = (CustomState)StateFactory.getSession().get(CustomState.class, state2.getId());
 
-        serverState.getAssignedStates().remove(state1);
-        assertEquals(1, serverState.getAssignedStates().size());
+        serverState.getCustomStates().remove(state1);
+        assertEquals(1, serverState.getCustomStates().size());
 
         StateFactory.save(serverState);
         clearFlush();
 
         serverState = (ServerStateRevision) StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
-        state2 = (SaltState)StateFactory.getSession().get(SaltState.class, state2.getId());
+        state2 = (CustomState)StateFactory.getSession().get(CustomState.class, state2.getId());
 
-        assertEquals(1, serverState.getAssignedStates().size());
-        assertTrue(serverState.getAssignedStates().contains(state2));
+        assertEquals(1, serverState.getCustomStates().size());
+        assertTrue(serverState.getCustomStates().contains(state2));
     }
 
     private void clearFlush() {

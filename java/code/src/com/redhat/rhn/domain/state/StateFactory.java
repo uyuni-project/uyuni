@@ -47,11 +47,11 @@ public class StateFactory extends HibernateFactory {
     }
 
     /**
-     * Save a {@link SaltState}.
-     * @param saltState the salt state to save
+     * Save a {@link CustomState}.
+     * @param customState the salt state to save
      */
-    public static void save(SaltState saltState) {
-        singleton.saveObject(saltState);
+    public static void save(CustomState customState) {
+        singleton.saveObject(customState);
     }
 
     /**
@@ -77,14 +77,14 @@ public class StateFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup the latest set of custom {@link SaltState} objects for a given server.
+     * Lookup the latest set of custom {@link CustomState} objects for a given server.
      *
      * @param server the server
      * @return the latest custom states for this server
      */
-    public static Optional<Set<SaltState>> latestCustomSaltStates(Server server) {
+    public static Optional<Set<CustomState>> latestCustomSaltStates(Server server) {
         ServerStateRevision revision = latestRevision(server);
-        return Optional.ofNullable(revision).map(ServerStateRevision::getAssignedStates);
+        return Optional.ofNullable(revision).map(ServerStateRevision::getCustomStates);
     }
 
     /**
@@ -96,12 +96,12 @@ public class StateFactory extends HibernateFactory {
     }
 
     /**
-     * Get a {@link SaltState} object from the db by name
+     * Get a {@link CustomState} object from the db by name
      * @param name the name of the state to get
-     * @return a {@link SaltState} object
+     * @return a {@link CustomState} object
      */
-    public static SaltState getCustomSaltStateByName(String name) {
-        return (SaltState)getSession().createCriteria(SaltState.class)
+    public static CustomState getCustomSaltStateByName(String name) {
+        return (CustomState)getSession().createCriteria(CustomState.class)
                 .add(Restrictions.eq("stateName", name))
                 .uniqueResult();
     }
