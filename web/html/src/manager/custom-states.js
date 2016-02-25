@@ -95,10 +95,11 @@ class ApplyState extends React.Component {
         dataType: "json"
     })
     .done( data => {
-        // TODO add link to even page ApplyStatesEvent
         console.log("apply action queued:" + data)
         this.setState({
-            messages: msg('info', t('Custom states apply has been scheduled.'))
+            messages: msg('info', <span>{t("Applying the custom states has been ")}
+                <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
+            </span>)
         });
     });
     return Promise.resolve(request);
