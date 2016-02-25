@@ -148,6 +148,7 @@ begin
         delete from rhnServerAction where server_id = server_id_in;
         delete from rhnServerActionPackageResult where server_id = server_id_in;
         delete from rhnServerActionScriptResult where server_id = server_id_in;
+        delete from rhnServerActionStatesResult where server_id = server_id_in;
         delete from rhnServerActionVerifyResult where server_id = server_id_in;
         delete from rhnServerActionVerifyMissing where server_id = server_id_in;
         -- counts are handled above.  this should be a delete_ function.
