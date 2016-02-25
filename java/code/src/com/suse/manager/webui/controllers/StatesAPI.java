@@ -291,7 +291,9 @@ public class StatesAPI {
                      state.addPackageState(s);
                  }));
 
-        // TODO add latest assigned salt states
+        state.getAssignedStates().addAll(
+                StateFactory.latestCustomSaltStates(server)
+                        .orElse(Collections.emptySet()));
 
         try {
             StateFactory.save(state);
