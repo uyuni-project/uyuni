@@ -45,13 +45,16 @@ import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.RepoFileUtils;
+import com.suse.manager.webui.utils.SaltCustomState;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPkgLatest;
 import com.suse.manager.webui.utils.SaltPkgRemoved;
 import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.gson.JSONPackageState;
+import com.suse.manager.webui.utils.gson.JSONSaltState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
+import com.suse.manager.webui.utils.gson.JSONServerSaltStates;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 
 import java.io.IOException;
@@ -72,6 +75,7 @@ import java.util.stream.Stream;
 
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
@@ -184,11 +188,13 @@ public class StatesAPI {
         JSONServerSaltStates json = GSON.fromJson(request.body(),
                 JSONServerSaltStates.class);
         Server server = ServerFactory.lookupById(json.getServerId());
-        assertUserHasPermissionsOnServer(server, user);
+        checkUserHasPermissionsOnServer(server, user);
 
         ServerStateRevision newRevision = new ServerStateRevision();
         newRevision.setServer(server);
         newRevision.setCreator(user);
+        newRevision.getPackageStates().addAll(StateFactory
+                .latestPackageStates(server).orElse(Collections.emptySet()));
 
         // Merge the latest salt states with the changes
         Set<String> toAssign = json.getSaltStates().stream()
@@ -252,12 +258,10 @@ public class StatesAPI {
 
     }
 
-    private static void assertUserHasPermissionsOnServer(Server server, User user) {
+    private static void checkUserHasPermissionsOnServer(Server server, User user) {
         if (!server.getOrg().getId().equals(user.getOrg().getId())) {
-            // TODO throw a custom exception and return http 403 - forbidden
             // TODO any other checks needed here ?
-            throw new RuntimeException(
-                    "User is trying to change a server from a different org");
+            Spark.halt(HttpStatus.SC_FORBIDDEN);
         }
     }
 
@@ -275,6 +279,7 @@ public class StatesAPI {
         JSONServerPackageStates json = GSON.fromJson(request.body(),
                 JSONServerPackageStates.class);
         Server server = ServerFactory.lookupById(json.getServerId());
+        checkUserHasPermissionsOnServer(server, user);
 
         // Create a new state revision for this server
         ServerStateRevision state = new ServerStateRevision();
@@ -317,6 +322,8 @@ public class StatesAPI {
     public static Object apply(Request request, Response response, User user) {
         JSONServerApplyStates json = GSON.fromJson(request.body(),
                 JSONServerApplyStates.class);
+        Server server = ServerFactory.lookupById(json.getServerId());
+        checkUserHasPermissionsOnServer(server, user);
 
         // Schedule an ApplyStatesAction to happen right now
         ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
@@ -326,28 +333,6 @@ public class StatesAPI {
         response.type("application/json");
         return GSON.toJson(action.getId());
     }
-
-//    public static Object scheduleApply(Request request, Response response, User user) {
-//        JSONServerApplyStates json = GSON.fromJson(request.body(),
-//                JSONServerApplyStates.class);
-//
-//        Server server = ServerFactory.lookupById(json.getServerId());
-//        Optional<Set<SaltState>> saltStates = StateFactory.latestCustomSaltStates(server);
-//        Set<String> stateNames = saltStates.map( states -> states.stream()
-//                .map(s -> s.getStateName())
-//                .collect(Collectors.toSet()))
-//                .orElse(Collections.emptySet());
-//
-//        stateNames = SaltAPIService.INSTANCE.resolveOrgStates(user.getOrg().getId(), stateNames);
-//
-//        ApplyStatesEventMessage applyStatesEventMessage = new ApplyStatesEventMessage(
-//                json.getServerId(), user.getId(), new ArrayList<>(stateNames));
-//        MessageQueue.publish(applyStatesEventMessage);
-//
-//        // TODO schedule ApplyStatesEventMessageAction here to get the id
-//        // TODO See https://github.com/SUSE/spacewalk/blob/Manager-salt-actions/java/code/src/com/suse/manager/reactor/messaging/ApplyStatesEventMessageAction.java#L61
-//        return json(response, new JSONActionScheduled(-1));
-//    }
 
     /**
      * Get the current set of package states for a given server as {@link JSONPackageState}
