@@ -444,17 +444,15 @@ public enum SaltAPIService implements SaltService {
     public Map<String, Schedule.Result> schedule(String name,
             LocalCall<?> call, Target<?> target, ZonedDateTime scheduleDate,
             Map<String, ?> metadata) throws SaltException {
-        // Get the timezone offset for all target minions
+        // We do one Salt call per timezone: group minions by their timezone offsets
         Map<String, String> minionOffsets = getTimezoneOffsets(target);
-
-        // We do one schedule call per timezone: group minions by their timezone offsets
         Map<String, List<String>> offsetMap = minionOffsets.keySet().stream()
                 .collect(Collectors.groupingBy(minionOffsets::get));
         if (LOG.isDebugEnabled()) {
             LOG.debug("Minions grouped by timezone offsets: " + offsetMap);
         }
 
-        // The result type: map from timezone offset to map of minion id to result
+        // The return type is a map of minion ids to their schedule results
         return offsetMap.entrySet().stream().flatMap(entry -> {
             LocalDateTime targetScheduleDate = scheduleDate.toOffsetDateTime()
                     .withOffsetSameInstant(ZoneOffset.of(entry.getKey())).toLocalDateTime();
