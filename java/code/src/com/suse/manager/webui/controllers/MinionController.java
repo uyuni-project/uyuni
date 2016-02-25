@@ -151,7 +151,7 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         data.put("serverId", serverId);
         data.put("serverName", ServerFactory.lookupById(new Long(serverId)).getName());
-        return new ModelAndView(data, "minion/applystates.jade");
+        return new ModelAndView(data, "minion/custom.jade");
     }
 
 }

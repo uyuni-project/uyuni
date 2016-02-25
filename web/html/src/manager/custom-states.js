@@ -141,7 +141,10 @@ class ApplyState extends React.Component {
       });
     }, (jqXHR, textStatus, errorThrown) => {
       console.log("fail: " + textStatus);
-      messages: msg('error', t('An error occurred on save.'))
+
+      this.setState({
+        messages: msg('error', t('An error occurred on save.'))
+      });
     });
     return Promise.resolve(request);
   }
@@ -309,7 +312,7 @@ class ApplyState extends React.Component {
     return (
         <span>
         {messages}
-        <InnerPanel title={t("Apply Custom States")} buttons={buttons}>
+        <InnerPanel title={t("Custom States")} icon="spacewalk-icon-salt-add" buttons={buttons}>
 
             <PanelRow className="input-group">
                 <TextField value={this.state.filter} placeholder={t("Search in state catalog")} onChange={this.onSearchChange} onPressEnter={this.search}/>
