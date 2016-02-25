@@ -13,19 +13,21 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseServerAssignedStates
+CREATE TABLE suseCustomState
 (
-    state_revision_id NUMBER NOT NULL
-                          CONSTRAINT suse_server_state_rev_id_fk
-                              REFERENCES suseStateRevision (id)
-                              ON DELETE CASCADE,
-    state_id NUMBER NOT NULL
-                          CONSTRAINT suse_salt_state_id_fk
-                              REFERENCES suseSaltState (id)
-                              ON DELETE CASCADE,
+    id               NUMBER NOT NULL
+                         CONSTRAINT suse_custom_state_id_pk PRIMARY KEY,
+    org_id           NUMBER NOT NULL
+                         CONSTRAINT suse_custom_state_org_id_fk
+                            REFERENCES web_customer (id)
+                            ON DELETE CASCADE,
+    state_name       VARCHAR2(256) NOT NULL
+
 )
 ENABLE ROW MOVEMENT
 ;
+CREATE UNIQUE INDEX suse_custom_state_name_org_uq
+ON suseCustomState (org_id, state_name)
+TABLESPACE [[8m_tbs]];
 
-ALTER TABLE suseAssignedStates
-    ADD CONSTRAINT suse_assigned_states_id_sid_uq UNIQUE (state_revision_id, state_id);
+CREATE SEQUENCE suse_custom_state_id_seq;

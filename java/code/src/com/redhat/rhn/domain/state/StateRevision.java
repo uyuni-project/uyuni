@@ -33,7 +33,7 @@ public class StateRevision {
     private Date created;
     private User creator;
     private Set<PackageState> packageStates = new HashSet<>();
-    private Set<SaltState> assignedStates = new HashSet<>();
+    private Set<CustomState> customStates = new HashSet<>();
 
     /**
      * @return the id
@@ -101,15 +101,15 @@ public class StateRevision {
     /**
      * @return the custom states assigned to this server
      */
-    public Set<SaltState> getAssignedStates() {
-        return assignedStates;
+    public Set<CustomState> getCustomStates() {
+        return customStates;
     }
 
     /**
      * @param assignedStatesIn the custom states to assign to this server
      */
-    public void setAssignedStates(Set<SaltState> assignedStatesIn) {
-        this.assignedStates = assignedStatesIn;
+    public void setCustomStates(Set<CustomState> assignedStatesIn) {
+        this.customStates = assignedStatesIn;
     }
 
     /**
