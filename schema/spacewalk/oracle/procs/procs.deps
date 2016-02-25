@@ -50,7 +50,8 @@ delete_server                   :: rhn_channel.pks rhn_config.pks \
                                    rhnUserServerPrefs \
                                    rhnServerPath rhnServerPath \
                                    rhnServerNetInterface \
-                                   rhnServerEntitlementView
+                                   rhnServerEntitlementView \
+                                   rhnServerActionStatesResult
 delete_server_bulk              :: delete_server
 does_user_have_role             :: rhnUserGroup rhnUserGroupMembers rhnUserGroupType
 insert_crash_file               :: rhnServerCrashFile
