@@ -15,7 +15,7 @@
 package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.state.SaltState;
+import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.suse.manager.webui.utils.RepoFileUtils;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -85,7 +85,7 @@ public class SaltStateStorageManager {
             throw new SaltStateExistsException();
         }
 
-        Path orgPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId);
+        Path orgPath = Paths.get(getBaseDirPath(), getOrgNamespace(orgId));
         File orgDir = orgPath.toFile();
         if (!orgDir.exists()) {
             orgDir.mkdir();
@@ -114,15 +114,15 @@ public class SaltStateStorageManager {
 
         String stateName = stripExtension(name);
         if (!move) {
-            SaltState saltState = new SaltState();
-            saltState.setOrg(OrgFactory.lookupById(orgId));
-            saltState.setStateName(stateName);
-            StateFactory.save(saltState);
+            CustomState customState = new CustomState();
+            customState.setOrg(OrgFactory.lookupById(orgId));
+            customState.setStateName(stateName);
+            StateFactory.save(customState);
         }
         else {
-            SaltState saltState = StateFactory.getCustomSaltStateByName(oldName);
-            saltState.setStateName(stateName);
-            StateFactory.save(saltState);
+            CustomState customState = StateFactory.getCustomSaltStateByName(oldName);
+            customState.setStateName(stateName);
+            StateFactory.save(customState);
         }
     }
 
@@ -141,7 +141,7 @@ public class SaltStateStorageManager {
      * @throws IOException in case of an IO error
      */
     public void deleteState(long orgId, String name) throws IOException {
-        File orgDir = new File(getBaseDirPath(), "manager_org_" + orgId);
+        File orgDir = new File(getBaseDirPath(), getOrgNamespace(orgId));
         File stateFile = new File(orgDir, defaultExtension(name));
         assertStateInOrgDir(orgDir, stateFile);
         Files.delete(stateFile.toPath());
@@ -156,7 +156,7 @@ public class SaltStateStorageManager {
      */
     public Optional<String> getContent(long orgId, String name)
             throws IOException {
-        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId,
+        Path slsPath = Paths.get(getBaseDirPath(), getOrgNamespace(orgId),
                 defaultExtension(name));
         File slsFile = slsPath.toFile();
         if (!slsFile.exists()) {
@@ -172,7 +172,7 @@ public class SaltStateStorageManager {
      * @return a list containing all .sls files names (without .sls extension)
      */
     public List<String> listByOrg(long orgId) {
-        Path orgPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId);
+        Path orgPath = Paths.get(getBaseDirPath(), getOrgNamespace(orgId));
         File orgDir = orgPath.toFile();
         if (!orgDir.exists()) {
             return Collections.emptyList();
@@ -189,7 +189,7 @@ public class SaltStateStorageManager {
      * @return true if the file exists, false otherwise
      */
     public boolean exists(long orgId, String name) {
-        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId,
+        Path slsPath = Paths.get(getBaseDirPath(), getOrgNamespace(orgId),
                 defaultExtension(name));
         return slsPath.toFile().exists();
     }
