@@ -894,12 +894,10 @@ public class ContentSyncManager {
      */
     public List<XMLChannel> getAvailableChannels(List<XMLChannel> allChannels)
             throws ContentSyncException {
-        // Get all channels from channels.xml and filter
-        List<XMLChannel> availableChannels = new ArrayList<XMLChannel>();
-
         List<SCCRepository> repositories = SCCCachingFactory.lookupRepositories();
 
         // Filter in all channels which we can mirror
+        List<XMLChannel> availableChannels = new ArrayList<XMLChannel>();
         for (XMLChannel c : allChannels) {
             if (isMirrorable(c, repositories) != null) {
                 availableChannels.add(c);
