@@ -1710,7 +1710,7 @@ tree will not be usable for autoinstalling.
         <source>Service Pack Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.scheduled">
-        <source>A Service Pack Migration is already &lt;a href="/network/systems/details/history/event.pxt?sid={0}&amp;hid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
+        <source>A Service Pack Migration is already &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.up-to-date">
         <source>There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available. Please use the &lt;a href="/rhn/admin/setup/SUSEProducts.do"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt; to identify and add missing products.</source>
@@ -1747,10 +1747,10 @@ tree will not be usable for autoinstalling.
 
       <!-- Messages -->
       <trans-unit id="spmigration.message.scheduled">
-        <source>This system is &lt;a href="/network/systems/details/history/event.pxt?sid={0}&amp;hid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
+        <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled.dry-run">
-        <source>This system is &lt;a href="/network/systems/details/history/event.pxt?sid={0}&amp;hid={1}"&gt;scheduled&lt;/a&gt; for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
+        <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
       </trans-unit>
 
       <!-- SUSE only taskomatic jobs -->
