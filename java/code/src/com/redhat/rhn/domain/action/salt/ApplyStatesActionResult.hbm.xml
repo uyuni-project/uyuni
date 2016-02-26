@@ -3,7 +3,7 @@
         "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="com.redhat.rhn.domain.action.salt.ApplyStatesActionResult"
-            table="rhnServerActionStatesResult" >
+            table="rhnActionApplyStatesResult" >
         <composite-id unsaved-value="any">
             <key-property name="serverId" type="long" column="server_id" />
             <key-property name="actionApplyStatesId" type="long" column="action_apply_states_id" />
