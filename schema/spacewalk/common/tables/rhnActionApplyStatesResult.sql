@@ -13,13 +13,13 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE rhnServerActionStatesResult
+CREATE TABLE rhnActionApplyStatesResult
 (
     server_id              NUMBER NOT NULL
-                               CONSTRAINT rhn_states_result_sid_fk
+                               CONSTRAINT rhn_apply_states_result_sid_fk
                                    REFERENCES rhnServer (id),
     action_apply_states_id NUMBER NOT NULL
-                               CONSTRAINT rhn_states_result_aasid_fk
+                               CONSTRAINT rhn_apply_states_result_aasid_fk
                                    REFERENCES rhnActionApplyStates (id)
                                    ON DELETE CASCADE,
     output                 BLOB,
@@ -28,10 +28,10 @@ CREATE TABLE rhnServerActionStatesResult
 ENABLE ROW MOVEMENT
 ;
 
-CREATE UNIQUE INDEX rhn_states_result_saas_uq
-    ON rhnServerActionStatesResult (server_id, action_apply_states_id);
+CREATE UNIQUE INDEX rhn_apply_states_result_saas_uq
+    ON rhnActionApplyStatesResult (server_id, action_apply_states_id);
 
-CREATE INDEX rhn_states_result_aasid_idx
-    ON rhnServerActionStatesResult (action_apply_states_id)
+CREATE INDEX rhn_apply_states_result_aasid_idx
+    ON rhnActionApplyStatesResult (action_apply_states_id)
     NOLOGGING;
 
