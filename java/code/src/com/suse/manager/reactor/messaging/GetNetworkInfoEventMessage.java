@@ -14,16 +14,21 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.EventDatabaseMessage;
+
 import com.suse.manager.reactor.utils.ValueMap;
+
+import org.hibernate.Transaction;
 
 /**
  * Triggers getting the network information from a minion.
  */
-public class GetNetworkInfoEventMessage implements EventMessage {
+public class GetNetworkInfoEventMessage implements EventDatabaseMessage {
 
     private Long serverId;
     private ValueMap grains;
+    private final Transaction txn;
 
     /**
      * The constructor.
@@ -33,6 +38,7 @@ public class GetNetworkInfoEventMessage implements EventMessage {
     public GetNetworkInfoEventMessage(Long serverIdIn, ValueMap grainsIn) {
         serverId = serverIdIn;
         grains = grainsIn;
+        txn = HibernateFactory.getSession().getTransaction();
     }
 
     @Override
@@ -59,5 +65,10 @@ public class GetNetworkInfoEventMessage implements EventMessage {
      */
     public Long getServerId() {
         return serverId;
+    }
+
+    @Override
+    public Transaction getTransaction() {
+        return txn;
     }
 }
