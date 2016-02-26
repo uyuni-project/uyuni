@@ -396,8 +396,11 @@ public class UserManagerTest extends RhnBaseTestCase {
         assertEquals(UserManager.getTimeZone("GMT"), lst.get(0));
         assertEquals("GMT", lst.get(0).getOlsonName());
 
-        assertEquals("Pacific/Auckland", lst.get(5).getOlsonName());
-        assertEquals(UserManager.getTimeZone("Pacific/Auckland"), lst.get(5));
+        assertEquals("America/Sao_Paulo", lst.get(5).getOlsonName());
+        assertEquals(UserManager.getTimeZone("America/Sao_Paulo"), lst.get(5));
+
+        assertEquals("Europe/Paris", lst.get(lst.size() - 1).getOlsonName());
+        assertEquals(UserManager.getTimeZone("Europe/Paris"), lst.get(lst.size() - 1));
     }
 
    public void testUsersInSet() throws Exception {
