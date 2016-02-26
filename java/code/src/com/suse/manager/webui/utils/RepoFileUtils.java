@@ -47,19 +47,19 @@ public class RepoFileUtils {
      */
     public static void generateRepositoryFile(Server server)
             throws IOException, JoseException {
-            String fileName = "channels.repo." + server.getDigitalServerId();
-            String token = TokenUtils.createTokenWithServerKey(
-                    server.getOrg().getId(), Optional.empty());
-            Path baseDir = Paths.get(GENERATED_SLS_ROOT, SALT_CHANNEL_FILES);
-            Files.createDirectories(baseDir);
-            String fileContents = StreamSupport
-                    .stream(server.getChannels().spliterator(), false)
-                    .map(ch -> RepoFileUtils
-                            .repoFileEntryForChannel(ch, token)
-                            .fileFormat())
-                    .collect(Collectors.joining("\n"));
+        String fileName = "channels.repo." + server.getDigitalServerId();
+        String token = TokenUtils.createTokenWithServerKey(
+                server.getOrg().getId(), Optional.empty());
+        Path baseDir = Paths.get(GENERATED_SLS_ROOT, SALT_CHANNEL_FILES);
+        Files.createDirectories(baseDir);
+        String fileContents = StreamSupport
+                .stream(server.getChannels().spliterator(), false)
+                .map(ch -> RepoFileUtils
+                        .repoFileEntryForChannel(ch, token)
+                        .fileFormat())
+                .collect(Collectors.joining("\n"));
 
-            Files.write(baseDir.resolve(fileName), fileContents.getBytes());
+        Files.write(baseDir.resolve(fileName), fileContents.getBytes());
     }
 
     /**
