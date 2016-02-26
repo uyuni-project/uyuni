@@ -46,10 +46,10 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      * @param stateNamesIn state names that need to be applied to the server
      */
     public ApplyStatesEventMessage(long serverIdIn, long userIdIn, String... stateNamesIn) {
-        this.serverId = serverIdIn;
-        this.userId = userIdIn;
-        this.stateNames = Arrays.asList(stateNamesIn);
-        this.txn = HibernateFactory.getSession().getTransaction();
+        serverId = serverIdIn;
+        userId = userIdIn;
+        stateNames = Arrays.asList(stateNamesIn);
+        txn = HibernateFactory.getSession().getTransaction();
     }
 
     /**
@@ -59,10 +59,10 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      * @param stateNamesIn state names that need to be applied to the server
      */
     public ApplyStatesEventMessage(long serverIdIn, String... stateNamesIn) {
-        this.serverId = serverIdIn;
-        this.userId = null;
-        this.stateNames = Arrays.asList(stateNamesIn);
-        this.txn = HibernateFactory.getSession().getTransaction();
+        serverId = serverIdIn;
+        userId = null;
+        stateNames = Arrays.asList(stateNamesIn);
+        txn = HibernateFactory.getSession().getTransaction();
     }
 
     /**
@@ -83,17 +83,11 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
         return stateNames;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Long getUserId() {
-        return this.userId;
+        return userId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toText() {
         return toString();

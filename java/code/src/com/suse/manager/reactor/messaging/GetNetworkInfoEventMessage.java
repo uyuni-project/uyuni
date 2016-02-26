@@ -26,8 +26,8 @@ import org.hibernate.Transaction;
  */
 public class GetNetworkInfoEventMessage implements EventDatabaseMessage {
 
-    private Long serverId;
-    private ValueMap grains;
+    private final Long serverId;
+    private final ValueMap grains;
     private final Transaction txn;
 
     /**
