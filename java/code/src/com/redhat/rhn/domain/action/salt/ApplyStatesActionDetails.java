@@ -27,7 +27,7 @@ public class ApplyStatesActionDetails extends ActionChild {
     private long id;
     private long actionId;
     private String states;
-    private Set<ApplyStatesResult> results;
+    private Set<ApplyStatesActionResult> results;
 
     /**
      * @return the id
@@ -74,25 +74,25 @@ public class ApplyStatesActionDetails extends ActionChild {
     /**
      * @return the results
      */
-    public Set<ApplyStatesResult> getResults() {
+    public Set<ApplyStatesActionResult> getResults() {
         return results;
     }
 
     /**
      * @param resultsIn the results to set
      */
-    public void setResults(Set<ApplyStatesResult> resultsIn) {
+    public void setResults(Set<ApplyStatesActionResult> resultsIn) {
         this.results = resultsIn;
     }
 
     /**
-     * Add {@link ApplyStatesResult} to the results set.
+     * Add {@link ApplyStatesActionResult} to the results set.
      *
-     * @param resultIn ApplyStatesResult to add to the set
+     * @param resultIn ApplyStatesActionResult to add to the set
      */
-    public void addResult(ApplyStatesResult resultIn) {
+    public void addResult(ApplyStatesActionResult resultIn) {
         if (results == null) {
-            results = new HashSet<ApplyStatesResult>();
+            results = new HashSet<ApplyStatesActionResult>();
         }
         resultIn.setParentScriptActionDetails(this);
         results.add(resultIn);

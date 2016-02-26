@@ -19,7 +19,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesResult;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -141,7 +141,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         Action action = serverAction.getParentAction();
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
-            ApplyStatesResult statesResult = new ApplyStatesResult();
+            ApplyStatesActionResult statesResult = new ApplyStatesActionResult();
             applyStatesAction.getDetails().addResult(statesResult);
             statesResult.setActionApplyStatesId(applyStatesAction.getDetails().getId());
             statesResult.setServerId(serverAction.getServerId());

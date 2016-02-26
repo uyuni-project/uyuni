@@ -22,9 +22,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.io.Serializable;
 
 /**
- * ApplyStatesResult
+ * ApplyStatesActionResult
  */
-public class ApplyStatesResult implements Serializable {
+public class ApplyStatesActionResult implements Serializable {
 
     private Long serverId;
     private Long actionApplyStatesId;
@@ -113,11 +113,11 @@ public class ApplyStatesResult implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof ApplyStatesResult)) {
+        if (obj == null || !(obj instanceof ApplyStatesActionResult)) {
             return false;
         }
 
-        ApplyStatesResult result = (ApplyStatesResult) obj;
+        ApplyStatesActionResult result = (ApplyStatesActionResult) obj;
 
         return new EqualsBuilder()
                 .append(this.getActionApplyStatesId(), result.getActionApplyStatesId())

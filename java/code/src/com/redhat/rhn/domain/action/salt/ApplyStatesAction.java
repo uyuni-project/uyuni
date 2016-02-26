@@ -60,7 +60,7 @@ public class ApplyStatesAction extends Action {
         // LocalizationService ls = LocalizationService.getInstance();
         StringBuilder retval = new StringBuilder();
         retval.append("</br>");
-        for (ApplyStatesResult result : getDetails().getResults()) {
+        for (ApplyStatesActionResult result : getDetails().getResults()) {
             if (result.getServerId().equals(server.getId())) {
                 retval.append("Results:");
                 retval.append("</br>");
