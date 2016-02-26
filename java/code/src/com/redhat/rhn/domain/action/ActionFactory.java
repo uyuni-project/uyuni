@@ -36,6 +36,7 @@ import com.redhat.rhn.domain.action.kickstart.KickstartInitiateGuestAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
@@ -448,6 +449,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_DIST_UPGRADE)) {
             retval = new DistUpgradeAction();
+        }
+        else if (typeIn.equals(TYPE_APPLY_STATES)) {
+            retval = new ApplyStatesAction();
         }
 
         else {
@@ -1126,5 +1130,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_DIST_UPGRADE =
             lookupActionTypeByLabel("distupgrade.upgrade");
+
+    /**
+     * The constant representing application of salt states.  [ID:503]
+     */
+    public static final ActionType TYPE_APPLY_STATES =
+            lookupActionTypeByLabel("states.apply");
 }
 

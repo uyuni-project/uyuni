@@ -17,6 +17,7 @@ package com.suse.manager.webui.services;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.Errata;
@@ -28,6 +29,7 @@ import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Schedule;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.exception.SaltException;
@@ -36,6 +38,7 @@ import org.apache.log4j.Logger;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -128,6 +131,11 @@ public enum SaltServerActionService {
             ScriptAction scriptAction = (ScriptAction) actionIn;
             String script = scriptAction.getScriptActionDetails().getScriptContents();
             return remoteCommandAction(minions, script);
+        }
+        else if (actionIn.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
+            ApplyStatesAction applyStatesAction = (ApplyStatesAction) actionIn;
+            String states = applyStatesAction.getDetails().getStates();
+            return applyStatesAction(minions, states);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -237,6 +245,13 @@ public enum SaltServerActionService {
                 "bash",
                 // remove \r or bash will fail
                 script.replaceAll("\r\n", "\n")), minions);
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> applyStatesAction(
+            List<MinionServer> minions, String states) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        ret.put(State.apply(Arrays.asList(states.split("\\s*,\\s*"))), minions);
         return ret;
     }
 }
