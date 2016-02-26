@@ -1,8 +1,5 @@
-When(/^I change the state for "(.*?)" to "(.*?)"$/) do |pkg, state|
-  # Give a package name and state {"Unmanaged","Installed", "Removed"}
-  within(:xpath, "//td[contains(text(), '#{pkg}')]/ancestor::tr") do   #[td[contains(text(), '#{architecture}')]])"  
-  end
-end
+# Copyright (c) 2016 SUSE LLC
+# Licensed under the terms of the MIT license.
 
 When(/^I list packages with "(.*?)"$/) do |str|
   find('input#package-search').set(str)
@@ -10,12 +7,35 @@ When(/^I list packages with "(.*?)"$/) do |str|
 end
 
 When(/^I change the state of "([^"]*)" to "([^"]*)" and "([^"]*)"$/) do |pkg, state, instd_state|
+  # Options for state are Installed, Unmanaged and Removed
+  # Options for instd_state are Any or Latest
+  # Default if you pick Installed is Latest
   find("##{pkg}-pkg-state").select(state)
+  if !instd_state.to_s.empty? && state == 'Installed'
+    find("##{pkg}-version-constraint").select(instd_state)
+  end
+end
+
+Then(/^"([^"]*)" is not installed$/) do |package|
+  output = `rpm -q #{package} 2>&1`
+  puts output
+  if  $?.success?
+    raise "exec rpm removal failed (Code #{$?}): #{$!}: #{output}"
+  end
 end
 
 When(/^I click undo for "(.*?)"$/) do |pkg|
   find("button##{pkg}-undo").click
 end
 
-When(/^I click the$/) do
+When(/^I click apply$/) do
+  find('button#apply').click
+end
+
+When(/^I click save$/) do
+  find('button#save').click
+end
+
+When(/^I click system$/) do
+  find('button#system').click
 end

@@ -1,7 +1,7 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Check client registration
+Feature: Check the Salt package state UI
   In Order to test salt package states.
   As the testing
 
@@ -13,14 +13,67 @@ Feature: Check client registration
     Then I click on "Confirm"
     Then I click on "Modify Base Software Channel"
     Then I should see a "System's Base Channel has been updated." text
-    
-  Scenario: Test package states through the UI
+
+  Scenario: Test package removal through the UI
     Given I am on the Systems overview page of this client
     Then I follow "States" in the content area
     Then I should see a "Package States" text
-    And I list packages with "dummy" 
+    And I list packages with "dummy"
     Then I should see a "milkyway-dummy" text
-    And I change the state of "milkyway-dummy" to "Installed" and "Any"
+    And "milkyway-dummy" is installed
+    And I change the state of "milkyway-dummy" to "Removed" and ""
     Then I should see a "1 Changes" text
-    Then I click undo for "milkyway-dummy"    
-    Then I should see a "No Changes" text
+    Then I click save
+    Then I click apply
+    And I wait for "10" seconds
+    Then "milkyway-dummy" is not installed
+
+   Scenario: Test package installation through the UI
+    Given I am on the Systems overview page of this client
+    Then I follow "States" in the content area
+    Then I should see a "Package States" text
+    And I list packages with "dummy"
+    Then I should see a "milkyway-dummy" text
+    And "milkyway-dummy" is not installed
+    And I change the state of "milkyway-dummy" to "Installed" and ""
+    Then I should see a "1 Changes" text
+    Then I click save
+    Then I click apply
+    And I wait for "10" seconds
+    Then "milkyway-dummy" is installed
+
+   Scenario: Test package installation with any through the UI
+    Given I am on the Systems overview page of this client
+    Then I follow "States" in the content area
+    Then I should see a "Package States" text
+    And I list packages with "dummy"
+    Then I should see a "virgo-dummy" text
+    And "virgo-dummy-1.0" is installed
+    And I change the state of "virgo-dummy" to "Installed" and "Any"
+    Then I should see a "1 Changes" text
+    Then I click save
+    Then I click apply
+    And I wait for "10" seconds
+    Then "virgo-dummy-1.0" is installed
+
+  Scenario: Test package upgrade through the UI
+    Given I am on the Systems overview page of this client
+    Then I follow "States" in the content area
+    Then I should see a "Package States" text
+    And I list packages with "dummy"
+    Then I should see a "andromeda-dummy" text
+    And "andromeda-dummy-1.0-4.1" is installed
+    And I change the state of "andromeda-dummy" to "Installed" and "Latest"
+    Then I should see a "1 Changes" text
+    Then I click save
+    Then I click apply
+    And I wait for "10" seconds
+    Then "andromeda-dummy-2.0-1.1" is installed
+
+  Scenario: I verify the system status of the salt ui
+    Given I am on the Systems overview page of this client
+    Then I follow "States" in the content area
+    Then I should see a "Package States" text
+    Then I should see a "milkyway-dummy" text
+    Then I should see a "andromeda-dummy" text
+    Then I should see a "virgo-dummy" text
