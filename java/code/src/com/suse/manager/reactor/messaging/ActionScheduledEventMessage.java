@@ -30,7 +30,7 @@ import org.hibernate.Transaction;
 public class ActionScheduledEventMessage implements EventDatabaseMessage {
 
     private final long actionId;
-    private final long userId;
+    private final Long userId;
     private final Transaction txn;
 
     /**
@@ -40,7 +40,8 @@ public class ActionScheduledEventMessage implements EventDatabaseMessage {
      */
     public ActionScheduledEventMessage(Action actionIn) {
         actionId = actionIn.getId();
-        userId = actionIn.getSchedulerUser().getId();
+        userId = actionIn.getSchedulerUser() != null ?
+                actionIn.getSchedulerUser().getId() : null;
         txn = HibernateFactory.getSession().getTransaction();
     }
 

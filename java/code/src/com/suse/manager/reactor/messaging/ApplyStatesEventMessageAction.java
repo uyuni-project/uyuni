@@ -15,63 +15,55 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageAction;
+import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.salt.netapi.datatypes.target.Grains;
+
 import org.apache.log4j.Logger;
 
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Applies states to a server
  */
-public class ApplyStatesEventMessageAction implements MessageAction {
+public class ApplyStatesEventMessageAction extends AbstractDatabaseAction {
 
     private static final Logger LOG = Logger.getLogger(ApplyStatesEventMessageAction.class);
-    private final SaltService SALT_SERVICE;
 
     /**
      * Default constructor.
      */
     public ApplyStatesEventMessageAction() {
-        SALT_SERVICE = SaltAPIService.INSTANCE;
     }
 
-    /**
-     * Constructor taking a {@link SaltService} instance.
-     *
-     * @param saltService the salt service to use
-     */
-    public ApplyStatesEventMessageAction(SaltService saltService) {
-        SALT_SERVICE = saltService;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void execute(EventMessage event) {
-        ApplyStatesEventMessage stateDirtyEvent = ((ApplyStatesEventMessage) event);
-        Server server = ServerFactory.lookupById(stateDirtyEvent.getServerId());
+    public void doExecute(EventMessage event) {
+        ApplyStatesEventMessage applyStatesEvent = (ApplyStatesEventMessage) event;
+        Server server = ServerFactory.lookupById(applyStatesEvent.getServerId());
 
-        // Update state only for salt systems
-        if (server.hasEntitlement(EntitlementManager.SALT)) {
-            try {
-                SALT_SERVICE.applyState(
-                        new Grains("machine_id", server.getDigitalServerId()),
-                        stateDirtyEvent.getStateNames());
-            }
-            catch (Exception e) {
-                LOG.error(String.format(
-                        "Applying states %s on serverId '%s' failed.",
-                        stateDirtyEvent.getStateNames().stream()
-                                .collect(Collectors.joining(", ")),
-                        server.getId()), e);
-            }
+        // Apply states only for salt systems
+        if (server != null && server.hasEntitlement(EntitlementManager.SALT)) {
+            LOG.debug("Schedule state.apply for " + server.getName() + ": " +
+                    applyStatesEvent.getStateNames());
+
+            // The scheduling user can be null
+            User scheduler = event.getUserId() != null ?
+                    UserFactory.lookupById(event.getUserId()) : null;
+
+            // Schedule a "state.apply" action to happen right now
+            ApplyStatesAction action = ActionManager.scheduleApplyStates(
+                    scheduler,
+                    Arrays.asList(server.getId()),
+                    applyStatesEvent.getStateNames(),
+                    new Date());
+            MessageQueue.publish(new ActionScheduledEventMessage(action));
         }
     }
 }

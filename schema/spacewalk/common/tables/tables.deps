@@ -18,6 +18,8 @@ path = . class
 log                            :: web_contact_all
 PXTSessions                    :: web_contact
 rhnAction                      :: rhnActionType web_customer web_contact
+rhnActionApplyStates           :: rhnAction
+rhnActionApplyStatesResult     :: rhnActionApplyStates rhnServer
 rhnActionScript                :: rhnAction
 rhnActionConfigChannel         :: rhnServerAction rhnConfigChannel
 rhnActionConfigDate            :: rhnAction

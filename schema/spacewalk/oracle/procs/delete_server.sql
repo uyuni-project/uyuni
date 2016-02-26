@@ -130,6 +130,7 @@ begin
 	-- here, now.  I'm hoping this will help aleviate our deadlock
 	-- problem.
 
+	delete from rhnActionApplyStatesResult where server_id = server_id_in;
 	delete from rhnActionConfigChannel where server_id = server_id_in;
 	delete from rhnActionConfigRevision where server_id = server_id_in;
 	delete from rhnActionPackageRemovalFailure where server_id = server_id_in;
