@@ -35,10 +35,13 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.RepoFileUtils;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
+import org.jose4j.lang.JoseException;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -200,11 +203,20 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             LOG.info("Finished minion registration: " + minionId);
 
             StatesAPI.generateServerPackageState(server);
-            // Trigger certification deployment
-            MessageQueue.publish(new ChannelsChangedEventMessage(server.getId()));
+
+            // Generate the .repo file for this server
+            try {
+                RepoFileUtils.generateRepositoryFile(server);
+            }
+            catch (IOException | JoseException e) {
+                LOG.error("Error generating repo file: " + e.getMessage());
+            }
+
+            // Apply initial states asynchronously
             MessageQueue.publish(new ApplyStatesEventMessage(
                     server.getId(),
                     ApplyStatesEventMessage.CERTIFICATE,
+                    ApplyStatesEventMessage.CHANNELS,
                     ApplyStatesEventMessage.PACKAGES
             ));
         }
