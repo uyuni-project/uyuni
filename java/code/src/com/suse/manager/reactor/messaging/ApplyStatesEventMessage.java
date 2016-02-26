@@ -101,7 +101,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
 
     @Override
     public String toString() {
-        return "StateDirtyEvent[serverId: " + serverId + ", stateNames: " +
+        return "ApplyStatesEventMessage[serverId: " + serverId + ", stateNames: " +
                 stateNames.stream().collect(Collectors.joining(", ")) + "]";
     }
 

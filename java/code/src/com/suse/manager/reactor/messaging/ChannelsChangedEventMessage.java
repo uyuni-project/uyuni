@@ -87,6 +87,6 @@ public class ChannelsChangedEventMessage implements EventDatabaseMessage {
 
     @Override
     public String toString() {
-        return "ChannelChangedEvent[serverId: " + serverId + "]";
+        return "ChannelChangedEventMessage[serverId: " + serverId + "]";
     }
 }
