@@ -135,7 +135,7 @@ public enum SaltServerActionService {
         else if (actionIn.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) actionIn;
             String states = applyStatesAction.getDetails().getStates();
-            allCalls = applyStatesAction(minions, states);
+            return applyStatesAction(minions, states);
         }
         else {
             if (LOG.isDebugEnabled()) {
