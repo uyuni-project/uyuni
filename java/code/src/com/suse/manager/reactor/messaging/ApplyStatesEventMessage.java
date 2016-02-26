@@ -14,7 +14,10 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.EventDatabaseMessage;
+
+import org.hibernate.Transaction;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +27,7 @@ import java.util.stream.Collectors;
  * An event to signal that a set of states is dirty and needs
  * to be applied to a particular server
  */
-public class ApplyStatesEventMessage implements EventMessage {
+public class ApplyStatesEventMessage implements EventDatabaseMessage {
 
     public static final String CERTIFICATE = "certs";
     public static final String PACKAGES = "packages";
@@ -33,6 +36,7 @@ public class ApplyStatesEventMessage implements EventMessage {
     private final long serverId;
     private final Long userId;
     private final List<String> stateNames;
+    private final Transaction txn;
 
     /**
      * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
@@ -45,6 +49,7 @@ public class ApplyStatesEventMessage implements EventMessage {
         this.serverId = serverIdIn;
         this.userId = userIdIn;
         this.stateNames = Arrays.asList(stateNamesIn);
+        this.txn = HibernateFactory.getSession().getTransaction();
     }
 
     /**
@@ -57,6 +62,7 @@ public class ApplyStatesEventMessage implements EventMessage {
         this.serverId = serverIdIn;
         this.userId = null;
         this.stateNames = Arrays.asList(stateNamesIn);
+        this.txn = HibernateFactory.getSession().getTransaction();
     }
 
     /**
@@ -99,4 +105,8 @@ public class ApplyStatesEventMessage implements EventMessage {
                 stateNames.stream().collect(Collectors.joining(", ")) + "]";
     }
 
+    @Override
+    public Transaction getTransaction() {
+        return txn;
+    }
 }

@@ -14,14 +14,18 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.EventDatabaseMessage;
+
+import org.hibernate.Transaction;
 
 /**
  * Trigger getting the hardware information from a minion.
  */
-public class GetHardwareInfoEventMessage implements EventMessage {
+public class GetHardwareInfoEventMessage implements EventDatabaseMessage {
 
     private Long serverId;
+    private final Transaction txn;
 
     /**
      * Create a new event to trigger retrieving the hardware information.
@@ -30,6 +34,7 @@ public class GetHardwareInfoEventMessage implements EventMessage {
      */
     public GetHardwareInfoEventMessage(Long serverIdIn) {
         this.serverId = serverIdIn;
+        txn = HibernateFactory.getSession().getTransaction();
     }
 
     @Override
@@ -56,4 +61,8 @@ public class GetHardwareInfoEventMessage implements EventMessage {
         return serverId;
     }
 
+    @Override
+    public Transaction getTransaction() {
+        return txn;
+    }
 }
