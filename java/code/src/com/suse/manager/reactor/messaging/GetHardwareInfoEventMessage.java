@@ -24,7 +24,7 @@ import org.hibernate.Transaction;
  */
 public class GetHardwareInfoEventMessage implements EventDatabaseMessage {
 
-    private Long serverId;
+    private final Long serverId;
     private final Transaction txn;
 
     /**
@@ -33,7 +33,7 @@ public class GetHardwareInfoEventMessage implements EventDatabaseMessage {
      * @param serverIdIn minion to register
      */
     public GetHardwareInfoEventMessage(Long serverIdIn) {
-        this.serverId = serverIdIn;
+        serverId = serverIdIn;
         txn = HibernateFactory.getSession().getTransaction();
     }
 
