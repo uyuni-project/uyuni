@@ -132,7 +132,7 @@ module Yast
 
       # help text
       @help_text = _(
-        "<p>Here, enter mirror credentials from the SUSE Customer Center.</p>"
+        "<p>Here, enter organization credentials (mirror credentials) from the SUSE Customer Center.</p>"
       )
 
       # dialog caption
