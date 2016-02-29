@@ -51,10 +51,10 @@ import com.suse.manager.webui.utils.SaltPkgLatest;
 import com.suse.manager.webui.utils.SaltPkgRemoved;
 import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.gson.JSONPackageState;
-import com.suse.manager.webui.utils.gson.JSONSaltState;
+import com.suse.manager.webui.utils.gson.JSONCustomState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
-import com.suse.manager.webui.utils.gson.JSONServerSaltStates;
+import com.suse.manager.webui.utils.gson.JSONServerCustomStates;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 
 import java.io.IOException;
@@ -154,17 +154,17 @@ public class StatesAPI {
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
 
         // Find matches among this server's current salt states
-        Set<JSONSaltState> result = new HashSet<>(); // use a set to avoid duplicates
+        Set<JSONCustomState> result = new HashSet<>(); // use a set to avoid duplicates
         Optional<Set<CustomState>> saltStates = StateFactory.latestCustomtates(server);
         result.addAll(saltStates.orElseGet(Collections::<CustomState>emptySet).stream()
                 .filter(s -> s.getStateName().toLowerCase().contains(targetLowerCase))
-                .map(s -> new JSONSaltState(s.getStateName(), true))
+                .map(s -> new JSONCustomState(s.getStateName(), true))
                 .collect(Collectors.toList()));
 
         // Find matches among available organization states
         result.addAll(SaltAPIService.INSTANCE.getOrgStates(user.getId()).stream()
                 .filter(s -> s.toLowerCase().contains(targetLowerCase))
-                .map(s -> new JSONSaltState(s, false))
+                .map(s -> new JSONCustomState(s, false))
                 .collect(Collectors.toList()));
 
         return json(response, result);
@@ -181,8 +181,8 @@ public class StatesAPI {
      */
     public static String saveCustomStates(Request request, Response response,
                                           User user) {
-        JSONServerSaltStates json = GSON.fromJson(request.body(),
-                JSONServerSaltStates.class);
+        JSONServerCustomStates json = GSON.fromJson(request.body(),
+                JSONServerCustomStates.class);
         Server server = ServerFactory.lookupById(json.getServerId());
         checkUserHasPermissionsOnServer(server, user);
 
@@ -216,7 +216,7 @@ public class StatesAPI {
             StateFactory.save(newRevision);
             generateServerCustomState(newRevision);
             return json(response, newRevision.getCustomStates()
-                    .stream().map(s -> new JSONSaltState(s.getStateName(), true))
+                    .stream().map(s -> new JSONCustomState(s.getStateName(), true))
                     .collect(Collectors.toSet()));
         }
         catch (Throwable t) {
