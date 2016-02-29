@@ -38,8 +38,12 @@
                     </div>
                     <div class="modal-footer">
                         <span id="edit-credentials-spinner"></span>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-success" onClick="saveCredentials();">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <bean:message key="mirror-credentials.jsp.bt.cancel" />
+                        </button>
+                        <button type="button" class="btn btn-success" onClick="saveCredentials();">
+                            <bean:message key="mirror-credentials.jsp.bt.save" />
+                        </button>
                     </div>
                 </div>
             </div>
@@ -65,8 +69,12 @@
                     </div>
                     <div class="modal-footer">
                         <span id="delete-credentials-spinner"></span>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-success" onClick="deleteCredentials();">Delete</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <bean:message key="mirror-credentials.jsp.bt.cancel" />
+                        </button>
+                        <button type="button" class="btn btn-success" onClick="deleteCredentials();">
+                            <bean:message key="mirror-credentials.jsp.bt.delete" />
+                        </button>
                     </div>
                 </div>
             </div>
@@ -84,7 +92,9 @@
                         <!-- Content will be rendered here -->
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <bean:message key="mirror-credentials.jsp.bt.close" />
+                        </button>
                     </div>
                 </div>
             </div>
@@ -92,7 +102,7 @@
 
         <div class="responsive-wizard">
             <rhn:toolbar base="h1" icon="header-preferences" helpUrl="/rhn/help/reference/en-US/ref.webui.admin.jsp#ref.webui.admin.wizard">
-                Setup Wizard
+                <bean:message key="mirror-credentials.jsp.header" />
             </rhn:toolbar>
             <rhn:dialogmenu mindepth="0" maxdepth="1"
                         definition="/WEB-INF/nav/setup_wizard.xml"
@@ -107,11 +117,11 @@
                                     <script>MirrorCredentialsRenderer.renderCredentials(makeRendererHandler("listset-container", false));</script>
                                 </div>
                                 <div class="col-sm-3 hidden-xs" id="wizard-faq">
-                                    <h4>What are Organization Credentials</h4>
-                                    <p>Organization credentials (Mirror credentials) are your access to SUSE product downloads.</p>
+                                    <h4><bean:message key="mirror-credentials.jsp.info.h1" /></h4>
+                                    <p><bean:message key="mirror-credentials.jsp.info.p1" /></p>
                                     <img src="../../../img/setup-wizard/credentials-help.png" />
-                                    <h4>Where do I find my Organization Credentials?</h4>
-                                    <p>You can find them in the <a href="https://scc.suse.com/organization" target="_blank">Customer Center</a>.</p>
+                                    <h4><bean:message key="mirror-credentials.jsp.info.h2" /></h4>
+                                    <p><bean:message key="mirror-credentials.jsp.info.p2" /></p>
                                 </div>
                             </div>
                         </c:when>

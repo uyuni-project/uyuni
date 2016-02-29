@@ -1995,7 +1995,7 @@ tree will not be usable for autoinstalling.
       <trans-unit id="channelName">
         <source>Channel Name</source>
       </trans-unit>
-      
+
       <!-- Action Chaining -->
       <trans-unit id="actionchain.jsp.errata.update">
         <source>Apply patch(es) {0} on</source>
@@ -2091,8 +2091,38 @@ tree will not be usable for autoinstalling.
       <trans-unit id="mirror-credentials.jsp.iss-slave">
         <source>This server is configured as an Inter-Server Synchronisation (ISS) slave. Credentials can only be managed on the ISS master.</source>
       </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.bt.cancel">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.bt.save">
+        <source>Save</source>
+      </trans-unit>
+       <trans-unit id="mirror-credentials.jsp.bt.delete">
+        <source>Delete</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.bt.close">
+        <source>Close</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.header">
+        <source>Setup Wizard</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.info.h1">
+        <source>What are Organization Credentials?</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.info.p1">
+        <source>Organization credentials (Mirror credentials) are your access to SUSE product downloads.</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.info.h2">
+        <source>Where do I find my Organization Credentials?</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.info.p2">
+        <source>You can find them in the &lt;a href="https://scc.suse.com/organization" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
+      </trans-unit>
 
       <!-- SUSE Products -->
+      <trans-unit id="suse-products.jsp.header">
+        <source>Setup Wizard</source>
+      </trans-unit>
       <trans-unit id="suse-products.jsp.add-products">
         <source>Add products</source>
       </trans-unit>
@@ -2128,6 +2158,30 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="suse-products.jsp.refresh-running">
         <source>A refresh of the product data is currently running in the background. Please try again later.</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.th.available-products">
+        <source>Available Products Below</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.th.arch">
+        <source>Architecture</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.th.channels">
+        <source>Channels</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.th.status">
+        <source>Status</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.loading">
+        <source>Loading...</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.info.h1">
+        <source>Why aren't all SUSE products displayed in the list?</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.info.p1">
+        <source>The products displayed on this list are directly linked to your Organization credentials (Mirror credentials) as well as your SUSE subscriptions.</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.info.p2">
+        <source>If you believe there are products missing, make sure you have added the correct Organization credentials in the previous wizard step.</source>
       </trans-unit>
       <trans-unit id="setupwizard.syncstatus.scheduled">
         <source>Scheduled</source>
