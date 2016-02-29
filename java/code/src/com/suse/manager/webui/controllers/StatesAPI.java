@@ -40,7 +40,6 @@ import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
 import com.suse.manager.webui.services.StateRevisionService;
-import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.RepoFileUtils;
 import com.suse.manager.webui.utils.SaltCustomState;
