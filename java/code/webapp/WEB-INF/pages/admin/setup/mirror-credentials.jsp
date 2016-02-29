@@ -107,10 +107,10 @@
                                     <script>MirrorCredentialsRenderer.renderCredentials(makeRendererHandler("listset-container", false));</script>
                                 </div>
                                 <div class="col-sm-3 hidden-xs" id="wizard-faq">
-                                    <h4>What are Mirror Credentials</h4>
-                                    <p>Mirror credentials are your access to SUSE product downloads.</p>
+                                    <h4>What are Organization Credentials</h4>
+                                    <p>Organization credentials (Mirror credentials) are your access to SUSE product downloads.</p>
                                     <img src="../../../img/setup-wizard/credentials-help.png" />
-                                    <h4>Where do I find my Mirror Credentials?</h4>
+                                    <h4>Where do I find my Organization Credentials?</h4>
                                     <p>You can find them in the <a href="https://scc.suse.com/organization" target="_blank">Customer Center</a>.</p>
                                 </div>
                             </div>

@@ -210,19 +210,21 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * Add mirror credentials to SUSE Manager.
+     * Add organization credentials (mirror credentials) to SUSE Manager.
      *
      * @param loggedInUser the currently logged in user
-     * @param username mirror credentials username
-     * @param password mirror credentials password
+     * @param username organization credentials (mirror credentials) username
+     * @param password organization credentials (mirror credentials) password
      * @param primary make this the primary credentials
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Add mirror credentials to SUSE Manager.
+     * @xmlrpc.doc Add organization credentials (mirror credentials) to SUSE Manager.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "username", "Mirror credentials username")
-     * @xmlrpc.param #param_desc("string", "password", "Mirror credentials password")
+     * @xmlrpc.param #param_desc("string", "username", "Organization credentials
+     *                                                  (Mirror credentials) username")
+     * @xmlrpc.param #param_desc("string", "password", "Organization credentials
+     *                                                  (Mirror credentials) password")
      * @xmlrpc.param #param_desc("boolean", "primary", "Make this the primary credentials")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -239,14 +241,14 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * Delete mirror credentials from SUSE Manager.
+     * Delete organization credentials (mirror credentials) from SUSE Manager.
      *
      * @param loggedInUser the currently logged in user
      * @param username username of the credentials to be deleted
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Delete mirror credentials from SUSE Manager.
+     * @xmlrpc.doc Delete organization credentials (mirror credentials) from SUSE Manager.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "username", "Username of credentials to delete")
      * @xmlrpc.returntype #return_int_success()
@@ -264,13 +266,14 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * List mirror credentials available in SUSE Manager.
+     * List organization credentials (mirror credentials) available in SUSE Manager.
      *
      * @param loggedInUser the currently logged in user
-     * @return List of mirror credentials
+     * @return List of organization credentials (mirror credentials)
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc List mirror credentials available in SUSE Manager.
+     * @xmlrpc.doc List organization credentials (mirror credentials) available in
+     *             SUSE Manager.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array()
      *                       $MirrorCredentialsDtoSerializer

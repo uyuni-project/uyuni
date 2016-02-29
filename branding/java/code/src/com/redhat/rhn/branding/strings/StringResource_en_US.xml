@@ -2024,7 +2024,7 @@ tree will not be usable for autoinstalling.
         <source>HTTP Proxy</source>
       </trans-unit>
       <trans-unit id="Mirror Credentials">
-        <source>Mirror Credentials</source>
+        <source>Organization Credentials</source>
       </trans-unit>
       <trans-unit id="SUSE Products">
         <source>SUSE Products</source>
