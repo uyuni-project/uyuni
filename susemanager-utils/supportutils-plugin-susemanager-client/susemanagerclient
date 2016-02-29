@@ -62,6 +62,11 @@ openscap
 openscap-utils
 libopenscap1
 openscap-content
+salt-minion
+salt
+python-Jinja2
+python-tornado
+python-pyzmq
 "
 
 for THISRPM in $RPMLIST; do
@@ -95,4 +100,5 @@ plog_files 1000 /var/log/salt/minion
 
 plugin_command "zypper --no-refresh ls"
 plugin_command "zypper --no-refresh lr -u"
+plugin_command "salt-minion --versions-report"
 
