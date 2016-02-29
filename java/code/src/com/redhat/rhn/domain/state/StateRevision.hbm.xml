@@ -12,7 +12,7 @@
             <one-to-many class="com.redhat.rhn.domain.state.PackageState"/>
         </set>
 
-        <set name="customStates" lazy="true" table="suseServerCustomState"
+        <set name="customStates" lazy="true" table="suseStateRevisionCustomState"
              cascade="save-update" >
             <key column="state_revision_id"/>
             <many-to-many
