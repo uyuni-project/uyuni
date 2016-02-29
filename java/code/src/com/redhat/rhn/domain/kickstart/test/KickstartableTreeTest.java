@@ -289,7 +289,9 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
                                                 "/media/boot/%s/initrd"});
         archMap.put(513L, new String[]{"x86_64", "/media/boot/%s/loader/linux",
                                                  "/media/boot/%s/loader/initrd"});
-        archMap.put(515L, new String[]{"ppc64", "/media/suseboot/linux64.gz",
+        archMap.put(515L, new String[]{"ppc64", "/media/suseboot/inst64",
+                                                "/media/suseboot/initrd64"});
+        archMap.put(515L, new String[]{"ppc64", "/media/suseboot/linux64",
                                                 "/media/suseboot/initrd64"});
         archMap.put(516L, new String[]{"ppc64le", "/media/boot/%s/linux",
                                                   "/media/boot/%s/initrd"});
