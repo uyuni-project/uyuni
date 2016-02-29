@@ -155,7 +155,7 @@ public class StatesAPI {
 
         // Find matches among this server's current salt states
         Set<JSONSaltState> result = new HashSet<>(); // use a set to avoid duplicates
-        Optional<Set<CustomState>> saltStates = StateFactory.latestCustomSaltStates(server);
+        Optional<Set<CustomState>> saltStates = StateFactory.latestCustomtates(server);
         result.addAll(saltStates.orElseGet(Collections::<CustomState>emptySet).stream()
                 .filter(s -> s.getStateName().toLowerCase().contains(targetLowerCase))
                 .map(s -> new JSONSaltState(s.getStateName(), true))
@@ -198,7 +198,7 @@ public class StatesAPI {
                 .filter(s -> !s.isAssigned()).map(s -> s.getName())
                 .collect(Collectors.toSet());
 
-        StateFactory.latestCustomSaltStates(server).ifPresent(oldStates -> {
+        StateFactory.latestCustomtates(server).ifPresent(oldStates -> {
             for (CustomState oldState : oldStates) {
                 if (!toRemove.contains(oldState.getStateName())) {
                     newRevision.getCustomStates().add(oldState);
