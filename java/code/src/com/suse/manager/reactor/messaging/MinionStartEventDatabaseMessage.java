@@ -14,41 +14,30 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.EventDatabaseMessage;
+
+import org.hibernate.Transaction;
 
 /**
- * Event message to handle what needs to be done during minion start.
+ * A version of {@link MinionStartEventMessage} that waits for the current transaction
+ * (i.e. at message creation time) to be finished before being handled.
  */
-public class MinionStartEventMessage implements EventMessage {
+public class MinionStartEventDatabaseMessage extends MinionStartEventMessage
+        implements EventDatabaseMessage {
 
-    private final String minionId;
+    private final Transaction txn;
 
     /**
      * @param minionIdIn the id of the minion that was started
      */
-    public MinionStartEventMessage(String minionIdIn) {
-        minionId = minionIdIn;
-    }
-
-    /**
-     * @return the minion id
-     */
-    public String getMinionId() {
-        return minionId;
+    public MinionStartEventDatabaseMessage(String minionIdIn) {
+        super(minionIdIn);
+        txn = HibernateFactory.getSession().getTransaction();
     }
 
     @Override
-    public Long getUserId() {
-        return null;
-    }
-
-    @Override
-    public String toText() {
-        return toString();
-    }
-
-    @Override
-    public String toString() {
-        return "MinionStartEventMessage[minionId: " + minionId + "]";
+    public Transaction getTransaction() {
+        return txn;
     }
 }
