@@ -30,6 +30,7 @@ import com.suse.manager.reactor.messaging.GetNetworkInfoEventMessage;
 import com.suse.manager.reactor.messaging.GetNetworkInfoEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
@@ -85,6 +86,8 @@ public class SaltReactor implements EventListener {
                 RegisterMinionEventMessage.class);
         MessageQueue.registerAction(new MinionStartEventMessageAction(),
                 MinionStartEventMessage.class);
+        MessageQueue.registerAction(new MinionStartEventMessageAction(),
+                MinionStartEventDatabaseMessage.class);
         MessageQueue.registerAction(new UpdatePackageProfileEventMessageAction(),
                 UpdatePackageProfileEventMessage.class);
         MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
