@@ -14,7 +14,19 @@ RCFILE="/usr/lib/supportconfig/resources/scplugin.rc"
 [ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
 
 section_header "Supportconfig Plugin for SUSE Manager, v${SVER}"
-RPMLIST="susemanager-tools susemanager susemanager-schema suse-manager-server-release suse-manager-server-release-cd release-notes-susemanager"
+RPMLIST="
+susemanager-tools
+susemanager
+susemanager-schema
+suse-manager-server-release
+suse-manager-server-release-cd
+release-notes-susemanager
+salt-minion
+salt
+python-Jinja2
+python-tornado
+python-pyzmq
+"
 DAEMONLIST="susemanager tomcat osa-dispatcher postgresql"
 
 if ! rpm -q susemanager &>/dev/null; then
@@ -25,7 +37,7 @@ fi
 
 for THISRPM in $RPMLIST
 do
-   validate_rpm $THISRPM
+   validate_rpm_if_installed $THISRPM
 done
 
 for i in $DAEMONLIST
@@ -36,5 +48,6 @@ done
 plugin_command "zypper --no-refresh ls"
 plugin_command "zypper --no-refresh lr -u"
 plugin_command "/usr/lib/susemanager/bin/susemanager-connection-check"
+plugin_command "salt-master --versions-report"
 
 plugin_command "/sbin/supportconfig-sumalog $LOG"

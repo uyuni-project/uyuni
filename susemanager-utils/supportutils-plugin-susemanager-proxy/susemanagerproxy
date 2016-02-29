@@ -104,6 +104,12 @@ zypp-plugin-spacewalk
 rhnlib
 suseRegisterInfo
 spacewalk-client-tools
+salt-master
+salt-syndic
+salt
+python-Jinja2
+python-tornado
+python-pyzmq
 "
 
 for THISRPM in $RPMLIST; do
@@ -140,4 +146,5 @@ find_and_plog_files /var/log/salt -type f
 
 plugin_command "zypper --no-refresh ls"
 plugin_command "zypper --no-refresh lr -u"
+plugin_command "salt-master --versions-report"
 
