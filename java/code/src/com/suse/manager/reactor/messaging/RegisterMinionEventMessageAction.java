@@ -204,6 +204,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             StatesAPI.generateServerPackageState(server);
 
+            // Asynchronously get the uptime of this minion
+            MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
+
             // Generate the .repo file for this server
             try {
                 RepoFileUtils.generateRepositoryFile(server);
