@@ -19,12 +19,12 @@ import java.util.Set;
 /**
  * JSON representation of a server and a list of custom Salt states.
  */
-public class JSONServerSaltStates {
+public class JSONServerCustomStates {
 
     /** Server id */
     private long sid;
 
-    private Set<JSONSaltState> saltStates;
+    private Set<JSONCustomState> saltStates;
 
     /**
      * @return the sever id
@@ -36,7 +36,7 @@ public class JSONServerSaltStates {
     /**
      * @return the custom Salt states
      */
-    public Set<JSONSaltState> getSaltStates() {
+    public Set<JSONCustomState> getSaltStates() {
         return saltStates;
     }
 }

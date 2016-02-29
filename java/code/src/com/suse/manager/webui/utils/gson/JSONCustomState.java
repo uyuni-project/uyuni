@@ -17,7 +17,7 @@ package com.suse.manager.webui.utils.gson;
 /**
  * JSON representation of a custom Salt state.
  */
-public class JSONSaltState {
+public class JSONCustomState {
 
     private String name;
 
@@ -27,7 +27,7 @@ public class JSONSaltState {
      * @param nameIn the name of the state
      * @param assignedIn if it's assigned or not
      */
-    public JSONSaltState(String nameIn, boolean assignedIn) {
+    public JSONCustomState(String nameIn, boolean assignedIn) {
         this.name = nameIn;
         this.assigned = assignedIn;
     }
@@ -69,7 +69,7 @@ public class JSONSaltState {
             return false;
         }
 
-        JSONSaltState that = (JSONSaltState) o;
+        JSONCustomState that = (JSONCustomState) o;
 
         return name != null ? name.equals(that.name) : that.name == null;
 
