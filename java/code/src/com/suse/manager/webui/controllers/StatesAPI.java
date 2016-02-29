@@ -208,7 +208,7 @@ public class StatesAPI {
         });
 
         for (String newStateName : toAssign) {
-            CustomState newState = StateFactory.getCustomSaltStateByName(newStateName);
+            CustomState newState = StateFactory.getCustomStateByName(newStateName);
             newRevision.getCustomStates().add(newState);
         }
 
