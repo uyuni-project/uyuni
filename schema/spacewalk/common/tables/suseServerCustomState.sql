@@ -13,7 +13,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseServerCustomState
+CREATE TABLE suseStateRevisionCustomState
 (
     state_revision_id NUMBER NOT NULL
                           CONSTRAINT suse_server_state_rev_id_fk
@@ -27,5 +27,5 @@ CREATE TABLE suseServerCustomState
 ENABLE ROW MOVEMENT
 ;
 
-ALTER TABLE suseServerCustomState
-    ADD CONSTRAINT suse_assigned_states_id_sid_uq UNIQUE (state_revision_id, state_id);
+ALTER TABLE suseStateRevisionCustomState
+    ADD CONSTRAINT suse_state_rev_id_state_id_uq UNIQUE (state_revision_id, state_id);
