@@ -14,7 +14,10 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.EventDatabaseMessage;
+
+import org.hibernate.Transaction;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +27,7 @@ import java.util.stream.Collectors;
  * An event to signal that a set of states is dirty and needs
  * to be applied to a particular server
  */
-public class ApplyStatesEventMessage implements EventMessage {
+public class ApplyStatesEventMessage implements EventDatabaseMessage {
 
     public static final String CERTIFICATE = "certs";
     public static final String PACKAGES = "packages";
@@ -33,6 +36,7 @@ public class ApplyStatesEventMessage implements EventMessage {
     private final long serverId;
     private final Long userId;
     private final List<String> stateNames;
+    private final Transaction txn;
 
     /**
      * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
@@ -42,9 +46,10 @@ public class ApplyStatesEventMessage implements EventMessage {
      * @param stateNamesIn state names that need to be applied to the server
      */
     public ApplyStatesEventMessage(long serverIdIn, long userIdIn, String... stateNamesIn) {
-        this.serverId = serverIdIn;
-        this.userId = userIdIn;
-        this.stateNames = Arrays.asList(stateNamesIn);
+        serverId = serverIdIn;
+        userId = userIdIn;
+        stateNames = Arrays.asList(stateNamesIn);
+        txn = HibernateFactory.getSession().getTransaction();
     }
 
     /**
@@ -54,9 +59,10 @@ public class ApplyStatesEventMessage implements EventMessage {
      * @param stateNamesIn state names that need to be applied to the server
      */
     public ApplyStatesEventMessage(long serverIdIn, String... stateNamesIn) {
-        this.serverId = serverIdIn;
-        this.userId = null;
-        this.stateNames = Arrays.asList(stateNamesIn);
+        serverId = serverIdIn;
+        userId = null;
+        stateNames = Arrays.asList(stateNamesIn);
+        txn = HibernateFactory.getSession().getTransaction();
     }
 
     /**
@@ -77,17 +83,11 @@ public class ApplyStatesEventMessage implements EventMessage {
         return stateNames;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Long getUserId() {
-        return this.userId;
+        return userId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toText() {
         return toString();
@@ -95,8 +95,12 @@ public class ApplyStatesEventMessage implements EventMessage {
 
     @Override
     public String toString() {
-        return "StateDirtyEvent[serverId: " + serverId + ", stateNames: " +
+        return "ApplyStatesEventMessage[serverId: " + serverId + ", stateNames: " +
                 stateNames.stream().collect(Collectors.joining(", ")) + "]";
     }
 
+    @Override
+    public Transaction getTransaction() {
+        return txn;
+    }
 }
