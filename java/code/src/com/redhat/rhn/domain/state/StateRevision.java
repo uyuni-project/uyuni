@@ -106,10 +106,10 @@ public class StateRevision {
     }
 
     /**
-     * @param assignedStatesIn the custom states to assign to this server
+     * @param customStatesIn the custom states to assign to this server
      */
-    public void setCustomStates(Set<CustomState> assignedStatesIn) {
-        this.customStates = assignedStatesIn;
+    public void setCustomStates(Set<CustomState> customStatesIn) {
+        this.customStates = customStatesIn;
     }
 
     /**
