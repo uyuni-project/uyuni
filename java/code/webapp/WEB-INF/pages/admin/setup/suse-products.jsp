@@ -17,7 +17,7 @@
 <body>
     <div class="responsive-wizard">
         <rhn:toolbar base="h1" icon="header-preferences" helpUrl="/rhn/help/reference/en-US/ref.webui.admin.jsp#ref.webui.admin.wizard">
-            Setup Wizard
+            <bean:message key="suse-products.jsp.header" />
         </rhn:toolbar>
         <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/setup_wizard.xml"
             renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
@@ -35,10 +35,10 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" class="select-all" autocomplete="off" /></th>
-                                            <th>Available Products Below</th>
-                                            <th>Architecture</th>
-                                            <th>Channels</th>
-                                            <th>Status</th>
+                                            <th><bean:message key="suse-products.jsp.th.available-products"/></th>
+                                            <th><bean:message key="suse-products.jsp.th.arch"/></th>
+                                            <th><bean:message key="suse-products.jsp.th.channels"/></th>
+                                            <th><bean:message key="suse-products.jsp.th.status"/></th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -47,7 +47,7 @@
                                             <td colspan="6">
                                                 <div class="spinner-container">
                                                     <rhn:icon type="spinner"></rhn:icon>
-                                                    <span>Loading...</span>
+                                                    <span><bean:message key="suse-products.jsp.loading" /></span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -69,11 +69,9 @@
                                 </table>
                             </div>
                             <div class="col-sm-3 hidden-xs" id="wizard-faq">
-                                <h4>Why aren't all SUSE products displayed in the list?</h4>
-                                <p>The products displayed on this list are directly linked to
-                                   your Mirror Credentials as well as your SUSE subscriptions.</p>
-                                <p>If you believe there are products missing, make sure you have
-                                   added the correct Mirror Credentials in the previous wizard step.</p>
+                                <h4><bean:message key="suse-products.jsp.info.h1" /></h4>
+                                <p><bean:message key="suse-products.jsp.info.p1" /></p>
+                                <p><bean:message key="suse-products.jsp.info.p2" /></p>
                             </div>
                         </div>
                     </c:when>

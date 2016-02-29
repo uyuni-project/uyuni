@@ -966,7 +966,7 @@ sub populate_initial_configs {
                       );
       Spacewalk::Setup::system_or_exit(["/bin/bash", "-c",
                                         "echo \"$st\" | spacewalk-sql --select-mode - 2>&1"],
-                                       1, "*** Setup Mirror Credentials failed.");
+                                       1, "*** Setup Organization Credentials failed.");
 
       my $apache_gid = getgrnam('www');
       if ($apache_gid && -e Spacewalk::Setup::SCC_CREDENTIAL_FILE) {
