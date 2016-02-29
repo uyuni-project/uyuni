@@ -13,7 +13,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseServerCustomState
+CREATE TABLE suseStateRevisionCustomState
 (
     state_revision_id NUMBER NOT NULL
                           CONSTRAINT suse_server_state_rev_id_fk
