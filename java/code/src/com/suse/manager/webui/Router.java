@@ -63,7 +63,7 @@ public class Router implements SparkApplication {
                 jade);
 
         get("/manager/systems/details/custom",
-                withCsrfToken(MinionController::applyMinionStates),
+                withCsrfToken(MinionController::customStates),
                 jade);
 
         // Minion APIs
