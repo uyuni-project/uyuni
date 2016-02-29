@@ -69,7 +69,7 @@ public enum StateRevisionService {
             // custom states can be simply added to the collections because
             // they don't hold any reference to the state revision
             newRevision.getCustomStates().addAll(
-                    StateFactory.latestCustomSaltStates(server)
+                    StateFactory.latestCustomtates(server)
                             .orElse(Collections.emptySet()));
         }
 
