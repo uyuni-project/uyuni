@@ -21,13 +21,13 @@ import com.redhat.rhn.common.messaging.EventMessage;
  */
 public class MinionStartEventMessage implements EventMessage {
 
-    private String minionId;
+    private final String minionId;
 
     /**
      * @param minionIdIn the id of the minion that was started
      */
     public MinionStartEventMessage(String minionIdIn) {
-        this.minionId = minionIdIn;
+        minionId = minionIdIn;
     }
 
     /**
@@ -37,25 +37,16 @@ public class MinionStartEventMessage implements EventMessage {
         return minionId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Long getUserId() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toText() {
         return toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return "MinionStartEventMessage[minionId: " + minionId + "]";
