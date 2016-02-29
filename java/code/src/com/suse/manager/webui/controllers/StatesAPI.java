@@ -34,6 +34,7 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import com.redhat.rhn.manager.system.SystemManager;
 import org.apache.http.HttpStatus;
 
 import com.suse.manager.webui.utils.gson.JSONSaltState;
@@ -253,8 +254,7 @@ public class StatesAPI {
     }
 
     private static void checkUserHasPermissionsOnServer(Server server, User user) {
-        if (!server.getOrg().getId().equals(user.getOrg().getId())) {
-            // TODO any other checks needed here ?
+        if (!SystemManager.isAvailableToUser(user, server.getId())) {
             Spark.halt(HttpStatus.SC_FORBIDDEN);
         }
     }
