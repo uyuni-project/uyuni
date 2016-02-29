@@ -100,7 +100,7 @@ public class StateFactory extends HibernateFactory {
      * @param name the name of the state to get
      * @return a {@link CustomState} object
      */
-    public static CustomState getCustomSaltStateByName(String name) {
+    public static CustomState getCustomStateByName(String name) {
         return (CustomState)getSession().createCriteria(CustomState.class)
                 .add(Restrictions.eq("stateName", name))
                 .uniqueResult();

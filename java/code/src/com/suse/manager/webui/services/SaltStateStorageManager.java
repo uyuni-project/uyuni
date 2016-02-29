@@ -120,7 +120,7 @@ public class SaltStateStorageManager {
             StateFactory.save(customState);
         }
         else {
-            CustomState customState = StateFactory.getCustomSaltStateByName(oldName);
+            CustomState customState = StateFactory.getCustomStateByName(oldName);
             customState.setStateName(stateName);
             StateFactory.save(customState);
         }
