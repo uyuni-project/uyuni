@@ -58,7 +58,7 @@ function modifyUploadCheckbox(checkbox) {
           action="/rhn/admin/multiorg/OrgConfigDetails.do">
             <rhn:csrf />
             <rhn:submitted/>
-            <input type="hidden" name="oid" value="${param.oid}"/>
+            <rhn:hidden name="oid" value="${param.oid}"/>
             <div class="form-group">
                 <label class="col-lg-3 control-label">
                     <bean:message key="org-config.staging-content.jsp"/>

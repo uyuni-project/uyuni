@@ -40,7 +40,7 @@
       </html:submit>
     </div>
 
-    <input type="hidden" name="submitted" value="true" />
+    <rhn:hidden name="submitted" value="true" />
   </html:form>
 
   <h2><bean:message key="help.credentials.jsp.logininfo"/></h2>
@@ -63,7 +63,7 @@
       </html:submit>
     </div>
 
-    <input type="hidden" name="submitted" value="true" />
+    <rhn:hidden name="submitted" value="true" />
   </html:form>
 
 </body>
