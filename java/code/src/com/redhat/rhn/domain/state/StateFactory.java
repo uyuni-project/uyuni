@@ -99,11 +99,12 @@ public class StateFactory extends HibernateFactory {
     /**
      * Get a {@link CustomState} object from the db by name
      * @param name the name of the state to get
-     * @return a {@link CustomState} object
+     * @return an {@link Optional} containing a {@link CustomState} object
      */
-    public static CustomState getCustomStateByName(String name) {
-        return (CustomState)getSession().createCriteria(CustomState.class)
+    public static Optional<CustomState> getCustomStateByName(String name) {
+        CustomState state = (CustomState)getSession().createCriteria(CustomState.class)
                 .add(Restrictions.eq("stateName", name))
                 .uniqueResult();
+        return Optional.ofNullable(state);
     }
 }
