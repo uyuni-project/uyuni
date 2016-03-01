@@ -61,19 +61,20 @@ public class StateFactory extends HibernateFactory {
      * @return the latest package states for this server
      */
     public static Optional<Set<PackageState>> latestPackageStates(Server server) {
-        ServerStateRevision revision = latestRevision(server);
-        return Optional.ofNullable(revision).map(ServerStateRevision::getPackageStates);
+        Optional<ServerStateRevision> revision = latestRevision(server);
+        return revision.map(ServerStateRevision::getPackageStates);
     }
 
-    private static ServerStateRevision latestRevision(Server server) {
+    private static Optional<ServerStateRevision> latestRevision(Server server) {
         DetachedCriteria maxQuery = DetachedCriteria.forClass(ServerStateRevision.class)
                 .add(Restrictions.eq("server", server))
                 .setProjection(Projections.max("id"));
-        return (ServerStateRevision) getSession()
+        ServerStateRevision revision = (ServerStateRevision) getSession()
                 .createCriteria(ServerStateRevision.class)
                 .add(Restrictions.eq("server", server))
                 .add(Property.forName("id").eq(maxQuery))
                 .uniqueResult();
+        return Optional.ofNullable(revision);
     }
 
     /**
@@ -83,8 +84,8 @@ public class StateFactory extends HibernateFactory {
      * @return the latest custom states for this server
      */
     public static Optional<Set<CustomState>> latestCustomtates(Server server) {
-        ServerStateRevision revision = latestRevision(server);
-        return Optional.ofNullable(revision).map(ServerStateRevision::getCustomStates);
+        Optional<ServerStateRevision> revision = latestRevision(server);
+        return revision.map(ServerStateRevision::getCustomStates);
     }
 
     /**
