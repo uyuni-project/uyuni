@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Mar 01 16:49:30 CET 2016 - mc@suse.de
+
+- version 2.5.4.1-1
+- remote package upgrade saying newer package is installed,
+  but it is not
+- delete file with input files after template is created
+
+-------------------------------------------------------------------
 Tue Jan 26 13:52:10 CET 2016 - mc@suse.de
 
 - version 2.5.2.1-1
