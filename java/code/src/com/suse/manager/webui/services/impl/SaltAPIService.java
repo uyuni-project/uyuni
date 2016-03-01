@@ -638,4 +638,14 @@ public enum SaltAPIService implements SaltService {
     public boolean orgStateExists(long orgId, String name) {
         return storageManager.exists(orgId, name);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Set<String> resolveOrgStates(long orgId, Set<String> states) {
+        return states.stream().map(state -> storageManager
+                .getOrgNamespace(orgId) + "." + state)
+                .collect(Collectors.toSet());
+    }
+
 }

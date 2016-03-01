@@ -5,3 +5,4 @@ base:
   '*':
     - certs
     - packages
+    - custom

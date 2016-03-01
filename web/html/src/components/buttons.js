@@ -17,6 +17,12 @@ class AsyncButton extends React.Component {
         value: "waiting"
     });
     const future = this.props.action();
+    if (!future) {
+        this.setState({
+            value: "initial"
+        });
+        return;
+    }
     future.then(
       () => {
         this.setState({

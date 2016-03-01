@@ -33,6 +33,7 @@ public class StateRevision {
     private Date created;
     private User creator;
     private Set<PackageState> packageStates = new HashSet<>();
+    private Set<CustomState> customStates = new HashSet<>();
 
     /**
      * @return the id
@@ -95,6 +96,20 @@ public class StateRevision {
      */
     public void addPackageState(PackageState packageState) {
         this.packageStates.add(packageState);
+    }
+
+    /**
+     * @return the custom states assigned to this server
+     */
+    public Set<CustomState> getCustomStates() {
+        return customStates;
+    }
+
+    /**
+     * @param customStatesIn the custom states to assign to this server
+     */
+    public void setCustomStates(Set<CustomState> customStatesIn) {
+        this.customStates = customStatesIn;
     }
 
     /**

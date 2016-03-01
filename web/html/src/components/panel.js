@@ -1,5 +1,8 @@
 'use strict';
 
+// TODO rename this to panels.js
+// TODO use the same syntax (ES5 or ES6) in all classes
+
 var React = require("react");
 
 var PanelButton = React.createClass({
@@ -20,6 +23,7 @@ var PanelButton = React.createClass({
   }
 });
 
+// TODO rename this to TopPanel
 var Panel = React.createClass({
   getInitialState: function() {
     return {};
@@ -38,8 +42,59 @@ var Panel = React.createClass({
   }
 });
 
+class InnerPanel extends React.Component {
+
+  constructor(props) {
+    super();
+  }
+
+  render() {
+    return (
+      <div>
+        <h2>
+          <i className={"fa " +  this.props.icon}></i>
+          {this.props.title}
+          <span className="btn-group pull-right">
+              {this.props.buttons}
+          </span>
+        </h2>
+        <div className="row col-md-12">
+          <div className="panel panel-default">
+            <div className="panel-body">
+                {this.props.children}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+}
+
+class PanelRow extends React.Component {
+
+  constructor(props) {
+    super();
+  }
+
+  render() {
+    return (
+        <div className="row">
+            <span className="col-md-8 pull-right">
+                <span className={this.props.className}>
+                    {this.props.children}
+                </span>
+            </span>
+        </div>
+    );
+  }
+
+}
+
 module.exports = {
     Panel : Panel,
-    PanelButton : PanelButton
+    PanelButton : PanelButton,
+    InnerPanel : InnerPanel,
+    PanelRow : PanelRow
 }
 
