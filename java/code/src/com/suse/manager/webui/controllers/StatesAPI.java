@@ -18,6 +18,8 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.PackageState;
@@ -52,6 +54,8 @@ import com.suse.manager.webui.utils.gson.JSONCustomState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
 import com.suse.manager.webui.utils.gson.JSONServerCustomStates;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.exception.SaltException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -61,6 +65,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -416,5 +421,38 @@ public class StatesAPI {
         });
         serverRev.setPackageStates(packageStateStream.collect(Collectors.toSet()));
         StateFactory.save(serverRev);
+    }
+
+    /**
+     * Call state.show_highstate for a given minion and return the output as JSON.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return JSON result of state.show_highstate
+     */
+    public static String showHighstate(Request request, Response response) {
+        // Lookup the minion
+        Optional<MinionServer> minionServer = MinionServerFactory
+                .lookupById(Long.valueOf(request.queryParams("sid")));
+        String ret = "";
+
+        if (minionServer.isPresent()) {
+            String minionId = minionServer.get().getMinionId();
+            LOG.debug("minionId is: " + minionId);
+            MinionList target = new MinionList(minionId);
+
+            Map<String, Object> result;
+            try {
+                result = SaltAPIService.INSTANCE.callSync(
+                        com.suse.manager.webui.utils.salt.State.showHighstate(), target, null);
+                ret = GSON.toJson(result.get(minionId));
+            }
+            catch (SaltException e) {
+                response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+                ret = e.getMessage();
+            }
+        }
+        response.type("application/json");
+        return ret;
     }
 }
