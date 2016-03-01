@@ -124,8 +124,8 @@ public class SaltStateStorageManager {
             Optional<CustomState> customState = StateFactory.
                     getCustomStateByName(oldNameToGet);
             CustomState state = customState.orElseThrow(() ->
-                    new IllegalArgumentException("CustomState name=" + oldNameToGet
-                            + " not found"));
+                    new IllegalArgumentException("CustomState name=" + oldNameToGet +
+                            " not found"));
             state.setStateName(stateName);
             StateFactory.save(state);
         }
