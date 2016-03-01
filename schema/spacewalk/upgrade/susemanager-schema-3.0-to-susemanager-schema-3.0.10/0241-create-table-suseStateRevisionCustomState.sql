@@ -27,5 +27,5 @@ CREATE TABLE suseStateRevisionCustomState
 ENABLE ROW MOVEMENT
 ;
 
-ALTER TABLE suseServerCustomState
-    ADD CONSTRAINT suse_assigned_states_id_sid_uq UNIQUE (state_revision_id, state_id);
+ALTER TABLE suseStateRevisionCustomState
+    ADD CONSTRAINT suse_state_rev_id_state_id_uq UNIQUE (state_revision_id, state_id);
