@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.services;
 
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.state.CustomState;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.suse.manager.webui.utils.RepoFileUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -31,6 +34,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.suse.manager.webui.utils.SaltFileUtils.hasExtension;
+import static com.suse.manager.webui.utils.SaltFileUtils.stripExtension;
+import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
 /**
  * Manages the Salt .sls files on disk.
@@ -68,7 +76,7 @@ public class SaltStateStorageManager {
         // TODO synchronize at file level not on the class instance
 
         if (StringUtils.isNotBlank(oldName)) {
-            oldName = StringUtils.removeEnd(oldName, ".sls");
+            oldName = stripExtension(oldName);
             if (!oldName.equals(name) && exists(orgId, name)) {
                 throw new SaltStateExistsException();
             }
@@ -77,12 +85,12 @@ public class SaltStateStorageManager {
             throw new SaltStateExistsException();
         }
 
-        Path orgPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId);
+        Path orgPath = Paths.get(getBaseDirPath(), getOrgNamespace(orgId));
         File orgDir = orgPath.toFile();
         if (!orgDir.exists()) {
             orgDir.mkdir();
         }
-        File stateFile = new File(orgDir, ext(name));
+        File stateFile = new File(orgDir, defaultExtension(name));
         assertStateInOrgDir(orgDir, stateFile);
 
         if (stateFile.exists()) {
@@ -95,12 +103,32 @@ public class SaltStateStorageManager {
             }
         }
 
+        boolean move = false;
         if (StringUtils.isNotBlank(oldName)) {
-            Files.move(orgPath.resolve(ext(oldName)), stateFile.toPath());
+            Files.move(orgPath.resolve(defaultExtension(oldName)), stateFile.toPath());
+            move = true;
         }
 
         // TODO clarify encoding
         FileUtils.writeStringToFile(stateFile, content, "US-ASCII");
+
+        String stateName = stripExtension(name);
+        if (!move) {
+            CustomState customState = new CustomState();
+            customState.setOrg(OrgFactory.lookupById(orgId));
+            customState.setStateName(stateName);
+            StateFactory.save(customState);
+        }
+        else {
+            final String oldNameToGet = oldName;
+            Optional<CustomState> customState = StateFactory.
+                    getCustomStateByName(oldNameToGet);
+            CustomState state = customState.orElseThrow(() ->
+                    new IllegalArgumentException("CustomState name=" + oldNameToGet
+                            + " not found"));
+            state.setStateName(stateName);
+            StateFactory.save(state);
+        }
     }
 
     private void assertStateInOrgDir(File orgDir, File stateFile) throws IOException {
@@ -111,10 +139,6 @@ public class SaltStateStorageManager {
         }
     }
 
-    private String ext(String name) {
-        return StringUtils.endsWith(name, ".sls") ? name : name + ".sls";
-    }
-
     /**
      * Delete the .sls file with the give name.
      * @param orgId the organization id
@@ -122,8 +146,8 @@ public class SaltStateStorageManager {
      * @throws IOException in case of an IO error
      */
     public void deleteState(long orgId, String name) throws IOException {
-        File orgDir = new File(getBaseDirPath(), "manager_org_" + orgId);
-        File stateFile = new File(orgDir, ext(name));
+        File orgDir = new File(getBaseDirPath(), getOrgNamespace(orgId));
+        File stateFile = new File(orgDir, defaultExtension(name));
         assertStateInOrgDir(orgDir, stateFile);
         Files.delete(stateFile.toPath());
     }
@@ -135,8 +159,10 @@ public class SaltStateStorageManager {
      * @return the content of the file as a string if the file exists
      * @throws IOException in case of an IO error
      */
-    public Optional<String> getContent(long orgId, String name) throws IOException {
-        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, ext(name));
+    public Optional<String> getContent(long orgId, String name)
+            throws IOException {
+        Path slsPath = Paths.get(getBaseDirPath(), getOrgNamespace(orgId),
+                defaultExtension(name));
         File slsFile = slsPath.toFile();
         if (!slsFile.exists()) {
             return Optional.empty();
@@ -151,12 +177,14 @@ public class SaltStateStorageManager {
      * @return a list containing all .sls files names (without .sls extension)
      */
     public List<String> listByOrg(long orgId) {
-        Path orgPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId);
+        Path orgPath = Paths.get(getBaseDirPath(), getOrgNamespace(orgId));
         File orgDir = orgPath.toFile();
         if (!orgDir.exists()) {
             return Collections.emptyList();
         }
-        return Arrays.asList(orgDir.list((dir, name) -> name.endsWith(".sls")));
+        return Arrays.asList(orgDir.list((dir, name) -> hasExtension(name)))
+                .stream().map(name -> stripExtension(name))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -166,8 +194,18 @@ public class SaltStateStorageManager {
      * @return true if the file exists, false otherwise
      */
     public boolean exists(long orgId, String name) {
-        Path slsPath = Paths.get(getBaseDirPath(), "manager_org_" + orgId, ext(name));
+        Path slsPath = Paths.get(getBaseDirPath(), getOrgNamespace(orgId),
+                defaultExtension(name));
         return slsPath.toFile().exists();
+    }
+
+    /**
+     * Get the Salt namespace of the organization.
+     * @param orgId the organization id
+     * @return the Salt namespace
+     */
+    public String getOrgNamespace(long orgId) {
+        return "manager_org_" + orgId;
     }
 
 }

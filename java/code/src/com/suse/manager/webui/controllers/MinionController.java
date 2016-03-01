@@ -131,11 +131,27 @@ public class MinionController {
      * @param response the response object
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView packages(Request request, Response response) {
+    public static ModelAndView packageStates(Request request, Response response) {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
         data.put("serverId", serverId);
         data.put("serverName", ServerFactory.lookupById(new Long(serverId)).getName());
         return new ModelAndView(data, "minion/packages.jade");
     }
+
+    /**
+     * Handler for the apply minion states page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView customStates(Request request, Response response) {
+        String serverId = request.queryParams("sid");
+        Map<String, Object> data = new HashMap<>();
+        data.put("serverId", serverId);
+        data.put("serverName", ServerFactory.lookupById(new Long(serverId)).getName());
+        return new ModelAndView(data, "minion/custom.jade");
+    }
+
 }

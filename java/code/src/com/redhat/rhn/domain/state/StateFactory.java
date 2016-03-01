@@ -47,12 +47,25 @@ public class StateFactory extends HibernateFactory {
     }
 
     /**
+     * Save a {@link CustomState}.
+     * @param customState the salt state to save
+     */
+    public static void save(CustomState customState) {
+        singleton.saveObject(customState);
+    }
+
+    /**
      * Lookup the latest set of {@link PackageState} objects for a given server.
      *
      * @param server the server
      * @return the latest package states for this server
      */
     public static Optional<Set<PackageState>> latestPackageStates(Server server) {
+        Optional<ServerStateRevision> revision = latestRevision(server);
+        return revision.map(ServerStateRevision::getPackageStates);
+    }
+
+    private static Optional<ServerStateRevision> latestRevision(Server server) {
         DetachedCriteria maxQuery = DetachedCriteria.forClass(ServerStateRevision.class)
                 .add(Restrictions.eq("server", server))
                 .setProjection(Projections.max("id"));
@@ -61,7 +74,18 @@ public class StateFactory extends HibernateFactory {
                 .add(Restrictions.eq("server", server))
                 .add(Property.forName("id").eq(maxQuery))
                 .uniqueResult();
-        return Optional.ofNullable(revision).map(ServerStateRevision::getPackageStates);
+        return Optional.ofNullable(revision);
+    }
+
+    /**
+     * Lookup the latest set of custom {@link CustomState} objects for a given server.
+     *
+     * @param server the server
+     * @return the latest custom states for this server
+     */
+    public static Optional<Set<CustomState>> latestCustomStates(Server server) {
+        Optional<ServerStateRevision> revision = latestRevision(server);
+        return revision.map(ServerStateRevision::getCustomStates);
     }
 
     /**
@@ -70,5 +94,17 @@ public class StateFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         return log;
+    }
+
+    /**
+     * Get a {@link CustomState} object from the db by name
+     * @param name the name of the state to get
+     * @return an {@link Optional} containing a {@link CustomState} object
+     */
+    public static Optional<CustomState> getCustomStateByName(String name) {
+        CustomState state = (CustomState)getSession().createCriteria(CustomState.class)
+                .add(Restrictions.eq("stateName", name))
+                .uniqueResult();
+        return Optional.ofNullable(state);
     }
 }

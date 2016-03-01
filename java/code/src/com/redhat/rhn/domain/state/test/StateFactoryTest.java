@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -85,4 +86,92 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, states.get().size());
         assertTrue(states.get().contains(packageState));
     }
+
+    /**
+     * Test assigning a state
+     * @throws Exception
+     */
+    public void testAssignStates() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user);
+        ServerStateRevision serverState = new ServerStateRevision();
+        serverState.setServer(server);
+        serverState.setCreator(user);
+
+        CustomState state1 = new CustomState();
+        state1.setOrg(user.getOrg());
+        state1.setStateName("foo");
+
+        CustomState state2 = new CustomState();
+        state2.setOrg(user.getOrg());
+        state2.setStateName("bar");
+
+        serverState.getCustomStates().add(state1);
+        serverState.getCustomStates().add(state2);
+
+        StateFactory.save(serverState);
+        clearFlush();
+
+        assertNotNull(serverState.getId());
+        assertNotNull(state1.getId());
+        assertNotNull(state2.getId());
+
+        serverState = (ServerStateRevision) StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
+        state1 = (CustomState)StateFactory.getSession().get(CustomState.class, state1.getId());
+        state2 = (CustomState)StateFactory.getSession().get(CustomState.class, state2.getId());
+
+        assertNotNull(serverState);
+        assertNotNull(state1);
+        assertNotNull(state2);
+        assertEquals(2, serverState.getCustomStates().size());
+        assertTrue(serverState.getCustomStates().contains(state1));
+        assertTrue(serverState.getCustomStates().contains(state2));
+    }
+
+    /**
+     * Test removing a state
+     * @throws Exception
+     */
+    public void testRemoveAssignedStates() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user);
+        ServerStateRevision serverState = new ServerStateRevision();
+        serverState.setServer(server);
+        serverState.setCreator(user);
+
+        CustomState state1 = new CustomState();
+        state1.setOrg(user.getOrg());
+        state1.setStateName("foo");
+
+        CustomState state2 = new CustomState();
+        state2.setOrg(user.getOrg());
+        state2.setStateName("bar");
+
+        serverState.getCustomStates().add(state1);
+        serverState.getCustomStates().add(state2);
+
+        StateFactory.save(serverState);
+        clearFlush();
+
+        serverState = (ServerStateRevision) StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
+        state1 = (CustomState)StateFactory.getSession().get(CustomState.class, state1.getId());
+        state2 = (CustomState)StateFactory.getSession().get(CustomState.class, state2.getId());
+
+        serverState.getCustomStates().remove(state1);
+        assertEquals(1, serverState.getCustomStates().size());
+
+        StateFactory.save(serverState);
+        clearFlush();
+
+        serverState = (ServerStateRevision) StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
+        state2 = (CustomState)StateFactory.getSession().get(CustomState.class, state2.getId());
+
+        assertEquals(1, serverState.getCustomStates().size());
+        assertTrue(serverState.getCustomStates().contains(state2));
+    }
+
+    private void clearFlush() {
+        StateFactory.getSession().flush();
+        StateFactory.getSession().clear();
+    }
+
+
 }

@@ -59,7 +59,11 @@ public class Router implements SparkApplication {
 
         // Package Management
         get("/manager/systems/details/packages",
-                withCsrfToken(MinionController::packages),
+                withCsrfToken(MinionController::packageStates),
+                jade);
+
+        get("/manager/systems/details/custom",
+                withCsrfToken(MinionController::customStates),
                 jade);
 
         // Minion APIs
@@ -68,9 +72,11 @@ public class Router implements SparkApplication {
 
         // States API
         post("/manager/api/states/apply", withUser(StatesAPI::apply));
+        get("/manager/api/states/match", withUser(StatesAPI::matchStates));
+        post("/manager/api/states/save", withUser(StatesAPI::saveCustomStates));
         get("/manager/api/states/packages", StatesAPI::packages);
-        post("/manager/api/states/packages/save", withUser(StatesAPI::save));
-        get("/manager/api/states/packages/match", StatesAPI::match);
+        post("/manager/api/states/packages/save", withUser(StatesAPI::savePackages));
+        get("/manager/api/states/packages/match", StatesAPI::matchPackages);
 
         // Download endpoint
         get("/manager/download/:channel/getPackage/:file",
@@ -124,6 +130,8 @@ public class Router implements SparkApplication {
                 withCsrfToken(withOrgAdmin(StateCatalogController::add)), jade);
         get("/manager/state_catalog/state/:name",
                 withCsrfToken(withOrgAdmin(StateCatalogController::edit)), jade);
+        get("/manager/state-catalog/state/:name/content",
+                withUser(StateCatalogController::content));
         post("/manager/state_catalog/state",
                 withOrgAdmin(StateCatalogController::create));
         put("/manager/state_catalog/state/:name",
