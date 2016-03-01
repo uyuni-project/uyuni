@@ -59,7 +59,7 @@ public class Router implements SparkApplication {
 
         // Package Management
         get("/manager/systems/details/packages",
-                withCsrfToken(MinionController::packages),
+                withCsrfToken(MinionController::packageStates),
                 jade);
 
         get("/manager/systems/details/custom",
