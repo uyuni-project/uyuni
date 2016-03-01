@@ -39,30 +39,6 @@ public class PackageState {
     private int versionConstraintId;
 
     /**
-     * No arg constructor.
-     */
-    public PackageState() { }
-
-    /**
-     * @param nameIn package name
-     * @param evrIn the evr
-     * @param archIn the architecture
-     * @param stateRevisionIn the state revision
-     * @param packageStateTypeIdIn the package state type
-     * @param versionConstraintIdIn the version constraint
-     */
-    public PackageState(PackageName nameIn, PackageEvr evrIn, PackageArch archIn,
-                        StateRevision stateRevisionIn, int packageStateTypeIdIn,
-                        int versionConstraintIdIn) {
-        this.name = nameIn;
-        this.evr = evrIn;
-        this.arch = archIn;
-        this.stateRevision = stateRevisionIn;
-        this.packageStateTypeId = packageStateTypeIdIn;
-        this.versionConstraintId = versionConstraintIdIn;
-    }
-
-    /**
      * @return the arch
      */
     public PackageArch getArch() {
