@@ -83,7 +83,7 @@ public class StateFactory extends HibernateFactory {
      * @param server the server
      * @return the latest custom states for this server
      */
-    public static Optional<Set<CustomState>> latestCustomtates(Server server) {
+    public static Optional<Set<CustomState>> latestCustomStates(Server server) {
         Optional<ServerStateRevision> revision = latestRevision(server);
         return revision.map(ServerStateRevision::getCustomStates);
     }
