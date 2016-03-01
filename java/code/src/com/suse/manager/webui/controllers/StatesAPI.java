@@ -188,10 +188,12 @@ public class StatesAPI {
 
         // Merge the latest salt states with the changes
         Set<String> toAssign = json.getSaltStates().stream()
-                .filter(s -> s.isAssigned()).map(s -> s.getName())
+                .filter(s -> s.isAssigned())
+                .map(s -> s.getName())
                 .collect(Collectors.toSet());
         Set<String> toRemove = json.getSaltStates().stream()
-                .filter(s -> !s.isAssigned()).map(s -> s.getName())
+                .filter(s -> !s.isAssigned())
+                .map(s -> s.getName())
                 .collect(Collectors.toSet());
 
         StateFactory.latestCustomStates(server).ifPresent(oldStates -> {
