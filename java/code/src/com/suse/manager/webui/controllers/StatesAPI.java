@@ -204,8 +204,8 @@ public class StatesAPI {
         });
 
         for (String newStateName : toAssign) {
-            CustomState newState = StateFactory.getCustomStateByName(newStateName);
-            newRevision.getCustomStates().add(newState);
+            Optional<CustomState> newState = StateFactory.getCustomStateByName(newStateName);
+            newState.ifPresent(s -> newRevision.getCustomStates().add(s));
         }
 
         try {
