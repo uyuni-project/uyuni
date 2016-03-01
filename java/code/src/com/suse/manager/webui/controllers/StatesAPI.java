@@ -152,7 +152,7 @@ public class StatesAPI {
         // Find matches among this server's current salt states
         Set<JSONCustomState> result = new HashSet<>(); // use a set to avoid duplicates
         Optional<Set<CustomState>> saltStates = StateFactory.latestCustomStates(server);
-        result.addAll(saltStates.orElseGet(Collections::<CustomState>emptySet).stream()
+        result.addAll(saltStates.orElseGet(Collections::emptySet).stream()
                 .filter(s -> s.getStateName().toLowerCase().contains(targetLowerCase))
                 .map(s -> new JSONCustomState(s.getStateName(), true))
                 .collect(Collectors.toList()));
