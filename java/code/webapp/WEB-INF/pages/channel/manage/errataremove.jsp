@@ -18,7 +18,7 @@
 
   <rl:listset name="errata_list_set">
    <rhn:csrf />
-   <rhn:hidden name="cid" value="${cid}">
+   <rhn:hidden name="cid" value="${cid}" />
 
                   <rl:list  dataset="errata_data"
                                         decorator="SelectableDecorator"
