@@ -60,8 +60,8 @@ public enum StateRevisionService {
                                 copy.setEvr(p.getEvr());
                                 copy.setArch(p.getArch());
                                 copy.setStateRevision(newRevision);
-                                copy.setPackageStateTypeId(p.getPackageStateTypeId());
-                                copy.setVersionConstraintId(p.getVersionConstraintId());
+                                copy.setPackageState(p.getPackageState());
+                                copy.setVersionConstraint(p.getVersionConstraint());
                                 return copy;
                             }).collect(Collectors.toSet()))
                     .orElse(Collections.emptySet());
