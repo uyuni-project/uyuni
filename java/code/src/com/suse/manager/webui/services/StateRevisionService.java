@@ -54,13 +54,16 @@ public enum StateRevisionService {
             Set<PackageState> packageCopies = StateFactory
                     .latestPackageStates(server)
                     .map(packageStates -> packageStates.stream()
-                            .map(p -> new PackageState(p.getName(),
-                                    p.getEvr(),
-                                    p.getArch(),
-                                    newRevision,
-                                    p.getPackageStateTypeId(),
-                                    p.getVersionConstraintId())
-                            ).collect(Collectors.toSet()))
+                            .map(p -> {
+                                PackageState copy = new PackageState();
+                                copy.setName(p.getName());
+                                copy.setEvr(p.getEvr());
+                                copy.setArch(p.getArch());
+                                copy.setStateRevision(newRevision);
+                                copy.setPackageStateTypeId(p.getPackageStateTypeId());
+                                copy.setVersionConstraintId(p.getVersionConstraintId());
+                                return copy;
+                            }).collect(Collectors.toSet()))
                     .orElse(Collections.emptySet());
             newRevision.setPackageStates(packageCopies);
         }
