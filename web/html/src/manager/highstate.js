@@ -21,7 +21,7 @@ var Highstate = React.createClass({
     refreshHighstate: function() {
         console.log("Refreshing the highstate...");
         $.get("/rhn/manager/api/states/highstate?sid=" + serverId, data => {
-          this.setState({"highstate" : data});
+            this.setState({"highstate" : data});
         });
     },
 
@@ -30,26 +30,26 @@ var Highstate = React.createClass({
     },
 
     applyHighstate: function() {
-      const request = $.ajax({
-          type: "POST",
-          url: "/rhn/manager/api/states/apply",
-          data: JSON.stringify({
-              sid: serverId,
-              states: []
-          }),
-          contentType: "application/json",
-          dataType: "json"
-      })
-      .done( data => {
-          console.log("state.apply action scheduled:" + data)
-          this.state.messages.push(msg('info', <span>{t("Applying the highstate has been ")}
-                  <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
-                  {t(".")}</span>))
-          this.setState({
-              messages: this.state.messages
-          });
-      });
-      return Promise.resolve(request);
+        const request = $.ajax({
+            type: "POST",
+            url: "/rhn/manager/api/states/apply",
+            data: JSON.stringify({
+                sid: serverId,
+                states: []
+            }),
+            contentType: "application/json",
+            dataType: "json"
+        })
+        .done(data => {
+            console.log("state.apply action scheduled:" + data)
+            this.state.messages.push(msg('info', <span>{t("Applying the highstate has been ")}
+                <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
+                {t(".")}</span>))
+            this.setState({
+                messages: this.state.messages
+            });
+        });
+        return Promise.resolve(request);
     },
 
     render: function() {
@@ -83,6 +83,6 @@ var Highstate = React.createClass({
 });
 
 React.render(
-  <Highstate />,
-  document.getElementById('highstate')
+    <Highstate />,
+    document.getElementById('highstate')
 );
