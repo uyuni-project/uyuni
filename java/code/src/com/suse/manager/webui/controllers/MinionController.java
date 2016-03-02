@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 
@@ -140,13 +141,28 @@ public class MinionController {
     }
 
     /**
-     * Handler for the apply minion states page.
+     * Handler for the org states page.
      *
      * @param request the request object
      * @param response the response object
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView customStates(Request request, Response response) {
+    public static ModelAndView orgCustomStates(Request request, Response response) {
+        String orgId = request.queryParams("oid");
+        Map<String, Object> data = new HashMap<>();
+        data.put("orgId", orgId);
+        data.put("orgName", OrgFactory.lookupById(new Long(orgId)).getName());
+        return new ModelAndView(data, "org/custom.jade");
+    }
+
+    /**
+     * Handler for the minion states page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView minionCustomStates(Request request, Response response) {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
         data.put("serverId", serverId);

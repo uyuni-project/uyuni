@@ -330,7 +330,7 @@ public interface SaltService {
      * @param orgId the organization id
      * @return a list of names without the .sls extension
      */
-    List<String> getOrgStates(long orgId);
+    List<String> getCatalogStates(long orgId);
 
     /**
      * Get the content of the give Salt .sls file.

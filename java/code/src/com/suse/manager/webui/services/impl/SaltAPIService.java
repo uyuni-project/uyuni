@@ -630,7 +630,7 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public List<String> getOrgStates(long orgId) {
+    public List<String> getCatalogStates(long orgId) {
         return storageManager.listByOrg(orgId);
     }
 

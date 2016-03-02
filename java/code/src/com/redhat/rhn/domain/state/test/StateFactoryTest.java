@@ -16,14 +16,20 @@ package com.redhat.rhn.domain.state.test;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.CustomState;
+import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import java.util.Optional;
 import java.util.Set;
@@ -167,6 +173,107 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, serverState.getCustomStates().size());
         assertTrue(serverState.getCustomStates().contains(state2));
     }
+
+    public void testServerGroupCustomStates() {
+        ManagedServerGroup group = ServerGroupFactory.create("testgroup-" +
+                TestUtils.randomString(), "desc", user.getOrg());
+
+        CustomState state1 = new CustomState();
+        state1.setOrg(user.getOrg());
+        state1.setStateName("foo");
+
+        CustomState state2 = new CustomState();
+        state2.setOrg(user.getOrg());
+        state2.setStateName("bar");
+
+        ServerGroupStateRevision groupRevision = new ServerGroupStateRevision();
+        groupRevision.setGroup(group);
+        groupRevision.setCreator(user);
+        groupRevision.getCustomStates().add(state1);
+        groupRevision.getCustomStates().add(state2);
+
+        StateFactory.save(groupRevision);
+        clearFlush();
+
+        groupRevision = (ServerGroupStateRevision) StateFactory.getSession().get(ServerGroupStateRevision.class,
+                groupRevision.getId());
+        assertEquals(2, groupRevision.getCustomStates().size());
+        assertTrue(groupRevision.getCustomStates().stream()
+                .filter( s -> s.getId().equals(state1.getId())).findFirst().isPresent());
+        assertTrue(groupRevision.getCustomStates().stream()
+                .filter( s -> s.getId().equals(state2.getId())).findFirst().isPresent());
+    }
+
+    public void testOrgCustomStates() {
+
+        CustomState state1 = new CustomState();
+        state1.setOrg(user.getOrg());
+        state1.setStateName("foo");
+
+        CustomState state2 = new CustomState();
+        state2.setOrg(user.getOrg());
+        state2.setStateName("bar");
+
+        OrgStateRevision orgRevision = new OrgStateRevision();
+        orgRevision.setOrg(user.getOrg());
+        orgRevision.setCreator(user);
+        orgRevision.getCustomStates().add(state1);
+        orgRevision.getCustomStates().add(state2);
+
+        StateFactory.save(orgRevision);
+        clearFlush();
+
+        orgRevision = (OrgStateRevision) StateFactory.getSession().get(OrgStateRevision.class,
+                orgRevision.getId());
+        assertEquals(2, orgRevision.getCustomStates().size());
+        assertTrue(orgRevision.getCustomStates().stream()
+                .filter( s -> s.getId().equals(state1.getId())).findFirst().isPresent());
+        assertTrue(orgRevision.getCustomStates().stream()
+                .filter( s -> s.getId().equals(state2.getId())).findFirst().isPresent());
+    }
+
+    public void testLatestServerGroupCustomStates() throws Exception {
+        ManagedServerGroup group = ServerGroupFactory.create("testgroup-" +
+                TestUtils.randomString(), "desc", user.getOrg());
+
+        // create revision 1
+        CustomState state = new CustomState();
+        state.setOrg(user.getOrg());
+        state.setStateName("first");
+
+        ServerGroupStateRevision groupRevision = new ServerGroupStateRevision();
+        groupRevision.setGroup(group);
+        groupRevision.setCreator(user);
+        groupRevision.getCustomStates().add(state);
+
+        StateFactory.save(groupRevision);
+
+        clearFlush();
+
+        // create revision 2
+        state = new CustomState();
+        state.setOrg(user.getOrg());
+        state.setStateName("second");
+
+        groupRevision = new ServerGroupStateRevision();
+        groupRevision.setGroup(group);
+        groupRevision.setCreator(user);
+        groupRevision.getCustomStates().add(state);
+
+        StateFactory.save(groupRevision);
+
+        clearFlush();
+
+        // Verify: Latest custom states contain only "bar"
+        Optional<Set<CustomState>> states = StateFactory.latestCustomStates(user.getOrg());
+        assertTrue(states.isPresent());
+        assertEquals(1, states.get().size());
+        assertTrue(states.get().stream()
+                .filter(s -> s.getStateName().equals("second"))
+                .findFirst().isPresent());
+
+    }
+
 
     private void clearFlush() {
         StateFactory.getSession().flush();

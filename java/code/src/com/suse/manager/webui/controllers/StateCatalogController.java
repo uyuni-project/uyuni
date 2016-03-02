@@ -143,7 +143,7 @@ public class StateCatalogController {
      * @return the JSON data
      */
     public static String data(Request request, Response response, User user) {
-        List<String> data = SaltAPIService.INSTANCE.getOrgStates(user.getOrg().getId());
+        List<String> data = SaltAPIService.INSTANCE.getCatalogStates(user.getOrg().getId());
         data.replaceAll(e -> StringUtils.substringBeforeLast(e, "."));
         response.type("application/json");
         return GSON.toJson(data);
