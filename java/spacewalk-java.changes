@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Wed Mar 02 12:18:58 CET 2016 - mc@suse.de
+
+- version 2.5.57.1-1
+- fix multiple xss vulnerabilities (CVE-2016-2104)
+- remove monitoring from the help text (bsc#963962)
+- Add support for minions in different timezones
+- on cancel, only delete actions that haven't been picked up yet
+- Do not use the PICKED UP status for actions scheduled on minions
+- Create a new "Salt" tab on the top level
+- Unit tests for SLE-RT12-SP1 (bsc#952381) and SUSE-OpenStack-Cloud-6
+  (bsc#964033)
+- fallback to "virtio26" as generic os version
+- Sort timezones: GMT first and then east to west
+- add Chile to the list of timezones (bsc#959055)
+- Reference and apply states from state catalog for single minions
+- Subscription Matching Pin feature
+- PinnedSubscription XMLRPC API - list, create & delete operations
+- Fix crash in minion virtualization detection
+- Enable reboot actions and remote commands for minions
+- Add support for 'state.apply' actions
+- Convert UnmatchedSystem to UnmatchedProduct report
+- Improved minion registration process and fixed scheduling of actions
+- refactor javascript components as separated and reusable components of React
+
+-------------------------------------------------------------------
 Wed Feb 10 08:38:05 CET 2016 - mc@suse.de
 
 - version 2.5.49.1-1
