@@ -1884,13 +1884,15 @@ public class ActionManager extends BaseManager {
             List<String> stateNames, Date earliest) {
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory
                 .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
-        action.setName("Apply states " + stateNames);
+        String states = stateNames.isEmpty() ? "[highstate]" : stateNames.toString();
+        action.setName("Apply states " + states);
         action.setOrg(scheduler != null ?
                 scheduler.getOrg() : OrgFactory.getSatelliteOrg());
         action.setSchedulerUser(scheduler);
 
         ApplyStatesActionDetails actionDetails = new ApplyStatesActionDetails();
-        actionDetails.setStates(stateNames.stream().collect(Collectors.joining(",")));
+        actionDetails.setStates(stateNames.isEmpty() ? null :
+            stateNames.stream().collect(Collectors.joining(",")));
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
