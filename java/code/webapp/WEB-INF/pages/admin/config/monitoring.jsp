@@ -64,7 +64,7 @@
                             <bean:message key="generalconfig.jsp.update_config"/>
                         </html:submit>
                     </div>
-                    <input type="hidden" name="submitted" value="true" />
+                    <rhn:hidden name="submitted" value="true" />
                 </div>
             </html:form>
         </rhn:require>

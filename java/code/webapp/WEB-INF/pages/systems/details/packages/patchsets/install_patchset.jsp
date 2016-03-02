@@ -28,8 +28,8 @@
   </table>
 <form method="POST" name="install_patchset" action="/rhn/systems/details/packages/patchsets/InstallPatchSetSubmit.do">
     <rhn:csrf />
-    <input type="hidden" name="sid" value="${param.sid}" />
-    <input type="hidden" name="pid" value="${param.pid}" />
+    <rhn:hidden name="sid" value="${param.sid}" />
+    <rhn:hidden name="pid" value="${param.pid}" />
 
     <div class="text-right">
       <hr />

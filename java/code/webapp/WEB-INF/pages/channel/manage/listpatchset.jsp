@@ -28,7 +28,7 @@
 
  <rl:listset name="patchListSet">
  <rhn:csrf />
- <input type="hidden" name="cid" value="${cid}" />
+ <rhn:hidden name="cid" value="${cid}" />
 
 <rl:list dataset="pageList"
          width="100%"

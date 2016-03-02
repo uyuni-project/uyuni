@@ -43,7 +43,7 @@
 
 <rhn:csrf />
 
-<input type="hidden" name="selected_family" value="${selected_family}" />
+<rhn:hidden name="selected_family" value="${selected_family}" />
 
         <br/>
         <select name="channel_family">
