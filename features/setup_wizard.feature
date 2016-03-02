@@ -5,7 +5,7 @@ Feature: I want to verify the Setup Wizard
 
   Scenario: I want to test the credentials setup
     Given I am on the Admin page
-    And I follow "Mirror Credentials" in the content area
+    And I follow "Organization Credentials" in the content area
     And I want to add a new credential
     And I enter "asdf" as "edit-user"
     And I enter "asdf" as "edit-password"
