@@ -40,6 +40,8 @@ import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import org.apache.http.HttpStatus;
 
 import org.apache.log4j.Logger;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
@@ -445,14 +447,25 @@ public class StatesAPI {
             try {
                 result = SaltAPIService.INSTANCE.callSync(
                         com.suse.manager.webui.utils.salt.State.showHighstate(), target, null);
-                ret = GSON.toJson(result.get(minionId));
+
+                // Send the highstate formatted as YAML
+                DumperOptions setup = new DumperOptions();
+                setup.setIndent(4);
+                setup.setAllowUnicode(true);
+                setup.setPrettyFlow(true);
+                setup.setLineBreak(DumperOptions.LineBreak.UNIX);
+                setup.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+                setup.setCanonical(false);
+
+                Yaml yaml = new Yaml(setup);
+                ret = yaml.dump(result.get(minionId));
             }
             catch (SaltException e) {
                 response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
                 ret = e.getMessage();
             }
         }
-        response.type("application/json");
+        response.type("text/yaml");
         return ret;
     }
 }
