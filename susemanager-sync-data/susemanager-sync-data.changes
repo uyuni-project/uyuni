@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Mar 02 12:11:19 CET 2016 - mc@suse.de
+
+- version 3.0.6-1
+- add support for SLE-RT12-SP1 (bsc#952381)
+- add support for SUSE-OpenStack-Cloud-6 (bsc#964033)
+
+-------------------------------------------------------------------
 Wed Feb 10 08:30:19 CET 2016 - mc@suse.de
 
 - version 3.0.5-1
