@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Wed Mar 02 12:03:12 CET 2016 - mc@suse.de
+
+- version 3.0.11-1
+- rename Mirror Credentials to Organization Credentials at user
+  visible places
+- require syslinux or syslinux-x86_64 dependencies here in an arch
+  package(bsc#964471)
+- migration: quote tr parameters correctly (bsc#967096)
+- migration: exit on errors during database migration
+- migration: check tmpdir existence and permissions
+- migration: add IP address check for source machine.
+- migration: directly transfer db dump to target system
+- migration: fix pg_hba.conf permissions;
+- restart postgres after tuning (#bsc960964)
+- mgr-create-bootstrap-repo: add option to take custom repos into
+  account when searching for newest packages
+
+-------------------------------------------------------------------
 Wed Feb 10 08:28:52 CET 2016 - mc@suse.de
 
 - version 3.0.10-1
