@@ -21,7 +21,7 @@ CREATE TABLE rhnActionApplyStates
                          CONSTRAINT rhn_act_apply_states_act_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    states           VARCHAR2(1024) NOT NULL,
+    states           VARCHAR2(1024),
     created          timestamp with local time zone
                          DEFAULT (current_timestamp) NOT NULL,
     modified         timestamp with local time zone
