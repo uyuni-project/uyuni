@@ -5,7 +5,7 @@ const Messages = require("../components/messages").Messages;
 const AsyncButton = require("../components/buttons").AsyncButton;
 
 function msg(severityIn, textIn) {
-    return [{severity: severityIn, text: textIn}];
+    return {severity: severityIn, text: textIn};
 }
 
 var Highstate = React.createClass({
@@ -13,7 +13,7 @@ var Highstate = React.createClass({
     getInitialState: function() {
         var state = {
             "highstate": [],
-            "messages": null
+            "messages": []
         };
         return state;
     },
@@ -42,18 +42,18 @@ var Highstate = React.createClass({
       })
       .done( data => {
           console.log("state.apply action scheduled:" + data)
-          this.setState({
-              messages: msg('info', <span>{t("Applying the highstate has been ")}
+          this.state.messages.push(msg('info', <span>{t("Applying the highstate has been ")}
                   <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
-                  {t(".")}
-              </span>)
+                  {t(".")}</span>))
+          this.setState({
+              messages: this.state.messages
           });
       });
       return Promise.resolve(request);
     },
 
     render: function() {
-        const messages = this.state.messages ? <Messages items={this.state.messages}/> : null;
+        const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages}/> : null;
         return (
             <span>
             {messages}
