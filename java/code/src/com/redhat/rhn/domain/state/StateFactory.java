@@ -15,8 +15,10 @@
 package com.redhat.rhn.domain.state;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 
+import com.redhat.rhn.domain.server.ServerGroup;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
@@ -65,6 +67,14 @@ public class StateFactory extends HibernateFactory {
         return revision.map(ServerStateRevision::getPackageStates);
     }
 
+    public static Optional<Set<CustomState>> latestCustomStates(Org org) {
+        return null;
+    }
+
+    public static Optional<Set<CustomState>> latestCustomStates(ServerGroup group) {
+        return null;
+    }
+
     private static Optional<ServerStateRevision> latestRevision(Server server) {
         DetachedCriteria maxQuery = DetachedCriteria.forClass(ServerStateRevision.class)
                 .add(Restrictions.eq("server", server))
@@ -107,4 +117,5 @@ public class StateFactory extends HibernateFactory {
                 .uniqueResult();
         return Optional.ofNullable(state);
     }
+
 }

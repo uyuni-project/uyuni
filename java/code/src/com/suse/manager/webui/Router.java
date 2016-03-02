@@ -54,13 +54,16 @@ public class Router implements SparkApplication {
         get("/manager/minions/cmd", withCsrfToken(MinionController::cmd), jade);
         get("/manager/minions/:id", MinionController::show);
 
-        // Package Management
+        // Minion Package Management
         get("/manager/systems/details/packages",
                 withCsrfToken(MinionController::packageStates),
                 jade);
 
+        get("/manager/multiorg/details/custom",
+                withCsrfToken(MinionController::orgCustomStates),
+                jade);
         get("/manager/systems/details/custom",
-                withCsrfToken(MinionController::customStates),
+                withCsrfToken(MinionController::minionCustomStates),
                 jade);
         get("/manager/systems/details/highstate",
                 withCsrfToken(MinionController::highstate),

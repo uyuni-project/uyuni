@@ -16,12 +16,16 @@ package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.CustomState;
@@ -37,6 +41,7 @@ import com.google.gson.GsonBuilder;
 
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
 
 import org.apache.log4j.Logger;
@@ -151,20 +156,31 @@ public class StatesAPI {
     public static String matchStates(Request request, Response response, User user) {
         String target = request.queryParams("target");
         String targetLowerCase = target != null ? target.toLowerCase() : "";
-        String serverId = request.queryParams("sid");
 
-        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
+        Optional<Set<CustomState>> saltStates = null;
+        if (StringUtils.isNotBlank(request.queryParams("sid"))) {
+            Server server = ServerFactory.lookupById(Long.valueOf(request.queryParams("sid")));
+            saltStates = StateFactory.latestCustomStates(server);
+        } else if (StringUtils.isNotBlank(request.queryParams("oid"))) {
+            Org org = OrgFactory.lookupById(Long.valueOf(request.queryParams("oid")));
+            saltStates = StateFactory.latestCustomStates(org);
 
-        // Find matches among this server's current salt states
+        } else if (StringUtils.isNotBlank(request.queryParams("gid"))) {
+            ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(request.queryParams("gid")),
+                    user.getOrg()); // TODO is org really needed here?
+            saltStates = StateFactory.latestCustomStates(group);
+        }
+
+        // Find matches among this currently assigned salt states
         Set<JSONCustomState> result = new HashSet<>(); // use a set to avoid duplicates
-        Optional<Set<CustomState>> saltStates = StateFactory.latestCustomStates(server);
+
         result.addAll(saltStates.orElseGet(Collections::emptySet).stream()
                 .filter(s -> s.getStateName().toLowerCase().contains(targetLowerCase))
                 .map(s -> new JSONCustomState(s.getStateName(), true))
                 .collect(Collectors.toList()));
 
-        // Find matches among available organization states
-        result.addAll(SaltAPIService.INSTANCE.getOrgStates(user.getId()).stream()
+        // Find matches among available catalog states
+        result.addAll(SaltAPIService.INSTANCE.getCatalogStates(user.getId()).stream()
                 .filter(s -> s.toLowerCase().contains(targetLowerCase))
                 .map(s -> new JSONCustomState(s, false))
                 .collect(Collectors.toList()));
@@ -185,12 +201,6 @@ public class StatesAPI {
                                           User user) {
         JSONServerCustomStates json = GSON.fromJson(request.body(),
                 JSONServerCustomStates.class);
-        Server server = ServerFactory.lookupById(json.getServerId());
-        checkUserHasPermissionsOnServer(server, user);
-
-        // clone any existing package states
-        ServerStateRevision newRevision = StateRevisionService.INSTANCE
-                .cloneLatest(server, user, true, false);
 
         // Merge the latest salt states with the changes
         Set<String> toAssign = json.getSaltStates().stream()
@@ -201,6 +211,13 @@ public class StatesAPI {
                 .filter(s -> !s.isAssigned())
                 .map(s -> s.getName())
                 .collect(Collectors.toSet());
+
+        Server server = ServerFactory.lookupById(json.getServerId());
+        checkUserHasPermissionsOnServer(server, user);
+
+        // clone any existing package states
+        ServerStateRevision newRevision = StateRevisionService.INSTANCE
+                .cloneLatest(server, user, true, false);
 
         StateFactory.latestCustomStates(server).ifPresent(oldStates -> {
             for (CustomState oldState : oldStates) {
