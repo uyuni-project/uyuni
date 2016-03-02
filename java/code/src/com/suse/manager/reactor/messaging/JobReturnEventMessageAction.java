@@ -152,11 +152,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             statesResult.setOutput(gson.toJson(eventData.get("return")).getBytes());
 
             // Create the result message depending on the action status
-            String message = "Successfully applied state(s): " +
-                    applyStatesAction.getDetails().getStates();
+            String states = applyStatesAction.getDetails().getStates() != null ?
+                    applyStatesAction.getDetails().getStates() : "highstate";
+            String message = "Successfully applied state(s): " + states;
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                message = "Failed to apply state(s): " +
-                    applyStatesAction.getDetails().getStates();
+                message = "Failed to apply state(s): " + states;
             }
             serverAction.setResultMsg(message);
         }
