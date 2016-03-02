@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Mar 02 11:13:30 CET 2016 - mc@suse.de
+
+- version 2.5.84.1-1
+- just set one required attribute to be compatible with all
+  xmlrpclib versions
+- fixed SyntaxError: invalid syntax ' .. = b ' to work in
+  python 2.4
+
+-------------------------------------------------------------------
 Tue Jan 26 13:53:44 CET 2016 - mc@suse.de
 
 - version 2.5.83.1-1
