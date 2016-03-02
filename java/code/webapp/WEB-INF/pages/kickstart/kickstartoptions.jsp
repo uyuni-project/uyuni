@@ -107,8 +107,8 @@
                            value="<bean:message key='kickstartoptions.jsp.updatekickstart'/>" />
                 </div>
             </div>
-            <input type="hidden" name="ksid" value="${ksdata.id}"/>
-            <input type="hidden" name="submitted" value="true"/>
+            <rhn:input name="ksid" value="${ksdata.id}"/>
+            <rhn:input name="submitted" value="true"/>
         </form>
     </body>
 </html:html>
