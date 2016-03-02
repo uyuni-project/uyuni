@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Mar 02 11:23:45 CET 2016 - mc@suse.de
+
+- version 2.5.3.3-1
+- rename Mirror Credentials to Organization Credentials at user
+  visible places
+
+-------------------------------------------------------------------
 Tue Jan 26 13:55:36 CET 2016 - mc@suse.de
 
 - version 2.5.3.2-1
