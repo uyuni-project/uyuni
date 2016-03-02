@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Mar 02 12:16:58 CET 2016 - mc@suse.de
+
+- version 2.5.22.1-1
+- make sure truncated value does not contain incomplete characters
+- allow sat-sync-error-email to be configurable
+- Remove custom latest RPM handling in spacewalk-repo-sync and use
+  the same logic as reposync from yum-utils instead.
+- honor no_proxy variable in InterServerSync (bsc#965651)
+
+-------------------------------------------------------------------
 Wed Feb 10 08:38:56 CET 2016 - mc@suse.de
 
 - version 2.5.18.1-1
