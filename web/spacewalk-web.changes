@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Mar 02 11:47:09 CET 2016 - mc@suse.de
+
+- version 2.5.7.4-1
+- Add gulp infrastructure to transpile JSX and ES6 into ES5 and
+  provide bundling functionality
+
+-------------------------------------------------------------------
 Wed Feb 10 08:25:16 CET 2016 - mc@suse.de
 
 - version 2.5.7.3-1
