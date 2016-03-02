@@ -40,8 +40,6 @@ import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import org.apache.http.HttpStatus;
 
 import org.apache.log4j.Logger;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
 
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
@@ -51,6 +49,7 @@ import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPkgLatest;
 import com.suse.manager.webui.utils.SaltPkgRemoved;
 import com.suse.manager.webui.utils.SaltStateGenerator;
+import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.gson.JSONPackageState;
 import com.suse.manager.webui.utils.gson.JSONCustomState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
@@ -447,18 +446,7 @@ public class StatesAPI {
             try {
                 result = SaltAPIService.INSTANCE.callSync(
                         com.suse.manager.webui.utils.salt.State.showHighstate(), target, null);
-
-                // Send the highstate formatted as YAML
-                DumperOptions setup = new DumperOptions();
-                setup.setIndent(4);
-                setup.setAllowUnicode(true);
-                setup.setPrettyFlow(true);
-                setup.setLineBreak(DumperOptions.LineBreak.UNIX);
-                setup.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-                setup.setCanonical(false);
-
-                Yaml yaml = new Yaml(setup);
-                ret = yaml.dump(result.get(minionId));
+                ret = YamlHelper.INSTANCE.dump(result.get(minionId));
             }
             catch (SaltException e) {
                 response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
