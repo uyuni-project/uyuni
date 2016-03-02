@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Mar 02 12:14:47 CET 2016 - mc@suse.de
+
+- version 5.10.88.1-1
+- fixing removing of temporary files during transaction rollback for
+  rhncfg-manager.
+- fixing removing directories which rhncfg-manager didn't create.
+
+-------------------------------------------------------------------
 Mon Nov 30 11:16:55 CET 2015 - mc@suse.de
 
 - version 5.10.87.1-1
