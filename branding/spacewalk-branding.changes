@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Wed Mar 02 12:12:27 CET 2016 - mc@suse.de
+
+- version 2.5.2.5-1
+- Change text in the activation keys UI (bsc#966750)
+- move texts from jsp files into translation files
+- rename Mirror Credentials to Organization Credentials at user
+  visible places
+- fix link to scheduled action for SP migration (bsc#968257)
+- Create a new "Salt" tab on the top level
+- Refactoring: use standard sized icons
+- Subscription Matching Pin feature
+- state catalog UI
+- Be specific about virtualization host system type (bsc#964832)
+- use vendor_name macro in base channel type description (bsc#966080)
+- replace more errata with patch (bsc#966065)
+
+-------------------------------------------------------------------
 Wed Feb 10 08:31:46 CET 2016 - mc@suse.de
 
 - version 2.5.2.4-1
