@@ -445,7 +445,8 @@ public class StatesAPI {
             Map<String, Object> result;
             try {
                 result = SaltAPIService.INSTANCE.callSync(
-                        com.suse.manager.webui.utils.salt.State.showHighstate(), target, null);
+                        com.suse.manager.webui.utils.salt.State.showHighstate(),
+                        target, null);
                 ret = YamlHelper.INSTANCE.dump(result.get(minionId));
             }
             catch (SaltException e) {
