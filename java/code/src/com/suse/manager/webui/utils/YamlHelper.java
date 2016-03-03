@@ -26,7 +26,7 @@ public enum YamlHelper {
      */
     INSTANCE;
 
-    final DumperOptions options;
+    private final DumperOptions options;
 
     YamlHelper() {
         // Configure the YAML output here
@@ -42,7 +42,7 @@ public enum YamlHelper {
     /**
      * Dump a given object into Yaml.
      *
-     * @param o the object to dump
+     * @param object the object to dump
      * @return the YAML representation of the given object
      */
     public String dump(Object object) {
