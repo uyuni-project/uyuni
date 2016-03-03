@@ -63,28 +63,57 @@ public class StateFactory extends HibernateFactory {
      * @return the latest package states for this server
      */
     public static Optional<Set<PackageState>> latestPackageStates(Server server) {
-        Optional<ServerStateRevision> revision = latestRevision(server);
+        Optional<ServerStateRevision> revision = latestRevision(ServerStateRevision.class,
+                "server", server);
         return revision.map(ServerStateRevision::getPackageStates);
     }
 
+    /**
+     * Lookup the latest set of {@link PackageState} objects for a given server group.
+     *
+     * @param group the server group
+     * @return the latest package states for this server group
+     */
+    public static Optional<Set<PackageState>> latestPackageStates(ServerGroup group) {
+        Optional<ServerGroupStateRevision> revision = latestRevision(
+                ServerGroupStateRevision.class, "group", group);
+        return revision.map(ServerGroupStateRevision::getPackageStates);
+    }
+
+    /**
+     * Lookup the latest set of {@link PackageState} objects for a given organization.
+     *
+     * @param org the organization
+     * @return the latest package states for this organization
+     */
+    public static Optional<Set<PackageState>> latestPackageStates(Org org) {
+        Optional<OrgStateRevision> revision = latestRevision(OrgStateRevision.class,
+                "org", org);
+        return revision.map(OrgStateRevision::getPackageStates);
+    }
+
+    /**
+     * Lookup the latest set of custom {@link CustomState} objects for a given server.
+     *
+     * @param org the organization
+     * @return the latest custom states for this server
+     */
     public static Optional<Set<CustomState>> latestCustomStates(Org org) {
-        return null;
+        Optional<OrgStateRevision> revision = latestRevision(OrgStateRevision.class,
+                "org", org);
+        return revision.map(OrgStateRevision::getCustomStates);
     }
 
+    /**
+     * Lookup the latest set of custom {@link CustomState} objects for a given server.
+     *
+     * @param group the server group
+     * @return the latest custom states for this server
+     */
     public static Optional<Set<CustomState>> latestCustomStates(ServerGroup group) {
-        return null;
-    }
-
-    private static Optional<ServerStateRevision> latestRevision(Server server) {
-        DetachedCriteria maxQuery = DetachedCriteria.forClass(ServerStateRevision.class)
-                .add(Restrictions.eq("server", server))
-                .setProjection(Projections.max("id"));
-        ServerStateRevision revision = (ServerStateRevision) getSession()
-                .createCriteria(ServerStateRevision.class)
-                .add(Restrictions.eq("server", server))
-                .add(Property.forName("id").eq(maxQuery))
-                .uniqueResult();
-        return Optional.ofNullable(revision);
+        Optional<ServerGroupStateRevision> revision = latestRevision(
+                ServerGroupStateRevision.class, "group", group);
+        return revision.map(ServerGroupStateRevision::getCustomStates);
     }
 
     /**
@@ -94,8 +123,22 @@ public class StateFactory extends HibernateFactory {
      * @return the latest custom states for this server
      */
     public static Optional<Set<CustomState>> latestCustomStates(Server server) {
-        Optional<ServerStateRevision> revision = latestRevision(server);
+        Optional<ServerStateRevision> revision = latestRevision(ServerStateRevision.class,
+                "server", server);
         return revision.map(ServerStateRevision::getCustomStates);
+    }
+
+    private static <T extends StateRevision> Optional<T> latestRevision(
+            Class<T> revisionType, String field, Object bean) {
+        DetachedCriteria maxQuery = DetachedCriteria.forClass(revisionType)
+                .add(Restrictions.eq(field, bean))
+                .setProjection(Projections.max("id"));
+        T revision = (T) getSession()
+                .createCriteria(revisionType)
+                .add(Restrictions.eq(field, bean))
+                .add(Property.forName("id").eq(maxQuery))
+                .uniqueResult();
+        return Optional.ofNullable(revision);
     }
 
     /**

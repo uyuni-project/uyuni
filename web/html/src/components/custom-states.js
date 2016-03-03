@@ -101,7 +101,7 @@ class CustomStates extends React.Component {
     for(var state of this.state.changed.values()) {
         states.push(state.value)
     }
-    const request = this.props.saveRequest()
+    const request = this.props.saveRequest(states)
     .then((data, textStatus, jqXHR) => {
       console.log("success: " + data);
 

@@ -22,15 +22,21 @@ import java.util.Set;
 public class JSONServerCustomStates {
 
     /** Server id */
-    private long sid;
+    private long id;
+
+    private String type;
 
     private Set<JSONCustomState> saltStates;
 
     /**
      * @return the sever id
      */
-    public long getServerId() {
-        return sid;
+    public Long getTargetId() {
+        return id;
+    }
+
+    public String getTargetType() {
+        return type;
     }
 
     /**
@@ -39,4 +45,6 @@ public class JSONServerCustomStates {
     public Set<JSONCustomState> getSaltStates() {
         return saltStates;
     }
+
+
 }

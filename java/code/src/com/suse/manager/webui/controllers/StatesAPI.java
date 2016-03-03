@@ -26,11 +26,14 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.CustomState;
+import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -41,7 +44,6 @@ import com.google.gson.GsonBuilder;
 
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
 
 import org.apache.log4j.Logger;
@@ -74,6 +76,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -124,6 +127,7 @@ public class StatesAPI {
         String target = request.queryParams("target");
         String targetLowerCase = target.toLowerCase();
         String serverId = request.queryParams("sid");
+        // TODO add org,group support
 
         // Find matches among this server's current packages states
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
@@ -156,17 +160,20 @@ public class StatesAPI {
     public static String matchStates(Request request, Response response, User user) {
         String target = request.queryParams("target");
         String targetLowerCase = target != null ? target.toLowerCase() : "";
+        String type = request.queryParams("type");
+        long id = Long.valueOf(request.queryParams("id"));
 
         Optional<Set<CustomState>> saltStates = null;
-        if (StringUtils.isNotBlank(request.queryParams("sid"))) {
-            Server server = ServerFactory.lookupById(Long.valueOf(request.queryParams("sid")));
+        if ("server".equals(type)) {
+            Server server = ServerFactory.lookupById(id);
             saltStates = StateFactory.latestCustomStates(server);
-        } else if (StringUtils.isNotBlank(request.queryParams("oid"))) {
-            Org org = OrgFactory.lookupById(Long.valueOf(request.queryParams("oid")));
+
+        } else if ("org".equals(type)) {
+            Org org = OrgFactory.lookupById(id);
             saltStates = StateFactory.latestCustomStates(org);
 
-        } else if (StringUtils.isNotBlank(request.queryParams("gid"))) {
-            ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(request.queryParams("gid")),
+        } else if ("group".equals(type)) {
+            ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id,
                     user.getOrg()); // TODO is org really needed here?
             saltStates = StateFactory.latestCustomStates(group);
         }
@@ -212,31 +219,64 @@ public class StatesAPI {
                 .map(s -> s.getName())
                 .collect(Collectors.toSet());
 
-        Server server = ServerFactory.lookupById(json.getServerId());
-        checkUserHasPermissionsOnServer(server, user);
 
-        // clone any existing package states
-        ServerStateRevision newRevision = StateRevisionService.INSTANCE
-                .cloneLatest(server, user, true, false);
+        StateRevision newRevision = null;
+        if ("server".equals(json.getTargetType())) {
+            Server server = ServerFactory.lookupById(json.getTargetId());
+            checkUserHasPermissionsOnServer(server, user);
 
-        StateFactory.latestCustomStates(server).ifPresent(oldStates -> {
-            for (CustomState oldState : oldStates) {
-                if (!toRemove.contains(oldState.getStateName())) {
-                    newRevision.getCustomStates().add(oldState);
-                    toAssign.remove(oldState.getStateName()); // state already assigned
-                }
-            }
-        });
+            // clone any existing package states
+            ServerStateRevision newServerRevision = StateRevisionService.INSTANCE
+                    .cloneLatest(server, user, true, false);
 
-        for (String newStateName : toAssign) {
-            Optional<CustomState> newState = StateFactory
-                    .getCustomStateByName(newStateName);
-            newState.ifPresent(s -> newRevision.getCustomStates().add(s));
+            // merge existing states with incoming selections
+            mergeStates(newServerRevision,
+                    StateFactory.latestCustomStates(server),
+                    toRemove,
+                    toAssign);
+            // assign any remaining new selection
+            assignNewStates(newServerRevision, toAssign);
+            generateServerCustomState(newServerRevision);
+            newRevision = newServerRevision;
+
+        } else if ("group".equals(json.getTargetType())) {
+            ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(
+                    json.getTargetId(), user.getOrg()); // TODO is org really needed here ?
+            checkUserHasPermissionsOnServerGroup(group);
+
+            ServerGroupStateRevision newGroupRevision = StateRevisionService.INSTANCE
+                    .cloneLatest(group, user, true, false);
+
+            mergeStates(newGroupRevision,
+                    StateFactory.latestCustomStates(group),
+                    toRemove,
+                    toAssign);
+            assignNewStates(newGroupRevision, toAssign);
+            // TODO generate state
+            newRevision = newGroupRevision;
+
+        } else if ("org".equals(json.getTargetType())) {
+            Org org = OrgFactory.lookupById(json.getTargetId());
+            checkUserHasPermissionsOnOrg(org);
+
+            OrgStateRevision newOrgRevision = StateRevisionService.INSTANCE
+                    .cloneLatest(org, user, true, false);
+
+            mergeStates(newOrgRevision,
+                    StateFactory.latestCustomStates(org),
+                    toRemove,
+                    toAssign);
+            assignNewStates(newOrgRevision, toAssign);
+            generateOrgCustomState(newOrgRevision);
+            newRevision = newOrgRevision;
+
+        } else {
+            throw new IllegalArgumentException("Invalid targetType value");
         }
 
         try {
             StateFactory.save(newRevision);
-            generateServerCustomState(newRevision);
+
             return json(response, newRevision.getCustomStates()
                     .stream().map(s -> new JSONCustomState(s.getStateName(), true))
                     .collect(Collectors.toSet()));
@@ -247,9 +287,40 @@ public class StatesAPI {
         }
     }
 
+
+    private static void checkUserHasPermissionsOnServerGroup(ServerGroup group) {
+        // TODO
+    }
+
+    private static void checkUserHasPermissionsOnOrg(Org org) {
+        // TODO
+    }
+
+    private static void mergeStates(StateRevision newRevision,
+                                    Optional<Set<CustomState>> latestStates,
+                                    Set<String> toRemove,
+                                    Set<String> toAssign) {
+        latestStates.ifPresent(oldStates -> {
+            for (CustomState oldState : oldStates) {
+                if (!toRemove.contains(oldState.getStateName())) {
+                    newRevision.getCustomStates().add(oldState);
+                    toAssign.remove(oldState.getStateName()); // state already assigned
+                }
+            }
+        });
+    }
+
+    private static void assignNewStates(StateRevision newRevision, Set<String> toAssign) {
+        for (String newStateName : toAssign) {
+            Optional<CustomState> newState = StateFactory
+                    .getCustomStateByName(newStateName);
+            newState.ifPresent(s -> newRevision.getCustomStates().add(s));
+        }
+    }
+
     private static void generateServerCustomState(ServerStateRevision stateRevision) {
         Server server = stateRevision.getServer();
-        LOG.debug("Generating custom state SLS file for: " + server.getId());
+        LOG.debug("Generating custom state SLS file for server: " + server.getId());
 
         Set<String> stateNames = stateRevision.getCustomStates()
                 .stream().map(s -> s.getStateName())
@@ -273,6 +344,11 @@ public class StatesAPI {
         }
 
     }
+
+    private static void generateOrgCustomState(OrgStateRevision stateRevision) {
+
+    }
+
 
     private static void checkUserHasPermissionsOnServer(Server server, User user) {
         if (!SystemManager.isAvailableToUser(user, server.getId())) {
@@ -336,18 +412,65 @@ public class StatesAPI {
                 .create();
         JSONServerApplyStates json = gson.fromJson(request.body(),
                 JSONServerApplyStates.class);
-        Server server = ServerFactory.lookupById(json.getServerId());
-        checkUserHasPermissionsOnServer(server, user);
 
-        // Schedule an ApplyStatesAction
-        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                Arrays.asList(json.getServerId()), json.getStates(),
-                json.getEarliest() != null ? json.getEarliest() : new Date());
-        MessageQueue.publish(new ActionScheduledEventMessage(action));
+
+        ApplyStatesAction scheduledAction = handleTarget(json.getTargetType(), json.getTargetId(),
+                (serverId) -> {
+                    Server server = ServerFactory.lookupById(json.getTargetId());
+                    checkUserHasPermissionsOnServer(server, user);
+                    // Schedule an ApplyStatesAction to happen right now
+                    ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                            Arrays.asList(json.getTargetId()), json.getStates(),
+                            json.getEarliest() != null ? json.getEarliest() : new Date());
+                    return action;
+                },
+                (groupId) -> {
+                    // TODO group
+                    return null;
+                },
+                (orgId) -> {
+                    // TODO org
+                    return null;
+                }
+                );
+
+//        ApplyStatesAction action = null;
+//        if ("server".equals(json.getTargetType())) {
+//            Server server = ServerFactory.lookupById(json.getTargetId());
+//            checkUserHasPermissionsOnServer(server, user);
+//            // Schedule an ApplyStatesAction to happen right now
+//            action = ActionManager.scheduleApplyStates(user,
+//                    Arrays.asList(json.getTargetId()), json.getStates(), new Date());
+//
+//        } else if ("group".equals(json.getTargetType())) {
+//
+//        } else if ("org".equals(json.getTargetType())) {
+//
+//        } else {
+//            throw new IllegalArgumentException("Invalid targetType value");
+//        }
+
+        MessageQueue.publish(new ActionScheduledEventMessage(scheduledAction));
 
         response.type("application/json");
-        return GSON.toJson(action.getId());
+        return GSON.toJson(scheduledAction.getId());
     }
+
+    public static <R> R handleTarget(String targetType, long targetId,
+                                     Function<Long, R> serverHandler,
+                                     Function<Long, R> groupHandler,
+                                     Function<Long, R> orgHandler) {
+        if ("server".equals(targetType)) {
+            return serverHandler.apply(targetId);
+        } else if ("group".equals(targetType)) {
+            return groupHandler.apply(targetId);
+        } else if ("org".equals(targetType)) {
+            return orgHandler.apply(targetId);
+        } else {
+            throw new IllegalArgumentException("Invalid targetType value");
+        }
+    }
+
 
     /**
      * Get the current set of package states for a given server as {@link JSONPackageState}
