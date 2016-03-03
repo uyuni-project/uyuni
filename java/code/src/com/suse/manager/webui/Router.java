@@ -53,9 +53,6 @@ public class Router implements SparkApplication {
         // Remote command page
         get("/manager/minions/cmd", withCsrfToken(MinionController::cmd), jade);
         get("/manager/minions/:id", MinionController::show);
-        post("/manager/minions/:id/accept", MinionController::accept);
-        post("/manager/minions/:id/reject", MinionController::reject);
-        post("/manager/minions/:id/delete", MinionController::destroy);
 
         // Package Management
         get("/manager/systems/details/packages",

@@ -16,8 +16,11 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.salt.netapi.calls.wheel.Key;
 import spark.Request;
 import spark.Response;
 
@@ -38,6 +41,7 @@ public class MinionsAPI {
     public static final String SALT_CMD_RUN_TARGETS = "salt_cmd_run_targets";
 
     private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
+    private static final Gson GSON = new GsonBuilder().create();
 
     private MinionsAPI() { }
 
@@ -81,6 +85,54 @@ public class MinionsAPI {
         request.session().attribute(SALT_CMD_RUN_TARGETS, minions);
 
         return json(response, minions);
+    }
+
+    /**
+     * API endpoint to get all minions matching a target glob
+     * @param request the request object
+     * @param response the response object
+     * @return json result of the API call
+     */
+    public static String listKeys(Request request, Response response) {
+        Key.Fingerprints fingerprints = SALT_SERVICE.getFingerprints();
+        return json(response, fingerprints);
+    }
+
+
+    /**
+     * API endpoint to accept minion keys
+     * @param request the request object
+     * @param response the response object
+     * @return json result of the API call
+     */
+    public static String accept(Request request, Response response) {
+        String target = request.params("target");
+        SALT_SERVICE.acceptKey(target);
+        return json(response, true);
+    }
+
+    /**
+     * API endpoint to delete minion keys
+     * @param request the request object
+     * @param response the response object
+     * @return json result of the API call
+     */
+    public static String delete(Request request, Response response) {
+        String target = request.params("target");
+        SALT_SERVICE.deleteKey(target);
+        return json(response, true);
+    }
+
+    /**
+     * API endpoint to reject minion keys
+     * @param request the request object
+     * @param response the response object
+     * @return json result of the API call
+     */
+    public static String reject(Request request, Response response) {
+        String target = request.params("target");
+        SALT_SERVICE.rejectKey(target);
+        return json(response, true);
     }
 
 }
