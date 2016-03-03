@@ -116,6 +116,20 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
+    public Key.Fingerprints getFingerprints() {
+        try {
+            WheelResult<Key.Fingerprints> result = Key.finger("*")
+                    .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            return result.getData().getResult();
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Map<String, Object> getGrains(String minionId) {
         try {
             Map<String, Map<String, Object>> grains = Grains.items(false).callSync(
@@ -181,9 +195,9 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public void acceptKey(String minionId) {
+    public void acceptKey(String match) {
         try {
-            Key.accept(minionId).callSync(SALT_CLIENT,
+            Key.accept(match).callSync(SALT_CLIENT,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
         catch (SaltException e) {
