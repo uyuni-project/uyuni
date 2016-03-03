@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.state.OrgStateRevision;
@@ -97,7 +96,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
      * Test assigning a state
      * @throws Exception
      */
-    public void testAssignStates() throws Exception {
+    public void testAssignCustomStatesToServer() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         ServerStateRevision serverState = new ServerStateRevision();
         serverState.setServer(server);
@@ -121,9 +120,12 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(state1.getId());
         assertNotNull(state2.getId());
 
-        serverState = (ServerStateRevision) StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
-        state1 = (CustomState)StateFactory.getSession().get(CustomState.class, state1.getId());
-        state2 = (CustomState)StateFactory.getSession().get(CustomState.class, state2.getId());
+        serverState = (ServerStateRevision) StateFactory.getSession().get(
+                ServerStateRevision.class, serverState.getId());
+        state1 = (CustomState)StateFactory.getSession().get(CustomState.class,
+                state1.getId());
+        state2 = (CustomState)StateFactory.getSession().get(CustomState.class,
+                state2.getId());
 
         assertNotNull(serverState);
         assertNotNull(state1);
@@ -137,7 +139,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
      * Test removing a state
      * @throws Exception
      */
-    public void testRemoveAssignedStates() throws Exception {
+    public void testRemoveAssignedStatesFromServer() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         ServerStateRevision serverState = new ServerStateRevision();
         serverState.setServer(server);
@@ -157,9 +159,12 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         StateFactory.save(serverState);
         clearFlush();
 
-        serverState = (ServerStateRevision) StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
-        state1 = (CustomState)StateFactory.getSession().get(CustomState.class, state1.getId());
-        state2 = (CustomState)StateFactory.getSession().get(CustomState.class, state2.getId());
+        serverState = (ServerStateRevision) StateFactory.getSession().get(
+                ServerStateRevision.class, serverState.getId());
+        state1 = (CustomState)StateFactory.getSession().get(CustomState.class,
+                state1.getId());
+        state2 = (CustomState)StateFactory.getSession().get(CustomState.class,
+                state2.getId());
 
         serverState.getCustomStates().remove(state1);
         assertEquals(1, serverState.getCustomStates().size());
@@ -167,8 +172,10 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         StateFactory.save(serverState);
         clearFlush();
 
-        serverState = (ServerStateRevision) StateFactory.getSession().get(ServerStateRevision.class, serverState.getId());
-        state2 = (CustomState)StateFactory.getSession().get(CustomState.class, state2.getId());
+        serverState = (ServerStateRevision) StateFactory.getSession().get(
+                ServerStateRevision.class, serverState.getId());
+        state2 = (CustomState)StateFactory.getSession().get(CustomState.class,
+                state2.getId());
 
         assertEquals(1, serverState.getCustomStates().size());
         assertTrue(serverState.getCustomStates().contains(state2));
@@ -195,13 +202,13 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         StateFactory.save(groupRevision);
         clearFlush();
 
-        groupRevision = (ServerGroupStateRevision) StateFactory.getSession().get(ServerGroupStateRevision.class,
-                groupRevision.getId());
+        groupRevision = (ServerGroupStateRevision) StateFactory.getSession().get(
+                ServerGroupStateRevision.class, groupRevision.getId());
         assertEquals(2, groupRevision.getCustomStates().size());
         assertTrue(groupRevision.getCustomStates().stream()
-                .filter( s -> s.getId().equals(state1.getId())).findFirst().isPresent());
+                .filter(s -> s.getId().equals(state1.getId())).findFirst().isPresent());
         assertTrue(groupRevision.getCustomStates().stream()
-                .filter( s -> s.getId().equals(state2.getId())).findFirst().isPresent());
+                .filter(s -> s.getId().equals(state2.getId())).findFirst().isPresent());
     }
 
     public void testOrgCustomStates() {
@@ -223,13 +230,13 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         StateFactory.save(orgRevision);
         clearFlush();
 
-        orgRevision = (OrgStateRevision) StateFactory.getSession().get(OrgStateRevision.class,
-                orgRevision.getId());
+        orgRevision = (OrgStateRevision) StateFactory.getSession().get(
+                OrgStateRevision.class, orgRevision.getId());
         assertEquals(2, orgRevision.getCustomStates().size());
         assertTrue(orgRevision.getCustomStates().stream()
-                .filter( s -> s.getId().equals(state1.getId())).findFirst().isPresent());
+                .filter(s -> s.getId().equals(state1.getId())).findFirst().isPresent());
         assertTrue(orgRevision.getCustomStates().stream()
-                .filter( s -> s.getId().equals(state2.getId())).findFirst().isPresent());
+                .filter(s -> s.getId().equals(state2.getId())).findFirst().isPresent());
     }
 
     public void testLatestServerGroupCustomStates() throws Exception {
@@ -247,7 +254,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         groupRevision.getCustomStates().add(state);
 
         StateFactory.save(groupRevision);
-
         clearFlush();
 
         // create revision 2
@@ -261,10 +267,44 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         groupRevision.getCustomStates().add(state);
 
         StateFactory.save(groupRevision);
-
         clearFlush();
 
-        // Verify: Latest custom states contain only "bar"
+        // Verify: Latest custom states contain only "second"
+        Optional<Set<CustomState>> states = StateFactory.latestCustomStates(group);
+        assertTrue(states.isPresent());
+        assertEquals(1, states.get().size());
+        assertTrue(states.get().stream()
+                .filter(s -> s.getStateName().equals("second"))
+                .findFirst().isPresent());
+    }
+
+    public void testLatestOrgCustomStates() {
+        // create revision 1
+        CustomState state = new CustomState();
+        state.setOrg(user.getOrg());
+        state.setStateName("first");
+
+        OrgStateRevision orgRevision = new OrgStateRevision();
+        orgRevision.setOrg(user.getOrg());
+        orgRevision.setCreator(user);
+        orgRevision.getCustomStates().add(state);
+
+        StateFactory.save(orgRevision);
+        clearFlush();
+
+        state = new CustomState();
+        state.setOrg(user.getOrg());
+        state.setStateName("second");
+
+        orgRevision = new OrgStateRevision();
+        orgRevision.setOrg(user.getOrg());
+        orgRevision.setCreator(user);
+        orgRevision.getCustomStates().add(state);
+
+        StateFactory.save(orgRevision);
+        clearFlush();
+
+        // Verify: Latest custom states contain only "second"
         Optional<Set<CustomState>> states = StateFactory.latestCustomStates(user.getOrg());
         assertTrue(states.isPresent());
         assertEquals(1, states.get().size());
@@ -274,11 +314,9 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
 
     }
 
-
     private void clearFlush() {
         StateFactory.getSession().flush();
         StateFactory.getSession().clear();
     }
-
 
 }
