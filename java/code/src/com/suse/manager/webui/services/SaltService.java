@@ -47,6 +47,13 @@ public interface SaltService {
     Key.Names getKeys();
 
     /**
+     * Get the minion keys from salt with their respective status and fingerprint.
+     *
+     * @return the keys with their respective status and fingerprint as returned from salt
+     */
+    Key.Fingerprints getFingerprints();
+
+    /**
      * Get the grains for a given minion.
      *
      * @param minionId id of the target minion
@@ -96,11 +103,11 @@ public interface SaltService {
             String minionId, List<String> attributes);
 
     /**
-     * Accept a given minion's key.
+     * Accept all keys matching the given pattern
      *
-     * @param minionId id of the minion
+     * @param pattern for minion ids
      */
-    void acceptKey(String minionId);
+    void acceptKey(String pattern);
 
     /**
      * Delete a given minion's key.
