@@ -36,7 +36,7 @@ class MinionResultView extends React.Component {
     };
     return (
       <div className="panel panel-default" style={style}>
-        <div className="panel-heading" onClick={this.onClick}>
+        <div id={id} className="panel-heading" onClick={this.onClick}>
            <span>{id}</span>
            {(() => {
               if(props.started){
@@ -58,7 +58,7 @@ class MinionResultView extends React.Component {
         </div>
         {this.state.open && result != null ?
         <div className="panel-body">
-           <pre>{result}</pre>
+           <pre id={id + '-results'}>{result}</pre>
         </div>
         : undefined }
       </div>
@@ -92,8 +92,8 @@ class RemoteCommand extends React.Component {
         })
     }
     const button = !this.state.previewed ?
-        <AsyncButton name={t("Preview")} action={this.onPreview} /> :
-        <AsyncButton name={t("Run")} action={this.onRun} />;
+        <AsyncButton id="preview" name={t("Preview")} action={this.onPreview} /> :
+        <AsyncButton id="run" name={t("Run")} action={this.onRun} />;
 
     return (
       <div>
@@ -109,9 +109,9 @@ class RemoteCommand extends React.Component {
               <div className="row">
                 <div className="col-lg-12">
                   <div className="input-group">
-                      <input className="form-control" type="text" defaultValue={this.state.command} onChange={this.commandChanged} />
+                      <input id="command" className="form-control" type="text" defaultValue={this.state.command} onChange={this.commandChanged} />
                       <span className="input-group-addon">@</span>
-                      <input className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged} />
+                      <input id="target" className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged} />
                       <div className="input-group-btn">{button}</div>
                   </div>
                 </div>
