@@ -53,9 +53,6 @@ public class Router implements SparkApplication {
         // Remote command page
         get("/manager/minions/cmd", withCsrfToken(MinionController::cmd), jade);
         get("/manager/minions/:id", MinionController::show);
-        post("/manager/minions/:id/accept", MinionController::accept);
-        post("/manager/minions/:id/reject", MinionController::reject);
-        post("/manager/minions/:id/delete", MinionController::destroy);
 
         // Package Management
         get("/manager/systems/details/packages",
@@ -72,6 +69,10 @@ public class Router implements SparkApplication {
         // Minion APIs
         post("/manager/api/minions/cmd", withUser(MinionsAPI::run));
         get("/manager/api/minions/match", withUser(MinionsAPI::match));
+        get("/manager/api/minions/keys", MinionsAPI::listKeys);
+        post("/manager/api/minions/keys/:target/accept", MinionsAPI::accept);
+        post("/manager/api/minions/keys/:target/reject", MinionsAPI::reject);
+        post("/manager/api/minions/keys/:target/delete", MinionsAPI::delete);
 
         // States API
         post("/manager/api/states/apply", withUser(StatesAPI::apply));
