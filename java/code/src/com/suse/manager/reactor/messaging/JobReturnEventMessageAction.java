@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
-
+import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.event.JobReturnEvent;
 
@@ -148,15 +148,15 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             statesResult.setReturnCode(retcode);
 
             // Set the output to the result
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            statesResult.setOutput(gson.toJson(eventData.get("return")).getBytes());
+            statesResult.setOutput(YamlHelper.INSTANCE
+                    .dump(eventData.get("return")).getBytes());
 
             // Create the result message depending on the action status
-            String message = "Successfully applied state(s): " +
-                    applyStatesAction.getDetails().getStates();
+            String states = applyStatesAction.getDetails().getStates() != null ?
+                    applyStatesAction.getDetails().getStates() : "highstate";
+            String message = "Successfully applied state(s): " + states;
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                message = "Failed to apply state(s): " +
-                    applyStatesAction.getDetails().getStates();
+                message = "Failed to apply state(s): " + states;
             }
             serverAction.setResultMsg(message);
         }

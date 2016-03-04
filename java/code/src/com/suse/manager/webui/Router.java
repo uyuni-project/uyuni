@@ -65,6 +65,9 @@ public class Router implements SparkApplication {
         get("/manager/systems/details/custom",
                 withCsrfToken(MinionController::customStates),
                 jade);
+        get("/manager/systems/details/highstate",
+                withCsrfToken(MinionController::highstate),
+                jade);
 
         // Minion APIs
         post("/manager/api/minions/cmd", withUser(MinionsAPI::run));
@@ -77,6 +80,7 @@ public class Router implements SparkApplication {
         get("/manager/api/states/packages", StatesAPI::packages);
         post("/manager/api/states/packages/save", withUser(StatesAPI::savePackages));
         get("/manager/api/states/packages/match", StatesAPI::matchPackages);
+        get("/manager/api/states/highstate", StatesAPI::showHighstate);
 
         // Download endpoint
         get("/manager/download/:channel/getPackage/:file",

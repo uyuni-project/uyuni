@@ -35,6 +35,8 @@ public class ApplyStatesActionFormatter extends ActionFormatter {
 
     @Override
     public String getActionType() {
-        return "Apply states (" + actionDetails.getStates() + ")";
+        String states = actionDetails.getStates() != null ?
+                actionDetails.getStates() : "highstate";
+        return "Apply states (" + states + ")";
     }
 }

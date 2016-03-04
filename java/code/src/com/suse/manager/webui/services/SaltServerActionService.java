@@ -134,7 +134,8 @@ public enum SaltServerActionService {
         }
         else if (actionIn.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) actionIn;
-            String states = applyStatesAction.getDetails().getStates();
+            Optional<String> states = Optional.ofNullable(
+                    applyStatesAction.getDetails().getStates());
             return applyStatesAction(minions, states);
         }
         else {
@@ -249,9 +250,14 @@ public enum SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionServer>> applyStatesAction(
-            List<MinionServer> minions, String states) {
+            List<MinionServer> minions, Optional<String> states) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(State.apply(Arrays.asList(states.split("\\s*,\\s*"))), minions);
+        if (states.isPresent()) {
+            ret.put(State.apply(Arrays.asList(states.get().split("\\s*,\\s*"))), minions);
+        }
+        else {
+            ret.put(State.apply(), minions);
+        }
         return ret;
     }
 }
