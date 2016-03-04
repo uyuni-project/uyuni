@@ -5,7 +5,7 @@ const CustomStates = require("../components/custom-states").CustomStates;
 
 
 function matchUrl(target) {
-    return "/rhn/manager/api/states/match?id=" + orgId + "&type=org"
+    return "/rhn/manager/api/states/match?id=" + groupId + "&type=group"
              + (target ? "&target=" + target : "");
 }
 
@@ -14,8 +14,8 @@ function applyRequest() {
         type: "POST",
         url: "/rhn/manager/api/states/apply",
         data: JSON.stringify({
-            id: orgId,
-            type: "org",
+            id: groupId,
+            type: "group",
             states: ["custom"]
         }),
         contentType: "application/json",
@@ -28,8 +28,8 @@ function saveRequest(states) {
         type: "POST",
         url: "/rhn/manager/api/states/save",
         data: JSON.stringify({
-            id: orgId,
-            type: "org",
+            id: groupId,
+            type: "group",
             saltStates: states
         }),
         contentType: "application/json"
