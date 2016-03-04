@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +28,9 @@ public class JSONServerApplyStates {
     /** List of states to be applied */
     private List<String> states;
 
+    /** The earliest execution date */
+    private Date earliest;
+
     /**
      * @return the server id
      */
@@ -39,5 +43,12 @@ public class JSONServerApplyStates {
      */
     public List<String> getStates() {
         return states;
+    }
+
+    /**
+     * @return the date of earliest execution
+     */
+    public Date getEarliest() {
+        return earliest;
     }
 }
