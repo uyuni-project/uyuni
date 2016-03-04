@@ -83,11 +83,15 @@ public final class CSRFTokenValidator {
             throw new CSRFTokenException("Session does not contain a CSRF security token");
         }
 
-        if (request.getParameter(tokenKey) == null) {
+        String header = request.getHeader("X-CSRF-Token");
+        String parameter = request.getParameter(tokenKey);
+        String token = parameter != null ? parameter : (header != null ? header : null);
+
+        if (token == null) {
             throw new CSRFTokenException("Request does not contain a CSRF security token");
         }
 
-        if (!session.getAttribute(tokenKey).equals(request.getParameter(tokenKey))) {
+        if (!session.getAttribute(tokenKey).equals(token)) {
             throw new CSRFTokenException("Validation of CSRF security token failed");
         }
     }
