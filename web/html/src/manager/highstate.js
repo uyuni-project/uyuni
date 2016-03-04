@@ -61,37 +61,37 @@ var Highstate = React.createClass({
         const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages}/> : null;
         return (
             <span>
-            {messages}
-            <div className="panel panel-default">
-                <div className="panel-heading">
-                    <h4>{t("Show and apply the highstate for ")}{serverName}</h4>
-                </div>
-                <div className="panel-body">
-                    <div className="form-horizontal">
-                        <div className="form-group">
-                            <label className="col-md-3 control-label">
-                                {t("Highstate data:")}
-                            </label>
-                            <div className="col-md-6">
-                                <textarea className="form-control" rows="20" value={this.state.highstate} readOnly="true" />
+                {messages}
+                <div className="panel panel-default">
+                    <div className="panel-heading">
+                        <h4>{t("Show and apply the highstate for ")}{serverName}</h4>
+                    </div>
+                    <div className="panel-body">
+                        <div className="form-horizontal">
+                            <div className="form-group">
+                                <label className="col-md-3 control-label">
+                                    {t("Highstate data:")}
+                                </label>
+                                <div className="col-md-6">
+                                    <textarea className="form-control" rows="20" value={this.state.highstate} readOnly="true" />
+                                </div>
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <label className="col-md-3 control-label">
-                                {t("Schedule no sooner than:")}
-                            </label>
-                            <div className="col-md-6">
-                                <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={timezone} />
+                            <div className="form-group">
+                                <label className="col-md-3 control-label">
+                                    {t("Schedule no sooner than:")}
+                                </label>
+                                <div className="col-md-6">
+                                    <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={timezone} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <div className="col-md-offset-3 col-md-6">
-                                <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} />
+                            <div className="form-group">
+                                <div className="col-md-offset-3 col-md-6">
+                                    <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </span>
         );
     }
