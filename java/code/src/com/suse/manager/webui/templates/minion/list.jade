@@ -1,64 +1,11 @@
 include ../common.jade
 
-.spacewalk-toolbar-h1
-  h1
-    i.fa.fa-desktop
-    | #{l.t("All Minions")}
+#onboarding
 
-.row
-  .col-md-6
-    #pending-list.panel.panel-default
-      .panel-heading
-        if size(unaccepted_minions) > 1
-          h2.pull-left(style="padding-top: 4px")
-            i.fa.fa-plus
-            | #{size(unaccepted_minions)} #{l.t("Pending")}
-          form(method="post")
-            +csrfToken
-            .pull-right.btn-group
-              button(type="submit", formaction="/rhn/manager/minions/*/accept").btn.btn-default
-                i.fa.fa-check.no-margin
-              button(type="submit", formaction="/rhn/manager/minions/*/reject").btn.btn-default
-                i.fa.fa-times.no-margin
-          .clearfix
-        else
-          h2
-            i.fa.fa-plus
-            | #{size(unaccepted_minions)} #{l.t("Pending")}
-      table(class="table table-striped vertical-middle")
-        for minion in unaccepted_minions
-          tr
-            td
-              b #{minion}
-            td.col-md-5
-              form(method="post")
-                +csrfToken
-                .pull-right.btn-group
-                  button(type="submit", formaction="/rhn/manager/minions/#{minion}/accept").btn.btn-default
-                    i.fa.fa-check.no-margin
-                  button(type="submit", formaction="/rhn/manager/minions/#{minion}/reject").btn.btn-default
-                    i.fa.fa-times.no-margin
-        else
-          tr
-            td #{l.t("No pending minions.")}
+script(src='/javascript/reactjs/react.bundle.js')
 
-  .col-md-6
-    #rejected-list.panel.panel-default
-      .panel-heading
-        h2
-          i.fa.fa-times
-          | #{size(rejected_minions)} #{l.t("Rejected")}
-      table(class="table table-striped vertical-middle")
-        for minion in rejected_minions
-          tr
-            td
-              b #{minion}
-            td.col-md-2
-              form(method="post")
-                +csrfToken
-                .pull-right
-                  button(type="submit", formaction="/rhn/manager/minions/#{minion}/delete").btn.btn-default
-                    i.fa.fa-trash-o.no-margin
-        else
-          tr
-            td #{l.t("No rejected minions.")}
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+    const serverId = "#{serverId}";
+script(src='/javascript/manager/onboarding.bundle.js', type='text/javascript')
+
