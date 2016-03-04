@@ -1,6 +1,7 @@
 "use strict";
 
 var React = require("react");
+const Network = require("../utils/network");
 
 var MatcherRunPanel = React.createClass({
   getInitialState: function() {
@@ -88,8 +89,8 @@ var MatcherTaskDescription = () =>
 
 var MatcherScheduleButton = React.createClass({
   onClick: function() {
-    $.post("/rhn/manager/subscription-matching/schedule-matcher-run")
-      .error(() => { this.props.onError(); });
+    Network.post("/rhn/manager/subscription-matching/schedule-matcher-run")
+      .catch(() => this.props.onError());
     this.props.onScheduled();
   },
 

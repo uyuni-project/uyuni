@@ -11,6 +11,7 @@ const AsyncButton = Buttons.AsyncButton;
 const InnerPanel = Panels.InnerPanel;
 const PanelRow = Panels.PanelRow;
 const TextField = Fields.TextField;
+const Network = require("../utils/network");
 
 function stateKey(state) {
     return state.name;
@@ -68,7 +69,7 @@ class ApplyState extends React.Component {
   }
 
   init() {
-    $.get("/rhn/manager/api/states/match?sid=" + serverId, data => {
+    Network.get("/rhn/manager/api/states/match?sid=" + serverId).then(data => {
       console.log(data);
       this.setState({
         saltStates: data
@@ -84,17 +85,14 @@ class ApplyState extends React.Component {
         }
     }
 
-    const request = $.ajax({
-        type: "POST",
-        url: "/rhn/manager/api/states/apply",
-        data: JSON.stringify({
+    const request = Network.post(
+        "/rhn/manager/api/states/apply",
+        JSON.stringify({
             sid: serverId,
             states: ["custom"]
         }),
-        contentType: "application/json",
-        dataType: "json"
-    })
-    .done( data => {
+        "application/json"
+    ).then( data => {
         console.log("apply action queued:" + data)
         this.setState({
             messages: msg('info', <span>{t("Applying the custom states has been ")}
@@ -102,7 +100,7 @@ class ApplyState extends React.Component {
             </span>)
         });
     });
-    return Promise.resolve(request);
+    return request;
   }
 
   save() {
@@ -110,15 +108,14 @@ class ApplyState extends React.Component {
     for(var state of this.state.changed.values()) {
         states.push(state.value)
     }
-    const request = $.ajax({
-        type: "POST",
-        url: "/rhn/manager/api/states/save",
-        data: JSON.stringify({
+    const request = Network.post(
+        "/rhn/manager/api/states/save",
+        JSON.stringify({
             sid: serverId,
             saltStates: states
         }),
-        contentType: "application/json"
-    }).then((data, textStatus, jqXHR) => {
+        "application/json"
+    ).then(data => {
       console.log("success: " + data);
 
       const newSearchResults = this.state.search.results.map( state => {
@@ -140,14 +137,15 @@ class ApplyState extends React.Component {
         },
         messages: msg('info', t('State assignments have been saved.'))
       });
-    }, (jqXHR, textStatus, errorThrown) => {
-      console.log("fail: " + textStatus);
+    }, jqXHR => {
+      console.log("fail: " + jqXHR.statusText);
 
       this.setState({
         messages: msg('error', t('An error occurred on save.'))
       });
+      throw t('An error occurred on save.');
     });
-    return Promise.resolve(request);
+    return request;
   }
 
   onSearchChange(event) {
@@ -163,7 +161,7 @@ class ApplyState extends React.Component {
         });
         return Promise.resolve();
     } else {
-       return $.get("/rhn/manager/api/states/match?sid=" + serverId + "&target=" + this.state.filter, data => {
+       return Network.get("/rhn/manager/api/states/match?sid=" + serverId + "&target=" + this.state.filter).then(data => {
           console.log(data);
           this.setState({
             view: "search",
@@ -283,7 +281,7 @@ class ApplyState extends React.Component {
   }
 
   showPopUp(stateName) {
-    $.get("/rhn/manager/state-catalog/state/" + stateName + "/content", data => {
+    Network.get("/rhn/manager/state-catalog/state/" + stateName + "/content").then(data => {
         this.setState({
             showSaltState: {name: stateName, content: data}
         })
