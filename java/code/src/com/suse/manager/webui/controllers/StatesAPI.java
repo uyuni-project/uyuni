@@ -312,13 +312,20 @@ public class StatesAPI {
      * @return the id of the scheduled action
      */
     public static Object apply(Request request, Response response, User user) {
-        JSONServerApplyStates json = GSON.fromJson(request.body(),
+        // Can we use the ECMAScriptDateAdapter throughout this whole class?
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
+                .serializeNulls()
+                .create();
+        JSONServerApplyStates json = gson.fromJson(request.body(),
                 JSONServerApplyStates.class);
         Server server = ServerFactory.lookupById(json.getServerId());
         checkUserHasPermissionsOnServer(server, user);
-        // Schedule an ApplyStatesAction to happen right now
+
+        // Schedule an ApplyStatesAction
         ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                Arrays.asList(json.getServerId()), json.getStates(), new Date());
+                Arrays.asList(json.getServerId()), json.getStates(),
+                json.getEarliest() != null ? json.getEarliest() : new Date());
         MessageQueue.publish(new ActionScheduledEventMessage(action));
 
         response.type("application/json");
