@@ -2,6 +2,7 @@
 
 const React = require("react");
 const Buttons = require("../components/buttons");
+const Network = require("../utils/network");
 
 const AsyncButton = Buttons.AsyncButton;
 
@@ -131,8 +132,8 @@ class RemoteCommand extends React.Component {
     const cmd = this.state.command;
     const target = this.state.target;
     console.log(cmd);
-    return $.get("/rhn/manager/api/minions/match?target=" + target)
-        .done(data => {
+    return Network.get("/rhn/manager/api/minions/match?target=" + target)
+        .then(data => {
             console.log(data);
             this.setState({
               previewed: true,
@@ -161,22 +162,20 @@ class RemoteCommand extends React.Component {
       },
       started: true
     });
-    return $.post("/rhn/manager/api/minions/cmd", {
-        csrf_token: csrfToken,
+    return Network.post("/rhn/manager/api/minions/cmd", {
         cmd: cmd,
         target: target
     })
-    .done(data => {
+    .then(data => {
         console.log(data);
         this.setState({
           result: {
             minions: object2map(data)
           }
         });
-    })
-    .fail((jqXHR, textStatus, errorThrown) => {
+    },(jqXHR) => {
         try {
-            this.setState({errors: $.parseJSON(jqXHR.responseText)})
+            this.setState({errors: JSON.parse(jqXHR.responseText)})
         } catch (err) {
         }
     });

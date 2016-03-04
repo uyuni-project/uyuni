@@ -67,7 +67,7 @@ var StateDetail = React.createClass({
           error: function(xhr, status, err) {
             if (xhr.status == 400) {
                 // validation err
-                var errs = $.parseJSON(xhr.responseText);
+                var errs = JSON.parse(xhr.responseText);
                 this.setState({errors: errs})
             } else if (xhr.status == 500) {
                 this.setState({errors: [t("An internal server error occurred")]})

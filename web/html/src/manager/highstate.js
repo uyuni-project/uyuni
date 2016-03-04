@@ -4,6 +4,7 @@ const React = require("react");
 const Messages = require("../components/messages").Messages;
 const DateTimePicker = require("../components/datetimepicker").DateTimePicker;
 const AsyncButton = require("../components/buttons").AsyncButton;
+const Network = require("../utils/network");
 
 function msg(severityIn, textIn) {
     return {severity: severityIn, text: textIn};
@@ -21,7 +22,7 @@ var Highstate = React.createClass({
     },
 
     refreshHighstate: function() {
-        $.get("/rhn/manager/api/states/highstate?sid=" + serverId, data => {
+        Network.get("/rhn/manager/api/states/highstate?sid=" + serverId).then(data => {
             this.setState({"highstate": data});
         });
     },
@@ -31,18 +32,15 @@ var Highstate = React.createClass({
     },
 
     applyHighstate: function() {
-        const request = $.ajax({
-            type: "POST",
-            url: "/rhn/manager/api/states/apply",
-            data: JSON.stringify({
+        const request = Network.post(
+            "/rhn/manager/api/states/apply",
+            JSON.stringify({
                 sid: serverId,
                 states: [],
                 earliest: this.state.earliest
             }),
-            contentType: "application/json",
-            dataType: "json"
-        })
-        .done(data => {
+            "application/json"
+        ).then(data => {
             this.state.messages.push(msg('info', <span>{t("Applying the highstate has been ")}
                     <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
                     {t(".")}</span>))
@@ -50,7 +48,7 @@ var Highstate = React.createClass({
                 messages: this.state.messages
             });
         });
-        return Promise.resolve(request);
+        return request;
     },
 
     onDateTimeChanged: function(date) {
