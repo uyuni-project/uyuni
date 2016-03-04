@@ -3,16 +3,17 @@
 const React = require("react");
 const Buttons = require("../components/buttons");
 const AsyncButton = Buttons.AsyncButton;
-const Panel = require("../components/panel").Panel
-const Table = require("../components/table2").Table
-const Functions = require("../utils/functions")
+const Panel = require("../components/panel").Panel;
+const Table = require("../components/table2").Table;
+const Network = require("../utils/network");
+const Functions = require("../utils/functions");
 const Comparators = Functions.Comparators;
 const Filters = Functions.Filters;
 const Renderer = Functions.Renderer;
 
 
 function listKeys() {
-    return $.get("/rhn/manager/api/minions/keys");
+    return Network.get("/rhn/manager/api/minions/keys");
 }
 
 function minionToList(idFingerprintMap, state) {
@@ -32,15 +33,15 @@ function processData(keys) {
 }
 
 function acceptKey(key) {
-    return $.post("/rhn/manager/api/minions/keys/" + key + "/accept");
+    return Network.post("/rhn/manager/api/minions/keys/" + key + "/accept");
 }
 
 function deleteKey(key) {
-    return $.post("/rhn/manager/api/minions/keys/" + key + "/delete");
+    return Network.post("/rhn/manager/api/minions/keys/" + key + "/delete");
 }
 
 function rejectKey(key) {
-    return $.post("/rhn/manager/api/minions/keys/" + key + "/reject");
+    return Network.post("/rhn/manager/api/minions/keys/" + key + "/reject");
 }
 
 function actionsFor(id, state, update) {
