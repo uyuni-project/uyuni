@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.google.gson.Gson;
@@ -74,6 +75,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -425,35 +427,42 @@ public class StatesAPI {
                     return action;
                 },
                 (groupId) -> {
-                    // TODO group
-                    return null;
+                    ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(json.getTargetId(), user.getOrg());
+                    checkUserHasPermissionsOnServerGroup(group);
+                    List<Server> groupServers = ServerGroupFactory.listServers(group);
+                    List<Long> minionServerIds = filterSaltMinionIds(groupServers);
+
+                    ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                            minionServerIds, json.getStates(), new Date());
+
+                    return action;
                 },
                 (orgId) -> {
-                    // TODO org
-                    return null;
-                }
-                );
+                    Org org = OrgFactory.lookupById(json.getTargetId());
+                    checkUserHasPermissionsOnOrg(org);
+                    List<Server> orgServers = ServerFactory.lookupByOrg(org.getId());
+                    List<Long> minionServerIds = filterSaltMinionIds(orgServers);
 
-//        ApplyStatesAction action = null;
-//        if ("server".equals(json.getTargetType())) {
-//            Server server = ServerFactory.lookupById(json.getTargetId());
-//            checkUserHasPermissionsOnServer(server, user);
-//            // Schedule an ApplyStatesAction to happen right now
-//            action = ActionManager.scheduleApplyStates(user,
-//                    Arrays.asList(json.getTargetId()), json.getStates(), new Date());
-//
-//        } else if ("group".equals(json.getTargetType())) {
-//
-//        } else if ("org".equals(json.getTargetType())) {
-//
-//        } else {
-//            throw new IllegalArgumentException("Invalid targetType value");
-//        }
+                    ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                            minionServerIds, json.getStates(), new Date());
+
+                    return action;
+                }
+        );
 
         MessageQueue.publish(new ActionScheduledEventMessage(scheduledAction));
 
         response.type("application/json");
         return GSON.toJson(scheduledAction.getId());
+    }
+
+    private static List<Long> filterSaltMinionIds(List<Server> servers) {
+        return servers.stream()
+            .filter(s -> s.asMinionServer()
+                    .filter(m -> m.hasEntitlement(EntitlementManager.SALT))
+                    .isPresent())
+            .map(s -> s.getId())
+            .collect(Collectors.toList());
     }
 
     public static <R> R handleTarget(String targetType, long targetId,
