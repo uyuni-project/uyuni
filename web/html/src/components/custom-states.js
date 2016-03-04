@@ -84,15 +84,15 @@ class CustomStates extends React.Component {
         }
     }
 
-    const request = this.props.applyRequest()
-    .done( data => {
-        console.log("apply action queued:" + data)
-        this.setState({
-            messages: msg('info', <span>{t("Applying the custom states has been ")}
-                <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
-            </span>)
-        });
-    });
+    const request = this.props.applyRequest(this);
+//    .done( data => {
+//        console.log("apply action queued:" + data)
+//        this.setState({
+//            messages: msg('info', <span>{t("Applying the custom states has been ")}
+//                <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
+//            </span>)
+//        });
+//    });
     return Promise.resolve(request);
   }
 
@@ -330,5 +330,6 @@ class CustomStates extends React.Component {
 }
 
 module.exports = {
-    CustomStates : CustomStates
+    CustomStates : CustomStates,
+    msg: msg
 }

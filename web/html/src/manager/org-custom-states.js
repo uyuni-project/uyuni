@@ -1,7 +1,9 @@
 'use strict';
 
 const React = require("react");
-const CustomStates = require("../components/custom-states").CustomStates;
+const CustomStatesModule = require("../components/custom-states")
+const CustomStates = CustomStatesModule.CustomStates;
+const msg = CustomStatesModule.msg;
 
 
 function matchUrl(target) {
@@ -9,7 +11,7 @@ function matchUrl(target) {
              + (target ? "&target=" + target : "");
 }
 
-function applyRequest() {
+function applyRequest(component) {
     return $.ajax({
         type: "POST",
         url: "/rhn/manager/api/states/apply",
@@ -20,7 +22,13 @@ function applyRequest() {
         }),
         contentType: "application/json",
         dataType: "json"
-    });
+    })
+    .done( data => {
+          console.log("apply action queued:" + data)
+          component.setState({
+              messages: msg('info', <span>{t("Applying the custom states has been scheduled for each minion server in this organization")}</span>)
+          });
+      });
 }
 
 function saveRequest(states) {
@@ -37,6 +45,6 @@ function saveRequest(states) {
 }
 
 React.render(
-  <CustomStates matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest}/>,
+  <CustomStates matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest} a/>,
   document.getElementById('custom-states')
 );
