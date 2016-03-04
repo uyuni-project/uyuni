@@ -439,10 +439,9 @@ public class StatesAPI {
      * @return JSON result of state.show_highstate
      */
     public static String showHighstate(Request request, Response response) {
-        // Lookup the minion
         Optional<MinionServer> minionServer = MinionServerFactory
                 .lookupById(Long.valueOf(request.queryParams("sid")));
-        String ret = "";
+        String ret = "Server not found.";
 
         if (minionServer.isPresent()) {
             String minionId = minionServer.get().getMinionId();
@@ -461,6 +460,7 @@ public class StatesAPI {
                 ret = e.getMessage();
             }
         }
+
         response.type("text/yaml");
         return ret;
     }
