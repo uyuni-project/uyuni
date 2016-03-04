@@ -15,9 +15,17 @@
 
 package com.suse.manager.webui.utils;
 
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
 import org.apache.commons.lang.WordUtils;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import spark.Request;
 
@@ -66,5 +74,20 @@ public enum ViewHelper {
         catch (Exception e) {
             throw new RuntimeException("Error rendering the navigation menu.", e);
         }
+    }
+
+    /**
+     * Render the current user's configured timezone for being displayed (falling back to
+     * the system default in case there is currently no user context).
+     *
+     * @return timezone to be displayed
+     */
+    public String renderTimezone() {
+        Context ctx = Context.getCurrentContext();
+        Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
+        TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
+        DateFormat tzFormat = new SimpleDateFormat("z", locale);
+        tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
+        return tzFormat.format(new Date());
     }
 }
