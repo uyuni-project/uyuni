@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.salt.netapi.calls.wheel.Key;
@@ -153,6 +155,22 @@ public class MinionController {
         data.put("orgId", orgId);
         data.put("orgName", OrgFactory.lookupById(new Long(orgId)).getName());
         return new ModelAndView(data, "org/custom.jade");
+    }
+
+    /**
+     * Handler for the server group states page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView serverGroupCustomStates(Request request, Response response, User user) {
+        String orgId = request.queryParams("sgid");
+        Map<String, Object> data = new HashMap<>();
+        data.put("groupId", orgId);
+        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(new Long(orgId),
+                user.getOrg()).getName());
+        return new ModelAndView(data, "groups/custom.jade");
     }
 
     /**
