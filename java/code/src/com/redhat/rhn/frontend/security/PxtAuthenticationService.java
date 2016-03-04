@@ -71,8 +71,6 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         set.add("/rhn/common/DownloadFile");
         // search (safe to be unprotected, since it has no modifying side-effects)
         set.add("/rhn/Search.do");
-        // exclude API endpoints
-        set.add("/rhn/manager/api");
 
         POST_UNPROTECTED_URIS = UnmodifiableSet.decorate(set);
     }
