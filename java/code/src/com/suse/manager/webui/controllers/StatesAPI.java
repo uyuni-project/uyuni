@@ -20,7 +20,6 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -40,7 +39,6 @@ import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.google.gson.Gson;
@@ -50,6 +48,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorFacade;
+import com.suse.manager.webui.utils.MinionServerUtils;
 import org.apache.http.HttpStatus;
 
 import org.apache.log4j.Logger;
@@ -57,7 +56,6 @@ import org.apache.log4j.Logger;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.RepoFileUtils;
-import com.suse.manager.webui.utils.SaltCustomState;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPkgLatest;
 import com.suse.manager.webui.utils.SaltPkgRemoved;
@@ -226,7 +224,7 @@ public class StatesAPI {
                 .map(s -> s.getName())
                 .collect(Collectors.toSet());
 
-        StateRevision newRevision =handleTarget(json.getTargetType(), json.getTargetId(),
+        StateRevision newRevision = handleTarget(json.getTargetType(), json.getTargetId(),
             (serverId) -> {
                 Server server = ServerFactory.lookupById(serverId);
                 checkUserHasPermissionsOnServer(server, user);
@@ -242,7 +240,8 @@ public class StatesAPI {
                         toAssign);
                 // assign any remaining new selection
                 assignNewStates(newServerRevision, toAssign);
-                SaltStateGeneratorFacade.INSTANCE.generateServerCustomState(newServerRevision);
+                SaltStateGeneratorFacade.INSTANCE
+                        .generateServerCustomState(newServerRevision);
                 return newServerRevision;
             },
             (groupId) -> {
@@ -258,7 +257,8 @@ public class StatesAPI {
                         toRemove,
                         toAssign);
                 assignNewStates(newGroupRevision, toAssign);
-                SaltStateGeneratorFacade.INSTANCE.generateGroupCustomState(newGroupRevision);
+                SaltStateGeneratorFacade.INSTANCE
+                        .generateGroupCustomState(newGroupRevision);
                 return newGroupRevision;
             },
             (orgId) -> {
@@ -293,9 +293,17 @@ public class StatesAPI {
 
     private static void checkUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
         try {
-            ServerGroupManager.getInstance().validateAccessCredentials(user, group, group.getName());
+            ServerGroupManager.getInstance().validateAccessCredentials(user, group,
+                    group.getName());
             ServerGroupManager.getInstance().validateAdminCredentials(user);
-        } catch (PermissionException | LookupException e) {
+        }
+        catch (PermissionException | LookupException e) {
+            Spark.halt(HttpStatus.SC_FORBIDDEN);
+        }
+    }
+
+    private static void checkUserHasPermissionsOnServer(Server server, User user) {
+        if (!SystemManager.isAvailableToUser(user, server.getId())) {
             Spark.halt(HttpStatus.SC_FORBIDDEN);
         }
     }
@@ -323,12 +331,6 @@ public class StatesAPI {
             Optional<CustomState> newState = StateFactory
                     .getCustomStateByName(newStateName);
             newState.ifPresent(s -> newRevision.getCustomStates().add(s));
-        }
-    }
-
-    private static void checkUserHasPermissionsOnServer(Server server, User user) {
-        if (!SystemManager.isAvailableToUser(user, server.getId())) {
-            Spark.halt(HttpStatus.SC_FORBIDDEN);
         }
     }
 
@@ -390,38 +392,42 @@ public class StatesAPI {
                 JSONServerApplyStates.class);
 
 
-        ApplyStatesAction scheduledAction = handleTarget(json.getTargetType(), json.getTargetId(),
-                (serverId) -> {
-                    Server server = ServerFactory.lookupById(json.getTargetId());
-                    checkUserHasPermissionsOnServer(server, user);
-                    // Schedule an ApplyStatesAction to happen right now
-                    ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                            Arrays.asList(json.getTargetId()), json.getStates(),
-                            json.getEarliest() != null ? json.getEarliest() : new Date());
-                    return action;
-                },
-                (groupId) -> {
-                    ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(json.getTargetId(), user.getOrg());
-                    checkUserHasPermissionsOnServerGroup(user, group);
-                    List<Server> groupServers = ServerGroupFactory.listServers(group);
-                    List<Long> minionServerIds = filterSaltMinionIds(groupServers);
+        ApplyStatesAction scheduledAction = handleTarget(json.getTargetType(),
+                json.getTargetId(),
+            (serverId) -> {
+                Server server = ServerFactory.lookupById(json.getTargetId());
+                checkUserHasPermissionsOnServer(server, user);
+                // Schedule an ApplyStatesAction to happen right now
+                ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                        Arrays.asList(json.getTargetId()), json.getStates(),
+                        getScheduleDate(json));
+                return action;
+            },
+            (groupId) -> {
+                ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(json.getTargetId(),
+                        user.getOrg());
+                checkUserHasPermissionsOnServerGroup(user, group);
+                List<Server> groupServers = ServerGroupFactory.listServers(group);
+                List<Long> minionServerIds = MinionServerUtils.filterSaltMinionIds(
+                        groupServers, (s) -> s.getId());
 
-                    ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                            minionServerIds, json.getStates(), new Date());
+                ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                        minionServerIds, json.getStates(), getScheduleDate(json));
 
-                    return action;
-                },
-                (orgId) -> {
-                    Org org = OrgFactory.lookupById(json.getTargetId());
-                    checkUserHasPermissionsOnOrg(org);
-                    List<Server> orgServers = ServerFactory.lookupByOrg(org.getId());
-                    List<Long> minionServerIds = filterSaltMinionIds(orgServers);
+                return action;
+            },
+            (orgId) -> {
+                Org org = OrgFactory.lookupById(json.getTargetId());
+                checkUserHasPermissionsOnOrg(org);
+                List<Server> orgServers = ServerFactory.lookupByOrg(org.getId());
+                List<Long> minionServerIds = MinionServerUtils.filterSaltMinionIds(
+                        orgServers, (s) -> s.getId());
 
-                    ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                            minionServerIds, json.getStates(), new Date());
+                ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                        minionServerIds, json.getStates(), getScheduleDate(json));
 
-                    return action;
-                }
+                return action;
+            }
         );
 
         MessageQueue.publish(new ActionScheduledEventMessage(scheduledAction));
@@ -430,14 +436,10 @@ public class StatesAPI {
         return GSON.toJson(scheduledAction.getId());
     }
 
-    private static List<Long> filterSaltMinionIds(List<Server> servers) {
-        return servers.stream()
-            .filter(s -> s.asMinionServer()
-                    .filter(m -> m.hasEntitlement(EntitlementManager.SALT))
-                    .isPresent())
-            .map(s -> s.getId())
-            .collect(Collectors.toList());
+    private static Date getScheduleDate(JSONServerApplyStates json) {
+        return json.getEarliest() != null ? json.getEarliest() : new Date();
     }
+
 
     public static <R> R handleTarget(String targetType, long targetId,
                                      Function<Long, R> serverHandler,
@@ -445,11 +447,14 @@ public class StatesAPI {
                                      Function<Long, R> orgHandler) {
         if ("server".equals(targetType)) {
             return serverHandler.apply(targetId);
-        } else if ("group".equals(targetType)) {
+        }
+        else if ("group".equals(targetType)) {
             return groupHandler.apply(targetId);
-        } else if ("org".equals(targetType)) {
+        }
+        else if ("org".equals(targetType)) {
             return orgHandler.apply(targetId);
-        } else {
+        }
+        else {
             throw new IllegalArgumentException("Invalid targetType value");
         }
     }
