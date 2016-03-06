@@ -3,12 +3,15 @@ package com.suse.manager.webui.services;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.RepoFileUtils;
 import com.suse.manager.webui.utils.SaltCustomState;
 import com.suse.manager.webui.utils.SaltPillar;
@@ -40,10 +43,13 @@ public enum SaltStateGeneratorFacade {
     public static final String GENERATED_PILLAR_ROOT = "/srv/susemanager/pillar";
 
     /**
-     * Generate server specific pillar
+     * Generate server specific pillar if the given server is a minion.
      * @param server
      */
     public void generatePillarForServer(Server server) {
+        if (!MinionServerUtils.isMinionServer(server)) {
+            return;
+        }
         LOG.debug("Generating pillar file for server name= " + server.getName()
                 + " digitalId=" + server.getDigitalServerId());
 
@@ -68,8 +74,50 @@ public enum SaltStateGeneratorFacade {
         }
     }
 
+    /**
+     * Remove the corresponding pillar data if the server is a minion.
+     * @param server
+     */
+    public void removePillarForServer(Server server) {
+        if (!MinionServerUtils.isMinionServer(server)) {
+            return;
+        }
+        LOG.debug("Removing pillar file for server name= " + server.getName()
+                + " digitalId=" + server.getDigitalServerId());
+        Path baseDir = Paths.get(GENERATED_PILLAR_ROOT);
+        Path filePath = baseDir.resolve(
+                defaultExtension("server_" + server.getDigitalServerId()));
+        try {
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            LOG.error("Could not remove pillar file " + filePath);
+        }
+    }
+
+//    public void removePillarForServerGroup(ServerGroup group) {
+//        List<Server> groupServers = ServerGroupFactory.listServers(group);
+//        removePillarFromServers(groupServers);
+//    }
+//
+//    public void removePillarFromOrg(Org org) {
+//        List<Server> orgServers = ServerFactory.lookupByOrg(org.getId());
+//        removePillarFromServers(orgServers);
+//    }
+//
+//
+//    private void removePillarFromServers(List<Server> servers) {
+//        List<Server> minionServers = MinionServerUtils
+//                .filterSaltMinionIds(servers, (s) -> s);
+//        for (Server server : minionServers) {
+//            generatePillarForServer(server);
+//        }
+//    }
+
     public void generateServerCustomState(ServerStateRevision stateRevision) {
         Server server = stateRevision.getServer();
+        if (!MinionServerUtils.isMinionServer(server)) {
+            return;
+        }
         LOG.debug("Generating custom state SLS file for server: " + server.getId());
 
         Set<String> stateNames = stateRevision.getCustomStates()
@@ -144,5 +192,6 @@ public enum SaltStateGeneratorFacade {
             LOG.error(e.getMessage(), e);
         }
     }
+
 
 }
