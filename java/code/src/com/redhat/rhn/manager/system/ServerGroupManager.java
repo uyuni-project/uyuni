@@ -29,6 +29,8 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.suse.manager.webui.controllers.StatesAPI;
+import com.suse.manager.webui.services.SaltStateGeneratorFacade;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -334,7 +336,9 @@ public class ServerGroupManager {
         validateAdminCredentials(loggedInUser);
         for (Server s : servers) {
             SystemManager.addServerToServerGroup(s, sg);
+            SaltStateGeneratorFacade.INSTANCE.generatePillarForServer(s);
         }
+
     }
 
     /**
@@ -360,6 +364,7 @@ public class ServerGroupManager {
     public void removeServers(ServerGroup sg, Collection<Server> servers) {
         for (Server s : servers) {
             SystemManager.removeServerFromServerGroup(s, sg);
+            SaltStateGeneratorFacade.INSTANCE.generatePillarForServer(s);
         }
     }
 

@@ -14,10 +14,13 @@
  */
 package com.suse.manager.webui.controllers;
 
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -43,8 +46,10 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import com.suse.manager.webui.services.SaltStateGeneratorFacade;
 import org.apache.http.HttpStatus;
 
 import org.apache.log4j.Logger;
@@ -98,7 +103,6 @@ public class StatesAPI {
 
     private static final Gson GSON = new GsonBuilder().create();
     public static final String SALT_PACKAGE_FILES = "packages";
-    public static final String SALT_CUSTOM_STATES = "custom";
 
     private StatesAPI() { }
 
@@ -165,20 +169,21 @@ public class StatesAPI {
         String type = request.queryParams("type");
         long id = Long.valueOf(request.queryParams("id"));
 
-        Optional<Set<CustomState>> saltStates = null;
-        if ("server".equals(type)) {
-            Server server = ServerFactory.lookupById(id);
-            saltStates = StateFactory.latestCustomStates(server);
-
-        } else if ("org".equals(type)) {
-            Org org = OrgFactory.lookupById(id);
-            saltStates = StateFactory.latestCustomStates(org);
-
-        } else if ("group".equals(type)) {
-            ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id,
-                    user.getOrg()); // TODO is org really needed here?
-            saltStates = StateFactory.latestCustomStates(group);
-        }
+        Optional<Set<CustomState>> saltStates = handleTarget(type, id,
+            (serverId) -> {
+                Server server = ServerFactory.lookupById(id);
+                return StateFactory.latestCustomStates(server);
+            },
+            (groupId) -> {
+                ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id,
+                        user.getOrg()); // TODO is org really needed here?
+                return StateFactory.latestCustomStates(group);
+            },
+            (orgId) -> {
+                Org org = OrgFactory.lookupById(id);
+                return StateFactory.latestCustomStates(org);
+            }
+        );
 
         // Find matches among this currently assigned salt states
         Set<JSONCustomState> result = new HashSet<>(); // use a set to avoid duplicates
@@ -221,60 +226,57 @@ public class StatesAPI {
                 .map(s -> s.getName())
                 .collect(Collectors.toSet());
 
+        StateRevision newRevision =handleTarget(json.getTargetType(), json.getTargetId(),
+            (serverId) -> {
+                Server server = ServerFactory.lookupById(serverId);
+                checkUserHasPermissionsOnServer(server, user);
 
-        StateRevision newRevision = null;
-        if ("server".equals(json.getTargetType())) {
-            Server server = ServerFactory.lookupById(json.getTargetId());
-            checkUserHasPermissionsOnServer(server, user);
+                // clone any existing package states
+                ServerStateRevision newServerRevision = StateRevisionService.INSTANCE
+                        .cloneLatest(server, user, true, false);
 
-            // clone any existing package states
-            ServerStateRevision newServerRevision = StateRevisionService.INSTANCE
-                    .cloneLatest(server, user, true, false);
+                // merge existing states with incoming selections
+                mergeStates(newServerRevision,
+                        StateFactory.latestCustomStates(server),
+                        toRemove,
+                        toAssign);
+                // assign any remaining new selection
+                assignNewStates(newServerRevision, toAssign);
+                SaltStateGeneratorFacade.INSTANCE.generateServerCustomState(newServerRevision);
+                return newServerRevision;
+            },
+            (groupId) -> {
+                ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(
+                        groupId, user.getOrg()); // TODO is org really needed here ?
+                checkUserHasPermissionsOnServerGroup(user, group);
 
-            // merge existing states with incoming selections
-            mergeStates(newServerRevision,
-                    StateFactory.latestCustomStates(server),
-                    toRemove,
-                    toAssign);
-            // assign any remaining new selection
-            assignNewStates(newServerRevision, toAssign);
-            generateServerCustomState(newServerRevision);
-            newRevision = newServerRevision;
+                ServerGroupStateRevision newGroupRevision = StateRevisionService.INSTANCE
+                        .cloneLatest(group, user, true, false);
 
-        } else if ("group".equals(json.getTargetType())) {
-            ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(
-                    json.getTargetId(), user.getOrg()); // TODO is org really needed here ?
-            checkUserHasPermissionsOnServerGroup(group);
+                mergeStates(newGroupRevision,
+                        StateFactory.latestCustomStates(group),
+                        toRemove,
+                        toAssign);
+                assignNewStates(newGroupRevision, toAssign);
+                SaltStateGeneratorFacade.INSTANCE.generateGroupCustomState(newGroupRevision);
+                return newGroupRevision;
+            },
+            (orgId) -> {
+                Org org = OrgFactory.lookupById(json.getTargetId());
+                checkUserHasPermissionsOnOrg(org);
 
-            ServerGroupStateRevision newGroupRevision = StateRevisionService.INSTANCE
-                    .cloneLatest(group, user, true, false);
+                OrgStateRevision newOrgRevision = StateRevisionService.INSTANCE
+                        .cloneLatest(org, user, true, false);
 
-            mergeStates(newGroupRevision,
-                    StateFactory.latestCustomStates(group),
-                    toRemove,
-                    toAssign);
-            assignNewStates(newGroupRevision, toAssign);
-            // TODO generate state
-            newRevision = newGroupRevision;
-
-        } else if ("org".equals(json.getTargetType())) {
-            Org org = OrgFactory.lookupById(json.getTargetId());
-            checkUserHasPermissionsOnOrg(org);
-
-            OrgStateRevision newOrgRevision = StateRevisionService.INSTANCE
-                    .cloneLatest(org, user, true, false);
-
-            mergeStates(newOrgRevision,
-                    StateFactory.latestCustomStates(org),
-                    toRemove,
-                    toAssign);
-            assignNewStates(newOrgRevision, toAssign);
-            generateOrgCustomState(newOrgRevision);
-            newRevision = newOrgRevision;
-
-        } else {
-            throw new IllegalArgumentException("Invalid targetType value");
-        }
+                mergeStates(newOrgRevision,
+                        StateFactory.latestCustomStates(org),
+                        toRemove,
+                        toAssign);
+                assignNewStates(newOrgRevision, toAssign);
+                SaltStateGeneratorFacade.INSTANCE.generateOrgCustomState(newOrgRevision);
+                return newOrgRevision;
+            }
+        );
 
         try {
             StateFactory.save(newRevision);
@@ -289,9 +291,13 @@ public class StatesAPI {
         }
     }
 
-
-    private static void checkUserHasPermissionsOnServerGroup(ServerGroup group) {
-        // TODO
+    private static void checkUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
+        try {
+            ServerGroupManager.getInstance().validateAccessCredentials(user, group, group.getName());
+            ServerGroupManager.getInstance().validateAdminCredentials(user);
+        } catch (PermissionException | LookupException e) {
+            Spark.halt(HttpStatus.SC_FORBIDDEN);
+        }
     }
 
     private static void checkUserHasPermissionsOnOrg(Org org) {
@@ -319,38 +325,6 @@ public class StatesAPI {
             newState.ifPresent(s -> newRevision.getCustomStates().add(s));
         }
     }
-
-    private static void generateServerCustomState(ServerStateRevision stateRevision) {
-        Server server = stateRevision.getServer();
-        LOG.debug("Generating custom state SLS file for server: " + server.getId());
-
-        Set<String> stateNames = stateRevision.getCustomStates()
-                .stream().map(s -> s.getStateName())
-                .collect(Collectors.toSet());
-
-        stateNames = SaltAPIService.INSTANCE.resolveOrgStates(
-                server.getOrg().getId(), stateNames);
-
-        try {
-            Path baseDir = Paths.get(
-                    RepoFileUtils.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
-            Files.createDirectories(baseDir);
-            Path filePath = baseDir.resolve(
-                    "custom_" + server.getDigitalServerId() + ".sls");
-            SaltStateGenerator saltStateGenerator =
-                    new SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(new SaltCustomState(server.getId(), stateNames));
-        }
-        catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-        }
-
-    }
-
-    private static void generateOrgCustomState(OrgStateRevision stateRevision) {
-
-    }
-
 
     private static void checkUserHasPermissionsOnServer(Server server, User user) {
         if (!SystemManager.isAvailableToUser(user, server.getId())) {
@@ -428,7 +402,7 @@ public class StatesAPI {
                 },
                 (groupId) -> {
                     ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(json.getTargetId(), user.getOrg());
-                    checkUserHasPermissionsOnServerGroup(group);
+                    checkUserHasPermissionsOnServerGroup(user, group);
                     List<Server> groupServers = ServerGroupFactory.listServers(group);
                     List<Long> minionServerIds = filterSaltMinionIds(groupServers);
 
