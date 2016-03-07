@@ -22,10 +22,17 @@ fi
 
 
 spacewalk_target_services() {
+    FEXISTS=""
+    for t in /usr/lib/systemd/system/*.service; do
+        FEXISTS="$FEXISTS $(basename $t)"
+    done
     awk -F= 'BEGIN {split("'"$EXCLUDE"'", keys, / +/);
-                    for (i in keys) {exclude[keys[i]]}
+                    split("'"$FEXISTS"'", srvs, / +/);
+                    for (i in keys) {exclude[keys[i]]};
+                    for (j in srvs) {fexists[srvs[j]]}
                    }
-             /Requires=/ {if (!($2 in exclude)) {print $2}}' \
+             /Requires=/ {if (!($2 in exclude)) {print $2}}
+             /Wants=/ {if (($2 in fexists) && !($2 in exclude)) {print $2}}' \
              /usr/lib/systemd/system/spacewalk.target
 }
 
