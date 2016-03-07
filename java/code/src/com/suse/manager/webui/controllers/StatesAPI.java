@@ -224,61 +224,62 @@ public class StatesAPI {
                 .map(s -> s.getName())
                 .collect(Collectors.toSet());
 
-        StateRevision newRevision = handleTarget(json.getTargetType(), json.getTargetId(),
-            (serverId) -> {
-                Server server = ServerFactory.lookupById(serverId);
-                checkUserHasPermissionsOnServer(server, user);
-
-                // clone any existing package states
-                ServerStateRevision newServerRevision = StateRevisionService.INSTANCE
-                        .cloneLatest(server, user, true, false);
-
-                // merge existing states with incoming selections
-                mergeStates(newServerRevision,
-                        StateFactory.latestCustomStates(server),
-                        toRemove,
-                        toAssign);
-                // assign any remaining new selection
-                assignNewStates(newServerRevision, toAssign);
-                SaltStateGeneratorFacade.INSTANCE
-                        .generateServerCustomState(newServerRevision);
-                return newServerRevision;
-            },
-            (groupId) -> {
-                ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(
-                        groupId, user.getOrg()); // TODO is org really needed here ?
-                checkUserHasPermissionsOnServerGroup(user, group);
-
-                ServerGroupStateRevision newGroupRevision = StateRevisionService.INSTANCE
-                        .cloneLatest(group, user, true, false);
-
-                mergeStates(newGroupRevision,
-                        StateFactory.latestCustomStates(group),
-                        toRemove,
-                        toAssign);
-                assignNewStates(newGroupRevision, toAssign);
-                SaltStateGeneratorFacade.INSTANCE
-                        .generateGroupCustomState(newGroupRevision);
-                return newGroupRevision;
-            },
-            (orgId) -> {
-                Org org = OrgFactory.lookupById(json.getTargetId());
-                checkUserHasPermissionsOnOrg(org);
-
-                OrgStateRevision newOrgRevision = StateRevisionService.INSTANCE
-                        .cloneLatest(org, user, true, false);
-
-                mergeStates(newOrgRevision,
-                        StateFactory.latestCustomStates(org),
-                        toRemove,
-                        toAssign);
-                assignNewStates(newOrgRevision, toAssign);
-                SaltStateGeneratorFacade.INSTANCE.generateOrgCustomState(newOrgRevision);
-                return newOrgRevision;
-            }
-        );
-
         try {
+
+            StateRevision newRevision = handleTarget(json.getTargetType(), json.getTargetId(),
+                (serverId) -> {
+                    Server server = ServerFactory.lookupById(serverId);
+                    checkUserHasPermissionsOnServer(server, user);
+
+                    // clone any existing package states
+                    ServerStateRevision newServerRevision = StateRevisionService.INSTANCE
+                            .cloneLatest(server, user, true, false);
+
+                    // merge existing states with incoming selections
+                    mergeStates(newServerRevision,
+                            StateFactory.latestCustomStates(server),
+                            toRemove,
+                            toAssign);
+                    // assign any remaining new selection
+                    assignNewStates(newServerRevision, toAssign);
+                    SaltStateGeneratorFacade.INSTANCE
+                            .generateServerCustomState(newServerRevision);
+                    return newServerRevision;
+                },
+                (groupId) -> {
+                    ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(
+                            groupId, user.getOrg()); // TODO is org really needed here ?
+                    checkUserHasPermissionsOnServerGroup(user, group);
+
+                    ServerGroupStateRevision newGroupRevision = StateRevisionService.INSTANCE
+                            .cloneLatest(group, user, true, false);
+
+                    mergeStates(newGroupRevision,
+                            StateFactory.latestCustomStates(group),
+                            toRemove,
+                            toAssign);
+                    assignNewStates(newGroupRevision, toAssign);
+                    SaltStateGeneratorFacade.INSTANCE
+                            .generateGroupCustomState(newGroupRevision);
+                    return newGroupRevision;
+                },
+                (orgId) -> {
+                    Org org = OrgFactory.lookupById(json.getTargetId());
+                    checkUserHasPermissionsOnOrg(org);
+
+                    OrgStateRevision newOrgRevision = StateRevisionService.INSTANCE
+                            .cloneLatest(org, user, true, false);
+
+                    mergeStates(newOrgRevision,
+                            StateFactory.latestCustomStates(org),
+                            toRemove,
+                            toAssign);
+                    assignNewStates(newOrgRevision, toAssign);
+                    SaltStateGeneratorFacade.INSTANCE.generateOrgCustomState(newOrgRevision);
+                    return newOrgRevision;
+                }
+            );
+
             StateFactory.save(newRevision);
 
             return json(response, newRevision.getCustomStates()
@@ -286,6 +287,7 @@ public class StatesAPI {
                     .collect(Collectors.toSet()));
         }
         catch (Throwable t) {
+            LOG.error(t.getMessage(), t);
             response.status(500);
             return "{}";
         }
@@ -369,7 +371,7 @@ public class StatesAPI {
             return GSON.toJson(convertToJSON(state.getPackageStates()));
         }
         catch (Throwable t) {
-            response.status(500);
+            response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }
     }
@@ -383,6 +385,7 @@ public class StatesAPI {
      * @return the id of the scheduled action
      */
     public static Object apply(Request request, Response response, User user) {
+        response.type("application/json");
         // Can we use the ECMAScriptDateAdapter throughout this whole class?
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -390,50 +393,52 @@ public class StatesAPI {
                 .create();
         JSONServerApplyStates json = gson.fromJson(request.body(),
                 JSONServerApplyStates.class);
+        try {
+            ApplyStatesAction scheduledAction = handleTarget(json.getTargetType(),
+                    json.getTargetId(),
+                    (serverId) -> {
+                        Server server = ServerFactory.lookupById(json.getTargetId());
+                        checkUserHasPermissionsOnServer(server, user);
+                        // Schedule an ApplyStatesAction to happen right now
+                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                                Arrays.asList(json.getTargetId()), json.getStates(),
+                                getScheduleDate(json));
+                        return action;
+                    },
+                    (groupId) -> {
+                        ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(json.getTargetId(),
+                                user.getOrg());
+                        checkUserHasPermissionsOnServerGroup(user, group);
+                        List<Server> groupServers = ServerGroupFactory.listServers(group);
+                        List<Long> minionServerIds = MinionServerUtils.filterSaltMinionIds(
+                                groupServers, (s) -> s.getId());
 
+                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                                minionServerIds, json.getStates(), getScheduleDate(json));
 
-        ApplyStatesAction scheduledAction = handleTarget(json.getTargetType(),
-                json.getTargetId(),
-            (serverId) -> {
-                Server server = ServerFactory.lookupById(json.getTargetId());
-                checkUserHasPermissionsOnServer(server, user);
-                // Schedule an ApplyStatesAction to happen right now
-                ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                        Arrays.asList(json.getTargetId()), json.getStates(),
-                        getScheduleDate(json));
-                return action;
-            },
-            (groupId) -> {
-                ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(json.getTargetId(),
-                        user.getOrg());
-                checkUserHasPermissionsOnServerGroup(user, group);
-                List<Server> groupServers = ServerGroupFactory.listServers(group);
-                List<Long> minionServerIds = MinionServerUtils.filterSaltMinionIds(
-                        groupServers, (s) -> s.getId());
+                        return action;
+                    },
+                    (orgId) -> {
+                        Org org = OrgFactory.lookupById(json.getTargetId());
+                        checkUserHasPermissionsOnOrg(org);
+                        List<Server> orgServers = ServerFactory.lookupByOrg(org.getId());
+                        List<Long> minionServerIds = MinionServerUtils.filterSaltMinionIds(
+                                orgServers, (s) -> s.getId());
 
-                ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                        minionServerIds, json.getStates(), getScheduleDate(json));
+                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                                minionServerIds, json.getStates(), getScheduleDate(json));
 
-                return action;
-            },
-            (orgId) -> {
-                Org org = OrgFactory.lookupById(json.getTargetId());
-                checkUserHasPermissionsOnOrg(org);
-                List<Server> orgServers = ServerFactory.lookupByOrg(org.getId());
-                List<Long> minionServerIds = MinionServerUtils.filterSaltMinionIds(
-                        orgServers, (s) -> s.getId());
+                        return action;
+                    }
+            );
 
-                ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                        minionServerIds, json.getStates(), getScheduleDate(json));
+            MessageQueue.publish(new ActionScheduledEventMessage(scheduledAction));
 
-                return action;
-            }
-        );
-
-        MessageQueue.publish(new ActionScheduledEventMessage(scheduledAction));
-
-        response.type("application/json");
-        return GSON.toJson(scheduledAction.getId());
+            return GSON.toJson(scheduledAction.getId());
+        } catch (Exception e) {
+            response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            return "{}";
+        }
     }
 
     private static Date getScheduleDate(JSONServerApplyStates json) {

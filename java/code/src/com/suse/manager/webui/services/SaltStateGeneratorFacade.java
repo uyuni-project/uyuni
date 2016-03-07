@@ -9,6 +9,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.MinionServerUtils;
@@ -94,25 +95,6 @@ public enum SaltStateGeneratorFacade {
         }
     }
 
-//    public void removePillarForServerGroup(ServerGroup group) {
-//        List<Server> groupServers = ServerGroupFactory.listServers(group);
-//        removePillarFromServers(groupServers);
-//    }
-//
-//    public void removePillarFromOrg(Org org) {
-//        List<Server> orgServers = ServerFactory.lookupByOrg(org.getId());
-//        removePillarFromServers(orgServers);
-//    }
-//
-//
-//    private void removePillarFromServers(List<Server> servers) {
-//        List<Server> minionServers = MinionServerUtils
-//                .filterSaltMinionIds(servers, (s) -> s);
-//        for (Server server : minionServers) {
-//            generatePillarForServer(server);
-//        }
-//    }
-
     public void generateServerCustomState(ServerStateRevision stateRevision) {
         Server server = stateRevision.getServer();
         if (!MinionServerUtils.isMinionServer(server)) {
@@ -120,78 +102,49 @@ public enum SaltStateGeneratorFacade {
         }
         LOG.debug("Generating custom state SLS file for server: " + server.getId());
 
-        Set<String> stateNames = stateRevision.getCustomStates()
-                .stream().map(s -> s.getStateName())
-                .collect(Collectors.toSet());
-
-        stateNames = SaltAPIService.INSTANCE.resolveOrgStates(
-                server.getOrg().getId(), stateNames);
-
-        try {
-            Path baseDir = Paths.get(
-                    RepoFileUtils.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
-            Files.createDirectories(baseDir);
-            Path filePath = baseDir.resolve(
-                    "custom_" + server.getDigitalServerId() + ".sls");
-            com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
-                    new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(new SaltCustomState(server.getId(), stateNames));
-        }
-        catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-        }
-
+        generateCustomStates(server.getOrg().getId(), stateRevision,
+                defaultExtension("custom_" + server.getDigitalServerId()));
     }
 
     public void generateGroupCustomState(ServerGroupStateRevision stateRevision) {
         ServerGroup group = stateRevision.getGroup();
         LOG.debug("Generating custom state SLS file for server group: " + group.getId());
 
-        Set<String> stateNames = stateRevision.getCustomStates()
-                .stream().map(s -> s.getStateName())
-                .collect(Collectors.toSet());
-
-        stateNames = SaltAPIService.INSTANCE.resolveOrgStates(
-                group.getOrg().getId(), stateNames);
-
-        try {
-            Path baseDir = Paths.get(
-                    RepoFileUtils.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
-            Files.createDirectories(baseDir);
-            Path filePath = baseDir.resolve(defaultExtension("group_" + group.getId()));
-            com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
-                    new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(new SaltCustomState(group.getId(), stateNames));
-        }
-        catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-        }
+        generateCustomStates(group.getOrg().getId(), stateRevision,
+                defaultExtension("group_" + group.getId()));
     }
+
 
     public void generateOrgCustomState(OrgStateRevision stateRevision) {
         Org org = stateRevision.getOrg();
         LOG.debug("Generating custom state SLS file for organization: " + org.getId());
 
+        generateCustomStates(org.getId(), stateRevision,
+                defaultExtension("org_" + org.getId()));
+    }
+
+    private void generateCustomStates(long orgId, StateRevision stateRevision, String fileName) {
         Set<String> stateNames = stateRevision.getCustomStates()
                 .stream().map(s -> s.getStateName())
                 .collect(Collectors.toSet());
 
         stateNames = SaltAPIService.INSTANCE.resolveOrgStates(
-                org.getId(), stateNames);
+                orgId, stateNames);
 
+
+        Path baseDir = Paths.get(
+                RepoFileUtils.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
         try {
-            Path baseDir = Paths.get(
-                    RepoFileUtils.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
             Files.createDirectories(baseDir);
-            Path filePath = baseDir.resolve(defaultExtension("org_" + org.getId()));
+            Path filePath = baseDir.resolve(fileName);
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(new SaltCustomState(org.getId(), stateNames));
+            saltStateGenerator.generate(new SaltCustomState(stateNames));
         }
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
+            throw new RuntimeException(e);
         }
     }
-
 
 }

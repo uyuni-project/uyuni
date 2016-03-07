@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -155,6 +156,20 @@ public class MinionController {
         data.put("orgId", orgId);
         data.put("orgName", OrgFactory.lookupById(new Long(orgId)).getName());
         return new ModelAndView(data, "org/custom.jade");
+    }
+
+    /**
+     * Handler for the org states page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView yourOrgCustomStates(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("orgId", user.getOrg().getId());
+        data.put("orgName", user.getOrg().getName());
+        return new ModelAndView(data, "yourorg/custom.jade");
     }
 
     /**
