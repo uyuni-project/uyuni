@@ -52,7 +52,7 @@ class Table extends React.Component {
        },
        paging: {
            rowsPerPage: this.state.paging.rowsPerPage,
-           currentPage: this.state.paging.currentPage < lastPage ? 0 : this.state.paging.currentPage
+           currentPage: this.state.paging.currentPage > lastPage ? 0 : this.state.paging.currentPage
        }
     });
   }
@@ -173,7 +173,7 @@ class Table extends React.Component {
             <div className="spacewalk-list-bottom-addons">
               <input className="form-control table-input-search"
                 value={this.state.filtering.value}
-                placeholder={"Search"}
+                placeholder={"Filter"}
                 type="text"
                 onChange={(e) => this.onFilterChange(e.target.value)}
               />
