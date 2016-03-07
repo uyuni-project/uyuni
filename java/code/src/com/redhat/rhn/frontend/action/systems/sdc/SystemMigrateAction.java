@@ -151,7 +151,7 @@ public class SystemMigrateAction extends RhnAction {
 
     /**
      * Proccesses the system details edit form
-     * @param request to add messages to.
+     * @param request to add messages to.toOrg
      * @param daForm DynaActionForm to be processed
      * @param user User submitting the form
      * @param s Server whose details are being update

@@ -3,14 +3,12 @@ package com.suse.manager.webui.services;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateRevision;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.RepoFileUtils;
@@ -31,13 +29,13 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 /**
  * Created by matei on 3/4/16.
  */
-public enum SaltStateGeneratorFacade {
+public enum SaltStateGeneratorService {
 
     // Singleton instance of this class
     INSTANCE;
 
     /** Logger */
-    private static final Logger LOG = Logger.getLogger(SaltStateGeneratorFacade.class);
+    private static final Logger LOG = Logger.getLogger(SaltStateGeneratorService.class);
 
     public static final String SALT_CUSTOM_STATES = "custom";
 
@@ -94,6 +92,20 @@ public enum SaltStateGeneratorFacade {
             LOG.error("Could not remove pillar file " + filePath);
         }
     }
+
+    public void removeServerCustomState(Server server) {
+
+    }
+
+    public void removeGroupCustomState(ServerGroup group) {
+
+    }
+
+    public void removeOrgCustomState(Org org) {
+
+    }
+
+
 
     public void generateServerCustomState(ServerStateRevision stateRevision) {
         Server server = stateRevision.getServer();

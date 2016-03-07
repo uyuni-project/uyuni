@@ -82,7 +82,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
-import com.suse.manager.webui.services.SaltStateGeneratorFacade;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -393,7 +393,7 @@ public class SystemManager extends BaseManager {
         // remove server itself
         ServerFactory.delete(server);
 
-        SaltStateGeneratorFacade.INSTANCE.removePillarForServer(server);
+        SaltStateGeneratorService.INSTANCE.removePillarForServer(server);
     }
 
     /**
