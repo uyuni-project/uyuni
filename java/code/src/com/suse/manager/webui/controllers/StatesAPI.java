@@ -47,7 +47,7 @@ import com.google.gson.GsonBuilder;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
-import com.suse.manager.webui.services.SaltStateGeneratorFacade;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import org.apache.http.HttpStatus;
 
@@ -242,7 +242,7 @@ public class StatesAPI {
                             toAssign);
                     // assign any remaining new selection
                     assignNewStates(newServerRevision, toAssign);
-                    SaltStateGeneratorFacade.INSTANCE
+                    SaltStateGeneratorService.INSTANCE
                             .generateServerCustomState(newServerRevision);
                     return newServerRevision;
                 },
@@ -259,7 +259,7 @@ public class StatesAPI {
                             toRemove,
                             toAssign);
                     assignNewStates(newGroupRevision, toAssign);
-                    SaltStateGeneratorFacade.INSTANCE
+                    SaltStateGeneratorService.INSTANCE
                             .generateGroupCustomState(newGroupRevision);
                     return newGroupRevision;
                 },
@@ -275,7 +275,7 @@ public class StatesAPI {
                             toRemove,
                             toAssign);
                     assignNewStates(newOrgRevision, toAssign);
-                    SaltStateGeneratorFacade.INSTANCE.generateOrgCustomState(newOrgRevision);
+                    SaltStateGeneratorService.INSTANCE.generateOrgCustomState(newOrgRevision);
                     return newOrgRevision;
                 }
             );

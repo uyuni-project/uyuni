@@ -1,11 +1,8 @@
 package com.suse.manager.webui.utils;
 
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -24,15 +21,7 @@ public class MinionServerUtils {
     }
 
     public static boolean isMinionServer(Server server) {
-        return getMinionServer(server).isPresent();
+        return server.asMinionServer().isPresent();
     }
-
-    public static Optional<MinionServer> getMinionServer(Server server) {
-        return server.asMinionServer()
-                .filter(m -> m.hasEntitlement(EntitlementManager.SALT));
-    }
-
-
-
 
 }

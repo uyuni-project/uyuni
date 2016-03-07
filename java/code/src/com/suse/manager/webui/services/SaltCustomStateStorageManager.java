@@ -43,9 +43,9 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 /**
  * Manages the Salt .sls files on disk.
  */
-public class SaltStateStorageManager {
+public class SaltCustomStateStorageManager {
 
-    private static final Logger LOG = Logger.getLogger(SaltStateStorageManager.class);
+    private static final Logger LOG = Logger.getLogger(SaltCustomStateStorageManager.class);
 
     /**
      * Get the base directory where .sls files are stored.

@@ -34,7 +34,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.services.SaltStateGeneratorFacade;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.RepoFileUtils;
 
@@ -159,7 +159,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             ServerFactory.save(server);
 
-            SaltStateGeneratorFacade.INSTANCE.generatePillarForServer(server);
+            SaltStateGeneratorService.INSTANCE.generatePillarForServer(server);
 
             // apply activation key properties that need to be set after saving the server
             activationKey.ifPresent(ak -> {
