@@ -122,10 +122,16 @@ class Onboarding extends React.Component {
                 columns={[
                   {
                       "header": t("Name"),
-                      "entryToCell": (entry) => entry.id,
-                      "renderCell": Renderer.highlightSubstring,
-                      "sort": Comparators.locale,
-                      "filter": Filters.substring,
+                      "entryToCell": (entry) => entry,
+                      "renderCell": (entry, filter) => {
+                        if(entry.state == "minions") {
+                            return <a href={ "/rhn/manager/minions/" + entry.id }>{ Renderer.highlightSubstring(entry.id, filter) }</a>;
+                        } else {
+                            return Renderer.highlightSubstring(entry.id, filter);
+                        }
+                      },
+                      "sort": Comparators.mapping(Comparators.locale, (entry) => entry.id),
+                      "filter": Filters.mapping(Filters.substring, (entry) => entry.id),
                       "ratio": 0.3
                   },{
                       "header": t("Fingerprint"),
