@@ -33,7 +33,7 @@ public class SaltEntitlement extends Entitlement {
      */
     @Override
     public boolean isPermanent() {
-        return false;
+        return true;
     }
 
     /**
