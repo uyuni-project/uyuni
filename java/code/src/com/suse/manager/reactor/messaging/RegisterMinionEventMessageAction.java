@@ -193,8 +193,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             triggerGetNetworkInfo(server, grains);
 
             // Assign the Salt base entitlement by default
-            server.setBaseEntitlement(
-                    EntitlementManager.getByName(EntitlementManager.SALT_ENTITLED));
+            server.setBaseEntitlement(EntitlementManager.SALT);
 
             Map<String, String> data = new HashMap<>();
             data.put("minionId", minionId);
