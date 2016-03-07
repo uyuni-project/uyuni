@@ -19,3 +19,21 @@ Feature: Test the remote commands via salt
     Then I wait for "3" seconds
     And I expand the results
     And I verify the results
+
+  Scenario: Run a remote command from the systems overview page
+    Given I follow "Systems"
+    Then I follow this client link
+    When I follow "Remote Command" in the content area
+    And I enter as remote command this script in
+      """
+      #!/bin/bash
+      touch /root/12345
+      """
+    And I click on "Schedule"
+    Then I should see a "Remote Command has been scheduled successfully" text
+    Then "/root/12345" exists on the filesystem
+    And I follow "Events" in the content area
+    And I follow "History" in the content area
+    Then I follow "Run an arbitrary script schedule by testing" in the content area
+    And I should see a "Script executed successfully." text
+    And I should see a "Return code: 0" text

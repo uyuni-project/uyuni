@@ -17,7 +17,7 @@ When(/^I expand the results$/) do
    find("div[id='#{$myhostname}']").click
 end
 
-When(/^I expand the results for ".?*"$/) do |host|
+When(/^I expand the results for "(.*)"$/) do |host|
    find("div[id=#{host}]").click
 end
 
@@ -27,4 +27,8 @@ When(/^I verify the results$/) do
     fail if not page.has_content?('spacewalk-testsuite-base')
     fail if not page.has_content?('.bashrc')
   end
+end
+
+When(/^"(.*)" exists on the filesystem$/) do |file|
+  fail if not File.exists?(file)
 end
