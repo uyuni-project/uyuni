@@ -85,7 +85,7 @@ public class AuthFilter implements Filter {
                 RhnHttpServletRequest((HttpServletRequest)request);
 
 
-            if (hreq.getMethod().equals("POST") || hreq.getMethod().equals("PUT")) {
+            if (hreq.getMethod().equals("POST") || hreq.getMethod().equals("PUT") || hreq.getMethod().equals("DELETE")) {
                 // validate security token to prevent CSRF type of attacks
                 if (!authenticationService.skipCsfr((HttpServletRequest) request)) {
                     try {
