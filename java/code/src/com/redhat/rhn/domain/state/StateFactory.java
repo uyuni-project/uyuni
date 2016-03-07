@@ -99,8 +99,8 @@ public class StateFactory extends HibernateFactory {
      * @return the latest custom states for this server
      */
     public static Optional<Set<CustomState>> latestCustomStates(Org org) {
-        Optional<OrgStateRevision> revision = latestRevision(OrgStateRevision.class,
-                "org", org);
+        Optional<OrgStateRevision> revision = latestRevision(
+                OrgStateRevision.class, "org", org);
         return revision.map(OrgStateRevision::getCustomStates);
     }
 
@@ -123,8 +123,8 @@ public class StateFactory extends HibernateFactory {
      * @return the latest custom states for this server
      */
     public static Optional<Set<CustomState>> latestCustomStates(Server server) {
-        Optional<ServerStateRevision> revision = latestRevision(ServerStateRevision.class,
-                "server", server);
+        Optional<ServerStateRevision> revision = latestRevision(
+                ServerStateRevision.class, "server", server);
         return revision.map(ServerStateRevision::getCustomStates);
     }
 
