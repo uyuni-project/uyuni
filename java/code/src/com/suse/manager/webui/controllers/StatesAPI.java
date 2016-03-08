@@ -414,8 +414,10 @@ public class StatesAPI {
                                 .lookupByIdAndOrg(json.getTargetId(), user.getOrg());
                         checkUserHasPermissionsOnServerGroup(user, group);
                         List<Server> groupServers = ServerGroupFactory.listServers(group);
-                        List<Long> minionServerIds = MinionServerUtils.filterSaltMinionIds(
-                                groupServers, (s) -> s.getId());
+                        List<Long> minionServerIds = MinionServerUtils
+                                .filterSaltMinions(groupServers)
+                                .stream().map(s -> s.getId())
+                                .collect(Collectors.toList());
 
                         ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
                                 minionServerIds, json.getStates(), getScheduleDate(json));
@@ -426,8 +428,10 @@ public class StatesAPI {
                         Org org = OrgFactory.lookupById(json.getTargetId());
                         checkUserHasPermissionsOnOrg(org);
                         List<Server> orgServers = ServerFactory.lookupByOrg(org.getId());
-                        List<Long> minionServerIds = MinionServerUtils.filterSaltMinionIds(
-                                orgServers, (s) -> s.getId());
+                        List<Long> minionServerIds = MinionServerUtils
+                                .filterSaltMinions(orgServers)
+                                .stream().map(s -> s.getId())
+                                .collect(Collectors.toList());
 
                         ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
                                 minionServerIds, json.getStates(), getScheduleDate(json));
