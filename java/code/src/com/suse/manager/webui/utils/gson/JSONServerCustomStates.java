@@ -24,7 +24,7 @@ public class JSONServerCustomStates {
     /** Server id */
     private long id;
 
-    private String type;
+    private JSONStateTargetType type;
 
     private Set<JSONCustomState> saltStates;
 
@@ -38,7 +38,7 @@ public class JSONServerCustomStates {
     /**
      * @return the target type
      */
-    public String getTargetType() {
+    public JSONStateTargetType getTargetType() {
         return type;
     }
 

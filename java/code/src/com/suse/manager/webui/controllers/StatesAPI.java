@@ -49,6 +49,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.MinionServerUtils;
+import com.suse.manager.webui.utils.gson.JSONStateTargetType;
 import org.apache.http.HttpStatus;
 
 import org.apache.log4j.Logger;
@@ -164,7 +165,7 @@ public class StatesAPI {
     public static String matchStates(Request request, Response response, User user) {
         String target = request.queryParams("target");
         String targetLowerCase = target != null ? target.toLowerCase() : "";
-        String type = request.queryParams("type");
+        JSONStateTargetType type = JSONStateTargetType.valueOf(request.queryParams("type"));
         long id = Long.valueOf(request.queryParams("id"));
 
         Optional<Set<CustomState>> saltStates = handleTarget(type, id,
@@ -426,7 +427,8 @@ public class StatesAPI {
                     (orgId) -> {
                         Org org = OrgFactory.lookupById(json.getTargetId());
                         checkUserHasPermissionsOnOrg(org);
-                        List<Server> orgServers = MinionServerFactory.lookupByOrg(org.getId());
+                        List<Server> orgServers = MinionServerFactory
+                                .lookupByOrg(org.getId());
                         List<Long> minionServerIds = MinionServerUtils
                                 .filterSaltMinions(orgServers)
                                 .stream().map(s -> s.getId())
@@ -454,17 +456,17 @@ public class StatesAPI {
     }
 
 
-    private static <R> R handleTarget(String targetType, long targetId,
+    private static <R> R handleTarget(JSONStateTargetType targetType, long targetId,
                                      Function<Long, R> serverHandler,
                                      Function<Long, R> groupHandler,
                                      Function<Long, R> orgHandler) {
-        if ("server".equals(targetType)) {
+        if (JSONStateTargetType.server == targetType) {
             return serverHandler.apply(targetId);
         }
-        else if ("group".equals(targetType)) {
+        else if (JSONStateTargetType.group == targetType) {
             return groupHandler.apply(targetId);
         }
-        else if ("org".equals(targetType)) {
+        else if (JSONStateTargetType.org == targetType) {
             return orgHandler.apply(targetId);
         }
         else {
