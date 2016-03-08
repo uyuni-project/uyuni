@@ -52,7 +52,7 @@ done
 
 # remove cache file to push all files again
 rm -f /var/lib/cobbler/pxe_cache.json
-/etc/init.d/cobblerd restart
-/etc/init.d/apache2 reload
+rccobblerd restart
+rcapache2 reload
 echo "Please call 'cobbler sync' to push the enviroment to the new configured proxies"
 
