@@ -18,10 +18,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.LocalCallWithMetadata;
 import com.suse.manager.webui.utils.salt.Timezone;
@@ -91,7 +93,8 @@ public enum SaltAPIService implements SaltService {
     // Shared salt client instance
     private final SaltClient SALT_CLIENT = new SaltClient(SALT_MASTER_URI);
 
-    private SaltCustomStateStorageManager customSaltStorageManager = new SaltCustomStateStorageManager();
+    private SaltCustomStateStorageManager customSaltStorageManager =
+            new SaltCustomStateStorageManager();
 
     // Prevent instantiation
     SaltAPIService() {
@@ -605,8 +608,8 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public void storeOrgState(long orgId, String name, String content,
-                              String oldName, String oldChecksum) {
+    public void saveCustomState(long orgId, String name, String content,
+                                String oldName, String oldChecksum) {
         try {
             customSaltStorageManager.storeState(orgId, name, content, oldName, oldChecksum);
         }
@@ -618,8 +621,10 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public void deleteOrgState(long orgId, String name) {
+    public void deleteCustomState(long orgId, String name) {
         try {
+            StateFactory.removeCustomState(orgId, name);
+            SaltStateGeneratorService.INSTANCE.removeCustomState(orgId, name);
             customSaltStorageManager.deleteState(orgId, name);
         }
         catch (IOException e) {

@@ -42,4 +42,8 @@
     <query name="StateRevision.deleteAll">
         <![CDATA[delete from com.redhat.rhn.domain.state.StateRevision]]>
     </query>
+<!--    <query name="StateRevision.findByCustomState">
+        <![CDATA[from com.redhat.rhn.domain.state.StateRevision as rev join rev.customStates as cust
+        where cust.org.id=:orgId and cust.stateName=:name]]>
+    </query>-->
 </hibernate-mapping>

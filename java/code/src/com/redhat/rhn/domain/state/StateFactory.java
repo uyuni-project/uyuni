@@ -27,6 +27,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Factory class for working with states.
@@ -93,6 +94,34 @@ public class StateFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup the latest state revision of an org.
+     * @param org the org
+     * @return the optional {@link OrgStateRevision}
+     */
+    public static Optional<OrgStateRevision> latestStateRevision(Org org) {
+        return latestRevision(OrgStateRevision.class, "org", org);
+    }
+
+    /**
+     * Lookup the latest state revision of an org.
+     * @param group the server group
+     * @return the optional {@link OrgStateRevision}
+     */
+    public static Optional<ServerGroupStateRevision> latestStateRevision(
+            ServerGroup group) {
+        return latestRevision(ServerGroupStateRevision.class, "group", group);
+    }
+
+    /**
+     * Lookup the latest state revision of a server.
+     * @param server the server
+     * @return the optional {@link OrgStateRevision}
+     */
+    public static Optional<ServerStateRevision> latestStateRevision(Server server) {
+        return latestRevision(ServerStateRevision.class, "server", server);
+    }
+
+    /**
      * Lookup the latest set of custom {@link CustomState} objects for a given server.
      *
      * @param org the organization
@@ -101,7 +130,7 @@ public class StateFactory extends HibernateFactory {
     public static Optional<Set<CustomState>> latestCustomStates(Org org) {
         Optional<OrgStateRevision> revision = latestRevision(
                 OrgStateRevision.class, "org", org);
-        return revision.map(OrgStateRevision::getCustomStates);
+        return filterDeleted(revision);
     }
 
     /**
@@ -113,7 +142,7 @@ public class StateFactory extends HibernateFactory {
     public static Optional<Set<CustomState>> latestCustomStates(ServerGroup group) {
         Optional<ServerGroupStateRevision> revision = latestRevision(
                 ServerGroupStateRevision.class, "group", group);
-        return revision.map(ServerGroupStateRevision::getCustomStates);
+        return filterDeleted(revision);
     }
 
     /**
@@ -125,8 +154,18 @@ public class StateFactory extends HibernateFactory {
     public static Optional<Set<CustomState>> latestCustomStates(Server server) {
         Optional<ServerStateRevision> revision = latestRevision(
                 ServerStateRevision.class, "server", server);
-        return revision.map(ServerStateRevision::getCustomStates);
+        return filterDeleted(revision);
     }
+
+    private static Optional<Set<CustomState>> filterDeleted(
+            Optional<? extends StateRevision> revision) {
+        return revision.map(
+                r -> r.getCustomStates().stream()
+                        .filter(s -> !s.isDeleted())
+                        .collect(Collectors.toSet())
+        );
+    }
+
 
     private static <T extends StateRevision> Optional<T> latestRevision(
             Class<T> revisionType, String field, Object bean) {
@@ -152,13 +191,28 @@ public class StateFactory extends HibernateFactory {
     /**
      * Get a {@link CustomState} object from the db by name
      * @param name the name of the state to get
+     * @param orgId the org id
      * @return an {@link Optional} containing a {@link CustomState} object
      */
-    public static Optional<CustomState> getCustomStateByName(String name) {
+    public static Optional<CustomState> getCustomStateByName(long orgId, String name) {
         CustomState state = (CustomState)getSession().createCriteria(CustomState.class)
                 .add(Restrictions.eq("stateName", name))
+                .add(Restrictions.eq("org.id", orgId))
+                .add(Restrictions.eq("deleted", false))
                 .uniqueResult();
         return Optional.ofNullable(state);
+    }
+
+    /**
+     * Mark custom state as deleted in the database. Does not actually remove it.
+     * @param orgId the org id
+     * @param name the custom state name
+     */
+    public static void removeCustomState(long orgId, String name) {
+        Optional<CustomState> customState = getCustomStateByName(orgId, name);
+        customState.ifPresent(state ->
+                state.setDeleted(true)
+        );
     }
 
 }

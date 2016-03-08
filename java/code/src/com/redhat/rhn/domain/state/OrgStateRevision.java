@@ -26,12 +26,18 @@ public class OrgStateRevision extends StateRevision  {
 
     private Org org;
 
+    /**
+     * @return the organization
+     */
     public Org getOrg() {
         return org;
     }
 
-    public void setOrg(Org org) {
-        this.org = org;
+    /**
+     * @param orgIn the organization
+     */
+    public void setOrg(Org orgIn) {
+        this.org = orgIn;
     }
 
     /**

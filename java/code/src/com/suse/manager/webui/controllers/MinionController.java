@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -163,9 +162,11 @@ public class MinionController {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView yourOrgCustomStates(Request request, Response response, User user) {
+    public static ModelAndView yourOrgCustomStates(Request request, Response response,
+                                                   User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("orgId", user.getOrg().getId());
         data.put("orgName", user.getOrg().getName());
@@ -177,9 +178,11 @@ public class MinionController {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView serverGroupCustomStates(Request request, Response response, User user) {
+    public static ModelAndView serverGroupCustomStates(Request request, Response response,
+                                                       User user) {
         String orgId = request.queryParams("sgid");
         Map<String, Object> data = new HashMap<>();
         data.put("groupId", orgId);

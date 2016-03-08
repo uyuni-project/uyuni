@@ -29,7 +29,6 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import java.util.Collection;
@@ -193,8 +192,8 @@ public class ServerGroupManager {
         validateAdminCredentials(user);
         removeServers(group, listServers(group), user);
         dissociateAdmins(group, group.getAssociatedAdminsFor(user), user);
+        SaltStateGeneratorService.INSTANCE.removeServerGroup(group);
         ServerGroupFactory.remove(group);
-        SaltStateGeneratorService.INSTANCE.removeGroupCustomState(group);
     }
 
     /**

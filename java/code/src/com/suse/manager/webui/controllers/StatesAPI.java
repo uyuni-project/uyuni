@@ -226,7 +226,8 @@ public class StatesAPI {
 
         try {
 
-            StateRevision newRevision = handleTarget(json.getTargetType(), json.getTargetId(),
+            StateRevision newRevision = handleTarget(
+                    json.getTargetType(), json.getTargetId(),
                 (serverId) -> {
                     Server server = ServerFactory.lookupById(serverId);
                     checkUserHasPermissionsOnServer(server, user);
@@ -241,7 +242,7 @@ public class StatesAPI {
                             toRemove,
                             toAssign);
                     // assign any remaining new selection
-                    assignNewStates(newServerRevision, toAssign);
+                    assignNewStates(user, newServerRevision, toAssign);
                     SaltStateGeneratorService.INSTANCE
                             .generateServerCustomState(newServerRevision);
                     return newServerRevision;
@@ -251,14 +252,15 @@ public class StatesAPI {
                             groupId, user.getOrg()); // TODO is org really needed here ?
                     checkUserHasPermissionsOnServerGroup(user, group);
 
-                    ServerGroupStateRevision newGroupRevision = StateRevisionService.INSTANCE
-                            .cloneLatest(group, user, true, false);
+                    ServerGroupStateRevision newGroupRevision =
+                            StateRevisionService.INSTANCE
+                                    .cloneLatest(group, user, true, false);
 
                     mergeStates(newGroupRevision,
                             StateFactory.latestCustomStates(group),
                             toRemove,
                             toAssign);
-                    assignNewStates(newGroupRevision, toAssign);
+                    assignNewStates(user, newGroupRevision, toAssign);
                     SaltStateGeneratorService.INSTANCE
                             .generateGroupCustomState(newGroupRevision);
                     return newGroupRevision;
@@ -274,8 +276,9 @@ public class StatesAPI {
                             StateFactory.latestCustomStates(org),
                             toRemove,
                             toAssign);
-                    assignNewStates(newOrgRevision, toAssign);
-                    SaltStateGeneratorService.INSTANCE.generateOrgCustomState(newOrgRevision);
+                    assignNewStates(user, newOrgRevision, toAssign);
+                    SaltStateGeneratorService.INSTANCE
+                            .generateOrgCustomState(newOrgRevision);
                     return newOrgRevision;
                 }
             );
@@ -328,10 +331,11 @@ public class StatesAPI {
         });
     }
 
-    private static void assignNewStates(StateRevision newRevision, Set<String> toAssign) {
+    private static void assignNewStates(User user, StateRevision newRevision,
+                                        Set<String> toAssign) {
         for (String newStateName : toAssign) {
             Optional<CustomState> newState = StateFactory
-                    .getCustomStateByName(newStateName);
+                    .getCustomStateByName(user.getOrg().getId(), newStateName);
             newState.ifPresent(s -> newRevision.getCustomStates().add(s));
         }
     }
@@ -406,8 +410,8 @@ public class StatesAPI {
                         return action;
                     },
                     (groupId) -> {
-                        ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(json.getTargetId(),
-                                user.getOrg());
+                        ServerGroup group = ServerGroupFactory
+                                .lookupByIdAndOrg(json.getTargetId(), user.getOrg());
                         checkUserHasPermissionsOnServerGroup(user, group);
                         List<Server> groupServers = ServerGroupFactory.listServers(group);
                         List<Long> minionServerIds = MinionServerUtils.filterSaltMinionIds(
@@ -435,7 +439,8 @@ public class StatesAPI {
             MessageQueue.publish(new ActionScheduledEventMessage(scheduledAction));
 
             return GSON.toJson(scheduledAction.getId());
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }
@@ -446,7 +451,7 @@ public class StatesAPI {
     }
 
 
-    public static <R> R handleTarget(String targetType, long targetId,
+    private static <R> R handleTarget(String targetType, long targetId,
                                      Function<Long, R> serverHandler,
                                      Function<Long, R> groupHandler,
                                      Function<Long, R> orgHandler) {

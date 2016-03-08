@@ -25,8 +25,6 @@ import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.manager.kickstart.KickstartDeleteCommand;
@@ -97,10 +95,7 @@ public class OrgFactory extends HibernateFactory {
                 kdc.store();
             }
         }
-        List<Server> servers = ServerFactory.lookupByOrg(oid);
-        for (Server server : servers) {
-            SaltStateGeneratorService.INSTANCE.removePillarForServer(server);
-        }
+        SaltStateGeneratorService.INSTANCE.removeOrg(org);
         IssFactory.unmapLocalOrg(org);
 
         Map<String, Object> in = new HashMap<String, Object>();
