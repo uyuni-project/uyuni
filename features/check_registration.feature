@@ -146,7 +146,7 @@ Feature: Check client registration
     When I follow "Properties" in the content area
     Then I should see a "Edit System Details" text
     And I should see a "system_name" element in "systemDetailsForm" form
-    And I should see a "baseentitlement" element in "systemDetailsForm" form
+    And I should see a "Management" text
     And I should see a "receive_notifications" element in "systemDetailsForm" form
     And I should see a "summary" element in "systemDetailsForm" form
     And I should see a "autoerrataupdate" element in "systemDetailsForm" form
