@@ -25,7 +25,7 @@ public class JSONServerApplyStates {
     /** Server id */
     private long id;
 
-    private String type;
+    private JSONStateTargetType type;
 
     /** List of states to be applied */
     private List<String> states;
@@ -43,7 +43,7 @@ public class JSONServerApplyStates {
     /**
      * @return the target type (server/group/org)
      */
-    public String getTargetType() {
+    public JSONStateTargetType getTargetType() {
         return type;
     }
 
