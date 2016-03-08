@@ -352,6 +352,13 @@ sub setup_salt_master {
     print SALT_MASTER "    - /srv/susemanager/salt\n";
     print SALT_MASTER "    - /srv/salt\n";
 
+    # Configure different pillar roots
+    print SALT_MASTER "pillar_roots:\n";
+    print SALT_MASTER "  base:\n";
+    print SALT_MASTER "    - /usr/share/susemanager/pillar\n";
+    print SALT_MASTER "    - /srv/susemanager/pillar\n";
+    print SALT_MASTER "    - /srv/pillar\n";
+
     close(SALT_MASTER);
 }
 
