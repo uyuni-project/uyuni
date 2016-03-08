@@ -242,6 +242,8 @@ suseVHMConfig                  :: suseVirtualHostManager
 suseVirtualHostManager         :: web_customer suseCredentials rhnServerGroup
 suseCustomState                :: web_customer
 suseStateRevisionCustomState   :: suseCustomState suseStateRevision
+suseServerGroupStateRevision   :: rhnServerGroup suseStateRevision
+suseOrgStateRevision           :: web_customer suseStateRevision
 web_contact                    :: web_customer
 web_contact_all                :: web_contact
 web_user_contact_permission    :: web_contact

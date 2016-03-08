@@ -13,25 +13,6 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseServerGroupStateRevision
-(
-    group_id         NUMBER NOT NULL
-                          CONSTRAINT suse_server_group_rev_sid_fk
-                              REFERENCES rhnServerGroup (id)
-                              ON DELETE CASCADE,
-    state_revision_id NUMBER NOT NULL
-                          CONSTRAINT suse_server_group_rev_id_fk
-                              REFERENCES suseStateRevision (id)
-                              ON DELETE CASCADE
-)
-ENABLE ROW MOVEMENT
-;
-
-ALTER TABLE suseServerGroupStateRevision
-    ADD CONSTRAINT suse_server_group_rev_id_sid_uq UNIQUE (group_id, state_revision_id);
-
-
-
 CREATE TABLE suseOrgStateRevision
 (
     org_id         NUMBER NOT NULL
