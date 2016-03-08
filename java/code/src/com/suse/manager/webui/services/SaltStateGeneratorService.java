@@ -68,8 +68,8 @@ public enum SaltStateGeneratorService {
         if (!MinionServerUtils.isMinionServer(server)) {
             return;
         }
-        LOG.debug("Generating pillar file for server name= " + server.getName()
-                + " digitalId=" + server.getDigitalServerId());
+        LOG.debug("Generating pillar file for server name= " + server.getName() +
+                " digitalId=" + server.getDigitalServerId());
 
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(server);
         List<Long> groupIds = groups.stream()
@@ -100,8 +100,8 @@ public enum SaltStateGeneratorService {
         if (!MinionServerUtils.isMinionServer(server)) {
             return;
         }
-        LOG.debug("Removing pillar file for server name= " + server.getName()
-                + " digitalId=" + server.getDigitalServerId());
+        LOG.debug("Removing pillar file for server name= " + server.getName() +
+                " digitalId=" + server.getDigitalServerId());
         Path baseDir = Paths.get(GENERATED_PILLAR_ROOT);
         Path filePath = baseDir.resolve(
                 defaultExtension("server_" + server.getDigitalServerId()));
@@ -202,7 +202,8 @@ public enum SaltStateGeneratorService {
         generateCustomStateAssignmentFile(orgId, fileName, stateNames);
     }
 
-    private void generateCustomStateAssignmentFile(long orgId, String fileName, Set<String> stateNames) {
+    private void generateCustomStateAssignmentFile(long orgId, String fileName,
+        Set<String> stateNames) {
         stateNames = SaltAPIService.INSTANCE.resolveOrgStates(
                 orgId, stateNames);
 
@@ -224,7 +225,7 @@ public enum SaltStateGeneratorService {
     /**
      * Generate pillar and custom states assignments for a
      * newly registered server.
-     * @param server
+     * @param server newly registered server
      */
     public void registerServer(Server server) {
         if (!MinionServerUtils.isMinionServer(server)) {
