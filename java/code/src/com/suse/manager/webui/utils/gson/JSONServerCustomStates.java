@@ -35,6 +35,9 @@ public class JSONServerCustomStates {
         return id;
     }
 
+    /**
+     * @return the target type
+     */
     public String getTargetType() {
         return type;
     }

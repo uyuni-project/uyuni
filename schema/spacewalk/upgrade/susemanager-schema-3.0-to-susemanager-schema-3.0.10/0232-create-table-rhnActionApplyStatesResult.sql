@@ -11,13 +11,14 @@
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
---
+--a
 
 CREATE TABLE rhnActionApplyStatesResult
 (
     server_id              NUMBER NOT NULL
                                CONSTRAINT rhn_apply_states_result_sid_fk
-                                   REFERENCES rhnServer (id),
+                                   REFERENCES rhnServer (id)
+                                   ON DELETE CASCADE,
     action_apply_states_id NUMBER NOT NULL
                                CONSTRAINT rhn_apply_states_result_aasid_fk
                                    REFERENCES rhnActionApplyStates (id)

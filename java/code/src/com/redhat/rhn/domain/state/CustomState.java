@@ -24,6 +24,7 @@ public class CustomState {
     private Long id;
     private Org org;
     private String stateName;
+    private boolean deleted;
 
     /**
      * The id of state.
@@ -72,5 +73,20 @@ public class CustomState {
      */
     public void setStateName(String stateNameIn) {
         this.stateName = stateNameIn;
+    }
+
+    /**
+     * @return true if this state was deleted
+     */
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    /**
+     * Mark custom state as deleted.
+     * @param deletedIn true if deleted
+     */
+    public void setDeleted(boolean deletedIn) {
+        this.deleted = deletedIn;
     }
 }

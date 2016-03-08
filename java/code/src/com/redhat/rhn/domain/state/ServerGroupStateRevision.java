@@ -26,12 +26,18 @@ public class ServerGroupStateRevision extends StateRevision {
 
     private ServerGroup group;
 
+    /**
+     * @return the group
+     */
     public ServerGroup getGroup() {
         return group;
     }
 
-    public void setGroup(ServerGroup group) {
-        this.group = group;
+    /**
+     * @param groupIn the group
+     */
+    public void setGroup(ServerGroup groupIn) {
+        this.group = groupIn;
     }
 
     /**

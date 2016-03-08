@@ -122,7 +122,7 @@ public class SaltCustomStateStorageManager {
         else {
             final String oldNameToGet = oldName;
             Optional<CustomState> customState = StateFactory.
-                    getCustomStateByName(oldNameToGet);
+                    getCustomStateByName(orgId, oldNameToGet);
             CustomState state = customState.orElseThrow(() ->
                     new IllegalArgumentException("CustomState name=" + oldNameToGet +
                             " not found"));
@@ -149,7 +149,7 @@ public class SaltCustomStateStorageManager {
         File orgDir = new File(getBaseDirPath(), getOrgNamespace(orgId));
         File stateFile = new File(orgDir, defaultExtension(name));
         assertStateInOrgDir(orgDir, stateFile);
-        Files.delete(stateFile.toPath());
+        Files.delete(stateFile.toPath()); // TODO mark it as deleted
     }
 
     /**

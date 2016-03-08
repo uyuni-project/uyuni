@@ -40,6 +40,9 @@ public class JSONServerApplyStates {
         return id;
     }
 
+    /**
+     * @return the target type (server/group/org)
+     */
     public String getTargetType() {
         return type;
     }

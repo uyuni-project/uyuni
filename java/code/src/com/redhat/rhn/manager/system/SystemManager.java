@@ -393,7 +393,7 @@ public class SystemManager extends BaseManager {
         // remove server itself
         ServerFactory.delete(server);
 
-        SaltStateGeneratorService.INSTANCE.removePillarForServer(server);
+        SaltStateGeneratorService.INSTANCE.removeServer(server);
     }
 
     /**
