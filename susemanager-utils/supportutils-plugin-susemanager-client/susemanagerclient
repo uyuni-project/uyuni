@@ -82,7 +82,10 @@ pconf_files \
     /etc/sysconfig/rhn/rhncfg-manager.conf \
     /etc/sysconfig/rhn/image.cfg \
     /etc/sysconfig/rhn/rhnpushrc \
-    /etc/sysconfig/rhn/rhnsd
+    /etc/sysconfig/rhn/rhnsd \
+    /etc/salt/minion \
+    /etc/salt/minion.d/master.conf \
+    /etc/salt/minion.d/_schedule.conf
 
 section_header "SUSE Manager Client Capabilities"
 
