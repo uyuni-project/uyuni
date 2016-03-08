@@ -7,7 +7,7 @@ const msg = CustomStatesModule.msg;
 const Network = require("../utils/network");
 
 function matchUrl(target) {
-    return "/rhn/manager/api/states/match?id=" + serverId + "&type=server"
+    return "/rhn/manager/api/states/match?id=" + serverId + "&type=SERVER"
              + (target ? "&target=" + target : "");
 }
 
@@ -16,7 +16,7 @@ function applyRequest(component) {
         "/rhn/manager/api/states/apply",
         JSON.stringify({
             id: serverId,
-            type: "server",
+            type: "SERVER",
             states: ["custom"]
         }),
         "application/json",
@@ -36,7 +36,7 @@ function saveRequest(states) {
         "/rhn/manager/api/states/save",
         JSON.stringify({
             id: serverId,
-            type: "server",
+            type: "SERVER",
             saltStates: states
         }),
         "application/json"

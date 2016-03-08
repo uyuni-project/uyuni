@@ -7,7 +7,7 @@ const msg = CustomStatesModule.msg;
 const Network = require("../utils/network");
 
 function matchUrl(target) {
-    return "/rhn/manager/api/states/match?id=" + orgId + "&type=org"
+    return "/rhn/manager/api/states/match?id=" + orgId + "&type=ORG"
              + (target ? "&target=" + target : "");
 }
 
@@ -16,7 +16,7 @@ function applyRequest(component) {
         "/rhn/manager/api/states/apply",
         JSON.stringify({
              id: orgId,
-             type: "org",
+             type: "ORG",
              states: ["custom_org"]
          }),
         "application/json",
@@ -34,7 +34,7 @@ function saveRequest(states, doneCallback, failCallback) {
         "/rhn/manager/api/states/save",
         JSON.stringify({
             id: orgId,
-            type: "org",
+            type: "ORG",
             saltStates: states
         }),
         "application/json",

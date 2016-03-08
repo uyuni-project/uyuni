@@ -7,7 +7,7 @@ const msg = CustomStatesModule.msg;
 const Network = require("../utils/network");
 
 function matchUrl(target) {
-    return "/rhn/manager/api/states/match?id=" + groupId + "&type=group"
+    return "/rhn/manager/api/states/match?id=" + groupId + "&type=GROUP"
              + (target ? "&target=" + target : "");
 }
 
@@ -16,7 +16,7 @@ function applyRequest(component) {
         "/rhn/manager/api/states/apply",
         JSON.stringify({
             id: groupId,
-            type: "group",
+            type: "GROUP",
             states: ["custom_groups"]
         }),
         "application/json",
@@ -35,7 +35,7 @@ function saveRequest(states) {
         "/rhn/manager/api/states/save",
         JSON.stringify({
              id: groupId,
-             type: "group",
+             type: "GROUP",
              saltStates: states
          }),
         "application/json"
