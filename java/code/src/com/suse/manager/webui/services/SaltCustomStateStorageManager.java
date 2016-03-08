@@ -43,9 +43,9 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 /**
  * Manages the Salt .sls files on disk.
  */
-public class SaltStateStorageManager {
+public class SaltCustomStateStorageManager {
 
-    private static final Logger LOG = Logger.getLogger(SaltStateStorageManager.class);
+    private static final Logger LOG = Logger.getLogger(SaltCustomStateStorageManager.class);
 
     /**
      * Get the base directory where .sls files are stored.
@@ -104,7 +104,7 @@ public class SaltStateStorageManager {
         }
 
         boolean move = false;
-        if (StringUtils.isNotBlank(oldName)) {
+        if (StringUtils.isNotBlank(oldName) && !oldName.equals(name)) {
             Files.move(orgPath.resolve(defaultExtension(oldName)), stateFile.toPath());
             move = true;
         }
@@ -122,7 +122,7 @@ public class SaltStateStorageManager {
         else {
             final String oldNameToGet = oldName;
             Optional<CustomState> customState = StateFactory.
-                    getCustomStateByName(oldNameToGet);
+                    getCustomStateByName(orgId, oldNameToGet);
             CustomState state = customState.orElseThrow(() ->
                     new IllegalArgumentException("CustomState name=" + oldNameToGet +
                             " not found"));
@@ -149,7 +149,7 @@ public class SaltStateStorageManager {
         File orgDir = new File(getBaseDirPath(), getOrgNamespace(orgId));
         File stateFile = new File(orgDir, defaultExtension(name));
         assertStateInOrgDir(orgDir, stateFile);
-        Files.delete(stateFile.toPath());
+        Files.delete(stateFile.toPath()); // TODO mark it as deleted
     }
 
     /**

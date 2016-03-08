@@ -18,10 +18,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.services.SaltStateStorageManager;
+import com.suse.manager.webui.services.SaltCustomStateStorageManager;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.LocalCallWithMetadata;
 import com.suse.manager.webui.utils.salt.Timezone;
@@ -91,7 +93,8 @@ public enum SaltAPIService implements SaltService {
     // Shared salt client instance
     private final SaltClient SALT_CLIENT = new SaltClient(SALT_MASTER_URI);
 
-    private SaltStateStorageManager storageManager = new SaltStateStorageManager();
+    private SaltCustomStateStorageManager customSaltStorageManager =
+            new SaltCustomStateStorageManager();
 
     // Prevent instantiation
     SaltAPIService() {
@@ -605,10 +608,10 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public void storeOrgState(long orgId, String name, String content,
-                              String oldName, String oldChecksum) {
+    public void saveCustomState(long orgId, String name, String content,
+                                String oldName, String oldChecksum) {
         try {
-            storageManager.storeState(orgId, name, content, oldName, oldChecksum);
+            customSaltStorageManager.storeState(orgId, name, content, oldName, oldChecksum);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
@@ -618,9 +621,11 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public void deleteOrgState(long orgId, String name) {
+    public void deleteCustomState(long orgId, String name) {
         try {
-            storageManager.deleteState(orgId, name);
+            StateFactory.removeCustomState(orgId, name);
+            SaltStateGeneratorService.INSTANCE.removeCustomState(orgId, name);
+            customSaltStorageManager.deleteState(orgId, name);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
@@ -630,8 +635,8 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public List<String> getOrgStates(long orgId) {
-        return storageManager.listByOrg(orgId);
+    public List<String> getCatalogStates(long orgId) {
+        return customSaltStorageManager.listByOrg(orgId);
     }
 
     /**
@@ -639,7 +644,7 @@ public enum SaltAPIService implements SaltService {
      */
     public Optional<String> getOrgStateContent(long orgId, String name) {
         try {
-            return storageManager.getContent(orgId, name);
+            return customSaltStorageManager.getContent(orgId, name);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
@@ -650,14 +655,14 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public boolean orgStateExists(long orgId, String name) {
-        return storageManager.exists(orgId, name);
+        return customSaltStorageManager.exists(orgId, name);
     }
 
-    /**
+    /**storageManager
      * {@inheritDoc}
      */
     public Set<String> resolveOrgStates(long orgId, Set<String> states) {
-        return states.stream().map(state -> storageManager
+        return states.stream().map(state -> customSaltStorageManager
                 .getOrgNamespace(orgId) + "." + state)
                 .collect(Collectors.toSet());
     }

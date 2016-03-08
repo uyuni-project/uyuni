@@ -23,6 +23,7 @@
         <rhn-tab-url>/rhn/multiorg/channels/Consumed.do</rhn-tab-url>
         <rhn-tab-url>/rhn/multiorg/channels/Provided.do</rhn-tab-url>
       </rhn-tab>
+      <rhn-tab name="Custom States" url="/rhn/manager/yourorg/custom" acl="user_role(org_admin)"/>
     </rhn-tab>
   </rhn-tab>
   <rhn-tab name="Systems" url="/rhn/systems/Overview.do">

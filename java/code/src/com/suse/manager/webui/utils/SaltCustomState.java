@@ -26,16 +26,12 @@ import java.util.Set;
  */
 public class SaltCustomState implements SaltState {
 
-    private long orgId;
-
     private Set<String> includedStates = new HashSet<>();
 
     /**
-     * @param orgIdIn the organization id
      * @param includedStatesIn the states to be included
      */
-    public SaltCustomState(long orgIdIn, Set<String> includedStatesIn) {
-        this.orgId = orgIdIn;
+    public SaltCustomState(Set<String> includedStatesIn) {
         this.includedStates = includedStatesIn;
     }
 
@@ -51,13 +47,6 @@ public class SaltCustomState implements SaltState {
         included.sort((s1, s2) -> s1.compareTo(s2));
         state.put("include", included);
         return state;
-    }
-
-    /**
-     * @return the organization id
-     */
-    public long getOrgId() {
-        return orgId;
     }
 
     /**

@@ -23,7 +23,9 @@ import java.util.List;
 public class JSONServerApplyStates {
 
     /** Server id */
-    private long sid;
+    private long id;
+
+    private StateTargetType type;
 
     /** List of states to be applied */
     private List<String> states;
@@ -34,8 +36,15 @@ public class JSONServerApplyStates {
     /**
      * @return the server id
      */
-    public long getServerId() {
-        return sid;
+    public long getTargetId() {
+        return id;
+    }
+
+    /**
+     * @return the target type (server/group/org)
+     */
+    public StateTargetType getTargetType() {
+        return type;
     }
 
     /**

@@ -313,15 +313,15 @@ public interface SaltService {
      * @param oldChecksum the checksum of the file at
      *                    the time of showing it to the user
      */
-    void storeOrgState(long orgId, String name, String content,
-                       String oldName, String oldChecksum);
+    void saveCustomState(long orgId, String name, String content,
+        String oldName, String oldChecksum);
 
     /**
      * Delete a Salt .sls file.
      * @param orgId the organization id
      * @param name the name of the file
      */
-    void deleteOrgState(long orgId, String name);
+    void deleteCustomState(long orgId, String name);
 
     /**
      * Get a list of all Salt .sls files
@@ -330,7 +330,7 @@ public interface SaltService {
      * @param orgId the organization id
      * @return a list of names without the .sls extension
      */
-    List<String> getOrgStates(long orgId);
+    List<String> getCatalogStates(long orgId);
 
     /**
      * Get the content of the give Salt .sls file.
