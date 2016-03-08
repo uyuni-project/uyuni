@@ -11,28 +11,28 @@ function matchUrl(target) {
              + (target ? "&target=" + target : "");
 }
 
-function applyRequest() {
-    Network.post(
+function applyRequest(component) {
+    return Network.post(
         "/rhn/manager/api/states/apply",
         JSON.stringify({
             id: serverId,
             type: "server",
             states: ["custom"]
         }),
-        "application/json"
-    )
-    .done( data => {
-          console.log("apply action queued:" + data)
-          component.setState({
-              messages: msg('info', <span>{t("Applying the custom states has been ")}
-                  <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
-              </span>)
-          });
-    });
+        "application/json",
+        data => {
+              console.log("apply action queued:" + data);
+              component.setState({
+                  messages: msg('info', <span>{t("Applying the custom states has been ")}
+                      <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
+                  </span>)
+              });
+        }
+    );
 }
 
 function saveRequest(states) {
-    const request = Network.post(
+    return Network.post(
         "/rhn/manager/api/states/save",
         JSON.stringify({
             id: serverId,
@@ -40,7 +40,7 @@ function saveRequest(states) {
             saltStates: states
         }),
         "application/json"
-    )
+    );
 }
 
 React.render(

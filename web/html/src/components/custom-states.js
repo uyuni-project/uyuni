@@ -85,15 +85,8 @@ class CustomStates extends React.Component {
     }
 
     const request = this.props.applyRequest(this);
-//    .done( data => {
-//        console.log("apply action queued:" + data)
-//        this.setState({
-//            messages: msg('info', <span>{t("Applying the custom states has been ")}
-//                <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
-//            </span>)
-//        });
-//    });
-    return Promise.resolve(request);
+
+    return request;
   }
 
   save() {
@@ -101,8 +94,8 @@ class CustomStates extends React.Component {
     for(var state of this.state.changed.values()) {
         states.push(state.value)
     }
-    const request = this.props.saveRequest(states)
-    .then((data, textStatus, jqXHR) => {
+    const request = this.props.saveRequest(states,
+    (data, textStatus, jqXHR) => {
       console.log("success: " + data);
 
       const newSearchResults = this.state.search.results.map( state => {
@@ -124,14 +117,15 @@ class CustomStates extends React.Component {
         },
         messages: msg('info', t('State assignments have been saved.'))
       });
-    }, (jqXHR, textStatus, errorThrown) => {
+     },
+     (jqXHR, textStatus, errorThrown) => {
       console.log("fail: " + textStatus);
 
       this.setState({
         messages: msg('error', t('An error occurred on save.'))
       });
-    });
-    return Promise.resolve(request);
+     });
+    return request;
   }
 
   onSearchChange(event) {
