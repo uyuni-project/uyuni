@@ -314,7 +314,7 @@ public interface SaltService {
      *                    the time of showing it to the user
      */
     void saveCustomState(long orgId, String name, String content,
-                         String oldName, String oldChecksum);
+        String oldName, String oldChecksum);
 
     /**
      * Delete a Salt .sls file.
