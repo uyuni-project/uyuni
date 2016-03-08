@@ -403,7 +403,6 @@ public class StatesAPI {
                     (serverId) -> {
                         Server server = ServerFactory.lookupById(json.getTargetId());
                         checkUserHasPermissionsOnServer(server, user);
-                        // Schedule an ApplyStatesAction to happen right now
                         ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
                                 Arrays.asList(json.getTargetId()), json.getStates(),
                                 getScheduleDate(json));
