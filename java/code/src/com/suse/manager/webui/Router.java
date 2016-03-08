@@ -63,7 +63,7 @@ public class Router implements SparkApplication {
                 withCsrfToken(MinionController::orgCustomStates),
                 jade);
         get("/manager/yourorg/custom",
-                withUser(MinionController::yourOrgCustomStates),
+                withCsrfToken(withUser(MinionController::yourOrgCustomStates)),
                 jade);
         get("/manager/groups/details/custom",
                 withCsrfToken(withUser(MinionController::serverGroupCustomStates)),
