@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.utils;
 
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 
 import java.util.List;
@@ -28,17 +29,14 @@ public class MinionServerUtils {
     private MinionServerUtils() { }
 
     /**
-     * Filter only the minion servers and apply the given function to each one.
+     * Filter only the minion servers.
      * @param servers a list of servers
-     * @param function the functions to apply
-     * @param <T> the type of the resulting list
      * @return a list containing the results of the function
      */
-    public static <T> List<T> filterSaltMinionIds(List<Server> servers,
-                                                  Function<Server, T> function) {
+    public static List<MinionServer> filterSaltMinions(List<Server> servers) {
         return servers.stream()
                 .filter(s -> isMinionServer(s))
-                .map(function)
+                .map(s -> s.asMinionServer().get())
                 .collect(Collectors.toList());
     }
 
