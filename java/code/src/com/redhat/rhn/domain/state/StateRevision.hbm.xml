@@ -22,12 +22,28 @@
 
         <property name="created" column="created" type="timestamp" insert="false" update="false"/>
         <many-to-one name="creator" column="creator_id" class="com.redhat.rhn.domain.user.legacy.UserImpl" lazy="proxy"/>
+
         <joined-subclass name="com.redhat.rhn.domain.state.ServerStateRevision" table="suseServerStateRevision">
             <key column="state_revision_id"/>
             <many-to-one name="server" column="server_id" class="com.redhat.rhn.domain.server.Server"/>
         </joined-subclass>
+
+        <joined-subclass name="com.redhat.rhn.domain.state.ServerGroupStateRevision" table="suseServerGroupStateRevision">
+            <key column="state_revision_id"/>
+            <many-to-one name="group" column="group_id" class="com.redhat.rhn.domain.server.ServerGroup"/>
+        </joined-subclass>
+
+        <joined-subclass name="com.redhat.rhn.domain.state.OrgStateRevision" table="suseOrgStateRevision">
+            <key column="state_revision_id"/>
+            <many-to-one name="org" column="org_id" class="com.redhat.rhn.domain.org.Org"/>
+        </joined-subclass>
+
     </class>
     <query name="StateRevision.deleteAll">
         <![CDATA[delete from com.redhat.rhn.domain.state.StateRevision]]>
     </query>
+<!--    <query name="StateRevision.findByCustomState">
+        <![CDATA[from com.redhat.rhn.domain.state.StateRevision as rev join rev.customStates as cust
+        where cust.org.id=:orgId and cust.stateName=:name]]>
+    </query>-->
 </hibernate-mapping>

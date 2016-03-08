@@ -33,6 +33,17 @@ public class MinionServerFactory extends HibernateFactory {
 
     private static Logger log = Logger.getLogger(MinionServerFactory.class);
 
+    /**
+     * Lookup all Servers that belong to an org
+     * @param orgId the org id to search for
+     * @return the Server found
+     */
+    public static List<Server> lookupByOrg(Long orgId) {
+        return (List<Server>) HibernateFactory.getSession().createCriteria(Server.class)
+                .add(Restrictions.eq("org.id", orgId))
+                .list();
+    }
+
     @Override
     protected Logger getLogger() {
         return log;

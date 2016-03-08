@@ -30,6 +30,7 @@ import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.manager.kickstart.KickstartDeleteCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -94,7 +95,7 @@ public class OrgFactory extends HibernateFactory {
                 kdc.store();
             }
         }
-
+        SaltStateGeneratorService.INSTANCE.removeOrg(org);
         IssFactory.unmapLocalOrg(org);
 
         Map<String, Object> in = new HashMap<String, Object>();

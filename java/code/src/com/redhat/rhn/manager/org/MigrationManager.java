@@ -35,6 +35,7 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,7 +79,7 @@ public class MigrationManager extends BaseManager {
             OrgFactory.save(toOrg);
             OrgFactory.save(fromOrg);
             ServerFactory.save(server);
-
+            SaltStateGeneratorService.INSTANCE.migrateServer(server);
             if (user.getOrg().equals(toOrg)) {
                 server.setCreator(user);
             }

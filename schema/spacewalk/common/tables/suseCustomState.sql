@@ -21,8 +21,11 @@ CREATE TABLE suseCustomState
                          CONSTRAINT suse_custom_state_org_id_fk
                             REFERENCES web_customer (id)
                             ON DELETE CASCADE,
-    state_name       VARCHAR2(256) NOT NULL
-
+    state_name       VARCHAR2(256) NOT NULL,
+    state_deleted    char(1)
+                           default ('N') not null
+                           constraint suse_custom_state_deleted_chk
+                           check (state_deleted in ('Y', 'N'))
 )
 ENABLE ROW MOVEMENT
 ;

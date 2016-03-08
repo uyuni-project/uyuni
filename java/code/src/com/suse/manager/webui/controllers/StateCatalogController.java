@@ -143,7 +143,7 @@ public class StateCatalogController {
      * @return the JSON data
      */
     public static String data(Request request, Response response, User user) {
-        List<String> data = SaltAPIService.INSTANCE.getOrgStates(user.getOrg().getId());
+        List<String> data = SaltAPIService.INSTANCE.getCatalogStates(user.getOrg().getId());
         data.replaceAll(e -> StringUtils.substringBeforeLast(e, "."));
         response.type("application/json");
         return GSON.toJson(data);
@@ -183,7 +183,7 @@ public class StateCatalogController {
     public static String delete(Request request, Response response, User user) {
         String name = request.params("name");
         try {
-            SaltAPIService.INSTANCE.deleteOrgState(user.getOrg().getId(), name);
+            SaltAPIService.INSTANCE.deleteCustomState(user.getOrg().getId(), name);
         }
         catch (RuntimeException e) {
             LOG.error("Could not delete state " + name, e);
@@ -204,7 +204,7 @@ public class StateCatalogController {
         }
         // TODO validate content?
         try {
-            SaltAPIService.INSTANCE.storeOrgState(user.getOrg().getId(), name,
+            SaltAPIService.INSTANCE.saveCustomState(user.getOrg().getId(), name,
                     content, previousName, previousChecksum);
         }
         catch (SaltStateExistsException e) {

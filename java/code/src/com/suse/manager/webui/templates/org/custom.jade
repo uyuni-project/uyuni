@@ -1,0 +1,18 @@
+.spacewalk-toolbar-h1
+  .spacewalk-toolbar
+    a(href="/rhn/admin/multiorg/DeleteOrg.do?oid=#{orgId}")
+        i.fa.fa-trash-o(title='Delete System')
+        | #{l.t("delete organization")}
+  h1
+    i.fa.fa-group
+    | #{" " + orgName + " "}
+
+!{h.renderNavigationMenu(request, "/WEB-INF/nav/org_tabs.xml")}
+#custom-states
+
+script(type='text/javascript').
+    var csrfToken = "#{csrf_token}";
+    var orgId = "#{orgId}";
+
+script(src='/javascript/reactjs/react.bundle.js')
+script(src='/javascript/manager/org-custom-states.bundle.js', type='text/javascript')
