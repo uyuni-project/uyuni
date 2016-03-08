@@ -159,7 +159,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             ServerFactory.save(server);
 
-            SaltStateGeneratorService.INSTANCE.generatePillarForServer(server);
+            SaltStateGeneratorService.INSTANCE.registerServer(server);
 
             // apply activation key properties that need to be set after saving the server
             activationKey.ifPresent(ak -> {

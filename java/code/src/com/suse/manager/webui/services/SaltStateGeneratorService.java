@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -162,7 +163,7 @@ public enum SaltStateGeneratorService {
         LOG.debug("Generating custom state SLS file for server: " + server.getId());
 
         generateCustomStates(server.getOrg().getId(), serverStateRevision,
-                defaultExtension("custom_" + server.getDigitalServerId()));
+                "custom_" + server.getDigitalServerId());
     }
 
     /**
@@ -174,7 +175,7 @@ public enum SaltStateGeneratorService {
         LOG.debug("Generating custom state SLS file for server group: " + group.getId());
 
         generateCustomStates(group.getOrg().getId(), groupStateRevision,
-                defaultExtension("group_" + group.getId()));
+                "group_" + group.getId());
     }
 
     /**
@@ -187,7 +188,7 @@ public enum SaltStateGeneratorService {
         LOG.debug("Generating custom state SLS file for organization: " + org.getId());
 
         generateCustomStates(org.getId(), orgStateRevision,
-                defaultExtension("org_" + org.getId()));
+                "org_" + org.getId());
     }
 
     private void generateCustomStates(long orgId, StateRevision stateRevision,
@@ -198,15 +199,18 @@ public enum SaltStateGeneratorService {
                 .map(s -> s.getStateName())
                 .collect(Collectors.toSet());
 
+        generateCustomStateAssignmentFile(orgId, fileName, stateNames);
+    }
+
+    private void generateCustomStateAssignmentFile(long orgId, String fileName, Set<String> stateNames) {
         stateNames = SaltAPIService.INSTANCE.resolveOrgStates(
                 orgId, stateNames);
-
 
         Path baseDir = Paths.get(
                 RepoFileUtils.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
         try {
             Files.createDirectories(baseDir);
-            Path filePath = baseDir.resolve(fileName);
+            Path filePath = baseDir.resolve(defaultExtension(fileName));
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(new SaltCustomState(stateNames));
@@ -215,6 +219,22 @@ public enum SaltStateGeneratorService {
             LOG.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Generate pillar and custom states assignments for a
+     * newly registered server.
+     * @param server
+     */
+    public void registerServer(Server server) {
+        if (!MinionServerUtils.isMinionServer(server)) {
+            return;
+        }
+        // TODO create an empty revision ?
+        generatePillarForServer(server);
+        generateCustomStateAssignmentFile(server.getOrg().getId(),
+                "custom_" + server.getDigitalServerId(),
+                Collections.emptySet());
     }
 
     /**
