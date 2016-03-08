@@ -460,18 +460,16 @@ public class StatesAPI {
                                      Function<Long, R> serverHandler,
                                      Function<Long, R> groupHandler,
                                      Function<Long, R> orgHandler) {
-        if (JSONStateTargetType.server == targetType) {
-            return serverHandler.apply(targetId);
+        switch (targetType) {
+            case server:
+                return serverHandler.apply(targetId);
+            case group:
+                return groupHandler.apply(targetId);
+            case org:
+                return orgHandler.apply(targetId);
         }
-        else if (JSONStateTargetType.group == targetType) {
-            return groupHandler.apply(targetId);
-        }
-        else if (JSONStateTargetType.org == targetType) {
-            return orgHandler.apply(targetId);
-        }
-        else {
-            throw new IllegalArgumentException("Invalid targetType value");
-        }
+        // should not happen
+        throw new IllegalArgumentException("Invalid targetType value");
     }
 
 
