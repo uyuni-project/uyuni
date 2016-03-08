@@ -9,6 +9,4 @@ public enum JSONStateTargetType {
     group,
     org
 
-
-
 }
