@@ -10,30 +10,23 @@ Feature: Explore the Minions page
     Given I am authorized as "testing" with password "testing"
 
   Scenario: Completeness of the Minions page
-    And I go to the minion onboarding page
-    Then I should see a "All Minions" text
-    And I should see a "Pending" text
-    And I should see a "Rejected" text
+    Given I go to the minion onboarding page
+    Then I should see a "Onboarding" text in the content area
+    And I should see a "Fingerprint" text
 
   Scenario: Minion is visible in the Pending section
     Given this minion key is unaccepted
     And I go to the minion onboarding page
-    Then I should see this client in the Pending section
-
-  Scenario: Pending minion shows up in the Overview dashboard
-    Given this minion key is unaccepted
-# Temp work around
-#   Then I should see a "Manage Pending Minions (1)" text
-#   When I follow "Manage Pending Minions (1)"
-    And I go to the minion onboarding page
-    Then I should see this client in the Pending section
+    Then I should see this hostname as text
+    And I see my fingerprint
+    Then I should see a "pending" text
 
   Scenario: Reject and delete the pending minion key
     Given this minion key is unaccepted
     And I go to the minion onboarding page
     And I reject this client from the Pending section
     And we wait till Salt master sees this minion as rejected
-    Then I should see this client in the Rejected section
+    Then I should see a "rejected" text
     And I delete this client from the Rejected section
     Then I should not see this client as a Minion anywhere
 
@@ -41,11 +34,11 @@ Feature: Explore the Minions page
     Given this minion key is unaccepted
     And this minion is not registered in Spacewalk
     And I go to the minion onboarding page
-    Then I should see this client in the Pending section
+    Then I should see a "pending" text
     When I accept this client's minion key
     And we wait till Salt master sees this minion as accepted
     # Registration takes a while
-    And I wait for "15" seconds
+    And I wait for "20" seconds
     And I follow first "Systems"
     Then I should see this client as link
 

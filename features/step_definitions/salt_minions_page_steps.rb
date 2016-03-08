@@ -13,15 +13,21 @@ end
 
 # Perform actions
 When(/^I reject this client from the Pending section$/) do
-  find("button[formaction='/rhn/manager/minions/#{$myhostname}/reject']").click
+  find("button[title='reject']").click
 end
 
 When(/^I delete this client from the Rejected section$/) do
-  find("button[formaction='/rhn/manager/minions/#{$myhostname}/delete']").click
+  find("button[title='delete']").click
+end
+
+When(/^I see my fingerprint$/) do
+  output = `salt-call --local key.finger`
+  fing = output.split("\n")[1].strip!
+  fail if not page.has_content?(fing)
 end
 
 When(/^I accept this client's minion key$/) do
-  find("button[formaction='/rhn/manager/minions/#{$myhostname}/accept']").click
+  find("button[title='accept']").click
 end
 
 When(/^I go to the minion onboarding page$/) do
@@ -29,4 +35,16 @@ When(/^I go to the minion onboarding page$/) do
     And I follow "Salt"
     And I follow "Onboarding"
   }
+end
+
+When(/^I should see this hostname as text$/) do
+  within('#spacewalk-content') do
+    fail if not page.has_content?($myhostname)
+  end
+end
+
+When(/^I should see a "(.*)" text in the content area$/) do |txt|
+  within('#spacewalk-content') do
+    fail if not page.has_content?(txt)
+  end
 end
