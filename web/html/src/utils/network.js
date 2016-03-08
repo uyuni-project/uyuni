@@ -22,11 +22,21 @@ function post(url, data, contentType) {
     return request(url, "POST", { "X-CSRF-Token": csrfToken }, data, contentType);
 }
 
+function del(url, data, contentType) {
+    return request(url, "DELETE", { "X-CSRF-Token": csrfToken }, data, contentType);
+}
+
+function put(url, data, contentType) {
+    return request(url, "PUT", { "X-CSRF-Token": csrfToken }, data, contentType);
+}
+
 function get(url) {
     return request(url, "GET");
 }
 
 module.exports = {
     get: get,
-    post: post
+    post: post,
+    put: put,
+    del: del
 }

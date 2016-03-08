@@ -4,6 +4,7 @@ var React = require("react")
 
 var Panel = require("../components/panel").Panel
 var Messages = require("../components/messages").Messages
+var Network = require("../utils/network");
 
 var Button = React.createClass({
 
@@ -52,30 +53,30 @@ var StateDetail = React.createClass({
             formData['checksum'] = this.props.sls.checksum;
         }
 
-        $.ajax({
-          url: window.location.href + (csrfToken ? "?csrf_token=" + csrfToken : ""),
-          dataType: 'json',
-          contentType: "application/json",
-          type: httpMethod,
-          data: JSON.stringify(formData),
-          success: function(data) {
-            console.log(data)
-            this.setState({messages: [data.message]})
-            window.location.href = data.url
-          }.bind(this),
-
-          error: function(xhr, status, err) {
-            if (xhr.status == 400) {
-                // validation err
-                var errs = $.parseJSON(xhr.responseText);
-                this.setState({errors: errs})
-            } else if (xhr.status == 500) {
-                this.setState({errors: [t("An internal server error occurred")]})
-            } else {
-                console.error(status, err.toString());
-            }
-          }.bind(this)
-        });
+        var promise = null;
+        if (httpMethod == "POST") {
+            promise = Network.post(window.location.href, JSON.stringify(formData), "application/json");
+        } else if (httpMethod == "PUT") {
+            promise = Network.put(window.location.href, JSON.stringify(formData), "application/json");
+        } else if (httpMethod == "DELETE") {
+            promise = Network.del(window.location.href, JSON.stringify(formData), "application/json");
+        }
+        if (promise) {
+            promise.then(data => {
+                console.log(data);
+                this.setState({messages: [data.message]});
+                window.location.href = data.url;
+            },
+            (xhr) => {
+               if (xhr.status == 400) {
+                   // validation err
+                   var errs = JSON.parse(xhr.responseText);
+                   this.setState({errors: errs});
+               } else {
+                   this.setState({errors: [t("An internal server error occurred")]});
+               }
+            });
+        }
 
     },
 
@@ -85,17 +86,7 @@ var StateDetail = React.createClass({
             errs = <Messages items={this.state.errors.map(function(e) {
                 return {severity: "error", text: e};
             })}/>;
-//            errs = this.state.errors.map( function(e) {
-//                    return (<div className="alert alert-danger">{t(e)}</div>)
-//                   })
-
         }
-
-//        if (this.state.messages) {
-//            errs = this.state.messages.map( function(e) {
-//                    return (<div className="alert alert-info">{t(e)}</div>)
-//                   });
-//        }
 
         var buttons = [];
         if (this.props.sls.action == "edit") {

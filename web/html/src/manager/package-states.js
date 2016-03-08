@@ -2,6 +2,7 @@
 
 const React = require("react");
 const Buttons = require("../components/buttons");
+const Network = require("../utils/network");
 
 const AsyncButton = Buttons.AsyncButton;
 
@@ -71,7 +72,7 @@ class PackageStates extends React.Component {
   }
 
   init() {
-    $.get("/rhn/manager/api/states/packages?sid=" + serverId, data => {
+    Network.get("/rhn/manager/api/states/packages?sid=" + serverId).then(data => {
       console.log(data);
       this.setState({
         packageStates: data.map(state => {
@@ -90,7 +91,7 @@ class PackageStates extends React.Component {
         });
         return Promise.resolve();
     } else {
-       return $.get("/rhn/manager/api/states/packages/match?sid=" + serverId + "&target=" + this.state.filter, data => {
+       return Network.get("/rhn/manager/api/states/packages/match?sid=" + serverId + "&target=" + this.state.filter).then(data => {
           console.log(data);
           this.setState({
             view: "search",
@@ -111,15 +112,14 @@ class PackageStates extends React.Component {
     for(var state of this.state.changed.values()) {
         states.push(state.value)
     }
-    const request = $.ajax({
-        type: "POST",
-        url: "/rhn/manager/api/states/packages/save",
-        data: JSON.stringify({
+    const request = Network.post(
+        "/rhn/manager/api/states/packages/save",
+        JSON.stringify({
             sid: serverId,
             packageStates: states
         }),
-        contentType: "application/json"
-    }).then((data, textStatus, jqXHR) => {
+        "application/json"
+    ).then(data => {
       console.log("success: " + data);
       const newPackageStates = data.map(state => {
           state.packageStateId = normalizePackageState(state.packageStateId);
@@ -144,23 +144,23 @@ class PackageStates extends React.Component {
         },
         packageStates: newPackageStates
       });
-    }, (jqXHR, textStatus, errorThrown) => {
-      console.log("fail: " + textStatus);
+    }, jqXHR => {
+      console.log("fail: " + jqXHR);
+      throw "failed to save";
     });
-    return Promise.resolve(request);
+    return request;
   }
 
   applyPackageState() {
-    const request = $.ajax({
-        type: "POST",
-        url: "/rhn/manager/api/states/apply",
-        data: JSON.stringify({
+    const request = Network.post(
+        "/rhn/manager/api/states/apply",
+        JSON.stringify({
             sid: serverId,
             states: ["packages"]
         }),
-        contentType: "application/json"
-    });
-    return Promise.resolve(request);
+        "application/json"
+    );
+    return request;
   }
 
   setView(view) {
