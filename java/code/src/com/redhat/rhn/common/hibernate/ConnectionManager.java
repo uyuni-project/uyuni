@@ -205,7 +205,6 @@ class ConnectionManager {
             sessionFactory = config.buildSessionFactory();
         }
         catch (HibernateException e) {
-            e.printStackTrace();
             LOG.error("FATAL ERROR creating HibernateFactory", e);
         }
     }
