@@ -104,7 +104,7 @@ public class SaltCustomStateStorageManager {
         }
 
         boolean move = false;
-        if (StringUtils.isNotBlank(oldName)) {
+        if (StringUtils.isNotBlank(oldName) && !oldName.equals(name)) {
             Files.move(orgPath.resolve(defaultExtension(oldName)), stateFile.toPath());
             move = true;
         }
