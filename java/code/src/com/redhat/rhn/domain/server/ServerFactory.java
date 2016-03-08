@@ -976,17 +976,5 @@ public class ServerFactory extends HibernateFactory {
         singleton.saveObject(networkInterfaceIn);
     }
 
-    /**
-     * Lookup all Servers that belong to an org
-     * @param orgId the org id to search for
-     * @return the Server found
-     */
-    public static List<Server> lookupByOrg(Long orgId) {
-        return (List<Server>) HibernateFactory.getSession().createCriteria(Server.class)
-                .add(Restrictions.eq("org.id", orgId))
-                .list();
-    }
-
-
 
 }

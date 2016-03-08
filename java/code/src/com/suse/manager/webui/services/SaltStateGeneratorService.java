@@ -17,8 +17,8 @@ package com.suse.manager.webui.services;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.OrgStateRevision;
@@ -262,7 +262,7 @@ public enum SaltStateGeneratorService {
      * @param org the org
      */
     public void removeOrg(Org org) {
-        List<Server> servers = ServerFactory.lookupByOrg(org.getId());
+        List<Server> servers = MinionServerFactory.lookupByOrg(org.getId());
         for (Server server : servers) {
             removeServer(server);
         }
@@ -279,7 +279,7 @@ public enum SaltStateGeneratorService {
         // TODO use a query to get only affected states
         Org org = OrgFactory.lookupById(orgId);
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(org);
-        List<Server> servers = ServerFactory.lookupByOrg(org.getId());
+        List<Server> servers = MinionServerFactory.lookupByOrg(org.getId());
 
         Optional<OrgStateRevision> orgStateRevision = StateFactory
                 .latestStateRevision(org);
