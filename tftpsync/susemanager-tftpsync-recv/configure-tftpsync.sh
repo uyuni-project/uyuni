@@ -187,5 +187,5 @@ echo "open tftp service in SUSE firewall..."
 sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_CONFIGURATIONS_EXT atftp
 rcSuSEfirewall2 try-restart
 
-/etc/init.d/atftpd start
-/etc/init.d/apache2 restart
+rcatftpd start
+rcapache2 restart
