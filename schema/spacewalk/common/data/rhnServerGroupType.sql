@@ -22,7 +22,7 @@
 insert into rhnServerGroupType (id, label, name, permanent, is_base)
         values (sequence_nextval('rhn_servergroup_type_seq'),
                 'enterprise_entitled', 'Spacewalk Management Entitled Servers', 
-                'N', 'Y'
+                'Y', 'Y'
         );
 
 -- virtualization_host type ----------------------------------------------------
@@ -46,7 +46,7 @@ insert into rhnServerGroupType ( id, label, name, permanent, is_base)
 insert into rhnServerGroupType (id, label, name, permanent, is_base)
    values (sequence_nextval('rhn_servergroup_type_seq'),
       'salt_entitled', 'Salt Management Entitled Servers',
-      'N', 'Y'
+      'Y', 'Y'
    );
 
 -- foreign_entitled type ---------------------------------------------------------

@@ -32,7 +32,7 @@ public class ManagementEntitlement extends Entitlement {
      * {@inheritDoc}
      */
     public boolean isPermanent() {
-        return false;
+        return true;
     }
 
     /**
