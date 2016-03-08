@@ -6,3 +6,5 @@ base:
     - certs
     - packages
     - custom
+    - custom_groups
+    - custom_org
