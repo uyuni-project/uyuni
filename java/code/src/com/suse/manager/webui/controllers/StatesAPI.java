@@ -467,9 +467,10 @@ public class StatesAPI {
                 return groupHandler.apply(targetId);
             case org:
                 return orgHandler.apply(targetId);
+            default:
+                // should not happen
+                throw new IllegalArgumentException("Invalid targetType value");
         }
-        // should not happen
-        throw new IllegalArgumentException("Invalid targetType value");
     }
 
 
