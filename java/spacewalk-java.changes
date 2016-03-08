@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Mar  8 15:09:31 UTC 2016 - dmacvicar@suse.de
+
+- set hibernate.cache.provider_configuration_file_resource_path
+  to load a custom ehcache.xml instead of ehcache-failsafe.xml
+  from the ehcache jar
+
+-------------------------------------------------------------------
 Wed Mar 02 12:18:58 CET 2016 - mc@suse.de
 
 - version 2.5.57.1-1
