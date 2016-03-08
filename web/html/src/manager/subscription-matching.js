@@ -13,6 +13,7 @@ var Messages =  require("./subscription-matching-messages").Messages;
 var UnmatchedProducts =  require("./subscription-matching-unmatched-products").UnmatchedProducts;
 var MatcherRunPanel =  require("./subscription-matching-matcher-run-panel").MatcherRunPanel;
 var WarningIcon =  require("./subscription-matching-util").WarningIcon;
+const Network = require("../utils/network");
 
 var SubscriptionMatching = React.createClass({
   getInitialState: function() {
@@ -25,7 +26,7 @@ var SubscriptionMatching = React.createClass({
   },
 
   refreshServerData: function() {
-    this.refreshRequest = $.get("/rhn/manager/subscription-matching/data", data => {
+    this.refreshRequest = Network.get("/rhn/manager/subscription-matching/data").then(data => {
       this.setState({serverData: data});
     });
   },
