@@ -49,7 +49,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.MinionServerUtils;
-import com.suse.manager.webui.utils.gson.JSONStateTargetType;
+import com.suse.manager.webui.utils.gson.StateTargetType;
 import org.apache.http.HttpStatus;
 
 import org.apache.log4j.Logger;
@@ -165,7 +165,7 @@ public class StatesAPI {
     public static String matchStates(Request request, Response response, User user) {
         String target = request.queryParams("target");
         String targetLowerCase = target != null ? target.toLowerCase() : "";
-        JSONStateTargetType type = JSONStateTargetType.valueOf(request.queryParams("type"));
+        StateTargetType type = StateTargetType.valueOf(request.queryParams("type"));
         long id = Long.valueOf(request.queryParams("id"));
 
         Optional<Set<CustomState>> saltStates = handleTarget(type, id,
@@ -193,7 +193,8 @@ public class StatesAPI {
                 .collect(Collectors.toList()));
 
         // Find matches among available catalog states
-        result.addAll(SaltAPIService.INSTANCE.getCatalogStates(user.getId()).stream()
+        result.addAll(SaltAPIService.INSTANCE.getCatalogStates(user.getOrg().getId())
+                .stream()
                 .filter(s -> s.toLowerCase().contains(targetLowerCase))
                 .map(s -> new JSONCustomState(s, false))
                 .collect(Collectors.toList()));
@@ -456,16 +457,16 @@ public class StatesAPI {
     }
 
 
-    private static <R> R handleTarget(JSONStateTargetType targetType, long targetId,
-                                     Function<Long, R> serverHandler,
-                                     Function<Long, R> groupHandler,
-                                     Function<Long, R> orgHandler) {
+    private static <R> R handleTarget(StateTargetType targetType, long targetId,
+                                      Function<Long, R> serverHandler,
+                                      Function<Long, R> groupHandler,
+                                      Function<Long, R> orgHandler) {
         switch (targetType) {
-            case server:
+            case SERVER:
                 return serverHandler.apply(targetId);
-            case group:
+            case GROUP:
                 return groupHandler.apply(targetId);
-            case org:
+            case ORG:
                 return orgHandler.apply(targetId);
             default:
                 // should not happen
