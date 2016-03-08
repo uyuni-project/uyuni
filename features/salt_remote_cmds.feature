@@ -34,6 +34,6 @@ Feature: Test the remote commands via salt
     Then "/root/12345" exists on the filesystem
     And I follow "Events" in the content area
     And I follow "History" in the content area
-    Then I follow "Run an arbitrary script schedule by testing" in the content area
+    Then I follow "Run an arbitrary script scheduled by testing" in the content area
     And I should see a "Script executed successfully." text
     And I should see a "Return code: 0" text
