@@ -17,8 +17,8 @@
 -- tricky view.  it explodes to a full cartesian product when
 -- not queried via org_id, so DO NOT DO THAT :)
 
-drop view if exists rhnOrgErrata;
-drop view if exists rhnAvailableChannels;
+drop view rhnOrgErrata;
+drop view rhnAvailableChannels;
 
 create or replace view
 rhnAvailableChannels
