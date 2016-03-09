@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Mar 09 10:59:04 CET 2016 - mc@suse.de
+
+- version 5.0.19.1-1
+- delete file with input files after template is created
+- update translations
+
+-------------------------------------------------------------------
 Mon Oct 12 11:10:08 CEST 2015 - mc@suse.de
 
 - version 5.0.17.2-1
