@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Mar 09 10:47:12 CET 2016 - mc@suse.de
+
+- version 2.5.24.1-1
+- include salt master config files into spacewalk-debug
+- we need to import either cx_Oracle or psycopg2
+- better never import foreign private channel families, custom
+  channels will be synced into your org anyway
+- org_id of channel family is probably never filled, just not make
+  private channel families public
+- all strings should be truncated, not only unicode instances
+
+-------------------------------------------------------------------
 Wed Mar 02 12:16:58 CET 2016 - mc@suse.de
 
 - version 2.5.22.1-1
