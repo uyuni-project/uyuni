@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 09 10:52:57 CET 2016 - mc@suse.de
+
+- version 2.5.1.2-1
+- handle auditlog-keeper in the spacewalk-service command
+
+-------------------------------------------------------------------
 Mon Nov 30 11:18:41 CET 2015 - mc@suse.de
 
 - version 2.5.1.1-1
