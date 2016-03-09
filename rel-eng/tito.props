@@ -1,6 +1,6 @@
-[globalconfig]
-default_builder = tito.builder.Builder
-default_tagger = tito.susetagger.SUSETagger
+[buildconfig]
+builder = tito.builder.Builder
+tagger = tito.tagger.SUSETagger
 changelog_with_email = 0
 changelog_do_not_remove_cherrypick = 0
 
