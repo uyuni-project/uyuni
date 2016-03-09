@@ -36,4 +36,4 @@ Feature: Test the remote commands via salt
     And I follow "History" in the content area
     Then I follow "Run an arbitrary script scheduled by testing" in the content area
     And I should see a "Script executed successfully." text
-    And I should see a "Return code: 0" text
+    And I should see a "Return Code: 0" text
