@@ -35,7 +35,8 @@ var Highstate = React.createClass({
         const request = Network.post(
             "/rhn/manager/api/states/apply",
             JSON.stringify({
-                sid: serverId,
+                id: serverId,
+                type: "SERVER",
                 states: [],
                 earliest: this.state.earliest
             }),

@@ -155,7 +155,8 @@ class PackageStates extends React.Component {
     const request = Network.post(
         "/rhn/manager/api/states/apply",
         JSON.stringify({
-            sid: serverId,
+            id: serverId,
+            type: "SERVER",
             states: ["packages"]
         }),
         "application/json"
