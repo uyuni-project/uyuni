@@ -359,6 +359,9 @@ sub setup_salt_master {
     print SALT_MASTER "    - /srv/susemanager/pillar\n";
     print SALT_MASTER "    - /srv/pillar\n";
 
+    # Use SHA256 instead of default MD5
+    print SALT_MASTER "hash_type: sha256\n";
+
     close(SALT_MASTER);
 }
 
