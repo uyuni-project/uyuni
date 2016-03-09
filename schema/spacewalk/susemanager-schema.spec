@@ -1,13 +1,12 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
-Name:           susemanager-schema
+Name:           spacewalk-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
 Version:        3.0.9
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
-Source1:        %{name}-rpmlintrc
 
 License:        GPLv2
 Url:            http://fedorahosted.org/spacewalk/
@@ -16,11 +15,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  perl(Digest::SHA)
 BuildRequires:  python
-BuildRequires:  fdupes
 BuildRequires:  /usr/bin/pod2man
 Requires:       %{sbinpath}/restorecon
-
-Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
 
 
@@ -29,14 +25,14 @@ Obsoletes:      rhn-satellite-schema <= 5.1.0
 %define postgres %{rhnroot}/postgres
 
 %description
-susemanager-schema is the SQL schema for the SUSE Manager server.
+spacewalk-schema is the SQL schema for the Spacewalk server.
 
 %prep
 
 %setup -q
 
 %build
-%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1110
+%if 0%{?fedora} || 0%{?rhel} >= 7
 find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
 %endif
 make -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
@@ -53,25 +49,22 @@ install -m 0644 postgres/main.sql $RPM_BUILD_ROOT%{postgres}
 install -m 0644 oracle/end.sql $RPM_BUILD_ROOT%{oracle}/upgrade-end.sql
 install -m 0644 postgres/end.sql $RPM_BUILD_ROOT%{postgres}/upgrade-end.sql
 install -m 0755 -d $RPM_BUILD_ROOT%{_bindir}
-install -m 0755 spacewalk-schema-upgrade $RPM_BUILD_ROOT%{_bindir}
+install -m 0755 %{name}-upgrade $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 spacewalk-sql $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 ( cd upgrade && tar cf - --exclude='*.sql' . | ( cd $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade && tar xf - ) )
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-schema-upgrade.1 $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-sql.1 $RPM_BUILD_ROOT%{_mandir}/man1
-%fdupes -s $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root)
-%dir %{rhnroot}
 %{oracle}
 %{postgres}
 %{rhnroot}/schema-upgrade
-%{_bindir}/spacewalk-schema-upgrade
+%{_bindir}/%{name}-upgrade
 %{_bindir}/spacewalk-sql
 %{_mandir}/man1/spacewalk-schema-upgrade*
 %{_mandir}/man1/spacewalk-sql*
@@ -580,6 +573,17 @@ rm -rf $RPM_BUILD_ROOT
 * Thu Mar 06 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.4-1
 - drop web_contact.old_password column from schema
 - insert new gpg key only if not exists
+
+* Fri Feb 28 2014 Tomas Lestach <tlestach@redhat.com> 2.2.3-1
+- fix oracle equivalent source sha1
+
+* Fri Feb 28 2014 Tomas Lestach <tlestach@redhat.com> 2.2.2-1
+- 1070917 - extending cron_expr column within the rhnTaskoSchedule table
+
+* Tue Feb 25 2014 Tomas Lestach <tlestach@redhat.com> 2.2.1-1
+- introduce keep_roles option
+- extend rhnUserGroupMembers
+- Bumping package versions for 2.2.
 
 * Mon Feb 24 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.50-1
 - replacing view must have the same number of columns (in postgresql)
