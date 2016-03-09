@@ -4,6 +4,7 @@ var React = require("react");
 var TableComponent = require("../components/table");
 var PanelComponent = require("../components/panel");
 var Messages = require("../components/messages").Messages;
+var Network = require("../utils/network");
 
 var Table = TableComponent.Table;
 var TableCell = TableComponent.TableCell;
