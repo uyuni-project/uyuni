@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Mar 09 10:54:38 CET 2016 - mc@suse.de
+
+- version 2.5.2.1-1
+- fixing warning
+- do not evaluate Makefile
+- update translations
+
+-------------------------------------------------------------------
 Mon Nov 30 11:06:37 CET 2015 - mc@suse.de
 
 - version 2.5.1.1-1
