@@ -165,8 +165,6 @@ public class MigrationManager extends BaseManager {
         for (ServerSnapshot snapshot : snapshots) {
             ServerFactory.deleteSnapshot(snapshot);
         }
-
-        SystemManager.removeAllServerEntitlements(server.getId());
     }
 
     /**
