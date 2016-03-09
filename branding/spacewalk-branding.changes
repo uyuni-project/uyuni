@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Mar 09 11:30:34 CET 2016 - mc@suse.de
+
+- version 2.5.2.6-1
+- Change color and height of the top navbar tab visual clue
+  on hover and active
+- BugFix: fix navbar css rules for a visual clue of the current active top bar
+  tab (bsc#959600)
+- Initial UI to show the highstate for a minion
+
+-------------------------------------------------------------------
 Wed Mar 02 12:12:27 CET 2016 - mc@suse.de
 
 - version 2.5.2.5-1
