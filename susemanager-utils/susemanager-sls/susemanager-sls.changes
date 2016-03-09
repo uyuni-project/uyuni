@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Mar 09 11:29:45 CET 2016 - mc@suse.de
+
+- version 0.1.9-1
+- include org and groups separately in top.sls
+- refresh pillar on remove from group
+- initial suma groups external pillar
+
+-------------------------------------------------------------------
 Wed Mar 02 12:09:13 CET 2016 - mc@suse.de
 
 - version 0.1.8-1
