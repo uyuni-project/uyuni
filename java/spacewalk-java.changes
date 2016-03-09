@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Wed Mar 09 11:18:37 CET 2016 - mc@suse.de
+
+- version 2.5.59.1-1
+- Add Custom State UI for Organizations and Groups
+- set hibernate.cache.provider_configuration_file_resource_path to load a
+  custom ehcache.xml instead of ehcache-failsafe.xml from the ehcache jar
+- create server pillar on add/remove from group and on minion registration
+- add unit tests for SLE-Live-Patching12 (bsc#924298)
+- check header for csrf token
+- Simplify assignment of salt entitlement during registration
+- Make read-only entitlements show up aligned in the UI
+- Make base entitlements permanent
+- hidden taglib provide id field if given (bsc#969868)
+- escape message texts and hidden fields (CVE-2016-2104)
+- refactor salt minion onboarding ui showing the fingerprint
+- Allow to apply the highstate from the UI
+- fix kernel and initrd pathes for creating autoinstallation (bsc#966622)
+
+-------------------------------------------------------------------
 Tue Mar  8 15:09:31 UTC 2016 - dmacvicar@suse.de
 
 - set hibernate.cache.provider_configuration_file_resource_path
