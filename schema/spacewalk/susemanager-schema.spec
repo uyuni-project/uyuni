@@ -1,12 +1,13 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
-Name:           spacewalk-schema
+Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
 Version:        3.0.9
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
+Source1:        %{name}-rpmlintrc
 
 License:        GPLv2
 Url:            http://fedorahosted.org/spacewalk/
@@ -15,8 +16,11 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  perl(Digest::SHA)
 BuildRequires:  python
+BuildRequires:  fdupes
 BuildRequires:  /usr/bin/pod2man
 Requires:       %{sbinpath}/restorecon
+
+Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
 
 
@@ -25,14 +29,14 @@ Obsoletes:      rhn-satellite-schema <= 5.1.0
 %define postgres %{rhnroot}/postgres
 
 %description
-spacewalk-schema is the SQL schema for the Spacewalk server.
+susemanager-schema is the SQL schema for the SUSE Manager server.
 
 %prep
 
 %setup -q
 
 %build
-%if 0%{?fedora} || 0%{?rhel} >= 7
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1110
 find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
 %endif
 make -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
@@ -49,22 +53,25 @@ install -m 0644 postgres/main.sql $RPM_BUILD_ROOT%{postgres}
 install -m 0644 oracle/end.sql $RPM_BUILD_ROOT%{oracle}/upgrade-end.sql
 install -m 0644 postgres/end.sql $RPM_BUILD_ROOT%{postgres}/upgrade-end.sql
 install -m 0755 -d $RPM_BUILD_ROOT%{_bindir}
-install -m 0755 %{name}-upgrade $RPM_BUILD_ROOT%{_bindir}
+install -m 0755 spacewalk-schema-upgrade $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 spacewalk-sql $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 ( cd upgrade && tar cf - --exclude='*.sql' . | ( cd $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade && tar xf - ) )
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-schema-upgrade.1 $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-sql.1 $RPM_BUILD_ROOT%{_mandir}/man1
+%fdupes -s $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%defattr(-,root,root)
+%dir %{rhnroot}
 %{oracle}
 %{postgres}
 %{rhnroot}/schema-upgrade
-%{_bindir}/%{name}-upgrade
+%{_bindir}/spacewalk-schema-upgrade
 %{_bindir}/spacewalk-sql
 %{_mandir}/man1/spacewalk-schema-upgrade*
 %{_mandir}/man1/spacewalk-sql*
