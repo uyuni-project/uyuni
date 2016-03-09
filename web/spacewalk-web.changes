@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Mar 09 11:27:51 CET 2016 - mc@suse.de
+
+- version 2.5.7.5-1
+- Add Custom State UI for Organizations and Groups
+- check header for csrf token
+- refactor salt minion onboarding ui showing the fingerprint
+- Allow to apply the highstate from the UI
+
+-------------------------------------------------------------------
 Wed Mar 02 11:47:09 CET 2016 - mc@suse.de
 
 - version 2.5.7.4-1
