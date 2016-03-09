@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Wed Mar 09 11:33:06 CET 2016 - mc@suse.de
+
+- version 3.0.10-1
+- add tables for State Apply
+- add tables for Subscription Pinning
+- Declare the base entitlements permanent
+- fixing upgrade on Oracle
+- Allow null for the state names in the DB (meaning highstate)
+- rename KSInstallTypes to SUSE Linux Enterprise
+- db tables for minion state selection
+- Rename 'unmatched systems' CSV report to 'unmatched products'
+- add Chile to the list of timezones (bsc#959055)
+- Add features to enable reboot and remote commands for salt minions
+- enable system group ui for salt minions
+- Use blob as a backing db type for MatcherRunData, assign name to the
+  constraint, fix the migration script directory
+- DB: Table for SubscriptionMatchingData
+- When deleting a server, delete all associated rhnSet entries
+- no need to lock table since we don't update entitlements
+
+-------------------------------------------------------------------
 Wed Jan 27 16:02:01 CET 2016 - mc@suse.de
 
 - version 3.0.9-1
