@@ -21,6 +21,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.utils.SparkTestUtils;
@@ -53,6 +54,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     private Channel channel;
     private String uriFile;
     private File packageFile;
+    private MockHttpServletResponse mockResponse;
     private Response response;
     private Package pkg;
 
@@ -86,7 +88,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         super.setUp();
 
         this.channel = createTestChannel(user);
-        this.response = RequestResponseFactory.create(new MockHttpServletResponse());
+        this.mockResponse = new RhnMockHttpServletResponse();
+        this.response = RequestResponseFactory.create(mockResponse);
 
         this.pkg = createTestPackage(user, channel, "noarch");
         final String nvra = String.format("%s-%s-%s.%s",
@@ -238,7 +241,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            assertNull(DownloadController.downloadPackage(request, response));
+            assertNotNull(DownloadController.downloadPackage(request, response));
         } catch (spark.HaltException e) {
             fail("No HaltException should be thrown with a valid token!");
         }
@@ -257,7 +260,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            assertNull(DownloadController.downloadPackage(request, response));
+            assertNotNull(DownloadController.downloadPackage(request, response));
         } catch (spark.HaltException e) {
             fail("No HaltException should be thrown with a valid token!");
         }
