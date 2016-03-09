@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 09 10:43:36 CET 2016 - mc@suse.de
+
+- version 3.0.3-1
+- include salt minion config files into supportconfig
+
+-------------------------------------------------------------------
 Wed Mar 02 11:22:16 CET 2016 - mc@suse.de
 
 - version 3.0.2-1
