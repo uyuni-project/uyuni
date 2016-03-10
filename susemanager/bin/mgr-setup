@@ -205,6 +205,8 @@ if [ -f $MANAGER_COMPLETE ]; then
             su - postgres -c "dropdb $MANAGER_DB_NAME" 2> /dev/null
             su - postgres -c "dropuser $MANAGER_USER" 2> /dev/null
         fi
+        echo "Delete existing salt minion keys"
+        salt-key -D > /dev/null
     else
         echo "SUSE Manager is already set up. Exit." >&2
         exit 1
