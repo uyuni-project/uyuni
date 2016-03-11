@@ -24,6 +24,7 @@ def changepass(scenario, password)
     click_button "Sign In"
 
     find_link("Your Account").click
+    sleep(2)
 
     begin
         fill_in "desiredpassword", :with => "admin"
