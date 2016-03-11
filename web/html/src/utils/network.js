@@ -1,5 +1,6 @@
 "use strict";
 
+const Functions = require("../utils/functions.js");
 
 function request(url, type, headers, data, contentType) {
    const a = $.ajax({
@@ -15,7 +16,7 @@ function request(url, type, headers, data, contentType) {
             }
          }
    });
-   return Promise.resolve(a);
+   return Functions.Utils.cancelable(Promise.resolve(a), () => a.abort());
 }
 
 function post(url, data, contentType) {

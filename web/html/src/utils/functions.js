@@ -20,6 +20,30 @@ const generateSubstringHighlightRenderer = (match, nomatch, container) => (cell,
   return container(elements)
 }
 
+const cancelable = (promise, onCancel) => {
+    var rejectFn;
+    var isCanceled = false;
+
+    const cancelPromise = new Promise((resolve, reject) => {
+        rejectFn = reject;
+    });
+
+    const race = Promise.race([promise, cancelPromise]).catch(error => {
+        if(isCanceled) {
+            onCancel(error);
+        }
+        throw error;
+    });
+
+    return {
+        promise: race,
+        cancel: (reason) => {
+            isCanceled = true;
+            rejectFn(reason);
+        }
+    };
+}
+
 const stringSubstringHighlight = generateSubstringHighlightRenderer(
     (match, index) => <span key={"m"+index} style={{backgroundColor: "#f0ad4e", borderRadius: "2px"}}>{ match }</span>,
     (nomatch, index) => <span key={"n"+index}>{ nomatch }</span>,
@@ -40,5 +64,8 @@ module.exports = {
     Renderer: {
         generate: generateSubstringHighlightRenderer,
         highlightSubstring: stringSubstringHighlight
+    },
+    Utils : {
+        cancelable: cancelable
     }
 }

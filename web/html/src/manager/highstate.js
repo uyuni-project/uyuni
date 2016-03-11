@@ -22,7 +22,7 @@ var Highstate = React.createClass({
     },
 
     refreshHighstate: function() {
-        Network.get("/rhn/manager/api/states/highstate?sid=" + serverId).then(data => {
+        Network.get("/rhn/manager/api/states/highstate?sid=" + serverId).promise.then(data => {
             this.setState({"highstate": data});
         });
     },
@@ -41,7 +41,7 @@ var Highstate = React.createClass({
                 earliest: this.state.earliest
             }),
             "application/json"
-        ).then(data => {
+        ).promise.then(data => {
             this.state.messages.push(msg('info', <span>{t("Applying the highstate has been ")}
                     <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
                     {t(".")}</span>))

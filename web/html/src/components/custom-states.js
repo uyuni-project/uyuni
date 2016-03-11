@@ -69,7 +69,7 @@ class CustomStates extends React.Component {
   }
 
   init() {
-    Network.get(this.props.matchUrl()).then(data => {
+    Network.get(this.props.matchUrl()).promise.then(data => {
       console.log(data);
       this.setState({
         saltStates: data
@@ -95,7 +95,7 @@ class CustomStates extends React.Component {
     for(var state of this.state.changed.values()) {
         states.push(state.value)
     }
-    const request = this.props.saveRequest(states).then(
+    const request = this.props.saveRequest(states).promise.then(
     (data, textStatus, jqXHR) => {
       console.log("success: " + data);
 
@@ -142,7 +142,7 @@ class CustomStates extends React.Component {
         });
         return Promise.resolve();
     } else {
-       return Network.get(this.props.matchUrl(this.state.filter)).then(data => {
+       return Network.get(this.props.matchUrl(this.state.filter)).promise.then(data => {
           console.log(data);
           this.setState({
             view: "search",
@@ -262,12 +262,11 @@ class CustomStates extends React.Component {
   }
 
   showPopUp(stateName) {
-    Network.get("/rhn/manager/state-catalog/state/" + stateName + "/content").then(data => {
+    Network.get("/rhn/manager/state-catalog/state/" + stateName + "/content").promise.then(data => {
         this.setState({
             showSaltState: {name: stateName, content: data}
         })
     });
-
   }
 
   onClosePopUp() {

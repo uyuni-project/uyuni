@@ -26,14 +26,15 @@ var SubscriptionMatching = React.createClass({
   },
 
   refreshServerData: function() {
-    this.refreshRequest = Network.get("/rhn/manager/subscription-matching/data").then(data => {
+    this.refreshRequest = Network.get("/rhn/manager/subscription-matching/data");
+    this.refreshRequest.promise.then(data => {
       this.setState({serverData: data});
     });
   },
 
   onPinChanged: function(pinnedMatches) {
     if (this.refreshRequest) {
-      this.refreshRequest.abort();
+      this.refreshRequest.cancel();
     }
     this.state.serverData.pinnedMatches = pinnedMatches;
     this.setState(this.state);
@@ -41,7 +42,7 @@ var SubscriptionMatching = React.createClass({
 
   onMatcherRunSchedule: function() {
     if (this.refreshRequest) {
-      this.refreshRequest.abort();
+      this.refreshRequest.cancel();
     }
   },
 
