@@ -19,17 +19,17 @@ function applyRequest(component) {
              type: "ORG",
              states: ["custom_org"]
          }),
-        "application/json",
-        data => {
-          console.log("apply action queued:" + data)
-          component.setState({
-              messages: msg('info', <span>{t("Applying the custom states has been scheduled for each minion server in this organization")}</span>)
-          });
-        }
-    );
+        "application/json"
+    )
+    .then(data => {
+        console.log("apply action queued:" + data)
+        component.setState({
+            messages: msg('info', <span>{t("Applying the custom states has been scheduled for each minion server in this organization")}</span>)
+        });
+    });
 }
 
-function saveRequest(states, doneCallback, failCallback) {
+function saveRequest(states) {
     return Network.post(
         "/rhn/manager/api/states/save",
         JSON.stringify({
@@ -37,9 +37,7 @@ function saveRequest(states, doneCallback, failCallback) {
             type: "ORG",
             saltStates: states
         }),
-        "application/json",
-        doneCallback,
-        failCallback
+        "application/json"
     );
 }
 
