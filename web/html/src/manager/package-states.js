@@ -72,7 +72,7 @@ class PackageStates extends React.Component {
   }
 
   init() {
-    Network.get("/rhn/manager/api/states/packages?sid=" + serverId).then(data => {
+    Network.get("/rhn/manager/api/states/packages?sid=" + serverId).promise.then(data => {
       console.log(data);
       this.setState({
         packageStates: data.map(state => {
@@ -91,7 +91,7 @@ class PackageStates extends React.Component {
         });
         return Promise.resolve();
     } else {
-       return Network.get("/rhn/manager/api/states/packages/match?sid=" + serverId + "&target=" + this.state.filter).then(data => {
+       return Network.get("/rhn/manager/api/states/packages/match?sid=" + serverId + "&target=" + this.state.filter).promise.then(data => {
           console.log(data);
           this.setState({
             view: "search",
@@ -119,7 +119,7 @@ class PackageStates extends React.Component {
             packageStates: states
         }),
         "application/json"
-    ).then(data => {
+    ).promise.then(data => {
       console.log("success: " + data);
       const newPackageStates = data.map(state => {
           state.packageStateId = normalizePackageState(state.packageStateId);
@@ -161,7 +161,7 @@ class PackageStates extends React.Component {
         }),
         "application/json"
     );
-    return request;
+    return request.promise;
   }
 
   setView(view) {

@@ -13,7 +13,7 @@ const Renderer = Functions.Renderer;
 
 
 function listKeys() {
-    return Network.get("/rhn/manager/api/minions/keys");
+    return Network.get("/rhn/manager/api/minions/keys").promise;
 }
 
 function minionToList(idFingerprintMap, state) {
@@ -33,15 +33,15 @@ function processData(keys) {
 }
 
 function acceptKey(key) {
-    return Network.post("/rhn/manager/api/minions/keys/" + key + "/accept");
+    return Network.post("/rhn/manager/api/minions/keys/" + key + "/accept").promise;
 }
 
 function deleteKey(key) {
-    return Network.post("/rhn/manager/api/minions/keys/" + key + "/delete");
+    return Network.post("/rhn/manager/api/minions/keys/" + key + "/delete").promise;
 }
 
 function rejectKey(key) {
-    return Network.post("/rhn/manager/api/minions/keys/" + key + "/reject");
+    return Network.post("/rhn/manager/api/minions/keys/" + key + "/reject").promise;
 }
 
 function actionsFor(id, state, update) {

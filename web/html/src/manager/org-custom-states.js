@@ -21,7 +21,7 @@ function applyRequest(component) {
          }),
         "application/json"
     )
-    .then(data => {
+    .promise.then(data => {
         console.log("apply action queued:" + data)
         component.setState({
             messages: msg('info', <span>{t("Applying the custom states has been scheduled for each minion server in this organization")}</span>)
@@ -38,7 +38,7 @@ function saveRequest(states) {
             saltStates: states
         }),
         "application/json"
-    );
+    ).promise;
 }
 
 React.render(

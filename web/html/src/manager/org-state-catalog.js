@@ -23,7 +23,7 @@ var StateCatalog = React.createClass({
     },
 
     refreshServerData: function() {
-        Network.get("/rhn/manager/state_catalog/data").then(data => {
+        Network.get("/rhn/manager/state_catalog/data").promise.then(data => {
           this.setState({"serverData" : data});
         });
     },

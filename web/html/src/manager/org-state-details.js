@@ -55,11 +55,11 @@ var StateDetail = React.createClass({
 
         var promise = null;
         if (httpMethod == "POST") {
-            promise = Network.post(window.location.href, JSON.stringify(formData), "application/json");
+            promise = Network.post(window.location.href, JSON.stringify(formData), "application/json").promise;
         } else if (httpMethod == "PUT") {
-            promise = Network.put(window.location.href, JSON.stringify(formData), "application/json");
+            promise = Network.put(window.location.href, JSON.stringify(formData), "application/json").promise;
         } else if (httpMethod == "DELETE") {
-            promise = Network.del(window.location.href, JSON.stringify(formData), "application/json");
+            promise = Network.del(window.location.href, JSON.stringify(formData), "application/json").promise;
         }
         if (promise) {
             promise.then(data => {

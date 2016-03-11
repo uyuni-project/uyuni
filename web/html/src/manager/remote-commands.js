@@ -133,7 +133,7 @@ class RemoteCommand extends React.Component {
     const target = this.state.target;
     console.log(cmd);
     return Network.get("/rhn/manager/api/minions/match?target=" + target)
-        .then(data => {
+        .promise.then(data => {
             console.log(data);
             this.setState({
               previewed: true,
@@ -166,7 +166,7 @@ class RemoteCommand extends React.Component {
         cmd: cmd,
         target: target
     })
-    .then(data => {
+    .promise.then(data => {
         console.log(data);
         this.setState({
           result: {
