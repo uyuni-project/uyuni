@@ -78,13 +78,10 @@ PKGLIST12 = [
                 "python-cffi",
                 "python-cryptography",
                 "python-dmidecode",
-                "python-enum34",
                 "python-ethtool",
                 "python-gobject2",
                 "python-gudev",
                 "python-hwdata",
-                "python-idna",
-                "python-ipaddress",
                 "python-newt",
                 "python-pyasn1",
                 "python-pycparser",
@@ -104,6 +101,12 @@ PKGLIST12 = [
                 "zypp-plugin-spacewalk",
                 "zypper"
             ]
+
+ENHANCE12SP1 = [
+                "python-enum34",
+                "python-idna",
+                "python-ipaddress",
+               ]
 
 DATA = {
     'SLE-11-SP1-i586' : {
@@ -259,15 +262,15 @@ DATA = {
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
     'SLE-12-SP1-ppc64le' : {
-                          'PDID' : 1334, 'PKGLIST' : PKGLIST12,
+                          'PDID' : 1334, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
                         },
     'SLE-12-SP1-s390x' : {
-                          'PDID' : 1335, 'PKGLIST' : PKGLIST12,
+                          'PDID' : 1335, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
                         },
     'SLE-12-SP1-x86_64' : {
-                          'PDID' : 1322, 'PKGLIST' : PKGLIST12,
+                          'PDID' : 1322, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
                         },
 }
