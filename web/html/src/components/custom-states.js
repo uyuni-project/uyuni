@@ -6,6 +6,7 @@ const Panels = require("../components/panel");
 const Fields = require("../components/fields");
 const PopUp = require("../components/popup").PopUp;
 const Messages = require("../components/messages").Messages;
+const Network = require("../utils/network");
 
 const AsyncButton = Buttons.AsyncButton;
 const InnerPanel = Panels.InnerPanel;
@@ -68,7 +69,7 @@ class CustomStates extends React.Component {
   }
 
   init() {
-    $.get(this.props.matchUrl(), data => {
+    Network.get(this.props.matchUrl()).then(data => {
       console.log(data);
       this.setState({
         saltStates: data
@@ -141,7 +142,7 @@ class CustomStates extends React.Component {
         });
         return Promise.resolve();
     } else {
-       return $.get(this.props.matchUrl(this.state.filter), data => {
+       return Network.get(this.props.matchUrl(this.state.filter)).then(data => {
           console.log(data);
           this.setState({
             view: "search",
@@ -261,7 +262,7 @@ class CustomStates extends React.Component {
   }
 
   showPopUp(stateName) {
-    $.get("/rhn/manager/state-catalog/state/" + stateName + "/content", data => {
+    Network.get("/rhn/manager/state-catalog/state/" + stateName + "/content").then(data => {
         this.setState({
             showSaltState: {name: stateName, content: data}
         })
