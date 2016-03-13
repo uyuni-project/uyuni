@@ -58,7 +58,25 @@ PKGLIST11 = [
                 "suseRegisterInfo",
                 "zypp-plugin-python",
                 "zypp-plugin-spacewalk",
-                "zypper"
+                "zypper",
+                "libyaml-0-2",
+                "libzmq3",
+                "python-backports.ssl_match_hostname",
+                "python-certifi",
+                "python-curl",
+                "python-futures",
+                "python-Jinja2",
+                "python-MarkupSafe",
+                "python-msgpack-python",
+                "python-psutil",
+                "python-pycrypto",
+                "python-pyzmq",
+                "python-requests",
+                "python-simplejson",
+                "python-tornado",
+                "python-yaml",
+                "salt",
+                "salt-minion"
             ]
 
 PKGLIST12 = [
@@ -99,7 +117,23 @@ PKGLIST12 = [
                 "suseRegisterInfo",
                 "zypp-plugin-python",
                 "zypp-plugin-spacewalk",
-                "zypper"
+                "zypper",
+                "libzmq3",
+                "python-backports.ssl_match_hostname",
+                "python-certifi",
+                "python-futures",
+                "python-Jinja2",
+                "python-MarkupSafe",
+                "python-msgpack-python",
+                "python-psutil",
+                "python-pycrypto",
+                "python-PyYAML",
+                "python-pyzmq",
+                "python-requests",
+                "python-simplejson",
+                "python-tornado",
+                "salt",
+                "salt-minion"
             ]
 
 ENHANCE12SP1 = [
