@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
+import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.RepoFileUtils;
@@ -313,10 +314,15 @@ public enum SaltStateGeneratorService {
      * @param user the user performing the migration
      */
     public void migrateServer(Server server, User user) {
+        // generate a new state revision without any package or custom states
         ServerStateRevision newStateRev = StateRevisionService.INSTANCE
                 .cloneLatest(server, user, false, false);
+        StateFactory.save(newStateRev);
+
+        // refresh pillar, custom and package states
         generatePillarForServer(server);
         generateServerCustomState(newStateRev);
+        StatesAPI.generateServerPackageState(server);
     }
 
 }
