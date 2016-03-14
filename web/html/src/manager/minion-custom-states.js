@@ -19,16 +19,16 @@ function applyRequest(component) {
             type: "SERVER",
             states: ["custom"]
         }),
-        "application/json",
-        data => {
+        "application/json"
+        )
+        .then(data => {
               console.log("apply action queued:" + data);
               component.setState({
                   messages: msg('info', <span>{t("Applying the custom states has been ")}
                       <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
                   </span>)
               });
-        }
-    );
+        });
 }
 
 function saveRequest(states) {

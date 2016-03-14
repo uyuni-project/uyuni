@@ -19,15 +19,14 @@ function applyRequest(component) {
             type: "GROUP",
             states: ["custom_groups"]
         }),
-        "application/json",
-        data => {
+        "application/json"
+        )
+        .then( data => {
           console.log("apply action queued:" + data)
           component.setState({
               messages: msg('info', <span>{t("Applying the custom states has been scheduled for each minion server in this group")}</span>)
           });
-        }
-    );
-
+        });
 }
 
 function saveRequest(states) {
