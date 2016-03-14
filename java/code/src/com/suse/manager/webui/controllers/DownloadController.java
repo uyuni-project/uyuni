@@ -74,10 +74,7 @@ public class DownloadController {
 
         File file = new File(new File("/var/cache/rhn/repodata", channel),
                 filename).getAbsoluteFile();
-        downloadFile(request, response, file);
-
-        // make spark happy
-        return null;
+        return downloadFile(request, response, file);
     }
 
     /**
@@ -111,10 +108,8 @@ public class DownloadController {
 
         File file = new File(Config.get().getString(ConfigDefaults.MOUNT_POINT),
                 pkg.getPath()).getAbsoluteFile();
-        downloadFile(request, response, file);
 
-        // make spark happy
-        return null;
+        return downloadFile(request, response, file);
     }
 
     /**
@@ -189,33 +184,10 @@ public class DownloadController {
      * @param response the response object
      * @param file description of the file to send
      */
-    private static void downloadFile(Request request, Response response, File file) {
-        if (file.exists()) {
-            response.status(HttpStatus.SC_OK);
-        }
-        else {
-            halt(HttpStatus.SC_NOT_FOUND);
-        }
-
-        // Skip download in case of a HEAD request
-        if (request.requestMethod().equals("HEAD")) {
-            return;
-        }
-
-        HttpServletResponse raw = response.raw();
-        raw.setContentType("application/octet-stream");
-        raw.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
-        raw.setHeader("X-Sendfile", file.getAbsolutePath());
-        try {
-            // we need to write some dummy body or mod_proxy
-            // will prevent mod_xsendfile from working
-            OutputStream out = raw.getOutputStream();
-            out.write(new byte[] {42});
-            out.flush();
-            out.close();
-        }
-        catch (IOException e) {
-            halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+    private static Object downloadFile(Request request, Response response, File file) {
+        response.header("Content-Type", "application/octet-stream");
+        response.header("Content-Disposition", "attachment; filename=" + file.getName());
+        response.header("X-Sendfile", file.getAbsolutePath());
+        return response;
     }
 }
