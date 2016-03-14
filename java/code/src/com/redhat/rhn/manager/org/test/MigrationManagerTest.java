@@ -105,7 +105,7 @@ public class MigrationManagerTest extends RhnBaseTestCase {
         MigrationManager.removeOrgRelationships(origOrgAdmins.iterator().next(), server);
         server = ServerFactory.lookupById(server.getId());
 
-        assertEquals(0, server.getEntitlements().size());
+        assertTrue(server.getEntitlements().size() > 0);
     }
 
     public void testRemoveSystemGroups() throws Exception {
