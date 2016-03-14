@@ -21,6 +21,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.utils.SparkTestUtils;
@@ -53,6 +54,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     private Channel channel;
     private String uriFile;
     private File packageFile;
+    private MockHttpServletResponse mockResponse;
     private Response response;
     private Package pkg;
 
@@ -86,7 +88,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         super.setUp();
 
         this.channel = createTestChannel(user);
-        this.response = RequestResponseFactory.create(new MockHttpServletResponse());
+        this.mockResponse = new RhnMockHttpServletResponse();
+        this.response = RequestResponseFactory.create(mockResponse);
 
         this.pkg = createTestPackage(user, channel, "noarch");
         final String nvra = String.format("%s-%s-%s.%s",
@@ -138,6 +141,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             fail("Controller should fail if no token was given");
         } catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
+            assertNull(response.raw().getHeader("X-Sendfile"));
         }
     }
 
@@ -154,6 +158,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             fail("Controller should fail if wrong token was given");
         } catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
+            assertNull(response.raw().getHeader("X-Sendfile"));
         }
     }
 
@@ -177,6 +182,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                     DownloadController.class.getSimpleName()));
         } catch (spark.HaltException e) {
             assertEquals(400, e.getStatusCode());
+            assertNull(response.raw().getHeader("X-Sendfile"));
         }
     }
 
@@ -200,6 +206,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                     DownloadController.class.getSimpleName()));
         } catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
+            assertNull(response.raw().getHeader("X-Sendfile"));
         }
     }
 
@@ -222,6 +229,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                     DownloadController.class.getSimpleName()));
         } catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
+            assertNull(response.raw().getHeader("X-Sendfile"));
         }
     }
 
@@ -238,7 +246,12 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            assertNull(DownloadController.downloadPackage(request, response));
+            assertNotNull(DownloadController.downloadPackage(request, response));
+
+            assertEquals(packageFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
+            assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
+            assertEquals("attachment; filename=" + packageFile.getName(),
+                    response.raw().getHeader("Content-Disposition"));
         } catch (spark.HaltException e) {
             fail("No HaltException should be thrown with a valid token!");
         }
@@ -257,7 +270,12 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            assertNull(DownloadController.downloadPackage(request, response));
+            assertNotNull(DownloadController.downloadPackage(request, response));
+
+            assertEquals(packageFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
+            assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
+            assertEquals("attachment; filename=" + packageFile.getName(),
+                    response.raw().getHeader("Content-Disposition"));
         } catch (spark.HaltException e) {
             fail("No HaltException should be thrown with a valid token!");
         }
