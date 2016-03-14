@@ -217,6 +217,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 LOG.error("Error generating repo file: " + e.getMessage());
             }
 
+            // Refresh pillars before applying any states
+            SALT_SERVICE.refreshPillar(minionId);
+
             // Apply initial states asynchronously
             MessageQueue.publish(new ApplyStatesEventMessage(
                     server.getId(),
