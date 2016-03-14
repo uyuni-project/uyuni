@@ -31,10 +31,7 @@ import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import spark.Request;
 import spark.Response;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.security.Key;
 import java.util.HashSet;
 import java.util.List;
