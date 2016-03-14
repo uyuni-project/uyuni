@@ -49,6 +49,7 @@ public class ManagersSetupAction extends RhnAction implements Listable {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                   ActionForm formIn,
                                   HttpServletRequest request,
@@ -64,6 +65,7 @@ public class ManagersSetupAction extends RhnAction implements Listable {
         }
 
         request.setAttribute("channel_name", currentChan.getName());
+        request.setAttribute("is_custom", currentChan.isCustom());
         request.setAttribute(RequestContext.CID, cid);
 
         Map params = makeParamMap(request);
@@ -125,6 +127,7 @@ public class ManagersSetupAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
         User currentUser = context.getCurrentUser();
         List<UserOverview> userList = UserManager.activeInOrg2(currentUser);
