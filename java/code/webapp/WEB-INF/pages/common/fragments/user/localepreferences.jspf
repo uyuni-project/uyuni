@@ -18,6 +18,11 @@
         </html:select>
       </div>
     </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <rhn:submit valueKey="preferences.jsp.submitvalue"/>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -79,9 +84,9 @@
 
   </div>
 </div>
--->
 
 <hr/>
 <div class="text-right">
 <rhn:submit valueKey="preferences.jsp.submitvalue"/>
 </div>
+-->
