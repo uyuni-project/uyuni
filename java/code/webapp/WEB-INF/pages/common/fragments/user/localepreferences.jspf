@@ -18,17 +18,21 @@
         </html:select>
       </div>
     </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <rhn:submit valueKey="preferences.jsp.submitvalue"/>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- try to set default values -->
+<!-- Set default values -->
 <html:hidden property="submitted" value="true" />
 <html:hidden property="uid" />
 <html:hidden property="preferredLocale" value="en_US" />
 <!-- end -->
 
 <!--
-
 <div class="panel panel-default">
   <div class="panel-heading">
     <h4><bean:message key="preferences.jsp.lang" /></h4>
@@ -82,5 +86,7 @@
 </div>
 
 <hr/>
+<div class="text-right">
+<rhn:submit valueKey="preferences.jsp.submitvalue"/>
+</div>
 -->
-
