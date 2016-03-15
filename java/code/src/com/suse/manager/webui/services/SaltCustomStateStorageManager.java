@@ -103,17 +103,17 @@ public class SaltCustomStateStorageManager {
             }
         }
 
-        boolean move = false;
-        if (StringUtils.isNotBlank(oldName) && !oldName.equals(name)) {
+        boolean moved = false;
+        if (isRename(oldName, name)) {
             Files.move(orgPath.resolve(defaultExtension(oldName)), stateFile.toPath());
-            move = true;
+            moved = true;
         }
 
         // TODO clarify encoding
         FileUtils.writeStringToFile(stateFile, content, "US-ASCII");
 
         String stateName = stripExtension(name);
-        if (!move) {
+        if (!moved) {
             CustomState customState = new CustomState();
             customState.setOrg(OrgFactory.lookupById(orgId));
             customState.setStateName(stateName);
@@ -129,6 +129,15 @@ public class SaltCustomStateStorageManager {
             state.setStateName(stateName);
             StateFactory.save(state);
         }
+    }
+
+    /**
+     * @param oldName the old state name
+     * @param newName the new state name
+     * @return true if the oldName is not blank and they're not equal
+     */
+    public boolean isRename(String oldName, String newName) {
+        return StringUtils.isNotBlank(oldName) && !oldName.equals(newName);
     }
 
     private void assertStateInOrgDir(File orgDir, File stateFile) throws IOException {
