@@ -17,6 +17,8 @@ package com.suse.manager.webui.services;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -124,6 +126,9 @@ public enum SaltServerActionService {
         if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
             return errataAction(minions, (ErrataAction) actionIn);
         }
+        else if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
+            return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
+        }
         else if (actionIn.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
             return rebootAction(minions);
         }
@@ -230,6 +235,23 @@ public enum SaltServerActionService {
                 ,
                 Map.Entry::getValue
         ));
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> packagesUpdateAction(
+            List<MinionServer> minions, PackageUpdateAction action) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        Map<String, String> pkgs = new HashMap<>();
+        for (PackageActionDetails details : action.getDetails()) {
+            String name = details.getPackageName().getName();
+            // TODO: Add "epoch:" prefix if epoch is actually there and a number
+            String version = details.getEvr().getVersion() + "-" +
+                    details.getEvr().getRelease();
+            LOG.debug("Name: " + name);
+            LOG.debug("Version: " + version);
+            pkgs.put(name, version);
+        }
+        ret.put(com.suse.manager.webui.utils.salt.Pkg.install(true, pkgs), minions);
+        return ret;
     }
 
     private Map<LocalCall<?>, List<MinionServer>> rebootAction(List<MinionServer> minions) {
