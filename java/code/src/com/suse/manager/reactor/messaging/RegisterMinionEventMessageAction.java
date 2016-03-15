@@ -159,8 +159,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             ServerFactory.save(server);
 
-            SaltStateGeneratorService.INSTANCE.registerServer(server);
-
             // apply activation key properties that need to be set after saving the server
             activationKey.ifPresent(ak -> {
                 ak.getToken().getActivatedServers().add(server);
@@ -215,6 +213,15 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             }
             catch (IOException | JoseException e) {
                 LOG.error("Error generating repo file: " + e.getMessage());
+            }
+
+            // Generate pillar data
+            try {
+                SaltStateGeneratorService.INSTANCE.registerServer(server);
+            }
+            catch (RuntimeException e) {
+                LOG.error("Error generating Salt files for server '" + minionId +
+                        "':" + e.getMessage());
             }
 
             // Apply initial states asynchronously

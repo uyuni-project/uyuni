@@ -1,3 +1,1 @@
-include:
-  - .custom_{{ grains['machine_id'] }}
-
+{% include 'custom/custom_{0}.sls'.format(grains['machine_id']) ignore missing %}
