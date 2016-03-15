@@ -667,20 +667,4 @@ public enum SaltAPIService implements SaltService {
                 .collect(Collectors.toSet());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void refreshPillar(String target) {
-        try {
-            com.suse.manager.webui.utils.salt.SaltUtil.refreshPillar(Optional.empty(),
-                    Optional.empty()).callSync(SALT_CLIENT,
-                    new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
 }
