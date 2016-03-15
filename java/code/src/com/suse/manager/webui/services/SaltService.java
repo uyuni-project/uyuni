@@ -347,5 +347,4 @@ public interface SaltService {
      * @return a set of names that included the organization namespace
      */
     Set<String> resolveOrgStates(long orgId, Set<String> states);
-
 }
