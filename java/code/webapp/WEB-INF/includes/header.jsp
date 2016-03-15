@@ -32,7 +32,7 @@
       <li class="hidden-xs"><a href="https://www.suse.com/support/kb/product.php?id=SUSE_Manager" target="_blank"><bean:message key="header.jsp.knowledgebase" /></a></li>
       <li class="hidden-xs"><a href="https://www.suse.com/documentation/suse_manager/" target="_blank"><bean:message key="header.jsp.documentation" /></a></li>
       <li><a href="/rhn/account/UserDetails.do"><rhn:icon type="header-user" /> <c:out escapeXml="true" value="${requestScope.session.user.login}" /></a></li>
-      <li class="hidden-sm hidden-xs hidden-md"><a><rhn:icon type="header-sitemap" /> <c:out escapeXml="true" value="${requestScope.session.user.org.name}" /></a></li>
+      <li class="hidden-sm hidden-xs hidden-md"><span class="spacewalk-header-non-link"><rhn:icon type="header-sitemap" /> <c:out escapeXml="true" value="${requestScope.session.user.org.name}" /></span></li>
       <li><a href="/rhn/account/UserPreferences.do"><rhn:icon type="header-preferences" title="header.jsp.preferences" /></a></li>
       <li><a href="/rhn/Logout.do"><rhn:icon type="header-signout" title="header.jsp.signout" /></a></li>
       <li class="search hidden-xs">
