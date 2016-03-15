@@ -348,10 +348,4 @@ public interface SaltService {
      */
     Set<String> resolveOrgStates(long orgId, Set<String> states);
 
-    /**
-     * Call 'saltuil.refresh_pillar' to refresh the pillar data on the target minion(s).
-     * @param minionId the minionId
-     */
-    void refreshPillar(String minionId);
-
 }

@@ -218,9 +218,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             // Generate pillar data
             SaltStateGeneratorService.INSTANCE.registerServer(server);
 
-            // Refresh pillars before applying any states
-            SALT_SERVICE.refreshPillar(minionId);
-
             // Apply initial states asynchronously
             MessageQueue.publish(new ApplyStatesEventMessage(
                     server.getId(),
