@@ -216,7 +216,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             }
 
             // Generate pillar data
-            SaltStateGeneratorService.INSTANCE.registerServer(server);
+            try {
+                SaltStateGeneratorService.INSTANCE.registerServer(server);
+            }
+            catch (RuntimeException e) {
+                LOG.error("Error generating Salt files for server '" + minionId +
+                        "':" + e.getMessage());
+            }
 
             // Apply initial states asynchronously
             MessageQueue.publish(new ApplyStatesEventMessage(
