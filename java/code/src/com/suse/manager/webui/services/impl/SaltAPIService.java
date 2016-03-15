@@ -612,6 +612,10 @@ public enum SaltAPIService implements SaltService {
                                 String oldName, String oldChecksum) {
         try {
             customSaltStorageManager.storeState(orgId, name, content, oldName, oldChecksum);
+            if (customSaltStorageManager.isRename(oldName, name)) {
+                // TODO find all servers/groups/org where this state is used
+                // TODO regenerate all assignments .sls files
+            }
         }
         catch (IOException e) {
             throw new RuntimeException(e);
