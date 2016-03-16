@@ -197,14 +197,14 @@ public class ChannelArch extends BaseDomainHelper {
             return "i386";
         }
         if (substrings[1].equals("s390") || substrings[1].equals("s390x")) {
-            return "s390";
+            return "s390x";
         }
         if (substrings[1].equals("ia64")) {
             return "ia64";
         }
         if (substrings[1].equals("ppc") || substrings[1].equals("powerpc") ||
                 substrings[1].equals("iSeries") || substrings[1].equals("pSeries")) {
-            return "ppc";
+            return "ppc64";
         }
         if (substrings[1].equals("aarch64")) {
             return "aarch64";
