@@ -97,6 +97,19 @@ public class TaskManager {
         params.put("package_id", packageId);
         DataResult<Map<String, Object>> dataResult = m.execute(params);
 
+        // if the result is empty and the channel is a clone, we'll try to look for the
+        // information in the original channel (in a recursive manner)
+        if (dataResult.isEmpty()) {
+            SelectMode originalMode = ModeFactory.getMode(TaskConstants.MODE_NAME,
+                    TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CLONED_FROM);
+            Map<String, Object> originalQueryParams = new HashMap<>();
+            originalQueryParams.put("channel_id", channelId);
+            DataResult<Map<String, Long>> originalId = originalMode.execute(originalQueryParams);
+            if (!originalId.isEmpty()) {
+                return getChannelPackageKeywords(originalId.get(0).get("original_id"), packageId);
+            }
+        }
+
         List<String> result = new LinkedList<>();
         for (Map<String, Object> row: dataResult) {
             result.add((String)row.get("label"));
