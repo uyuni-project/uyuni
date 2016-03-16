@@ -15,7 +15,6 @@
 package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -41,7 +40,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -273,38 +271,23 @@ public enum SaltStateGeneratorService {
     }
 
     /**
-     * Remove custom state from org, group and sever assignments.
+     * Regenerate custom state assignments for org, group and severs where
+     * the given state is used.
      * @param orgId org id
      * @param name custom state name
      */
-    public void removeCustomState(long orgId, String name) {
-        // TODO for now regenerate all state assignments.
-        // TODO use a query to get only affected states
-        Org org = OrgFactory.lookupById(orgId);
-        List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(org);
-        List<Server> servers = MinionServerFactory.lookupByOrg(org.getId());
-
-        Optional<OrgStateRevision> orgStateRevision = StateFactory
-                .latestStateRevision(org);
-        orgStateRevision.ifPresent(rev ->
-            generateOrgCustomState(rev)
+    public void regenerateCustomStates(long orgId, String name) {
+        StateFactory.CustomStateRevisionsUsage usage = StateFactory
+                .latestStateRevisionsByCustomState(orgId, name);
+        usage.getServerStateRevisions().forEach(rev ->
+                generateServerCustomState(rev)
         );
-
-        for (ManagedServerGroup group : groups) {
-            Optional<ServerGroupStateRevision> groupStateRevision = StateFactory
-                    .latestStateRevision(group);
-            groupStateRevision.ifPresent(rev ->
-                    generateGroupCustomState(rev)
-            );
-        }
-
-        for (Server server : servers) {
-            Optional<ServerStateRevision> serverStateRevision = StateFactory
-                    .latestStateRevision(server);
-            serverStateRevision.ifPresent(rev ->
-                    generateServerCustomState(rev)
-            );
-        }
+        usage.getServerGroupStateRevisions().forEach(rev ->
+                generateGroupCustomState(rev)
+        );
+        usage.getOrgStateRevisions().forEach(rev ->
+                generateOrgCustomState(rev)
+        );
     }
 
     /**
