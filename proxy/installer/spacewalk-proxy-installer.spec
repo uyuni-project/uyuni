@@ -67,6 +67,7 @@ Run configure-proxy.sh after installation to configure proxy.
 if [ -f /etc/sysconfig/apache2 ]; then
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
 fi
+sed -i -e"s/^range_offset_limit -1 KB/range_offset_limit none/" /etc/squid/squid.conf
 %endif
 
 %install
