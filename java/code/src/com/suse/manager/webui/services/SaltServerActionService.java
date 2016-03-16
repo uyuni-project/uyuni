@@ -240,16 +240,8 @@ public enum SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> packagesUpdateAction(
             List<MinionServer> minions, PackageUpdateAction action) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        Map<String, String> pkgs = new HashMap<>();
-        for (PackageActionDetails details : action.getDetails()) {
-            String name = details.getPackageName().getName();
-            // TODO: Add "epoch:" prefix if epoch is actually there and a number
-            String version = details.getEvr().getVersion() + "-" +
-                    details.getEvr().getRelease();
-            LOG.debug("Name: " + name);
-            LOG.debug("Version: " + version);
-            pkgs.put(name, version);
-        }
+        Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
+                d -> d.getPackageName().getName(), PackageActionDetails::getZypperVersion));
         ret.put(com.suse.manager.webui.utils.salt.Pkg.install(true, pkgs), minions);
         return ret;
     }
