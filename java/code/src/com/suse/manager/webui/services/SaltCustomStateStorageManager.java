@@ -53,11 +53,11 @@ public class SaltCustomStateStorageManager {
 
     /**
      * No arg constructor. Will initialize {@link #baseDirPath} with
-     * '/srv/susemanager/salt'
+     * '/srv/susemanager/salt' and {@link #encoding} with US-ASCII.
      */
     public SaltCustomStateStorageManager() {
         this.baseDirPath = RepoFileUtils.GENERATED_SLS_ROOT;
-        this.encoding = "US-ASCII";
+        this.encoding = "US-ASCII"; // TODO clarify default encoding
     }
 
     /**
@@ -159,7 +159,6 @@ public class SaltCustomStateStorageManager {
         }
         // else no db changes, just update the state content
 
-        // TODO clarify encoding
         FileUtils.writeStringToFile(stateFile, content, encoding);
 
     }
