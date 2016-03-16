@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.Org;
@@ -165,6 +166,46 @@ public abstract class CobblerCommand {
      */
     public static String makeCobblerName(KickstartableTree tree) {
         return makeCobblerName(tree.getLabel(), tree.getOrg());
+    }
+
+    /**
+     * Return an architecture string used in cobbler
+     * @param arch Channel Arch object
+     * @return cobbler arch string
+     */
+    public static String getCobblerArch(ChannelArch arch) {
+        String cobblerArch = "";
+        switch(arch.getLabel()) {
+        case "channel-ia32":
+            cobblerArch = "i386";
+            break;
+        case "channel-ia64":
+            cobblerArch = "ia64";
+            break;
+        case "channel-s390":
+            cobblerArch = "s390";
+            break;
+        case "channel-s390x":
+            cobblerArch = "s390x";
+            break;
+        case "channel-x86_64":
+            cobblerArch = "x86_64";
+            break;
+        case "channel-ppc":
+            // There is no channel-ppc64 so we need to map this one
+            cobblerArch = "ppc64";
+            break;
+        case "channel-ppc64le":
+            cobblerArch = "ppc64le";
+            break;
+        case "channel-aarch64":
+            cobblerArch = "aarch64";
+            break;
+        default:
+            cobblerArch = arch.getName().toLowerCase();
+            break;
+        }
+        return cobblerArch;
     }
 
     /**
