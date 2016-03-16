@@ -9,7 +9,7 @@ Feature: Watch/edit user details
     Given I am on the Details page
     Then I should see a "User Details" text
     And I should see a "Delete User" link
-    And I should see a "deactivate user" link
+    And I should see a "Deactivate User" link
     And I should see a "Details" link
     And I should see a "System Groups" link
     And I should see a "Systems" link in the content area
@@ -59,7 +59,7 @@ Feature: Watch/edit user details
 
   Scenario: Deactivate User (Fail)
     Given I am on the Details page
-    When I follow "deactivate user"
+    When I follow "Deactivate User"
     Then I should see a "This action will deactivate this user. This user will no longer be able to log in or perform actions unless it is reactivated." text
     When I click on "Deactivate User"
     Then I should see a "You cannot deactivate another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to deactivate their account." text
@@ -79,7 +79,7 @@ Feature: Watch/edit user details
   Scenario: Deactivate User (Succeed)
     Given I am on the Details page
     Then I should see "role_org_admin" as unchecked
-    When I follow "deactivate user"
+    When I follow "Deactivate User"
     Then I should see a "This action will deactivate this user. This user will no longer be able to log in or perform actions unless it is reactivated." text
     When I click on "Deactivate User"
     Then I should see a "Active Users" text
@@ -94,8 +94,8 @@ Feature: Watch/edit user details
     Given I am on the Users page
     When I follow "Deactivated"
     And I follow "user1"
-    Then I should see a "reactivate user" link
-    When I follow "reactivate user"
+    Then I should see a "Reactivate User" link
+    When I follow "Reactivate User"
     Then I should see a "This action will allow this user to access SUSE Manager. This user will retain all permissions, roles, and data that he or she had before being deactivated." text
     When I click on "Reactivate User"
     Then I should see a "Active Users" text
