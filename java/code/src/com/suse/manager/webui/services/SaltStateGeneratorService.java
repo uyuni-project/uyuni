@@ -26,6 +26,8 @@ import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
+import com.redhat.rhn.domain.user.User;
+import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.RepoFileUtils;
@@ -306,13 +308,21 @@ public enum SaltStateGeneratorService {
     }
 
     /**
-     * Regenerate pillar and remove any assigned custom states for a
-     * server that was migrated to another organization.
+     * Regenerate pillar with the new org and create a new state revision without
+     * any package or custom states.
      * @param server the migrated server
+     * @param user the user performing the migration
      */
-    public void migrateServer(Server server) {
+    public void migrateServer(Server server, User user) {
+        // generate a new state revision without any package or custom states
+        ServerStateRevision newStateRev = StateRevisionService.INSTANCE
+                .cloneLatest(server, user, false, false);
+        StateFactory.save(newStateRev);
+
+        // refresh pillar, custom and package states
         generatePillarForServer(server);
-        removeCustomStateAssignments(server);
+        generateServerCustomState(newStateRev);
+        StatesAPI.generateServerPackageState(server);
     }
 
 }
