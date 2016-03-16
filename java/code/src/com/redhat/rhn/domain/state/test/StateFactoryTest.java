@@ -27,11 +27,9 @@ import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
-import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -316,50 +314,97 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
 
     }
 
-//    public void testFindStateRevisionsByCustomState() throws Exception {
-//        // create org revision
-//        CustomState state1 = new CustomState();
-//        state1.setOrg(user.getOrg());
-//        state1.setStateName("first");
-//
-//        // create org revision
-//        CustomState state2 = new CustomState();
-//        state2.setOrg(user.getOrg());
-//        state2.setStateName("second");
-//
-//        OrgStateRevision orgRevision = new OrgStateRevision();
-//        orgRevision.setOrg(user.getOrg());
-//        orgRevision.setCreator(user);
-//        orgRevision.getCustomStates().add(state1);
-//
-//        StateFactory.save(orgRevision);
-//
-//        Server server = ServerFactoryTest.createTestServer(user);
-//        ServerStateRevision serverState = new ServerStateRevision();
-//        serverState.setServer(server);
-//        serverState.setCreator(user);
-//
-//        serverState.getCustomStates().add(state1);
-//        serverState.getCustomStates().add(state2);
-//
-//        StateFactory.save(serverState);
-//
-//        ManagedServerGroup group = ServerGroupFactory.create("testgroup-" +
-//                TestUtils.randomString(), "desc", user.getOrg());
-//        ServerGroupStateRevision groupRevision = new ServerGroupStateRevision();
-//        groupRevision.setGroup(group);
-//        groupRevision.setCreator(user);
-//        groupRevision.getCustomStates().add(state1);
-//        groupRevision.getCustomStates().add(state2);
-//
-//        StateFactory.save(groupRevision);
-//
-//        clearFlush();
-//
-//        List<StateRevision> states = StateFactory.findLatestStateRevisionsByCustomState(user.getOrg().getId(), "first");
-//        assertEquals(3, states.size());
-//
-//    }
+    public void testLookupCustomStateUsage() throws Exception {
+        CustomState state1 = new CustomState();
+        state1.setOrg(user.getOrg());
+        state1.setStateName("state1_" + TestUtils.randomString());
+
+        CustomState state2 = new CustomState();
+        state2.setOrg(user.getOrg());
+        state2.setStateName("state2_" + TestUtils.randomString());
+
+        // server usage
+
+        Server server1 = ServerFactoryTest.createTestServer(user);
+        ServerStateRevision server1Revision = new ServerStateRevision();
+        server1Revision.setServer(server1);
+        server1Revision.setCreator(user);
+        server1Revision.getCustomStates().add(state1);
+
+        OrgStateRevision orgRevision = new OrgStateRevision();
+        orgRevision.setOrg(user.getOrg());
+        orgRevision.setCreator(user);
+        orgRevision.getCustomStates().add(state2);
+
+        StateFactory.save(orgRevision);
+
+        StateFactory.save(server1Revision);
+        clearFlush();
+
+        StateFactory.CustomStateRevisionsUsage usage = StateFactory
+                .latestStateRevisionsByCustomState(user.getOrg().getId(), state1.getStateName());
+        assertEquals(0, usage.getOrgStateRevisions().size());
+        assertEquals(0, usage.getServerGroupStateRevisions().size());
+        assertEquals(1, usage.getServerStateRevisions().size());
+        assertEquals(server1Revision.getId(), (long)usage.getServerStateRevisions().stream()
+                .filter(r -> r.getServer().getId().equals(server1.getId()))
+                .findFirst()
+                .map(r -> r.getId()).get());
+
+        // org usage
+
+        orgRevision = new OrgStateRevision();
+        orgRevision.setOrg(user.getOrg());
+        orgRevision.setCreator(user);
+        orgRevision.getCustomStates().add(state1);
+        orgRevision.getCustomStates().add(state2);
+
+        StateFactory.save(orgRevision);
+        clearFlush();
+
+        usage = StateFactory.
+                latestStateRevisionsByCustomState(user.getOrg().getId(), state1.getStateName());
+        assertEquals(1, usage.getOrgStateRevisions().size());
+        assertEquals(orgRevision.getId(), (long)usage.getOrgStateRevisions().stream()
+                .findFirst().map(r -> r.getId()).get());
+        assertEquals(0, usage.getServerGroupStateRevisions().size());
+        assertEquals(1, usage.getServerStateRevisions().size());
+
+        // server group usage
+
+        ManagedServerGroup group1 = ServerGroupFactory.create("testgroup1-" +
+                TestUtils.randomString(), "desc", user.getOrg());
+        ServerGroupStateRevision group1Revision = new ServerGroupStateRevision();
+        group1Revision.setGroup(group1);
+        group1Revision.setCreator(user);
+        group1Revision.getCustomStates().add(state1);
+
+        StateFactory.save(group1Revision);
+
+        ManagedServerGroup group2 = ServerGroupFactory.create("testgroup2-" +
+                TestUtils.randomString(), "desc", user.getOrg());
+        ServerGroupStateRevision group2Revision = new ServerGroupStateRevision();
+        group2Revision.setGroup(group2);
+        group2Revision.setCreator(user);
+        group2Revision.getCustomStates().add(state1);
+
+        StateFactory.save(group2Revision);
+
+        clearFlush();
+
+        usage = StateFactory
+                .latestStateRevisionsByCustomState(user.getOrg().getId(), state1.getStateName());
+        assertEquals(1, usage.getOrgStateRevisions().size());
+        assertEquals(2, usage.getServerGroupStateRevisions().size());
+        assertEquals(group1Revision.getId(), (long)usage.getServerGroupStateRevisions().stream()
+                .filter(r -> r.getGroup().getId().equals(group1.getId()))
+                .findFirst().map(r -> r.getId()).get());
+        assertEquals(group2Revision.getId(), (long)usage.getServerGroupStateRevisions().stream()
+                .filter(r -> r.getGroup().getId().equals(group2.getId()))
+                .findFirst().map(r -> r.getId()).get());
+        assertEquals(1, usage.getServerStateRevisions().size());
+
+    }
 
     private void clearFlush() {
         StateFactory.getSession().flush();
