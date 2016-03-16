@@ -314,7 +314,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
 
     }
 
-    public void testLookupCustomStateUsage() throws Exception {
+    public void testLatestStateRevisionsByCustomState() throws Exception {
         CustomState state1 = new CustomState();
         state1.setOrg(user.getOrg());
         state1.setStateName("state1_" + TestUtils.randomString());
