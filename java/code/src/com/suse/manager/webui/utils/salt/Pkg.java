@@ -7,12 +7,13 @@ import com.suse.salt.netapi.calls.LocalCall;
 
 import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * salt.modules.pkg
@@ -30,12 +31,10 @@ public class Pkg {
         kwargs.put("refresh", refresh);
 
         // Convert map into a list of maps with a single entry each as expected by Salt
-        List<Map<String, String>> pkgsList = new ArrayList<>();
-        for (String pkg : pkgs.keySet()) {
-            Map<String, String> map = new HashMap<>();
-            map.put(pkg, pkgs.get(pkg));
-            pkgsList.add(map);
-        }
+        List<Map<String, String>> pkgsList = pkgs.entrySet().stream()
+                .map(entry -> Collections.unmodifiableMap(Stream.of(entry).collect(
+                        Collectors.toMap(e -> e.getKey(), e -> e.getValue()))))
+                .collect(Collectors.toList());
         kwargs.put("pkgs", pkgsList);
 
         return new LocalCall<>("pkg.install", Optional.empty(), Optional.of(kwargs),
