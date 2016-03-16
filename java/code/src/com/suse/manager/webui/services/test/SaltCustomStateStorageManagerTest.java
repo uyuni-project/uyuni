@@ -23,6 +23,7 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 public class SaltCustomStateStorageManagerTest extends BaseTestCaseWithUser {
 
     private static final String THE_STATE_CONTENT = "#the state content";
+    public static final long ORG_ID = 1;
     private SaltCustomStateStorageManager manager;
     private Path baseDir;
 
@@ -46,26 +47,26 @@ public class SaltCustomStateStorageManagerTest extends BaseTestCaseWithUser {
 
     public void testStoreCreateNew() throws IOException {
         String name = "state-" + TestUtils.randomString();
-        manager.storeState(1, name, THE_STATE_CONTENT, null, null);
+        manager.storeState(ORG_ID, name, THE_STATE_CONTENT, null, null);
 
         Path newFile = getStatePath(name);
         assertTrue(Files.exists(newFile));
 
-        Optional<String> content = manager.getContent(1, name);
+        Optional<String> content = manager.getContent(ORG_ID, name);
         assertEquals(THE_STATE_CONTENT, content.get());
 
-        Optional<CustomState> stateOpt = StateFactory.getCustomStateByName(1, name);
+        Optional<CustomState> stateOpt = StateFactory.getCustomStateByName(ORG_ID, name);
         assertTrue(stateOpt.isPresent());
         assertEquals(name, stateOpt.get().getStateName());
-        assertEquals(1L, (long)stateOpt.get().getOrg().getId());
+        assertEquals(ORG_ID, (long)stateOpt.get().getOrg().getId());
     }
 
     public void testStoreSaltStateExistsExceptionCreate() throws IOException {
         try {
             String name = "state-" + TestUtils.randomString();
-            manager.storeState(1, name, THE_STATE_CONTENT, null, null);
+            manager.storeState(ORG_ID, name, THE_STATE_CONTENT, null, null);
 
-            manager.storeState(1, name, THE_STATE_CONTENT, null, null);
+            manager.storeState(ORG_ID, name, THE_STATE_CONTENT, null, null);
 
             fail("Expected exception "  + SaltStateExistsException.class.getName());
 
@@ -77,12 +78,12 @@ public class SaltCustomStateStorageManagerTest extends BaseTestCaseWithUser {
     public void testStoreSaltStateExistsExceptionRename() throws IOException {
         try {
             String name = "state-" + TestUtils.randomString();
-            manager.storeState(1, name, THE_STATE_CONTENT, null, null);
+            manager.storeState(ORG_ID, name, THE_STATE_CONTENT, null, null);
 
             String name2 = "state-" + TestUtils.randomString();
-            manager.storeState(1, name2, THE_STATE_CONTENT, null, null);
+            manager.storeState(ORG_ID, name2, THE_STATE_CONTENT, null, null);
 
-            manager.storeState(1, name2, THE_STATE_CONTENT, name, DigestUtils.md5Hex(THE_STATE_CONTENT));
+            manager.storeState(ORG_ID, name2, THE_STATE_CONTENT, name, DigestUtils.md5Hex(THE_STATE_CONTENT));
 
             fail("Expected exception "  + SaltStateExistsException.class.getName());
 
@@ -94,10 +95,10 @@ public class SaltCustomStateStorageManagerTest extends BaseTestCaseWithUser {
     public void testStoreStaleSaltStateException() throws IOException {
         try {
             String name = "state-" + TestUtils.randomString();
-            manager.storeState(1, name, THE_STATE_CONTENT, null, null);
+            manager.storeState(ORG_ID, name, THE_STATE_CONTENT, null, null);
 
-            manager.storeState(1, name, "foo bar", name, DigestUtils.md5Hex(THE_STATE_CONTENT));
-            manager.storeState(1, name, THE_STATE_CONTENT, name, DigestUtils.md5Hex(THE_STATE_CONTENT));
+            manager.storeState(ORG_ID, name, "foo bar", name, DigestUtils.md5Hex(THE_STATE_CONTENT));
+            manager.storeState(ORG_ID, name, THE_STATE_CONTENT, name, DigestUtils.md5Hex(THE_STATE_CONTENT));
 
             fail("Expected exception "  + StaleSaltStateException.class.getName());
 
@@ -108,52 +109,52 @@ public class SaltCustomStateStorageManagerTest extends BaseTestCaseWithUser {
 
     public void testStoreUpdateNoRename() throws IOException {
         String name = "state-" + TestUtils.randomString();
-        manager.storeState(1, name, THE_STATE_CONTENT, null, null);
+        manager.storeState(ORG_ID, name, THE_STATE_CONTENT, null, null);
 
-        manager.storeState(1, name, "foo bar", name, DigestUtils.md5Hex(THE_STATE_CONTENT));
+        manager.storeState(ORG_ID, name, "foo bar", name, DigestUtils.md5Hex(THE_STATE_CONTENT));
 
         Path newFile = getStatePath(name);
         assertTrue(Files.exists(newFile));
 
-        Optional<String> content = manager.getContent(1, name);
+        Optional<String> content = manager.getContent(ORG_ID, name);
         assertEquals("foo bar", content.get());
     }
 
     public void testStoreUpdateRename() throws IOException {
         String random = TestUtils.randomString();
         String name = "state-" + random;
-        manager.storeState(1, name, THE_STATE_CONTENT, null, null);
+        manager.storeState(ORG_ID, name, THE_STATE_CONTENT, null, null);
 
         String newName = "stateNewName-" + random;
-        manager.storeState(1, newName, "foo bar", name, DigestUtils.md5Hex(THE_STATE_CONTENT));
+        manager.storeState(ORG_ID, newName, "foo bar", name, DigestUtils.md5Hex(THE_STATE_CONTENT));
 
         Path newFile = getStatePath(newName);
         assertTrue(Files.exists(newFile));
 
-        Optional<String> content = manager.getContent(1, newName);
+        Optional<String> content = manager.getContent(ORG_ID, newName);
         assertEquals("foo bar", content.get());
 
-        Optional<CustomState> newNameOpt = StateFactory.getCustomStateByName(1, newName);
-        Optional<CustomState> oldNameOpt = StateFactory.getCustomStateByName(1, name);
+        Optional<CustomState> newNameOpt = StateFactory.getCustomStateByName(ORG_ID, newName);
+        Optional<CustomState> oldNameOpt = StateFactory.getCustomStateByName(ORG_ID, name);
         assertFalse(oldNameOpt.isPresent());
         assertEquals(newName, newNameOpt.get().getStateName());
     }
 
     public void testDelete() throws IOException {
         String name = "state-" + TestUtils.randomString();
-        manager.storeState(1, name, THE_STATE_CONTENT, null, null);
+        manager.storeState(ORG_ID, name, THE_STATE_CONTENT, null, null);
         Path newFile = getStatePath(name);
 
         assertTrue(Files.exists(newFile));
-        assertTrue(StateFactory.getCustomStateByName(1, name).isPresent());
+        assertTrue(StateFactory.getCustomStateByName(ORG_ID, name).isPresent());
 
-        manager.deleteState(1, name);
+        manager.deleteState(ORG_ID, name);
         assertFalse(Files.exists(newFile));
-        assertFalse(StateFactory.getCustomStateByName(1, name).isPresent());
+        assertFalse(StateFactory.getCustomStateByName(ORG_ID, name).isPresent());
     }
 
     private Path getStatePath(String name) {
-        return baseDir.resolve("manager_org_1").resolve(defaultExtension(name));
+        return baseDir.resolve("manager_org_" + ORG_ID).resolve(defaultExtension(name));
     }
 
 }
