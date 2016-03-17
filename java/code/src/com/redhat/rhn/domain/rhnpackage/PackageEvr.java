@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.rhnpackage;
 
 import com.redhat.rhn.common.util.RpmVersionComparator;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -173,15 +174,16 @@ public class PackageEvr implements Comparable {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String toString() {
-        String retval = "";
-        if (this.getEpoch() != null) {
-            retval = this.getEpoch() + ".";
+        StringBuilder builder = new StringBuilder();
+        if (StringUtils.isNumeric(getEpoch())) {
+            builder.append(getEpoch());
+            builder.append(":");
         }
-        retval = retval + this.getVersion() + "." + this.getRelease();
-        return retval;
+        builder.append(getVersion());
+        builder.append("-");
+        builder.append(getRelease());
+        return builder.toString();
     }
 }

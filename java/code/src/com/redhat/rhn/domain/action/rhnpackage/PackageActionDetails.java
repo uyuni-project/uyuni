@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.util.HashSet;
@@ -156,22 +155,5 @@ public class PackageActionDetails extends ActionChild {
         result += 37 * (parameter == null ? 0 : parameter.hashCode());
         result += 37 * (packageName == null ? 0 : packageName.hashCode());
         return result;
-    }
-
-    /**
-     * Return a string representation to be used with zypper: [epoch:]version-release
-     *
-     * @return string representation of epoch, version and release
-     */
-    public String getZypperVersion() {
-        StringBuilder builder = new StringBuilder();
-        if (StringUtils.isNumeric(getEvr().getEpoch())) {
-            builder.append(getEvr().getEpoch());
-            builder.append(":");
-        }
-        builder.append(getEvr().getVersion());
-        builder.append("-");
-        builder.append(getEvr().getRelease());
-        return builder.toString();
     }
 }
