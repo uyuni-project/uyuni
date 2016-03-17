@@ -38,6 +38,7 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
@@ -47,6 +48,8 @@ import com.google.gson.GsonBuilder;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.StateTargetType;
@@ -74,6 +77,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -392,10 +397,9 @@ public class StatesAPI {
      */
     public static Object apply(Request request, Response response, User user) {
         response.type("application/json");
-        // Can we use the ECMAScriptDateAdapter throughout this whole class?
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
-                .serializeNulls()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+                .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
                 .create();
         JSONServerApplyStates json = gson.fromJson(request.body(),
                 JSONServerApplyStates.class);
@@ -453,7 +457,10 @@ public class StatesAPI {
     }
 
     private static Date getScheduleDate(JSONServerApplyStates json) {
-        return json.getEarliest() != null ? json.getEarliest() : new Date();
+        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        return Date.from(
+            json.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
+        );
     }
 
 
