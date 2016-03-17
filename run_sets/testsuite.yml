@@ -70,3 +70,5 @@
 - features/spacewalk-debug.feature
 - features/tomcat_errors.feature
 - features/smdba.feature
+- features/spacewalk_repo_sync.feature
+- features/mgr_create_bootstrap_repo.feature
