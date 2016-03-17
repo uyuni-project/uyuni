@@ -229,11 +229,11 @@ class CustomStates extends React.Component {
       const currentState = changed === undefined? row.original : changed;
 
       elements.push(
-        <tr className={changed !== undefined ? "warning" : ""}>
+        <tr id={currentState.name + '-row'} key={currentState.name} className={changed !== undefined ? "warning" : ""}>
           <td><a href="#" data-toggle="modal" data-target="#saltStatePopUp" onClick={() => {this.showPopUp(currentState.name);}}>{currentState.name}</a></td>
           <td>
             <div className="form-group">
-                <input type="checkbox" checked={currentState.assigned} value={currentState.name} onChange={this.handleSelectionChange(row.original)}/>
+                <input id={currentState.name + "-cbox"} type="checkbox" checked={currentState.assigned} value={currentState.name} onChange={this.handleSelectionChange(row.original)}/>
             </div>
           </td>
         </tr>
@@ -282,8 +282,8 @@ class CustomStates extends React.Component {
   }
 
   render() {
-    const buttons = [<AsyncButton action={this.save} name={t("Save")} disabled={this.state.changed.size == 0}/>,
-                     <AsyncButton action={this.applySaltState} name={t("Apply")} />];
+    const buttons = [<AsyncButton id="save-btn" action={this.save} name={t("Save")} disabled={this.state.changed.size == 0}/>,
+                     <AsyncButton id="apply-btn" action={this.applySaltState} name={t("Apply")} />];
 
     const messages = this.state.messages ?
             <Messages items={this.state.messages}/>
@@ -294,11 +294,11 @@ class CustomStates extends React.Component {
         <InnerPanel title={t("Custom States")} icon="spacewalk-icon-salt-add" buttons={buttons}>
 
             <PanelRow className="input-group">
-                <TextField value={this.state.filter} placeholder={t("Search in state catalog")} onChange={this.onSearchChange} onPressEnter={this.search}/>
+                <TextField id="search-field" value={this.state.filter} placeholder={t("Search in state catalog")} onChange={this.onSearchChange} onPressEnter={this.search}/>
                 <span className="input-group-btn">
-                    <AsyncButton name={t("Search")} action={this.search} />
-                    <button className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
-                    <button className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
+                    <AsyncButton id="search-btn" name={t("Search")} action={this.search} />
+                    <button id="system-btn" className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
+                    <button id="changes-btn" className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
                         {this.state.changed.size > 0 ? this.state.changed.size : t("No")} {t("Changes")}
                     </button>
                 </span>
