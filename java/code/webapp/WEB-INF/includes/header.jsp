@@ -62,7 +62,7 @@
         <button id="header_selcount" class="btn btn-default btn-link disabled">
           <rhn:setdisplay user="${requestScope.session.user}" />
         </button>
-        <a href="/rhn/ssm/index.do">
+        <a href="/rhn/ssm/index.do" class="no-underline-hover">
           <button class="btn btn-primary" type="button">
             <bean:message key="manage"/>
           </button>
