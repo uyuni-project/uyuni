@@ -165,3 +165,7 @@ Then /^I wait for mgr-sync refresh is finished$/ do
       end
   end
 end
+
+Then(/^I should see "(.*?)" in the output$/) do |arg1|
+  assert_includes(@command_output, arg1)
+end
