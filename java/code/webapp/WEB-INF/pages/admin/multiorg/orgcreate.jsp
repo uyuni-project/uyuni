@@ -152,14 +152,14 @@ function toggleAsterisk() {
                 <label class="col-lg-3 control-label" for="firstNames">
                     <rhn:required-field key="firstNames"/>:
                 </label>
-                <div class="col-lg-1">
+                <div class="col-lg-2">
                     <html:select property="prefix" styleClass="form-control">
                         <html:options collection="availablePrefixes"
                                       property="value"
                                       labelProperty="label" />
                     </html:select>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <html:text property="firstNames" size="45"
                                styleClass="form-control"
                                maxlength="128" styleId="firstNames" />
