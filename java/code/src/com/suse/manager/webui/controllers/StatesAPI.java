@@ -603,7 +603,23 @@ public class StatesAPI {
                 result = SaltAPIService.INSTANCE.callSync(
                         com.suse.manager.webui.utils.salt.State.showHighstate(),
                         target, null);
-                ret = YamlHelper.INSTANCE.dump(result.get(minionId));
+                Object minionResult = result.get(minionId);
+                // if the response is a List containing only one String element
+                // it may be an error from Salt so use that String directly
+                // without dumping it to Yaml
+                Optional<String> oneStringResult = Optional.ofNullable(minionResult)
+                        .filter(r -> r instanceof List)
+                        .map(r -> (List)r)
+                        .filter(l -> l.size() == 1)
+                        .map(l -> l.get(0))
+                        .filter(e -> e instanceof String)
+                        .map(e -> Optional.of((String)e))
+                        .orElse(Optional.empty());
+                if (oneStringResult.isPresent()) {
+                    ret = oneStringResult.get();
+                } else {
+                    ret = YamlHelper.INSTANCE.dump(minionResult);
+                }
             }
             catch (SaltException e) {
                 response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
