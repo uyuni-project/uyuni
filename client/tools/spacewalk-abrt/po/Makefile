@@ -7,7 +7,7 @@ POTFILE		= $(NLSPACKAGE).pot
 
 INSTALL         = /usr/bin/install -c --verbose
 INSTALL_BIN     = $(INSTALL) -m 755
-INSTALL_DATA    = $(INSTALL) -m 664
+INSTALL_DATA    = $(INSTALL) -m 644
 INSTALL_DIR     = $(INSTALL) -m 755 -d
 
 MSGMERGE	= msgmerge -v
