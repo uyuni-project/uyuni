@@ -50,6 +50,22 @@ const stringSubstringHighlight = generateSubstringHighlightRenderer(
     (elements) => <b>{ elements }</b>
 );
 
+function LocalDateTime(date) {
+    const padTo = (v) => {
+        v = v.toString();
+        if(v.length >= 2) return v;
+        else return padTo("0" + v);
+    }
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const days = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    return "" + year + "-" + padTo(month + 1) + "-" + padTo(days) +
+           "T" + padTo(hours) + ":" + padTo(minutes) + ":" + padTo(seconds);
+}
+
 module.exports = {
     Comparators : {
         mapping: mappingComparator,
@@ -65,7 +81,10 @@ module.exports = {
         generate: generateSubstringHighlightRenderer,
         highlightSubstring: stringSubstringHighlight
     },
-    Utils : {
+    Utils: {
         cancelable: cancelable
+    },
+    Formats: {
+        LocalDateTime: LocalDateTime
     }
 }
