@@ -2,31 +2,62 @@
 
 const React = require("react");
 
+$.fn.datepicker.dates['en_US'] = {
+    days:      [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',],
+    daysShort: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',],
+    daysMin:   [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',],
+    months:      [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December',],
+    monthsShort: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',],
+};
+
 class DatePicker extends React.Component {
 
     constructor(props) {
         super();
+        this.setVisible.bind(this);
+    }
+
+    setVisible(visible) {
+        if (visible) this._input.datepicker('show');
+        else this._input.datepicker('hide');
     }
 
     componentDidMount() {
-        this._input.datepicker();
+        this._input.datepicker({
+        });
+        this.setVisible(this.props.open);
         this._input.datepicker('setDate', this.props.value);
         this._input.on('changeDate', () => {
             const datepickerValue = this._input.datepicker('getDate');
 
-            console.log("datepickerValue: " + datepickerValue.getTime());
-            console.log("vs. value: " + this.props.value.getTime());
-
             // Call the callback only if value has actually changed
-            if (this.props.value.getTime() !== datepickerValue.getTime()) {
-                this.props.onDateChanged(datepickerValue);
+            const propsTime = this.props.value.getTime();
+            const pickerTime = datepickerValue.getTime();
+            if (propsTime !== pickerTime) {
+                //in case the date is unselected
+                if (!Number.isNaN(pickerTime)) {
+                    this.props.onDateChanged(datepickerValue);
+                }
+                this._input.datepicker('setDate', this.props.value);
+            }
+        });
+        this._input.on('show', () => {
+            if (!this.props.open) {
+               this.setVisible(false);
+               this.props.onToggle(true);
+            }
+        });
+        this._input.on('hide', () => {
+            if (this.props.open) {
+               this.setVisible(true);
+               this.props.onToggle(false);
             }
         });
     }
 
-    componentWillReceiveProps() {
-        console.log("props received: " + this.props.value);
-        // this._input.datepicker('setDate', this.props.value);
+    componentWillReceiveProps(props) {
+        this._input.datepicker('setDate', props.value);
+        this.setVisible(props.open);
     }
 
     render() {
@@ -46,24 +77,51 @@ class TimePicker extends React.Component {
     }
 
     componentDidMount() {
-        this._input.timepicker({});
+        this._input.timepicker({
+            roundingFunction: (seconds, options) => seconds
+        });
+        this._input.on('change', () => {
+            const timepickerValue = this._input.timepicker('getTime');
+        });
+        this._input.on('timeFormatError', () => {
+            const timepickerValue = this._input.timepicker('getTime');
+        });
         this._input.timepicker('setTime', this.props.value);
         this._input.on('changeTime', () => {
             const timepickerValue = this._input.timepicker('getTime');
 
-            console.log("timepickerValue: " + timepickerValue.getTime());
-            console.log("vs. value: " + this.props.value.getTime());
-
             // Call the callback only if value has actually changed
             if (this.props.value.getTime() !== timepickerValue.getTime()) {
                 this.props.onTimeChanged(timepickerValue);
+                this._input.timepicker('setTime', this.props.value);
+            }
+        });
+        this._input.on('showTimepicker', () => {
+            if (!this.props.open) {
+               this.setVisible(false);
+               this.props.onToggle(true);
+            }
+        });
+        this._input.on('hideTimepicker', () => {
+            if (this.props.open) {
+               this.setVisible(true);
+               this.props.onToggle(false);
             }
         });
     }
 
-    componentWillReceiveProps() {
-        console.log("props received: " + this.props.value);
-        // this._input.timepicker('setTime', this.props.value);
+    setVisible(visible) {
+        if (visible) this._input.timepicker('show');
+        else this._input.timepicker('hide');
+    }
+
+    componentWillReceiveProps(props) {
+        if (props.value.getTime() !== this.props.value.getTime()) {
+            this._input.timepicker('setTime', props.value);
+        }
+        if (props.open !== this.props.open) {
+            this.setVisible(props.open);
+        }
     }
 
     render() {
@@ -78,30 +136,48 @@ class DateTimePicker extends React.Component {
 
     constructor(props) {
         super();
+        this.state = {
+            dateOpen: false,
+            timeOpen: false,
+            timezone: new Date().toString().match(/\((.*)\)/)[1]
+        };
     }
 
     componentDidMount() {
-        // TODO: show datepicker when its addon is clicked
-        this._addonDate.on('click', () => {
-            console.log("TODO: show datepicker");
-        });
-
-        // TODO: show timepicker when its addon is clicked
-        this._addonTime.on('click', () => {
-            console.log("TODO: show timepicker");
-        });
     }
 
     onDateChanged(date) {
-        console.log("--> onDateChanged(): " + date);
         const value = this.props.value;
         const merged = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
                 value.getHours(), value.getMinutes(), value.getSeconds(), value.getMilliseconds());
         this.props.onChange(merged);
     }
 
+    onToggleDate(open) {
+        this.setState({
+            dateOpen: open
+        });
+    }
+
+    onToggleTime(open) {
+        this.setState({
+            timeOpen: open
+        });
+    }
+
+    toggleDatepicker() {
+        this.setState({
+            dateOpen: !this.state.dateOpen
+        });
+    }
+
+    toggleTimepicker() {
+        this.setState({
+            timeOpen: !this.state.timeOpen
+        });
+    }
+
     onTimeChanged(date) {
-        console.log("--> onTimeChanged(): " + date);
         const value = this.props.value;
         const merged = new Date(value.getFullYear(), value.getMonth(), value.getDate(),
                 date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
@@ -111,14 +187,14 @@ class DateTimePicker extends React.Component {
     render() {
         return (
             <div className="input-group">
-                <span className="input-group-addon" data-picker-type="date" ref={(c) => this._addonDate = $(c)}>
+                <span className="input-group-addon" data-picker-type="date" onClick={this.toggleDatepicker.bind(this)}>
                     &nbsp;<i className="fa fa-calendar"></i>
                 </span>
-                <DatePicker onDateChanged={date => this.onDateChanged(date)} value={this.props.value} />
-                <span className="input-group-addon" data-picker-type="time" ref={(c) => this._addonTime = $(c)}>
+                <DatePicker key="date" onDateChanged={date => this.onDateChanged(date)} onToggle={this.onToggleDate.bind(this)} open={this.state.dateOpen} value={this.props.value} />
+                <span className="input-group-addon" data-picker-type="time" onClick={this.toggleTimepicker.bind(this)}>
                     &nbsp;<i className="fa fa-clock-o"></i>
                 </span>
-                <TimePicker onTimeChanged={date => this.onTimeChanged(date)} value={this.props.value} />
+                <TimePicker key="time" onTimeChanged={date => this.onTimeChanged(date)} onToggle={this.onToggleTime.bind(this)} open={this.state.timeOpen} value={this.props.value} />
                 <span className="input-group-addon">
                     {this.props.timezone}
                 </span>
