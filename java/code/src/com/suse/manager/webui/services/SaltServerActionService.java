@@ -17,7 +17,6 @@ package com.suse.manager.webui.services;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
-import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.script.ScriptAction;
@@ -241,7 +240,7 @@ public enum SaltServerActionService {
             List<MinionServer> minions, PackageUpdateAction action) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
-                d -> d.getPackageName().getName(), PackageActionDetails::getZypperVersion));
+                d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
         ret.put(com.suse.manager.webui.utils.salt.Pkg.install(true, pkgs), minions);
         return ret;
     }
