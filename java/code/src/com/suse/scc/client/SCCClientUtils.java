@@ -14,9 +14,9 @@
  */
 package com.suse.scc.client;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -30,6 +30,13 @@ import java.io.Reader;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.URI;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.attribute.UserPrincipal;
+import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -92,17 +99,28 @@ public class SCCClientUtils {
             throw e;
         }
 
+        FileSystem fileSystem = FileSystems.getDefault();
+        UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+        UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
+        UserPrincipal rootUser = service.lookupPrincipalByName("root");
+
         File logDirFile = new File(logDir);
         if (!logDirFile.exists()) {
             FileUtils.forceMkdir(logDirFile);
-            logDirFile.setWritable(true, false);
+            Path logDirPath = logDirFile.toPath();
+            if (Files.getOwner(logDirPath, LinkOption.NOFOLLOW_LINKS).equals(rootUser)) {
+                Files.setOwner(logDirPath, tomcatUser);
+            }
         }
 
         String logFilename = getLogFilename(requestUri, user);
         File logFile = new File(logDir + File.separator + logFilename);
         if (!logFile.exists()) {
             FileUtils.touch(logFile);
-            logFile.setWritable(true, false);
+        }
+        Path logPath = logFile.toPath();
+        if (Files.getOwner(logPath, LinkOption.NOFOLLOW_LINKS).equals(rootUser)) {
+            Files.setOwner(logPath, tomcatUser);
         }
 
         OutputStream fileOutputStream = new FileOutputStream(logFile);
