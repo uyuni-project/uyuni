@@ -14,8 +14,9 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * JSON representation of a server id with a list of states to be applied.
@@ -31,7 +32,7 @@ public class JSONServerApplyStates {
     private List<String> states;
 
     /** The earliest execution date */
-    private Date earliest;
+    private Optional<LocalDateTime> earliest = Optional.empty();
 
     /**
      * @return the server id
@@ -57,7 +58,7 @@ public class JSONServerApplyStates {
     /**
      * @return the date of earliest execution
      */
-    public Date getEarliest() {
+    public Optional<LocalDateTime> getEarliest() {
         return earliest;
     }
 }
