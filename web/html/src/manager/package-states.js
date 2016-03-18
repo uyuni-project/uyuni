@@ -5,7 +5,7 @@ const Buttons = require("../components/buttons");
 const Network = require("../utils/network");
 const Fields = require("../components/fields");
 const Messages = require("../components/messages").Messages;
-const MessagesUtil = require("../components/messages").Utils;
+const MessagesUtils = require("../components/messages").Utils;
 
 const AsyncButton = Buttons.AsyncButton;
 const TextField = Fields.TextField;
@@ -152,7 +152,7 @@ class PackageStates extends React.Component {
             results: newSearchResults
         },
         packageStates: newPackageStates,
-        messages: MessagesUtil.msg('info', t('Package states have been saved.'))
+        messages: MessagesUtils.info(t('Package states have been saved.'))
       });
     }, jqXHR => {
       console.log("fail: " + jqXHR);
@@ -181,7 +181,7 @@ class PackageStates extends React.Component {
     return request.promise.then(data => {
           console.log("apply action queued:" + data);
           this.setState({
-              messages: MessagesUtil.msg('info', <span>{t("Applying the packages states has been ")}
+              messages: MessagesUtils.info(<span>{t("Applying the packages states has been ")}
                   <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
               </span>)
           });

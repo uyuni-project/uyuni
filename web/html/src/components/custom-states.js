@@ -113,14 +113,14 @@ class CustomStates extends React.Component {
             filter: this.state.search.filter,
             results: newSearchResults
         },
-        messages: MessagesUtils.msg('info', t('State assignments have been saved.'))
+        messages: MessagesUtils.info(t('State assignments have been saved.'))
       });
      },
      (jqXHR, textStatus, errorThrown) => {
       console.log("fail: " + textStatus);
 
       this.setState({
-        messages: MessagesUtils.msg('error', t('An error occurred on save.'))
+        messages: MessagesUtils.error(t('An error occurred on save.'))
       });
      });
     return request;
