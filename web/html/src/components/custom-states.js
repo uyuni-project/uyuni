@@ -296,7 +296,7 @@ class CustomStates extends React.Component {
             <PanelRow className="input-group">
                 <TextField id="search-field" value={this.state.filter} placeholder={t("Search in state catalog")} onChange={this.onSearchChange} onPressEnter={this.search}/>
                 <span className="input-group-btn">
-                    <AsyncButton id="search-btn" name={t("Search")} action={this.search} />
+                    <AsyncButton id="search-states" name={t("Search")} action={this.search} />
                     <button id="system-btn" className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
                     <button id="changes-btn" className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
                         {this.state.changed.size > 0 ? this.state.changed.size : t("No")} {t("Changes")}
