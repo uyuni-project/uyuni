@@ -3,27 +3,19 @@
 var React = require("react")
 
 var Panel = require("../components/panel").Panel
+var PanelButton = require("../components/panel").PanelButton
 var Messages = require("../components/messages").Messages
 var Network = require("../utils/network");
-
-var Button = React.createClass({
-
-    render: function() {
-        return (
-            <button type="button" className={'btn ' + this.props.className} onClick={this.props.handler}>
-                <i className={'fa ' + this.props.icon}/>{this.props.text}
-            </button>
-        )
-    }
-})
+var Button = require("../components/buttons").Button;
+var LinkButton = require("../components/buttons").LinkButton;
 
 var StateDetail = React.createClass({
 
     _titles: {
-        "add": t("Add state"),
-        "edit": t("Edit state"),
-        "delete": t("Delete state"),
-        "info": t("View state")
+        "add": t("Create State"),
+        "edit": t("Edit State"),
+        "delete": t("Delete State"),
+        "info": t("View State")
     },
 
     getInitialState: function() {
@@ -91,21 +83,29 @@ var StateDetail = React.createClass({
         var buttons = [];
         if (this.props.sls.action == "edit") {
             buttons.push(
-                <Button className="btn-success" icon="fa-plus" text={t("Save state")} handler={this.handleUpdate}/>,
-                <Button className="btn-danger" icon="fa-trash" text={t("Delete state")} handler={this.handleDelete}/>
+                <Button id="save-btn" className="btn-success" icon="fa-floppy-o" text={t("Update")} handler={this.handleUpdate}/>
             );
         } else {
             buttons.push(
-                <Button className="btn-success" icon="fa-plus" text={t("Create state")} handler={this.handleCreate}/>
-                );
+                <Button id="save-btn" className="btn-success" icon="fa-floppy-o" text={t("Create State")} handler={this.handleCreate}/>
+            );
         }
+        buttons.push(
+            <LinkButton id="cancel-btn" className="btn-default form-horizontal pull-right" text={t("Cancel")} href="/rhn/manager/state_catalog"/>
+        );
+
+        var deleteButton = null;
+        if (this.props.sls.action == "edit") {
+            deleteButton = <PanelButton id="delete-btn" text={t("Delete State")} icon="fa-trash" handler={this.handleDelete}/>;
+        }
+
         // TODO show readonly if action==delete or info
         return (
-        <Panel title={this._titles[this.props.sls.action]} icon="spacewalk-icon-virtual-host-manager">
+        <Panel title={this._titles[this.props.sls.action]} icon="spacewalk-icon-salt-add" button={deleteButton}>
             {errs}
             <form className="form-horizontal">
                 <div className="form-group">
-                    <label className="col-md-3 control-label">Name:</label>
+                    <label className="col-md-3 control-label">Name<span className="required-form-field">*</span>:</label>
                     <div className="col-md-6">
                         <input className="form-control" type="text" name="name" ref="stateName"
                             defaultValue={this.props.sls.name}/>
@@ -113,7 +113,7 @@ var StateDetail = React.createClass({
                 </div>
 
                 <div className="form-group">
-                    <label className="col-md-3 control-label">Content:</label>
+                    <label className="col-md-3 control-label">Content<span className="required-form-field">*</span>:</label>
                     <div className="col-md-6">
                         <textarea className="form-control" rows="20" name="content" ref="stateContent"
                             defaultValue={this.props.sls.content}/>
