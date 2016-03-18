@@ -50,7 +50,7 @@ class SSLSocket:
         for f in trusted_certs:
             self.add_trusted_cert(f)
         # SSL method to use
-        self._ssl_method = SSL.SSLv23_METHOD
+        self._ssl_method = SSL.TLSv1_METHOD
         # Flags to pass to the SSL layer
         self._ssl_verify_flags = SSL.VERIFY_PEER
 
