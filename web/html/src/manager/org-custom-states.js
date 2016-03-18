@@ -3,6 +3,7 @@
 const React = require("react");
 const CustomStatesModule = require("../components/custom-states")
 const CustomStates = CustomStatesModule.CustomStates;
+const MessagesUtils = require("../components/messages").Utils;
 const msg = CustomStatesModule.msg;
 const Network = require("../utils/network");
 
@@ -24,7 +25,7 @@ function applyRequest(component) {
     .promise.then(data => {
         console.log("apply action queued:" + data)
         component.setState({
-            messages: msg('info', <span>{t("Applying the custom states has been scheduled for each minion server in this organization")}</span>)
+            messages: MessagesUtils.msg('info', <span>{t("Applying the custom states has been scheduled for each minion server in this organization")}</span>)
         });
     });
 }
