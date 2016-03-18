@@ -5,6 +5,8 @@ const Messages = require("../components/messages").Messages;
 const DateTimePicker = require("../components/datetimepicker").DateTimePicker;
 const AsyncButton = require("../components/buttons").AsyncButton;
 const Network = require("../utils/network");
+const Functions = require("../utils/functions");
+const Formats = Functions.Formats;
 
 function msg(severityIn, textIn) {
     return {severity: severityIn, text: textIn};
@@ -14,9 +16,9 @@ var Highstate = React.createClass({
 
     getInitialState: function() {
         var state = {
-            "highstate": [],
-            "messages": [],
-            "earliest": new Date()
+            highstate: [],
+            messages: [],
+            earliest: new Date()
         };
         return state;
     },
@@ -38,7 +40,7 @@ var Highstate = React.createClass({
                 id: serverId,
                 type: "SERVER",
                 states: [],
-                earliest: this.state.earliest
+                earliest: Formats.LocalDateTime(this.state.earliest)
             }),
             "application/json"
         ).promise.then(data => {
