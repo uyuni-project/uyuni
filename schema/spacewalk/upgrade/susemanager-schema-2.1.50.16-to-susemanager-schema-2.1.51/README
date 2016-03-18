@@ -1,0 +1,2 @@
+-- Schema upgrade scripts.
+-- leave this directory empty, all upgrades from 2.1 to 3.0 are covered by 2.1.51 to 3.0 upgrade
