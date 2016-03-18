@@ -25,7 +25,7 @@ function applyRequest(component) {
     .promise.then(data => {
         console.log("apply action queued:" + data)
         component.setState({
-            messages: MessagesUtils.msg('info', <span>{t("Applying the custom states has been scheduled for each minion server in this organization")}</span>)
+            messages: MessagesUtils.info(t("Applying the custom states has been scheduled for each minion server in this organization"))
         });
     });
 }

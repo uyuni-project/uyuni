@@ -10,10 +10,6 @@ var Messages = React.createClass({
     "warning": "warning",
   },
 
-  msg : function() {
-    return [{severity: severityIn, text: textIn}];
-  },
-
   getInitialState: function() {
     return {};
   },
@@ -34,8 +30,17 @@ function msg(severityIn, textIn) {
 module.exports = {
     Messages : Messages,
     Utils: {
-        msg: function (severityIn, textIn) {
-            return [{severity: severityIn, text: textIn}];
+        info: function (textIn) {
+            return msg("info", textIn);
+        },
+        success: function (textIn) {
+            return msg("success", textIn);
+        },
+        warning: function (textIn) {
+            return msg("warning", textIn);
+        },
+        error: function (textIn) {
+            return msg("error", textIn);
         }
     }
 }

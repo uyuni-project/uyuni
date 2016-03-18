@@ -24,7 +24,7 @@ function applyRequest(component) {
         .promise.then(data => {
               console.log("apply action queued:" + data);
               component.setState({
-                  messages: MessagesUtils.msg('info', <span>{t("Applying the custom states has been ")}
+                  messages: MessagesUtils.info(<span>{t("Applying the custom states has been ")}
                       <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
                   </span>)
               });
