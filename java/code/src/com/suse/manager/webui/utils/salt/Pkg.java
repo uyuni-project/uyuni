@@ -22,36 +22,42 @@ public class Pkg {
 
     /**
      * @param refresh set true to perform a refresh before the installation
-     * @param pkgs a map of package names to versions
+     * @param pkgs map of packages (name -> version) to be installed
      * @return the LocalCall object
      */
     public static LocalCall<Map<String, Object>> install(boolean refresh,
             Map<String, String> pkgs) {
         LinkedHashMap<String, Object> kwargs = new LinkedHashMap<>();
         kwargs.put("refresh", refresh);
-
-        // Convert map into a list of maps with a single entry each as expected by Salt
-        List<Map<String, String>> pkgsList = pkgs.entrySet().stream()
-                .map(entry -> Collections.unmodifiableMap(Stream.of(entry).collect(
-                        Collectors.toMap(e -> e.getKey(), e -> e.getValue()))))
-                .collect(Collectors.toList());
-        kwargs.put("pkgs", pkgsList);
-
+        kwargs.put("pkgs", preparePkgs(pkgs));
         return new LocalCall<>("pkg.install", Optional.empty(), Optional.of(kwargs),
                 new TypeToken<Map<String, Object>>() { });
     }
 
+    /**
+     * @param pkgs map of packages (name -> version) to be removed
+     * @return the LocalCall object
+     */
     public static LocalCall<Map<String, Object>> remove(Map<String, String> pkgs) {
         LinkedHashMap<String, Object> kwargs = new LinkedHashMap<>();
+        kwargs.put("pkgs", preparePkgs(pkgs));
+        return new LocalCall<>("pkg.remove", Optional.empty(), Optional.of(kwargs),
+                new TypeToken<Map<String, Object>>() { });
+    }
 
-        // Convert map into a list of maps with a single entry each as expected by Salt
+    /**
+     * From a given map (package name -> version), create a list of maps with just one
+     * element each. This is how Salt requires us to send the 'pkgs' argument when multiple
+     * packages should be installed or reomved.
+     *
+     * @param pkgs map with packages (name -> version)
+     * @return list of maps with one element each
+     */
+    private static List<Map<String, String>> preparePkgs(Map<String, String> pkgs) {
         List<Map<String, String>> pkgsList = pkgs.entrySet().stream()
                 .map(entry -> Collections.unmodifiableMap(Stream.of(entry).collect(
                         Collectors.toMap(e -> e.getKey(), e -> e.getValue()))))
                 .collect(Collectors.toList());
-        kwargs.put("pkgs", pkgsList);
-
-        return new LocalCall<>("pkg.remove", Optional.empty(), Optional.of(kwargs),
-                new TypeToken<Map<String, Object>>() { });
+        return pkgsList;
     }
 }
