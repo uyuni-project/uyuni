@@ -38,10 +38,10 @@ function saveRequest(states) {
             saltStates: states
         }),
         "application/json"
-    ).promise;
+    );
 }
 
 React.render(
-  <CustomStates matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest} a/>,
+  <CustomStates matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest}/>,
   document.getElementById('custom-states')
 );

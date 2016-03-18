@@ -38,7 +38,7 @@ function saveRequest(states) {
              saltStates: states
          }),
         "application/json"
-    ).promise;
+    );
 }
 
 React.render(
