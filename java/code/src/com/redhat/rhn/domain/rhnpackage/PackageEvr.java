@@ -174,6 +174,11 @@ public class PackageEvr implements Comparable {
         return result;
     }
 
+    /**
+     * Return a string representation in the format "[epoch:]version-release".
+     *
+     * @return string representation of epoch, version and release
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
