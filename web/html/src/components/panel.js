@@ -12,9 +12,11 @@ var PanelButton = React.createClass({
   },
 
   render: function() {
+      var href = this.props.action ? this.props.action : "#";
+
       return (
           <div className="spacewalk-toolbar">
-            <a href={this.props.action}>
+            <a id={this.props.id} href={this.props.action} onClick={this.props.handler}>
               <i className={'fa ' + this.props.icon}></i>
               {t(this.props.text)}
             </a>
