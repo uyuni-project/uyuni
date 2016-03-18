@@ -1,0 +1,19 @@
+.spacewalk-toolbar-h1
+  .spacewalk-toolbar
+    a(href="/rhn/systems/details/DeleteConfirm.do?sid=#{server.id}")
+        i.fa.fa-trash-o(title='Delete System')
+        | #{l.t("Delete System")}
+  h1
+    if server.bootstrap
+        i.fa.spacewalk-icon-bare-metal
+    else if server.virtualGuest
+        i.fa.spacewalk-icon-virtual-guest
+    else if server.virtualHost
+        i.fa.spacewalk-icon-virtual-host
+    else
+        i.fa.fa-desktop
+    | #{" " + server.name + " "}
+    a(href="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#s3-sm-system-details", target="_blank")
+      i.fa.fa-question-circle.spacewalk-help-link
+
+!{h.renderNavigationMenu(request, "/WEB-INF/nav/system_detail.xml")}
