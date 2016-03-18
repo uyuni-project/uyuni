@@ -2311,9 +2311,9 @@
 			<product_id name="sle-haegeo" version="11.4">1286</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="Geo Clustering for SUSE Linux Enterprise High Availability Extension 11 SP4 x86_64" family="AiO" is_signed="Y" label="sle11-hae-geo-sp4-pool-x86_64-sap-sp4" name="SLE11-HAE-GEO-SP4-Pool for x86_64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-HAE-GEO-SP4-Pool/sle-11-x86_64/" summary="Geo Clustering for SUSE Linux Enterprise High Availability Extension 11 SP4 x86_64" update_tag="sleshagsp4">
+	<channel arch="x86_64" description="Geo Clustering for SUSE Linux Enterprise High Availability Extension 11 SP4 x86_64" family="SLE-HAE-GEO" is_signed="Y" label="sle11-hae-geo-sp4-pool-x86_64-sap-sp4" name="SLE11-HAE-GEO-SP4-Pool for x86_64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-x86_64" product_name="sle-haegeo" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-HAE-GEO-SP4-Pool/sle-11-x86_64/" summary="Geo Clustering for SUSE Linux Enterprise High Availability Extension 11 SP4 x86_64" update_tag="sleshagsp4">
 		<products>
-			<product_id name="SUSE_SLES_SAP" version="11.4">1329</product_id>
+			<product_id name="sle-haegeo" version="11.4">1286</product_id>
 		</products>
 	</channel>
 	<channel arch="s390x" description="Geo Clustering for SUSE Linux Enterprise High Availability Extension 11 SP4 s390x" family="SLE-HAE-GEO" is_signed="Y" label="sle11-hae-geo-sp4-updates-s390x" name="SLE11-HAE-GEO-SP4-Updates for s390x" optional="N" parent="sles11-sp4-pool-s390x" product_name="sle-haegeo" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-HAE-GEO-SP4-Updates/sle-11-s390x/" summary="Geo Clustering for SUSE Linux Enterprise High Availability Extension 11 SP4 s390x" update_tag="sleshagsp4">
@@ -2326,9 +2326,9 @@
 			<product_id name="sle-haegeo" version="11.4">1286</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="Geo Clustering for SUSE Linux Enterprise High Availability Extension 11 SP4 x86_64" family="AiO" is_signed="Y" label="sle11-hae-geo-sp4-updates-x86_64-sap-sp4" name="SLE11-HAE-GEO-SP4-Updates for x86_64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-HAE-GEO-SP4-Updates/sle-11-x86_64/" summary="Geo Clustering for SUSE Linux Enterprise High Availability Extension 11 SP4 x86_64" update_tag="sleshagsp4">
+	<channel arch="x86_64" description="Geo Clustering for SUSE Linux Enterprise High Availability Extension 11 SP4 x86_64" family="SLE-HAE-GEO" is_signed="Y" label="sle11-hae-geo-sp4-updates-x86_64-sap-sp4" name="SLE11-HAE-GEO-SP4-Updates for x86_64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-x86_64" product_name="sle-haegeo" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-HAE-GEO-SP4-Updates/sle-11-x86_64/" summary="Geo Clustering for SUSE Linux Enterprise High Availability Extension 11 SP4 x86_64" update_tag="sleshagsp4">
 		<products>
-			<product_id name="SUSE_SLES_SAP" version="11.4">1329</product_id>
+			<product_id name="sle-haegeo" version="11.4">1286</product_id>
 		</products>
 	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise High Availability Extension 11 SP1 i586" family="SLE-HAE-X86" is_signed="Y" label="sle11-hae-sp1-pool-i586" name="SLE11-HAE-SP1-Pool for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-hae" product_version="11.1" source_url="https://updates.suse.com/repo/$RCE/SLE11-HAE-SP1-Pool/sle-11-i586/" summary="SUSE Linux Enterprise High Availability Extension 11 SP1 i586" update_tag="sleshasp1">
