@@ -17,6 +17,8 @@ package com.suse.manager.webui.services;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
+import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -124,6 +126,12 @@ public enum SaltServerActionService {
         if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
             return errataAction(minions, (ErrataAction) actionIn);
         }
+        else if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
+            return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
+        }
+        else if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
+            return packagesRemoveAction(minions, (PackageRemoveAction) actionIn);
+        }
         else if (actionIn.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
             return rebootAction(minions);
         }
@@ -230,6 +238,24 @@ public enum SaltServerActionService {
                 ,
                 Map.Entry::getValue
         ));
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> packagesUpdateAction(
+            List<MinionServer> minions, PackageUpdateAction action) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
+                d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
+        ret.put(com.suse.manager.webui.utils.salt.Pkg.install(true, pkgs), minions);
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> packagesRemoveAction(
+            List<MinionServer> minions, PackageRemoveAction action) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
+                d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
+        ret.put(com.suse.manager.webui.utils.salt.Pkg.remove(pkgs), minions);
+        return ret;
     }
 
     private Map<LocalCall<?>, List<MinionServer>> rebootAction(List<MinionServer> minions) {

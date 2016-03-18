@@ -3131,10 +3131,13 @@ public class SystemHandler extends BaseHandler {
 
             // Would be nice to do this check at the Manager layer but upset many tests,
             // some of which were not cooperative when being fixed. Placing here for now.
-            if (!SystemManager.hasEntitlement(server.getId(),
-                    EntitlementManager.MANAGEMENT)) {
+            if (!(SystemManager.hasEntitlement(server.getId(),
+                    EntitlementManager.MANAGEMENT) ||
+                    SystemManager.hasEntitlement(server.getId(),
+                    EntitlementManager.SALT))) {
                 throw new MissingEntitlementException(
-                        EntitlementManager.MANAGEMENT.getHumanReadableLabel());
+                        EntitlementManager.MANAGEMENT.getHumanReadableLabel() + " or " +
+                        EntitlementManager.SALT.getHumanReadableLabel());
             }
 
             Action action = null;
