@@ -12,6 +12,6 @@ Feature: Verify the minion registration
   Scenario: Check installed packages are visible
     Given I am on the Systems overview page of this client
     When I follow "Software"
-    And I follow "List"
+    And I follow "List / Remove"
     Then I should see a "aaa_base" text
     And I should see a "aaa_base-extras" text
