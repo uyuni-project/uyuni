@@ -20,6 +20,18 @@ Given /^I am on the manage software channels page$/ do
   step %[I follow "Manage Software Channels" in the left menu]
 end
 
+Given /^metadata generation finished for "([^"]*)"$/ do |channel|
+  for c in 0..60
+      begin
+          sshcmd('ls /var/cache/rhn/repodata/#{channel}/updateinfo.xml.gz')
+      rescue
+          sleep 2
+      else
+          break
+      end
+  end
+end
+
 When /^I choose "([^"]*)" for "([^"]*)"$/ do |arg1, arg2|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg2}')]]") do
     find(:xpath, './/select').select(arg1)
