@@ -1,5 +1,6 @@
 # Copyright 2016 (c) SUSE LLC
 # Licensed under the terms of the MIT license.
+require 'timeout'
 
 When(/^I click on preview$/) do
   find('button#preview').click
@@ -30,5 +31,15 @@ When(/^I verify the results$/) do
 end
 
 When(/^"(.*)" exists on the filesystem$/) do |file|
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if File.exists?(file)
+        sleep(1)
+      end
+    end
+  rescue Timeout::Error
+    puts "timeout waiting for the file to appear"
+  end
   fail if not File.exists?(file)
 end
