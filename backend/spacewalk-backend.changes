@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Mar 21 17:48:47 CET 2016 - mc@suse.de
+
+- version 2.5.24.2-1
+- Fix rhnreg_ks doesn't work with activation key
+- update checksumtype after setting the SSL values (bsc#970824)
+
+-------------------------------------------------------------------
 Wed Mar 09 10:47:12 CET 2016 - mc@suse.de
 
 - version 2.5.24.1-1
