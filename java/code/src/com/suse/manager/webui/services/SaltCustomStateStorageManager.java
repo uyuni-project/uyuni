@@ -41,11 +41,24 @@ import static com.suse.manager.webui.utils.SaltFileUtils.stripExtension;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
 /**
- * Manages the Salt .sls files on disk.
+ * Manages the custom Salt states files on disk.
  */
 public class SaltCustomStateStorageManager {
 
     private static final Logger LOG = Logger.getLogger(SaltCustomStateStorageManager.class);
+
+    private String baseDirPath;
+
+    private String encoding;
+
+    /**
+     * No arg constructor. Will initialize {@link #baseDirPath} with
+     * '/srv/susemanager/salt' and {@link #encoding} with US-ASCII.
+     */
+    public SaltCustomStateStorageManager() {
+        this.baseDirPath = RepoFileUtils.GENERATED_SLS_ROOT;
+        this.encoding = "US-ASCII"; // TODO clarify default encoding
+    }
 
     /**
      * Get the base directory where .sls files are stored.
@@ -53,7 +66,23 @@ public class SaltCustomStateStorageManager {
      * @return the path of the base directory
      */
     public String getBaseDirPath() {
-        return RepoFileUtils.GENERATED_SLS_ROOT;
+        return baseDirPath;
+    }
+
+    /**
+     * Set the base directory where .sls files are stored.
+     * Does not include the organization directory.
+     * @param baseDirPathIn the path of the base directory
+     */
+    public void setBaseDirPath(String baseDirPathIn) {
+        this.baseDirPath = baseDirPathIn;
+    }
+
+    /**
+     * @return the encoding used to write .sls files.
+     */
+    public String getEncoding() {
+        return encoding;
     }
 
     /**
@@ -75,14 +104,18 @@ public class SaltCustomStateStorageManager {
             throws IOException {
         // TODO synchronize at file level not on the class instance
 
+        boolean exists = exists(orgId, name);
         if (StringUtils.isNotBlank(oldName)) {
             oldName = stripExtension(oldName);
-            if (!oldName.equals(name) && exists(orgId, name)) {
-                throw new SaltStateExistsException();
+            if (!oldName.equals(name) && exists) {
+                throw new SaltStateExistsException("Cannot rename '" + oldName +
+                        "' to '" + name + "'. A custom state '" + name +
+                        "' already exists");
             }
         }
-        else if (exists(orgId, name)) {
-            throw new SaltStateExistsException();
+        else if (exists) {
+            throw new SaltStateExistsException("Cannot create. A custom state '" +
+                    name + "' already exists");
         }
 
         Path orgPath = Paths.get(getBaseDirPath(), getOrgNamespace(orgId));
@@ -103,32 +136,40 @@ public class SaltCustomStateStorageManager {
             }
         }
 
-        boolean move = false;
-        if (StringUtils.isNotBlank(oldName) && !oldName.equals(name)) {
-            Files.move(orgPath.resolve(defaultExtension(oldName)), stateFile.toPath());
-            move = true;
-        }
-
-        // TODO clarify encoding
-        FileUtils.writeStringToFile(stateFile, content, "US-ASCII");
-
         String stateName = stripExtension(name);
-        if (!move) {
-            CustomState customState = new CustomState();
-            customState.setOrg(OrgFactory.lookupById(orgId));
-            customState.setStateName(stateName);
-            StateFactory.save(customState);
-        }
-        else {
+
+        if (isRename(oldName, name)) {
+            Files.move(orgPath.resolve(defaultExtension(oldName)), stateFile.toPath());
+
             final String oldNameToGet = oldName;
             Optional<CustomState> customState = StateFactory.
                     getCustomStateByName(orgId, oldNameToGet);
             CustomState state = customState.orElseThrow(() ->
                     new IllegalArgumentException("CustomState name=" + oldNameToGet +
-                            " not found"));
+                            " orgId=" + orgId + " not found in the database"));
             state.setStateName(stateName);
             StateFactory.save(state);
         }
+        else if (!exists) {
+            // create a new custom state in the db
+            CustomState customState = new CustomState();
+            customState.setOrg(OrgFactory.lookupById(orgId));
+            customState.setStateName(stateName);
+            StateFactory.save(customState);
+        }
+        // else no db changes, just update the state content
+
+        FileUtils.writeStringToFile(stateFile, content, encoding);
+
+    }
+
+    /**
+     * @param oldName the old state name
+     * @param newName the new state name
+     * @return true if the oldName is not blank and they're not equal
+     */
+    public boolean isRename(String oldName, String newName) {
+        return StringUtils.isNotBlank(oldName) && !oldName.equals(newName);
     }
 
     private void assertStateInOrgDir(File orgDir, File stateFile) throws IOException {
@@ -146,6 +187,7 @@ public class SaltCustomStateStorageManager {
      * @throws IOException in case of an IO error
      */
     public void deleteState(long orgId, String name) throws IOException {
+        StateFactory.removeCustomState(orgId, name);
         File orgDir = new File(getBaseDirPath(), getOrgNamespace(orgId));
         File stateFile = new File(orgDir, defaultExtension(name));
         assertStateInOrgDir(orgDir, stateFile);
@@ -167,7 +209,7 @@ public class SaltCustomStateStorageManager {
         if (!slsFile.exists()) {
             return Optional.empty();
         }
-        return Optional.of(FileUtils.readFileToString(slsFile, "US-ASCII"));
+        return Optional.of(FileUtils.readFileToString(slsFile, encoding));
 
     }
 
@@ -194,9 +236,7 @@ public class SaltCustomStateStorageManager {
      * @return true if the file exists, false otherwise
      */
     public boolean exists(long orgId, String name) {
-        Path slsPath = Paths.get(getBaseDirPath(), getOrgNamespace(orgId),
-                defaultExtension(name));
-        return slsPath.toFile().exists();
+        return StateFactory.getCustomStateByName(orgId, name).isPresent();
     }
 
     /**
