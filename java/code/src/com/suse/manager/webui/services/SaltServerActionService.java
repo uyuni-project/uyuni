@@ -33,7 +33,6 @@ import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.exception.SaltException;
 
 import org.apache.log4j.Logger;
@@ -49,7 +48,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -77,32 +75,47 @@ public enum SaltServerActionService {
                 .atZone(ZoneId.systemDefault());
         Map<String, Long> metadata = new HashMap<>();
         metadata.put("suma-action-id", actionIn.getId());
-        Map<String, MinionServer> minionsById = minions
+        List<String> minionIds = minions
                 .stream()
-                .collect(Collectors.toMap(MinionServer::getMinionId, Function.identity()));
-        Target<?> target = new MinionList(minionsById.keySet()
-                .stream().collect(Collectors.toList()));
+                .map(MinionServer::getMinionId)
+                .collect(Collectors.toList());
+
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Scheduling action for: " + target.getTarget());
+            LOG.debug("Scheduling action for: " +
+                    minionIds.stream().collect(Collectors.joining(", ")));
         }
 
         try {
             ZonedDateTime now = ZonedDateTime.now();
             if (earliestAction.isBefore(now) || earliestAction.equals(now)) {
                 LOG.debug("Action will be executed directly using callAsync()");
-                List<String> results = SaltAPIService.INSTANCE
-                        .callAsync(call, target, metadata)
-                        .getMinions();
-                return minions.stream()
-                        .collect(Collectors.partitioningBy(minion ->
-                                results.contains(minion.getMinionId())
-                        ));
+                final List<String> allPresent = SaltAPIService.INSTANCE.present();
+                final List<String> present = minionIds.stream()
+                        .filter(allPresent::contains)
+                        .collect(Collectors.toList());
+
+                if (present.isEmpty()) {
+                    Map<Boolean, List<MinionServer>> result = new HashMap<>();
+                    result.put(true, Collections.emptyList());
+                    result.put(false, minions);
+                    return result;
+                }
+                else {
+                    List<String> results = SaltAPIService.INSTANCE
+                            .callAsync(call, new MinionList(present), metadata)
+                            .getMinions();
+                    return minions.stream()
+                            .collect(Collectors.partitioningBy(minion ->
+                                    results.contains(minion.getMinionId()) &&
+                                            present.contains(minion.getMinionId())
+                            ));
+                }
             }
             else {
                 LOG.debug("Action will be scheduled for later using schedule()");
                 Map<String, Schedule.Result> results = SaltAPIService.INSTANCE
-                        .schedule("scheduled-action-" + actionIn.getId(), call, target,
+                        .schedule("scheduled-action-" + actionIn.getId(), call, new MinionList(minionIds),
                                 earliestAction, metadata);
                 return minions.stream()
                         .collect(Collectors.partitioningBy(minion ->
