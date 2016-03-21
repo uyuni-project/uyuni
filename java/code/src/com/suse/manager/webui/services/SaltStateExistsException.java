@@ -18,4 +18,18 @@ package com.suse.manager.webui.services;
  * Throws if the Salt .sls file already exists.
  */
 public class SaltStateExistsException extends RuntimeException {
+
+    /**
+     * No arg constructor.
+     */
+    public SaltStateExistsException() {
+    }
+
+    /**
+     * Create the exception with the given message
+     * @param message the message
+     */
+    public SaltStateExistsException(String message) {
+        super(message);
+    }
 }

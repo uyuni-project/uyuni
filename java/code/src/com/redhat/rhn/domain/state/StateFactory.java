@@ -25,6 +25,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,6 +38,42 @@ public class StateFactory extends HibernateFactory {
 
     private static Logger log = Logger.getLogger(StateFactory.class);
     private static StateFactory singleton = new StateFactory();
+
+    /**
+     * Holds the result of {@link StateFactory#latestStateRevisionsByCustomState}.
+     */
+    public static class CustomStateRevisionsUsage {
+        private List<ServerStateRevision> serverStateRevisions = new LinkedList<>();
+        private List<ServerGroupStateRevision> serverGroupStateRevisions
+                = new LinkedList<>();
+        private List<OrgStateRevision> orgStateRevisions = new LinkedList<>();
+
+        /**
+         * No arg constructor.
+         */
+        public CustomStateRevisionsUsage() { }
+
+        /**
+         * @return the server state revisions
+         */
+        public List<ServerStateRevision> getServerStateRevisions() {
+            return serverStateRevisions;
+        }
+
+        /**
+         * @return the server group state revisions
+         */
+        public List<ServerGroupStateRevision> getServerGroupStateRevisions() {
+            return serverGroupStateRevisions;
+        }
+
+        /**
+         * @return the org state revisions
+         */
+        public List<OrgStateRevision> getOrgStateRevisions() {
+            return orgStateRevisions;
+        }
+    }
 
     private StateFactory() {
     }
@@ -213,6 +251,43 @@ public class StateFactory extends HibernateFactory {
         customState.ifPresent(state ->
                 state.setDeleted(true)
         );
+    }
+
+    /**
+     * Find latest state revisions where a custom state is used.
+     * @param orgIdIn the org of the custom state
+     * @param stateNameIn the name of the custom state
+     * @return a {@link CustomStateRevisionsUsage} bean holding the latest
+     * server/group/org revisions where the given custom state is used
+     */
+    public static CustomStateRevisionsUsage latestStateRevisionsByCustomState(
+            long orgIdIn, String stateNameIn) {
+        List<Object[]> idList = getSession().getNamedQuery("StateRevision.findStateUsage")
+                .setLong("orgId", orgIdIn)
+                .setString("stateName", stateNameIn)
+                .list();
+
+        CustomStateRevisionsUsage usage = new CustomStateRevisionsUsage();
+        for (Object[] ids : idList) {
+            Long stateId = (Long)ids[0];
+
+            if (ids[1] != null) {
+                ServerStateRevision rev = (ServerStateRevision)getSession()
+                        .get(ServerStateRevision.class, stateId);
+                usage.getServerStateRevisions().add(rev);
+            }
+            else if (ids[2] != null) {
+                ServerGroupStateRevision rev = (ServerGroupStateRevision)getSession()
+                        .get(ServerGroupStateRevision.class, stateId);
+                usage.getServerGroupStateRevisions().add(rev);
+            }
+            else if (ids[3] != null) {
+                OrgStateRevision rev = (OrgStateRevision)getSession()
+                        .get(OrgStateRevision.class, stateId);
+                usage.getOrgStateRevisions().add(rev);
+            }
+        }
+        return usage;
     }
 
 }

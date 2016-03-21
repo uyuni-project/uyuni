@@ -612,6 +612,13 @@ public enum SaltAPIService implements SaltService {
                                 String oldName, String oldChecksum) {
         try {
             customSaltStorageManager.storeState(orgId, name, content, oldName, oldChecksum);
+            if (customSaltStorageManager.isRename(oldName, name)) {
+                // for some reason the following native query does not trigger a flush
+                // and the new name is not yet in the db
+                StateFactory.getSession().flush();
+
+                SaltStateGeneratorService.INSTANCE.regenerateCustomStates(orgId, name);
+            }
         }
         catch (IOException e) {
             throw new RuntimeException(e);
@@ -623,8 +630,7 @@ public enum SaltAPIService implements SaltService {
      */
     public void deleteCustomState(long orgId, String name) {
         try {
-            StateFactory.removeCustomState(orgId, name);
-            SaltStateGeneratorService.INSTANCE.removeCustomState(orgId, name);
+            SaltStateGeneratorService.INSTANCE.regenerateCustomStates(orgId, name);
             customSaltStorageManager.deleteState(orgId, name);
         }
         catch (IOException e) {
