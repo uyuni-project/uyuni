@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Mar 21 16:33:55 CET 2016 - mc@suse.de
+
+- version 2.5.2.3-1
+- convert squid config parameter range_offset_limit for new squid
+  version on update
+
+-------------------------------------------------------------------
 Wed Mar 09 10:45:15 CET 2016 - mc@suse.de
 
 - version 2.5.2.2-1
