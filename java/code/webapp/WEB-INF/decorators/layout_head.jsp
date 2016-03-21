@@ -57,7 +57,3 @@
     <script src="/rhn/dwr/interface/DWRItemSelector.js"></script>
     <script src="/javascript/jquery.timepicker.js"></script>
     <script src="/javascript/bootstrap-datepicker.js"></script>
-
-    <rhn:require acl="user_authenticated()">
-      <script src="/javascript/susemanager-events.js"></script>
-    </rhn:require>
