@@ -1,4 +1,47 @@
 -------------------------------------------------------------------
+Mon Mar 21 17:43:40 CET 2016 - mc@suse.de
+
+- version 2.5.59.3-1
+- BugFix: add missing url mapping (bsc#961565)
+- Do not load susemanager-events.js (bsc#969303)
+- fix unique index error on update custom state , refactor and add unit test
+- regenerate custom state assignments on rename and delete (bsc#971206)
+- query to find state revisions where a custom state is used (bsc#971206)
+- check if custom state is being renamed (bsc#971206)
+- fix scheduling an action chain (bsc#971495)
+- replaced if with optional (bnc#971466)
+- do not dump Salt err msg to Yaml (bnc#971466)
+- fix icon in groups and systems -> salt page
+- Support package removals in the same way as installs/updates
+- Allow package actions to be scheduled on minions via the API
+- Fix PackageEvr.toString() to write correct format
+- Refine the system details navigation tabs
+- Add support for package updates on Salt minions (bsc#971364)
+- Use LocalDateTime for apply state and use user timezone setting
+- update tests for HAE-GEO on SLES 4 SAP (bsc#970425)
+- Disable changing Managers for Vendor Channels (bsc#957171)
+- BugFix: enlarged field too small in form-control creating org (bsc#959595)
+- BugFix: remove hover behavior on button inside href (bsc#967892)
+- Use the 64 bit arch names
+- Fix case statements to correctly check for NULL (bsc#971128)
+- BugFix: header organization name behavior like text instead of link
+  (bsc#967882)
+- minion onboarding: generate pillar after generating repo files
+- refresh pillar before applying states at onboarding time
+- regenerate package states on migration (bsc#970322)
+- Point Documentation link in the header to SUSE webpage (bsc#967875)
+- capitalize link (bsc#970016)
+- Bring back the button from SUSE Manager 2.1 (bsc#969578)
+- Fix user locale prefs cannot be saved (bsc#969578)
+- Create new server state revision on migration (bnc#970322)
+- Verify that entitlements are *not* removed
+- Do not remove entitlements when a server is migrated (bsc#958707)
+- show proxy tab only if the system is a proxy (bsc#969118)
+- DownloadController: Test that the right headers are set
+- return an object so that Spark does not continue the filter chain
+  (bnc#963148)
+
+-------------------------------------------------------------------
 Wed Mar 09 12:37:25 CET 2016 - mc@suse.de
 
 - version 2.5.59.2-1
