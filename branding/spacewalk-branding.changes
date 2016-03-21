@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Mon Mar 21 17:47:14 CET 2016 - mc@suse.de
+
+- version 2.5.2.7-1
+- capitalize link (bsc#970016)
+- replace salt logo with generic one
+- Fix: balance margins of top bar menu links
+- BugFix: remove hover behavior on button inside href (bsc#967892)
+- Fix: fix behavior in 'about' page for top bar
+- BugFix: fix behavior in login page for top option bar
+- BugFix: change behavior for more legibility in header-utility-tool-bar on
+  hover (bsc#967893)
+- Fix: redundant rule label
+- BugFix: change color of active link menu in sidebar to have more visibility
+  (bsc#967883)
+- BugFix: header organization name behavior like text instead of link
+  (bsc#967882)
+- BugFix: reduce question mark icon in page titles (bsc#967890)
+
+-------------------------------------------------------------------
 Wed Mar 09 11:30:34 CET 2016 - mc@suse.de
 
 - version 2.5.2.6-1
