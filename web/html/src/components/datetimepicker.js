@@ -119,9 +119,7 @@ class TimePicker extends React.Component {
         if (props.value.getTime() !== this.props.value.getTime()) {
             this._input.timepicker('setTime', props.value);
         }
-        if (props.open !== this.props.open) {
-            this.setVisible(props.open);
-        }
+        this.setVisible(props.open);
     }
 
     render() {
