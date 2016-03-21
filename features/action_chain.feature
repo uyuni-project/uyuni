@@ -121,6 +121,6 @@ Feature: Test action chaining
     And I follow "new action chain"
     And I should see a "1. Run a remote command on 1 system" text
     Then I click on "Save and Schedule"
-    And I see a "Action Chain new action chain has been scheduled for execution." text
+    And I should see a "Action Chain new action chain has been scheduled for execution." text
     When I run rhn_check on this client
     Then "/root/webui-actionchain-test" exists on the filesystem
