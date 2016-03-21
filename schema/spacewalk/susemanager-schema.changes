@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Mon Mar 21 17:40:17 CET 2016 - mc@suse.de
+
+- version 3.0.11-1
+- add missing database commit
+- adding missing Oracle upgrade
+- delete sync probe task
+- sequnce rhn_org_entitlement_type_seq should be dropped
+- drop unused tables/sequences/synonyms/etc.
+- Rename DB migration file
+- Add support for package removals on minions (DB changes)
+- Enable 'ftr_package_updates' on minions
+- support schema upgrade from schema 2.1.50.16 to 3.0.X
+- fix schema upgrade from Beta2 to RC1 (bsc#971543)
+
+-------------------------------------------------------------------
 Wed Mar 09 11:33:06 CET 2016 - mc@suse.de
 
 - version 3.0.10-1
