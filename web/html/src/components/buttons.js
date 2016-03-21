@@ -5,7 +5,7 @@ var React = require("react");
 class AsyncButton extends React.Component {
 
   constructor(props) {
-    super();
+    super(props);
     ["trigger"].forEach(method => this[method] = this[method].bind(this));
     this.state = {
         value: "initial"
@@ -37,8 +37,6 @@ class AsyncButton extends React.Component {
     );
   }
 
-
-
   render() {
     const style = this.state.value == "failure" ? "btn btn-danger" : "btn btn-default";
     const margin = this.props.name != undefined ? "" : " no-margin"
@@ -56,7 +54,44 @@ class AsyncButton extends React.Component {
 
 }
 
+class Button extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <button id={this.props.id} type="button" className={'btn ' + this.props.className} onClick={this.props.handler}>
+                <i className={'fa ' + this.props.icon}/>{this.props.text}
+            </button>
+        )
+    }
+}
+
+class LinkButton extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        var icon = this.props.icon ?
+            <i className={'fa ' + this.props.icon}/> :
+            null;
+        return (
+            <a id={this.props.id} className={'btn ' + this.props.className} href={this.props.href}>
+                {icon}
+                {this.props.text}
+            </a>
+        )
+    }
+
+}
+
 
 module.exports = {
+    Button : Button,
+    LinkButton : LinkButton,
     AsyncButton : AsyncButton
 }

@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 
 import com.redhat.rhn.domain.server.MinionServer;
@@ -137,8 +138,8 @@ public class MinionController {
     public static ModelAndView packageStates(Request request, Response response) {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
-        data.put("serverId", serverId);
-        data.put("serverName", ServerFactory.lookupById(new Long(serverId)).getName());
+        Server server = ServerFactory.lookupById(new Long(serverId));
+        data.put("server", server);
         return new ModelAndView(data, "minion/packages.jade");
     }
 
@@ -201,8 +202,8 @@ public class MinionController {
     public static ModelAndView minionCustomStates(Request request, Response response) {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
-        data.put("serverId", serverId);
-        data.put("serverName", ServerFactory.lookupById(new Long(serverId)).getName());
+        Server server = ServerFactory.lookupById(new Long(serverId));
+        data.put("server", server);
         return new ModelAndView(data, "minion/custom.jade");
     }
 
@@ -216,8 +217,8 @@ public class MinionController {
     public static ModelAndView highstate(Request request, Response response) {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
-        data.put("serverId", serverId);
-        data.put("serverName", ServerFactory.lookupById(new Long(serverId)).getName());
+        Server server = ServerFactory.lookupById(new Long(serverId));
+        data.put("server", server);
         return new ModelAndView(data, "minion/highstate.jade");
     }
 }
