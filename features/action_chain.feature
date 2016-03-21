@@ -101,3 +101,26 @@ Feature: Test action chaining
      And I follow "new action chain"
      And I follow "delete action chain" in the content area
      Then I click on "Delete"
+
+  Scenario: I add a remote command to new action chain
+    Given I am on the Systems overview page of this client
+    When I follow "Remote Command"
+    And I enter as remote command this script in
+      """
+      #!/bin/bash
+      touch /root/webui-actionchain-test
+      """
+    And I check radio button "schedule-by-action-chain"
+    And I click on "Schedule"
+    Then I should see a "Action has been successfully added to the Action Chain" text
+
+  Scenario: I execute the action chain from the web ui
+    Given I am on the Systems overview page of this client
+    When I follow "Schedule"
+    And I follow "Action Chains"
+    And I follow "new action chain"
+    And I should see a "1. Run a remote command on 1 system" text
+    Then I click on "Save and Schedule"
+    And I see a "Action Chain new action chain has been scheduled for execution." text
+    When I run rhn_check on this client
+    Then "/root/webui-actionchain-test" exists on the filesystem
