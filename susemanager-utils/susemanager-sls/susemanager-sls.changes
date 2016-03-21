@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Mon Mar 21 17:38:33 CET 2016 - mc@suse.de
+
+- version 0.1.10-1
+- remove unused ext_pillar
+- ignore missing .sls to include in certs/init.sls
+- ignore packages_{machine_id}.sls if it's missing
+- ignore missing pillar files at minion level
+- ignore missing sls or pillars in custom_XXX/init.sls
+  (bnc#970461, bnc#970316)
+- Include minion custom_<machine_id>.sls only if it exists (#bnc970461)
+- Ignore missing org custom state (#bnc970461)
+- refactor in python (#bnc970316) (#bnc970461)
+
+-------------------------------------------------------------------
 Wed Mar 09 11:29:45 CET 2016 - mc@suse.de
 
 - version 0.1.9-1
