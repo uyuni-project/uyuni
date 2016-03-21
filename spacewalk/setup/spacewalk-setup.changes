@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Mar 21 16:32:21 CET 2016 - mc@suse.de
+
+- version 2.5.3.5-1
+- Remove SHA256 explicit master configuration as it is shipped
+  now as default with our salt package
+- Use SHA256 hash type for the Salt Master instead of default MD5.
+
+-------------------------------------------------------------------
 Wed Mar 09 11:31:48 CET 2016 - mc@suse.de
 
 - version 2.5.3.4-1
