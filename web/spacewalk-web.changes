@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Mon Mar 21 17:42:16 CET 2016 - mc@suse.de
+
+- version 2.5.7.6-1
+- fix timepicker show on addon click
+- add Messages.Util.info/warning/error methods
+- change icon of state catalog page
+- save/apply messages in pkg states UI, move msg() to Messages.Utils.msg
+- enter triggers search in package state UI
+- Adjust datetimepicker and update highstate ui to use it
+- add LocalDateTime formating helper
+- Changed state search button to unique id
+- unneeded .promise in *-custom-states.js saveRequest() causes undefined error
+- Make request functions cancelable, adjust client code
+- (bnc#970531) Fix Network usage in custom state component
+- (bnc#970531) Revert Network.js changes and fix custom state pages
+
+-------------------------------------------------------------------
 Wed Mar 09 11:27:51 CET 2016 - mc@suse.de
 
 - version 2.5.7.5-1
