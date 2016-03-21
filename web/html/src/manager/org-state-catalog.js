@@ -49,7 +49,7 @@ var StateCatalog = React.createClass({
             msg = <Messages items={this.props.flashMessages}/>;
         }
         return (
-            <Panel title="States Catalog" icon="spacewalk-icon-virtual-host-manager" button={button}>
+            <Panel title="States Catalog" icon="spacewalk-icon-salt-add" button={button}>
                 {msg}
                 <div>
                     <Table headers={[t("State")]}

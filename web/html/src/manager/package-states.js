@@ -3,8 +3,12 @@
 const React = require("react");
 const Buttons = require("../components/buttons");
 const Network = require("../utils/network");
+const Fields = require("../components/fields");
+const Messages = require("../components/messages").Messages;
+const MessagesUtils = require("../components/messages").Utils;
 
 const AsyncButton = Buttons.AsyncButton;
+const TextField = Fields.TextField;
 
 const UNMANAGED = {};
 const INSTALLED = {value: 0};
@@ -56,7 +60,8 @@ class PackageStates extends React.Component {
 
   constructor() {
     super();
-    ["init", "tableBody", "handleStateChange", "onSearchChange", "search", "save", "setView", "addChanged"]
+    ["init", "tableBody", "handleStateChange", "onSearchChange", "search", "save", "setView", "addChanged",
+    "triggerSearch", "applyPackageState"]
     .forEach(method => this[method] = this[method].bind(this));
     this.state = {
         filter: "",
@@ -82,6 +87,10 @@ class PackageStates extends React.Component {
         })
       });
     });
+  }
+
+  triggerSearch() {
+    this.searchButton.trigger()
   }
 
   search() {
@@ -142,7 +151,8 @@ class PackageStates extends React.Component {
             filter: this.state.search.filter,
             results: newSearchResults
         },
-        packageStates: newPackageStates
+        packageStates: newPackageStates,
+        messages: MessagesUtils.info(t('Package states have been saved.'))
       });
     }, jqXHR => {
       console.log("fail: " + jqXHR);
@@ -152,6 +162,13 @@ class PackageStates extends React.Component {
   }
 
   applyPackageState() {
+    if (this.state.changed.size > 0) {
+        const response = confirm(t("There are unsaved changes. Do you want to proceed ?"))
+        if (response == false) {
+            return null;
+        }
+    }
+
     const request = Network.post(
         "/rhn/manager/api/states/apply",
         JSON.stringify({
@@ -161,7 +178,14 @@ class PackageStates extends React.Component {
         }),
         "application/json"
     );
-    return request.promise;
+    return request.promise.then(data => {
+          console.log("apply action queued:" + data);
+          this.setState({
+              messages: MessagesUtils.info(<span>{t("Applying the packages states has been ")}
+                  <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
+              </span>)
+          });
+    });
   }
 
   setView(view) {
@@ -317,8 +341,14 @@ class PackageStates extends React.Component {
 
 
   render() {
+
+    const messages = this.state.messages ?
+          <Messages items={this.state.messages}/>
+          : null;
+
     return (
       <div>
+        {messages}
         <h2>
           <i className="fa spacewalk-icon-package-add"></i>
           {t("Package States")}
@@ -333,9 +363,9 @@ class PackageStates extends React.Component {
                 <div className="row">
                     <span className="col-md-8 pull-right">
                         <span className="input-group">
-                            <input id="package-search" className="form-control" type="text" value={this.state.filter} onChange={this.onSearchChange}/>
+                            <TextField id="package-search" value={this.state.filter} placeholder={t("Search package")} onChange={this.onSearchChange} onPressEnter={this.triggerSearch}/>
                             <span className="input-group-btn">
-                                <AsyncButton id="search" name={t("Search")} action={this.search} />
+                                <AsyncButton id="search" name={t("Search")} action={this.search} ref={(c) => this.searchButton = c}/>
                                 <button id="system" className={this.state.view == "system" ? "btn btn-success" : "btn btn-default"} onClick={this.setView("system")}>{t("System")}</button>
                                 <button id="changes" className={this.state.view == "changes" ? "btn btn-success" : "btn btn-default"} disabled={this.state.changed.size == 0} onClick={this.setView("changes")}>
                                     {this.state.changed.size > 0 ? this.state.changed.size : t("No")} {t("Changes")}

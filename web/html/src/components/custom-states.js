@@ -6,6 +6,7 @@ const Panels = require("../components/panel");
 const Fields = require("../components/fields");
 const PopUp = require("../components/popup").PopUp;
 const Messages = require("../components/messages").Messages;
+const MessagesUtils = require("../components/messages").Utils;
 const Network = require("../utils/network");
 
 const AsyncButton = Buttons.AsyncButton;
@@ -15,10 +16,6 @@ const TextField = Fields.TextField;
 
 function stateKey(state) {
     return state.name;
-}
-
-function msg(severityIn, textIn) {
-    return [{severity: severityIn, text: textIn}];
 }
 
 class SaltStatePopup extends React.Component {
@@ -79,7 +76,7 @@ class CustomStates extends React.Component {
 
   applySaltState() {
     if (this.state.changed.size > 0) {
-        const response = confirm("There are unsaved changes. Do you want to proceed ?")
+        const response = confirm(t("There are unsaved changes. Do you want to proceed ?"))
         if (response == false) {
             return null;
         }
@@ -116,14 +113,14 @@ class CustomStates extends React.Component {
             filter: this.state.search.filter,
             results: newSearchResults
         },
-        messages: msg('info', t('State assignments have been saved.'))
+        messages: MessagesUtils.info(t('State assignments have been saved.'))
       });
      },
      (jqXHR, textStatus, errorThrown) => {
       console.log("fail: " + textStatus);
 
       this.setState({
-        messages: msg('error', t('An error occurred on save.'))
+        messages: MessagesUtils.error(t('An error occurred on save.'))
       });
      });
     return request;
@@ -324,6 +321,5 @@ class CustomStates extends React.Component {
 }
 
 module.exports = {
-    CustomStates : CustomStates,
-    msg: msg
+    CustomStates : CustomStates
 }
