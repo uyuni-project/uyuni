@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -589,44 +588,31 @@ public class StatesAPI {
      * @return JSON result of state.show_highstate
      */
     public static String showHighstate(Request request, Response response) {
-        Optional<MinionServer> minionServer = MinionServerFactory
-                .lookupById(Long.valueOf(request.queryParams("sid")));
-        String ret = "Server not found.";
-
-        if (minionServer.isPresent()) {
-            String minionId = minionServer.get().getMinionId();
-            LOG.debug("minionId is: " + minionId);
-            MinionList target = new MinionList(minionId);
-
-            Map<String, Object> result;
-            try {
-                result = SaltAPIService.INSTANCE.callSync(
-                        com.suse.manager.webui.utils.salt.State.showHighstate(),
-                        target, null);
-                Object minionResult = result.get(minionId);
-                // if the response is a List containing only one String element
-                // it may be an error from Salt so use that String directly
-                // without dumping it to Yaml
-                ret = Optional.ofNullable(minionResult)
-                        .filter(r -> r instanceof List)
-                        .map(r -> (List)r)
-                        .filter(l -> l.size() == 1)
-                        .map(l -> l.get(0))
-                        .filter(e -> e instanceof String)
-                        .map(e -> (String)e)
-                        .orElseGet(() ->
-                                Optional.ofNullable(minionResult)
-                                .map(r -> YamlHelper.INSTANCE.dump(r))
-                                .orElse("No reply from minion: " + minionId)
-                        );
-            }
-            catch (SaltException e) {
-                response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-                ret = e.getMessage();
-            }
-        }
-
         response.type("text/yaml");
-        return ret;
+        return MinionServerFactory
+                .lookupById(Long.valueOf(request.queryParams("sid")))
+                .map(minion -> {
+                    final String minionId = minion.getMinionId();
+                    try {
+                        Map<String, Object> result = SaltAPIService.INSTANCE.callSync(
+                                com.suse.manager.webui.utils.salt.State.showHighstate(),
+                                new MinionList(minionId), null);
+                        // if the response is a List containing only one String element
+                        // it may be an error from Salt so use that String directly
+                        // without dumping it to Yaml
+                        return Optional.ofNullable(result.get(minionId)).map(r ->
+                                r instanceof List &&
+                                ((List<?>)r).size() == 1 &&
+                                ((List<?>)r).get(0) instanceof String ?
+                                        (String)((List<?>)r).get(0) :
+                                        YamlHelper.INSTANCE.dump(r)
+                        ).orElse("No reply from minion: " + minionId);
+                    }
+                    catch (SaltException e) {
+                        response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+                        LOG.debug("showHighstate failed with: " + e.getMessage());
+                        return e.getMessage();
+                    }
+                }).orElse("Server not found.");
     }
 }
