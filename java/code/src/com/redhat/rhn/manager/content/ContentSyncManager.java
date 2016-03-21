@@ -615,7 +615,6 @@ public class ContentSyncManager {
      */
     public void refreshSubscriptionCache(List<SCCSubscription> subscriptions,
             Credentials c) {
-
         SCCCachingFactory.clearSubscriptions(c);
         for (SCCSubscription s : subscriptions) {
             SCCCachingFactory.saveJsonSubscription(s, c);

@@ -94,16 +94,6 @@ public class SCCCachingFactory extends HibernateFactory {
      */
     public static void saveJsonSubscription(com.suse.scc.model.SCCSubscription jsonSub,
             Credentials creds) {
-        SCCSubscription sub = new SCCSubscription();
-        sub.setCredentials(creds);
-        sub.setSccId(jsonSub.getId());
-        sub.setName(jsonSub.getName());
-        sub.setStartsAt(jsonSub.getStartsAt());
-        sub.setExpiresAt(jsonSub.getExpiresAt());
-        sub.setStatus(jsonSub.getStatus());
-        sub.setRegcode(jsonSub.getRegcode());
-        sub.setType(jsonSub.getType());
-        sub.setSystemLimit(jsonSub.getSystemLimit().longValue());
         Set<SUSEProduct> products = new HashSet<>();
         for (Long pid : jsonSub.getProductIds()) {
             SUSEProduct prd = SUSEProductFactory.lookupByProductId(pid);
@@ -114,6 +104,22 @@ public class SCCCachingFactory extends HibernateFactory {
                 log.error("unable to find product for scc product id: " + pid);
             }
         }
+
+        SCCSubscription sub = lookupSubscriptionBySccId((long) jsonSub.getId());
+        if (sub == null) {
+            sub = new SCCSubscription();
+        }
+
+        sub.setCredentials(creds);
+        sub.setSccId(jsonSub.getId());
+        sub.setName(jsonSub.getName());
+        sub.setStartsAt(jsonSub.getStartsAt());
+        sub.setExpiresAt(jsonSub.getExpiresAt());
+        sub.setStatus(jsonSub.getStatus());
+        sub.setRegcode(jsonSub.getRegcode());
+        sub.setType(jsonSub.getType());
+        sub.setSystemLimit(jsonSub.getSystemLimit().longValue());
+
         sub.setProducts(products);
         sub.setModified(new Date());
         singleton.saveObject(sub);
