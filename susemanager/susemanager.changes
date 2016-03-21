@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Mar 21 17:36:34 CET 2016 - mc@suse.de
+
+- version 3.0.12-1
+- fix file permissions (bsc#970550)
+- add salt-minion and dependencies for SLE11 to bootstrap repo
+- add salt-minion and dependencies for SLE12 to bootstrap repo
+- add SLES 4 SAP to mgr-create-bootstap-repo as an option
+- start an extra list for SLE12 SP1 only dependencies (bsc#970672)
+- delete salt minion keys on re-install (bsc#970505)
+
+-------------------------------------------------------------------
 Wed Mar 02 12:03:12 CET 2016 - mc@suse.de
 
 - version 3.0.11-1
