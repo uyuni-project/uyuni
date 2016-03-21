@@ -1,5 +1,5 @@
 Name:           susemanager-branding-oss
-Version:        3.0.2
+Version:        3.0.3
 Release:        1%{?dist}
 Summary:        SUSE Manager branding oss specific files
 Group:          Applications/System
