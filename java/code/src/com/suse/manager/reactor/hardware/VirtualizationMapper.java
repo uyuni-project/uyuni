@@ -99,18 +99,23 @@ public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance
             }
         }
         else if (!CpuArchUtil.isS390(cpuarch)) {
-            // there's not DMI on S390
-            ValueMap dmiSystem = new ValueMap(saltInvoker
-                    .getDmiRecords(server.getMinionId(), RecordType.SYSTEM));
-            String manufacturer = dmiSystem.getValueAsString("manufacturer");
-            String productName = dmiSystem.getValueAsString("product_name");
-            if ("HITACHI".equalsIgnoreCase(manufacturer) &&
-                    productName.endsWith(" HVM LPAR")) {
-                if (StringUtils.isEmpty(virtUuid)) {
-                    virtUuid = "flex-guest";
+            // there's no DMI on S390
+            try {
+                ValueMap dmiSystem = new ValueMap(saltInvoker
+                        .getDmiRecords(server.getMinionId(), RecordType.SYSTEM));
+                String manufacturer = dmiSystem.getValueAsString("manufacturer");
+                String productName = dmiSystem.getValueAsString("product_name");
+                if ("HITACHI".equalsIgnoreCase(manufacturer) &&
+                        productName.endsWith(" HVM LPAR")) {
+                    if (StringUtils.isEmpty(virtUuid)) {
+                        virtUuid = "flex-guest";
+                    }
+                    type = VirtualInstanceFactory.getInstance()
+                            .getVirtualInstanceType("virtage");
                 }
-                type = VirtualInstanceFactory.getInstance()
-                        .getVirtualInstanceType("virtage");
+            } catch (Exception e) {
+                LOG.warn("Could not retrieve DMI info from minion '" + server.getMinionId() +
+                        "'. JSON syntax error.");
             }
         }
 
