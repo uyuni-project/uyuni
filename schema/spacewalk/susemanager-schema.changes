@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar 22 09:57:18 CET 2016 - mc@suse.de
+
+- fix schema upgrade using if exists for dropping a sequence
+
+-------------------------------------------------------------------
 Mon Mar 21 17:40:17 CET 2016 - mc@suse.de
 
 - version 3.0.11-1
