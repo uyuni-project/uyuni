@@ -958,11 +958,14 @@ public class ServerFactory extends HibernateFactory {
                 Collectors.mapping(row -> {
                     String name = (String) row[2];
                     String tag = (String) row[3];
+                    if (StringUtils.isBlank(tag)) {
+                        return name;
+                    }
                     if (name.startsWith("SUSE-")) {
                         return name.replaceFirst("SUSE", "SUSE-" + tag);
                     }
                     else {
-                        return name;
+                        return tag + "-" + name;
                     }
                 }, Collectors.toSet())))
         );
