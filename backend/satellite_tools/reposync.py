@@ -727,6 +727,7 @@ class RepoSync(object):
                     VALUES (:package_id, :product_id)
                 """)
                 h.execute(package_id=packrow['id'], product_id=row['id'])
+                self.regen = True
 
     def import_susedata(self, repo):
         kwcache = {}
@@ -785,6 +786,7 @@ class RepoSync(object):
                     kadd = rhnSQL.prepare("""INSERT INTO suseMdData (package_id, channel_id, keyword_id)
                                               VALUES(:package_id, :channel_id, :keyword_id)""")
                     kadd.execute(package_id=pkgid, channel_id=int(self.channel['id']), keyword_id=kwcache[keyword])
+                    self.regen = True
 
             if package.has_key('eula'):
                 eula_id = suseEula.find_or_create_eula(package['eula'])
@@ -800,6 +802,7 @@ class RepoSync(object):
                     kdel = rhnSQL.prepare("""DELETE FROM suseMdData WHERE package_id = :package_id
                                              AND channel_id = :channel_id AND keyword_id = :keyword_id""")
                     kdel.execute(package_id=pkgid, channel_id=int(self.channel['id']), keyword_id=kwcache[label])
+                    self.regen = True
 
     def _patch_naming(self, notice):
         """Return the name of the patch according to our rules
