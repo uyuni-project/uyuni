@@ -101,10 +101,6 @@ public class SaltReactor implements EventListener {
         MessageQueue.registerAction(new GetNetworkInfoEventMessageAction(SALT_SERVICE),
                 GetNetworkInfoEventMessage.class);
 
-        // Sync minions to systems in the database
-        LOG.debug("Syncing minions to the database");
-        SALT_SERVICE.getKeys().getMinions().forEach(this::triggerMinionRegistration);
-
         // Initialize the event stream
         eventStream = SALT_SERVICE.getEventStream();
         eventStream.addEventListener(this);
