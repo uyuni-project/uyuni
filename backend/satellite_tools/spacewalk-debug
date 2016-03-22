@@ -161,11 +161,7 @@ for cfg_file in $(ls /etc/salt/master /etc/salt/master.d/*conf); do
 	if [[ ! ${STATIC_PILLARS[*]} =~ $pillar_dir ]]; then
 	    if [ -d $pillar_dir ] && [ "$(ls -A $pillar_dir)" ]; then
 		echo "    * Gathering information about custom pillar $pillar_dir"
-		echo "$pillar_dir:" >> $CUSTOM_PILLARS_NFO
-		for p_file in $(ls $pillar_dir); do
-		    echo "  - $p_file" >> $CUSTOM_PILLARS_NFO
-		done
-		echo >> $CUSTOM_PILLARS_NFO
+		ls -laR $pillar_dir >> $CUSTOM_PILLARS_NFO
 	    fi
 	fi
     done
