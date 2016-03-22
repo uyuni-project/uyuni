@@ -6,8 +6,6 @@
         <dependency org="suse" name="asm" rev="1.5.3" />
         <dependency org="suse" name="asm-attrs" rev="1.5.3" />
         <dependency org="suse" name="bcel" rev="5.1" />
-        <!-- dependency org="suse" name="bcpg" rev="1.37" /-->
-        <!-- dependency org="suse" name="bcprov" rev="1.37" /-->
         <dependency org="suse" name="c3p0" rev="0.9.1.2" />
         <dependency org="suse" name="cglib" rev="2.1.3" />
         <dependency org="suse" name="checkstyle-all" rev="6.11.2" />
@@ -30,14 +28,11 @@
         <dependency org="suse" name="dom4j" rev="1.6.1" />
         <dependency org="suse" name="dwr" rev="3.0rc2+svn4059" />
         <dependency org="suse" name="ehcache" rev="1.2.3" />
-        <!-- dependency org="suse" name="emma" rev="20040713" /-->
-        <!-- dependency org="suse" name="emma_ant" rev="20040713" /-->
         <dependency org="suse" name="google-gson" rev="2.3.1" />
         <dependency org="suse" name="gsbase" rev="2.0.1" />
         <dependency org="suse" name="hibernate3" rev="3.2.7" />
         <dependency org="suse" name="httpclient" rev="4.5" />
         <dependency org="suse" name="httpcore" rev="4.4.1" />
-        <!-- dependency org="suse" name="imap" rev="1.3.1" /-->
         <dependency org="suse" name="jade4j" rev="1.0.7" />
         <dependency org="suse" name="jaf" rev="1.0.2" />
         <dependency org="suse" name="jasper" rev="8.0.23" />
@@ -52,7 +47,6 @@
         <dependency org="suse" name="jta" rev="1.1" />
         <dependency org="suse" name="junit" rev="3.8.2" />
         <dependency org="suse" name="log4j" rev="1.2.15" />
-        <!-- dependency org="suse" name="logdriver" rev="0.1" /-->
         <dependency org="suse" name="mailapi" rev="1.3.1" />
         <dependency org="suse" name="mockobjects" rev="0.09" />
         <dependency org="suse" name="mockobjects-core" rev="0.09" />
@@ -61,7 +55,6 @@
         <dependency org="suse" name="oro" rev="2.0.8" />
         <dependency org="suse" name="oscache" rev="2.2" />
         <dependency org="suse" name="postgresql-jdbc" rev="9.3" />
-        <!-- dependency org="suse" name="pop3" rev="1.3.1" /-->
         <dependency org="suse" name="quartz" rev="1.8.4" />
         <dependency org="suse" name="quartz-oracle" rev="1.8.4" />
         <dependency org="suse" name="redstone-xmlrpc" rev="1.1_20071120" />
@@ -73,7 +66,6 @@
         <dependency org="suse" name="simple-xml" rev="2.6.2" />
         <dependency org="suse" name="slf4j-api" rev="1.7.12" />
         <dependency org="suse" name="slf4j-log4j12" rev="1.7.12" />
-        <!-- dependency org="suse" name="smtp" rev="1.3.1" /-->
         <dependency org="suse" name="snakeyaml" rev="1.10" />
         <dependency org="suse" name="spark-core" rev="2.3" />
         <dependency org="suse" name="spark-template-jade" rev="2.3" />
@@ -88,7 +80,6 @@
         <dependency org="suse" name="tomcat-jsp-2.3-api" rev="8.0.23" />
         <dependency org="suse" name="tomcat-juli" rev="8.0.23" />
         <dependency org="suse" name="tomcat-servlet-3.1-api" rev="8.0.23" />
-        <!-- dependency org="suse" name="tyrex" rev="1.0" /-->
         <dependency org="suse" name="velocity" rev="1.5" />
         <dependency org="suse" name="websocket-api" rev="1.1" />
         <dependency org="suse" name="xalan-j2" rev="2.7.0" />
