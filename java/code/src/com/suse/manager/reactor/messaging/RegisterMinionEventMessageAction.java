@@ -190,7 +190,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             // salt systems always have script.run capability
             SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-            triggerGetHardwareInfo(server, grains);
+            triggerGetHardwareInfo(server);
             triggerGetNetworkInfo(server, grains);
 
             // Assign the Salt base entitlement by default
@@ -248,8 +248,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                new GetNetworkInfoEventMessage(server.getId(), grains));
     }
 
-    private void triggerGetHardwareInfo(MinionServer server, ValueMap grains) {
-        MessageQueue.publish(new GetHardwareInfoEventMessage(server.getId()));
+    private void triggerGetHardwareInfo(MinionServer server) {
+        MessageQueue.publish(
+                new GetHardwareInfoEventMessage(server.getId(), server.getMinionId()));
     }
 
 }
