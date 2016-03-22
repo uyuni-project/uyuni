@@ -219,14 +219,8 @@ public class SaltCustomStateStorageManager {
      * @return a list containing all .sls files names (without .sls extension)
      */
     public List<String> listByOrg(long orgId) {
-        Path orgPath = Paths.get(getBaseDirPath(), getOrgNamespace(orgId));
-        File orgDir = orgPath.toFile();
-        if (!orgDir.exists()) {
-            return Collections.emptyList();
-        }
-        return Arrays.asList(orgDir.list((dir, name) -> hasExtension(name)))
-                .stream().map(name -> stripExtension(name))
-                .collect(Collectors.toList());
+        List<CustomState> orgStates = StateFactory.getCustomStatesByOrg(orgId);
+        return orgStates.stream().map(st -> st.getStateName()).collect(Collectors.toList());
     }
 
     /**

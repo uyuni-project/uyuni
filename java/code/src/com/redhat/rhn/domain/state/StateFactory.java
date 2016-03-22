@@ -242,6 +242,18 @@ public class StateFactory extends HibernateFactory {
     }
 
     /**
+     * Get a list of {@link CustomState} from the db by organization
+     * @param orgId the org id
+     * @return a list of {@link CustomState} that belong to the given org
+     */
+    public static List<CustomState> getCustomStatesByOrg(long orgId) {
+        return (List<CustomState>)getSession().createCriteria(CustomState.class)
+                .add(Restrictions.eq("org.id", orgId))
+                .add(Restrictions.eq("deleted", false))
+                .list();
+    }
+
+    /**
      * Mark custom state as deleted in the database. Does not actually remove it.
      * @param orgId the org id
      * @param name the custom state name

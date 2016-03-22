@@ -19,6 +19,11 @@ var StateDetail = React.createClass({
     },
 
     getInitialState: function() {
+        if (this.props.sls.errors) {
+            return {
+                errors: this.props.sls.errors
+            };
+        }
         return {};
     },
 
