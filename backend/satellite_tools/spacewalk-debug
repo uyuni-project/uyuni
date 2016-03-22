@@ -151,6 +151,26 @@ for sls_dir in "/usr/share/susemanager/salt/","static-sls","static SLS" \
 done
 IFS=$D_IFS
 
+# Get only an information about user-defined custom pillars.
+# Note: currently only base environment supported.
+STATIC_PILLARS=("/srv/susemanager/pillar" "/usr/share/susemanager/pillar")
+CUSTOM_PILLARS_NFO=$DIR/salt-states/custom-pillars.txt
+for cfg_file in $(ls /etc/salt/master /etc/salt/master.d/*conf); do
+    for pillar_dir in $(python -c \
+	"import yaml;print ' '.join(yaml.load(open('$cfg_file')).get('pillar_roots', {}).get('base', []))"); do 
+	if [[ ! ${STATIC_PILLARS[*]} =~ $pillar_dir ]]; then
+	    if [ -d $pillar_dir ] && [ "$(ls -A $pillar_dir)" ]; then
+		echo "    * Gathering information about custom pillar $pillar_dir"
+		echo "$pillar_dir:" >> $CUSTOM_PILLARS_NFO
+		for p_file in $(ls $pillar_dir); do
+		    echo "  - $p_file" >> $CUSTOM_PILLARS_NFO
+		done
+		echo >> $CUSTOM_PILLARS_NFO
+	    fi
+	fi
+    done
+done
+
 echo "    * copying logs"
 if [ $IS_SUSE -eq 1 ]; then
     cp -fa /var/log/apache2 $DIR/httpd-logs
