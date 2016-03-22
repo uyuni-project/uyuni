@@ -32,6 +32,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     public static final String CERTIFICATE = "certs";
     public static final String PACKAGES = "packages";
     public static final String CHANNELS = "channels";
+    public static final String CHANNELS_DISABLE_LOCAL_REPOS = "channels.disablelocalrepos";
 
     private final long serverId;
     private final Long userId;
