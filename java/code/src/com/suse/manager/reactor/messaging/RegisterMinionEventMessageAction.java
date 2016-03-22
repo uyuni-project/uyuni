@@ -229,6 +229,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     server.getId(),
                     ApplyStatesEventMessage.CERTIFICATE,
                     ApplyStatesEventMessage.CHANNELS,
+                    ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS,
                     ApplyStatesEventMessage.PACKAGES
             ));
         }
