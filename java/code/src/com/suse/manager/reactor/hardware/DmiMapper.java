@@ -62,18 +62,18 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
             ValueMap board = new ValueMap(saltInvoker.getDmiRecords(minionId,
                     Smbios.RecordType.BASEBOARD));
 
-            biosVendor = bios.getValueAsString("vendor");
-            biosVersion = bios.getValueAsString("version");
-            biosReleseDate = bios.getValueAsString("release_date");
+            biosVendor = (String)bios.get("vendor").orElse(null);
+            biosVersion = (String)bios.get("version").orElse(null);
+            biosReleseDate = (String)bios.get("release_date").orElse(null);
 
-            productName = system.getValueAsString("product_name");
-            systemVersion = system.getValueAsString("version");
-            systemSerial = system.getValueAsString("serial_number");
+            productName = (String)system.get("product_name").orElse(null);
+            systemVersion = (String)system.get("version").orElse(null);
+            systemSerial = (String)system.get("serial_number").orElse(null);
 
-            chassisSerial = chassis.getValueAsString("serial_number");
-            chassisTag = chassis.getValueAsString("asset_tag");
+            chassisSerial = (String)chassis.get("serial_number").orElse(null);
+            chassisTag = (String)chassis.get("asset_tag").orElse(null);
 
-            boardSerial = board.getValueAsString("serial_number");
+            boardSerial = (String)board.get("serial_number").orElse(null);
         }
         catch (com.google.gson.JsonSyntaxException e) {
             LOG.warn("Could not retrieve DMI info from minion '" + minionId +
