@@ -330,9 +330,11 @@ copy_remote_files_common() {
 
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/spacewalk/jabberd/server.pem /etc/pki/spacewalk/jabberd/server.pem
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/rhn/rhn.conf /etc/rhn/rhn.conf-SUMA21
-    chown -R tomcat.tomcat /var/lib/rhn/kickstarts
+    chown -R tomcat:tomcat /var/lib/rhn/kickstarts
     chmod 600 /etc/pki/spacewalk/jabberd/server.pem
     chown jabber:jabber /etc/pki/spacewalk/jabberd/server.pem
+    chown tftp:tftp /srv/tftpboot
+    chmod 750 /srv/tftpboot
 }
 
 copy_remote_files_redhat() {
