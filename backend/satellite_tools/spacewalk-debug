@@ -122,13 +122,15 @@ if [ -f /etc/tnsnames.ora ] ; then
     cp -fa /etc/tnsnames.ora $DIR/conf
 fi
 
+# Copy all Salt Master configuration
 if [ -e /etc/salt/master ]; then
     mkdir -p $DIR/conf/salt
     cp -fa /etc/salt/master $DIR/conf/salt
 fi
-if [ -e /etc/salt/master.d/susemanager.conf ]; then
+
+if [ "$(ls -A /etc/salt/master.d)" ]; then
     mkdir -p $DIR/conf/salt/master.d
-    cp -fa /etc/salt/master.d/susemanager.conf $DIR/conf/salt/master.d
+    cp -fa /etc/salt/master.d/* $DIR/conf/salt/master.d
 fi
 
 
