@@ -1,8 +1,10 @@
 <ivy-module version="1.0">
     <info organisation="suse" module="manager" />
     <dependencies>
+        <dependency org="suse" name="ant" rev="1.9.4" />
         <dependency org="suse" name="antlr" rev="2.7.7" />
         <dependency org="suse" name="ant-contrib" rev="1.0b2" />
+        <dependency org="suse" name="ant-junit" rev="1.9.4" />
         <dependency org="suse" name="asm" rev="1.5.3" />
         <dependency org="suse" name="asm-attrs" rev="1.5.3" />
         <dependency org="suse" name="bcel" rev="5.1" />
