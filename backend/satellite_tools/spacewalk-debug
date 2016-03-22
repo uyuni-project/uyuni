@@ -104,6 +104,7 @@ mkdir -p $DIR/kickstarts
 mkdir -p $DIR/database/trc
 mkdir -p $DIR/cobbler-lib
 mkdir -p $DIR/tasko
+mkdir -p $DIR/salt-states
 
 echo "    * copying configuration information"
 cp -fa /etc/apache2/conf* $DIR/conf/httpd
@@ -133,6 +134,21 @@ if [ "$(ls -A /etc/salt/master.d)" ]; then
     cp -fa /etc/salt/master.d/* $DIR/conf/salt/master.d
 fi
 
+# Copy generated and existing SLS files
+echo "    * copying Salt state files"
+D_IFS=$IFS
+IFS=","
+for sls_dir in "/usr/share/susemanager/salt/","static","static SLS" \
+               "/srv/susemanager/salt/","generated-sls","generated SLS" \
+               "/srv/susemanager/pillar/","generated-pillar","generated pillars" \
+               "/srv/salt/","custom-sls"; do
+    set $sls_dir
+    if [ "$(ls -A $1)" ]; then
+	echo -e "    \t- copying $3"
+	cp -fa $1 $DIR/salt-states/$2
+    fi
+done
+IFS=$D_IFS
 
 echo "    * copying logs"
 if [ $IS_SUSE -eq 1 ]; then
