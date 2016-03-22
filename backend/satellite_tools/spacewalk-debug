@@ -143,7 +143,7 @@ for sls_dir in "/usr/share/susemanager/salt/","static","static SLS" \
                "/srv/susemanager/pillar/","generated-pillar","generated pillars" \
                "/srv/salt/","custom-sls"; do
     set $sls_dir
-    if [ "$(ls -A $1)" ]; then
+    if [ -d $1 ] && [ "$(ls -A $1)" ]; then
 	echo -e "    \t- copying $3"
 	cp -fa $1 $DIR/salt-states/$2
     fi
