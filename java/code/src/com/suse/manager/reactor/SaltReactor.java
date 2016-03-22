@@ -37,13 +37,10 @@ import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessage;
 import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessageAction;
-import com.suse.manager.webui.events.ManagedFileChangedEvent;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.manager.webui.sse.SSEServlet;
 import com.suse.salt.netapi.datatypes.Event;
 
-import com.suse.salt.netapi.event.BeaconEvent;
 import com.suse.salt.netapi.event.EventListener;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
@@ -51,7 +48,6 @@ import com.suse.salt.netapi.event.MinionStartEvent;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -157,34 +153,8 @@ public class SaltReactor implements EventListener {
         // Setup handlers for different event types
         Runnable runnable =
                 MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
-                JobReturnEvent.parse(event).map(this::onJobReturnEvent).orElseGet(() ->
-                BeaconEvent.parse(event).map(this::onBeaconEvent).orElse(() -> { })));
+                JobReturnEvent.parse(event).map(this::onJobReturnEvent).orElse(() -> { }));
         executorService.submit(runnable);
-    }
-
-    /**
-     * Event handler for beacon events.
-     *
-     * @param beaconEvent beacon event
-     * @return event handler runnable
-     */
-    private Runnable onBeaconEvent(BeaconEvent beaconEvent) {
-        return () -> {
-            // Detect changes of managed files using the "managedwatch" beacon
-            if (beaconEvent.getBeacon().equals("managedwatch")) {
-                @SuppressWarnings("unchecked")
-                Map<String, Object> data = (Map<String, Object>)
-                        beaconEvent.getData().get("data");
-                String path = (String) data.get("path");
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Managed file has changed: " + path);
-                }
-
-                // Send event via SSE to connected clients
-                SSEServlet.sendEvent(new ManagedFileChangedEvent(
-                        beaconEvent.getMinionId(), path, (String) data.get("diff")));
-            }
-        };
     }
 
     /**
