@@ -42,6 +42,7 @@ execute tmp_drop_if_exists('sequence', 'rhn_solaris_ps_seq')
 execute tmp_drop_if_exists('sequence', 'rhn_solaris_pt_seq')
 execute tmp_drop_if_exists('sequence', 'rhn_strategies_recid_seq')
 execute tmp_drop_if_exists('sequence', 'rhn_url_probe_step_recid_seq')
+execute tmp_drop_if_exists('sequence', 'rhn_org_entitlement_type_seq')
 
 -- Dropping Oracle synonyms
 execute tmp_drop_if_exists('synonym', 'check_probe')

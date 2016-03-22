@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 dd4ba5492b5fad3835eeea074cf4ca819abb0661
+-- oracle equivalent source sha1 5e6f0cd8fbea859c65198a5b71075c092cdf70de
 
 -- Dropping tables
 drop table if exists rhn_command_queue_sessions;
@@ -38,3 +38,4 @@ drop sequence if exists rhn_solaris_ps_seq;
 drop sequence if exists rhn_solaris_pt_seq;
 drop sequence if exists rhn_strategies_recid_seq;
 drop sequence if exists rhn_url_probe_step_recid_seq;
+drop sequence if exists rhn_org_entitlement_type_seq;
