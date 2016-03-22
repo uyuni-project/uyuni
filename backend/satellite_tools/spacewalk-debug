@@ -140,6 +140,7 @@ D_IFS=$IFS
 IFS=","
 for sls_dir in "/usr/share/susemanager/salt/","static","static SLS" \
                "/srv/susemanager/salt/","generated-sls","generated SLS" \
+               "/usr/share/susemanager/pillar","static-pillar","statis pillars" \
                "/srv/susemanager/pillar/","generated-pillar","generated pillars" \
                "/srv/salt/","custom-sls","custom SLS"; do
     set $sls_dir
