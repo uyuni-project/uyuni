@@ -314,9 +314,8 @@ sub setup_cobbler {
       if (-e '/usr/lib/systemd/system/tftp.socket') {
         system("systemctl --quiet enable tftp.socket");
       } else {
-        #system("chkconfig tftp on");
-        #system("chkconfig xinetd on");
-        system("chkconfig atftpd on");
+        system("systemctl enable atftpd.service");
+        system("systemctl start atftpd.service");
       }
   }
 }
