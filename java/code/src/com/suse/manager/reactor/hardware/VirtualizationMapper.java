@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.SaltGrains;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -45,7 +46,7 @@ public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance
         String virtType = grains.getValueAsString("virtual");
         String virtSubtype = grains.getValueAsString("virtual_subtype");
         String virtUuid = grains.getValueAsString("uuid");
-        String cpuarch = grains.getValueAsString("cpuarch");
+        String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue());
 
         VirtualInstanceType type = null;
 
