@@ -169,3 +169,15 @@ end
 Then(/^I should see "(.*?)" in the output$/) do |arg1|
   assert_includes(@command_output, arg1)
 end
+
+Then /^Service "([^"]*)" is enabled on the Server$/ do |service|
+    output = sshcmd("systemctl is-enabled '#{service}'", ignore_err: true)[:stdout]
+    output.chomp!
+    fail if output != "enabled"
+end
+
+Then /^Service "([^"]*)" is running on the Server$/ do |service|
+    output = sshcmd("systemctl is-active '#{service}'", ignore_err: true)[:stdout]
+    output.chomp!
+    fail if output != "active"
+end

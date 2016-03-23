@@ -54,3 +54,27 @@ Feature: Create initial users
 
   Scenario: wait for mgr-sync refresh finished
     Then I wait for mgr-sync refresh is finished
+
+  Scenario: check services which should run
+    Then Service "atftpd" is enabled on the Server
+    Then Service "atftpd" is running on the Server
+    Then Service "auditlog-keeper" is enabled on the Server
+    Then Service "auditlog-keeper" is running on the Server
+    Then Service "cobblerd" is enabled on the Server
+    Then Service "cobblerd" is running on the Server
+    Then Service "jabberd" is enabled on the Server
+    Then Service "jabberd" is running on the Server
+    Then Service "osa-dispatcher" is enabled on the Server
+    Then Service "osa-dispatcher" is running on the Server
+    Then Service "rhn-search" is enabled on the Server
+    Then Service "rhn-search" is running on the Server
+    Then Service "salt-api" is enabled on the Server
+    Then Service "salt-api" is running on the Server
+    Then Service "salt-master" is enabled on the Server
+    Then Service "salt-master" is running on the Server
+    Then Service "taskomatic" is enabled on the Server
+    Then Service "taskomatic" is running on the Server
+    Then Service "apache2" is enabled on the Server
+    Then Service "apache2" is running on the Server
+    Then Service "tomcat" is enabled on the Server
+    Then Service "tomcat" is running on the Server
