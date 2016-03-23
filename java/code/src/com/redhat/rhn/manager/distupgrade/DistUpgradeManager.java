@@ -251,7 +251,8 @@ public class DistUpgradeManager extends BaseManager {
 
             // Look for addon product targets
             for (SUSEProduct addonProduct : installedProducts.getAddonProducts()) {
-                logger.debug("Looking for target of Add-On: " + addonProduct.getFriendlyName() +
+                logger.debug("Looking for target of Add-On: " +
+                        addonProduct.getFriendlyName() +
                         "(" + addonProduct.getProductId() + ")");
                 List<SUSEProductDto> targetAddonProducts = findTargetProducts(
                         addonProduct.getId());
