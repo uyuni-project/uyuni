@@ -104,6 +104,7 @@ mkdir -p $DIR/kickstarts
 mkdir -p $DIR/database/trc
 mkdir -p $DIR/cobbler-lib
 mkdir -p $DIR/tasko
+mkdir -p $DIR/salt-states
 
 echo "    * copying configuration information"
 cp -fa /etc/apache2/conf* $DIR/conf/httpd
@@ -122,15 +123,49 @@ if [ -f /etc/tnsnames.ora ] ; then
     cp -fa /etc/tnsnames.ora $DIR/conf
 fi
 
+# Copy all Salt Master configuration
 if [ -e /etc/salt/master ]; then
     mkdir -p $DIR/conf/salt
     cp -fa /etc/salt/master $DIR/conf/salt
 fi
-if [ -e /etc/salt/master.d/susemanager.conf ]; then
+
+if [ "$(ls -A /etc/salt/master.d)" ]; then
     mkdir -p $DIR/conf/salt/master.d
-    cp -fa /etc/salt/master.d/susemanager.conf $DIR/conf/salt/master.d
+    cp -fa /etc/salt/master.d/* $DIR/conf/salt/master.d
 fi
 
+# Copy generated and existing SLS files
+echo "    * copying Salt state files"
+D_IFS=$IFS
+IFS=","
+for sls_dir in "/usr/share/susemanager/salt/","static-sls","static SLS" \
+               "/srv/susemanager/salt/","generated-sls","generated SLS" \
+               "/usr/share/susemanager/pillar","static-pillar","statis pillars" \
+               "/srv/susemanager/pillar/","generated-pillar","generated pillars" \
+               "/srv/salt/","custom-sls","custom SLS"; do
+    set $sls_dir
+    if [ -d $1 ] && [ "$(ls -A $1)" ]; then
+	echo -e "    \t- copying $3"
+	cp -fa $1 $DIR/salt-states/$2
+    fi
+done
+IFS=$D_IFS
+
+# Get only an information about user-defined custom pillars.
+# Note: currently only base environment supported.
+STATIC_PILLARS=("/srv/susemanager/pillar" "/usr/share/susemanager/pillar")
+CUSTOM_PILLARS_NFO=$DIR/salt-states/custom-pillars.txt
+for cfg_file in $(ls /etc/salt/master /etc/salt/master.d/*conf); do
+    for pillar_dir in $(python -c \
+	"import yaml;print ' '.join(yaml.load(open('$cfg_file')).get('pillar_roots', {}).get('base', []))"); do 
+	if [[ ! ${STATIC_PILLARS[*]} =~ $pillar_dir ]]; then
+	    if [ -d $pillar_dir ] && [ "$(ls -A $pillar_dir)" ]; then
+		echo "    * Gathering information about custom pillar $pillar_dir"
+		ls -laR $pillar_dir >> $CUSTOM_PILLARS_NFO
+	    fi
+	fi
+    done
+done
 
 echo "    * copying logs"
 if [ $IS_SUSE -eq 1 ]; then
