@@ -115,8 +115,8 @@ public enum SaltServerActionService {
             else {
                 LOG.debug("Action will be scheduled for later using schedule()");
                 Map<String, Schedule.Result> results = SaltAPIService.INSTANCE
-                        .schedule("scheduled-action-" + actionIn.getId(), call, new MinionList(minionIds),
-                                earliestAction, metadata);
+                        .schedule("scheduled-action-" + actionIn.getId(), call,
+                                new MinionList(minionIds), earliestAction, metadata);
                 return minions.stream()
                         .collect(Collectors.partitioningBy(minion ->
                                 Optional.ofNullable(results.get(minion.getMinionId()))
