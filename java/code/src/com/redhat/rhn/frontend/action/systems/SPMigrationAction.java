@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -55,6 +56,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
  * Action class for scheduling distribution upgrades (Service Pack Migrations).
  */
 public class SPMigrationAction extends RhnAction {
+
+    private static Logger logger = Logger.getLogger(SPMigrationAction.class);
 
     // Request attributes
     private static final String UPGRADE_SUPPORTED = "upgradeSupported";
@@ -95,16 +98,19 @@ public class SPMigrationAction extends RhnAction {
         // Check if this server supports distribution upgrades
         boolean supported = DistUpgradeManager.isUpgradeSupported(
                 server, ctx.getCurrentUser());
+        logger.debug("Upgrade supported? " + supported);
         request.setAttribute(UPGRADE_SUPPORTED, supported);
 
         // Check if zypp-plugin-spacewalk is installed
         boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
                 "zypp-plugin-spacewalk", server) != null;
+        logger.debug("zypp plugin installed? " + zyppPluginInstalled);
         request.setAttribute(ZYPP_INSTALLED, zyppPluginInstalled);
 
         // Check if the newest update stack is installed
         boolean updateStackUpdateNeeded = ErrataManager.updateStackUpdateNeeded(
                 ctx.getCurrentUser(), server);
+        logger.debug("update stack update needed? " + updateStackUpdateNeeded);
         request.setAttribute(UPDATESTACK_UPDATE_NEEDED, updateStackUpdateNeeded);
 
         // Check if there is already a migration in the schedule
@@ -155,15 +161,18 @@ public class SPMigrationAction extends RhnAction {
             SUSEProductSet targetProducts = null;
             if (migrationTargets == null) {
                 // Installed products are 'unknown'
+                logger.debug("Installed products are 'unknown'");
                 return forward;
             }
             else if (migrationTargets.size() == 0) {
                 // Latest SP is apparently installed
+                logger.debug("Latest SP is apparently installed");
                 request.setAttribute(LATEST_SP, true);
                 return forward;
             }
             else if (migrationTargets.size() >= 1) {
                 // At least one target available
+                logger.debug("Found at least one migration target");
                 targetProducts = migrationTargets.get(0);
                 request.setAttribute(TARGET_PRODUCTS, targetProducts);
             }
