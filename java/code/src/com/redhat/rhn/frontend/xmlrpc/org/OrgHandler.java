@@ -202,7 +202,7 @@ public class OrgHandler extends BaseHandler {
             throw new SatelliteOrgException();
         }
 
-        OrgFactory.deleteOrg(org.getId(), loggedInUser);
+        OrgFactory.deleteOrgAndDependencies(org.getId(), loggedInUser);
 
         return 1;
     }
