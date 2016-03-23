@@ -19,6 +19,7 @@ import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.SaltServiceInvoker;
 import com.suse.manager.reactor.hardware.SysinfoMapper;
 import com.suse.manager.reactor.hardware.VirtualizationMapper;
+import com.suse.manager.webui.services.SaltGrains;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.messaging.EventMessage;
@@ -60,7 +61,7 @@ public class GetHardwareInfoEventMessageAction implements MessageAction {
         CpuMapper cpuMapper = new CpuMapper(saltInvoker);
         cpuMapper.map(event.getServerId(), grains);
 
-        String cpuarch = grains.getValueAsString("cpuarch");
+        String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue());
 
         if (!CpuArchUtil.isS390(cpuarch)) {
             DmiMapper dmiMapper = new DmiMapper(saltInvoker);

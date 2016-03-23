@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
+import com.suse.manager.webui.services.SaltGrains;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -52,7 +53,8 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
 
     @Override
     public VirtualInstance doMap(MinionServer server, ValueMap grains) {
-        String cpuarch = grains.getValueAsString("cpuarch").toLowerCase();
+        String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue())
+                .toLowerCase();
         String minionId = server.getMinionId();
         try {
             // call custom minion to get read_values info (if available)
@@ -100,7 +102,7 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
                 if (zhost == null) {
                     // create a new z/OS host server entry
                     zhost = ServerFactory.createServer();
-                    String cpurch = grains.getValueAsString("cpuarch");
+                    String cpurch = grains.getValueAsString(SaltGrains.CPUARCH.getValue());
                     // TODO extract this cpuarch + "-redhat-linux" in some common util
                     zhost.setServerArch(ServerFactory
                             .lookupServerArchByLabel(cpurch + "-redhat-linux"));
