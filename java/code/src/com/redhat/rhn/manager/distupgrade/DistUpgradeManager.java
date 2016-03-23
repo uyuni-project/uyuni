@@ -189,6 +189,12 @@ public class DistUpgradeManager extends BaseManager {
         EssentialChannelDto channelDto = getProductBaseChannelDto(productID, arch);
         if (channelDto != null) {
             ret = ChannelFactory.lookupByIdAndUser(channelDto.getId(), user);
+            if (ret == null) {
+                logger.debug("Channel lookup failure");
+            }
+        }
+        else {
+            logger.debug("No channel found");
         }
         return ret;
     }
@@ -206,6 +212,7 @@ public class DistUpgradeManager extends BaseManager {
             SUSEProductSet installedProducts, ChannelArch arch, User user) {
         ArrayList<SUSEProductSet> ret = new ArrayList<SUSEProductSet>();
         if (installedProducts == null) {
+            logger.warn("No products installed on this system");
             return null;
         }
 
@@ -219,13 +226,19 @@ public class DistUpgradeManager extends BaseManager {
             SUSEProduct targetProduct = SUSEProductFactory.getProductById(
                     targetBaseProduct.getId());
             targetSet.setBaseProduct(targetProduct);
+            logger.debug("Found Target Base Product: " + targetProduct.getFriendlyName() +
+                    "(" + targetProduct.getProductId() + ")");
 
             // Look for the target product's base channel
             Channel baseChannel = getProductBaseChannel(
                     targetBaseProduct.getId(), arch, user);
             if (baseChannel == null) {
+                logger.debug("No base channel found for product: " +
+                        targetProduct.getFriendlyName() +
+                        "(" + targetProduct.getProductId() + ")");
                 continue;
             }
+            logger.debug("Found Base Channel: " + baseChannel.getLabel());
 
             // Look for mandatory child channels
             List<ChildChannelDto> productChannels = findProductChannels(
@@ -238,6 +251,8 @@ public class DistUpgradeManager extends BaseManager {
 
             // Look for addon product targets
             for (SUSEProduct addonProduct : installedProducts.getAddonProducts()) {
+                logger.debug("Looking for target of Add-On: " + addonProduct.getFriendlyName() +
+                        "(" + addonProduct.getProductId() + ")");
                 List<SUSEProductDto> targetAddonProducts = findTargetProducts(
                         addonProduct.getId());
 
@@ -256,6 +271,7 @@ public class DistUpgradeManager extends BaseManager {
                 }
 
                 if (targetAddonProductID != null) {
+                    logger.debug("Found target add-on : " + targetAddonProductID);
                     targetSet.addAddonProduct(SUSEProductFactory.getProductById(
                             targetAddonProductID));
 
@@ -266,6 +282,10 @@ public class DistUpgradeManager extends BaseManager {
                         // Some channels are missing
                         targetSet.addMissingChannels(getMissingChannels(drChannelsChild));
                     }
+                }
+                else {
+                    // should never happen
+                    logger.error("No target add-on product found");
                 }
             }
             // Return this product set only if all addons can be migrated
@@ -289,6 +309,7 @@ public class DistUpgradeManager extends BaseManager {
         for (ChildChannelDto channel : channels) {
             Long cid = channel.getId();
             if (cid == null) {
+                logger.warn("Mandatory channel not synced: " + channel.getLabel());
                 ret.add(channel.getLabel());
             }
         }
@@ -337,6 +358,7 @@ public class DistUpgradeManager extends BaseManager {
             // Channel is synced
             if (channel.getParentId() != parentChannelID) {
                 // Found channel not matching given parent, return
+                logger.warn("Channel has not requested parent: " + channel.getLabel());
                 ret = false;
                 break;
             }
