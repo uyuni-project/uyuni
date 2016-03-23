@@ -11,7 +11,7 @@ include $(TOP)/Makefile.defs
 
 # exclude these files from instalation
 NO_INSTALL	= .cvsignore Makefile _project OLD \
-		  bench phantom project.html
+		  bench phantom project.html src
 
 all::
 
