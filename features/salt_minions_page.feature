@@ -47,3 +47,7 @@ Feature: Explore the Minions page
     Given that the master can reach this client
     When I get OS information of the Minion from the Master
     Then it should contain a "SLES" text
+
+  Scenario: The minion got all local repositories disabled
+    Given that this minion is registered in Spacewalk
+    Then all local repositories are disabled
