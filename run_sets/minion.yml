@@ -7,3 +7,4 @@
 - features/salt_software_states.feature
 - features/salt_remote_cmds.feature
 - features/salt_install_package.feature
+- features/salt_states_catalog.feature
