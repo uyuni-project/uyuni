@@ -32,6 +32,8 @@ import spark.Request;
 import spark.Response;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.Key;
 import java.util.HashSet;
 import java.util.List;
@@ -82,10 +84,22 @@ public class DownloadController {
      * @return an object to make spark happy
      */
     public static Object downloadPackage(Request request, Response response) {
-        String channel = request.params(":channel");
-        String filename = request.params(":file");
 
-        String basename = FilenameUtils.getBaseName(filename);
+        // we can't use request.params(:file)
+        // See https://bugzilla.suse.com/show_bug.cgi?id=972158
+        // https://github.com/perwendel/spark/issues/490
+        String channel = request.params(":channel");
+        String path = "";
+        try {
+            URL url = new URL(request.url());
+            path = url.getPath();
+        }
+        catch (MalformedURLException e) {
+            halt(HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    String.format("url '%s' is malformed", request.url()));
+        }
+
+        String basename = FilenameUtils.getBaseName(path);
         String arch = StringUtils.substringAfterLast(basename, ".");
         String rest = StringUtils.substringBeforeLast(basename, ".");
         String release = StringUtils.substringAfterLast(rest, "-");
@@ -94,13 +108,13 @@ public class DownloadController {
         String name = StringUtils.substringBeforeLast(rest, "-");
 
         String token = getTokenFromRequest(request);
-        validateToken(token, channel, filename);
+        validateToken(token, channel, basename);
 
         Package pkg = PackageFactory.lookupByChannelLabelNevra(
                 channel, name, version, release, null, arch);
         if (pkg == null) {
             halt(HttpStatus.SC_NOT_FOUND,
-                 String.format("%s not found in %s", filename, channel));
+                 String.format("%s not found in %s", basename, channel));
         }
 
         File file = new File(Config.get().getString(ConfigDefaults.MOUNT_POINT),
