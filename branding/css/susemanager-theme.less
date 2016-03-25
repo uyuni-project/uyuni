@@ -932,3 +932,58 @@ i.spacewalk-help-link {
 .spacewalk-bar .btn-group a .btn-primary {
 	.btn-xs;
 }
+
+/* Override rules from spacewalk-theme.less that uses
+"PatternFly-webicon" icons for alert boxes decoration */
+.alert:before,
+.alert:after {
+  font-family: 'spacewalk-icon';
+  top: 15px;
+}
+
+.alert-info,
+.alert-success,
+.alert-warning,
+.alert-danger {
+	position: relative;
+}
+
+.alert-info:before {
+  content: "\e63e";
+  color: #306899;
+}
+
+.alert-info:after {
+	content: "";
+  color: transparent;
+}
+
+.alert-success:before {
+  content: "\e63d";
+  color: #57a81c;
+}
+
+.alert-success:after {
+  content: "";
+  color: transparent;
+}
+
+.alert-warning:before {
+  content: "\e63f";
+  color: #eb7720;
+}
+
+.alert-warning:after {
+  content: "";
+  color: transparent;
+}
+
+.alert-danger:before {
+  content: "\e640";
+  color: #c90813;
+}
+
+.alert-danger:after {
+  content: "";
+  color: transparent;
+}
