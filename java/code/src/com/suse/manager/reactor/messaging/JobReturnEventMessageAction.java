@@ -107,13 +107,17 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             });
         }
 
-        // for all jobs, update minion last checkin
-        MinionServerFactory
-                .findByMinionId(jobReturnEvent.getMinionId())
-                .ifPresent(minionServer -> {
-                    MessageQueue.publish
-                            (new CheckinEventMessage(minionServer.getId()));
-                });
+        // For all jobs: update minion last checkin
+        Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
+                jobReturnEvent.getMinionId());
+        if (minion.isPresent()) {
+            MessageQueue.publish(new CheckinEventMessage(minion.get().getId()));
+        }
+        else {
+            // Or trigger registration if minion is not present
+            MessageQueue.publish(new RegisterMinionEventMessage(
+                    jobReturnEvent.getMinionId()));
+        }
     }
 
     /**
