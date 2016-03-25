@@ -95,19 +95,14 @@
 		<rhn-tab-url>/rhn/systems/ssm/audit/ScheduleXccdfSubmit.do</rhn-tab-url>
 	</rhn-tab>
 
-	<rhn-tab name="Misc" url="/rhn/systems/ssm/misc/Index.do" acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
-            <rhn-tab name="ssm.misc.index.tabs.hardware" url="/rhn/systems/ssm/misc/HardwareRefresh.do"/>
-            <rhn-tab name="ssm.misc.index.tabs.software" url="/rhn/systems/ssm/misc/SoftwareRefresh.do"/>
+	<rhn-tab name="Misc" url="/rhn/systems/ssm/misc/Index.do">
+            <rhn-tab name="ssm.misc.index.tabs.hardware" url="/rhn/systems/ssm/misc/HardwareRefresh.do" acl="all_systems_in_set_have_entitlement(enterprise_entitled)"/>
+            <rhn-tab name="ssm.misc.index.tabs.software" url="/rhn/systems/ssm/misc/SoftwareRefresh.do" acl="all_systems_in_set_have_entitlement(enterprise_entitled)"/>
             <rhn-tab name="ssm.misc.index.tabs.migrate" url="/rhn/systems/ssm/MigrateSystems.do"/>
-            <rhn-tab name="ssm.misc.index.tabs.lockunlock" url="/rhn/systems/ssm/misc/LockUnlockSystem.do"/>
-            <rhn-tab name="ssm.misc.index.tabs.reboot" url="/rhn/systems/ssm/misc/RebootSystem.do" />
+            <rhn-tab name="ssm.misc.index.tabs.lockunlock" url="/rhn/systems/ssm/misc/LockUnlockSystem.do" acl="all_systems_in_set_have_entitlement(enterprise_entitled)"/>
+            <rhn-tab name="ssm.misc.index.tabs.reboot" url="/rhn/systems/ssm/misc/RebootSystem.do" acl="all_systems_in_set_have_entitlement(enterprise_entitled)"/>
             <rhn-tab name="ssm.misc.index.tabs.delete" url="/rhn/systems/ssm/DeleteConfirm.do"/>
             <rhn-tab-url>/rhn/systems/ssm/misc/ConfirmSystemPreferences.do</rhn-tab-url>
             <rhn-tab-url>/rhn/systems/ssm/DeleteConfirm.do</rhn-tab-url>
 	</rhn-tab>
-
-        <rhn-tab name="Misc" url="/rhn/systems/ssm/MigrateSystems.do" acl="not all_systems_in_set_have_entitlement(enterprise_entitled)">
-            <rhn-tab name="ssm.misc.index.tabs.migrate" url="/rhn/systems/ssm/MigrateSystems.do"/>
-            <rhn-tab name="ssm.misc.index.tabs.delete" url="/rhn/systems/ssm/DeleteConfirm.do"/>
-        </rhn-tab>
 </rhn-navi-tree>
