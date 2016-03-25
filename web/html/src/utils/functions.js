@@ -47,7 +47,7 @@ const cancelable = (promise, onCancel) => {
 const stringSubstringHighlight = generateSubstringHighlightRenderer(
     (match, index) => <span key={"m"+index} style={{backgroundColor: "#f0ad4e", borderRadius: "2px"}}>{ match }</span>,
     (nomatch, index) => <span key={"n"+index}>{ nomatch }</span>,
-    (elements) => <b>{ elements }</b>
+    (elements) => <strong>{ elements }</strong>
 );
 
 function LocalDateTime(date) {

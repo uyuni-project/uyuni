@@ -106,6 +106,14 @@ class Onboarding extends React.Component {
     });
   }
 
+  fingerprintRenderer (entity) {
+    var text = entity;
+    if (text.length > 42) {
+      text = "..." + entity.substring(entity.length-42);
+    }
+    return <strong title={entity}>{text}</strong>;
+  }
+
   render() {
     const minions = this.state.keys;
     const panelButtons = <div className="pull-right btn-group">
@@ -136,7 +144,7 @@ class Onboarding extends React.Component {
                   },{
                       "header": t("Fingerprint"),
                       "entryToCell": (entry) => entry.fingerprint,
-                      "renderCell": Renderer.highlightSubstring,
+                      "renderCell": this.fingerprintRenderer,
                       "sort": Comparators.locale,
                       "filter": Filters.substring,
                       "ratio": 0.5
