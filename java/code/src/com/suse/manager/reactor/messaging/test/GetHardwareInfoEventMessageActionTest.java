@@ -1,7 +1,6 @@
 package com.suse.manager.reactor.messaging.test;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -32,7 +31,7 @@ public class GetHardwareInfoEventMessageActionTest extends JMockBaseTestCaseWith
 
     public void testRuntimeException() throws Exception {
 
-        MinionServer server = testAction(new RuntimeException("test exception"));
+        MinionServer server = doTest(new RuntimeException("test exception"));
 
         assertNotNull(server);
         assertNotNull(server.getCpu());
@@ -44,7 +43,7 @@ public class GetHardwareInfoEventMessageActionTest extends JMockBaseTestCaseWith
 
     public void testJsonSyntaxException() throws Exception {
 
-        MinionServer server = testAction(new JsonSyntaxException("test exception"));
+        MinionServer server = doTest(new JsonSyntaxException("test exception"));
 
         assertNotNull(server);
         assertNotNull(server.getCpu());
@@ -58,7 +57,7 @@ public class GetHardwareInfoEventMessageActionTest extends JMockBaseTestCaseWith
 
     }
 
-    private MinionServer testAction(Exception exception) throws Exception {
+    private MinionServer doTest(Exception exception) throws Exception {
         MinionServer server = (MinionServer) ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
