@@ -10,7 +10,9 @@ import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.suse.manager.webui.services.SaltService;
 import org.apache.log4j.Logger;
 
+import java.util.Date;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by matei on 3/28/16.
@@ -43,19 +45,30 @@ public class RefreshHardwareEventMessageAction extends AbstractDatabaseAction {
                         .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
 
                 serverAction.ifPresent(sa -> {
-
                     LOG.debug("Refreshing hardware for: " + minionServer.getMinionId());
 
                     GetHardwareInfoEventMessageAction hardwareAction = new GetHardwareInfoEventMessageAction(SALT_SERVICE);
-                    hardwareAction.execute(new GetHardwareInfoEventMessage(minionServer.getId()));
+                    hardwareAction.execute(new GetHardwareInfoEventMessage(minionServer.getId(), minionServer.getMinionId()));
 
                     GetNetworkInfoEventMessageAction networkAction = new GetNetworkInfoEventMessageAction(SALT_SERVICE);
                     networkAction.execute(new GetNetworkInfoEventMessage(minionServer.getId()));
 
-                    // TODO refactor actions to expose outcome and set states depending on that
-                    sa.setStatus(ActionFactory.STATUS_COMPLETED);
-                    sa.setResultMsg("hardware list refreshed");
-                    sa.setResultCode(0L);
+                    if (!hardwareAction.getErrors().isEmpty() || networkAction.getError() != null) {
+                        sa.setStatus(ActionFactory.STATUS_FAILED);
+                        sa.setResultMsg(
+                            "Hardware list could not be refreshed completely\n" +
+                                hardwareAction.getErrors().stream().collect(Collectors.joining("\n")) +
+                                "\nNetwork: " + networkAction.getError()
+                        );
+                        sa.setResultCode(-1L);
+                    } else {
+                        sa.setStatus(ActionFactory.STATUS_COMPLETED);
+                        sa.setResultMsg("hardware list refreshed");
+                        sa.setResultCode(0L);
+
+                    }
+                    sa.setCompletionTime(new Date());
+
                     ActionFactory.save(sa);
                 });
 
