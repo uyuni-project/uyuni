@@ -61,6 +61,10 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
             String minionId = server.getMinionId();
             ValueMap grains = event.getGrains();
 
+            if (grains == null) {
+                grains = new ValueMap(SALT_SERVICE.getGrains(minionId));
+            }
+
             Map<String, Network.Interface> interfaces = SALT_SERVICE
                     .getNetworkInterfacesInfo(minionId);
             Map<SumaUtil.IPVersion, SumaUtil.IPRoute> primaryIps = SALT_SERVICE

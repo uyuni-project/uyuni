@@ -1511,7 +1511,8 @@ public class ActionManager extends BaseManager {
      */
     public static Action scheduleHardwareRefreshAction(User scheduler, Server srvr,
             Date earliestAction) {
-        if (!SystemManager.hasEntitlement(srvr.getId(), EntitlementManager.MANAGEMENT)) {
+        if (!SystemManager.hasEntitlement(srvr.getId(), EntitlementManager.MANAGEMENT) &&
+                !SystemManager.hasEntitlement(srvr.getId(), EntitlementManager.SALT)) {
             throw new MissingEntitlementException(
                     EntitlementManager.MANAGEMENT.getHumanReadableLabel());
         }

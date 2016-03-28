@@ -33,6 +33,14 @@ public class GetNetworkInfoEventMessage implements EventDatabaseMessage {
     /**
      * The constructor.
      * @param serverIdIn the sever id
+     */
+    public GetNetworkInfoEventMessage(Long serverIdIn) {
+        this(serverIdIn, null);
+    }
+
+    /**
+     * The constructor.
+     * @param serverIdIn the sever id
      * @param grainsIn the minion grains
      */
     public GetNetworkInfoEventMessage(Long serverIdIn, ValueMap grainsIn) {

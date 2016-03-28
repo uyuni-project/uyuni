@@ -38,7 +38,10 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
     @Override
     public CPU doMap(MinionServer server, ValueMap grains) {
 
-        CPU cpu = new CPU();
+        CPU cpu = server.getCpu();
+        if (cpu == null) {
+            cpu = new CPU();
+        }
 
         // os.uname[4]
         String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue())
