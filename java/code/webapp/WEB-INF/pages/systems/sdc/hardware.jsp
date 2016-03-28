@@ -8,7 +8,7 @@
 <body>
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
     <html:form method="post" action="/systems/details/SystemHardware.do?sid=${sid}">
-        <rhn:require acl="system_has_management_entitlement()">
+        <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>

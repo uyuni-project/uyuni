@@ -17,6 +17,7 @@ package com.suse.manager.reactor.hardware;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.MinionServer;
 
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.reactor.utils.ValueMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -49,6 +50,12 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
     public MinionServer doMap(MinionServer server, ValueMap grains) {
         String minionId = server.getMinionId();
         List<Map<String, Object>> db = saltInvoker.getUdevdb(minionId);
+
+
+        for (Device device : server.getDevices()) {
+            ServerFactory.delete(device);
+        }
+        server.getDevices().clear();
 
         db.forEach(dbdev -> {
             String devpath = (String)dbdev.get("P"); // sysfs path without /sys

@@ -82,7 +82,10 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
             // go on and persist an empty Dmi bean.
         }
 
-        Dmi dmi = new Dmi();
+        Dmi dmi = server.getDmi();
+        if (dmi == null) {
+            dmi = new Dmi();
+        }
         StringBuilder dmiSystem = new StringBuilder();
         if (StringUtils.isNotBlank(productName)) {
             dmiSystem.append(productName);
