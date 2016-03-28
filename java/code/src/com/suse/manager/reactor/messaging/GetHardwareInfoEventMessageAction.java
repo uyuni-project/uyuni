@@ -15,6 +15,7 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.MessageAction;
+import com.suse.manager.reactor.hardware.AbstractHardwareMapper;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.SaltServiceInvoker;
 import com.suse.manager.reactor.hardware.SysinfoMapper;
@@ -29,6 +30,9 @@ import com.suse.manager.reactor.hardware.DmiMapper;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltService;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Get and process hardware information from a minion.
  */
@@ -40,6 +44,8 @@ public class GetHardwareInfoEventMessageAction implements MessageAction {
 
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
+
+    private List<String> errors = new LinkedList<>();
 
     /**
      * The constructor.
@@ -60,25 +66,40 @@ public class GetHardwareInfoEventMessageAction implements MessageAction {
 
         CpuMapper cpuMapper = new CpuMapper(saltInvoker);
         cpuMapper.map(event.getServerId(), grains);
+        checkErrors("CPU", cpuMapper);
 
         String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue());
 
         if (!CpuArchUtil.isS390(cpuarch)) {
             DmiMapper dmiMapper = new DmiMapper(saltInvoker);
             dmiMapper.map(event.getServerId(), grains);
+            checkErrors("DMI", dmiMapper);
         }
 
         DevicesMapper devicesMapper = new DevicesMapper(saltInvoker);
         devicesMapper.map(event.getServerId(), grains);
+        checkErrors("Devices", devicesMapper);
 
         if (CpuArchUtil.isS390(cpuarch)) {
             SysinfoMapper sysinfoMapper = new SysinfoMapper(saltInvoker);
             sysinfoMapper.map(event.getServerId(), grains);
+            checkErrors("S390", sysinfoMapper);
         }
 
         VirtualizationMapper virtMapper = new VirtualizationMapper(saltInvoker);
         virtMapper.map(event.getServerId(), grains);
+        checkErrors("Virtualization", virtMapper);
 
         LOG.info("Finished getting hardware info for: " + event.getMinionId());
+    }
+
+    private void checkErrors(String category, AbstractHardwareMapper<?> mapper) {
+        if (mapper.getError() != null) {
+            errors.add(category + ": " + mapper.getError());
+        }
+    }
+
+    public List<String> getErrors() {
+        return errors;
     }
 }

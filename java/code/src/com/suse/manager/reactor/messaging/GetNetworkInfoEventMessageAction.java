@@ -30,6 +30,8 @@ import com.suse.salt.netapi.calls.modules.Network;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -41,6 +43,8 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
 
+    private String error;
+
     /**
      * The constructor.
      * @param saltService a {@link SaltService} instance
@@ -51,6 +55,15 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
 
     @Override
     protected void doExecute(EventMessage msg) {
+        try {
+            getNetworkInfo(msg);
+        } catch (RuntimeException e) {
+            error = e.getMessage();
+            throw e;
+        }
+    }
+
+    protected void getNetworkInfo(EventMessage msg) {
         GetNetworkInfoEventMessage event = (GetNetworkInfoEventMessage)msg;
 
         Optional<MinionServer> minionServer = MinionServerFactory
@@ -157,5 +170,9 @@ public class GetNetworkInfoEventMessageAction extends AbstractDatabaseAction {
                 });
             });
         });
+    }
+
+    public String getError() {
+        return error;
     }
 }
