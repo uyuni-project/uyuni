@@ -7,6 +7,7 @@ Requires=postgresql.service tomcat.service
 Type=forking
 ExecStart=/usr/sbin/taskomatic start
 ExecStop=/usr/sbin/taskomatic stop
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
