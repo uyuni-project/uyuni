@@ -99,7 +99,7 @@ public class SPMigrationAction extends RhnAction {
         // Check if this server supports distribution upgrades
         boolean supported = DistUpgradeManager.isUpgradeSupported(
                 server, ctx.getCurrentUser());
-        logger.debug("Upgrade supported? " + supported);
+        logger.debug("Upgrade supported for '" + server.getName() + "'? " + supported);
         request.setAttribute(UPGRADE_SUPPORTED, supported);
 
         // Check if zypp-plugin-spacewalk is installed
