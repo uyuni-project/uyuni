@@ -70,7 +70,7 @@ public abstract class AbstractHardwareMapper<T> {
             LOG.error("Rolling back transaction. Error executing mapper " +
                     getClass().getName(), e);
             HibernateFactory.rollbackTransaction();
-            setError(e.getMessage());
+            setError("An error occurred: " + e.getMessage());
         }
         finally {
             HibernateFactory.closeSession();
@@ -81,11 +81,17 @@ public abstract class AbstractHardwareMapper<T> {
 
     protected abstract T doMap(MinionServer server, ValueMap grains);
 
+    /**
+     * @return error messages
+     */
     public String getError() {
         return error;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    /**
+     * @param errorIn error messages
+     */
+    public void setError(String errorIn) {
+        this.error = errorIn;
     }
 }

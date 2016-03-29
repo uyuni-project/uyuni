@@ -76,10 +76,11 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
             boardSerial = (String)board.get("serial_number").orElse(null);
         }
         catch (com.google.gson.JsonSyntaxException e) {
-            LOG.warn("Could not retrieve DMI info from minion '" + minionId +
-                    "'. JSON syntax error.");
+            LOG.warn("Could not retrieve DMI info from minion '" + minionId + "': " +
+                    e.getMessage());
             // In order to behave like the "old style" registration
             // go on and persist an empty Dmi bean.
+            setError("Could not retrieve DMI records: " + e.getMessage());
         }
 
         Dmi dmi = server.getDmi();

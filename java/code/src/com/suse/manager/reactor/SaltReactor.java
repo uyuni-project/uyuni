@@ -24,10 +24,6 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.reactor.messaging.CheckinEventMessage;
 import com.suse.manager.reactor.messaging.CheckinEventMessageAction;
-import com.suse.manager.reactor.messaging.GetHardwareInfoEventMessage;
-import com.suse.manager.reactor.messaging.GetHardwareInfoEventMessageAction;
-import com.suse.manager.reactor.messaging.GetNetworkInfoEventMessage;
-import com.suse.manager.reactor.messaging.GetNetworkInfoEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
@@ -92,16 +88,12 @@ public class SaltReactor implements EventListener {
                 ChannelsChangedEventMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
-        MessageQueue.registerAction(new GetHardwareInfoEventMessageAction(SALT_SERVICE),
-                GetHardwareInfoEventMessage.class);
         MessageQueue.registerAction(new ActionScheduledEventMessageAction(),
                 ActionScheduledEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(),
                 JobReturnEventMessage.class);
         MessageQueue.registerAction(new CheckinEventMessageAction(),
                 CheckinEventMessage.class);
-        MessageQueue.registerAction(new GetNetworkInfoEventMessageAction(SALT_SERVICE),
-                GetNetworkInfoEventMessage.class);
         MessageQueue.registerAction(new RefreshHardwareEventMessageAction(SALT_SERVICE),
                 RefreshHardwareEventMessage.class);
 

@@ -15,6 +15,8 @@
 package com.suse.manager.reactor.hardware;
 
 import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.utils.salt.custom.SumaUtil;
+import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 
 import java.util.HashMap;
@@ -49,7 +51,7 @@ public class SaltServiceInvoker {
     }
 
     /**
-     * @see SaltService#getDmiRecords(String, Smbios.RecordType)
+     * @see SaltService#getDmiRecords(String, RecordType)
      * @param minionId the minion id
      * @param recordType the smbios record type
      * @return the DMI data as a map.
@@ -109,9 +111,37 @@ public class SaltServiceInvoker {
     }
 
     /**
+     * @see SaltService#getNetworkInterfacesInfo(String)
+     * @param minionId the minion id
+     * @return the network info as a map.
+     */
+    public Map<String, Network.Interface> getNetworkInterfacesInfo(String minionId) {
+        return getOrInvoke("net", () -> saltService.getNetworkInterfacesInfo(minionId));
+    }
+
+    /**
+     * @see SaltService#getPrimaryIps(String)
+     * @param minionId the minion id
+     * @return the network info as a map.
+     */
+    public Map<SumaUtil.IPVersion, SumaUtil.IPRoute> getPrimaryIps(String minionId) {
+        return getOrInvoke("primaryIps", () -> saltService.getPrimaryIps(minionId));
+    }
+
+    /**
+     * @see SaltService#getNetModules(String)
+     * @param minionId the minion id
+     * @return the network info as a map.
+     */
+    public Map<String, String> getNetModules(String minionId) {
+        return getOrInvoke("netModules", () -> saltService.getNetModules(minionId));
+    }
+
+    /**
      * @return the {@link SaltService} used to call Salt
      */
     public SaltService getSaltService() {
         return saltService;
     }
+
 }
