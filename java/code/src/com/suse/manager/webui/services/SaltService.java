@@ -340,4 +340,12 @@ public interface SaltService {
      * @return a set of names that included the organization namespace
      */
     Set<String> resolveOrgStates(long orgId, Set<String> states);
+
+    /**
+     * Pings a target set of minions.
+     * @param target the target
+     * @return a Map from minion ids which responded to the ping to Boolean.TRUE
+     * @throws SaltException if we get a failure from Salt
+     */
+    Map<String, Boolean> ping(Target<?> target) throws SaltException;
 }

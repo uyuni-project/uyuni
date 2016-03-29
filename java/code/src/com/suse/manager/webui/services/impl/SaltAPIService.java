@@ -44,6 +44,7 @@ import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.Smbios;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Status;
+import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.config.ClientConfig;
@@ -658,4 +659,15 @@ public enum SaltAPIService implements SaltService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Boolean> ping(Target<?> targetIn) throws SaltException {
+        return callSync(
+            Test.ping(),
+            targetIn,
+            Collections.emptyMap()
+        );
+    }
 }
