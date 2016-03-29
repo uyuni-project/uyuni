@@ -195,8 +195,9 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
 
         }
         catch (com.google.gson.JsonSyntaxException e) {
+            setError("Could not retrieve SYS info");
             LOG.warn("Could not retrieve SYS info from minion '" + minionId +
-                    "'. JSON syntax error.");
+                    "': " + e.getMessage());
         }
 
         return null;

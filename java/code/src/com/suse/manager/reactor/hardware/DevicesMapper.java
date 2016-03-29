@@ -51,11 +51,17 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
         String minionId = server.getMinionId();
         List<Map<String, Object>> db = saltInvoker.getUdevdb(minionId);
 
-
+        // remove any existing devices in case we're refreshing the hw info
         for (Device device : server.getDevices()) {
             ServerFactory.delete(device);
         }
         server.getDevices().clear();
+
+        if (db == null || db.isEmpty()) {
+            setError("Got empty devices list");
+            LOG.warn("Got empty devices list for minion: " + minionId);
+            return null;
+        }
 
         db.forEach(dbdev -> {
             String devpath = (String)dbdev.get("P"); // sysfs path without /sys
@@ -161,6 +167,7 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
 
             }
         });
+
         return server;
     }
 

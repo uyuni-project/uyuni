@@ -16,6 +16,7 @@ package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -28,6 +29,7 @@ import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.redhat.rhn.manager.system.SystemManager;
@@ -190,11 +192,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             // salt systems always have script.run capability
             SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-            triggerGetHardwareInfo(server);
-            triggerGetNetworkInfo(server, grains);
-
             // Assign the Salt base entitlement by default
             server.setBaseEntitlement(EntitlementManager.SALT);
+
+            // get hardware and network async
+            triggerGetHardwareInfo(server);
 
             Map<String, String> data = new HashMap<>();
             data.put("minionId", minionId);
@@ -243,14 +245,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         server.setRam(grains.getValueAsLong("mem_total").orElse(0L));
     }
 
-    private void triggerGetNetworkInfo(MinionServer server, ValueMap grains) {
-        MessageQueue.publish(
-               new GetNetworkInfoEventMessage(server.getId(), grains));
-    }
-
     private void triggerGetHardwareInfo(MinionServer server) {
-        MessageQueue.publish(
-                new GetHardwareInfoEventMessage(server.getId(), server.getMinionId()));
+        Action action = ActionManager
+                .scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
+        MessageQueue.publish(new RefreshHardwareEventMessage(server.getMinionId(), action));
     }
 
 }
