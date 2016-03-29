@@ -15,19 +15,17 @@
 package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
+
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.salt.netapi.calls.wheel.Key;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import spark.ModelAndView;
@@ -52,13 +50,7 @@ public class MinionController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView list(Request request, Response response) {
-        Key.Names keys = SALT_SERVICE.getKeys();
-        List<String> present = SALT_SERVICE.present();
         Map<String, Object> data = new HashMap<>();
-        data.put("minions", keys.getMinions());
-        data.put("unaccepted_minions", keys.getUnacceptedMinions());
-        data.put("rejected_minions", keys.getRejectedMinions());
-        data.put("present", present);
         return new ModelAndView(data, "minion/list.jade");
     }
 

@@ -90,10 +90,12 @@ public enum SaltServerActionService {
             ZonedDateTime now = ZonedDateTime.now();
             if (earliestAction.isBefore(now) || earliestAction.equals(now)) {
                 LOG.debug("Action will be executed directly using callAsync()");
-                final List<String> allPresent = SaltAPIService.INSTANCE.present();
+                final Map<String, Boolean> responding =
+                    SaltAPIService.INSTANCE.ping(new MinionList(minionIds));
                 final List<String> present = minionIds.stream()
-                        .filter(allPresent::contains)
+                        .filter(responding::containsKey)
                         .collect(Collectors.toList());
+                LOG.debug(present.size() + " minions present out of " + minionIds.size());
 
                 if (present.isEmpty()) {
                     Map<Boolean, List<MinionServer>> result = new HashMap<>();
