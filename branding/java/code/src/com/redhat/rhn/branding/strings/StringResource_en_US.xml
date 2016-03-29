@@ -414,7 +414,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Patches Packages</source>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.instructions">
-        <source>Below is the list of packages you can add to this patch. The "view" select box allows you to restrict the set of available packages. To add packages to this patch, select them, and click 'Add Packages' below.</source>
+        <source>This is the list of available packages. To add packages to this patch, select them and click 'Add Packages'.&lt;br/&gt;The drop-down list below allows you to restrict the set of available packages by channel.</source>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.success.plural">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; packages added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
