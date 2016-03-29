@@ -194,7 +194,7 @@ Feature: Explore the main landing page
   Scenario: Check sidebar link destination for Systems => Advanced Search
     Given I am on the Systems page
     And I follow "Advanced Search" in the left menu
-    Then I should see a "System Search" text
+    Then I should see a "Advanced Search" text
 
   Scenario: Check sidebar link destination for Systems => Activation Keys
     Given I am on the Systems page
