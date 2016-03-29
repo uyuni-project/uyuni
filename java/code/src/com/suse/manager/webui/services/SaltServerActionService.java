@@ -32,6 +32,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 
@@ -90,10 +91,11 @@ public enum SaltServerActionService {
             ZonedDateTime now = ZonedDateTime.now();
             if (earliestAction.isBefore(now) || earliestAction.equals(now)) {
                 LOG.debug("Action will be executed directly using callAsync()");
-                final List<String> allPresent = SaltAPIService.INSTANCE.present();
+                final List<String> responding = respondingToPing(minionIds);
                 final List<String> present = minionIds.stream()
-                        .filter(allPresent::contains)
+                        .filter(responding::contains)
                         .collect(Collectors.toList());
+                LOG.debug(present.size() + " minions present out of " + minionIds.size());
 
                 if (present.isEmpty()) {
                     Map<Boolean, List<MinionServer>> result = new HashMap<>();
@@ -132,6 +134,18 @@ public enum SaltServerActionService {
             result.put(false, minions);
             return result;
         }
+    }
+
+    private List<String> respondingToPing(List<String> minionIds) throws SaltException {
+        Map<String, Boolean> pingResult = SaltAPIService.INSTANCE.callSync(
+            Test.ping(),
+            new MinionList(minionIds),
+            Collections.emptyMap()
+        );
+        return pingResult.entrySet().stream()
+            .filter(e -> e.getValue() == Boolean.TRUE)
+            .map(e -> e.getKey())
+            .collect(Collectors.toList());
     }
 
     private Map<LocalCall<?>, List<MinionServer>> callsForAction(Action actionIn,
