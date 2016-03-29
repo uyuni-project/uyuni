@@ -23,6 +23,8 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.common.ProvisionState;
+import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
@@ -935,5 +937,72 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         List<SnapshotTag> tags = ServerFactory.getSnapshotTags(snap);
         assertContains(tags, tag);
+    }
+
+
+    public void testListErrataNamesForServer() throws Exception {
+        Set<Long> serverIds = new HashSet<Long>();
+        Set<Long> errataIds = new HashSet<Long>();
+
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        serverIds.add(server.getId());
+        Channel baseChan = ChannelFactoryTest.createBaseChannel(user);
+        baseChan.setUpdateTag("SLE-SERVER");
+        server.addChannel(baseChan);
+
+        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        errataIds.add(e.getId());
+        e.setAdvisoryName("SUSE-2016-1234");
+        baseChan.addErrata(e);
+
+        Errata ce = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        errataIds.add(ce.getId());
+        ce.setAdvisoryName("CL-SUSE-2016-1234");
+        baseChan.addErrata(ce);
+
+        ChannelFactory.save(baseChan);
+
+        TestUtils.saveAndFlush(e);
+
+        Map<Long, Map<Long, Set<String>>> out =
+                ServerFactory.listErrataNamesForServers(serverIds, errataIds);
+        Set<String> errataName = out.get(server.getId()).get(e.getId());
+        assertContains(errataName, "SUSE-SLE-SERVER-2016-1234");
+
+        errataName = out.get(server.getId()).get(ce.getId());
+        assertContains(errataName, "CL-SUSE-SLE-SERVER-2016-1234");
+    }
+
+    public void testListErrataNamesForServerSLE11() throws Exception {
+        Set<Long> serverIds = new HashSet<Long>();
+        Set<Long> errataIds = new HashSet<Long>();
+
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        serverIds.add(server.getId());
+        Channel baseChan = ChannelFactoryTest.createBaseChannel(user);
+        baseChan.setUpdateTag("slessp4");
+        server.addChannel(baseChan);
+
+        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        errataIds.add(e.getId());
+        e.setAdvisoryName("ecryptfs-utils-12379");
+        baseChan.addErrata(e);
+
+        Errata ce = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        errataIds.add(ce.getId());
+        ce.setAdvisoryName("CL-ecryptfs-utils-12379");
+        baseChan.addErrata(ce);
+
+        ChannelFactory.save(baseChan);
+
+        TestUtils.saveAndFlush(e);
+
+        Map<Long, Map<Long, Set<String>>> out =
+                ServerFactory.listErrataNamesForServers(serverIds, errataIds);
+        Set<String> errataName = out.get(server.getId()).get(e.getId());
+        assertContains(errataName, "slessp4-ecryptfs-utils-12379");
+
+        errataName = out.get(server.getId()).get(ce.getId());
+        assertContains(errataName, "slessp4-CL-ecryptfs-utils-12379");
     }
 }
