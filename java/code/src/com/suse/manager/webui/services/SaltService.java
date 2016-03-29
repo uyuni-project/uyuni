@@ -78,13 +78,6 @@ public interface SaltService {
     Map<String, String> getTimezoneOffsets(Target<?> target);
 
     /**
-     * Query all present minions according to salt's presence detection.
-     *
-     * @return the list of minion keys that are present
-     */
-    List<String> present();
-
-    /**
      * Get all installed packages from a given minion.
      *
      * @param minionId id of the target minion
