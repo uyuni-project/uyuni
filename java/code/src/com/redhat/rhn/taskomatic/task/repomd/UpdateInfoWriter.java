@@ -123,7 +123,7 @@ public class UpdateInfoWriter extends RepomdWriter {
         String id = erratum.getAdvisoryName();
         String updateTag = findUpdateTag(channel);
         if (updateTag != null) {
-            if (id.startsWith("SUSE-")) {
+            if (id.matches("^([C-Z][A-Z]-)*SUSE-(.*)$")) {
                 // SLE12 style where the update tag is not a prefix
                 id = id.replaceFirst("SUSE", "SUSE-" + updateTag);
             }
