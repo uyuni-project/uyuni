@@ -78,13 +78,6 @@ public interface SaltService {
     Map<String, String> getTimezoneOffsets(Target<?> target);
 
     /**
-     * Query all present minions according to salt's presence detection.
-     *
-     * @return the list of minion keys that are present
-     */
-    List<String> present();
-
-    /**
      * Get all installed packages from a given minion.
      *
      * @param minionId id of the target minion
@@ -347,4 +340,12 @@ public interface SaltService {
      * @return a set of names that included the organization namespace
      */
     Set<String> resolveOrgStates(long orgId, Set<String> states);
+
+    /**
+     * Pings a target set of minions.
+     * @param target the target
+     * @return a Map from minion ids which responded to the ping to Boolean.TRUE
+     * @throws SaltException if we get a failure from Salt
+     */
+    Map<String, Boolean> ping(Target<?> target) throws SaltException;
 }

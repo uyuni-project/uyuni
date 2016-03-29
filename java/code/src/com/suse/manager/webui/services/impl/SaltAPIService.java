@@ -44,7 +44,7 @@ import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.Smbios;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Status;
-import com.suse.salt.netapi.calls.runner.Manage;
+import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.config.ClientConfig;
@@ -160,20 +160,6 @@ public enum SaltAPIService implements SaltService {
             Map<String, String> offsets = Timezone.getOffset().callSync(SALT_CLIENT, target,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return offsets;
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<String> present() {
-        try {
-            List<String> present = Manage.present().callSync(SALT_CLIENT,
-                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            return present;
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -673,4 +659,15 @@ public enum SaltAPIService implements SaltService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Boolean> ping(Target<?> targetIn) throws SaltException {
+        return callSync(
+            Test.ping(),
+            targetIn,
+            Collections.emptyMap()
+        );
+    }
 }
