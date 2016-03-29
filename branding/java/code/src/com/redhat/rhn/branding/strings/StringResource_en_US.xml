@@ -448,10 +448,10 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>'kernel', 'slessp1-glibc'</source>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.toolbar">
-        <source>Patches Search</source>
+        <source>Advanced Search</source>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.summary">
-        <source>Patches Search will return results from the complete set of patches released by @@PRODUCT_NAME@@.</source>
+        <source>Advanced Search will return results from the complete set of patches released by @@PRODUCT_NAME@@.</source>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.errata_advisory">
         <source>Patch Advisory</source>
