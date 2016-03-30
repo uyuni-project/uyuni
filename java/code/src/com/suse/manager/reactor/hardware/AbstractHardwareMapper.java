@@ -14,9 +14,13 @@
  */
 package com.suse.manager.reactor.hardware;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.suse.manager.reactor.utils.ValueMap;
 import org.apache.log4j.Logger;
+
+import java.util.Optional;
 
 /**
  * Base mapper that processes hardware info from a minion and stores it in the SUMA db.
@@ -40,18 +44,36 @@ public abstract class AbstractHardwareMapper<T> {
 
     /**
      * Get the hardware information from the minion and store it in our db.
-     * @param server the {@link MinionServer} bean
+     * @param serverId the id of the {@link MinionServer}
      * @param grains the Salt grains
      * @return the persisted bean(s)
      */
-    public T map(MinionServer server, ValueMap grains) {
+    public T map(Long serverId, ValueMap grains) {
+        T result = null;
         try {
-            return doMap(server, grains);
+            HibernateFactory.getSession().beginTransaction();
+            Optional<MinionServer> optionalServer = MinionServerFactory
+                    .lookupById(serverId);
+            if (!optionalServer.isPresent()) {
+                LOG.warn("Minion server not found: " + serverId);
+                result = null;
+            }
+            else {
+                result = doMap(optionalServer.get(), grains);
+            }
+
+            HibernateFactory.commitTransaction();
         }
         catch (Exception e) {
-            LOG.error("Error executing mapper " + getClass().getName(), e);
+            LOG.error("Rolling back transaction. Error executing mapper " +
+                    getClass().getName(), e);
+            HibernateFactory.rollbackTransaction();
         }
-        return null;
+        finally {
+            HibernateFactory.closeSession();
+        }
+
+        return result;
     }
 
     protected abstract T doMap(MinionServer server, ValueMap grains);
