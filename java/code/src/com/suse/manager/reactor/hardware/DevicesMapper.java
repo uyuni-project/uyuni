@@ -58,8 +58,9 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
         server.getDevices().clear();
 
         if (db == null || db.isEmpty()) {
-            setError("Got empty devices list");
-            LOG.warn("Got empty devices list for minion: " + minionId);
+            setError("Salt module 'udevdb.exportdb' returned an empty list");
+            LOG.warn("Salt module 'udevdb.exportdb' returned an empty list " +
+                    "for minion: " + minionId);
             return null;
         }
 
