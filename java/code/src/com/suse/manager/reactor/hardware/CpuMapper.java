@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.server.CPUArch;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.SaltGrains;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -40,7 +41,8 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
         CPU cpu = new CPU();
 
         // os.uname[4]
-        String cpuarch = grains.getValueAsString("cpuarch").toLowerCase();
+        String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue())
+                .toLowerCase();
 
         ValueMap cpuinfo = new ValueMap(saltInvoker.getCpuInfo(server.getMinionId()));
         // salt returns /proc/cpuinfo data

@@ -14,18 +14,15 @@
  */
 package com.suse.manager.reactor.messaging;
 
+import com.redhat.rhn.common.messaging.MessageAction;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.SaltServiceInvoker;
 import com.suse.manager.reactor.hardware.SysinfoMapper;
 import com.suse.manager.reactor.hardware.VirtualizationMapper;
+import com.suse.manager.webui.services.SaltGrains;
 import org.apache.log4j.Logger;
 
-import java.util.Optional;
-
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.suse.manager.reactor.hardware.CpuMapper;
 import com.suse.manager.reactor.hardware.DevicesMapper;
 import com.suse.manager.reactor.hardware.DmiMapper;
@@ -35,7 +32,7 @@ import com.suse.manager.webui.services.SaltService;
 /**
  * Get and process hardware information from a minion.
  */
-public class GetHardwareInfoEventMessageAction extends AbstractDatabaseAction {
+public class GetHardwareInfoEventMessageAction implements MessageAction {
 
     // Logger for this class
     private static final Logger LOG = Logger
@@ -52,44 +49,36 @@ public class GetHardwareInfoEventMessageAction extends AbstractDatabaseAction {
         this.SALT_SERVICE = saltService;
     }
 
-    @Override
-    protected void doExecute(EventMessage msg) {
+    /**
+     * {@inheritDoc}
+     */
+    public void execute(EventMessage msg) {
         GetHardwareInfoEventMessage event = (GetHardwareInfoEventMessage) msg;
 
-        Optional<MinionServer> optionalServer = MinionServerFactory
-                .lookupById(event.getServerId());
-        // TODO test refresh hardware case once the refresh btn works
-        optionalServer.ifPresent(server -> {
-            String minionId = server.getMinionId();
-            SaltServiceInvoker saltInvoker = new SaltServiceInvoker(SALT_SERVICE);
-            ValueMap grains = new ValueMap(saltInvoker.getGrains(minionId));
+        SaltServiceInvoker saltInvoker = new SaltServiceInvoker(SALT_SERVICE);
+        ValueMap grains = new ValueMap(saltInvoker.getGrains(event.getMinionId()));
 
-            CpuMapper cpuMapper = new CpuMapper(saltInvoker);
-            cpuMapper.map(server, grains);
+        CpuMapper cpuMapper = new CpuMapper(saltInvoker);
+        cpuMapper.map(event.getServerId(), grains);
 
-            String cpuarch = grains.getValueAsString("cpuarch");
+        String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue());
 
-            if (!CpuArchUtil.isS390(cpuarch)) {
-                DmiMapper dmiMapper = new DmiMapper(saltInvoker);
-                dmiMapper.map(server, grains);
-            }
-
-            DevicesMapper devicesMapper = new DevicesMapper(saltInvoker);
-            devicesMapper.map(server, grains);
-
-            if (CpuArchUtil.isS390(cpuarch)) {
-                SysinfoMapper sysinfoMapper = new SysinfoMapper(saltInvoker);
-                sysinfoMapper.map(server, grains);
-            }
-
-            VirtualizationMapper virtMapper = new VirtualizationMapper(saltInvoker);
-            virtMapper.map(server, grains);
-
-            LOG.info("Finished getting hardware info for: " + minionId);
-        });
-
-        if (!optionalServer.isPresent()) {
-            LOG.warn("Server entry not found: " + event.getServerId());
+        if (!CpuArchUtil.isS390(cpuarch)) {
+            DmiMapper dmiMapper = new DmiMapper(saltInvoker);
+            dmiMapper.map(event.getServerId(), grains);
         }
+
+        DevicesMapper devicesMapper = new DevicesMapper(saltInvoker);
+        devicesMapper.map(event.getServerId(), grains);
+
+        if (CpuArchUtil.isS390(cpuarch)) {
+            SysinfoMapper sysinfoMapper = new SysinfoMapper(saltInvoker);
+            sysinfoMapper.map(event.getServerId(), grains);
+        }
+
+        VirtualizationMapper virtMapper = new VirtualizationMapper(saltInvoker);
+        virtMapper.map(event.getServerId(), grains);
+
+        LOG.info("Finished getting hardware info for: " + event.getMinionId());
     }
 }

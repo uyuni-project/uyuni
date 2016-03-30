@@ -113,7 +113,7 @@ public class OrgDeleteAction extends RhnAction {
         String name = org.getName();
         RequestContext requestContext = new RequestContext(request);
 
-        OrgFactory.deleteOrg(oidIn, requestContext.getCurrentUser());
+        OrgFactory.deleteOrgAndDependencies(oidIn, requestContext.getCurrentUser());
         ActionMessages msg = new ActionMessages();
         msg.add(ActionMessages.GLOBAL_MESSAGE,
                 new ActionMessage("message.org_deleted", name));

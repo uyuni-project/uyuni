@@ -76,6 +76,18 @@ public class OrgFactory extends HibernateFactory {
     }
 
     /**
+     * Remove the org from db and dependencies like Salt custom states.
+     * @param oid Org Id to delete
+     * @param user User who initiated this action
+     */
+    // TODO this be probably somewhere else
+    public static void deleteOrgAndDependencies(Long oid, User user) {
+        Org org = OrgFactory.lookupById(oid);
+        SaltStateGeneratorService.INSTANCE.removeOrg(org);
+        deleteOrg(oid, user);
+    }
+
+    /**
      * the org id is passed to pl/sql to wipe out
      * @param oid Org Id to delete
      * @param user User who initiated this action
@@ -95,7 +107,7 @@ public class OrgFactory extends HibernateFactory {
                 kdc.store();
             }
         }
-        SaltStateGeneratorService.INSTANCE.removeOrg(org);
+
         IssFactory.unmapLocalOrg(org);
 
         Map<String, Object> in = new HashMap<String, Object>();
