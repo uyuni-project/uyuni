@@ -5,6 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -19,13 +20,17 @@ import com.suse.manager.webui.utils.salt.custom.Udevdb;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Status;
+import com.suse.salt.netapi.calls.modules.Test;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.commons.io.IOUtils;
 import org.jmock.Mock;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * Test for RefreshHardwareEventMessageAction.
@@ -34,36 +39,45 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
     private Gson gson = new Gson();
 
-    public void testRuntimeException() throws Exception {
-
-        MinionServer server = doTest(new RuntimeException("test exception"));
-
-        assertNotNull(server);
-        assertNotNull(server.getCpu());
-        assertNotNull(server.getVirtualInstance());
-        assertNull(server.getDmi()); // getDmiRecords() threw exception so it was not populated
-        assertTrue(!server.getNetworkInterfaces().isEmpty());
-        assertTrue(!server.getDevices().isEmpty());
-
+    public void testDmiRuntimeException() throws Exception {
+        doTest(new RuntimeException("test exception"),
+            (server, action) -> {
+                assertNotNull(server);
+                assertNotNull(server.getCpu());
+                assertNotNull(server.getVirtualInstance());
+                assertNull(server.getDmi()); // getDmiRecords() threw exception so it was not populated
+                assertTrue(!server.getNetworkInterfaces().isEmpty());
+                assertTrue(!server.getDevices().isEmpty());
+                ServerAction serverAction = action.getServerActions().stream().findFirst().get();
+                assertEquals(new Long(-1L), serverAction.getResultCode());
+                assertThat(serverAction.getResultMsg(),
+                    stringContains("DMI: An error occurred: test exception")
+                );
+            });
     }
 
-    public void testJsonSyntaxException() throws Exception {
-
-        MinionServer server = doTest(new JsonSyntaxException("test exception"));
-
-        assertNotNull(server);
-        assertNotNull(server.getCpu());
-        assertNotNull(server.getVirtualInstance());
-        assertNotNull(server.getDmi());
-        assertNull(server.getDmi().getSystem());
-        assertNull(server.getDmi().getProduct());
-        assertNull(server.getDmi().getBios());
-        assertNull(server.getDmi().getVendor());
-        assertTrue(!server.getDevices().isEmpty());
-        assertTrue(!server.getNetworkInterfaces().isEmpty());
+    public void testDmiJsonSyntaxException() throws Exception {
+        doTest(new JsonSyntaxException("test exception"),
+            (server, action) -> {
+                assertNotNull(server);
+                assertNotNull(server.getCpu());
+                assertNotNull(server.getVirtualInstance());
+                assertNotNull(server.getDmi());
+                assertNull(server.getDmi().getSystem());
+                assertNull(server.getDmi().getProduct());
+                assertNull(server.getDmi().getBios());
+                assertNull(server.getDmi().getVendor());
+                assertTrue(!server.getDevices().isEmpty());
+                assertTrue(!server.getNetworkInterfaces().isEmpty());
+                ServerAction serverAction = action.getServerActions().stream().findFirst().get();
+                assertEquals(new Long(-1L), serverAction.getResultCode());
+                assertThat(serverAction.getResultMsg(),
+                    stringContains("DMI: Could not retrieve DMI records: test exception")
+                );
+            });
     }
 
-    private MinionServer doTest(Exception exception) throws Exception {
+    private void doTest(Exception exception, BiConsumer<MinionServer, Action> assertions) throws Exception {
         MinionServer server = (MinionServer) ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
@@ -90,6 +104,10 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         Map<String, String> netmodules = parse("sumautil.get_net_modules", SumaUtil.getNetModules().getReturnType());
         apiMock.stubs().method("getNetModules").with(eq(minionId)).will(returnValue(netmodules));
 
+        Map<String, Boolean> ping = new HashMap<>();
+        ping.put(minionId, true);
+        apiMock.stubs().method("ping").will(returnValue(ping));
+
         RefreshHardwareEventMessageAction action = new RefreshHardwareEventMessageAction((SaltService)apiMock.proxy());
 
         Action scheduledAction = ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
@@ -101,7 +119,8 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
         server = MinionServerFactory.findByMinionId(minionId).orElse(null);
-        return server;
+
+        assertions.accept(server, scheduledAction);
     }
 
     private <T> T parse(String name, TypeToken<T> returnType) throws IOException {
