@@ -99,8 +99,9 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
             Set<InstalledPackage> oldPackages = server.getPackages();
             oldPackages.addAll(newPackages);
             oldPackages.retainAll(newPackages);
-
-            server.setInstalledProducts(getInstalledProducts(server.getMinionId()));
+            Optional<Set<InstalledProduct>> installedProducts =
+                    getInstalledProducts(server.getMinionId());
+            installedProducts.ifPresent(server::setInstalledProducts);
 
             ServerFactory.save(server);
             if (LOG.isDebugEnabled()) {
@@ -118,33 +119,35 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
      * @param minionId the id of the minion
      * @return a list of installed products
      */
-    private Set<InstalledProduct> getInstalledProducts(String minionId) {
-        return SALT_SERVICE.getInstalledProducts(minionId).stream().flatMap(saltProduct -> {
-            String name = saltProduct.getName();
-            String version = saltProduct.getVersion();
-            String release = saltProduct.getRelease();
-            String arch = saltProduct.getArch();
-            boolean isbase = saltProduct.getIsbase();
+    private Optional<Set<InstalledProduct>> getInstalledProducts(String minionId) {
+        return SALT_SERVICE.getInstalledProducts(minionId).map(result ->
+            result.stream().flatMap(saltProduct -> {
+                String name = saltProduct.getName();
+                String version = saltProduct.getVersion();
+                String release = saltProduct.getRelease();
+                String arch = saltProduct.getArch();
+                boolean isbase = saltProduct.getIsbase();
 
-            Optional<SUSEProduct> product = Optional.ofNullable(
-                SUSEProductFactory.findSUSEProduct(
-                        name, version, release, arch, true
-                )
-            );
-            if (!product.isPresent()) {
-                LOG.info(String.format("No product match found for: %s %s %s %s",
-                        name, version, release, arch));
-            }
-            return product.map(prod -> {
-                InstalledProduct prd = new InstalledProduct();
-                prd.setName(prod.getName());
-                prd.setVersion(prod.getVersion());
-                prd.setRelease(prod.getRelease());
-                prd.setArch(prod.getArch());
-                prd.setBaseproduct(isbase);
-                return Stream.of(prd);
-            }).orElseGet(Stream::empty);
-        }).collect(Collectors.toSet());
+                Optional<SUSEProduct> product = Optional.ofNullable(
+                    SUSEProductFactory.findSUSEProduct(
+                            name, version, release, arch, true
+                    )
+                );
+                if (!product.isPresent()) {
+                    LOG.info(String.format("No product match found for: %s %s %s %s",
+                            name, version, release, arch));
+                }
+                return product.map(prod -> {
+                    InstalledProduct prd = new InstalledProduct();
+                    prd.setName(prod.getName());
+                    prd.setVersion(prod.getVersion());
+                    prd.setRelease(prod.getRelease());
+                    prd.setArch(prod.getArch());
+                    prd.setBaseproduct(isbase);
+                    return Stream.of(prd);
+                }).orElseGet(Stream::empty);
+            }).collect(Collectors.toSet())
+        );
     }
 
     /**
