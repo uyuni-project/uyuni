@@ -961,7 +961,7 @@ public class ServerFactory extends HibernateFactory {
                     if (StringUtils.isBlank(tag)) {
                         return name;
                     }
-                    if (name.startsWith("SUSE-")) {
+                    if (name.matches("^([C-Z][A-Z]-)*SUSE-(.*)$")) {
                         return name.replaceFirst("SUSE", "SUSE-" + tag);
                     }
                     else {
