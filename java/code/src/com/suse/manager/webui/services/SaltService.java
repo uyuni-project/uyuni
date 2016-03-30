@@ -40,6 +40,17 @@ import java.util.Set;
 public interface SaltService {
 
     /**
+     * Executes a salt function on a single minion.
+     *
+     * @param call salt function to call
+     * @param minionId minion id to target
+     * @param <R> result type of the salt function
+     * @return Optional holding the result of the function
+     * or none if the minion did not respond.
+     */
+    <R> Optional<R> syncSingleMinion(LocalCall<R> call, String minionId);
+
+    /**
      * Get the minion keys from salt with their respective status.
      *
      * @return the keys with their respective status as returned from salt
@@ -184,14 +195,14 @@ public interface SaltService {
      * @return the DMI data as a map. An empty
      * imutable map is returned if there is no data.
      */
-    Map<String, Object> getDmiRecords(String minionId, RecordType recordType);
+    Optional<Map<String, Object>> getDmiRecords(String minionId, RecordType recordType);
 
     /**
      * Get the udev database from a minion.
      * @param minionId the minion id
      * @return the udev db as a list of maps, where each map is a db entry.
      */
-    List<Map<String, Object>> getUdevdb(String minionId);
+    Optional<List<Map<String, Object>>> getUdevdb(String minionId);
 
     /**
      * Get the content of file from a minion.
@@ -199,21 +210,21 @@ public interface SaltService {
      * @param path the path of the file
      * @return the content of a file as a string
      */
-    String getFileContent(String minionId, String path);
+    Optional<String> getFileContent(String minionId, String path);
 
     /**
      * Get the output of the '/usr/bin/read_values' if available.
      * @param minionId the minion id
      * @return the output of command as a string.
      */
-    String getMainframeSysinfoReadValues(String minionId);
+    Optional<String> getMainframeSysinfoReadValues(String minionId);
 
     /**
      * Get the network interfaces from a minion.
      * @param minionId the minion id
      * @return a map containing information about each network interface
      */
-    Map<String, Network.Interface> getNetworkInterfacesInfo(String minionId);
+    Optional<Map<String, Network.Interface>> getNetworkInterfacesInfo(String minionId);
 
     /**
      * Schedule a function call for a given target.
@@ -270,7 +281,7 @@ public interface SaltService {
      * @param minionId the minion id
      * @return a map of IPv4 and IPv6 (if available) {@link SumaUtil.IPRoute}
      */
-    Map<SumaUtil.IPVersion, SumaUtil.IPRoute> getPrimaryIps(String minionId);
+    Optional<Map<SumaUtil.IPVersion, SumaUtil.IPRoute>> getPrimaryIps(String minionId);
 
     /**
      * Get the kernel modules used for each network interface.
@@ -278,14 +289,14 @@ public interface SaltService {
      * @return a map with the network interface name as key and
      * the kernel module name or null as a value
      */
-    Map<String, String> getNetModules(String minionId);
+    Optional<Map<String, String>> getNetModules(String minionId);
 
     /**
      * Gets the installed products of the minion
      * @param minionId the minion id
      * @return a list of installed products
      */
-    List<Zypper.ProductInfo> getInstalledProducts(String minionId);
+    Optional<List<Zypper.ProductInfo>> getInstalledProducts(String minionId);
     /**
      * Find all minions matching the target expression and
      * retain only those allowed for the given user.
