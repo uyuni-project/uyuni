@@ -225,6 +225,7 @@ var AddPinPopUp = React.createClass({
     if (this.state.systemId == null) {
       popUpContent = (
         <div>
+          <h4 className="add-pin-popup-subtitle">{t("Available Systems")}</h4>
           <p>{t("Step 1/2: select the system to pin from the table below.")}</p>
           <Table headers={[t("System"), t("Socket/IFL count"), t("Products"), t("")]} rows={this.buildRows()}
             rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["name"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
@@ -239,6 +240,7 @@ var AddPinPopUp = React.createClass({
       var system = this.props.systems[this.state.systemId];
       popUpContent = (
         <div>
+          <h4 className="add-pin-popup-subtitle">{t("Available Subscriptions for the Selected System")}</h4>
           <p>{t("Step 2/2: pick a subscription for system ")}<strong>{system.name}</strong></p>
           <PinSubscriptionSelector onSubscriptionSelected={this.onSubscriptionSelected}
             subscriptions={system.possibleSubscriptionIds.map(
