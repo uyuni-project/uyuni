@@ -32,11 +32,14 @@ import com.suse.manager.reactor.hardware.VirtualizationMapper;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltGrains;
 import com.suse.manager.webui.services.SaltService;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.exception.SaltException;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -77,45 +80,65 @@ public class RefreshHardwareEventMessageAction extends AbstractDatabaseAction {
                 serverAction.ifPresent(sa -> {
                     LOG.debug("Refreshing hardware for: " + minionServer.getMinionId());
 
+                    Boolean minionIsUp = null;
                     List<String> errors = new LinkedList<>();
-                    SaltServiceInvoker saltInvoker = new SaltServiceInvoker(saltService);
-
-                    ValueMap grains = new ValueMap(saltInvoker
-                            .getGrains(event.getMinionId()));
-
-                    CpuMapper cpuMapper = new CpuMapper(saltInvoker);
-                    cpuMapper.map(minionServer.getId(), grains);
-                    checkErrors("CPU", errors, cpuMapper);
-
-                    String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue());
-
-                    if (!CpuArchUtil.isS390(cpuarch)) {
-                        DmiMapper dmiMapper = new DmiMapper(saltInvoker);
-                        dmiMapper.map(minionServer.getId(), grains);
-                        checkErrors("DMI", errors, dmiMapper);
+                    try {
+                        Map<String, Boolean> ping = saltService
+                                .ping(new MinionList(minionServer.getMinionId()));
+                        minionIsUp = ping.get(minionServer.getMinionId());
                     }
-
-                    DevicesMapper devicesMapper = new DevicesMapper(saltInvoker);
-                    devicesMapper.map(minionServer.getId(), grains);
-                    checkErrors("Devices", errors, devicesMapper);
-
-                    if (CpuArchUtil.isS390(cpuarch)) {
-                        SysinfoMapper sysinfoMapper = new SysinfoMapper(saltInvoker);
-                        sysinfoMapper.map(minionServer.getId(), grains);
-                        checkErrors("S390", errors, sysinfoMapper);
+                    catch (SaltException e) {
+                        errors.add("Could not 'test.ping' minion: " + e.getMessage());
                     }
+                    if (minionIsUp == null || Boolean.FALSE.equals(minionIsUp)) {
+                        errors.add("Minion did not respond");
+                    }
+                    else {
+                        SaltServiceInvoker saltInvoker =
+                                new SaltServiceInvoker(saltService);
 
-                    VirtualizationMapper virtMapper = new VirtualizationMapper(saltInvoker);
-                    virtMapper.map(minionServer.getId(), grains);
-                    checkErrors("Virtualization", errors, virtMapper);
+                        ValueMap grains = new ValueMap(saltInvoker
+                                .getGrains(event.getMinionId()));
 
-                    LOG.info("Done refreshing hardware info for: " + event.getMinionId());
+                        CpuMapper cpuMapper = new CpuMapper(saltInvoker);
+                        cpuMapper.map(minionServer.getId(), grains);
+                        checkErrors("CPU", errors, cpuMapper);
 
-                    NetworkInfoMapper networkMapper = new NetworkInfoMapper(saltInvoker);
-                    networkMapper.map(minionServer.getId(), grains);
-                    checkErrors("Network", errors, networkMapper);
+                        String cpuarch = grains
+                                .getValueAsString(SaltGrains.CPUARCH.getValue());
 
-                    LOG.info("Done refreshing network info for: " + event.getMinionId());
+                        if (!CpuArchUtil.isS390(cpuarch)) {
+                            DmiMapper dmiMapper = new DmiMapper(saltInvoker);
+                            dmiMapper.map(minionServer.getId(), grains);
+                            checkErrors("DMI", errors, dmiMapper);
+                        }
+
+                        DevicesMapper devicesMapper = new DevicesMapper(saltInvoker);
+                        devicesMapper.map(minionServer.getId(), grains);
+                        checkErrors("Devices", errors, devicesMapper);
+
+                        if (CpuArchUtil.isS390(cpuarch)) {
+                            SysinfoMapper sysinfoMapper = new SysinfoMapper(saltInvoker);
+                            sysinfoMapper.map(minionServer.getId(), grains);
+                            checkErrors("S390", errors, sysinfoMapper);
+                        }
+
+                        VirtualizationMapper virtMapper =
+                                new VirtualizationMapper(saltInvoker);
+                        virtMapper.map(minionServer.getId(), grains);
+                        checkErrors("Virtualization", errors, virtMapper);
+
+                        LOG.info("Done refreshing hardware info for: " +
+                                event.getMinionId());
+
+                        NetworkInfoMapper networkMapper =
+                                new NetworkInfoMapper(saltInvoker);
+                        networkMapper.map(minionServer.getId(), grains);
+                        checkErrors("Network", errors, networkMapper);
+
+                        LOG.info("Done refreshing network info for: " +
+                                event.getMinionId());
+                    }
 
                     if (errors.isEmpty()) {
                         sa.setStatus(ActionFactory.STATUS_COMPLETED);
