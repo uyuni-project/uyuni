@@ -57,29 +57,32 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
         }
 
         Map<String, Network.Interface> interfaces = saltInvoker
-                .getNetworkInterfacesInfo(minionId);
+                .getNetworkInterfacesInfo(minionId)
+                .orElse(Collections.emptyMap());
         Optional<Map<SumaUtil.IPVersion, SumaUtil.IPRoute>> primaryIps =
-                Optional.ofNullable(saltInvoker.getPrimaryIps(minionId));
-        Map<String, String> netModules = Optional.ofNullable(saltInvoker
-                .getNetModules(minionId)).orElse(Collections.emptyMap());
+                saltInvoker.getPrimaryIps(minionId);
+        Map<String, String> netModules = saltInvoker.getNetModules(minionId)
+                .orElse(Collections.emptyMap());
 
-        if (interfaces == null) {
+        if (interfaces.isEmpty()) {
             setError("Salt module 'network.interfaces' returned en empty value");
             LOG.error("Salt module 'network.interfaces' returned en empty value " +
                     "for minion: " + minionId);
             return null;
         }
 
-        String primaryIPv4 = primaryIps.map(ips -> ips.get(SumaUtil.IPVersion.IPV4))
-                .map(SumaUtil.IPRoute::getSource).orElse(null);
-        String primaryIPv6 = primaryIps.map(ips -> ips.get(SumaUtil.IPVersion.IPV6))
-                .map(SumaUtil.IPRoute::getSource).orElse(null);
+        Optional<String> primaryIPv4 = primaryIps
+                    .flatMap(x -> Optional.ofNullable(x.get(SumaUtil.IPVersion.IPV4)))
+                    .map(SumaUtil.IPRoute::getSource);
+        Optional<String> primaryIPv6 = primaryIps
+                    .flatMap(x -> Optional.ofNullable(x.get(SumaUtil.IPVersion.IPV6)))
+                    .map(SumaUtil.IPRoute::getSource);
 
         com.redhat.rhn.domain.server.Network network =
                 new com.redhat.rhn.domain.server.Network();
         network.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
-        network.setIpaddr(primaryIPv4);
-        network.setIp6addr(primaryIPv6);
+        primaryIPv4.ifPresent(network::setIpaddr);
+        primaryIPv6.ifPresent(network::setIp6addr);
 
         server.addNetwork(network);
 
@@ -123,7 +126,7 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
 
                 ServerNetworkFactory.saveServerNetAddress4(ipv4);
 
-                if (StringUtils.equals(ipv4.getAddress(), primaryIPv4)) {
+                if (StringUtils.equals(ipv4.getAddress(), primaryIPv4.orElse(null))) {
                     iface.setPrimary("Y");
                 }
             });
@@ -147,7 +150,7 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
 
                 ServerNetworkFactory.saveServerNetAddress6(ipv6);
 
-                if (StringUtils.equals(ipv6.getAddress(), primaryIPv6)) {
+                if (StringUtils.equals(ipv6.getAddress(), primaryIPv6.orElse(null))) {
                     iface.setPrimary("Y");
                 }
             });

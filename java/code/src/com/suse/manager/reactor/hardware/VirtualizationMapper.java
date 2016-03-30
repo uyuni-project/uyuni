@@ -106,8 +106,8 @@ public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance
         else if (!CpuArchUtil.isS390(cpuarch)) {
             // there's no DMI on S390
             try {
-                ValueMap dmiSystem = new ValueMap(saltInvoker
-                        .getDmiRecords(server.getMinionId(), RecordType.SYSTEM));
+                ValueMap dmiSystem = saltInvoker.getDmiRecords(server.getMinionId(),
+                        RecordType.SYSTEM).map(ValueMap::new).orElseGet(ValueMap::new);
                 String manufacturer = dmiSystem.getValueAsString("manufacturer");
                 String productName = dmiSystem.getValueAsString("product_name");
                 if ("HITACHI".equalsIgnoreCase(manufacturer) &&

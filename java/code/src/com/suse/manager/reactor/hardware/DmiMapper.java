@@ -31,10 +31,6 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(DmiMapper.class);
 
-    private ValueMap bios;
-
-    private ValueMap system;
-
     /**
      * The constructor.
      * @param saltServiceInvoker a {@link SaltServiceInvoker} instance
@@ -53,14 +49,16 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
         try {
             // TODO get all records at once? less roundtrips but larger response
             // TODO there is a 1MB limit to message size
-            bios = new ValueMap(saltInvoker.getDmiRecords(minionId,
-                    Smbios.RecordType.BIOS));
-            system = new ValueMap(saltInvoker.getDmiRecords(minionId,
-                    Smbios.RecordType.SYSTEM));
-            ValueMap chassis = new ValueMap(saltInvoker.getDmiRecords(minionId,
-                    Smbios.RecordType.CHASSIS));
-            ValueMap board = new ValueMap(saltInvoker.getDmiRecords(minionId,
-                    Smbios.RecordType.BASEBOARD));
+            ValueMap bios = saltInvoker.getDmiRecords(minionId, Smbios.RecordType.BIOS)
+                    .map(ValueMap::new).orElseGet(ValueMap::new);
+            ValueMap system = saltInvoker.getDmiRecords(minionId, Smbios.RecordType.SYSTEM)
+                    .map(ValueMap::new).orElseGet(ValueMap::new);
+            ValueMap chassis = saltInvoker.getDmiRecords(minionId,
+                    Smbios.RecordType.CHASSIS)
+                    .map(ValueMap::new).orElseGet(ValueMap::new);
+            ValueMap board = saltInvoker.getDmiRecords(minionId,
+                    Smbios.RecordType.BASEBOARD)
+                    .map(ValueMap::new).orElseGet(ValueMap::new);
 
             biosVendor = (String)bios.get("vendor").orElse(null);
             biosVersion = (String)bios.get("version").orElse(null);
