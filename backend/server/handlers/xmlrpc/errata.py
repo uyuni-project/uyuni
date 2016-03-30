@@ -15,6 +15,8 @@
 # Implements the errata.* functions for XMLRPC
 #
 
+import re
+
 # common modules imports
 from spacewalk.common.rhnTranslate import _
 from spacewalk.common import rhnFlags
@@ -274,9 +276,10 @@ class Errata(rhnHandler):
         h.execute(**bound_vars)
         errata_list = h.fetchall()
         result = []
+        regexp = re.compile(r"^([C-Z][A-Z]-)*SUSE-(.*)$")
         for eid, name, update_tag in errata_list:
             if update_tag:
-                if name.startswith('SUSE-'):
+                if regexp.match(name):
                     name = name.replace("SUSE", "SUSE-%s" % update_tag, 1)
                 else:
                     name = "%s-%s" % (update_tag, name)
