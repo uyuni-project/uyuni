@@ -49,6 +49,10 @@ public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance
         String virtUuid = grains.getValueAsString("uuid");
         String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue());
 
+        if (virtType == null) {
+            setError("Grain 'virtual' has no value");
+        }
+
         VirtualInstanceType type = null;
 
         if (StringUtils.isNotBlank(virtType) && !"physical".equals(virtType)) {
