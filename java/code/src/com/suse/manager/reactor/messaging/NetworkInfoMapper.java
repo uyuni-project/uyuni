@@ -64,9 +64,9 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
                 .getNetModules(minionId)).orElse(Collections.emptyMap());
 
         if (interfaces == null) {
-            setError("Module 'network.interfaces' returned en empty value");
-            LOG.error("Module 'network.interfaces' returned en empty value for minion: " +
-                    minionId);
+            setError("Salt module 'network.interfaces' returned en empty value");
+            LOG.error("Salt module 'network.interfaces' returned en empty value " +
+                    "for minion: " + minionId);
             return null;
         }
 
