@@ -18,6 +18,7 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
@@ -39,6 +40,13 @@ public class ValueMap {
      */
     public ValueMap(Map<String, ?> valueMapIn) {
         this.valueMap = valueMapIn;
+    }
+
+    /**
+     * Create an empty ValueMap
+     */
+    public ValueMap() {
+        this.valueMap = Collections.emptyMap();
     }
 
     /**
