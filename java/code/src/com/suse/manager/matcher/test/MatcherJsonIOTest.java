@@ -13,6 +13,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -32,9 +33,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
-public class MatcherJsonIOTest extends TestCase {
+public class MatcherJsonIOTest extends RhnBaseTestCase {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/sccdata/";
     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
     private static final String ORDERS_JSON = "organizations_orders.json";
