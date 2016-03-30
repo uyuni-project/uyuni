@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,7 +50,7 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
     @Override
     public MinionServer doMap(MinionServer server, ValueMap grains) {
         String minionId = server.getMinionId();
-        List<Map<String, Object>> db = saltInvoker.getUdevdb(minionId);
+        Optional<List<Map<String, Object>>> udevdb = saltInvoker.getUdevdb(minionId);
 
         // remove any existing devices in case we're refreshing the hw info
         for (Device device : server.getDevices()) {
@@ -57,14 +58,14 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
         }
         server.getDevices().clear();
 
-        if (db == null || db.isEmpty()) {
+        if (!udevdb.isPresent() || udevdb.filter(List::isEmpty).isPresent()) {
             setError("Salt module 'udevdb.exportdb' returned an empty list");
             LOG.warn("Salt module 'udevdb.exportdb' returned an empty list " +
                     "for minion: " + minionId);
             return null;
         }
 
-        db.forEach(dbdev -> {
+        udevdb.get().forEach(dbdev -> {
             String devpath = (String)dbdev.get("P"); // sysfs path without /sys
             @SuppressWarnings("unchecked")
             ValueMap props = new ValueMap((Map<String, Object>)dbdev.get("E"));
@@ -389,9 +390,14 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
     private int getScsiDevType(String minionId, String sysfsPath) {
         String path = "/sys" + sysfsPath + "/type";
         try {
-            String content = saltInvoker
-                    .getFileContent(minionId, path);
-            return Integer.parseInt(StringUtils.trim(content));
+            Optional<Integer> integer = saltInvoker
+                    .getFileContent(minionId, path)
+                    .map(StringUtils::trim)
+                    .map(Integer::parseInt);
+            if (!integer.isPresent()) {
+                LOG.warn("Could not get content of file " + path);
+            }
+            return integer.orElse(-1);
         }
         catch (Exception e) {
             LOG.warn("Could not get content of file " + path, e);
