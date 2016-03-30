@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.hardware;
 
+import com.google.gson.JsonSyntaxException;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
@@ -113,9 +114,10 @@ public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance
                     type = VirtualInstanceFactory.getInstance()
                             .getVirtualInstanceType("virtage");
                 }
-            } catch (Exception e) {
-                LOG.warn("Could not retrieve DMI info from minion '" + server.getMinionId() +
-                        "'. JSON syntax error.");
+            }
+            catch (JsonSyntaxException e) {
+                LOG.warn("Could not retrieve DMI info from minion '" +
+                        server.getMinionId() + "'. JSON syntax error.");
             }
         }
 
