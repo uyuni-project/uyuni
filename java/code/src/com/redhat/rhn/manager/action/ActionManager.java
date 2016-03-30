@@ -1269,12 +1269,7 @@ public class ActionManager extends BaseManager {
                 throw new MissingCapabilityException("script.run", sid);
             }
 
-            if (!SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT) &&
-                    !SystemManager.hasEntitlement(sid, EntitlementManager.SALT)) {
-                throw new MissingEntitlementException(
-                    EntitlementManager.MANAGEMENT.getHumanReadableLabel() + " or " +
-                    EntitlementManager.SALT.getHumanReadableLabel());
-            }
+            checkSaltOrManagementEntitlement(sid);
         }
     }
 
@@ -1511,7 +1506,7 @@ public class ActionManager extends BaseManager {
      */
     public static Action scheduleHardwareRefreshAction(User scheduler, Server srvr,
             Date earliestAction) {
-        checkHardwareRefreshEntitlement(srvr.getId());
+        checkSaltOrManagementEntitlement(srvr.getId());
         return scheduleAction(scheduler, srvr, ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
                 ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction);
     }
@@ -1528,7 +1523,7 @@ public class ActionManager extends BaseManager {
             Set<Long> serverIds) {
         for (Long sid : serverIds) {
             Server s = SystemManager.lookupByIdAndUser(sid, scheduler);
-            checkHardwareRefreshEntitlement(sid);
+            checkSaltOrManagementEntitlement(sid);
         }
         return scheduleAction(scheduler, ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
                 ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction,
@@ -1545,7 +1540,7 @@ public class ActionManager extends BaseManager {
      */
     public static Action scheduleHardwareRefreshAction(Org schedulerOrg, Server srvr,
                                                        Date earliestAction) {
-        checkHardwareRefreshEntitlement(srvr.getId());
+        checkSaltOrManagementEntitlement(srvr.getId());
 
         Action action = ActionFactory
                 .createAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
@@ -1567,14 +1562,14 @@ public class ActionManager extends BaseManager {
         return action;
     }
 
-    private static void checkHardwareRefreshEntitlement(Long sid) {
+    private static void checkSaltOrManagementEntitlement(Long sid) {
         if (!SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT) &&
                 !SystemManager.hasEntitlement(sid, EntitlementManager.SALT)) {
-            log.error("Unable to run a hardware refresh action " +
-                    "on an system without enterprise entitlement, id " + sid);
+            log.error("Unable to run action " +
+            "on an system without either Salt or Management entitlement, id " + sid);
             throw new MissingEntitlementException(
-                    EntitlementManager.MANAGEMENT.getHumanReadableLabel() +
-                            " or " + EntitlementManager.SALT.getHumanReadableLabel()
+                    EntitlementManager.MANAGEMENT.getHumanReadableLabel() + " or " +
+                    EntitlementManager.SALT.getHumanReadableLabel()
             );
         }
     }
