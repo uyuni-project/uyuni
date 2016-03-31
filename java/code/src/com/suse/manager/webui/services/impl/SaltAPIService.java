@@ -159,8 +159,9 @@ public enum SaltAPIService implements SaltService {
      */
     public Optional<String> getMachineId(String minionId) {
         return getGrain(minionId, "machine_id").flatMap(grain -> {
-          if (grain instanceof String)
-              return Optional.of((String)grain);
+          if (grain instanceof String) {
+              return Optional.of((String) grain);
+          }
           else {
               LOG.warn("Minion " + minionId + " returned non string: " +
                       grain + " as minion_id");

@@ -38,7 +38,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -91,7 +90,8 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
         // Query info about installed packages and save the server
         MinionServerFactory.lookupById(eventMessage.getServerId()).ifPresent(server -> {
 
-            SALT_SERVICE.getInstalledPackageDetails(server.getMinionId(), PKGATTR).map(saltPkgs ->
+            SALT_SERVICE.getInstalledPackageDetails(server.getMinionId(), PKGATTR)
+                    .map(saltPkgs ->
                 saltPkgs.entrySet().stream().map(
                    entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
                 ).collect(Collectors.toSet())
