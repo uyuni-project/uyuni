@@ -217,7 +217,8 @@ public class SaltCustomStateStorageManager {
      */
     public List<String> listByOrg(long orgId) {
         List<CustomState> orgStates = StateFactory.getCustomStatesByOrg(orgId);
-        return orgStates.stream().map(CustomState::getStateName).collect(Collectors.toList());
+        return orgStates.stream().map(CustomState::getStateName)
+                .collect(Collectors.toList());
     }
 
     /**
