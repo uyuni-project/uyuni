@@ -196,7 +196,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setBaseEntitlement(EntitlementManager.SALT);
 
             // get hardware and network async
-            triggerGetHardwareInfo(server);
+            triggerHardwareRefresh(server);
 
             Map<String, String> data = new HashMap<>();
             data.put("minionId", minionId);
@@ -245,7 +245,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         server.setRam(grains.getValueAsLong("mem_total").orElse(0L));
     }
 
-    private void triggerGetHardwareInfo(MinionServer server) {
+    private void triggerHardwareRefresh(MinionServer server) {
         Action action = ActionManager
                 .scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
         MessageQueue.publish(new RefreshHardwareEventMessage(server.getMinionId(), action));
