@@ -20,8 +20,6 @@ import com.suse.manager.webui.utils.salt.custom.Udevdb;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Status;
-import com.suse.salt.netapi.calls.modules.Test;
-import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.commons.io.IOUtils;
 import org.jmock.Mock;
 
@@ -30,6 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 /**
@@ -87,22 +86,22 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         apiMock.stubs().method("getDmiRecords").will(throwException(exception));
 
         Map<String, Object> grains = parse("grains.items", Grains.items(false).getReturnType());
-        apiMock.stubs().method("getGrains").with(eq(minionId)).will(returnValue(grains));
+        apiMock.stubs().method("getGrains").with(eq(minionId)).will(returnValue(Optional.of(grains)));
 
         List<Map<String, Object>> udevdb = parse("udevdb.exportdb", Udevdb.exportdb().getReturnType());
-        apiMock.stubs().method("getUdevdb").with(eq(minionId)).will(returnValue(udevdb));
+        apiMock.stubs().method("getUdevdb").with(eq(minionId)).will(returnValue(Optional.of(udevdb)));
 
         Map<String, Object> cpuinfo = parse("status.cpuinfo", Status.cpuinfo().getReturnType());
-        apiMock.stubs().method("getCpuInfo").with(eq(minionId)).will(returnValue(cpuinfo));
+        apiMock.stubs().method("getCpuInfo").with(eq(minionId)).will(returnValue(Optional.of(cpuinfo)));
 
         Map<String, Network.Interface> netif = parse("network.interfaces", Network.interfaces().getReturnType());
-        apiMock.stubs().method("getNetworkInterfacesInfo").with(eq(minionId)).will(returnValue(netif));
+        apiMock.stubs().method("getNetworkInterfacesInfo").with(eq(minionId)).will(returnValue(Optional.of(netif)));
 
         Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse("sumautil.primary_ips", SumaUtil.primaryIps().getReturnType());
-        apiMock.stubs().method("getPrimaryIps").with(eq(minionId)).will(returnValue(ips));
+        apiMock.stubs().method("getPrimaryIps").with(eq(minionId)).will(returnValue(Optional.of(ips)));
 
         Map<String, String> netmodules = parse("sumautil.get_net_modules", SumaUtil.getNetModules().getReturnType());
-        apiMock.stubs().method("getNetModules").with(eq(minionId)).will(returnValue(netmodules));
+        apiMock.stubs().method("getNetModules").with(eq(minionId)).will(returnValue(Optional.of(netmodules)));
 
         Map<String, Boolean> ping = new HashMap<>();
         ping.put(minionId, true);
