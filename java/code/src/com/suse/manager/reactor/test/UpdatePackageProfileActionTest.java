@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -105,14 +106,14 @@ public class UpdatePackageProfileActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, minion.getInstalledProducts().size());
     }
 
-    private Map<String, Pkg.Info> getMinionPackages() throws IOException, ClassNotFoundException {
-        return new JsonParser<>(Pkg.infoInstalled(UpdatePackageProfileEventMessageAction.PKGATTR, true)
-                .getReturnType()).parse(readFile("dummy_package.json"));
+    private Optional<Map<String, Pkg.Info>> getMinionPackages() throws IOException, ClassNotFoundException {
+        return Optional.ofNullable(new JsonParser<>(Pkg.infoInstalled(UpdatePackageProfileEventMessageAction.PKGATTR, true)
+                .getReturnType()).parse(readFile("dummy_package.json")));
     }
 
-    private List<Zypper.ProductInfo> getInstalledProducts() throws IOException, ClassNotFoundException {
-        return new JsonParser<>(Zypper.listProducts(false)
-                .getReturnType()).parse(readFile("dummy_installed_products.json"));
+    private Optional<List<Zypper.ProductInfo>> getInstalledProducts() throws IOException, ClassNotFoundException {
+        return Optional.ofNullable(new JsonParser<>(Zypper.listProducts(false)
+                .getReturnType()).parse(readFile("dummy_installed_products.json")));
     }
 
     private String readFile(String file) throws IOException, ClassNotFoundException {
