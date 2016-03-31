@@ -70,7 +70,7 @@ public interface SaltService {
      * @param minionId id of the target minion
      * @return map containing the grains
      */
-    Map<String, Object> getGrains(String minionId);
+    Optional<Map<String, Object>> getGrains(String minionId);
 
     /**
      * Get the machine id for a given minion.
@@ -78,7 +78,7 @@ public interface SaltService {
      * @param minionId id of the target minion
      * @return the machine id as a string
      */
-    String getMachineId(String minionId);
+    Optional<String> getMachineId(String minionId);
 
     /**
      * Get the timezone offsets for a target, e.g. a list of minions.
@@ -94,7 +94,7 @@ public interface SaltService {
      * @param minionId id of the target minion
      * @return a map from package names to list of version strings
      */
-    Map<String, List<String>> getPackages(String minionId);
+    Optional<Map<String, List<String>>> getPackages(String minionId);
 
     /**
      * Get the installed packages from a minion with package info.
@@ -103,7 +103,7 @@ public interface SaltService {
      * @param attributes package attributes that should be returned
      * @return a map from package names to package info objects
      */
-    Map<String, Pkg.Info> getInstalledPackageDetails(
+    Optional<Map<String, Pkg.Info>> getInstalledPackageDetails(
             String minionId, List<String> attributes);
 
     /**
@@ -174,7 +174,7 @@ public interface SaltService {
      * @param minionId the minion id
      * @return the CPU data as a map.
      */
-    Map<String, Object> getCpuInfo(String minionId);
+    Optional<Map<String, Object>> getCpuInfo(String minionId);
 
     /**
      * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
