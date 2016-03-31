@@ -91,7 +91,7 @@ public abstract class AbstractHardwareMapper<T> {
     /**
      * @param errorIn error messages
      */
-    public void setError(String errorIn) {
+    protected void setError(String errorIn) {
         this.error = Optional.ofNullable(errorIn);
     }
 }
