@@ -99,7 +99,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             LOG.info("Cannot find machine id for minion: " + minionId);
             return;
         }
-        //FIXME: refactor this whole function so we don't have to call get in so many places.
+        //FIXME: refactor this whole function so we don't have to call get
+        //in so many places.
         String machineId = optMachineId.get();
 
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
