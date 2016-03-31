@@ -29,8 +29,7 @@ import org.apache.log4j.Logger;
 public class CpuMapper extends AbstractHardwareMapper<CPU> {
 
     // Logger for this class
-    private static final Logger LOG = Logger
-            .getLogger(CpuMapper.class);
+    private static final Logger LOG = Logger.getLogger(CpuMapper.class);
 
     /**
      * The constructor
