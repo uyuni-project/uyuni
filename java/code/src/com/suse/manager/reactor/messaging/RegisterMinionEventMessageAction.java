@@ -94,11 +94,14 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         String minionId = event.getMinionId();
 
         // Match minions via their machine id
-        String machineId = SALT_SERVICE.getMachineId(minionId);
-        if (machineId == null) {
+        Optional<String> optMachineId = SALT_SERVICE.getMachineId(minionId);
+        if (!optMachineId.isPresent()) {
             LOG.info("Cannot find machine id for minion: " + minionId);
             return;
         }
+        //FIXME: refactor this whole function so we don't have to call get in so many places.
+        String machineId = optMachineId.get();
+
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         if (optMinion.isPresent()) {
             MinionServer registeredMinion = optMinion.get();
@@ -125,7 +128,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             SALT_SERVICE.syncGrains(minionId);
             SALT_SERVICE.syncModules(minionId);
 
-            ValueMap grains = new ValueMap(SALT_SERVICE.getGrains(minionId));
+            ValueMap grains = new ValueMap(
+                    SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
 
             //apply activation key properties that can be set before saving the server
             Optional<ActivationKey> activationKey = grains
