@@ -57,7 +57,8 @@ public class SaltServiceInvoker {
      * @param recordType the smbios record type
      * @return the DMI data as a map.
      */
-    public Optional<Map<String, Object>> getDmiRecords(String minionId, RecordType recordType) {
+    public Optional<Map<String, Object>> getDmiRecords(String minionId,
+            RecordType recordType) {
         return getOrInvoke("dmi_" + recordType.getType(),
                 () -> saltService.getDmiRecords(minionId, recordType));
     }
@@ -116,7 +117,8 @@ public class SaltServiceInvoker {
      * @param minionId the minion id
      * @return the network info as a map.
      */
-    public Optional<Map<String, Network.Interface>> getNetworkInterfacesInfo(String minionId) {
+    public Optional<Map<String, Network.Interface>> getNetworkInterfacesInfo(
+            String minionId) {
         return getOrInvoke("net", () -> saltService.getNetworkInterfacesInfo(minionId));
     }
 
@@ -125,7 +127,8 @@ public class SaltServiceInvoker {
      * @param minionId the minion id
      * @return the network info as a map.
      */
-    public Optional<Map<SumaUtil.IPVersion, SumaUtil.IPRoute>> getPrimaryIps(String minionId) {
+    public Optional<Map<SumaUtil.IPVersion, SumaUtil.IPRoute>> getPrimaryIps(
+            String minionId) {
         return getOrInvoke("primaryIps", () -> saltService.getPrimaryIps(minionId));
     }
 
