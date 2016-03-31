@@ -97,8 +97,9 @@ public class RefreshHardwareEventMessageAction extends AbstractDatabaseAction {
                         SaltServiceInvoker saltInvoker =
                                 new SaltServiceInvoker(saltService);
 
-                        ValueMap grains = new ValueMap(saltInvoker
-                                .getGrains(event.getMinionId()));
+                        ValueMap grains = saltInvoker
+                                .getGrains(event.getMinionId())
+                                .map(ValueMap::new).orElseGet(ValueMap::new);
 
                         CpuMapper cpuMapper = new CpuMapper(saltInvoker);
                         cpuMapper.map(minionServer.getId(), grains);
