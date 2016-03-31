@@ -1,6 +1,6 @@
 # Container used to test java and python code of SUSE Manager against postgresql
 #
-# VERSION               1.0.0
+# VERSION               1.0.1
 
 FROM suma-3.0-base:latest
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
@@ -21,4 +21,6 @@ RUN sh /root/setup-db-postgres.sh
 RUN sed -i 's/^max_connections =.*$/max_connections = 20/g' /var/lib/pgsql/data/postgresql.conf
 
 ADD rhn.conf /root/rhn.conf
+
+ADD susemanager-schema-3.0.10-1.1.noarch.rpm /root/susemanager-schema-3.0.10-1.1.noarch.rpm
 
