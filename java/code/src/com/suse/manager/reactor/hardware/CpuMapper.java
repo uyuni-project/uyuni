@@ -23,6 +23,8 @@ import com.suse.manager.webui.services.SaltGrains;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.Optional;
+
 /**
  * Get the CPU information from a minion an store it in the SUMA db.
  */
@@ -42,10 +44,7 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
     @Override
     public CPU doMap(MinionServer server, ValueMap grains) {
 
-        CPU cpu = server.getCpu();
-        if (cpu == null) {
-            cpu = new CPU();
-        }
+        final CPU cpu = Optional.ofNullable(server.getCpu()).orElseGet(CPU::new);
 
         // os.uname[4]
         String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue())
