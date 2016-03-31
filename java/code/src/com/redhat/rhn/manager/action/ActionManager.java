@@ -1565,8 +1565,8 @@ public class ActionManager extends BaseManager {
     private static void checkSaltOrManagementEntitlement(Long sid) {
         if (!SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT) &&
                 !SystemManager.hasEntitlement(sid, EntitlementManager.SALT)) {
-            log.error("Unable to run action " +
-                "on an a system without either Salt or Management entitlement, id " + sid);
+            log.error("Unable to run action on a system without either Salt or " +
+                    "Management entitlement, id " + sid);
             throw new MissingEntitlementException(
                     EntitlementManager.MANAGEMENT.getHumanReadableLabel() + " or " +
                     EntitlementManager.SALT.getHumanReadableLabel()
