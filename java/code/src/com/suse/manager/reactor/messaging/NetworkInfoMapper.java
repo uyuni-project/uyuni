@@ -53,7 +53,8 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
         String minionId = server.getMinionId();
 
         if (grains == null) {
-            grains = new ValueMap(saltInvoker.getGrains(minionId));
+            grains = saltInvoker.getGrains(minionId)
+                .map(ValueMap::new).orElseGet(ValueMap::new);
         }
 
         Map<String, Network.Interface> interfaces = saltInvoker

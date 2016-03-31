@@ -57,7 +57,8 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
             return null;
         }
 
-        ValueMap cpuinfo = new ValueMap(saltInvoker.getCpuInfo(server.getMinionId()));
+        ValueMap cpuinfo = saltInvoker.getCpuInfo(server.getMinionId())
+                .map(ValueMap::new).orElseGet(ValueMap::new);
         // salt returns /proc/cpuinfo data
 
         // See hardware.py read_cpuinfo()
