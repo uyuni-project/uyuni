@@ -90,18 +90,20 @@ public class UpdatePackageProfileEventMessageAction extends AbstractDatabaseActi
 
         // Query info about installed packages and save the server
         MinionServerFactory.lookupById(eventMessage.getServerId()).ifPresent(server -> {
-            Map<String, Pkg.Info> saltPackages =
-                    SALT_SERVICE.getInstalledPackageDetails(server.getMinionId(), PKGATTR);
-            Set<InstalledPackage> newPackages = saltPackages.entrySet().stream().map(
-                    entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
-            ).collect(Collectors.toSet());
 
-            Set<InstalledPackage> oldPackages = server.getPackages();
-            oldPackages.addAll(newPackages);
-            oldPackages.retainAll(newPackages);
-            Optional<Set<InstalledProduct>> installedProducts =
-                    getInstalledProducts(server.getMinionId());
-            installedProducts.ifPresent(server::setInstalledProducts);
+            SALT_SERVICE.getInstalledPackageDetails(server.getMinionId(), PKGATTR).map(saltPkgs ->
+                saltPkgs.entrySet().stream().map(
+                   entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
+                ).collect(Collectors.toSet())
+            ).ifPresent(newPackages -> {
+                Set<InstalledPackage> oldPackages = server.getPackages();
+                oldPackages.addAll(newPackages);
+                oldPackages.retainAll(newPackages);
+            });
+
+
+            getInstalledProducts(server.getMinionId())
+                    .ifPresent(server::setInstalledProducts);
 
             ServerFactory.save(server);
             if (LOG.isDebugEnabled()) {
