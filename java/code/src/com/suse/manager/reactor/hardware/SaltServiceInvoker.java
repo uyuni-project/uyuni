@@ -144,5 +144,4 @@ public class SaltServiceInvoker {
     public SaltService getSaltService() {
         return saltService;
     }
-
 }
