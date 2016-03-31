@@ -85,7 +85,7 @@ public class RefreshHardwareEventMessageAction extends AbstractDatabaseAction {
                     try {
                         Map<String, Boolean> ping = saltService
                                 .ping(new MinionList(minionServer.getMinionId()));
-                        minionIsUp = ping.get(minionServer.getMinionId());
+                        minionIsUp = ping.containsKey(minionServer.getMinionId());
                     }
                     catch (SaltException e) {
                         errors.add("Could not 'test.ping' minion: " + e.getMessage());
