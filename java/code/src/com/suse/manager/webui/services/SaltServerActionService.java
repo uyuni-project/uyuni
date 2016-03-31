@@ -141,27 +141,27 @@ public enum SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> callsForAction(Action actionIn,
             List<MinionServer> minions) {
         ActionType actionType = actionIn.getActionType();
-        if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
+        if (actionType.equals(ActionFactory.TYPE_ERRATA)) {
             return errataAction(minions, (ErrataAction) actionIn);
         }
-        else if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
+        else if (actionType.equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
             return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
         }
-        else if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
+        else if (actionType.equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
             return packagesRemoveAction(minions, (PackageRemoveAction) actionIn);
         }
         else if (actionType.equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
             return packagesRefreshListAction(minions);
         }
-        else if (actionIn.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+        else if (actionType.equals(ActionFactory.TYPE_REBOOT)) {
             return rebootAction(minions);
         }
-        else if (actionIn.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
+        else if (actionType.equals(ActionFactory.TYPE_SCRIPT_RUN)) {
             ScriptAction scriptAction = (ScriptAction) actionIn;
             String script = scriptAction.getScriptActionDetails().getScriptContents();
             return remoteCommandAction(minions, script);
         }
-        else if (actionIn.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
+        else if (actionType.equals(ActionFactory.TYPE_APPLY_STATES)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) actionIn;
             Optional<String> states = Optional.ofNullable(
                     applyStatesAction.getDetails().getStates());
@@ -169,7 +169,7 @@ public enum SaltServerActionService {
         }
         else {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Action type " + actionIn.getActionType().getName() +
+                LOG.debug("Action type " + actionType.getName() +
                         " is not supported with Salt");
             }
             return Collections.emptyMap();
