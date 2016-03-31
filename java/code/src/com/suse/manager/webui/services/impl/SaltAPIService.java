@@ -104,7 +104,7 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public <R> Optional<R> syncSingleMinion(LocalCall<R> call, String minionId) {
+    public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
         try {
             Map<String, R> stringRMap = call.callSync(SALT_CLIENT, new MinionList(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
@@ -372,7 +372,7 @@ public enum SaltAPIService implements SaltService {
      */
     public Optional<Map<String, Object>> getDmiRecords(String minionId,
             Smbios.RecordType recordType) {
-        return syncSingleMinion(Smbios.records(recordType), minionId).map(col ->
+        return callSync(Smbios.records(recordType), minionId).map(col ->
                 col.isEmpty() ? Collections.emptyMap() : col.get(0).getData()
         );
     }
@@ -407,21 +407,21 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public Optional<List<Map<String, Object>>> getUdevdb(String minionId) {
-        return syncSingleMinion(Udevdb.exportdb(), minionId);
+        return callSync(Udevdb.exportdb(), minionId);
     }
 
     /**
      * {@inheritDoc}
      */
     public Optional<String> getFileContent(String minionId, String path) {
-        return syncSingleMinion(SumaUtil.cat(path), minionId);
+        return callSync(SumaUtil.cat(path), minionId);
     }
 
     /**
      * {@inheritDoc}
      */
     public Optional<String> getMainframeSysinfoReadValues(String minionId) {
-        return syncSingleMinion(MainframeSysinfo.readValues(), minionId);
+        return callSync(MainframeSysinfo.readValues(), minionId);
     }
 
     /**
@@ -499,7 +499,7 @@ public enum SaltAPIService implements SaltService {
      */
     public Optional<Map<String, Network.Interface>> getNetworkInterfacesInfo(
             String minionId) {
-        return syncSingleMinion(Network.interfaces(), minionId);
+        return callSync(Network.interfaces(), minionId);
     }
 
     /**
@@ -507,21 +507,21 @@ public enum SaltAPIService implements SaltService {
      */
     public Optional<Map<SumaUtil.IPVersion, SumaUtil.IPRoute>> getPrimaryIps(
             String minionId) {
-        return syncSingleMinion(SumaUtil.primaryIps(), minionId);
+        return callSync(SumaUtil.primaryIps(), minionId);
     }
 
     /**
      * {@inheritDoc}
      */
     public Optional<Map<String, String>> getNetModules(String minionId) {
-        return syncSingleMinion(SumaUtil.getNetModules(), minionId);
+        return callSync(SumaUtil.getNetModules(), minionId);
     }
 
     /**
      * {@inheritDoc}
      */
     public Optional<List<Zypper.ProductInfo>> getInstalledProducts(String minionId) {
-        return syncSingleMinion(Zypper.listProducts(false), minionId);
+        return callSync(Zypper.listProducts(false), minionId);
     }
 
     /**

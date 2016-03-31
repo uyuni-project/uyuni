@@ -48,7 +48,7 @@ public interface SaltService {
      * @return Optional holding the result of the function
      * or none if the minion did not respond.
      */
-    <R> Optional<R> syncSingleMinion(LocalCall<R> call, String minionId);
+    <R> Optional<R> callSync(LocalCall<R> call, String minionId);
 
     /**
      * Get the minion keys from salt with their respective status.
