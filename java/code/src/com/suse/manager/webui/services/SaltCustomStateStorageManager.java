@@ -30,13 +30,10 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SaltFileUtils.hasExtension;
 import static com.suse.manager.webui.utils.SaltFileUtils.stripExtension;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
@@ -219,14 +216,8 @@ public class SaltCustomStateStorageManager {
      * @return a list containing all .sls files names (without .sls extension)
      */
     public List<String> listByOrg(long orgId) {
-        Path orgPath = Paths.get(getBaseDirPath(), getOrgNamespace(orgId));
-        File orgDir = orgPath.toFile();
-        if (!orgDir.exists()) {
-            return Collections.emptyList();
-        }
-        return Arrays.asList(orgDir.list((dir, name) -> hasExtension(name)))
-                .stream().map(name -> stripExtension(name))
-                .collect(Collectors.toList());
+        List<CustomState> orgStates = StateFactory.getCustomStatesByOrg(orgId);
+        return orgStates.stream().map(CustomState::getStateName).collect(Collectors.toList());
     }
 
     /**
