@@ -1,0 +1,15 @@
+# Container used to test java code of SUSE Manager
+#
+# VERSION               1.0.0
+
+FROM suma-docker-registry.suse.de/suma-3.0-base:latest
+MAINTAINER Flavio Castelli "fcastelli@suse.com"
+
+# Install the required packages
+ADD add_packages.sh /root/add_packages.sh
+RUN /root/add_packages.sh
+
+# PostgreSQL setup
+ADD initrd.gz /root/initrd.gz
+ADD initrd.xz /root/initrd.xz
+
