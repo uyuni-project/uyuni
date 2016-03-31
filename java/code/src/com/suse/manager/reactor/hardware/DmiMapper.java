@@ -31,10 +31,6 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(DmiMapper.class);
 
-    private ValueMap bios;
-
-    private ValueMap system;
-
     /**
      * The constructor.
      * @param saltServiceInvoker a {@link SaltServiceInvoker} instance
@@ -53,14 +49,16 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
         try {
             // TODO get all records at once? less roundtrips but larger response
             // TODO there is a 1MB limit to message size
-            bios = new ValueMap(saltInvoker.getDmiRecords(minionId,
-                    Smbios.RecordType.BIOS));
-            system = new ValueMap(saltInvoker.getDmiRecords(minionId,
-                    Smbios.RecordType.SYSTEM));
-            ValueMap chassis = new ValueMap(saltInvoker.getDmiRecords(minionId,
-                    Smbios.RecordType.CHASSIS));
-            ValueMap board = new ValueMap(saltInvoker.getDmiRecords(minionId,
-                    Smbios.RecordType.BASEBOARD));
+            ValueMap bios = saltInvoker.getDmiRecords(minionId, Smbios.RecordType.BIOS)
+                    .map(ValueMap::new).orElseGet(ValueMap::new);
+            ValueMap system = saltInvoker.getDmiRecords(minionId, Smbios.RecordType.SYSTEM)
+                    .map(ValueMap::new).orElseGet(ValueMap::new);
+            ValueMap chassis = saltInvoker.getDmiRecords(minionId,
+                    Smbios.RecordType.CHASSIS)
+                    .map(ValueMap::new).orElseGet(ValueMap::new);
+            ValueMap board = saltInvoker.getDmiRecords(minionId,
+                    Smbios.RecordType.BASEBOARD)
+                    .map(ValueMap::new).orElseGet(ValueMap::new);
 
             biosVendor = (String)bios.get("vendor").orElse(null);
             biosVersion = (String)bios.get("version").orElse(null);
@@ -76,13 +74,17 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
             boardSerial = (String)board.get("serial_number").orElse(null);
         }
         catch (com.google.gson.JsonSyntaxException e) {
-            LOG.warn("Could not retrieve DMI info from minion '" + minionId +
-                    "'. JSON syntax error.");
+            LOG.warn("Could not retrieve DMI info from minion '" + minionId + "': " +
+                    e.getMessage());
             // In order to behave like the "old style" registration
             // go on and persist an empty Dmi bean.
+            setError("Could not retrieve DMI records: " + e.getMessage());
         }
 
-        Dmi dmi = new Dmi();
+        Dmi dmi = server.getDmi();
+        if (dmi == null) {
+            dmi = new Dmi();
+        }
         StringBuilder dmiSystem = new StringBuilder();
         if (StringUtils.isNotBlank(productName)) {
             dmiSystem.append(productName);

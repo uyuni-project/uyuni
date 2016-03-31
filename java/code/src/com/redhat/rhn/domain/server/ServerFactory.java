@@ -980,4 +980,11 @@ public class ServerFactory extends HibernateFactory {
     }
 
 
+    /**
+     * Delete a device
+     * @param device the device to delete
+     */
+    public static void delete(Device device) {
+        HibernateFactory.getSession().delete(device);
+    }
 }

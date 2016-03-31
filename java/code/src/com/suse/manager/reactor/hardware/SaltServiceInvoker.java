@@ -15,11 +15,14 @@
 package com.suse.manager.reactor.hardware;
 
 import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.utils.salt.custom.SumaUtil;
+import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -49,12 +52,13 @@ public class SaltServiceInvoker {
     }
 
     /**
-     * @see SaltService#getDmiRecords(String, Smbios.RecordType)
+     * @see SaltService#getDmiRecords(String, RecordType)
      * @param minionId the minion id
      * @param recordType the smbios record type
      * @return the DMI data as a map.
      */
-    public Map<String, Object> getDmiRecords(String minionId, RecordType recordType) {
+    public Optional<Map<String, Object>> getDmiRecords(String minionId,
+            RecordType recordType) {
         return getOrInvoke("dmi_" + recordType.getType(),
                 () -> saltService.getDmiRecords(minionId, recordType));
     }
@@ -64,7 +68,7 @@ public class SaltServiceInvoker {
      * @param minionId the minion id
      * @return the udev db as a map.
      */
-    public List<Map<String, Object>> getUdevdb(String minionId) {
+    public Optional<List<Map<String, Object>>> getUdevdb(String minionId) {
         return getOrInvoke("udevdb", () -> saltService.getUdevdb(minionId));
     }
 
@@ -75,7 +79,7 @@ public class SaltServiceInvoker {
      * @param path the file path
      * @return the file content as a string
      */
-    public String getFileContent(String minionId, String path) {
+    public Optional<String> getFileContent(String minionId, String path) {
         // Don't cache this because the result may be large
         return saltService.getFileContent(minionId, path);
     }
@@ -85,7 +89,7 @@ public class SaltServiceInvoker {
      * @param minionId the minion id
      * @return the read_values output as a string
      */
-    public String getMainframeSysinfoReadValues(String minionId) {
+    public Optional<String> getMainframeSysinfoReadValues(String minionId) {
         return getOrInvoke("sysinfo",
                 () -> saltService.getMainframeSysinfoReadValues(minionId));
     }
@@ -95,7 +99,7 @@ public class SaltServiceInvoker {
      * @param minionId the minion id
      * @return the cpu info as a map.
      */
-    public Map<String, Object> getCpuInfo(String minionId) {
+    public Optional<Map<String, Object>> getCpuInfo(String minionId) {
         return getOrInvoke("cpu", () -> saltService.getCpuInfo(minionId));
     }
 
@@ -104,8 +108,37 @@ public class SaltServiceInvoker {
      * @param minionId the minion id
      * @return the grains as a map.
      */
-    public Map<String, Object> getGrains(String minionId) {
+    public Optional<Map<String, Object>> getGrains(String minionId) {
         return getOrInvoke("grains", () -> saltService.getGrains(minionId));
+    }
+
+    /**
+     * @see SaltService#getNetworkInterfacesInfo(String)
+     * @param minionId the minion id
+     * @return the network info as a map.
+     */
+    public Optional<Map<String, Network.Interface>> getNetworkInterfacesInfo(
+            String minionId) {
+        return getOrInvoke("net", () -> saltService.getNetworkInterfacesInfo(minionId));
+    }
+
+    /**
+     * @see SaltService#getPrimaryIps(String)
+     * @param minionId the minion id
+     * @return the network info as a map.
+     */
+    public Optional<Map<SumaUtil.IPVersion, SumaUtil.IPRoute>> getPrimaryIps(
+            String minionId) {
+        return getOrInvoke("primaryIps", () -> saltService.getPrimaryIps(minionId));
+    }
+
+    /**
+     * @see SaltService#getNetModules(String)
+     * @param minionId the minion id
+     * @return the network info as a map.
+     */
+    public Optional<Map<String, String>> getNetModules(String minionId) {
+        return getOrInvoke("netModules", () -> saltService.getNetModules(minionId));
     }
 
     /**

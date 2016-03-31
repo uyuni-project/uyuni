@@ -21,11 +21,17 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltGrains;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
+import java.util.Optional;
 
 /**
  * Get the CPU information from a minion an store it in the SUMA db.
  */
 public class CpuMapper extends AbstractHardwareMapper<CPU> {
+
+    // Logger for this class
+    private static final Logger LOG = Logger.getLogger(CpuMapper.class);
 
     /**
      * The constructor
@@ -38,13 +44,20 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
     @Override
     public CPU doMap(MinionServer server, ValueMap grains) {
 
-        CPU cpu = new CPU();
+        final CPU cpu = Optional.ofNullable(server.getCpu()).orElseGet(CPU::new);
 
         // os.uname[4]
         String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue())
                 .toLowerCase();
 
-        ValueMap cpuinfo = new ValueMap(saltInvoker.getCpuInfo(server.getMinionId()));
+        if (StringUtils.isBlank(cpuarch)) {
+            setError("Grain 'cpuarch' has no value");
+            LOG.warn("Grain 'cpuarch' has no value for minion: " + server.getMinionId());
+            return null;
+        }
+
+        ValueMap cpuinfo = saltInvoker.getCpuInfo(server.getMinionId())
+                .map(ValueMap::new).orElseGet(ValueMap::new);
         // salt returns /proc/cpuinfo data
 
         // See hardware.py read_cpuinfo()
