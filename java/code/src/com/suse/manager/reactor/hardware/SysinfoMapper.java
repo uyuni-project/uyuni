@@ -59,7 +59,8 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
         try {
             // call custom minion to get read_values info (if available)
             // original code: hardware.py get_sysinfo()
-            String readValuesOutput = saltInvoker.getMainframeSysinfoReadValues(minionId);
+            String readValuesOutput = saltInvoker.getMainframeSysinfoReadValues(minionId)
+                    .orElse("");
             Map<String, String> sysvalues = new HashMap<>();
             for (String line : readValuesOutput.split("\\r?\\n")) {
                 if (!line.contains(":")) {
@@ -195,8 +196,9 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
 
         }
         catch (com.google.gson.JsonSyntaxException e) {
+            setError("Could not retrieve SYS info");
             LOG.warn("Could not retrieve SYS info from minion '" + minionId +
-                    "'. JSON syntax error.");
+                    "': " + e.getMessage());
         }
 
         return null;

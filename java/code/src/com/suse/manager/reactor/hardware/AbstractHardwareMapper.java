@@ -34,6 +34,8 @@ public abstract class AbstractHardwareMapper<T> {
 
     protected SaltServiceInvoker saltInvoker;
 
+    private Optional<String> error = Optional.empty();
+
     /**
      * The constructor.
      * @param saltInvokerIn a {@link SaltServiceInvoker} instance
@@ -68,6 +70,7 @@ public abstract class AbstractHardwareMapper<T> {
             LOG.error("Rolling back transaction. Error executing mapper " +
                     getClass().getName(), e);
             HibernateFactory.rollbackTransaction();
+            setError("An error occurred: " + e.getMessage());
         }
         finally {
             HibernateFactory.closeSession();
@@ -78,4 +81,17 @@ public abstract class AbstractHardwareMapper<T> {
 
     protected abstract T doMap(MinionServer server, ValueMap grains);
 
+    /**
+     * @return error messages
+     */
+    public Optional<String> getError() {
+        return error;
+    }
+
+    /**
+     * @param errorIn error messages
+     */
+    protected void setError(String errorIn) {
+        this.error = Optional.ofNullable(errorIn);
+    }
 }

@@ -109,7 +109,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         action.doExecute(new RegisterMinionEventMessage(MINION_ID));
 
         // Verify the resulting system entry
-        String machineId = saltService.getMachineId(MINION_ID);
+        String machineId = saltService.getMachineId(MINION_ID).get();
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         assertTrue(optMinion.isPresent());
         MinionServer minion = optMinion.get();

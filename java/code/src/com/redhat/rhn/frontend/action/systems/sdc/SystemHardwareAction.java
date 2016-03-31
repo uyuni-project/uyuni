@@ -25,6 +25,9 @@ import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.suse.manager.reactor.messaging.RefreshHardwareEventMessage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -82,7 +85,11 @@ public class SystemHardwareAction extends RhnAction {
             else {
                 Action a = ActionManager.scheduleHardwareRefreshAction(user, server, now);
                 ActionFactory.save(a);
-
+                if (server.asMinionServer().isPresent() &&
+                        server.hasEntitlement(EntitlementManager.SALT)) {
+                    MessageQueue.publish(new RefreshHardwareEventMessage(
+                            server.asMinionServer().get().getMinionId(), a));
+                }
                 createSuccessMessage(request, "message.refeshScheduled", server.getName());
 
                 // No idea why I have to do this  :(

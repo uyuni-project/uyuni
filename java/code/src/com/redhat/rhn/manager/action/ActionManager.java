@@ -1269,12 +1269,7 @@ public class ActionManager extends BaseManager {
                 throw new MissingCapabilityException("script.run", sid);
             }
 
-            if (!SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT) &&
-                    !SystemManager.hasEntitlement(sid, EntitlementManager.SALT)) {
-                throw new MissingEntitlementException(
-                    EntitlementManager.MANAGEMENT.getHumanReadableLabel() + " or " +
-                    EntitlementManager.SALT.getHumanReadableLabel());
-            }
+            checkSaltOrManagementEntitlement(sid);
         }
     }
 
@@ -1511,10 +1506,7 @@ public class ActionManager extends BaseManager {
      */
     public static Action scheduleHardwareRefreshAction(User scheduler, Server srvr,
             Date earliestAction) {
-        if (!SystemManager.hasEntitlement(srvr.getId(), EntitlementManager.MANAGEMENT)) {
-            throw new MissingEntitlementException(
-                    EntitlementManager.MANAGEMENT.getHumanReadableLabel());
-        }
+        checkSaltOrManagementEntitlement(srvr.getId());
         return scheduleAction(scheduler, srvr, ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
                 ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction);
     }
@@ -1531,16 +1523,55 @@ public class ActionManager extends BaseManager {
             Set<Long> serverIds) {
         for (Long sid : serverIds) {
             Server s = SystemManager.lookupByIdAndUser(sid, scheduler);
-            if (!SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT)) {
-                log.error("Unable to run a hardware refresh action " +
-                        "on an system without enterprise entitlement, id " + sid);
-                throw new MissingEntitlementException(
-                        EntitlementManager.MANAGEMENT.getHumanReadableLabel());
-            }
+            checkSaltOrManagementEntitlement(sid);
         }
         return scheduleAction(scheduler, ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
                 ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName(), earliestAction,
                 serverIds);
+    }
+
+    /**
+     * Schedule a HardwareRefreshAction without a user.
+     * @param schedulerOrg the org scheduling the action.
+     * @param srvr Server for which the action affects.
+     * @param earliestAction Date run the Action
+     * @return Currently scheduled HardwareRefreshAction
+     * @throws MissingCapabilityException if scripts cannot be run
+     */
+    public static Action scheduleHardwareRefreshAction(Org schedulerOrg, Server srvr,
+                                                       Date earliestAction) {
+        checkSaltOrManagementEntitlement(srvr.getId());
+
+        Action action = ActionFactory
+                .createAction(ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        action.setName(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName());
+        action.setOrg(schedulerOrg);
+        action.setSchedulerUser(null);
+        action.setEarliestAction(earliestAction);
+
+        ServerAction sa = new ServerAction();
+        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setRemainingTries(REMAINING_TRIES);
+        sa.setServer(srvr);
+
+        action.addServerAction(sa);
+        sa.setParentAction(action);
+
+        ActionFactory.save(action);
+
+        return action;
+    }
+
+    private static void checkSaltOrManagementEntitlement(Long sid) {
+        if (!SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT) &&
+                !SystemManager.hasEntitlement(sid, EntitlementManager.SALT)) {
+            log.error("Unable to run action on a system without either Salt or " +
+                    "Management entitlement, id " + sid);
+            throw new MissingEntitlementException(
+                    EntitlementManager.MANAGEMENT.getHumanReadableLabel() + " or " +
+                    EntitlementManager.SALT.getHumanReadableLabel()
+            );
+        }
     }
 
     /**

@@ -16,59 +16,58 @@ package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventDatabaseMessage;
-
-import com.suse.manager.reactor.utils.ValueMap;
-
+import com.redhat.rhn.domain.action.Action;
 import org.hibernate.Transaction;
 
 /**
- * Triggers getting the network information from a minion.
+ * Triggers the {@link RefreshHardwareEventMessageAction}
  */
-public class GetNetworkInfoEventMessage implements EventDatabaseMessage {
+public class RefreshHardwareEventMessage implements EventDatabaseMessage {
 
-    private final Long serverId;
-    private final ValueMap grains;
+    private final long actionId;
+    private final Long userId;
+    private final String minionId;
     private final Transaction txn;
 
     /**
-     * The constructor.
-     * @param serverIdIn the sever id
-     * @param grainsIn the minion grains
+     * The constructor
+     * @param minionIdIn the minion id
+     * @param actionIn the scheduled action
      */
-    public GetNetworkInfoEventMessage(Long serverIdIn, ValueMap grainsIn) {
-        serverId = serverIdIn;
-        grains = grainsIn;
+    public RefreshHardwareEventMessage(String minionIdIn, Action actionIn) {
+        actionId = actionIn.getId();
+        userId = actionIn.getSchedulerUser() != null ?
+                actionIn.getSchedulerUser().getId() : null;
         txn = HibernateFactory.getSession().getTransaction();
-    }
-
-    @Override
-    public String toText() {
-        return null;
-    }
-
-    @Override
-    public Long getUserId() {
-        return null;
+        minionId = minionIdIn;
     }
 
     /**
-     * Get the minion grains.
-     * @return a {@link ValueMap} containing the grains
+     * @return the scheduled action id
      */
-    public ValueMap getGrains() {
-        return grains;
+    public long getActionId() {
+        return actionId;
     }
 
     /**
-     * Get server id.
-     * @return the id
+     * @return the minion id
      */
-    public Long getServerId() {
-        return serverId;
+    public String getMinionId() {
+        return minionId;
     }
 
     @Override
     public Transaction getTransaction() {
         return txn;
+    }
+
+    @Override
+    public String toText() {
+        return toString();
+    }
+
+    @Override
+    public Long getUserId() {
+        return userId;
     }
 }
