@@ -16,6 +16,7 @@ package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
@@ -27,6 +28,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
@@ -138,6 +140,7 @@ public enum SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionServer>> callsForAction(Action actionIn,
             List<MinionServer> minions) {
+        ActionType actionType = actionIn.getActionType();
         if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
             return errataAction(minions, (ErrataAction) actionIn);
         }
@@ -146,6 +149,9 @@ public enum SaltServerActionService {
         }
         else if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
             return packagesRemoveAction(minions, (PackageRemoveAction) actionIn);
+        }
+        else if (actionType.equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
+            return packagesRefreshListAction(minions);
         }
         else if (actionIn.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
             return rebootAction(minions);
@@ -270,6 +276,14 @@ public enum SaltServerActionService {
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
         ret.put(com.suse.manager.webui.utils.salt.Pkg.remove(pkgs), minions);
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> packagesRefreshListAction(
+            List<MinionServer> minions) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE)),
+                minions);
         return ret;
     }
 

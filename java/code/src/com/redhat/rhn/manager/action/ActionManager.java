@@ -22,6 +22,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
@@ -75,6 +76,9 @@ import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+
 import com.redhat.rhn.domain.rhnpackage.Package;
 
 import org.apache.commons.codec.binary.Base64;
@@ -993,14 +997,12 @@ public class ActionManager extends BaseManager {
      */
     public static PackageAction schedulePackageRefresh(User scheduler, Server server,
             Date earliest) {
-        if (!SystemManager.hasEntitlement(server.getId(), EntitlementManager.MANAGEMENT)) {
-            throw new MissingEntitlementException(
-                    EntitlementManager.MANAGEMENT.getHumanReadableLabel());
-        }
+        checkSaltOrManagementEntitlement(server.getId());
 
         PackageAction pa = (PackageAction) schedulePackageAction(scheduler,
                 (List) null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, earliest, server);
         storeAction(pa);
+        MessageQueue.publish(new ActionScheduledEventMessage(pa));
         return pa;
     }
 
