@@ -359,4 +359,12 @@ public interface SaltService {
      * @throws SaltException if we get a failure from Salt
      */
     Map<String, Boolean> ping(Target<?> target) throws SaltException;
+
+    /**
+     * Get the directory where custom state files are stored on disk.
+     * @param orgId the organization id
+     * @return the path where .sls files are stored
+     */
+    String getCustomStateBaseDir(long orgId);
+
 }

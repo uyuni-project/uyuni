@@ -564,7 +564,7 @@ public enum SaltAPIService implements SaltService {
         return customSaltStorageManager.exists(orgId, name);
     }
 
-    /**storageManager
+    /**
      * {@inheritDoc}
      */
     public Set<String> resolveOrgStates(long orgId, Set<String> states) {
@@ -584,4 +584,11 @@ public enum SaltAPIService implements SaltService {
             Collections.emptyMap()
         );
     }
+    /**
+     * {@inheritDoc}
+     */
+    public String getCustomStateBaseDir(long orgId) {
+        return customSaltStorageManager.getBaseDirPath();
+    }
+
 }

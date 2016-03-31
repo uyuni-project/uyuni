@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import com.suse.manager.webui.services.StaleSaltStateException;
@@ -104,13 +105,22 @@ public class StateCatalogController {
         }
 
         Map<String, Object> data = new HashMap<>();
-        Map<String, String> stateData = new HashMap<>();
+        Map<String, Object> stateData = new HashMap<>();
         stateData.put("action", "edit");
         stateData.put("name", SaltFileUtils.stripExtension(stateName));
-        String content = SaltAPIService.INSTANCE
-                .getOrgStateContent(user.getOrg().getId(), stateName).orElse("");
-        stateData.put("content", content);
-        stateData.put("checksum", DigestUtils.md5Hex(content));
+        Optional<String> content = SaltAPIService.INSTANCE
+                .getOrgStateContent(user.getOrg().getId(), stateName);
+
+        stateData.put("content", content.orElse(""));
+        stateData.put("checksum", DigestUtils.md5Hex(content.orElse("")));
+        if (!content.isPresent()) {
+            stateData.put("errors", Arrays.asList(
+                    "'" + stateName + ".sls' was not found in " +
+                    SaltAPIService.INSTANCE
+                            .getCustomStateBaseDir(user.getOrg().getId())
+            ));
+            LOG.warn("Content of '" + stateName + "' was not found on disk");
+        }
         data.put("stateData", GSON.toJson(stateData));
 
         return new ModelAndView(data, "state_catalog/state.jade");
