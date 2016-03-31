@@ -93,7 +93,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         // Register a minion via RegisterMinionAction and mocked SaltService
 
         saltServiceMock.stubs().method("getMachineId").with(eq(MINION_ID)).will(
-                returnValue(MACHINE_ID));
+                returnValue(Optional.of(MACHINE_ID)));
         saltServiceMock.stubs().method("getGrains").with(eq(MINION_ID)).will(
                 returnValue(getGrains(MINION_ID, key.getKey())));
         saltServiceMock.stubs().method("getCpuInfo").with(eq(MINION_ID)).will(
@@ -151,19 +151,19 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     }
 
-    private Map<String, Object> getCpuInfo(String minionId) throws IOException, ClassNotFoundException {
-        return new JsonParser<>(Status.cpuinfo().getReturnType()).parse(
-                readFile("dummy_cpuinfo.json"));
+    private Optional<Map<String, Object>> getCpuInfo(String minionId) throws IOException, ClassNotFoundException {
+        return Optional.of(new JsonParser<>(Status.cpuinfo().getReturnType()).parse(
+                readFile("dummy_cpuinfo.json")));
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getGrains(String minionId, String akey) throws ClassNotFoundException, IOException {
+    private Optional<Map<String, Object>> getGrains(String minionId, String akey) throws ClassNotFoundException, IOException {
         Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
                 readFile("dummy_grains.json"));
         Map<String, String> susemanager = new HashMap<>();
         susemanager.put("activation_key", akey);
         grains.put("susemanager", susemanager);
-        return grains;
+        return Optional.of(grains);
     }
 
     private String readFile(String file) throws IOException, ClassNotFoundException {
