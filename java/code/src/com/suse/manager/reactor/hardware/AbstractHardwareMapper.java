@@ -34,7 +34,7 @@ public abstract class AbstractHardwareMapper<T> {
 
     protected SaltServiceInvoker saltInvoker;
 
-    private String error;
+    private Optional<String> error = Optional.empty();
 
     /**
      * The constructor.
@@ -84,7 +84,7 @@ public abstract class AbstractHardwareMapper<T> {
     /**
      * @return error messages
      */
-    public String getError() {
+    public Optional<String> getError() {
         return error;
     }
 
@@ -92,6 +92,6 @@ public abstract class AbstractHardwareMapper<T> {
      * @param errorIn error messages
      */
     public void setError(String errorIn) {
-        this.error = errorIn;
+        this.error = Optional.ofNullable(errorIn);
     }
 }

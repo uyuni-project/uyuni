@@ -168,9 +168,7 @@ public class RefreshHardwareEventMessageAction extends AbstractDatabaseAction {
 
     private void checkErrors(String category, List<String> errors,
                              AbstractHardwareMapper<?> mapper) {
-        if (mapper.getError() != null) {
-            errors.add(category + ": " + mapper.getError());
-        }
+        mapper.getError().ifPresent(e -> errors.add(category + ": " + e));
     }
 
 }
