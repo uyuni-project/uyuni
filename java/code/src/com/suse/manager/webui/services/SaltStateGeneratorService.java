@@ -106,7 +106,6 @@ public enum SaltStateGeneratorService {
 
             }
             pillar.add("channels", chanPillar);
-
         }
         catch (JoseException e) {
             LOG.error(String.format(
