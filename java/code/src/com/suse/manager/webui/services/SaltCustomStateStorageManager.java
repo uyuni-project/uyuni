@@ -41,6 +41,9 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
  */
 public class SaltCustomStateStorageManager {
 
+    /**
+     * The path where SUSE Manager writes custom sls data
+     */
     public static final String GENERATED_SLS_ROOT = "/srv/susemanager/salt";
     private static final Logger LOG = Logger.getLogger(SaltCustomStateStorageManager.class);
 
