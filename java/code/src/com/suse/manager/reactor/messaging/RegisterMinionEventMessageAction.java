@@ -38,13 +38,10 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.manager.webui.utils.RepoFileUtils;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
-import org.jose4j.lang.JoseException;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -213,14 +210,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             // Asynchronously get the uptime of this minion
             MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
-
-            // Generate the .repo file for this server
-            try {
-                RepoFileUtils.generateRepositoryFile(server);
-            }
-            catch (IOException | JoseException e) {
-                LOG.error("Error generating repo file: " + e.getMessage());
-            }
 
             // Generate pillar data
             try {
