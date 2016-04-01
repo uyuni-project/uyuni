@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.state.StateFactory;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,7 +44,6 @@ public class SaltCustomStateStorageManager {
      * The path where SUSE Manager writes custom sls data
      */
     public static final String GENERATED_SLS_ROOT = "/srv/susemanager/salt";
-    private static final Logger LOG = Logger.getLogger(SaltCustomStateStorageManager.class);
 
     private String baseDirPath;
 
