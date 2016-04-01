@@ -21,15 +21,11 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import org.apache.log4j.Logger;
 
 /**
  * Generate repo files for managed systems whenever their channel assignments have changed.
  */
 public class ChannelsChangedEventMessageAction implements MessageAction {
-
-    private static final Logger LOG = Logger.getLogger(
-            ChannelsChangedEventMessageAction.class);
 
     /**
      * {@inheritDoc}
