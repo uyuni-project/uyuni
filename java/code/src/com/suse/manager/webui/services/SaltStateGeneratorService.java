@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.services;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -29,17 +31,21 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.MinionServerUtils;
-import com.suse.manager.webui.utils.RepoFileUtils;
 import com.suse.manager.webui.utils.SaltCustomState;
 import com.suse.manager.webui.utils.SaltPillar;
+import com.suse.manager.webui.utils.TokenUtils;
 import org.apache.log4j.Logger;
+import org.jose4j.lang.JoseException;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -77,6 +83,36 @@ public enum SaltStateGeneratorService {
         SaltPillar pillar = new SaltPillar();
         pillar.add("org_id", server.getOrg().getId());
         pillar.add("group_id", groupIds.toArray(new Long[groupIds.size()]));
+
+        Map<String, Object> chanPillar = new HashMap<>();
+        try {
+            String token = TokenUtils.createTokenWithServerKey(
+                    server.getOrg().getId(), Optional.empty());
+
+            for (Channel chan : server.getChannels()) {
+                Map<String, Object> chanProps = new HashMap<>();
+                chanProps.put("alias", "susemanager:" + chan.getLabel());
+                chanProps.put("name", chan.getName());
+                chanProps.put("enabled", "1");
+                chanProps.put("autorefresh", "1");
+                chanProps.put("host", ConfigDefaults.get().getCobblerHost());
+                chanProps.put("token", token);
+                chanProps.put("type", "rpm-md");
+                chanProps.put("gpgcheck", "0");
+                chanProps.put("repo_gpgcheck", "0");
+                chanProps.put("pkg_gpgcheck", "1");
+
+                chanPillar.put(chan.getLabel(), chanProps);
+
+            }
+            pillar.add("channels", chanPillar);
+
+        }
+        catch (JoseException e) {
+            LOG.error(String.format(
+                "Generating channel pillar for server with serverId '%s' failed.",
+                server.getId()), e);
+        }
 
         try {
             Path baseDir = Paths.get(GENERATED_PILLAR_ROOT);
@@ -139,7 +175,7 @@ public enum SaltStateGeneratorService {
 
     private void removeCustomStateAssignments(String file) {
         Path baseDir = Paths.get(
-                RepoFileUtils.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
+                SaltCustomStateStorageManager.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
         Path filePath = baseDir.resolve(defaultExtension(file));
 
         try {
@@ -208,7 +244,7 @@ public enum SaltStateGeneratorService {
                 orgId, stateNames);
 
         Path baseDir = Paths.get(
-                RepoFileUtils.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
+                SaltCustomStateStorageManager.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
         try {
             Files.createDirectories(baseDir);
             Path filePath = baseDir.resolve(defaultExtension(fileName));
