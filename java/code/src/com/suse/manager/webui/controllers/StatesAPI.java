@@ -49,6 +49,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.StateTargetType;
@@ -58,7 +59,6 @@ import org.apache.log4j.Logger;
 
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.manager.webui.utils.RepoFileUtils;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPkgLatest;
 import com.suse.manager.webui.utils.SaltPkgRemoved;
@@ -544,7 +544,7 @@ public class StatesAPI {
 
         try {
             Path baseDir = Paths.get(
-                    RepoFileUtils.GENERATED_SLS_ROOT, SALT_PACKAGE_FILES);
+                    SaltCustomStateStorageManager.GENERATED_SLS_ROOT, SALT_PACKAGE_FILES);
             Files.createDirectories(baseDir);
             Path filePath = baseDir.resolve(
                     "packages_" + server.getDigitalServerId() + ".sls");

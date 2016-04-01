@@ -17,11 +17,9 @@ package com.suse.manager.webui.services;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.StateFactory;
-import com.suse.manager.webui.utils.RepoFileUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,7 +40,10 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
  */
 public class SaltCustomStateStorageManager {
 
-    private static final Logger LOG = Logger.getLogger(SaltCustomStateStorageManager.class);
+    /**
+     * The path where SUSE Manager writes custom sls data
+     */
+    public static final String GENERATED_SLS_ROOT = "/srv/susemanager/salt";
 
     private String baseDirPath;
 
@@ -53,7 +54,7 @@ public class SaltCustomStateStorageManager {
      * '/srv/susemanager/salt' and {@link #encoding} with US-ASCII.
      */
     public SaltCustomStateStorageManager() {
-        this.baseDirPath = RepoFileUtils.GENERATED_SLS_ROOT;
+        this.baseDirPath = GENERATED_SLS_ROOT;
         this.encoding = "US-ASCII"; // TODO clarify default encoding
     }
 

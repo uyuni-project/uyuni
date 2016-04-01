@@ -20,19 +20,12 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.suse.manager.webui.utils.RepoFileUtils;
-import org.apache.log4j.Logger;
-import org.jose4j.lang.JoseException;
-
-import java.io.IOException;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 /**
  * Generate repo files for managed systems whenever their channel assignments have changed.
  */
 public class ChannelsChangedEventMessageAction implements MessageAction {
-
-    private static final Logger LOG = Logger.getLogger(
-            ChannelsChangedEventMessageAction.class);
 
     /**
      * {@inheritDoc}
@@ -41,26 +34,18 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
     public void execute(EventMessage event) {
         long serverId = ((ChannelsChangedEventMessage) event).getServerId();
         Server server = ServerFactory.lookupById(serverId);
-
         // Generate repo files only for salt minions
         if (server.hasEntitlement(EntitlementManager.SALT)) {
-            try {
-                RepoFileUtils.generateRepositoryFile(server);
-                if (event.getUserId() != null) {
-                    MessageQueue.publish(new ApplyStatesEventMessage(
-                        serverId, event.getUserId(), ApplyStatesEventMessage.CHANNELS)
-                    );
-                }
-                else {
-                    MessageQueue.publish(new ApplyStatesEventMessage(
-                        serverId, ApplyStatesEventMessage.CHANNELS)
-                    );
-                }
+            SaltStateGeneratorService.INSTANCE.generatePillarForServer(server);
+            if (event.getUserId() != null) {
+                MessageQueue.publish(new ApplyStatesEventMessage(
+                    serverId, event.getUserId(), ApplyStatesEventMessage.CHANNELS)
+                );
             }
-            catch (IOException | JoseException e) {
-                LOG.error(String.format(
-                        "Generating repo file for server with serverId '%s' failed.",
-                        serverId), e);
+            else {
+                MessageQueue.publish(new ApplyStatesEventMessage(
+                        serverId, ApplyStatesEventMessage.CHANNELS)
+                );
             }
         }
     }
