@@ -37,7 +37,9 @@ provided for the integration between infrastructure components.
 
 %install
 mkdir -p %{buildroot}/usr/share/susemanager/salt
+mkdir -p %{buildroot}/usr/share/susemanager/pillar
 cp -R salt/* %{buildroot}/usr/share/susemanager/salt
+cp -R pillar/* %{buildroot}/usr/share/susemanager/pillar
 
 %post
 # HACK! Create broken link when it will be replaces with the real file
@@ -48,4 +50,5 @@ ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
 %defattr(-,root,root)
 %dir /usr/share/susemanager
 /usr/share/susemanager/salt
+/usr/share/susemanager/pillar
 %ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
