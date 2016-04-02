@@ -1807,13 +1807,13 @@ public class SystemHandler extends BaseHandler {
      * sid cannot be found.
      *
      * @xmlrpc.doc Delete the custom values defined for the custom system information keys
-     * provided from the given system.
+     * provided from the given system.<br/>
+     * (Note: Attempt to delete values of non-existing keys throws exception. Attempt to
+     * delete value of existing key which has assigned no values doesn't throw exception.)
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param  #array_single("string", "customInfoLabel")
      * @xmlrpc.returntype #return_int_success()
-     * (Note: Attempt to delete values of non-existing keys throws exception. Attempt to
-     * delete value of existing key which has assigned no values doesn't throw exception.)
      */
     public int deleteCustomValues(User loggedInUser, Integer sid, List<String> keys)
             throws FaultException {
