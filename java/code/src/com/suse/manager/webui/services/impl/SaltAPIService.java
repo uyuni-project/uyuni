@@ -515,8 +515,10 @@ public enum SaltAPIService implements SaltService {
      */
     public void deleteCustomState(long orgId, String name) {
         try {
-            SaltStateGeneratorService.INSTANCE.regenerateCustomStates(orgId, name);
+            StateFactory.CustomStateRevisionsUsage usage = StateFactory
+                    .latestStateRevisionsByCustomState(orgId, name);
             customSaltStorageManager.deleteState(orgId, name);
+            SaltStateGeneratorService.INSTANCE.regenerateCustomStates(usage);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
