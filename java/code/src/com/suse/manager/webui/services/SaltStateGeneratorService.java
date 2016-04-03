@@ -314,6 +314,15 @@ public enum SaltStateGeneratorService {
     public void regenerateCustomStates(long orgId, String name) {
         StateFactory.CustomStateRevisionsUsage usage = StateFactory
                 .latestStateRevisionsByCustomState(orgId, name);
+        regenerateCustomStates(usage);
+    }
+
+    /**
+     * Regenerate custom state assignments for org, group and severs for
+     * the given usages.
+     * @param usage custom states usages
+     */
+    public void regenerateCustomStates(StateFactory.CustomStateRevisionsUsage usage) {
         usage.getServerStateRevisions().forEach(rev ->
                 generateServerCustomState(rev)
         );
