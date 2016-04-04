@@ -104,9 +104,11 @@ public class TaskManager {
                     TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CLONED_FROM);
             Map<String, Object> originalQueryParams = new HashMap<>();
             originalQueryParams.put("channel_id", channelId);
-            DataResult<Map<String, Long>> originalId = originalMode.execute(originalQueryParams);
+            DataResult<Map<String, Long>> originalId =
+                    originalMode.execute(originalQueryParams);
             if (!originalId.isEmpty()) {
-                return getChannelPackageKeywords(originalId.get(0).get("original_id"), packageId);
+                return getChannelPackageKeywords(originalId.get(0).get("original_id"),
+                        packageId);
             }
         }
 
