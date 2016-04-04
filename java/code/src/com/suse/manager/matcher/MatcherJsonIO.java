@@ -48,6 +48,7 @@ import com.suse.matcher.json.JsonSystem;
 
 import org.apache.log4j.Logger;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -177,6 +178,7 @@ public class MatcherJsonIO {
      */
     public String generateMatcherInput(boolean includeSelf, String arch) {
         return gson.toJson(new JsonInput(
+            new Date(),
             getJsonSystems(includeSelf, arch),
             getJsonProducts(),
             getJsonSubscriptions(),

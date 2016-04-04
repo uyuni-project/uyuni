@@ -14,12 +14,16 @@
  */
 package com.suse.matcher.json;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * JSON representation of the matcher's input.
  */
 public class JsonInput {
+
+    /** Date and time of the match (as it influences subscriptions). */
+    private Date timestamp;
 
     /** The systems */
     private List<JsonSystem> systems;
@@ -36,13 +40,16 @@ public class JsonInput {
     /**
      * Standard constructor.
      *
+     * @param timestampIn the date and time of the match
      * @param systemsIn the systems
      * @param productsIn the products
      * @param subscriptionsIn the subscriptions
      * @param pinnedMatchesIn the pinned matches
      */
-    public JsonInput(List<JsonSystem> systemsIn, List<JsonProduct> productsIn,
-            List<JsonSubscription> subscriptionsIn, List<JsonMatch> pinnedMatchesIn) {
+    public JsonInput(Date timestampIn, List<JsonSystem> systemsIn,
+            List<JsonProduct> productsIn, List<JsonSubscription> subscriptionsIn,
+            List<JsonMatch> pinnedMatchesIn) {
+        timestamp = timestampIn;
         systems = systemsIn;
         products = productsIn;
         subscriptions = subscriptionsIn;
@@ -119,5 +126,23 @@ public class JsonInput {
      */
     public void setPinnedMatches(List<JsonMatch> pinnedMatchesIn) {
         pinnedMatches = pinnedMatchesIn;
+    }
+
+    /**
+     * Gets the date and time of the match.
+     *
+     * @return the date and time of the match
+     */
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    /**
+     * Sets the date and time of the match.
+     *
+     * @param timestampIn the new date and time of the match
+     */
+    public void setTimestamp(Date timestampIn) {
+        timestamp = timestampIn;
     }
 }
