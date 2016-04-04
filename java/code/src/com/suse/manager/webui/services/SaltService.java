@@ -162,14 +162,6 @@ public interface SaltService {
     Map<String, Boolean> match(String target);
 
     /**
-     * Injects an event into the salt event bus
-     * @param tag salt event tag
-     * @param data salt event data
-     * @return true if successful otherwise false
-     */
-    boolean sendEvent(String tag, Object data);
-
-    /**
      * Get the CPU info from a minion.
      * @param minionId the minion id
      * @return the CPU data as a map.

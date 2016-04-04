@@ -203,7 +203,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Map<String, String> data = new HashMap<>();
             data.put("minionId", minionId);
             data.put("machineId", machineId);
-            SALT_SERVICE.sendEvent("susemanager/minion/registered", data);
             LOG.info("Finished minion registration: " + minionId);
 
             StatesAPI.generateServerPackageState(server);

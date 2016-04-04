@@ -315,21 +315,6 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public boolean sendEvent(String tag, Object data) {
-        try {
-            SaltClient client = new SaltClient(SALT_MASTER_URI);
-            client.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 30000);
-            return client.sendEvent(tag, GSON.toJson(data));
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public Optional<Map<String, Object>> getCpuInfo(String minionId) {
         return callSync(Status.cpuinfo(), minionId);
     }
