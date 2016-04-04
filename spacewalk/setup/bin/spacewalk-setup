@@ -358,6 +358,20 @@ sub setup_salt_master {
     print SALT_MASTER "    - /srv/susemanager/pillar\n";
     print SALT_MASTER "    - /srv/pillar\n";
 
+    # Scalability configuration parameters
+
+    # Avoids Salt timeouts in case many minions are accepted (in the hundreds range) and
+    # at least a few of them respond slowly. Default value is 5 and leads to the following
+    # error:
+    # Salt request timed out. The master is not responding. If this error persists after
+    # verifying the master is up, worker_threads may need to be increased
+    print SALT_MASTER "worker_threads: 50\n";
+
+    # Wait for slow minions, or long running operations, longer. Default is 15s in total.
+    # Raise the timeout after 4 minutes.
+    print SALT_MASTER "timeout: 120\n";
+    print SALT_MASTER "gather_job_timeout: 120\n";
+
     close(SALT_MASTER);
 }
 
