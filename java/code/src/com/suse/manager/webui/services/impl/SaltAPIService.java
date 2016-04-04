@@ -413,7 +413,7 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public <T> Map<String, T> callSync(LocalCall<T> call, Target<?> target,
-            Map<String, ?> metadata) throws SaltException {
+            Optional<Map<String, ?>> metadata) throws SaltException {
         LocalCallWithMetadata<T> callWithMetadata =
                 new LocalCallWithMetadata<>(call, metadata);
         return callWithMetadata
@@ -424,7 +424,7 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target,
-            Map<String, ?> metadata) throws SaltException {
+            Optional<Map<String, ?>> metadata) throws SaltException {
         LocalCallWithMetadata<T> callWithMetadata =
                 new LocalCallWithMetadata<>(call, metadata);
         return callWithMetadata
@@ -568,7 +568,7 @@ public enum SaltAPIService implements SaltService {
         return callSync(
             Test.ping(),
             targetIn,
-            Collections.emptyMap()
+            Optional.empty()
         );
     }
 

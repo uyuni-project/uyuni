@@ -609,7 +609,7 @@ public class StatesAPI {
                     try {
                         Map<String, Object> result = SaltAPIService.INSTANCE.callSync(
                                 com.suse.manager.webui.utils.salt.State.showHighstate(),
-                                new MinionList(minionId), null);
+                                new MinionList(minionId), Optional.empty());
                         // if the response is a List containing only one String element
                         // it may be an error from Salt so use that String directly
                         // without dumping it to Yaml
