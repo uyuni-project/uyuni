@@ -359,4 +359,9 @@ public interface SaltService {
      */
     String getCustomStateBaseDir(long orgId);
 
+    /**
+     * @param baseDirPath the base path where .sls files are stored
+     */
+    void setCustomStateBaseDir(String baseDirPath);
+
 }

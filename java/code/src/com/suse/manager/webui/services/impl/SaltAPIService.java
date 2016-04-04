@@ -571,11 +571,20 @@ public enum SaltAPIService implements SaltService {
             Collections.emptyMap()
         );
     }
+
     /**
      * {@inheritDoc}
      */
     public String getCustomStateBaseDir(long orgId) {
         return customSaltStorageManager.getBaseDirPath();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setCustomStateBaseDir(String baseDirPath) {
+        customSaltStorageManager.setBaseDirPath(baseDirPath);
+    }
+
 
 }

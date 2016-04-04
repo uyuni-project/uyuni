@@ -66,6 +66,15 @@ public enum SaltStateGeneratorService {
 
     public static final String GENERATED_PILLAR_ROOT = "/srv/susemanager/pillar";
 
+    private String generatedSlsRoot;
+
+    private String generatedPillarRoot;
+
+    SaltStateGeneratorService() {
+        generatedSlsRoot = SaltCustomStateStorageManager.GENERATED_SLS_ROOT;
+        generatedPillarRoot = GENERATED_PILLAR_ROOT;
+    }
+
     /**
      * Generate server specific pillar if the given server is a minion.
      * @param server the minion server
@@ -114,7 +123,7 @@ public enum SaltStateGeneratorService {
         }
 
         try {
-            Path baseDir = Paths.get(GENERATED_PILLAR_ROOT);
+            Path baseDir = Paths.get(generatedPillarRoot);
             Files.createDirectories(baseDir);
             Path filePath = baseDir.resolve(
                     defaultExtension("server_" + server.getDigitalServerId()));
@@ -137,7 +146,7 @@ public enum SaltStateGeneratorService {
         }
         LOG.debug("Removing pillar file for server name= " + server.getName() +
                 " digitalId=" + server.getDigitalServerId());
-        Path baseDir = Paths.get(GENERATED_PILLAR_ROOT);
+        Path baseDir = Paths.get(generatedPillarRoot);
         Path filePath = baseDir.resolve(
                 defaultExtension("server_" + server.getDigitalServerId()));
         try {
@@ -173,8 +182,7 @@ public enum SaltStateGeneratorService {
     }
 
     private void removeCustomStateAssignments(String file) {
-        Path baseDir = Paths.get(
-                SaltCustomStateStorageManager.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
+        Path baseDir = Paths.get(generatedSlsRoot, SALT_CUSTOM_STATES);
         Path filePath = baseDir.resolve(defaultExtension(file));
 
         try {
@@ -242,8 +250,7 @@ public enum SaltStateGeneratorService {
         stateNames = SaltAPIService.INSTANCE.resolveOrgStates(
                 orgId, stateNames);
 
-        Path baseDir = Paths.get(
-                SaltCustomStateStorageManager.GENERATED_SLS_ROOT, SALT_CUSTOM_STATES);
+        Path baseDir = Paths.get(generatedSlsRoot, SALT_CUSTOM_STATES);
         try {
             Files.createDirectories(baseDir);
             Path filePath = baseDir.resolve(defaultExtension(fileName));
@@ -352,4 +359,31 @@ public enum SaltStateGeneratorService {
         StatesAPI.generateServerPackageState(server);
     }
 
+    /**
+     * @return the root path where state files are generated
+     */
+    public String getGeneratedSlsRoot() {
+        return generatedSlsRoot;
+    }
+
+    /**
+     * @param generatedSlsRootIn the root path where state files are generated
+     */
+    public void setGeneratedSlsRoot(String generatedSlsRootIn) {
+        this.generatedSlsRoot = generatedSlsRootIn;
+    }
+
+    /**
+     * @return the root path where pillar files are generated
+     */
+    public String getGeneratedPillarRoot() {
+        return generatedPillarRoot;
+    }
+
+    /**
+     * @param generatedPillarRootIn the root path where pillar files are generated
+     */
+    public void setGeneratedPillarRoot(String generatedPillarRootIn) {
+        this.generatedPillarRoot = generatedPillarRootIn;
+    }
 }
