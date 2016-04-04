@@ -146,9 +146,7 @@ public class DownloadController {
     }
 
     /**
-     * TODO: This rather belongs to {@link TokenBuilder} or some TokenValidatorService class.
-     *
-     * Validate a given token.
+     * Validate a given token for a given channel.
      *
      * @param token the token to validate
      * @param channel the channel
