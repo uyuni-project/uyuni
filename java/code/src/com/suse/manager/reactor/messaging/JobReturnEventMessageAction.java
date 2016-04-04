@@ -29,18 +29,21 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.Zypper;
+import com.suse.manager.webui.utils.salt.custom.CmdExecCodeAllResult;
+import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSls;
+import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.event.JobReturnEvent;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.log4j.Logger;
 
-import java.util.Collections;
 import java.util.Date;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Handler class for {@link JobReturnEventMessage}.
@@ -56,7 +59,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         JobReturnEvent jobReturnEvent = jobReturnEventMessage.getJobReturnEvent();
 
         // React according to the function the minion ran
-        String function = (String) jobReturnEvent.getData().get("fun");
+        String function = jobReturnEvent.getData().getFun();
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Job return event for minion: " +
@@ -64,12 +67,20 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     " (" + function + ")");
         }
 
+        Optional<Long> actionId = getActionId(jobReturnEvent);
+        if(!actionId.isPresent()) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("No action id provided.");
+            }
+        }
+
         // Adjust action status if the job was scheduled by us
-        getActionId(jobReturnEvent).ifPresent(id -> {
+        actionId.ifPresent(id -> {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Matched salt job with action (id=" + id + ")");
             }
 
+            //TODO: Potential null pointer wrap action
             Action action = ActionFactory.lookupById(id);
             Optional<MinionServer> minionServerOpt = MinionServerFactory
                     .findByMinionId(jobReturnEvent.getMinionId());
@@ -78,15 +89,15 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
 
                 // Delete schedule on the minion if we created it
-                if (jobReturnEvent.getData().containsKey("schedule")) {
-                    String scheduleName = (String) jobReturnEvent.getData().get("schedule");
+                jobReturnEvent.getData().getSchedule().ifPresent(scheduleName -> {
+
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Deleting schedule '" + scheduleName +
                                 "' from minion: " + minionServer.getMinionId());
                     }
                     SaltAPIService.INSTANCE.deleteSchedule(scheduleName,
                         new MinionList(jobReturnEvent.getMinionId()));
-                }
+                });
 
                 serverAction.ifPresent(sa -> {
                     if (LOG.isDebugEnabled()) {
@@ -127,15 +138,16 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @param event the event to read the update data from
      */
     private void updateServerAction(ServerAction serverAction, JobReturnEvent event) {
-        Map<String, Object> eventData = event.getData();
+        JobReturnEvent.Data eventData = event.getData();
         serverAction.setCompletionTime(new Date());
 
+        final long retcode = eventData.getRetcode();
+
         // Set the result code defaulting to 0
-        long retcode = ((Double) eventData.getOrDefault("retcode", 0.0)).longValue();
         serverAction.setResultCode(retcode);
 
         // The final status of the action depends on "success" and "retcode"
-        if ((Boolean) eventData.getOrDefault("success", false) && retcode == 0) {
+        if (eventData.isSuccess() && retcode == 0) {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
         else {
@@ -153,7 +165,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
             // Set the output to the result
             statesResult.setOutput(YamlHelper.INSTANCE
-                    .dump(eventData.get("return")).getBytes());
+                    .dump(eventData.getResult()).getBytes());
 
             // Create the result message depending on the action status
             String states = applyStatesAction.getDetails().getStates() != null ?
@@ -165,9 +177,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             serverAction.setResultMsg(message);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            @SuppressWarnings("unchecked")
-            Map<String, Object> eventDataReturnMap = (Map<String, Object>) eventData
-                    .getOrDefault("return", Collections.EMPTY_MAP);
+            CmdExecCodeAllResult cmdResult = eventData.getResult(CmdExecCodeAllResult.class);
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = new ScriptResult();
             scriptAction.getScriptActionDetails().addResult(scriptResult);
@@ -185,21 +195,35 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
                 serverAction.setResultMsg("Failed to execute script. [jid=" +
                         event.getJobId() + "]");
-                String stderr = (String) eventDataReturnMap.getOrDefault("stderr",
-                        "stderr is not available.");
-                scriptResult.setOutput(stderr.getBytes());
             }
             else {
                 serverAction.setResultMsg("Script executed successfully. [jid=" +
                         event.getJobId() + "]");
-                String stdout = (String) eventDataReturnMap.getOrDefault("stdout",
-                        "stdout is not available.");
-                scriptResult.setOutput(stdout.getBytes());
             }
+            StringBuilder sb = new StringBuilder();
+            sb.append("Stderr: '");
+            sb.append(cmdResult.getStderr());
+            sb.append("\n\n");
+            sb.append("Stdout: '");
+            sb.append(cmdResult.getStdout());
+            sb.append("\n");
+            scriptResult.setOutput(sb.toString().getBytes());
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+                serverAction.setResultMsg("failure");
+            }
+            else {
+                serverAction.setResultMsg("success");
+            }
+
+            PkgProfileUpdateSls result = eventData.getResult(PkgProfileUpdateSls.class);
+            LOG.debug("Products: " + result.getListProducts().getChanges().getRet().stream()
+                    .map(Zypper.ProductInfo::getName).collect(Collectors.joining(", ")));
         }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
-            Object returnObject = eventData.get("return");
+            Object returnObject = eventData.getResult();
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String json = gson.toJson(returnObject);
             serverAction.setResultMsg(json.length() > 1024 ?
@@ -213,20 +237,13 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @param event the job return event
      * @return the corresponding action id or empty optional
      */
-    @SuppressWarnings("unchecked")
     private Optional<Long> getActionId(JobReturnEvent event) {
-        Map<String, Object> metadata = (Map<String, Object>) event.getData()
-                .getOrDefault("metadata", Collections.EMPTY_MAP);
-        Optional<Long> actionId = Optional.empty();
-        Double actionIdDouble = (Double) metadata.get("suma-action-id");
-        if (actionIdDouble != null) {
-            actionId = Optional.ofNullable(actionIdDouble.longValue());
-        }
-        return actionId;
+        return event.getData().getMetadata(ScheduleMetadata.class)
+                .map(ScheduleMetadata::getSumaActionId);
     }
 
     private boolean packagesChanged(JobReturnEvent event) {
-        String function = (String) event.getData().get("fun");
+        String function = event.getData().getFun();
         // Add more events that change packages here
         // This can also be further optimized by inspecting the event contents
         switch (function) {
