@@ -24,6 +24,7 @@ Vendor:       Novell Technical Services
 Requires:     supportconfig-plugin-resource
 Requires:     supportconfig-plugin-tag
 Supplements:  packageand(spacewalk-check:supportutils)
+Supplements:  packageand(salt-minion:supportutils)
 
 %description
 Extends supportconfig functionality to include system information for
