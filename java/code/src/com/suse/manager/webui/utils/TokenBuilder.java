@@ -129,10 +129,9 @@ public class TokenBuilder {
     }
 
     /**
-     * @return a download token with the current builder parameters.
-     * @throws JoseException if there is an error generating the token
+     * @return the current token JWT claims
      */
-    public String getToken() throws JoseException {
+    public JwtClaims getClaims() {
         JwtClaims claims = new JwtClaims();
         this.expirationTimeMinutesInTheFuture.ifPresent(exp -> {
             claims.setExpirationTimeMinutesInTheFuture(exp);
@@ -144,6 +143,15 @@ public class TokenBuilder {
         onlyChannels.ifPresent(channels ->
                 claims.setStringListClaim("onlyChannels",
                         channels.stream().collect(Collectors.toList())));
+        return claims;
+    }
+
+    /**
+     * @return a download token with the current builder parameters.
+     * @throws JoseException if there is an error generating the token
+     */
+    public String getToken() throws JoseException {
+        JwtClaims claims = getClaims();
 
         JsonWebSignature jws = new JsonWebSignature();
         jws.setPayload(claims.toJson());
