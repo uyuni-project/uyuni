@@ -298,4 +298,30 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             fail("No HaltException should be thrown with a valid token!");
         }
     }
+
+    /**
+     * Tests that a expired token does not allow access
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testExpiredToken() throws Exception {
+        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        // already expired
+        tokenBuilder.setExpirationTimeMinutesInTheFuture(-1);
+        String expiredToken = tokenBuilder.getToken();
+
+        Map<String, String> params = new HashMap<>();
+        params.put(expiredToken, "");
+        Request request = getMockRequestWithParams(params);
+
+        try {
+            DownloadController.downloadPackage(request, response);
+            fail(String.format("%s should halt 403 if an expired token is given",
+                    DownloadController.class.getSimpleName()));
+        } catch (spark.HaltException e) {
+            assertEquals(403, e.getStatusCode());
+            assertNull(response.raw().getHeader("X-Sendfile"));
+        }
+    }
 }

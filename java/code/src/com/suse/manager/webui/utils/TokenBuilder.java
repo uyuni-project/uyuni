@@ -57,7 +57,7 @@ public class TokenBuilder {
      *
      * @note: Default is a year
      */
-    private     Optional<Float> expirationTimeMinutesInTheFuture =
+    private Optional<Float> expirationTimeMinutesInTheFuture =
             Optional.of(YEAR_IN_MINUTES);
 
     /**
@@ -109,6 +109,14 @@ public class TokenBuilder {
     public static Key getKeyForSecret(String secret) {
         byte[] bytes = javax.xml.bind.DatatypeConverter.parseHexBinary(secret);
         return new HmacKey(bytes);
+    }
+
+    /**
+     * Set expiration time of the token.
+     * @param minutes minutes in the future when the token expires
+     */
+    public void setExpirationTimeMinutesInTheFuture(float minutes) {
+        this.expirationTimeMinutesInTheFuture = Optional.of(minutes);
     }
 
     /**
