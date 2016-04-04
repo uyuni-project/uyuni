@@ -25,7 +25,7 @@ import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.utils.SparkTestUtils;
-import com.suse.manager.webui.utils.TokenUtils;
+import com.suse.manager.webui.utils.TokenBuilder;
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -169,8 +169,10 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testTwoTokens() throws Exception {
-        String token = TokenUtils.createTokenWithServerKey(user.getOrg().getId(),
-                Optional.empty());
+        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        String token = tokenBuilder.getToken();
+
         Map<String, String> params = new HashMap<>();
         params.put(token, "");
         params.put("2ndtoken", "");
@@ -193,9 +195,14 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     public void testTokenDifferentChannel() throws Exception {
         // The added token is for a different channel
-        String tokenOtherChannel = TokenUtils.createTokenWithServerKey(
-                user.getOrg().getId(),
-                Optional.of(new HashSet<>(Arrays.asList(channel.getLabel() + "WRONG"))));
+        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        tokenBuilder.onlyChannels(
+                new HashSet<>(
+                        Arrays.asList(channel.getLabel() + "WRONG")));
+        String tokenOtherChannel = tokenBuilder.getToken();
+
+
         Map<String, String> params = new HashMap<>();
         params.put(tokenOtherChannel, "");
         Request request = getMockRequestWithParams(params);
@@ -216,9 +223,13 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testTokenWrongOrg() throws Exception {
-        String tokenOtherOrg = TokenUtils.createTokenWithServerKey(
-                user.getOrg().getId() + 1,
-                Optional.of(new HashSet<>(Arrays.asList(channel.getLabel()))));
+        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId() + 1);
+        tokenBuilder.useServerSecret();
+        tokenBuilder.onlyChannels(
+                new HashSet<>(
+                        Arrays.asList(channel.getLabel())));
+        String tokenOtherOrg = tokenBuilder.getToken();
+
         Map<String, String> params = new HashMap<>();
         params.put(tokenOtherOrg, "");
         Request request = getMockRequestWithParams(params);
@@ -239,8 +250,13 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testCorrectChannel() throws Exception {
-        String tokenChannel = TokenUtils.createTokenWithServerKey(user.getOrg().getId(),
-                Optional.of(new HashSet<>(Arrays.asList(channel.getLabel()))));
+        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        tokenBuilder.onlyChannels(
+                new HashSet<>(
+                        Arrays.asList(channel.getLabel())));
+        String tokenChannel = tokenBuilder.getToken();
+
         Map<String, String> params = new HashMap<>();
         params.put(tokenChannel, "");
         Request request = getMockRequestWithParams(params);
@@ -263,10 +279,12 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testCorrectOrg() throws Exception {
-        String token = TokenUtils.createTokenWithServerKey(user.getOrg().getId(),
-                Optional.empty());
+        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        String tokenOrg = tokenBuilder.getToken();
+
         Map<String, String> params = new HashMap<>();
-        params.put(token, "");
+        params.put(tokenOrg, "");
         Request request = getMockRequestWithParams(params);
 
         try {
