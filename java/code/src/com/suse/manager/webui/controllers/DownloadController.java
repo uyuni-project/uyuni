@@ -19,7 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.suse.manager.webui.utils.TokenUtils;
+import com.suse.manager.webui.utils.TokenBuilder;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
@@ -49,7 +49,10 @@ import static spark.Spark.halt;
 public class DownloadController {
 
     private static final int BUF_SIZE = 4096;
-    private static final Key KEY = TokenUtils.getServerKey();
+    private static final Key KEY = TokenBuilder.getKeyForSecret(
+            TokenBuilder.getServerSecret().orElseThrow(
+                        () -> new IllegalArgumentException(
+                                "Server has no key configured")));
     private static final JwtConsumer JWT_CONSUMER = new JwtConsumerBuilder()
             .setVerificationKey(KEY)
             .build();
@@ -143,7 +146,7 @@ public class DownloadController {
     }
 
     /**
-     * TODO: This rather belongs to {@link TokenUtils} or some TokenValidatorService class.
+     * TODO: This rather belongs to {@link TokenBuilder} or some TokenValidatorService class.
      *
      * Validate a given token.
      *
