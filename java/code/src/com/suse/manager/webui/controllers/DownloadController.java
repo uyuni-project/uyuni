@@ -48,7 +48,6 @@ import static spark.Spark.halt;
  */
 public class DownloadController {
 
-    private static final int BUF_SIZE = 4096;
     private static final Key KEY = TokenBuilder.getKeyForSecret(
             TokenBuilder.getServerSecret().orElseThrow(
                         () -> new IllegalArgumentException(
