@@ -423,8 +423,15 @@ public class StatesAPI {
                                 .stream().map(s -> s.getId())
                                 .collect(Collectors.toList());
 
+                        // server groups are a special case
+                        // here we want to apply the custom states specific to
+                        // only one group not to all groups of a minion
+                        String state = SaltAPIService.INSTANCE
+                                .getServerGroupGeneratedStateName(groupId);
+
                         ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                                minionServerIds, json.getStates(), getScheduleDate(json));
+                                minionServerIds, Arrays.asList(state),
+                                getScheduleDate(json));
 
                         return action;
                     },
