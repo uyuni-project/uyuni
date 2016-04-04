@@ -170,7 +170,7 @@ public enum SaltStateGeneratorService {
      * @param group the server group
      */
     public void removeCustomStateAssignments(ServerGroup group) {
-        removeCustomStateAssignments("group_" + group.getId());
+        removeCustomStateAssignments(getGroupStateFileName(group.getId()));
     }
 
     /**
@@ -218,7 +218,7 @@ public enum SaltStateGeneratorService {
         LOG.debug("Generating custom state SLS file for server group: " + group.getId());
 
         generateCustomStates(group.getOrg().getId(), groupStateRevision,
-                "group_" + group.getId());
+                getGroupStateFileName(group.getId()));
     }
 
     /**
@@ -359,6 +359,17 @@ public enum SaltStateGeneratorService {
         StatesAPI.generateServerPackageState(server);
     }
 
+    private String getGroupStateFileName(long groupId) {
+        return "group_" + groupId;
+    }
+
+    /**
+     * @param groupId the id of the server group
+     * @return the name of the generated server group .sls file.
+     */
+    public String getServerGroupGeneratedStateName(long groupId) {
+        return SALT_CUSTOM_STATES + "." + getGroupStateFileName(groupId);
+    }
     /**
      * @param generatedSlsRootIn the root path where state files are generated
      */
