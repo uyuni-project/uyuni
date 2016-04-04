@@ -57,7 +57,7 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
             try {
                 Map<String, Object> metadata = new HashMap<>();
                 Map<String, Float> uptimes = SaltAPIService.INSTANCE
-                        .callSync(uptimeCall, target, metadata);
+                        .callSync(uptimeCall, target, Optional.of(metadata));
                 if (uptimes.containsKey(minion.getMinionId())) {
                     Long uptime = uptimes.get(minion.getMinionId()).longValue();
 

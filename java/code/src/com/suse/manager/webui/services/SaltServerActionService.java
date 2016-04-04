@@ -107,7 +107,7 @@ public enum SaltServerActionService {
                 }
                 else {
                     List<String> results = SaltAPIService.INSTANCE
-                            .callAsync(call, new MinionList(present), metadata)
+                            .callAsync(call, new MinionList(present), Optional.of(metadata))
                             .getMinions();
                     return minions.stream()
                             .collect(Collectors.partitioningBy(minion ->
