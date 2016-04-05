@@ -32,7 +32,7 @@ public class SaltCustomStateStorageManagerTest extends BaseTestCaseWithUser {
      */
     public void setUp() throws Exception {
         super.setUp();
-        manager = new SaltCustomStateStorageManager();
+        manager = SaltCustomStateStorageManager.INSTANCE;
         baseDir = Files.createTempDirectory("salt-" + TestUtils.randomString());
         manager.setBaseDirPath(baseDir.toString());
     }
