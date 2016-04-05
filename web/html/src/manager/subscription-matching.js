@@ -62,7 +62,7 @@ const SubscriptionMatching = React.createClass({
         </div>
         <SubscriptionMatchingTabContainer data={data} onPinChanged={this.onPinChanged} />
         <MatcherRunPanel
-          dataAvailable={data != null && typeof data == "object" }
+          dataAvailable={data != null}
           initialLatestStart={data == null ? null : data.latestStart}
           initialLatestEnd={data == null ? null : data.latestEnd}
           onMatcherRunSchedule={this.onMatcherRunSchedule}
