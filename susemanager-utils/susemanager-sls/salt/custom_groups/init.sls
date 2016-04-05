@@ -1,3 +1,4 @@
-{% for gid in pillar.get('group_ids', []) %}
-{% include 'custom/group_{0}.sls'.format(gid) ignore missing %}
+include:
+{% for gid in pillar.get('group_ids', []) -%}
+  - custom.group_{{ gid }}
 {% endfor %}
