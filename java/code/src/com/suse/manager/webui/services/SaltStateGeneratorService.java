@@ -372,4 +372,11 @@ public enum SaltStateGeneratorService {
     public void setGeneratedPillarRoot(String generatedPillarRootIn) {
         this.generatedPillarRoot = generatedPillarRootIn;
     }
+
+    /**
+     * @return the root path where pillar files are generated
+     */
+    public String getGeneratedPillarRoot() {
+        return this.generatedPillarRoot;
+    }
 }
