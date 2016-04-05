@@ -388,6 +388,11 @@ public class StatesAPI {
 
     /**
      * Schedule an {@link ApplyStatesAction} and return its id.
+     * In the case of server groups the "custom.group_[id]" state
+     * is applied instead of "custom_groups".
+     * This is because the user wants to apply only the
+     * custom states assigned to one group, not all the states of all
+     * the groups of which a minion might be member of.
      *
      * @param request the request object
      * @param response the response object
@@ -423,14 +428,15 @@ public class StatesAPI {
                                 .stream().map(s -> s.getId())
                                 .collect(Collectors.toList());
 
-                        // server groups are a special case
-                        // here we want to apply the custom states specific to
-                        // only one group not to all groups of a minion
-                        String state = SaltStateGeneratorService.INSTANCE
-                                .getServerGroupGeneratedStateName(groupId);
+                        List<String> states = json.getStates();
+                        if (states.size() == 1 && "custom_groups".equals(states.get(0))) {
+                            String state = SaltStateGeneratorService.INSTANCE
+                                    .getServerGroupGeneratedStateName(groupId);
+                            states = Arrays.asList(state);
+                        }
 
                         ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
-                                minionServerIds, Arrays.asList(state),
+                                minionServerIds, states,
                                 getScheduleDate(json));
 
                         return action;
