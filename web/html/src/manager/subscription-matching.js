@@ -1,21 +1,21 @@
 "use strict";
 
-var React = require("react");
-var ReactDOM = require("react-dom");
-var TableComponent = require("../components/table");
-var Table = TableComponent.Table;
-var TableCell = TableComponent.TableCell;
-var TableRow = TableComponent.TableRow;
-var TabContainer = require("../components/tab-container").TabContainer;
-var Subscriptions =  require("./subscription-matching-subscriptions").Subscriptions;
-var Pins =  require("./subscription-matching-pins").Pins;
-var Messages =  require("./subscription-matching-messages").Messages;
-var UnmatchedProducts =  require("./subscription-matching-unmatched-products").UnmatchedProducts;
-var MatcherRunPanel =  require("./subscription-matching-matcher-run-panel").MatcherRunPanel;
-var WarningIcon =  require("./subscription-matching-util").WarningIcon;
+const React = require("react");
+const ReactDOM = require("react-dom");
+const TableComponent = require("../components/table");
+const Table = TableComponent.Table;
+const TableCell = TableComponent.TableCell;
+const TableRow = TableComponent.TableRow;
+const TabContainer = require("../components/tab-container").TabContainer;
+const Subscriptions =  require("./subscription-matching-subscriptions").Subscriptions;
+const Pins =  require("./subscription-matching-pins").Pins;
+const Messages =  require("./subscription-matching-messages").Messages;
+const UnmatchedProducts =  require("./subscription-matching-unmatched-products").UnmatchedProducts;
+const MatcherRunPanel =  require("./subscription-matching-matcher-run-panel").MatcherRunPanel;
+const WarningIcon =  require("./subscription-matching-util").WarningIcon;
 const Network = require("../utils/network");
 
-var SubscriptionMatching = React.createClass({
+const SubscriptionMatching = React.createClass({
   getInitialState: function() {
     return {serverData: null};
   },
@@ -72,7 +72,7 @@ var SubscriptionMatching = React.createClass({
   }
 });
 
-var SubscriptionMatchingTabContainer = React.createClass({
+const SubscriptionMatchingTabContainer = React.createClass({
   getInitialState: function() {
     return {activeTabHash: document.location.hash};
   },
@@ -95,10 +95,10 @@ var SubscriptionMatchingTabContainer = React.createClass({
       return null;
     }
 
-    var pinLabelIcon = data.pinnedMatches.filter((p) => p.status == "unsatisfied").length > 0 ?
+    const pinLabelIcon = data.pinnedMatches.filter((p) => p.status == "unsatisfied").length > 0 ?
       <WarningIcon iconOnRight={true} /> : null;
 
-    var messageLabelIcon = data.messages.length > 0 ?
+    const messageLabelIcon = data.messages.length > 0 ?
       <WarningIcon iconOnRight={true} /> : null;
 
     return (

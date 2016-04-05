@@ -1,9 +1,9 @@
 "use strict";
 
-var React = require("react");
+const React = require("react");
 const Network = require("../utils/network");
 
-var MatcherRunPanel = React.createClass({
+const MatcherRunPanel = React.createClass({
   getInitialState: function() {
     return {
       dataAvailable: this.props.dataAvailable,
@@ -42,7 +42,7 @@ var MatcherRunPanel = React.createClass({
   },
 
   render: function() {
-    var matcherDataStatus = this.state.dataAvailable
+    const matcherDataStatus = this.state.dataAvailable
         ? <div>
             <MatcherTaskDescription />
             <MatcherRunDescription latestStart={this.state.latestStart} latestEnd={this.state.latestEnd} error={this.state.error} />
@@ -63,7 +63,7 @@ var MatcherRunPanel = React.createClass({
   }
 });
 
-var MatcherRunDescription = (props) => {
+const MatcherRunDescription = (props) => {
   if (props.error) {
     return <div className="text-danger">{t("Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running.")}</div>
   }
@@ -84,13 +84,13 @@ var MatcherRunDescription = (props) => {
   return <div>{t("Latest successful match data was computed {0}, you can trigger a new run by clicking the button below.", moment(props.latestEnd).fromNow())}</div>;
 }
 
-var MatcherNoDataDescription = () =>
+const MatcherNoDataDescription = () =>
   <div>
     {t("Couldn't retrieve the matcher data from the server. This can happen when the session is expired. Please try to log in again.")}
   </div>
 ;
 
-var MatcherTaskDescription = () =>
+const MatcherTaskDescription = () =>
   <div>
     {t("Match data is computed via a task schedule, nightly by default (you can ")}
     <a href="/rhn/admin/BunchDetail.do?label=gatherer-matcher-bunch">{t("change the task schedule from the administration page")}</a>
@@ -98,7 +98,7 @@ var MatcherTaskDescription = () =>
   </div>
 ;
 
-var MatcherScheduleButton = React.createClass({
+const MatcherScheduleButton = React.createClass({
   onClick: function() {
     Network.post("/rhn/manager/subscription-matching/schedule-matcher-run")
       .promise.catch(() => this.props.onError());

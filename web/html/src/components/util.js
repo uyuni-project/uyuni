@@ -1,9 +1,9 @@
 "use strict";
 
-var React = require("react");
+const React = require("react");
 
 // use this mixin to persist an element's state between mounts
-var StatePersistedMixin = {
+const StatePersistedMixin = {
   propTypes: {
     saveState: React.PropTypes.func, // is called before unmount
     loadState: React.PropTypes.func, // is called on mount
