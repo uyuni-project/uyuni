@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.server.test;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
      * Test for {@link MinionServerFactory#findByMachineId(String)}.
      */
     public void testFindByMachineId() throws Exception {
-        MinionServer minionServer = createTestMinionServer();
+        MinionServer minionServer = createTestMinionServer(user);
         Optional<MinionServer> minion = MinionServerFactory
                 .findByMachineId(minionServer.getMachineId());
         assertTrue(minion.isPresent());
@@ -42,7 +43,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
      * Test for {@link MinionServerFactory#findByMinionId(String)}.
      */
     public void testFindByMinionId() throws Exception {
-        MinionServer minionServer = createTestMinionServer();
+        MinionServer minionServer = createTestMinionServer(user);
         Optional<MinionServer> minion = MinionServerFactory
                 .findByMinionId(minionServer.getMinionId());
         assertTrue(minion.isPresent());
@@ -53,7 +54,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
      * Test for {@link MinionServerFactory#listMinions()}.
      */
     public void testListMinions() throws Exception {
-        MinionServer minionServer = createTestMinionServer();
+        MinionServer minionServer = createTestMinionServer(user);
         List<MinionServer> minions = MinionServerFactory.listMinions();
         assertTrue(minions.contains(minionServer));
     }
@@ -62,7 +63,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
      * Test for {@link MinionServerFactory#lookupById(Long)}.
      */
     public void testLookupById() throws Exception {
-        MinionServer minionServer = createTestMinionServer();
+        MinionServer minionServer = createTestMinionServer(user);
         Optional<MinionServer> minion = MinionServerFactory
                 .lookupById(minionServer.getId());
         assertTrue(minion.isPresent());
@@ -75,8 +76,8 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
      * @return the MinionServer object
      * @throws Exception in case of an error
      */
-    private MinionServer createTestMinionServer() throws Exception {
-        return (MinionServer) ServerFactoryTest.createTestServer(user, true,
+    public static MinionServer createTestMinionServer(User owner) throws Exception {
+        return (MinionServer) ServerFactoryTest.createTestServer(owner, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
     }
