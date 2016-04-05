@@ -6,7 +6,6 @@ const Network = require("../utils/network");
 const MatcherRunPanel = React.createClass({
   getInitialState: function() {
     return {
-      dataAvailable: this.props.dataAvailable,
       latestStart: this.props.initialLatestStart,
       latestEnd: this.props.initialLatestEnd,
       error: false,
@@ -14,10 +13,6 @@ const MatcherRunPanel = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      dataAvailable: nextProps.dataAvailable,
-    });
-
     if (this.state.latestStart == null || nextProps.initialLatestStart >= this.state.latestStart) {
       this.setState({
         latestStart: nextProps.initialLatestStart,
@@ -42,22 +37,22 @@ const MatcherRunPanel = React.createClass({
   },
 
   render: function() {
-    const matcherDataStatus = this.state.dataAvailable
-        ? <div>
-            <MatcherTaskDescription />
-            <MatcherRunDescription latestStart={this.state.latestStart} latestEnd={this.state.latestEnd} error={this.state.error} />
-            <MatcherScheduleButton
-              matcherRunning={!this.state.error && this.state.latestStart != null && this.state.latestEnd == null}
-              onScheduled={this.onScheduled}
-              onError={this.onError}
-            />
-          </div>
-        : <MatcherNoDataDescription />;
+    if (!this.props.dataAvailable) {
+      // no data available from the backend yet, avoid
+      // a flash of unwanted content
+      return null;
+    }
 
     return (
       <div className="row col-md-12">
         <h2>{t("Match data status")}</h2>
-        {matcherDataStatus}
+        <MatcherTaskDescription />
+        <MatcherRunDescription latestStart={this.state.latestStart} latestEnd={this.state.latestEnd} error={this.state.error} />
+        <MatcherScheduleButton
+          matcherRunning={!this.state.error && this.state.latestStart != null && this.state.latestEnd == null}
+          onScheduled={this.onScheduled}
+          onError={this.onError}
+        />
       </div>
     );
   }
@@ -83,12 +78,6 @@ const MatcherRunDescription = (props) => {
 
   return <div>{t("Latest successful match data was computed {0}, you can trigger a new run by clicking the button below.", moment(props.latestEnd).fromNow())}</div>;
 }
-
-const MatcherNoDataDescription = () =>
-  <div>
-    {t("Couldn't retrieve the matcher data from the server. This can happen when the session is expired. Please try to log in again.")}
-  </div>
-;
 
 const MatcherTaskDescription = () =>
   <div>
