@@ -32,6 +32,7 @@ import com.redhat.rhn.manager.user.CreateUserCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.log4j.Logger;
 
 /**
@@ -156,6 +157,7 @@ public class CreateOrgCommand {
             return errors;
         }
         createdOrg = OrgFactory.save(createdOrg);
+        SaltStateGeneratorService.INSTANCE.createOrg(createdOrg);
         cmd.setOrg(createdOrg);
         cmd.storeNewUser();
         this.newOrg = createdOrg;
