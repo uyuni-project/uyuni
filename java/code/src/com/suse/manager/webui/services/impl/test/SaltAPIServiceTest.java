@@ -1,10 +1,8 @@
 package com.suse.manager.webui.services.impl.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerConstants;
-import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -63,7 +61,7 @@ public class SaltAPIServiceTest extends BaseTestCaseWithUser {
         String random = TestUtils.randomString();
         String name = "state-" + random;
 
-        Server server = createTestMinionServer();
+        Server server = MinionServerFactoryTest.createTestMinionServer(user);
 
         service.saveCustomState(ORG_ID, name, THE_STATE_CONTENT, null, null);
 
@@ -99,10 +97,5 @@ public class SaltAPIServiceTest extends BaseTestCaseWithUser {
         return slsContent;
     }
 
-    private MinionServer createTestMinionServer() throws Exception {
-        return (MinionServer) ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeSaltEntitled(),
-                ServerFactoryTest.TYPE_SERVER_MINION);
-    }
 
 }
