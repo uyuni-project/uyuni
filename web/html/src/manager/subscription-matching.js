@@ -168,6 +168,6 @@ const SubscriptionMatchingTabContainer = React.createClass({
 });
 
 ReactDOM.render(
-  <SubscriptionMatching refreshInterval={5000} />,
+  <SubscriptionMatching refreshInterval={60 * 1000} />,
   document.getElementById("subscription-matching")
 );
