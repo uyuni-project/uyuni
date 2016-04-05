@@ -92,7 +92,7 @@ public enum SaltAPIService implements SaltService {
     private final SaltClient SALT_CLIENT = new SaltClient(SALT_MASTER_URI);
 
     private SaltCustomStateStorageManager customSaltStorageManager =
-            new SaltCustomStateStorageManager();
+            SaltCustomStateStorageManager.INSTANCE;
 
     // Prevent instantiation
     SaltAPIService() {
@@ -515,8 +515,10 @@ public enum SaltAPIService implements SaltService {
      */
     public void deleteCustomState(long orgId, String name) {
         try {
-            SaltStateGeneratorService.INSTANCE.regenerateCustomStates(orgId, name);
+            StateFactory.CustomStateRevisionsUsage usage = StateFactory
+                    .latestStateRevisionsByCustomState(orgId, name);
             customSaltStorageManager.deleteState(orgId, name);
+            SaltStateGeneratorService.INSTANCE.regenerateCustomStates(usage);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
@@ -569,6 +571,7 @@ public enum SaltAPIService implements SaltService {
             Collections.emptyMap()
         );
     }
+
     /**
      * {@inheritDoc}
      */
