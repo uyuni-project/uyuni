@@ -28,7 +28,6 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -40,28 +39,6 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
  * Tests for {@link SaltStateGeneratorService}
  */
 public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
-
-    private String origPillarRoot;
-    private Path tmpPillarRoot;
-
-    private void setupTestPillar() throws Exception {
-        origPillarRoot =  SaltStateGeneratorService.INSTANCE.getGeneratedPillarRoot();
-        tmpPillarRoot = Files.createTempDirectory(null);
-        SaltStateGeneratorService.INSTANCE.setGeneratedPillarRoot(
-                tmpPillarRoot.toAbsolutePath().toString());
-    }
-
-    public void setUp() throws Exception {
-        super.setUp();
-        setupTestPillar();
-    }
-
-    public void tearDown() throws Exception {
-        tmpPillarRoot.toFile().delete();
-        // rollback
-        SaltStateGeneratorService.INSTANCE.setGeneratedPillarRoot(origPillarRoot);
-        super.tearDown();
-    }
 
     public void testGeneratePillarForServer() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
