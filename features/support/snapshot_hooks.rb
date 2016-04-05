@@ -16,7 +16,7 @@ After do |scenario|
       #nothing happened, delete snapshot as we dont need it
       $sshout = ""
       $sshout = `echo | ssh root@$VHOST rm -f $IMGDIR/#{name}.qcow2`
-      raise "Failed to remove snapshot" unless $?.success?
+      puts "Failed to remove snapshot" unless $?.success?
     end
   end
 end
