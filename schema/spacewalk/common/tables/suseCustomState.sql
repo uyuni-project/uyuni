@@ -29,8 +29,5 @@ CREATE TABLE suseCustomState
 )
 ENABLE ROW MOVEMENT
 ;
-CREATE UNIQUE INDEX suse_custom_state_name_org_uq
-ON suseCustomState (org_id, state_name)
-TABLESPACE [[8m_tbs]];
 
 CREATE SEQUENCE suse_custom_state_id_seq;
