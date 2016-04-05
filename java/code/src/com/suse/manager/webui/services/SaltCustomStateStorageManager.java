@@ -189,7 +189,7 @@ public class SaltCustomStateStorageManager {
         File orgDir = new File(getBaseDirPath(), getOrgNamespace(orgId));
         File stateFile = new File(orgDir, defaultExtension(name));
         assertStateInOrgDir(orgDir, stateFile);
-        Files.delete(stateFile.toPath()); // TODO mark it as deleted
+        Files.deleteIfExists(stateFile.toPath());
     }
 
     /**
