@@ -13,11 +13,16 @@ const Messages =  require("./subscription-matching-messages").Messages;
 const UnmatchedProducts =  require("./subscription-matching-unmatched-products").UnmatchedProducts;
 const MatcherRunPanel =  require("./subscription-matching-matcher-run-panel").MatcherRunPanel;
 const WarningIcon =  require("./subscription-matching-util").WarningIcon;
+const MessageContainer = require("../components/messages").Messages;
+const MessagesUtils = require("../components/messages").Utils;
 const Network = require("../utils/network");
 
 const SubscriptionMatching = React.createClass({
   getInitialState: function() {
-    return {serverData: null};
+    return {
+      serverData: null,
+      error: null
+    };
   },
 
   componentWillMount: function() {
@@ -26,10 +31,21 @@ const SubscriptionMatching = React.createClass({
   },
 
   refreshServerData: function() {
-    this.refreshRequest = Network.get("/rhn/manager/subscription-matching/data");
-    this.refreshRequest.promise.then(data => {
-      this.setState({serverData: data});
-    });
+    this.refreshRequest = Network.get("/rhn/manager/subscription-matching/data", "application/json");
+    this.refreshRequest.promise
+      .then(data => {
+        this.setState({
+          serverData: data,
+          error: null
+        });
+      })
+      .catch(response => {
+        this.setState({
+          error: response.status == 401 ? "authentication" :
+            response.status >= 500 ? "general" :
+            null
+        });
+      });
   },
 
   onPinChanged: function(pinnedMatches) {
@@ -59,10 +75,11 @@ const SubscriptionMatching = React.createClass({
             </a>
           </div>
           <h1><i className="fa spacewalk-icon-subscription-counting"></i>{t("Subscription Matching")}</h1>
+          <ErrorMessage error={this.state.error} />
         </div>
         <SubscriptionMatchingTabContainer data={data} onPinChanged={this.onPinChanged} />
         <MatcherRunPanel
-          dataAvailable={data != null && typeof data == "object" }
+          dataAvailable={data != null}
           initialLatestStart={data == null ? null : data.latestStart}
           initialLatestEnd={data == null ? null : data.latestEnd}
           onMatcherRunSchedule={this.onMatcherRunSchedule}
@@ -71,6 +88,15 @@ const SubscriptionMatching = React.createClass({
     );
   }
 });
+
+const ErrorMessage = (props) => <MessageContainer items={
+    props.error == "authentication" ?
+      MessagesUtils.warning(t("Session expired, please reload the page to see up-to-date data.")) :
+    props.error == "general" ?
+      MessagesUtils.warning(t("Server error, please check log files.")) :
+    []
+  } />
+;
 
 const SubscriptionMatchingTabContainer = React.createClass({
   getInitialState: function() {

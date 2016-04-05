@@ -108,8 +108,16 @@ public class AuthFilter implements Filter {
             chain.doFilter(request, response);
         }
         else {
-            authenticationService.redirectToLogin((HttpServletRequest)request,
-                    (HttpServletResponse)response);
+            HttpServletRequest servletRequest = (HttpServletRequest) request;
+            HttpServletResponse servletResponse = (HttpServletResponse) response;
+
+            String contentType = servletRequest.getContentType();
+            if (contentType != null && contentType.equals("application/json")) {
+                servletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            }
+            else {
+                authenticationService.redirectToLogin(servletRequest, servletResponse);
+            }
         }
     }
 

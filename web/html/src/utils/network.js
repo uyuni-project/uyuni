@@ -31,8 +31,8 @@ function put(url, data, contentType) {
     return request(url, "PUT", { "X-CSRF-Token": csrfToken }, data, contentType);
 }
 
-function get(url) {
-    return request(url, "GET");
+function get(url, contentType) {
+    return request(url, "GET", {}, {}, contentType);
 }
 
 module.exports = {
