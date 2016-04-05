@@ -81,21 +81,13 @@ public class SaltAPIServiceTest extends BaseTestCaseWithUser {
         String stateFullName = "- manager_org_" + user.getOrg().getId() + "." + name;
 
         Path generatedSlsPath = slsDir.resolve("custom").resolve("custom_" + server.getDigitalServerId() + ".sls");
-        String slsContent = readContent(generatedSlsPath);
+        String slsContent = FileUtils.readFileToString(generatedSlsPath.toFile());
 
         assertTrue(contains(slsContent, stateFullName));
 
         service.deleteCustomState(ORG_ID, name);
-        slsContent = readContent(generatedSlsPath);
+        slsContent = FileUtils.readFileToString(generatedSlsPath.toFile());
         assertFalse(contains(slsContent, stateFullName));
-    }
-
-    private String readContent(Path generatedSlsPath) throws IOException {
-        String slsContent;
-        try (FileInputStream fin = new FileInputStream(generatedSlsPath.toFile())) {
-            slsContent = TestUtils.readAll(fin);
-        }
-        return slsContent;
     }
 
 
