@@ -1,17 +1,17 @@
 "use strict";
 
-var React = require("react");
-var TableComponent = require("../components/table");
-var Table = TableComponent.Table;
-var TableCell = TableComponent.TableCell;
-var TableRow = TableComponent.TableRow;
-var StatePersistedMixin = require("../components/util").StatePersistedMixin;
-var UtilComponent = require("./subscription-matching-util");
-var CsvLink = UtilComponent.CsvLink;
-var SystemLabel = UtilComponent.SystemLabel;
-var PopUp = require("../components/popup").PopUp;
+const React = require("react");
+const TableComponent = require("../components/table");
+const Table = TableComponent.Table;
+const TableCell = TableComponent.TableCell;
+const TableRow = TableComponent.TableRow;
+const StatePersistedMixin = require("../components/util").StatePersistedMixin;
+const UtilComponent = require("./subscription-matching-util");
+const CsvLink = UtilComponent.CsvLink;
+const SystemLabel = UtilComponent.SystemLabel;
+const PopUp = require("../components/popup").PopUp;
 
-var UnmatchedProducts = React.createClass({
+const UnmatchedProducts = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
@@ -19,12 +19,13 @@ var UnmatchedProducts = React.createClass({
   },
 
   rowComparator: function(a, b, columnIndex, ascending) {
-    var columnKeyInRawData = ["productName", "systemCount"];
-    var columnKey = columnKeyInRawData[columnIndex];
-    var orderCondition = ascending ? 1 : -1;
+    const columnKeyInRawData = ["productName", "systemCount"];
+    const columnKey = columnKeyInRawData[columnIndex];
+    const orderCondition = ascending ? 1 : -1;
+    const aValue = a.props["rawData"][columnKey];
+    const bValue = b.props["rawData"][columnKey];
+
     var result = 0;
-    var aValue = a.props["rawData"][columnKey];
-    var bValue = b.props["rawData"][columnKey];
     if (columnKey == "systemCount") {
       result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
     }
@@ -33,8 +34,8 @@ var UnmatchedProducts = React.createClass({
     }
 
     if (result == 0) {
-      var aId = a.props["rawData"]["id"];
-      var bId = b.props["rawData"]["id"];
+      const aId = a.props["rawData"]["id"];
+      const bId = b.props["rawData"]["id"];
       result = aId > bId ? 1 : (aId < bId ? -1 : 0);
     }
 
@@ -42,11 +43,11 @@ var UnmatchedProducts = React.createClass({
   },
 
   buildRows: function() {
-    var products = this.props.products;
+    const products = this.props.products;
     return this.props.unmatchedProductIds.map((pid) => {
-      var productName = products[pid].productName;
-      var systemCount = products[pid].unmatchedSystemCount;
-      var listButton =
+      const productName = products[pid].productName;
+      const systemCount = products[pid].unmatchedSystemCount;
+      const listButton =
           <button
             className="btn btn-default btn-cell"
             onClick={() => {this.showPopUp(pid);}}
@@ -55,13 +56,13 @@ var UnmatchedProducts = React.createClass({
             {t("Show system list")}
           </button>;
 
-      var columns = [
+      const columns = [
         <TableCell key="name" content={productName} />,
         <TableCell key="cpuCount" content={systemCount} />,
         <TableCell key="button" content={listButton} />,
       ];
 
-      var rawData = {
+      const rawData = {
         id: pid,
         productName: productName,
         systemCount: systemCount
@@ -115,30 +116,29 @@ var UnmatchedProducts = React.createClass({
   }
 });
 
-var UnmatchedSystemPopUp = React.createClass({
+const UnmatchedSystemPopUp = React.createClass({
   rowComparator: function(a, b, columnIndex, ascending) {
-    var columnKeyInRawData = ["systemName"];
-    var columnKey = columnKeyInRawData[columnIndex];
-    var orderCondition = ascending ? 1 : -1;
-    var result = 0;
-    var aValue = a.props["rawData"][columnKey];
-    var bValue = b.props["rawData"][columnKey];
-    result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+    const columnKeyInRawData = ["systemName"];
+    const columnKey = columnKeyInRawData[columnIndex];
+    const orderCondition = ascending ? 1 : -1;
+    const aValue = a.props["rawData"][columnKey];
+    const bValue = b.props["rawData"][columnKey];
+    const result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
     return result * orderCondition;
   },
 
   buildRows: function(product, systems) {
     return product.unmatchedSystemIds.map((sid) => {
-      var systemName = systems[sid].name;
-      var column = <TableCell key="system" content={<SystemLabel type={systems[sid].type} name={systemName} />} />;
-      var rawData = {systemName: systemName};
+      const systemName = systems[sid].name;
+      const column = <TableCell key="system" content={<SystemLabel type={systems[sid].type} name={systemName} />} />;
+      const rawData = {systemName: systemName};
 
       return <TableRow key={sid} columns={[column]} rawData={rawData} />
     });
   },
 
   render: function() {
-    var popUpContent = this.props.selectedProductId == null ?
+    const popUpContent = this.props.selectedProductId == null ?
       null :
       <Table
         headers={[t("System name")]}

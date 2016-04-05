@@ -1,8 +1,8 @@
 "use strict";
 
-var React = require("react");
+const React = require("react");
 
-var PopUp = React.createClass({
+const PopUp = React.createClass({
     propTypes: {
       id: React.PropTypes.string.isRequired, // the id of the html div tag
       onClosePopUp: React.PropTypes.func.isRequired, // a callback function with no parameters

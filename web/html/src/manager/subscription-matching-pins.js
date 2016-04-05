@@ -1,21 +1,21 @@
 "use strict";
 
-var React = require("react");
-var TableComponent = require("../components/table");
-var Table = TableComponent.Table;
-var TableCell = TableComponent.TableCell;
-var TableRow = TableComponent.TableRow;
-var StatePersistedMixin = require("../components/util").StatePersistedMixin;
-var PopUp = require("../components/popup").PopUp;
-var UtilComponent =  require("./subscription-matching-util");
-var StrongText = UtilComponent.StrongText;
-var SystemLabel = UtilComponent.SystemLabel;
-var ToolTip = UtilComponent.ToolTip;
-var humanReadablePolicy = UtilComponent.humanReadablePolicy;
-var WarningIcon =  require("./subscription-matching-util").WarningIcon;
+const React = require("react");
+const TableComponent = require("../components/table");
+const Table = TableComponent.Table;
+const TableCell = TableComponent.TableCell;
+const TableRow = TableComponent.TableRow;
+const StatePersistedMixin = require("../components/util").StatePersistedMixin;
+const PopUp = require("../components/popup").PopUp;
+const UtilComponent =  require("./subscription-matching-util");
+const StrongText = UtilComponent.StrongText;
+const SystemLabel = UtilComponent.SystemLabel;
+const ToolTip = UtilComponent.ToolTip;
+const humanReadablePolicy = UtilComponent.humanReadablePolicy;
+const WarningIcon =  require("./subscription-matching-util").WarningIcon;
 const Network = require("../utils/network");
 
-var Pins = React.createClass({
+const Pins = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
@@ -23,20 +23,19 @@ var Pins = React.createClass({
   },
 
   rowComparator: function(a, b, columnIndex, ascending) {
-    var aRaw = a.props["rawData"];
-    var bRaw = b.props["rawData"];
-    var columnKeyInRawData=["systemName", "subscriptionDescription", "subscriptionPolicy", "subscriptionEndDate", "subscriptionPartNumber", "status"];
-    var columnKey = columnKeyInRawData[columnIndex];
-    var orderCondition = ascending ? 1 : -1;
+    const aRaw = a.props["rawData"];
+    const bRaw = b.props["rawData"];
+    const columnKeyInRawData=["systemName", "subscriptionDescription", "subscriptionPolicy", "subscriptionEndDate", "subscriptionPartNumber", "status"];
+    const columnKey = columnKeyInRawData[columnIndex];
+    const orderCondition = ascending ? 1 : -1;
 
-    var result = 0;
-    var aValue = aRaw[columnKey];
-    var bValue = bRaw[columnKey];
-    result = aValue.localeCompare(bValue);
+    const aValue = aRaw[columnKey];
+    const bValue = bRaw[columnKey];
 
+    var result = aValue.localeCompare(bValue);
     if (result == 0) {
-      var aId = aRaw["id"];
-      var bId = bRaw["id"];
+      const aId = aRaw["id"];
+      const bId = bRaw["id"];
       result = aId > bId ? 1 : (aId < bId ? -1 : 0);
     }
 
@@ -45,15 +44,15 @@ var Pins = React.createClass({
 
   buildRows: function(pins, systems, subscriptions, onClickAction) {
     return pins.map((p) => {
-      var system = systems[p.systemId];
-      var systemName = system == null ? "System " + p.systemId : system.name;
-      var systemType = system == null ? null : system.type;
-      var subscription = subscriptions[p.subscriptionId];
-      var subscriptionDescription = subscription == null ? "Subscription " + p.subscriptionId : subscription.description;
-      var subscriptionPolicy = subscription == null ? " " : subscription.policy;
-      var subscriptionEndDate = subscription == null ? " " : subscription.endDate;
-      var subscriptionPartNumber = subscription == null ? "" : subscription.partNumber;
-      var columns = [
+      const system = systems[p.systemId];
+      const systemName = system == null ? "System " + p.systemId : system.name;
+      const systemType = system == null ? null : system.type;
+      const subscription = subscriptions[p.subscriptionId];
+      const subscriptionDescription = subscription == null ? "Subscription " + p.subscriptionId : subscription.description;
+      const subscriptionPolicy = subscription == null ? " " : subscription.policy;
+      const subscriptionEndDate = subscription == null ? " " : subscription.endDate;
+      const subscriptionPartNumber = subscription == null ? "" : subscription.partNumber;
+      const columns = [
         <TableCell key="systemId" content={<SystemLabel id={p.systemId} name={systemName} type={systemType} />} />,
         <TableCell key="subscription" content={subscriptionDescription} />,
         <TableCell key="policy" content={humanReadablePolicy(subscriptionPolicy)} />,
@@ -71,7 +70,7 @@ var Pins = React.createClass({
           }
         />
       ];
-      var rawData = {
+      const rawData = {
         id: p.id,
         systemName: systemName,
         subscriptionDescription: subscriptionDescription,
@@ -105,7 +104,7 @@ var Pins = React.createClass({
   },
 
   render: function() {
-    var popUpContent = this.state.showPopUp ? <AddPinPopUp products={this.props.products} systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
+    const popUpContent = this.state.showPopUp ? <AddPinPopUp products={this.props.products} systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
     return (
       <div className="row col-md-12">
         <h2>{t("Pins")}</h2>
@@ -143,7 +142,7 @@ var Pins = React.createClass({
   }
 });
 
-var PinStatus = (props) => {
+const PinStatus = (props) => {
   if (props.status == "pending") {
     return <span><i className="fa fa-hourglass-start"></i><em>{t("pending next run")}</em></span>;
   }
@@ -153,27 +152,28 @@ var PinStatus = (props) => {
   return <span><WarningIcon />{t("not satisfied")}</span>;
 }
 
-var PinButton = (props) =>
+const PinButton = (props) =>
   <button className="btn btn-default btn-cell" onClick={props.onClick}>
     {props.content}
   </button>
 ;
 
-var AddPinPopUp = React.createClass({
+const AddPinPopUp = React.createClass({
   getInitialState:function() {
     return {systemId: null};
   },
 
   rowComparator: function(a, b, columnIndex, ascending) {
-    var aRaw = a.props["rawData"];
-    var bRaw = b.props["rawData"];
-    var columnKeyInRawData=["name", "cpuCount"];
-    var columnKey = columnKeyInRawData[columnIndex];
-    var orderCondition = ascending ? 1 : -1;
+    const aRaw = a.props["rawData"];
+    const bRaw = b.props["rawData"];
+    const columnKeyInRawData=["name", "cpuCount"];
+    const columnKey = columnKeyInRawData[columnIndex];
+    const orderCondition = ascending ? 1 : -1;
+
+    const aValue = aRaw[columnKey];
+    const bValue = bRaw[columnKey];
 
     var result = 0;
-    var aValue = aRaw[columnKey];
-    var bValue = bRaw[columnKey];
     if (columnKey == "name") {
       result = aValue.localeCompare(bValue);
     }
@@ -182,8 +182,8 @@ var AddPinPopUp = React.createClass({
     }
 
     if (result == 0) {
-      var aId = aRaw["id"];
-      var bId = bRaw["id"];
+      const aId = aRaw["id"];
+      const bId = bRaw["id"];
       result = aId - bId;
     }
 
@@ -192,8 +192,8 @@ var AddPinPopUp = React.createClass({
 
   buildRows: function() {
     return Object.keys(this.props.systems).map((id) => {
-      var s = this.props.systems[id];
-      var columns = [
+      const s = this.props.systems[id];
+      const columns = [
         <TableCell key="system" content={<SystemLabel id={id} name={s.name} type={s.type} />} />,
         <TableCell key="cpuCount" content={s.cpuCount} />,
         <ProductTableCell key="products" products={this.props.products} productIds={s.productIds} />,
@@ -237,7 +237,7 @@ var AddPinPopUp = React.createClass({
       );
     }
     else {
-      var system = this.props.systems[this.state.systemId];
+      const system = this.props.systems[this.state.systemId];
       popUpContent = (
         <div>
           <h4 className="add-pin-popup-subtitle">{t("Available Subscriptions for the Selected System")}</h4>
@@ -259,7 +259,7 @@ var AddPinPopUp = React.createClass({
   }
 });
 
-var ProductTableCell = (props) => {
+const ProductTableCell = (props) => {
   const productLength = props.productIds.length;
 
   if (productLength == 0){
@@ -285,10 +285,10 @@ var ProductTableCell = (props) => {
   );
 };
 
-var PinSubscriptionSelector = React.createClass({
+const PinSubscriptionSelector = React.createClass({
   buildRows: function(possibleSubscriptions, onClickAction) {
     return possibleSubscriptions.map((s) => {
-      var columns = [
+      const columns = [
         <TableCell key="partNumber" content={s.partNumber} />,
         <TableCell key="description" content={s.description} />,
         <TableCell key="policy" content={humanReadablePolicy(s.policy)} />,

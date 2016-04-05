@@ -1,9 +1,9 @@
 "use strict";
 
-var React = require("react")
-var StatePersistedMixin = require("./util").StatePersistedMixin
+const React = require("react")
+const StatePersistedMixin = require("./util").StatePersistedMixin
 
-var Table = React.createClass({
+const Table = React.createClass({
   mixins: [StatePersistedMixin],
 
   propTypes: {
@@ -26,7 +26,7 @@ var Table = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var lastPage = Math.ceil(nextProps.rows.length / this.state.itemsPerPage);
+    const lastPage = Math.ceil(nextProps.rows.length / this.state.itemsPerPage);
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage});
     }
@@ -65,7 +65,7 @@ var Table = React.createClass({
   onItemsPerPageChange: function(itemsPerPage) {
     this.setState({itemsPerPage: itemsPerPage});
 
-    var lastPage = this.lastPage(this.state.filterText, itemsPerPage);
+    const lastPage = this.lastPage(this.state.filterText, itemsPerPage);
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage});
     }
@@ -74,7 +74,7 @@ var Table = React.createClass({
   onFilterTextChange: function(filterText) {
     this.setState({filterText: filterText});
 
-    var lastPage = this.lastPage(filterText, this.state.itemsPerPage);
+    const lastPage = this.lastPage(filterText, this.state.itemsPerPage);
     if (this.state.currentPage > lastPage) {
       this.setState({currentPage: lastPage});
     }
@@ -171,11 +171,11 @@ var Table = React.createClass({
   }
 });
 
-var TableRow = (props) => <tr className={props.className}>{props.columns}</tr>;
+const TableRow = (props) => <tr className={props.className}>{props.columns}</tr>;
 
-var TableCell = (props) => <td>{props.content}</td>;
+const TableCell = (props) => <td>{props.content}</td>;
 
-var PaginationBlock = (props) => {
+const PaginationBlock = (props) => {
   const currentPage = props.currentPage;
   const lastPage = props.lastPage;
   const onPageChange = props.onPageChange;
@@ -200,14 +200,14 @@ var PaginationBlock = (props) => {
   );
 };
 
-var PaginationButton = (props) =>
+const PaginationButton = (props) =>
   <button type="button" className="btn btn-default"
     disabled={props.disabled} onClick={props.onClick}>
     {props.text}
   </button>
 ;
 
-var ItemsPerPageSelector = (props) =>
+const ItemsPerPageSelector = (props) =>
   <select className="display-number"
     defaultValue={props.currentValue}
     onChange={(e) => props.onChange(parseInt(e.target.value))}>
@@ -215,15 +215,15 @@ var ItemsPerPageSelector = (props) =>
   </select>
 ;
 
-var TableHeader = (props) => <thead><tr>{props.content}</tr></thead>;
+const TableHeader = (props) => <thead><tr>{props.content}</tr></thead>;
 
-var SortableTableHeader = (props) =>
+const SortableTableHeader = (props) =>
   <th className={props.className}>
     <a className="orderBy" onClick={props.orderBy}>{props.content}</a>
   </th>
 ;
 
-var FilterField = (props) =>
+const FilterField = (props) =>
   <input className="form-control table-input-search"
     value={props.defaultValue}
     placeholder={props.placeholder}

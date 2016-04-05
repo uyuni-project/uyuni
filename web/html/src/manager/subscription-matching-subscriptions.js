@@ -1,50 +1,50 @@
 "use strict";
 
-var React = require("react");
-var TableComponent = require("../components/table");
-var Table = TableComponent.Table;
-var TableCell = TableComponent.TableCell;
-var TableRow = TableComponent.TableRow;
-var StatePersistedMixin = require("../components/util").StatePersistedMixin;
-var UtilComponent = require("./subscription-matching-util");
-var ToolTip = UtilComponent.ToolTip;
-var CsvLink = UtilComponent.CsvLink;
-var humanReadablePolicy = UtilComponent.humanReadablePolicy;
-var WarningIcon =  require("./subscription-matching-util").WarningIcon;
+const React = require("react");
+const TableComponent = require("../components/table");
+const Table = TableComponent.Table;
+const TableCell = TableComponent.TableCell;
+const TableRow = TableComponent.TableRow;
+const StatePersistedMixin = require("../components/util").StatePersistedMixin;
+const UtilComponent = require("./subscription-matching-util");
+const ToolTip = UtilComponent.ToolTip;
+const CsvLink = UtilComponent.CsvLink;
+const humanReadablePolicy = UtilComponent.humanReadablePolicy;
+const WarningIcon =  require("./subscription-matching-util").WarningIcon;
 
-var Subscriptions = React.createClass({
+const Subscriptions = React.createClass({
   mixins: [StatePersistedMixin],
 
   rowComparator: function(a, b, columnIndex, ascending) {
-    var columnKeyInRawData=["partNumber", "description", "policy", "quantity", "startDate", "endDate"];
-    var columnKey = columnKeyInRawData[columnIndex];
-    var orderCondition = ascending ? 1 : -1;
-    var aRaw = a.props["rawData"];
-    var bRaw = b.props["rawData"];
+    const columnKeyInRawData=["partNumber", "description", "policy", "quantity", "startDate", "endDate"];
+    const columnKey = columnKeyInRawData[columnIndex];
+    const orderCondition = ascending ? 1 : -1;
+    const aRaw = a.props["rawData"];
+    const bRaw = b.props["rawData"];
     var result = 0;
     if (columnKey == "policy") {
-      var aValue = humanReadablePolicy(aRaw[columnKey]);
-      var bValue = humanReadablePolicy(bRaw[columnKey]);
+      const aValue = humanReadablePolicy(aRaw[columnKey]);
+      const bValue = humanReadablePolicy(bRaw[columnKey]);
       result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
     }
     else if (columnKey == "quantity") {
-      var aMatched = aRaw["matchedQuantity"];
-      var aTotal = aRaw["totalQuantity"];
-      var bMatched = bRaw["matchedQuantity"];
-      var bTotal = bRaw["totalQuantity"];
-      var aValue =  aMatched / aTotal;
-      var bValue =  bMatched / bTotal;
+      const aMatched = aRaw["matchedQuantity"];
+      const aTotal = aRaw["totalQuantity"];
+      const bMatched = bRaw["matchedQuantity"];
+      const bTotal = bRaw["totalQuantity"];
+      const aValue =  aMatched / aTotal;
+      const bValue =  bMatched / bTotal;
       result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
     }
     else {
-      var aValue = aRaw[columnKey];
-      var bValue = bRaw[columnKey];
+      const aValue = aRaw[columnKey];
+      const bValue = bRaw[columnKey];
       result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
     }
 
     if (result == 0) {
-      var aId = aRaw["id"];
-      var bId = bRaw["id"];
+      const aId = aRaw["id"];
+      const bId = bRaw["id"];
       result = aId > bId ? 1 : (aId < bId ? -1 : 0);
     }
     return result * orderCondition;
@@ -52,12 +52,12 @@ var Subscriptions = React.createClass({
 
   buildRows: function(subscriptions) {
     return Object.keys(subscriptions).map((id) => {
-      var s = subscriptions[id];
-      var className = moment(s.endDate).isBefore(moment()) ? "text-muted" : null;
-      var warningIcon = moment(s.endDate).isBefore(moment().add(6, "months")) && moment(s.endDate).isAfter(moment()) ?
+      const s = subscriptions[id];
+      const className = moment(s.endDate).isBefore(moment()) ? "text-muted" : null;
+      const warningIcon = moment(s.endDate).isBefore(moment().add(6, "months")) && moment(s.endDate).isAfter(moment()) ?
         <WarningIcon iconOnRight={true} /> : null;
 
-      var columns = [
+      const columns = [
         <TableCell key="partNumber" content={s.partNumber} />,
         <TableCell key="description" content={s.description} />,
         <TableCell key="policy" content={humanReadablePolicy(s.policy)} />,
@@ -110,10 +110,10 @@ var Subscriptions = React.createClass({
   }
 });
 
-var QuantityCell = (props) => {
-  var matched = props.matched;
-  var total = props.total;
-  var content = matched + "/" + total;
+const QuantityCell = (props) => {
+  const matched = props.matched;
+  const total = props.total;
+  const content = matched + "/" + total;
 
   if (matched == total) {
     return (

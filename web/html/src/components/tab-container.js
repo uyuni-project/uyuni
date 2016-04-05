@@ -1,8 +1,8 @@
 "use strict";
 
-var React = require("react");
+const React = require("react");
 
-var TabContainer = React.createClass({
+const TabContainer = React.createClass({
   propTypes: {
     labels: React.PropTypes.arrayOf(React.PropTypes.node).isRequired,
     hashes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired, // must start with #
@@ -54,7 +54,7 @@ var TabContainer = React.createClass({
   }
 });
 
-var TabLabel = (props) =>
+const TabLabel = (props) =>
   <li className={props.active ? "active" : ""}>
     <a href={props.hash} onClick={props.onClick}>{props.text}</a>
   </li>

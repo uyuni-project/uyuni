@@ -1,14 +1,14 @@
 "use strict";
 
-var React = require("react");
-var TableComponent = require("../components/table");
-var Table = TableComponent.Table;
-var TableCell = TableComponent.TableCell;
-var TableRow = TableComponent.TableRow;
-var StatePersistedMixin = require("../components/util").StatePersistedMixin;
-var CsvLink = require("./subscription-matching-util").CsvLink;
+const React = require("react");
+const TableComponent = require("../components/table");
+const Table = TableComponent.Table;
+const TableCell = TableComponent.TableCell;
+const TableRow = TableComponent.TableRow;
+const StatePersistedMixin = require("../components/util").StatePersistedMixin;
+const CsvLink = require("./subscription-matching-util").CsvLink;
 
-var Messages = React.createClass({
+const Messages = React.createClass({
   mixins: [StatePersistedMixin],
 
   rowComparator: function(a, b, columnIndex, ascending) {
@@ -19,8 +19,8 @@ var Messages = React.createClass({
   },
 
   buildRows: function(rawMessages, systems) {
-    var result = rawMessages.map(function(rawMessage, index) {
-      var data = rawMessage["data"];
+    const result = rawMessages.map(function(rawMessage, index) {
+      const data = rawMessage["data"];
       var message;
       var additionalInformation;
       switch(rawMessage["type"]) {
@@ -44,7 +44,7 @@ var Messages = React.createClass({
           message = rawMessage["type"];
           additionalInformation = data;
       }
-      var columns = [
+      const columns = [
         <TableCell key="message" content={message} />,
         <TableCell key="additionalInformation" content={additionalInformation} />
       ];

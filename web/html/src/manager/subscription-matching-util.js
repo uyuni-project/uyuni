@@ -1,14 +1,14 @@
 "use strict";
 
-var React = require("react");
+const React = require("react");
 
-var ToolTip = (props) =>
+const ToolTip = (props) =>
   <span title={props.title}>
     {props.content}
   </span>
 ;
 
-var CsvLink = (props) =>
+const CsvLink = (props) =>
   <div className="spacewalk-csv-download">
     <a className="btn btn-link" href={"/rhn/manager/subscription-matching/" + props.name}>
       <i className="fa spacewalk-icon-download-csv"></i>
@@ -17,7 +17,7 @@ var CsvLink = (props) =>
   </div>
 ;
 
-var SystemLabel = (props) => {
+const SystemLabel = (props) => {
   var icon;
   if (props.type == "nonVirtual") {
     icon = <i className="fa fa-desktop"></i>;
@@ -56,7 +56,7 @@ function humanReadablePolicy(rawPolicy) {
   return message;
 }
 
-var WarningIcon = (props) =>
+const WarningIcon = (props) =>
   <i className={
     "fa fa-exclamation-triangle text-warning" +
     (props.iconOnRight ? " fa-right" : "")}>
