@@ -82,7 +82,7 @@ public enum SaltStateGeneratorService {
                 .map(g -> g.getId()).collect(Collectors.toList());
         SaltPillar pillar = new SaltPillar();
         pillar.add("org_id", server.getOrg().getId());
-        pillar.add("group_id", groupIds.toArray(new Long[groupIds.size()]));
+        pillar.add("group_ids", groupIds.toArray(new Long[groupIds.size()]));
 
         Map<String, Object> chanPillar = new HashMap<>();
         try {
