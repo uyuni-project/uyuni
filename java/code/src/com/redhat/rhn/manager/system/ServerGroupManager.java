@@ -207,6 +207,7 @@ public class ServerGroupManager {
         validateAdminCredentials(user);
         ManagedServerGroup sg = ServerGroupFactory.create(name, description,
                                                                 user.getOrg());
+        SaltStateGeneratorService.INSTANCE.createServerGroup(sg);
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             sg.getAssociatedAdminsFor(user).add(user);
             ServerGroupFactory.save(sg);
