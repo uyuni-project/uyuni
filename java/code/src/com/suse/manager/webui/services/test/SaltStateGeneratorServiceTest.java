@@ -17,10 +17,9 @@ package com.suse.manager.webui.services.test;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -65,9 +64,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
     }
 
     public void testGeneratePillarForServer() throws Exception {
-        MinionServer minion = (MinionServer) ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeSaltEntitled(),
-                ServerFactoryTest.TYPE_SERVER_MINION);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
         ServerFactory.addServerToGroup(minion, group);
