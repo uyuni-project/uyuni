@@ -1007,6 +1007,35 @@ public class ActionManager extends BaseManager {
     }
 
     /**
+     * Schedule a package list refresh without a user.
+     *
+     * @param schedulerOrg the organization the server belongs to
+     * @param server the server
+     * @return the scheduled PackageRefreshListAction
+     */
+    public static PackageAction schedulePackageRefresh(Org schedulerOrg, Server server) {
+        checkSaltOrManagementEntitlement(server.getId());
+
+        Action action = ActionFactory.createAction(
+                ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+        action.setName(ActionFactory.TYPE_PACKAGES_REFRESH_LIST.getName());
+        action.setOrg(schedulerOrg);
+        action.setSchedulerUser(null);
+        action.setEarliestAction(new Date());
+
+        ServerAction sa = new ServerAction();
+        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setRemainingTries(REMAINING_TRIES);
+        sa.setServer(server);
+        action.addServerAction(sa);
+        sa.setParentAction(action);
+
+        ActionFactory.save(action);
+        MessageQueue.publish(new ActionScheduledEventMessage(action));
+        return (PackageAction) action;
+    }
+
+    /**
      * Schedules a package runtransaction action.
      * @param scheduler User scheduling the action.
      * @param server Server for which the action affects.
