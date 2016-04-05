@@ -37,6 +37,9 @@ public class MatcherRunner {
     /** Path where output from subscription-matcher is stored */
     public static final String OUT_DIRECTORY = "/var/lib/spacewalk/subscription-matcher";
 
+    /** Path where logs from subscription-matcher are stored */
+    public static final String LOG_DIRECTORY = "/var/log/rhn";
+
     private static final String MATCHER_CMD = "/usr/bin/subscription-matcher";
 
     /**
@@ -52,8 +55,10 @@ public class MatcherRunner {
     public void run(String csvDelimiter) {
         List<String> args = new LinkedList<>();
         args.add(MATCHER_CMD);
-        args.add("--directory");
+        args.add("--output-directory");
         args.add(OUT_DIRECTORY);
+        args.add("--log-directory");
+        args.add(LOG_DIRECTORY);
         args.add("--delimiter");
         args.add(csvDelimiter);
 
