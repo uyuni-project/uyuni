@@ -23,17 +23,29 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.salt.Zypper;
+import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 import com.suse.manager.webui.utils.salt.custom.CmdExecCodeAllResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSls;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
+import com.suse.manager.webui.utils.salt.events.JobReturnEvent.Data;
+import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import com.google.gson.Gson;
@@ -42,8 +54,11 @@ import com.google.gson.GsonBuilder;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Handler class for {@link JobReturnEventMessage}.
@@ -211,15 +226,12 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                serverAction.setResultMsg("failure");
+                serverAction.setResultMsg("Failure");
             }
             else {
-                serverAction.setResultMsg("success");
+                serverAction.setResultMsg("Success");
             }
-
-            PkgProfileUpdateSls result = eventData.getResult(PkgProfileUpdateSls.class);
-            LOG.debug("Products: " + result.getListProducts().getChanges().getRet().stream()
-                    .map(Zypper.ProductInfo::getName).collect(Collectors.joining(", ")));
+            handlePackageProfileUpdate(serverAction, eventData);
         }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
@@ -249,8 +261,107 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         switch (function) {
             case "pkg.install": return true;
             case "pkg.remove": return true;
-            case "state.apply": return true;
+            // Check the details before re-enabling
+            // case "state.apply": return true;
             default: return false;
         }
+    }
+
+    /**
+     * Perform the actual update of the database based on given event data.
+     *
+     * @param serverAction the current server action
+     * @param eventData event data
+     */
+    private void handlePackageProfileUpdate(ServerAction serverAction, Data eventData) {
+        serverAction.getServer().asMinionServer().ifPresent(server -> {
+
+            // Parse the event data
+            PkgProfileUpdateSls result = eventData.getResult(PkgProfileUpdateSls.class);
+            Optional.of(result.getInfoInstalled().getChanges().getRet())
+                .map(saltPkgs -> saltPkgs.entrySet().stream().map(
+                    entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
+                ).collect(Collectors.toSet())
+            ).ifPresent(newPackages -> {
+                Set<InstalledPackage> oldPackages = server.getPackages();
+                oldPackages.addAll(newPackages);
+                oldPackages.retainAll(newPackages);
+            });
+
+            getInstalledProducts(Optional.of(result.getListProducts().getChanges().getRet()))
+                    .ifPresent(server::setInstalledProducts);
+
+            ServerFactory.save(server);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Package profile updated for minion: " + server.getMinionId());
+            }
+
+            // Trigger update of errata cache for this server
+            ErrataManager.insertErrataCacheTask(server);
+        });
+    }
+
+    /**
+     * Create a {@link InstalledPackage} object from package name and info and return it.
+     *
+     * @param name name of the package
+     * @param info package info from salt
+     * @param server server this package will be added to
+     * @return the InstalledPackage object
+     */
+    private InstalledPackage createPackageFromSalt(
+            String name, Pkg.Info info, Server server) {
+        String epoch = info.getEpoch().orElse(null);
+        String release = info.getRelease().orElse("0");
+        String version = info.getVersion().get();
+        PackageEvr evr = PackageEvrFactory
+                .lookupOrCreatePackageEvr(epoch, version, release);
+
+        InstalledPackage pkg = new InstalledPackage();
+        pkg.setEvr(evr);
+        pkg.setArch(PackageFactory.lookupPackageArchByLabel(info.getArchitecture().get()));
+        pkg.setInstallTime(Date.from(info.getInstallDate().get().toInstant()));
+        pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
+        pkg.setServer(server);
+        return pkg;
+    }
+
+    /**
+     * Convert a list of {@link ProductInfo} objects into a set of {@link InstalledProduct}
+     * objects.
+     *
+     * @param productsIn list of products as received from Salt
+     * @return set of installed products
+     */
+    private Optional<Set<InstalledProduct>> getInstalledProducts(
+            Optional<List<ProductInfo>> productsIn) {
+        return productsIn.map(result ->
+            result.stream().flatMap(saltProduct -> {
+                String name = saltProduct.getName();
+                String version = saltProduct.getVersion();
+                String release = saltProduct.getRelease();
+                String arch = saltProduct.getArch();
+                boolean isbase = saltProduct.getIsbase();
+
+                Optional<SUSEProduct> product = Optional.ofNullable(
+                    SUSEProductFactory.findSUSEProduct(
+                            name, version, release, arch, true
+                    )
+                );
+                if (!product.isPresent()) {
+                    LOG.info(String.format("No product match found for: %s %s %s %s",
+                            name, version, release, arch));
+                }
+                return product.map(prod -> {
+                    InstalledProduct prd = new InstalledProduct();
+                    prd.setName(prod.getName());
+                    prd.setVersion(prod.getVersion());
+                    prd.setRelease(prod.getRelease());
+                    prd.setArch(prod.getArch());
+                    prd.setBaseproduct(isbase);
+                    return Stream.of(prd);
+                }).orElseGet(Stream::empty);
+            }).collect(Collectors.toSet())
+        );
     }
 }
