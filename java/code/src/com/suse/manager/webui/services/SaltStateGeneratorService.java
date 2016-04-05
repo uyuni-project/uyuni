@@ -178,7 +178,7 @@ public enum SaltStateGeneratorService {
      * @param org the organization
      */
     public void removeCustomStateAssignments(Org org) {
-        removeCustomStateAssignments("org_" + org.getId());
+        removeCustomStateAssignments(getOrgStateFileName(org.getId()));
     }
 
     private void removeCustomStateAssignments(String file) {
@@ -231,7 +231,7 @@ public enum SaltStateGeneratorService {
         LOG.debug("Generating custom state SLS file for organization: " + org.getId());
 
         generateCustomStates(org.getId(), orgStateRevision,
-                "org_" + org.getId());
+                getOrgStateFileName(org.getId()));
     }
 
     private void generateCustomStates(long orgId, StateRevision stateRevision,
@@ -363,6 +363,10 @@ public enum SaltStateGeneratorService {
         return "group_" + groupId;
     }
 
+    private String getOrgStateFileName(long orgId) {
+        return "org_" + orgId;
+    }
+
     /**
      * @param groupId the id of the server group
      * @return the name of the generated server group .sls file.
@@ -390,5 +394,25 @@ public enum SaltStateGeneratorService {
      */
     public String getGeneratedPillarRoot() {
         return this.generatedPillarRoot;
+    }
+
+    /**
+     * Generate state files for a new server group.
+     * @param serverGroup the new server group
+     */
+    public void createServerGroup(ServerGroup serverGroup) {
+        generateCustomStateAssignmentFile(serverGroup.getOrg().getId(),
+                getGroupStateFileName(serverGroup.getId()),
+                Collections.emptySet());
+    }
+
+    /**
+     * Generate state files for a new org.
+     * @param org the new org
+     */
+    public void createOrg(Org org) {
+        generateCustomStateAssignmentFile(org.getId(),
+                getOrgStateFileName(org.getId()),
+                Collections.emptySet());
     }
 }
