@@ -370,6 +370,7 @@ public enum SaltStateGeneratorService {
     public String getServerGroupGeneratedStateName(long groupId) {
         return SALT_CUSTOM_STATES + "." + getGroupStateFileName(groupId);
     }
+
     /**
      * @param generatedSlsRootIn the root path where state files are generated
      */
