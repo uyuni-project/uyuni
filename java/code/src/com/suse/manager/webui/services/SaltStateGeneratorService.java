@@ -33,7 +33,7 @@ import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.SaltCustomState;
 import com.suse.manager.webui.utils.SaltPillar;
-import com.suse.manager.webui.utils.TokenUtils;
+import com.suse.manager.webui.utils.TokenBuilder;
 import org.apache.log4j.Logger;
 import org.jose4j.lang.JoseException;
 
@@ -45,7 +45,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -95,8 +94,9 @@ public enum SaltStateGeneratorService {
 
         Map<String, Object> chanPillar = new HashMap<>();
         try {
-            String token = TokenUtils.createTokenWithServerKey(
-                    server.getOrg().getId(), Optional.empty());
+            TokenBuilder tokenBuilder = new TokenBuilder(server.getOrg().getId());
+            tokenBuilder.useServerSecret();
+            String token = tokenBuilder.getToken();
 
             for (Channel chan : server.getChannels()) {
                 Map<String, Object> chanProps = new HashMap<>();
