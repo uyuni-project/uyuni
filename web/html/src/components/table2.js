@@ -160,7 +160,7 @@ class Table extends React.Component {
           <tr className={classes} key={this.props.keyFn(entry)}>{
             columns.map(column => {
                 const cell = column.entryToCell(entry);
-                const classes = column === this.state.sorting.column ? "sortedCol" : "";
+                const classes = column.className + (column === this.state.sorting.column ? " sortedCol" : "");
                 return <td className={classes} key={column.header}>{ column.renderCell(cell, filterValue) }</td>
             })
           }</tr>
@@ -221,7 +221,8 @@ Table.propTypes = {
             "entryToCell": React.PropTypes.func.isRequired, // function from data entry to column relevant data
             "renderCell": React.PropTypes.func.isRequired, // function from column relevant data to react node
             "sort": React.PropTypes.func, // standard javascript comparator function
-            "filter": React.PropTypes.func // (entry, filterValue) => boolean
+            "filter": React.PropTypes.func, // (entry, filterValue) => boolean
+            "className": React.PropTypes.string // additive class to the cell <td> or its content
         })
     ).isRequired
 };
