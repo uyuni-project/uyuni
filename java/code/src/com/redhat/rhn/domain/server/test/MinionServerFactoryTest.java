@@ -76,8 +76,8 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
      * @return the MinionServer object
      * @throws Exception in case of an error
      */
-    public static MinionServer createTestMinionServer(User user) throws Exception {
-        return (MinionServer) ServerFactoryTest.createTestServer(user, true,
+    public static MinionServer createTestMinionServer(User owner) throws Exception {
+        return (MinionServer) ServerFactoryTest.createTestServer(owner, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
     }
