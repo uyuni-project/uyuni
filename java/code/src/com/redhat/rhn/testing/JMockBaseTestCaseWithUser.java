@@ -19,7 +19,13 @@ import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
+import com.suse.manager.webui.services.SaltCustomStateStorageManager;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
+import org.apache.commons.io.FileUtils;
 import org.hibernate.HibernateException;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Basic test class class with a User
@@ -28,6 +34,8 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
 
     protected User user;
     private boolean committed = false;
+    protected Path tmpPillarRoot;
+    protected Path tmpSaltRoot;
 
     /**
      * {@inheritDoc}
@@ -37,6 +45,14 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
         user = UserTestUtils.findNewUser("testUser", "testOrg" +
                 this.getClass().getSimpleName());
         KickstartDataTest.setupTestConfiguration(user);
+        tmpPillarRoot = Files.createTempDirectory("pillar");
+        tmpSaltRoot = Files.createTempDirectory("salt");
+        SaltStateGeneratorService.INSTANCE.setGeneratedPillarRoot(tmpPillarRoot
+                .toAbsolutePath().toString());
+        SaltStateGeneratorService.INSTANCE.setGeneratedSlsRoot(tmpSaltRoot
+                .toAbsolutePath().toString());
+        SaltCustomStateStorageManager.INSTANCE.setBaseDirPath(tmpSaltRoot
+                .toAbsolutePath().toString());
     }
 
     /**
@@ -56,6 +72,8 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
         }
         committed = false;
         user = null;
+        FileUtils.deleteDirectory(tmpPillarRoot.toFile());
+        FileUtils.deleteDirectory(tmpSaltRoot.toFile());
     }
 
     // If we have to commit in mid-test, set up the next transaction correctly
