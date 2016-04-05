@@ -84,7 +84,9 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
                 defaultExtension("server_" + minion.getDigitalServerId()));
 
         Yaml yaml = new Yaml();
-        Map<String, Object> map = yaml.loadAs(new FileInputStream(filePath.toFile()), Map.class);
+        FileInputStream fi = new FileInputStream(filePath.toFile());
+        Map<String, Object> map = yaml.loadAs(fi, Map.class);
+        fi.close();
 
         assertTrue(map.containsKey("org_id"));
         assertEquals(minion.getOrg().getId(), new Long((int) map.get("org_id")));
