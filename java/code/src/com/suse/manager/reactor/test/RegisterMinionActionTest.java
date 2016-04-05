@@ -98,7 +98,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 returnValue(getGrains(MINION_ID, key.getKey())));
         saltServiceMock.stubs().method("getCpuInfo").with(eq(MINION_ID)).will(
                 returnValue(getCpuInfo(MINION_ID)));
-        saltServiceMock.stubs().method("sendEvent").will(returnValue(true));
         saltServiceMock.stubs().method("syncGrains");
         saltServiceMock.stubs().method("syncModules");
 
