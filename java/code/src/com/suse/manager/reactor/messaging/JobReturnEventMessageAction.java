@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
@@ -43,6 +44,7 @@ import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 import com.suse.manager.webui.utils.salt.custom.CmdExecCodeAllResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSls;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.custom.StateApplyResult;
 import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
 import com.suse.manager.webui.utils.salt.events.JobReturnEvent.Data;
 import com.suse.salt.netapi.calls.modules.Pkg;
@@ -50,11 +52,14 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -67,6 +72,10 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(JobReturnEventMessageAction.class);
+
+    /* List of Salt modules that could possibly change installed packages */
+    private final List<String> packageChangingModules = Arrays.asList("pkg.install",
+            "pkg.remove", "pkg_installed", "pkg_latest", "pkg_removed");
 
     @Override
     public void doExecute(EventMessage msg) {
@@ -128,8 +137,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             MinionServerFactory
                     .findByMinionId(jobReturnEvent.getMinionId())
                     .ifPresent(minionServer -> {
-                MessageQueue.publish(
-                        new UpdatePackageProfileEventMessage(minionServer.getId()));
+                ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
             });
         }
 
@@ -254,15 +262,27 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 .map(ScheduleMetadata::getSumaActionId);
     }
 
+    /**
+     * Figure out if this {@link JobReturnEvent} could possibly have changed the list of
+     * installed packages, i.e. if we should trigger a package list refresh.
+     *
+     * @param event the job return event
+     * @return true if installed packages could have changed
+     */
     private boolean packagesChanged(JobReturnEvent event) {
         String function = event.getData().getFun();
-        // Add more events that change packages here
-        // This can also be further optimized by inspecting the event contents
         switch (function) {
             case "pkg.install": return true;
             case "pkg.remove": return true;
-            // Check the details before re-enabling
-            // case "state.apply": return true;
+            case "state.apply":
+                Map<String, StateApplyResult<Object>> results = event.getData().getResult(
+                        new TypeToken<Map<String, StateApplyResult<Object>>>() { });
+                for (StateApplyResult<Object> result : results.values()) {
+                    if (packageChangingModules.contains(result.getName())) {
+                        return true;
+                    }
+                }
+                return false;
             default: return false;
         }
     }
