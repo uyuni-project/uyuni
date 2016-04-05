@@ -359,9 +359,4 @@ public interface SaltService {
      */
     String getCustomStateBaseDir(long orgId);
 
-    /**
-     * @param groupId the id of the server group
-     * @return the name of the generated server group .sls file.
-     */
-    String getServerGroupGeneratedStateName(long groupId);
 }

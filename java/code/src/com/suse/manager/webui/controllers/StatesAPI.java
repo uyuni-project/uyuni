@@ -426,7 +426,7 @@ public class StatesAPI {
                         // server groups are a special case
                         // here we want to apply the custom states specific to
                         // only one group not to all groups of a minion
-                        String state = SaltAPIService.INSTANCE
+                        String state = SaltStateGeneratorService.INSTANCE
                                 .getServerGroupGeneratedStateName(groupId);
 
                         ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
