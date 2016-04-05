@@ -38,7 +38,10 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 /**
  * Manages the custom Salt states files on disk.
  */
-public class SaltCustomStateStorageManager {
+public enum SaltCustomStateStorageManager {
+
+    // Singleton instance of this class
+    INSTANCE;
 
     /**
      * The path where SUSE Manager writes custom sls data
@@ -53,7 +56,7 @@ public class SaltCustomStateStorageManager {
      * No arg constructor. Will initialize {@link #baseDirPath} with
      * '/srv/susemanager/salt' and {@link #encoding} with US-ASCII.
      */
-    public SaltCustomStateStorageManager() {
+    SaltCustomStateStorageManager() {
         this.baseDirPath = GENERATED_SLS_ROOT;
         this.encoding = "US-ASCII"; // TODO clarify default encoding
     }

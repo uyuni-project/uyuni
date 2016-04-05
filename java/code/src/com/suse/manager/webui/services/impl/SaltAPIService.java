@@ -92,7 +92,7 @@ public enum SaltAPIService implements SaltService {
     private final SaltClient SALT_CLIENT = new SaltClient(SALT_MASTER_URI);
 
     private SaltCustomStateStorageManager customSaltStorageManager =
-            new SaltCustomStateStorageManager();
+            SaltCustomStateStorageManager.INSTANCE;
 
     // Prevent instantiation
     SaltAPIService() {
@@ -578,13 +578,5 @@ public enum SaltAPIService implements SaltService {
     public String getCustomStateBaseDir(long orgId) {
         return customSaltStorageManager.getBaseDirPath();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setCustomStateBaseDir(String baseDirPath) {
-        customSaltStorageManager.setBaseDirPath(baseDirPath);
-    }
-
 
 }

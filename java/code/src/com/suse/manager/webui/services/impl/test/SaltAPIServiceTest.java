@@ -8,6 +8,7 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
@@ -41,7 +42,7 @@ public class SaltAPIServiceTest extends BaseTestCaseWithUser {
         slsDir = Files.createTempDirectory("salt-" + TestUtils.randomString());
         pillarDir = Files.createTempDirectory("pillar-" + TestUtils.randomString());
 
-        SaltAPIService.INSTANCE.setCustomStateBaseDir(slsDir.toString());
+        SaltCustomStateStorageManager.INSTANCE.setBaseDirPath(slsDir.toString());
         SaltStateGeneratorService.INSTANCE.setGeneratedSlsRoot(slsDir.toString());
         SaltStateGeneratorService.INSTANCE.setGeneratedPillarRoot(pillarDir.toString());
     }
