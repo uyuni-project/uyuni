@@ -360,24 +360,10 @@ public enum SaltStateGeneratorService {
     }
 
     /**
-     * @return the root path where state files are generated
-     */
-    public String getGeneratedSlsRoot() {
-        return generatedSlsRoot;
-    }
-
-    /**
      * @param generatedSlsRootIn the root path where state files are generated
      */
     public void setGeneratedSlsRoot(String generatedSlsRootIn) {
         this.generatedSlsRoot = generatedSlsRootIn;
-    }
-
-    /**
-     * @return the root path where pillar files are generated
-     */
-    public String getGeneratedPillarRoot() {
-        return generatedPillarRoot;
     }
 
     /**
