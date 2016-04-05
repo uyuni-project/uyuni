@@ -579,11 +579,4 @@ public enum SaltAPIService implements SaltService {
         return customSaltStorageManager.getBaseDirPath();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String getServerGroupGeneratedStateName(long groupId) {
-        return SaltStateGeneratorService.INSTANCE.getServerGroupGeneratedStateName(groupId);
-    }
-
 }
