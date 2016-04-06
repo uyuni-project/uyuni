@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Apr 06 08:48:55 CEST 2016 - mc@suse.de
+
+- version 2.5.6.3-1
+- spacewalk-clone-by-date - package names may contain special regexp
+  chars now
+
+-------------------------------------------------------------------
 Mon Mar 21 16:25:39 CET 2016 - mc@suse.de
 
 - version 2.5.6.2-1
