@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Wed Apr 06 08:39:38 CEST 2016 - mc@suse.de
+
+- version 2.5.2.8-1
+- show fingerprint and scroll if it overflows
+- SubscriptionMatching UI: add a sub-title for add-pin popup to clarify the
+  content
+- BugFix: add more visibility to the header-search_type-select (bsc#963393)
+- Fix: correct english grammar
+- BugFix: clarify description for 'add packages to patch' page (bsc#967033)
+- BugFix: add missing font-icons in alert messages (bsc#967887)
+- Never overflow content of table columns
+
+-------------------------------------------------------------------
 Mon Mar 21 17:47:14 CET 2016 - mc@suse.de
 
 - version 2.5.2.7-1
