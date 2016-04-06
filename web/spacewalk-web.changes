@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Wed Apr 06 08:42:16 CEST 2016 - mc@suse.de
+
+- version 2.5.7.7-1
+- show fingerprint and scroll if it overflows
+- Extend the matcher UI refresh interval to 1 minute
+- Subscription Matching: add message popups in case of errors during refreshes
+- SubscriptionMatching UI: add a sub-title for add-pin popup to clarify the
+  content
+- list custom states from db instead of disk (bsc#972166)
+- BugFix: cut fingerprint but show it whole in tooltip (bsc#971003)
+- Do not install the src directory (bsc#972125)
+- Remove all code related to SSE based UI events (bsc#969303)
+
+-------------------------------------------------------------------
 Mon Mar 21 17:42:16 CET 2016 - mc@suse.de
 
 - version 2.5.7.6-1
