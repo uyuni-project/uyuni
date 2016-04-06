@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed Apr 06 08:45:13 CEST 2016 - mc@suse.de
+
+- version 2.5.3.6-1
+- Use localhost instead of hostname during setup, so we do not rely
+  on correct proxy setup (bsc#970690)
+- Set better defaults according to initial scalability tests
+- Raise the maximum memory available for Tomcat to accommodate
+  for >100 minions onboarding at once (bsc#971573)
+- enable and start atftpd (bsc#972168)
+
+-------------------------------------------------------------------
 Mon Mar 21 16:32:21 CET 2016 - mc@suse.de
 
 - version 2.5.3.5-1
