@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Apr 06 08:47:35 CEST 2016 - mc@suse.de
+
+- version 3.0.4-1
+- install supportutils plugin if salt-minion is installed
+
+-------------------------------------------------------------------
 Wed Mar 09 10:43:36 CET 2016 - mc@suse.de
 
 - version 3.0.3-1
