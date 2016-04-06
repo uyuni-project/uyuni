@@ -23,10 +23,8 @@ end
 When(/^I see my fingerprint$/) do
   output = `salt-call --local key.finger`
   fing = output.split("\n")[1].strip!
-  partial_fing = find("strong[title=\"#{fing}\"]").text
-  partial_fing.gsub!('.','')
-  fail if not find("strong[title=\"#{fing}\"]")
-  fail if not fing.include?(partial_fing)
+
+  fail if not page.has_content?(fing)
 end
 
 When(/^I accept this client's minion key$/) do
