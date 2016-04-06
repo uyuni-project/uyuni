@@ -92,11 +92,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         }
 
         Optional<Long> actionId = getActionId(jobReturnEvent);
-        if(!actionId.isPresent()) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("No action id provided.");
-            }
-        }
 
         // Adjust action status if the job was scheduled by us
         actionId.ifPresent(id -> {
