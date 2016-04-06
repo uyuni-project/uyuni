@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Wed Apr 06 08:46:20 CEST 2016 - mc@suse.de
+
+- version 0.1.11-1
+- generate include only if group_ids not empty
+- use state names in custom_groups (bsc#973452)
+- rename pillar group_id to group_ids
+- Fix generating blank repositories because hitting salt file list cache
+  (bsc#971004)
+- package pillar/top.sls (bsc#973569)
+- pre require coreutils to create the cert symlink in post (bsc#972160)
+- disable local repositories on registration (bnc#971788)
+
+-------------------------------------------------------------------
 Mon Mar 21 17:38:33 CET 2016 - mc@suse.de
 
 - version 0.1.10-1
