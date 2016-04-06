@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Apr 06 08:43:47 CEST 2016 - mc@suse.de
+
+- version 3.0.12-1
+- change unique index to partial (bsc#973673)
+- move sql to enable refresh hardware feature (bsc#972305)
+- check ftr_hardware_refresh when showing 'Refresh Hardware' button
+  (bsc#972305)
+- trigger metadata generation for all channels (bsc#972972)
+
+-------------------------------------------------------------------
 Tue Mar 22 09:57:18 CET 2016 - mc@suse.de
 
 - fix schema upgrade using if exists for dropping a sequence
