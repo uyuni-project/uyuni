@@ -30,7 +30,6 @@ import com.suse.salt.netapi.exception.SaltException;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -55,9 +54,8 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
             // get uptime
             LocalCall<Float> uptimeCall = Status.uptime();
             try {
-                Map<String, Object> metadata = new HashMap<>();
                 Map<String, Float> uptimes = SaltAPIService.INSTANCE
-                        .callSync(uptimeCall, target, Optional.of(metadata));
+                        .callSync(uptimeCall, target, Optional.empty());
                 if (uptimes.containsKey(minion.getMinionId())) {
                     Long uptime = uptimes.get(minion.getMinionId()).longValue();
 
