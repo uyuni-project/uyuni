@@ -1,4 +1,62 @@
 -------------------------------------------------------------------
+Wed Apr 06 08:30:19 CEST 2016 - mc@suse.de
+
+- version 2.5.59.4-1
+- use custom.group_[id] only when applying custom_org (bsc#973452)
+- AuthFilter: don't redirect to HTML pages for JSON endpoints, send 401 instead
+- subscription-matcher: add timestamp to input.json
+- apply only group_<ID>.sls (bsc#973452)
+- fix sls regeneration on custom state delete (bsc#973666)
+- rename pillar group_id to group_ids
+- Don't set a limit on the Salt API response time (bsc#972766)
+- When generating repo metadata for a cloned channel, recursively fetch
+  keywords from the original channel (bsc#970901)
+- fix API documentation
+- Fix getting MD5 for file
+- Fix Content-Length in HTTP-header of response
+- Cleaning up some remaining Tag/Group XSS issues
+- Warning "Unservable packages" is not shown when such packages don't
+  exist now
+- Bad bean-message ids and navbar-vars can lead to XSS issues
+- AlphaBar had an 'interesting' XSS exploit available
+- Fix SelectAll in the presence of filtering
+- found/fixed another in BunchDetails. QE++
+- Change mechanism of selecting compatible systems
+- Fix generating blank repositories because hitting salt file list cache
+  (bsc#971004)
+- fix kernel options splitting (bsc#973413)
+- schedule minion hw refresh on api call (bsc#972305)
+- fix ping minion before hw refresh (bsc#972305)
+- check ftr_hardware_refresh when showing 'Refresh Hardware' button
+  (bsc#972305)
+- rename and use method to check salt or management entitlement (bsc#972305)
+- refactor getting hardware and network information (bsc#972305)
+- handle no response for installed products (bsc#971906)
+- return Optional for single minion api calls (bsc#971906)
+- catch smbios call errors and log warn (bsc#970497)
+- Require Tomcat and Postgresql running before Taskomatic start
+- list custom states from db instead of disk (bsc#972166)
+- fix SLE12 patch style detection in case of cloned patches (bsc#972972)
+- execute each hardware mapper in its own transaction (bsc#972163)
+- Use test.ping instead of presence to detect reachable minions (bsc#972665,
+  bsc#971194)
+- BugFix: 'Systems > Advanced Search' title and description consistency
+  (bsc#966737)
+- BugFix: correct behavior with visibility conditions of sub-tabs in
+  Systems/Misc page (bsc#962563)
+- Trigger registration if minion is not present (bsc#971725)
+- Do not sync minions on tomcat startup (bsc#971725)
+- better logging for SP Migration feature (bsc#970223)
+- Workaround Spark bug https://github.com/perwendel/spark/issues/490
+  (bnc#972158)
+- add present check to immediate schedule execution (bsc#971194)
+- fix installing patches via salt (bsc#971093)
+- Remove all code related to SSE based UI events (bsc#969303)
+- Do not handle beacon events anymore (bsc#969303)
+- Fix problem on concurrent SCC subscription refresh
+- disable local repositories on registration (bnc#971788)
+
+-------------------------------------------------------------------
 Mon Mar 21 17:43:40 CET 2016 - mc@suse.de
 
 - version 2.5.59.3-1
