@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Wed Apr 06 08:40:42 CEST 2016 - mc@suse.de
+
+- version 2.5.24.3-1
+- Include the Matcher data directory in supportconfig
+- qemu-kvm guests created on my Fedora 22 have different signature
+- fix SLE12 patch style detection in case of cloned patches (bsc#972972)
+- Grab the entire pillar structure at once
+- trigger regeneration of metadata on product or keyword changes (bsc#972096)
+- Find all user configured places of the custom pillars and get an info about
+  them
+- Rename static Salt states directory
+- Gather also static pillars
+- Add missing title about custom Salt states
+- Check if directory exists at all prior checking its content
+- Copy all Salt state files and generated pillars
+- Copy all Salt Master configuration
+
+-------------------------------------------------------------------
 Mon Mar 21 17:48:47 CET 2016 - mc@suse.de
 
 - version 2.5.24.2-1
