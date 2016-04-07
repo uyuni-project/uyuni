@@ -45,7 +45,7 @@ public class SaltAPIServiceTest extends BaseTestCaseWithUser {
         StateFactory.save(serverState);
         HibernateFactory.getSession().flush();
 
-        SaltStateGeneratorService.INSTANCE
+        SaltStateGeneratorService.instance()
                 .generateServerCustomState(serverState);
 
         String stateFullName = "- manager_org_" + user.getOrg().getId() + "." + name;

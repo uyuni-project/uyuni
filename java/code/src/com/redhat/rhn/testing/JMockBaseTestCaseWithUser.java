@@ -47,9 +47,9 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
         KickstartDataTest.setupTestConfiguration(user);
         tmpPillarRoot = Files.createTempDirectory("pillar");
         tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setPillarDataPath(tmpPillarRoot
+        SaltStateGeneratorService.instance().setPillarDataPath(tmpPillarRoot
                 .toAbsolutePath().toString());
-        SaltStateGeneratorService.INSTANCE.setGeneratedSlsRoot(tmpSaltRoot
+        SaltStateGeneratorService.instance().setGeneratedSlsRoot(tmpSaltRoot
                 .toAbsolutePath().toString());
         SaltCustomStateStorageManager.INSTANCE.setBaseDirPath(tmpSaltRoot
                 .toAbsolutePath().toString());
