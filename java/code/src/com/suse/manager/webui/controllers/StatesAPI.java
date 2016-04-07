@@ -250,7 +250,7 @@ public class StatesAPI {
                             toAssign);
                     // assign any remaining new selection
                     assignNewStates(user, newServerRevision, toAssign);
-                    SaltStateGeneratorService.INSTANCE
+                    SaltStateGeneratorService.instance()
                             .generateServerCustomState(newServerRevision);
                     return newServerRevision;
                 },
@@ -268,7 +268,7 @@ public class StatesAPI {
                             toRemove,
                             toAssign);
                     assignNewStates(user, newGroupRevision, toAssign);
-                    SaltStateGeneratorService.INSTANCE
+                    SaltStateGeneratorService.instance()
                             .generateGroupCustomState(newGroupRevision);
                     return newGroupRevision;
                 },
@@ -284,7 +284,7 @@ public class StatesAPI {
                             toRemove,
                             toAssign);
                     assignNewStates(user, newOrgRevision, toAssign);
-                    SaltStateGeneratorService.INSTANCE
+                    SaltStateGeneratorService.instance()
                             .generateOrgCustomState(newOrgRevision);
                     return newOrgRevision;
                 }
@@ -431,7 +431,7 @@ public class StatesAPI {
 
                         List<String> states = json.getStates();
                         if (states.size() == 1 && "custom_groups".equals(states.get(0))) {
-                            String state = SaltStateGeneratorService.INSTANCE
+                            String state = SaltStateGeneratorService.instance()
                                     .getServerGroupGeneratedStateName(groupId);
                             states = Arrays.asList(state);
                         }

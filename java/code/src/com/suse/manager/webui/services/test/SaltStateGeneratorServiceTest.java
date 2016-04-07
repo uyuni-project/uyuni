@@ -62,7 +62,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         minion.addChannel(channel2);
 
         ServerFactory.save(minion);
-        SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+        SaltStateGeneratorService.instance().generatePillar(minion);
 
         Path filePath = tmpPillarRoot.resolve(
                 SaltStateGeneratorService.PILLAR_DATA_FILE_PREFIX + "_" +

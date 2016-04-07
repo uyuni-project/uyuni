@@ -83,7 +83,7 @@ public class OrgFactory extends HibernateFactory {
     // TODO this be probably somewhere else
     public static void deleteOrgAndDependencies(Long oid, User user) {
         Org org = OrgFactory.lookupById(oid);
-        SaltStateGeneratorService.INSTANCE.removeOrg(org);
+        SaltStateGeneratorService.instance().removeOrg(org);
         deleteOrg(oid, user);
     }
 
