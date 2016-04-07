@@ -56,6 +56,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.log4j.Logger;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -295,6 +297,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      */
     private void handlePackageProfileUpdate(ServerAction serverAction, Data eventData) {
         serverAction.getServer().asMinionServer().ifPresent(server -> {
+            Instant start = Instant.now();
 
             // Parse the event data
             PkgProfileUpdateSls result = eventData.getResult(PkgProfileUpdateSls.class);
@@ -313,7 +316,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
             ServerFactory.save(server);
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Package profile updated for minion: " + server.getMinionId());
+                long duration = Duration.between(start, Instant.now()).getSeconds();
+                LOG.debug("Package profile updated for minion: " + server.getMinionId() +
+                        " (" + duration + " seconds)");
             }
 
             // Trigger update of errata cache for this server
