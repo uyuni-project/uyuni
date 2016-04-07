@@ -91,41 +91,46 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     " (" + function + ")");
         }
 
-        Optional<Long> actionId = getActionId(jobReturnEvent);
-
         // Adjust action status if the job was scheduled by us
+        Optional<Long> actionId = getActionId(jobReturnEvent);
         actionId.ifPresent(id -> {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Matched salt job with action (id=" + id + ")");
             }
 
-            //TODO: Potential null pointer wrap action
-            Action action = ActionFactory.lookupById(id);
-            Optional<MinionServer> minionServerOpt = MinionServerFactory
-                    .findByMinionId(jobReturnEvent.getMinionId());
-            minionServerOpt.ifPresent(minionServer -> {
-                Optional<ServerAction> serverAction = action.getServerActions().stream()
-                        .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
+            // Lookup the corresponding action
+            Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(id));
+            if (action.isPresent()) {
+                Optional<MinionServer> minionServerOpt = MinionServerFactory
+                        .findByMinionId(jobReturnEvent.getMinionId());
+                minionServerOpt.ifPresent(minionServer -> {
+                    Optional<ServerAction> serverAction = action.get().getServerActions()
+                            .stream()
+                            .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
 
-                // Delete schedule on the minion if we created it
-                jobReturnEvent.getData().getSchedule().ifPresent(scheduleName -> {
+                    // Delete schedule on the minion if we created it
+                    jobReturnEvent.getData().getSchedule().ifPresent(scheduleName -> {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Deleting schedule '" + scheduleName +
+                                    "' from minion: " + minionServer.getMinionId());
+                        }
+                        SaltAPIService.INSTANCE.deleteSchedule(scheduleName,
+                                new MinionList(jobReturnEvent.getMinionId()));
+                    });
 
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Deleting schedule '" + scheduleName +
-                                "' from minion: " + minionServer.getMinionId());
-                    }
-                    SaltAPIService.INSTANCE.deleteSchedule(scheduleName,
-                        new MinionList(jobReturnEvent.getMinionId()));
+                    serverAction.ifPresent(sa -> {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Updating action for server: " +
+                                    minionServer.getId());
+                        }
+                        updateServerAction(sa, jobReturnEvent);
+                        ActionFactory.save(sa);
+                    });
                 });
-
-                serverAction.ifPresent(sa -> {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Updating action for server: " + minionServer.getId());
-                    }
-                    updateServerAction(sa, jobReturnEvent);
-                    ActionFactory.save(sa);
-                });
-            });
+            }
+            else {
+                LOG.warn("Action referenced from Salt job was not found: " + id);
+            }
         });
 
         if (packagesChanged(jobReturnEvent)) {
