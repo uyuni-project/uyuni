@@ -24,7 +24,6 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.LocalCallWithMetadata;
 import com.suse.manager.webui.utils.salt.Timezone;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
@@ -39,7 +38,6 @@ import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Match;
 import com.suse.salt.netapi.calls.modules.Network;
-import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.Smbios;
@@ -187,13 +185,6 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Optional<Map<String, List<String>>> getPackages(String minionId) {
-        return callSync(Pkg.listPkgs(), minionId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void acceptKey(String match) {
         try {
             Key.accept(match).callSync(SALT_CLIENT,
@@ -272,14 +263,6 @@ public enum SaltAPIService implements SaltService {
         return callSync(Grains.item(true, grain), minionId).flatMap(grains ->
            Optional.ofNullable(grains.get(grain))
         );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Optional<Map<String, Pkg.Info>>
-            getInstalledPackageDetails(String minionId, List<String> attributes) {
-        return callSync(Pkg.infoInstalled(attributes, true), minionId);
     }
 
     /**
@@ -467,13 +450,6 @@ public enum SaltAPIService implements SaltService {
      */
     public Optional<Map<String, String>> getNetModules(String minionId) {
         return callSync(SumaUtil.getNetModules(), minionId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Optional<List<Zypper.ProductInfo>> getInstalledProducts(String minionId) {
-        return callSync(Zypper.listProducts(false), minionId);
     }
 
     /**
