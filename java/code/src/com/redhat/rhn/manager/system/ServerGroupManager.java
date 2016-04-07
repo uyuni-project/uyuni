@@ -337,7 +337,8 @@ public class ServerGroupManager {
         validateAdminCredentials(loggedInUser);
         for (Server s : servers) {
             SystemManager.addServerToServerGroup(s, sg);
-            SaltStateGeneratorService.INSTANCE.generatePillarForServer(s);
+            s.asMinionServer().ifPresent(
+                    SaltStateGeneratorService.INSTANCE::generatePillar);
         }
 
     }
@@ -365,7 +366,8 @@ public class ServerGroupManager {
     public void removeServers(ServerGroup sg, Collection<Server> servers) {
         for (Server s : servers) {
             SystemManager.removeServerFromServerGroup(s, sg);
-            SaltStateGeneratorService.INSTANCE.generatePillarForServer(s);
+            s.asMinionServer().ifPresent(
+                    SaltStateGeneratorService.INSTANCE::generatePillar);
         }
     }
 

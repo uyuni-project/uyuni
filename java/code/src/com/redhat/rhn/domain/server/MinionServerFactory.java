@@ -38,8 +38,9 @@ public class MinionServerFactory extends HibernateFactory {
      * @param orgId the org id to search for
      * @return the Server found
      */
-    public static List<Server> lookupByOrg(Long orgId) {
-        return (List<Server>) HibernateFactory.getSession().createCriteria(Server.class)
+    public static List<MinionServer> lookupByOrg(Long orgId) {
+        return (List<MinionServer>) HibernateFactory.getSession()
+                .createCriteria(MinionServer.class)
                 .add(Restrictions.eq("org.id", orgId))
                 .list();
     }

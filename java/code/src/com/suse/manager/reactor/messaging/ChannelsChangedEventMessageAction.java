@@ -17,8 +17,7 @@ package com.suse.manager.reactor.messaging;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
@@ -33,20 +32,20 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
     @Override
     public void execute(EventMessage event) {
         long serverId = ((ChannelsChangedEventMessage) event).getServerId();
-        Server server = ServerFactory.lookupById(serverId);
         // Generate repo files only for salt minions
-        if (server.hasEntitlement(EntitlementManager.SALT)) {
-            SaltStateGeneratorService.INSTANCE.generatePillarForServer(server);
-            if (event.getUserId() != null) {
-                MessageQueue.publish(new ApplyStatesEventMessage(serverId,
-                        event.getUserId(), true, ApplyStatesEventMessage.CHANNELS)
-                );
+        MinionServerFactory.lookupById(serverId).ifPresent(minion -> {
+            if (minion.hasEntitlement(EntitlementManager.SALT)) {
+                SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+                if (event.getUserId() != null) {
+                    MessageQueue.publish(new ApplyStatesEventMessage(serverId,
+                            event.getUserId(), true, ApplyStatesEventMessage.CHANNELS)
+                    );
+                } else {
+                    MessageQueue.publish(new ApplyStatesEventMessage(
+                            serverId, true, ApplyStatesEventMessage.CHANNELS)
+                    );
+                }
             }
-            else {
-                MessageQueue.publish(new ApplyStatesEventMessage(
-                        serverId, true, ApplyStatesEventMessage.CHANNELS)
-                );
-            }
-        }
+        });
     }
 }

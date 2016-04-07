@@ -18,8 +18,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.state.OrgStateRevision;
@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.SaltCustomState;
 import com.suse.manager.webui.utils.SaltPillar;
 import com.suse.manager.webui.utils.TokenBuilder;
@@ -80,29 +79,26 @@ public enum SaltStateGeneratorService {
 
     /**
      * Generate server specific pillar if the given server is a minion.
-     * @param server the minion server
+     * @param minion the minion server
      */
-    public void generatePillarForServer(Server server) {
-        if (!MinionServerUtils.isMinionServer(server)) {
-            return;
-        }
-        LOG.debug("Generating pillar file for server name= " + server.getName() +
-                " digitalId=" + server.getDigitalServerId());
+    public void generatePillar(MinionServer minion) {
+        LOG.debug("Generating pillar file for server name= " + minion.getName() +
+                " digitalId=" + minion.getDigitalServerId());
 
-        List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(server);
+        List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(minion);
         List<Long> groupIds = groups.stream()
                 .map(g -> g.getId()).collect(Collectors.toList());
         SaltPillar pillar = new SaltPillar();
-        pillar.add("org_id", server.getOrg().getId());
+        pillar.add("org_id", minion.getOrg().getId());
         pillar.add("group_ids", groupIds.toArray(new Long[groupIds.size()]));
 
         Map<String, Object> chanPillar = new HashMap<>();
         try {
-            TokenBuilder tokenBuilder = new TokenBuilder(server.getOrg().getId());
+            TokenBuilder tokenBuilder = new TokenBuilder(minion.getOrg().getId());
             tokenBuilder.useServerSecret();
             String token = tokenBuilder.getToken();
 
-            for (Channel chan : server.getChannels()) {
+            for (Channel chan : minion.getChannels()) {
                 Map<String, Object> chanProps = new HashMap<>();
                 chanProps.put("alias", "susemanager:" + chan.getLabel());
                 chanProps.put("name", chan.getName());
@@ -123,15 +119,14 @@ public enum SaltStateGeneratorService {
         catch (JoseException e) {
             LOG.error(String.format(
                 "Generating channel pillar for server with serverId '%s' failed.",
-                server.getId()), e);
+                minion.getId()), e);
         }
 
         try {
             Path baseDir = Paths.get(pillarDataPath);
             Files.createDirectories(baseDir);
             Path filePath = baseDir.resolve(
-                    getServerPillarFileName(server)
-            );
+                    defaultExtension("server_" + minion.getDigitalServerId()));
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(pillar);
@@ -141,25 +136,22 @@ public enum SaltStateGeneratorService {
         }
     }
 
-    private String getServerPillarFileName(Server server) {
+    private String getServerPillarFileName(MinionServer minion) {
         return PILLAR_DATA_FILE_PREFIX + "_" +
-            server.asMinionServer().get().getMinionId() + "." +
-                PILLAR_DATA_FILE_EXT;
+               minion.getMinionId() + "." +
+               PILLAR_DATA_FILE_EXT;
     }
 
     /**
      * Remove the corresponding pillar data if the server is a minion.
-     * @param server the minion server
+     * @param minion the minion server
      */
-    public void removePillarForServer(Server server) {
-        if (!MinionServerUtils.isMinionServer(server)) {
-            return;
-        }
-        LOG.debug("Removing pillar file for server name= " + server.getName() +
-                " digitalId=" + server.getDigitalServerId());
+    public void removePillar(MinionServer minion) {
+        LOG.debug("Removing pillar file for server name= " + minion.getName() +
+                " digitalId=" + minion.getDigitalServerId());
         Path baseDir = Paths.get(pillarDataPath);
         Path filePath = baseDir.resolve(
-                getServerPillarFileName(server));
+                getServerPillarFileName(minion));
         try {
             Files.deleteIfExists(filePath);
         }
@@ -170,10 +162,10 @@ public enum SaltStateGeneratorService {
 
     /**
      * Remove the custom states assignments for minion server.
-     * @param server the minion server
+     * @param minion the minion server
      */
-    public void removeCustomStateAssignments(Server server) {
-        removeCustomStateAssignments("custom_" + server.getDigitalServerId());
+    public void removeCustomStateAssignments(MinionServer minion) {
+        removeCustomStateAssignments("custom_" + minion.getDigitalServerId());
     }
 
     /**
@@ -210,14 +202,12 @@ public enum SaltStateGeneratorService {
      * @param serverStateRevision the state revision of a server
      */
     public void generateServerCustomState(ServerStateRevision serverStateRevision) {
-        Server server = serverStateRevision.getServer();
-        if (!MinionServerUtils.isMinionServer(server)) {
-            return;
-        }
-        LOG.debug("Generating custom state SLS file for server: " + server.getId());
+        serverStateRevision.getServer().asMinionServer().ifPresent(minion -> {
+            LOG.debug("Generating custom state SLS file for server: " + minion.getId());
 
-        generateCustomStates(server.getOrg().getId(), serverStateRevision,
-                "custom_" + server.getDigitalServerId());
+            generateCustomStates(minion.getOrg().getId(), serverStateRevision,
+                    "custom_" + minion.getDigitalServerId());
+        });
     }
 
     /**
@@ -278,29 +268,23 @@ public enum SaltStateGeneratorService {
     /**
      * Generate pillar and custom states assignments for a
      * newly registered server.
-     * @param server newly registered server
+     * @param minion newly registered minion
      */
-    public void registerServer(Server server) {
-        if (!MinionServerUtils.isMinionServer(server)) {
-            return;
-        }
+    public void registerServer(MinionServer minion) {
         // TODO create an empty revision ?
-        generatePillarForServer(server);
-        generateCustomStateAssignmentFile(server.getOrg().getId(),
-                "custom_" + server.getDigitalServerId(),
+        generatePillar(minion);
+        generateCustomStateAssignmentFile(minion.getOrg().getId(),
+                "custom_" + minion.getDigitalServerId(),
                 Collections.emptySet());
     }
 
     /**
      * Remove pillars and custom states assignments of a server.
-     * @param server the server
+     * @param minion the minion
      */
-    public void removeServer(Server server) {
-        if (!MinionServerUtils.isMinionServer(server)) {
-            return;
-        }
-        removePillarForServer(server);
-        removeCustomStateAssignments(server);
+    public void removeServer(MinionServer minion) {
+        removePillar(minion);
+        removeCustomStateAssignments(minion);
     }
 
     /**
@@ -316,10 +300,8 @@ public enum SaltStateGeneratorService {
      * @param org the org
      */
     public void removeOrg(Org org) {
-        List<Server> servers = MinionServerFactory.lookupByOrg(org.getId());
-        for (Server server : servers) {
-            removeServer(server);
-        }
+        MinionServerFactory.lookupByOrg(org.getId()).stream()
+                .forEach(this::removeServer);
         removeCustomStateAssignments(org);
     }
 
@@ -355,19 +337,19 @@ public enum SaltStateGeneratorService {
     /**
      * Regenerate pillar with the new org and create a new state revision without
      * any package or custom states.
-     * @param server the migrated server
+     * @param minion the migrated server
      * @param user the user performing the migration
      */
-    public void migrateServer(Server server, User user) {
+    public void migrateServer(MinionServer minion, User user) {
         // generate a new state revision without any package or custom states
         ServerStateRevision newStateRev = StateRevisionService.INSTANCE
-                .cloneLatest(server, user, false, false);
+                .cloneLatest(minion, user, false, false);
         StateFactory.save(newStateRev);
 
         // refresh pillar, custom and package states
-        generatePillarForServer(server);
+        generatePillar(minion);
         generateServerCustomState(newStateRev);
-        StatesAPI.generateServerPackageState(server);
+        StatesAPI.generateServerPackageState(minion);
     }
 
     private String getGroupStateFileName(long groupId) {
