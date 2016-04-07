@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -444,11 +445,9 @@ public class StatesAPI {
                     (orgId) -> {
                         Org org = OrgFactory.lookupById(json.getTargetId());
                         checkUserHasPermissionsOnOrg(org);
-                        List<Server> orgServers = MinionServerFactory
-                                .lookupByOrg(org.getId());
-                        List<Long> minionServerIds = MinionServerUtils
-                                .filterSaltMinions(orgServers)
-                                .stream().map(s -> s.getId())
+                        List<Long> minionServerIds = MinionServerFactory
+                                .lookupByOrg(org.getId()).stream()
+                                .map(MinionServer::getId)
                                 .collect(Collectors.toList());
 
                         ApplyStatesAction action = ActionManager.scheduleApplyStates(user,

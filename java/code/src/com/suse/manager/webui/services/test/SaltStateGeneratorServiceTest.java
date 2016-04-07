@@ -55,7 +55,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         minion.addChannel(channel2);
 
         ServerFactory.save(minion);
-        SaltStateGeneratorService.INSTANCE.generatePillarForServer(minion);
+        SaltStateGeneratorService.INSTANCE.generatePillar(minion);
 
         Path filePath = tmpPillarRoot.resolve(
                 defaultExtension("server_" + minion.getDigitalServerId()));
