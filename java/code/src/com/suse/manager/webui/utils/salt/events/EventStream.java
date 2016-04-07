@@ -5,7 +5,6 @@ import com.suse.salt.netapi.config.ClientConfig;
 import com.suse.salt.netapi.exception.MessageTooBigException;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.parser.JsonParser;
-import org.apache.log4j.Logger;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
@@ -35,8 +34,6 @@ import java.util.List;
  */
 @ClientEndpoint
 public class EventStream implements AutoCloseable {
-
-    private static final Logger LOG = Logger.getLogger(EventStream.class);
 
     /**
      * Listeners that are notified of a new events.
