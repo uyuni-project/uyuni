@@ -213,7 +213,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             // Generate pillar data
             try {
-                SaltStateGeneratorService.INSTANCE.registerServer(server);
+                SaltStateGeneratorService.instance().registerServer(server);
             }
             catch (RuntimeException e) {
                 LOG.error("Error generating Salt files for server '" + minionId +
