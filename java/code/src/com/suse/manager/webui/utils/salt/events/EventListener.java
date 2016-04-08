@@ -1,5 +1,7 @@
+/**
+ * CHECKSTYLE:OFF
+ */
 package com.suse.manager.webui.utils.salt.events;
-
 
 import javax.websocket.CloseReason;
 

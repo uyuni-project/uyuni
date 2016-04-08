@@ -202,7 +202,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             serverAction.setResultMsg(message);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            CmdExecCodeAllResult cmdResult = eventData.getResult(CmdExecCodeAllResult.class);
+            CmdExecCodeAllResult result = eventData.getResult(CmdExecCodeAllResult.class);
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = new ScriptResult();
             scriptAction.getScriptActionDetails().addResult(scriptResult);
@@ -227,10 +227,10 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             }
             StringBuilder sb = new StringBuilder();
             sb.append("Stderr: '");
-            sb.append(cmdResult.getStderr());
+            sb.append(result.getStderr());
             sb.append("\n\n");
             sb.append("Stdout: '");
-            sb.append(cmdResult.getStdout());
+            sb.append(result.getStdout());
             sb.append("\n");
             scriptResult.setOutput(sb.toString().getBytes());
         }
@@ -311,8 +311,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 oldPackages.retainAll(newPackages);
             });
 
-            getInstalledProducts(Optional.of(result.getListProducts().getChanges().getRet()))
-                    .ifPresent(server::setInstalledProducts);
+            Optional<List<ProductInfo>> productInfo = Optional.of(
+                    result.getListProducts().getChanges().getRet());
+            getInstalledProducts(productInfo).ifPresent(server::setInstalledProducts);
 
             ServerFactory.save(server);
             if (LOG.isDebugEnabled()) {
