@@ -85,7 +85,7 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
             // All packages have epoch null
             assertNull(pkg.getEvr().getEpoch());
         }
-        assertEquals(611, minion.getPackages().size());
+        assertEquals(3, minion.getPackages().size());
 
         minion.getInstalledProducts().stream().forEach(product -> {
             assertEquals("sles", product.getName());
