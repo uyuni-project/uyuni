@@ -209,6 +209,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         if (!errors.isEmpty()) {
             request.setAttribute(CHANNEL_LABEL, form.get(LABEL));
             request.setAttribute(CHANNEL_NAME, form.getString(NAME));
+            request.setAttribute(PARENT, form.getString(PARENT));
             request.setAttribute(CHANNEL_ARCH, form.get(ARCH_NAME));
             request.setAttribute(CHANNEL_ARCH_LABEL, form.get(ARCH));
             request.setAttribute(CHECKSUM, form.get(CHECKSUM));
@@ -719,8 +720,14 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
             for (Channel c : bases) {
                 addOption(baseChannels, c.getName(), c.getId().toString());
             }
+
+            // keep the user selection value
+            if (ctx.getRequest().getAttribute(PARENT) != null &&
+                    !ctx.getRequest().getAttribute(PARENT).toString().isEmpty()) {
+                ctx.getRequest().setAttribute("defaultParent", ctx.getRequest().getAttribute(PARENT));
+            }
             // if cloning a child channel, make a guess as to who the parent should be
-            if (original != null) {
+            else if (original != null) {
                 ctx.getRequest().setAttribute("defaultParent",
                         ChannelManager.likelyParentId(original, loggedInUser.getOrg()));
             }

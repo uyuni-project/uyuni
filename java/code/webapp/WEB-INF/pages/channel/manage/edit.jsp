@@ -49,6 +49,16 @@
                 $('#parent').change(function() {
                     setChildChannelArchChecksum();
                 });
+
+                // fire what the change of this dropdown-field should fire,
+                // so other fields are filtered from this selected value
+                // i.e.: on "submit with errors", the partially-filled page is reloaded,
+                // so it keep trace of selected dropdown filtered values
+                setChildChannelArchChecksum();
+                // set other values: after the "parent change"
+                // selected values are lost because of the filter function
+                $('#parentarch').val(defaultArch);
+                $('#checksum').val(defaultChecksum);
             });
         </script>
         <rhn:toolbar base="h1" icon="header-channel"
