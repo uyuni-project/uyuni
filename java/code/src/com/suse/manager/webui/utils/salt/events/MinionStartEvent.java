@@ -1,3 +1,6 @@
+/**
+ * CHECKSTYLE:OFF
+ */
 package com.suse.manager.webui.utils.salt.events;
 
 import com.google.gson.Gson;
@@ -23,7 +26,7 @@ public class MinionStartEvent {
     private static final Pattern PATTERN =
             Pattern.compile("^salt/minion/([^/]+)/start$");
 
-    private static final Gson gson = new GsonBuilder()
+    private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
             .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeISOAdapter())
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
@@ -31,7 +34,6 @@ public class MinionStartEvent {
 
     private final String minionId;
     private final JsonElement data;
-
 
     /**
      * Creates a new MinionStartEvent
@@ -52,14 +54,21 @@ public class MinionStartEvent {
         return minionId;
     }
 
-
-    public Map<String, Object> getData() {
-        TypeToken<Map<String, Object>> typeToken = new TypeToken<Map<String, Object>>() {};
-        return gson.fromJson(data, typeToken.getType());
+    /**
+     * Return the event data parsed into the given type.
+     * @return the event data
+     */
+    public <T> T getData(TypeToken<T> type) {
+        return GSON.fromJson(data, type.getType());
     }
 
-    public <T> T getData(TypeToken<T> type) {
-        return gson.fromJson(data, type.getType());
+    /**
+     * Return the event data as Map<String, Object>.
+     * @return the event data
+     */
+    public Map<String, Object> getData() {
+        TypeToken<Map<String, Object>> typeToken = new TypeToken<Map<String, Object>>() {};
+        return GSON.fromJson(data, typeToken.getType());
     }
 
     /**
