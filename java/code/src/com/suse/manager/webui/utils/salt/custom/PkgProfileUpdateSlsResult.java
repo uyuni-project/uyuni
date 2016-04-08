@@ -15,6 +15,8 @@
 package com.suse.manager.webui.utils.salt.custom;
 
 import com.suse.manager.webui.utils.salt.Zypper;
+import com.suse.manager.webui.utils.salt.results.Ret;
+import com.suse.manager.webui.utils.salt.results.StateApplyResult;
 import com.suse.salt.netapi.calls.modules.Pkg;
 
 import com.google.gson.annotations.SerializedName;
@@ -25,7 +27,7 @@ import java.util.Map;
 /**
  * Object representation of the results of a call to state.apply packages.profileupdate.
  */
-public class PkgProfileUpdateSls {
+public class PkgProfileUpdateSlsResult {
 
    @SerializedName("module_|-products_|-pkg.list_products_|-run")
    private StateApplyResult<Ret<List<Zypper.ProductInfo>>> listProducts;

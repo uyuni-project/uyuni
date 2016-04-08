@@ -1,7 +1,7 @@
 /**
  * CHECKSTYLE:OFF
  */
-package com.suse.manager.webui.utils.salt.custom;
+package com.suse.manager.webui.utils.salt.results;
 
 public class CmdExecCodeAllResult {
 
