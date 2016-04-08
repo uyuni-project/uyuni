@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
+import com.redhat.rhn.domain.state.CustomState;
+import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -71,10 +73,10 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
         assertTrue(Files.exists(filePath));
 
-        Yaml yaml = new Yaml();
-        FileInputStream fi = new FileInputStream(filePath.toFile());
-        Map<String, Object> map = yaml.loadAs(fi, Map.class);
-        fi.close();
+        Map<String, Object> map;
+        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
+            map = new Yaml().loadAs(fi, Map.class);
+        }
 
         assertTrue(map.containsKey("org_id"));
         assertEquals(minion.getOrg().getId(), new Long((int) map.get("org_id")));
@@ -124,4 +126,44 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
             assertEquals("1", (String) values.get("pkg_gpgcheck"));
         }
     }
+
+    public void testGenerateServerCustomState() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        ServerStateRevision serverRev = new ServerStateRevision();
+        serverRev.setServer(minion);
+
+        CustomState foo = new CustomState();
+        foo.setStateName("foo");
+
+        CustomState bar = new CustomState();
+        bar.setStateName("bar");
+
+        CustomState deleted = new CustomState();
+        deleted.setStateName("deleted");
+        deleted.setDeleted(true);
+
+        serverRev.getCustomStates().add(foo);
+        serverRev.getCustomStates().add(bar);
+        serverRev.getCustomStates().add(deleted);
+
+        SaltStateGeneratorService.instance().generateServerCustomState(serverRev);
+
+        Path filePath = tmpSaltRoot.resolve(SaltStateGeneratorService.SALT_CUSTOM_STATES)
+                .resolve(defaultExtension(SaltStateGeneratorService.SERVER_SLS_PREFIX +
+                        minion.getDigitalServerId()));
+
+        assertTrue(Files.exists(filePath));
+
+        Map<String, Object> map;
+        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
+            map = new Yaml().loadAs(fi, Map.class);
+        }
+        assertTrue(map.containsKey("include"));
+        List<String> includes = (List<String>)map.get("include");
+        assertEquals(2, includes.size());
+        assertTrue(includes.contains("manager_org_" + minion.getOrg().getId() + ".foo"));
+        assertTrue(includes.contains("manager_org_" + minion.getOrg().getId() + ".bar"));
+    }
+
 }
