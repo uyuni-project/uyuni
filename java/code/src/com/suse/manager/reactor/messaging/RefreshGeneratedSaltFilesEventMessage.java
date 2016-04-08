@@ -6,6 +6,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
  * Created by matei on 4/7/16.
  */
 public class RefreshGeneratedSaltFilesEventMessage implements EventMessage {
+
     @Override
     public String toText() {
         return null;

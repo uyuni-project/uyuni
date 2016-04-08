@@ -54,17 +54,15 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
  */
 public class SaltStateGeneratorService {
 
-    // Singleton instance of this class
-//    INSTANCE;
+    /** Logger */
+    private static final Logger LOG = Logger.getLogger(SaltStateGeneratorService.class);
 
     private static class LazyHolder {
         // Inner classes are not loaded until they are referenced
         private static final SaltStateGeneratorService INSTANCE = new SaltStateGeneratorService();
     }
 
-    /** Logger */
-    private static final Logger LOG = Logger.getLogger(SaltStateGeneratorService.class);
-
+    public static final String SERVER_SLS_PREFIX = "custom_";
     public static final String SALT_CUSTOM_STATES = "custom";
 
     public static final String PILLAR_DATA_PATH = "/srv/susemanager/pillar_data";
@@ -173,7 +171,7 @@ public class SaltStateGeneratorService {
      * @param minion the minion server
      */
     public void removeCustomStateAssignments(MinionServer minion) {
-        removeCustomStateAssignments("custom_" + minion.getDigitalServerId());
+        removeCustomStateAssignments(getServerStateFileName(server.getDigitalServerId()));
     }
 
     /**
@@ -214,7 +212,7 @@ public class SaltStateGeneratorService {
             LOG.debug("Generating custom state SLS file for server: " + minion.getId());
 
             generateCustomStates(minion.getOrg().getId(), serverStateRevision,
-                    "custom_" + minion.getDigitalServerId());
+                    getServerStateFileName(server.getDigitalServerId()));
         });
     }
 
@@ -282,7 +280,7 @@ public class SaltStateGeneratorService {
         // TODO create an empty revision ?
         generatePillar(minion);
         generateCustomStateAssignmentFile(minion.getOrg().getId(),
-                "custom_" + minion.getDigitalServerId(),
+                getServerStateFileName(server.getDigitalServerId()),
                 Collections.emptySet());
     }
 
@@ -367,6 +365,12 @@ public class SaltStateGeneratorService {
     private String getOrgStateFileName(long orgId) {
         return "org_" + orgId;
     }
+
+
+    private String getServerStateFileName(String digitalServerId) {
+        return SERVER_SLS_PREFIX + digitalServerId;
+    }
+
 
     /**
      * @param groupId the id of the server group
