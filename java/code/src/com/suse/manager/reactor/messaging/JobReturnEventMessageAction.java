@@ -40,13 +40,12 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.ScheduleMetadata;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
-import com.suse.manager.webui.utils.salt.custom.CmdExecCodeAllResult;
-import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSls;
-import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
-import com.suse.manager.webui.utils.salt.custom.StateApplyResult;
+import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
-import com.suse.manager.webui.utils.salt.events.JobReturnEvent.Data;
+import com.suse.manager.webui.utils.salt.results.CmdExecCodeAllResult;
+import com.suse.manager.webui.utils.salt.results.StateApplyResult;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
@@ -241,7 +240,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             else {
                 serverAction.setResultMsg("Success");
             }
-            handlePackageProfileUpdate(serverAction, eventData);
+            handlePackageProfileUpdate(serverAction,
+                    eventData.getResult(PkgProfileUpdateSlsResult.class));
         }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
@@ -295,12 +295,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @param serverAction the current server action
      * @param eventData event data
      */
-    private void handlePackageProfileUpdate(ServerAction serverAction, Data eventData) {
+    private void handlePackageProfileUpdate(ServerAction serverAction,
+            PkgProfileUpdateSlsResult result) {
         serverAction.getServer().asMinionServer().ifPresent(server -> {
             Instant start = Instant.now();
 
-            // Parse the event data
-            PkgProfileUpdateSls result = eventData.getResult(PkgProfileUpdateSls.class);
             Optional.of(result.getInfoInstalled().getChanges().getRet())
                 .map(saltPkgs -> saltPkgs.entrySet().stream().map(
                     entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
