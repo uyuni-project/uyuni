@@ -1,3 +1,6 @@
+/**
+ * CHECKSTYLE:OFF
+ */
 package com.suse.manager.webui.utils.salt.events;
 
 import com.google.gson.Gson;
@@ -12,11 +15,9 @@ import com.suse.manager.reactor.utils.ZonedDateTimeISOAdapter;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 /**
  * Representation of job return events fired each time a minion returns data for a job.
@@ -162,15 +163,15 @@ public class JobReturnEvent {
     }
 
     /**
-     * The id of the minion that returned the ob
-     *
      * @return the minion id
      */
     public String getMinionId() {
         return minionId;
     }
 
-
+    /**
+     * @return the event data
+     */
     public Data getData() {
         return data;
     }

@@ -1,3 +1,6 @@
+/**
+ * CHECKSTYLE:OFF
+ */
 package com.suse.manager.reactor.utils;
 
 import com.google.gson.JsonParseException;
