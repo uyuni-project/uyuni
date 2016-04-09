@@ -120,7 +120,6 @@ PKGLIST12 = [
                 "zypper",
                 "libzmq3",
                 "python-backports.ssl_match_hostname",
-                "python-certifi",
                 "python-futures",
                 "python-Jinja2",
                 "python-MarkupSafe",
