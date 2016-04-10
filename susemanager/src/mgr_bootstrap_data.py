@@ -99,10 +99,19 @@ PKGLIST12 = [
                 "suseRegisterInfo",
                 "zypp-plugin-python",
                 "zypp-plugin-spacewalk",
-                "zypper"
+                "zypper",
+                "yast2-packager",
+                "yast2-pkg-bindings",
+            ]
+
+ENHANCE12 = [
+             "libyui-ncurses-pkg6",
+             "libyui-qt-pkg6"
             ]
 
 ENHANCE12SP1 = [
+                "libyui-ncurses-pkg7",
+                "libyui-qt-pkg7",
                 "python-enum34",
                 "python-idna",
                 "python-ipaddress",
@@ -247,19 +256,19 @@ DATA = {
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
                         },
     'SLE-12-ppc64le' : {
-                          'PDID' : {'NCC' : 0 , 'SCC' : 1116}, 'PKGLIST' : PKGLIST12,
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1116}, 'PKGLIST' : PKGLIST12 + ENHANCE12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
     'SLE-12-s390x' : {
-                          'PDID' : {'NCC' : 0 , 'SCC' : 1115}, 'PKGLIST' : PKGLIST12,
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1115}, 'PKGLIST' : PKGLIST12 + ENHANCE12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
     'SLE-12-x86_64' : {
-                          'PDID' : {'NCC' : 0 , 'SCC' : 1117}, 'PKGLIST' : PKGLIST12,
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1117}, 'PKGLIST' : PKGLIST12 + ENHANCE12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
     'SLES4SAP-12-x86_64' : {
-                          'PDID' : {'NCC' : 0 , 'SCC' : 1319}, 'PKGLIST' : PKGLIST12,
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1319}, 'PKGLIST' : PKGLIST12 + ENHANCE12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
     'SLE-12-SP1-ppc64le' : {
