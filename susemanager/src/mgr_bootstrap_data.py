@@ -118,6 +118,8 @@ PKGLIST12 = [
                 "zypp-plugin-python",
                 "zypp-plugin-spacewalk",
                 "zypper",
+                "yast2-packager",
+                "yast2-pkg-bindings",
                 "libzmq3",
                 "python-backports.ssl_match_hostname",
                 "python-futures",
@@ -135,7 +137,14 @@ PKGLIST12 = [
                 "salt-minion"
             ]
 
+ENHANCE12 = [
+             "libyui-ncurses-pkg6",
+             "libyui-qt-pkg6"
+            ]
+
 ENHANCE12SP1 = [
+                "libyui-ncurses-pkg7",
+                "libyui-qt-pkg7",
                 "python-enum34",
                 "python-idna",
                 "python-ipaddress",
@@ -279,19 +288,19 @@ DATA = {
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
                         },
     'SLE-12-ppc64le' : {
-                          'PDID' : 1116, 'PKGLIST' : PKGLIST12,
+                          'PDID' : 1116, 'PKGLIST' : PKGLIST12 + ENHANCE12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
     'SLE-12-s390x' : {
-                          'PDID' : 1115, 'PKGLIST' : PKGLIST12,
+                          'PDID' : 1115, 'PKGLIST' : PKGLIST12 + ENHANCE12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
     'SLE-12-x86_64' : {
-                          'PDID' : 1117, 'PKGLIST' : PKGLIST12,
+                          'PDID' : 1117, 'PKGLIST' : PKGLIST12 + ENHANCE12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
     'SLES4SAP-12-x86_64' : {
-                          'PDID' : 1319, 'PKGLIST' : PKGLIST12,
+                          'PDID' : 1319, 'PKGLIST' : PKGLIST12 + ENHANCE12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
     'SLE-12-SP1-ppc64le' : {
