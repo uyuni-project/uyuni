@@ -65,14 +65,14 @@ public enum SaltServerActionService {
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
 
     /**
-     *
      * @param actionIn the action
      * @param call the call
      * @param minions minions to target
+     * @param forcePackageListRefresh add metadata to force a package list refresh
      * @return a map containing all minions partitioned by success
      */
-    private Map<Boolean, List<MinionServer>> schedule(Action actionIn,
-            LocalCall<?> call, List<MinionServer> minions, boolean forcePackageListRefresh) {
+    private Map<Boolean, List<MinionServer>> schedule(Action actionIn, LocalCall<?> call,
+            List<MinionServer> minions, boolean forcePackageListRefresh) {
         ZonedDateTime earliestAction = actionIn.getEarliestAction().toInstant()
                 .atZone(ZoneId.systemDefault());
 
@@ -191,6 +191,7 @@ public enum SaltServerActionService {
      * Execute a given {@link Action} via salt.
      *
      * @param actionIn the action to execute
+     * @param forcePackageListRefresh add metadata to force a package list refresh
      */
     public void execute(Action actionIn, boolean forcePackageListRefresh) {
         List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
