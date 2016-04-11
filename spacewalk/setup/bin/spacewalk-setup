@@ -358,6 +358,17 @@ sub setup_salt_master {
     print SALT_MASTER "    - /srv/susemanager/pillar\n";
     print SALT_MASTER "    - /srv/pillar\n";
 
+    # Configure external pillar
+    print SALT_MASTER "extension_modules: /usr/share/susemanager/salt_extension_modules\n";
+    print SALT_MASTER "ext_pillar:\n";
+    print SALT_MASTER "  - suma_minion:\n";
+    print SALT_MASTER "      prefix: server\n";
+    print SALT_MASTER "      prefix: file_extension\n";
+    print SALT_MASTER "      environment: base\n";
+    print SALT_MASTER "      overwrite: true\n";
+    print SALT_MASTER "      path:\n";
+    print SALT_MASTER "        - /srv/susemanager/pillar_data\n";
+
     # Scalability configuration parameters
 
     # Avoids Salt timeouts in case many minions are accepted (in the hundreds range) and
