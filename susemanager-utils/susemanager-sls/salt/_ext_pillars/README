@@ -1,0 +1,20 @@
+1. In the "/etc/salt/master" add the following:
+
+   extension_modules: /path/to/the/extension_pillar_modules
+
+                                         ^
+                                         |
+2. Copy *.py from this directory here ---+
+
+
+3. Then, in the "/etc/salt/master" add the following:
+
+   ext_pillar:
+     - suma_minion:
+         prefix: server
+         file_extension: sls
+         overwrite: true
+         environment: base
+         pillar_roots:
+           - /path/with/the/pillar/files
+           - /another/path/with/the/pillar/files
