@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Apr 11 14:37:03 CEST 2016 - mc@suse.de
+
+- version 2.5.13.2-1
+- convert dbus.Int32 to int to fix a TypeError during registration
+  (bsc#974864)
+
+-------------------------------------------------------------------
 Wed Mar 02 12:15:46 CET 2016 - mc@suse.de
 
 - version 2.5.13.1-1
