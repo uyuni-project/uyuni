@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
+
 /**
  * Tests for {@link SaltStateGeneratorService}
  */

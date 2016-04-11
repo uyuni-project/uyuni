@@ -16,13 +16,9 @@ package com.suse.manager.reactor.messaging.test;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -53,9 +49,8 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
         assertTrue(Files.exists(tmpSaltRoot.resolve(SaltStateGeneratorService.SALT_CUSTOM_STATES)
                 .resolve(SaltStateGeneratorService.SERVER_SLS_PREFIX + server.getDigitalServerId() + ".sls")));
 
-        RefreshGeneratedSaltFilesEventMessageAction action = new RefreshGeneratedSaltFilesEventMessageAction();
-        action.setSuseManagerStatesFileRoot(tmpSaltRoot.toString());
-        action.setSaltGenerationTempDir(tmpFileRoot.toString());
+        RefreshGeneratedSaltFilesEventMessageAction action = new RefreshGeneratedSaltFilesEventMessageAction(
+                tmpSaltRoot.toString(), tmpFileRoot.toString());
         action.execute(new RefreshGeneratedSaltFilesEventMessage());
 
         Path customPath = tmpSaltRoot.resolve(SaltStateGeneratorService.SALT_CUSTOM_STATES);
