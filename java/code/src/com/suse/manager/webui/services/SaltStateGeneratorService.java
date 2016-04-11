@@ -72,9 +72,9 @@ public enum SaltStateGeneratorService {
 
     SaltStateGeneratorService() {
         generatedSlsRoot = SaltCustomStateStorageManager.GENERATED_SLS_ROOT;
-        generatedPillarRoot = ConfigDefaults.get().getSaltGeneratedPillarRoot();
-        generatedPillarPrefix = ConfigDefaults.get().getSaltGeneratedPillarPrefix();
-        generatedPillarExtension = ConfigDefaults.get().getSaltGeneratedPillarExtension();
+        generatedPillarRoot = ConfigDefaults.get().getSaltGeneratedPillarDataRoot();
+        generatedPillarPrefix = ConfigDefaults.get().getSaltGeneratedPillarServerPrefix();
+        generatedPillarExtension = ConfigDefaults.get().getSaltGeneratedPillarServerExtension();
     }
 
     /**

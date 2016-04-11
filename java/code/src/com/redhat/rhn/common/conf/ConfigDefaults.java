@@ -199,12 +199,12 @@ public class ConfigDefaults {
      * SUSE Manager defaults
      */
     public static final String SCC_URL = "server.susemanager.scc_url";
-    public static final String SALT_GENERATED_PILLAR_ROOT
-            = "server.susemanager.salt.generated.pillar.root";
+    public static final String SALT_GENERATED_PILLAR_DATA_ROOT
+            = "server.susemanager.salt.generated.pillar.data.root";
     public static final String SALT_GENERATED_PILLAR_SERVER_PREFIX
-            = "server.susemanager.salt.generated.server.prefix";
+            = "server.susemanager.salt.generated.pillar.server.prefix";
     public static final String SALT_GENERATED_PILLAR_SERVER_EXTENSION
-            = "server.susemanager.salt.generated.server.extension";
+            = "server.susemanager.salt.generated.pillar.server.extension";
     private ConfigDefaults() {
     }
 
@@ -755,15 +755,15 @@ public class ConfigDefaults {
     /**
      * @return the directory where SuMa generates pillar files
      */
-    public String getSaltGeneratedPillarRoot() {
-        return Config.get().getString(SALT_GENERATED_PILLAR_ROOT,
+    public String getSaltGeneratedPillarDataRoot() {
+        return Config.get().getString(SALT_GENERATED_PILLAR_DATA_ROOT,
                 "/srv/susemanager/pillar_data");
     }
 
     /**
      * @return the prefix of the server specific pillar files
      */
-    public String getSaltGeneratedPillarPrefix() {
+    public String getSaltGeneratedPillarServerPrefix() {
         return Config.get().getString(SALT_GENERATED_PILLAR_SERVER_PREFIX,
                 "server");
     }
@@ -771,7 +771,7 @@ public class ConfigDefaults {
     /**
      * @return the extension of the server specific pillar files
      */
-    public String getSaltGeneratedPillarExtension() {
+    public String getSaltGeneratedPillarServerExtension() {
         return Config.get().getString(SALT_GENERATED_PILLAR_SERVER_EXTENSION,
                 "yml");
     }
