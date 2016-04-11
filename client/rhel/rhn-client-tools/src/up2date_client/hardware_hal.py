@@ -127,13 +127,13 @@ def process_hal_nodes(node):
         #get scsi info
         if dev['bus'] == 'scsi':
             if 'scsi.host' in parent.properties:
-                dev['prop1'] = parent.properties['scsi.host']
+                dev['prop1'] = int(parent.properties['scsi.host'])
             if 'scsi.target' in parent.properties:
-                dev['prop2'] = parent.properties['scsi.target']
+                dev['prop2'] = int(parent.properties['scsi.target'])
             if 'scsi.bus' in parent.properties:
-                dev['prop3'] = parent.properties['scsi.bus']
+                dev['prop3'] = int(parent.properties['scsi.bus'])
             if 'scsi.lun' in parent.properties:
-                dev['prop4'] = parent.properties['scsi.lun']
+                dev['prop4'] = int(parent.properties['scsi.lun'])
 
 
         dev['driver'] = str(get_device_driver(node))
