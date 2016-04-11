@@ -36,8 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
-
 /**
  * Tests for {@link SaltStateGeneratorService}
  */
@@ -67,9 +65,9 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         SaltStateGeneratorService.INSTANCE.generatePillar(minion);
 
         Path filePath = tmpPillarRoot.resolve(
-                ConfigDefaults.get().getSaltGeneratedPillarPrefix() + "_" +
+                ConfigDefaults.get().getSaltGeneratedPillarServerPrefix() + "_" +
                 minion.getMinionId() + "." +
-                ConfigDefaults.get().getSaltGeneratedPillarExtension());
+                ConfigDefaults.get().getSaltGeneratedPillarServerExtension());
 
         assertTrue(Files.exists(filePath));
 
