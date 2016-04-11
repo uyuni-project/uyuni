@@ -50,5 +50,6 @@ ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
 %defattr(-,root,root)
 %dir /usr/share/susemanager
 /usr/share/susemanager/salt
+/usr/share/susemanager/modules
 /usr/share/susemanager/modules/pillar
 %ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
