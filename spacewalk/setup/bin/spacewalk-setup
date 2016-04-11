@@ -363,7 +363,7 @@ sub setup_salt_master {
     print SALT_MASTER "ext_pillar:\n";
     print SALT_MASTER "  - suma_minion:\n";
     print SALT_MASTER "      prefix: server\n";
-    print SALT_MASTER "      prefix: file_extension\n";
+    print SALT_MASTER "      file_extension: yml\n";
     print SALT_MASTER "      environment: base\n";
     print SALT_MASTER "      overwrite: true\n";
     print SALT_MASTER "      path:\n";
