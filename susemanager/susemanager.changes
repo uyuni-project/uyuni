@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Apr 11 09:26:14 CEST 2016 - mc@suse.de
+
+- version 3.0.14-1
+- add more packages to bootstrap repo (bsc#971237)
+- drop python-certifi from bootstrap repo for SLE12 (bsc#974727)
+
+-------------------------------------------------------------------
 Wed Apr 06 08:48:14 CEST 2016 - mc@suse.de
 
 - version 3.0.13-1
