@@ -46,7 +46,8 @@ public class ActionScheduledEventMessageAction extends AbstractDatabaseAction {
         Action action = ActionFactory.lookupById(event.getActionId());
         if (action != null) {
             LOG.debug("Action scheduled: " + action.getName());
-            SaltServerActionService.INSTANCE.execute(action);
+            SaltServerActionService.INSTANCE.execute(action,
+                    event.forcePackageListRefresh());
         }
         else {
             LOG.error("Action not found: " + event.getActionId());
