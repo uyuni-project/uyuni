@@ -40,7 +40,8 @@ Sat Jan 16 11:33:54 CET 2016 - mc@suse.de
 Wed Dec 16 11:17:48 CET 2015 - mc@suse.de
 
 - version 2.5.2.2-1
-- fix client registration for network interfaces with labels (bsc#956981)
+- fix client registration for network interfaces with
+  labels (bsc#956981)
 
 -------------------------------------------------------------------
 Mon Nov 30 11:20:52 CET 2015 - mc@suse.de
@@ -48,7 +49,7 @@ Mon Nov 30 11:20:52 CET 2015 - mc@suse.de
 - version 2.5.2.1-1
 - rhel client tools: po files updated
 - update documentation
-- fix rhnChannel instance has no attribute 'get'
+- fix rhnChannel instance has no attribute 'get' (bsc#964006)
 
 -------------------------------------------------------------------
 Wed Oct 07 15:06:28 CEST 2015 - mc@suse.de
