@@ -366,8 +366,7 @@ public class ServerGroupManager {
     public void removeServers(ServerGroup sg, Collection<Server> servers) {
         for (Server s : servers) {
             SystemManager.removeServerFromServerGroup(s, sg);
-            s.asMinionServer().ifPresent(m ->
-                    SaltStateGeneratorService.instance().generatePillar(m));
+            s.asMinionServer().ifPresent(SaltStateGeneratorService.instance()::generatePillar);
         }
     }
 

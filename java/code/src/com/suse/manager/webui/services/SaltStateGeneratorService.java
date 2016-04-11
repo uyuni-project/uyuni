@@ -59,7 +59,8 @@ public class SaltStateGeneratorService {
 
     private static class LazyHolder {
         // Inner classes are not loaded until they are referenced
-        private static final SaltStateGeneratorService INSTANCE = new SaltStateGeneratorService();
+        private static final SaltStateGeneratorService INSTANCE =
+                new SaltStateGeneratorService();
     }
 
     public static final String SERVER_SLS_PREFIX = "custom_";
@@ -75,11 +76,17 @@ public class SaltStateGeneratorService {
 
     private String pillarDataPath;
 
+    /**
+     * No arg constructor.
+     */
     public SaltStateGeneratorService() {
-        generatedSlsRoot = SaltCustomStateStorageManager.GENERATED_SLS_ROOT;
+        generatedSlsRoot = ConfigDefaults.get().getSaltSuseManagerStatesFileRoot();
         pillarDataPath = PILLAR_DATA_PATH;
     }
 
+    /**
+     * @return a singleton instance.
+     */
     public static SaltStateGeneratorService instance() {
         return LazyHolder.INSTANCE;
     }
@@ -171,7 +178,7 @@ public class SaltStateGeneratorService {
      * @param minion the minion server
      */
     public void removeCustomStateAssignments(MinionServer minion) {
-        removeCustomStateAssignments(getServerStateFileName(server.getDigitalServerId()));
+        removeCustomStateAssignments(getServerStateFileName(minion.getDigitalServerId()));
     }
 
     /**
@@ -212,7 +219,7 @@ public class SaltStateGeneratorService {
             LOG.debug("Generating custom state SLS file for server: " + minion.getId());
 
             generateCustomStates(minion.getOrg().getId(), serverStateRevision,
-                    getServerStateFileName(server.getDigitalServerId()));
+                    getServerStateFileName(minion.getDigitalServerId()));
         });
     }
 
@@ -280,7 +287,7 @@ public class SaltStateGeneratorService {
         // TODO create an empty revision ?
         generatePillar(minion);
         generateCustomStateAssignmentFile(minion.getOrg().getId(),
-                getServerStateFileName(server.getDigitalServerId()),
+                getServerStateFileName(minion.getDigitalServerId()),
                 Collections.emptySet());
     }
 
