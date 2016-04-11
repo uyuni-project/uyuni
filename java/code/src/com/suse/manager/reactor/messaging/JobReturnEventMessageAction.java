@@ -134,7 +134,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             }
         });
 
-        if (packagesChanged(jobReturnEvent)) {
+        // Schedule a package list refresh if either requested or detected as necessary
+        if (forcePackageListRefresh(jobReturnEvent) || packagesChanged(jobReturnEvent)) {
             MinionServerFactory
                     .findByMinionId(jobReturnEvent.getMinionId())
                     .ifPresent(minionServer -> {
@@ -262,6 +263,21 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     private Optional<Long> getActionId(JobReturnEvent event) {
         return event.getData().getMetadata(ScheduleMetadata.class)
                 .map(ScheduleMetadata::getSumaActionId);
+    }
+
+    /**
+     * Lookup the metadata to see if a package list refresh was requested.
+     *
+     * @param event the job return event
+     * @return true if a package list refresh was requested, otherwise false
+     */
+    private boolean forcePackageListRefresh(JobReturnEvent event) {
+        Optional<Boolean> value = event.getData().getMetadata(ScheduleMetadata.class)
+                .map(ScheduleMetadata::forcePackageListRefresh);
+        if (value.isPresent()) {
+            return value.get();
+        }
+        return false;
     }
 
     /**

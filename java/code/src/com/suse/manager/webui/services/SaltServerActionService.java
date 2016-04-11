@@ -72,16 +72,21 @@ public enum SaltServerActionService {
      * @return a map containing all minions partitioned by success
      */
     private Map<Boolean, List<MinionServer>> schedule(Action actionIn,
-            LocalCall<?> call, List<MinionServer> minions) {
+            LocalCall<?> call, List<MinionServer> minions, boolean forcePackageListRefresh) {
         ZonedDateTime earliestAction = actionIn.getEarliestAction().toInstant()
                 .atZone(ZoneId.systemDefault());
-        Map<String, Long> metadata = new HashMap<>();
+
+        // Prepare the metadata
+        Map<String, Object> metadata = new HashMap<>();
         metadata.put("suma-action-id", actionIn.getId());
+        if (forcePackageListRefresh) {
+            metadata.put("suma-force-pkg-list-refresh", true);
+        }
+
         List<String> minionIds = minions
                 .stream()
                 .map(MinionServer::getMinionId)
                 .collect(Collectors.toList());
-
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Scheduling action for: " +
@@ -187,7 +192,7 @@ public enum SaltServerActionService {
      *
      * @param actionIn the action to execute
      */
-    public void execute(Action actionIn) {
+    public void execute(Action actionIn, boolean forcePackageListRefresh) {
         List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
                 .map(serverActions -> serverActions.stream()
                         .flatMap(action ->
@@ -206,7 +211,7 @@ public enum SaltServerActionService {
             final List<MinionServer> targetMinions = entry.getValue();
 
             Map<Boolean, List<MinionServer>> results =
-                    schedule(actionIn, call, targetMinions);
+                    schedule(actionIn, call, targetMinions, forcePackageListRefresh);
 
             results.get(true).stream().forEach(minionServer -> {
                 serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {

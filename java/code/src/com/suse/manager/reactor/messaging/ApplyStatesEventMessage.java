@@ -38,6 +38,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     private final long serverId;
     private final Long userId;
     private final List<String> stateNames;
+    private final boolean forcePackageListRefresh;
     private final Transaction txn;
 
     /**
@@ -51,6 +52,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
         serverId = serverIdIn;
         userId = userIdIn;
         stateNames = Arrays.asList(stateNamesIn);
+        forcePackageListRefresh = false;
         txn = HibernateFactory.getSession().getTransaction();
     }
 
@@ -61,9 +63,22 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      * @param stateNamesIn state names that need to be applied to the server
      */
     public ApplyStatesEventMessage(long serverIdIn, String... stateNamesIn) {
+        this(serverIdIn, false, stateNamesIn);
+    }
+
+    /**
+     * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
+     *
+     * @param serverIdIn the server id
+     * @param forcePackageListRefreshIn set true to request a package list refresh
+     * @param stateNamesIn state names that need to be applied to the server
+     */
+    public ApplyStatesEventMessage(long serverIdIn, boolean forcePackageListRefreshIn,
+            String... stateNamesIn) {
         serverId = serverIdIn;
         userId = null;
         stateNames = Arrays.asList(stateNamesIn);
+        forcePackageListRefresh = forcePackageListRefreshIn;
         txn = HibernateFactory.getSession().getTransaction();
     }
 
@@ -83,6 +98,15 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      */
     public List<String> getStateNames() {
         return stateNames;
+    }
+
+    /**
+     * Return true if a package list refresh is requested, otherwise false.
+     *
+     * @return true if a package list refresh is requested, otherwise false
+     */
+    public boolean forcePackageListRefresh() {
+        return forcePackageListRefresh;
     }
 
     @Override

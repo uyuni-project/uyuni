@@ -63,7 +63,8 @@ public class ApplyStatesEventMessageAction extends AbstractDatabaseAction {
                     Arrays.asList(server.getId()),
                     applyStatesEvent.getStateNames(),
                     new Date());
-            MessageQueue.publish(new ActionScheduledEventMessage(action));
+            MessageQueue.publish(new ActionScheduledEventMessage(action,
+                    applyStatesEvent.forcePackageListRefresh()));
         }
     }
 }

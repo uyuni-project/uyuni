@@ -24,6 +24,9 @@ public class ScheduleMetadata {
     @SerializedName("suma-action-id")
     private long sumaActionId = 0L;
 
+    @SerializedName("suma-force-pkg-list-refresh")
+    private boolean forcePackageListRefresh;
+
     /**
      * @param sumaActionIdIn the action id
      */
@@ -36,5 +39,12 @@ public class ScheduleMetadata {
      */
     public long getSumaActionId() {
         return sumaActionId;
+    }
+
+    /**
+     * @return true if a package list refresh should be enforced afterwards
+     */
+    public boolean forcePackageListRefresh() {
+        return forcePackageListRefresh;
     }
 }

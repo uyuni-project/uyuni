@@ -223,6 +223,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             // Apply initial states asynchronously
             MessageQueue.publish(new ApplyStatesEventMessage(
                     server.getId(),
+                    true,
                     ApplyStatesEventMessage.CERTIFICATE,
                     ApplyStatesEventMessage.CHANNELS,
                     ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS,
