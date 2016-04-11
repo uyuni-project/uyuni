@@ -200,13 +200,14 @@ public class ConfigDefaults {
      */
     public static final String SCC_URL = "server.susemanager.scc_url";
 
-    public static final String SUMA_SALT_GENERATION_TEMP_DIR = "server.susemanager.salt.generation.temp.dir";
+    public static final String SUMA_SALT_GENERATION_TEMP_DIR
+            = "server.susemanager.salt.generation.temp.dir";
 
-    public static final String SUMA_SALT_STATES_FILE_ROOT = "server.susemanager.salt.states.file.root";
+    public static final String SUMA_SALT_STATES_FILE_ROOT
+            = "server.susemanager.salt.states.file.root";
 
-    public static final String SUMA_SALT_PILLAR_FILE_ROOT = "server.susemanager.salt.pillar.file.root";
-
-    public static final String SUMA_SALT_SLS_ENCODING = "server.susemanager.salt.pillar.file.root";
+    public static final String SUMA_SALT_SLS_ENCODING
+            = "server.susemanager.salt.pillar.file.root";
 
     private ConfigDefaults() {
     }
@@ -759,21 +760,16 @@ public class ConfigDefaults {
      * @return temp directory used to generate .sls files
      */
     public String getSaltGenerationTempDir() {
-        return Config.get().getString(SUMA_SALT_GENERATION_TEMP_DIR, "/srv/susemanager/tmp");
+        return Config.get().getString(SUMA_SALT_GENERATION_TEMP_DIR,
+                "/srv/susemanager/tmp");
     }
 
     /**
      * @return the path to SUSE Manager generated Salt state files
      */
     public String getSaltSuseManagerStatesFileRoot() {
-        return Config.get().getString(SUMA_SALT_STATES_FILE_ROOT, "/srv/susemanager/salt");
-    }
-
-    /**
-     * @return the path to SUSE Manager generated Salt pillar files
-     */
-    public String getSaltSuseManagerPillarFileRoot() {
-        return Config.get().getString(SUMA_SALT_PILLAR_FILE_ROOT, "/srv/susemanager/pillar");
+        return Config.get().getString(SUMA_SALT_STATES_FILE_ROOT,
+                "/srv/susemanager/salt");
     }
 
     /**

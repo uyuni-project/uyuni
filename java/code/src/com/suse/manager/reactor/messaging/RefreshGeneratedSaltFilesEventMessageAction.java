@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2016 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -36,6 +50,9 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
 
     private ReentrantLock lock = new ReentrantLock();
 
+    /**
+     * No arg constructor.
+     */
     public RefreshGeneratedSaltFilesEventMessageAction() {
         this.suseManagerStatesFileRoot = ConfigDefaults.get()
                 .getSaltSuseManagerStatesFileRoot();
@@ -43,12 +60,22 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                 .getSaltGenerationTempDir();
     }
 
+    /**
+     * @param suseManagerStatesFileRootIn dir where the Salt state files are stored
+     * @param saltGenerationTempDirIn the temp dir used to generate the state files
+     */
+    public RefreshGeneratedSaltFilesEventMessageAction(String suseManagerStatesFileRootIn,
+                                                       String saltGenerationTempDirIn) {
+        this.suseManagerStatesFileRoot = suseManagerStatesFileRootIn;
+        this.saltGenerationTempDir = saltGenerationTempDirIn;
+    }
+
     @Override
     protected void doExecute(EventMessage msg) {
         if (lock.tryLock()) {
             try {
                 // generate org and group files to /srv/susemanager/tmp/salt
-                Path tempSaltRootPath = Paths.get(getSaltGenerationTempDir(), "salt");
+                Path tempSaltRootPath = Paths.get(saltGenerationTempDir, "salt");
                 FileUtils.deleteDirectory(tempSaltRootPath.toFile());
                 Files.createDirectories(tempSaltRootPath);
 
@@ -81,9 +108,9 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                     }
                 }
 
-                Path saltPath = Paths.get(getSuseManagerStatesFileRoot(),
+                Path saltPath = Paths.get(suseManagerStatesFileRoot,
                         SaltStateGeneratorService.SALT_CUSTOM_STATES);
-                Path oldSaltPath = Paths.get(getSaltGenerationTempDir(),
+                Path oldSaltPath = Paths.get(saltGenerationTempDir,
                         SaltStateGeneratorService.SALT_CUSTOM_STATES + "_todelete");
                 Path tempCustomPath = tempSaltRootPath
                         .resolve(SaltStateGeneratorService.SALT_CUSTOM_STATES);
@@ -108,7 +135,7 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
             }
             catch (IOException e) {
                 log.error("Could not regenerate org and group sls files in " +
-                        getSaltGenerationTempDir(), e);
+                        saltGenerationTempDir, e);
             }
             finally {
                 lock.unlock();
@@ -119,19 +146,4 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
         }
     }
 
-    public String getSuseManagerStatesFileRoot() {
-        return suseManagerStatesFileRoot;
-    }
-
-    public void setSuseManagerStatesFileRoot(String suseManagerStatesFileRootIn) {
-        this.suseManagerStatesFileRoot = suseManagerStatesFileRootIn;
-    }
-
-    public String getSaltGenerationTempDir() {
-        return saltGenerationTempDir;
-    }
-
-    public void setSaltGenerationTempDir(String saltGenerationTempDirIn) {
-        this.saltGenerationTempDir = saltGenerationTempDirIn;
-    }
 }
