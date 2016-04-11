@@ -63,15 +63,19 @@ public enum SaltStateGeneratorService {
 
     public static final String SALT_CUSTOM_STATES = "custom";
 
-    public static final String GENERATED_PILLAR_ROOT = "/srv/susemanager/pillar";
-
     private String generatedSlsRoot;
 
     private String generatedPillarRoot;
 
+    private String generatedPillarPrefix;
+
+    private String generatedPillarExtension;
+
     SaltStateGeneratorService() {
         generatedSlsRoot = SaltCustomStateStorageManager.GENERATED_SLS_ROOT;
-        generatedPillarRoot = GENERATED_PILLAR_ROOT;
+        generatedPillarRoot = ConfigDefaults.get().getSaltGeneratedPillarRoot();
+        generatedPillarPrefix = ConfigDefaults.get().getSaltGeneratedPillarPrefix();
+        generatedPillarExtension = ConfigDefaults.get().getSaltGeneratedPillarExtension();
     }
 
     /**
@@ -79,7 +83,8 @@ public enum SaltStateGeneratorService {
      * @param server the minion server
      */
     public void generatePillarForServer(Server server) {
-        if (!MinionServerUtils.isMinionServer(server)) {
+        if (!MinionServerUtils.isMinionServer(server) ||
+                !server.asMinionServer().isPresent()) {
             return;
         }
         LOG.debug("Generating pillar file for server name= " + server.getName() +
@@ -126,7 +131,10 @@ public enum SaltStateGeneratorService {
             Path baseDir = Paths.get(generatedPillarRoot);
             Files.createDirectories(baseDir);
             Path filePath = baseDir.resolve(
-                    defaultExtension("server_" + server.getDigitalServerId()));
+                    generatedPillarPrefix + "_" +
+                    server.asMinionServer().get().getMinionId() +
+                    "." + generatedPillarExtension
+            );
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(pillar);
