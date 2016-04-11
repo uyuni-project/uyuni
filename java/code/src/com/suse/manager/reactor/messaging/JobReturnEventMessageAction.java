@@ -53,6 +53,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.time.Duration;
@@ -226,12 +227,16 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         event.getJobId() + "]");
             }
             StringBuilder sb = new StringBuilder();
-            sb.append("Stderr: '");
-            sb.append(result.getStderr());
-            sb.append("\n\n");
-            sb.append("Stdout: '");
-            sb.append(result.getStdout());
-            sb.append("\n");
+            if (StringUtils.isNotEmpty(result.getStderr())) {
+                sb.append("stderr:\n\n");
+                sb.append(result.getStderr());
+                sb.append("\n");
+            }
+            if (StringUtils.isNotEmpty(result.getStdout())) {
+                sb.append("stdout:\n\n");
+                sb.append(result.getStdout());
+                sb.append("\n");
+            }
             scriptResult.setOutput(sb.toString().getBytes());
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
