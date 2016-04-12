@@ -62,7 +62,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         super.setUp();
         processor = new SubscriptionMatchProcessor();
         input = new JsonInput(new Date(), new LinkedList<>(), new LinkedList<>(),
-                new LinkedList<>(), new LinkedList<>());
+                new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
         output = new JsonOutput(new Date(), new LinkedList<>(), new LinkedList<>(),
                 new HashMap<>());
     }

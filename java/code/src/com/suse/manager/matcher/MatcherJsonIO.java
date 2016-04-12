@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.google.gson.FieldNamingPolicy;
@@ -46,6 +47,7 @@ import com.suse.matcher.json.JsonProduct;
 import com.suse.matcher.json.JsonSubscription;
 import com.suse.matcher.json.JsonSystem;
 
+import com.suse.matcher.json.JsonVirtualizationGroup;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -54,6 +56,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -100,15 +103,19 @@ public class MatcherJsonIO {
                     cpus == null ? null : cpus.intValue(),
                     !system.isVirtualGuest(),
                     system.isVirtualHost(),
-                    system.getGuests().stream()
-                        .filter(vi -> vi.getGuestSystem() != null)
-                        .map(vi -> vi.getGuestSystem().getId())
-                        .collect(toSet()),
+                    getVirtualGuests(system),
                     productIds
                 );
             });
 
         return concat(systems, jsonSystemForSelf(includeSelf, arch)).collect(toList());
+    }
+
+    private static Set<Long> getVirtualGuests(Server system) {
+        return system.getGuests().stream()
+            .filter(vi -> vi.getGuestSystem() != null)
+            .map(vi -> vi.getGuestSystem().getId())
+            .collect(toSet());
     }
 
     /**
@@ -180,10 +187,29 @@ public class MatcherJsonIO {
         return gson.toJson(new JsonInput(
             new Date(),
             getJsonSystems(includeSelf, arch),
+            getJsonVirtualizationGroups(),
             getJsonProducts(),
             getJsonSubscriptions(),
             getJsonMatches())
         );
+    }
+
+    /**
+     * Returns the JSON representation of virtualization groups.
+     *
+     * @return virtualization groups
+     */
+    public List<JsonVirtualizationGroup> getJsonVirtualizationGroups() {
+        // only group we currently support is by virtual host manager
+        return VirtualHostManagerFactory.getInstance().listVirtualHostManagers().stream()
+                .map(vhm -> new JsonVirtualizationGroup(
+                        vhm.getId(),
+                        vhm.getLabel(),
+                        "virtual_host_manager_" + vhm.getGathererModule().toLowerCase(),
+                        vhm.getServers().stream()
+                                .flatMap(s -> getVirtualGuests(s).stream())
+                                .collect(Collectors.toSet())))
+                .collect(Collectors.toList());
     }
 
     /**
