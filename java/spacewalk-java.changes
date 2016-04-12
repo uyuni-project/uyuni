@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Apr 12 17:18:44 CEST 2016 - mc@suse.de
+
+- version 2.5.59.5-1
+- trim cpu values and skip dmi for ppc64 (bsc#974792)
+- delete pillar data on remove server (bsc#974853)
+- use minion_id in pillar data file name (bsc#974853)
+
+-------------------------------------------------------------------
 Wed Apr 06 08:30:19 CEST 2016 - mc@suse.de
 
 - version 2.5.59.4-1
