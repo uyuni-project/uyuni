@@ -89,8 +89,7 @@ public enum SaltStateGeneratorService {
      * @param server the minion server
      */
     public void generatePillarForServer(Server server) {
-        if (!MinionServerUtils.isMinionServer(server) ||
-                !server.asMinionServer().isPresent()) {
+        if (!MinionServerUtils.isMinionServer(server)) {
             return;
         }
         LOG.debug("Generating pillar file for server name= " + server.getName() +
