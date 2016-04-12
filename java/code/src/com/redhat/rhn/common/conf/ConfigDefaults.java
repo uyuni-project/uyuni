@@ -199,12 +199,7 @@ public class ConfigDefaults {
      * SUSE Manager defaults
      */
     public static final String SCC_URL = "server.susemanager.scc_url";
-    public static final String SALT_GENERATED_PILLAR_DATA_ROOT
-            = "server.susemanager.salt.generated.pillar.data.root";
-    public static final String SALT_GENERATED_PILLAR_SERVER_PREFIX
-            = "server.susemanager.salt.generated.pillar.server.prefix";
-    public static final String SALT_GENERATED_PILLAR_SERVER_EXTENSION
-            = "server.susemanager.salt.generated.pillar.server.extension";
+
     private ConfigDefaults() {
     }
 
@@ -751,6 +746,4 @@ public class ConfigDefaults {
     public int getConfigFileEditSize() {
         return Config.get().getInt(CONFIG_FILE_EDIT_SIZE, 32);
     }
-
-
 }
