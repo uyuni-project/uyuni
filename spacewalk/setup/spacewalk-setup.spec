@@ -39,6 +39,8 @@ Requires:       perl-Frontier-RPC
 Requires:       perl-libwww-perl
 Requires:       perl-Net-LibIDN
 Requires:       patch
+# to have /etc/salt/master.d
+Requires(pre):  salt-master
 BuildRequires:       perl-libwww-perl
 %else
 Requires:       %{sbinpath}/restorecon
@@ -94,6 +96,7 @@ cat share/tomcat.1 >share/tomcat.conf.1
 
 chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/
+install -d -m 755 %{buildroot}/%{_sysconfdir}/salt/master.d/
 install -m 0755 share/embedded_diskspace_check.py %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/sudoers.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/mod_ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
@@ -108,6 +111,7 @@ install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -m 0644 share/defaults.d/defaults.conf %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/cobbler
 install -m 0644 share/cobbler/* %{buildroot}/%{_datadir}/spacewalk/setup/cobbler/
+install -m 0644 salt/susemanager.conf %{buildroot}/%{_sysconfdir}/salt/master.d/
 
 # create a directory for misc. Spacewalk things
 install -d -m 755 %{buildroot}/%{misc_path}/spacewalk
@@ -189,6 +193,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc Changes README answers.txt
+%config %{_sysconfdir}/salt/master.d/susemanager.conf
 %{perl_vendorlib}/*
 %{_bindir}/spacewalk-setup
 %{_bindir}/spacewalk-setup-httpd
