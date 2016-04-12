@@ -64,7 +64,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     private final SaltService SALT_SERVICE;
 
     private static final List<String> BLACKLIST = Collections.unmodifiableList(
-       Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host")
+       Arrays.asList("rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host",
+               "osad")
     );
 
     /**
