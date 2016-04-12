@@ -52,52 +52,20 @@ def __virtual__():
     return True
 
 
-def _merge(data, update, overwrite=False):
-    '''
-    Merge YAML data
-
-    :param data:
-    :param update:
-    :return:
-    '''
-    if isinstance(data, dict) and isinstance(update, dict):
-        for k, v in update.items():
-            if overwrite or k not in data:
-                data[k] = v
-            else:
-                data[k] = _merge(data[k], v)
-    return data
-
-
-def ext_pillar(minion_id,
-               pillar,  # pylint: disable=W0613
-               prefix="minion",
-               file_extension="sls",
-               environment=None,
-               overwrite=False,
-               pillar_roots=None):
+def ext_pillar(minion_id, pillar, path):
     '''
     Find SUMA-related pillars for the registered minions and return the data.
     '''
 
-    log.debug('Finding Pillar data for the minion "{0}"'.format(minion_id))
-
-    pillar_roots = __opts__.get('pillar_roots', {}).get(environment or 'base', list()) + (pillar_roots or list())
+    log.debug('Getting pillar data for the minion "{0}"'.format(minion_id))
 
     ret = dict()
-    for pillar_path in pillar_roots:
-        if not os.path.exists(pillar_path):
-            log.error('Ignoring path "{0}" - does not exist'.format(pillar_path))
-            continue
-        if not os.access(pillar_path, os.R_OK):
-            log.error('Ignoring path "{0}" - access denied.'.format(pillar_path))
-            continue
-
-        data_filename = os.path.join(pillar_path,
-                                     "{prefix}_{minion_id}.{extension}".format(prefix=prefix,
-                                                                               minion_id=minion_id,
-                                                                               extension=file_extension))
-        if os.path.exists(data_filename):
-            ret = _merge(ret, yaml.load(open(data_filename).read()), overwrite=overwrite)
+    data_filename = os.path.join(path or '/srv/susemanager/pillar_data', 'pillar_{minion_id}.yml'.format(minion_id=minion_id))
+    if not os.path.exists(data_filename):
+        log.error('Requested pillar data "{pillar_file}" does not exist!'.format(pillar_file=data_filename))
+    elif not os.access(data_filename, os.R_OK):
+        log.error('Access denied to the requested pillar data "{pillar_file}"!'.format(pillar_file=data_filename))
+    else:
+        ret = yaml.load(open(data_filename).read())
 
     return ret
