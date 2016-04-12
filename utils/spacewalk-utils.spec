@@ -66,6 +66,7 @@ Requires:       yum-utils
 
 Requires:       python-yaml
 Requires:       python-ldap
+Requires:       python-curses
 
 %description
 Generic utilities that may be run against a Spacewalk server.
