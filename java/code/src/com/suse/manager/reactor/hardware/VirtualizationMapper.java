@@ -103,8 +103,8 @@ public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance
 
             }
         }
-        else if (!CpuArchUtil.isS390(cpuarch)) {
-            // there's no DMI on S390
+        else if (CpuArchUtil.isDmiCapable(cpuarch)) {
+            // there's no DMI on S390 and PPC64
             try {
                 ValueMap dmiSystem = saltInvoker.getDmiRecords(server.getMinionId(),
                         RecordType.SYSTEM).map(ValueMap::new).orElseGet(ValueMap::new);
