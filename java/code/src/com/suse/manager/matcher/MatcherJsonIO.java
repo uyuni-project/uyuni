@@ -236,8 +236,9 @@ public class MatcherJsonIO {
      * for SUSE Manager entitlements.
      */
     private Stream<Long> productIdsForServer(Server server) {
-        SUSEProductSet productSet = server.getInstalledProductSet();
+        Stream<Long> managerEntitlementIds = entitlementIdsForServer(server);
 
+        SUSEProductSet productSet = server.getInstalledProductSet();
         if (productSet != null) {
             SUSEProduct baseProduct = productSet.getBaseProduct();
             if (baseProduct != null) {
@@ -247,12 +248,10 @@ public class MatcherJsonIO {
                         .map(p -> p.getProductId())
                 );
 
-                Stream<Long> managerEntitlementIds = entitlementIdsForServer(server);
-
                 return concat(productIds, managerEntitlementIds);
             }
         }
-        return empty();
+        return managerEntitlementIds;
     }
 
     /**
