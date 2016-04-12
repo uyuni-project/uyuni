@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Apr 12 17:20:43 CEST 2016 - mc@suse.de
+
+- version 2.5.3.7-1
+- use static file to configure salt-master in SUSE Manager
+- add ext_pillar to master.d/susemanager.conf (bsc#974853)
+
+-------------------------------------------------------------------
 Wed Apr 06 08:45:13 CEST 2016 - mc@suse.de
 
 - version 2.5.3.6-1
