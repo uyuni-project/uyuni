@@ -45,7 +45,7 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
         KickstartDataTest.setupTestConfiguration(user);
         tmpPillarRoot = Files.createTempDirectory("pillar");
         tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setGeneratedPillarRoot(tmpPillarRoot
+        SaltStateGeneratorService.INSTANCE.setPillarDataPath(tmpPillarRoot
                 .toAbsolutePath().toString());
         SaltStateGeneratorService.INSTANCE.setGeneratedSlsRoot(tmpSaltRoot
                 .toAbsolutePath().toString());
