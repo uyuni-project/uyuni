@@ -752,27 +752,5 @@ public class ConfigDefaults {
         return Config.get().getInt(CONFIG_FILE_EDIT_SIZE, 32);
     }
 
-    /**
-     * @return the directory where SuMa generates pillar files
-     */
-    public String getSaltGeneratedPillarDataRoot() {
-        return Config.get().getString(SALT_GENERATED_PILLAR_DATA_ROOT,
-                "/srv/susemanager/pillar_data");
-    }
 
-    /**
-     * @return the prefix of the server specific pillar files
-     */
-    public String getSaltGeneratedPillarServerPrefix() {
-        return Config.get().getString(SALT_GENERATED_PILLAR_SERVER_PREFIX,
-                "server");
-    }
-
-    /**
-     * @return the extension of the server specific pillar files
-     */
-    public String getSaltGeneratedPillarServerExtension() {
-        return Config.get().getString(SALT_GENERATED_PILLAR_SERVER_EXTENSION,
-                "yml");
-    }
 }

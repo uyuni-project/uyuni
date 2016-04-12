@@ -65,9 +65,9 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         SaltStateGeneratorService.INSTANCE.generatePillarForServer(minion);
 
         Path filePath = tmpPillarRoot.resolve(
-                ConfigDefaults.get().getSaltGeneratedPillarServerPrefix() + "_" +
+                SaltStateGeneratorService.PILLAR_DATA_FILE_PREFIX + "_" +
                 minion.getMinionId() + "." +
-                ConfigDefaults.get().getSaltGeneratedPillarServerExtension());
+                SaltStateGeneratorService.PILLAR_DATA_FILE_EXT);
 
         assertTrue(Files.exists(filePath));
 
