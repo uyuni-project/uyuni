@@ -36,6 +36,7 @@ public class ValueMapTest extends TestCase {
         assertEquals("12345", vmap.getValueAsString("short", 5));
         assertEquals("a very", vmap.getValueAsString("long", 6));
         assertEquals("a", vmap.getValueAsString("long", 1));
+        assertEquals("", vmap.getValueAsString(null, 1));
     }
 
 }
