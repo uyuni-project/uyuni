@@ -126,7 +126,7 @@ public enum SaltStateGeneratorService {
             Path baseDir = Paths.get(pillarDataPath);
             Files.createDirectories(baseDir);
             Path filePath = baseDir.resolve(
-                    getServerPillarFileName(server)
+                    getServerPillarFileName(minion)
             );
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
@@ -137,9 +137,9 @@ public enum SaltStateGeneratorService {
         }
     }
 
-    private String getServerPillarFileName(Server server) {
+    private String getServerPillarFileName(MinionServer minion) {
         return PILLAR_DATA_FILE_PREFIX + "_" +
-            server.asMinionServer().get().getMinionId() + "." +
+            minion.getMinionId() + "." +
                 PILLAR_DATA_FILE_EXT;
     }
 
@@ -152,7 +152,7 @@ public enum SaltStateGeneratorService {
                 " digitalId=" + minion.getDigitalServerId());
         Path baseDir = Paths.get(pillarDataPath);
         Path filePath = baseDir.resolve(
-                getServerPillarFileName(server));
+                getServerPillarFileName(minion));
         try {
             Files.deleteIfExists(filePath);
         }
