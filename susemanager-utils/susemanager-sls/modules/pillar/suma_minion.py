@@ -60,7 +60,7 @@ def ext_pillar(minion_id, pillar, path):
     log.debug('Getting pillar data for the minion "{0}"'.format(minion_id))
 
     ret = dict()
-    data_filename = os.path.join(path or '/srv/susemanager/pillar_data', 'pillar_{minion_id}.yml'.format(minion_id=minion_id))
+    data_filename = os.path.join(path, 'pillar_{minion_id}.yml'.format(minion_id=minion_id))
     if not os.path.exists(data_filename):
         log.error('Requested pillar data "{pillar_file}" does not exist!'.format(pillar_file=data_filename))
     elif not os.access(data_filename, os.R_OK):
