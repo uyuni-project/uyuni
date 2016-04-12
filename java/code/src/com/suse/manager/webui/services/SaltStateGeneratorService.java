@@ -63,15 +63,19 @@ public enum SaltStateGeneratorService {
 
     public static final String SALT_CUSTOM_STATES = "custom";
 
-    public static final String GENERATED_PILLAR_ROOT = "/srv/susemanager/pillar";
+    public static final String PILLAR_DATA_PATH = "/srv/susemanager/pillar_data";
+
+    public static final String PILLAR_DATA_FILE_PREFIX = "pillar";
+
+    public static final String PILLAR_DATA_FILE_EXT = "yml";
 
     private String generatedSlsRoot;
 
-    private String generatedPillarRoot;
+    private String pillarDataPath;
 
     SaltStateGeneratorService() {
         generatedSlsRoot = SaltCustomStateStorageManager.GENERATED_SLS_ROOT;
-        generatedPillarRoot = GENERATED_PILLAR_ROOT;
+        pillarDataPath = PILLAR_DATA_PATH;
     }
 
     /**
@@ -123,10 +127,11 @@ public enum SaltStateGeneratorService {
         }
 
         try {
-            Path baseDir = Paths.get(generatedPillarRoot);
+            Path baseDir = Paths.get(pillarDataPath);
             Files.createDirectories(baseDir);
             Path filePath = baseDir.resolve(
-                    defaultExtension("server_" + server.getDigitalServerId()));
+                    getServerPillarFileName(server)
+            );
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(pillar);
@@ -134,6 +139,12 @@ public enum SaltStateGeneratorService {
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }
+    }
+
+    private String getServerPillarFileName(Server server) {
+        return PILLAR_DATA_FILE_PREFIX + "_" +
+            server.asMinionServer().get().getMinionId() + "." +
+                PILLAR_DATA_FILE_EXT;
     }
 
     /**
@@ -146,9 +157,9 @@ public enum SaltStateGeneratorService {
         }
         LOG.debug("Removing pillar file for server name= " + server.getName() +
                 " digitalId=" + server.getDigitalServerId());
-        Path baseDir = Paths.get(generatedPillarRoot);
+        Path baseDir = Paths.get(pillarDataPath);
         Path filePath = baseDir.resolve(
-                defaultExtension("server_" + server.getDigitalServerId()));
+                getServerPillarFileName(server));
         try {
             Files.deleteIfExists(filePath);
         }
@@ -385,15 +396,15 @@ public enum SaltStateGeneratorService {
     /**
      * @param generatedPillarRootIn the root path where pillar files are generated
      */
-    public void setGeneratedPillarRoot(String generatedPillarRootIn) {
-        this.generatedPillarRoot = generatedPillarRootIn;
+    public void setPillarDataPath(String generatedPillarRootIn) {
+        this.pillarDataPath = generatedPillarRootIn;
     }
 
     /**
      * @return the root path where pillar files are generated
      */
-    public String getGeneratedPillarRoot() {
-        return this.generatedPillarRoot;
+    public String getPillarDataPath() {
+        return this.pillarDataPath;
     }
 
     /**

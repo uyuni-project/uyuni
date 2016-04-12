@@ -157,9 +157,6 @@ if(not $opts{"skip-db-population"}) {
 print Spacewalk::Setup::loc("* Setting up Cobbler..\n");
 setup_cobbler(\%opts, \%answers);
 
-print Spacewalk::Setup::loc("* Setting up Salt Master.\n");
-setup_salt_master(\%opts);
-
 if ($opts{'upgrade'}) {
   Spacewalk::Setup::postgresql_start() if (Spacewalk::Setup::is_embedded_db(\%opts));
 
@@ -318,61 +315,6 @@ sub setup_cobbler {
         system("systemctl start atftpd.service");
       }
   }
-}
-
-sub setup_salt_master {
-    my $opts = shift;
-    # We might need port and host from the options/YaST answer file in a future.
-    my $salt_master = '/etc/salt/master.d/susemanager.conf';
-    open(SALT_MASTER, '>', $salt_master) || die "Unable to open $salt_master file!";
-
-    # Setup cherrypy
-    print SALT_MASTER "rest_cherrypy:\n";
-    print SALT_MASTER "  port: 9080\n";
-    print SALT_MASTER "  host: 127.0.0.1\n";
-    print SALT_MASTER "  collect_stats: false\n";
-    print SALT_MASTER "  disable_ssl: true\n";
-    print SALT_MASTER "  ssl_crt: /etc/apache2/ssl.crt/spacewalk.crt\n";
-    print SALT_MASTER "  ssl_key: /etc/apache2/ssl.key/spacewalk.key\n";
-
-    # Setup API authentication
-    print SALT_MASTER "external_auth:\n";
-    print SALT_MASTER "  auto:\n";
-    print SALT_MASTER "    admin:\n";
-    print SALT_MASTER "      - .*\n";
-    print SALT_MASTER "      - '\@wheel'\n";
-    print SALT_MASTER "      - '\@runner'\n";
-    print SALT_MASTER "      - '\@jobs'\n";
-
-    # Configure different file roots
-    print SALT_MASTER "file_roots:\n";
-    print SALT_MASTER "  base:\n";
-    print SALT_MASTER "    - /usr/share/susemanager/salt\n";
-    print SALT_MASTER "    - /srv/susemanager/salt\n";
-    print SALT_MASTER "    - /srv/salt\n";
-
-    # Configure different pillar roots
-    print SALT_MASTER "pillar_roots:\n";
-    print SALT_MASTER "  base:\n";
-    print SALT_MASTER "    - /usr/share/susemanager/pillar\n";
-    print SALT_MASTER "    - /srv/susemanager/pillar\n";
-    print SALT_MASTER "    - /srv/pillar\n";
-
-    # Scalability configuration parameters
-
-    # Avoids Salt timeouts in case many minions are accepted (in the hundreds range) and
-    # at least a few of them respond slowly. Default value is 5 and leads to the following
-    # error:
-    # Salt request timed out. The master is not responding. If this error persists after
-    # verifying the master is up, worker_threads may need to be increased
-    print SALT_MASTER "worker_threads: 50\n";
-
-    # Wait for slow minions, or long running operations, longer. Default is 15s in total.
-    # Raise the timeout after 4 minutes.
-    print SALT_MASTER "timeout: 120\n";
-    print SALT_MASTER "gather_job_timeout: 120\n";
-
-    close(SALT_MASTER);
 }
 
 sub setup_admin_email {
