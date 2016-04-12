@@ -10,11 +10,4 @@
 3. Then, in the "/etc/salt/master" add the following:
 
    ext_pillar:
-     - suma_minion:
-         prefix: server
-         file_extension: sls
-         overwrite: true
-         environment: base
-         pillar_roots:
-           - /path/with/the/pillar/files
-           - /another/path/with/the/pillar/files
+     - suma_minion: /another/path/with/the/pillar/files
