@@ -241,7 +241,7 @@ public class MatcherJsonIO {
         if (productSet != null) {
             SUSEProduct baseProduct = productSet.getBaseProduct();
             if (baseProduct != null) {
-                Stream<Long> addonProductIds = concat(
+                Stream<Long> productIds = concat(
                     of(baseProduct.getProductId()),
                     productSet.getAddonProducts().stream()
                         .map(p -> p.getProductId())
@@ -249,7 +249,7 @@ public class MatcherJsonIO {
 
                 Stream<Long> managerEntitlementIds = entitlementIdsForServer(server);
 
-                return concat(addonProductIds, managerEntitlementIds);
+                return concat(productIds, managerEntitlementIds);
             }
         }
         return empty();
