@@ -73,15 +73,9 @@ public enum SaltStateGeneratorService {
 
     private String generatedPillarRoot;
 
-    private String generatedPillarPrefix;
-
-    private String generatedPillarExtension;
-
     SaltStateGeneratorService() {
         generatedSlsRoot = SaltCustomStateStorageManager.GENERATED_SLS_ROOT;
         generatedPillarRoot = PILLAR_DATA_PATH;
-        generatedPillarPrefix = PILLAR_DATA_FILE_PREFIX;
-        generatedPillarExtension = PILLAR_DATA_FILE_EXT;
     }
 
     /**
@@ -148,9 +142,9 @@ public enum SaltStateGeneratorService {
     }
 
     private String getServerPillarFileName(Server server) {
-        return generatedPillarPrefix + "_" +
+        return PILLAR_DATA_FILE_PREFIX + "_" +
             server.asMinionServer().get().getMinionId() + "." +
-                generatedPillarExtension;
+                PILLAR_DATA_FILE_EXT;
     }
 
     /**
