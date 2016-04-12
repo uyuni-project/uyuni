@@ -49,4 +49,12 @@ public class CpuArchUtil {
                 StringUtils.substring(cpuarch, -2, cpuarch.length()).equals("86")) ||
                 "x86_64".equals(cpuarch);
     }
+
+    /**
+     * @param cpuarch the cpu arch
+     * @return true if the architecture supports DMI
+     */
+    public static boolean isDmiCapable(String cpuarch) {
+        return isX86(cpuarch);
+    }
 }
