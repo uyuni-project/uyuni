@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Apr 12 17:15:01 CEST 2016 - mc@suse.de
+
+- version 0.1.12-1
+- Add external pillar minion data resolver (bsc#974853)
+- Add readme about ext_pillars
+- remove pillar top.sls (bsc#974853)
+
+-------------------------------------------------------------------
 Wed Apr 06 08:46:20 CEST 2016 - mc@suse.de
 
 - version 0.1.11-1
