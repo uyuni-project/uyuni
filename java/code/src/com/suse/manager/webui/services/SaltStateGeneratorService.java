@@ -62,6 +62,12 @@ public enum SaltStateGeneratorService {
 
     public static final String SALT_CUSTOM_STATES = "custom";
 
+    public static final String PILLAR_DATA_PATH = "/srv/susemanager/pillar_data";
+
+    public static final String PILLAR_DATA_FILE_PREFIX = "pillar";
+
+    public static final String PILLAR_DATA_FILE_EXT = "yml";
+
     private String generatedSlsRoot;
 
     private String generatedPillarRoot;
@@ -72,9 +78,9 @@ public enum SaltStateGeneratorService {
 
     SaltStateGeneratorService() {
         generatedSlsRoot = SaltCustomStateStorageManager.GENERATED_SLS_ROOT;
-        generatedPillarRoot = ConfigDefaults.get().getSaltGeneratedPillarDataRoot();
-        generatedPillarPrefix = ConfigDefaults.get().getSaltGeneratedPillarServerPrefix();
-        generatedPillarExtension = ConfigDefaults.get().getSaltGeneratedPillarServerExtension();
+        generatedPillarRoot = PILLAR_DATA_PATH;
+        generatedPillarPrefix = PILLAR_DATA_FILE_PREFIX;
+        generatedPillarExtension = PILLAR_DATA_FILE_EXT;
     }
 
     /**
