@@ -5,6 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -74,6 +75,59 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                     stringContains("DMI: Could not retrieve DMI records: test exception")
                 );
             });
+    }
+
+
+    public void testPPC64() throws Exception {
+        MinionServer server = (MinionServer) ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        String minionId = server.getMinionId();
+
+        Mock apiMock = mock(SaltService.class);
+
+        apiMock.stubs().method("getFileContent").with(isA(String.class), isA(String.class)).will(returnValue(Optional.empty()));
+
+        Map<String, Object> grains = parse("grains.items.ppc64", Grains.items(false).getReturnType());
+        apiMock.stubs().method("getGrains").with(eq(minionId)).will(returnValue(Optional.of(grains)));
+
+        List<Map<String, Object>> udevdb = parse("udevdb.exportdb.ppc64", Udevdb.exportdb().getReturnType());
+        apiMock.stubs().method("getUdevdb").with(eq(minionId)).will(returnValue(Optional.of(udevdb)));
+
+        Map<String, Object> cpuinfo = parse("status.cpuinfo.ppc64", Status.cpuinfo().getReturnType());
+        apiMock.stubs().method("getCpuInfo").with(eq(minionId)).will(returnValue(Optional.of(cpuinfo)));
+
+        Map<String, Network.Interface> netif = parse("network.interfaces", Network.interfaces().getReturnType());
+        apiMock.stubs().method("getNetworkInterfacesInfo").with(eq(minionId)).will(returnValue(Optional.of(netif)));
+
+        Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse("sumautil.primary_ips", SumaUtil.primaryIps().getReturnType());
+        apiMock.stubs().method("getPrimaryIps").with(eq(minionId)).will(returnValue(Optional.of(ips)));
+
+        Map<String, String> netmodules = parse("sumautil.get_net_modules", SumaUtil.getNetModules().getReturnType());
+        apiMock.stubs().method("getNetModules").with(eq(minionId)).will(returnValue(Optional.of(netmodules)));
+
+        Map<String, Boolean> ping = new HashMap<>();
+        ping.put(minionId, true);
+        apiMock.stubs().method("ping").will(returnValue(ping));
+
+        RefreshHardwareEventMessageAction action = new RefreshHardwareEventMessageAction((SaltService)apiMock.proxy());
+
+        Action scheduledAction = ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
+        RefreshHardwareEventMessage msg = new RefreshHardwareEventMessage(minionId, scheduledAction);
+        action.execute(msg);
+
+        this.commitHappened(); // force cleanup on tearDown()
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        ServerAction serverAction = scheduledAction.getServerActions().stream().findFirst().get();
+        assertEquals(serverAction.getResultMsg(), "hardware list refreshed");
+        assertEquals(serverAction.getStatus(), ActionFactory.STATUS_COMPLETED);
+
+        server = MinionServerFactory.findByMinionId(minionId).orElse(null);
+        assertEquals("CHRP IBM pSeries (emulated by qe", server.getCpu().getVendor());
+
     }
 
     private void doTest(Exception exception, BiConsumer<MinionServer, Action> assertions) throws Exception {
