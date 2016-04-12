@@ -124,5 +124,4 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
             assertEquals("1", (String) values.get("pkg_gpgcheck"));
         }
     }
-
 }
