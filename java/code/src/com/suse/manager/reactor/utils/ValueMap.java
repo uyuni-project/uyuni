@@ -15,6 +15,7 @@
 package com.suse.manager.reactor.utils;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.text.DecimalFormat;
@@ -57,6 +58,18 @@ public class ValueMap {
      */
     public String getValueAsString(String key) {
         return get(key).flatMap(this::toString).orElse("");
+    }
+
+    /**
+     * Get the value as string and chop of chars that exceed maxLength.
+     * @param key the key
+     * @param maxLength max allowed length
+     * @return a value converted to string or an
+     * empty string if the value is missing.
+     */
+    public String getValueAsString(String key, int maxLength) {
+        return get(key).map(o -> StringUtils.substring(o.toString(), 0, maxLength))
+                .orElse("");
     }
 
     /**

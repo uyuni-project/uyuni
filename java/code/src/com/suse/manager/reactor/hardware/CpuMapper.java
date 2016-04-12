@@ -70,31 +70,32 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
             }
 
             // /proc/cpuinfo -> model name
-            cpu.setModel(grains.getValueAsString("cpu_model"));
+            cpu.setModel(getModel(grains.getValueAsString("cpu_model")));
             // some machines don't report cpu MHz
-            cpu.setMHz(cpuinfo.get("cpu MHz").flatMap(cpuinfo::toString).orElse("-1"));
-            cpu.setVendor(cpuinfo.getValueAsString("vendor_id"));
-            cpu.setStepping(cpuinfo.getValueAsString("stepping"));
-            cpu.setFamily(cpuinfo.getValueAsString("cpu family"));
-            cpu.setCache(cpuinfo.getValueAsString("cache size"));
-            cpu.setBogomips(cpuinfo.getValueAsString("bogomips"));
-            cpu.setFlags(cpuinfo.get("flags'").flatMap(cpuinfo::toString).orElse(null));
-            cpu.setVersion(cpuinfo.getValueAsString("model"));
+            cpu.setMHz(getMhz(cpuinfo.get("cpu MHz").flatMap(cpuinfo::toString)
+                    .orElse("-1")));
+            cpu.setVendor(getVendor(cpuinfo, "vendor_id"));
+            cpu.setStepping(getStepping(cpuinfo, "stepping"));
+            cpu.setFamily(getFamily(cpuinfo, "cpu family"));
+            cpu.setCache(getCache(cpuinfo, "cache size"));
+            cpu.setBogomips(getBogomips(cpuinfo, "bogomips"));
+            cpu.setFlags(cpuinfo.get("flags").flatMap(cpuinfo::toString).orElse(null));
+            cpu.setVersion(getVersion(cpuinfo, "model"));
 
         }
         else if (CpuArchUtil.isPPC64(cpuarch)) {
-            cpu.setModel(cpuinfo.getValueAsString("cpu"));
-            cpu.setVersion(cpuinfo.getValueAsString("revision"));
-            cpu.setBogomips(cpuinfo.getValueAsString("bogompis"));
-            cpu.setVendor(cpuinfo.getValueAsString("machine"));
-            cpu.setMHz(StringUtils.substring(cpuinfo.get("clock")
+            cpu.setModel(getModel(cpuinfo.getValueAsString("cpu")));
+            cpu.setVersion(getVersion(cpuinfo, "revision"));
+            cpu.setBogomips(getBogomips(cpuinfo, "bogompis"));
+            cpu.setVendor(getVendor(cpuinfo, "machine"));
+            cpu.setMHz(getMhz(StringUtils.substring(cpuinfo.get("clock")
                     .flatMap(cpuinfo::toString)
-                    .orElse("-1MHz"), 0, -3)); // remove MHz sufix
+                    .orElse("-1MHz"), 0, -3))); // remove MHz sufix
         }
         else if (CpuArchUtil.isS390(cpuarch)) {
-            cpu.setVendor(cpuinfo.getValueAsString("vendor_id"));
-            cpu.setModel(cpuarch);
-            cpu.setBogomips(cpuinfo.getValueAsString("bogomips per cpu"));
+            cpu.setVendor(getVendor(cpuinfo, "vendor_id"));
+            cpu.setModel(getModel(cpuarch));
+            cpu.setBogomips(getBogomips(cpuinfo, "bogomips per cpu"));
             cpu.setFlags(cpuinfo.get("features").flatMap(cpuinfo::toString).orElse(null));
             cpu.setMHz("0");
         }
@@ -121,4 +122,38 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
 
         return cpu;
     }
+
+    private String getVendor(ValueMap cpuinfo, String key) {
+        return cpuinfo.getValueAsString(key, 32);
+    }
+
+    private String getVersion(ValueMap cpuinfo, String key) {
+        return cpuinfo.getValueAsString(key, 32);
+    }
+
+    private String getBogomips(ValueMap cpuinfo, String key) {
+        return cpuinfo.getValueAsString(key, 16);
+    }
+
+    private String getCache(ValueMap cpuinfo, String key) {
+        return cpuinfo.getValueAsString(key, 16);
+    }
+
+    private String getFamily(ValueMap cpuinfo, String key) {
+        return cpuinfo.getValueAsString(key, 32);
+    }
+
+    private String getMhz(String value) {
+        return StringUtils.substring(value, 0, 16);
+    }
+
+    private String getStepping(ValueMap cpuinfo, String key) {
+        return cpuinfo.getValueAsString(key, 16);
+    }
+
+    private String getModel(String value) {
+        return StringUtils.substring(value, 0, 32);
+    }
+
+
 }
