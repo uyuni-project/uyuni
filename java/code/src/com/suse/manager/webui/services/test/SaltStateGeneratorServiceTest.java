@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services.test;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -25,20 +26,26 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
-
 /**
  * Tests for {@link SaltStateGeneratorService}
  */
 public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
+
+    public void setUp() throws Exception {
+        super.setUp();
+        Config.get().setString("server.secret_key",
+                DigestUtils.sha256Hex(TestUtils.randomString()));
+    }
 
     public void testGeneratePillarForServer() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -58,7 +65,11 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         SaltStateGeneratorService.INSTANCE.generatePillar(minion);
 
         Path filePath = tmpPillarRoot.resolve(
-                defaultExtension("server_" + minion.getDigitalServerId()));
+                SaltStateGeneratorService.PILLAR_DATA_FILE_PREFIX + "_" +
+                minion.getMinionId() + "." +
+                SaltStateGeneratorService.PILLAR_DATA_FILE_EXT);
+
+        assertTrue(Files.exists(filePath));
 
         Yaml yaml = new Yaml();
         FileInputStream fi = new FileInputStream(filePath.toFile());

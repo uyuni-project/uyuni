@@ -601,6 +601,7 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -d $RPM_BUILD_ROOT/srv/susemanager/salt
 install -d $RPM_BUILD_ROOT/srv/susemanager/pillar
+install -d $RPM_BUILD_ROOT/srv/susemanager/pillar_data
 
 %if 0%{?fedora}
 echo "hibernate.cache.region.factory_class=net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory" >> conf/default/rhn_hibernate.conf
@@ -787,6 +788,7 @@ fi
 %dir /srv/susemanager
 %dir /srv/susemanager/salt
 %dir /srv/susemanager/pillar
+%dir /srv/susemanager/pillar_data
 %dir %{appdir}/rhn/
 %{appdir}/rhn/apidoc/
 %{appdir}/rhn/css/
