@@ -12,6 +12,8 @@ import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -22,16 +24,20 @@ import com.suse.matcher.json.JsonMatch;
 import com.suse.matcher.json.JsonProduct;
 import com.suse.matcher.json.JsonSubscription;
 import com.suse.matcher.json.JsonSystem;
+import com.suse.matcher.json.JsonVirtualizationGroup;
 import com.suse.scc.model.SCCSubscription;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MatcherJsonIOTest extends BaseTestCaseWithUser {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/sccdata/";
@@ -204,6 +210,40 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
             ordertempFile.delete();
             fromdir.toFile().delete();
         }
+    }
+
+    /**
+     * Tests creating a nontrivial JSON Virtualization Group (based on single
+     * {@link VirtualHostManager}.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testVirtualHostManagersToJson() throws Exception {
+        Server virtualHost1 = ServerTestUtils.createVirtHostWithGuests(2);
+        Server virtualHost2 = ServerTestUtils.createVirtHostWithGuest();
+        VirtualHostManager vhm = VirtualHostManagerFactory.getInstance()
+                .createVirtualHostManager("ESXi", user.getOrg(), "file", new HashMap<>());
+        vhm.addServer(virtualHost1);
+        vhm.addServer(virtualHost2);
+        VirtualHostManagerFactory.getInstance().save(vhm);
+
+        List<JsonVirtualizationGroup> jsonVirtualizationGroups = new MatcherJsonIO()
+                .getJsonVirtualizationGroups();
+        assertEquals(1, jsonVirtualizationGroups.size());
+
+        JsonVirtualizationGroup virtualizationGroup =
+                jsonVirtualizationGroups.iterator().next();
+        assertEquals(vhm.getId(), virtualizationGroup.getId());
+        assertEquals(vhm.getLabel(), virtualizationGroup.getName());
+        assertEquals("virtual_host_manager_file", virtualizationGroup.getType());
+        assertEquals(3, virtualizationGroup.getVirtualGuestIds().size());
+
+        Set<Long> guestIds = Arrays.asList(virtualHost1, virtualHost2).stream()
+                .flatMap(s -> s.getGuests().stream())
+                .map(vi -> vi.getGuestSystem())
+                .map(Server::getId)
+                .collect(Collectors.toSet());
+        assertTrue(virtualizationGroup.getVirtualGuestIds().containsAll(guestIds));
     }
 
     public void testPinsToJson() throws Exception {
