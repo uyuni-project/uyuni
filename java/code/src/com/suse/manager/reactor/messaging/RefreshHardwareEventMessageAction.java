@@ -108,7 +108,7 @@ public class RefreshHardwareEventMessageAction extends AbstractDatabaseAction {
                         String cpuarch = grains
                                 .getValueAsString(SaltGrains.CPUARCH.getValue());
 
-                        if (!CpuArchUtil.isS390(cpuarch)) {
+                        if (!CpuArchUtil.isS390(cpuarch) && !CpuArchUtil.isPPC64(cpuarch)) {
                             DmiMapper dmiMapper = new DmiMapper(saltInvoker);
                             dmiMapper.map(minionServer.getId(), grains);
                             checkErrors("DMI", errors, dmiMapper);
