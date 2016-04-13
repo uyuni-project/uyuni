@@ -95,7 +95,7 @@ def extract_channel_id(bytes):
             oldpos = io.tell()
             try:
                 (length, ) = struct.unpack(">H", io.read(2))
-                string = struct.unpack(">" + str(length) + "s", io.read(length))
+                string = struct.unpack(">{0}s".format(length), io.read(length))
                 strings += string
             except struct.error:
                 pass # not a real string, ignore
