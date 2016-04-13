@@ -19,9 +19,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.text.DecimalFormat;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Convenience wrapper around a {@link Map}
@@ -100,6 +102,13 @@ public class ValueMap {
      * the value could not be converted.
      */
     public Optional<String> toString(Object value) {
+        return valueToString(0, value);
+    }
+
+    private Optional<String> valueToString(int depth, Object value) {
+        if (depth > 10) {
+            return Optional.empty();
+        }
         if (value instanceof Double) {
             DecimalFormat formater = new DecimalFormat("#.##");
             return Optional.of(formater.format((double)value));
@@ -109,6 +118,12 @@ public class ValueMap {
         }
         else if (value instanceof String) {
             return Optional.of((String)value);
+        }
+        if (value instanceof Collection) {
+            return Optional.of(((Collection<?>)value).stream()
+                    .map(v -> valueToString(depth + 1, v))
+                    .map(opt -> opt.orElse(""))
+                    .collect(Collectors.joining(" ")));
         }
         else {
             LOG.warn("Value '" + ObjectUtils.toString(value) +
