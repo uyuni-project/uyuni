@@ -104,7 +104,7 @@ def extract_channel_id(bytes):
     return next((string for string in strings if string.isdigit()), None)
 
 def format_run(run):
-    """Formats data from a Taskomatic run in human-friently form."""
+    """Formats data from a Taskomatic run in human-friendly form."""
     if run["end_time"]:
         run["since"] = format_date_delta(run["start_time"], run["end_time"])
         run["status"] = "(finished)"
