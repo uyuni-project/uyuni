@@ -84,7 +84,7 @@ def extract_channel_id(bytes):
     # two bytes for the length and the string chars themselves. If they
     # represent numbers, we assume they are channel_ids
     # (currently this is the case)
-    strings = []
+    java_strings = []
     io = StringIO.StringIO(bytes)
     while True:
         char = io.read(1)
@@ -94,13 +94,13 @@ def extract_channel_id(bytes):
             oldpos = io.tell()
             try:
                 length = struct.unpack(">H", io.read(2))[0]
-                string = struct.unpack(">{0}s".format(length), io.read(length))
-                strings += string
+                java_string = struct.unpack(">{0}s".format(length), io.read(length))
+                java_strings += java_string
             except struct.error:
                 pass # not a real string, ignore
             io.seek(oldpos)
     # of those found, filter the ones looking like a number
-    return next((string for string in strings if string.isdigit()), None)
+    return next((java_string for java_string in java_strings if java_string.isdigit()), None)
 
 def format_run(run):
     """Formats data from a Taskomatic run in human-friendly form."""
