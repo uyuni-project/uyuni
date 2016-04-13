@@ -70,7 +70,7 @@ def get_channel_name(id):
 def get_current_repodata_channel_names():
     """Gets the channel names of currenlty running repodata tasks from the database."""
     query = rhnSQL.prepare("""
-        SELECT channel_label
+        SELECT DISTINCT channel_label
             FROM rhnRepoRegenQueue
             WHERE next_action IS NULL
     """);
