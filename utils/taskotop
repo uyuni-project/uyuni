@@ -93,7 +93,7 @@ def extract_channel_id(bytes):
         elif char == "t":
             oldpos = io.tell()
             try:
-                (length, ) = struct.unpack(">H", io.read(2))
+                length = struct.unpack(">H", io.read(2))[0]
                 string = struct.unpack(">{0}s".format(length), io.read(length))
                 strings += string
             except struct.error:
