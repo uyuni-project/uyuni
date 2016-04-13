@@ -246,8 +246,10 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             else {
                 serverAction.setResultMsg("Success");
             }
-            handlePackageProfileUpdate(serverAction,
-                    eventData.getResult(PkgProfileUpdateSlsResult.class));
+            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                handlePackageProfileUpdate(minionServer, eventData.getResult(
+                        PkgProfileUpdateSlsResult.class));
+            });
         }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
@@ -316,35 +318,35 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @param serverAction the current server action
      * @param eventData event data
      */
-    private void handlePackageProfileUpdate(ServerAction serverAction,
+    private void handlePackageProfileUpdate(MinionServer server,
             PkgProfileUpdateSlsResult result) {
-        serverAction.getServer().asMinionServer().ifPresent(server -> {
-            Instant start = Instant.now();
+        Instant start = Instant.now();
 
-            Optional.of(result.getInfoInstalled().getChanges().getRet())
-                .map(saltPkgs -> saltPkgs.entrySet().stream().map(
-                    entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
-                ).collect(Collectors.toSet())
-            ).ifPresent(newPackages -> {
-                Set<InstalledPackage> oldPackages = server.getPackages();
-                oldPackages.addAll(newPackages);
-                oldPackages.retainAll(newPackages);
-            });
-
-            Optional<List<ProductInfo>> productInfo = Optional.of(
-                    result.getListProducts().getChanges().getRet());
-            getInstalledProducts(productInfo).ifPresent(server::setInstalledProducts);
-
-            ServerFactory.save(server);
-            if (LOG.isDebugEnabled()) {
-                long duration = Duration.between(start, Instant.now()).getSeconds();
-                LOG.debug("Package profile updated for minion: " + server.getMinionId() +
-                        " (" + duration + " seconds)");
-            }
-
-            // Trigger update of errata cache for this server
-            ErrataManager.insertErrataCacheTask(server);
+        Optional.of(result.getInfoInstalled().getChanges().getRet())
+            .map(saltPkgs -> saltPkgs.entrySet().stream().map(
+                entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
+            ).collect(Collectors.toSet())
+        ).ifPresent(newPackages -> {
+            Set<InstalledPackage> oldPackages = server.getPackages();
+            oldPackages.addAll(newPackages);
+            oldPackages.retainAll(newPackages);
         });
+
+        Optional<List<ProductInfo>> productInfo = Optional.of(
+                result.getListProducts().getChanges().getRet());
+        productInfo
+                .map(this::getInstalledProducts)
+                .ifPresent(server::setInstalledProducts);
+
+        ServerFactory.save(server);
+        if (LOG.isDebugEnabled()) {
+            long duration = Duration.between(start, Instant.now()).getSeconds();
+            LOG.debug("Package profile updated for minion: " + server.getMinionId() +
+                    " (" + duration + " seconds)");
+        }
+
+        // Trigger update of errata cache for this server
+        ErrataManager.insertErrataCacheTask(server);
     }
 
     /**
@@ -379,35 +381,32 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @param productsIn list of products as received from Salt
      * @return set of installed products
      */
-    private Optional<Set<InstalledProduct>> getInstalledProducts(
-            Optional<List<ProductInfo>> productsIn) {
-        return productsIn.map(result ->
-            result.stream().flatMap(saltProduct -> {
-                String name = saltProduct.getName();
-                String version = saltProduct.getVersion();
-                String release = saltProduct.getRelease();
-                String arch = saltProduct.getArch();
-                boolean isbase = saltProduct.getIsbase();
+    private Set<InstalledProduct> getInstalledProducts(
+            List<ProductInfo> productsIn) {
+        return productsIn.stream().flatMap(saltProduct -> {
+            String name = saltProduct.getName();
+            String version = saltProduct.getVersion();
+            String release = saltProduct.getRelease();
+            String arch = saltProduct.getArch();
+            boolean isbase = saltProduct.getIsbase();
 
-                Optional<SUSEProduct> product = Optional.ofNullable(
-                    SUSEProductFactory.findSUSEProduct(
-                            name, version, release, arch, true
-                    )
-                );
-                if (!product.isPresent()) {
-                    LOG.info(String.format("No product match found for: %s %s %s %s",
-                            name, version, release, arch));
-                }
-                return product.map(prod -> {
-                    InstalledProduct prd = new InstalledProduct();
-                    prd.setName(prod.getName());
-                    prd.setVersion(prod.getVersion());
-                    prd.setRelease(prod.getRelease());
-                    prd.setArch(prod.getArch());
-                    prd.setBaseproduct(isbase);
-                    return Stream.of(prd);
-                }).orElseGet(Stream::empty);
-            }).collect(Collectors.toSet())
-        );
+            // Find the corresponding SUSEProduct in the database
+            Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
+                    .findSUSEProduct(name, version, release, arch, true));
+            if (!suseProduct.isPresent()) {
+                LOG.warn(String.format("No product match found for: %s %s %s %s",
+                        name, version, release, arch));
+            }
+
+            return suseProduct.map(product -> {
+                InstalledProduct installedProduct = new InstalledProduct();
+                installedProduct.setName(product.getName());
+                installedProduct.setVersion(product.getVersion());
+                installedProduct.setRelease(product.getRelease());
+                installedProduct.setArch(product.getArch());
+                installedProduct.setBaseproduct(isbase);
+                return Stream.of(installedProduct);
+            }).orElseGet(Stream::empty);
+        }).collect(Collectors.toSet());
     }
 }
