@@ -97,18 +97,21 @@ When(/^I list rejected keys at Salt Master$/) do
 end
 
 Then(/^the list of the keys should contain this client's hostname$/) do
+  time_waited = 0
   begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
+    Timeout.timeout(120) do
       loop do
         @output = @action.call
         break if @output[:stdout].include?($myhostname)
         sleep(1)
+        time_waited += 1
       end
     end
   rescue Timeout::Error
     puts "timeout waiting for the key to appear"
   end
   assert_match(/#{$myhostname}/, @output[:stdout], "#{$myhostname} is not listed in the key list")
+  puts "Total time waited: #{time_waited}"
 end
 
 Given(/^this minion key is unaccepted$/) do
