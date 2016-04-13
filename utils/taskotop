@@ -74,7 +74,6 @@ def get_current_repodata_channel_names():
             FROM rhnRepoRegenQueue
             WHERE next_action IS NULL
     """);
-
     query.execute()
 
     return [row[0] for row in query.fetchall()]
