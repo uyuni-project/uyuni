@@ -1050,7 +1050,7 @@ class NCCSync(object):
                                 "to it. No need to sync." % channel_label)
                 return
             try:
-                scheduled = taskomatic.schedule_single_sat_repo_sync(channel_id)
+                scheduled = taskomatic.schedule_single_sat_repo_sync([str(channel_id)])
             except socket.error, e:
                 self.error_msg("Failed to connect to taskomatic. %s" % e)
             else:
