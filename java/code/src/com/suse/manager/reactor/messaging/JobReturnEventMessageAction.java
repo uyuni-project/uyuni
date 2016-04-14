@@ -315,8 +315,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     /**
      * Perform the actual update of the database based on given event data.
      *
-     * @param serverAction the current server action
-     * @param eventData event data
+     * @param server the minion server
+     * @param result the result of the call as parsed from event data
      */
     private void handlePackageProfileUpdate(MinionServer server,
             PkgProfileUpdateSlsResult result) {
