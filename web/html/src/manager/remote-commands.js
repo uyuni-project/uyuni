@@ -112,7 +112,7 @@ class RemoteCommand extends React.Component {
                       <input id="target" className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged} />
                       <div className="input-group-btn">
                         <AsyncButton id="preview" name={t("Preview")} action={this.onPreview} />
-                        <AsyncButton id="run" name={t("Run")} action={this.onRun} />
+                        <AsyncButton id="run" disabled={this.state.previewed ? "" : "disabled"} name={t("Run")} action={this.onRun} />
                       </div>
                   </div>
                 </div>
