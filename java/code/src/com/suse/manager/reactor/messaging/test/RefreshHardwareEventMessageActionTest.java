@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Test for RefreshHardwareEventMessageAction.
@@ -40,8 +42,15 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
     private Gson gson = new Gson();
 
+    private static final String ARCH_X86 = "x86";
+    private static final String ARCH_PPC64 = "ppc64";
+    private static final String ARCH_S390 = "s390";
+
     public void testDmiRuntimeException() throws Exception {
-        doTest(new RuntimeException("test exception"),
+        doTest(ARCH_X86,
+            (apiMock, minionId) -> apiMock.stubs()
+                    .method("getDmiRecords")
+                    .will(throwException(new RuntimeException("test exception"))),
             (server, action) -> {
                 assertNotNull(server);
                 assertNotNull(server.getCpu());
@@ -58,7 +67,10 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     }
 
     public void testDmiJsonSyntaxException() throws Exception {
-        doTest(new JsonSyntaxException("test exception"),
+        doTest(ARCH_X86,
+            (apiMock, minionId) -> apiMock.stubs()
+                .method("getDmiRecords")
+                .will(throwException(new JsonSyntaxException("test exception"))),
             (server, action) -> {
                 assertNotNull(server);
                 assertNotNull(server.getCpu());
@@ -78,35 +90,120 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
             });
     }
 
-    public void testRefreshHardware() throws Exception {
-        doTest(null,
+    public void testRefreshHardwareX86() throws Exception {
+        doTest(ARCH_X86,
+            (apiMock, minionId) -> {
+                try {
+                    List<Smbios.Record> smbiosSystem = parse("smbios.records.system", ARCH_X86,
+                            Smbios.records(Smbios.RecordType.SYSTEM).getReturnType());
+                    apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.SYSTEM)).
+                            will(returnValue(Optional.of(smbiosSystem.get(0).getData())));
+
+                    List<Smbios.Record> smbiosBios = parse("smbios.records.bios", ARCH_X86,
+                            Smbios.records(Smbios.RecordType.BIOS).getReturnType());
+                    apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BIOS)).
+                            will(returnValue(Optional.of(smbiosBios.get(0).getData())));
+
+                    List<Smbios.Record> smbiosChassis = parse("smbios.records.chassis", ARCH_X86,
+                            Smbios.records(Smbios.RecordType.CHASSIS).getReturnType());
+                    apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.CHASSIS)).
+                            will(returnValue(Optional.of(smbiosChassis.get(0).getData())));
+
+                    List<Smbios.Record> smbiosBaseboard = parse("smbios.records.chassis", ARCH_X86,
+                            Smbios.records(Smbios.RecordType.BASEBOARD).getReturnType());
+                    apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BASEBOARD)).
+                            will(returnValue(Optional.of(smbiosBaseboard.get(0).getData())));
+
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                    fail("Could not setup mock " + e.getMessage());
+                }
+            },
+            (server, action) -> {
+                assertNotNull(server);
+                assertNotNull(server.getCpu());
+                assertEquals("Intel Xeon E312xx (Sandy Bridge)", server.getCpu().getModel());
+                assertEquals("3492.164", server.getCpu().getMHz());
+                assertEquals("GenuineIntel", server.getCpu().getVendor());
+                assertEquals("1", server.getCpu().getStepping());
+                assertEquals("6", server.getCpu().getFamily());
+                assertEquals("4096 KB", server.getCpu().getCache());
+                assertEquals("6984.32", server.getCpu().getBogomips());
+                assertEquals("fpu vme de pse tsc msr pae mce cx8 apic sep mtrr " +
+                                "pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss " +
+                                "syscall nx pdpe1gb rdtscp lm constant_tsc rep_good " +
+                                "nopl eagerfpu pni pclmulqdq vmx ssse3 fma cx16 pcid " +
+                                "sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer " +
+                                "aes xsave avx f16c rdrand hypervisor lahf_lm abm xsaveopt " +
+                                "vnmi ept fsgsbase bmi1 avx2 smep bmi2 erms invpcid",
+                        server.getCpu().getFlags());
+                assertEquals("42", server.getCpu().getVersion());
+                assertNotNull(server.getVirtualInstance());
+                assertNotNull(server.getDmi());
+                assertNotNull(server.getDmi().getSystem());
+                assertNotNull(server.getDmi().getProduct());
+                assertNotNull(server.getDmi().getBios());
+                assertNotNull(server.getDmi().getVendor());
+                assertTrue(!server.getDevices().isEmpty());
+                assertTrue(!server.getNetworkInterfaces().isEmpty());
+                ServerAction serverAction = action.getServerActions().stream().findFirst().get();
+                assertEquals(new Long(0L), serverAction.getResultCode());
+                assertEquals(serverAction.getResultMsg(), "hardware list refreshed");
+                assertEquals(serverAction.getStatus(), ActionFactory.STATUS_COMPLETED);
+            });
+    }
+
+    public void testRefreshHardwareX86LongCPUValues() throws Exception {
+        doTest(ARCH_X86,
+                (apiMock, minionId) -> {
+                    try {
+                        // thow an err here to skip dmi
+                        apiMock.stubs()
+                            .method("getDmiRecords")
+                            .will(throwException(new JsonSyntaxException("test exception")));
+
+                        Map<String, Object> cpuinfo = parse("status.cpuinfo.longval", ARCH_X86, Status.cpuinfo().getReturnType());
+                        apiMock.stubs().method("getCpuInfo").with(eq(minionId)).will(returnValue(Optional.of(cpuinfo)));
+
+                        Map<String, Object> grains = parse("grains.items.longval", ARCH_X86, Grains.items(false).getReturnType());
+                        apiMock.stubs().method("getGrains").with(eq(minionId)).will(returnValue(Optional.of(grains)));
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                        fail("Could not setup mock " + e.getMessage());
+                    }
+                },
                 (server, action) -> {
                     assertNotNull(server);
                     assertNotNull(server.getCpu());
-                    assertEquals("fpu vme de pse tsc msr pae mce cx8 apic sep mtrr " +
-                            "pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss " +
-                            "syscall nx pdpe1gb rdtscp lm constant_tsc rep_good " +
-                            "nopl eagerfpu pni pclmulqdq vmx ssse3 fma cx16 pcid " +
-                            "sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer " +
-                            "aes xsave avx f16c rdrand hypervisor lahf_lm abm xsaveopt " +
-                            "vnmi ept fsgsbase bmi1 avx2 smep bmi2 erms invpcid",
-                            server.getCpu().getFlags());
-                    assertNotNull(server.getVirtualInstance());
-                    assertNotNull(server.getDmi());
-                    assertNotNull(server.getDmi().getSystem());
-                    assertNotNull(server.getDmi().getProduct());
-                    assertNotNull(server.getDmi().getBios());
-                    assertNotNull(server.getDmi().getVendor());
-                    assertTrue(!server.getDevices().isEmpty());
-                    assertTrue(!server.getNetworkInterfaces().isEmpty());
-                    ServerAction serverAction = action.getServerActions().stream().findFirst().get();
-                    assertEquals(new Long(0L), serverAction.getResultCode());
-                    assertEquals(serverAction.getResultMsg(), "hardware list refreshed");
-                    assertEquals(serverAction.getStatus(), ActionFactory.STATUS_COMPLETED);
+
+                    assertEquals(32, server.getCpu().getModel().length());
+                    assertEquals(16, server.getCpu().getMHz().length());
+                    assertEquals(32, server.getCpu().getVendor().length());
+                    assertEquals(16, server.getCpu().getStepping().length());
+                    assertEquals(32, server.getCpu().getFamily().length());
+                    assertEquals(16, server.getCpu().getCache().length());
+                    assertEquals(16, server.getCpu().getBogomips().length());
+                    assertEquals(32, server.getCpu().getVersion().length());
+                    assertEquals(2048, server.getCpu().getFlags().length());
                 });
     }
 
-    public void testPPC64() throws Exception {
+    public void testRefreshHardwarePPC64() throws Exception {
+        doTest(ARCH_PPC64,
+            (apiMock, minionId) -> { },
+            (server, action) -> {
+                ServerAction serverAction = action.getServerActions().stream().findFirst().get();
+                assertEquals(serverAction.getResultMsg(), "hardware list refreshed");
+                assertEquals(serverAction.getStatus(), ActionFactory.STATUS_COMPLETED);
+
+                server = MinionServerFactory.findByMinionId(server.getMinionId()).orElse(null);
+                assertEquals("CHRP IBM pSeries (emulated by qe", server.getCpu().getVendor());
+            });
+    }
+
+    private void doTest(String arch, BiConsumer<Mock, String> stubs, BiConsumer<MinionServer, Action> assertions) throws Exception {
         MinionServer server = (MinionServer) ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
@@ -116,13 +213,13 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
         apiMock.stubs().method("getFileContent").with(isA(String.class), isA(String.class)).will(returnValue(Optional.empty()));
 
-        Map<String, Object> grains = parse("grains.items.ppc64", Grains.items(false).getReturnType());
+        Map<String, Object> grains = parse("grains.items", arch, Grains.items(false).getReturnType());
         apiMock.stubs().method("getGrains").with(eq(minionId)).will(returnValue(Optional.of(grains)));
 
-        List<Map<String, Object>> udevdb = parse("udevdb.exportdb.ppc64", Udevdb.exportdb().getReturnType());
+        List<Map<String, Object>> udevdb = parse("udevdb.exportdb", arch, Udevdb.exportdb().getReturnType());
         apiMock.stubs().method("getUdevdb").with(eq(minionId)).will(returnValue(Optional.of(udevdb)));
 
-        Map<String, Object> cpuinfo = parse("status.cpuinfo.ppc64", Status.cpuinfo().getReturnType());
+        Map<String, Object> cpuinfo = parse("status.cpuinfo", arch, Status.cpuinfo().getReturnType());
         apiMock.stubs().method("getCpuInfo").with(eq(minionId)).will(returnValue(Optional.of(cpuinfo)));
 
         Map<String, Network.Interface> netif = parse("network.interfaces", Network.interfaces().getReturnType());
@@ -138,77 +235,9 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         ping.put(minionId, true);
         apiMock.stubs().method("ping").will(returnValue(ping));
 
-        RefreshHardwareEventMessageAction action = new RefreshHardwareEventMessageAction((SaltService)apiMock.proxy());
-
-        Action scheduledAction = ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
-        RefreshHardwareEventMessage msg = new RefreshHardwareEventMessage(minionId, scheduledAction);
-        action.execute(msg);
-
-        this.commitHappened(); // force cleanup on tearDown()
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-
-        ServerAction serverAction = scheduledAction.getServerActions().stream().findFirst().get();
-        assertEquals(serverAction.getResultMsg(), "hardware list refreshed");
-        assertEquals(serverAction.getStatus(), ActionFactory.STATUS_COMPLETED);
-
-        server = MinionServerFactory.findByMinionId(minionId).orElse(null);
-        assertEquals("CHRP IBM pSeries (emulated by qe", server.getCpu().getVendor());
-    }
-
-    private void doTest(Exception exception, BiConsumer<MinionServer, Action> assertions) throws Exception {
-        MinionServer server = (MinionServer) ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeSaltEntitled(),
-                ServerFactoryTest.TYPE_SERVER_MINION);
-        String minionId = server.getMinionId();
-
-        Mock apiMock = mock(SaltService.class);
-        if (exception != null) {
-            apiMock.stubs().method("getDmiRecords").will(throwException(exception));
-        } else {
-            List<Smbios.Record> smbiosSystem = parse("smbios.records.system",
-                    Smbios.records(Smbios.RecordType.SYSTEM).getReturnType());
-            apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.SYSTEM)).
-                    will(returnValue(Optional.of(smbiosSystem.get(0).getData())));
-
-            List<Smbios.Record> smbiosBios = parse("smbios.records.bios",
-                    Smbios.records(Smbios.RecordType.BIOS).getReturnType());
-            apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BIOS)).
-                    will(returnValue(Optional.of(smbiosBios.get(0).getData())));
-
-            List<Smbios.Record> smbiosChassis = parse("smbios.records.chassis",
-                    Smbios.records(Smbios.RecordType.CHASSIS).getReturnType());
-            apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.CHASSIS)).
-                    will(returnValue(Optional.of(smbiosChassis.get(0).getData())));
-
-            List<Smbios.Record> smbiosBaseboard = parse("smbios.records.chassis",
-                    Smbios.records(Smbios.RecordType.BASEBOARD).getReturnType());
-            apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BASEBOARD)).
-                    will(returnValue(Optional.of(smbiosBaseboard.get(0).getData())));
+        if (stubs != null) {
+            stubs.accept(apiMock, minionId);
         }
-
-        Map<String, Object> grains = parse("grains.items", Grains.items(false).getReturnType());
-        apiMock.stubs().method("getGrains").with(eq(minionId)).will(returnValue(Optional.of(grains)));
-
-        List<Map<String, Object>> udevdb = parse("udevdb.exportdb", Udevdb.exportdb().getReturnType());
-        apiMock.stubs().method("getUdevdb").with(eq(minionId)).will(returnValue(Optional.of(udevdb)));
-
-        Map<String, Object> cpuinfo = parse("status.cpuinfo", Status.cpuinfo().getReturnType());
-        apiMock.stubs().method("getCpuInfo").with(eq(minionId)).will(returnValue(Optional.of(cpuinfo)));
-
-        Map<String, Network.Interface> netif = parse("network.interfaces", Network.interfaces().getReturnType());
-        apiMock.stubs().method("getNetworkInterfacesInfo").with(eq(minionId)).will(returnValue(Optional.of(netif)));
-
-        Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse("sumautil.primary_ips", SumaUtil.primaryIps().getReturnType());
-        apiMock.stubs().method("getPrimaryIps").with(eq(minionId)).will(returnValue(Optional.of(ips)));
-
-        Map<String, String> netmodules = parse("sumautil.get_net_modules", SumaUtil.getNetModules().getReturnType());
-        apiMock.stubs().method("getNetModules").with(eq(minionId)).will(returnValue(Optional.of(netmodules)));
-
-        Map<String, Boolean> ping = new HashMap<>();
-        ping.put(minionId, true);
-        apiMock.stubs().method("ping").will(returnValue(ping));
 
         RefreshHardwareEventMessageAction action = new RefreshHardwareEventMessageAction((SaltService)apiMock.proxy());
 
@@ -226,7 +255,11 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     }
 
     private <T> T parse(String name, TypeToken<T> returnType) throws IOException {
-        String str = IOUtils.toString(getClass().getResourceAsStream(name + ".json"));
+        return parse(name, null, returnType);
+    }
+
+    private <T> T parse(String name, String arch, TypeToken<T> returnType) throws IOException {
+        String str = IOUtils.toString(getClass().getResourceAsStream(name + (arch != null ? "." + arch : "") + ".json"));
         return gson.fromJson(str, returnType.getType());
     }
 
