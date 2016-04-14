@@ -29,6 +29,7 @@ import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
 import com.redhat.rhn.taskomatic.TaskoSchedule;
+import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import com.suse.manager.model.products.Channel;
@@ -245,9 +246,10 @@ public class ProductSyncManager {
         for (TaskoRun run : runs) {
             // Get the channel id of that run
             TaskoSchedule schedule = TaskoFactory.lookupScheduleById(run.getScheduleId());
-            Long scheduleChannelId = getChannelIdForSchedule(schedule);
+            List<Long> scheduleChannelIds =
+                RepoSyncTask.getChannelIds(schedule.getDataMap());
 
-            if (channelId.equals(scheduleChannelId)) {
+            if (scheduleChannelIds.contains(channelId)) {
                 // We found a repo-sync run for this channel
                 repoSyncRunFound = true;
                 lastRunEndTime = run.getEndTime();
@@ -293,8 +295,9 @@ public class ProductSyncManager {
             List<TaskoSchedule> schedules =
                     TaskoFactory.listRepoSyncSchedulesNewerThan(lastRunEndTime);
             for (TaskoSchedule s : schedules) {
-                Long scheduleChannelId = getChannelIdForSchedule(s);
-                if (channelId.equals(scheduleChannelId)) {
+                List<Long> scheduleChannelIds =
+                        RepoSyncTask.getChannelIds(s.getDataMap());
+                if (scheduleChannelIds.contains(channelId)) {
                     // There is a schedule for this channel
                     channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
                     return channelSyncStatus;
