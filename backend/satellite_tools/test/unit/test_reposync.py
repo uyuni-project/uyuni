@@ -19,7 +19,7 @@ import unittest
 from StringIO import StringIO
 from datetime import datetime
 
-from mock import Mock
+from mock import Mock, patch, call
 
 import spacewalk.satellite_tools.reposync
 from spacewalk.satellite_tools.repo_plugins import ContentPackage
@@ -710,6 +710,98 @@ class RepoSyncTest(unittest.TestCase):
 
         self.reposync.initCFG = Mock()
         return rs
+
+
+class SyncTest(unittest.TestCase):
+
+    def setUp(self):
+        module_patcher = patch.multiple(
+            'spacewalk.satellite_tools.reposync',
+            get_compatible_arches=Mock(),
+            rhnSQL=Mock(),
+            initCFG=Mock()
+        )
+        class_patcher = patch.multiple(
+            'spacewalk.satellite_tools.reposync.RepoSync',
+            load_channel=Mock(
+                return_value=dict(id="1", org_id="1", label="label#1")
+            ),
+            load_plugin=Mock(),
+            import_packages=Mock(),
+            import_groups=Mock(),
+            import_updates=Mock(),
+            import_products=Mock(),
+            import_susedata=Mock()
+        )
+        module_patcher.start()
+        class_patcher.start()
+        self.addCleanup(module_patcher.stop)
+        self.addCleanup(class_patcher.stop)
+
+    def test_pass_multiple_urls_params(self):
+        from spacewalk.satellite_tools.reposync import RepoSync
+        urls = ['http://some.url', 'http://some-other.url']
+        repo_sync = RepoSync(
+            channel_label="channel-label",
+            repo_type=RTYPE,
+            url=urls
+        )
+        repo_sync.sync()
+
+    @patch('spacewalk.satellite_tools.reposync.RepoSync._url_with_repo_credentials')
+    def test_set_repo_credentials_with_multiple_urls(self, mocked_method):
+        from spacewalk.satellite_tools.reposync import RepoSync
+        urls = ['http://some.url', 'http://some-other.url']
+        data = {
+            'metadata_signed': 'N',
+            'label': None,
+            'id': None,
+            'source_url': urls
+        }
+        repo_sync = RepoSync(
+            channel_label="channel-label",
+            repo_type=RTYPE,
+            url=urls
+        )
+        repo_sync.set_repo_credentials(data)
+        self.assertEqual(
+            repo_sync._url_with_repo_credentials.call_args_list,
+            [call(urls[0]), call(urls[1])]
+        )
+
+    def test__url_with_repo_credentials(self):
+        import base64
+        from spacewalk.satellite_tools.reposync import RepoSync
+        credentials_id = 777
+        urls = [
+            'http://some.url?credentials=abc_%s' % credentials_id,
+            'http://some-other.url'
+        ]
+        repo_sync = RepoSync(
+            channel_label="channel-label",
+            repo_type=RTYPE,
+            url=urls
+        )
+        username = "user#1"
+        password = "pass#1"
+        config = {
+            'return_value.fetchone_dict.return_value': {
+                "username": "user#1",
+                "password": base64.encodestring(password)
+            }
+        }
+        patcher = patch(
+            'spacewalk.satellite_tools.reposync.rhnSQL.prepare', **config
+        )
+        with patcher as mock_prepare:
+            self.assertEqual(
+                repo_sync._url_with_repo_credentials(urls[0]),
+                'http://{0}:{1}@some.url'.format(username, password)
+            )
+            mock_prepare.assert_called_once_with(
+                'SELECT username, password FROM suseCredentials WHERE id = :id'
+            )
+            mock_prepare().execute.assert_called_once_with(id=credentials_id)
 
 def test_channel_exceptions():
     """Test rasising all the different exceptions when syncing"""
