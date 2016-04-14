@@ -44,7 +44,7 @@ public class ScheduleMetadata {
     /**
      * @return true if a package list refresh should be enforced afterwards
      */
-    public boolean forcePackageListRefresh() {
+    public boolean isForcePackageListRefresh() {
         return forcePackageListRefresh;
     }
 }
