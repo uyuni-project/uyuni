@@ -1951,6 +1951,3 @@ def get_repo_path(repourl):
 
     """
     return repourl.split('repo/')[-1].split('/?credentials')[0].rstrip('/')
-
-
-
