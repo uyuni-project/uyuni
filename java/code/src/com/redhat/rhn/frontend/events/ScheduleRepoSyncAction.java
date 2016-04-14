@@ -23,7 +23,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import redstone.xmlrpc.XmlRpcClient;
@@ -45,23 +45,25 @@ public class ScheduleRepoSyncAction implements MessageAction {
     public void execute(EventMessage msg) {
         ScheduleRepoSyncEvent event = (ScheduleRepoSyncEvent) msg;
         if (logger.isDebugEnabled()) {
-            logger.debug("Scheduling repo sync for: " + event.getChannelLabel());
+            logger.debug("Scheduling repo sync for channels: " + event.getChannelLabels());
         }
-        scheduleRepoSync(event.getChannelLabel());
+        scheduleRepoSync(event.getChannelLabels());
     }
 
     /**
      * Schedule an immediate reposync via the Taskomatic API.
      *
-     * @param channelLabel label of the channel to sync
+     * @param channelLabels labels of the channel to sync
      */
-    private void scheduleRepoSync(String channelLabel) {
-        List<String> labels = new ArrayList<String>();
-        labels.add(channelLabel);
-        @SuppressWarnings("unchecked")
-        List<Long> channelIds = ChannelFactory.getChannelIds(labels);
-        if (!channelIds.isEmpty()) {
-            this.rpcInvoke("tasko.scheduleSingleSatRepoSync", channelIds.get(0));
+    @SuppressWarnings("unchecked")
+    private void scheduleRepoSync(List<String> channelLabels) {
+        if (!channelLabels.isEmpty()) {
+            List<String> channelIds = new LinkedList<>();
+            for (Long channelId :
+                (List<Long>) ChannelFactory.getChannelIds(channelLabels)) {
+                channelIds.add(channelId.toString());
+            }
+            this.rpcInvoke("tasko.scheduleSingleSatRepoSync", channelIds);
         }
     }
 
