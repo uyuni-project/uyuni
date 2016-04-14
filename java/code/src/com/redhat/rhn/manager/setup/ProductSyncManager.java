@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 import com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
@@ -33,8 +34,8 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
-import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.MgrSyncStatus;
+import com.suse.mgrsync.XMLChannel;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -45,6 +46,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -95,20 +97,23 @@ public class ProductSyncManager {
     /**
      * Adds multiple products.
      * @param productIdents the product ident list
+     * @param user the current user
      * @throws ProductSyncException if an error occurred
      */
-    public void addProducts(List<String> productIdents) throws ProductSyncException {
+    public void addProducts(List<String> productIdents, User user)
+        throws ProductSyncException {
         for (String productIdent : productIdents) {
-            addProduct(productIdent);
+            addProduct(productIdent, user);
         }
     }
 
     /**
      * Adds the product.
      * @param productIdent the product ident
+     * @param user the current user
      * @throws ProductSyncException if an error occurred
      */
-    public void addProduct(String productIdent) throws ProductSyncException {
+    public void addProduct(String productIdent, User user) throws ProductSyncException {
         SetupWizardProductDto product = findProductByIdent(productIdent);
         if (product != null) {
             try {
@@ -122,11 +127,13 @@ public class ProductSyncManager {
                 }
 
                 // Trigger sync of those channels
+                List<String> labels = new LinkedList<>();
                 for (Channel channel : product.getMandatoryChannels()) {
-                    ScheduleRepoSyncEvent event =
-                            new ScheduleRepoSyncEvent(channel.getLabel());
-                    MessageQueue.publish(event);
+                    labels.add(channel.getLabel());
                 }
+                ScheduleRepoSyncEvent event =
+                        new ScheduleRepoSyncEvent(labels, user.getId());
+                MessageQueue.publish(event);
             }
             catch (ContentSyncException ex) {
                 throw new ProductSyncException(ex.getMessage());

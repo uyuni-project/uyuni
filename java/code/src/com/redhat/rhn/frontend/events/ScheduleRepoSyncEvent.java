@@ -19,34 +19,40 @@ import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 /**
  * Publish this event to sync a repo for a channel given by label.
  */
 public class ScheduleRepoSyncEvent implements EventDatabaseMessage {
 
-    private String channelLabel;
+    private List<String> channelLabels;
+    private Long userId;
     private Transaction txn;
 
     /**
      * Constructor expecting a channel label.
-     * @param channelLabelIn label of the channel to sync
+     * @param channelLabelsIn ids of the channels to sync
+     * @param userIdIn the user requesting the sync
      */
-    public ScheduleRepoSyncEvent(String channelLabelIn) {
-        channelLabel = channelLabelIn;
+    public ScheduleRepoSyncEvent(List<String> channelLabelsIn, Long userIdIn) {
+        channelLabels = channelLabelsIn;
+        userId = userIdIn;
         txn = HibernateFactory.getSession().getTransaction();
     }
 
     /**
-     * @return Returns the channel label
+     * @return Returns the channel labels
      */
-    public String getChannelLabel() {
-        return channelLabel;
+    public List<String> getChannelLabels() {
+        return channelLabels;
     }
 
     /**
      *
      * {@inheritDoc}
      */
+    @Override
     public Transaction getTransaction() {
         return txn;
     }
@@ -56,7 +62,7 @@ public class ScheduleRepoSyncEvent implements EventDatabaseMessage {
      */
     @Override
     public Long getUserId() {
-        return null;
+        return userId;
     }
 
     /**
