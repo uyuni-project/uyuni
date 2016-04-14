@@ -92,9 +92,6 @@ class RemoteCommand extends React.Component {
             errs = <div className="alert alert-danger">{msg}</div>
         })
     }
-    const button = !this.state.previewed ?
-        <AsyncButton id="preview" name={t("Preview")} action={this.onPreview} /> :
-        <AsyncButton id="run" name={t("Run")} action={this.onRun} />;
 
     return (
       <div>
@@ -113,7 +110,10 @@ class RemoteCommand extends React.Component {
                       <input id="command" className="form-control" type="text" defaultValue={this.state.command} onChange={this.commandChanged} />
                       <span className="input-group-addon">@</span>
                       <input id="target" className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged} />
-                      <div className="input-group-btn">{button}</div>
+                      <div className="input-group-btn">
+                        <AsyncButton id="preview" name={t("Preview")} action={this.onPreview} />
+                        <AsyncButton id="run" name={t("Run")} action={this.onRun} />
+                      </div>
                   </div>
                 </div>
               </div>
