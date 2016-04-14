@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Get the CPU information from a minion an store it in the SUMA db.
@@ -72,14 +73,20 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
             // /proc/cpuinfo -> model name
             cpu.setModel(getModel(grains.getValueAsString("cpu_model")));
             // some machines don't report cpu MHz
-            cpu.setMHz(getMhz(cpuinfo.get("cpu MHz").flatMap(cpuinfo::toString)
+            cpu.setMHz(getMhz(cpuinfo.get("cpu MHz").flatMap(ValueMap::toString)
                     .orElse("-1")));
             cpu.setVendor(getVendor(cpuinfo, "vendor_id"));
             cpu.setStepping(getStepping(cpuinfo, "stepping"));
             cpu.setFamily(getFamily(cpuinfo, "cpu family"));
             cpu.setCache(getCache(cpuinfo, "cache size"));
             cpu.setBogomips(getBogomips(cpuinfo, "bogomips"));
-            cpu.setFlags(cpuinfo.get("flags").flatMap(cpuinfo::toString).orElse(null));
+            cpu.setFlags(getFlags(cpuinfo.getValueAsCollection("flags")
+                    .map(c -> c.stream()
+                        .map(e -> cpuinfo.toString(e))
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .collect(Collectors.joining(" ")))
+                    .orElse(null)));
             cpu.setVersion(getVersion(cpuinfo, "model"));
 
         }
@@ -89,14 +96,15 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
             cpu.setBogomips(getBogomips(cpuinfo, "bogompis"));
             cpu.setVendor(getVendor(cpuinfo, "machine"));
             cpu.setMHz(getMhz(StringUtils.substring(cpuinfo.get("clock")
-                    .flatMap(cpuinfo::toString)
+                    .flatMap(ValueMap::toString)
                     .orElse("-1MHz"), 0, -3))); // remove MHz sufix
         }
         else if (CpuArchUtil.isS390(cpuarch)) {
             cpu.setVendor(getVendor(cpuinfo, "vendor_id"));
             cpu.setModel(getModel(cpuarch));
             cpu.setBogomips(getBogomips(cpuinfo, "bogomips per cpu"));
-            cpu.setFlags(cpuinfo.get("features").flatMap(cpuinfo::toString).orElse(null));
+            cpu.setFlags(getFlags(cpuinfo.get("features")
+                    .flatMap(ValueMap::toString).orElse(null)));
             cpu.setMHz("0");
         }
         else {
@@ -153,6 +161,10 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
 
     private String getModel(String value) {
         return StringUtils.substring(value, 0, 32);
+    }
+
+    private String getFlags(String value) {
+        return StringUtils.substring(value, 0, 2048);
     }
 
 

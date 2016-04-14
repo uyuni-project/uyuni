@@ -1,0 +1,209 @@
+{
+        "biosversion": "rel-1.7.5-0-ge51488c-20150524_160643-cloud127",
+        "kernel": "Linux", 
+        "domain": "vagrant.local", 
+        "biosreleasedate": "04/01/2014", 
+        "zmqversion": "4.0.4", 
+        "kernelrelease": "3.12.53-60.30-default", 
+        "pythonpath": [
+            "/usr/bin", 
+            "/usr/lib/python27.zip", 
+            "/usr/lib64/python2.7", 
+            "/usr/lib64/python2.7/plat-linux2", 
+            "/usr/lib64/python2.7/lib-tk", 
+            "/usr/lib64/python2.7/lib-old", 
+            "/usr/lib64/python2.7/lib-dynload", 
+            "/usr/lib64/python2.7/site-packages", 
+            "/usr/local/lib64/python2.7/site-packages", 
+            "/usr/local/lib/python2.7/site-packages", 
+            "/usr/lib/python2.7/site-packages"
+        ], 
+        "ip_interfaces": {
+            "lo": [
+                "127.0.0.1", 
+                "::1"
+            ], 
+            "eth1": [
+                "172.17.247.221", 
+                "fe80::5054:ff:fe73:b7a8"
+            ], 
+            "eth0": [
+                "192.168.121.244", 
+                "fe80::5054:ff:fe96:17eb"
+            ]
+        }, 
+        "shell": "/bin/bash", 
+        "mem_total": 489, 
+        "saltversioninfo": [
+            2015, 
+            8, 
+            7, 
+            0
+        ], 
+        "SSDs": [], 
+        "server": "suma3pg.vagrant.local", 
+        "id": "clisles12sp1-suma3pg.vagrant.local", 
+        "susemanager": {
+            "activation_key": "1-sles12sp1"
+        }, 
+        "osrelease": "12.1", 
+        "ps": "ps -efH", 
+        "server_id": 1704458941, 
+        "uuid": "4a531bb7-612f-e846-9d94-63af964e00e9", 
+        "ip6_interfaces": {
+            "lo": [
+                "::1"
+            ], 
+            "eth1": [
+                "fe80::5054:ff:fe73:b7a8"
+            ], 
+            "eth0": [
+                "fe80::5054:ff:fe96:17eb"
+            ]
+        }, 
+        "num_cpus": 1, 
+        "hwaddr_interfaces": {
+            "lo": "00:00:00:00:00:00", 
+            "eth1": "52:54:00:73:b7:a8", 
+            "eth0": "52:54:00:96:17:eb"
+        }, 
+        "init": "systemd", 
+        "ip4_interfaces": {
+            "lo": [
+                "127.0.0.1"
+            ], 
+            "eth1": [
+                "172.17.247.221"
+            ], 
+            "eth0": [
+                "192.168.121.244"
+            ]
+        }, 
+        "osfullname": "SLES", 
+        "master": "suma3pg", 
+        "ipv4": [
+            "127.0.0.1", 
+            "172.17.247.221", 
+            "192.168.121.244"
+        ], 
+        "ipv6": [
+            "::1", 
+            "fe80::5054:ff:fe73:b7a8", 
+            "fe80::5054:ff:fe96:17eb"
+        ], 
+        "role": "client", 
+        "cpusockets": 1, 
+        "cpu_flags": [
+          "fpu",
+          "vme",
+          "de",
+          "pse",
+          "tsc",
+          "msr",
+          "pae",
+          "mce",
+          "cx8",
+          "apic",
+          "sep",
+          "mtrr",
+          "pge",
+          "mca",
+          "cmov",
+          "pat",
+          "pse36",
+          "clflush",
+          "mmx",
+          "fxsr",
+          "sse",
+          "sse2",
+          "ss",
+          "syscall",
+          "nx",
+          "pdpe1gb",
+          "rdtscp",
+          "lm",
+          "constant_tsc",
+          "rep_good",
+          "nopl",
+          "eagerfpu",
+          "pni",
+          "pclmulqdq",
+          "vmx",
+          "ssse3",
+          "fma",
+          "cx16",
+          "pcid",
+          "sse4_1",
+          "sse4_2",
+          "x2apic",
+          "movbe",
+          "popcnt",
+          "tsc_deadline_timer",
+          "aes",
+          "xsave",
+          "avx",
+          "f16c",
+          "rdrand",
+          "hypervisor",
+          "lahf_lm",
+          "abm",
+          "xsaveopt",
+          "vnmi",
+          "ept",
+          "fsgsbase",
+          "bmi1",
+          "avx2",
+          "smep",
+          "bmi2",
+          "erms",
+          "invpcid"
+        ],
+        "localhost": "clisles12sp1-suma3pg", 
+        "lsb_distrib_id": "SLES", 
+        "fqdn_ip4": [
+            "127.0.0.1"
+        ], 
+        "fqdn_ip6": [], 
+        "nodename": "clisles12sp1-suma3pg", 
+        "saltversion": "2015.8.7", 
+        "lsb_distrib_release": "12.1", 
+        "systemd": {
+            "version": "210", 
+            "features": "+PAM +LIBWRAP +AUDIT +SELINUX -IMA +SYSVINIT +LIBCRYPTSETUP +GCRYPT +ACL +XZ +SECCOMP +APPARMOR"
+        }, 
+        "saltpath": "/usr/lib/python2.7/site-packages/salt", 
+        "host": "clisles12sp1-suma3pg", 
+        "os_family": "Suse", 
+        "oscodename": "SUSE Linux Enterprise Server 12 SP1", 
+        "gpus": [], 
+        "pythonversion": [
+            2, 
+            7, 
+            9, 
+            "final", 
+            0
+        ], 
+        "manufacturer": "QEMU", 
+        "total_num_cpus": 1, 
+        "num_gpus": 0, 
+        "virtual": "kvm", 
+        "cpu_model": "Intel Xeon E312xx (Sandy Bridge) aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "fqdn": "clisles12sp1-suma3pg.vagrant.local", 
+        "pythonexecutable": "/usr/bin/python", 
+        "productname": "Standard PC (i440FX + PIIX, 1996)", 
+        "osarch": "x86_64", 
+        "cpuarch": "x86_64", 
+        "lsb_distrib_codename": "SUSE Linux Enterprise Server 12 SP1", 
+        "osrelease_info": [
+            12, 
+            1
+        ], 
+        "locale_info": {
+            "detectedencoding": "UTF-8", 
+            "defaultlanguage": "en_US", 
+            "defaultencoding": "UTF-8"
+        }, 
+        "path": "/sbin:/usr/sbin:/usr/local/sbin:/root/bin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib/mit/bin:/usr/lib/mit/sbin", 
+        "machine_id": "e9492337c6664c1aa8fe2798ba439f57", 
+        "os": "SUSE"
+}

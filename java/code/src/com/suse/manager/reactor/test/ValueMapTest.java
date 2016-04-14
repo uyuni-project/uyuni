@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Test for {@link com.suse.manager.reactor.utils.ValueMap}
@@ -43,37 +44,15 @@ public class ValueMapTest extends TestCase {
         assertEquals("", vmap.getValueAsString(null, 1));
     }
 
-    public void testGetCollectionValueAsString() {
+    public void testGetValueAsCollection() {
         Map<String, Object> map = new HashMap<>();
-        map.put("stringList", Arrays.asList("one", "two", "three"));
-        map.put("longList", Arrays.asList(1L, 2L, 3L));
-        map.put("doubleList", Arrays.asList(1.111d, 2.222d, 3.333d));
-        map.put("nestedList", Arrays.asList(Arrays.asList("one"), Arrays.asList("two"),
-                Arrays.asList("three four")));
-
-        List<List> deeplyNested = new ArrayList<>();
-        List<List> l = deeplyNested;
-        for (int i = 0; i < 12; i++) {
-            l.add(new ArrayList<>());
-            l = l.get(0);
-        }
-        l.add(Arrays.asList("one"));
-
-        map.put("deeplyNestedList", deeplyNested);
-        map.put("empty", Collections.emptySet());
-        map.put("emptyString", Arrays.asList(""));
-        map.put("twoEmptyStrings", Arrays.asList("", ""));
+        map.put("list", Arrays.asList("one"));
+        map.put("string", "a string");
 
         ValueMap vmap = new ValueMap(map);
-        assertEquals("one two three", vmap.getValueAsString("stringList"));
-        assertEquals("1 2 3", vmap.getValueAsString("longList"));
-        assertEquals("1.11 2.22 3.33", vmap.getValueAsString("doubleList"));
-        assertEquals("", vmap.getValueAsString("empty"));
-        assertEquals("", vmap.getValueAsString("emptyString"));
-        assertEquals(" ", vmap.getValueAsString("twoEmptyStrings"));
-        assertEquals("one two three four", vmap.getValueAsString("nestedList"));
-        assertEquals("", vmap.getValueAsString("deeplyNestedList"));
-
+        assertTrue(vmap.getValueAsCollection("list").isPresent());
+        assertEquals(map.get("list"), vmap.getValueAsCollection("list").get());
+        assertFalse(vmap.getValueAsCollection("string").isPresent());
     }
 
 }
