@@ -23,13 +23,16 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
@@ -104,15 +107,14 @@ public class TaskomaticApi {
      */
     public void scheduleSingleRepoSync(List<Channel> channels)
             throws TaskomaticApiException {
-        if (channels == null) {
-            return;
+        List<String> channelIds = new ArrayList<>(channels.size());
+        for (Channel channel : channels) {
+            channelIds.add(channel.getId().toString());
         }
-        for (Channel c : channels) {
-            Map<String, String> scheduleParams = new HashMap<String, String>();
-            scheduleParams.put("channel_id", c.getId().toString());
-            invoke("tasko.scheduleSingleBunchRun", OrgFactory.getSatelliteOrg().getId(),
-                    "repo-sync-bunch", scheduleParams);
-        }
+        Map<String, List<String>> scheduleParams = new HashMap<>();
+        scheduleParams.put("channel_ids", channelIds);
+        invoke("tasko.scheduleSingleBunchRun", OrgFactory.getSatelliteOrg().getId(),
+                "repo-sync-bunch", scheduleParams);
     }
 
     /**
