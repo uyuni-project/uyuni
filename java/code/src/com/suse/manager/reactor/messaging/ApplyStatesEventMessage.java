@@ -114,7 +114,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      *
      * @return true if a package list refresh is requested, otherwise false
      */
-    public boolean forcePackageListRefresh() {
+    public boolean isForcePackageListRefresh() {
         return forcePackageListRefresh;
     }
 
