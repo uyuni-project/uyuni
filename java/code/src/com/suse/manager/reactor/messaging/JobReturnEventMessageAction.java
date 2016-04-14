@@ -280,7 +280,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      */
     private boolean forcePackageListRefresh(JobReturnEvent event) {
         Optional<Boolean> value = event.getData().getMetadata(ScheduleMetadata.class)
-                .map(ScheduleMetadata::forcePackageListRefresh);
+                .map(ScheduleMetadata::isForcePackageListRefresh);
         if (value.isPresent()) {
             return value.get();
         }
