@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.salt.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Schedule;
@@ -78,9 +79,9 @@ public enum SaltServerActionService {
 
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
-        metadata.put("suma-action-id", actionIn.getId());
+        metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
         if (forcePackageListRefresh) {
-            metadata.put("suma-force-pkg-list-refresh", true);
+            metadata.put(ScheduleMetadata.SUMA_FORCE_PGK_LIST_REFRESH, true);
         }
 
         List<String> minionIds = minions
