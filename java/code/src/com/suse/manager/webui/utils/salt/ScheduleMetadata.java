@@ -21,10 +21,13 @@ import com.google.gson.annotations.SerializedName;
  */
 public class ScheduleMetadata {
 
-    @SerializedName("suma-action-id")
+    public static final String SUMA_ACTION_ID = "suma-action-id";
+    public static final String SUMA_FORCE_PGK_LIST_REFRESH = "suma-force-pkg-list-refresh";
+
+    @SerializedName(SUMA_ACTION_ID)
     private long sumaActionId = 0L;
 
-    @SerializedName("suma-force-pkg-list-refresh")
+    @SerializedName(SUMA_FORCE_PGK_LIST_REFRESH)
     private boolean forcePackageListRefresh;
 
     /**
