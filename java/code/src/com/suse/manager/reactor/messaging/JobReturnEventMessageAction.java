@@ -288,11 +288,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     }
 
     /**
-     * Figure out if this {@link JobReturnEvent} could possibly have changed the list of
-     * installed packages, i.e. if we should trigger a package list refresh.
+     * Figure out if the list of packages has changed based on a {@link JobReturnEvent}.
+     * This information is used to decide if we should trigger a package list refresh.
      *
      * @param event the job return event
-     * @return true if installed packages could have changed
+     * @return true if installed packages have changed, otherwise false
      */
     private boolean packagesChanged(JobReturnEvent event) {
         String function = event.getData().getFun();
@@ -300,10 +300,13 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             case "pkg.install": return true;
             case "pkg.remove": return true;
             case "state.apply":
-                Map<String, StateApplyResult<Object>> results = event.getData().getResult(
-                        new TypeToken<Map<String, StateApplyResult<Object>>>() { });
-                for (StateApplyResult<Object> result : results.values()) {
-                    if (packageChangingModules.contains(result.getName())) {
+                TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
+                    new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
+                Map<String, StateApplyResult<Map<String, Object>>> results =
+                        event.getData().getResult(typeToken);
+                for (StateApplyResult<Map<String, Object>> result : results.values()) {
+                    if (packageChangingModules.contains(result.getName()) &&
+                            !result.getChanges().isEmpty()) {
                         return true;
                     }
                 }
