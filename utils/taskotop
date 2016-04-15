@@ -56,16 +56,20 @@ def get_tasko_runs(maximum_age):
         row = task_query.fetchone_dict()
     return result
 
-def get_channel_name(id):
-    """Gets the channel name out of a channel id from the database."""
-    query = rhnSQL.prepare("""
-        SELECT label
-            FROM rhnChannel
-            WHERE id = :id
-    """);
-    query.execute(id = id)
+def get_channel_names(ids):
+    """Gets the channel names corresponding to channel ids from the database."""
+    if len(ids) == 0:
+        return []
 
-    return query.fetchone()[0]
+    query = rhnSQL.prepare("""
+        SELECT DISTINCT label
+            FROM rhnChannel
+            WHERE id IN ({0})
+            ORDER BY label
+    """.format(",".join(ids)));
+    query.execute()
+
+    return [tuple[0] for tuple in query.fetchall()]
 
 def get_current_repodata_channel_names():
     """Gets the channel names of currenlty running repodata tasks from the database."""
@@ -73,13 +77,14 @@ def get_current_repodata_channel_names():
         SELECT DISTINCT channel_label
             FROM rhnRepoRegenQueue
             WHERE next_action IS NULL
+            ORDER BY channel_label
     """);
     query.execute()
 
     return [row[0] for row in query.fetchall()]
 
-def extract_channel_id(bytes):
-    """Extracts a channel id from a Java Map in serialized form."""
+def extract_channel_ids(bytes):
+    """Extracts channel ids from a Java Map in serialized form."""
     # HACK: this heuristicallty looks for strings, which are marked with 't',
     # two bytes for the length and the string chars themselves. If they
     # represent numbers, we assume they are channel_ids
@@ -100,7 +105,7 @@ def extract_channel_id(bytes):
                 pass # not a real string, ignore
             io.seek(oldpos)
     # of those found, filter the ones looking like a number
-    return next((java_string for java_string in java_strings if java_string.isdigit()), None)
+    return [java_string for java_string in java_strings if java_string.isdigit()]
 
 def format_run(run):
     """Formats data from a Taskomatic run in human-friendly form."""
@@ -113,14 +118,26 @@ def format_run(run):
 
     run["channel_name"] = ""
     if run["data"]:
-        channel_id = extract_channel_id(run["data"])
-        if channel_id:
-            run["channel_name"] = get_channel_name(channel_id)
+        channel_names = get_channel_names(extract_channel_ids(run["data"]))
+        run["channel_name"] = format_multiple_names(channel_names)
 
     if run["name"] == "channel-repodata" and run["status"] == "":
-        run["channel_name"] = ", ".join(get_current_repodata_channel_names())
+        run["channel_name"] = format_multiple_names(get_current_repodata_channel_names())
 
-    return "{id:11d} {name:>30} {since:>13} {status:10} {channel_name:>50}".format(**run)
+    return "{id:11d} {name:>30} {since:>13} {status:10} {channel_name:>60}".format(**run)
+
+def format_multiple_names(names):
+    """Formats an array so that it does not take up too much screen space."""
+    if len(names) == 0:
+        return ""
+    elif len(names) == 1:
+        return names[0]
+    else:
+        one = names[datetime.datetime.now().second % len(names)]
+        if len(names) == 1:
+            return "{0} and 1 other".format(one)
+        else:
+            return "{0} and {1} others".format(one, len(names) -1)
 
 def format_date_delta(start, end):
     """Formats a time delta in human-friently form."""
@@ -141,7 +158,7 @@ def main(screen):
         screen.erase()
 
         rows = (
-            ["{0:>11} {1:>30} {2:>13} {3:10} {4:>50}".format("RUN ID", "TASK NAME", "ELAPSED TIME", "", "CHANNEL")] +
+            ["{0:>11} {1:>30} {2:>13} {3:10} {4:>60}".format("RUN ID", "TASK NAME", "ELAPSED TIME", "", "CHANNEL")] +
             [format_run(run) for run in get_tasko_runs(60)]
         )
 
