@@ -236,23 +236,22 @@ public class MatcherJsonIO {
      * for SUSE Manager entitlements.
      */
     private Stream<Long> productIdsForServer(Server server) {
-        SUSEProductSet productSet = server.getInstalledProductSet();
+        Stream<Long> productIds = Stream.empty();
 
+        SUSEProductSet productSet = server.getInstalledProductSet();
         if (productSet != null) {
             SUSEProduct baseProduct = productSet.getBaseProduct();
             if (baseProduct != null) {
-                Stream<Long> addonProductIds = concat(
+                productIds = concat(
                     of(baseProduct.getProductId()),
                     productSet.getAddonProducts().stream()
                         .map(p -> p.getProductId())
                 );
 
-                Stream<Long> managerEntitlementIds = entitlementIdsForServer(server);
-
-                return concat(addonProductIds, managerEntitlementIds);
             }
         }
-        return empty();
+
+        return concat(productIds, entitlementIdsForServer(server));
     }
 
     /**
