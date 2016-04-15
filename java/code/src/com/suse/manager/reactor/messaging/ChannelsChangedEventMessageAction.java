@@ -37,13 +37,13 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
             if (minion.hasEntitlement(EntitlementManager.SALT)) {
                 SaltStateGeneratorService.INSTANCE.generatePillar(minion);
                 if (event.getUserId() != null) {
-                    MessageQueue.publish(new ApplyStatesEventMessage(
-                            serverId, event.getUserId(), ApplyStatesEventMessage.CHANNELS)
+                    MessageQueue.publish(new ApplyStatesEventMessage(serverId,
+                            event.getUserId(), true, ApplyStatesEventMessage.CHANNELS)
                     );
                 }
                 else {
                     MessageQueue.publish(new ApplyStatesEventMessage(
-                            serverId, ApplyStatesEventMessage.CHANNELS)
+                            serverId, true, ApplyStatesEventMessage.CHANNELS)
                     );
                 }
             }

@@ -23,24 +23,49 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
+import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
+import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
+import com.suse.manager.webui.utils.salt.results.CmdExecCodeAllResult;
+import com.suse.manager.webui.utils.salt.results.StateApplyResult;
+import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.event.JobReturnEvent;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.util.Collections;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Handler class for {@link JobReturnEventMessage}.
@@ -50,13 +75,17 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(JobReturnEventMessageAction.class);
 
+    /* List of Salt modules that could possibly change installed packages */
+    private final List<String> packageChangingModules = Arrays.asList("pkg.install",
+            "pkg.remove", "pkg_installed", "pkg_latest", "pkg_removed");
+
     @Override
     public void doExecute(EventMessage msg) {
         JobReturnEventMessage jobReturnEventMessage = (JobReturnEventMessage) msg;
         JobReturnEvent jobReturnEvent = jobReturnEventMessage.getJobReturnEvent();
 
         // React according to the function the minion ran
-        String function = (String) jobReturnEvent.getData().get("fun");
+        String function = jobReturnEvent.getData().getFun();
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Job return event for minion: " +
@@ -65,45 +94,53 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         }
 
         // Adjust action status if the job was scheduled by us
-        getActionId(jobReturnEvent).ifPresent(id -> {
+        Optional<Long> actionId = getActionId(jobReturnEvent);
+        actionId.ifPresent(id -> {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Matched salt job with action (id=" + id + ")");
             }
 
-            Action action = ActionFactory.lookupById(id);
-            Optional<MinionServer> minionServerOpt = MinionServerFactory
-                    .findByMinionId(jobReturnEvent.getMinionId());
-            minionServerOpt.ifPresent(minionServer -> {
-                Optional<ServerAction> serverAction = action.getServerActions().stream()
-                        .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
+            // Lookup the corresponding action
+            Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(id));
+            if (action.isPresent()) {
+                Optional<MinionServer> minionServerOpt = MinionServerFactory
+                        .findByMinionId(jobReturnEvent.getMinionId());
+                minionServerOpt.ifPresent(minionServer -> {
+                    Optional<ServerAction> serverAction = action.get().getServerActions()
+                            .stream()
+                            .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
 
-                // Delete schedule on the minion if we created it
-                if (jobReturnEvent.getData().containsKey("schedule")) {
-                    String scheduleName = (String) jobReturnEvent.getData().get("schedule");
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Deleting schedule '" + scheduleName +
-                                "' from minion: " + minionServer.getMinionId());
-                    }
-                    SaltAPIService.INSTANCE.deleteSchedule(scheduleName,
-                        new MinionList(jobReturnEvent.getMinionId()));
-                }
+                    // Delete schedule on the minion if we created it
+                    jobReturnEvent.getData().getSchedule().ifPresent(scheduleName -> {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Deleting schedule '" + scheduleName +
+                                    "' from minion: " + minionServer.getMinionId());
+                        }
+                        SaltAPIService.INSTANCE.deleteSchedule(scheduleName,
+                                new MinionList(jobReturnEvent.getMinionId()));
+                    });
 
-                serverAction.ifPresent(sa -> {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Updating action for server: " + minionServer.getId());
-                    }
-                    updateServerAction(sa, jobReturnEvent);
-                    ActionFactory.save(sa);
+                    serverAction.ifPresent(sa -> {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Updating action for server: " +
+                                    minionServer.getId());
+                        }
+                        updateServerAction(sa, jobReturnEvent);
+                        ActionFactory.save(sa);
+                    });
                 });
-            });
+            }
+            else {
+                LOG.warn("Action referenced from Salt job was not found: " + id);
+            }
         });
 
-        if (packagesChanged(jobReturnEvent)) {
+        // Schedule a package list refresh if either requested or detected as necessary
+        if (forcePackageListRefresh(jobReturnEvent) || packagesChanged(jobReturnEvent)) {
             MinionServerFactory
                     .findByMinionId(jobReturnEvent.getMinionId())
                     .ifPresent(minionServer -> {
-                MessageQueue.publish(
-                        new UpdatePackageProfileEventMessage(minionServer.getId()));
+                ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
             });
         }
 
@@ -127,15 +164,16 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @param event the event to read the update data from
      */
     private void updateServerAction(ServerAction serverAction, JobReturnEvent event) {
-        Map<String, Object> eventData = event.getData();
+        JobReturnEvent.Data eventData = event.getData();
         serverAction.setCompletionTime(new Date());
 
+        final long retcode = eventData.getRetcode();
+
         // Set the result code defaulting to 0
-        long retcode = ((Double) eventData.getOrDefault("retcode", 0.0)).longValue();
         serverAction.setResultCode(retcode);
 
         // The final status of the action depends on "success" and "retcode"
-        if ((Boolean) eventData.getOrDefault("success", false) && retcode == 0) {
+        if (eventData.isSuccess() && retcode == 0) {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
         else {
@@ -153,7 +191,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
             // Set the output to the result
             statesResult.setOutput(YamlHelper.INSTANCE
-                    .dump(eventData.get("return")).getBytes());
+                    .dump(eventData.getResult()).getBytes());
 
             // Create the result message depending on the action status
             String states = applyStatesAction.getDetails().getStates() != null ?
@@ -165,9 +203,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             serverAction.setResultMsg(message);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            @SuppressWarnings("unchecked")
-            Map<String, Object> eventDataReturnMap = (Map<String, Object>) eventData
-                    .getOrDefault("return", Collections.EMPTY_MAP);
+            CmdExecCodeAllResult result = eventData.getResult(CmdExecCodeAllResult.class);
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = new ScriptResult();
             scriptAction.getScriptActionDetails().addResult(scriptResult);
@@ -185,21 +221,39 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
                 serverAction.setResultMsg("Failed to execute script. [jid=" +
                         event.getJobId() + "]");
-                String stderr = (String) eventDataReturnMap.getOrDefault("stderr",
-                        "stderr is not available.");
-                scriptResult.setOutput(stderr.getBytes());
             }
             else {
                 serverAction.setResultMsg("Script executed successfully. [jid=" +
                         event.getJobId() + "]");
-                String stdout = (String) eventDataReturnMap.getOrDefault("stdout",
-                        "stdout is not available.");
-                scriptResult.setOutput(stdout.getBytes());
             }
+            StringBuilder sb = new StringBuilder();
+            if (StringUtils.isNotEmpty(result.getStderr())) {
+                sb.append("stderr:\n\n");
+                sb.append(result.getStderr());
+                sb.append("\n");
+            }
+            if (StringUtils.isNotEmpty(result.getStdout())) {
+                sb.append("stdout:\n\n");
+                sb.append(result.getStdout());
+                sb.append("\n");
+            }
+            scriptResult.setOutput(sb.toString().getBytes());
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+                serverAction.setResultMsg("Failure");
+            }
+            else {
+                serverAction.setResultMsg("Success");
+            }
+            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                handlePackageProfileUpdate(minionServer, eventData.getResult(
+                        PkgProfileUpdateSlsResult.class));
+            });
         }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
-            Object returnObject = eventData.get("return");
+            Object returnObject = eventData.getResult();
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String json = gson.toJson(returnObject);
             serverAction.setResultMsg(json.length() > 1024 ?
@@ -213,27 +267,149 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @param event the job return event
      * @return the corresponding action id or empty optional
      */
-    @SuppressWarnings("unchecked")
     private Optional<Long> getActionId(JobReturnEvent event) {
-        Map<String, Object> metadata = (Map<String, Object>) event.getData()
-                .getOrDefault("metadata", Collections.EMPTY_MAP);
-        Optional<Long> actionId = Optional.empty();
-        Double actionIdDouble = (Double) metadata.get("suma-action-id");
-        if (actionIdDouble != null) {
-            actionId = Optional.ofNullable(actionIdDouble.longValue());
-        }
-        return actionId;
+        return event.getData().getMetadata(ScheduleMetadata.class)
+                .map(ScheduleMetadata::getSumaActionId);
     }
 
+    /**
+     * Lookup the metadata to see if a package list refresh was requested.
+     *
+     * @param event the job return event
+     * @return true if a package list refresh was requested, otherwise false
+     */
+    private boolean forcePackageListRefresh(JobReturnEvent event) {
+        Optional<Boolean> value = event.getData().getMetadata(ScheduleMetadata.class)
+                .map(ScheduleMetadata::isForcePackageListRefresh);
+        if (value.isPresent()) {
+            return value.get();
+        }
+        return false;
+    }
+
+    /**
+     * Figure out if the list of packages has changed based on a {@link JobReturnEvent}.
+     * This information is used to decide if we should trigger a package list refresh.
+     *
+     * @param event the job return event
+     * @return true if installed packages have changed, otherwise false
+     */
     private boolean packagesChanged(JobReturnEvent event) {
-        String function = (String) event.getData().get("fun");
-        // Add more events that change packages here
-        // This can also be further optimized by inspecting the event contents
+        String function = event.getData().getFun();
         switch (function) {
             case "pkg.install": return true;
             case "pkg.remove": return true;
-            case "state.apply": return true;
+            case "state.apply":
+                TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
+                    new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
+                Map<String, StateApplyResult<Map<String, Object>>> results =
+                        event.getData().getResult(typeToken);
+                for (StateApplyResult<Map<String, Object>> result : results.values()) {
+                    if (packageChangingModules.contains(result.getName()) &&
+                            !result.getChanges().isEmpty()) {
+                        return true;
+                    }
+                }
+                return false;
             default: return false;
         }
+    }
+
+    /**
+     * Perform the actual update of the database based on given event data.
+     *
+     * @param server the minion server
+     * @param result the result of the call as parsed from event data
+     */
+    private void handlePackageProfileUpdate(MinionServer server,
+            PkgProfileUpdateSlsResult result) {
+        Instant start = Instant.now();
+
+        Optional.of(result.getInfoInstalled().getChanges().getRet())
+            .map(saltPkgs -> saltPkgs.entrySet().stream().map(
+                entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
+            ).collect(Collectors.toSet())
+        ).ifPresent(newPackages -> {
+            Set<InstalledPackage> oldPackages = server.getPackages();
+            oldPackages.addAll(newPackages);
+            oldPackages.retainAll(newPackages);
+        });
+
+        Optional<List<ProductInfo>> productInfo = Optional.of(
+                result.getListProducts().getChanges().getRet());
+        productInfo
+                .map(this::getInstalledProducts)
+                .ifPresent(server::setInstalledProducts);
+
+        ServerFactory.save(server);
+        if (LOG.isDebugEnabled()) {
+            long duration = Duration.between(start, Instant.now()).getSeconds();
+            LOG.debug("Package profile updated for minion: " + server.getMinionId() +
+                    " (" + duration + " seconds)");
+        }
+
+        // Trigger update of errata cache for this server
+        ErrataManager.insertErrataCacheTask(server);
+    }
+
+    /**
+     * Create a {@link InstalledPackage} object from package name and info and return it.
+     *
+     * @param name name of the package
+     * @param info package info from salt
+     * @param server server this package will be added to
+     * @return the InstalledPackage object
+     */
+    private InstalledPackage createPackageFromSalt(
+            String name, Pkg.Info info, Server server) {
+        String epoch = info.getEpoch().orElse(null);
+        String release = info.getRelease().orElse("0");
+        String version = info.getVersion().get();
+        PackageEvr evr = PackageEvrFactory
+                .lookupOrCreatePackageEvr(epoch, version, release);
+
+        InstalledPackage pkg = new InstalledPackage();
+        pkg.setEvr(evr);
+        pkg.setArch(PackageFactory.lookupPackageArchByLabel(info.getArchitecture().get()));
+        pkg.setInstallTime(Date.from(info.getInstallDate().get().toInstant()));
+        pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
+        pkg.setServer(server);
+        return pkg;
+    }
+
+    /**
+     * Convert a list of {@link ProductInfo} objects into a set of {@link InstalledProduct}
+     * objects.
+     *
+     * @param productsIn list of products as received from Salt
+     * @return set of installed products
+     */
+    private Set<InstalledProduct> getInstalledProducts(
+            List<ProductInfo> productsIn) {
+        return productsIn.stream().flatMap(saltProduct -> {
+            String name = saltProduct.getName();
+            String version = saltProduct.getVersion();
+            String release = saltProduct.getRelease();
+            String arch = saltProduct.getArch();
+            boolean isbase = saltProduct.getIsbase();
+
+            // Find the corresponding SUSEProduct in the database
+            Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
+                    .findSUSEProduct(name, version, release, arch, true));
+            if (!suseProduct.isPresent()) {
+                LOG.warn(String.format("No product match found for: %s %s %s %s",
+                        name, version, release, arch));
+            }
+
+            return suseProduct.map(product -> {
+                InstalledProduct installedProduct = new InstalledProduct();
+                installedProduct.setName(product.getName());
+                installedProduct.setVersion(product.getVersion());
+                installedProduct.setRelease(product.getRelease());
+                installedProduct.setArch(product.getArch());
+                installedProduct.setBaseproduct(isbase);
+                return Stream.of(installedProduct);
+            }).orElseGet(Stream::empty);
+        }).collect(Collectors.toSet());
     }
 }
