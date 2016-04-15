@@ -31,6 +31,7 @@ public class ActionScheduledEventMessage implements EventDatabaseMessage {
 
     private final long actionId;
     private final Long userId;
+    private final boolean forcePackageListRefresh;
     private final Transaction txn;
 
     /**
@@ -39,9 +40,20 @@ public class ActionScheduledEventMessage implements EventDatabaseMessage {
      * @param actionIn the action that has been scheduled
      */
     public ActionScheduledEventMessage(Action actionIn) {
+        this(actionIn, false);
+    }
+
+    /**
+     * Create a new event about a recently scheduled action.
+     *
+     * @param actionIn the action that has been scheduled
+     * @param forcePackageListRefreshIn set true to request a package list refresh
+     */
+    public ActionScheduledEventMessage(Action actionIn, boolean forcePackageListRefreshIn) {
         actionId = actionIn.getId();
         userId = actionIn.getSchedulerUser() != null ?
                 actionIn.getSchedulerUser().getId() : null;
+        forcePackageListRefresh = forcePackageListRefreshIn;
         txn = HibernateFactory.getSession().getTransaction();
     }
 
@@ -52,6 +64,16 @@ public class ActionScheduledEventMessage implements EventDatabaseMessage {
      */
     public long getActionId() {
         return actionId;
+    }
+
+
+    /**
+     * Return true if a package list refresh is requested, otherwise false.
+     *
+     * @return true if a package list refresh is requested, otherwise false
+     */
+    public boolean forcePackageListRefresh() {
+        return forcePackageListRefresh;
     }
 
     @Override

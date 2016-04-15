@@ -1,0 +1,86 @@
+{
+  "tag": "salt/job/20160407084101455804/ret/minionsles12-suma3pg.vagrant.local",
+  "data": {
+    "fun_args": [
+      {
+        "mods": [
+          "packages.profileupdate"
+        ]
+      }
+    ],
+    "jid": "20160407084101455804",
+    "return": {
+      "module_|-products_|-pkg.list_products_|-run": {
+        "comment": "Module function pkg.list_products executed",
+        "name": "pkg.list_products",
+        "start_time": "10:41:02.671005",
+        "result": true,
+        "duration": 84.543,
+        "__run_num__": 1,
+        "changes": {
+          "ret": [
+            {
+              "eol_t": 1730332800,
+              "productline": "sles",
+              "name": "SLES",
+              "installed": true,
+              "vendor": "SUSE",
+              "summary": "SUSE Linux Enterprise Server 12 SP1",
+              "repo": "@System",
+              "registerrelease": false,
+              "epoch": "0",
+              "version": "12.1",
+              "release": "0",
+              "isbase": true,
+              "flavor": "DVD",
+              "eol": "2024-10-31T01:00:00+01",
+              "arch": "x86_64",
+              "shortname": "SLES12-SP1",
+              "description": "SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world\u0027s most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class."
+            }
+          ]
+        }
+      },
+      "module_|-packages_|-pkg.info_installed_|-run": {
+        "comment": "Module function pkg.info_installed executed",
+        "name": "pkg.info_installed",
+        "start_time": "10:41:02.065145",
+        "result": true,
+        "duration": 605.665,
+        "__run_num__": 0,
+        "changes": {
+          "ret": {
+            "aaa_base": {
+              "release": "12.1",
+              "arch": "x86_64",
+              "version": "13.2+git20140911.61c1681",
+              "install_date": "2016-04-05T16:27:12Z"
+            },
+            "bash": {
+              "release": "75.2",
+              "arch": "x86_64",
+              "version": "4.2",
+              "install_date": "2016-04-05T16:27:06Z"
+            },
+            "timezone-java": {
+              "release": "0.37.1",
+              "arch": "noarch",
+              "version": "2016c",
+              "install_date": "2016-04-05T16:27:50Z"
+            }
+          }
+        }
+      }
+    },
+    "retcode": 0,
+    "success": true,
+    "cmd": "_return",
+    "_stamp": "2016-04-07T08:41:02.846934",
+    "fun": "state.apply",
+    "out": "highstate",
+    "id": "minionsles12-suma3pg.vagrant.local",
+    "metadata": {
+      "suma-action-id": 59
+    }
+  }
+}

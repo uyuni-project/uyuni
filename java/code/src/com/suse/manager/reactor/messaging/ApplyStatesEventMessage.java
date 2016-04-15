@@ -31,12 +31,14 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
 
     public static final String CERTIFICATE = "certs";
     public static final String PACKAGES = "packages";
+    public static final String PACKAGES_PROFILE_UPDATE = "packages.profileupdate";
     public static final String CHANNELS = "channels";
     public static final String CHANNELS_DISABLE_LOCAL_REPOS = "channels.disablelocalrepos";
 
     private final long serverId;
     private final Long userId;
     private final List<String> stateNames;
+    private final boolean forcePackageListRefresh;
     private final Transaction txn;
 
     /**
@@ -47,22 +49,45 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      * @param stateNamesIn state names that need to be applied to the server
      */
     public ApplyStatesEventMessage(long serverIdIn, long userIdIn, String... stateNamesIn) {
-        serverId = serverIdIn;
-        userId = userIdIn;
-        stateNames = Arrays.asList(stateNamesIn);
-        txn = HibernateFactory.getSession().getTransaction();
+        this(serverIdIn, userIdIn, false, stateNamesIn);
     }
 
     /**
      * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
      *
      * @param serverIdIn the server id
-     * @param stateNamesIn state names that need to be applied to the server
+     * @param stateNamesIn state module names to be applied to the server
      */
     public ApplyStatesEventMessage(long serverIdIn, String... stateNamesIn) {
+        this(serverIdIn, null, false, stateNamesIn);
+    }
+
+    /**
+     * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
+     *
+     * @param serverIdIn the server id
+     * @param forcePackageListRefreshIn set true to request a package list refresh
+     * @param stateNamesIn state module names to be applied to the server
+     */
+    public ApplyStatesEventMessage(long serverIdIn, boolean forcePackageListRefreshIn,
+            String... stateNamesIn) {
+        this(serverIdIn, null, forcePackageListRefreshIn, stateNamesIn);
+    }
+
+    /**
+     * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
+     *
+     * @param serverIdIn the server id
+     * @param userIdIn the user id
+     * @param forcePackageListRefreshIn set true to request a package list refresh
+     * @param stateNamesIn state module names to be applied to the server
+     */
+    public ApplyStatesEventMessage(long serverIdIn, Long userIdIn,
+            boolean forcePackageListRefreshIn, String... stateNamesIn) {
         serverId = serverIdIn;
-        userId = null;
+        userId = userIdIn;
         stateNames = Arrays.asList(stateNamesIn);
+        forcePackageListRefresh = forcePackageListRefreshIn;
         txn = HibernateFactory.getSession().getTransaction();
     }
 
@@ -82,6 +107,15 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      */
     public List<String> getStateNames() {
         return stateNames;
+    }
+
+    /**
+     * Return true if a package list refresh is requested, otherwise false.
+     *
+     * @return true if a package list refresh is requested, otherwise false
+     */
+    public boolean isForcePackageListRefresh() {
+        return forcePackageListRefresh;
     }
 
     @Override

@@ -14,18 +14,16 @@
  */
 package com.suse.manager.webui.services;
 
-import com.suse.manager.webui.utils.salt.Zypper;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
+import com.suse.manager.webui.utils.salt.events.EventStream;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Network;
-import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.datatypes.target.Target;
-import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 
 import java.time.ZonedDateTime;
@@ -87,24 +85,6 @@ public interface SaltService {
      * @return the timezone offsets of the targeted minions
      */
     Map<String, String> getTimezoneOffsets(Target<?> target);
-
-    /**
-     * Get all installed packages from a given minion.
-     *
-     * @param minionId id of the target minion
-     * @return a map from package names to list of version strings
-     */
-    Optional<Map<String, List<String>>> getPackages(String minionId);
-
-    /**
-     * Get the installed packages from a minion with package info.
-     *
-     * @param minionId id of the target minion
-     * @param attributes package attributes that should be returned
-     * @return a map from package names to package info objects
-     */
-    Optional<Map<String, Pkg.Info>> getInstalledPackageDetails(
-            String minionId, List<String> attributes);
 
     /**
      * Accept all keys matching the given pattern
@@ -253,7 +233,7 @@ public interface SaltService {
      * @throws SaltException in case of an error executing the job with Salt
      */
     <T> Map<String, T> callSync(LocalCall<T> call, Target<?> target,
-            Map<String, ?> metadata) throws SaltException;
+           Optional<Map<String, ?>> metadata) throws SaltException;
 
     /**
      * Execute a LocalCall asynchronously on the default Salt client.
@@ -266,7 +246,7 @@ public interface SaltService {
      * @throws SaltException in case of an error executing the job with Salt
      */
     <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target,
-            Map<String, ?> metadata) throws SaltException;
+            Optional<Map<String, ?>> metadata) throws SaltException;
 
     /**
      * Get the IP routing that the minion uses to connect to the master.
@@ -283,12 +263,6 @@ public interface SaltService {
      */
     Optional<Map<String, String>> getNetModules(String minionId);
 
-    /**
-     * Gets the installed products of the minion
-     * @param minionId the minion id
-     * @return a list of installed products
-     */
-    Optional<List<Zypper.ProductInfo>> getInstalledProducts(String minionId);
     /**
      * Find all minions matching the target expression and
      * retain only those allowed for the given user.
