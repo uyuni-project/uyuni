@@ -87,4 +87,7 @@ INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
              VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'gatherer-matcher-bunch', 'Schedule running gatherer', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+             VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'uuid-cleanup-bunch', 'purge orphaned uuid records', null);
+
 commit;

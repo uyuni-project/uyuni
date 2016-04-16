@@ -25,7 +25,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.59.4
+Version: 2.5.84
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -982,6 +982,101 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Apr 15 2016 Jan Dobes 2.5.84-1
+- clean unused pages
+- acl fixes
+- update strings
+- remove proxy.jsp, action and struts config
+- add proxy version info to proxyclients page
+- change details->proxy tab to point to proxyclients
+
+* Wed Apr 13 2016 Jiri Precechtel <jprecech@redhat.com> 2.5.83-1
+- Added switch to show Systems with Managed cfg files only
+
+* Mon Apr 11 2016 Jan Dobes 2.5.82-1
+- 1192879 - updating confirm page
+- 1192879 - adding delete queries for database and filesystem
+- 1192879 - adding queries for listing source package ids in set
+- 1192879 - make possible to list source packages + other minor fixes on page
+- 1192879 - adding checkbox for listing source packages
+- 1192879 - adding queries for listing source packages
+- 1192879 - cannot automatically delete source package as other packages may
+  still use it
+
+* Fri Apr 08 2016 Tomas Lestach <tlestach@redhat.com> 2.5.81-1
+- Fix the string representation of PackageEvr
+
+* Wed Apr 06 2016 Jiri Precechtel <jprecech@redhat.com> 2.5.80-1
+- 1274484 - changed name of key in ConfigRevision structure + updated API doc +
+  configchannel.py
+
+* Tue Apr 05 2016 Jan Dobes 2.5.79-1
+- improving apidoc appearance
+
+* Fri Apr 01 2016 Gennadii Altukhov <galt@redhat.com> 2.5.78-1
+- 1323126 - Fix getting MD5 for file
+- fix scheduling an action chain
+- Fix: 'Systems > Advanced Search' title and description consistency
+- fix splitting kernel options
+
+* Thu Mar 31 2016 Gennadii Altukhov <galt@redhat.com> 2.5.77-1
+- 1322890 - Fix Content-Length in HTTP-header of response
+
+* Wed Mar 30 2016 Grant Gainey 2.5.76-1
+- 1320452 - Cleaning up some remaining Tag/Group XSS issues
+
+* Wed Mar 30 2016 Jiri Precechtel <jprecech@redhat.com> 2.5.75-1
+- 1158981 - Warning "Unservable packages" is not shown when such packages don't
+  exist now
+
+* Tue Mar 29 2016 Grant Gainey 2.5.74-1
+- 1320444 - typo slipped past. Ugh.
+
+* Tue Mar 29 2016 Grant Gainey 2.5.73-1
+- 1320444 - Bad bean-message ids and navbar-vars can lead to XSS issues
+
+* Tue Mar 29 2016 Grant Gainey 2.5.72-1
+- 1313517 - AlphaBar had an 'interesting' XSS exploit available
+- Whitespace fixes
+
+* Mon Mar 28 2016 Grant Gainey 2.5.71-1
+- 1291031 - Fix SelectAll in the presence of filtering
+
+* Mon Mar 28 2016 Grant Gainey 2.5.70-1
+- 1320452 - <c:out> is your friend
+
+* Mon Mar 28 2016 Grant Gainey 2.5.69-1
+- 1313515 - found/fixed another in BunchDetails. QE++
+
+* Thu Mar 24 2016 Jiri Precechtel <jprecech@redhat.com> 2.5.68-1
+- 1063839 - added comment to deleteCustomValues API method's "returns" section
+
+* Thu Mar 24 2016 Gennadii Altukhov <galt@redhat.com> 2.5.67-1
+- 1320236 - Change mechanism of selecting compatible systems
+
+* Wed Mar 23 2016 Jan Dobes 2.5.66-1
+- Fix: add a missing url mapping for kickstart/tree/EditVariables
+- Whitespace fix
+
+* Mon Mar 21 2016 Jan Dobes 2.5.65-1
+- Make read-only entitlements show up aligned in the UI
+
+* Sun Mar 20 2016 Jan Dobes 2.5.64-1
+- Disable changing Managers for Vendor Channels
+
+* Fri Mar 18 2016 Jan Dobes 2.5.63-1
+- Fix case statements to correctly check for NULL
+
+* Thu Mar 17 2016 Tomas Lestach <tlestach@redhat.com> 2.5.62-1
+- remove redundant line
+- add missing string
+
+* Fri Mar 11 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.61-1
+- add missing string (UUID cleanup description)
+
+* Wed Mar 09 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.60-1
+- move uuid cleanup logic into taskomatic
+
 * Mon Mar 07 2016 Grant Gainey 2.5.59-1
 - 1313515 - add unittest for id in hidden fields
 - 1313515 - hidden taglib provide id field if given

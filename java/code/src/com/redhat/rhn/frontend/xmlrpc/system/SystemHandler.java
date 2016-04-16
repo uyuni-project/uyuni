@@ -1814,6 +1814,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param  #array_single("string", "customInfoLabel")
      * @xmlrpc.returntype #return_int_success()
+     * (Note: Attempt to delete values of non-existing keys throws exception. Attempt to
+     * delete value of existing key which has assigned no values doesn't throw exception.)
      */
     public int deleteCustomValues(User loggedInUser, Integer sid, List<String> keys)
             throws FaultException {

@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.5.6.3
+Version:	2.5.8
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -121,6 +121,13 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Thu Apr 14 2016 Jiri Precechtel <jprecech@redhat.com> 2.5.8-1
+- 1103960 - removed escape of regular expressions, updated man page
+
+* Fri Apr 01 2016 Jiri Precechtel <jprecech@redhat.com> 2.5.7-1
+- 1103960 - spacewalk-clone-by-date - package names may contain special regexp
+  chars now
+
 * Mon Jan 25 2016 Grant Gainey 2.5.6-1
 - Extended allowed delimiters to include '.'
 - Add delimiter option for spacewalk-manage-channel-lifecycle
