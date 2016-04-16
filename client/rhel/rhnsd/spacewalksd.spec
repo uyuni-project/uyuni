@@ -5,7 +5,7 @@
 %define rhnsd		 spacewalksd
 #
 Name: spacewalksd
-Version: 5.0.19.1
+Version: 5.0.20
 Release: 1%{?dist}
 Summary: Spacewalk query daemon
 License: GPL-2.0
@@ -197,6 +197,9 @@ rm -fr $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Mon Apr 04 2016 Jan Dobes 5.0.20-1
+- 1306994 - use /dev/null as stdin
+
 * Thu Feb 18 2016 Jan Dobes 5.0.19-1
 - do not keep this file in git
 - delete file with input files after template is created

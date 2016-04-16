@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        3.0.12
+Version:        3.5.20
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -77,6 +77,41 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Apr 14 2016 Jiri Precechtel <jprecech@redhat.com> 2.5.20-1
+- 1320119 - added delete of data in referrenced table
+
+* Fri Mar 18 2016 Jan Dobes 2.5.19-1
+- add missing database commit
+
+* Thu Mar 17 2016 Jan Dobes 2.5.18-1
+- adding missing Oracle upgrade
+- delete sync probe task
+- populate uuid cleanup task on clean installation
+- drop column from _log table too
+- sequnce rhn_org_entitlement_type_seq should be dropped
+- dropping functions after entitlements removal in upgrade
+
+* Fri Mar 11 2016 Jan Dobes 2.5.17-1
+- Revert "fix oracle sha1 for 017-drop_monitoring_tables.sql"
+
+* Fri Mar 11 2016 Jan Dobes 2.5.16-1
+- make sure people already on 2.4 will get missed 2.2 -> 2.3 upgrades
+- fixing missing 2.2 -> 2.3 upgrades
+- Revert "delete one more table"
+
+* Wed Mar 09 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.15-1
+- fixing oracle sha1
+- taskomatic records for uuid cleanup
+
+* Wed Mar 09 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.14-1
+- remove uuid cleanup from database level
+
+* Mon Mar 07 2016 Jan Dobes 2.5.13-1
+- fixing upgrade on Oracle - it's function
+- fixing upgrade on Oracle - invalid end of file
+- fixing upgrade on Oracle
+- add Chile to the list of timezones (bsc#959055)
+
 * Fri Feb 12 2016 Jan Dobes 2.5.12-1
 - fixing missing upgrade
 
