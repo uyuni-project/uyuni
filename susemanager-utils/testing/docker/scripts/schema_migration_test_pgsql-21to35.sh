@@ -60,7 +60,7 @@ for v in `seq 30 -1 11`; do
     if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.0.$minusone-to-susemanager-schema-3.0.$v ]; then
         mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.0.$v-to-susemanager-schema-3.1.0
 	# set hard this destination
-        export SUMA_TEST_SCHEMA_VERSION="3.1.0"
+        export SUMA_TEST_SCHEMA_VERSION="3.5.0"
         break
     fi
 done
