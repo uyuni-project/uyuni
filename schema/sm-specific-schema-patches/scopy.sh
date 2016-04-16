@@ -16,7 +16,7 @@ function incr () {
 
 function new_path () {
 
-    dest="$basepath/susemanager-schema-3.0-to-susemanager-schema-3.0.10/$nextnum$fname"
+    dest="$basepath/susemanager-schema-3.1.0-to-susemanager-schema-3.5.0/$nextnum$fname"
 
 }
 
@@ -74,7 +74,7 @@ for d in ${dirs[*]}; do
         fi
         if [ "$d" == "spacewalk-schema-2.4-to-spacewalk-schema-2.5" ]; then
             num=`echo "$fname" | sed 's/^\([0-9]\+\)\-.*$/\1/'`
-	    if [ $num -lt 202 ]; then
+	    if [ $num -lt 206 ]; then
                 continue
             fi
 	fi
