@@ -53,18 +53,19 @@ else
     export SUMA_TEST_SCHEMA_VERSION=$RPMVERSION
 fi
 
-# guessing the link
+# guessing and creating the link between 3.0 => 3.5 schema
 # obsolete: we have this link now in the package.
-#for v in `seq 20 -1 13`; do
-#    minusone=$(($v-1))
-#    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-2.1.50.$minusone-to-susemanager-schema-2.1.50.$v ]; then
-#        mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-2.1.50.$v-to-susemanager-schema-2.1.51
-#        break
-#    fi
-#done
+for v in `seq 30 -1 11`; do
+    minusone=$(($v-1))
+    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.0.$minusone-to-susemanager-schema-3.0.$v ]; then
+        mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.0.$v-to-susemanager-schema-3.1.0
+	# set hard this destination
+        export SUMA_TEST_SCHEMA_VERSION="3.1.0"
+        break
+    fi
+done
 ###############################################
 ####### END
-#export SUMA_TEST_SCHEMA_VERSION="3.0"
 ###############################################
 
 # run the schema upgrade from git repo
