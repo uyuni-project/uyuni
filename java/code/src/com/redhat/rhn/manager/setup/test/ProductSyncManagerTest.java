@@ -36,6 +36,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -199,28 +201,27 @@ public abstract class ProductSyncManagerTest extends BaseTestCaseWithUser {
     protected void productInsertTaskoSchedule(String prodIdent) {
         for (Product prod : products.getProducts()) {
             if (prodIdent.equals(prod.getIdent())) {
-                for (com.suse.manager.model.products.Channel ch : prod
-                        .getMandatoryChannels()) {
-                    insertTaskoSchedule(ch);
+                List<Long> channelIds = new LinkedList<>();
+                for (com.suse.manager.model.products.Channel channel :
+                    prod.getMandatoryChannels()) {
+                    if (channel.isProvided()) {
+                        Long channelId = ChannelFactory.lookupByLabel(channel.getLabel())
+                                .getId();
+                        channelIds.add(channelId);
+                    }
                 }
+                insertTaskoSchedule(channelIds);
             }
         }
     }
 
-    protected void insertTaskoSchedule(com.suse.manager.model.products.Channel ch) {
-        if (ch.isProvided()) {
-            Channel chObj = ChannelFactory.lookupByLabel(ch.getLabel());
-            insertTaskoSchedule(chObj);
-        }
-    }
-
-    private TaskoSchedule insertTaskoSchedule(Channel chObj) {
+    private TaskoSchedule insertTaskoSchedule(List<Long> channelIds) {
         String bunchName = "repo-sync-bunch";
         Integer orgId = user.getOrg().getId().intValue();
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("channel_id", chObj.getId().toString());
+        params.put("channel_ids", channelIds);
         TaskoBunch bunch = TaskoFactory.lookupBunchByName(bunchName);
-        String jobLabel = chObj.getLabel() + "-job-" + TestUtils.randomString();
+        String jobLabel = "channels-job-" + TestUtils.randomString();
         TaskoSchedule schedule = new TaskoSchedule(
                 orgId, bunch, jobLabel, params, new Date(), null, null);
         TaskoFactory.save(schedule);
@@ -237,24 +238,22 @@ public abstract class ProductSyncManagerTest extends BaseTestCaseWithUser {
     protected void productInsertTaskoRun(String prodIdent, String status) throws Exception {
         for (Product prod : products.getProducts()) {
             if (prodIdent.equals(prod.getIdent())) {
+                List<Long> channelIds = new LinkedList<>();
                 for (com.suse.manager.model.products.Channel ch : prod
                         .getMandatoryChannels()) {
-                    insertTaskoRun(ch, status);
+                    if (ch.isProvided()) {
+                        Long channelId = ChannelFactory.lookupByLabel(ch.getLabel())
+                                .getId();
+                        channelIds.add(channelId);
+                    }
                 }
+                insertTaskoRun(channelIds, status);
             }
         }
     }
 
-    private void insertTaskoRun(
-            com.suse.manager.model.products.Channel ch, String status) throws Exception {
-        if (ch.isProvided()) {
-            Channel chObj = ChannelFactory.lookupByLabel(ch.getLabel());
-            insertTaskoRun(chObj, status);
-        }
-    }
-
-    private void insertTaskoRun(Channel chObj, String status) throws Exception {
-        TaskoSchedule schedule = insertTaskoSchedule(chObj);
+    private void insertTaskoRun(List<Long> channelIds, String status) throws Exception {
+        TaskoSchedule schedule = insertTaskoSchedule(channelIds);
         TaskoTemplate template = schedule.getBunch().getTemplates().get(0);
         assertNotNull(template);
         TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, schedule.getId());

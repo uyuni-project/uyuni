@@ -284,23 +284,19 @@ public class TaskoXmlRpcHandler {
      * This is needed for SUSE channels which are made by merging multiple
      * Novell Customer Center repositories.
      *
-     * @param channelId database id of the channel to sync
+     * @param channelIds database ids of the channels to sync
      * @return start date of the newly created job
      * @throws NoSuchBunchTaskException
      *      thrown if "repo-sync-bunch" is not found in the database
      * @throws InvalidParamException on error
      */
-    public Date scheduleSingleSatRepoSync(Integer channelId)
+    public Date scheduleSingleSatRepoSync(List<String> channelIds)
             throws NoSuchBunchTaskException, InvalidParamException {
         // repo-sync-bunch is an organizational bunch. The following code
         // works around this and forces creation of a repo sync job
         // as a sattelite job (orgId == null).
         String bunchName = "repo-sync-bunch";
         Integer orgId = null;
-
-        // TaskoSchedule parameters. Need to pass the channel_id here.
-        Map params = new HashMap();
-        params.put("channel_id", channelId.toString());
 
         String jobLabel = null;
         TaskoBunch bunch = null;
@@ -335,8 +331,9 @@ public class TaskoXmlRpcHandler {
         }
 
         // create schedule
-        TaskoSchedule schedule = null;
-        schedule = new TaskoSchedule(null, bunch, jobLabel, params,
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("channel_ids", channelIds);
+        TaskoSchedule schedule = new TaskoSchedule(null, bunch, jobLabel, params,
                 new Date(), null, null);
         TaskoFactory.save(schedule);
 

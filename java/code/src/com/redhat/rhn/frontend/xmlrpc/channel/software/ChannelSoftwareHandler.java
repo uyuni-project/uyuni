@@ -2768,6 +2768,33 @@ public class ChannelSoftwareHandler extends BaseHandler {
     /**
      * Trigger immediate repo synchronization
      * @param sessionKey session key
+     * @param channelLabels channel labels
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Trigger immediate repo synchronization
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #array_single("string", "channelLabels")
+     * @xmlrpc.returntype  #return_int_success()
+     */
+    public int syncRepo(String sessionKey, List<String> channelLabels) {
+        User loggedInUser = getLoggedInUser(sessionKey);
+        List<Channel> channels = new ArrayList<>(channelLabels.size());
+        for (String channelLabel : channelLabels) {
+            channels.add(lookupChannelByLabel(loggedInUser, channelLabel));
+        }
+        TaskomaticApi tapi = new TaskomaticApi();
+        if (tapi.isRunning()) {
+            tapi.scheduleSingleRepoSync(channels);
+            return BaseHandler.VALID;
+        }
+        else {
+            throw new TaskomaticApiException("Taskomatic is not running");
+        }
+    }
+
+    /**
+     * Trigger immediate repo synchronization
+     * @param sessionKey session key
      * @param channelLabel channel label
      * @return 1 on success
      *

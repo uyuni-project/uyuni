@@ -23,6 +23,7 @@ import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
 import com.redhat.rhn.taskomatic.TaskoSchedule;
+import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import com.suse.manager.model.products.Channel;
@@ -193,9 +194,10 @@ public abstract class ProductSyncManager {
         for (TaskoRun run : runs) {
             // Get the channel id of that run
             TaskoSchedule schedule = TaskoFactory.lookupScheduleById(run.getScheduleId());
-            Long scheduleChannelId = getChannelIdForSchedule(schedule);
+            List<Long> scheduleChannelIds =
+                RepoSyncTask.getChannelIds(schedule.getDataMap());
 
-            if (channelId.equals(scheduleChannelId)) {
+            if (scheduleChannelIds.contains(channelId)) {
                 // We found a repo-sync run for this channel
                 repoSyncRunFound = true;
                 lastRunEndTime = run.getEndTime();
@@ -241,8 +243,9 @@ public abstract class ProductSyncManager {
             List<TaskoSchedule> schedules =
                     TaskoFactory.listRepoSyncSchedulesNewerThan(lastRunEndTime);
             for (TaskoSchedule s : schedules) {
-                Long scheduleChannelId = getChannelIdForSchedule(s);
-                if (channelId.equals(scheduleChannelId)) {
+                List<Long> scheduleChannelIds =
+                        RepoSyncTask.getChannelIds(s.getDataMap());
+                if (scheduleChannelIds.contains(channelId)) {
                     // There is a schedule for this channel
                     channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
                     return channelSyncStatus;
@@ -271,24 +274,5 @@ public abstract class ProductSyncManager {
 
         // Otherwise return FAILED
         return channelSyncStatus;
-    }
-
-    /**
-     * For a given {@link TaskoSchedule} return the id of the associated channel.
-     * @param schedule a taskomatic schedule
-     * @return channel ID as {@link Long} or null in case of an error
-     */
-    @SuppressWarnings("unchecked")
-    private Long getChannelIdForSchedule(TaskoSchedule schedule) {
-        Long ret = null;
-        Map<String, Object> dataMap = schedule.getDataMap();
-        String channelIdString = (String) dataMap.get("channel_id");
-        try {
-            ret = Long.parseLong(channelIdString);
-        }
-        catch (NumberFormatException e) {
-            logger.error(e.getMessage());
-        }
-        return ret;
     }
 }

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -91,11 +92,12 @@ public class SCCProductSyncManager extends ProductSyncManager {
                 }
 
                 // Trigger sync of those channels
+                List<String> labels = new LinkedList<>();
                 for (Channel channel : product.getMandatoryChannels()) {
-                    ScheduleRepoSyncEvent event =
-                            new ScheduleRepoSyncEvent(channel.getLabel());
-                    MessageQueue.publish(event);
+                    labels.add(channel.getLabel());
                 }
+                ScheduleRepoSyncEvent event = new ScheduleRepoSyncEvent(labels);
+                MessageQueue.publish(event);
             }
             catch (ContentSyncException ex) {
                 throw new ProductSyncException(ex.getMessage());
