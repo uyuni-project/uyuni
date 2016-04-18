@@ -201,12 +201,12 @@ public abstract class ProductSyncManagerTest extends BaseTestCaseWithUser {
     protected void productInsertTaskoSchedule(String prodIdent) {
         for (Product prod : products.getProducts()) {
             if (prodIdent.equals(prod.getIdent())) {
-                List<Long> channelIds = new LinkedList<>();
+                List<String> channelIds = new LinkedList<>();
                 for (com.suse.manager.model.products.Channel channel :
                     prod.getMandatoryChannels()) {
                     if (channel.isProvided()) {
-                        Long channelId = ChannelFactory.lookupByLabel(channel.getLabel())
-                                .getId();
+                        String channelId = ChannelFactory.lookupByLabel(channel.getLabel())
+                                .getId().toString();
                         channelIds.add(channelId);
                     }
                 }
@@ -215,7 +215,7 @@ public abstract class ProductSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
-    private TaskoSchedule insertTaskoSchedule(List<Long> channelIds) {
+    private TaskoSchedule insertTaskoSchedule(List<String> channelIds) {
         String bunchName = "repo-sync-bunch";
         Integer orgId = user.getOrg().getId().intValue();
         Map<String, Object> params = new HashMap<String, Object>();
@@ -238,12 +238,12 @@ public abstract class ProductSyncManagerTest extends BaseTestCaseWithUser {
     protected void productInsertTaskoRun(String prodIdent, String status) throws Exception {
         for (Product prod : products.getProducts()) {
             if (prodIdent.equals(prod.getIdent())) {
-                List<Long> channelIds = new LinkedList<>();
+                List<String> channelIds = new LinkedList<>();
                 for (com.suse.manager.model.products.Channel ch : prod
                         .getMandatoryChannels()) {
                     if (ch.isProvided()) {
-                        Long channelId = ChannelFactory.lookupByLabel(ch.getLabel())
-                                .getId();
+                        String channelId = ChannelFactory.lookupByLabel(ch.getLabel())
+                                .getId().toString();
                         channelIds.add(channelId);
                     }
                 }
@@ -252,7 +252,7 @@ public abstract class ProductSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
-    private void insertTaskoRun(List<Long> channelIds, String status) throws Exception {
+    private void insertTaskoRun(List<String> channelIds, String status) throws Exception {
         TaskoSchedule schedule = insertTaskoSchedule(channelIds);
         TaskoTemplate template = schedule.getBunch().getTemplates().get(0);
         assertNotNull(template);
