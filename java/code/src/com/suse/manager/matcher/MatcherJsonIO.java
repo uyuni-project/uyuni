@@ -262,34 +262,63 @@ public class MatcherJsonIO {
                 server.hasEntitlement(EntitlementManager.SALT)) {
             if (server.getServerArch()
                     .equals(ServerFactory.lookupServerArchByLabel("s390x"))) {
-                return of(
-                    productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual-Z"),
-                    productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual-Z")
-                );
+                return productIdsForS390xSystem();
             }
             else if (server.hasVirtualizationEntitlement()) {
-                return of(
-                    productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual"),
-                    productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual")
-                );
+                return productIdsForVirtualHost();
             }
             else {
-                return of(
-                    productIdForEntitlement("SUSE-Manager-Mgmt-Single"),
-                    productIdForEntitlement("SUSE-Manager-Prov-Single")
-                );
+                return productIdsForSystem();
             }
         }
         return empty();
     }
 
     /**
-     * Returns a single SUSE Manager entitlement product ids given the name.
+     * Retruns product ids for an s390x system.
      */
-    private Long productIdForEntitlement(String productName) {
+    private Stream<Long> productIdsForS390xSystem() {
+        return of(
+            productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual-Z"),
+            productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual-Z")
+        ).filter(id -> id.isPresent()).map(id -> id.get());
+    }
+
+    /**
+     * Retruns product ids for a virtual host.
+     */
+    private Stream<Long> productIdsForVirtualHost() {
+        return of(
+            productIdForEntitlement("SUSE-Manager-Mgmt-Unlimited-Virtual"),
+            productIdForEntitlement("SUSE-Manager-Prov-Unlimited-Virtual")
+        ).filter(id -> id.isPresent()).map(id -> id.get());
+    }
+
+    /**
+     * Returns product ids for a normal system.
+     */
+    private Stream<Long> productIdsForSystem() {
+        return of(
+            productIdForEntitlement("SUSE-Manager-Mgmt-Single"),
+            productIdForEntitlement("SUSE-Manager-Prov-Single")
+        ).filter(id -> id.isPresent()).map(id -> id.get());
+    }
+
+    /**
+     * Returns a single SUSE Manager entitlement product ids given the name.
+     * @return the product id or Optional.empty if the correspoding product has not been
+     * added to SUSE Manager. Currently this happens only before the first mgr-sync,
+     * which is scheduled at setup time
+     */
+    private Optional<Long> productIdForEntitlement(String productName) {
         SUSEProduct ent = SUSEProductFactory.findSUSEProduct(productName, "1.2", null,
                 null, true);
-        return ent.getProductId();
+        if (ent != null) {
+            return Optional.of(ent.getProductId());
+        }
+        else {
+            return Optional.empty();
+        }
     }
 
     /**
