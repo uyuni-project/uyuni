@@ -21,7 +21,6 @@ import org.quartz.Trigger;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -274,76 +273,6 @@ public class TaskoXmlRpcHandler {
         if (scheduleDate == null) {
             TaskoFactory.delete(schedule);
             TaskoFactory.commitTransaction();
-        }
-        return scheduleDate;
-    }
-
-    /**
-     * Schedule a one-time repo sync of a satellite (not
-     * organizational/custom) channel ASAP.
-     * This is needed for SUSE channels which are made by merging multiple
-     * SCC repositories.
-     *
-     * @param channelId database id of the channel to sync
-     * @return start date of the newly created job
-     * @throws NoSuchBunchTaskException
-     *      thrown if "repo-sync-bunch" is not found in the database
-     * @throws InvalidParamException on error
-     */
-    public Date scheduleSingleSatRepoSync(Integer channelId)
-            throws NoSuchBunchTaskException, InvalidParamException {
-        // repo-sync-bunch is an organizational bunch. The following code
-        // works around this and forces creation of a repo sync job
-        // as a sattelite job (orgId == null).
-        String bunchName = "repo-sync-bunch";
-        Integer orgId = null;
-
-        // TaskoSchedule parameters. Need to pass the channel_id here.
-        Map params = new HashMap();
-        params.put("channel_id", channelId.toString());
-
-        String jobLabel = null;
-        TaskoBunch bunch = null;
-        try {
-            // modified getUniqueSingleJobLabel() to cope with null orgid
-            jobLabel = "single-" + bunchName + "-";
-            Integer count = 0;
-            while (!TaskoFactory.listSchedulesByOrgAndLabel(orgId,
-                    jobLabel + count.toString()).isEmpty() ||
-                    (SchedulerKernel.getScheduler().getTrigger(jobLabel + count.toString(),
-                            TaskoQuartzHelper.getGroupName(orgId)) != null)) {
-                count++;
-            }
-            jobLabel += count.toString();
-
-            // modified doBasicCheck() to cope with null orgid
-            bunch = TaskoFactory.lookupOrgBunchByName(bunchName);
-            if (bunch == null) {
-                throw new NoSuchBunchTaskException(bunchName);
-            }
-
-            if (!TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel).isEmpty() ||
-                    (SchedulerKernel.getScheduler().getTrigger(jobLabel,
-                            TaskoQuartzHelper.getGroupName(orgId)) != null)) {
-                String[] triggerNames = SchedulerKernel.getScheduler().
-                    getTriggerNames(TaskoQuartzHelper.getGroupName(orgId));
-                throw new InvalidParamException("jobLabel already in use");
-            }
-        }
-        catch (SchedulerException se) {
-            return null;
-        }
-
-        // create schedule
-        TaskoSchedule schedule = null;
-        schedule = new TaskoSchedule(null, bunch, jobLabel, params,
-                new Date(), null, null);
-        TaskoFactory.save(schedule);
-
-        // create job
-        Date scheduleDate = TaskoQuartzHelper.createJob(schedule);
-        if (scheduleDate == null) {
-            TaskoFactory.delete(schedule);
         }
         return scheduleDate;
     }
