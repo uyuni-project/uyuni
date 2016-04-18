@@ -146,7 +146,7 @@ public class MgrSyncAJAXEndpoint {
             if (log.isDebugEnabled()) {
                 log.debug("Add/Sync products: " + productIdents);
             }
-            new ProductSyncManager().addProducts(productIdents);
+            new ProductSyncManager().addProducts(productIdents, getUser());
         }
         catch (ProductSyncException e) {
             log.error(e);
@@ -158,10 +158,19 @@ public class MgrSyncAJAXEndpoint {
      * Make sure that the current user is SAT_ADMIN.
      */
     private static void ensureSatAdmin() {
-        User user = new RequestContext(WebContextFactory.get().getHttpServletRequest()).
-                getCurrentUser();
+        User user = getUser();
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
         }
+    }
+
+    /**
+     * Gets the current user.
+     *
+     * @return the user
+     */
+    private static User getUser() {
+        return new RequestContext(WebContextFactory.get().getHttpServletRequest()).
+                getCurrentUser();
     }
 }
