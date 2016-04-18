@@ -140,7 +140,8 @@ class RepoSyncTest(unittest.TestCase):
     def test_sync_success_no_regen(self):
         rs = self._init_reposync()
 
-        rs.urls = [{"source_url": "bogus-url", "id": 42, "metadata_signed": "N"}]
+        rs.urls = [
+            {"source_url": ["bogus-url"], "id": 42, "metadata_signed": "N"}]
 
         _mock_rhnsql(self.reposync, {})
         rs = self._mock_sync(rs)
@@ -577,15 +578,22 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(url['source_url'], "http://example.com")
 
     def test_set_repo_credentials_old_default_credentials_bad(self):
-        url = {'source_url': "http://example.com/?credentials=testcreds"}
+        url = {
+            "source_url": [
+                "http://example.com/?credentials=testcreds"
+            ]
+        }
         rs = self._create_mocked_reposync()
         self.assertRaises(SystemExit, rs.set_repo_credentials, url)
 
     def test_set_repo_credentials_bad_credentials(self):
         rs = self._init_reposync()
         rs.error_msg = Mock()
-        url = {'source_url':
-               "http://example.com/?credentials=bad_creds_with_underscore"}
+        url = {
+            "source_url": [
+                "http://example.com/?credentials=bad_creds_with_underscore"
+            ]
+        }
 
         self.assertRaises(SystemExit, rs.set_repo_credentials, url)
         self.assertFalse(self.reposync.CFG.get.called)
@@ -593,11 +601,14 @@ class RepoSyncTest(unittest.TestCase):
 
     def test_set_repo_credentials_number_credentials(self):
         rs = self._create_mocked_reposync()
-        url = {'source_url': "http://example.com/?credentials=testcreds_42"}
+        url = {
+            "source_url": [
+                "http://example.com/?credentials=testcreds_42"
+            ]
+        }
         _mock_rhnsql(self.reposync, [{ 'username' : 'foo', 'password': 'c2VjcmV0' }])
-        rs.set_repo_credentials(url)
-
-        self.assertEqual(url['source_url'], "http://foo:secret@example.com/")
+        self.assertEqual(
+            rs.set_repo_credentials(url), ["http://foo:secret@example.com/"])
 
     def test_is_old_style(self):
         """
