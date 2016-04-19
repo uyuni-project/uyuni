@@ -51,6 +51,17 @@ class ProductOperationsTest(unittest.TestCase):
         if os.path.exists("tmp.log"):
             os.unlink("tmp.log")
 
+    def _mock_iterator(self):
+        '''
+        Mock *called* iterator.
+
+        :return:
+        '''
+        mocked_iter = MagicMock()
+        for dummy_element in mocked_iter():
+            pass
+        return mocked_iter.mock_calls[-1]
+
     def test_list_emtpy_product(self):
         options = get_options("list product".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
