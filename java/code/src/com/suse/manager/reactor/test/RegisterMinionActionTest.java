@@ -80,7 +80,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         key.setBaseChannel(baseChannel);
         key.setOrg(user.getOrg());
         Arrays.asList(
-            "rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host"
+            "rhncfg", "rhncfg-actions", "rhncfg-client", "rhn-virtualization-host", "osad"
         ).forEach(blacklisted ->
             key.addPackage(PackageFactory.lookupOrCreatePackageByName(blacklisted), null)
         );
