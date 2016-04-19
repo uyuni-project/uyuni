@@ -2768,7 +2768,17 @@
 			<product_id name="sle-pos" version="11.3">1073</product_id>
 		</products>
 	</channel>
+	<channel arch="i586" description="SUSE Linux Enterprise Point of Service 11 SP3" family="10040" is_signed="Y" label="sle11-pos-sp3-pool-i586-sp4" name="SLE11-POS-SP3-Pool for i586 SP4" optional="N" parent="sles11-sp4-pool-i586" product_name="sle-pos" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-POS-SP3-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Point of Service 11 SP3" update_tag="sleposp3">
+		<products>
+			<product_id name="sle-pos" version="11.3">1073</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Point of Service 11 SP3" family="10040" is_signed="Y" label="sle11-pos-sp3-pool-x86_64" name="SLE11-POS-SP3-Pool for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="sle-pos" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-POS-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Point of Service 11 SP3" update_tag="sleposp3">
+		<products>
+			<product_id name="sle-pos" version="11.3">1073</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Point of Service 11 SP3" family="10040" is_signed="Y" label="sle11-pos-sp3-pool-x86_64-sp4" name="SLE11-POS-SP3-Pool for x86_64 SP4" optional="N" parent="sles11-sp4-pool-x86_64" product_name="sle-pos" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-POS-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Point of Service 11 SP3" update_tag="sleposp3">
 		<products>
 			<product_id name="sle-pos" version="11.3">1073</product_id>
 		</products>
@@ -2778,7 +2788,17 @@
 			<product_id name="sle-pos" version="11.3">1073</product_id>
 		</products>
 	</channel>
+	<channel arch="i586" description="SUSE Linux Enterprise Point of Service 11 SP3" family="10040" is_signed="Y" label="sle11-pos-sp3-updates-i586-sp4" name="SLE11-POS-SP3-Updates for i586 SP4" optional="N" parent="sles11-sp4-pool-i586" product_name="sle-pos" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-POS-SP3-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Point of Service 11 SP3" update_tag="sleposp3">
+		<products>
+			<product_id name="sle-pos" version="11.3">1073</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Point of Service 11 SP3" family="10040" is_signed="Y" label="sle11-pos-sp3-updates-x86_64" name="SLE11-POS-SP3-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="sle-pos" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-POS-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Point of Service 11 SP3" update_tag="sleposp3">
+		<products>
+			<product_id name="sle-pos" version="11.3">1073</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Point of Service 11 SP3" family="10040" is_signed="Y" label="sle11-pos-sp3-updates-x86_64-sp4" name="SLE11-POS-SP3-Updates for x86_64 SP4" optional="N" parent="sles11-sp4-pool-x86_64" product_name="sle-pos" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-POS-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Point of Service 11 SP3" update_tag="sleposp3">
 		<products>
 			<product_id name="sle-pos" version="11.3">1073</product_id>
 		</products>
