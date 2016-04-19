@@ -486,9 +486,18 @@ Product successfully added"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        expected_xmlrpc_calls = []
+        expected_xmlrpc_calls = [
+            call._execute_xmlrpc_method(
+                self.mgr_sync.conn.sync.content,
+                "listChannels",
+                self.fake_auth_token)),
+            call.__iter__(),
+            call.__iter__(),
+        ]
+
         mandatory_channels = [c for c in chosen_product.channels
                               if not c.optional]
+
         for channel in mandatory_channels:
             expected_xmlrpc_calls.append(
                 call._execute_xmlrpc_method(
@@ -497,12 +506,13 @@ Product successfully added"""
                     self.fake_auth_token,
                     channel.label,
                     ''))
-            expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
-                    self.mgr_sync.conn.channel.software,
-                    "syncRepo",
-                    self.fake_auth_token,
-                    channel.label))
+
+        expected_xmlrpc_calls.append(
+            call._execute_xmlrpc_method(
+                self.mgr_sync.conn.channel.software,
+                "syncRepo",
+                self.fake_auth_token,
+                [c.label for c in mandatory_channels]))
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
@@ -566,12 +576,12 @@ Product successfully added"""
                     self.fake_auth_token,
                     channel.label,
                     ''))
-            expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
-                    self.mgr_sync.conn.channel.software,
-                    "syncRepo",
-                    self.fake_auth_token,
-                    channel.label))
+        expected_xmlrpc_calls.append(
+            call._execute_xmlrpc_method(
+                self.mgr_sync.conn.channel.software,
+                "syncRepo",
+                self.fake_auth_token,
+                [c.label for c in mandatory_channels]))
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
@@ -640,12 +650,12 @@ Product successfully added"""
                         self.fake_auth_token,
                         channel.label,
                         ''))
-            expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
-                    self.mgr_sync.conn.channel.software,
-                    "syncRepo",
-                    self.fake_auth_token,
-                    channel.label))
+        expected_xmlrpc_calls.append(
+            call._execute_xmlrpc_method(
+                self.mgr_sync.conn.channel.software,
+                "syncRepo",
+                self.fake_auth_token,
+                [c.label for c in mandatory_channels]))
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
@@ -767,9 +777,18 @@ Scheduling reposync for 'res4-as-x86_64' channel
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        expected_xmlrpc_calls = []
+        expected_xmlrpc_calls = [
+            call._execute_xmlrpc_method(
+                self.mgr_sync.conn.sync.content,
+                "listChannels",
+                self.fake_auth_token)),
+            call.__iter__(),
+            call.__iter__(),
+        ]
+
         mandatory_channels = [c for c in chosen_product.channels
                               if not c.optional]
+
         for channel in mandatory_channels:
             expected_xmlrpc_calls.append(
                 call._execute_xmlrpc_method(
@@ -778,11 +797,12 @@ Product successfully added"""
                     self.fake_auth_token,
                     channel.label,
                     ''))
-            expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
-                    self.mgr_sync.conn.channel.software,
-                    "syncRepo",
-                    self.fake_auth_token,
-                    channel.label))
+
+        expected_xmlrpc_calls.append(
+            call._execute_xmlrpc_method(
+                self.mgr_sync.conn.channel.software,
+                "syncRepo",
+                self.fake_auth_token,
+                [c.label for c in mandatory_channels]))
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
