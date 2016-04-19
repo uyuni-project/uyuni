@@ -162,4 +162,18 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    /**
+     * Simple test for the auto-installation files error detection heuristics.
+     */
+    public void testErrorDetectionHeuristicsSimple() {
+        assertTrue(KickstartManager.tryDetectErrors("Traceback (most recent call last):" +
+                "more content goes here."));
+        assertTrue(KickstartManager.tryDetectErrors("There is a templating error" +
+                " preventing this file from and some other stuff"));
+        assertTrue(KickstartManager.tryDetectErrors("# This kickstart had errors that " +
+                "prevented it from being rendered correctly." +
+                "\n and now some other contents."));
+        assertFalse(KickstartManager.tryDetectErrors("this string was returned by" +
+                " cobbler. our heuristics doesn't consider it to be erroneous."));
+    }
 }
