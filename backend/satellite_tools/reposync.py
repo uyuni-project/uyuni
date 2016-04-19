@@ -351,7 +351,9 @@ class RepoSync(object):
                                "for this URL: "+url.getURL())
                 sys.exit(1)
             # SCC - read credentials from DB
-            h = rhnSQL.prepare("""SELECT username, password FROM suseCredentials WHERE id = :id""")
+            h = rhnSQL.prepare(
+                "SELECT username, password FROM suseCredentials WHERE id = :id"
+            )
             h.execute(id=creds_no)
             credentials = h.fetchone_dict() or None
             if not credentials:
