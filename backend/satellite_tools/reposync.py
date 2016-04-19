@@ -326,7 +326,7 @@ class RepoSync(object):
 
     def set_repo_credentials(self, url_dict):
         """Set the credentials in the url_dict['source_url'] url list from the config file"""
-        return map(lambda u: self._url_with_repo_credentials(u), url_dict['source_url'])
+        return [self._url_with_repo_credentials(url) for url in url_dict['source_url']]
 
     def _url_with_repo_credentials(self, url_in):
         """Adds the credentials to the given url from the config file
