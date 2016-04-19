@@ -490,7 +490,7 @@ Product successfully added"""
             call._execute_xmlrpc_method(
                 self.mgr_sync.conn.sync.content,
                 "listChannels",
-                self.fake_auth_token)),
+                self.fake_auth_token),
             call.__iter__(),
             call.__iter__(),
         ]
@@ -781,7 +781,7 @@ Product successfully added"""
             call._execute_xmlrpc_method(
                 self.mgr_sync.conn.sync.content,
                 "listChannels",
-                self.fake_auth_token)),
+                self.fake_auth_token),
             call.__iter__(),
             call.__iter__(),
         ]
