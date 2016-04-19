@@ -270,7 +270,7 @@ Status:
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
-                                        channel)
+                                        [channel])
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
@@ -302,7 +302,7 @@ Status:
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
-                                        channel)
+                                        [channel])
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
@@ -341,7 +341,7 @@ Status:
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
-                                        base_channel),
+                                        [base_channel]),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "addChannel",
                                         self.fake_auth_token,
@@ -350,7 +350,7 @@ Status:
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
-                                        channel)
+                                        [channel])
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
@@ -385,7 +385,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
-                                        channel)
+                                        [channel])
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
@@ -537,7 +537,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
-                                        chosen_channel)
+                                        [chosen_channel])
         ]
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
