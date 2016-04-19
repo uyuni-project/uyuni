@@ -48,7 +48,7 @@
 
   <html:form method="post" action="/systems/details/SPMigration.do?sid=${system.id}">
     <hr />
-    <input type="hidden" name="use_date" value="true" />
+    <rhn:hidden name="use_date" value="true" />
     <div class="form-horizontal">
       <div class="form-group">
         <label class="col-sm-3 control-label"><bean:message key="confirm.jsp.than"/></label>

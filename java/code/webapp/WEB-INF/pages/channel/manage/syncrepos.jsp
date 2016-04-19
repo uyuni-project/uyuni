@@ -15,7 +15,7 @@
         <rl:listset name="packageSet">
             <rhn:csrf />
 
-            <input type="hidden" name="cid" value="${cid}" />
+            <rhn:hidden name="cid" value="${cid}" />
 
             <rl:list
                 emptykey="repos.jsp.channel.norepos"

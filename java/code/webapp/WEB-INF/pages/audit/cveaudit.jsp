@@ -93,7 +93,7 @@
             <button type="submit" class="btn btn-success"><i class="fa fa-search"></i><bean:message key="cveaudit.jsp.cvenumber.auditsystem" /></button>
           </div>
         </div>
-        <input type="hidden" name="submitted" value="true" />
+        <rhn:hidden name="submitted" value="true" />
       </html:form>
     </div>
   </div>
@@ -104,19 +104,19 @@
       <rhn:csrf />
 
       <%-- Copy parameters over --%>
-      <input type="hidden" name="cveIdentifierYear"
+      <rhn:hidden name="cveIdentifierYear"
         value="${cveIdentifierYear}" />
-      <input type="hidden" name="cveIdentifierId"
+      <rhn:hidden name="cveIdentifierId"
         value="${cveIdentifierId}" />
-      <input type="hidden" name="includeAffectedPatchInapplicable"
+      <rhn:hidden name="includeAffectedPatchInapplicable"
         value="${includeAffectedPatchInapplicable}" />
-      <input type="hidden" name="includeAffectedPatchApplicable"
+      <rhn:hidden name="includeAffectedPatchApplicable"
         value="${includeAffectedPatchApplicable}" />
-      <input type="hidden" name="includeNotAffected"
+      <rhn:hidden name="includeNotAffected"
         value="${includeNotAffected}" />
-      <input type="hidden" name="includePatched"
+      <rhn:hidden name="includePatched"
         value="${includePatched}" />
-      <input type="hidden" name="submitted" value="true" />
+      <rhn:hidden name="submitted" value="true" />
 
       <rl:list name="list" dataset="dataset"
         emptykey="cveaudit.jsp.noresults" width="100%"

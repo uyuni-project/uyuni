@@ -42,7 +42,7 @@
 <rl:listset name="entitlementSet">
     <rhn:csrf />
         <rhn:submitted/>
-        <input type="hidden" name="oid" value="${param.oid}"/>
+        <rhn:hidden name="oid" value="${param.oid}"/>
 
     <rl:list dataset="pageList"
                         name="entitlement"

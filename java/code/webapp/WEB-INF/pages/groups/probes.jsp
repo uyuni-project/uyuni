@@ -96,7 +96,7 @@
 
 </rl:list>
 
-<input type="hidden" name="sgid" value="${sgid}" />
+<rhn:hidden name="sgid" value="${sgid}" />
 
 <rl:csv  exportColumns="id,serverName,description,stateString,stateOutputString,lastCheck"/>
 

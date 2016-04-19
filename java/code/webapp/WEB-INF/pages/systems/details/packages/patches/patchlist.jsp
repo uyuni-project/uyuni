@@ -52,7 +52,7 @@
   </div>
 
 </rhn:list>
-<input type="hidden" name="sid" value="${param.sid}" />
+<rhn:hidden name="sid" value="${param.sid}" />
 </form>
 </body>
 </html>

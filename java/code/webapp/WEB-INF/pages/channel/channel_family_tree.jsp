@@ -25,7 +25,7 @@
 <form method="post" name="rhn_list" action="/rhn/software/channels/ChannelFamilyTree.do">
     <rhn:csrf />
     <rhn:submitted />
-        <input type="hidden" name="cfid" value="${cfid}">
+        <rhn:hidden name="cfid" value="${cfid}" />
         <%@ include file="/WEB-INF/pages/common/fragments/channel/channel_tree.jspf" %>
 </form>
 
