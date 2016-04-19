@@ -36,10 +36,13 @@ import com.redhat.rhn.manager.BaseManager;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  *
@@ -117,8 +120,7 @@ public class KickstartManager extends BaseManager {
         try {
             if (ksdata.isValid()) {
                 String text = renderKickstart(ksdata);
-                if (text.contains("Traceback (most recent call last):") ||
-                text.contains("There is a templating error preventing this file from")) {
+                if (tryDetectErrors(text)) {
                     ValidatorException.
                         raiseException("kickstart.jsp.error.template_generation",
                                 LocalizationService.getInstance().
@@ -131,6 +133,26 @@ public class KickstartManager extends BaseManager {
                     LocalizationService.getInstance().getMessage(
                             "kickstartdownload.jsp.header"));
         }
+    }
+
+    /**
+     * HACK: Heuristics for detecting errors in the contents of the auto-installation file.
+     * This is not a reliable method of detecting errors, but currently cobbler provides
+     * no way of error reporting.
+     *
+     * @param contents - the auto-installation file contents
+     * @return true if an error was detected in the auto-installation file contents
+     */
+    private boolean tryDetectErrors(String contents) {
+        Set<String> errorStrings = new HashSet<>();
+        errorStrings.add("Traceback (most recent call last):");
+        errorStrings.add("There is a templating error preventing this file from");
+        errorStrings.add("# This kickstart had errors that prevented it from being " +
+                "rendered correctly.\n");
+
+        return errorStrings.stream()
+                .map(errorString -> contents.contains(errorString))
+                .anyMatch(Predicate.isEqual(true));
     }
 
     /**
