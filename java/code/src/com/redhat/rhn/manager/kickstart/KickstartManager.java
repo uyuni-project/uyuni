@@ -143,7 +143,7 @@ public class KickstartManager extends BaseManager {
      * @param contents - the auto-installation file contents
      * @return true if an error was detected in the auto-installation file contents
      */
-    private boolean tryDetectErrors(String contents) {
+    public static boolean tryDetectErrors(String contents) {
         Set<String> errorStrings = new HashSet<>();
         errorStrings.add("Traceback (most recent call last):");
         errorStrings.add("There is a templating error preventing this file from");
