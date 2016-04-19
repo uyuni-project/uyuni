@@ -40,7 +40,8 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
                     MessageQueue.publish(new ApplyStatesEventMessage(serverId,
                             event.getUserId(), true, ApplyStatesEventMessage.CHANNELS)
                     );
-                } else {
+                }
+                else {
                     MessageQueue.publish(new ApplyStatesEventMessage(
                             serverId, true, ApplyStatesEventMessage.CHANNELS)
                     );

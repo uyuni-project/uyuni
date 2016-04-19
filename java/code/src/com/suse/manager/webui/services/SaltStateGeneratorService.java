@@ -125,8 +125,7 @@ public enum SaltStateGeneratorService {
         try {
             Path baseDir = Paths.get(pillarDataPath);
             Files.createDirectories(baseDir);
-            Path filePath = baseDir.resolve(
-                    defaultExtension("server_" + minion.getDigitalServerId()));
+            Path filePath = baseDir.resolve(getServerPillarFileName(minion));
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
             saltStateGenerator.generate(pillar);
