@@ -320,7 +320,7 @@ class RepoSync(object):
             total_time = datetime.now() - start_time
             self.print_msg("Sync completed.")
             self.print_msg("Total time: %s" % str(total_time).split('.')[0])
-            if len(self.error_messages) > 0:
+            if self.error_messages:
                 self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
                 sys.exit(1)
 
