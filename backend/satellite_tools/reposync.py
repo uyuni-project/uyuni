@@ -347,13 +347,13 @@ class RepoSync(object):
             try:
                 creds_no = int(creds.split("_")[1])
             except (ValueError, IndexError):
-                self.error_msg("Could not figure out which credentials to use "
-                               "for this URL: "+url.getURL())
+                self.error_msg(
+                    "Could not figure out which credentials to use "
+                    "for this URL: {0}".format(url.getURL())
+                )
                 sys.exit(1)
             # SCC - read credentials from DB
-            h = rhnSQL.prepare(
-                "SELECT username, password FROM suseCredentials WHERE id = :id"
-            )
+            h = rhnSQL.prepare("SELECT username, password FROM suseCredentials WHERE id = :id")
             h.execute(id=creds_no)
             credentials = h.fetchone_dict() or None
             if not credentials:
