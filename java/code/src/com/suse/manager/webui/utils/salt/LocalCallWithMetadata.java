@@ -13,10 +13,10 @@ import java.util.Optional;
  */
 public class LocalCallWithMetadata<T> extends LocalCall<T> {
 
-    private Map<String, ?> metadata;
+    private Optional<Map<String, ?>> metadata;
     private LocalCall<T> call;
 
-    public LocalCallWithMetadata(LocalCall<T> call, Map<String, ?> metadata) {
+    public LocalCallWithMetadata(LocalCall<T> call, Optional<Map<String, ?>> metadata) {
         super(null, Optional.empty(), Optional.empty(), call.getReturnType());
         this.call = call;
         this.metadata = metadata;
@@ -25,7 +25,7 @@ public class LocalCallWithMetadata<T> extends LocalCall<T> {
     @Override
     public Map<String, Object> getPayload() {
         Map<String, Object> payPaload = call.getPayload();
-        payPaload.put("metadata", metadata);
+        metadata.ifPresent(m -> payPaload.put("metadata", m));
         return payPaload;
     }
 }

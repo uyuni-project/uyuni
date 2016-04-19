@@ -22,6 +22,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
@@ -75,6 +76,9 @@ import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+
 import com.redhat.rhn.domain.rhnpackage.Package;
 
 import org.apache.commons.codec.binary.Base64;
@@ -993,15 +997,42 @@ public class ActionManager extends BaseManager {
      */
     public static PackageAction schedulePackageRefresh(User scheduler, Server server,
             Date earliest) {
-        if (!SystemManager.hasEntitlement(server.getId(), EntitlementManager.MANAGEMENT)) {
-            throw new MissingEntitlementException(
-                    EntitlementManager.MANAGEMENT.getHumanReadableLabel());
-        }
+        checkSaltOrManagementEntitlement(server.getId());
 
         PackageAction pa = (PackageAction) schedulePackageAction(scheduler,
                 (List) null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, earliest, server);
         storeAction(pa);
+        MessageQueue.publish(new ActionScheduledEventMessage(pa));
         return pa;
+    }
+
+    /**
+     * Schedule a package list refresh without a user.
+     *
+     * @param schedulerOrg the organization the server belongs to
+     * @param server the server
+     * @return the scheduled PackageRefreshListAction
+     */
+    public static PackageAction schedulePackageRefresh(Org schedulerOrg, Server server) {
+        checkSaltOrManagementEntitlement(server.getId());
+
+        Action action = ActionFactory.createAction(
+                ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+        action.setName(ActionFactory.TYPE_PACKAGES_REFRESH_LIST.getName());
+        action.setOrg(schedulerOrg);
+        action.setSchedulerUser(null);
+        action.setEarliestAction(new Date());
+
+        ServerAction sa = new ServerAction();
+        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setRemainingTries(REMAINING_TRIES);
+        sa.setServer(server);
+        action.addServerAction(sa);
+        sa.setParentAction(action);
+
+        ActionFactory.save(action);
+        MessageQueue.publish(new ActionScheduledEventMessage(action));
+        return (PackageAction) action;
     }
 
     /**

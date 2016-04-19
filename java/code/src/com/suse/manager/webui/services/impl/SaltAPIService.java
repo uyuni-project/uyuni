@@ -24,12 +24,12 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.LocalCallWithMetadata;
 import com.suse.manager.webui.utils.salt.Timezone;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
+import com.suse.manager.webui.utils.salt.events.EventStream;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -38,7 +38,6 @@ import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Match;
 import com.suse.salt.netapi.calls.modules.Network;
-import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.Smbios;
@@ -51,7 +50,6 @@ import com.suse.salt.netapi.config.ClientConfig;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
-import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import org.apache.log4j.Logger;
 
@@ -187,13 +185,6 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Optional<Map<String, List<String>>> getPackages(String minionId) {
-        return callSync(Pkg.listPkgs(), minionId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void acceptKey(String match) {
         try {
             Key.accept(match).callSync(SALT_CLIENT,
@@ -254,7 +245,7 @@ public enum SaltAPIService implements SaltService {
             SaltClient client = new SaltClient(SALT_MASTER_URI);
             client.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            return client.events();
+            return new EventStream(client.getConfig());
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -272,14 +263,6 @@ public enum SaltAPIService implements SaltService {
         return callSync(Grains.item(true, grain), minionId).flatMap(grains ->
            Optional.ofNullable(grains.get(grain))
         );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Optional<Map<String, Pkg.Info>>
-            getInstalledPackageDetails(String minionId, List<String> attributes) {
-        return callSync(Pkg.infoInstalled(attributes, true), minionId);
     }
 
     /**
@@ -413,7 +396,7 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public <T> Map<String, T> callSync(LocalCall<T> call, Target<?> target,
-            Map<String, ?> metadata) throws SaltException {
+            Optional<Map<String, ?>> metadata) throws SaltException {
         LocalCallWithMetadata<T> callWithMetadata =
                 new LocalCallWithMetadata<>(call, metadata);
         return callWithMetadata
@@ -424,7 +407,7 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target,
-            Map<String, ?> metadata) throws SaltException {
+            Optional<Map<String, ?>> metadata) throws SaltException {
         LocalCallWithMetadata<T> callWithMetadata =
                 new LocalCallWithMetadata<>(call, metadata);
         return callWithMetadata
@@ -467,13 +450,6 @@ public enum SaltAPIService implements SaltService {
      */
     public Optional<Map<String, String>> getNetModules(String minionId) {
         return callSync(SumaUtil.getNetModules(), minionId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Optional<List<Zypper.ProductInfo>> getInstalledProducts(String minionId) {
-        return callSync(Zypper.listProducts(false), minionId);
     }
 
     /**
@@ -568,7 +544,7 @@ public enum SaltAPIService implements SaltService {
         return callSync(
             Test.ping(),
             targetIn,
-            Collections.emptyMap()
+            Optional.empty()
         );
     }
 

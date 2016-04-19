@@ -16,6 +16,7 @@ package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
@@ -27,7 +28,9 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.salt.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Schedule;
@@ -63,23 +66,28 @@ public enum SaltServerActionService {
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
 
     /**
-     *
      * @param actionIn the action
      * @param call the call
      * @param minions minions to target
+     * @param forcePackageListRefresh add metadata to force a package list refresh
      * @return a map containing all minions partitioned by success
      */
-    private Map<Boolean, List<MinionServer>> schedule(Action actionIn,
-            LocalCall<?> call, List<MinionServer> minions) {
+    private Map<Boolean, List<MinionServer>> schedule(Action actionIn, LocalCall<?> call,
+            List<MinionServer> minions, boolean forcePackageListRefresh) {
         ZonedDateTime earliestAction = actionIn.getEarliestAction().toInstant()
                 .atZone(ZoneId.systemDefault());
-        Map<String, Long> metadata = new HashMap<>();
-        metadata.put("suma-action-id", actionIn.getId());
+
+        // Prepare the metadata
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
+        if (forcePackageListRefresh) {
+            metadata.put(ScheduleMetadata.SUMA_FORCE_PGK_LIST_REFRESH, true);
+        }
+
         List<String> minionIds = minions
                 .stream()
                 .map(MinionServer::getMinionId)
                 .collect(Collectors.toList());
-
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Scheduling action for: " +
@@ -105,7 +113,7 @@ public enum SaltServerActionService {
                 }
                 else {
                     List<String> results = SaltAPIService.INSTANCE
-                            .callAsync(call, new MinionList(present), metadata)
+                            .callAsync(call, new MinionList(present), Optional.of(metadata))
                             .getMinions();
                     return minions.stream()
                             .collect(Collectors.partitioningBy(minion ->
@@ -138,24 +146,28 @@ public enum SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionServer>> callsForAction(Action actionIn,
             List<MinionServer> minions) {
-        if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
+        ActionType actionType = actionIn.getActionType();
+        if (actionType.equals(ActionFactory.TYPE_ERRATA)) {
             return errataAction(minions, (ErrataAction) actionIn);
         }
-        else if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
+        else if (actionType.equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
             return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
         }
-        else if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
+        else if (actionType.equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
             return packagesRemoveAction(minions, (PackageRemoveAction) actionIn);
         }
-        else if (actionIn.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+        else if (actionType.equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
+            return packagesRefreshListAction(minions);
+        }
+        else if (actionType.equals(ActionFactory.TYPE_REBOOT)) {
             return rebootAction(minions);
         }
-        else if (actionIn.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
+        else if (actionType.equals(ActionFactory.TYPE_SCRIPT_RUN)) {
             ScriptAction scriptAction = (ScriptAction) actionIn;
             String script = scriptAction.getScriptActionDetails().getScriptContents();
             return remoteCommandAction(minions, script);
         }
-        else if (actionIn.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
+        else if (actionType.equals(ActionFactory.TYPE_APPLY_STATES)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) actionIn;
             Optional<String> states = Optional.ofNullable(
                     applyStatesAction.getDetails().getStates());
@@ -163,7 +175,7 @@ public enum SaltServerActionService {
         }
         else {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Action type " + actionIn.getActionType().getName() +
+                LOG.debug("Action type " + actionType.getName() +
                         " is not supported with Salt");
             }
             return Collections.emptyMap();
@@ -180,8 +192,9 @@ public enum SaltServerActionService {
      * Execute a given {@link Action} via salt.
      *
      * @param actionIn the action to execute
+     * @param forcePackageListRefresh add metadata to force a package list refresh
      */
-    public void execute(Action actionIn) {
+    public void execute(Action actionIn, boolean forcePackageListRefresh) {
         List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
                 .map(serverActions -> serverActions.stream()
                         .flatMap(action ->
@@ -200,7 +213,7 @@ public enum SaltServerActionService {
             final List<MinionServer> targetMinions = entry.getValue();
 
             Map<Boolean, List<MinionServer>> results =
-                    schedule(actionIn, call, targetMinions);
+                    schedule(actionIn, call, targetMinions, forcePackageListRefresh);
 
             results.get(true).stream().forEach(minionServer -> {
                 serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
@@ -270,6 +283,14 @@ public enum SaltServerActionService {
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
         ret.put(com.suse.manager.webui.utils.salt.Pkg.remove(pkgs), minions);
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> packagesRefreshListAction(
+            List<MinionServer> minions) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE)),
+                minions);
         return ret;
     }
 

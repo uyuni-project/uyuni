@@ -33,16 +33,14 @@ import com.suse.manager.reactor.messaging.RefreshHardwareEventMessage;
 import com.suse.manager.reactor.messaging.RefreshHardwareEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
-import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessage;
-import com.suse.manager.reactor.messaging.UpdatePackageProfileEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.salt.netapi.datatypes.Event;
+import com.suse.manager.webui.utils.salt.events.Event;
+import com.suse.manager.webui.utils.salt.events.EventListener;
+import com.suse.manager.webui.utils.salt.events.EventStream;
+import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
+import com.suse.manager.webui.utils.salt.events.MinionStartEvent;
 
-import com.suse.salt.netapi.event.EventListener;
-import com.suse.salt.netapi.event.EventStream;
-import com.suse.salt.netapi.event.JobReturnEvent;
-import com.suse.salt.netapi.event.MinionStartEvent;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -82,8 +80,6 @@ public class SaltReactor implements EventListener {
                 MinionStartEventMessage.class);
         MessageQueue.registerAction(new MinionStartEventMessageAction(),
                 MinionStartEventDatabaseMessage.class);
-        MessageQueue.registerAction(new UpdatePackageProfileEventMessageAction(),
-                UpdatePackageProfileEventMessage.class);
         MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
                 ChannelsChangedEventMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
