@@ -256,7 +256,7 @@ class RepoSync(object):
                                     on rhncontentsourcessl.ssl_client_key_id = k3.id
                             where rhncontentsourcessl.content_source_id = :repo_id
                             """, repo_id=int(data['id']))
-                        if keys and keys.has_key('ca_cert'):
+                        if keys and 'ca_cert' in keys:
                             plugin.set_ssl_options(keys['ca_cert'], keys['client_cert'], keys['client_key'])
 
                     # update the checksum type of channels with org_id NULL
