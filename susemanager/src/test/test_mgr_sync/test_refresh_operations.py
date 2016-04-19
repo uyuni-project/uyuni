@@ -165,11 +165,7 @@ Scheduling reposync for 'sle10-sdk-sp4-updates-x86_64' channel"""
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
-                                        "sles10-sp4-pool-x86_64"),
-            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
-                                        "syncRepo",
-                                        self.fake_auth_token,
-                                        "sle10-sdk-sp4-updates-x86_64"),
+                                        ["sles10-sp4-pool-x86_64", "sle10-sdk-sp4-updates-x86_64"]),
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_calls)
 
