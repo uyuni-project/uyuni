@@ -52,8 +52,6 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
 
     private Path saltGenerationTempDir;
 
-    private ReentrantLock lock = new ReentrantLock();
-
     /**
      * No arg constructor.
      */
@@ -74,75 +72,67 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
 
     @Override
     protected void doExecute(EventMessage msg) {
-        if (lock.tryLock()) {
-            try {
-                // generate org and group files to temp dir /srv/susemanager/tmp/saltXXXX
-                Path tempSaltRootPath = Files.createTempDirectory(saltGenerationTempDir, "salt");
-                FileUtils.deleteDirectory(tempSaltRootPath.toFile());
-                Files.createDirectories(tempSaltRootPath);
+        try {
+            // generate org and group files to temp dir /srv/susemanager/tmp/saltXXXX
+            Path tempSaltRootPath = Files.createTempDirectory(saltGenerationTempDir, "salt");
+            FileUtils.deleteDirectory(tempSaltRootPath.toFile());
+            Files.createDirectories(tempSaltRootPath);
 
-                List<Org> orgs = OrgFactory.lookupAllOrgs();
-                for (Org org : orgs) {
-                    OrgStateRevision orgRev = StateFactory.latestStateRevision(org)
+            List<Org> orgs = OrgFactory.lookupAllOrgs();
+            for (Org org : orgs) {
+                OrgStateRevision orgRev = StateFactory.latestStateRevision(org)
+                        .orElseGet(() -> {
+                            OrgStateRevision rev = new OrgStateRevision();
+                            rev.setOrg(org);
+                            return rev;
+                        });
+                SaltStateGeneratorService.INSTANCE.generateOrgCustomState(orgRev,
+                        tempSaltRootPath);
+
+                List<ManagedServerGroup> groups = ServerGroupFactory
+                        .listManagedGroups(org);
+                for (ManagedServerGroup group : groups) {
+                    ServerGroupStateRevision groupRev = StateFactory
+                            .latestStateRevision(group)
                             .orElseGet(() -> {
-                                OrgStateRevision rev = new OrgStateRevision();
-                                rev.setOrg(org);
+                                ServerGroupStateRevision rev =
+                                        new ServerGroupStateRevision();
+                                rev.setGroup(group);
                                 return rev;
                             });
-                    SaltStateGeneratorService.INSTANCE.generateOrgCustomState(orgRev,
-                            tempSaltRootPath);
-
-                    List<ManagedServerGroup> groups = ServerGroupFactory
-                            .listManagedGroups(org);
-                    for (ManagedServerGroup group : groups) {
-                        ServerGroupStateRevision groupRev = StateFactory
-                                .latestStateRevision(group)
-                                .orElseGet(() -> {
-                                    ServerGroupStateRevision rev =
-                                            new ServerGroupStateRevision();
-                                    rev.setGroup(group);
-                                    return rev;
-                                });
-                        SaltStateGeneratorService.INSTANCE.generateGroupCustomState(
-                                groupRev, tempSaltRootPath);
-                    }
+                    SaltStateGeneratorService.INSTANCE.generateGroupCustomState(
+                            groupRev, tempSaltRootPath);
                 }
-
-                Path saltPath = suseManagerStatesFilesRoot.resolve(
-                        SALT_CUSTOM_STATES_DIR);
-                Path oldSaltPath = saltGenerationTempDir.resolve(
-                        SALT_CUSTOM_STATES_DIR + "_todelete");
-                Path tempCustomPath = tempSaltRootPath
-                        .resolve(SALT_CUSTOM_STATES_DIR);
-
-                // copy /srv/susemanager/salt/custom/custom_*.sls
-                // to /srv/susemanager/tmp/salt
-                for (Path serverSls : Files.newDirectoryStream(saltPath,
-                        SALT_SERVER_STATE_FILE_PREFIX + "*.sls")) {
-                    Files.copy(serverSls, tempCustomPath.resolve(serverSls.getFileName()));
-                }
-
-                // rm -rf /srv/susemanager/tmp/custom_todelete
-                FileUtils.deleteDirectory(oldSaltPath.toFile());
-                // mv /srv/susemanager/salt/custom -> /srv/susemanager/tmp/custom_todelete
-                Files.move(saltPath, oldSaltPath, StandardCopyOption.ATOMIC_MOVE);
-                // mv /srv/susemanager/tmp/salt -> /srv/susemanager/salt/custom
-                Files.move(tempCustomPath, saltPath, StandardCopyOption.ATOMIC_MOVE);
-                // rm -rf /srv/susemanager/tmp/custom_todelete
-                FileUtils.deleteDirectory(oldSaltPath.toFile());
-
-                log.info("Regenerated org and group .sls files in " + saltPath);
             }
-            catch (IOException e) {
-                log.error("Could not regenerate org and group sls files in " +
-                        saltGenerationTempDir, e);
+
+            Path saltPath = suseManagerStatesFilesRoot.resolve(
+                    SALT_CUSTOM_STATES_DIR);
+            Path oldSaltPath = saltGenerationTempDir.resolve(
+                    SALT_CUSTOM_STATES_DIR + "_todelete");
+            Path tempCustomPath = tempSaltRootPath
+                    .resolve(SALT_CUSTOM_STATES_DIR);
+
+            // copy /srv/susemanager/salt/custom/custom_*.sls
+            // to /srv/susemanager/tmp/salt
+            for (Path serverSls : Files.newDirectoryStream(saltPath,
+                    SALT_SERVER_STATE_FILE_PREFIX + "*.sls")) {
+                Files.copy(serverSls, tempCustomPath.resolve(serverSls.getFileName()));
             }
-            finally {
-                lock.unlock();
-            }
+
+            // rm -rf /srv/susemanager/tmp/custom_todelete
+            FileUtils.deleteDirectory(oldSaltPath.toFile());
+            // mv /srv/susemanager/salt/custom -> /srv/susemanager/tmp/custom_todelete
+            Files.move(saltPath, oldSaltPath, StandardCopyOption.ATOMIC_MOVE);
+            // mv /srv/susemanager/tmp/salt -> /srv/susemanager/salt/custom
+            Files.move(tempCustomPath, saltPath, StandardCopyOption.ATOMIC_MOVE);
+            // rm -rf /srv/susemanager/tmp/custom_todelete
+            FileUtils.deleteDirectory(oldSaltPath.toFile());
+
+            log.info("Regenerated org and group .sls files in " + saltPath);
         }
-        else {
-            log.warn("Refreshing generated Salt files is already executing");
+        catch (IOException e) {
+            log.error("Could not regenerate org and group sls files in " +
+                    saltGenerationTempDir, e);
         }
     }
 
