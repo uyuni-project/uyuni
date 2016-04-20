@@ -8,7 +8,7 @@
  
  https://github.com/SUSE/spacewalk/wiki/Java-Development-Environment
 -->
-<project name="SUSE Manager" default="deploy" basedir=".">
+<project name="SUSE Manager" default="deploy" basedir="." xmlns:jacoco="antlib:org.jacoco.ant">
   <!-- User-defined properties -->
   <property file="buildconf/manager-developer-build.properties" />
 
@@ -301,4 +301,57 @@
       <property key="javadoc.lazy" value="false" />
     </checkstyle>
   </target>
+
+  <target name="test-coverage" depends="jar" description="">
+    <taskdef uri="antlib:org.jacoco.ant"  resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
+
+    <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
+    <loadfile property="tests.excludes.text" srcFile="${tests.excludes}"/>
+    <echo message="Running tests with coverage including:" />
+    <echo message="${tests.includes.text}" />
+    <echo message="and excluding:" />
+    <echo message="${tests.excludes.text}" />
+
+    <jacoco:coverage>
+      <junit fork="yes" forkmode="once" maxmemory="256m" dir="${basedir}/buildconf">
+        <sysproperty key="rhn-home" value="." />
+        <sysproperty key="java.awt.headless" value="true" />
+        <sysproperty key="log4j.threshold" value="warn" />
+        <sysproperty key="rhn.config.dir" value="${tests.configuration.path}" />
+
+        <jvmarg value="-ea" />
+        <classpath refid="managertestjars" />
+        <formatter type="xml" usefile="true" />
+        <formatter type="brief" usefile="false" />
+        <batchtest todir="${tests.results.dir}">
+          <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
+        </batchtest>
+      </junit>
+    </jacoco:coverage>
+  </target>
+
+  <target name="test-coverage-report" description="">
+    <taskdef uri="antlib:org.jacoco.ant"  resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
+
+    <jacoco:report>
+
+      <executiondata>
+        <file file="jacoco.exec"/>
+      </executiondata>
+
+      <structure name="Example Project">
+        <classfiles>
+          <fileset dir="classes"/>
+        </classfiles>
+        <sourcefiles encoding="UTF-8">
+          <fileset dir="src"/>
+        </sourcefiles>
+      </structure>
+
+      <html destdir="report"/>
+
+    </jacoco:report>
+
+  </target>
+
 </project>
