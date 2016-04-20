@@ -192,7 +192,7 @@ public class ServerGroupManager {
         validateAdminCredentials(user);
         removeServers(group, listServers(group), user);
         dissociateAdmins(group, group.getAssociatedAdminsFor(user), user);
-        SaltStateGeneratorService.instance().removeServerGroup(group);
+        SaltStateGeneratorService.INSTANCE.removeServerGroup(group);
         ServerGroupFactory.remove(group);
     }
 
@@ -207,7 +207,7 @@ public class ServerGroupManager {
         validateAdminCredentials(user);
         ManagedServerGroup sg = ServerGroupFactory.create(name, description,
                                                                 user.getOrg());
-        SaltStateGeneratorService.instance().createServerGroup(sg);
+        SaltStateGeneratorService.INSTANCE.createServerGroup(sg);
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             sg.getAssociatedAdminsFor(user).add(user);
             ServerGroupFactory.save(sg);
@@ -338,7 +338,7 @@ public class ServerGroupManager {
         for (Server s : servers) {
             SystemManager.addServerToServerGroup(s, sg);
             s.asMinionServer().ifPresent(m ->
-                    SaltStateGeneratorService.instance().generatePillar(m));
+                    SaltStateGeneratorService.INSTANCE.generatePillar(m));
         }
 
     }
@@ -366,7 +366,7 @@ public class ServerGroupManager {
     public void removeServers(ServerGroup sg, Collection<Server> servers) {
         for (Server s : servers) {
             SystemManager.removeServerFromServerGroup(s, sg);
-            s.asMinionServer().ifPresent(SaltStateGeneratorService.instance()::generatePillar);
+            s.asMinionServer().ifPresent(SaltStateGeneratorService.INSTANCE::generatePillar);
         }
     }
 

@@ -79,10 +79,6 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                 FileUtils.deleteDirectory(tempSaltRootPath.toFile());
                 Files.createDirectories(tempSaltRootPath);
 
-                SaltStateGeneratorService generatorService =
-                        new SaltStateGeneratorService();
-                generatorService.setGeneratedSlsRoot(tempSaltRootPath.toString());
-
                 List<Org> orgs = OrgFactory.lookupAllOrgs();
                 for (Org org : orgs) {
                     OrgStateRevision orgRev = StateFactory.latestStateRevision(org)
@@ -91,7 +87,8 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                                 rev.setOrg(org);
                                 return rev;
                             });
-                    generatorService.generateOrgCustomState(orgRev);
+                    SaltStateGeneratorService.INSTANCE.generateOrgCustomState(orgRev,
+                            tempSaltRootPath);
 
                     List<ManagedServerGroup> groups = ServerGroupFactory
                             .listManagedGroups(org);
@@ -104,7 +101,8 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                                     rev.setGroup(group);
                                     return rev;
                                 });
-                        generatorService.generateGroupCustomState(groupRev);
+                        SaltStateGeneratorService.INSTANCE.generateGroupCustomState(
+                                groupRev, tempSaltRootPath);
                     }
                 }
 
