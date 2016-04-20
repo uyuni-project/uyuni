@@ -52,6 +52,7 @@ web/rpm-build
 web/rhn-web-*.tar.gz
 sqlnet.log
 backend/reports
+backend/satellite_tools/spacewalk-repo-syncc
 
 # Intellij IDEA
 .idea/
