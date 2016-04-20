@@ -106,7 +106,9 @@ PKGLIST12 = [
 
 ENHANCE12 = [
              "libyui-ncurses-pkg6",
-             "libyui-qt-pkg6"
+             "libyui-qt-pkg6",
+             "PackageKit-backend-zypp",
+             "PackageKit-lang",
             ]
 
 ENHANCE12SP1 = [
