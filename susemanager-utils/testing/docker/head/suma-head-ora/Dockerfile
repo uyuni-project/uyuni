@@ -1,8 +1,8 @@
 # Container used to test java and python code of SUSE Manager against Oracle database
 #
-# VERSION               0.1
+# VERSION               1.0.0
 
-FROM suma-head-base
+FROM suma-docker-registry.suse.de/suma-head-base:1.0.1
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
 
 ADD add_packages.sh /root/add_packages.sh
