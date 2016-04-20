@@ -14,8 +14,10 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 
+import imp
 import sys
 import unittest
+import json
 from StringIO import StringIO
 from datetime import datetime
 
@@ -802,6 +804,93 @@ class SyncTest(unittest.TestCase):
                 'SELECT username, password FROM suseCredentials WHERE id = :id'
             )
             mock_prepare().execute.assert_called_once_with(id=credentials_id)
+
+
+class RunScriptTest(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.repo_sync = imp.load_source(
+            'repo_sync',
+            '/manager/backend/satellite_tools/spacewalk-repo-sync')
+
+    def setUp(self):
+        config = dict(
+            os=Mock(**{'getuid.return_value': 0}),
+            open=Mock(
+                return_value=StringIO(
+                    json.dumps(
+                        {
+                            "no_errata": False,
+                            "sync_kickstart": False,
+                            "quiet": False,
+                            "fail": True,
+                            "channel": {
+                                "chann_1": [
+                                    "http://example.com/repo1",
+                                    "http://example.com/repo2"
+                                ],
+                                "chann_2": []
+                            }
+                        }
+                    )
+                )
+            ),
+            rhnLockfile=Mock(),
+            releaseLOCK=Mock(),
+            OptionParser=Mock(
+                **{
+                    'return_value.parse_args.return_value': [
+                        Mock(
+                            # options
+                            list=None,
+                            dry_run=False,
+                            config="example.conf",
+                            channel_label=[],
+                            parent_label=None
+                        ),
+                        []
+                    ]
+                }
+            ),
+            reposync=Mock(
+                **{
+                    'getCustomChannels.return_value': ['chann_1', 'chann_2'],
+                    'getChannelRepo.return_value': {
+                        'chann_1': 'abc',
+                        'chann_2': 'def'
+                    }
+                }
+            ),
+            clear_interrupted_downloads=Mock(),
+            systemExit=Mock(side_effect=[SystemExit])
+        )
+        patcher = patch.multiple('repo_sync', **config)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_config_parameter_channel_not_list(self):
+        self.repo_sync.open.return_value = StringIO(
+            json.dumps(
+                {
+                    "no_errata": False,
+                    "sync_kickstart": False,
+                    "quiet": False,
+                    "fail": True,
+                    "channel": {"chann_1": "http://example.com/repo1"}
+                }
+            )
+        )
+        self.assertRaises(SystemExit, self.repo_sync.main)
+        self.repo_sync.systemExit.assert_called_once_with(
+            1,
+            "Configuration file is invalid, chann_1's value needs to be a list."
+        )
+
+    def test_config_parameter_channel_as_list(self):
+        self.repo_sync.main()
+        self.assertEqual(self.repo_sync.reposync.RepoSync.call_count, 2)
+
 
 def test_channel_exceptions():
     """Test rasising all the different exceptions when syncing"""
