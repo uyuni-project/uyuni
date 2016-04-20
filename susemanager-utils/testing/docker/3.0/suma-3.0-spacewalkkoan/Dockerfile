@@ -1,8 +1,8 @@
 # Container used to test java code of SUSE Manager
 #
-# VERSION               1.0.0
+# VERSION               1.0.1
 
-FROM suma-docker-registry.suse.de/suma-3.0-base:latest
+FROM suma-docker-registry.suse.de/suma-3.0-base:1.0.1
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
 
 # Install the required packages
