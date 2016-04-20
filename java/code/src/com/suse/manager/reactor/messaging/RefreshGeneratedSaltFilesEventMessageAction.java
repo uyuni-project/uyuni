@@ -14,7 +14,6 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -36,6 +35,11 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+import static com.suse.manager.webui.services.SaltConstants.SALT_CUSTOM_STATES_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
+
 /**
  * Regenerate all state assignment .sls files for orgs and groups.
  */
@@ -44,9 +48,9 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
     private static Logger log = Logger
             .getLogger(RefreshGeneratedSaltFilesEventMessageAction.class);
 
-    private String suseManagerStatesFileRoot;
+    private Path suseManagerStatesFilesRoot;
 
-    private String saltGenerationTempDir;
+    private Path saltGenerationTempDir;
 
     private ReentrantLock lock = new ReentrantLock();
 
@@ -54,10 +58,8 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
      * No arg constructor.
      */
     public RefreshGeneratedSaltFilesEventMessageAction() {
-        this.suseManagerStatesFileRoot = ConfigDefaults.get()
-                .getSaltSuseManagerStatesFileRoot();
-        this.saltGenerationTempDir = ConfigDefaults.get()
-                .getSaltGenerationTempDir();
+        this.suseManagerStatesFilesRoot = Paths.get(SUMA_STATE_FILES_ROOT_PATH);
+        this.saltGenerationTempDir = Paths.get(SALT_FILE_GENERATION_TEMP_PATH);
     }
 
     /**
@@ -66,16 +68,16 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
      */
     public RefreshGeneratedSaltFilesEventMessageAction(String suseManagerStatesFileRootIn,
                                                        String saltGenerationTempDirIn) {
-        this.suseManagerStatesFileRoot = suseManagerStatesFileRootIn;
-        this.saltGenerationTempDir = saltGenerationTempDirIn;
+        this.suseManagerStatesFilesRoot = Paths.get(suseManagerStatesFileRootIn);
+        this.saltGenerationTempDir = Paths.get(saltGenerationTempDirIn);
     }
 
     @Override
     protected void doExecute(EventMessage msg) {
         if (lock.tryLock()) {
             try {
-                // generate org and group files to /srv/susemanager/tmp/salt
-                Path tempSaltRootPath = Paths.get(saltGenerationTempDir, "salt");
+                // generate org and group files to temp dir /srv/susemanager/tmp/saltXXXX
+                Path tempSaltRootPath = Files.createTempDirectory(saltGenerationTempDir, "salt");
                 FileUtils.deleteDirectory(tempSaltRootPath.toFile());
                 Files.createDirectories(tempSaltRootPath);
 
@@ -106,17 +108,17 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                     }
                 }
 
-                Path saltPath = Paths.get(suseManagerStatesFileRoot,
-                        SaltStateGeneratorService.SALT_CUSTOM_STATES);
-                Path oldSaltPath = Paths.get(saltGenerationTempDir,
-                        SaltStateGeneratorService.SALT_CUSTOM_STATES + "_todelete");
+                Path saltPath = suseManagerStatesFilesRoot.resolve(
+                        SALT_CUSTOM_STATES_DIR);
+                Path oldSaltPath = saltGenerationTempDir.resolve(
+                        SALT_CUSTOM_STATES_DIR + "_todelete");
                 Path tempCustomPath = tempSaltRootPath
-                        .resolve(SaltStateGeneratorService.SALT_CUSTOM_STATES);
+                        .resolve(SALT_CUSTOM_STATES_DIR);
 
                 // copy /srv/susemanager/salt/custom/custom_*.sls
                 // to /srv/susemanager/tmp/salt
                 for (Path serverSls : Files.newDirectoryStream(saltPath,
-                        SaltStateGeneratorService.SERVER_SLS_PREFIX + "*.sls")) {
+                        SALT_SERVER_STATE_FILE_PREFIX + "*.sls")) {
                     Files.copy(serverSls, tempCustomPath.resolve(serverSls.getFileName()));
                 }
 

@@ -23,11 +23,16 @@ public class RefreshGeneratedSaltFilesEventMessage implements EventMessage {
 
     @Override
     public String toText() {
-        return "RefreshGeneratedSaltFilesEventMessage[]";
+        return toString();
     }
 
     @Override
     public Long getUserId() {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "RefreshGeneratedSaltFilesEventMessage{}";
     }
 }
