@@ -14,12 +14,14 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 
+import imp
 import sys
 import unittest
+import json
 from StringIO import StringIO
 from datetime import datetime
 
-from mock import Mock
+from mock import Mock, patch, call
 
 import spacewalk.satellite_tools.reposync
 from spacewalk.satellite_tools.repo_plugins import ContentPackage
@@ -140,7 +142,8 @@ class RepoSyncTest(unittest.TestCase):
     def test_sync_success_no_regen(self):
         rs = self._init_reposync()
 
-        rs.urls = [{"source_url": "bogus-url", "id": 42, "metadata_signed": "N"}]
+        rs.urls = [
+            {"source_url": ["bogus-url"], "id": 42, "metadata_signed": "N"}]
 
         _mock_rhnsql(self.reposync, {})
         rs = self._mock_sync(rs)
@@ -577,15 +580,22 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(url['source_url'], "http://example.com")
 
     def test_set_repo_credentials_old_default_credentials_bad(self):
-        url = {'source_url': "http://example.com/?credentials=testcreds"}
+        url = {
+            "source_url": [
+                "http://example.com/?credentials=testcreds"
+            ]
+        }
         rs = self._create_mocked_reposync()
         self.assertRaises(SystemExit, rs.set_repo_credentials, url)
 
     def test_set_repo_credentials_bad_credentials(self):
         rs = self._init_reposync()
         rs.error_msg = Mock()
-        url = {'source_url':
-               "http://example.com/?credentials=bad_creds_with_underscore"}
+        url = {
+            "source_url": [
+                "http://example.com/?credentials=bad_creds_with_underscore"
+            ]
+        }
 
         self.assertRaises(SystemExit, rs.set_repo_credentials, url)
         self.assertFalse(self.reposync.CFG.get.called)
@@ -593,11 +603,14 @@ class RepoSyncTest(unittest.TestCase):
 
     def test_set_repo_credentials_number_credentials(self):
         rs = self._create_mocked_reposync()
-        url = {'source_url': "http://example.com/?credentials=testcreds_42"}
+        url = {
+            "source_url": [
+                "http://example.com/?credentials=testcreds_42"
+            ]
+        }
         _mock_rhnsql(self.reposync, [{ 'username' : 'foo', 'password': 'c2VjcmV0' }])
-        rs.set_repo_credentials(url)
-
-        self.assertEqual(url['source_url'], "http://foo:secret@example.com/")
+        self.assertEqual(
+            rs.set_repo_credentials(url), ["http://foo:secret@example.com/"])
 
     def test_is_old_style(self):
         """
@@ -699,6 +712,185 @@ class RepoSyncTest(unittest.TestCase):
 
         self.reposync.initCFG = Mock()
         return rs
+
+
+class SyncTest(unittest.TestCase):
+
+    def setUp(self):
+        module_patcher = patch.multiple(
+            'spacewalk.satellite_tools.reposync',
+            get_compatible_arches=Mock(),
+            rhnSQL=Mock(),
+            initCFG=Mock()
+        )
+        class_patcher = patch.multiple(
+            'spacewalk.satellite_tools.reposync.RepoSync',
+            load_channel=Mock(
+                return_value=dict(id="1", org_id="1", label="label#1")
+            ),
+            load_plugin=Mock(),
+            import_packages=Mock(),
+            import_groups=Mock(),
+            import_updates=Mock(),
+            import_products=Mock(),
+            import_susedata=Mock()
+        )
+        module_patcher.start()
+        class_patcher.start()
+        self.addCleanup(module_patcher.stop)
+        self.addCleanup(class_patcher.stop)
+
+    def test_pass_multiple_urls_params(self):
+        from spacewalk.satellite_tools.reposync import RepoSync
+        urls = ['http://some.url', 'http://some-other.url']
+        repo_sync = RepoSync(
+            channel_label="channel-label",
+            repo_type=RTYPE,
+            url=urls
+        )
+        repo_sync.sync()
+
+    @patch('spacewalk.satellite_tools.reposync.RepoSync._url_with_repo_credentials')
+    def test_set_repo_credentials_with_multiple_urls(self, mocked_method):
+        from spacewalk.satellite_tools.reposync import RepoSync
+        urls = ['http://some.url', 'http://some-other.url']
+        data = {
+            'metadata_signed': 'N',
+            'label': None,
+            'id': None,
+            'source_url': urls
+        }
+        repo_sync = RepoSync(
+            channel_label="channel-label",
+            repo_type=RTYPE,
+            url=urls
+        )
+        repo_sync.set_repo_credentials(data)
+        self.assertEqual(
+            repo_sync._url_with_repo_credentials.call_args_list,
+            [call(urls[0]), call(urls[1])]
+        )
+
+    def test__url_with_repo_credentials(self):
+        import base64
+        from spacewalk.satellite_tools.reposync import RepoSync
+        credentials_id = 777
+        urls = [
+            'http://some.url?credentials=abc_%s' % credentials_id,
+            'http://some-other.url'
+        ]
+        repo_sync = RepoSync(
+            channel_label="channel-label",
+            repo_type=RTYPE,
+            url=urls
+        )
+        username = "user#1"
+        password = "pass#1"
+        config = {
+            'return_value.fetchone_dict.return_value': {
+                "username": "user#1",
+                "password": base64.encodestring(password)
+            }
+        }
+        patcher = patch(
+            'spacewalk.satellite_tools.reposync.rhnSQL.prepare', **config
+        )
+        with patcher as mock_prepare:
+            self.assertEqual(
+                repo_sync._url_with_repo_credentials(urls[0]),
+                'http://{0}:{1}@some.url'.format(username, password)
+            )
+            mock_prepare.assert_called_once_with(
+                'SELECT username, password FROM suseCredentials WHERE id = :id'
+            )
+            mock_prepare().execute.assert_called_once_with(id=credentials_id)
+
+
+class RunScriptTest(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.repo_sync = imp.load_source(
+            'repo_sync',
+            '/manager/backend/satellite_tools/spacewalk-repo-sync')
+
+    def setUp(self):
+        config = dict(
+            os=Mock(**{'getuid.return_value': 0}),
+            open=Mock(
+                return_value=StringIO(
+                    json.dumps(
+                        {
+                            "no_errata": False,
+                            "sync_kickstart": False,
+                            "quiet": False,
+                            "fail": True,
+                            "channel": {
+                                "chann_1": [
+                                    "http://example.com/repo1",
+                                    "http://example.com/repo2"
+                                ],
+                                "chann_2": []
+                            }
+                        }
+                    )
+                )
+            ),
+            rhnLockfile=Mock(),
+            releaseLOCK=Mock(),
+            OptionParser=Mock(
+                **{
+                    'return_value.parse_args.return_value': [
+                        Mock(
+                            # options
+                            list=None,
+                            dry_run=False,
+                            config="example.conf",
+                            channel_label=[],
+                            parent_label=None
+                        ),
+                        []
+                    ]
+                }
+            ),
+            reposync=Mock(
+                **{
+                    'getCustomChannels.return_value': ['chann_1', 'chann_2'],
+                    'getChannelRepo.return_value': {
+                        'chann_1': 'abc',
+                        'chann_2': 'def'
+                    }
+                }
+            ),
+            clear_interrupted_downloads=Mock(),
+            systemExit=Mock(side_effect=[SystemExit])
+        )
+        patcher = patch.multiple('repo_sync', **config)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_config_parameter_channel_not_list(self):
+        self.repo_sync.open.return_value = StringIO(
+            json.dumps(
+                {
+                    "no_errata": False,
+                    "sync_kickstart": False,
+                    "quiet": False,
+                    "fail": True,
+                    "channel": {"chann_1": "http://example.com/repo1"}
+                }
+            )
+        )
+        self.assertRaises(SystemExit, self.repo_sync.main)
+        self.repo_sync.systemExit.assert_called_once_with(
+            1,
+            "Configuration file is invalid, chann_1's value needs to be a list."
+        )
+
+    def test_config_parameter_channel_as_list(self):
+        self.repo_sync.main()
+        self.assertEqual(self.repo_sync.reposync.RepoSync.call_count, 2)
+
 
 def test_channel_exceptions():
     """Test rasising all the different exceptions when syncing"""
