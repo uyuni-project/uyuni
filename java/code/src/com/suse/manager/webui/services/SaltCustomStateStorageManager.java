@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.services;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -53,8 +52,8 @@ public enum SaltCustomStateStorageManager {
      * '/srv/susemanager/salt' and {@link #encoding} with US-ASCII.
      */
     SaltCustomStateStorageManager() {
-        this.baseDirPath = ConfigDefaults.get().getSaltSuseManagerStatesFileRoot();
-        this.encoding = ConfigDefaults.get().getSaltSlsEncoding();
+        this.baseDirPath = SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+        this.encoding = SaltConstants.SLS_FILE_ENCODING;
     }
 
     /**

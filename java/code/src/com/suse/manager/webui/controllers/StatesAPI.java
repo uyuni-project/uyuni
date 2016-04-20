@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
@@ -51,6 +50,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.StateTargetType;
@@ -556,8 +556,7 @@ public class StatesAPI {
 
         try {
             Path baseDir = Paths.get(
-                    ConfigDefaults.get().getSaltSuseManagerStatesFileRoot(),
-                    SALT_PACKAGE_FILES);
+                    SaltConstants.SUMA_STATE_FILES_ROOT_PATH, SALT_PACKAGE_FILES);
             Files.createDirectories(baseDir);
             Path filePath = baseDir.resolve(
                     "packages_" + server.getDigitalServerId() + ".sls");

@@ -39,6 +39,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
+import static com.suse.manager.webui.services.SaltConstants.SALT_CUSTOM_STATES_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 
 /**
  * Tests for {@link SaltStateGeneratorService}
@@ -69,9 +73,9 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         SaltStateGeneratorService.INSTANCE.generatePillar(minion);
 
         Path filePath = tmpPillarRoot.resolve(
-                SaltStateGeneratorService.PILLAR_DATA_FILE_PREFIX + "_" +
+                PILLAR_DATA_FILE_PREFIX + "_" +
                 minion.getMinionId() + "." +
-                SaltStateGeneratorService.PILLAR_DATA_FILE_EXT);
+                PILLAR_DATA_FILE_EXT);
 
         assertTrue(Files.exists(filePath));
 
@@ -151,8 +155,8 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
         SaltStateGeneratorService.INSTANCE.generateServerCustomState(serverRev);
 
-        Path filePath = tmpSaltRoot.resolve(SaltStateGeneratorService.SALT_CUSTOM_STATES)
-                .resolve(defaultExtension(SaltStateGeneratorService.SERVER_SLS_PREFIX +
+        Path filePath = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR)
+                .resolve(defaultExtension(SALT_SERVER_STATE_FILE_PREFIX +
                         minion.getDigitalServerId()));
 
         assertTrue(Files.exists(filePath));
