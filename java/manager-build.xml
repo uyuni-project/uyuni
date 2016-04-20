@@ -340,7 +340,10 @@
       </executiondata>
       <structure name="Suse Manager">
         <classfiles>
-          <fileset dir="${build.dir}/classes"/>
+          <fileset dir="${build.dir}/classes">
+            <exclude name="**/*Test*.class" />
+            <exclude name="**/test/*.class" />
+          </fileset>
         </classfiles>
         <sourcefiles encoding="UTF-8">
           <fileset dir="code/src"/>
