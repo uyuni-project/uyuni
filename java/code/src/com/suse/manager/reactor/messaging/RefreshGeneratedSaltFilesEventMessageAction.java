@@ -33,7 +33,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CUSTOM_STATES_DIR;
@@ -74,7 +73,8 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
     protected void doExecute(EventMessage msg) {
         try {
             // generate org and group files to temp dir /srv/susemanager/tmp/saltXXXX
-            Path tempSaltRootPath = Files.createTempDirectory(saltGenerationTempDir, "salt");
+            Path tempSaltRootPath = Files
+                    .createTempDirectory(saltGenerationTempDir, "salt");
             FileUtils.deleteDirectory(tempSaltRootPath.toFile());
             Files.createDirectories(tempSaltRootPath);
 
