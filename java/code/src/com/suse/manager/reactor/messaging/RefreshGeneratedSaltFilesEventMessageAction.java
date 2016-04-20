@@ -71,12 +71,13 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
 
     @Override
     protected void doExecute(EventMessage msg) {
+        Path tempSaltRootPath = null;
         try {
             // generate org and group files to temp dir /srv/susemanager/tmp/saltXXXX
-            Path tempSaltRootPath = Files
+            Files.createDirectories(saltGenerationTempDir);
+            tempSaltRootPath = Files
                     .createTempDirectory(saltGenerationTempDir, "salt");
-            FileUtils.deleteDirectory(tempSaltRootPath.toFile());
-            Files.createDirectories(tempSaltRootPath);
+            log.debug("Created temporary dir " + tempSaltRootPath);
 
             List<Org> orgs = OrgFactory.lookupAllOrgs();
             for (Org org : orgs) {
@@ -123,7 +124,7 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
             FileUtils.deleteDirectory(oldSaltPath.toFile());
             // mv /srv/susemanager/salt/custom -> /srv/susemanager/tmp/custom_todelete
             Files.move(saltPath, oldSaltPath, StandardCopyOption.ATOMIC_MOVE);
-            // mv /srv/susemanager/tmp/salt -> /srv/susemanager/salt/custom
+            // mv /srv/susemanager/tmp/saltXXXX -> /srv/susemanager/salt/custom
             Files.move(tempCustomPath, saltPath, StandardCopyOption.ATOMIC_MOVE);
             // rm -rf /srv/susemanager/tmp/custom_todelete
             FileUtils.deleteDirectory(oldSaltPath.toFile());
@@ -133,6 +134,16 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
         catch (IOException e) {
             log.error("Could not regenerate org and group sls files in " +
                     saltGenerationTempDir, e);
+        } finally {
+            if (tempSaltRootPath != null) {
+                try {
+                    log.debug("Removing temporary dir " + tempSaltRootPath);
+                    FileUtils.deleteDirectory(tempSaltRootPath.toFile());
+                } catch (IOException e) {
+                    log.error("Could not remove temporary directory " +
+                            tempSaltRootPath, e);
+                }
+            }
         }
     }
 
