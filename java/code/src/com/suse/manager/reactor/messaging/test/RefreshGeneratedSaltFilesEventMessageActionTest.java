@@ -44,7 +44,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
 
         ServerStateRevision serverRev = new ServerStateRevision();
         serverRev.setServer(server);
-        SaltStateGeneratorService.instance().generateServerCustomState(serverRev);
+        SaltStateGeneratorService.INSTANCE.generateServerCustomState(serverRev);
 
         assertTrue(Files.exists(tmpSaltRoot.resolve(SaltStateGeneratorService.SALT_CUSTOM_STATES)
                 .resolve(SaltStateGeneratorService.SERVER_SLS_PREFIX + server.getDigitalServerId() + ".sls")));
