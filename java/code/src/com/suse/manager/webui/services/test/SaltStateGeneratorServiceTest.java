@@ -157,7 +157,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
         Path filePath = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR)
                 .resolve(defaultExtension(SALT_SERVER_STATE_FILE_PREFIX +
-                        minion.getDigitalServerId()));
+                        minion.getMachineId()));
 
         assertTrue(Files.exists(filePath));
 
