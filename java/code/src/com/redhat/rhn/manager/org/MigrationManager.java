@@ -78,7 +78,7 @@ public class MigrationManager extends BaseManager {
             OrgFactory.save(fromOrg);
             ServerFactory.save(server);
             server.asMinionServer().ifPresent(minion ->
-                    SaltStateGeneratorService.instance().migrateServer(minion, user));
+                    SaltStateGeneratorService.INSTANCE.migrateServer(minion, user));
             if (user.getOrg().equals(toOrg)) {
                 server.setCreator(user);
             }

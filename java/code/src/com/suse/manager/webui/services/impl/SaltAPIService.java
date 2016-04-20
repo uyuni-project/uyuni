@@ -478,7 +478,7 @@ public enum SaltAPIService implements SaltService {
                 // and the new name is not yet in the db
                 StateFactory.getSession().flush();
 
-                SaltStateGeneratorService.instance().regenerateCustomStates(orgId, name);
+                SaltStateGeneratorService.INSTANCE.regenerateCustomStates(orgId, name);
             }
         }
         catch (IOException e) {
@@ -494,7 +494,7 @@ public enum SaltAPIService implements SaltService {
             StateFactory.CustomStateRevisionsUsage usage = StateFactory
                     .latestStateRevisionsByCustomState(orgId, name);
             customSaltStorageManager.deleteState(orgId, name);
-            SaltStateGeneratorService.instance().regenerateCustomStates(usage);
+            SaltStateGeneratorService.INSTANCE.regenerateCustomStates(usage);
         }
         catch (IOException e) {
             throw new RuntimeException(e);

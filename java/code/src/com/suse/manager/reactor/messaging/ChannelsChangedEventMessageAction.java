@@ -35,7 +35,7 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
         // Generate repo files only for salt minions
         MinionServerFactory.lookupById(serverId).ifPresent(minion -> {
             if (minion.hasEntitlement(EntitlementManager.SALT)) {
-                SaltStateGeneratorService.instance().generatePillar(minion);
+                SaltStateGeneratorService.INSTANCE.generatePillar(minion);
                 if (event.getUserId() != null) {
                     MessageQueue.publish(new ApplyStatesEventMessage(serverId,
                             event.getUserId(), true, ApplyStatesEventMessage.CHANNELS)

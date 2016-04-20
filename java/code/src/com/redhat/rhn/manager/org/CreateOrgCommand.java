@@ -157,7 +157,7 @@ public class CreateOrgCommand {
             return errors;
         }
         createdOrg = OrgFactory.save(createdOrg);
-        SaltStateGeneratorService.instance().createOrg(createdOrg);
+        SaltStateGeneratorService.INSTANCE.createOrg(createdOrg);
         cmd.setOrg(createdOrg);
         cmd.storeNewUser();
         this.newOrg = createdOrg;
