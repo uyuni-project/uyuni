@@ -51,6 +51,7 @@ zypper --non-interactive in  \
               python-pylint \
               python-selinux \
               python-setools \
+              python-simplejson \
               python-urlgrabber \
               python-xml \
               rpm-python \
