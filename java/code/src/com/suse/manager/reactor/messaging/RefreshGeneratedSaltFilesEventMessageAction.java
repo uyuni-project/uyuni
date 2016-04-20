@@ -134,12 +134,14 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
         catch (IOException e) {
             log.error("Could not regenerate org and group sls files in " +
                     saltGenerationTempDir, e);
-        } finally {
+        }
+        finally {
             if (tempSaltRootPath != null) {
                 try {
                     log.debug("Removing temporary dir " + tempSaltRootPath);
                     FileUtils.deleteDirectory(tempSaltRootPath.toFile());
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     log.error("Could not remove temporary directory " +
                             tempSaltRootPath, e);
                 }
