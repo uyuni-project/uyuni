@@ -29,6 +29,7 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import org.apache.commons.io.FileUtils;
 
 import static com.suse.manager.webui.services.SaltConstants.SALT_CUSTOM_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
@@ -38,9 +39,20 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FI
  */
 public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCaseWithUser {
 
-    public void testDoExecute() throws Exception {
-        Path tmpFileRoot = Files.createTempDirectory("refgensalt");
+    private Path tmpFileRoot;
 
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        tmpFileRoot = Files.createTempDirectory("refgensalt");
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        FileUtils.deleteDirectory(tmpFileRoot.toFile());
+    }
+
+    public void testDoExecute() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         // create a group to make sure we have at least one
         ServerGroupTestUtils.createManaged(user);
@@ -69,6 +81,8 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
                         "group_" + group.getId() + ".sls")));
             }
         }
+
+        assertFalse(Files.newDirectoryStream(tmpFileRoot).iterator().hasNext());
     }
 
 
