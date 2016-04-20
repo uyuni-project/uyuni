@@ -114,6 +114,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = optMinion.get();
         assertEquals(MINION_ID, minion.getName());
         assertEquals(machineId, minion.getDigitalServerId());
+        assertEquals(machineId, minion.getMachineId());
         assertEquals("3.12.48-52.27-default", minion.getRunningKernel());
         assertEquals("SLES", minion.getOs());
         assertEquals("12", minion.getRelease());

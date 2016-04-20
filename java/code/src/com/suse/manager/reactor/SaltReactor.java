@@ -29,6 +29,8 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
+import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
+import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RefreshHardwareEventMessage;
 import com.suse.manager.reactor.messaging.RefreshHardwareEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
@@ -92,7 +94,10 @@ public class SaltReactor implements EventListener {
                 CheckinEventMessage.class);
         MessageQueue.registerAction(new RefreshHardwareEventMessageAction(SALT_SERVICE),
                 RefreshHardwareEventMessage.class);
+        MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
+                RefreshGeneratedSaltFilesEventMessage.class);
 
+        MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
         // Initialize the event stream
         eventStream = SALT_SERVICE.getEventStream();

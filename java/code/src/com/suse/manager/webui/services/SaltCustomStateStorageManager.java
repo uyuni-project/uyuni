@@ -43,11 +43,6 @@ public enum SaltCustomStateStorageManager {
     // Singleton instance of this class
     INSTANCE;
 
-    /**
-     * The path where SUSE Manager writes custom sls data
-     */
-    public static final String GENERATED_SLS_ROOT = "/srv/susemanager/salt";
-
     private String baseDirPath;
 
     private String encoding;
@@ -57,8 +52,8 @@ public enum SaltCustomStateStorageManager {
      * '/srv/susemanager/salt' and {@link #encoding} with US-ASCII.
      */
     SaltCustomStateStorageManager() {
-        this.baseDirPath = GENERATED_SLS_ROOT;
-        this.encoding = "US-ASCII"; // TODO clarify default encoding
+        this.baseDirPath = SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+        this.encoding = SaltConstants.SLS_FILE_ENCODING;
     }
 
     /**
