@@ -8,7 +8,7 @@
  
  https://github.com/SUSE/spacewalk/wiki/Java-Development-Environment
 -->
-<project name="SUSE Manager" default="deploy" basedir="." xmlns:jacoco="antlib:org.jacoco.ant">
+<project name="SUSE Manager" default="deploy" basedir=".">
   <!-- User-defined properties -->
   <property file="buildconf/manager-developer-build.properties" />
 
@@ -24,6 +24,8 @@
   <property name="tests.includes" value="buildconf/manager-test-includes" />
   <property name="tests.excludes" value="buildconf/manager-test-excludes" />
   <property name="tests.results.dir" value="test-results"/>
+  <property name="tests.coverage.results.dir" value="test-results/coverage/html"/>
+  <property name="tests.coverage.destfile" value="test-results/coverage/jacoco.exec"/>
   <property name="tests.configuration.path" value="${basedir}/buildconf/test" />
 
   <property name="branding.dir" value="${basedir}/../branding"/>
@@ -302,8 +304,8 @@
     </checkstyle>
   </target>
 
-  <target name="test-coverage" depends="jar" description="">
-    <taskdef uri="antlib:org.jacoco.ant"  resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
+  <target name="test-coverage" depends="jar" description="Measure unit test coverage">
+    <taskdef resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
 
     <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
     <loadfile property="tests.excludes.text" srcFile="${tests.excludes}"/>
@@ -312,7 +314,7 @@
     <echo message="and excluding:" />
     <echo message="${tests.excludes.text}" />
 
-    <jacoco:coverage>
+    <coverage destfile="${tests.coverage.destfile}">
       <junit fork="yes" forkmode="once" maxmemory="256m" dir="${basedir}/buildconf">
         <sysproperty key="rhn-home" value="." />
         <sysproperty key="java.awt.headless" value="true" />
@@ -327,31 +329,25 @@
           <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
         </batchtest>
       </junit>
-    </jacoco:coverage>
+    </coverage>
   </target>
 
-  <target name="test-coverage-report" description="">
-    <taskdef uri="antlib:org.jacoco.ant"  resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
-
-    <jacoco:report>
-
+  <target name="test-coverage-report" description="Generate the unit test coverage report in html">
+    <taskdef resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
+    <report>
       <executiondata>
-        <file file="jacoco.exec"/>
+        <file file="${tests.coverage.destfile}"/>
       </executiondata>
-
-      <structure name="Example Project">
+      <structure name="Suse Manager">
         <classfiles>
-          <fileset dir="classes"/>
+          <fileset dir="${build.dir}/classes"/>
         </classfiles>
         <sourcefiles encoding="UTF-8">
-          <fileset dir="src"/>
+          <fileset dir="code/src"/>
         </sourcefiles>
       </structure>
-
-      <html destdir="report"/>
-
-    </jacoco:report>
-
+      <html destdir="${tests.coverage.results.dir}"/>
+    </report>
   </target>
 
 </project>
