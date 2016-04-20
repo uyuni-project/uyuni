@@ -160,6 +160,12 @@ def main():
         # Channels
         if config.has_key('channel'):
             for ch,repo in config['channel'].iteritems():
+                 if not isinstance(repo, list):
+                    systemExit(
+                        1,
+                        "Configuration file is invalid, "
+                        "{0}'s value needs to be a list.".format(ch)
+                    )
                  d_ch_repo_sync[ch]=repo
 
         if config.has_key('parent_channel'):
