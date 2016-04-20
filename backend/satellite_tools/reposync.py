@@ -235,96 +235,101 @@ class RepoSync(object):
                 insecure = True
             plugin = None
 
-            # If the repository uses a uln:// URL, switch to the ULN plugin, overriding the command-line
-            if data['source_url'].startswith("uln://"):
-                self.repo_plugin = self.load_plugin("uln")
+            for url in data['source_url']:
+                # If the repository uses a uln:// URL, switch to the ULN plugin, overriding the command-line
+                if url.startswith("uln://"):
+                    self.repo_plugin = self.load_plugin("uln")
 
-            # pylint: disable=W0703
-            try:
-                plugin = self.repo_plugin(data['source_url'], self.channel_label,
-                                        insecure, self.quiet, self.interactive)
-                if data['id'] is not None:
-                    keys = rhnSQL.fetchone_dict("""
-                        select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
-                        from rhncontentsourcessl
-                                join rhncryptokey k1
-                                on rhncontentsourcessl.ssl_ca_cert_id = k1.id
-                                left outer join rhncryptokey k2
-                                on rhncontentsourcessl.ssl_client_cert_id = k2.id
-                                left outer join rhncryptokey k3
-                                on rhncontentsourcessl.ssl_client_key_id = k3.id
-                        where rhncontentsourcessl.content_source_id = :repo_id
-                        """, repo_id=int(data['id']))
-                    if keys and keys.has_key('ca_cert'):
-                        plugin.set_ssl_options(keys['ca_cert'], keys['client_cert'], keys['client_key'])
+                # pylint: disable=W0703
+                try:
+                    plugin = self.repo_plugin(
+                        url, self.channel_label, insecure, self.quiet, self.interactive)
+                    if data['id'] is not None:
+                        keys = rhnSQL.fetchone_dict("""
+                            select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
+                            from rhncontentsourcessl
+                                    join rhncryptokey k1
+                                    on rhncontentsourcessl.ssl_ca_cert_id = k1.id
+                                    left outer join rhncryptokey k2
+                                    on rhncontentsourcessl.ssl_client_cert_id = k2.id
+                                    left outer join rhncryptokey k3
+                                    on rhncontentsourcessl.ssl_client_key_id = k3.id
+                            where rhncontentsourcessl.content_source_id = :repo_id
+                            """, repo_id=int(data['id']))
+                        if keys and 'ca_cert' in keys:
+                            plugin.set_ssl_options(keys['ca_cert'], keys['client_cert'], keys['client_key'])
 
-                # update the checksum type of channels with org_id NULL
-                self.updateChannelChecksumType(plugin.get_md_checksum_type())
+                    # update the checksum type of channels with org_id NULL
+                    self.updateChannelChecksumType(plugin.get_md_checksum_type())
 
-                self.import_packages(plugin, data['id'], data['source_url'])
-                self.import_groups(plugin, data['source_url'])
-                if not self.no_errata:
-                    self.import_updates(plugin, data['source_url'])
-                # only for repos obtained from the DB
-                if self.sync_kickstart and data['label']:
-                    try:
-                        self.import_kickstart(plugin, data['source_url'], data['label'])
-                    except:
-                        rhnSQL.rollback()
-                        raise
-                self.import_products(plugin)
-                self.import_susedata(plugin)
+                    self.import_packages(plugin, data['id'], url)
+                    self.import_groups(plugin, url)
+                    if not self.no_errata:
+                        self.import_updates(plugin, url)
+                    # only for repos obtained from the DB
+                    if self.sync_kickstart and data['label']:
+                        try:
+                            self.import_kickstart(plugin, url, data['label'])
+                        except:
+                            rhnSQL.rollback()
+                            raise
+                    self.import_products(plugin)
+                    self.import_susedata(plugin)
 
-            except ChannelTimeoutException, e:
-                self.print_msg(e)
-                self.sendErrorMail(str(e))
-                sys.exit(1)
-            except ChannelException, e:
-                self.print_msg("ChannelException: %s" % e)
-                self.sendErrorMail("ChannelException: %s" % str(e))
-                sys.exit(1)
-            except Errors.YumGPGCheckError, e:
-                self.print_msg("YumGPGCheckError: %s" % e)
-                self.sendErrorMail("YumGPGCheckError: %s" % e)
-                sys.exit(1)
-            except Errors.RepoError, e:
-                self.print_msg("RepoError: %s" % e)
-                self.sendErrorMail("RepoError: %s" % e)
-                sys.exit(1)
-            except Errors.RepoMDError, e:
-                if "primary not available" in str(e):
-                    taskomatic.add_to_repodata_queue_for_channel_package_subscription(
-                        [self.channel_label], [], "server.app.yumreposync")
-                    rhnSQL.commit()
-                    self.print_msg("Repository has no packages. (%s)" % e)
-                    sys.exit(0)
-                else:
-                    self.print_msg("RepoMDError: %s" % e)
-                    self.sendErrorMail("RepoMDError: %s" % e)
-                sys.exit(1)
-            except:
-                self.print_msg("Unexpected error: %s" % sys.exc_info()[0])
-                self.print_msg("%s" % traceback.format_exc())
-                self.sendErrorMail(fetchTraceback())
-                sys.exit(1)
+                except ChannelTimeoutException, e:
+                    self.print_msg(e)
+                    self.sendErrorMail(str(e))
+                    sys.exit(1)
+                except ChannelException, e:
+                    self.print_msg("ChannelException: %s" % e)
+                    self.sendErrorMail("ChannelException: %s" % str(e))
+                    sys.exit(1)
+                except Errors.YumGPGCheckError, e:
+                    self.print_msg("YumGPGCheckError: %s" % e)
+                    self.sendErrorMail("YumGPGCheckError: %s" % e)
+                    sys.exit(1)
+                except Errors.RepoError, e:
+                    self.print_msg("RepoError: %s" % e)
+                    self.sendErrorMail("RepoError: %s" % e)
+                    sys.exit(1)
+                except Errors.RepoMDError, e:
+                    if "primary not available" in str(e):
+                        taskomatic.add_to_repodata_queue_for_channel_package_subscription(
+                            [self.channel_label], [], "server.app.yumreposync")
+                        rhnSQL.commit()
+                        self.print_msg("Repository has no packages. (%s)" % e)
+                        sys.exit(0)
+                    else:
+                        self.print_msg("RepoMDError: %s" % e)
+                        self.sendErrorMail("RepoMDError: %s" % e)
+                    sys.exit(1)
+                except:
+                    self.print_msg("Unexpected error: %s" % sys.exc_info()[0])
+                    self.print_msg("%s" % traceback.format_exc())
+                    self.sendErrorMail(fetchTraceback())
+                    sys.exit(1)
 
-            if plugin is not None:
-                plugin.clear_ssl_cache()
-        if self.regen:
-            taskomatic.add_to_repodata_queue_for_channel_package_subscription(
-                [self.channel_label], [], "server.app.yumreposync")
-            taskomatic.add_to_erratacache_queue(self.channel_label)
-        self.update_date()
-        rhnSQL.commit()
-        total_time = datetime.now() - start_time
-        self.print_msg("Sync completed.")
-        self.print_msg("Total time: %s" % str(total_time).split('.')[0])
-        if len(self.error_messages) > 0:
-            self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
-            sys.exit(1)
+                if plugin is not None:
+                    plugin.clear_ssl_cache()
+            if self.regen:
+                taskomatic.add_to_repodata_queue_for_channel_package_subscription(
+                    [self.channel_label], [], "server.app.yumreposync")
+                taskomatic.add_to_erratacache_queue(self.channel_label)
+            self.update_date()
+            rhnSQL.commit()
+            total_time = datetime.now() - start_time
+            self.print_msg("Sync completed.")
+            self.print_msg("Total time: %s" % str(total_time).split('.')[0])
+            if self.error_messages:
+                self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
+                sys.exit(1)
 
     def set_repo_credentials(self, url_dict):
-        """Set the credentials in the url_dict['source_url'] from the config file
+        """Set the credentials in the url_dict['source_url'] url list from the config file"""
+        return [self._url_with_repo_credentials(url) for url in url_dict['source_url']]
+
+    def _url_with_repo_credentials(self, url_in):
+        """Adds the credentials to the given url from the config file
 
         We look for the `credentials` query argument and use its value
         as the location of the username and password in the current
@@ -335,21 +340,22 @@ class RepoSync(object):
         ?credeentials=mirrcred_5 - read 'mirrcred_user_5' and 'mirrcred_pass_5'
 
         """
-        url = suseLib.URL(url_dict['source_url'])
+        url = suseLib.URL(url_in)
         creds = url.get_query_param('credentials')
         if creds:
-            namespace = creds.split("_")[0]
             creds_no = 0
             try:
                 creds_no = int(creds.split("_")[1])
             except (ValueError, IndexError):
-                self.error_msg("Could not figure out which credentials to use "
-                               "for this URL: "+url.getURL())
+                self.error_msg(
+                    "Could not figure out which credentials to use "
+                    "for this URL: {0}".format(url.getURL())
+                )
                 sys.exit(1)
             # SCC - read credentials from DB
-            h = rhnSQL.prepare("""SELECT username, password FROM suseCredentials WHERE id = :id""");
-            h.execute(id=creds_no);
-            credentials = h.fetchone_dict() or None;
+            h = rhnSQL.prepare("SELECT username, password FROM suseCredentials WHERE id = :id")
+            h.execute(id=creds_no)
+            credentials = h.fetchone_dict() or None
             if not credentials:
                 self.error_msg("Could not figure out which credentials to use "
                                "for this URL: "+url.getURL())
@@ -358,7 +364,7 @@ class RepoSync(object):
             url.password = base64.decodestring(credentials['password'])
             # remove query parameter from url
             url.query = ""
-        url_dict['source_url'] = url.getURL()
+        return url.getURL()
 
     def update_date(self):
         """ Updates the last sync time"""
