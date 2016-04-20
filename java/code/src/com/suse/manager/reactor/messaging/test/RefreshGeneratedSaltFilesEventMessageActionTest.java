@@ -30,13 +30,16 @@ import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
+import static com.suse.manager.webui.services.SaltConstants.SALT_CUSTOM_STATES_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
+
 /**
  * Test for {@link RefreshGeneratedSaltFilesEventMessageAction}
  */
 public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCaseWithUser {
 
     public void testDoExecute() throws Exception {
-        Path tmpFileRoot = Files.createTempDirectory("tmp");
+        Path tmpFileRoot = Files.createTempDirectory("refgensalt");
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         // create a group to make sure we have at least one
@@ -46,16 +49,16 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
         serverRev.setServer(server);
         SaltStateGeneratorService.INSTANCE.generateServerCustomState(serverRev);
 
-        assertTrue(Files.exists(tmpSaltRoot.resolve(SaltStateGeneratorService.SALT_CUSTOM_STATES)
-                .resolve(SaltStateGeneratorService.SERVER_SLS_PREFIX + server.getDigitalServerId() + ".sls")));
+        assertTrue(Files.exists(tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR)
+                .resolve(SALT_SERVER_STATE_FILE_PREFIX + server.getDigitalServerId() + ".sls")));
 
         RefreshGeneratedSaltFilesEventMessageAction action = new RefreshGeneratedSaltFilesEventMessageAction(
                 tmpSaltRoot.toString(), tmpFileRoot.toString());
         action.execute(new RefreshGeneratedSaltFilesEventMessage());
 
-        Path customPath = tmpSaltRoot.resolve(SaltStateGeneratorService.SALT_CUSTOM_STATES);
+        Path customPath = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR);
         assertTrue(Files.exists(customPath.resolve(
-                SaltStateGeneratorService.SERVER_SLS_PREFIX + server.getDigitalServerId() + ".sls")));
+                SALT_SERVER_STATE_FILE_PREFIX + server.getDigitalServerId() + ".sls")));
 
         for (Org org : OrgFactory.lookupAllOrgs()) {
             assertTrue(Files.exists(customPath.resolve(
