@@ -190,11 +190,12 @@ public class DistUpgradeManager extends BaseManager {
         if (channelDto != null) {
             ret = ChannelFactory.lookupByIdAndUser(channelDto.getId(), user);
             if (ret == null) {
-                logger.debug("Channel lookup failure");
+                logger.error("Channel lookup failure. No permissions for user " +
+                    user.getLogin() + " on channel " + channelDto.getLabel());
             }
         }
         else {
-            logger.debug("No channel found");
+            logger.error("No Base Channel found for product id: " + productID);
         }
         return ret;
     }
