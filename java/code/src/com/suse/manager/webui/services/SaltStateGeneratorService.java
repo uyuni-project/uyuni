@@ -80,8 +80,7 @@ public enum SaltStateGeneratorService {
      * @param minion the minion server
      */
     public void generatePillar(MinionServer minion) {
-        LOG.debug("Generating pillar file for server name= " + minion.getName() +
-                " digitalId=" + minion.getDigitalServerId());
+        LOG.debug("Generating pillar file for server name= " + minion.getMinionId());
 
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(minion);
         List<Long> groupIds = groups.stream()
@@ -145,8 +144,7 @@ public enum SaltStateGeneratorService {
      * @param minion the minion server
      */
     public void removePillar(MinionServer minion) {
-        LOG.debug("Removing pillar file for server name= " + minion.getName() +
-                " digitalId=" + minion.getDigitalServerId());
+        LOG.debug("Removing pillar file for server name= " + minion.getMinionId());
         Path filePath = pillarDataPath.resolve(
                 getServerPillarFileName(minion));
         try {
@@ -162,7 +160,7 @@ public enum SaltStateGeneratorService {
      * @param minion the minion server
      */
     public void removeCustomStateAssignments(MinionServer minion) {
-        removeCustomStateAssignments(getServerStateFileName(minion.getDigitalServerId()));
+        removeCustomStateAssignments(getServerStateFileName(minion.getMachineId()));
     }
 
     /**
@@ -203,7 +201,7 @@ public enum SaltStateGeneratorService {
             LOG.debug("Generating custom state SLS file for server: " + minion.getId());
 
             generateCustomStates(minion.getOrg().getId(), serverStateRevision,
-                    getServerStateFileName(minion.getDigitalServerId()),
+                    getServerStateFileName(minion.getMachineId()),
                     suseManagerStatesFilesRoot);
         });
     }
@@ -291,7 +289,7 @@ public enum SaltStateGeneratorService {
         // TODO create an empty revision ?
         generatePillar(minion);
         generateCustomStateAssignmentFile(minion.getOrg().getId(),
-                getServerStateFileName(minion.getDigitalServerId()),
+                getServerStateFileName(minion.getMachineId()),
                 Collections.emptySet(), suseManagerStatesFilesRoot);
     }
 

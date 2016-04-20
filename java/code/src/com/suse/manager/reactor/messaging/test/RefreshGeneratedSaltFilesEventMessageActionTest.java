@@ -50,7 +50,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
         SaltStateGeneratorService.INSTANCE.generateServerCustomState(serverRev);
 
         assertTrue(Files.exists(tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR)
-                .resolve(SALT_SERVER_STATE_FILE_PREFIX + server.getDigitalServerId() + ".sls")));
+                .resolve(SALT_SERVER_STATE_FILE_PREFIX + server.getMachineId() + ".sls")));
 
         RefreshGeneratedSaltFilesEventMessageAction action = new RefreshGeneratedSaltFilesEventMessageAction(
                 tmpSaltRoot.toString(), tmpFileRoot.toString());
@@ -58,7 +58,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
 
         Path customPath = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR);
         assertTrue(Files.exists(customPath.resolve(
-                SALT_SERVER_STATE_FILE_PREFIX + server.getDigitalServerId() + ".sls")));
+                SALT_SERVER_STATE_FILE_PREFIX + server.getMachineId() + ".sls")));
 
         for (Org org : OrgFactory.lookupAllOrgs()) {
             assertTrue(Files.exists(customPath.resolve(
