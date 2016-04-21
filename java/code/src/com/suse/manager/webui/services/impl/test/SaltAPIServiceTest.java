@@ -8,6 +8,7 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
@@ -50,7 +51,9 @@ public class SaltAPIServiceTest extends BaseTestCaseWithUser {
 
         String stateFullName = "- manager_org_" + user.getOrg().getId() + "." + name;
 
-        Path generatedSlsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + server.getDigitalServerId() + ".sls");
+        Path generatedSlsPath = tmpSaltRoot.resolve(SaltConstants.SALT_CUSTOM_STATES_DIR)
+                .resolve(SaltConstants.SALT_SERVER_STATE_FILE_PREFIX +
+                        server.asMinionServer().get().getMachineId() + ".sls");
         String slsContent = FileUtils.readFileToString(generatedSlsPath.toFile());
 
         assertTrue(contains(slsContent, stateFullName));
