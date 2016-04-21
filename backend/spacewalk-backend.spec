@@ -303,6 +303,7 @@ Requires: %{name}
 Requires: spacewalk-certs-tools
 Requires: spacewalk-admin >= 0.1.1-0
 Requires: python-gzipstream
+Requires: python-dateutil
 Requires: susemanager-tools
 %if 0%{?suse_version}
 Requires: python-base
