@@ -22,6 +22,8 @@ import time
 import traceback
 import base64
 from datetime import datetime
+from dateutil.parser import parse as parse_date
+from dateutil.tz import tzutc
 from optparse import OptionParser
 
 from yum import Errors
@@ -1456,15 +1458,12 @@ def _to_db_date(date):
     elif date.isdigit():
         ret = datetime.fromtimestamp(float(date))
     else:
-        # we expect to get ISO formated date
+        ret = parse_date(date)
         try:
-            ret = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
-        except ValueError:
-            try:
-                ret = datetime.strptime(date, '%Y-%m-%d')
-            except ValueError:
-                raise ValueError("Not a valid date")
-    return ret.isoformat(' ')[:19] #return 1st 19 letters of date, therefore preventing ORA-01830 caused by fractions of seconds
+            ret = ret.astimezone(tzutc())
+        except ValueError, e:
+            log_debug(2, e)
+    return ret.isoformat(' ')[:19]  # return 1st 19 letters of date, therefore preventing ORA-01830 caused by fractions of seconds
 
 def _update_keywords(notice):
     """Return a list of Keyword objects for the notice"""
