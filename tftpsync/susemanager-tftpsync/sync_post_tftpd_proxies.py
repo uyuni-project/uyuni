@@ -1,6 +1,7 @@
 #
-#    change_tftpd_proxies.py
+#    sync_post_tftpd_proxies.py
 #    Copyright (C) 2013  Novell, Inc.
+#    Copyright (C) 2016  SUSE LLC
 #
 #    This library is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU Lesser General Public
@@ -31,12 +32,12 @@ _DEBUG = False
 def register():
     # this pure python trigger acts as if it were a legacy shell-trigger, but is much faster.
     # the return of this method indicates the trigger type
-    return "/var/lib/cobbler/triggers/change/*"
+    return "/var/lib/cobbler/triggers/sync/post/*"
 
 def run(api,args,logger):
     if not logger:
         logger = clogger.Logger()
-    logger.info("change_tftp running")
+    logger.info("sync_post_tftp_proxies started")
     settings = api.settings()
 
     # test if proxies are configured:

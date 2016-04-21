@@ -42,7 +42,7 @@ to the configured proxies.
 
 %install
 
-install -p -D -m 644 change_tftpd_proxies.py %{buildroot}%{python_sitelib}/cobbler/modules/change_tftpd_proxies.py
+install -p -D -m 644 sync_post_tftpd_proxies.py %{buildroot}%{python_sitelib}/cobbler/modules/sync_post_tftpd_proxies.py
 install -p -D -m 644 MultipartPostHandler.py %{buildroot}%{python_sitelib}/cobbler/MultipartPostHandler.py
 install -p -D -m 755 configure-tftpsync.sh  %{buildroot}%{_sbindir}/configure-tftpsync.sh
 
@@ -66,7 +66,7 @@ fi
 %files
 %defattr(-,root,root,-)
 %doc COPYING.LIB README
-%{python_sitelib}/cobbler/modules/change_tftpd_proxies.py*
+%{python_sitelib}/cobbler/modules/sync_post_tftpd_proxies.py*
 %{python_sitelib}/cobbler/MultipartPostHandler.py*
 %{_sbindir}/configure-tftpsync.sh
 
