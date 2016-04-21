@@ -19,6 +19,7 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
+import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import org.apache.log4j.Logger;
 
@@ -110,11 +111,11 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
         }
 
 
-        return null;
+        return new CobblerSyncCommand(user).store();
     }
 
     private void createProfile(KickstartData profile) {
-        CobblerProfileCreateCommand creator = new CobblerProfileCreateCommand(profile);
+        CobblerProfileCreateCommand creator = new CobblerProfileCreateCommand(profile, false);
         creator.store();
     }
 
