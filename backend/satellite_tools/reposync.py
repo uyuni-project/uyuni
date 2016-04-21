@@ -182,15 +182,15 @@ class RepoSync(object):
 
         if not url:
             # TODO:need to look at user security across orgs
-            h = rhnSQL.prepare("""select s.id, s.source_url, s.metadata_signed, s.label
-                                  from rhnContentSource s,
-                                       rhnChannelContentSource cs
-                                 where s.id = cs.source_id
-                                   and cs.channel_id = :channel_id""")
-            h.execute(channel_id=int(self.channel['id']))
-            source_urls = h.fetchall_dict()
+            cursor = rhnSQL.prepare(
+                "select source_url from rhnContentSource s, rhnChannelContentSource cs "
+                "where s.id=cs.source_id "
+                "and cs.channel_id = :channel_id "
+            )
+            cursor.execute(channel_id=int(self.channel['id']))
+            source_urls = [url[0] for url in cursor.fetchall()]
             if source_urls:
-                self.urls = source_urls
+                self.urls = [{'id': None, 'source_url': source_urls, 'metadata_signed' : 'N', 'label': None}]
             else:
                 # generate empty metadata and quit
                 taskomatic.add_to_repodata_queue_for_channel_package_subscription(
