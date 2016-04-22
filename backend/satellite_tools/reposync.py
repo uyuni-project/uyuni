@@ -182,15 +182,17 @@ class RepoSync(object):
 
         if not url:
             # TODO:need to look at user security across orgs
-            cursor = rhnSQL.prepare(
-                "select source_url from rhnContentSource s, rhnChannelContentSource cs "
-                "where s.id=cs.source_id "
-                "and cs.channel_id = :channel_id "
+            h = rhnSQL.prepare(
+                """
+                select s.id, s.source_url, s.metadata_signed, s.label
+                from rhnContentSource s, rhnChannelContentSource cs
+                where s.id = cs.source_id and cs.channel_id = :channel_id
+                """
             )
-            cursor.execute(channel_id=int(self.channel['id']))
-            source_urls = [url[0] for url in cursor.fetchall()]
-            if source_urls:
-                self.urls = [{'id': None, 'source_url': source_urls, 'metadata_signed' : 'N', 'label': None}]
+            h.execute(channel_id=int(self.channel['id']))
+            sources = h.fetchall_dict()
+            if sources:
+                self.urls = self._format_sources(sources)
             else:
                 # generate empty metadata and quit
                 taskomatic.add_to_repodata_queue_for_channel_package_subscription(
@@ -205,6 +207,16 @@ class RepoSync(object):
             self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N', 'label': None}]
 
         self.arches = get_compatible_arches(int(self.channel['id']))
+
+    def _format_sources(self, sources):
+        return [
+            dict(
+                id=item['id'],
+                source_url=[item['source_url']],
+                metadata_signed=item['metadata_signed'],
+                label=item['label']
+            ) for item in sources
+        ]
 
     def load_plugin(self, repo_type):
         """Try to import the repository plugin required to sync the repository
