@@ -1451,19 +1451,19 @@ def _best_checksum_item(checksums):
 
 def _to_db_date(date):
     if not date:
-        ret = datetime.utcnow().isoformat(' ')
+        ret = datetime.utcnow()
     elif date.isdigit():
-        ret = datetime.fromtimestamp(float(date)).isoformat(' ')
+        ret = datetime.fromtimestamp(float(date))
     else:
         # we expect to get ISO formated date
         try:
-            ret = datetime.strptime(date, '%Y-%m-%d %H:%M:%S').isoformat(' ')
+            ret = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
         except ValueError:
             try:
-                ret = datetime.strptime(date, '%Y-%m-%d').isoformat(' ')
+                ret = datetime.strptime(date, '%Y-%m-%d')
             except ValueError:
                 raise ValueError("Not a valid date")
-    return ret[:19] #return 1st 19 letters of date, therefore preventing ORA-01830 caused by fractions of seconds
+    return ret.isoformat(' ')[:19] #return 1st 19 letters of date, therefore preventing ORA-01830 caused by fractions of seconds
 
 def _update_keywords(notice):
     """Return a list of Keyword objects for the notice"""
