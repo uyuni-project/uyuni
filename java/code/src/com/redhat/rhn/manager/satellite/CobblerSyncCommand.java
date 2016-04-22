@@ -19,6 +19,9 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * @author paji
@@ -38,9 +41,10 @@ public class CobblerSyncCommand extends CobblerCommand {
      */
     @Override
     public ValidatorError store() {
-        if (!Boolean.TRUE.equals(invokeXMLRPC("sync", xmlRpcToken))) {
-            return new ValidatorError("cobbler.jsp.error_syncing");
-        }
+        Map<String, Object> args = new HashMap<>();
+        args.put("verbose", Boolean.TRUE);
+        // background_sync return the event_id and not a boolean
+        invokeXMLRPC("background_sync", args, xmlRpcToken);
         return null;
     }
 
