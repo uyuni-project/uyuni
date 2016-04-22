@@ -10,3 +10,6 @@ com/suse/scc/client/test/SCCClientUtilTest.class
 this triggers a known Hibernate bug when running without c3p0
 we shold re-enable this when we upgrade Hibernate past 3.2.4
 com/redhat/rhn/webapp/test/RhnServletListenerTest.class
+
+upstream is fixing this
+com/redhat/rhn/frontend/nav/test/NavNodeTest.class
