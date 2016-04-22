@@ -724,7 +724,8 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
             // keep the user selection value
             if (ctx.getRequest().getAttribute(PARENT) != null &&
                     !ctx.getRequest().getAttribute(PARENT).toString().isEmpty()) {
-                ctx.getRequest().setAttribute("defaultParent", ctx.getRequest().getAttribute(PARENT));
+                ctx.getRequest().setAttribute("defaultParent",
+                        ctx.getRequest().getAttribute(PARENT));
             }
             // if cloning a child channel, make a guess as to who the parent should be
             else if (original != null) {
