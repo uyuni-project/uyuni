@@ -103,12 +103,7 @@ class RepoSyncTest(unittest.TestCase):
         channel = {'org_id':'org', 'id':1, 'arch': 'arch1'}
         self.reposync.RepoSync.load_channel = Mock(return_value=channel)
 
-        patcher = patch(
-            'spacewalk.satellite_tools.reposync.rhnSQL.prepare',
-            **{'return_value.fetchall.return_value': []}
-        )
-        with patcher as mock_prepare:
-            self.assertRaises(SystemExit, self.reposync.RepoSync, 'WrongLabel', RTYPE)
+        self.assertRaises(SystemExit, self.reposync.RepoSync, 'WrongLabel', RTYPE)
 
         self.assertTrue(self.reposync.taskomatic.
                         add_to_repodata_queue_for_channel_package_subscription.
@@ -810,31 +805,6 @@ class SyncTest(unittest.TestCase):
             )
             mock_prepare().execute.assert_called_once_with(id=credentials_id)
 
-    def test_rhnSQL_should_return_source_urls_as_list(self):
-        from spacewalk.satellite_tools.reposync import RepoSync
-        url1 = 'http://url.one'
-        url2 = 'http://url.two'
-        patcher = patch(
-            'spacewalk.satellite_tools.reposync.rhnSQL.prepare',
-            **{'return_value.fetchall.return_value': [(url1,), (url2,)]}
-        )
-        with patcher as mock_prepare:
-            repo_sync = RepoSync(
-                channel_label="channel-label",
-                repo_type=RTYPE
-            )
-            self.assertEqual(
-                repo_sync.urls,
-                [
-                    {
-                        'id': None,
-                        'source_url': [url1, url2],
-                        'metadata_signed' : 'N',
-                        'label': None
-                    }
-                ]
-            )
-
 
 class RunScriptTest(unittest.TestCase):
 
@@ -999,6 +969,6 @@ def _mock_rhnsql(module, return_values):
     # return our desired return value
     query = Mock()
     returned_obj = Mock(side_effect=side_effect)
-    query.fetchall_dict = query.fetchone_dict = query.fetchall = returned_obj
+    query.fetchall_dict = query.fetchone_dict = returned_obj
 
     module.rhnSQL.prepare = Mock(return_value=query)
