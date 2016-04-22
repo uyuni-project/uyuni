@@ -57,7 +57,13 @@ class RepoSyncTest(unittest.TestCase):
         self.reposync.rhnSQL.initDB = Mock()
         self.reposync.rhnSQL.commit = Mock()
 
-        _mock_rhnsql(self.reposync, ['Label', { 'label' : 'foo' }])
+        _mock_rhnsql(
+            self.reposync,
+            [
+                [{'id': 'id1', 'label': 'label1', 'source_url': 'http://url.one', 'metadata_signed': 'Y'}],
+                [{'id': 'id2', 'label': 'label2', 'source_url': 'http://url.two', 'metadata_signed': 'N'}],
+            ]
+        )
 
     def tearDown(self):
         self.stdout.close()
@@ -517,6 +523,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs._importer_run.call_args,
                          ((package, 'server.app.yumreposync', mocked_backend),
                           {}))
+
     def test_best_checksum_item_unknown(self):
         checksums = {'no good checksum': None}
 
@@ -804,6 +811,52 @@ class SyncTest(unittest.TestCase):
                 'SELECT username, password FROM suseCredentials WHERE id = :id'
             )
             mock_prepare().execute.assert_called_once_with(id=credentials_id)
+
+    def test_rhnSQL_should_return_source_urls_as_list(self):
+        from spacewalk.satellite_tools.reposync import RepoSync
+        url1 = 'http://url.one'
+        url2 = 'http://url.two'
+        patcher = patch(
+            'spacewalk.satellite_tools.reposync.rhnSQL.prepare',
+            **{
+                'return_value.fetchall_dict.return_value': [
+                    {
+                        'metadata_signed': 'N',
+                        'label': 'channel-label-1',
+                        'id': 508,
+                        'source_url': url1
+                    },
+                    {
+                        'metadata_signed': 'Y',
+                        'label': 'channel-label-2',
+                        'id': 509,
+                        'source_url': url2
+                    }
+                ]
+            }
+        )
+        with patcher as mock_prepare:
+            repo_sync = RepoSync(
+                channel_label="channel-label",
+                repo_type=RTYPE
+            )
+            self.assertEqual(
+                repo_sync.urls,
+                [
+                    {
+                        'metadata_signed': 'N',
+                        'label': 'channel-label-1',
+                        'id': 508,
+                        'source_url': [url1]
+                    },
+                    {
+                        'metadata_signed': 'Y',
+                        'label': 'channel-label-2',
+                        'id': 509,
+                        'source_url': [url2]
+                    }
+                ]
+            )
 
 
 class RunScriptTest(unittest.TestCase):
