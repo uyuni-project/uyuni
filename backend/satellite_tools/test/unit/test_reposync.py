@@ -57,7 +57,13 @@ class RepoSyncTest(unittest.TestCase):
         self.reposync.rhnSQL.initDB = Mock()
         self.reposync.rhnSQL.commit = Mock()
 
-        _mock_rhnsql(self.reposync, ['Label', { 'label' : 'foo' }])
+        _mock_rhnsql(
+            self.reposync,
+            [
+                [{'id': 'id1', 'label': 'label1', 'source_url': 'http://url.one', 'metadata_signed': 'Y'}],
+                [{'id': 'id2', 'label': 'label2', 'source_url': 'http://url.two', 'metadata_signed': 'N'}],
+            ]
+        )
 
     def tearDown(self):
         self.stdout.close()
@@ -103,12 +109,7 @@ class RepoSyncTest(unittest.TestCase):
         channel = {'org_id':'org', 'id':1, 'arch': 'arch1'}
         self.reposync.RepoSync.load_channel = Mock(return_value=channel)
 
-        patcher = patch(
-            'spacewalk.satellite_tools.reposync.rhnSQL.prepare',
-            **{'return_value.fetchall.return_value': []}
-        )
-        with patcher as mock_prepare:
-            self.assertRaises(SystemExit, self.reposync.RepoSync, 'WrongLabel', RTYPE)
+        self.assertRaises(SystemExit, self.reposync.RepoSync, 'WrongLabel', RTYPE)
 
         self.assertTrue(self.reposync.taskomatic.
                         add_to_repodata_queue_for_channel_package_subscription.
@@ -522,6 +523,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs._importer_run.call_args,
                          ((package, 'server.app.yumreposync', mocked_backend),
                           {}))
+
     def test_best_checksum_item_unknown(self):
         checksums = {'no good checksum': None}
 
@@ -816,7 +818,22 @@ class SyncTest(unittest.TestCase):
         url2 = 'http://url.two'
         patcher = patch(
             'spacewalk.satellite_tools.reposync.rhnSQL.prepare',
-            **{'return_value.fetchall.return_value': [(url1,), (url2,)]}
+            **{
+                'return_value.fetchall_dict.return_value': [
+                    {
+                        'metadata_signed': 'N',
+                        'label': 'channel-label-1',
+                        'id': 508,
+                        'source_url': url1
+                    },
+                    {
+                        'metadata_signed': 'Y',
+                        'label': 'channel-label-2',
+                        'id': 509,
+                        'source_url': url2
+                    }
+                ]
+            }
         )
         with patcher as mock_prepare:
             repo_sync = RepoSync(
@@ -827,10 +844,16 @@ class SyncTest(unittest.TestCase):
                 repo_sync.urls,
                 [
                     {
-                        'id': None,
-                        'source_url': [url1, url2],
-                        'metadata_signed' : 'N',
-                        'label': None
+                        'metadata_signed': 'N',
+                        'label': 'channel-label-1',
+                        'id': 508,
+                        'source_url': [url1]
+                    },
+                    {
+                        'metadata_signed': 'Y',
+                        'label': 'channel-label-2',
+                        'id': 509,
+                        'source_url': [url2]
                     }
                 ]
             )
@@ -999,6 +1022,6 @@ def _mock_rhnsql(module, return_values):
     # return our desired return value
     query = Mock()
     returned_obj = Mock(side_effect=side_effect)
-    query.fetchall_dict = query.fetchone_dict = query.fetchall = returned_obj
+    query.fetchall_dict = query.fetchone_dict = returned_obj
 
     module.rhnSQL.prepare = Mock(return_value=query)
