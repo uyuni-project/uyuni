@@ -21,8 +21,12 @@
 import sys
 
 # other rhn imports
+from spacewalk.common.usix import raise_with_tb
 from spacewalk.server import rhnSQL
 from spacewalk.common.rhnTB import fetchTraceback
+
+# bare-except and broad-except
+# pylint: disable=W0702,W0703
 
 def get_all_orgs():
     """ Fetch org_id. Create first org_id if needed.
@@ -79,7 +83,7 @@ def _checkCertMatch_rhnCryptoKey(caCert, description, org_id, deleteRowYN=0,
         if cert == rhnSQL.read_lob(row['key']):
             # match found, nothing to do
             if verbosity:
-                print "Nothing to do: certificate to be pushed matches certificate in database."
+                print("Nothing to do: certificate to be pushed matches certificate in database.")
             return
         # there can only be one (bugzilla: 120297)
         rhn_cryptokey_id = int(row['id'])
@@ -127,8 +131,8 @@ def _lobUpdate_rhnCryptoKey(rhn_cryptokey_id, caCert):
                       cert, rhn_cryptokey_id=rhn_cryptokey_id)
     except:
         # didn't go in!
-        raise CaCertInsertionError("ERROR: CA certificate failed to be "
-                                   "inserted into the database"), None, sys.exc_info()[2]
+        raise_with_tb(CaCertInsertionError("ERROR: CA certificate failed to be "
+                                           "inserted into the database"), sys.exc_info()[2])
 
 
 def store_rhnCryptoKey(description, caCert, verbosity=0):
@@ -160,8 +164,8 @@ def store_rhnCryptoKey(description, caCert, verbosity=0):
             _lobUpdate_rhnCryptoKey(rhn_cryptokey_id, caCert)
             rhnSQL.commit()
         except rhnSQL.sql_base.SQLError:
-            raise CaCertInsertionError(
-                "...the traceback: %s" % fetchTraceback()), None, sys.exc_info()[2]
+            raise_with_tb(CaCertInsertionError(
+                "...the traceback: %s" % fetchTraceback()), sys.exc_info()[2])
 
 
 _querySelectCryptoCertInfo = rhnSQL.Statement("""
@@ -204,6 +208,6 @@ if __name__ == '__main__':
     # NOTE!!! This has be seg-faulting on exit, specifically upon closeDB()
     #         Bugzilla: 127324
 
-    print "end of __main__"
+    print("end of __main__")
     rhnSQL.closeDB()
-    print "we have closed the database"
+    print("we have closed the database")

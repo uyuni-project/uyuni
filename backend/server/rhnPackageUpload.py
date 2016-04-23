@@ -17,6 +17,7 @@ import os
 import sys
 import tempfile
 
+from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import rhn_mpm, rhn_deb, rhn_pkg
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
@@ -74,7 +75,7 @@ def relative_path_from_header(header, org_id, checksum_type=None, checksum=None)
     nevra = importLib.get_nevra(header)
     if header.is_source:
         # 4/18/05 wregglej. if 1051 is in the header's keys, then it's a nosrc package.
-        if 1051 in header.keys():
+        if 1051 in list(header.keys()):
             nevra[4] = 'nosrc'
         else:
             nevra[4] = 'src'
@@ -83,7 +84,7 @@ def relative_path_from_header(header, org_id, checksum_type=None, checksum=None)
 
     # if the package isn't an rpm and the package name is spelled out in the
     # header, use it
-    if header.packaging == "mpm" and "package_name" in header.keys() and \
+    if header.packaging == "mpm" and "package_name" in list(header.keys()) and \
        header["package_name"]:
 
         rel_path = relative_path_from_nevra_without_package_name(nevra, org_id,
@@ -122,12 +123,13 @@ def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None
         importLib.move_package(a_pkg.payload_stream.name, basedir=CFG.MOUNT_POINT,
                                relpath=relative_path,
                                checksum_type=a_pkg.checksum_type, checksum=a_pkg.checksum, force=1)
-    except OSError, e:
-        raise rhnFault(50, "Package upload failed: %s" % e), None, sys.exc_info()[2]
+    except OSError:
+        e = sys.exc_info()[1]
+        raise_with_tb(rhnFault(50, "Package upload failed: %s" % e), sys.exc_info()[2])
     except importLib.FileConflictError:
-        raise rhnFault(50, "File already exists"), None, sys.exc_info()[2]
+        raise_with_tb(rhnFault(50, "File already exists"), sys.exc_info()[2])
     except:
-        raise rhnFault(50, "File error"), None, sys.exc_info()[2]
+        raise_with_tb(rhnFault(50, "File error"), sys.exc_info()[2])
 
     pkg = mpmSource.create_package(a_pkg.header, size=a_pkg.payload_size,
                                    checksum_type=a_pkg.checksum_type, checksum=a_pkg.checksum,
@@ -261,7 +263,7 @@ def _key_ids(sigs):
     for sig in sigs:
         h[sig['key_id']] = None
 
-    l = h.keys()
+    l = list(h.keys())
     l.sort()
     return l
 
@@ -297,12 +299,12 @@ def load_package(package_stream):
         try:
             header, payload_stream = rhn_deb.load(filename=package_stream.name)
         except:
-            raise rhnFault(50, "Unable to load package", explain=0), None, sys.exc_info()[2]
+            raise_with_tb(rhnFault(50, "Unable to load package", explain=0), sys.exc_info()[2])
     else:
         try:
             header, payload_stream = rhn_mpm.load(file_obj=package_stream)
         except:
-            raise rhnFault(50, "Unable to load package", explain=0), None, sys.exc_info()[2]
+            raise_with_tb(rhnFault(50, "Unable to load package", explain=0), sys.exc_info()[2])
 
     payload_stream.seek(0, 0)
     if header.packaging == "mpm" or header.packaging == "deb":

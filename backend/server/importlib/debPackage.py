@@ -21,7 +21,7 @@ import time
 import string
 from importLib import Channel
 from backendLib import gmtime, localtime
-from types import IntType
+from spacewalk.common.usix import IntType
 from spacewalk.common.stringutils import to_string
 
 
@@ -41,14 +41,14 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
         ]
 
         for t in self._already_mapped:
-            if self.tagMap.has_key(t):
+            if t in self.tagMap:
                 del self.tagMap[t]
 
         # XXX is seems to me that this is the place that 'source_rpm' is getting
         # set
         for f in self.keys():
             field = f
-            if self.tagMap.has_key(f):
+            if f in self.tagMap:
                 field = self.tagMap[f]
                 if not field:
                     # Unsupported
@@ -62,7 +62,7 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
                     val = gmtime(val)
             elif val:
                 # Convert to strings
-                if isinstance(val, unicode):
+                if isinstance(val, UnicodeType):
                     val = to_string(val)
                 else:
                     val = str(val)

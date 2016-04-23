@@ -15,7 +15,12 @@
 # Sends notification to search-server that it should update server index
 #
 
-import xmlrpclib
+try:
+    #  python 2
+    import xmlrpclib
+except ImportError:
+    #  python3
+    import xmlrpc.client as xmlrpclib
 from spacewalk.common.rhnLog import log_error
 
 
@@ -28,7 +33,8 @@ class SearchNotify:
         try:
             client = xmlrpclib.ServerProxy(self.addr)
             result = client.admin.updateIndex(indexName)
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             log_error("Failed to notify search service located at %s to update %s indexes"
                       % (self.addr, indexName), e)
             return False
@@ -37,4 +43,4 @@ class SearchNotify:
 if __name__ == "__main__":
     search = SearchNotify()
     result = search.notify()
-    print "search.notify() = %s" % (result)
+    print("search.notify() = %s" % (result))

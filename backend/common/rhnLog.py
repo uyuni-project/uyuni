@@ -190,7 +190,7 @@ class rhnLog:
                     os.chown(self.file, apache_uid, 0)
                 else:
                     os.chown(self.file, apache_uid, apache_gid)
-                os.chmod(self.file, 0660)
+                os.chmod(self.file, int('0660', 8))
         except:
             log_stderr("ERROR LOG FILE: Couldn't open log file %s" % self.file,
                        sys.exc_info()[:2])
@@ -241,7 +241,7 @@ class rhnLog:
     def set_req(self, req=None):
         remoteAddr = '0.0.0.0'
         if req:
-            if req.headers_in.has_key("X-Forwarded-For"):
+            if "X-Forwarded-For" in req.headers_in:
                 remoteAddr = req.headers_in["X-Forwarded-For"]
             else:
                 remoteAddr = req.connection.remote_ip
@@ -265,11 +265,16 @@ def _exit(lastExitfunc=_exitfuncChain):
         LOG = None
     if lastExitfunc:
         lastExitfunc()
-sys.exitfunc = _exit
+
+if sys.version_info[0] == 3:
+    import atexit
+    atexit.register(_exit)
+else:
+    sys.exitfunc = _exit
 
 
 #------------------------------------------------------------------------------
 if __name__ == "__main__":
-    print "You can not run this module by itself"
+    print("You can not run this module by itself")
     sys.exit(-1)
 #------------------------------------------------------------------------------

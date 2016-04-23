@@ -19,10 +19,16 @@
 import sys
 import base64
 import string
-import xmlrpclib
+try:
+    #  python 2
+    import xmlrpclib
+except ImportError:
+    #  python3
+    import xmlrpc.client as xmlrpclib
 from rhn.rpclib import transports
 
 # common modules
+from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import apache, rhnFlags
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common import byterange
@@ -134,7 +140,13 @@ class apacheRequest:
         except (TypeError, ValueError, KeyError, IndexError, UnknownXML):
             # report exception back to server
             fault = 1
-            if sys.exc_type == UnknownXML:
+
+            if sys.version_info[0] == 3:
+                exctype = sys.exc_info()[0]
+            else:
+                exctype = sys.exc_type
+
+            if exctype == UnknownXML:
                 fault = -1
             e_type, e_value = sys.exc_info()[:2]
             response = xmlrpclib.Fault(fault, _(
@@ -144,16 +156,20 @@ class apacheRequest:
                       extra="Response sent back to the caller:\n%s\n" % (
                           response.faultString,),
                       severity="notification")
-        except rhnNotFound, e:
+        except rhnNotFound:
+            e = sys.exc_info()[1]
             return apache.HTTP_NOT_FOUND
         # pkilambi:catch exception if redirect
-        except redirectException, re:
+        except redirectException:
+            re = sys.exc_info()[1]
             log_debug(3, "redirect exception caught", re.path)
             response = re.path
 
-        except rhnFault, f:
+        except rhnFault:
+            f = sys.exc_info()[1]
             response = f.getxml()
-        except rhnSQL.SQLSchemaError, e:
+        except rhnSQL.SQLSchemaError:
+            e = sys.exc_info()[1]
             f = None
             if e.errno == 20200:
                 log_debug(2, "User Group Membership EXCEEDED")
@@ -167,14 +183,16 @@ class apacheRequest:
                           severity="schema")
                 return apache.HTTP_INTERNAL_SERVER_ERROR
             response = f.getxml()
-        except rhnSQL.SQLError, e:
+        except rhnSQL.SQLError:
+            e = sys.exc_info()[1]
             log_error("rhnSQL.SQLError caught", e)
             rhnSQL.rollback()
             Traceback(method, self.req,
                       extra="SQL Error generated: %s" % e,
                       severity="schema")
             return apache.HTTP_INTERNAL_SERVER_ERROR
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             log_error("Unhandled exception", e)
             rhnSQL.rollback()
             # otherwise we do a full stop
@@ -242,13 +260,13 @@ class apacheRequest:
         response_size = file_size
 
         # Respond to if-modified-since requests
-        if (self.req.headers_in.has_key("If-Modified-Since") and
-                rhnFlags.get("outputTransportOptions").has_key("Last-Modified") and
+        if ("If-Modified-Since" in self.req.headers_in and
+                "Last-Modified" in rhnFlags.get("outputTransportOptions") and
                 rhnFlags.get("outputTransportOptions")['Last-Modified'] == self.req.headers_in['If-Modified-Since']):
             return apache.HTTP_NOT_MODIFIED
 
         # Serve up the requested byte range
-        if self.req.headers_in.has_key("Range"):
+        if "Range" in self.req.headers_in:
             try:
                 range_start, range_end = \
                     byterange.parse_byteranges(self.req.headers_in["Range"],
@@ -280,7 +298,7 @@ class apacheRequest:
         if response.name:
             self.req.headers_out["X-Package-FileName"] = response.name
 
-        xrepcon = self.req.headers_in.has_key("X-Replace-Content-Active") \
+        xrepcon = "X-Replace-Content-Active" in self.req.headers_in \
             and rhnFlags.test("Download-Accelerator-Path")
         if xrepcon:
             fpath = rhnFlags.get("Download-Accelerator-Path")
@@ -294,7 +312,7 @@ class apacheRequest:
         # send the headers
         self.req.send_http_header()
 
-        if self.req.headers_in.has_key("Range"):
+        if "Range" in self.req.headers_in:
             # and the file
             read = 0
             while read < response_size:
@@ -373,7 +391,8 @@ class apacheRequest:
             response = self.normalize(response)
             try:
                 response = xmlrpclib.dumps(response, methodresponse=1)
-            except TypeError, e:
+            except TypeError:
+                e = sys.exc_info()[1]
                 log_debug(4, "Error \"%s\" encoding response = %s" % (e, response))
                 Traceback("apacheHandler.response", self.req,
                           extra="Error \"%s\" encoding response = %s" % (e, response),
@@ -432,7 +451,7 @@ class apachePOST(apacheRequest):
             self.parser.feed(data)
         except IndexError:
             # malformed XML data
-            raise xmlrpclib.ResponseError, None, sys.exc_info()[2]
+            raise_with_tb(xmlrpclib.ResponseError, sys.exc_info()[2])
 
         self.parser.close()
         # extract the method and arguments; we pass the exceptions through
@@ -461,8 +480,8 @@ class apachePOST(apacheRequest):
         try:
             classname, funcname = string.split(method, '.', 1)
         except:
-            raise UnknownXML("method '%s' doesn't have a class and function" %
-                             (method,)), None, sys.exc_info()[2]
+            raise_with_tb(UnknownXML("method '%s' doesn't have a class and function" %
+                             (method,)), sys.exc_info()[2])
         if not classname or not funcname:
             raise UnknownXML(method)
 
@@ -532,7 +551,7 @@ class apacheGET:
         log_debug(3, "Handler classes", self.handler_classes)
 
         self.handler = None
-        if not self.handler_classes.has_key(self.server):
+        if self.server not in self.handler_classes:
             raise HandlerNotFoundError(self.server)
 
         handler_class = self.handler_classes[self.server]
@@ -582,12 +601,14 @@ class GetHandler(apacheRequest):
 
         try:
             method, params = self._get_method_params()
-        except rhnFault, f:
+        except rhnFault:
+            f = sys.exc_info()[1]
             log_debug(2, "Fault caught")
             response = f.getxml()
             self.response(response)
             return apache.HTTP_NOT_FOUND
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             rhnSQL.rollback()
             # otherwise we do a full stop
             Traceback(method, self.req, severity="unhandled")
@@ -653,7 +674,7 @@ class GetHandler(apacheRequest):
     def redirect(self, req, url, temporary=1):
         log_debug(3, "url input to redirect is ", url)
         if req.sent_bodyct:
-            raise IOError, "Cannot redirect after headers have already been sent."
+            raise IOError("Cannot redirect after headers have already been sent.")
 
         # akamize the url with the new tokengen before sending the redirect response
         import tokengen.Generator

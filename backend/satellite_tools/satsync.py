@@ -22,9 +22,14 @@ import os
 import sys
 import stat
 import time
-import types
+import spacewalk.common.usix as usix
 import exceptions
-import Queue
+try:
+    #  python 2
+    import Queue
+except ImportError:
+    #  python3
+    import queue as Queue # pylint: disable=F0401
 import threading
 from optparse import Option, OptionParser
 from rhn.connections import idn_ascii_to_puny, idn_puny_to_unicode
@@ -34,6 +39,7 @@ translation = gettext.translation('spacewalk-backend-server', fallback=True)
 _ = translation.ugettext
 
 # __rhn imports__
+from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import rhnMail, rhnLib
 from spacewalk.common.rhnLog import initLOG
 from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
@@ -148,7 +154,7 @@ class Runner:
     def _handle_step_dependents(self, actionDict, step):
         ad = actionDict
 
-        if ad.has_key(step):
+        if step in ad:
             # if the step is turned off, then the steps that are dependent on it have to be turned
             # off as well.
             if ad[step] == 0:
@@ -164,7 +170,7 @@ class Runner:
     def _turn_off_dependents(self, actionDict, step):
         ad = actionDict
         for dependent in self.step_precedence[step]:
-            if ad.has_key(dependent):
+            if dependent in ad:
                 ad[dependent] = 0
         return ad
 
@@ -183,7 +189,7 @@ class Runner:
         self._actions = actionDict
 
         # 5/26/05 wregglej - 156079 have to handle the list-channels special case.
-        if actionDict.has_key('list-channels'):
+        if 'list-channels' in actionDict:
             if actionDict['list-channels'] == 1:
                 actionDict['channels'] = 1
                 actionDict['arches'] = 0
@@ -203,7 +209,8 @@ class Runner:
             self.syncer.initialize()
         except (KeyboardInterrupt, SystemExit):
             raise
-        except xmlWireSource.rpclib.xmlrpclib.Fault, e:
+        except xmlWireSource.rpclib.xmlrpclib.Fault:
+            e = sys.exc_info()[1]
             if CFG.ISS_PARENT:
                 # we met old satellite who do not know ISS
                 log(-1, ['', messages.sw_iss_not_available % e.faultString ], )
@@ -212,13 +219,14 @@ class Runner:
                 log(-1, ['', messages.syncer_error % e.faultString], )
                 sys.exit(9)
 
-        except Exception, e:  # pylint: disable=E0012, W0703
+        except Exception:  # pylint: disable=E0012, W0703
+            e = sys.exc_info()[1]
             log(-1, ['', messages.syncer_error % e], )
             sys.exit(10)
 
         log(1, '   db:  %s/<password>@%s' % (CFG.DB_USER, CFG.DB_NAME))
 
-        selected = [action for action in actionDict.keys() if actionDict[action]]
+        selected = [action for action in list(actionDict.keys()) if actionDict[action]]
         log2(-1, 3, "Action list/commandline toggles: %s" % repr(selected),
              stream=sys.stderr)
 
@@ -257,7 +265,8 @@ class Runner:
             except RhnSyncException:
                 rhnSQL.rollback()
                 raise
-            except exception, e:
+            except exception:
+                e = sys.exc_info()[1]
                 msg = _("ERROR: Encountered IntegrityError: \n"
                         + str(e)
                         + "\nconsider removing satellite-sync cache at /var/cache/rhn/satsync/*"
@@ -307,10 +316,12 @@ class Runner:
             return 1
         except (KeyboardInterrupt, SystemExit):
             raise
-        except xmlWireSource.rpclib.xmlrpclib.Fault, e:
+        except xmlWireSource.rpclib.xmlrpclib.Fault:
+            e = sys.exc_info()[1]
             log(-1, messages.failed_step % (step_name, e.faultString))
             return 1
-        except Exception, e:  # pylint: disable=E0012, W0703
+        except Exception:  # pylint: disable=E0012, W0703
+            e = sys.exc_info()[1]
             log(-1, messages.failed_step % (step_name, e))
             return 1
         return ret
@@ -324,7 +335,8 @@ class Runner:
     def _step_channels(self):
         try:
             self.syncer.process_channels()
-        except MissingParentChannelError, e:
+        except MissingParentChannelError:
+            e = sys.exc_info()[1]
             msg = messages.parent_channel_error % repr(e.channel)
             log(-1, msg)
             # log2email(-1, msg) # redundant
@@ -408,7 +420,7 @@ def sendMail(forceEmail=0):
     if forceEmail or (OPTIONS is not None and OPTIONS.email):
         body = dumpEMAIL_LOG()
         if body:
-            print _("+++ sending log as an email +++")
+            print(_("+++ sending log as an email +++"))
             host_label = idn_puny_to_unicode(os.uname()[1])
             headers = {
                 'Subject' : _('SUSE Manager Inter Server sync. report from %s') % host_label,
@@ -418,7 +430,7 @@ def sendMail(forceEmail=0):
                 sndr = CFG.default_mail_from
             rhnMail.send(headers, body, sender=sndr)
         else:
-            print _("+++ email requested, but there is nothing to send +++")
+            print(_("+++ email requested, but there is nothing to send +++"))
         # mail was sent. Let's not allow it to be sent twice...
         OPTIONS.email = None
 
@@ -520,7 +532,8 @@ class Syncer:
                         and os.access(self._systemidPath, os.R_OK)):
                     self.systemid = open(self._systemidPath, 'rb').read()
                 else:
-                    raise RhnSyncException, _('ERROR: this server must be registered with SUSE Manager.'), sys.exc_info()[2]
+                    raise_with_tb(RhnSyncException(_('ERROR: this server must be registered with SUSE Manager.')),
+                                  sys.exc_info()[2])
             # authorization check of the satellite
             auth = xmlWireSource.AuthWireSource(self.systemid, self.sslYN,
                                                 self.xml_dump_version)
@@ -553,7 +566,8 @@ class Syncer:
         except KeyboardInterrupt:
             log(-1, _('*** SYSTEM INTERRUPT CALLED ***'), stream=sys.stderr)
             raise
-        except (FatalParseException, ParseException, Exception), e:  # pylint: disable=E0012, W0703
+        except (FatalParseException, ParseException, Exception):  # pylint: disable=E0012, W0703
+            e = sys.exc_info()[1]
             # nuke the container batch upon error!
             self.containerHandler.clear()
             msg = ''
@@ -656,8 +670,8 @@ class Syncer:
                     self._process_comps(importer.backend, label, sync_handlers._to_timestamp(ch['comps_last_modified']))
 
         except InvalidChannelFamilyError:
-            raise RhnSyncException(messages.invalid_channel_family_error %
-                                   ''.join(requested_channels)), None, sys.exc_info()[2]
+            raise_with_tb(RhnSyncException(messages.invalid_channel_family_error %
+                                           ''.join(requested_channels)), sys.exc_info()[2])
         except MissingParentChannelError:
             raise
 
@@ -841,7 +855,7 @@ class Syncer:
             sync_handlers.get_short_package_handler(),
             self.xmlDataServer, 'getChannelShortPackagesXmlStream')
 
-        sorted_channels = sorted(self._channel_packages.items(), key=lambda x: x[0])  # sort by channel_label
+        sorted_channels = sorted(list(self._channel_packages.items()), key=lambda x: x[0])  # sort by channel_label
         for channel_label, package_ids in sorted_channels:
             log(1, _("   Retrieving / parsing short package metadata: %s (%s)") %
                 (channel_label, len(package_ids)))
@@ -902,7 +916,7 @@ class Syncer:
         self._missing_channel_packages = {}
         self._missing_fs_packages = {}
 
-        sorted_channels = sorted(self._channel_packages.items(), key=lambda x: x[0])  # sort by channel_label
+        sorted_channels = sorted(list(self._channel_packages.items()), key=lambda x: x[0])  # sort by channel_label
         for channel_label, upids in sorted_channels:
             log(1, _("Diffing package metadata (what's missing locally?): %s") %
                 channel_label)
@@ -927,7 +941,7 @@ class Syncer:
                 avail_pids = self._avail_channel_packages[channel_label]
 
             if set(pids or []) > set(avail_pids or []):
-                raise RhnSyncException, _('ERROR: incremental dump skipped')
+                raise RhnSyncException(_('ERROR: incremental dump skipped'))
 
     @staticmethod
     def _get_rel_package_path(nevra, org_id, source, checksum_type, checksum):
@@ -1020,7 +1034,7 @@ class Syncer:
     def download_rpms(self):
         log(1, ["", _("Downloading rpm packages")])
         # Lets go fetch the packages and push them to their proper location:
-        sorted_channels = sorted(self._missing_fs_packages.items(), key=lambda x: x[0])  # sort by channel
+        sorted_channels = sorted(list(self._missing_fs_packages.items()), key=lambda x: x[0])  # sort by channel
         for channel, missing_fs_packages in sorted_channels:
             missing_packages_count = len(missing_fs_packages)
             log(1, _("   Fetching any missing RPMs: %s (%s)") %
@@ -1067,7 +1081,7 @@ class Syncer:
             sync_handlers.get_package_handler(),
             self.xmlDataServer, 'getPackageXmlStream')
 
-        sorted_channels = sorted(missing_packages.items(), key=lambda x: x[0])  # sort by channel
+        sorted_channels = sorted(list(missing_packages.items()), key=lambda x: x[0])  # sort by channel
         for channel, pids in sorted_channels:
             self._process_batch(channel, pids[:], messages.package_parsing,
                                 stream_loader.process, is_slow=True)
@@ -1086,7 +1100,8 @@ class Syncer:
         self._diff_source_packages()
         log(1, ["", _("Downloading srpm packages")])
         # Lets go fetch the source packages and push them to their proper location:
-        sorted_channels = sorted(self._missing_fs_source_packages.items(), key=lambda x: x[0])  # sort by channel_label
+        # sort by channel_label
+        sorted_channels = sorted(list(self._missing_fs_source_packages.items()), key=lambda x: x[0])
         for channel, missing_fs_source_packages in sorted_channels:
             missing_source_packages_count = len(missing_fs_source_packages)
             log(1, _("   Fetching any missing SRPMs: %s (%s)") %
@@ -1119,7 +1134,7 @@ class Syncer:
                 continue
             ret_sps = []
             for sp in sps:
-                if isinstance(sp, types.StringType):
+                if isinstance(sp, usix.StringType):
                     # Old style
                     ret_sps.append((sp, None))
                 else:
@@ -1255,7 +1270,7 @@ class Syncer:
                 # diffs
                 missing_kickstarts[kt_label] = None
 
-        ret = missing_kickstarts.items()
+        ret = list(missing_kickstarts.items())
         ret.sort()
         return ret
 
@@ -1272,7 +1287,8 @@ class Syncer:
             try:
                 f.write_file(stream)
                 break  # inner for
-            except FileCreationError, e:
+            except FileCreationError:
+                e = sys.exc_info()[1]
                 msg = e.args[0]
                 log2disk(-1, _("Unable to save file %s: %s") % (path,
                                                                 msg))
@@ -1302,7 +1318,7 @@ class Syncer:
         missing_ks_files = self._compute_missing_ks_files()
 
         log(1, ["", _("Downloading kickstartable trees files")])
-        sorted_channels = sorted(missing_ks_files.items(), key=lambda x: x[0])  # sort by channel
+        sorted_channels = sorted(list(missing_ks_files.items()), key=lambda x: x[0])  # sort by channel
         for channel, files in sorted_channels:
             self._process_batch(channel, files[:], messages.kickstart_downloading,
                                 self._download_kickstarts_file,
@@ -1449,7 +1465,7 @@ class Syncer:
                     last_modified = erratum['last_modified']
                     last_modified = rhnLib.timestamp(last_modified)
                     advisory_name = erratum['advisory_name']
-                    if db_ce.has_key(advisory_name):
+                    if advisory_name in db_ce:
                         _foo, db_last_modified = db_ce[advisory_name]
                         if last_modified == db_last_modified:
                             # We already have this erratum
@@ -1499,7 +1515,7 @@ class Syncer:
             sync_handlers.get_errata_handler(),
             self.xmlDataServer, 'getErrataXmlStream')
 
-        sorted_channels = sorted(not_cached_errata.items(), key=lambda x: x[0])  # sort by channel
+        sorted_channels = sorted(list(not_cached_errata.items()), key=lambda x: x[0])  # sort by channel
         for channel, erratum_ids in sorted_channels:
             self._process_batch(channel, erratum_ids[:], messages.erratum_parsing,
                                 stream_loader.process)
@@ -1553,7 +1569,8 @@ class Syncer:
         _validate_package_org(batch)
         try:
             sync_handlers.import_packages(batch, sources)
-        except (SQLError, SQLSchemaError, SQLConnectError), e:
+        except (SQLError, SQLSchemaError, SQLConnectError):
+            e = sys.exc_info()[1]
             # an SQL error is fatal... crash and burn
             exitWithTraceback(e, 'Exception caught during import', 13)
 
@@ -1565,7 +1582,7 @@ class Syncer:
             log(1, ["", _("Importing package metadata")])
             missing_channel_items = self._missing_channel_packages
 
-        sorted_channels = sorted(missing_channel_items.items(), key=lambda x: x[0])  # sort by channel
+        sorted_channels = sorted(list(missing_channel_items.items()), key=lambda x: x[0])  # sort by channel
         for channel, packages in sorted_channels:
             self._process_batch(channel, packages[:],
                                 messages.package_importing,
@@ -1586,7 +1603,7 @@ class Syncer:
                     continue
                 assert package is not None
                 channel_obj = {'label': chn}
-                if uq_packages.has_key(pid):
+                if pid in uq_packages:
                     # We've seen this package before - just add this channel
                     # to it
                     uq_packages[pid]['channels'].append(channel_obj)
@@ -1594,7 +1611,7 @@ class Syncer:
                     package['channels'] = [channel_obj]
                     uq_packages[pid] = package
 
-        uq_pkg_data = uq_packages.values()
+        uq_pkg_data = list(uq_packages.values())
         # check to make sure the orgs exported are valid
         _validate_package_org(uq_pkg_data)
         try:
@@ -1602,7 +1619,8 @@ class Syncer:
                 importer = sync_handlers.link_channel_packages(uq_pkg_data, strict=OPTIONS.consider_full)
             else:
                 importer = sync_handlers.link_channel_packages(uq_pkg_data)
-        except (SQLError, SQLSchemaError, SQLConnectError), e:
+        except (SQLError, SQLSchemaError, SQLConnectError):
+            e = sys.exc_info()[1]
             # an SQL error is fatal... crash and burn
             exitWithTraceback(e, 'Exception caught during import', 14)
         return importer.affected_channels
@@ -1632,7 +1650,8 @@ class Syncer:
     def import_errata(self):
         log(1, ["", _("Importing channel patches")])
         errata_collection = sync_handlers.ErrataCollection()
-        sorted_channels = sorted(self._missing_channel_errata.items(), key=lambda x: x[0])  # sort by channel_label
+        # sort by channel_label
+        sorted_channels = sorted(list(self._missing_channel_errata.items()), key=lambda x: x[0])
         for chn, errata in sorted_channels:
             log(2, _("Importing %s patches for channel %s.") % (len(errata), chn))
             batch = []
@@ -1815,7 +1834,8 @@ class Syncer:
             rpmFile = rpmsPath(package_id, self.mountpoint, sources)
             try:
                 stream = open(rpmFile)
-            except IOError, e:
+            except IOError:
+                e = sys.exc_info()[1]
                 if e.errno != 2:  # No such file or directory
                     raise
                 return (rpmFile, None)
@@ -1929,7 +1949,8 @@ class ThreadDownload(threading.Thread):
                 try:
                     rpmManip.write_file(stream)
                     break  # inner for
-                except FileCreationError, e:
+                except FileCreationError:
+                    e = sys.exc_info()[1]
                     msg = e.args[0]
                     log2disk(-1, _("Unable to save file %s: %s") % (
                         rpmManip.full_path, msg))
@@ -2069,7 +2090,8 @@ def _getImportedChannels(withAdvisory=None):
         h = rhnSQL.prepare(query)
         h.execute(advisory=withAdvisory)
         return [x['label'] for x in h.fetchall_dict() or []]
-    except (SQLError, SQLSchemaError, SQLConnectError), e:
+    except (SQLError, SQLSchemaError, SQLConnectError):
+        e = sys.exc_info()[1]
         # An SQL error is fatal... crash and burn
         exitWithTraceback(e, 'SQL ERROR during xml processing', 17)
     return []
@@ -2182,7 +2204,8 @@ def processCommandline():
         rhnSQL.initDB()
         rhnSQL.clear_log_id()
         rhnSQL.set_log_auth_login('SETUP')
-    except (SQLError, SQLSchemaError, SQLConnectError), e:
+    except (SQLError, SQLSchemaError, SQLConnectError):
+        e = sys.exc_info()[1]
         # An SQL error is fatal... crash and burn
         log(-1, _("ERROR: Can't connect to the database: %s") % e, stream=sys.stderr)
         log(-1, _("ERROR: Check if your database is running."), stream=sys.stderr)
@@ -2211,8 +2234,9 @@ def processCommandline():
         try:
             debugLevel = int(OPTIONS.debug_level)
             if not (0 <= debugLevel <= debugRange):
-                raise RhnSyncException, "exception will be caught", sys.exc_info()[2]
-        except KeyboardInterrupt, e:
+                raise_with_tb(RhnSyncException("exception will be caught"), sys.exc_info()[2])
+        except KeyboardInterrupt:
+            e = sys.exc_info()[1]
             raise
         # pylint: disable=E0012, W0703
         except Exception:
@@ -2284,7 +2308,7 @@ def processCommandline():
 
     # make sure *all* steps in the actionDict are handled.
     for step in stepHierarchy:
-        actionDict[step] = actionDict.has_key(step)
+        actionDict[step] = step in actionDict
 
     channels = OPTIONS.channel or []
     if OPTIONS.list_channels:
@@ -2356,8 +2380,8 @@ def processCommandline():
         except (ValueError, TypeError):
             # int(None) --> TypeError
             # int('a')  --> ValueError
-            raise ValueError(_("ERROR: --batch-size must have a value within the range: 1..50")), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ValueError(_("ERROR: --batch-size must have a value within the range: 1..50")),
+                          sys.exc_info()[2])
 
     OPTIONS.mount_point = fileutils.cleanupAbsPath(OPTIONS.mount_point)
     OPTIONS.systemid = fileutils.cleanupAbsPath(OPTIONS.systemid)
@@ -2426,7 +2450,8 @@ if __name__ == '__main__':
                      " purposes !!!\n")
     try:
         sys.exit(Runner().main() or 0)
-    except (KeyboardInterrupt, SystemExit), ex:
+    except (KeyboardInterrupt, SystemExit):
+        ex = sys.exc_info()[1]
         sys.exit(ex)
     except Exception:  # pylint: disable=E0012, W0703
         from spacewalk.common.rhnTB import fetchTraceback

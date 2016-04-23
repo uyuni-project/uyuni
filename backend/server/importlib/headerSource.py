@@ -22,10 +22,10 @@ import string
 from importLib import File, Dependency, ChangeLog, Channel, \
     IncompletePackage, Package, SourcePackage
 from backendLib import gmtime, localtime
-from types import ListType, TupleType, IntType, LongType, StringType
+from spacewalk.common.usix import ListType, TupleType, IntType, LongType, StringType, UnicodeType
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.stringutils import to_string
-from spacewalk.common.rhn_rpm import RPM_Header
+from spacewalk.common.usix import LongType
 
 
 class rpmPackage(IncompletePackage):
@@ -48,7 +48,7 @@ class rpmPackage(IncompletePackage):
         # set
         for f in self.keys():
             field = f
-            if self.tagMap.has_key(f):
+            if f in self.tagMap:
                 field = self.tagMap[f]
                 if not field:
                     # Unsupported
@@ -68,10 +68,10 @@ class rpmPackage(IncompletePackage):
                 elif val < 0:
                     # workaround for older rpms where signed
                     # attributes go negative for size > 2G
-                    val = long(val) + 2 ** 32
+                    val = LongType(val) + 2 ** 32
             elif val:
                 # Convert to strings
-                if isinstance(val, unicode):
+                if isinstance(val, UnicodeType):
                     val = to_string(val)
                 else:
                     val = str(val)
@@ -316,7 +316,7 @@ class rpmSourcePackage(SourcePackage, rpmPackage):
 
         # 5/13/05 wregglej - 154248 If 1051 is in the list of keys in the header,
         # the package is a nosrc package and needs to be saved as such.
-        if 1051 in header.keys():
+        if 1051 in list(header.keys()):
             self['source_rpm'] = "%s-%s-%s.nosrc.rpm" % tuple(nvr)
         else:
             self['source_rpm'] = "%s-%s-%s.src.rpm" % tuple(nvr)
@@ -324,7 +324,7 @@ class rpmSourcePackage(SourcePackage, rpmPackage):
         # Convert sigchecksum to ASCII
         self['sigchecksum_type'] = 'md5'
         self['sigchecksum'] = string.join(
-            map(lambda x: "%02x" % ord(x), self['sigchecksum']), '')
+            ["%02x" % ord(x) for x in self['sigchecksum']], '')
 
 
 class rpmFile(File, ChangeLog):
@@ -494,9 +494,9 @@ class rpmChangeLog(ChangeLog):
         # undetermined encoding. Assume ISO-Latin-1 if not UTF-8.
         for i in ('text', 'name'):
             try:
-                self[i] = unicode(self[i], "utf-8")
+                self[i] = UnicodeType(self[i], "utf-8")
             except UnicodeDecodeError:
-                self[i] = unicode(self[i], "iso-8859-1")
+                self[i] = UnicodeType(self[i], "iso-8859-1")
 
 
 def sanitizeList(l):

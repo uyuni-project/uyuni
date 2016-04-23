@@ -19,6 +19,11 @@
 %endif
 %global pythonrhnroot %{python_sitelib}/spacewalk
 
+%if 0%{?fedora} && 0%{?fedora} >= 23
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%global python3rhnroot %{python3_sitelib}/spacewalk
+%endif
+
 %if 0%{?fedora}
 %{!?pylint_check: %global pylint_check 1}
 %endif
@@ -27,7 +32,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.28
+Version: 2.5.35
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -87,6 +92,7 @@ BuildRequires: python-debian
 BuildRequires: python-gzipstream
 BuildRequires: yum
 %endif
+Requires: %{name}-usix
 # we don't really want to require this redhat-release, so we protect
 # against installations on other releases using conflicts...
 Obsoletes: rhns-common < 5.3.0
@@ -107,29 +113,30 @@ Requires(pre): %{name} = %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Obsoletes: rhns-sql < 5.3.0
 Provides: rhns-sql = 1:%{version}-%{release}
-Requires: %{name}-sql-virtual = %{version}
+Requires: %{name}-sql-virtual = %{version}-%{release}
+Requires: %{name}-usix
 
 %description sql
 This package contains the basic code that provides SQL connectivity for
 the Spacewalk backend modules.
 
-%if 0%{?fedora} < 17 || 0%{?suse_version}
 %package sql-oracle
 Summary: Oracle backend for Spacewalk
 Group: Applications/Internet
 Requires: python(:DBAPI:oracle)
-Provides: %{name}-sql-virtual = %{version}
+Requires: %{name}-usix
+Provides: %{name}-sql-virtual = %{version}-%{release}
 
 %description sql-oracle
 This package contains provides Oracle connectivity for the Spacewalk backend
 modules.
-%endif
 
 %package sql-postgresql
 Summary: Postgresql backend for Spacewalk
 Group: Applications/Internet
 Requires: python-psycopg2 >= 2.0.14-2
-Provides: %{name}-sql-virtual = %{version}
+Requires: %{name}-usix
+Provides: %{name}-sql-virtual = %{version}-%{release}
 
 %description sql-postgresql
 This package contains provides PostgreSQL connectivity for the Spacewalk
@@ -140,14 +147,8 @@ Summary: Basic code that provides Spacewalk Server functionality
 Group: Applications/Internet
 Requires(pre): %{name}-sql = %{version}-%{release}
 Requires: %{name}-sql = %{version}-%{release}
-# /etc/rhn/rhn.conf should be available before run this %post script
-%if 0%{?sle_version} >= 120000
-# no pre yet for SLE12. We only need -libs package for the client tools
-# and do not want to build the whole chain. A pre-requires is a buildrequire
 Requires: spacewalk-config
-%else
-Requires(pre): spacewalk-config
-%endif
+Requires: %{name}-usix
 Requires: PyPAM
 Obsoletes: rhns-server < 5.3.0
 Provides: rhns-server = 1:%{version}-%{release}
@@ -171,6 +172,7 @@ Summary: Handler for /XMLRPC
 Group: Applications/Internet
 Requires: %{name}-server = %{version}-%{release}
 Requires: rpm-python
+Requires: %{name}-usix
 Obsoletes: rhns-server-xmlrpc < 5.3.0
 Obsoletes: rhns-xmlrpc < 5.3.0
 Provides: rhns-server-xmlrpc = 1:%{version}-%{release}
@@ -185,6 +187,7 @@ and the up2date clients.
 Summary: Handler for /APPLET
 Group: Applications/Internet
 Requires: %{name}-server = %{version}-%{release}
+Requires: %{name}-usix
 Obsoletes: rhns-applet < 5.3.0
 Provides: rhns-applet = 1:%{version}-%{release}
 
@@ -196,6 +199,7 @@ provides the functions for the Spacewalk applet.
 Summary: Handler for /APP
 Group: Applications/Internet
 Requires: %{name}-server = %{version}-%{release}
+Requires: %{name}-usix
 Obsoletes: rhns-server-app < 5.3.0
 Obsoletes: rhns-app < 5.3.0
 Provides: rhns-server-app = 1:%{version}-%{release}
@@ -232,6 +236,7 @@ Summary: Listener for the Server XML dumper
 Group: Applications/Internet
 Requires: rpm-python
 Requires: %{name}-xml-export-libs = %{version}-%{release}
+Requires: %{name}-usix
 
 %description iss-export
 %{name} contains the basic code that provides server/backend
@@ -258,14 +263,49 @@ Conflicts: %{name} < 1.7.0
 Requires: python-hashlib
 BuildRequires: python-hashlib
 %endif
+Requires: %{name}-usix
 
 %description libs
 Libraries required by both Spacewalk server and Spacewalk client tools.
+
+%package usix
+Summary: Spacewalk server and client nano six library
+Group: Applications/Internet
+Provides: %{name}-usix = %{version}-%{release}
+
+%description usix
+Library for writing code that runs on Python 2 and 3
+
+
+%if 0%{?fedora} && 0%{?fedora} >= 23
+
+%package -n python3-%{name}-libs
+Summary: Spacewalk client tools libraries for Fedora 23
+Group: Applications/Internet
+BuildRequires: python3-devel
+BuildRequires: python3-libs
+Conflicts: %{name} < 1.7.0
+Requires: python3-libs
+Requires: python3-%{name}-usix
+
+%description -n python3-%{name}-libs
+Libraries required by Spacewalk client tools on Fedora 23.
+
+%package -n python3-%{name}-usix
+Summary: Spacewalk client micro six library
+Group: Applications/Internet
+Provides: python3-%{name}-usix = %{version}-%{release}
+
+%description -n python3-%{name}-usix
+Library for writing code that runs on Python 2 and 3
+
+%endif
 
 %package config-files-common
 Summary: Common files for the Configuration Management project
 Group: Applications/Internet
 Requires: %{name}-server = %{version}-%{release}
+Requires: %{name}-usix
 Obsoletes: rhns-config-files-common < 5.3.0
 Provides: rhns-config-files-common = 1:%{version}-%{release}
 
@@ -286,6 +326,7 @@ This package contains the server-side code for configuration management.
 Summary: Handler for /CONFIG-MANAGEMENT-TOOL
 Group: Applications/Internet
 Requires: %{name}-config-files-common = %{version}-%{release}
+Requires: %{name}-usix
 Obsoletes: rhns-config-files-tool < 5.3.0
 Provides: rhns-config-files-tool = 1:%{version}-%{release}
 
@@ -328,6 +369,7 @@ Requires: cobbler >= 2.0.0
 Recommends: cobbler20
 %endif
 Requires: rhnlib  >= 2.5.57
+Requires: %{name}-usix
 Obsoletes: rhns-satellite-tools < 5.3.0
 Obsoletes: spacewalk-backend-satellite-tools <= 0.2.7
 Provides: spacewalk-backend-satellite-tools = %{version}-%{release}
@@ -340,6 +382,7 @@ Various utilities for the Spacewalk Server.
 Summary: Spacewalk XML data exporter
 Group: Applications/Internet
 Requires: %{name}-server = %{version}-%{release}
+Requires: %{name}-usix
 Obsoletes: rhns-xml-export-libs < 5.3.0
 Provides: rhns-xml-export-libs = 1:%{version}-%{release}
 
@@ -361,6 +404,16 @@ install -d $RPM_BUILD_ROOT%{rhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir}
+
+%if 0%{?fedora} && 0%{?fedora} >= 23
+install -d $RPM_BUILD_ROOT%{python3rhnroot}/common
+cp $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py \
+    $RPM_BUILD_ROOT%{python3rhnroot}/
+cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/{__init__.py,usix.py} \
+    $RPM_BUILD_ROOT%{python3rhnroot}/common
+cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/{checksum.py,cli.py,rhn_deb.py,rhn_mpm.py,rhn_pkg.py,rhn_rpm.py,stringutils.py,fileutils.py} \
+    $RPM_BUILD_ROOT%{python3rhnroot}/common
+%endif
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
 
@@ -406,6 +459,10 @@ pushd %{buildroot}
 find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
 
+%if 0%{?fedora} && 0%{?fedora} >= 23
+rm -r $RPM_BUILD_ROOT%{python3rhnroot}/__pycache__
+rm -r $RPM_BUILD_ROOT%{python3rhnroot}/common/__pycache__
+%endif
 
 %pre server
 OLD_SECRET_FILE=%{_var}/www/rhns/server/secret/rhnSecret.py
@@ -423,12 +480,10 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES perl
 # Is secret key in our config file?
 regex="^[[:space:]]*(server\.|)secret_key[[:space:]]*=.*$"
 
-%if 0%{?sle_version} >= 120000
 if [ ! -d %{rhnconf} ]; then
     # happens if we do not pre-require spacewalk-config
     exit 0
 fi
-%endif
 
 if grep -E -i $regex %{rhnconf}/rhn.conf > /dev/null 2>&1 ; then
     # secret key already there
@@ -499,12 +554,10 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/rhnSQL/__init__.py*
 %{pythonrhnroot}/server/rhnSQL/sql_*.py*
 
-%if 0%{?fedora} < 17 || 0%{?suse_version}
 %files sql-oracle
 %defattr(-,root,root)
 %doc LICENSE
 %{pythonrhnroot}/server/rhnSQL/driver_cx_Oracle.py*
-%endif
 
 %files sql-postgresql
 %defattr(-,root,root)
@@ -668,9 +721,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files libs
 %defattr(-,root,root)
 %doc LICENSE
-%{pythonrhnroot}/__init__.py*
-%dir %{pythonrhnroot}/common
-%{pythonrhnroot}/common/__init__.py*
 %{pythonrhnroot}/common/checksum.py*
 %{pythonrhnroot}/common/cli.py*
 %{pythonrhnroot}/common/fileutils.py*
@@ -679,6 +729,35 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/rhn_pkg.py*
 %{pythonrhnroot}/common/rhn_rpm.py*
 %{pythonrhnroot}/common/stringutils.py*
+
+%files usix
+%doc LICENSE
+%dir %{pythonrhnroot}
+%{pythonrhnroot}/__init__.py*
+%dir %{pythonrhnroot}/common
+%{pythonrhnroot}/common/__init__.py*
+%{pythonrhnroot}/common/usix.py*
+
+%if 0%{?fedora} && 0%{?fedora} >= 23
+%files -n python3-%{name}-libs
+%doc LICENSE
+%{python3rhnroot}/common/checksum.py
+%{python3rhnroot}/common/cli.py
+%{python3rhnroot}/common/fileutils.py
+%{python3rhnroot}/common/rhn_deb.py
+%{python3rhnroot}/common/rhn_mpm.py
+%{python3rhnroot}/common/rhn_pkg.py
+%{python3rhnroot}/common/rhn_rpm.py
+%{python3rhnroot}/common/stringutils.py
+
+%files -n python3-%{name}-usix
+%doc LICENSE
+%dir %{python3rhnroot}
+%{python3rhnroot}/__init__.py
+%dir %{python3rhnroot}/common
+%{python3rhnroot}/common/__init__.py
+%{python3rhnroot}/common/usix.py
+%endif
 
 %files config-files-common
 %defattr(-,root,root)
@@ -807,6 +886,54 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Fri Apr 22 2016 Gennadii Altukhov <galt@redhat.com> 2.5.35-1
+- Add mode to open packages as 'binary'
+- Fix relative imports for python backend-common libs
+- Automatic commit of package [spacewalk-backend] release [2.5.34-1].
+- fix building of spacewalk-backend
+
+* Fri Apr 22 2016 Tomas Lestach <tlestach@redhat.com> 2.5.34-1
+- fix building of spacewalk-backend
+
+* Thu Apr 21 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.33-1
+- 
+
+* Thu Apr 21 2016 Gennadii Altukhov <galt@redhat.com> 2.5.32-1.git.1.151aa47
+- Add missing import 'sys'
+
+* Wed Apr 20 2016 Gennadii Altukhov <galt@redhat.com> 2.5.31-1.git.1.151aa47
+- Add new packages for spacewalk-backend-libs and usix
+- Fix usix module to run under Python 3
+
+* Tue Apr 19 2016 Gennadii Altukhov <galt@redhat.com> 2.5.30-1
+- Resolve conflicts between usix and backend-libs
+- Fix pylint warnings/fails
+- fix usix next() import and usage
+
+* Mon Apr 18 2016 Gennadii Altukhov <galt@redhat.com> 2.5.29-1
+- Fix 'iteritems' in backend Python 2/3 compatibility
+- Fix '.next()' in backend Python 2/3 compatibility
+- Add import of 'reduce' function in backend for Python 3 compatibility
+- Fix 'exc_type' in backend code for Python 2/3 compatibility
+- Fix 'unicode' in backend code for Python 2/3 compatibility
+- Fix 'apply' in backend code for Python 2/3 compatibility
+- Fix 'maxint' in backend code for Python 2/3 compatibility
+- Fix 'exitfunc' in backend code for Python 2/3 compatibility
+- Fix 'raw_input' in backend code for Python 2/3 compatibility
+- Fix imports in backend code for Python 2/3 compatibility
+- Fix data types in backend code for Python 2/3 compatibility
+- Fix 'dict' in backend code for Python 2/3 compatibility
+- Add __bool__ in backend code for Python 2/3 compatibility
+- Fix 'filter' in backend code for Python 2/3 compatibility
+- Fix 'map' in backend code for Python 2/3 compatibility
+- Fix 'xrange' in backend code for Python 2/3 compatibility
+- Fix 'octal' format of number in backend code for Python 2/3 compatibility
+- Fix 'raise' in backend code for Python 2/3 compatibility
+- Fix 'except' in backend code for Python 2/3 compatibility
+- Fix 'has_key' in backend code for Python 2/3 compatibility
+- Fix 'print' in backend code for Python 2/3 compatibility
+- Add micro-six python module to write code that runs on Python 2 and 3
+
 * Wed Mar 23 2016 Jan Dobes 2.5.28-1
 - qemu-kvm guests created on my Fedora 22 have following signature, mark them
   as virtual

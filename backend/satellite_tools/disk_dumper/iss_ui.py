@@ -89,10 +89,10 @@ class UI:
             self.options.debug_level = 3
 
         for i in self.options.__dict__.keys():
-            if not self.__dict__.has_key(i):
+            if i not in self.__dict__:
                 self.__dict__[i] = self.options.__dict__[i]
 
 if __name__ == "__main__":
     # pylint: disable=E1101
     a = UI()
-    print str(a.no_errata)
+    print(str(a.no_errata))

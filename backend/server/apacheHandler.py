@@ -68,7 +68,7 @@ class apacheHandler(apacheSession):
         options = req.get_options()
         # if we are initializing out of a <Location> handler don't
         # freak out
-        if not options.has_key("RHNComponentType"):
+        if "RHNComponentType" not in options:
             # clearly nothing to do
             return apache.OK
         initCFG(options["RHNComponentType"])
@@ -93,17 +93,15 @@ class apacheHandler(apacheSession):
 
         # Store client capabilities
         client_cap_header = 'X-RHN-Client-Capability'
-        if req.headers_in.has_key(client_cap_header):
+        if client_cap_header in req.headers_in:
             client_caps = req.headers_in[client_cap_header]
-            client_caps = filter(None,
-                                 map(string.strip, string.split(client_caps, ","))
-                                 )
+            client_caps = [_f for _f in list(map(string.strip, string.split(client_caps, ","))) if _f]
             rhnCapability.set_client_capabilities(client_caps)
 
         # Enabling the input header flags associated with the redirects/newer clients
         redirect_support_flags = ['X-RHN-Redirect', 'X-RHN-Transport-Capability']
         for flag in redirect_support_flags:
-            if req.headers_in.has_key(flag):
+            if flag in req.headers_in:
                 rhnFlags.set(flag, str(req.headers_in[flag]))
 
         return apache.OK
@@ -118,7 +116,8 @@ class apacheHandler(apacheSession):
         if req.method == "GET":
             try:
                 self._req_processor = apacheGET(self.clientVersion, req)
-            except HandlerNotFoundError, e:
+            except HandlerNotFoundError:
+                e = sys.exc_info()[1]
                 log_error("Unable to handle GET request for server %s" %
                           (e.args[0], ))
                 return apache.HTTP_METHOD_NOT_ALLOWED
@@ -178,7 +177,8 @@ class apacheHandler(apacheSession):
         if self.proxyVersion:
             try:
                 ret = self._req_processor.auth_proxy()
-            except rhnFault, f:
+            except rhnFault:
+                f = sys.exc_info()[1]
                 return self._req_processor.response(f.getxml())
 
         # Decide what to do with the request: try to authenticate the client.
@@ -188,7 +188,8 @@ class apacheHandler(apacheSession):
         if req.method == "GET":
             try:
                 ret = self._req_processor.auth_client()
-            except rhnFault, f:
+            except rhnFault:
+                f = sys.exc_info()[1]
                 return self._req_processor.response(f.getxml())
             # be safe rather than sorry
             if not ret:

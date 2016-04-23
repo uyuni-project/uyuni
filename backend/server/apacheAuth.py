@@ -127,7 +127,7 @@ def auth_proxy():
     #     proxy hit.
 
     tokens = string.split(rhnFlags.get('X-RHN-Proxy-Auth'), ',')
-    tokens = filter(lambda token: token, tokens)
+    tokens = [token for token in tokens if token]
 
     for auth_token in tokens:
         _verifyProxyAuthToken(auth_token)
@@ -155,7 +155,7 @@ def auth_client():
               'X-RHN-Auth',
               'X-RHN-Auth-Server-Time',
               'X-RHN-Auth-Expire-Offset'):
-        if not token.has_key(k):
+        if k not in token:
             # No auth information; decline any action
             log_debug(4, "Declined auth of client for GET requests; "
                          "incomplete header info.")

@@ -22,8 +22,12 @@ import tempfile
 
 from debian import debfile
 
+from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import checksum
-from rhn_pkg import A_Package, InvalidPackageError
+from spacewalk.common.rhn_pkg import A_Package, InvalidPackageError
+
+# bare-except and broad-except
+# pylint: disable=W0702,W0703
 
 DEB_CHECKSUM_TYPE = 'md5'       # FIXME: this should be a configuration option
 
@@ -40,8 +44,9 @@ class deb_Header:
 
         try:
             self.deb = debfile.DebFile(stream.name)
-        except Exception, e:
-            raise InvalidPackageError(e), None, sys.exc_info()[2]
+        except Exception:
+            e = sys.exc_info()[1]
+            raise_with_tb(InvalidPackageError(e), sys.exc_info()[2])
 
         try:
             # Fill info about package
@@ -66,10 +71,10 @@ class deb_Header:
                                  ('breaks', 'Breaks'),
                                  ('predepends', 'Pre-Depends'),
                                  ('payload_size', 'Installed-Size')]:
-                if debcontrol.has_key(deb_k):
+                if deb_k in debcontrol:
                     self.hdr[hdr_k] = debcontrol.get_as_string(deb_k)
             for k in debcontrol.keys():
-                if not self.hdr.has_key(k):
+                if k not in self.hdr:
                     self.hdr[k] = debcontrol.get_as_string(k)
 
             version = debcontrol.get_as_string('Version')
@@ -80,8 +85,9 @@ class deb_Header:
             else:
                 self.hdr['version'] = version_tmpArr[0]
                 self.hdr['release'] = version_tmpArr[1]
-        except Exception, e:
-            raise InvalidPackageError(e), None, sys.exc_info()[2]
+        except Exception:
+            e = sys.exc_info()[1]
+            raise_with_tb(InvalidPackageError(e), sys.exc_info()[2])
 
     @staticmethod
     def checksum_type():
@@ -120,7 +126,7 @@ class DEB_Package(A_Package):
             self.header_data.seek(0, 0)
             self.header = deb_Header(self.header_data)
         except:
-            raise InvalidPackageError, None, sys.exc_info()[2]
+            raise_with_tb(InvalidPackageError, sys.exc_info()[2])
 
     def save_payload(self, output_stream):
         c_hash = checksum.getHashlibInstance(self.checksum_type, False)

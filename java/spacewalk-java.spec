@@ -25,7 +25,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.84
+Version: 2.5.86
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -982,6 +982,16 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Apr 19 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.86-1
+- TaskomaticApi refactoring: method code formatted
+- TaskomaticApi refactoring: method code formatted
+- RepoSyncTask refactoring: spacing and comments
+- ChannelFactory.getChannelIds refactoring: never return null
+
+* Mon Apr 18 2016 Jan Dobes 2.5.85-1
+- 1192879 - support basic listing of source packages with API
+- 1192879 - support remove source package with API
+
 * Fri Apr 15 2016 Jan Dobes 2.5.84-1
 - clean unused pages
 - acl fixes
