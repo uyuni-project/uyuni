@@ -16,7 +16,7 @@
 
 import re
 
-from types import ListType, IntType
+from spacewalk.common.usix import ListType, IntType
 
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
@@ -95,7 +95,7 @@ _query_delete_verify_missing = rhnSQL.Statement("""
 def verify(server_id, action_id, data={}):
     log_debug(3, action_id)
 
-    if not data or not data.has_key('verify_info'):
+    if (not data) or ('verify_info' not in data):
         # some data should have been passed back...
         log_error("Insufficient package verify information returned",
                   server_id, action_id, data)
@@ -133,7 +133,7 @@ def verify(server_id, action_id, data={}):
         if package_spec[3] == '':
             package_spec[3] = None
         package_spec = tuple(package_spec)
-        if uq_packages.has_key(package_spec):
+        if package_spec in uq_packages:
             # Been here already
             continue
 
@@ -160,7 +160,7 @@ def verify(server_id, action_id, data={}):
             dict['epoch'] = package_spec[3]
             dict['arch'] = package_spec[4]
 
-            if not dict.has_key('missing'):
+            if 'missing' not in dict:
                 _hash_append(verify_attribs, dict)
             else:
                 _hash_append(missing_files, dict)
@@ -309,7 +309,8 @@ def update(server_id, action_id, data={}):
         # actions code, which we don't have time to do for the 500 beta. --wregglej
         try:
             ks_session_type = server_kickstart.get_kickstart_session_type(server_id, action_id)
-        except rhnException, re:
+        except rhnException:
+            re = sys.exc_info()[1]
             ks_session_type = None
 
         if ks_session_type is None:
@@ -433,7 +434,7 @@ def _check_dep(server_id, action_id, failed_dep):
                   "failed dep: bad package spec %s (type %s, len %s)" % (
                       server_id, action_id, pkg, type(pkg), len(pkg)))
         raise InvalidDep
-    pkg = map(str, pkg[:3])
+    pkg = list(map(str, pkg[:3]))
 
     if not isinstance(needs_pkg, ListType) or len(needs_pkg) < 2:
         log_error("action_extra_data.packages.remove: server %s, action %s: "
@@ -441,7 +442,7 @@ def _check_dep(server_id, action_id, failed_dep):
                       server_id, action_id, needs_pkg, type(needs_pkg),
                       len(needs_pkg)))
         raise InvalidDep
-    needs_pkg = map(str, needs_pkg[:2])
+    needs_pkg = list(map(str, needs_pkg[:2]))
 
     if not isinstance(flags, IntType):
         log_error("action_extra_data.packages.remove: server %s, action %s: "

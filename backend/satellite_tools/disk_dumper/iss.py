@@ -19,7 +19,13 @@ import sys
 import time
 import gzip
 import dumper
-import cStringIO
+try:
+    #  python 2
+    import cStringIO
+except ImportError:
+    #  python3
+    import io as cStringIO
+from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import rhnMail
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnTB import Traceback, exitWithTraceback
@@ -38,6 +44,8 @@ import gettext
 t = gettext.translation('spacewalk-backend-server', fallback=True)
 _ = t.ugettext
 
+# bare-except and broad-except
+# pylint: disable=W0702,W0703
 
 class ISSError(Exception):
 
@@ -268,7 +276,7 @@ class Dumper(dumper.XML_Dumper):
             # "incremental" dumps. So we will gather list of channel ids for channels already
             # in dump.
             channel_labels_for_families = self.fm.filemap['channels'].list()
-            print "Appending channels %s" % (channel_labels_for_families)
+            print("Appending channels %s" % (channel_labels_for_families))
             for ids in channel_labels_for_families:
                 ch_data.execute(label=ids)
                 ch_info = ch_data.fetchall_dict()
@@ -278,12 +286,12 @@ class Dumper(dumper.XML_Dumper):
         except ISSError:
             # Don't want calls to sys.exit to show up as a "bad" error.
             raise
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting channel info." %
-                           e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught while getting channel info." %
+                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
         ###BINARY RPM INFO###
         try:
@@ -343,12 +351,12 @@ class Dumper(dumper.XML_Dumper):
             for ch in self.channel_ids:
                 brpm_data.execute(channel_id=ch['channel_id'], **dates)
                 self.brpms = self.brpms + (brpm_data.fetchall_dict() or [])
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting binary rpm info." %
-                           e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught while getting binary rpm info." %
+                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
         ###PACKAGE INFO###
         # This will grab channel package information for a given channel.
@@ -419,12 +427,12 @@ class Dumper(dumper.XML_Dumper):
                 if a_package:
                     self.pkg_info = self.pkg_info + a_package
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting package info." %
-                           e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught while getting package info." %
+                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
         ###SOURCE PACKAGE INFO###
         try:
@@ -481,12 +489,12 @@ class Dumper(dumper.XML_Dumper):
             if not self.src_pkg_info:
                 self.src_pkg_info = []
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting source package info." %
-                           e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught while getting source package info." %
+                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
         ###ERRATA INFO###
         try:
@@ -522,12 +530,12 @@ class Dumper(dumper.XML_Dumper):
                 if an_errata:
                     self.errata_info = self.errata_info + an_errata
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting errata info." %
-                           e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught while getting errata info." %
+                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
         ###KICKSTART DATA/TREES INFO###
         try:
@@ -561,12 +569,12 @@ class Dumper(dumper.XML_Dumper):
                 if a_tree:
                     self.kickstart_trees = self.kickstart_trees + a_tree
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting kickstart data info." %
-                           e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught while getting kickstart data info." %
+                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
         ###KICKSTART FILES INFO###
         try:
@@ -605,12 +613,12 @@ class Dumper(dumper.XML_Dumper):
                 if a_file:
                     self.kickstart_files = self.kickstart_files + a_file
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting kickstart files info." %
-                           e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught while getting kickstart files info." %
+                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
     # The close method overrides the parent classes close method. This implementation
     # closes the self.outstream, which is an addition defined in this subclass.
@@ -637,7 +645,7 @@ class Dumper(dumper.XML_Dumper):
     # method to do the actual dumping.
     def _dump_simple(self, filename, dump_func, startmsg, endmsg, exceptmsg):
         try:
-            print "\n"
+            print("\n")
             log2stdout(1, startmsg)
             pb = progress_bar.ProgressBar(self.pb_label,
                                           self.pb_complete,
@@ -653,11 +661,11 @@ class Dumper(dumper.XML_Dumper):
             pb.printComplete()
             log2stdout(4, endmsg % filename)
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError(exceptmsg % e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError(exceptmsg % e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
     def dump_arches(self, rpm_arch_type_only=0):
         self._dump_simple(self.fm.getArchesFile(), dumper.XML_Dumper.dump_arches,
@@ -697,7 +705,7 @@ class Dumper(dumper.XML_Dumper):
     def dump_channels(self, channel_labels=None, start_date=None, end_date=None,
                       use_rhn_date=True, whole_errata=False):
         try:
-            print "\n"
+            print("\n")
             log2stdout(1, "Exporting channel info...")
             pb = progress_bar.ProgressBar(self.pb_label,
                                           self.pb_complete,
@@ -731,33 +739,33 @@ class Dumper(dumper.XML_Dumper):
             pb.printComplete()
             log2stderr(3, "Number of channels exported: %s" % str(len(self.channel_ids)))
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_channels." % e.__class__.__name__,
-                           tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught in dump_channels." % e.__class__.__name__,
+                                   tbout.getvalue()), sys.exc_info()[2])
 
     def dump_channel_packages_short(self, channel_label=None, last_modified=None, filepath=None,
                                     validate_channels=False, send_headers=False,
                                     open_stream=True):
         try:
-            print "\n"
+            print("\n")
             for ch_id in self.channel_ids:
                 filepath = self.fm.getChannelPackageShortFile(ch_id['channel_id'])
                 self.set_filename(filepath)
                 dumper.XML_Dumper.dump_channel_packages_short(self, ch_id, ch_id['last_modified'], filepath)
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_channel_packages_short." %
-                           e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught in dump_channel_packages_short." %
+                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
     def dump_packages(self, packages=None):
         try:
-            print "\n"
+            print("\n")
             log2stdout(1, "Exporting packages...")
             pb = progress_bar.ProgressBar(self.pb_label,
                                           self.pb_complete,
@@ -778,16 +786,16 @@ class Dumper(dumper.XML_Dumper):
             pb.printComplete()
             log2stdout(3, "Number of packages exported: %s" % str(len(self.pkg_info)))
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_packages." % e.__class__.__name__,
-                           tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught in dump_packages." % e.__class__.__name__,
+                                   tbout.getvalue()), sys.exc_info()[2])
 
     def dump_packages_short(self, packages=None):
         try:
-            print "\n"
+            print("\n")
             log2stdout(1, "Exporting short packages...")
             pb = progress_bar.ProgressBar(self.pb_label,
                                           self.pb_complete,
@@ -807,30 +815,30 @@ class Dumper(dumper.XML_Dumper):
             pb.printComplete()
             log2stdout(3, "Number of short packages exported: %s" % str(len(self.pkg_info)))
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_packages_short." %
-                           e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught in dump_packages_short." %
+                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
     def dump_source_packages(self, packages=None):
         try:
-            print "\n"
+            print("\n")
             for pkg_info in self.src_pkg_info:
                 self.set_filename(self.fm.getSourcePackagesFile("rhn-source-package-" + str(pkg_info['package_id'])))
                 dumper.XML_Dumper.dump_source_packages(self, [pkg_info])
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_source_packages." %
-                           e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught in dump_source_packages." %
+                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
     def dump_errata(self, errata=None, verify_errata=False):
         try:
-            print "\n"
+            print("\n")
             log2stdout(1, "Exporting errata...")
             pb = progress_bar.ProgressBar(self.pb_label,
                                           self.pb_complete,
@@ -851,16 +859,16 @@ class Dumper(dumper.XML_Dumper):
             pb.printComplete()
             log2stdout(3, "Number of errata exported: %s" % str(len(self.errata_info)))
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_errata." % e.__class__.__name__,
-                           tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught in dump_errata." % e.__class__.__name__,
+                                   tbout.getvalue()), sys.exc_info()[2])
 
     def dump_kickstart_data(self):
         try:
-            print "\n"
+            print("\n")
             log2stdout(1, "Exporting kickstart data...")
             pb = progress_bar.ProgressBar(self.pb_label,
                                           self.pb_complete,
@@ -879,16 +887,16 @@ class Dumper(dumper.XML_Dumper):
             pb.printComplete()
             log2stdout(3, "Amount of kickstart data exported: %s" % str(len(self.kickstart_trees)))
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_kickstart_data." %
-                           e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught in dump_kickstart_data." %
+                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
     def dump_kickstart_files(self):
         try:
-            print "\n"
+            print("\n")
             log2stdout(1, "Exporting kickstart files...")
             pb = progress_bar.ProgressBar(self.pb_label,
                                           self.pb_complete,
@@ -930,12 +938,12 @@ class Dumper(dumper.XML_Dumper):
                     else:
                         # Copy file from satellite to export dir.
                         shutil.copyfile(path_to_files, path_to_export_file)
-                except IOError, e:
+                except IOError:
+                    e = sys.exc_info()[1]
                     tbout = cStringIO.StringIO()
                     Traceback(mail=0, ostream=tbout, with_locals=1)
-                    raise ISSError("Error: Error copying file: %s: %s" % (path_to_files,
-                                                                          e.__class__.__name__), tbout.getvalue()), \
-                        None, sys.exc_info()[2]
+                    raise_with_tb(ISSError("Error: Error copying file: %s: %s" %
+                                           (path_to_files, e.__class__.__name__), tbout.getvalue()), sys.exc_info()[2])
 
                 log2email(5, "Kickstart File: %s" %
                           os.path.join(kickstart_file['base-path'],
@@ -948,17 +956,17 @@ class Dumper(dumper.XML_Dumper):
             log2stdout(3, "Number of kickstart files exported: %s" % str(len(self.kickstart_files)))
         except ISSError:
             raise
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_kickstart_files." %
-                           e.__class__.__name__, tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught in dump_kickstart_files." %
+                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
 
     # RPM and SRPM dumping code
     def dump_rpms(self):
         try:
-            print "\n"
+            print("\n")
             log2stdout(1, "Exporting binary RPMs...")
             pb = progress_bar.ProgressBar(self.pb_label,
                                           self.pb_complete,
@@ -996,20 +1004,20 @@ class Dumper(dumper.XML_Dumper):
                         os.link(satellite_path, path_to_rpm)
                     else:
                         shutil.copyfile(satellite_path, path_to_rpm)
-                except IOError, e:
+                except IOError:
+                    e = sys.exc_info()[1]
                     tbout = cStringIO.StringIO()
                     Traceback(mail=0, ostream=tbout, with_locals=1)
                     raise ISSError("Error: Error copying file %s: %s" %
                                    (os.path.join(CFG.MOUNT_POINT, rpm['path']),
-                                    e.__class__.__name__), tbout.getvalue()), \
-                        None, sys.exc_info()[2]
-                except OSError, e:
+                                    e.__class__.__name__), tbout.getvalue()).with_traceback(sys.exc_info()[2])
+                except OSError:
+                    e = sys.exc_info()[1]
                     tbout = cStringIO.StringIO()
                     Traceback(mail=0, ostream=tbout, with_locals=1)
                     raise ISSError("Error: Could not make hard link %s: %s (different filesystems?)" %
                                    (os.path.join(CFG.MOUNT_POINT, rpm['path']),
-                                    e.__class__.__name__), tbout.getvalue()), \
-                        None, sys.exc_info()[2]
+                                    e.__class__.__name__), tbout.getvalue()).with_traceback(sys.exc_info()[2])
                 log2email(5, "RPM: %s" % rpm['path'])
 
                 pb.addTo(1)
@@ -1019,12 +1027,12 @@ class Dumper(dumper.XML_Dumper):
         except ISSError:
             raise
 
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_rpms." % e.__class__.__name__,
-                           tbout.getvalue()), \
-                None, sys.exc_info()[2]
+            raise_with_tb(ISSError("%s caught in dump_rpms." % e.__class__.__name__,
+                                   tbout.getvalue()), sys.exc_info()[2])
 
     def dump_support_information(self):
         self._dump_simple(self.fm.getSupportInformationFile(),
@@ -1074,8 +1082,8 @@ def get_report():
 
 
 def print_report():
-    print ""
-    print "REPORT:"
+    print("")
+    print("REPORT:")
     report_string = get_report()
     sys.stdout.write(str(report_string))
 
@@ -1085,7 +1093,7 @@ def sendMail():
     # Send email summary
     body = dumpEMAIL_LOG()
     if body:
-        print "+++ sending log as an email +++"
+        print("+++ sending log as an email +++")
         headers = {
             'Subject' : 'SUSE Manager Export report from %s' % os.uname()[1],
         }
@@ -1093,7 +1101,7 @@ def sendMail():
         sndr = 'suse-manager@%s' % os.uname()[1]
         rhnMail.send(headers, body, sender=sndr)
     else:
-        print "+++ email requested, but there is nothing to send +++"
+        print("+++ email requested, but there is nothing to send +++")
 
 
 def handle_error(message, traceback):
@@ -1126,9 +1134,10 @@ class ExporterMain:
         try:
             rhnSQL.initDB()
         except SQLConnectError:
-            print 'SQLERROR: There was an error connecting to the Database.'
+            print('SQLERROR: There was an error connecting to the Database.')
             sys.exit(-1)
-        except (SQLError, SQLSchemaError), e:
+        except (SQLError, SQLSchemaError):
+            e = sys.exc_info()[1]
             # An SQL error is fatal... crash and burn
             exitWithTraceback(e, 'SQL ERROR during xml processing', -1)
 
@@ -1175,9 +1184,9 @@ class ExporterMain:
             using_orgs = []
             for org in self.options.org:
                 # User might have specified org name or org id, try both
-                if org in orgs.values():  # ids
+                if org in list(orgs.values()):  # ids
                     using_orgs.append(org)
-                elif org in orgs.keys():  # names
+                elif org in list(orgs.keys()):  # names
                     using_orgs.append(orgs[org])
                 else:
                     sys.stdout.write("Org not found: %s\n" % org)
@@ -1223,8 +1232,8 @@ class ExporterMain:
                 self.end_date = self.options.end_date.ljust(14, '0')
 
             self.start_date = self.options.start_date.ljust(14, '0')
-            print "start date limit: %s" % self.start_date
-            print "end date limit: %s" % self.end_date
+            print("start date limit: %s" % self.start_date)
+            print("end date limit: %s" % self.end_date)
         else:
             self.start_date = None
             self.end_date = None
@@ -1266,10 +1275,10 @@ class ExporterMain:
                     'cloned-channels':   {'dump': self.dumper.dump_cloned_channels},
                 }
             else:
-                print "The output directory is not a directory"
+                print("The output directory is not a directory")
                 sys.exit(-1)
         else:
-            print "can't access output directory"
+            print("can't access output directory")
             sys.exit(-1)
 
     @staticmethod
@@ -1334,22 +1343,22 @@ class ExporterMain:
         """
         if channel_dict:
             # Print the legend.
-            print "Channel List:"
-            print "B = Base Channel"
-            print "C = Child Channel"
-            print ""
+            print("Channel List:")
+            print("B = Base Channel")
+            print("C = Child Channel")
+            print("")
 
             base_template = "B %s"
             child_template = "C\t%s"
 
             # Print channel information.
             for pc in channel_dict.keys():
-                print base_template % (pc,)
+                print(base_template % (pc,))
                 for cc in channel_dict[pc]:
-                    print child_template % (cc,)
-                print " "
+                    print(child_template % (cc,))
+                print(" ")
         else:
-            print "No Channels available for listing."
+            print("No Channels available for listing.")
 
     @staticmethod
     def list_orgs():
@@ -1367,11 +1376,11 @@ class ExporterMain:
     @staticmethod
     def print_orgs(orgs):
         if orgs and len(orgs) > 0:
-            print "Orgs available for export:"
+            print("Orgs available for export:")
             for org in orgs:
-                print "Id: %s, Name: \'%s\'" % (org['id'], org['name'])
+                print("Id: %s, Name: \'%s\'" % (org['id'], org['name']))
         else:
-            print "No Orgs available for listing."
+            print("No Orgs available for listing.")
 
     def main(self):
         # pylint: disable=E1101
@@ -1437,7 +1446,8 @@ class ExporterMain:
         except SystemExit:
             sys.exit(0)
 
-        except ISSError, isserror:
+        except ISSError:
+            isserror = sys.exc_info()[1]
             # I have the tb get generated in the functions that the the error occurred in to minimize
             # the amount of extra crap that shows up in it.
             tb = isserror.tb
@@ -1451,7 +1461,8 @@ class ExporterMain:
 
             sys.exit(-1)
 
-        except Exception, e:  # pylint: disable=E0012, W0703
+        except Exception:  # pylint: disable=E0012, W0703
+            e = sys.exc_info()[1]
             # This should catch the vast majority of errors that aren't ISSErrors
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)

@@ -66,9 +66,9 @@ class ActionDeps:
         self.action_dict = {'blacklists': 0}
 
     def list_steps(self):
-        print "LIST OF STEPS:"
+        print("LIST OF STEPS:")
         for step in self.step_hierarchy:
-            print step
+            print(step)
         sys.exit(0)
 
     # Contains the logic for the --step option
@@ -90,7 +90,7 @@ class ActionDeps:
 
         # This will set the rest of the steps to 0.
         for step in self.step_hierarchy:
-            self.action_dict[step] = self.action_dict.has_key(step)
+            self.action_dict[step] = step in self.action_dict
 
     # Handles the logic for the --no-rpms, --no-packages, --no-errata, --no-kickstarts, and --list-channels.
     def handle_options(self):
@@ -122,13 +122,13 @@ class ActionDeps:
     # This method uses self.step_precendence to figure out if a step needs to be turned off.
     def turn_off_dep_steps(self, step):
         for dependent in self.step_precedence[step]:
-            if self.action_dict.has_key(dependent):
+            if dependent in self.action_dict:
                 self.action_dict[dependent] = 0
 
     # This method will call turn_off_dep_steps if the step is off or not present in self.action_dict.
     def handle_step_dependents(self):
         for step in self.step_hierarchy:
-            if self.action_dict.has_key(step):
+            if step in self.action_dict:
                 if self.action_dict[step] == 0:
                     self.turn_off_dep_steps(step)
             else:
@@ -145,4 +145,4 @@ if __name__ == "__main__":
     import iss_ui
     a = iss_ui.UI()
     b = ActionDeps(a)
-    print b.get_actions()
+    print(b.get_actions())

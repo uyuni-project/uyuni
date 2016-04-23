@@ -18,9 +18,15 @@ import os
 import sys
 import time
 
-from StringIO import StringIO
+try:
+    #  python 2
+    from StringIO import StringIO
+except ImportError:
+    #  python3
+    from io import StringIO
 
 # rhn imports:
+from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import rhnLib
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_time, log_clean
@@ -106,7 +112,8 @@ def log2disk(level, msg, cleanYN=0, notimeYN=0):
             log_clean(level=level, msg=_prepLogMsg(m, cleanYN, notimeYN))
         except (KeyboardInterrupt, SystemExit):
             raise
-        except Exception, e:  # pylint: disable=E0012, W0703
+        except Exception:  # pylint: disable=E0012, W0703
+            e = sys.exc_info()[1]
             sys.stderr.write('ERROR: upon attempt to write to log file: %s' % e)
 
 
@@ -214,7 +221,7 @@ class FileManip:
         fout = open(self.full_path, 'wb')
         # setting file permissions; NOTE: rhnpush uses apache to write to disk,
         # hence the 6 setting.
-        setPermsPath(self.full_path, user='wwwrun', group='www', chmod=0644)
+        setPermsPath(self.full_path, user='wwwrun', group='www', chmod=int('0644', 8))
         size = 0
         try:
             while 1:
@@ -224,7 +231,8 @@ class FileManip:
                 buf_len = len(buf)
                 fout.write(buf)
                 size = size + buf_len
-        except IOError, e:
+        except IOError:
+            e = sys.exc_info()[1]
             msg = "IOError: %s" % e
             log(-1, msg, stream=sys.stderr)
             # Try not to leave garbage around
@@ -232,7 +240,7 @@ class FileManip:
                 os.unlink(self.full_path)
             except (OSError, IOError):
                 pass
-            raise FileCreationError(msg), None, sys.exc_info()[2]
+            raise_with_tb(FileCreationError(msg), sys.exc_info()[2])
         l_file_size = fout.tell()
         fout.close()
 

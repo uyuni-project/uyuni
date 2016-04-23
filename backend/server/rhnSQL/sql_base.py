@@ -26,7 +26,7 @@
 import string
 import sys
 import sql_types
-import types
+import spacewalk.common.usix as usix
 
 
 def ociDict(names=None, row=None):
@@ -119,7 +119,7 @@ class Cursor:
         if self.sql:
             # Check the cache
             _h = self._cursor_cache[self._dbh_id]
-            if not force and _h.has_key(self.sql):
+            if not force and self.sql in _h:
                 return _h[self.sql]
         cursor = self._prepare_sql()
         if self.sql:
@@ -199,7 +199,7 @@ class Cursor:
 
     def _execute(self, *args, **kwargs):
         if kwargs:
-            val = kwargs.values()[0]
+            val = list(kwargs.values())[0]
             if self._is_sequence_type(val):
                 sys.stderr.write("WARNING: calling execute with named bound arrays\n")
         return self._execute_(args, kwargs)
@@ -249,7 +249,7 @@ class Cursor:
         return ret
 
     def _is_sequence_type(self, val):
-        if type(val) in (types.ListType, types.TupleType):
+        if type(val) in (usix.ListType, usix.TupleType):
             return 1
         return 0
 

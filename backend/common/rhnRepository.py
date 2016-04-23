@@ -16,20 +16,28 @@
 
 import os
 import stat
-import types
-import cStringIO
+import spacewalk.common.usix as usix
+try:
+    #  python 2
+    import cStringIO
+except ImportError:
+    #  python3
+    import io as cStringIO
 import sys
 from rhn import rpclib
 
+from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import rhn_rpm
 
 # local imports
-import rhnFlags
-from rhnLog import log_debug
-from rhnLib import rfc822time
-from rhnException import rhnException, rhnFault, rhnNotFound
-from RPC_Base import RPC_Base
+from spacewalk.common import rhnFlags
+from spacewalk.common.rhnLog import log_debug
+from spacewalk.common.rhnLib import rfc822time
+from spacewalk.common.rhnException import rhnException, rhnFault, rhnNotFound
+from spacewalk.common.RPC_Base import RPC_Base
 
+# bare-except and broad-except
+# pylint: disable=W0702,W0703
 
 class Repository(RPC_Base):
 
@@ -203,8 +211,8 @@ class Repository(RPC_Base):
             try:
                 s = os.stat(filePath)
             except:
-                raise rhnFault(17, "Unable to read package %s"
-                               % os.path.basename(filePath)), None, sys.exc_info()[2]
+                raise_with_tb(rhnFault(17, "Unable to read package %s"
+                                       % os.path.basename(filePath)), sys.exc_info()[2])
 
         lastModified = s[stat.ST_MTIME]
         del s  # XXX: not neccessary?
@@ -242,7 +250,7 @@ class Repository(RPC_Base):
         transport = rhnFlags.get('outputTransportOptions')
         if last_modified:
             # Put the last-modified info too
-            if isinstance(last_modified, (types.IntType, types.FloatType)):
+            if isinstance(last_modified, (usix.IntType, usix.FloatType)):
                 last_modified = rfc822time(last_modified)
             transport['Last-Modified'] = last_modified
         if extra_headers:

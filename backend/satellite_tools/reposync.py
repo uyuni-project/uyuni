@@ -1133,7 +1133,8 @@ class RepoSync(object):
             except KeyboardInterrupt:
                 finally_remove(localpath)
                 raise
-            except Exception, e:
+            except Exception:
+                e = sys.exc_info()[1]
                 self.error_msg(e)
                 finally_remove(localpath)
                 pack.clear_header()
@@ -1218,7 +1219,7 @@ class RepoSync(object):
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
         if not self.quiet:
-            print message
+            print(message)
 
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
@@ -1262,7 +1263,7 @@ class RepoSync(object):
                 from rhnKickstartableTree
                 where org_id = :org_id and channel_id = :channel_id and label = :label
                 """, org_id=self.channel['org_id'], channel_id=self.channel['id'], label=ks_tree_label):
-            print "Kickstartable tree %s already synced." % ks_tree_label
+            print("Kickstartable tree %s already synced." % ks_tree_label)
             return
 
         row = rhnSQL.fetchone_dict("""
@@ -1305,9 +1306,9 @@ class RepoSync(object):
                     continue
                 local_path = os.path.join(CFG.MOUNT_POINT, ks_path, d, s)
                 if os.path.exists(local_path):
-                    print "File %s%s already present locally" % (d, s)
+                    print("File %s%s already present locally" % (d, s))
                 else:
-                    print "Retrieving %s" % d + s
+                    print("Retrieving %s" % d + s)
                     plug.get_file(d + s, os.path.join(CFG.MOUNT_POINT, ks_path))
                 st = os.stat(local_path)
                 insert_h.execute(id=ks_id, path=d + s, checksum=getFileChecksum('sha256', local_path),

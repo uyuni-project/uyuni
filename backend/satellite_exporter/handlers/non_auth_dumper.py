@@ -17,11 +17,17 @@ Non-authenticated dumper
 """
 
 import os
-import xmlrpclib
+try:
+    #  python 2
+    import xmlrpclib
+except ImportError:
+    #  python3
+    import xmlrpc.client as xmlrpclib
 import gzip
 import sys
 
 from rhn.UserDictCase import UserDictCase
+from spacewalk.common.usix import raise_with_tb
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.server import rhnSQL, rhnLib
@@ -114,7 +120,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     def _send_headers(self, error=0, init_compressed_stream=1):
         log_debug(4, "is_closed", self._is_closed)
         if self._is_closed:
-            raise Exception, "Trying to write to a closed connection"
+            raise Exception("Trying to write to a closed connection")
         if self._headers_sent:
             return
         self._headers_sent = 1
@@ -146,7 +152,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         except IOError:
             log_error("Client appears to have closed connection")
             self.close()
-            raise dumper.ClosedConnectionError, None, sys.exc_info()[2]
+            raise_with_tb(dumper.ClosedConnectionError, sys.exc_info()[2])
         log_debug(5, "Bytes sent", len(data))
 
     write = send
@@ -161,7 +167,8 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
             log_debug(5, "Closing a compressed stream")
             try:
                 self._compressed_stream.close()
-            except IOError, e:
+            except IOError:
+                e = sys.exc_info()[1]
                 # Remote end has closed connection already
                 log_error("Error closing the stream", str(e))
 
@@ -182,7 +189,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
     def _get_channel_data(self, channels):
         writer = ContainerWriter()
-        d = ChannelsDumper(writer, params=channels.values())
+        d = ChannelsDumper(writer, params=list(channels.values()))
         d.dump()
         data = writer.get_data()
         # We don't care about <rhn-channels> here
@@ -219,7 +226,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
             }
             # Now look for package sources
             for tag_name, dummy, celem in child_elements:
-                if not maps.has_key(tag_name):
+                if tag_name not in maps:
                     continue
                 field, prefix = maps[tag_name]
                 prefix_len = len(prefix)
@@ -263,7 +270,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
         writer = self._get_xml_writer()
         d = dumper.SatelliteDumper(writer, dumper.ChannelsDumperEx(writer,
-                                                                   params=channels.values()))
+                                                                   params=list(channels.values())))
         d.dump()
         writer.flush()
         log_debug(4, "OK")
@@ -507,23 +514,26 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
             return _get_path_from_cursor(h)
         except InvalidPackageError:
             log_debug(4, "Error", "Non-existent package requested", fileName)
-            raise rhnFault(17, _("Invalid RPM package %s requested") % fileName), None, sys.exc_info()[2]
-        except NullPathPackageError, e:
+            raise_with_tb(rhnFault(17, _("Invalid RPM package %s requested") % fileName), sys.exc_info()[2])
+        except NullPathPackageError:
+            e = sys.exc_info()[1]
             package_id = e[0]
             log_error("Package path null for package id", package_id)
-            raise rhnFault(17, _("Invalid RPM package %s requested") % fileName), None, sys.exc_info()[2]
-        except MissingPackageError, e:
+            raise_with_tb(rhnFault(17, _("Invalid RPM package %s requested") % fileName), sys.exc_info()[2])
+        except MissingPackageError:
+            e = sys.exc_info()[1]
             filePath = e[0]
             log_error("Package not found", filePath)
-            raise rhnFault(17, _("Package not found")), None, sys.exc_info()[2]
+            raise_with_tb(rhnFault(17, _("Package not found")), sys.exc_info()[2])
 
     # Opens the file and sends the stream
     def _send_stream(self, path):
         try:
             stream = open(path)
-        except IOError, e:
+        except IOError:
+            e = sys.exc_info()[1]
             if e.errno == 2:
-                raise rhnFault(3007, "Missing file %s" % path), None, sys.exc_info()[2]
+                raise_with_tb(rhnFault(3007, "Missing file %s" % path), sys.exc_info()[2])
             # Let it flow so we can find it later
             raise
 
@@ -550,7 +560,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
                 # client closed the connection?
                 log_error("Client appears to have closed connection")
                 self.close_rpm()
-                raise dumper.ClosedConnectionError, None, sys.exc_info()[2]
+                raise_with_tb(dumper.ClosedConnectionError, sys.exc_info()[2])
         self.close_rpm()
 
     def close_rpm(self):

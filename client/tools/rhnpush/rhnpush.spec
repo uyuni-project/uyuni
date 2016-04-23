@@ -10,15 +10,28 @@ Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
 URL:           http://fedorahosted.org/spacewalk
-Version:       5.5.92
+Version:       5.5.94
 Release:       1%{?dist}
 Source0:       https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:     noarch
 Requires:      rpm-python
+
+%if 0%{?fedora} >= 23
+Requires:      python3-rhnlib
+Requires:      python3-spacewalk-backend-libs
+Requires:      python3-spacewalk-backend-usix
+BuildRequires: python3-spacewalk-backend-libs
+BuildRequires: python3-devel
+%else
 Requires:      rhnlib >= 2.5.74
 Requires:      spacewalk-backend-libs >= 1.7.17
+Requires:      spacewalk-backend-usix
+BuildRequires: spacewalk-backend-libs > 1.8.33
+BuildRequires: python-devel
+%endif
+
 Requires:      %{rhn_client_tools}
 %if 0%{?pylint_check}
 BuildRequires:  spacewalk-pylint >= 0.6
@@ -28,11 +41,10 @@ BuildRequires:  spacewalk-pylint >= 0.6
 BuildRequires:      %{rhn_client_tools}
 %endif
 BuildRequires: docbook-utils, gettext
-BuildRequires: python-devel
-%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} == 1110
-# pylint check
-BuildRequires:  %{rhn_client_tools}
-BuildRequires:  spacewalk-backend-libs > 1.8.33
+
+%if 0%{?fedora} || 0%{?rhel} > 5
+BuildRequires:  rhn-client-tools
+
 %endif
 
 Summary: Package uploader for the Spacewalk Server
@@ -61,6 +73,10 @@ rm -fv $RPM_BUILD_ROOT%{_mandir}/man8/solaris2mpm.8*
 %endif
 %if 0%{?suse_version}
 ln -s rhnpush $RPM_BUILD_ROOT/%{_bindir}/mgrpush
+%endif
+
+%if 0%{?fedora} >= 23
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT%{_bindir}/rhnpush
 %endif
 
 %clean
@@ -93,6 +109,16 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING
 
 %changelog
+* Fri Apr 22 2016 Gennadii Altukhov <galt@redhat.com> 5.5.94-1
+- Add some fixes to rhnpush for Python 3 compatibility - change mode for open()
+  function - HTTPResponse getheaders() was renamed to get() - fix binary string
+  decoding
+- Fix types in rhnpush utility
+- Fix relative imports in rhnpush utility
+
+* Thu Apr 21 2016 Gennadii Altukhov <galt@redhat.com> 5.5.93-1
+- rhnpush is adapted for Python3
+
 * Wed Mar 30 2016 Tomas Kasparek <tkasparek@redhat.com> 5.5.92-1
 - simplify expression
 - don't count on having newest rhn-client-tools

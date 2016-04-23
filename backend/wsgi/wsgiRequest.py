@@ -16,7 +16,12 @@
 
 
 import socket
-import httplib
+try:
+    #  python 2
+    import httplib
+except ImportError:
+    #  python3
+    import http.client as httplib
 
 
 class WsgiRequest:
@@ -79,7 +84,7 @@ class WsgiRequest:
         if not self.headers_out.has_key('Content-Type'):
             self.headers_out['Content-Type'] = 'text/xml'
 
-        self.start_response(self.status, self.headers_out.items())
+        self.start_response(self.status, list(self.headers_out.items()))
         return
 
     def get_remote_host(self, _rev=""):
@@ -133,7 +138,7 @@ class WsgiMPtable:
         self.dict = {}
 
     def add(self, key, value):
-        if self.dict.has_key(key):
+        if key in self.dict:
             self.dict[key].append(str(value))
         else:
             self.dict[key] = [str(value)]
@@ -154,10 +159,10 @@ class WsgiMPtable:
         return ilist
 
     def has_key(self, key):
-        return self.dict.has_key(key)
+        return key in self.dict
 
     def keys(self):
-        return self.dict.keys()
+        return list(self.dict.keys())
 
     def __str__(self):
         return str(self.items())

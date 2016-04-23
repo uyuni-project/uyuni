@@ -18,9 +18,7 @@
 
 # try to figure out if we're running under Apache or not
 try:
-    from rhnApache import rhnApache
-    # pylint: disable=F0401
-    # pylint can't see _apache because it is inserted by apache/mod_python
+    from spacewalk.common.rhnApache import rhnApache
     import _apache
 except ImportError:
     # no _apache available, not running under apache/mod_python

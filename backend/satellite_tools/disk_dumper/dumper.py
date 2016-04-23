@@ -17,9 +17,15 @@ import time
 import gzip
 import sys
 import tempfile
-from types import ListType
-from cStringIO import StringIO
+from spacewalk.common.usix import ListType
+try:
+    #  python 2
+    from cStringIO import StringIO
+except ImportError:
+    #  python3
+    from io import StringIO
 
+from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import rhnCache, rhnLib, rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG
@@ -288,7 +294,7 @@ class XML_Dumper:
             except IOError:
                 log_error("Client disconnected prematurely")
                 self.close()
-                raise ClosedConnectionError, None, sys.exc_info()[2]
+                raise_with_tb(ClosedConnectionError, sys.exc_info()[2])
         # We're done
         if open_stream:
             self._raw_stream.close()
@@ -368,7 +374,7 @@ class XML_Dumper:
         try:
             uuid = int(name[prefix_len:])
         except ValueError:
-            raise rhnFault(errnum, errmsg % name), None, sys.exc_info()[2]
+            raise_with_tb(rhnFault(errnum, errmsg % name), sys.exc_info()[2])
         return uuid
 
     def _packages(self, packages, prefix, dump_class, sources=0,
@@ -383,7 +389,7 @@ class XML_Dumper:
             for package in packages:
                 package_id = self._get_item_id(prefix, str(package),
                                                3002, 'Invalid package name %s')
-                if packages_hash.has_key(package_id):
+                if package_id in packages_hash:
                     # Already verified
                     continue
                 h.execute(package_id=package_id)
@@ -397,7 +403,7 @@ class XML_Dumper:
             for package in packages:
                 packages_hash[package['package_id']] = package
 
-        self._write_dump(dump_class, params=packages_hash.values())
+        self._write_dump(dump_class, params=list(packages_hash.values()))
         return 0
 
     def dump_errata(self, errata, verify_errata=False):
@@ -409,7 +415,7 @@ class XML_Dumper:
             for erratum in errata:
                 errata_id = self._get_item_id('rhn-erratum-', str(erratum),
                                               3004, "Wrong erratum name %s")
-                if errata_hash.has_key(errata_id):
+                if errata_id in errata_hash:
                     # Already verified
                     continue
                 h.execute(errata_id=errata_id)
@@ -423,7 +429,7 @@ class XML_Dumper:
             for erratum in errata:
                 errata_hash[erratum['errata_id']] = erratum
 
-        self._write_dump(ErrataDumper, params=errata_hash.values())
+        self._write_dump(ErrataDumper, params=list(errata_hash.values()))
         return 0
 
     def dump_kickstartable_trees(self, kickstart_labels=None,
@@ -463,7 +469,7 @@ class XML_Dumper:
         else:
             channels = {}
             for label in channel_labels:
-                if not all_channels_hash.has_key(label):
+                if label not in all_channels_hash:
                     raise rhnFault(3001, "Could not retrieve channel %s" %
                                    label)
                 if not (iss_slave_sha256_capable
@@ -513,11 +519,11 @@ class XML_Dumper:
                 all_ks_hash[row['kickstart_label']] = row
 
         if not kickstart_labels:
-            return all_ks_hash.values()
+            return list(all_ks_hash.values())
 
         result = []
         for l in kickstart_labels:
-            if all_ks_hash.has_key(l):
+            if l in all_ks_hash:
                 result.append(all_ks_hash[l])
 
         return result
@@ -701,7 +707,7 @@ class CachedDumper(exportLib.BaseDumper):
         last_modified = self._get_last_modified(params)
         key = self._get_key(params)
         return rhnCache.set(key, value, modified=last_modified,
-                        raw=1, user='wwwrun', group='www', mode=0755)
+                            raw=1, user='wwwrun', group='www', mode=int('0755', 8))
 
     def dump_subelement(self, data):
         log_debug(2)
