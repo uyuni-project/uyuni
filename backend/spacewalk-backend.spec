@@ -731,6 +731,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/stringutils.py*
 
 %files usix
+%defattr(-,root,root)
 %doc LICENSE
 %dir %{pythonrhnroot}
 %{pythonrhnroot}/__init__.py*
