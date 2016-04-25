@@ -1,7 +1,8 @@
 [Unit]
 Description=Taskomatic
-After=postgresql.service local-fs.target cobblerd.service sendmail.service apache2.service
-Requires=postgresql.service apache2.service
+After=local-fs.target cobblerd.service sendmail.service apache2.service postgresql.service
+Requires=apache2.service
+Wants=postgresql.service
 
 [Service]
 Type=forking
