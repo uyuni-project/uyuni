@@ -32,7 +32,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.35
+Version: 2.5.36
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -887,6 +887,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Mon Apr 25 2016 Gennadii Altukhov <galt@redhat.com> 2.5.36-1
+- Add missing sys imports
+
 * Fri Apr 22 2016 Gennadii Altukhov <galt@redhat.com> 2.5.35-1
 - Add mode to open packages as 'binary'
 - Fix relative imports for python backend-common libs
