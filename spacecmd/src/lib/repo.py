@@ -317,14 +317,19 @@ def do_repo_create(self, args):
         if not options.url:
             logging.error('A URL is required')
             return
-
-    self.client.channel.software.createRepo(self.session,
-                                            options.name,
-                                            'yum',
-                                            options.url,
-                                            options.ca,
-                                            options.cert,
-                                            options.key)
+    if options.ca or options.cert or options.key:
+        self.client.channel.software.createRepo(self.session,
+                                                options.name,
+                                                'yum',
+                                                options.url,
+                                                options.ca,
+                                                options.cert,
+                                                options.key)
+    else:
+        self.client.channel.software.createRepo(self.session,
+                                                options.name,
+                                                'yum',
+                                                options.url)
 
 ####################
 
