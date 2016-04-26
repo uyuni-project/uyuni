@@ -87,5 +87,6 @@
         <dependency org="suse" name="xalan-j2" rev="2.7.0" />
         <dependency org="suse" name="xerces-j2" rev="2.8.1" />
         <dependency org="suse" name="xml-commons-apis" rev="1.0" />
+        <dependency org="suse" name="jacocoant" rev="0.7.7" />
     </dependencies>
 </ivy-module>
