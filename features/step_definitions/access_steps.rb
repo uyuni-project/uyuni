@@ -31,7 +31,6 @@ Then(/^no link should be broken$/) do
   visited = {}
   failed_other_reason = []
 
-
   loop do
     href = hrefs.shift
     next if href.nil?

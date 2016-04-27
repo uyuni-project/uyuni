@@ -5,18 +5,15 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
     @connection.call("activationkey.create", @sid, id, descr, "", limit.to_i, [], false)
   end
 
-
   def deleteKey(id)
     @connection.call("activationkey.delete", @sid, id)
     @keys = @connection.call("activationkey.listActivationKeys", @sid)
   end
 
-
   def listActivatedSystems(key)
     systems = @connection.call("activationkey.listActivatedSystems", @sid, key)
     return systems == nil ? 0 : systems.length
   end
-
 
   def getActivationKeysCount
     @keys = @connection.call("activationkey.listActivationKeys", @sid)

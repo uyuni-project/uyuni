@@ -48,7 +48,6 @@ Then(/^I should see a text like "([^"]*)"$/) do |arg1|
   end
 end
 
-
 #
 # Test for a text not allowed in the whole page
 #
@@ -76,7 +75,6 @@ end
 Then(/^I should not see a "([^"]*)" link$/) do |arg1|
   fail if not page.has_no_link?(arg1)
 end
-
 
 Then(/^I should see a "([^"]*)" button$/) do |arg1|
   fail if not find_button(arg1).visible?
@@ -161,7 +159,6 @@ Then(/^I should see a "([^"]*)" link in row ([0-9]+) of the content menu$/) do |
     end
   end
 end
-
 
 Then(/^I should see a "([^"]*)" link in list "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//ul[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do

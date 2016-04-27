@@ -24,7 +24,6 @@ Then(/^I should get key deleted\.$/) do
   fail if rpctest.verifyKey(key)
 end
 
-
 When(/^I add config channels to a newly created key$/) do
   fail if rpctest.getConfigChannelsCount(key) > 0
 end
