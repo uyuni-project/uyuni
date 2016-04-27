@@ -29,10 +29,18 @@ public enum MessageHandlerThreadPool {
     INSTANCE;
 
     /* Logger for this class */
-    private static final Logger LOG = Logger.getLogger(MessageHandlerThreadPool.class);
+    private final Logger log = Logger.getLogger(MessageHandlerThreadPool.class);
 
     /* The executor service to be used */
-    private ExecutorService executor = Executors.newFixedThreadPool(5);
+    private final ExecutorService executorService;
+
+    /* The number of threads can be configurable */
+    private static final int NO_OF_THREADS = 5;
+
+    MessageHandlerThreadPool() {
+        executorService = Executors.newFixedThreadPool(NO_OF_THREADS);
+        log.debug("Started thread pool for concurrent mesage handling.");
+    }
 
     /**
      * Submit a {@link Runnable} for execution.
@@ -40,7 +48,15 @@ public enum MessageHandlerThreadPool {
      * @param runnable the runnable to submit
      */
     public Future<?> submit(Runnable runnable) {
-        LOG.debug("Submitting runnable");
-        return executor.submit(runnable);
+        log.debug("Submitting runnable");
+        return executorService.submit(runnable);
+    }
+
+    /**
+     * Call shutdown() on the executor service.
+     */
+    public void shutdown() {
+        log.debug("Shutting down message queue thread pool.");
+        executorService.shutdown();
     }
 }
