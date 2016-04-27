@@ -20,6 +20,7 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
+import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import org.apache.log4j.Logger;
 import org.cobbler.Distro;
@@ -117,7 +118,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
             messages.append("\n");
         }
         if (messages.length() == 0) {
-            return null;
+            return new CobblerSyncCommand(user).store();
         }
         return new ValidatorError("kickstart.cobbler.distro.syncfail", messages);
     }

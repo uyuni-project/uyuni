@@ -18,6 +18,7 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
 import org.cobbler.CobblerConnection;
+import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 import org.cobbler.Distro;
 
 /**
@@ -75,7 +76,7 @@ public class CobblerDistroEditCommand extends CobblerDistroCommand {
             CobblerDistroHelper.getInstance().updateDistroFromTree(nonXen, tree);
         }
 
-        return null;
+        return new CobblerSyncCommand(user).store();
     }
 
 }
