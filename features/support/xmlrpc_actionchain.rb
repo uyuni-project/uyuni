@@ -28,8 +28,8 @@ class XMLRPCActionChain < XMLRPCBaseTest
 
   def addScriptRun(system, script, label)
     @connection.call("actionchain.addScriptRun",
-                            @sid, system, label, "root", "root", 300,
-                            Base64.encode64(script))
+                     @sid, system, label, "root", "root", 300,
+                     Base64.encode64(script))
   end
 
 

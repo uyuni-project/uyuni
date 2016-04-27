@@ -21,15 +21,15 @@ Then /^no link should be broken$/ do
   Capybara.default_wait_time = 1
   visit Capybara.app_host
 
-  relation = Hash.new
+  relation = {}
 
   hrefs = collect_all_hrefs
   hrefs.each() do |url|
       relation[url.to_s] = "/"
   end
 
-  visited = Hash.new
-  failed_other_reason = Array.new
+  visited = {}
+  failed_other_reason = []
 
 
   loop do
