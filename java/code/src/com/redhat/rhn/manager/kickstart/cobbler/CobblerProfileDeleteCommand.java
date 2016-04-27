@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import org.apache.log4j.Logger;
 import org.cobbler.Profile;
@@ -56,7 +57,7 @@ public class CobblerProfileDeleteCommand extends CobblerProfileCommand {
             return new ValidatorError("cobbler.profile.remove_failed");
         }
         invokeCobblerUpdate();
-        return null;
+        return new CobblerSyncCommand(user).store();
 
     }
 
