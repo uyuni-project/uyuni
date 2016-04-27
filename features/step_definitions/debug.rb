@@ -1,4 +1,4 @@
-When /^debug$/ do
+When(/^debug$/) do
   page.driver.debug
 end
 

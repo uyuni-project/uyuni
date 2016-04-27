@@ -1,10 +1,10 @@
-When /^I check the ram value$/ do
+When(/^I check the ram value$/) do
    ram_value = `grep MemTotal /proc/meminfo |awk '{print $2}'`
    ram_MB = ram_value.to_i / 1024
    step %[I should see a "#{ram_MB}" text]
 end
 
-When /^I check the MAC address value$/ do
+When(/^I check the MAC address value$/) do
    mac_address = `ifconfig | grep eth0 | awk '{print $5}'`
    mac_address.downcase!
    step %[I should see a "#{mac_address}" text]
