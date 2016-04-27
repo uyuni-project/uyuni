@@ -6,16 +6,14 @@ Feature: smdba database helper tool
   As a Database administrator
   I want to easily take backups and snapshots
 
-  Scenario: Check if embedded database is PostgreSQL
-    When I cannot find file "/var/lib/pgsql/data/postgresql.conf"
-    Then I disable all the tests below
-
   Scenario: Check embedded database running
+    Given a postgresql database is running
     When I start database with the command "smdba db-start"
     And when I issue command "smdba db-status"
     Then I want to see if "online" is in the output
 
   Scenario: Check embedded database can be stopped, started and restarted
+    Given a postgresql database is running
     When I start database with the command "smdba db-start"
     And when I see that the database is "online" or "failed" as it might already running
     And when I stop the database with the command "smdba db-stop"
@@ -26,6 +24,7 @@ Feature: smdba database helper tool
     Then I want to see if the database is "online"
 
   Scenario: Check system check of the database sets optimal configuration
+    Given a postgresql database is running
     When I stop the database with the command "smdba db-stop"
     And when I configure "/var/lib/pgsql/data/postgresql.conf" parameter "wal_level" to "hot_standby"
     Then I start database with the command "smdba db-start"
@@ -40,7 +39,7 @@ Feature: smdba database helper tool
     Then I expect to see the configuration is set to "archive"
 
   Scenario: Check database utilities
-    Given database is running
+    Given a postgresql database is running
     When I issue command "smdba space-overview"
     Then I find tablespaces "susemanager" and "postgres"
     When I issue command "smdba space-reclaim"
@@ -49,7 +48,7 @@ Feature: smdba database helper tool
     Then I find "public.rhnserver", "public.rhnpackage" and "public.web_contact" are in the list.
 
   Scenario: Check SMDBA backup setup facility
-    Given database is running
+    Given a postgresql database is running
     Given there is no such "/smdba-backup-test" directory
     When I create backup directory "/smdba-backup-test" with UID "root" and GID "root"
     And when I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
@@ -61,7 +60,7 @@ Feature: smdba database helper tool
     Then I remove backup directory "/smdba-backup-test"
 
   Scenario: Take backup with SMDBA
-    Given database is running
+    Given a postgresql database is running
     Given there is no such "/smdba-backup-test" directory
     When I create backup directory "/smdba-backup-test" with UID "postgres" and GID "postgres"
     And when I change Access Control List on "/smdba-backup-test" directory to "0700"
@@ -72,7 +71,7 @@ Feature: smdba database helper tool
     Then "/usr/bin/smdba-pgarchive" destination should be set to "/smdba-backup-test" in configuration file
 
   Scenario: Restore backup with SMDBA
-    Given database is running
+    Given a postgresql database is running
     Given database "susemanager" has no table "dummy"
     When I set a checkpoint
     And when I issue command "smdba backup-hot"
@@ -80,7 +79,7 @@ Feature: smdba database helper tool
     And when I destroy "/var/lib/pgsql/data/pg_xlog" directory
     And when I restore database from the backup
     And when I issue command "smdba db-status"
-    Given database is running
+    Given a postgresql database is running
     Given database "susemanager" has no table "dummy"
     Then I disable backup in the directory "/smdba-backup-test" 
     Then I remove backup directory "/smdba-backup-test"
