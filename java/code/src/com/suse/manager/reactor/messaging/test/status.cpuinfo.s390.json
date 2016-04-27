@@ -1,0 +1,13 @@
+{
+  "features": "esan3 zarch stfle msa ldisp eimm dfp etf3eh highgprs",
+  "vendor_id": "IBM/S390",
+  "processor 0": "version = FF,  identification = 0A9A27,  machine = 2827",
+  "# processors": "1",
+  "cache5": "level=4 type=Unified scope=Shared size=393216K line_size=256 associativity=24",
+  "cache4": "level=3 type=Unified scope=Shared size=49152K line_size=256 associativity=12",
+  "bogomips per cpu": "2913.00",
+  "cache0": "level=1 type=Data scope=Private size=96K line_size=256 associativity=6",
+  "cache1": "level=1 type=Instruction scope=Private size=64K line_size=256 associativity=4",
+  "cache2": "level=2 type=Data scope=Private size=1024K line_size=256 associativity=8",
+  "cache3": "level=2 type=Instruction scope=Private size=1024K line_size=256 associativity=8"
+}
