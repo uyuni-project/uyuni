@@ -17,6 +17,8 @@ package com.redhat.rhn.common.messaging;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 
+import com.suse.manager.reactor.messaging.MessageHandlerThreadPool;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -55,7 +57,12 @@ public class MessageDispatcher implements Runnable {
                 if (actionHandler == null) {
                     continue;
                 }
-                actionHandler.run();
+                else if (((ActionExecutor) actionHandler).isConcurrent()) {
+                    MessageHandlerThreadPool.INSTANCE.submit(actionHandler);
+                }
+                else {
+                    actionHandler.run();
+                }
             }
             catch (InterruptedException e) {
                 log.error("Error occurred in the MessageQueue", e);
