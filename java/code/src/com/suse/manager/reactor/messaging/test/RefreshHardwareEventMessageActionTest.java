@@ -9,13 +9,16 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.reactor.messaging.RefreshHardwareEventMessage;
 import com.suse.manager.reactor.messaging.RefreshHardwareEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
 import com.suse.salt.netapi.calls.modules.Grains;
@@ -32,8 +35,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Test for RefreshHardwareEventMessageAction.
@@ -58,11 +61,8 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                 assertNull(server.getDmi()); // getDmiRecords() threw exception so it was not populated
                 assertTrue(!server.getNetworkInterfaces().isEmpty());
                 assertTrue(!server.getDevices().isEmpty());
-                ServerAction serverAction = action.getServerActions().stream().findFirst().get();
-                assertEquals(new Long(-1L), serverAction.getResultCode());
-                assertThat(serverAction.getResultMsg(),
-                    stringContains("DMI: An error occurred: test exception")
-                );
+                verifyFailed(action, "Hardware list could not be refreshed completely\n" +
+                        "DMI: An error occurred: test exception");
             });
     }
 
@@ -82,11 +82,8 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                 assertNull(server.getDmi().getVendor());
                 assertTrue(!server.getDevices().isEmpty());
                 assertTrue(!server.getNetworkInterfaces().isEmpty());
-                ServerAction serverAction = action.getServerActions().stream().findFirst().get();
-                assertEquals(new Long(-1L), serverAction.getResultCode());
-                assertThat(serverAction.getResultMsg(),
-                    stringContains("DMI: Could not retrieve DMI records: test exception")
-                );
+                verifyFailed(action, "Hardware list could not be refreshed completely\n" +
+                        "DMI: Could not retrieve DMI records: test exception");
             });
     }
 
@@ -123,6 +120,8 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
             (server, action) -> {
                 assertNotNull(server);
                 assertNotNull(server.getCpu());
+                assertEquals(new Long(1), server.getCpu().getNrsocket());
+                assertEquals(new Long(1), server.getCpu().getNrCPU());
                 assertEquals("Intel Xeon E312xx (Sandy Bridge)", server.getCpu().getModel());
                 assertEquals("3492.164", server.getCpu().getMHz());
                 assertEquals("GenuineIntel", server.getCpu().getVendor());
@@ -147,10 +146,49 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                 assertNotNull(server.getDmi().getVendor());
                 assertTrue(!server.getDevices().isEmpty());
                 assertTrue(!server.getNetworkInterfaces().isEmpty());
-                ServerAction serverAction = action.getServerActions().stream().findFirst().get();
-                assertEquals(new Long(0L), serverAction.getResultCode());
-                assertEquals(serverAction.getResultMsg(), "hardware list refreshed");
-                assertEquals(serverAction.getStatus(), ActionFactory.STATUS_COMPLETED);
+
+                Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
+                        eth -> eth.getName(),
+                        Function.identity()
+                ));
+
+                assertEquals("00:00:00:00:00:00", ethNames.get("lo").getHwaddr());
+                assertEquals("52:54:00:af:7f:30", ethNames.get("eth0").getHwaddr());
+                assertEquals("52:54:00:eb:51:3d", ethNames.get("eth1").getHwaddr());
+
+                assertEquals("::1", ethNames.get("lo").getIPv6Addresses().get(0).getAddress());
+                assertEquals("fe80::5054:ff:feaf:7f30", ethNames.get("eth0").getIPv6Addresses().get(0).getAddress());
+                assertEquals("fe80::5054:ff:feeb:513d", ethNames.get("eth1").getIPv6Addresses().get(0).getAddress());
+
+                assertEquals("128", ethNames.get("lo").getIPv6Addresses().get(0).getNetmask());
+                assertEquals("64", ethNames.get("eth0").getIPv6Addresses().get(0).getNetmask());
+                assertEquals("64", ethNames.get("eth1").getIPv6Addresses().get(0).getNetmask());
+
+                assertEquals("host", ethNames.get("lo").getIPv6Addresses().get(0).getScope());
+                assertEquals("link", ethNames.get("eth0").getIPv6Addresses().get(0).getScope());
+                assertEquals("link", ethNames.get("eth1").getIPv6Addresses().get(0).getScope());
+
+                assertEquals("127.0.0.1", ethNames.get("lo").getIpaddr());
+                assertEquals("192.168.121.155", ethNames.get("eth0").getIpaddr());
+                assertEquals("172.24.108.98", ethNames.get("eth1").getIpaddr());
+
+                assertEquals("255.0.0.0", ethNames.get("lo").getNetmask());
+                assertEquals("255.255.255.0", ethNames.get("eth0").getNetmask());
+                assertEquals("255.240.0.0", ethNames.get("eth1").getNetmask());
+
+                assertEquals("127.255.255.255", ethNames.get("lo").getBroadcast());
+                assertEquals("192.168.121.255", ethNames.get("eth0").getBroadcast());
+                assertEquals("172.31.255.255", ethNames.get("eth1").getBroadcast());
+
+                assertEquals(null, ethNames.get("lo").getModule());
+                assertEquals("virtio_net", ethNames.get("eth0").getModule());
+                assertEquals("virtio_net", ethNames.get("eth1").getModule());
+
+                assertEquals(null, ethNames.get("lo").getPrimary());
+                assertEquals(null, ethNames.get("eth0").getPrimary());
+                assertEquals("Y", ethNames.get("eth1").getPrimary());
+
+                verifyCompleted(action);
             });
     }
 
@@ -158,7 +196,7 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         doTest(ARCH_X86,
                 (apiMock, minionId) -> {
                     try {
-                        // thow an err here to skip dmi
+                        // not interested in DMI, just skip it
                         apiMock.stubs()
                             .method("getDmiRecords")
                             .will(throwException(new JsonSyntaxException("test exception")));
@@ -194,13 +232,150 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         doTest(ARCH_PPC64,
             (apiMock, minionId) -> { },
             (server, action) -> {
-                ServerAction serverAction = action.getServerActions().stream().findFirst().get();
-                assertEquals(serverAction.getResultMsg(), "hardware list refreshed");
-                assertEquals(serverAction.getStatus(), ActionFactory.STATUS_COMPLETED);
+                verifyCompleted(action);
+                assertNotNull(server);
+                assertNotNull(server.getCpu());
 
                 server = MinionServerFactory.findByMinionId(server.getMinionId()).orElse(null);
                 assertEquals("CHRP IBM pSeries (emulated by qe", server.getCpu().getVendor());
+                assertEquals("POWER8E (raw), altivec supported", server.getCpu().getModel());
+                assertEquals(null, server.getCpu().getBogomips());
+                assertEquals("3425.000000", server.getCpu().getMHz());
+
+                assertNull(server.getDmi());
+                assertTrue(!server.getDevices().isEmpty());
+
+                Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
+                        eth -> eth.getName(),
+                        Function.identity()
+                ));                
+
+                assertEquals("00:00:00:00:00:00", ethNames.get("lo").getHwaddr());
+                assertEquals("52:54:00:d7:4f:20", ethNames.get("eth0").getHwaddr());
+
+                assertEquals(1, ethNames.get("eth0").getIPv6Addresses().size());
+                assertEquals("::1", ethNames.get("lo").getIPv6Addresses().get(0).getAddress());
+                assertEquals("2620:113:80c0:8000:10:161:25:49", ethNames.get("eth0").getIPv6Addresses().get(0).getAddress());
+
+                assertEquals("128", ethNames.get("lo").getIPv6Addresses().get(0).getNetmask());
+                assertEquals("64", ethNames.get("eth0").getIPv6Addresses().get(0).getNetmask());
+
+                assertEquals("host", ethNames.get("lo").getIPv6Addresses().get(0).getScope());
+                assertEquals("global", ethNames.get("eth0").getIPv6Addresses().get(0).getScope());
+
+                assertEquals("127.0.0.1", ethNames.get("lo").getIpaddr());
+                assertEquals("10.161.25.49", ethNames.get("eth0").getIpaddr());
+
+                assertEquals("255.0.0.0", ethNames.get("lo").getNetmask());
+                assertEquals("255.255.192.0", ethNames.get("eth0").getNetmask());
+
+                assertEquals(null, ethNames.get("lo").getBroadcast());
+                assertEquals("10.161.63.255", ethNames.get("eth0").getBroadcast());
+
+                assertEquals(null, ethNames.get("lo").getModule());
+                assertEquals("ibmveth", ethNames.get("eth0").getModule());
+
+                assertEquals(null, ethNames.get("lo").getPrimary());
+                assertEquals("Y", ethNames.get("eth0").getPrimary());                
             });
+    }
+
+    public void testRefreshHardwareS390() throws Exception {
+        doTest(ARCH_S390,
+                (apiMock, minionId) -> {
+                    try {
+                        String readValues = parse("mainframesysinfo.read_values", ARCH_S390, MainframeSysinfo.readValues().getReturnType());
+                        apiMock.stubs().method("getMainframeSysinfoReadValues").with(eq(minionId)).will(returnValue(Optional.of(readValues)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        fail("Could not setup mock " + e.getMessage());
+                    }
+                },
+                (server, action) -> {
+
+                    verifyCompleted(action);
+
+                    assertNotNull(server);
+                    assertNotNull(server.getCpu());
+                    assertNull(server.getCpu().getNrsocket());
+                    assertEquals(new Long(0), server.getCpu().getNrCPU());
+                    assertEquals("s390x", server.getCpu().getModel());
+                    assertEquals("0", server.getCpu().getMHz());
+                    assertEquals("IBM/S390", server.getCpu().getVendor());
+                    assertNull(server.getCpu().getStepping());
+                    assertNull(server.getCpu().getFamily());
+                    assertNull(server.getCpu().getCache());
+                    assertEquals("2913.00", server.getCpu().getBogomips());
+                    assertEquals("esan3 zarch stfle msa ldisp eimm dfp etf3eh highgprs",
+                            server.getCpu().getFlags());
+                    assertNull(server.getCpu().getVersion());
+
+                    assertNotNull(server.getVirtualInstance());
+                    assertNotNull(server.getVirtualInstance().getHostSystem());
+                    assertEquals("z/OS", server.getVirtualInstance().getHostSystem().getOs());
+                    assertEquals("IBM Mainframe 2827 0000000000069A27", server.getVirtualInstance().getHostSystem().getName());
+                    assertEquals(new Long(45), server.getVirtualInstance().getHostSystem().getCpu().getNrCPU());
+                    assertEquals(new Long(45), server.getVirtualInstance().getHostSystem().getCpu().getNrsocket());
+
+                    assertEquals(VirtualInstanceFactory.getInstance().getFullyVirtType(),
+                            server.getVirtualInstance().getType());
+                    assertNotNull(server.getVirtualInstance().getUuid());
+                    assertEquals(VirtualInstanceFactory.getInstance().getUnknownState(),
+                            server.getVirtualInstance().getState());
+                    assertEquals(new Long(1),
+                            server.getVirtualInstance().getConfirmed());
+                    assertNull(server.getDmi());
+
+                    assertTrue(!server.getDevices().isEmpty());
+                    assertTrue(!server.getNetworkInterfaces().isEmpty());
+
+                    Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
+                            eth -> eth.getName(),
+                            Function.identity()
+                    ));
+
+                    assertEquals("00:00:00:00:00:00", ethNames.get("lo").getHwaddr());
+                    assertEquals("02:00:00:00:42:8e", ethNames.get("eth0").getHwaddr());
+
+                    assertEquals("::1", ethNames.get("lo").getIPv6Addresses().get(0).getAddress());
+                    assertEquals("fe80::ff:fe00:428e", ethNames.get("eth0").getIPv6Addresses().get(0).getAddress());
+
+                    assertEquals("128", ethNames.get("lo").getIPv6Addresses().get(0).getNetmask());
+                    assertEquals("64", ethNames.get("eth0").getIPv6Addresses().get(0).getNetmask());
+
+                    assertEquals("host", ethNames.get("lo").getIPv6Addresses().get(0).getScope());
+                    assertEquals("link", ethNames.get("eth0").getIPv6Addresses().get(0).getScope());
+
+                    assertEquals("127.0.0.1", ethNames.get("lo").getIpaddr());
+                    assertEquals("10.161.155.142", ethNames.get("eth0").getIpaddr());
+
+                    assertEquals("255.0.0.0", ethNames.get("lo").getNetmask());
+                    assertEquals("255.255.240.0", ethNames.get("eth0").getNetmask());
+
+                    assertEquals("127.255.255.255", ethNames.get("lo").getBroadcast());
+                    assertEquals(null, ethNames.get("eth0").getBroadcast());
+
+                    assertEquals(null, ethNames.get("lo").getModule());
+                    assertEquals("qeth", ethNames.get("eth0").getModule());
+
+                    assertEquals(null, ethNames.get("lo").getPrimary());
+                    assertEquals("Y", ethNames.get("eth0").getPrimary());
+
+                });
+    }
+
+    private void verifyCompleted(Action action) {
+        ServerAction serverAction = action.getServerActions().stream().findFirst().get();
+        assertEquals(new Long(0L), serverAction.getResultCode());
+        assertEquals(serverAction.getResultMsg(), "hardware list refreshed");
+        assertEquals(serverAction.getStatus(), ActionFactory.STATUS_COMPLETED);
+    }
+
+    private void verifyFailed(Action action, String msg) {
+        ServerAction serverAction = action.getServerActions().stream().findFirst().get();
+        assertEquals(new Long(-1L), serverAction.getResultCode());
+        assertEquals(msg, serverAction.getResultMsg());
+        assertEquals(serverAction.getStatus(), ActionFactory.STATUS_FAILED);
     }
 
     private void doTest(String arch, BiConsumer<Mock, String> stubs, BiConsumer<MinionServer, Action> assertions) throws Exception {
@@ -222,13 +397,13 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         Map<String, Object> cpuinfo = parse("status.cpuinfo", arch, Status.cpuinfo().getReturnType());
         apiMock.stubs().method("getCpuInfo").with(eq(minionId)).will(returnValue(Optional.of(cpuinfo)));
 
-        Map<String, Network.Interface> netif = parse("network.interfaces", Network.interfaces().getReturnType());
+        Map<String, Network.Interface> netif = parse("network.interfaces", arch, Network.interfaces().getReturnType());
         apiMock.stubs().method("getNetworkInterfacesInfo").with(eq(minionId)).will(returnValue(Optional.of(netif)));
 
-        Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse("sumautil.primary_ips", SumaUtil.primaryIps().getReturnType());
+        Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse("sumautil.primary_ips", arch, SumaUtil.primaryIps().getReturnType());
         apiMock.stubs().method("getPrimaryIps").with(eq(minionId)).will(returnValue(Optional.of(ips)));
 
-        Map<String, String> netmodules = parse("sumautil.get_net_modules", SumaUtil.getNetModules().getReturnType());
+        Map<String, String> netmodules = parse("sumautil.get_net_modules", arch, SumaUtil.getNetModules().getReturnType());
         apiMock.stubs().method("getNetModules").with(eq(minionId)).will(returnValue(Optional.of(netmodules)));
 
         Map<String, Boolean> ping = new HashMap<>();
@@ -252,10 +427,6 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         server = MinionServerFactory.findByMinionId(minionId).orElse(null);
 
         assertions.accept(server, scheduledAction);
-    }
-
-    private <T> T parse(String name, TypeToken<T> returnType) throws IOException {
-        return parse(name, null, returnType);
     }
 
     private <T> T parse(String name, String arch, TypeToken<T> returnType) throws IOException {
