@@ -40,9 +40,10 @@ public class CobblerProfileCreateCommand extends CobblerProfileCommand {
      * Constructor
      * @param ksDataIn to sync
      * @param userIn - user wanting to sync with cobbler
-     * @param cobberSync - should store() execute a cobbbler sync
+     * @param cobblerSync - should store() execute a cobbbler sync
      */
-    public CobblerProfileCreateCommand(KickstartData ksDataIn, User userIn, boolean cobblerSync) {
+    public CobblerProfileCreateCommand(KickstartData ksDataIn, User userIn,
+            boolean cobblerSync) {
         super(ksDataIn, userIn);
         callCobblerSync = cobblerSync;
     }
@@ -59,7 +60,7 @@ public class CobblerProfileCreateCommand extends CobblerProfileCommand {
     /**
      * Constructor
      * @param ksDataIn to sync
-     * @param cobberSync - should store() execute a cobbbler sync
+     * @param cobblerSync - should store() execute a cobbbler sync
      */
     public CobblerProfileCreateCommand(KickstartData ksDataIn, boolean cobblerSync) {
         super(ksDataIn);

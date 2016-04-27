@@ -36,7 +36,7 @@ public class CobblerSyncCommand extends CobblerCommand {
     }
 
     /**
-     * @param userIn user object
+     * Constructor
      */
     public CobblerSyncCommand() {
         super();

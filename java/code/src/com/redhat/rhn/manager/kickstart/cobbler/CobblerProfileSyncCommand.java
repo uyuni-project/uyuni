@@ -115,7 +115,8 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
     }
 
     private void createProfile(KickstartData profile) {
-        CobblerProfileCreateCommand creator = new CobblerProfileCreateCommand(profile, false);
+        CobblerProfileCreateCommand creator =
+                new CobblerProfileCreateCommand(profile, false);
         creator.store();
     }
 
