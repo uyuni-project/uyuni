@@ -97,7 +97,8 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
     }
 
     private void createProfile(KickstartData profile) {
-        CobblerProfileCreateCommand creator = new CobblerProfileCreateCommand(profile, false);
+        CobblerProfileCreateCommand creator =
+                new CobblerProfileCreateCommand(profile, false);
         creator.store();
     }
 }
