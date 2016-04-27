@@ -51,9 +51,16 @@ public abstract class CobblerCommand {
      * @param userIn - xmlrpc token for cobbler
      */
     public CobblerCommand(User userIn) {
-        xmlRpcToken =
-            IntegrationService.get().getAuthToken(userIn.getLogin());
-        log.debug("xmlrpc token for cobbler: " + xmlRpcToken);
+        if (userIn == null) {
+            xmlRpcToken = IntegrationService.get().getAuthToken(
+                ConfigDefaults.get().getCobblerAutomatedUser());
+            log.debug("Unauthenticated Cobbler call");
+        }
+        else {
+            xmlRpcToken =
+                IntegrationService.get().getAuthToken(userIn.getLogin());
+            log.debug("xmlrpc token for cobbler: " + xmlRpcToken);
+        }
         // We abstract this fetch of the class so a test class
         // can override the invoker with a mock xmlrpc invoker.
         invoker = (XMLRPCInvoker)
@@ -66,14 +73,7 @@ public abstract class CobblerCommand {
      *  This should only be used for taskomatic!
      */
     public CobblerCommand() {
-        xmlRpcToken = IntegrationService.get().getAuthToken(
-                ConfigDefaults.get().getCobblerAutomatedUser());
-        log.debug("Unauthenticated Cobbler call");
-        // We abstract this fetch of the class so a test class
-        // can override the invoker with a mock xmlrpc invoker.
-        invoker = (XMLRPCInvoker)
-            MethodUtil.getClassFromConfig(CobblerXMLRPCHelper.class.getName());
-        user = null;
+        this(null);
     }
 
     /**
