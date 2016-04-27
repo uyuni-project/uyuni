@@ -34,12 +34,12 @@ When(/^"(.*)" exists on the filesystem$/) do |file|
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        break if File.exists?(file)
+        break if File.exist?(file)
         sleep(1)
       end
     end
   rescue Timeout::Error
     puts "timeout waiting for the file to appear"
   end
-  fail if not File.exists?(file)
+  fail if not File.exist?(file)
 end
