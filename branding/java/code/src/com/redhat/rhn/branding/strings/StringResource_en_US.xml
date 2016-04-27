@@ -2665,6 +2665,12 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="virtualization_host">
         <source>Virtualization Host</source>
       </trans-unit>
+      <trans-unit id="task.status.matcher">
+        <source>Subscription Matcher Run</source>
+      </trans-unit>
+      <trans-unit id="task.status.gatherer">
+        <source>Virtual Host Manager Data Refresh</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
