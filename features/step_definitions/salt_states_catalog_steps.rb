@@ -5,7 +5,7 @@ When(/^I enter the salt state$/) do |multiline|
     x = find('textarea[name="content"]')
     x.set(multiline) #find("#{arg1}") #.set(lines)
   end 
- end
+end
 
 When(/^I click on the css "(.*)"$/) do |css|
   find(css).click
