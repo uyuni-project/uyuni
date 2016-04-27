@@ -1,7 +1,7 @@
 # Copyright (c) 2010-2011 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
-Then /^"(.*?)" is locked on this client$/ do |pkg|
+Then(/^"(.*?)" is locked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
   fail unless File.exists?(zypp_lock_file)
 
@@ -9,7 +9,7 @@ Then /^"(.*?)" is locked on this client$/ do |pkg|
   fail unless locks.find{|lock| pkg =~ /^#{lock['solvable_name']}/ }
 end
 
-Then /^Package "(.*?)" is reported as locked$/ do |pkg|
+Then(/^Package "(.*?)" is reported as locked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
 
@@ -17,7 +17,7 @@ Then /^Package "(.*?)" is reported as locked$/ do |pkg|
   fail unless locked_pkgs.find{|a| a.text =~ /^#{pkg}/}
 end
 
-Then /^"(.*?)" is unlocked on this client$/ do |pkg|
+Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
   fail unless File.exists?(zypp_lock_file)
 
@@ -25,25 +25,25 @@ Then /^"(.*?)" is unlocked on this client$/ do |pkg|
   fail if locks.find{|lock| pkg =~ /^#{lock['solvable_name']}/ }
 end
 
-Then /^Package "(.*?)" is reported as unlocked$/ do |pkg|
+Then(/^Package "(.*?)" is reported as unlocked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
 
   fail if locked_pkgs.find{|a| a.text =~ /^#{pkg}/}
 end
 
-Then /^The package scheduled is "(.*?)"$/ do |pkg|
+Then(/^The package scheduled is "(.*?)"$/) do |pkg|
   match = find(:xpath, "//li[@class='list-group-item']//li")
 
   fail unless match
   fail unless match.text =~ /^#{pkg}/
 end
 
-Then /^The action status is "(.*?)"$/ do |status|
+Then(/^The action status is "(.*?)"$/) do |status|
   step %[I should see a "This action's status is: #{status}" text]
 end
 
-Then /^Package "(.*?)" is reported as pending to be locked$/ do |pkg|
+Then(/^Package "(.*?)" is reported as pending to be locked$/) do |pkg|
   xpath_query = "//td[" + # Looking for 1 td element with...
     "a[text()='#{pkg}'] and " + # a link with a certain text
     "i[@class='fa fa-clock-o'] and " + # and the clock icon
@@ -51,7 +51,7 @@ Then /^Package "(.*?)" is reported as pending to be locked$/ do |pkg|
   find(:xpath, xpath_query)
 end
 
-Then /^Package "(.*?)" is reported as pending to be unlocked$/ do |pkg|
+Then(/^Package "(.*?)" is reported as pending to be unlocked$/) do |pkg|
   xpath_query = "//td[" + # Looking for 1 td element with...
     "a[text()='#{pkg}'] and " + # a link with a certain text
     "i[@class='fa fa-clock-o'] and " + # and the clock icon
@@ -59,7 +59,7 @@ Then /^Package "(.*?)" is reported as pending to be unlocked$/ do |pkg|
   find(:xpath, xpath_query)
 end
 
-Then /^Package "(.*?)" cannot be selected$/ do |pkg|
+Then(/^Package "(.*?)" cannot be selected$/) do |pkg|
   xpath_query = "//tr[" + # Looking for 1 table row where...
     "td[input[@type='checkbox' and @disabled]] and " + # the checkbox is disabled and...
     "td[ " + # there's another td which contains
@@ -70,7 +70,7 @@ Then /^Package "(.*?)" cannot be selected$/ do |pkg|
   find(:xpath, xpath_query)
 end
 
-Then /^Only packages "(.*?)" are reported as pending to be unlocked$/ do |pkgs|
+Then(/^Only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
   pkgs = pkgs.split(",").map{|pkg| pkg.strip}
 
   # ensure these packages are found as pending to be unlocked
@@ -91,7 +91,7 @@ Then /^Only packages "(.*?)" are reported as pending to be unlocked$/ do |pkgs|
   fail if matches.size != pkgs.size
 end
 
-When /^I select all the packages$/ do
+When(/^I select all the packages$/) do
   within(:xpath, "//section") do
     # use div/div/div for cve audit which has two tables
     top_level_xpath_query = "//div[@class='table-responsive']/table/thead/tr[.//input[@type='checkbox']]"

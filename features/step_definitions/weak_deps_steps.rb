@@ -1,7 +1,7 @@
 # Copyright (c) 2010-2011 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
-When /^I refresh the metadata$/ do
+When(/^I refresh the metadata$/) do
   output = `rhn_check -vvv 2>&1`
     if ! $?.success?
       raise "rhn_check failed: #{$!}: #{output}"
@@ -9,7 +9,7 @@ When /^I refresh the metadata$/ do
   client_refresh_metadata
 end
 
-Then /^I should have '([^']*)' in the metadata$/ do |text|
+Then(/^I should have '([^']*)' in the metadata$/) do |text|
   arch=`uname -m`
   arch.chomp!
   if arch != "x86_64"
@@ -19,7 +19,7 @@ Then /^I should have '([^']*)' in the metadata$/ do |text|
   fail if ! $?.success?
 end
 
-Then /^I should not have '([^']*)' in the metadata$/ do |text|
+Then(/^I should not have '([^']*)' in the metadata$/) do |text|
   arch=`uname -m`
   arch.chomp!
   if arch != "x86_64"
@@ -29,7 +29,7 @@ Then /^I should not have '([^']*)' in the metadata$/ do |text|
   fail if $?.success?
 end
 
-Then /^"([^"]*)" should exists in the metadata$/ do |file|
+Then(/^"([^"]*)" should exists in the metadata$/) do |file|
   arch=`uname -m`
   arch.chomp!
   if arch != "x86_64"
@@ -38,7 +38,7 @@ Then /^"([^"]*)" should exists in the metadata$/ do |file|
   fail if not File.exists?("#{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/#{file}")
 end
 
-Then /^I should have '([^']*)' in the patch metadata$/ do |text|
+Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
   arch=`uname -m`
   arch.chomp!
   if arch != "x86_64"
