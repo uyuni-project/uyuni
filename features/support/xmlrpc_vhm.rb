@@ -7,7 +7,7 @@ class XMLRPCVHMTest < XMLRPCBaseTest
     @connection.call('virtualhostmanager.listAvailableVirtualHostGathererModules', @sid) || []
   end
 
-  def listVirtualHostManagers()
+  def listVirtualHostManagers
     @connection.call('virtualhostmanager.listVirtualHostManagers', @sid) || []
   end
 

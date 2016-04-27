@@ -18,7 +18,7 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
   end
 
 
-  def getActivationKeysCount()
+  def getActivationKeysCount
     @keys = @connection.call("activationkey.listActivationKeys", @sid)
     return @keys == nil ? 0 : @keys.length
   end

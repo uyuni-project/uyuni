@@ -2,7 +2,7 @@ require "base64"
 require_relative "xmlrpctest"
 
 class XMLRPCActionChain < XMLRPCBaseTest
-  def listChains()
+  def listChains
     @connection.call("actionchain.listChains", @sid).map {|x| x['label']}
   end
 
