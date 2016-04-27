@@ -35,6 +35,12 @@ public class CobblerSyncCommand extends CobblerCommand {
         super(userIn);
     }
 
+    /**
+     * @param userIn user object
+     */
+    public CobblerSyncCommand() {
+        super();
+    }
 
     /**
      * {@inheritDoc}
