@@ -12,8 +12,13 @@ When(/^I associate repo "([^"]*)" with channel "([^"]*)"$/) do |repoLabel, chann
   assert(rpctest.associateRepo(channelLabel, repoLabel))
 end
 
-When(/^I create a channel with label "([^"]*)", name "([^"]*)", summary "([^"]*)", arch "([^"]*)" and parent "([^"]*)"$/) do |label, name, summary, arch, parent|
-  assert_equal(rpctest.create(label, name, summary, arch, parent), 1)
+When(/^I create the following channels:/) do |table|
+  channels = table.hashes
+  channels.each do |ch|
+    assert_equal(
+      rpctest.create(
+        ch['label'], ch['name'], ch['summary'], ch['arch'], ch['parent']), 1)
+  end
 end
 
 When(/^I delete the software channel with label "([^"]*)"$/) do |label|
