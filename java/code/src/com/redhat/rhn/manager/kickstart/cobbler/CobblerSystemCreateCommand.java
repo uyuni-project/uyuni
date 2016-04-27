@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
+import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import org.apache.commons.lang.StringUtils;
@@ -381,7 +382,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         if (saveCobblerId) {
             server.setCobblerId(rec.getId());
         }
-        return null;
+        return new CobblerSyncCommand(user).store();
     }
 
     /**

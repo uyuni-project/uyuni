@@ -19,6 +19,7 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
@@ -105,6 +106,9 @@ public class CobblerProfileCreateCommand extends CobblerProfileCommand {
 
         invokeCobblerUpdate();
         ksData.setCobblerId(prof.getUid());
+        if (callCobblerSync) {
+            return new CobblerSyncCommand(user).store();
+        }
         return null;
     }
 
