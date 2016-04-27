@@ -1,5 +1,5 @@
 # COPYRIGHT 2015 SUSE LLC
-password = "die gurke"
+CREATE_USER_PASSWORD = "die gurke"
 
 Given(/^I am logged in via XML\-RPC\/user as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   @rpc = XMLRPCUserTest.new(ENV["TESTHOST"])
@@ -23,7 +23,7 @@ Then(/^I should see at least one role that matches "([^"]*)" suffix$/) do |sfx|
 end
 
 When(/^I call user\.create\(sid, login, pwd, name, lastname, email\) with login "([^"]*)"$/) do |luser|
-  refute(@rpc.createUser(luser, password) != 1)
+  refute(@rpc.createUser(luser, CREATE_USER_PASSWORD) != 1)
 end
 
 Then(/^when I call user\.listUsers\(\), I should see a user "([^"]*)"$/) do |luser|

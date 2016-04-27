@@ -7,7 +7,6 @@ scdrpc = XMLRPCScheduleTest.new(ENV['TESTHOST'])
 
 users = nil
 roles = nil
-password = "die gurke"
 clientId = nil
 chainLabel = nil
 
