@@ -3,7 +3,7 @@
 
 Then(/^"(.*?)" is locked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
-  fail unless File.exists?(zypp_lock_file)
+  fail unless File.exist?(zypp_lock_file)
 
   locks = read_zypp_lock_file(zypp_lock_file)
   fail unless locks.find{|lock| pkg =~ /^#{lock['solvable_name']}/ }
@@ -19,7 +19,7 @@ end
 
 Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
-  fail unless File.exists?(zypp_lock_file)
+  fail unless File.exist?(zypp_lock_file)
 
   locks = read_zypp_lock_file(zypp_lock_file)
   fail if locks.find{|lock| pkg =~ /^#{lock['solvable_name']}/ }

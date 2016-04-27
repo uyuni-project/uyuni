@@ -12,7 +12,7 @@ Given(/^I am testing configuration$/) do
 end
 
 When(/^I change the local file "([^"]*)" to "([^"]*)"$/) do |filename, content|
-    fail unless File.exists?(filename)
+    fail unless File.exist?(filename)
     File.open(filename, 'w') do |f|
       f.write(content)
     end
@@ -32,11 +32,11 @@ Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
 end
 
 Then(/^On this client the File "([^"]*)" should exists$/) do |arg1|
-   fail if not File.exists?(arg1)
+   fail if not File.exist?(arg1)
 end
 
 Then(/^On this client the File "([^"]*)" should have the content "([^"]*)"$/) do |filename, content|
-    fail if not File.exists?(filename)
+    fail if not File.exist?(filename)
     fail if not File.read(filename).include?(content)
 end
 
