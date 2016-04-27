@@ -6,7 +6,6 @@ require 'tempfile'
 # Class for generating expect files to interactively run spacewalk-push-register.
 #
 class ExpectFileGenerator
-
   # Constructor.
   #
   def initialize(host, bootstrap)

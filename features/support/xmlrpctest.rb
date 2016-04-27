@@ -1,7 +1,6 @@
 require 'xmlrpc/client'
 
 class XMLRPCBaseTest
-
   def initialize(host)
     @host = host
     @connection = XMLRPC::Client.new2("http://" + @host + "/rpc/api")
