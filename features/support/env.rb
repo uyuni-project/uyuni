@@ -92,7 +92,7 @@ when :phantomjs
                                                              '--ignore-ssl-errors=yes',
                                                              '--ssl-protocol=TLSv1',
                                                              '--web-security=false'],
-                                                             :js_errors => false,
+                                      :js_errors => false,
                                       :debug => false)
   end
   Capybara.default_driver = :poltergeist
