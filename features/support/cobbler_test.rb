@@ -30,7 +30,7 @@ class CobblerTest
     end
   end
 
-  def is_running()
+  def is_running
     result = true
     begin
       @server.call("get_profiles")

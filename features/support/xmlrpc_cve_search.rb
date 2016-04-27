@@ -1,7 +1,7 @@
 require_relative 'xmlrpctest'
 
 class XMLRPCCVEAuditTest < XMLRPCBaseTest
-  def populateCVEServerChannels()
+  def populateCVEServerChannels
     return @connection.call("audit.populateCVEServerChannels", @sid)
   end
 
