@@ -102,7 +102,6 @@ Then(/^no link should be broken$/) do
 end
 
 Then(/^I should be able to login$/) do
-
     (0..10).each() do |i|
         visit Capybara.app_host
         if page.has_content?('Welcome to SUSE Manager')
