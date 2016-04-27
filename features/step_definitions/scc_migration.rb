@@ -25,7 +25,6 @@ Given(/^the server is migrated to SCC$/) do
   step %[there is "/var/lib/spacewalk/scc/migrated" file on the server]
 end
 
-
 When(/^the file "(.*?)" exists on the server$/) do |target_file|
   sshcmd("test -e #{target_file} && rm #{target_file}", ignore_err: true)
 end

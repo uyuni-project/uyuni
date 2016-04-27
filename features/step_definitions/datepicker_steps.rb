@@ -67,7 +67,6 @@ Then(/^the date picker title should be the current month and year$/) do
   step %[the date picker title should be "#{now}"]
 end
 
-
 Then(/^the date picker title should be "([^"]*)"$/) do |arg1|
   if page.has_no_css?('.datepicker')
     step %[I open the date picker]

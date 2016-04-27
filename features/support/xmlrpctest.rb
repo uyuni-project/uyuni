@@ -14,7 +14,6 @@ class XMLRPCBaseTest
     @sid = @connection.call("auth.login", luser, password)
   end
 
-
   def logout
     @connection.call("auth.logout", @sid)
   end

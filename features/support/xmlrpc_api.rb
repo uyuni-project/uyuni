@@ -5,7 +5,6 @@ class XMLRPCApiTest < XMLRPCBaseTest
     @connection.call("api.getVersion")
   end
 
-
   def systemVersion
     @connection.call("api.systemVersion")
   end
