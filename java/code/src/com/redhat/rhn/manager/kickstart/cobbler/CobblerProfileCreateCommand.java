@@ -19,6 +19,7 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
@@ -33,13 +34,36 @@ import java.util.Map;
  */
 public class CobblerProfileCreateCommand extends CobblerProfileCommand {
 
+    private boolean callCobblerSync;
+
+    /**
+     * Constructor
+     * @param ksDataIn to sync
+     * @param userIn - user wanting to sync with cobbler
+     * @param cobberSync - should store() execute a cobbbler sync
+     */
+    public CobblerProfileCreateCommand(KickstartData ksDataIn, User userIn, boolean cobblerSync) {
+        super(ksDataIn, userIn);
+        callCobblerSync = cobblerSync;
+    }
+
     /**
      * Constructor
      * @param ksDataIn to sync
      * @param userIn - user wanting to sync with cobbler
      */
     public CobblerProfileCreateCommand(KickstartData ksDataIn, User userIn) {
-        super(ksDataIn, userIn);
+        this(ksDataIn, userIn, true);
+    }
+
+    /**
+     * Constructor
+     * @param ksDataIn to sync
+     * @param cobberSync - should store() execute a cobbbler sync
+     */
+    public CobblerProfileCreateCommand(KickstartData ksDataIn, boolean cobblerSync) {
+        super(ksDataIn);
+        callCobblerSync = cobblerSync;
     }
 
     /**
@@ -49,7 +73,7 @@ public class CobblerProfileCreateCommand extends CobblerProfileCommand {
      * @param ksDataIn to sync
      */
     public CobblerProfileCreateCommand(KickstartData ksDataIn) {
-        super(ksDataIn);
+        this(ksDataIn, true);
     }
 
      /**
@@ -82,6 +106,9 @@ public class CobblerProfileCreateCommand extends CobblerProfileCommand {
 
         invokeCobblerUpdate();
         ksData.setCobblerId(prof.getUid());
+        if (callCobblerSync) {
+            return new CobblerSyncCommand(user).store();
+        }
         return null;
     }
 

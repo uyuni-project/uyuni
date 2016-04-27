@@ -18,6 +18,7 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import org.apache.commons.lang.StringUtils;
 import org.cobbler.Profile;
@@ -75,8 +76,8 @@ public class CobblerProfileEditCommand extends CobblerProfileCommand {
                 prof.setKickstart(cobFileName);
             }
             updateCobblerFields(prof);
+            return new CobblerSyncCommand(user).store();
         }
-
         return null;
     }
 }

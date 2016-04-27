@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import org.cobbler.Distro;
 
@@ -53,7 +54,7 @@ public class CobblerDistroEditCommand extends CobblerDistroCommand {
             d.setName(newName);
         }
         updateCobblerFields();
-        return null;
+        return new CobblerSyncCommand(user).store();
     }
 
 }
