@@ -46,16 +46,16 @@ Then(/^I should get ([0-9]+) returned$/) do |num|
 end
 
 Then(/^I should get "([^"]*)"$/) do |key|
-  assert(params.has_key?(key), "Expect parameter key '#{key}', but got only '#{params}'")
+  assert(params.key?(key), "Expect parameter key '#{key}', but got only '#{params}'")
 end
 
 Then(/^"([^"]*)" should be "([^"]*)"$/) do |key, value|
-  assert(detail.has_key?(key), "Expect parameter key '#{key}', but got only '#{detail}'")
+  assert(detail.key?(key), "Expect parameter key '#{key}', but got only '#{detail}'")
   assert(detail[key].to_s == value, "Expect value for #{key} should be '#{value}, but got '#{detail[key]}'")
 end
 
 Then(/^configs "([^"]*)" should be "([^"]*)"$/) do |key, value|
-  assert(detail['configs'].has_key?(key), "Expect parameter key '#{key}', but got only '#{detail['configs']}'")
+  assert(detail['configs'].key?(key), "Expect parameter key '#{key}', but got only '#{detail['configs']}'")
   assert(detail['configs'][key].to_s == value, "Expect value for #{key} should be '#{value}, but got '#{detail['configs'][key]}'")
 end
 
