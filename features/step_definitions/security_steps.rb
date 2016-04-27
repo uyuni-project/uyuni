@@ -112,7 +112,6 @@ Then(/^there are not security issues$/) do
       html << "</ul>"
       html << "</div>"
     end
-
   end
 
   puts html.string
