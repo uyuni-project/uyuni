@@ -1,10 +1,10 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Verify SMDBA infrastructure
-  In order to operate embedded database with SMDBA tool
-  As the testing user
-  I want to check if infrastructure is consistent
+Feature: smdba database helper tool
+  In order to protect the data in SUSE Manager
+  As a Database administrator
+  I want to easily take backups and snapshots
 
   Scenario: Check if embedded database is PostgreSQL
     When I cannot find file "/var/lib/pgsql/data/postgresql.conf"
