@@ -43,7 +43,7 @@ namespace :cucumber do
       STDERR.puts "waiting for virtual X server to settle.."
       sleep 1
     end
-    trap ("SIGINT") do
+    trap("SIGINT") do
       Process.kill("HUP", pid)
     end
 
