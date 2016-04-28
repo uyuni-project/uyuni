@@ -76,4 +76,3 @@ class XMLRPCChannelTest < XMLRPCBaseTest
     end
   end
 end
-

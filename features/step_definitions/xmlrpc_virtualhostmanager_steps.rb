@@ -62,5 +62,3 @@ end
 Then(/^I logout from XML\-RPC\/virtualhostmanager$/) do
   virtualhostmanager.logout
 end
-
-

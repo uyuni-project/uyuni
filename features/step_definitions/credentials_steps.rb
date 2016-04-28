@@ -8,4 +8,3 @@ Given(/^I am on the Credentials page$/) do
     And I follow "Credentials"
   ]
 end
-

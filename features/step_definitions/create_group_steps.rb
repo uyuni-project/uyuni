@@ -11,4 +11,3 @@ end
 When(/^I check this client$/) do
   step %[I check "#{$myhostname}" in the list]
 end
-

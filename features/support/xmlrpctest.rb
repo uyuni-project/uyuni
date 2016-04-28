@@ -17,4 +17,3 @@ class XMLRPCBaseTest
     @connection.call("auth.logout", @sid)
   end
 end
-

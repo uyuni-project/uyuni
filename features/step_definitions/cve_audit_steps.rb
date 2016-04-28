@@ -6,4 +6,3 @@ Then(/^I should see an alphabar link to this system$/) do
     fail if not find_link("#{$myhostname[0,1].upcase}").visible?
   end
 end
-

@@ -110,4 +110,3 @@ Then(/^I should be able to login$/) do
         sleep(5)
     end
 end
-

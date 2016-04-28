@@ -28,4 +28,3 @@ def read_zypp_lock_file(lock_file)
 
   locks
 end
-

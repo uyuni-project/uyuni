@@ -17,4 +17,3 @@ When(/^I enter as remote command this script in$/) do |multiline|
       x.set(multiline) #find("#{arg1}") #.set(lines)
    end
 end
-

@@ -8,5 +8,3 @@ When(/^I click on "([^"]+)" for "([^"]+)"$/) do |arg1, arg2|
     end
   end
 end
-
-

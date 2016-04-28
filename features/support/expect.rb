@@ -41,4 +41,3 @@ class ExpectFileGenerator
     @file.unlink
   end
 end
-
