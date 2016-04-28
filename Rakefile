@@ -12,7 +12,7 @@ $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "spacewalk_testsuite_base/version"
 
 ENV['LD_LIBRARY_PATH'] = "/usr/lib64/oracle/10.2.0.4/client/lib/"
-outputfile = ENV.key?('RUNID') ? "#{ENV["RUNID"]}-cucumber-results_#{ENV["ARCH2"]}.html" : "output.html"
+outputfile = ENV.key?('RUNID') ? "#{ENV['RUNID']}-cucumber-results_#{ENV['ARCH2']}.html" : "output.html"
 
 Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
   namespace :cucumber do
@@ -33,7 +33,7 @@ namespace :cucumber do
     raise "install xorg-x11-server-extra" if not File.exist?("/usr/bin/Xvfb")
 
     ENV["DISPLAY"] = ":98"
-    arglist = ["Xvfb", "#{ENV["DISPLAY"]}" ">& Xvfb.log &"]
+    arglist = ["Xvfb", "#{ENV['DISPLAY']}" ">& Xvfb.log &"]
     pid = fork do
       trap("SIGINT", "IGNORE")
       exec(*arglist)

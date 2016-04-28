@@ -27,7 +27,7 @@ World(MiniTest::Assertions)
 # basic support for rebranding of strings in the UI
 BRANDING = ENV['BRANDING'] || 'suse'
 
-DEFAULT_TIMEOUT=20
+DEFAULT_TIMEOUT = 20
 
 # Returns current url
 def current_url
@@ -109,7 +109,7 @@ when :firefox
       profile["network.proxy.ssl"] = proxy
       profile["network.proxy.ssl_port"] = 8080
     end
-    driver = Capybara::Selenium::Driver.new(app, :browser => :firefox,:profile=> profile)
+    driver = Capybara::Selenium::Driver.new(app, :browser => :firefox,:profile => profile)
     driver.browser.manage.window.resize_to(1280, 1024)
     driver
   end
@@ -134,7 +134,7 @@ end
 Before do
   sec_proxy = ENV['ZAP_PROXY']
   if sec_proxy && ['localhost', '127.0.0.1'].include?(sec_proxy)
-    $zap = Zap.new(:target=> "https://#{ENV['TESTHOST']}", :zap=>"/usr/share/owasp-zap/zap.sh")
+    $zap = Zap.new(:target => "https://#{ENV['TESTHOST']}", :zap => "/usr/share/owasp-zap/zap.sh")
     unless $zap.running?
       $zap.start(:daemon => true)
       until $zap.running?
