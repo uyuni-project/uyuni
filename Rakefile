@@ -39,7 +39,7 @@ namespace :cucumber do
       exec(*arglist)
     end
 
-    while ! File.exist?("/tmp/.X98-lock")
+    while !File.exist?("/tmp/.X98-lock")
       STDERR.puts "waiting for virtual X server to settle.."
       sleep 1
     end

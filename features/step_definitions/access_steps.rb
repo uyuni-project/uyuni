@@ -96,7 +96,7 @@ Then(/^no link should be broken$/) do
       $stderr.puts "\tother_reason: #{f}"
   end
   $stderr.puts "End of failed pages"
-  if ! failed_pages.empty?
+  if !failed_pages.empty?
     raise "Failed pages:\n#{failed_pages}"
   end
 end
