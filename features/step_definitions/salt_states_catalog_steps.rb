@@ -25,5 +25,5 @@ When(/^I wait for the file "(.*)"$/) do |file|
     break if File.exist?(file)
     sleep 1
   end
-  fail if not File.exist?(file)
+  fail if !File.exist?(file)
 end

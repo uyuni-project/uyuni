@@ -1,10 +1,10 @@
 # Verify content
 Then(/^I should see this client in the Pending section$/) do
-  fail if not find('#pending-list').find("b", :text => $myhostname).visible?
+  fail if !find('#pending-list').find("b", :text => $myhostname).visible?
 end
 
 Then(/^I should see this client in the Rejected section$/) do
-  fail if not find('#rejected-list').find("b", :text => $myhostname).visible?
+  fail if !find('#rejected-list').find("b", :text => $myhostname).visible?
 end
 
 Then(/^I should not see this client as a Minion anywhere$/) do
@@ -24,7 +24,7 @@ When(/^I see my fingerprint$/) do
   output = `salt-call --local key.finger`
   fing = output.split("\n")[1].strip!
 
-  fail if not page.has_content?(fing)
+  fail if !page.has_content?(fing)
 end
 
 When(/^I accept this client's minion key$/) do
@@ -39,12 +39,12 @@ end
 
 When(/^I should see this hostname as text$/) do
   within('#spacewalk-content') do
-    fail if not page.has_content?($myhostname)
+    fail if !page.has_content?($myhostname)
   end
 end
 
 When(/^I should see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
-    fail if not page.has_content?(txt)
+    fail if !page.has_content?(txt)
   end
 end

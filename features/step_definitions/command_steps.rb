@@ -136,7 +136,7 @@ Then(/^I want to get "([^"]*)"$/) do |arg1|
       break
     end
   end
-  if not found
+  if !found
     raise "'#{arg1}' not found in output '#{$command_output}'"
   end
 end

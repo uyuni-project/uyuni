@@ -3,7 +3,7 @@
 
 Given(/^I am not authorized$/) do
   visit Capybara.app_host
-  fail if not find_button('Sign In').visible?
+  fail if !find_button('Sign In').visible?
 end
 
 When(/^I go to the home page$/) do
@@ -13,7 +13,7 @@ end
 Given(/^I access the host the first time$/) do
   visit Capybara.app_host
   #fail if not page.has_content?("Create Spacewalk Administrator")
-  fail if not page.has_content?("Create SUSE Manager Administrator")
+  fail if !page.has_content?("Create SUSE Manager Administrator")
 end
 
 Then(/^no link should be broken$/) do
