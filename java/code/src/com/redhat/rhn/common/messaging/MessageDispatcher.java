@@ -17,8 +17,6 @@ package com.redhat.rhn.common.messaging;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 
-import com.suse.manager.reactor.messaging.MessageHandlerThreadPool;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -58,7 +56,7 @@ public class MessageDispatcher implements Runnable {
                     continue;
                 }
                 else if (((ActionExecutor) actionHandler).canRunConcurrently()) {
-                    MessageHandlerThreadPool.INSTANCE.submit(actionHandler);
+                    MessageQueueThreadPool.INSTANCE.submit(actionHandler);
                 }
                 else {
                     actionHandler.run();

@@ -49,9 +49,6 @@ import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
-
-import com.suse.manager.reactor.messaging.MessageHandlerThreadPool;
-
 import com.redhat.rhn.frontend.events.SsmInstallPackagesAction;
 import com.redhat.rhn.frontend.events.SsmInstallPackagesEvent;
 import com.redhat.rhn.frontend.events.SsmSystemRebootAction;
@@ -166,7 +163,7 @@ public class MessageQueue {
             logger.debug("stopMessaging() - start");
         }
         dispatcher.stop();
-        MessageHandlerThreadPool.INSTANCE.shutdown();
+        MessageQueueThreadPool.INSTANCE.shutdown();
         if (logger.isDebugEnabled()) {
             logger.debug("stopMessaging() - end");
         }
