@@ -58,14 +58,14 @@ end
 
 When(/^I check the tomcat logs for errors$/) do
   output = sshcmd("grep ERROR /var/log/tomcat6/catalina.out", ignore_err: true)[:stdout]
-  output.each_line() do |line|
+  output.each_line do |line|
     puts line
   end
 end
 
 When(/^I check the tomcat logs for NullPointerExceptions$/) do
   output = sshcmd("grep -n1 NullPointer /var/log/tomcat6/catalina.out", ignore_err: true)[:stdout]
-  output.each_line() do |line|
+  output.each_line do |line|
     puts line
   end
 end
@@ -130,7 +130,7 @@ end
 
 Then(/^I want to get "([^"]*)"$/) do |arg1|
   found = false
-  $command_output.each_line() do |line|
+  $command_output.each_line do |line|
     if line.include?(arg1)
       found = true
       break
@@ -143,7 +143,7 @@ end
 
 Then(/^I wont get "([^"]*)"$/) do |arg1|
   found = false
-  $command_output.each_line() do |line|
+  $command_output.each_line do |line|
     if line.include?(arg1)
       found = true
       break

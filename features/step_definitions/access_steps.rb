@@ -24,7 +24,7 @@ Then(/^no link should be broken$/) do
   relation = {}
 
   hrefs = collect_all_hrefs
-  hrefs.each() do |url|
+  hrefs.each do |url|
       relation[url.to_s] = "/"
   end
 
@@ -37,7 +37,7 @@ Then(/^no link should be broken$/) do
     base = href.split("?")[0]
     $stderr.puts "Visiting '#{href}' '#{base}', #{hrefs.size} to go, found at '#{relation[href.to_s]}'"
     visit href.to_s
-    htmlbody = page.html()
+    htmlbody = page.html
     # We have one page in our manual with has "Internal Server Error" in its text
     # we need to mark this page as success.
     if base != '/rhn/help/reference/en-US/ch-rhn-workgroup.jsp' &&
@@ -102,7 +102,7 @@ Then(/^no link should be broken$/) do
 end
 
 Then(/^I should be able to login$/) do
-    (0..10).each() do |i|
+    (0..10).each do |i|
         visit Capybara.app_host
         if page.has_content?('Welcome to SUSE Manager')
             break

@@ -17,7 +17,7 @@ class CobblerTest
     @server_port = server_port
     @server_path = server_path
     @server = XMLRPC::Client.new(server_address, server_path, server_port)
-    unless is_running()
+    unless is_running
       raise "No running server at found at " + server_address
     end
   end

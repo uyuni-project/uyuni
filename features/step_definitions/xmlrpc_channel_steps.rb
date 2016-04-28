@@ -30,7 +30,7 @@ When(/^I delete the repo with label "([^"]*)"$/) do |label|
 end
 
 Then(/^something should get listed with a call of listSoftwareChannels$/) do
-  assert_equal(rpctest.getSoftwareChannelsCount() < 1, false)
+  assert_equal(rpctest.getSoftwareChannelsCount < 1, false)
 end
 
 Then(/^"([^"]*)" should get listed with a call of listSoftwareChannels$/) do |label|
