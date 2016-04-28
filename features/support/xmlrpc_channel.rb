@@ -35,7 +35,7 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   def getSoftwareChannelsCount
     channels = @connection.call("channel.listSoftwareChannels", @sid)
-    channels == nil ? 0 : channels.length
+    channels.nil? ? 0 : channels.length
   end
 
   #

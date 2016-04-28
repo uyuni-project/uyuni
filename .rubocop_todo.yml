@@ -135,12 +135,6 @@ Style/NegatedWhile:
 # Offense count: 6
 # Cop supports --auto-correct.
 Style/NilComparison:
-  Enabled: false
-
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: IncludeSemanticChanges.
-Style/NonNilCheck:
   Enabled: true
 
 # Offense count: 1
