@@ -15,9 +15,9 @@ Given(/cobblerd is running/) do
   end
 end
 
-Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |arg1,arg2,arg3|
+Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |arg1, arg2, arg3|
   ct = CobblerTest.new()
-  ct.login(arg2,arg3)
+  ct.login(arg2, arg3)
   if ct.distro_exists(arg1)
     raise "distro " + arg1 + " already exists"
   end
@@ -31,9 +31,9 @@ Given(/distro "([^"]*)" exists/) do |arg1|
   end
 end
 
-Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |arg1,arg2,arg3|
+Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |arg1, arg2, arg3|
   ct = CobblerTest.new()
-  ct.login(arg2,arg3)
+  ct.login(arg2, arg3)
   if ct.profile_exists(arg1)
     raise "profile " + arg1 + " already exists"
   end

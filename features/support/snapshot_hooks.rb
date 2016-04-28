@@ -10,7 +10,7 @@ After do |scenario|
   #take a snapshot if the scenario fails
   if ENV['VHOST']
     name = short_name(scenario.name)
-    if(scenario.failed?)
+    if (scenario.failed?)
       step "I take a snapshot \"#{name}_failed\""
     else
       #nothing happened, delete snapshot as we dont need it
@@ -22,5 +22,5 @@ After do |scenario|
 end
 
 def short_name(name)
-  name.downcase.delete('^a-zA-z0-9 ').tr(' ','_').slice(0..35)
+  name.downcase.delete('^a-zA-z0-9 ').tr(' ', '_').slice(0..35)
 end

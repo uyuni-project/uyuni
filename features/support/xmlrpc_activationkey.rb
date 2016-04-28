@@ -49,7 +49,7 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
     keyinfo = @connection.call("activationkey.getDetails", @sid, key)
     puts "      Key info for the key " + keyinfo['key']
 
-    keyinfo.each_pair do |k,v|
+    keyinfo.each_pair do |k, v|
       puts "        " + k.to_s + ": " + v.to_s
     end
 
