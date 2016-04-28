@@ -6,7 +6,7 @@ Then(/^"(.*?)" is locked on this client$/) do |pkg|
   fail unless File.exist?(zypp_lock_file)
 
   locks = read_zypp_lock_file(zypp_lock_file)
-  fail unless locks.find{ |lock| pkg =~ /^#{lock['solvable_name']}/ }
+  fail unless locks.find { |lock| pkg =~ /^#{lock['solvable_name']}/ }
 end
 
 Then(/^Package "(.*?)" is reported as locked$/) do |pkg|
@@ -14,7 +14,7 @@ Then(/^Package "(.*?)" is reported as locked$/) do |pkg|
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
 
   fail if locked_pkgs.empty?
-  fail unless locked_pkgs.find{ |a| a.text =~ /^#{pkg}/ }
+  fail unless locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
 Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
@@ -22,14 +22,14 @@ Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
   fail unless File.exist?(zypp_lock_file)
 
   locks = read_zypp_lock_file(zypp_lock_file)
-  fail if locks.find{ |lock| pkg =~ /^#{lock['solvable_name']}/ }
+  fail if locks.find { |lock| pkg =~ /^#{lock['solvable_name']}/ }
 end
 
 Then(/^Package "(.*?)" is reported as unlocked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
 
-  fail if locked_pkgs.find{ |a| a.text =~ /^#{pkg}/ }
+  fail if locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
 Then(/^The package scheduled is "(.*?)"$/) do |pkg|
