@@ -3,8 +3,8 @@
 
 When(/^I register this client for SSH push via tunnel$/) do
   # Create backups of /etc/hosts and up2date config
-  FileUtils.cp('/etc/hosts', '/etc/hosts.BACKUP');
-  FileUtils.cp('/etc/sysconfig/rhn/up2date', '/etc/sysconfig/rhn/up2date.BACKUP');
+  FileUtils.cp('/etc/hosts', '/etc/hosts.BACKUP')
+  FileUtils.cp('/etc/sysconfig/rhn/up2date', '/etc/sysconfig/rhn/up2date.BACKUP')
 
   # Generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
