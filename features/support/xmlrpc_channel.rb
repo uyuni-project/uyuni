@@ -1,7 +1,6 @@
 require_relative 'xmlrpctest'
 
 class XMLRPCChannelTest < XMLRPCBaseTest
-
   def createRepo(label, url)
     @connection.call("channel.software.createRepo", @sid, label, 'yum', url)
   end
@@ -34,7 +33,7 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   # Return the number of custom software channels
   #
-  def getSoftwareChannelsCount()
+  def getSoftwareChannelsCount
     channels = @connection.call("channel.listSoftwareChannels", @sid)
     return channels == nil ? 0 : channels.length
   end
@@ -67,7 +66,7 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   # Debug: Get the list of channels and print some info
   #
-  def listSoftwareChannels()
+  def listSoftwareChannels
     channels = @connection.call("channel.listSoftwareChannels", @sid)
     for c in channels
       print "    Channel: " + "\n"

@@ -1,22 +1,22 @@
 # Copyright (c) 2010-2011 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
-Given /^I am not authorized$/ do
+Given(/^I am not authorized$/) do
   visit Capybara.app_host
   fail if not find_button('Sign In').visible?
 end
 
-When /^I go to the home page$/ do
+When(/^I go to the home page$/) do
   visit Capybara.app_host
 end
 
-Given /^I access the host the first time$/ do
+Given(/^I access the host the first time$/) do
   visit Capybara.app_host
   #fail if not page.has_content?("Create Spacewalk Administrator")
   fail if not page.has_content?("Create SUSE Manager Administrator")
 end
 
-Then /^no link should be broken$/ do
+Then(/^no link should be broken$/) do
 #  require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "collect"))
   Capybara.default_wait_time = 1
   visit Capybara.app_host
@@ -30,7 +30,6 @@ Then /^no link should be broken$/ do
 
   visited = {}
   failed_other_reason = []
-
 
   loop do
     href = hrefs.shift
@@ -64,7 +63,7 @@ Then /^no link should be broken$/ do
           hbase = fhref.split("?")[0]
           next if visited[hbase]
           visited[hbase] = true
-          if hbase.nil? or hbase.empty?
+          if hbase.nil? || hbase.empty?
               # Example: fhref = "?order=asc&sort=login"
               fhref = base.concat(fhref)
 #             $stderr.puts "\t empyt hbase; new href is #{fhref}"
@@ -102,8 +101,7 @@ Then /^no link should be broken$/ do
   end
 end
 
-Then /^I should be able to login$/ do
-
+Then(/^I should be able to login$/) do
     (0..10).each() do |i|
         visit Capybara.app_host
         if page.has_content?('Welcome to SUSE Manager')

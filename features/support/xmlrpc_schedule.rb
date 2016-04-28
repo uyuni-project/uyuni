@@ -5,7 +5,6 @@ class XMLRPCScheduleTest < XMLRPCBaseTest
     @connection.call("schedule.listAllActions", @sid)
   end
 
-
   def listInProgressActions
     @connection.call("schedule.listInProgressActions", @sid)
   end

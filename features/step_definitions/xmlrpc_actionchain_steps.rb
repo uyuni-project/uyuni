@@ -7,7 +7,6 @@ scdrpc = XMLRPCScheduleTest.new(ENV['TESTHOST'])
 
 users = nil
 roles = nil
-password = "die gurke"
 clientId = nil
 chainLabel = nil
 
@@ -152,7 +151,6 @@ end
 Then(/^I should be able to see that the current action chain is empty$/) do
   assert_empty(rpc.listChainActions($chainLabel))
 end
-
 
 # Scheduling the action chain
 When(/^I schedule the action chain$/) do

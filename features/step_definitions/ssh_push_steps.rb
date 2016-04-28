@@ -1,7 +1,7 @@
 # Copyright (c) 2013 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
-When /^I register this client for SSH push via tunnel$/ do
+When(/^I register this client for SSH push via tunnel$/) do
   # Create backups of /etc/hosts and up2date config
   FileUtils.cp('/etc/hosts', '/etc/hosts.BACKUP');
   FileUtils.cp('/etc/sysconfig/rhn/up2date', '/etc/sysconfig/rhn/up2date.BACKUP');

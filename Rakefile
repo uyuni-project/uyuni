@@ -12,13 +12,13 @@ $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "spacewalk_testsuite_base/version"
 
 ENV['LD_LIBRARY_PATH'] = "/usr/lib64/oracle/10.2.0.4/client/lib/"
-outputfile = ENV.has_key?('RUNID') ? "#{ENV["RUNID"]}-cucumber-results_#{ENV["ARCH2"]}.html" : "output.html"
+outputfile = ENV.key?('RUNID') ? "#{ENV["RUNID"]}-cucumber-results_#{ENV["ARCH2"]}.html" : "output.html"
 
 Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
   namespace :cucumber do
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
       cucumber_opts = %W{--format pretty --format html -o #{outputfile}}
-      features = YAML::load(File.read(entry))
+      features = YAML.load(File.read(entry))
       t.cucumber_opts = cucumber_opts + features
     end
   end
@@ -43,7 +43,7 @@ namespace :cucumber do
       STDERR.puts "waiting for virtual X server to settle.."
       sleep 1
     end
-    trap ("SIGINT") do
+    trap("SIGINT") do
       Process.kill("HUP", pid)
     end
 

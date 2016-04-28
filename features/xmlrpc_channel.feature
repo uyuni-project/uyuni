@@ -6,7 +6,9 @@ Feature: Test XML-RPC "channel" namespace und sub-namespaces.
 
   Scenario: Create a custom software channel
     Given I am logged in via XML-RPC/channel as user "admin" and password "admin"
-    When I create a channel with label "foobar", name "foobar", summary "foobar", arch "channel-x86_64" and parent ""
+    When I create the following channels:
+      |label  |name  |summary |arch           |parent|
+      |foobar |foobar|foobar  |channel-x86_64 |      |
     Then "foobar" should get listed with a call of listSoftwareChannels
 
   Scenario: Create a repo
