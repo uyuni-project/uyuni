@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.common.messaging;
 
-import com.redhat.rhn.frontend.events.AbstractConcurrentDatabaseAction;
+import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 
 import org.apache.log4j.Logger;
 
@@ -80,12 +80,14 @@ class ActionExecutor implements Runnable {
     }
 
     /**
-     * Return true if this action handler can run concurrently, else false.
+     * Return true if all message actions in this executor can run concurrently, else false.
      *
      * @return true if this action handler can run concurrently, else false
      */
-    public boolean isConcurrent() {
-        return actionHandlers.size() == 1 &&
-                actionHandlers.get(0) instanceof AbstractConcurrentDatabaseAction;
+    public boolean canRunConcurrently() {
+        return actionHandlers.stream().allMatch(handler -> {
+            return handler instanceof AbstractDatabaseAction &&
+                    ((AbstractDatabaseAction) handler).canRunConcurrently();
+        });
     }
 }

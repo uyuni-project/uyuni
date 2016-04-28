@@ -31,7 +31,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.frontend.events.AbstractConcurrentDatabaseAction;
+import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.domain.server.InstalledPackage;
@@ -70,7 +70,7 @@ import java.util.stream.Stream;
 /**
  * Handler class for {@link JobReturnEventMessage}.
  */
-public class JobReturnEventMessageAction extends AbstractConcurrentDatabaseAction {
+public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(JobReturnEventMessageAction.class);
@@ -411,5 +411,10 @@ public class JobReturnEventMessageAction extends AbstractConcurrentDatabaseActio
                 return Stream.of(installedProduct);
             }).orElseGet(Stream::empty);
         }).collect(Collectors.toSet());
+    }
+
+    @Override
+    public boolean canRunConcurrently() {
+        return true;
     }
 }
