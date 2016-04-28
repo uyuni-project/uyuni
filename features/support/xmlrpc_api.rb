@@ -15,7 +15,7 @@ class XMLRPCApiTest < XMLRPCBaseTest
     if namespaces != nil
       count = namespaces.length
     end
-    return count
+    count
   end
 
   #
@@ -27,7 +27,7 @@ class XMLRPCApiTest < XMLRPCBaseTest
     if call_list != nil
       count = call_list.length
     end
-    return count
+    count
   end
 
   def getCountOfApiNamespaceCallList
@@ -44,6 +44,6 @@ class XMLRPCApiTest < XMLRPCBaseTest
         puts "Failed"
       end
     end
-    return count
+    count
   end
 end
