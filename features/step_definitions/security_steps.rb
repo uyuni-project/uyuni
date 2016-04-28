@@ -80,7 +80,7 @@ Then(/^there are not security issues$/) do
 
   DISPLAY_ATTRS = [:url, :param, :evidence, :description, :solution, :reference]
 
-  grouped = alerts.group_by {|alert| alert[:group]}
+  grouped = alerts.group_by { |alert| alert[:group] }
   grouped.each do |group, alert_group|
     html << "<h3>#{group}</h3>"
     new_alerts = (unique_alerts - ignored_alerts)

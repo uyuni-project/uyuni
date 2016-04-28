@@ -212,5 +212,24 @@ And(/^this minion is not registered in Spacewalk$/) do
   @rpc.login('admin', 'admin')
   sid = @rpc.listSystems.select { |s| s['name'] == $myhostname }.map{ |s| s['id'] }.first
   @rpc.deleteSystem(sid) if sid
-  refute_includes(@rpc.listSystems.map {|s| s['id']}, $myhostname)
+  refute_includes(@rpc.listSystems.map { |s| s['id'] }, $myhostname)
+end
+
+Given(/^that this minion is registered in Spacewalk$/) do
+  @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
+  @rpc.login('admin', 'admin')
+  assert_includes(@rpc.listSystems.map { |s| s['name'] }, $myhostname)
+end
+
+Then(/^all local repositories are disabled$/) do
+  Nokogiri::XML(`zypper -x lr`)
+    .xpath('//repo-list')
+    .children
+    .select { |node| node.is_a?(Nokogiri::XML::Element) }
+    .select { |element| element.name == 'repo' }
+    .reject { |repo| repo[:alias].include?('susemanager:') }
+    .map do |repo|
+      assert_equal('0', repo[:enabled],
+                   "repo #{repo[:alias]} should be disabled")
+    end
 end

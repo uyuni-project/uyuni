@@ -22,8 +22,8 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
     refute_nil(servers)
     hostname = Socket.gethostbyname(Socket.gethostname).first # Needs proper DNS!
     $client_id = servers
-                .select {|s| s['name'] == hostname }
-                .map {|s| s['id'] }.first
+                .select { |s| s['name'] == hostname }
+                .map { |s| s['id'] }.first
     refute_nil($client_id, "Client #{hostname} is not yet registered?")
   end
 
@@ -163,7 +163,7 @@ end
 
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
   assert_includes(
-    scdrpc.listInProgressActions().map {|a| a['name']},
+    scdrpc.listInProgressActions().map { |a| a['name'] },
     label)
 end
 
