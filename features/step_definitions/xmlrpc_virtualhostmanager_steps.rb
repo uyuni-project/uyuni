@@ -11,11 +11,11 @@ Given(/^I am logged in via XML\-RPC\/virtualhostmanager as user "([^"]*)" and pa
 end
 
 When(/^I call virtualhostmanager.listAvailableVirtualHostGathererModules\(\)$/) do
-  modules = virtualhostmanager.listAvailableVirtualHostGathererModules()
+  modules = virtualhostmanager.listAvailableVirtualHostGathererModules
 end
 
 When(/^I call virtualhostmanager.listVirtualHostManagers\(\)$/) do
-  vhms = virtualhostmanager.listVirtualHostManagers()
+  vhms = virtualhostmanager.listVirtualHostManagers
 end
 
 When(/^I call virtualhostmanager.getModuleParameters\(\) for "([^"]*)"$/) do |moduleName|

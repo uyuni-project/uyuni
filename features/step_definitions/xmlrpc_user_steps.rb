@@ -7,7 +7,7 @@ Given(/^I am logged in via XML\-RPC\/user as user "([^"]*)" and password "([^"]*
 end
 
 When(/^I call user\.listUsers\(\)$/) do
-  @users = @rpc.getUsers()
+  @users = @rpc.getUsers
 end
 
 Then(/^I should get at least user "([^"]*)"$/) do |luser|
@@ -42,7 +42,7 @@ Then(/^I should see "([^"]*)" when I call user\.listRoles\(\) with "([^"]*)"$/) 
 end
 
 Then(/^I logout from XML\-RPC\/user namespace\.$/) do
-  assert(@rpc.logout())
+  assert(@rpc.logout)
 end
 
 When(/^I delete user "([^"]*)"$/) do |luser|
@@ -50,7 +50,7 @@ When(/^I delete user "([^"]*)"$/) do |luser|
 end
 
 Given(/^I make sure "([^"]*)" is not present$/) do |luser|
-  @rpc.getUsers()
+  @rpc.getUsers
     .map { |u| u['login'] }
     .select { |l| l == luser }
     .each { |l| @rpc.deleteUser(luser) }

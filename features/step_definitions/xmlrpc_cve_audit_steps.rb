@@ -4,7 +4,7 @@ Given(/^I am logged in via XML\-RPC\/cve audit as user "([^"]*)" and password "(
 end
 
 Given(/^channel data has already been updated$/) do
-  assert_equals(@rpctest.populateCVEServerChannels(), 1)
+  assert_equals(@rpctest.populateCVEServerChannels, 1)
 end
 
 When(/^I call audit.listSystemsByPatchStatus with CVE identifier "([^\"]*)"$/) do |cve_identifier|
@@ -40,5 +40,5 @@ Then(/^I should get the "([^"]*)" patch$/) do |patch|
 end
 
 Then(/^I logout from XML\-RPC\/cve audit namespace\.$/) do
-  assert(@rpctest.logout())
+  assert(@rpctest.logout)
 end

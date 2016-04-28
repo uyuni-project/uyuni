@@ -9,14 +9,14 @@ Given(/^I am on the Systems page$/) do
 end
 
 Given(/cobblerd is running/) do
-  ct = CobblerTest.new()
+  ct = CobblerTest.new
   unless ct.is_running
     raise "cobblerd is not running"
   end
 end
 
 Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |arg1, arg2, arg3|
-  ct = CobblerTest.new()
+  ct = CobblerTest.new
   ct.login(arg2, arg3)
   if ct.distro_exists(arg1)
     raise "distro " + arg1 + " already exists"
@@ -25,14 +25,14 @@ Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |ar
 end
 
 Given(/distro "([^"]*)" exists/) do |arg1|
-  ct = CobblerTest.new()
+  ct = CobblerTest.new
   unless ct.distro_exists(arg1)
     raise "distro " + arg1 + " does not exist"
   end
 end
 
 Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |arg1, arg2, arg3|
-  ct = CobblerTest.new()
+  ct = CobblerTest.new
   ct.login(arg2, arg3)
   if ct.profile_exists(arg1)
     raise "profile " + arg1 + " already exists"
@@ -41,7 +41,7 @@ Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |a
 end
 
 Given(/profile "([^"]*)" exists/) do |arg1|
-  ct = CobblerTest.new()
+  ct = CobblerTest.new
   unless ct.profile_exists(arg1)
     raise "profile " + arg1 + " does not exist"
   end

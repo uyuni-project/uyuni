@@ -16,7 +16,7 @@ Then(/^I should get it listed with a call of listActivationKeys\.$/) do
 end
 
 When(/^I call listActivationKeys I should get some\.$/) do
-  fail if rpctest.getActivationKeysCount() < 1
+  fail if rpctest.getActivationKeysCount < 1
 end
 
 Then(/^I should get key deleted\.$/) do

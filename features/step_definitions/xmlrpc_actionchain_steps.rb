@@ -18,7 +18,7 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
     sysrpc.login(luser, password)
     scdrpc.login(luser, password)
 
-    servers = sysrpc.listSystems()
+    servers = sysrpc.listSystems
     refute_nil(servers)
     hostname = Socket.gethostbyname(Socket.gethostname).first # Needs proper DNS!
     $client_id = servers
@@ -41,7 +41,7 @@ When(/^I call XML\-RPC\/createChain with chain_label "(.*?)"$/) do |label|
 end
 
 When(/^I call actionchain\.listChains\(\) if label "(.*?)" is there$/) do |label|
-  assert_includes(rpc.listChains(), label)
+  assert_includes(rpc.listChains, label)
 end
 
 # Deleting chain
@@ -67,19 +67,19 @@ Then(/^I call actionchain\.renameChain\(\) to rename it from "(.*?)" to "(.*?)"$
 end
 
 Then(/^there should be a new action chain with the label "(.*?)"$/) do |label|
-  assert_includes(rpc.listChains(), label)
+  assert_includes(rpc.listChains, label)
 end
 
 Then(/^there should be an action chain with the label "(.*?)"$/) do |label|
-  assert_includes(rpc.listChains(), label)
+  assert_includes(rpc.listChains, label)
 end
 
 Then(/^there should be no action chain with the label "(.*?)"$/) do |label|
-  refute_includes(rpc.listChains(), label)
+  refute_includes(rpc.listChains, label)
 end
 
 Then(/^no action chain with the label "(.*?)"\.$/) do |label|
-  refute_includes(rpc.listChains(), label)
+  refute_includes(rpc.listChains, label)
 end
 
 #
@@ -158,17 +158,17 @@ When(/^I schedule the action chain$/) do
 end
 
 Then(/^there should be no more my action chain$/) do
-  refute_includes(rpc.listChains(), $chain_label)
+  refute_includes(rpc.listChains, $chain_label)
 end
 
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
   assert_includes(
-    scdrpc.listInProgressActions().map { |a| a['name'] },
+    scdrpc.listInProgressActions.map { |a| a['name'] },
     label)
 end
 
 Then(/^I cancel all scheduled actions$/) do
-  for action in scdrpc.listInProgressActions() do
+  for action in scdrpc.listInProgressActions do
     # One-by-one, this is against single call in the API on purpose.
     scdrpc.cancelActions([action["id"]])
     puts "\t- Removed \"" + action["name"] + "\" action"
@@ -176,5 +176,5 @@ Then(/^I cancel all scheduled actions$/) do
 end
 
 Then(/^there should be no more any scheduled actions$/) do
-  assert_empty(scdrpc.listInProgressActions())
+  assert_empty(scdrpc.listInProgressActions)
 end
