@@ -35,6 +35,7 @@
         <dependency org="suse" name="hibernate3" rev="3.2.7" />
         <dependency org="suse" name="httpclient" rev="4.5" />
         <dependency org="suse" name="httpcore" rev="4.4.1" />
+        <dependency org="suse" name="jacocoant" rev="0.7.7" />
         <dependency org="suse" name="jade4j" rev="1.0.7" />
         <dependency org="suse" name="jaf" rev="1.0.2" />
         <dependency org="suse" name="jasper" rev="8.0.23" />
@@ -87,6 +88,5 @@
         <dependency org="suse" name="xalan-j2" rev="2.7.0" />
         <dependency org="suse" name="xerces-j2" rev="2.8.1" />
         <dependency org="suse" name="xml-commons-apis" rev="1.0" />
-        <dependency org="suse" name="jacocoant" rev="0.7.7" />
     </dependencies>
 </ivy-module>
