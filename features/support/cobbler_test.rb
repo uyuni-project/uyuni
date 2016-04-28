@@ -18,7 +18,7 @@ class CobblerTest
     @server_path = server_path
     @server = XMLRPC::Client.new(server_address, server_path, server_port)
     if ! is_running()
-      raise "No running server at found at "+server_address
+      raise "No running server at found at " + server_address
     end
   end
 
@@ -45,7 +45,7 @@ class CobblerTest
     if ! ["systems", "profiles", "distros"].include?(what)
       raise "unknown get_list parameter '#{what}'"
     end
-    ret = @server.call("get_"+what)
+    ret = @server.call("get_" + what)
     ret.each { |a| result << a["name"] }
     result
   end
@@ -80,7 +80,7 @@ class CobblerTest
     if profile_exists(name)
       result = get("profiles", name, key)
     else
-      raise "Profile "+name+" does not exists"
+      raise "Profile " + name + " does not exists"
     end
     result
   end
@@ -94,7 +94,7 @@ class CobblerTest
     if system_exists(name)
       result = get("systems", name, key)
     else
-      raise "System "+name+" does not exists"
+      raise "System " + name + " does not exists"
     end
     result
   end
@@ -108,7 +108,7 @@ class CobblerTest
     if distro_exists(name)
       result = get("distros", name, key)
     else
-      raise "Distro "+name+" does not exists"
+      raise "Distro " + name + " does not exists"
     end
     result
   end
@@ -136,7 +136,7 @@ class CobblerTest
     if repo_exists(name)
       result = get("repo", name, key)
     else
-      raise "Repo "+name+" does not exists"
+      raise "Repo " + name + " does not exists"
     end
     result
   end
@@ -145,7 +145,7 @@ protected
 
   def exists(what, key, value)
     result = false
-    ret = @server.call("get_"+what)
+    ret = @server.call("get_" + what)
     ret.each do |a|
       if a[key] == value
         result = true
@@ -156,7 +156,7 @@ protected
 
   def get(what, name, key)
     result = nil
-    ret = @server.call("get_"+what)
+    ret = @server.call("get_" + what)
     ret.each do |a|
       if a["name"] == name
         result = a[key]

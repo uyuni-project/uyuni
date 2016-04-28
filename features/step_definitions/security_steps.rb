@@ -53,11 +53,11 @@ Then(/^there are not security issues$/) do
     end
 
     if url.path
-      url.path = url.path.gsub(/;jsessionid=[A-Za-z0-9_]+/, ';jsessionid=' + ('X'*32))
+      url.path = url.path.gsub(/;jsessionid=[A-Za-z0-9_]+/, ';jsessionid=' + ('X' * 32))
       alert[:url] = url.to_s
     end
 
-    alert[:param] = alert[:param].gsub(/list_\d+_([A-Za-z0-9]+)/, 'list_' + 'X'*10 + '_\1')
+    alert[:param] = alert[:param].gsub(/list_\d+_([A-Za-z0-9]+)/, 'list_' + 'X' * 10 + '_\1')
 
     # only insert alerts for the unique id for
     # url-param-alert attributes, to remove duplicates
@@ -90,7 +90,7 @@ Then(/^there are not security issues$/) do
       html << "<h2>#{alert[:alert]}</h2>"
       html << "<ul>"
       DISPLAY_ATTRS.each do |k|
-        html <<  "<li>#{k}: #{alert[k]}</li>"
+        html << "<li>#{k}: #{alert[k]}</li>"
       end
       html << "</ul>"
     end
@@ -105,7 +105,7 @@ Then(/^there are not security issues$/) do
       html << "<h2>#{alert[:alert]}</h2>"
       html << "<ul>"
       DISPLAY_ATTRS.each do |k|
-        html <<  "<li>#{k}: #{alert[k]}</li>"
+        html << "<li>#{k}: #{alert[k]}</li>"
       end
       html << "</ul>"
       html << "</div>"

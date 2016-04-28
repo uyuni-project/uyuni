@@ -219,11 +219,6 @@ Style/SpaceAfterNot:
 Style/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: no_space
 
-# Offense count: 26
-# Cop supports --auto-correct.
-Style/SpaceAroundOperators:
-  Enabled: false
-
 # Offense count: 50
 # Cop supports --auto-correct.
 Style/SpecialGlobalVars:

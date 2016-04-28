@@ -65,7 +65,7 @@ Then(/^Package "(.*?)" cannot be selected$/) do |pkg|
     "td[ " + # there's another td which contains
       "a[text()='#{pkg}'] and " + # a link with a certain text
       "i[@class='fa fa-clock-o'] and " + # and the clock icon
-      "span[@class='label label-info']"  + # and the "Locking..."/"Unlocking" label
+      "span[@class='label label-info']" + # and the "Locking..."/"Unlocking" label
     "]]"
   find(:xpath, xpath_query)
 end

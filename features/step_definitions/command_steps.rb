@@ -18,7 +18,7 @@ When(/^I execute mgr\-sync refresh$/) do
 end
 
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
-  arch=`uname -m`
+  arch = `uname -m`
   arch.chomp!
   if arch != "x86_64"
     arch = "i586"

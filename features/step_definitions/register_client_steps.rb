@@ -42,7 +42,7 @@ When(/^I register using "([^"]*)" key$/) do |arg1|
 end
 
 When(/^I register using an activation key$/) do
-  arch=`uname -m`
+  arch = `uname -m`
   arch.chomp!
   if arch != "x86_64"
     arch = "i586"
