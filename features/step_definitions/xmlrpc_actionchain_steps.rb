@@ -7,13 +7,13 @@ scdrpc = XMLRPCScheduleTest.new(ENV['TESTHOST'])
 
 users = nil
 roles = nil
-clientId = nil
-chainLabel = nil
+client_id = nil
+chain_label = nil
 
 # Auth
 Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(.*?)"$/) do |luser, password|
   # Find target server once.
-  if not $clientId
+  if not $client_id
     rpc.login(luser, password)
     sysrpc.login(luser, password)
     scdrpc.login(luser, password)
@@ -21,10 +21,10 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
     servers = sysrpc.listSystems()
     refute_nil(servers)
     hostname = Socket.gethostbyname(Socket.gethostname).first # Needs proper DNS!
-    $clientId = servers
+    $client_id = servers
                 .select {|s| s['name'] == hostname }
                 .map {|s| s['id'] }.first
-    refute_nil($clientId, "Client #{hostname} is not yet registered?")
+    refute_nil($client_id, "Client #{hostname} is not yet registered?")
   end
 
   # Flush all chains
@@ -34,10 +34,10 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
 end
 
 # Listing chains
-When(/^I call XML\-RPC\/createChain with chainLabel "(.*?)"$/) do |label|
-  actionId = rpc.createChain(label)
-  refute(actionId < 1)
-  $chainLabel = label
+When(/^I call XML\-RPC\/createChain with chain_label "(.*?)"$/) do |label|
+  action_id = rpc.createChain(label)
+  refute(action_id < 1)
+  $chain_label = label
 end
 
 When(/^I call actionchain\.listChains\(\) if label "(.*?)" is there$/) do |label|
@@ -47,7 +47,7 @@ end
 # Deleting chain
 Then(/^I delete the action chain$/) do
   begin
-    rpc.deleteChain($chainLabel)
+    rpc.deleteChain($chain_label)
   rescue XMLRPC::FaultException => e
     fail "deleteChain: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
   end
@@ -86,12 +86,12 @@ end
 # Schedule scenario
 #
 When(/^I call actionchain\.addScriptRun\(\) with the script like "(.*?)"$/) do |script|
-  refute(rpc.addScriptRun($clientId, script, $chainLabel) < 1)
+  refute(rpc.addScriptRun($client_id, script, $chain_label) < 1)
 end
 
 Then(/^I should be able to see all these actions in the action chain$/) do
   begin
-    actions = rpc.listChainActions($chainLabel)
+    actions = rpc.listChainActions($chain_label)
     refute_nil(actions)
     puts "Running actions:"
     actions.each do |action|
@@ -104,43 +104,43 @@ end
 
 # Reboot
 When(/^I call actionchain\.addSystemReboot\(\)$/) do
-  refute(rpc.addSystemReboot($clientId, $chainLabel) < 1)
+  refute(rpc.addSystemReboot($client_id, $chain_label) < 1)
 end
 
 # Packages operations
 When(/^I call actionchain\.addPackageInstall\(\)$/) do
-  pkgs = sysrpc.listAllInstallablePackages($clientId)
+  pkgs = sysrpc.listAllInstallablePackages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
-  refute(rpc.addPackageInstall($clientId, [pkgs[0]["id"]], $chainLabel) < 1)
+  refute(rpc.addPackageInstall($client_id, [pkgs[0]["id"]], $chain_label) < 1)
 end
 
 When(/^I call actionchain\.addPackageRemoval\(\)$/) do
-  pkgs = sysrpc.listAllInstallablePackages($clientId)
-  refute(rpc.addPackageRemoval($clientId, [pkgs[0]["id"]], $chainLabel) < 1)
+  pkgs = sysrpc.listAllInstallablePackages($client_id)
+  refute(rpc.addPackageRemoval($client_id, [pkgs[0]["id"]], $chain_label) < 1)
 end
 
 When(/^I call actionchain\.addPackageUpgrade\(\)$/) do
-  pkgs = sysrpc.listLatestUpgradablePackages($clientId)
+  pkgs = sysrpc.listLatestUpgradablePackages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
-  refute(rpc.addPackageUpgrade($clientId, [pkgs[0]["to_package_id"]], $chainLabel) < 1)
+  refute(rpc.addPackageUpgrade($client_id, [pkgs[0]["to_package_id"]], $chain_label) < 1)
 end
 
 When(/^I call actionchain\.addPackageVerify\(\)$/) do
-  pkgs = sysrpc.listAllInstallablePackages($clientId)
+  pkgs = sysrpc.listAllInstallablePackages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
-  refute(rpc.addPackageVerify($clientId, [pkgs[0]["id"]], $chainLabel) < 1)
+  refute(rpc.addPackageVerify($client_id, [pkgs[0]["id"]], $chain_label) < 1)
 end
 
 # Manage actions within the action chain
 When(/^I call actionchain\.removeAction on each action within the chain$/) do
   begin
-    actions = rpc.listChainActions($chainLabel)
+    actions = rpc.listChainActions($chain_label)
     refute_nil(actions)
     for action in actions do
-      refute(rpc.removeAction($chainLabel, action["id"]) < 0)
+      refute(rpc.removeAction($chain_label, action["id"]) < 0)
       puts "\t- Removed \"" + action["label"] + "\" action"
     end
   rescue XMLRPC::FaultException => e
@@ -149,16 +149,16 @@ When(/^I call actionchain\.removeAction on each action within the chain$/) do
 end
 
 Then(/^I should be able to see that the current action chain is empty$/) do
-  assert_empty(rpc.listChainActions($chainLabel))
+  assert_empty(rpc.listChainActions($chain_label))
 end
 
 # Scheduling the action chain
 When(/^I schedule the action chain$/) do
-  refute(rpc.scheduleChain($chainLabel, DateTime.now) < 0)
+  refute(rpc.scheduleChain($chain_label, DateTime.now) < 0)
 end
 
 Then(/^there should be no more my action chain$/) do
-  refute_includes(rpc.listChains(), $chainLabel)
+  refute_includes(rpc.listChains(), $chain_label)
 end
 
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
