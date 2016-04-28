@@ -520,8 +520,7 @@ class Server(ServerWrapper):
             have_reg_token = rhnFlags.test("registration_token")
 
             # Handle virtualization specific bits
-            if self.virt_uuid is not None and \
-               self.virt_type is not None:
+            if self.virt_uuid and self.virt_type:
                 rhnVirtualization._notify_guest(self.getid(),
                                                 self.virt_uuid, self.virt_type)
 
