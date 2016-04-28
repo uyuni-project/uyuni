@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * Thread pool for parallel
+ * Message queue thread pool for concurrent dispatching of messages.
  */
 public enum MessageHandlerThreadPool {
 
@@ -34,12 +34,12 @@ public enum MessageHandlerThreadPool {
     /* The executor service to be used */
     private final ExecutorService executorService;
 
-    /* The number of threads can be configurable */
+    /* The number of threads */
     private static final int NO_OF_THREADS = 5;
 
     MessageHandlerThreadPool() {
         executorService = Executors.newFixedThreadPool(NO_OF_THREADS);
-        log.debug("Started thread pool for concurrent mesage handling.");
+        log.debug("Started message queue thread pool");
     }
 
     /**
@@ -48,7 +48,7 @@ public enum MessageHandlerThreadPool {
      * @param runnable the runnable to submit
      */
     public Future<?> submit(Runnable runnable) {
-        log.debug("Submitting runnable");
+        log.debug("Submitting new runnable for message queue thread pool");
         return executorService.submit(runnable);
     }
 
@@ -56,7 +56,7 @@ public enum MessageHandlerThreadPool {
      * Call shutdown() on the executor service.
      */
     public void shutdown() {
-        log.debug("Shutting down message queue thread pool.");
+        log.debug("Shutting down message queue thread pool");
         executorService.shutdown();
     }
 }
