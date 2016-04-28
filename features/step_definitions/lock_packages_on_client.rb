@@ -71,7 +71,7 @@ Then(/^Package "(.*?)" cannot be selected$/) do |pkg|
 end
 
 Then(/^Only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
-  pkgs = pkgs.split(",").map{|pkg| pkg.strip}
+  pkgs = pkgs.split(",").map(&:strip)
 
   # ensure these packages are found as pending to be unlocked
   pkgs.each do |pkg|
