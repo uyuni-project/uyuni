@@ -30,7 +30,7 @@ end
 
 namespace :cucumber do
   task :headless do
-    raise "install xorg-x11-server-extra" if not File.exist?("/usr/bin/Xvfb")
+    raise "install xorg-x11-server-extra" unless File.exist?("/usr/bin/Xvfb")
 
     ENV["DISPLAY"] = ":98"
     arglist = ["Xvfb", "#{ENV['DISPLAY']}" ">& Xvfb.log &"]
