@@ -542,8 +542,7 @@ class Server(ServerWrapper):
             server_lib.join_rhn(org_id)
 
         # Handle virtualization specific bits
-        if self.virt_uuid is not None and \
-           self.virt_type is not None:
+        if self.virt_uuid and self.virt_type:
             rhnVirtualization._notify_guest(self.getid(),
                                             self.virt_uuid, self.virt_type)
         # Update the uuid - but don't commit yet
