@@ -19,7 +19,7 @@ def client_refresh_metadata
   end
 end
 
-def client_raw_repodata_dir( channel )
+def client_raw_repodata_dir(channel)
   if client_is_zypp?
     return "/var/cache/zypp/raw/spacewalk:#{channel}/repodata"
   else

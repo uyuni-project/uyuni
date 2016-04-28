@@ -38,11 +38,11 @@ When(/^I call virtualhostmanager.getDetail\("([^"]*)"\)$/) do |label|
 end
 
 Then(/^I should get two modules$/) do
-  assert(modules.length == 2, "Expect: 'number of modules' == 2, but found '#{modules.length}' modules" )
+  assert(modules.length == 2, "Expect: 'number of modules' == 2, but found '#{modules.length}' modules")
 end
 
 Then(/^I should get ([0-9]+) returned$/) do |num|
-  assert(vhms.length == num.to_i, "Expect: 'number of VHMs' == '#{num}', but found '#{vhms.length}' VHMs" )
+  assert(vhms.length == num.to_i, "Expect: 'number of VHMs' == '#{num}', but found '#{vhms.length}' VHMs")
 end
 
 Then(/^I should get "([^"]*)"$/) do |key|

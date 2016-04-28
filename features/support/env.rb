@@ -17,7 +17,7 @@ require File.join(File.dirname(__FILE__), 'zypp_lock_helper')
 require 'owasp_zap'
 include OwaspZap
 
-browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :firefox
+browser = (ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil) || :firefox
 host = ENV['TESTHOST'] || 'andromeda.suse.de'
 proxy = ENV['ZAP_PROXY'].to_s || nil
 
