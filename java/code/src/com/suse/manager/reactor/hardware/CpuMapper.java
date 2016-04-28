@@ -23,6 +23,7 @@ import com.suse.manager.webui.services.SaltGrains;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -82,9 +83,7 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
             cpu.setBogomips(getBogomips(cpuinfo, "bogomips"));
             cpu.setFlags(getFlags(cpuinfo.getValueAsCollection("flags")
                     .map(c -> c.stream()
-                        .map(e -> cpuinfo.toString(e))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
+                        .map(e -> Objects.toString(e, ""))
                         .collect(Collectors.joining(" ")))
                     .orElse(null)));
             cpu.setVersion(getVersion(cpuinfo, "model"));
