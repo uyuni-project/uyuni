@@ -208,11 +208,6 @@ Style/SpaceAfterComma:
 Style/SpaceAfterControlKeyword:
   Enabled: false
 
-# Offense count: 6
-# Cop supports --auto-correct.
-Style/SpaceAfterNot:
-  Enabled: false
-
 # Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: SupportedStyles.
