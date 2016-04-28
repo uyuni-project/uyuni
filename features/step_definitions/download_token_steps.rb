@@ -14,7 +14,7 @@ end
 def server_secret
   rhnconf = sshcmd('cat /etc/rhn/rhn.conf')[:stdout]
   data = /server.secret_key\s*=\s*(\h+)$/.match(rhnconf)
-  return data[1].strip
+  data[1].strip
 end
 
 Given(/^I have a valid token for organization "([^"]*)"$/) do |org|
