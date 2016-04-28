@@ -141,7 +141,7 @@ Style/NilComparison:
 # Cop supports --auto-correct.
 # Configuration parameters: IncludeSemanticChanges.
 Style/NonNilCheck:
-  Enabled: false
+  Enabled: true
 
 # Offense count: 1
 # Configuration parameters: NamePrefix, NamePrefixBlacklist.
