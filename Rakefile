@@ -50,14 +50,14 @@ namespace :cucumber do
     #############################################
     #### Launch a virtual framebuffer X server ###
     ##############################################
-    #ENV["DISPLAY"] = ":98"
-    #system "Xvfb #{ENV["DISPLAY"]} >& Xvfb.log &"
-    #trap("EXIT") do
+    # ENV["DISPLAY"] = ":98"
+    # system "Xvfb #{ENV["DISPLAY"]} >& Xvfb.log &"
+    # trap("EXIT") do
     #  pid = $!
     #  puts "kill #{pid}"
     #  Process.kill("HUP", pid)
-    #end
-    #sleep 10
+    # end
+    # sleep 10
     ## start your application/testsuite here
     Rake::Task["cucumber"].invoke
   end

@@ -14,6 +14,6 @@ When(/^I enter as remote command this script in$/) do |multiline|
  #  lines = arg1.strip.split('\n')
    within(:xpath, "//section") do
       x = find('textarea#fSptInput')
-      x.set(multiline) #find("#{arg1}") #.set(lines)
+      x.set(multiline) # find("#{arg1}") #.set(lines)
    end
 end

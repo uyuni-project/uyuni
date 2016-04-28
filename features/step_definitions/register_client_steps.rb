@@ -33,7 +33,7 @@ When(/^I register using "([^"]*)" key$/) do |arg1|
   regurl = "http://#{ENV['TESTHOST']}/XMLRPC"
 
   command = "rhnreg_ks --serverUrl=#{regurl} --activationkey=#{arg1}"
-  #print "Command: #{command}\n"
+  # print "Command: #{command}\n"
 
   output = `#{command} 2>&1`
   unless $?.success?

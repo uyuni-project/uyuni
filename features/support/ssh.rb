@@ -2,8 +2,8 @@ require 'net/ssh'
 require 'stringio'
 
 def sshcmd(command, host: ENV['TESTHOST'], user: 'root', ignore_err: false)
-  #Execute a command on the remote server
-  #Not passing :password uses systems keys for auth
+  # Execute a command on the remote server
+  # Not passing :password uses systems keys for auth
   out = StringIO.new
   err = StringIO.new
   Net::SSH.start(host, user, :paranoid => Net::SSH::Verifiers::Null.new) do |ssh|
