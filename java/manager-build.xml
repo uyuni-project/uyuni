@@ -149,6 +149,7 @@
         <exclude name="**/jspapi*" />
         <exclude name="**/websocket-api*" />
         <exclude name="**/checkstyle*" />
+        <exclude name="**/jacocoant*" />
       </fileset>
       <fileset dir="${rhn-home}/buildconf/tempjars">
         <include name="**/*.jar" />
