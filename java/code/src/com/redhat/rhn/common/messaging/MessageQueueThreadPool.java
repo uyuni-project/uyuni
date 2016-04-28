@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.reactor.messaging;
+package com.redhat.rhn.common.messaging;
 
 import org.apache.log4j.Logger;
 
@@ -23,13 +23,13 @@ import java.util.concurrent.Future;
 /**
  * Message queue thread pool for concurrent dispatching of messages.
  */
-public enum MessageHandlerThreadPool {
+public enum MessageQueueThreadPool {
 
     /* Singleton instance of this class */
     INSTANCE;
 
     /* Logger for this class */
-    private final Logger log = Logger.getLogger(MessageHandlerThreadPool.class);
+    private final Logger log = Logger.getLogger(MessageQueueThreadPool.class);
 
     /* The executor service to be used */
     private final ExecutorService executorService;
@@ -37,7 +37,7 @@ public enum MessageHandlerThreadPool {
     /* The number of threads */
     private static final int NO_OF_THREADS = 5;
 
-    MessageHandlerThreadPool() {
+    MessageQueueThreadPool() {
         executorService = Executors.newFixedThreadPool(NO_OF_THREADS);
         log.debug("Started message queue thread pool");
     }
