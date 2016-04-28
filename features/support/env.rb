@@ -109,7 +109,7 @@ when :firefox
       profile["network.proxy.ssl"] = proxy
       profile["network.proxy.ssl_port"] = 8080
     end
-    driver = Capybara::Selenium::Driver.new(app, :browser => :firefox,:profile => profile)
+    driver = Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile)
     driver.browser.manage.window.resize_to(1280, 1024)
     driver
   end

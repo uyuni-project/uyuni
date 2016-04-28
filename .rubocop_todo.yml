@@ -198,11 +198,6 @@ Style/SignalException:
 Style/SingleSpaceBeforeFirstArg:
   Enabled: false
 
-# Offense count: 26
-# Cop supports --auto-correct.
-Style/SpaceAfterComma:
-  Enabled: false
-
 # Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: SupportedStyles.

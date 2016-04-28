@@ -58,7 +58,7 @@ Then(/^no link should be broken$/) do
       #    failed_other_reason << href
       #end
       collect_all_hrefs.each do |fhref|
-          next if fhref[0,1] == "#" # relative link
+          next if fhref[0, 1] == "#" # relative link
           next if hrefs.include?(fhref)
           hbase = fhref.split("?")[0]
           next if visited[hbase]
@@ -67,7 +67,7 @@ Then(/^no link should be broken$/) do
               # Example: fhref = "?order=asc&sort=login"
               fhref = base.concat(fhref)
 #             $stderr.puts "\t empyt hbase; new href is #{fhref}"
-          elsif fhref[0,1] != "/"
+          elsif fhref[0, 1] != "/"
               # Example: fhref = "delete_confirm.pxt?sgid=7"
 #             $stderr.puts "From #{fhref} (#{base})"
               hsplit = base.split("/")

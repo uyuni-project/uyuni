@@ -13,7 +13,7 @@ def collect_all_hrefs
     if href.start_with?(testhost_url) # URL start with http but is local
       href.sub!(/^#{testhost_url}/, '')
     end
-    next if href[0,4] == "http" # skip absolute/outside links
+    next if href[0, 4] == "http" # skip absolute/outside links
     next if href.nil?
     next if href =~ %r{/rhn/Logout.do} # this will close our session
     next if href =~ %r{/rhn/help/dispatcher} # this will redirect to redhat.com
