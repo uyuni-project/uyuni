@@ -35,8 +35,8 @@ end
 
 Then(/^I restore migration state$/) do
   action = $migrated ? "touch" : "rm"
-  sshcmd("#{action} #{$SCC_PATH}/migrated", ignore_err: true)    
+  sshcmd("#{action} #{$SCC_PATH}/migrated", ignore_err: true)
 
   action = $default_scc ? "touch" : "rm"
-  sshcmd("#{action} #{$SCC_PATH}/default_scc", ignore_err: true)    
+  sshcmd("#{action} #{$SCC_PATH}/default_scc", ignore_err: true)
 end

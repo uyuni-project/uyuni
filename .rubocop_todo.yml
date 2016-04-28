@@ -281,11 +281,6 @@ Style/Tab:
 Style/TrailingBlankLines:
   Enabled: false
 
-# Offense count: 15
-# Cop supports --auto-correct.
-Style/TrailingWhitespace:
-  Enabled: false
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: WordRegex.

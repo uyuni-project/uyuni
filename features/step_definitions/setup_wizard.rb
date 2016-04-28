@@ -59,7 +59,7 @@ When(/^I wait until it has finished$/) do
   find("button#synchronize .fa-plus")
 end
 
-When(/^I verify the products were added$/) do 
+When(/^I verify the products were added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
   fail if not output[:stdout].include? '[I] SLES12-SP1-Pool for x86_64 SUSE Linux Enterprise Server 12 SP1 x86_64 [sles12-sp1-pool-x86_64]'
   fail if not output[:stdout].include? '[I] SLE-Manager-Tools12-Pool x86_64 SP1 SUSE Manager Tools [sle-manager-tools12-pool-x86_64-sp1]'

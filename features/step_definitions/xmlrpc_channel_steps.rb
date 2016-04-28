@@ -49,10 +49,10 @@ Then(/^channel "([^"]*)" should have attribute "([^"]*)" from type "([^"]*)"$/) 
   ret = rpctest.getChannelDetails(label)
   assert(ret)
   assert_equal(ret[attr].class.to_s, type)
-end 
+end
 
 Then(/^channel "([^"]*)" should not have attribute "([^"]*)"$/) do |label, attr|
   ret = rpctest.getChannelDetails(label)
   assert(ret)
   assert_equal(ret.key?(attr), false)
-end 
+end
