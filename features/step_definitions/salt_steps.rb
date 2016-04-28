@@ -117,7 +117,7 @@ end
 Given(/^this minion key is unaccepted$/) do
   step "I list unaccepted keys at Salt Master"
   @output = @action.call
-  if ! @output[:stdout].include? $myhostname
+  unless @output[:stdout].include? $myhostname
     steps %(
       Then I delete this minion key in the Salt master
       And I restart salt-minion
@@ -136,7 +136,7 @@ end
 Given(/^this minion key is accepted$/) do
   step "I list accepted keys at Salt Master"
   @output = @action.call
-  if ! @output[:stdout].include? $myhostname
+  unless @output[:stdout].include? $myhostname
     steps %(
       Then I accept this minion key in the Salt master
       And we wait till Salt master sees this minion as accepted
@@ -154,7 +154,7 @@ end
 Given(/^this minion key is rejected$/) do
   step "I list rejected keys at Salt Master"
   @output = @action.call
-  if ! @output[:stdout].include? $myhostname
+  unless @output[:stdout].include? $myhostname
     steps %(
       Then I reject this minion key in the Salt master
       And we wait till Salt master sees this minion as rejected

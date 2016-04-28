@@ -13,7 +13,7 @@ chain_label = nil
 # Auth
 Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(.*?)"$/) do |luser, password|
   # Find target server once.
-  if !$client_id
+  unless $client_id
     rpc.login(luser, password)
     sysrpc.login(luser, password)
     scdrpc.login(luser, password)

@@ -9,7 +9,7 @@ Given(/^I am testing channels$/) do
 end
 
 Then(/^I should see package "([^"]*)"$/) do |package|
-  fail if !has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a[contains(.,'#{package}')]")
+  fail unless has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a[contains(.,'#{package}')]")
 end
 
 Given(/^I am on the manage software channels page$/) do
@@ -42,7 +42,7 @@ When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   srvurl = "http://#{ENV['TESTHOST']}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1}"
   output = `#{command} 2>&1`
-  if ! $?.success?
+  unless $?.success?
     raise "rhnpush failed '#{command}' #{$!}: #{output}"
   end
 end
