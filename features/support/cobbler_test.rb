@@ -23,11 +23,9 @@ class CobblerTest
   end
 
   def login(user, pass)
-    begin
-      @token = @server.call("login", user, pass)
-    rescue
-      raise "login to cobbler failed" + $!.to_s
-    end
+    @token = @server.call("login", user, pass)
+  rescue
+    raise "login to cobbler failed" + $!.to_s
   end
 
   def is_running
