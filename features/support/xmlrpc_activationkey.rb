@@ -22,7 +22,7 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
 
   def verifyKey(kid)
     @connection.call("activationkey.listActivationKeys", @sid)
-      .map {|key| key['key'] }
+      .map { |key| key['key'] }
       .include?(kid)
   end
 

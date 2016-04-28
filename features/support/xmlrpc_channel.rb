@@ -43,7 +43,7 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   def verifyChannel(label)
     @connection.call("channel.listSoftwareChannels", @sid)
-      .map {|c| c['label']}
+      .map { |c| c['label'] }
       .include?(label)
   end
 

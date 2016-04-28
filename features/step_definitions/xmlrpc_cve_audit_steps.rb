@@ -12,7 +12,7 @@ When(/^I call audit.listSystemsByPatchStatus with CVE identifier "([^\"]*)"$/) d
 end
 
 Then(/^I should get status "([^\"]+)" for system "([0-9]+)"$/) do |status, system|
-  @result = @result_list.select {|item| item['system_id'] == system.to_i}
+  @result = @result_list.select { |item| item['system_id'] == system.to_i }
   refute_empty(@result)
   @result = @result[0]
   assert_equal(status, @result['patch_status'])

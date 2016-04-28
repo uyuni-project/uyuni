@@ -3,7 +3,7 @@ require_relative "xmlrpctest"
 
 class XMLRPCActionChain < XMLRPCBaseTest
   def listChains
-    @connection.call("actionchain.listChains", @sid).map {|x| x['label']}
+    @connection.call("actionchain.listChains", @sid).map { |x| x['label'] }
   end
 
   def createChain(label)
