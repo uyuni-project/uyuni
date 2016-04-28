@@ -2,10 +2,10 @@
 # Licensed under the terms of the MIT license.
 
 Then(/^I should see something$/) do
-  steps %[
+  steps %(
     Given I should see a "Sign In" text
     And I should see a "About" text
-  ]
+    )
 end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
@@ -35,7 +35,7 @@ end
 
 Then(/^I should see that this system has been deleted$/) do
   system_id = client_system_id_to_i
-  step %[I should see a "System profile #{system_id} has been deleted." text]
+  step %(I should see a "System profile #{system_id} has been deleted." text)
 end
 
 #
@@ -155,7 +155,7 @@ end
 Then(/^I should see a "([^"]*)" link in row ([0-9]+) of the content menu$/) do |arg1, arg2|
   within(:xpath, "//section") do
     within(:xpath, "//div[@class=\"spacewalk-content-nav\"]/ul[#{arg2}]") do
-      step %[I should see a "#{arg1}" link]
+      step %(I should see a "#{arg1}" link)
     end
   end
 end

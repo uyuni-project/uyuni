@@ -40,7 +40,7 @@ Then(/^The package scheduled is "(.*?)"$/) do |pkg|
 end
 
 Then(/^The action status is "(.*?)"$/) do |status|
-  step %[I should see a "This action's status is: #{status}" text]
+  step %(I should see a "This action's status is: #{status}" text)
 end
 
 Then(/^Package "(.*?)" is reported as pending to be locked$/) do |pkg|

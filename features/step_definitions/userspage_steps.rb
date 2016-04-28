@@ -2,17 +2,17 @@
 # Licensed under the terms of the MIT license.
 
 Given(/^I am on the Users page$/) do
-  steps %[
+  steps %(
     Given I am authorized as "admin" with password "admin"
     And I follow "Users"
-  ]
+    )
 end
 
 Given(/^I am on the Details page$/) do
-  steps %[
+  steps %(
     Given I am on the Users page
     And I follow "user1"
-  ]
+    )
 end
 
 Then(/^Table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
