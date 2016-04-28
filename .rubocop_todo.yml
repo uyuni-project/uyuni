@@ -236,17 +236,6 @@ Style/SpaceBeforeBlockBraces:
 Style/SpaceInsideBlockBraces:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SupportedStyles.
-Style/SpaceInsideHashLiteralBraces:
-  Enabled: false
-
-# Offense count: 74
-# Cop supports --auto-correct.
-Style/SpaceInsideParens:
-  Enabled: true
-
 # Offense count: 50
 # Cop supports --auto-correct.
 Style/SpecialGlobalVars:
