@@ -8,7 +8,7 @@ end
 
 When(/^I create an AK with id "([^"]*)", description "([^"]*)" and limit of (\d+)$/) do |id, dscr, limit|
   key = rpctest.createKey(id, dscr, limit)
-  fail if key == nil
+  fail if key.nil?
 end
 
 Then(/^I should get it listed with a call of listActivationKeys\.$/) do

@@ -12,12 +12,12 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
 
   def listActivatedSystems(key)
     systems = @connection.call("activationkey.listActivatedSystems", @sid, key)
-    systems == nil ? 0 : systems.length
+    systems.nil? ? 0 : systems.length
   end
 
   def getActivationKeysCount
     @keys = @connection.call("activationkey.listActivationKeys", @sid)
-    @keys == nil ? 0 : @keys.length
+    @keys.nil? ? 0 : @keys.length
   end
 
   def verifyKey(kid)
@@ -28,7 +28,7 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
 
   def getConfigChannelsCount(key)
     channels = @connection.call("activationkey.listConfigChannels", @sid, key)
-    channels == nil ? 0 : channels.length
+    channels.nil? ? 0 : channels.length
   end
 
   def addConfigChannel(key, name)
