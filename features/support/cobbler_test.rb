@@ -12,13 +12,13 @@ require "pp"
 # list = ct.get_list( "systems" )
 
 class CobblerTest
-  def initialize(serverAddress=ENV['TESTHOST'], serverPort=80, serverPath="/cobbler_api")
-    @serverAddress = serverAddress
-    @serverPort = serverPort
-    @serverPath = serverPath
-    @server = XMLRPC::Client.new(serverAddress, serverPath, serverPort)
+  def initialize(server_address=ENV['TESTHOST'], server_port=80, server_path="/cobbler_api")
+    @server_address = server_address
+    @server_port = server_port
+    @server_path = server_path
+    @server = XMLRPC::Client.new(server_address, server_path, server_port)
     if ! is_running()
-      raise "No running server at found at "+serverAddress
+      raise "No running server at found at "+server_address
     end
   end
 

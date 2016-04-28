@@ -8,11 +8,11 @@ When(/^I register this client for SSH push via tunnel$/) do
 
   # Generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
-  expectFile = ExpectFileGenerator.new("#{$myhostname}", bootstrap)
-  step "I copy to server \"" + expectFile.path + "\""
+  expect_file = ExpectFileGenerator.new("#{$myhostname}", bootstrap)
+  step "I copy to server \"" + expect_file.path + "\""
 
   # Perform the registration
-  filename = expectFile.filename
+  filename = expect_file.filename
   command = "echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST expect #{filename} 2>&1"
   $sshout = ''
   $sshout = `#{command}`

@@ -22,10 +22,10 @@ class XMLRPCApiTest < XMLRPCBaseTest
   # Test lists all available api calls grouped by namespace.
   #
   def getCountOfApiCallListGroups
-    callList = @connection.call("api.getApiCallList", @sid)
+    call_list = @connection.call("api.getApiCallList", @sid)
     count = 0
-    if callList != nil
-      count = callList.length
+    if call_list != nil
+      count = call_list.length
     end
     return count
   end
@@ -36,9 +36,9 @@ class XMLRPCApiTest < XMLRPCBaseTest
     puts "    Spaces found: " + namespaces.length.to_s
     for ns in namespaces
       print "      Analyzing " + ns[0] + "... "
-      callList = @connection.call("api.getApiNamespaceCallList", @sid, ns[0])
-      if callList != nil
-        count += callList.length
+      call_list = @connection.call("api.getApiNamespaceCallList", @sid, ns[0])
+      if call_list != nil
+        count += call_list.length
         puts "Done"
       else
         puts "Failed"
