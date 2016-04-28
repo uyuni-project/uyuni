@@ -70,7 +70,7 @@ end
 # the given "id"
 When(/^I follow "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\"]") do
-    step %[I follow "#{arg1}"]
+    step %(I follow "#{arg1}")
   end
 end
 
@@ -114,7 +114,7 @@ When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
   end
 
   within(:xpath, "//#{tag}") do
-    step %[I follow "#{arg1}"]
+    step %(I follow "#{arg1}")
   end
 end
 

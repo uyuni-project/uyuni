@@ -5,7 +5,7 @@
 # Initial step for channel testing
 #
 Given(/^I am testing channels$/) do
-  step %[I am authorized as "admin" with password "admin"]
+  step %(I am authorized as "admin" with password "admin")
 end
 
 Then(/^I should see package "([^"]*)"$/) do |package|
@@ -13,11 +13,11 @@ Then(/^I should see package "([^"]*)"$/) do |package|
 end
 
 Given(/^I am on the manage software channels page$/) do
-  step %[I am authorized as "testing" with password "testing"]
+  step %(I am authorized as "testing" with password "testing")
   within(:xpath, "//header") do
     find_link("Channels").click
   end
-  step %[I follow "Manage Software Channels" in the left menu]
+  step %(I follow "Manage Software Channels" in the left menu)
 end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
@@ -48,13 +48,13 @@ When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
 end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |arg1, arg2|
-  steps %[
+  steps %(
     When I am authorized as "admin" with password "admin"
     And I follow "Channels"
     And I follow "#{arg2}"
     And I follow "Packages"
     Then I should see package "#{arg1}"
-  ]
+    )
 end
 
 Then(/^I should see a "([^"]*)" text in the "([^"]*)" column$/) do |arg1, arg2|

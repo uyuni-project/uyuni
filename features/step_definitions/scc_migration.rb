@@ -10,19 +10,19 @@ Given(/^migration state saved$/) do
 end
 
 Given(/^the server is not yet migrated to SCC$/) do
-  step %[the file "/var/lib/spacewalk/scc/migrated" exists on the server]
+  step %(the file "/var/lib/spacewalk/scc/migrated" exists on the server)
 end
 
 Given(/^the SCC is not yet the default customer center$/) do
-  step %[the file "/var/lib/spacewalk/scc/default_scc" exists on the server]
+  step %(the file "/var/lib/spacewalk/scc/default_scc" exists on the server)
 end
 
 Given(/^the SCC is the default customer center$/) do
-  step %[there is "/var/lib/spacewalk/scc/default_scc" file on the server]
+  step %(there is "/var/lib/spacewalk/scc/default_scc" file on the server)
 end
 
 Given(/^the server is migrated to SCC$/) do
-  step %[there is "/var/lib/spacewalk/scc/migrated" file on the server]
+  step %(there is "/var/lib/spacewalk/scc/migrated" file on the server)
 end
 
 When(/^the file "(.*?)" exists on the server$/) do |target_file|

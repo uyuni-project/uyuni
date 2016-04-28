@@ -12,11 +12,11 @@ Given(/^I am root$/) do
 end
 
 Given(/^I am on the Systems overview page of this client$/) do
-  steps %[
+  steps %(
     Given I am on the Systems page
     And I follow "Systems" in the left menu
     And I follow this client link
-  ]
+    )
 end
 
 Given(/^I update the profile of this client$/) do
@@ -47,14 +47,14 @@ When(/^I register using an activation key$/) do
   if arch != "x86_64"
     arch = "i586"
   end
-  step %[I register using "1-SUSE-DEV-#{arch}" key]
+  step %(I register using "1-SUSE-DEV-#{arch}" key)
 end
 
 Then(/^I should see this client in spacewalk$/) do
-  steps %[
+  steps %(
     Given I am on the Systems page
     Then I should see this client as link
-  ]
+    )
 end
 
 Then(/^this client should appear in spacewalk$/) do
@@ -62,10 +62,10 @@ Then(/^this client should appear in spacewalk$/) do
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         begin
-          steps %[
+          steps %(
             Given I am on the Systems page
             Then I should see this client as link
-          ]
+                    )
           break
         rescue Capybara::ElementNotFound
           sleep(1)
@@ -78,11 +78,11 @@ Then(/^this client should appear in spacewalk$/) do
 end
 
 Then(/^I should see this client as link$/) do
-  step %[I should see a "#{$myhostname}" link]
+  step %(I should see a "#{$myhostname}" link)
 end
 
 When(/^I follow this client link$/) do
-  step %[I follow "#{$myhostname}"]
+  step %(I follow "#{$myhostname}")
 end
 
 Then(/^config-actions are enabled$/) do

@@ -8,7 +8,7 @@ Then(/^I should see this client in the Rejected section$/) do
 end
 
 Then(/^I should not see this client as a Minion anywhere$/) do
-  step %[I should not see a "#{$myhostname}" text]
+  step %(I should not see a "#{$myhostname}" text)
 end
 
 # Perform actions
@@ -32,9 +32,9 @@ When(/^I accept this client's minion key$/) do
 end
 
 When(/^I go to the minion onboarding page$/) do
-  steps %{
+  steps %(
     And I follow "Salt"
-  }
+    )
 end
 
 When(/^I should see this hostname as text$/) do
