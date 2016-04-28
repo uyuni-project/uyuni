@@ -12,7 +12,7 @@ end
 
 Given(/^I access the host the first time$/) do
   visit Capybara.app_host
-  #fail if not page.has_content?("Create Spacewalk Administrator")
+  # fail if not page.has_content?("Create Spacewalk Administrator")
   fail unless page.has_content?("Create SUSE Manager Administrator")
 end
 
@@ -53,10 +53,10 @@ Then(/^no link should be broken$/) do
           $stderr.puts "-- ** failed (/var/www)"
           failed_other_reason << href
       end
-      #if page.has_content?('Errata') || page.has_content?('Erratum')
+      # if page.has_content?('Errata') || page.has_content?('Erratum')
       #    $stderr.puts "-- ** failed (Errata)"
       #    failed_other_reason << href
-      #end
+      # end
       collect_all_hrefs.each do |fhref|
           next if fhref[0, 1] == "#" # relative link
           next if hrefs.include?(fhref)
@@ -79,7 +79,7 @@ Then(/^no link should be broken$/) do
 #         $stderr.puts "Adding #{fhref}"
           hrefs << fhref
           relation[fhref.to_s] = href.to_s
-          #$stderr.puts "add rel #{fhref.to_s} => #{relation[fhref.to_s]}"
+          # $stderr.puts "add rel #{fhref.to_s} => #{relation[fhref.to_s]}"
       end
     end
     break if hrefs.empty?

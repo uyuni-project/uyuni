@@ -122,7 +122,7 @@ Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, colum
     idx = cols.index(colname)
   end
   fail("Unknown column '#{column}'") unless idx
-  #find(:xpath, "//table//thead//tr/td[#{idx + 1}]/a[text()='#{link}']")
+  # find(:xpath, "//table//thead//tr/td[#{idx + 1}]/a[text()='#{link}']")
   fail unless page.has_xpath?("//table//tr/td[#{idx + 1}]//a[text()='#{link}']")
 end
 

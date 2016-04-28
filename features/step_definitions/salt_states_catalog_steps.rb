@@ -3,7 +3,7 @@
 When(/^I enter the salt state$/) do |multiline|
   within(:xpath, "//section") do
     x = find('textarea[name="content"]')
-    x.set(multiline) #find("#{arg1}") #.set(lines)
+    x.set(multiline) # find("#{arg1}") #.set(lines)
   end
 end
 

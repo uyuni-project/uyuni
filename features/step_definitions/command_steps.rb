@@ -123,7 +123,7 @@ end
 
 When(/^spacewalk\-channel fails with "([^"]*)"$/) do |arg1|
   $command_output = `spacewalk-channel #{arg1} 2>&1`
-  if $?.success? #|| $command_status.exitstatus != arg1.to_i
+  if $?.success? # || $command_status.exitstatus != arg1.to_i
     raise "Executed command was successful: #{$status}"
   end
 end

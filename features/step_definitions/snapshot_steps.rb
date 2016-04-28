@@ -1,4 +1,4 @@
-#snapshots
+# snapshots
 
 When(/^I take a snapshot "([^"]*)"$/) do |name|
   $sshout = ""

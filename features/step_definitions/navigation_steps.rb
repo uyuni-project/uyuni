@@ -91,7 +91,7 @@ When(/^I click on First Page$/) do
 end
 
 When(/^I click the div "([^"]*)"$/) do |arg1|
-  #must give . or # for class or id
+  # must give . or # for class or id
   within("#spacewalk-content") do
     fail unless find(arg1).click
   end
