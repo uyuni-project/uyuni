@@ -14,7 +14,7 @@ def read_zypp_lock_file(lock_file)
 
     line.strip!
     if line.empty?
-      if !lock.keys.empty?
+      unless lock.keys.empty?
         locks << lock
         lock = {}
       end

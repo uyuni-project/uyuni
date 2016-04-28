@@ -2,7 +2,7 @@
 
 Given(/^a postgresql database is running$/) do
   $output = sshcmd("file /var/lib/pgsql/data/postgresql.conf", ignore_err: true)
-  if !$output[:stdout].include? "ASCII text"
+  unless $output[:stdout].include? "ASCII text"
     puts "Tests require Postgresql database, skipping..."
     pending
   end

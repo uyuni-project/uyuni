@@ -1,7 +1,7 @@
 # Copyright 2011-2014 Novell
 
 When(/^I make the credentials primary$/) do
-  fail if !find('i.fa-star-o').click
+  fail unless find('i.fa-star-o').click
 end
 
 When(/^I refresh scc$/) do
@@ -9,17 +9,17 @@ When(/^I refresh scc$/) do
 end
 
 When(/^I delete the primary credentials$/) do
-  fail if !find('i.fa-trash-o', :match => :first).click
+  fail unless find('i.fa-trash-o', :match => :first).click
   step 'I click on "Delete"'
 end
 
 When(/^I view the primary subscription list$/) do
-  fail if !find('i.fa-th-list', :match => :first).click
+  fail unless find('i.fa-th-list', :match => :first).click
 end
 
 When(/^I view the primary subscription list for asdf$/) do
   within(:xpath, "//h3[contains(text(), 'asdf')]/../..") do
-    fail if !find('i.fa-th-list', :match => :first).click
+    fail unless find('i.fa-th-list', :match => :first).click
   end
 end
 
@@ -31,13 +31,13 @@ When(/^I click on "([^"]*)" link in the setup wizard$/) do |arg1|
   else raise "Unknown element"
   end
   within(".text-left") do
-     fail if !find(tag).click
+     fail unless find(tag).click
   end
 end
 
 When(/^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/) do |product, architecture|
   within(:xpath, "(//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]])[1]") do
-    fail if !find("button.product-add-btn").click
+    fail unless find("button.product-add-btn").click
   end
 end
 
@@ -47,12 +47,12 @@ When(/^I select the addon "(.*?)" for the product "(.*?)" with arch "(.*?)"$/) d
   xpath += "ancestor::tr[td[contains(text(), '#{arch}')]]/following::span"
   xpath += "[contains(text(), '#{addon}')]/../.."
   within(:xpath, "#{xpath}") do
-      fail if !find("button.product-add-btn").click
+      fail unless find("button.product-add-btn").click
   end
 end
 
 When(/^I click the Add Product button$/) do
-  fail if !find("button#synchronize").click
+  fail unless find("button#synchronize").click
 end
 
 When(/^I wait until it has finished$/) do
@@ -61,14 +61,14 @@ end
 
 When(/^I verify the products were added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  fail if !output[:stdout].include? '[I] SLES12-SP1-Pool for x86_64 SUSE Linux Enterprise Server 12 SP1 x86_64 [sles12-sp1-pool-x86_64]'
-  fail if !output[:stdout].include? '[I] SLE-Manager-Tools12-Pool x86_64 SP1 SUSE Manager Tools [sle-manager-tools12-pool-x86_64-sp1]'
-  fail if !output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 SP1 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp1]'
+  fail unless output[:stdout].include? '[I] SLES12-SP1-Pool for x86_64 SUSE Linux Enterprise Server 12 SP1 x86_64 [sles12-sp1-pool-x86_64]'
+  fail unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool x86_64 SP1 SUSE Manager Tools [sle-manager-tools12-pool-x86_64-sp1]'
+  fail unless output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 SP1 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp1]'
 end
 
 When(/^I click the channel list of product "(.*?)" for the "(.*?)" architecture$/) do |product, architecture|
   within(:xpath, "//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]]") do
-    fail if !find('.product-channels-btn').click
+    fail unless find('.product-channels-btn').click
   end
 end
 

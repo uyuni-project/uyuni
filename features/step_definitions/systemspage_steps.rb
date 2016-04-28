@@ -10,7 +10,7 @@ end
 
 Given(/cobblerd is running/) do
   ct = CobblerTest.new()
-  if !ct.is_running
+  unless ct.is_running
     raise "cobblerd is not running"
   end
 end
@@ -26,7 +26,7 @@ end
 
 Given(/distro "([^"]*)" exists/) do |arg1|
   ct = CobblerTest.new()
-  if !ct.distro_exists(arg1)
+  unless ct.distro_exists(arg1)
     raise "distro " + arg1 + " does not exist"
   end
 end
@@ -42,7 +42,7 @@ end
 
 Given(/profile "([^"]*)" exists/) do |arg1|
   ct = CobblerTest.new()
-  if !ct.profile_exists(arg1)
+  unless ct.profile_exists(arg1)
     raise "profile " + arg1 + " does not exist"
   end
 end

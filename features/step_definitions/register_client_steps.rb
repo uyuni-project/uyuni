@@ -21,7 +21,7 @@ end
 
 Given(/^I update the profile of this client$/) do
   `rhn-profile-sync`
-  if ! $?.success?
+  unless $?.success?
     raise "Profile sync failed"
   end
 end
@@ -36,7 +36,7 @@ When(/^I register using "([^"]*)" key$/) do |arg1|
   #print "Command: #{command}\n"
 
   output = `#{command} 2>&1`
-  if ! $?.success?
+  unless $?.success?
     raise "Registration failed '#{command}' #{$!}: #{output}"
   end
 end
@@ -86,13 +86,13 @@ When(/^I follow this client link$/) do
 end
 
 Then(/^config-actions are enabled$/) do
-  if !File.exist?('/etc/sysconfig/rhn/allowed-actions/configfiles/all')
+  unless File.exist?('/etc/sysconfig/rhn/allowed-actions/configfiles/all')
     raise "config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist"
   end
 end
 
 Then(/^remote-commands are enabled$/) do
-  if !File.exist?('/etc/sysconfig/rhn/allowed-actions/script/run')
+  unless File.exist?('/etc/sysconfig/rhn/allowed-actions/script/run')
     raise "remote-commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist"
   end
 end

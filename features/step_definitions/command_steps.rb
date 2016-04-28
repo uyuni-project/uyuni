@@ -28,14 +28,14 @@ end
 
 When(/^I fetch "([^"]*)" from server$/) do |arg1|
   output = `curl -SkO http://$TESTHOST/#{arg1}`
-  if ! $?.success?
+  unless $?.success?
     raise "Execute command failed: #{$!}: #{output}"
   end
 end
 
 When(/^I execute "([^"]*)"$/) do |arg1|
   output = `sh ./#{arg1} 2>&1`
-  if ! $?.success?
+  unless $?.success?
     raise "Execute command (#{arg1}) failed(#{$?}): #{$!}: #{output}"
   end
 end
@@ -81,7 +81,7 @@ end
 When(/^I copy "([^"]*)"$/) do |arg1|
   user = "root@"
   $command_output = `echo | scp -o StrictHostKeyChecking=no #{user}$TESTHOST:#{arg1} . 2>&1`
-  if ! $?.success?
+  unless $?.success?
     raise "Execute command failed: #{$!}: #{$command_output}"
   end
 end
@@ -89,7 +89,7 @@ end
 When(/^I copy to server "([^"]*)"$/) do |arg1|
   user = "root@"
   $command_output = `echo | scp -o StrictHostKeyChecking=no #{arg1} #{user}$TESTHOST: 2>&1`
-  if ! $?.success?
+  unless $?.success?
     raise "Execute command failed: #{$!}: #{$command_output}"
   end
 end
@@ -116,7 +116,7 @@ end
 
 When(/^I execute spacewalk\-channel and pass "([^"]*)"$/) do |arg1|
   $command_output = `spacewalk-channel #{arg1} 2>&1`
-  if ! $?.success?
+  unless $?.success?
     raise "spacewalk-channel with #{arg1} command failed #{$command_output}"
   end
 end
@@ -136,7 +136,7 @@ Then(/^I want to get "([^"]*)"$/) do |arg1|
       break
     end
   end
-  if !found
+  unless found
     raise "'#{arg1}' not found in output '#{$command_output}'"
   end
 end

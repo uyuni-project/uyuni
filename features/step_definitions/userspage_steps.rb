@@ -17,6 +17,6 @@ end
 
 Then(/^Table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg1}')]]") do
-    fail if !has_content?(arg2)
+    fail unless has_content?(arg2)
   end
 end

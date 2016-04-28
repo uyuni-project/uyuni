@@ -17,7 +17,7 @@ class CobblerTest
     @server_port = server_port
     @server_path = server_path
     @server = XMLRPC::Client.new(server_address, server_path, server_port)
-    if !is_running()
+    unless is_running()
       raise "No running server at found at " + server_address
     end
   end
@@ -40,7 +40,7 @@ class CobblerTest
 
   def get_list(what)
     result = []
-    if ! ["systems", "profiles", "distros"].include?(what)
+    unless ["systems", "profiles", "distros"].include?(what)
       raise "unknown get_list parameter '#{what}'"
     end
     ret = @server.call("get_" + what)

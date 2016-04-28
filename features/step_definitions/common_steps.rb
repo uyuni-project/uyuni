@@ -10,14 +10,14 @@ end
 
 When(/^I run rhn_check on this client$/) do
   output = `rhn_check -vvv 2>&1`
-  if ! $?.success?
+  unless $?.success?
       raise "rhn_check failed: #{$!}: #{output}"
   end
 end
 
 Then(/^I download the SSL certificate$/) do
   output = `curl -S -k -o /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://$TESTHOST/pub/RHN-ORG-TRUSTED-SSL-CERT`
-  if ! $?.success?
+  unless $?.success?
       raise "Execute command failed: #{$!}: #{output}"
   end
 end
