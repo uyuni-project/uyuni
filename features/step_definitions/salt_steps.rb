@@ -210,7 +210,7 @@ end
 And(/^this minion is not registered in Spacewalk$/) do
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
-  sid = @rpc.listSystems.select { |s| s['name'] == $myhostname }.map{ |s| s['id'] }.first
+  sid = @rpc.listSystems.select { |s| s['name'] == $myhostname }.map { |s| s['id'] }.first
   @rpc.deleteSystem(sid) if sid
   refute_includes(@rpc.listSystems.map { |s| s['id'] }, $myhostname)
 end

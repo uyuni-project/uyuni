@@ -19,7 +19,7 @@ When(/^I call user\.getDetails\(\) on user "([^"]*)"$/) do |luser|
 end
 
 Then(/^I should see at least one role that matches "([^"]*)" suffix$/) do |sfx|
-  refute(@roles.find_all{ |el| el =~ /#{sfx}/ }.length < 1)
+  refute(@roles.find_all { |el| el =~ /#{sfx}/ }.length < 1)
 end
 
 When(/^I call user\.create\(sid, login, pwd, name, lastname, email\) with login "([^"]*)"$/) do |luser|
