@@ -57,7 +57,7 @@ public class MessageDispatcher implements Runnable {
                 if (actionHandler == null) {
                     continue;
                 }
-                else if (((ActionExecutor) actionHandler).isConcurrent()) {
+                else if (((ActionExecutor) actionHandler).canRunConcurrently()) {
                     MessageHandlerThreadPool.INSTANCE.submit(actionHandler);
                 }
                 else {
