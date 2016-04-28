@@ -175,4 +175,3 @@ end
 When(/^when I destroy "(.*?)" directory$/) do |pg_xlog|
   sshcmd("rm -rf #{pg_xlog}")
 end
-

@@ -7,4 +7,3 @@ Given(/^I am on the Admin page$/) do
     And I follow "Admin"
   ]
 end
-

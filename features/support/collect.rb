@@ -27,6 +27,3 @@ def collect_all_hrefs
   end
   hrefs.uniq.sort
 end
-
-
-

@@ -21,4 +21,3 @@ Then(/^I download the SSL certificate$/) do
       raise "Execute command failed: #{$!}: #{output}"
   end
 end
-
