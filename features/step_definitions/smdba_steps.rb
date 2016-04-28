@@ -7,7 +7,7 @@ Given(/^a postgresql database is running$/) do
     pending
   end
 
-  if not sshcmd("smdba db-status")[:stdout].include? "online"
+  if !sshcmd("smdba db-status")[:stdout].include? "online"
     sshcmd("smdba db-start")
     assert_includes(sshcmd("smdba db-status")[:stdout], "online")
   else

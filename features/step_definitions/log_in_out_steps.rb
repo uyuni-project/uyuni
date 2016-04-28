@@ -18,16 +18,16 @@ When(/^I sign out$/) do
 end
 
 Then(/^I should not be authorized$/) do
-  fail if not page.has_no_xpath?("//a[@href='/rhn/Logout.do']")
+  fail if !page.has_no_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
 Then(/^I should be logged in$/) do
-  fail if not page.has_xpath?("//a[@href='/rhn/Logout.do']")
+  fail if !page.has_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
 Then(/^I am logged-in$/) do
-  fail if not page.find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  fail if not page.has_content?("You have just created your first SUSE Manager user. To finalize your installation please use the Setup Wizard")
+  fail if !page.find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
+  fail if !page.has_content?("You have just created your first SUSE Manager user. To finalize your installation please use the Setup Wizard")
 end
 
 When(/^I go to the admin configuration page$/) do

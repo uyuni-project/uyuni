@@ -35,7 +35,7 @@ Then(/^"([^"]*)" should exists in the metadata$/) do |file|
   if arch != "x86_64"
     arch = "i586"
   end
-  fail if not File.exist?("#{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/#{file}")
+  fail if !File.exist?("#{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/#{file}")
 end
 
 Then(/^I should have '([^']*)' in the patch metadata$/) do |text|

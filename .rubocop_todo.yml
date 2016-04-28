@@ -143,11 +143,6 @@ Style/NilComparison:
 Style/NonNilCheck:
   Enabled: false
 
-# Offense count: 113
-# Cop supports --auto-correct.
-Style/Not:
-  Enabled: false
-
 # Offense count: 1
 # Configuration parameters: NamePrefix, NamePrefixBlacklist.
 Style/PredicateName:

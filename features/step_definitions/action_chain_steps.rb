@@ -1,9 +1,9 @@
 When(/^I check radio button "(.*?)"$/) do |arg1|
-   fail if not choose(arg1)
+   fail if !choose(arg1)
 end
 
 When(/^I open the action chain box$/) do
-   fail if not find('#s2id_action-chain span.select2-arrow').click
+   fail if !find('#s2id_action-chain span.select2-arrow').click
 end
 
 When(/^I enter "(.*?)" in action-chain$/) do |arg1|

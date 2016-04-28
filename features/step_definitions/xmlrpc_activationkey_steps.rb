@@ -3,7 +3,7 @@ rpctest = XMLRPCActivationKeyTest.new(ENV["TESTHOST"])
 key = nil
 
 Given(/^I am logged in via XML\-RPC\/activationkey as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  fail if not rpctest.login(luser, password)
+  fail if !rpctest.login(luser, password)
 end
 
 When(/^I create an AK with id "([^"]*)", description "([^"]*)" and limit of (\d+)$/) do |id, dscr, limit|
@@ -12,7 +12,7 @@ When(/^I create an AK with id "([^"]*)", description "([^"]*)" and limit of (\d+
 end
 
 Then(/^I should get it listed with a call of listActivationKeys\.$/) do
-  fail if not rpctest.verifyKey(key)
+  fail if !rpctest.verifyKey(key)
 end
 
 When(/^I call listActivationKeys I should get some\.$/) do
@@ -20,7 +20,7 @@ When(/^I call listActivationKeys I should get some\.$/) do
 end
 
 Then(/^I should get key deleted\.$/) do
-  fail if not rpctest.deleteKey(key)
+  fail if !rpctest.deleteKey(key)
   fail if rpctest.verifyKey(key)
 end
 
@@ -46,11 +46,11 @@ end
 
 # Details
 When(/^I call activationkey\.setDetails\(\) to the key$/) do
-  fail if not rpctest.setDetails(key)
+  fail if !rpctest.setDetails(key)
 end
 
 Then(/^I have to see them by calling activationkey\.getDetails\(\)$/) do
-  fail if not rpctest.getDetails(key)
+  fail if !rpctest.getDetails(key)
 end
 
 # ToDO
