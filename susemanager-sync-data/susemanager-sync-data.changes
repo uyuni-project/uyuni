@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Apr 29 11:38:48 CEST 2016 - jrenner@suse.com
+
+- version 2.1.15-1
+- support SLE-POS 11 SP3 as addon for SLES 11 SP4 (bsc#976194)
+- HAE-GEO is an addon product for SLES 4 SAP (bsc#970425)
+- add support for SLE-Live-Patching12 (bsc#924298, bsc#968851)
+
+-------------------------------------------------------------------
 Tue Feb 23 14:56:15 CET 2016 - mc@suse.de
 
 - version 2.1.14-1
