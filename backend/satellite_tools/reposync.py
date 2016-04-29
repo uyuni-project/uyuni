@@ -75,10 +75,11 @@ def getChannelRepo():
     items = {}
     sql = """
            select s.source_url, c.label
-                       from rhnContentSource s,
-                       rhnChannelContentSource cs,
-                       rhnChannel c
-                       where s.id = cs.source_id and cs.channel_id=c.id
+             from rhnChannel c
+        left join rhnChannelContentSource cs on cs.channel_id=c.id
+        left join rhnContentSource s on s.id = cs.source_id
+            where s.source_url is not null
+               or c.org_id is null
            """
     h = rhnSQL.prepare(sql)
     h.execute()
@@ -88,7 +89,8 @@ def getChannelRepo():
             break
         if not row['label'] in items:
             items[row['label']] = []
-        items[row['label']] += [row['source_url']]
+        if row['source_url']:
+            items[row['label']] += [row['source_url']]
 
     return items
 
