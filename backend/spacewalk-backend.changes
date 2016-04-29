@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 29 11:36:08 CEST 2016 - jrenner@suse.com
+
+- version 2.1.55.25-1
+- mgr_ncc_sync: adapt to bulk scheduling introduced in
+  scheduleSingleSatRepoSync
+
+-------------------------------------------------------------------
 Tue Feb 23 14:53:50 CET 2016 - mc@suse.de
 
 - version 2.1.55.24-1
