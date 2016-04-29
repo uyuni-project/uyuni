@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Fri Apr 29 10:58:08 CEST 2016 - jrenner@suse.com
+
+- version 2.1.165.22-1
+- call cobbler sync after cobbler command is finished (bsc#966890)
+- Under high load, the service wrapper may incorrectly interpret the inability
+  to get a response in time from taskomatic and kill it (bsc#962253).
+- log permissions problems on channel access while SP migration (bsc#970223)
+- unittests: support SLE-POS 11 SP3 as addon for SLES 11 SP4 (bsc#976194)
+- mgr-sync: use bulk channel reposync
+- Double the backslashes when reading the config files from java (bsc#958923)
+- When generating repo metadata for a cloned channel, recursively fetch
+  keywords from the original channel (bsc#970901)
+- better logging for SP Migration feature (bsc#970223)
+- Fix: 'Advanced Search' title consistency
+- CVE-2015-0284: XSS when altering user details and going somewhere where you are
+  choosing user (bsc#922740)
+- CVE-2016-3079, CVE-2016-2103, CVE-2016-2104, CVE-2016-3097: Fix multiple XSS
+  vulnerabilities (bsc#973162, bsc#974011, bsc#974010, bsc#973550)
+- BugFix: 'Systems > Advanced Search' title and description consistency
+  (bsc#966737)
+- Fix: correct behavior with visibility conditions of sub-tabs in Systems/Misc
+  page
+- BugFix: add missing url mapping (bsc#961565)
+- fix kernel and initrd pathes for creating autoinstallation tries (bsc#966622)
+- fix tests for HAE-GEO on SLES 4 SAP (bsc#970425)
+- add unit tests for SLE-Live-Patching12 (bsc#924298)
+
+-------------------------------------------------------------------
 Tue Feb 23 14:54:25 CET 2016 - mc@suse.de
 
 - version 2.1.165.21-1
