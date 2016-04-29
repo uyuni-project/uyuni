@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Apr 29 10:54:18 CEST 2016 - jrenner@suse.com
+
+- version 2.1.27.15-1
+- Bugfix: don't repeat channel labels
+- taskotop: a utility to monitor what Taskomatic is doing
+- fix file permissions (bsc#970550)
+
+-------------------------------------------------------------------
 Tue Feb 23 14:40:58 CET 2016 - mc@suse.de
 
 - version 2.1.27.14-1
