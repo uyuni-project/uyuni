@@ -3,7 +3,6 @@
 const React = require("react");
 const Buttons = require("../components/buttons");
 const Network = require("../utils/network");
-
 const AsyncButton = Buttons.AsyncButton;
 
 function object2map(obj) {
@@ -132,7 +131,7 @@ class RemoteCommand extends React.Component {
     const cmd = this.state.command;
     const target = this.state.target;
     console.log(cmd);
-    return Network.get("/rhn/manager/api/minions/match?target=" + target)
+    return Network.get("/rhn/manager/api/minions/match?target=" + target, "application/json")
         .promise.then(data => {
             console.log(data);
             this.setState({
@@ -143,8 +142,14 @@ class RemoteCommand extends React.Component {
                   acc.set(id, null);
                   return acc;
                 }, new Map())
-              }
+              },
+              errors: []
             });
+        })
+        .catch(jqXHR => {
+          this.setState({
+            errors: errorMessageByStatus(jqXHR.status)
+          });
         });
   }
 
@@ -162,21 +167,25 @@ class RemoteCommand extends React.Component {
       },
       started: true
     });
-    return Network.post("/rhn/manager/api/minions/cmd", {
-        cmd: cmd,
-        target: target
-    })
-    .promise.then(data => {
+    return Network.post("/rhn/manager/api/minions/cmd?cmd=" + cmd + "&target=" + target,
+      null, "application/json"
+    ).promise.then(data => {
         console.log(data);
         this.setState({
           result: {
             minions: object2map(data)
-          }
+          },
+          errors: []
         });
     },(jqXHR) => {
         try {
-            this.setState({errors: JSON.parse(jqXHR.responseText)})
+            this.setState({
+              errors: JSON.parse(jqXHR.responseText)
+            })
         } catch (err) {
+          this.setState({
+            errors: errorMessageByStatus(jqXHR.status)
+          })
         }
     });
   }
@@ -208,6 +217,21 @@ class RemoteCommand extends React.Component {
         {elements}
       </div>
     );
+  }
+}
+
+errorMessageByStatus(status) {
+  if (status == 401) {
+    return [t("Session expired, please reload the page to run command on systems.")];
+  }
+  else if (status == 403) {
+    return [t("Authorization error, please reload the page or try to logout/login again.")];
+  }
+  else if (status >= 500) {
+    return [t("Server error, please check log files.")];
+  }
+  else {
+    return [];
   }
 }
 
