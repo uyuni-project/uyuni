@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Message queue thread pool for concurrent dispatching of messages.
@@ -47,9 +46,9 @@ public enum MessageQueueThreadPool {
      *
      * @param runnable the runnable to submit
      */
-    public Future<?> submit(Runnable runnable) {
+    public void submit(Runnable runnable) {
         log.debug("Submitting new runnable for message queue thread pool");
-        return executorService.submit(runnable);
+        executorService.submit(runnable);
     }
 
     /**
