@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 29 11:39:51 CEST 2016 - jrenner@suse.com
+
+- version 2.1.2-1
+- rename change_tftpd_proxies.py to sync_post_tftpd_proxies.py and change
+  trigger type (bsc#966890)
+
+-------------------------------------------------------------------
 Mon Dec 09 16:22:29 CET 2013 - mc@suse.de
 
 - version 2.1.1-1
