@@ -19,14 +19,22 @@ import pwd
 import grp
 import sys
 import stat
-import string
-import cfg_exceptions
-import local_config
 import base64
-import utils
-import xmlrpclib
+from config_common import cfg_exceptions
+from config_common import local_config
+from config_common import utils
+from config_common.rhn_log import log_debug
+from rhn import rpclib
+Output = rpclib.transports.Output
 
-from rhn_log import log_debug
+try: # python2
+    import xmlrpclib
+except ImportError: # python3
+    import xmlrpc.client as xmlrpclib
+    basestring = (str, bytes)
+
+from spacewalk.common.usix import raise_with_tb
+from rhn.i18n import sstr
 
 try:
     from selinux import lgetfilecon
@@ -36,7 +44,7 @@ except:
         return [0, '']
 
 #6/29/05 rpc_wrapper implements the failover logic.
-import rpc_wrapper
+from config_common import rpc_wrapper
 rpclib = rpc_wrapper
 
 
@@ -96,7 +104,7 @@ class Repository:
             ret[label] = file_stat[st]
 
         # server expects things like 644, 700, etc.
-        ret['mode'] = deci_to_octal(ret['mode'] & 07777)
+        ret['mode'] = deci_to_octal(ret['mode'] & int('07777', 8))
 
         #print ret['size']
         #if ret['size'] > self.get_maximum_file_size():
@@ -111,7 +119,7 @@ class Repository:
             try:
                 pw_name = pwd.getpwuid(uid)[0]
             except KeyError:
-                print "Error looking up user id %s" % (uid, )
+                print("Error looking up user id %s" % (uid, ))
 
         if pw_name:
             ret['user'] = pw_name
@@ -122,7 +130,7 @@ class Repository:
             try:
                 gr_name = grp.getgrgid(gid)[0]
             except KeyError:
-                print "Error looking up group id %s" % (gid, )
+                print("Error looking up group id %s" % (gid, ))
 
         if gr_name:
             ret['group'] = gr_name
@@ -150,9 +158,10 @@ class Repository:
 
         try:
             file_stat = os.lstat(local_path)
-        except OSError, e:
-            raise cfg_exceptions.RepositoryLocalFileError(
-                "Error lstat()-ing local file: %s" % e), None, sys.exc_info()[2]
+        except OSError:
+            e = sys.exc_info()[1]
+            raise_with_tb(cfg_exceptions.RepositoryLocalFileError(
+                "Error lstat()-ing local file: %s" % e), sys.exc_info()[2])
 
         # Dlimiters
         if delim_start or delim_end:
@@ -184,9 +193,10 @@ class Repository:
         if load_contents:
             try:
                 file_contents = open(local_path, "r").read()
-            except IOError, e:
-                raise cfg_exceptions.RepositoryLocalFileError(
-                    "Error opening local file: %s" % e), None, sys.exc_info()[2]
+            except IOError:
+                e = sys.exc_info()[1]
+                raise_with_tb(cfg_exceptions.RepositoryLocalFileError(
+                    "Error opening local file: %s" % e), sys.exc_info()[2])
 
             self._add_content(file_contents, params)
 
@@ -256,12 +266,12 @@ class RPC_Repository(Repository):
         # not sure if we need this or not...
         lang = None
         for env in 'LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG':
-            if os.environ.has_key(env):
+            if env in os.environ:
                 if not os.environ[env]:
                     # sometimes unset
                     continue
-                lang = string.split(os.environ[env], ':')[0]
-                lang = string.split(lang, '.')[0]
+                lang = os.environ[env].split(':')[0]
+                lang = lang.split('.')[0]
                 break
 
         if setup_network:
@@ -291,7 +301,8 @@ class RPC_Repository(Repository):
             # without setting any state on the server side
             try:
                 x_server.registration.welcome_message()
-            except xmlrpclib.Fault, e:
+            except xmlrpclib.Fault:
+                e = sys.exc_info()[1]
                 sys.stderr.write("XML-RPC error while talking to %s:\n %s\n" % (self.__server_url, e))
                 sys.exit(2)
 
@@ -317,7 +328,10 @@ class RPC_Repository(Repository):
                                     rpc_handler=handler)
 
         self._set_capabilities()
-        self.server.set_transport_flags(encoding="gzip", transfer="binary")
+        self.server.set_transport_flags(
+            transfer=Output.TRANSFER_BINARY,
+            encoding=Output.ENCODE_GZIP
+        )
 
         if lang:
             self.server.setlang(lang)
@@ -361,14 +375,16 @@ class RPC_Repository(Repository):
     def rpc_call(self, method_name, *params):
         method = getattr(self.server, method_name)
         try:
-            result = apply(method, params)
-        except xmlrpclib.ProtocolError, e:
+            result = method(*params)
+        except xmlrpclib.ProtocolError:
+            e = sys.exc_info()[1]
             sys.stderr.write("XML-RPC call error: %s\n" % e)
             sys.exit(1)
         except xmlrpclib.Fault:
             # Re-raise them
             raise
-        except Exception, e:
+        except Exception:
+            e = sys.exc_info()[1]
             sys.stderr.write("XML-RPC error while talking to %s: %s\n" % (
                 self.__server_url, e))
             sys.exit(2)
@@ -383,7 +399,7 @@ class RPC_Repository(Repository):
 
         # check for the rhncfg.content.base64_decode capability and encode the
         # data if the server is capable of descoding it
-        if self._server_capabilities.has_key('rhncfg.content.base64_decode'):
+        if 'rhncfg.content.base64_decode' in self._server_capabilities:
             params['enc64'] = 1
             params['file_contents'] = base64.encodestring(file_contents)
         else:
@@ -403,9 +419,9 @@ def get_server_capability(s):
             r"^(?P<name>[^(]*)\((?P<version>[^)]*)\)\s*=\s*(?P<value>.*)$")
     vals = {}
     for h in cap_headers:
-        arr = string.split(h, ':', 1)
+        arr = h.split(':', 1)
         assert len(arr) == 2
-        val = string.strip(arr[1])
+        val = arr[1].strip()
         if not val:
             continue
 
@@ -415,7 +431,7 @@ def get_server_capability(s):
             continue
         vdict = mo.groupdict()
         for k, v in vdict.items():
-            vdict[k] = string.strip(v)
+            vdict[k] = v.strip()
 
         vals[vdict['name']] = vdict
     return vals

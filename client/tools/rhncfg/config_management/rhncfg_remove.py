@@ -16,7 +16,11 @@
 import os
 from config_common import handler_base, utils
 from config_common.rhn_log import log_debug, die
-import xmlrpclib
+
+try: # python2
+    import xmlrpclib
+except ImportError: # python3
+    import xmlrpc.client as xmlrpclib
 
 class Handler(handler_base.HandlerBase):
     _usage_options = "[options] file [ file ... ]"
@@ -48,7 +52,7 @@ class Handler(handler_base.HandlerBase):
         if not r.config_channel_exists(channel):
             die(6, "Error: config channel %s does not exist" % channel)
 
-        files = map(utils.normalize_path, self.args)
+        files = [utils.normalize_path(x) for x in self.args]
 
         files_to_remove = []
         if self.options.topdir:
@@ -64,14 +68,15 @@ class Handler(handler_base.HandlerBase):
             for f in files:
                 files_to_remove.append((f, f))
 
-        print "Removing from config channel %s" % channel
+        print("Removing from config channel %s" % channel)
         for (local_file, remote_file) in files_to_remove:
             try:
                 r.remove_file(channel, remote_file)
-            except xmlrpclib.Fault, e:
+            except xmlrpclib.Fault:
+                e = sys.exc_info()[1]
                 if e.faultCode == -4011:
-                    print "%s does not exist" % remote_file
+                    print("%s does not exist" % remote_file)
                     continue
                 raise
             else:
-                print "%s removed" % remote_file
+                print("%s removed" % remote_file)
