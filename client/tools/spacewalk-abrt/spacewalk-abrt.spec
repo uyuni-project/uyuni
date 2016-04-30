@@ -1,5 +1,5 @@
 Name:           spacewalk-abrt
-Version:        2.5.2.2
+Version:        2.5.3
 Release:        1%{?dist}
 Summary:        ABRT plug-in for rhn-check
 
@@ -15,7 +15,7 @@ BuildRequires:  gettext
 BuildRequires:  python
 Requires:       abrt
 Requires:       abrt-cli
-Requires:       rhnlib
+Requires:       rhn-client-tools
 Requires:       rhn-check
 %description
 spacewalk-abrt - rhn-check plug-in for collecting information about crashes handled by ABRT.
@@ -25,6 +25,9 @@ spacewalk-abrt - rhn-check plug-in for collecting information about crashes hand
 
 %build
 make -f Makefile.spacewalk-abrt
+%if 0%{?fedora} >= 23
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/bin/spacewalk-abrt
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -53,6 +56,9 @@ service abrtd restart ||:
 %{_mandir}/man8/*
 
 %changelog
+* Tue Apr 26 2016 Gennadii Altukhov <galt@redhat.com> 2.5.3-1
+- Adapt spacewalk-abrt to Python 2/3
+
 * Thu Feb 18 2016 Jan Dobes 2.5.2-1
 - fixing warning
 - do not evaluate Makefile

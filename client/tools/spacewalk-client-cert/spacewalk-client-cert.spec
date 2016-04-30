@@ -1,5 +1,5 @@
 Name:		spacewalk-client-cert
-Version:	2.5.0.1
+Version:	2.5.1
 Release:	1%{?dist}
 Summary:	Package allowing manipulation with Spacewalk client certificates
 
@@ -11,8 +11,7 @@ Source1:        %{name}-rpmlintrc
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 BuildRequires:  python-devel
-Requires:       rhnlib
-Requires:       rhn-check
+Requires:       rhn-client-tools
 Requires:       rhn-setup
 %description
 spacewalk-client-cert contains client side functionality allowing manipulation
@@ -33,6 +32,7 @@ make -f Makefile.spacewalk-client-cert install PREFIX=$RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+
 %files
 %dir /etc/sysconfig/rhn
 %dir /etc/sysconfig/rhn/clientCaps.d
@@ -41,7 +41,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/share/rhn/actions
 %{_datadir}/rhn/actions/clientcert.*
 
+
 %changelog
+* Tue Apr 26 2016 Gennadii Altukhov <galt@redhat.com> 2.5.1-1
+- Adapt spacewalk-client-cert for Python 2/3 compatibility
+- Bumping package versions for 2.5.
+- Bumping package versions for 2.4.
+
 * Thu Mar 19 2015 Grant Gainey 2.3.2-1
 - Updating copyright info for 2015
 

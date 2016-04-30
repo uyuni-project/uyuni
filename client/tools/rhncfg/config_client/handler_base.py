@@ -32,7 +32,7 @@ class HandlerBase(handler_base.HandlerBase):
 
         if not self.args:
             # No file specified; use all of them
-            files = files_hash.keys()
+            files = list(files_hash.keys())
             files.sort()
             return files
 
@@ -43,8 +43,8 @@ class HandlerBase(handler_base.HandlerBase):
                 if file[-1] == "/":
                     file = file[0:-1]
 
-            if not files_hash.has_key(file):
-                print "Not found on server: %s" % file
+            if file not in files_hash:
+                print("Not found on server: %s" % file)
                 continue
             files.append(file)
         files.sort()

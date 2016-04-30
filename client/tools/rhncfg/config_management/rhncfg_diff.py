@@ -22,6 +22,7 @@ import sys
 from config_common import handler_base, utils, cfg_exceptions
 from config_common.rhn_log import log_debug, die
 from config_common.file_utils import f_date, ostr_to_sym
+from spacewalk.common.usix import next
 
 
 class Handler(handler_base.HandlerBase):
@@ -67,7 +68,7 @@ class Handler(handler_base.HandlerBase):
 
         files_to_diff = []
 
-        files = map(utils.normalize_path, self.args)
+        files = [utils.normalize_path(x) for x in self.arg]
         files_count = len(files)
 
         if files_count != 1 and revision is not None:
@@ -116,7 +117,7 @@ class Handler(handler_base.HandlerBase):
         r = self.repository
         try:
             info = r.get_raw_file_info(channel, path, revision)
-            if info.has_key('encoding') and info['file_contents']:
+            if 'encoding' in info and info['file_contents']:
                 if info['encoding'] == 'base64':
                     info['file_contents'] = base64.decodestring(info['file_contents'])
                 else:
@@ -139,8 +140,8 @@ class Handler(handler_base.HandlerBase):
         diff_output = difflib.unified_diff(fromlines, tolines, info['path'], local_file)
         first_row = second_row = ''
         try:
-            first_row = diff_output.next()
-            second_row = diff_output.next()
+            first_row = next(diff_output)
+            second_row = next(diff_output)
         except StopIteration:
             pass
         file_stat = os.lstat(local_file)
@@ -154,7 +155,7 @@ class Handler(handler_base.HandlerBase):
             return ""
         else:
             template = "--- %s\t%s\tattributes: %s %s %s %s\tconfig channel: %s\trevision: %s"
-            if not info.has_key('modified'):
+            if 'modified' not in info:
                 info['modified'] = ''
             first_row = template % (path, str(info['modified']), ostr_to_sym(info['filemode'], info['filetype']),
                         info['username'], info['groupname'], info['selinux_ctx'], channel,
