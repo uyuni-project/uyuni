@@ -51,11 +51,11 @@ public class MessageDispatcher implements Runnable {
     public void run() {
         while (!isStopped) {
             try {
-                Runnable actionHandler = MessageQueue.popEventMessage();
+                ActionExecutor actionHandler = MessageQueue.popEventMessage();
                 if (actionHandler == null) {
                     continue;
                 }
-                else if (((ActionExecutor) actionHandler).canRunConcurrently()) {
+                else if (actionHandler.canRunConcurrently()) {
                     MessageQueueThreadPool.INSTANCE.submit(actionHandler);
                 }
                 else {
