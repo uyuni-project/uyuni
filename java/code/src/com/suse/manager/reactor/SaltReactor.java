@@ -16,6 +16,8 @@ package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessageAction;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -24,6 +26,8 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.reactor.messaging.CheckinEventMessage;
 import com.suse.manager.reactor.messaging.CheckinEventMessageAction;
+import com.suse.manager.reactor.messaging.RunnableEventMessage;
+import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
@@ -42,7 +46,7 @@ import com.suse.manager.webui.utils.salt.events.EventListener;
 import com.suse.manager.webui.utils.salt.events.EventStream;
 import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
 import com.suse.manager.webui.utils.salt.events.MinionStartEvent;
-
+import com.suse.manager.webui.utils.salt.events.ZypperEvent;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -69,7 +73,7 @@ public class SaltReactor implements EventListener {
     private volatile boolean isStopped = false;
 
     // Executor service for handling incoming events
-    private ExecutorService executorService = Executors.newCachedThreadPool();
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
 
     /**
      * Start the salt reactor.
@@ -96,6 +100,8 @@ public class SaltReactor implements EventListener {
                 RefreshHardwareEventMessage.class);
         MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
                 RefreshGeneratedSaltFilesEventMessage.class);
+        MessageQueue.registerAction(new RunnableEventMessageAction(),
+                RunnableEventMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
@@ -147,7 +153,8 @@ public class SaltReactor implements EventListener {
         // Setup handlers for different event types
         Runnable runnable =
                 MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
-                JobReturnEvent.parse(event).map(this::onJobReturnEvent).orElse(() -> { }));
+                JobReturnEvent.parse(event).map(this::onJobReturnEvent).orElseGet(() ->
+                ZypperEvent.parse(event).map(this::onZypperEvent).orElse(() -> { })));
         executorService.submit(runnable);
     }
 
@@ -173,6 +180,28 @@ public class SaltReactor implements EventListener {
     private Runnable onJobReturnEvent(JobReturnEvent jobReturnEvent) {
         return () -> {
             MessageQueue.publish(new JobReturnEventMessage(jobReturnEvent));
+        };
+    }
+
+    /**
+     * Trigger handling of zypper events
+     *
+     * @param zypperEvent the suma custom event
+     * @return event handler runnable
+     */
+    private Runnable onZypperEvent(ZypperEvent zypperEvent) {
+        return () -> {
+            if (zypperEvent.asPackageSetChanged().isPresent()) {
+                MessageQueue.publish(
+                        new RunnableEventMessage("ZypperEvent.PackageSetChanged", () -> {
+                    MinionServerFactory
+                        .findByMinionId(zypperEvent.getMinionId())
+                        .ifPresent(minionServer ->
+                                ActionManager.schedulePackageRefresh(minionServer.getOrg(),
+                                        minionServer)
+                        );
+                }));
+            }
         };
     }
 
