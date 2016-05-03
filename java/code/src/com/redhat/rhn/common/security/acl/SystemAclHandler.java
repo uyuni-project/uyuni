@@ -91,20 +91,6 @@ public class SystemAclHandler extends BaseHandler {
     }
 
     /**
-     * This acl is basically a combination of two others.
-     * I basically lifted the logic right from the perl code.
-     * @param ctx Context Map to pass in
-     * @param params Parameters to use to fetch from Context
-     * @return true if access is granted, false otherwise
-     */
-    public boolean aclSatellitePossible(Object ctx, String[] params) {
-        Access handler = new Access();
-        params = new String[] { "SMS" };
-        return handler.aclOrgChannelFamily(ctx, params) &&
-                aclChildChannelCandidate(ctx, params);
-    }
-
-    /**
      * FIXME not implemented. Currently this method
      * is unimplemented and ALWAYS returns false
      * @param ctx Context Map to pass in
