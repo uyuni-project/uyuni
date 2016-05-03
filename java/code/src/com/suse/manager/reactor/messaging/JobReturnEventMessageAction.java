@@ -79,6 +79,13 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     private final List<String> packageChangingModules = Arrays.asList("pkg.install",
             "pkg.remove", "pkg_installed", "pkg_latest", "pkg_removed");
 
+    /**
+     * Default constructor.
+     */
+    public JobReturnEventMessageAction() {
+        super();
+    }
+
     @Override
     public void doExecute(EventMessage msg) {
         JobReturnEventMessage jobReturnEventMessage = (JobReturnEventMessage) msg;
