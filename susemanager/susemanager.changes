@@ -3,10 +3,10 @@ Fri Apr 29 10:48:00 CEST 2016 - jrenner@suse.com
 
 - version 2.1.24-1
 - add packages to bootstrap repo (bsc#971237)
-- mgr-sync: use bulk channel reposync
+- mgr-sync: use bulk channel reposync (bsc#961002)
 - mgr_ncc_sync: adapt to bulk scheduling introduced in
   scheduleSingleSatRepoSync
-- add SLES 4 SAP to mgr-create-bootstap-repo as an option
+- add SLES 4 SAP to mgr-create-bootstap-repo as an option (bsc#972341)
 - put packages only available in SLE12 SP1 in a seperate list (bsc#970672)
 - fix file permissions (bsc#970550)
 
