@@ -7,7 +7,7 @@ Fri Apr 29 10:58:08 CEST 2016 - jrenner@suse.com
   to get a response in time from taskomatic and kill it (bsc#962253).
 - log permissions problems on channel access while SP migration (bsc#970223)
 - unittests: support SLE-POS 11 SP3 as addon for SLES 11 SP4 (bsc#976194)
-- mgr-sync: use bulk channel reposync
+- mgr-sync: use bulk channel reposync (bsc#961002)
 - Double the backslashes when reading the config files from java (bsc#958923)
 - When generating repo metadata for a cloned channel, recursively fetch
   keywords from the original channel (bsc#970901)
