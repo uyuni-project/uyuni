@@ -1101,7 +1101,7 @@ public class ContentSyncManager {
     }
 
     /**
-     * Update contents of the suseUpgradePaths table with values from upgrade_paths.xml
+     * Recreate contents of the suseUpgradePaths table with values from upgrade_paths.xml
      * and predecessor_ids from SCC
      *
      * @param products Collection of SCC Products
@@ -1109,15 +1109,8 @@ public class ContentSyncManager {
      */
     public void updateUpgradePaths(Collection<SCCProduct> products)
             throws ContentSyncException {
-        // Get all paths from DB and create map that eventually will hold the ones to remove
-        List<SUSEUpgradePath> upgradePathsDB = SUSEProductFactory.findAllSUSEUpgradePaths();
-        Map<String, SUSEUpgradePath> pathsToRemove = new HashMap<String, SUSEUpgradePath>();
-        for (SUSEUpgradePath path : upgradePathsDB) {
-            String identifier = String.format("%s-%s",
-                    path.getFromProduct().getProductId(),
-                    path.getToProduct().getProductId());
-            pathsToRemove.put(identifier, path);
-        }
+        // Clear all upgrade paths from the database
+        SUSEProductFactory.clearUpgradePaths();
 
         // Iterate through all paths in the XML file and lookup both products first
         for (MgrSyncUpgradePath path : readUpgradePaths()) {
@@ -1125,43 +1118,29 @@ public class ContentSyncManager {
                     path.getFromProductId());
             SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
                     path.getToProductId());
-            updateUpgradePath(fromProduct, path.getFromProductId(),
-                    toProduct, path.getToProductId(), pathsToRemove);
+            updateUpgradePath(fromProduct, toProduct);
         }
 
+        // Iterate through products from SCC and check predecessor IDs
         for (SCCProduct p : products) {
             if (p.getPredecessorIds() != null) {
                 SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(p.getId());
                 for (Integer predecessorId : p.getPredecessorIds()) {
                     SUSEProduct fromProduct =
                             SUSEProductFactory.lookupByProductId(predecessorId);
-                    updateUpgradePath(fromProduct, predecessorId, toProduct, p.getId(),
-                            pathsToRemove);
+                    updateUpgradePath(fromProduct, toProduct);
                 }
             }
-        }
-
-        // Remove all those paths that were not inserted or updated
-        if (log.isDebugEnabled()) {
-            log.debug("Removing " + pathsToRemove.size() + " upgrade paths.");
-        }
-        for (Map.Entry<String, SUSEUpgradePath> entry : pathsToRemove.entrySet()) {
-            SUSEProductFactory.remove(entry.getValue());
         }
     }
 
     /**
-     * Updates a single upgrade path.
+     * Insert a product upgrade path in case both products exist in the DB.
      *
      * @param fromProduct the source product
-     * @param fromSCCProductid the souce product's SCC ID
      * @param toProduct the destination product
-     * @param toSCCProductid the destination product's SCC ID
-     * @param pathsToRemove Map of paths to remove, will be updated by this method
      */
-    private void updateUpgradePath(SUSEProduct fromProduct, Integer fromSCCProductid,
-            SUSEProduct toProduct, Integer toSCCProductid,
-            Map<String, SUSEUpgradePath> pathsToRemove) {
+    private void updateUpgradePath(SUSEProduct fromProduct, SUSEProduct toProduct) {
         if (fromProduct != null && toProduct != null) {
 
             // Dirty Hack: prevent major version update from 11.X to 12.X
@@ -1170,21 +1149,7 @@ public class ContentSyncManager {
                 return;
             }
 
-            // Products found, get the existing path object from map by removing
-            String identifier = String.format("%s-%s",
-                    fromSCCProductid, toSCCProductid);
-            SUSEUpgradePath existingPath = null;
-            if (pathsToRemove.keySet().contains(identifier)) {
-                existingPath = pathsToRemove.remove(identifier);
-            }
-
-            // Insert or update the existing path
-            if (existingPath == null) {
-                SUSEProductFactory.save(new SUSEUpgradePath(fromProduct, toProduct));
-            }
-            else {
-                SUSEProductFactory.save(existingPath);
-            }
+            SUSEProductFactory.save(new SUSEUpgradePath(fromProduct, toProduct));
         }
     }
 
