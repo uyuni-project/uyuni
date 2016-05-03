@@ -15,7 +15,6 @@ Feature: Test Powermanagement
     Given I am on the Systems overview page of this client
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
-    And I setup the ipmi network card
     When I enter "192.168.0.5" as "powerAddress"
     And I enter "admin" as "powerUsername"
     And I enter "admin" as "powerPassword"
