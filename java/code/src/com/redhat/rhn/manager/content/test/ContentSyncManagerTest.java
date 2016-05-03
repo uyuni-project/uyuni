@@ -766,7 +766,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Remove the first product
             products.remove(product1);
-            product2.setPredecessorIds(new ArrayList<>());
+            product2.setPredecessorIds(new ArrayList<Integer>());
             csm.updateSUSEProducts(products);
 
             // There should be no upgrade paths
@@ -841,7 +841,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(1, SUSEProductFactory.findAllSUSEUpgradePaths().size());
 
             // Remove the upgrade path via the predecessor Id
-            product2.setPredecessorIds(new ArrayList<>());
+            product2.setPredecessorIds(new ArrayList<Integer>());
             csm.updateSUSEProducts(products);
 
             // There should be no upgrade paths
