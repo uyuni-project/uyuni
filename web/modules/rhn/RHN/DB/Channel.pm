@@ -608,7 +608,7 @@ sub rhn_satellite_channels {
   my $query = <<EOQ;
 SELECT  CFM.channel_id
   FROM  rhnChannelFamilyMembers CFM, rhnChannelFamily CF
- WHERE  CF.label = 'SMS'
+ WHERE  CF.label in ('SMS', 'SMS-X86', 'SMS-Z')
    AND  CF.id = CFM.channel_family_id
 EOQ
 
