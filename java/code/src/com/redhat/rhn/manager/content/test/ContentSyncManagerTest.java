@@ -72,6 +72,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
     private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
+    private static final String UPGRADE_PATHS_EMPTY_XML = JARPATH + "upgrade_paths_empty.xml";
 
     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
     private static final String ORDERS_JSON = "organizations_orders.json";
@@ -593,6 +594,157 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(upgradePathsXML);
+        }
+    }
+
+    /**
+     * There is an upgrade path in the DB and SCC deletes the "from" product.
+     * @throws Exception if anything goes wrong
+     */
+    public void testUpgradePathPredecessorDeleted() throws Exception {
+        File upgradePathsEmptyXML = new File(
+                TestUtils.findTestData(UPGRADE_PATHS_EMPTY_XML).getPath());
+        try {
+            List<SCCProduct> products = new ArrayList<SCCProduct>();
+
+            // Setup a product as it comes from SCC
+            int product1Id = 10012345;
+            assertNull(SUSEProductFactory.lookupByProductId(product1Id));
+            String name = TestUtils.randomString();
+            String identifier = TestUtils.randomString();
+            String version = TestUtils.randomString();
+            String releaseType = TestUtils.randomString();
+            String friendlyName = TestUtils.randomString();
+            String productClass = TestUtils.randomString();
+
+            SCCProduct product1 = new SCCProduct();
+            product1.setId(product1Id);
+            product1.setName(name);
+            product1.setIdentifier(identifier);
+            product1.setVersion(version);
+            product1.setReleaseType(releaseType);
+            product1.setFriendlyName(friendlyName);
+            product1.setProductClass(productClass);
+            product1.setArch("i686");
+            products.add(product1);
+
+            // Setup a 2nd product as it comes from SCC
+            int product2Id = 10012346;
+            assertNull(SUSEProductFactory.lookupByProductId(product2Id));
+            name = TestUtils.randomString();
+            identifier = TestUtils.randomString();
+            version = TestUtils.randomString();
+            releaseType = TestUtils.randomString();
+            friendlyName = TestUtils.randomString();
+            productClass = TestUtils.randomString();
+
+            SCCProduct product2 = new SCCProduct();
+            product2.setId(product2Id);
+            product2.setName(name);
+            product2.setIdentifier(identifier);
+            product2.setVersion(version);
+            product2.setReleaseType(releaseType);
+            product2.setFriendlyName(friendlyName);
+            product2.setProductClass(productClass);
+            product2.setArch("i686");
+            List<Integer> predIn = new ArrayList<Integer>();
+            predIn.add(product1Id);
+            product2.setPredecessorIds(predIn);
+            products.add(product2);
+
+            // Update SUSE products and upgrade paths
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.setUpgradePathsXML(upgradePathsEmptyXML);
+            csm.updateSUSEProducts(products);
+
+            // There should be an upgrade path from product1 to product2
+            assertEquals(1, SUSEProductFactory.findAllSUSEUpgradePaths().size());
+
+            // Remove the first product
+            products.remove(product1);
+            product2.setPredecessorIds(new ArrayList<>());
+            csm.updateSUSEProducts(products);
+
+            // There should be no upgrade paths
+            assertEquals(true, SUSEProductFactory.findAllSUSEUpgradePaths().isEmpty());
+        }
+        finally {
+            SUSEProductTestUtils.deleteIfTempFile(upgradePathsEmptyXML);
+        }
+    }
+
+    /**
+     * An upgrade path between two products is removed while the products still exist.
+     * @throws Exception if anything goes wrong
+     */
+    public void testUpgradePathRemoved() throws Exception {
+        File upgradePathsEmptyXML = new File(
+                TestUtils.findTestData(UPGRADE_PATHS_EMPTY_XML).getPath());
+        try {
+            List<SCCProduct> products = new ArrayList<SCCProduct>();
+
+            // Setup a product as it comes from SCC
+            int product1Id = 10012345;
+            assertNull(SUSEProductFactory.lookupByProductId(product1Id));
+            String name = TestUtils.randomString();
+            String identifier = TestUtils.randomString();
+            String version = TestUtils.randomString();
+            String releaseType = TestUtils.randomString();
+            String friendlyName = TestUtils.randomString();
+            String productClass = TestUtils.randomString();
+
+            SCCProduct product1 = new SCCProduct();
+            product1.setId(product1Id);
+            product1.setName(name);
+            product1.setIdentifier(identifier);
+            product1.setVersion(version);
+            product1.setReleaseType(releaseType);
+            product1.setFriendlyName(friendlyName);
+            product1.setProductClass(productClass);
+            product1.setArch("i686");
+            products.add(product1);
+
+            // Setup a 2nd product as it comes from SCC
+            int product2Id = 10012346;
+            assertNull(SUSEProductFactory.lookupByProductId(product2Id));
+            name = TestUtils.randomString();
+            identifier = TestUtils.randomString();
+            version = TestUtils.randomString();
+            releaseType = TestUtils.randomString();
+            friendlyName = TestUtils.randomString();
+            productClass = TestUtils.randomString();
+
+            SCCProduct product2 = new SCCProduct();
+            product2.setId(product2Id);
+            product2.setName(name);
+            product2.setIdentifier(identifier);
+            product2.setVersion(version);
+            product2.setReleaseType(releaseType);
+            product2.setFriendlyName(friendlyName);
+            product2.setProductClass(productClass);
+            product2.setArch("i686");
+            List<Integer> predIn = new ArrayList<Integer>();
+            predIn.add(product1Id);
+            product2.setPredecessorIds(predIn);
+            products.add(product2);
+
+            // Update SUSE products and upgrade paths
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.setUpgradePathsXML(upgradePathsEmptyXML);
+            csm.updateSUSEProducts(products);
+
+            // There should be an upgrade path from product1 to product2
+            assertEquals(1, SUSEProductFactory.findAllSUSEUpgradePaths().size());
+
+            // Remove the upgrade path via the predecessor Id
+            product2.setPredecessorIds(new ArrayList<>());
+            csm.updateSUSEProducts(products);
+
+            // There should be no upgrade paths
+            assertEquals(true, SUSEProductFactory.findAllSUSEUpgradePaths().isEmpty());
+        }
+        finally {
+            SUSEProductTestUtils.deleteIfTempFile(upgradePathsEmptyXML);
         }
     }
 
