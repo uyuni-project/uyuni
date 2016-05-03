@@ -3959,7 +3959,7 @@
              <forward name="success"
                       path="/systems/SystemList.do" redirect="true" />
              <forward name="error"
-                      path="/systems/details/Overview.do" />
+                      path="/WEB-INF/pages/systems/sdc/migrate.jsp" />
      </action>
 
     <action path="/systems/details/SystemChannels"

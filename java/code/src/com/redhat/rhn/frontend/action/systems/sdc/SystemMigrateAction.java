@@ -73,6 +73,8 @@ public class SystemMigrateAction extends RhnAction {
             Long sid = s.getId();      // Required because if the migration goes ahead we
             String name = s.getName(); // can't lookup the servers ID
 
+            request.setAttribute("system", s); // keep trace of the current system
+
             // Don't attempt migration to organisation "None"
             if (toOrg == null) {
                 ValidatorError err = new ValidatorError("system.migrate.no_org_specified");
