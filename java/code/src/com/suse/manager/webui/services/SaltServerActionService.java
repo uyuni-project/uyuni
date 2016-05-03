@@ -32,7 +32,6 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.salt.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -257,14 +256,17 @@ public enum SaltServerActionService {
                         .flatMap(Set::stream)
                         .collect(Collectors.toSet())
         ));
-        // Convert errata names to LocalCall objects of type Pkg.install
+        // Convert errata names to LocalCall objects of type State.apply
         return collect.entrySet().stream().collect(Collectors.toMap(
-                entry -> Pkg.install(true, entry.getKey()
+            entry -> com.suse.manager.webui.utils.salt.State.apply(
+                "packages.installpkg",
+                Collections.singletonMap("pkgs",
+                    entry.getKey()
                         .stream()
-                        .map(patch -> "patch:" + patch)
-                        .collect(Collectors.toList()))
-                ,
-                Map.Entry::getValue
+                        .collect(
+                            Collectors.toMap(patch -> "patch:" + patch, p -> "")
+                        ))),
+            Map.Entry::getValue
         ));
     }
 
@@ -273,7 +275,8 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
-        ret.put(com.suse.manager.webui.utils.salt.Pkg.install(true, pkgs), minions);
+        ret.put(com.suse.manager.webui.utils.salt.State.apply("packages.installpkg",
+                Collections.singletonMap("pkgs", pkgs)), minions);
         return ret;
     }
 
@@ -282,7 +285,8 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
-        ret.put(com.suse.manager.webui.utils.salt.Pkg.remove(pkgs), minions);
+        ret.put(com.suse.manager.webui.utils.salt.State.apply("packages.removepkg",
+                Collections.singletonMap("pkgs", pkgs)), minions);
         return ret;
     }
 
