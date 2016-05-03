@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 03 17:23:30 CEST 2016 - jrenner@suse.com
+
+- version 2.1.165.23-1
+- Recreate upgrade paths on every refresh (bsc#978166)
+
+-------------------------------------------------------------------
 Fri Apr 29 10:58:08 CEST 2016 - jrenner@suse.com
 
 - version 2.1.165.22-1
