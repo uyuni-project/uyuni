@@ -251,6 +251,13 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Clear all upgrade paths from the database.
+     */
+    public static void clearUpgradePaths() {
+        getSession().getNamedQuery("SUSEUpgradePath.clear").executeUpdate();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
