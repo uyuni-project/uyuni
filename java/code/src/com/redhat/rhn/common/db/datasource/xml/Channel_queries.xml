@@ -859,7 +859,7 @@ where   1=1
         and scac.channel_arch_id = c.channel_arch_id
         and c.id = cfm.channel_id
         and cfm.channel_family_id = cf.id
-        and cf.label not in ('rhn-satellite','rhn-proxy', 'SMS', 'SMP')
+        and cf.label not in ('rhn-satellite','rhn-proxy', 'SMS', 'SMS-X86', 'SMS-Z', 'SMP')
         and rhn_channel.user_role_check(c.id, :user_id, 'subscribe')=1
 union all
 select  c.id,
@@ -880,7 +880,7 @@ where   st.user_id = :user_id
         and c.parent_channel is not null
         and c.id = cfm.channel_id
         and cfm.channel_family_id = cf.id
-        and cf.label not in ('rhn-satellite','rhn-proxy', 'SMS', 'SMP')
+        and cf.label not in ('rhn-satellite','rhn-proxy', 'SMS', 'SMS-X86', 'SMS-Z', 'SMP')
         and rhn_channel.user_role_check(cfm.channel_id,:user_id,'subscribe')=1
         and usp.user_id = :user_id
         and st.element = usp.server_id
