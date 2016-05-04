@@ -260,7 +260,7 @@ public enum SaltServerActionService {
         return collect.entrySet().stream().collect(Collectors.toMap(
             entry -> com.suse.manager.webui.utils.salt.State.apply(
                 "packages.installpkg",
-                Collections.singletonMap("pkgs",
+                Collections.singletonMap("param_pkgs",
                     entry.getKey()
                         .stream()
                         .collect(
@@ -276,7 +276,7 @@ public enum SaltServerActionService {
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
         ret.put(com.suse.manager.webui.utils.salt.State.apply("packages.installpkg",
-                Collections.singletonMap("pkgs", pkgs)), minions);
+                Collections.singletonMap("param_pkgs", pkgs)), minions);
         return ret;
     }
 
@@ -286,7 +286,7 @@ public enum SaltServerActionService {
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
         ret.put(com.suse.manager.webui.utils.salt.State.apply("packages.removepkg",
-                Collections.singletonMap("pkgs", pkgs)), minions);
+                Collections.singletonMap("param_pkgs", pkgs)), minions);
         return ret;
     }
 
