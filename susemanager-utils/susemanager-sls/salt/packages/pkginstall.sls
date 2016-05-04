@@ -1,9 +1,9 @@
-{% if pillar.get('pkgs', {}).items() %}
+{% if pillar.get('param_pkgs', {}).items() %}
 pkg_installed:
   pkg.installed:
     -   refresh: true
     -   pkgs:
-{%- for pkg, version in pillar.get('pkgs', {}).items() %}
+{%- for pkg, version in pillar.get('param_pkgs', {}).items() %}
         - {{ pkg }}: {{ version }}
 {%- endfor %}
     -   require:
