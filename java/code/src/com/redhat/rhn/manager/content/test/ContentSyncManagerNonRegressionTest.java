@@ -61,7 +61,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
     /** Channel family labels that are entitled in the scope of this non regression test. */
     private static final List<String> ENTITLED_LABELS = new LinkedList<String>() { {
-        add("SLE-HAE-PPC"); add("RES"); add("SMS");
+        add("SLE-HAE-PPC"); add("RES"); add("SMS-X86"); add("SMS-Z");
         add("SMP"); add("SUSE_CLOUD"); add("DSMP");
         add("MONO"); add("7261"); add("7260");
         add("VMDP"); add("SLE-SDK"); add("OES2");
