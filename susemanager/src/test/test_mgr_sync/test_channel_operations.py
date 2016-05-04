@@ -491,6 +491,46 @@ Scheduling reposync for 'res4-es-i386' channel"""
         self.assertEqual(expected_output, recorder.stdout)
 
         self.mgr_sync._list_channels.assert_called_once_with(
+            expand=False, filter=None, no_optionals=False,
+            show_interactive_numbers=True, compact=False)
+
+        expected_xmlrpc_calls = [
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "addChannel",
+                                        self.fake_auth_token,
+                                        chosen_channel,
+                                        ''),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                        "syncRepo",
+                                        self.fake_auth_token,
+                                        [chosen_channel])
+        ]
+
+        stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+
+    def test_add_channels_interactive_no_optional(self):
+        options = get_options("add channel --no-optional".split())
+        available_channels = ['ch1', 'ch2']
+        chosen_channel = available_channels[0]
+        self.mgr_sync._list_channels = MagicMock(
+            return_value=available_channels)
+        stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture(
+            'list_channels.data'))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+
+        with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
+            mock.return_value = str(
+                available_channels.index(chosen_channel) + 1)
+            with ConsoleRecorder() as recorder:
+                self.mgr_sync.run(options)
+
+        expected_output = [
+            "Adding '{0}' channel".format(chosen_channel),
+            "Scheduling reposync for '{0}' channel".format(chosen_channel)
+        ]
+        self.assertEqual(expected_output, recorder.stdout)
+
+        self.mgr_sync._list_channels.assert_called_once_with(
             expand=False, filter=None, no_optionals=True,
             show_interactive_numbers=True, compact=False)
 
