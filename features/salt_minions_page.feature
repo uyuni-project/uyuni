@@ -22,7 +22,7 @@ Feature: Explore the Minions page
     Then I should see a "pending" text
 
   Scenario: Reject and delete the pending minion key
-    #Given this minion key is unaccepted
+    Given this minion key is unaccepted
     And I go to the minion onboarding page
     And I reject this client from the Pending section
     And we wait till Salt master sees this minion as rejected
