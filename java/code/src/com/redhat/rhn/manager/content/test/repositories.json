@@ -8883,6 +8883,42 @@
     "autorefresh": false
   },
   {
+    "id": 1945,
+    "name": "SUSE-Manager-Server-3.0-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SUSE-Manager-Server-3.0-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.0/s390x/update/?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1946,
+    "name": "SUSE-Manager-Server-3.0-Debuginfo-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SUSE-Manager-Server-3.0-Debuginfo-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.0/s390x/update_debug/?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1947,
+    "name": "SUSE-Manager-Server-3.0-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SUSE-Manager-Server-3.0-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.0/s390x/product/?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1948,
+    "name": "SUSE-Manager-Server-3.0-Debuginfo-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SUSE-Manager-Server-3.0-Debuginfo-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.0/s390x/product_debug/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
     "id": 1949,
     "name": "SUSE-Manager-Server-3.0-Updates",
     "distro_target": "sle-12-x86_64",
@@ -9176,6 +9212,312 @@
     "distro_target": "sle-12-s390x",
     "description": "SLE-Module-Containers12-Source-Pool for sle-12-s390x",
     "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Containers/12/s390x/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1982,
+    "name": "SUSE-OpenStack-Cloud-6-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-OpenStack-Cloud-6-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/OpenStack-Cloud/6/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1983,
+    "name": "SLE-RT12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-RT12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-RT/12-SP1/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1984,
+    "name": "SLE12-SP1-SAP-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE12-SP1-SAP-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP1/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1985,
+    "name": "SUSE-Enterprise-Storage-1.0-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-1.0-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/1.0/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1986,
+    "name": "SLE-Live-Patching12-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Live-Patching12-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Live-Patching/12/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1987,
+    "name": "SLE-Module-Legacy12-Source-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-Module-Legacy12-Source-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/ppc64le/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1988,
+    "name": "SLE-Module-Legacy12-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Legacy12-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/s390x/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1989,
+    "name": "SLE-Module-Legacy12-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Legacy12-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1990,
+    "name": "SLE-Module-Web-Scripting12-Source-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-Module-Web-Scripting12-Source-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/ppc64le/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1991,
+    "name": "SLE-Module-Web-Scripting12-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Web-Scripting12-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/s390x/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1992,
+    "name": "SLE-Module-Web-Scripting12-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Web-Scripting12-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1993,
+    "name": "SLE-Module-Public-Cloud12-Source-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-Module-Public-Cloud12-Source-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/ppc64le/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1994,
+    "name": "SLE-Module-Public-Cloud12-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Public-Cloud12-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/s390x/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1995,
+    "name": "SLE-Module-Public-Cloud12-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Public-Cloud12-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1996,
+    "name": "SLE-Module-Adv-Systems-Management12-Source-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-Module-Adv-Systems-Management12-Source-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/ppc64le/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1997,
+    "name": "SLE-Module-Adv-Systems-Management12-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Adv-Systems-Management12-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/s390x/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1998,
+    "name": "SLE-Module-Adv-Systems-Management12-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Adv-Systems-Management12-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1999,
+    "name": "SLE-12-Cloud-Compute5-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-12-Cloud-Compute5-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/12-Cloud-Compute/5/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 2000,
+    "name": "SUSE-Manager-Server-3.0-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SUSE-Manager-Server-3.0-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.0/s390x/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 2001,
+    "name": "SUSE-Manager-Server-3.0-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Manager-Server-3.0-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.0/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 2002,
+    "name": "SUSE-Manager-Proxy-3.0-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Manager-Proxy-3.0-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Proxy/3.0/x86_64/product_source/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 2064,
+    "name": "SLE-Module-Certifications12-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Certifications12-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Certifications/12/s390x/update/?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 2065,
+    "name": "SLE-Module-Certifications12-Debuginfo-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Certifications12-Debuginfo-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Certifications/12/s390x/update_debug/?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 2066,
+    "name": "SLE-Module-Certifications12-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Certifications12-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Certifications/12/s390x/product/?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 2067,
+    "name": "SLE-Module-Certifications12-Debuginfo-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Certifications12-Debuginfo-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Certifications/12/s390x/product_debug/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 2068,
+    "name": "SLE-Module-Certifications12-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Certifications12-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Certifications/12/x86_64/update/?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 2069,
+    "name": "SLE-Module-Certifications12-Debuginfo-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Certifications12-Debuginfo-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Certifications/12/x86_64/update_debug/?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 2070,
+    "name": "SLE-Module-Certifications12-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Certifications12-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Certifications/12/x86_64/product/?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 2071,
+    "name": "SLE-Module-Certifications12-Debuginfo-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Certifications12-Debuginfo-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Certifications/12/x86_64/product_debug/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 2072,
+    "name": "SUSE-Enterprise-Storage-3-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-3-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/Storage/3/x86_64/update/?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 2073,
+    "name": "SUSE-Enterprise-Storage-3-Debuginfo-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-3-Debuginfo-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/Storage/3/x86_64/update_debug/?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 2074,
+    "name": "SUSE-Enterprise-Storage-3-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-3-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/3/x86_64/product/?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 2075,
+    "name": "SUSE-Enterprise-Storage-3-Debuginfo-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-3-Debuginfo-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/3/x86_64/product_debug/?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 2076,
+    "name": "SUSE-Enterprise-Storage-3-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-3-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/3/x86_64/product_source/?my-fake-token",
     "enabled": false,
     "autorefresh": false
   }
