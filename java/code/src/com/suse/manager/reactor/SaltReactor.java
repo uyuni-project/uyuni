@@ -94,7 +94,7 @@ public class SaltReactor implements EventListener {
                 ActionScheduledEventMessage.class);
         MessageQueue.registerAction(JobReturnEventMessageAction.class,
                 JobReturnEventMessage.class);
-        MessageQueue.registerAction(new CheckinEventMessageAction(),
+        MessageQueue.registerAction(CheckinEventMessageAction.class,
                 CheckinEventMessage.class);
         MessageQueue.registerAction(new RefreshHardwareEventMessageAction(SALT_SERVICE),
                 RefreshHardwareEventMessage.class);

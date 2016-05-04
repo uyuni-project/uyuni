@@ -29,6 +29,13 @@ public class CheckinEventMessageAction extends AbstractDatabaseAction {
     private static final Logger LOG = Logger.getLogger(CheckinEventMessageAction.class);
 
     /**
+     * Default constructur.
+     */
+    public CheckinEventMessageAction() {
+        super();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -44,5 +51,10 @@ public class CheckinEventMessageAction extends AbstractDatabaseAction {
             LOG.info("Can't update checkin time of non-existing server: " +
                     checkinEventMessage.getServerId());
         }
+    }
+
+    @Override
+    public boolean canRunConcurrently() {
+        return true;
     }
 }
