@@ -2,9 +2,9 @@
 <channelfamilies>
 	<family default_nodecount="0" label="SLE-HAE-PPC" name="SUSE Linux Enterprise High Availability Extension (PPC)"/>
 	<family default_nodecount="0" label="RES" name="SUSE Linux Enterprise RedHat Expanded Support"/>
-	<family default_nodecount="0" label="SMS" name="SUSE Manager Server"/>
 	<family default_nodecount="0" label="SMP" name="SUSE Manager Proxy"/>
 	<family default_nodecount="0" label="SUSE_CLOUD" name="SUSE Cloud"/>
+	<family default_nodecount="0" label="SMS-Z" name="SUSE Manager Server System Z"/>
 	<family default_nodecount="0" label="DSMP" name="Data Synchronizer Mobility Pack"/>
 	<family default_nodecount="0" label="MONO" name="SUSE Linux Enterprise Mono Extension"/>
 	<family default_nodecount="0" label="7261" name="SUSE Linux Enterprise Server"/>
@@ -21,6 +21,7 @@
 	<family default_nodecount="0" label="ZLM7" name="ZENworks Linux Management"/>
 	<family default_nodecount="0" label="SLE-HAS" name="SUSE Linux Enterprise HA Server"/>
 	<family default_nodecount="0" label="ATI" name="ATI"/>
+	<family default_nodecount="0" label="SMS-X86" name="SUSE Manager Server X86-64"/>
 	<family default_nodecount="0" label="SLES-X86-VMWARE" name="SUSE Linux Enterprise Server for VMware"/>
 	<family default_nodecount="0" label="13319" name="SUSE Linux Enterprise Real Time"/>
 	<family default_nodecount="0" label="SLE-HAE-GEO" name="GEO Clustering for SLE HA Extension"/>
