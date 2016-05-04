@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.text.DecimalFormat;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class ValueMap {
      * empty string if the value is missing.
      */
     public String getValueAsString(String key) {
-        return get(key).flatMap(this::toString).orElse("");
+        return get(key).flatMap(ValueMap::toString).orElse("");
     }
 
     /**
@@ -79,7 +80,7 @@ public class ValueMap {
      * as a string
      */
     public Optional<String> getOptionalAsString(String key) {
-        return get(key).flatMap(this::toString);
+        return get(key).flatMap(ValueMap::toString);
     }
 
     /**
@@ -93,13 +94,22 @@ public class ValueMap {
     }
 
     /**
+     * Get a value as a collection (if possible)
+     * @param key the key
+     * @return an {@link Optional} containing the value as a {@link Collection}
+     */
+    public Optional<Collection<?>> getValueAsCollection(String key) {
+        return get(key).filter(v -> v instanceof Collection).map(v -> (Collection<?>) v);
+    }
+
+    /**
      * Convert a value to a string. Takes special care of {@link Double}
      * and {@link Long} values.
      * @param value a value
      * @return an {@link Optional} containing a string or empty if
      * the value could not be converted.
      */
-    public Optional<String> toString(Object value) {
+    public static Optional<String> toString(Object value) {
         if (value instanceof Double) {
             DecimalFormat formater = new DecimalFormat("#.##");
             return Optional.of(formater.format((double)value));

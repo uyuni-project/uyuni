@@ -1,0 +1,45 @@
+{
+  "lo": {
+    "hwaddr": "00:00:00:00:00:00",
+    "up": true,
+    "inet": [
+      {
+        "broadcast": null,
+        "netmask": "255.0.0.0",
+        "label": "lo",
+        "address": "127.0.0.1"
+      }
+    ],
+    "inet6": [
+      {
+        "prefixlen": "128",
+        "scope": "host",
+        "address": "::1"
+      }
+    ]
+  },
+  "eth0": {
+    "hwaddr": "52:54:00:d7:4f:20",
+    "up": true,
+    "inet": [
+      {
+        "broadcast": "10.161.63.255",
+        "netmask": "255.255.192.0",
+        "label": "eth0",
+        "address": "10.161.25.49"
+      }
+    ],
+    "inet6": [
+      {
+        "prefixlen": "64",
+        "scope": "global",
+        "address": "2620:113:80c0:8000:10:161:25:49"
+      },
+      {
+        "prefixlen": "64",
+        "scope": "link",
+        "address": "fe80::5054:ff:fed7:4f20"
+      }
+    ]
+  }
+}

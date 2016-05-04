@@ -17,15 +17,20 @@ package com.suse.manager.reactor.test;
 import com.suse.manager.reactor.utils.ValueMap;
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Test for {@link com.suse.manager.reactor.utils.ValueMap}
  */
 public class ValueMapTest extends TestCase {
 
-    public void testGetValueAsString() {
+    public void testGetValueAsMaxLengthString() {
 
         Map<String, Object> map = new HashMap<>();
         map.put("short", "12345");
@@ -37,6 +42,17 @@ public class ValueMapTest extends TestCase {
         assertEquals("a very", vmap.getValueAsString("long", 6));
         assertEquals("a", vmap.getValueAsString("long", 1));
         assertEquals("", vmap.getValueAsString(null, 1));
+    }
+
+    public void testGetValueAsCollection() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("list", Arrays.asList("one"));
+        map.put("string", "a string");
+
+        ValueMap vmap = new ValueMap(map);
+        assertTrue(vmap.getValueAsCollection("list").isPresent());
+        assertEquals(map.get("list"), vmap.getValueAsCollection("list").get());
+        assertFalse(vmap.getValueAsCollection("string").isPresent());
     }
 
 }

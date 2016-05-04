@@ -1,0 +1,16 @@
+[
+  {
+    "data": {
+      "boot-up_state": "Safe",
+      "manufacturer": "QEMU",
+      "oem_information": "0x00000000",
+      "power_supply_state": "Safe",
+      "thermal_state": "Safe",
+      "type": "Other",
+      "version": "pc-i440fx-2.1"
+    },
+    "description": "Chassis Information",
+    "handle": "0x0300",
+    "type": 3
+  }
+]
