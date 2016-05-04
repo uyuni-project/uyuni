@@ -73,6 +73,12 @@ def _create_add_subparser(subparsers):
         action='store_true',
         dest='primary',
         help='Designate SCC organization credentials as primary')
+    add_parser.add_argument(
+        '--no-optional',
+        action='store_true',
+        dest='no_optionals',
+        default=False,
+        help='do not list optional channels in interactive mode')
 
 
 def _create_list_subparser(subparsers):
