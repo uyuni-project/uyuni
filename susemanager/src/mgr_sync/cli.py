@@ -75,6 +75,12 @@ def _create_add_subparser(subparsers):
         dest='primary',
         help='Designate SCC organization credentials as primary. '
              'There can be only a primary credential, which is the first one used when retrieving the list of products and channels.')
+    add_parser.add_argument(
+        '--no-optional',
+        action='store_true',
+        dest='no_optionals',
+        default=False,
+        help='do not list optional channels in interactive mode')
 
 
 def _create_list_subparser(subparsers):
