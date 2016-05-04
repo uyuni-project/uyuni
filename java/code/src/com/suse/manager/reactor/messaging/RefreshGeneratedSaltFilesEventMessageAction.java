@@ -51,6 +51,8 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
 
     private Path saltGenerationTempDir;
 
+    private boolean executionError;
+
     /**
      * No arg constructor.
      */
@@ -115,23 +117,30 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
 
             // copy /srv/susemanager/salt/custom/custom_*.sls
             // to /srv/susemanager/tmp/salt
-            for (Path serverSls : Files.newDirectoryStream(saltPath,
-                    SALT_SERVER_STATE_FILE_PREFIX + "*.sls")) {
-                Files.copy(serverSls, tempCustomPath.resolve(serverSls.getFileName()));
+            if (Files.exists(saltPath)) {
+                for (Path serverSls : Files.newDirectoryStream(saltPath,
+                        SALT_SERVER_STATE_FILE_PREFIX + "*.sls")) {
+                    Files.copy(serverSls, tempCustomPath.resolve(serverSls.getFileName()));
+                }
             }
 
             // rm -rf /srv/susemanager/tmp/custom_todelete
             FileUtils.deleteDirectory(oldSaltPath.toFile());
             // mv /srv/susemanager/salt/custom -> /srv/susemanager/tmp/custom_todelete
-            Files.move(saltPath, oldSaltPath, StandardCopyOption.ATOMIC_MOVE);
+            if (Files.exists(saltPath)) {
+                Files.move(saltPath, oldSaltPath, StandardCopyOption.ATOMIC_MOVE);
+            }
             // mv /srv/susemanager/tmp/saltXXXX -> /srv/susemanager/salt/custom
             Files.move(tempCustomPath, saltPath, StandardCopyOption.ATOMIC_MOVE);
             // rm -rf /srv/susemanager/tmp/custom_todelete
-            FileUtils.deleteDirectory(oldSaltPath.toFile());
+            if (Files.exists(oldSaltPath)) {
+                FileUtils.deleteDirectory(oldSaltPath.toFile());
+            }
 
             log.info("Regenerated org and group .sls files in " + saltPath);
         }
         catch (IOException e) {
+            executionError = true;
             log.error("Could not regenerate org and group sls files in " +
                     saltGenerationTempDir, e);
         }
@@ -147,6 +156,14 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                 }
             }
         }
+    }
+
+    /**
+     * Needed for unit tests.
+     * @return true in case an error has occurred during execution
+     */
+    public boolean isExecutionError() {
+        return executionError;
     }
 
 }

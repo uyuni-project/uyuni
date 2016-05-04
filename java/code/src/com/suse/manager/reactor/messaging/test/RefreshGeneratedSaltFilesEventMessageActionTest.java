@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -72,6 +73,24 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
         assertTrue(Files.exists(customPath.resolve(
                 SALT_SERVER_STATE_FILE_PREFIX + server.getMachineId() + ".sls")));
 
+        checkAssertions(action);
+    }
+
+    public void testDoExecuteNoCustomDir() throws Exception {
+        // no /srv/susemanager/salt/custom
+        assertFalse(Files.exists(tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR)));
+
+        RefreshGeneratedSaltFilesEventMessageAction action = new RefreshGeneratedSaltFilesEventMessageAction(
+                tmpSaltRoot.toString(), tmpFileRoot.toString());
+        action.execute(new RefreshGeneratedSaltFilesEventMessage());
+
+        checkAssertions(action);
+    }
+
+    private void checkAssertions(RefreshGeneratedSaltFilesEventMessageAction action) throws IOException {
+        assertFalse(action.isExecutionError());
+
+        Path customPath = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR);
         for (Org org : OrgFactory.lookupAllOrgs()) {
             assertTrue(Files.exists(customPath.resolve(
                     "org_" + user.getOrg().getId() + ".sls")));
@@ -84,6 +103,5 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
 
         assertFalse(Files.newDirectoryStream(tmpFileRoot).iterator().hasNext());
     }
-
 
 }
