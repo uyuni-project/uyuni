@@ -1,0 +1,13 @@
+[{
+  "data": {
+    "manufacturer": "QEMU",
+    "product_name": "Standard PC (i440FX + PIIX, 1996)",
+    "uuid": "4A531BB7-612F-E846-9D94-63AF964E00E9",
+    "version": "pc-i440fx-2.1",
+    "wake-up_type": "Power Switch"
+  },
+  "description": "System Information",
+  "handle": "0x0100",
+  "type": 1
+}]
+

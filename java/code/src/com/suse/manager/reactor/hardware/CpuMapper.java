@@ -23,7 +23,9 @@ import com.suse.manager.webui.services.SaltGrains;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Get the CPU information from a minion an store it in the SUMA db.
@@ -70,33 +72,38 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
             }
 
             // /proc/cpuinfo -> model name
-            cpu.setModel(getModel(grains.getValueAsString("cpu_model")));
+            cpu.setModel(truncateModel(grains.getValueAsString("cpu_model")));
             // some machines don't report cpu MHz
-            cpu.setMHz(getMhz(cpuinfo.get("cpu MHz").flatMap(cpuinfo::toString)
+            cpu.setMHz(truncateMhz(cpuinfo.get("cpu MHz").flatMap(ValueMap::toString)
                     .orElse("-1")));
-            cpu.setVendor(getVendor(cpuinfo, "vendor_id"));
-            cpu.setStepping(getStepping(cpuinfo, "stepping"));
-            cpu.setFamily(getFamily(cpuinfo, "cpu family"));
-            cpu.setCache(getCache(cpuinfo, "cache size"));
-            cpu.setBogomips(getBogomips(cpuinfo, "bogomips"));
-            cpu.setFlags(cpuinfo.get("flags").flatMap(cpuinfo::toString).orElse(null));
-            cpu.setVersion(getVersion(cpuinfo, "model"));
+            cpu.setVendor(truncateVendor(cpuinfo, "vendor_id"));
+            cpu.setStepping(truncateStepping(cpuinfo, "stepping"));
+            cpu.setFamily(truncateFamily(cpuinfo, "cpu family"));
+            cpu.setCache(truncateCache(cpuinfo, "cache size"));
+            cpu.setBogomips(truncateBogomips(cpuinfo, "bogomips"));
+            cpu.setFlags(truncateFlags(cpuinfo.getValueAsCollection("flags")
+                    .map(c -> c.stream()
+                        .map(e -> Objects.toString(e, ""))
+                        .collect(Collectors.joining(" ")))
+                    .orElse(null)));
+            cpu.setVersion(truncateVersion(cpuinfo, "model"));
 
         }
         else if (CpuArchUtil.isPPC64(cpuarch)) {
-            cpu.setModel(getModel(cpuinfo.getValueAsString("cpu")));
-            cpu.setVersion(getVersion(cpuinfo, "revision"));
-            cpu.setBogomips(getBogomips(cpuinfo, "bogompis"));
-            cpu.setVendor(getVendor(cpuinfo, "machine"));
-            cpu.setMHz(getMhz(StringUtils.substring(cpuinfo.get("clock")
-                    .flatMap(cpuinfo::toString)
+            cpu.setModel(truncateModel(cpuinfo.getValueAsString("cpu")));
+            cpu.setVersion(truncateVersion(cpuinfo, "revision"));
+            cpu.setBogomips(truncateBogomips(cpuinfo, "bogompis"));
+            cpu.setVendor(truncateVendor(cpuinfo, "machine"));
+            cpu.setMHz(truncateMhz(StringUtils.substring(cpuinfo.get("clock")
+                    .flatMap(ValueMap::toString)
                     .orElse("-1MHz"), 0, -3))); // remove MHz sufix
         }
         else if (CpuArchUtil.isS390(cpuarch)) {
-            cpu.setVendor(getVendor(cpuinfo, "vendor_id"));
-            cpu.setModel(getModel(cpuarch));
-            cpu.setBogomips(getBogomips(cpuinfo, "bogomips per cpu"));
-            cpu.setFlags(cpuinfo.get("features").flatMap(cpuinfo::toString).orElse(null));
+            cpu.setVendor(truncateVendor(cpuinfo, "vendor_id"));
+            cpu.setModel(truncateModel(cpuarch));
+            cpu.setBogomips(truncateBogomips(cpuinfo, "bogomips per cpu"));
+            cpu.setFlags(truncateFlags(cpuinfo.get("features")
+                    .flatMap(ValueMap::toString).orElse(null)));
             cpu.setMHz("0");
         }
         else {
@@ -123,36 +130,40 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
         return cpu;
     }
 
-    private String getVendor(ValueMap cpuinfo, String key) {
+    private String truncateVendor(ValueMap cpuinfo, String key) {
         return cpuinfo.getValueAsString(key, 32);
     }
 
-    private String getVersion(ValueMap cpuinfo, String key) {
+    private String truncateVersion(ValueMap cpuinfo, String key) {
         return cpuinfo.getValueAsString(key, 32);
     }
 
-    private String getBogomips(ValueMap cpuinfo, String key) {
+    private String truncateBogomips(ValueMap cpuinfo, String key) {
         return cpuinfo.getValueAsString(key, 16);
     }
 
-    private String getCache(ValueMap cpuinfo, String key) {
+    private String truncateCache(ValueMap cpuinfo, String key) {
         return cpuinfo.getValueAsString(key, 16);
     }
 
-    private String getFamily(ValueMap cpuinfo, String key) {
+    private String truncateFamily(ValueMap cpuinfo, String key) {
         return cpuinfo.getValueAsString(key, 32);
     }
 
-    private String getMhz(String value) {
+    private String truncateMhz(String value) {
         return StringUtils.substring(value, 0, 16);
     }
 
-    private String getStepping(ValueMap cpuinfo, String key) {
+    private String truncateStepping(ValueMap cpuinfo, String key) {
         return cpuinfo.getValueAsString(key, 16);
     }
 
-    private String getModel(String value) {
+    private String truncateModel(String value) {
         return StringUtils.substring(value, 0, 32);
+    }
+
+    private String truncateFlags(String value) {
+        return StringUtils.substring(value, 0, 2048);
     }
 
 
