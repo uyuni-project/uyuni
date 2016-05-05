@@ -52,6 +52,7 @@ public abstract class AbstractHardwareMapper<T> {
      */
     public T map(Long serverId, ValueMap grains) {
         T result = null;
+        String minionId = null;
         try {
             HibernateFactory.getSession().beginTransaction();
             Optional<MinionServer> optionalServer = MinionServerFactory
@@ -62,13 +63,15 @@ public abstract class AbstractHardwareMapper<T> {
             }
             else {
                 result = doMap(optionalServer.get(), grains);
+                minionId = optionalServer.get().getMinionId();
             }
 
             HibernateFactory.commitTransaction();
         }
         catch (Exception e) {
-            LOG.error("Rolling back transaction. Error executing mapper " +
-                    getClass().getName(), e);
+            LOG.error(String.format("Rolling back transaction. " +
+                    "Error executing mapper %s for minionId=%s, serverId=%d",
+                    getClass().getName(), minionId, serverId), e);
             HibernateFactory.rollbackTransaction();
             setError("An error occurred: " + e.getMessage());
         }
