@@ -122,6 +122,18 @@ def getArch():
         arch += '-debian-linux'
     return arch
 
+def getMachineId():
+    def _file_to_string(path):
+        if os.path.isfile(path) and os.access(path, os.R_OK):
+            with open(path, "r") as fd:
+                return fd.read().strip()
+    # try first /etc/machine-id
+    machineId = _file_to_string("/etc/machine-id")
+    if not machineId:
+        # fallback to dbus
+        machineId = _file_to_string("/var/lib/dbus/machine-id")
+    return machineId
+
 def version():
     # substituted to the real version by the Makefile at installation time.
     return "@VERSION@"

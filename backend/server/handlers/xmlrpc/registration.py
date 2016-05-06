@@ -332,6 +332,10 @@ class Registration(rhnHandler):
             rhnSQL.set_log_auth(log_user_id)
             newserv = rhnServer.Server(user, architecture)
 
+        if "machine_id" in data:
+            newserv.server["machine_id"] = data["machine_id"]
+            log_debug(3, "machine_id", data["machine_id"])
+
         # Proceed with using the rest of the data
         newserv.server["release"] = release
         if 'release_name' in data:
