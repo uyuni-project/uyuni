@@ -104,18 +104,18 @@ things more explicit.
 ## Custom registry
 
 All the containers used by CI are stored inside of our personal docker registry
-which runs on `suma-docker-registry.suse.de`.
+which runs on `suma-docker-registry.mgr.suse.de`.
 
 ### Push containers to our registry
 
 First you need to tag the local images:
 ```
-docker tag suma-<branch>-<base|pgsql|ora> suma-docker-registry.suse.de/suma-<branch>-<base|pgsql|ora>
-docker tag suma-<branch>-<base|pgsql|ora>:<version> suma-docker-registry.suse.de/suma-<branch>-<base|pgsql|ora>:<version>
+docker tag suma-<branch>-<base|pgsql|ora> suma-docker-registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora>
+docker tag suma-<branch>-<base|pgsql|ora>:<version> suma-docker-registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora>:<version>
 ```
 
 Then you can push the local image:
 ```
-docker push suma-docker-registry.suse.de/suma-<branch>-<base|pgsql|ora>
-docker push suma-docker-registry.suse.de/suma-<branch>-<base|pgsql|ora>:<version>
+docker push suma-docker-registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora>
+docker push suma-docker-registry.mgr.suse.de/suma-<branch>-<base|pgsql|ora>:<version>
 ```
