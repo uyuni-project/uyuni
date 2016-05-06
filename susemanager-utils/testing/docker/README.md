@@ -113,7 +113,7 @@ A list of the supported targets can be obtained by invoking the following comman
 ## Custom registry
 
 All the containers used by CI are stored inside of our personal docker registry
-which runs on `suma-docker-registry.suse.de`.
+which runs on `suma-docker-registry.mgr.suse.de`.
 
 ### Push containers to our registry
 
