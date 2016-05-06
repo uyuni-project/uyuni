@@ -20,7 +20,9 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerStateRevision;
@@ -100,6 +102,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         //FIXME: refactor this whole function so we don't have to call get
         //in so many places.
         String machineId = optMachineId.get();
+        MinionServer minionServer = null;
 
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         if (optMinion.isPresent()) {
@@ -114,10 +117,43 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 ServerFactory.save(registeredMinion);
             }
             return;
+        } else {
+            Optional<Server> optServer = ServerFactory.findByMachineId(machineId);
+            if (optServer.isPresent()) {
+                // a traditional client with the same machine id is already registered
+                // migrate it to a minion server
+                ServerFactory.changeServerToMinionServer(optServer.get().getId(), machineId);
+                Optional<MinionServer> optNewMinion = MinionServerFactory.lookupById(optServer.get().getId());
+                minionServer = optNewMinion.get();
+
+                // disable token ?
+                // delete hardware ?
+                // if no creator_id use the activation key owner, else keep ?
+                // Generate a new secret for this server ?
+
+                // remove package profile
+                minionServer.getPackages().clear();
+
+                // change base channel
+                minionServer.getChannels().clear();
+
+                // add reactivation event to server history
+                ServerHistoryEvent historyEvent = new ServerHistoryEvent();
+                historyEvent.setCreated(new Date());
+                historyEvent.setServer(minionServer);
+                historyEvent.setSummary("Server reactivated as Salt minion");
+                historyEvent.setDetails("");
+                minionServer.getHistory().add(historyEvent);
+
+            } else {
+                // Create the server
+                minionServer = new MinionServer();
+            }
         }
+
         try {
-            // Create the server
-            MinionServer server = new MinionServer();
+            MinionServer server = minionServer;
+
             server.setMachineId(machineId);
             server.setMinionId(minionId);
             server.setName(minionId);
