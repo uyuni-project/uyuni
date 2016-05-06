@@ -30,6 +30,7 @@ import com.redhat.rhn.frontend.dto.SoftwareCrashDto;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 
 import org.apache.commons.lang.StringUtils;
@@ -49,6 +50,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -986,4 +988,18 @@ public class ServerFactory extends HibernateFactory {
     public static void delete(Device device) {
         HibernateFactory.getSession().delete(device);
     }
+
+    public static Optional<Server> findByMachineId(String machineId) {
+        Session session = getSession();
+        Criteria criteria = session.createCriteria(Server.class);
+        criteria.add(Restrictions.eq("machineId", machineId));
+        return Optional.ofNullable((Server) criteria.uniqueResult());
+    }
+
+    public static void changeServerToMinionServer(Long serverId, String minionId) {
+        SystemManager.addMinionInfoToServer(serverId, minionId);
+        Server server = lookupById(serverId);
+        ServerFactory.getSession().evict(server);
+    }
+
 }
