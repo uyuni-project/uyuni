@@ -11,4 +11,4 @@ INCOMPATIBLE_DBS_BY_BRANCH = {
 
 TEST_TARGETS = ('python', 'java')
 
-DOCKER_REGISTRY_HOST = 'suma-docker-registry.suse.de'
+DOCKER_REGISTRY_HOST = 'suma-docker-registry.mgr.suse.de'

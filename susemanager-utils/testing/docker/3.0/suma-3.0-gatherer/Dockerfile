@@ -2,7 +2,7 @@
 #
 # VERSION               1.0.0
 
-FROM suma-docker-registry.suse.de/sles12sp1:0.1.0
+FROM suma-docker-registry.mgr.suse.de/sles12sp1:0.1.0
 MAINTAINER Michael Calmer "mc@suse.com"
 
 

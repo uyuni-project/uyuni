@@ -2,7 +2,7 @@
 
 #########################################
 # docker
-# docker run -t -i --privileged --device /dev/mem --rm -v "/path/to/git:/manager" suma-docker-registry.suse.de/suma-head-salt /bin/bash
+# docker run -t -i --privileged --device /dev/mem --rm -v "/path/to/git:/manager" suma-docker-registry.mgr.suse.de/suma-head-salt /bin/bash
 #########################################
 # update packages
 
