@@ -51,6 +51,17 @@ class ProductOperationsTest(unittest.TestCase):
         if os.path.exists("tmp.log"):
             os.unlink("tmp.log")
 
+    def _mock_iterator(self):
+        '''
+        Mock *called* iterator.
+
+        :return:
+        '''
+        mocked_iter = MagicMock()
+        for dummy_element in mocked_iter():
+            pass
+        return mocked_iter.mock_calls[-1]
+
     def test_list_emtpy_product(self):
         options = get_options("list product".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
@@ -480,24 +491,16 @@ Product successfully added"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        expected_xmlrpc_calls = []
-        mandatory_channels = [c for c in chosen_product.channels
-                              if not c.optional]
+        mandatory_channels = [channel for channel in chosen_product.channels if not channel.optional]
+        expected_xmlrpc_calls = [call(self.mgr_sync.conn.sync.content, "listChannels", self.fake_auth_token),
+                                 self._mock_iterator(), self._mock_iterator()]
         for channel in mandatory_channels:
             expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
-                    self.mgr_sync.conn.sync.content,
-                    "addChannel",
-                    self.fake_auth_token,
-                    channel.label,
-                    ''))
-            expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
-                    self.mgr_sync.conn.channel.software,
-                    "syncRepo",
-                    self.fake_auth_token,
-                    channel.label))
+                call(self.mgr_sync.conn.sync.content, "addChannel", self.fake_auth_token, channel.label, ''))
 
+        expected_xmlrpc_calls.append(
+            call(self.mgr_sync.conn.channel.software, "syncRepo", self.fake_auth_token,
+                 [channel.label for channel in mandatory_channels]))
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
     def test_channel_interactive_child_with_parent_already_added(self):
@@ -560,12 +563,12 @@ Product successfully added"""
                     self.fake_auth_token,
                     channel.label,
                     ''))
-            expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
-                    self.mgr_sync.conn.channel.software,
-                    "syncRepo",
-                    self.fake_auth_token,
-                    channel.label))
+        expected_xmlrpc_calls.append(
+            call._execute_xmlrpc_method(
+                self.mgr_sync.conn.channel.software,
+                "syncRepo",
+                self.fake_auth_token,
+                [c.label for c in mandatory_channels]))
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
@@ -634,12 +637,12 @@ Product successfully added"""
                         self.fake_auth_token,
                         channel.label,
                         ''))
-            expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
-                    self.mgr_sync.conn.channel.software,
-                    "syncRepo",
-                    self.fake_auth_token,
-                    channel.label))
+        expected_xmlrpc_calls.append(
+            call._execute_xmlrpc_method(
+                self.mgr_sync.conn.channel.software,
+                "syncRepo",
+                self.fake_auth_token,
+                [c.label for c in mandatory_channels]))
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
@@ -761,22 +764,15 @@ Scheduling reposync for 'res4-as-x86_64' channel
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        expected_xmlrpc_calls = []
-        mandatory_channels = [c for c in chosen_product.channels
-                              if not c.optional]
+        expected_xmlrpc_calls = [call(self.mgr_sync.conn.sync.content, "listChannels",
+                                      self.fake_auth_token), self._mock_iterator(), self._mock_iterator()]
+        mandatory_channels = [channel for channel in chosen_product.channels if not channel.optional]
+
         for channel in mandatory_channels:
-            expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
-                    self.mgr_sync.conn.sync.content,
-                    "addChannel",
-                    self.fake_auth_token,
-                    channel.label,
-                    ''))
-            expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
-                    self.mgr_sync.conn.channel.software,
-                    "syncRepo",
-                    self.fake_auth_token,
-                    channel.label))
+            expected_xmlrpc_calls.append(call(self.mgr_sync.conn.sync.content, "addChannel",
+                                              self.fake_auth_token, channel.label, ''))
+
+        expected_xmlrpc_calls.append(call(self.mgr_sync.conn.channel.software, "syncRepo", self.fake_auth_token,
+                                          [channel.label for channel in mandatory_channels]))
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)

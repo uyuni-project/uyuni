@@ -14,65 +14,99 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Repo Sync
- *  Used for syncing repos (like yum repos) to a channel
- *  This really just calls a python script
- *
- * @version $Rev$
+ * Used for syncing repos (like yum repos) to a channel.
+ * This really just calls a python script.
  */
 public class RepoSyncTask extends RhnJavaJob {
 
     /**
-     *
      * {@inheritDoc}
      */
-    public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+    @Override
+    @SuppressWarnings("unchecked")
+    public void execute(JobExecutionContext context) {
+        List<Long> channelIds = getChannelIds(context.getJobDetail().getJobDataMap());
 
-        String channelIdString = (String)
-                    context.getJobDetail().getJobDataMap().get("channel_id");
-        String [] lparams = {"no-errata", "latest", "sync-kickstart", "fail"};
+        String[] lparams = {"no-errata", "latest", "sync-kickstart", "fail"};
         List<String> ltrue = Arrays.asList("true", "1");
         List<String> params = new ArrayList<String>();
         for (String p : lparams) {
             if (context.getJobDetail().getJobDataMap().containsKey(p)) {
-                if (ltrue.contains(context.getJobDetail().getJobDataMap()
-                        .get(p).toString().toLowerCase().trim())) {
+                if (ltrue.contains(context.getJobDetail().getJobDataMap().get(p).toString()
+                        .toLowerCase().trim())) {
                     params.add("--" + p);
-               }
+                }
             }
         }
-        Long channelId;
-        try {
-            channelId = Long.parseLong(channelIdString);
-        }
-        catch (Exception e) {
-            throw new JobExecutionException("No valid channel_id given.");
-        }
 
-        Channel c = ChannelFactory.lookupById(channelId);
-        if (c == null) {
-            throw new JobExecutionException("No such channel with channel_id " + channelId);
+        for (Long channelId : channelIds) {
+            Channel channel = ChannelFactory.lookupById(channelId);
+            if (channel != null) {
+                log.info("Syncing repos for channel: " + channel.getName());
+
+                try {
+                    executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]));
+                    channel.setLastSynced(new Date());
+                }
+                catch (JobExecutionException e) {
+                    log.error(e.getMessage());
+                }
+            }
+            else {
+                log.error("No such channel with channel_id " + channelId);
+            }
         }
-        log.info("Syncing repos for channel: " + c.getName());
-        executeExtCmd(getSyncCommand(c, params).toArray(new String[0]));
-        c.setLastSynced(new Date());
+    }
+
+    /**
+     * Gets the ids of channel(s) in a schedule/job data map.
+     *
+     * @param dataMap the data map
+     * @return the channel ids
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Long> getChannelIds(final Map<String, Object> dataMap) {
+        List<Long> result = new LinkedList<>();
+        if (dataMap != null) {
+            // bulk reposync case
+            List<String> channelIds = (List<String>) dataMap.get("channel_ids");
+
+            // single reposync case
+            if (channelIds == null) {
+                channelIds = new LinkedList<>();
+                String channelId = (String) dataMap.get("channel_id");
+                if (channelId != null) {
+                    channelIds.add(channelId);
+                }
+            }
+
+            // String -> Long
+            for (String channelId : channelIds) {
+                try {
+                  result.add(Long.parseLong(channelId));
+                }
+                catch (NumberFormatException nfe) {
+                    // there is a channel id but it is not valid
+                }
+            }
+        }
+        return result;
     }
 
     private static List<String> getSyncCommand(Channel c, List<String> params) {

@@ -211,8 +211,12 @@ public class ChannelFactory extends HibernateFactory {
     public static List getChannelIds(List<String> labelsIn) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("labels", labelsIn);
-        return singleton.listObjectsByNamedQuery(
+        List<Long> list = singleton.listObjectsByNamedQuery(
                 "Channel.findChannelIdsByLabels", params);
+        if (list != null) {
+            return list;
+        }
+        return new ArrayList<Long>();
     }
 
     /**
@@ -1219,8 +1223,12 @@ public class ChannelFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<Channel> listVendorChannels() {
         Map<String, Object> params = new HashMap<String, Object>();
-        return singleton.listObjectsByNamedQuery(
+        List<Channel> result = singleton.listObjectsByNamedQuery(
                 "Channel.findVendorChannels", params);
+        if (result != null) {
+            return result;
+        }
+        return new ArrayList<>();
     }
 
     /**

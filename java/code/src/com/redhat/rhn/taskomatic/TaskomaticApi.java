@@ -23,13 +23,16 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
@@ -104,15 +107,14 @@ public class TaskomaticApi {
      */
     public void scheduleSingleRepoSync(List<Channel> channels)
             throws TaskomaticApiException {
-        if (channels == null) {
-            return;
+        List<String> channelIds = new ArrayList<>(channels.size());
+        for (Channel channel : channels) {
+            channelIds.add(channel.getId().toString());
         }
-        for (Channel c : channels) {
-            Map<String, String> scheduleParams = new HashMap<String, String>();
-            scheduleParams.put("channel_id", c.getId().toString());
-            invoke("tasko.scheduleSingleBunchRun", OrgFactory.getSatelliteOrg().getId(),
-                    "repo-sync-bunch", scheduleParams);
-        }
+        Map<String, List<String>> scheduleParams = new HashMap<>();
+        scheduleParams.put("channel_ids", channelIds);
+        invoke("tasko.scheduleSingleBunchRun", OrgFactory.getSatelliteOrg().getId(),
+                "repo-sync-bunch", scheduleParams);
     }
 
     /**
@@ -156,8 +158,7 @@ public class TaskomaticApi {
         Map scheduleParams = new HashMap();
         scheduleParams.put("channel_id", chan.getId().toString());
         return (Date) invoke("tasko.scheduleBunch", user.getOrg().getId(),
-                "repo-sync-bunch", jobLabel , cron,
-                scheduleParams);
+                "repo-sync-bunch", jobLabel, cron, scheduleParams);
     }
 
     /**
@@ -170,8 +171,7 @@ public class TaskomaticApi {
      * @throws TaskomaticApiException if there was an error
      */
     public Date scheduleRepoSync(Channel chan, User user, String cron,
-                                                     Map<String, String> params)
-                                        throws TaskomaticApiException {
+            Map<String, String> params) throws TaskomaticApiException {
         String jobLabel = createRepoSyncScheduleName(chan, user);
 
         Map task = findScheduleByBunchAndLabel("repo-sync-bunch", jobLabel, user);
@@ -183,8 +183,7 @@ public class TaskomaticApi {
         scheduleParams.putAll(params);
 
         return (Date) invoke("tasko.scheduleBunch", user.getOrg().getId(),
-                "repo-sync-bunch", jobLabel , cron,
-                scheduleParams);
+                "repo-sync-bunch", jobLabel, cron, scheduleParams);
     }
 
     /**
@@ -412,28 +411,26 @@ public class TaskomaticApi {
         }
     }
 
-
     /**
      * unschedule all outdated repo-sync schedules within an org
      * @param orgIn organization
      * @return number of removed schedules
      */
+    @SuppressWarnings("unchecked")
     public int unscheduleInvalidRepoSyncSchedules(Org orgIn) {
-        int count = 0;
+        Set<String> unscheduledLabels = new HashSet<String>();
         for (TaskoSchedule schedule : listActiveRepoSyncSchedules(orgIn)) {
-            String channelIdStr = (String) schedule.getDataMap().get("channel_id");
-            Long channelId = null;
-            try {
-                channelId = Long.parseLong(channelIdStr);
-            }
-            catch (NumberFormatException nfe) {
-                // no valid channel id given
-            }
-            if (channelId == null || ChannelFactory.lookupById(channelId) == null) {
-                invoke("tasko.unscheduleBunch", orgIn.getId(), schedule.getJobLabel());
-                count++;
+            List<Long> channelIds = RepoSyncTask.getChannelIds(schedule.getDataMap());
+            for (Long channelId : channelIds) {
+                if (ChannelFactory.lookupById(channelId) == null) {
+                    String label = schedule.getJobLabel();
+                    if (!unscheduledLabels.contains(label)) {
+                        invoke("tasko.unscheduleBunch", orgIn.getId(), label);
+                        unscheduledLabels.add(label);
+                    }
+                }
             }
         }
-        return count;
+        return unscheduledLabels.size();
     }
 }

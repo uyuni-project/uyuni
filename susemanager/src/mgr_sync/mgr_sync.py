@@ -245,6 +245,7 @@ class MgrSync(object):
 
         current_channels = self._fetch_remote_channels()
 
+        channels_to_sync = []
         for channel in channels:
             add_channel = True
             if enable_checks:
@@ -301,21 +302,22 @@ class MgrSync(object):
                     match.status = Channel.Status.INSTALLED
 
             print("Scheduling reposync for '{0}' channel".format(channel))
-            self._schedule_channel_reposync(channel)
+            channels_to_sync.append(channel)
+        self._schedule_channel_reposync(channels_to_sync)
 
-    def _schedule_channel_reposync(self, channel):
-        """ Schedules a reposync for the given channel.
+    def _schedule_channel_reposync(self, channels):
+        """ Schedules a reposync for a set of channels.
 
-        :param channel: the label identifying the channel
+        :param channels: the labels identifying the channels
         """
 
         try:
-            self.log.info("Scheduling reposync for '{0}' channel".format(
-                channel))
+            self.log.info("Scheduling reposync for '{0}'".format(
+                channels))
             self._execute_xmlrpc_method(self.conn.channel.software,
                                         "syncRepo",
                                         self.auth.token(),
-                                        channel)
+                                        channels)
         except xmlrpclib.Fault, ex:
             if ex.faultCode == 2802:
                 self.log.error("Error, unable to schedule channel reposync: Taskomatic is not responding.")
@@ -629,6 +631,7 @@ class MgrSync(object):
             self.log.info("Scheduling refresh of all the available channels")
             print("\nScheduling refresh of all the available channels")
 
+            channels_to_sync = []
             base_channels = self._fetch_remote_channels()
             for bc_label in sorted(base_channels.keys()):
                 bc = base_channels[bc_label]
@@ -638,14 +641,15 @@ class MgrSync(object):
 
                 self.log.debug("Scheduling reposync for '{0}' channel".format(bc.label))
                 print("Scheduling reposync for '{0}' channel".format(bc.label))
-                self._schedule_channel_reposync(bc.label)
+                channels_to_sync.append(bc.label)
                 for child in bc.children:
                     if child.status == Channel.Status.INSTALLED:
                         self.log.debug("Scheduling reposync for '{0}' channel".format(
                             child.label))
                         print("Scheduling reposync for '{0}' channel".format(
                             child.label))
-                        self._schedule_channel_reposync(child.label)
+                        channels_to_sync.append(child.label)
+            self._schedule_channel_reposync(channels_to_sync)
         return True
 
     def _schedule_taskomatic_refresh(self, enable_reposync):

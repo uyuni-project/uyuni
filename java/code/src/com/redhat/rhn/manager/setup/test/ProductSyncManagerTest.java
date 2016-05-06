@@ -33,8 +33,8 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
-import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.MgrSyncStatus;
+import com.suse.mgrsync.XMLChannel;
 
 import org.apache.commons.io.FileUtils;
 
@@ -43,6 +43,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -297,37 +299,28 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @param product the product
      */
     private void productInsertTaskoSchedule(SetupWizardProductDto product) {
+        List<String> channelIds = new LinkedList<>();
         for (Channel channel : product.getMandatoryChannels()) {
-            insertTaskoSchedule(channel);
+            String channelId = ChannelFactory.lookupByLabel(channel.getLabel())
+                .getId().toString();
+            channelIds.add(channelId);
         }
+        insertTaskoSchedule(channelIds);
     }
 
     /**
      * Insert a {@link TaskoSchedule} for a given {@link Channel}.
      *
-     * @param channel the channel
+     * @param channelIds the channel ids
+     * @return the schedule
      */
-    private void insertTaskoSchedule(Channel channel) {
-        if (channel.isProvided()) {
-            com.redhat.rhn.domain.channel.Channel chObj =
-                    ChannelFactory.lookupByLabel(channel.getLabel());
-            insertTaskoSchedule(chObj);
-        }
-    }
-
-    /**
-     * Insert a {@link TaskoSchedule} for a {@link com.redhat.rhn.domain.channel.Channel}.
-     *
-     * @param dbChannel the channel
-     */
-    private TaskoSchedule insertTaskoSchedule(
-            com.redhat.rhn.domain.channel.Channel dbChannel) {
+    private TaskoSchedule insertTaskoSchedule(List<String> channelIds) {
         String bunchName = "repo-sync-bunch";
         Integer orgId = user.getOrg().getId().intValue();
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("channel_id", dbChannel.getId().toString());
+        params.put("channel_ids", channelIds);
         TaskoBunch bunch = TaskoFactory.lookupBunchByName(bunchName);
-        String jobLabel = dbChannel.getLabel() + "-job-" + TestUtils.randomString();
+        String jobLabel = "channels-job-" + TestUtils.randomString();
         TaskoSchedule schedule = new TaskoSchedule(
                 orgId, bunch, jobLabel, params, new Date(), null, null);
         TaskoFactory.save(schedule);
@@ -342,23 +335,13 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     * @param status the status
     */
     private void productInsertTaskoRun(SetupWizardProductDto product, String status) {
+        List<String> channelIds = new LinkedList<>();
         for (Channel channel : product.getMandatoryChannels()) {
-            insertTaskoRun(channel, status);
+            String channelId = ChannelFactory.lookupByLabel(channel.getLabel())
+                    .getId().toString();
+                channelIds.add(channelId);
         }
-    }
-
-    /**
-     * Insert a {@link TaskoRun} for a given {@link Channel}.
-     *
-     * @param channel the channel
-     * @param status the tasko run status
-     */
-    private void insertTaskoRun(Channel channel, String status) {
-        if (channel.isProvided()) {
-            com.redhat.rhn.domain.channel.Channel dbChannel =
-                    ChannelFactory.lookupByLabel(channel.getLabel());
-            insertTaskoRun(dbChannel, status);
-        }
+        insertTaskoRun(channelIds, status);
     }
 
     /**
@@ -367,9 +350,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @param dbChannel the channel
      * @param status the tasko run status
      */
-    private void insertTaskoRun(com.redhat.rhn.domain.channel.Channel dbChannel,
+    private void insertTaskoRun(List<String> channelIds,
             String status) {
-        TaskoSchedule schedule = insertTaskoSchedule(dbChannel);
+        TaskoSchedule schedule = insertTaskoSchedule(channelIds);
         TaskoTemplate template = schedule.getBunch().getTemplates().get(0);
         assertNotNull(template);
         TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, schedule.getId());
