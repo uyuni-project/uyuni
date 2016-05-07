@@ -17,7 +17,6 @@ java/buildconf/tempjars/*
 java/.checkstyle
 java/.classpath
 java/.externalToolBuilders
-java/.idea
 java/.pmd
 java/.project
 java/.settings/*
@@ -40,6 +39,7 @@ search-server/spacewalk-search/rhn-search.pid
 search-server/spacewalk-search/rhn_search_daemon.log
 *~
 *#*#*
+.idea
 .project
 .pydevproject
 .zanata-cache

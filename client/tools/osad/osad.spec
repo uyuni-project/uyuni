@@ -18,14 +18,21 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.11.66
+Version: 5.11.68
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 BuildRequires: python-devel
 Requires: python
+%if 0%{?fedora} >= 23
+Requires: python3-rhnlib
+Requires: python3-spacewalk-backend-usix
+Requires: python3-jabberpy
+%else
 Requires: rhnlib >= 1.8-3
+Requires: spacewalk-backend-usix
 Requires: jabberpy
+%endif
 Requires: osa-common = %{version}
 %if 0%{?rhel} && 0%{?rhel} < 6
 Requires: rhn-client-tools >= 0.4.20-66
@@ -73,6 +80,7 @@ Requires(preun): chkconfig
 Requires(preun): initscripts
 %endif
 %endif
+
 %description
 OSAD agent receives commands over jabber protocol from Spacewalk Server and
 commands are instantly executed.
@@ -159,6 +167,9 @@ sed -i 's@^#!/usr/bin/python$@#!/usr/bin/python -s@' invocation.py
 
 %build
 make -f Makefile.osad all
+%if 0%{?fedora} >= 23
+    sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/*.py invocation.py
+%endif
 
 %if 0%{?include_selinux_package}
 %{__perl} -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' osa-dispatcher-selinux/%{modulename}.te
@@ -378,7 +389,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %defattr(-,root,root)
 %dir %{rhnroot}/osad
 %attr(755,root,root) %{_sbindir}/osad
-%{rhnroot}/osad/_ConfigParser.py*
 %{rhnroot}/osad/osad.py*
 %{rhnroot}/osad/osad_client.py*
 %{rhnroot}/osad/osad_config.py*
@@ -448,6 +458,13 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Wed May 04 2016 Gennadii Altukhov <galt@redhat.com> 5.11.68-1
+- 1332224 - service osad doesn't work with selinux
+
+* Tue May 03 2016 Gennadii Altukhov <galt@redhat.com> 5.11.67-1
+- Adapt osad to work  in python 2/3
+- remove local ConfigParser which was used for Python 1.5
+
 * Fri Apr 29 2016 Tomas Kasparek <tkasparek@redhat.com> 5.11.66-1
 - fix typo in error message
 
