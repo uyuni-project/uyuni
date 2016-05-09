@@ -7,7 +7,6 @@ import com.suse.salt.netapi.calls.LocalCall;
 
 import com.google.gson.reflect.TypeToken;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +24,9 @@ public class State {
                 new TypeToken<Object>() { });
     }
 
-    public static LocalCall<Map<String, Object>> apply(String mod, Map<String, Object> pillar) {
+    public static LocalCall<Map<String, Object>> apply(List<String> mods, Map<String, Object> pillar) {
         LinkedHashMap args = new LinkedHashMap();
-        args.put("mods", Collections.singletonList(mod));
+        args.put("mods", mods);
         args.put("pillar", pillar);
         return new LocalCall("state.apply", Optional.empty(), Optional.of(args),
                 new TypeToken<Map<String, Object>>() { });
