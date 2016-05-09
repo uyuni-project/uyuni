@@ -64,6 +64,7 @@ public enum SaltServerActionService {
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
     private static final String PACKAGES_INSTALLPKG = "packages.installpkg";
+    public static final String PACKAGES_PKGREMOVE = "packages.removepkg";
     private static final String PARAM_PKGS = "param_pkgs";
 
     /**
@@ -285,7 +286,7 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
-        ret.put(com.suse.manager.webui.utils.salt.State.apply("packages.removepkg",
+        ret.put(com.suse.manager.webui.utils.salt.State.apply(PACKAGES_PKGREMOVE,
                 Collections.singletonMap(PARAM_PKGS, pkgs)), minions);
         return ret;
     }
