@@ -263,11 +263,11 @@ public enum SaltServerActionService {
         return collect.entrySet().stream()
                 .collect(Collectors.toMap(entry -> com.suse.manager.webui.utils.salt.State
                         .apply(Arrays.asList(PACKAGES_INSTALLPKG),
-                        Collections.singletonMap(PARAM_PKGS,
+                        Optional.of(Collections.singletonMap(PARAM_PKGS,
                                     entry.getKey().stream().collect(
                                             Collectors.toMap(
                                                     patch -> "patch:" + patch,
-                                                    patch -> "")))),
+                                                    patch -> ""))))),
                 Map.Entry::getValue));
     }
 
@@ -278,7 +278,7 @@ public enum SaltServerActionService {
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
         ret.put(com.suse.manager.webui.utils.salt.State.apply(
                 Arrays.asList(PACKAGES_INSTALLPKG),
-                Collections.singletonMap(PARAM_PKGS, pkgs)), minions);
+                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs))), minions);
         return ret;
     }
 
@@ -289,7 +289,7 @@ public enum SaltServerActionService {
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
         ret.put(com.suse.manager.webui.utils.salt.State.apply(
                 Arrays.asList(PACKAGES_PKGREMOVE),
-                Collections.singletonMap(PARAM_PKGS, pkgs)), minions);
+                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs))), minions);
         return ret;
     }
 
