@@ -262,7 +262,7 @@ public enum SaltServerActionService {
         // Convert errata names to LocalCall objects of type State.apply
         return collect.entrySet().stream()
                 .collect(Collectors.toMap(entry -> com.suse.manager.webui.utils.salt.State
-                        .apply(PACKAGES_INSTALLPKG,
+                        .apply(Arrays.asList(PACKAGES_INSTALLPKG),
                         Collections.singletonMap(PARAM_PKGS,
                                     entry.getKey().stream().collect(
                                             Collectors.toMap(
@@ -276,7 +276,8 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
-        ret.put(com.suse.manager.webui.utils.salt.State.apply(PACKAGES_INSTALLPKG,
+        ret.put(com.suse.manager.webui.utils.salt.State.apply(
+                Arrays.asList(PACKAGES_INSTALLPKG),
                 Collections.singletonMap(PARAM_PKGS, pkgs)), minions);
         return ret;
     }
@@ -286,7 +287,8 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
-        ret.put(com.suse.manager.webui.utils.salt.State.apply(PACKAGES_PKGREMOVE,
+        ret.put(com.suse.manager.webui.utils.salt.State.apply(
+                Arrays.asList(PACKAGES_PKGREMOVE),
                 Collections.singletonMap(PARAM_PKGS, pkgs)), minions);
         return ret;
     }
