@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * YAML generator for the Salt Package State.
  */
-public class SaltPkgRemoved implements SaltState {
+public class SaltPkgRemoved extends AbstractSaltRequisites implements SaltState {
     /**
      * Package data
      */
