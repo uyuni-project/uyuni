@@ -59,6 +59,9 @@ PKGLIST11 = [
                 "zypp-plugin-python",
                 "zypp-plugin-spacewalk",
                 "zypper",
+            ]
+
+ENHANCE11 = [
                 "libyaml-0-2",
                 "libzmq3",
                 "python-backports.ssl_match_hostname",
@@ -194,43 +197,43 @@ DATA = {
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
                         },
     'SLE-11-SP3-i586' : {
-                          'PDID' : 793, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 793, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
     'SLE-11-SP3-ia64' : {
-                          'PDID' : 1037, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 1037, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
     'SLE-11-SP3-ppc64' : {
-                          'PDID' : 949, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 949, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
     'SLE-11-SP3-s390x' : {
-                          'PDID' : 693, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 693, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
     'SLE-11-SP3-x86_64' : {
-                          'PDID' : 814, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 814, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
     'SLE-11-SP4-i586' : {
-                          'PDID' : 1299, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 1299, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
                         },
     'SLE-11-SP4-ia64' : {
-                          'PDID' : 1302, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 1302, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
                         },
     'SLE-11-SP4-ppc64' : {
-                          'PDID' : 1301, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 1301, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
                         },
     'SLE-11-SP4-s390x' : {
-                          'PDID' : 1303, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 1303, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
                         },
     'SLE-11-SP4-x86_64' : {
-                          'PDID' : 1300, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 1300, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
                         },
     'SLE-10-SP3-i586' : {
@@ -278,15 +281,15 @@ DATA = {
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
                         },
     'SLES4SAP-11-SP3-x86_64' : {
-                          'PDID' : 1131, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 1131, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
     'SLES4SAP-11-SP4-x86_64' : {
-                          'PDID' : 1329, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 1329, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
                         },
     'SLES4SAP-11-SP4-ppc64' : {
-                          'PDID' : 1331, 'PKGLIST' : PKGLIST11,
+                          'PDID' : 1331, 'PKGLIST' : PKGLIST11 + ENHANCE11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
                         },
     'SLE-12-ppc64le' : {
