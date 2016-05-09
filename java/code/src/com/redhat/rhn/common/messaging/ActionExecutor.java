@@ -83,8 +83,6 @@ class ActionExecutor implements Runnable {
      * @return true if this action handler can run concurrently, else false
      */
     public boolean canRunConcurrently() {
-        return actionHandlers.stream().allMatch(handler -> {
-            return handler.canRunConcurrently();
-        });
+        return actionHandlers.stream().allMatch(MessageAction::canRunConcurrently);
     }
 }
