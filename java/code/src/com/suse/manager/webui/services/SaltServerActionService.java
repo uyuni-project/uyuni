@@ -64,7 +64,7 @@ public enum SaltServerActionService {
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
     private static final String PACKAGES_INSTALLPKG = "packages.installpkg";
-    public static final String PACKAGES_PKGREMOVE = "packages.removepkg";
+    private static final String PACKAGES_PKGREMOVE = "packages.removepkg";
     private static final String PARAM_PKGS = "param_pkgs";
 
     /**
