@@ -4,7 +4,8 @@ Given(/^I am logged in via XML\-RPC\/channel as user "([^"]*)" and password "([^
   assert(rpctest.login(luser, password))
 end
 
-When(/^I create a repo with label "([^"]*)" and url "([^"]*)"$/) do |label, url|
+When(/^I create a repo with label "([^"]*)" and url) do |label|
+  url = "http://#{$server_ip}/pub/AnotherRepo/"
   assert(rpctest.createRepo(label, url))
 end
 

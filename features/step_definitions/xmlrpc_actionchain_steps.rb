@@ -20,10 +20,11 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
 
     servers = sysrpc.listSystems
     refute_nil(servers)
-    hostname = Socket.gethostbyname(Socket.gethostname).first # Needs proper DNS!
+
+    hostname = $client_hostname
     $client_id = servers
-                .select { |s| s['name'] == hostname }
-                .map { |s| s['id'] }.first
+                .select {|s| s['name'] == hostname }
+                .map {|s| s['id'] }.first
     refute_nil($client_id, "Client #{hostname} is not yet registered?")
   end
 

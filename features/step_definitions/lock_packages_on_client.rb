@@ -3,10 +3,14 @@
 
 Then(/^"(.*?)" is locked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
-  fail unless File.exist?(zypp_lock_file)
-
-  locks = read_zypp_lock_file(zypp_lock_file)
-  fail unless locks.find { |lock| pkg =~ /^#{lock['solvable_name']}/ }
+  fail unless file_exist($client, zypp_lock_file)
+  command = "zypper locks  --solvables | grep #{pkg}"
+  out, local, remote, code = $client.test_and_store_results_together(command, "root", 600)
+  puts out
+  if code != 0
+     puts out
+     raise "Package is not locked on client #{out}"
+  end
 end
 
 Then(/^Package "(.*?)" is reported as locked$/) do |pkg|
@@ -19,7 +23,7 @@ end
 
 Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
-  fail unless File.exist?(zypp_lock_file)
+  fail unless file_exist($client, zypp_lock_file)
 
   locks = read_zypp_lock_file(zypp_lock_file)
   fail if locks.find { |lock| pkg =~ /^#{lock['solvable_name']}/ }
