@@ -24,10 +24,12 @@ public class State {
                 new TypeToken<Object>() { });
     }
 
-    public static LocalCall<Map<String, Object>> apply(List<String> mods, Map<String, Object> pillar) {
+    public static LocalCall<Map<String, Object>> apply(List<String> mods, Optional<Map<String, Object>> pillar) {
         LinkedHashMap args = new LinkedHashMap();
         args.put("mods", mods);
-        args.put("pillar", pillar);
+        if (pillar.isPresent()) {
+            args.put("pillar", pillar.get());
+        }
         return new LocalCall("state.apply", Optional.empty(), Optional.of(args),
                 new TypeToken<Map<String, Object>>() { });
     }
