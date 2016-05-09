@@ -58,7 +58,6 @@ import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
 
 import org.apache.log4j.Logger;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -78,8 +77,6 @@ public class MessageQueue {
 
     private static final Map<Class, List<MessageAction>> ACTIONS =
             new HashMap<Class, List<MessageAction>>();
-    private static final Map<Class<? extends EventMessage>,
-            List<Class<? extends MessageAction>>> ACTION_CLASSES = new HashMap<>();
     private static Channel messages = new LinkedQueue();
     private static Thread dispatcherThread = null;
     private static MessageDispatcher dispatcher = null;
@@ -96,7 +93,7 @@ public class MessageQueue {
      * Each message is wrapped in a ActionExecutor instance
      * @param msg EventMessage to publish to queue.
      */
-    public synchronized static void publish(EventMessage msg) {
+    public static void publish(EventMessage msg) {
         if (logger.isDebugEnabled()) {
             logger.debug("publish(EventMessage) - start: " + msg.getClass().getName());
         }
@@ -104,42 +101,22 @@ public class MessageQueue {
             startMessaging();
         }
         if (msg != null) {
-            // Get all handler instances
-            List<MessageAction> handlers = ACTIONS.get(msg.getClass());
-            if (handlers == null) {
-                handlers = new ArrayList<>();
-            }
-
-            // See if there is class mappings defined
-            List<Class<? extends MessageAction>> handlerClasses =
-                    ACTION_CLASSES.get(msg.getClass());
-            if (handlerClasses != null && handlerClasses.size() > 0) {
-                try {
-                    for (Class<? extends MessageAction> clazz : handlerClasses) {
-                        logger.debug("Creating instance of: " + clazz);
-                        handlers.add(clazz.getConstructor().newInstance());
+            synchronized (ACTIONS) {
+                List<MessageAction> handlers = ACTIONS.get(msg.getClass());
+                if (handlers != null && handlers.size() > 0) {
+                    logger.debug("creating ActionExecutor");
+                    ActionExecutor executor = new ActionExecutor(handlers, msg);
+                    try {
+                        messages.put(executor);
+                        messageCount++;
+                    }
+                    catch (InterruptedException e) {
+                        logger.error(e.getMessage(), e);
                     }
                 }
-                catch (IllegalAccessException | InstantiationException |
-                        InvocationTargetException | NoSuchMethodException e) {
-                    logger.error(e.getMessage(), e);
+                else {
+                    logger.debug("handlers is null, not processing!");
                 }
-            }
-
-            // Create the ActionExecutor in case there is handlers
-            if (handlers != null && handlers.size() > 0) {
-                logger.debug("creating ActionExecutor");
-                ActionExecutor executor = new ActionExecutor(handlers, msg);
-                try {
-                    messages.put(executor);
-                    messageCount++;
-                }
-                catch (InterruptedException e) {
-                    logger.error(e.getMessage(), e);
-                }
-            }
-            else {
-                logger.debug("handlers is null, not processing!");
             }
         }
 
@@ -217,28 +194,6 @@ public class MessageQueue {
                 ACTIONS.put(eventType, handlers);
             }
             handlers.add(act);
-        }
-    }
-
-    /**
-     * Actions registered with this method will be instantiated whenever a message is handled.
-     * @param actionType the message action class
-     * @param eventType the event message class
-     */
-    public static void registerAction(Class<? extends MessageAction> actionType,
-            Class<? extends EventMessage> eventType) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("registerAction(Class, Class): " + actionType.getName() +
-                    " - " + eventType.getName());
-        }
-        synchronized (ACTION_CLASSES) {
-            List<Class<? extends MessageAction>> handlerClasses =
-                    ACTION_CLASSES.get(eventType);
-            if (handlerClasses == null) {
-                handlerClasses = new ArrayList<>();
-                ACTION_CLASSES.put(eventType, handlerClasses);
-            }
-            handlerClasses.add(actionType);
         }
     }
 
