@@ -40,10 +40,13 @@ end
 
 When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   srvurl = "http://#{ENV['TESTHOST']}/APP"
-  command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1}"
-  output = `#{command} 2>&1`
-  unless $?.success?
-    raise "rhnpush failed '#{command}' #{$!}: #{output}"
+  command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
+  out , local_err, remote_err, code = $server.test_and_store_results_together(command, "root", 500)
+  puts out
+
+  out , local_err, remote_err, ret_code = $server.test_and_print_results("ls -lR /var/spacewalk/packages", "root", 500)
+  if code != 0
+    raise "rhnpush failed '#{out}"
   end
 end
 
