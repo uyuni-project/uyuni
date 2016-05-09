@@ -82,6 +82,9 @@ public class SaltPkgLatest extends AbstractSaltRequisites implements SaltState {
         map.put("pkgs", pkgsList);
         pkgs.add(map);
 
+        // require the Suma channel
+        addRequisites(map);
+
         // Put the policy
         Map<String, Object> policy = new LinkedHashMap<>();
         policy.put("pkg.latest", pkgs);

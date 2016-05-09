@@ -125,6 +125,8 @@ public class SaltPkgRemoved extends AbstractSaltRequisites implements SaltState 
         List<Map<String, Object>> pkgs = new ArrayList<>();
         pkgs.add(map);
 
+        addRequisites(map);
+
         // Put the policy
         Map<String, Object> policy = new LinkedHashMap<>();
         policy.put("pkg.removed", pkgs);
