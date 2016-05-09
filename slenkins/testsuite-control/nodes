@@ -1,0 +1,15 @@
+node          server
+repository    ${CHANNEL_SLENKINS_SERVER}
+repository    ${CHANNEL_UPDATES_SERVER}
+repository    http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/SLE_12_SP1/Devel:Galaxy:Manager:Head.repo
+install       tests-suma-cucumber-tests-server
+
+node          client
+repository    ${CHANNEL_SLENKINS_CLIENT}
+repository    ${CHANNEL_UPDATES_CLIENT}
+install       tests-suma-cucumber-tests-client
+
+node          minion
+repository    ${CHANNEL_SLENKINS_MINION}
+repository    ${CHANNEL_UPDATES_MINION}
+install       tests-suma-cucumber-tests-minion
