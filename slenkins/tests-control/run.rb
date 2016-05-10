@@ -29,8 +29,6 @@ require 'time'
 #   $target = Twopence::init("ssh:192.168.123.45")
 #   $target = Twopence::init("serial:/dev/ttyS0")
 
-
-
 #FIXME: jlogger should be created in ruby.
 # HACK:  at moment without a library for ruby the stderr in jenkins will contain the stdout for cmd.
 # jlogger functions. This in feature should be moved to a generic ruby library.
@@ -65,17 +63,10 @@ CLIENT = Twopence::init(ENV["TARGET_CLIENT"])
 SERVER = Twopence::init(ENV["TARGET_SERVER"])
 MINION = Twopence::init(ENV["TARGET_MINION"])
 
-# variables that can be accessed and passed  with slenkins.
 
-# http://slenkins.suse.de/doc/REFERENCE-variables.txt
-# FIXME: in future, move this to attribute for the object, like susetest.
+#FIXME : change root pwd from opensuse -> linux. (SUMA use this)
 
-# For moment this work fine too for ruby. no PRIO1
 SERVER_IP = ENV["INTERNAL_IP_SERVER"]
-# this get the sles-sp1 or sp2 etc distro var.
-CLIENT_FAMILY = ENV["FAMILY_CLIENT"]
-
-family_hello = "echo #{CLIENT_FAMILY}"
 SET_SUMA_ENVS = "TESTHOST=#{SERVER_IP}; BROWSER=phantomjs; export TESTHOST; export phantomjs"
 #RUN_CUCUMBER 
 # ********************************************
