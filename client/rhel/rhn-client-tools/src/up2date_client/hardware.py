@@ -22,6 +22,7 @@ import os
 import sys
 from up2date_client import config
 from up2date_client import rhnserver
+from up2dateUtils import getMachineId
 
 from rhn.i18n import ustr
 
@@ -1009,6 +1010,13 @@ def Hardware():
             allhw.append(ret)
     except:
         print _("Error reading system info:"), sys.exc_type
+
+    machineinfo = {}
+    machineinfo["class"] = "MACHINEINFO"
+    machine_id = getMachineId()
+    if machine_id:
+        machineinfo["machine_id"] = machine_id
+    allhw.append(machineinfo)
 
     # all Done.
     return allhw
