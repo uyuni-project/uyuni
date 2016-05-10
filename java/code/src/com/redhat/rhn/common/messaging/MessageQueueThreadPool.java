@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.common.messaging;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import org.apache.log4j.Logger;
 
 import java.util.concurrent.ExecutorService;
@@ -33,12 +36,10 @@ public enum MessageQueueThreadPool {
     /* The executor service to be used */
     private final ExecutorService executorService;
 
-    /* The number of threads */
-    private static final int NO_OF_THREADS = 5;
-
     MessageQueueThreadPool() {
-        executorService = Executors.newFixedThreadPool(NO_OF_THREADS);
-        log.debug("Started message queue thread pool");
+        int size = Config.get().getInt(ConfigDefaults.MESSAGE_QUEUE_THREAD_POOL_SIZE);
+        executorService = Executors.newFixedThreadPool(size);
+        log.debug("Started message queue thread pool (size: " + size + ")");
     }
 
     /**
