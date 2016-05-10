@@ -74,8 +74,7 @@ if host.include?("//")
 end
 host = "https://#{host}"
 
-$myhostname = `hostname -f`
-$myhostname.chomp!
+$myhostname = host
 
 ENV['LANG'] = "en_US.UTF-8"
 ENV['IGNORECERT'] = "1"
