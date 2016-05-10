@@ -1015,6 +1015,22 @@ class SystemInformation():
         q_insert.execute(viid=viid, virt_type='fully_virtualized')
 
 
+class MachineInformation:
+    def __init__(self, dict=None):
+        self.machine_id = dict.get("machine_id") if "machine_id" in dict else None
+
+    def save(self, server_id):
+        if self.machine_id:
+            log_debug(4, "update_machine_id", server_id, self.machine_id)
+            s_update = rhnSQL.prepare("""
+                        UPDATE rhnServer
+                           SET machine_id = :machine_id
+                         WHERE id = :server_id
+                    """)
+            s_update.execute(machine_id=self.machine_id, server_id=server_id)
+        else:
+            log_debug(1, "machine_id not found")
+
 class Hardware:
 
     """ Support for the hardware items """
@@ -1067,6 +1083,8 @@ class Hardware:
             # where this system is running on
             SystemInformation(hardware, self)
             return 0
+        elif hw_class == "machineinfo":
+            class_type = MachineInformation
         else:
             log_error("UNKNOWN CLASS TYPE `%s'" % hw_class)
             # Same trick: try-except and raise the exception so that Traceback
