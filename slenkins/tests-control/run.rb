@@ -3,7 +3,9 @@
 require 'twopence'
 require 'time'
 
-# DOCUMENTATION EXAMPLES https://github.com/okirch/twopence/blob/master/examples/example.rb
+# ## DOC ##### 
+
+#DOCUMENTATION EXAMPLES https://github.com/okirch/twopence/blob/master/examples/example.rb
 
 # Documentation about currents methods. 
 # https://github.com/okirch/twopence/blob/a2f38fb4b4fb69141cad3c3ed6d5ac337911bb72/ruby/ext/twopence/target.c
@@ -16,12 +18,9 @@ require 'time'
 ##   timeout: the time in seconds after which the command is aborted 
 ##            (optional, defaults to 60L)
 
-
 # this is the run.rb in ruby. A Library still not exist yet, but with the environ variables, we can get
 # all the variables we want . (IP of macines, FAMILY, etc, and we can run commands from control to 
 # machines.
-
-
 
 # Example for getting the target. We use the env-vars, for dinamically.
 
@@ -72,21 +71,13 @@ MINION = Twopence::init(ENV["TARGET_MINION"])
 # FIXME: in future, move this to attribute for the object, like susetest.
 
 # For moment this work fine too for ruby. no PRIO1
-CLIENT_IP = ENV["INTERNAL_IP_CLIENT"]
+SERVER_IP = ENV["INTERNAL_IP_SERVER"]
 # this get the sles-sp1 or sp2 etc distro var.
 CLIENT_FAMILY = ENV["FAMILY_CLIENT"]
 
 family_hello = "echo #{CLIENT_FAMILY}"
-
-#R!"
-#jlogger("testsuite", id: GROUP_NAME, text: GROUP_NAME)
-#run_command(CLIENT, "ip a s",  "ip from  CLIENT")
-#run_command(SERVER, "ip a s",  "ip from  SERVER")
-#run_command(MINION, "ip a s",  "ip from MINION")
-#run_command(CLIENT, family_hello,  "FAMILY TESTS")
-
-
-
+SET_SUMA_ENVS = "TESTHOST=#{SERVER_IP}; BROWSER=phantomjs; export TESTHOST; export phantomjs"
+#RUN_CUCUMBER 
 # ********************************************
 ## MAIN ##
 # ********************************************
@@ -95,5 +86,6 @@ GROUP_NAME = "INIT_SERVER FOR SUSE_MANAGER!"
 SERVER_INIT= "/var/lib/slenkins/tests-suma-cucumber/tests-server/bin/suma_init.sh"
 jlogger("testsuite", id: GROUP_NAME, text: GROUP_NAME)
 run_command(SERVER, SERVER_INIT,  "INIT_SERVER", 1000)
-
+run_command(SERVER, SET_SUMA_ENVS,  "set env vars for cucumber", 1000)
+#run_command(SERVER, RUN_CUCUMBER,  "set env vars for cucumber", 1000)
 jlogger("endsuite")
