@@ -74,7 +74,7 @@ SET_SUMA_ENVS = "TESTHOST=#{SERVER_IP}; BROWSER=phantomjs; export TESTHOST; expo
 # ********************************************
 # Server configuration
 GROUP_NAME = "INIT_SERVER FOR SUSE_MANAGER!"
-SERVER_INIT= "/var/lib/slenkins/tests-suma-cucumber/tests-server/bin/suma_init.sh"
+SERVER_INIT= "/var/lib/slenkins/tests-suse-manager/tests-server/bin/suma_init.sh"
 jlogger("testsuite", id: GROUP_NAME, text: GROUP_NAME)
 run_command(SERVER, SERVER_INIT,  "INIT_SERVER", 1000)
 run_command(SERVER, SET_SUMA_ENVS,  "set env vars for cucumber", 1000)
