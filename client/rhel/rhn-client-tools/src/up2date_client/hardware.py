@@ -852,6 +852,15 @@ def get_sysinfo():
             pass
     return sysdict
 
+
+def read_machineinfo():
+    machineinfo = {}
+    machineinfo["class"] = "MACHINEINFO"
+    machine_id = getMachineId()
+    if machine_id:
+        machineinfo["machine_id"] = machine_id
+    return machineinfo
+
 # this one reads it all
 def Hardware():
     if using_gudev:
@@ -942,12 +951,12 @@ def Hardware():
     except:
         print _("Error reading system info:"), sys.exc_type
 
-    machineinfo = {}
-    machineinfo["class"] = "MACHINEINFO"
-    machine_id = getMachineId()
-    if machine_id:
-        machineinfo["machine_id"] = machine_id
-    allhw.append(machineinfo)
+    try:
+        ret = read_machineinfo()
+        if ret:
+             allhw.append(ret)
+    except:
+        print(_("Error reading machine info:"), sys.exc_info()[0])
 
     # all Done.
     return allhw

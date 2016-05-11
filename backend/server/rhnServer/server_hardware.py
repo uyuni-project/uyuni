@@ -1016,20 +1016,17 @@ class SystemInformation():
 
 
 class MachineInformation:
-    def __init__(self, dict=None):
-        self.machine_id = dict.get("machine_id") if "machine_id" in dict else None
 
-    def save(self, server_id):
-        if self.machine_id:
-            log_debug(4, "update_machine_id", server_id, self.machine_id)
-            s_update = rhnSQL.prepare("""
-                        UPDATE rhnServer
-                           SET machine_id = :machine_id
-                         WHERE id = :server_id
-                    """)
-            s_update.execute(machine_id=self.machine_id, server_id=server_id)
-        else:
-            log_debug(1, "machine_id not found")
+    def __init__(self, sysid, data=None):
+        machine_id = data.get("machine_id") if data and "machine_id" in data else None
+        log_debug(4, "updating machine_id", sysid, machine_id)
+        s_update = rhnSQL.prepare("""
+                    UPDATE rhnServer
+                       SET machine_id = :machine_id
+                     WHERE id = :server_id
+                """)
+        s_update.execute(machine_id=machine_id, server_id=sysid)
+
 
 class Hardware:
 
@@ -1084,7 +1081,8 @@ class Hardware:
             SystemInformation(hardware, self)
             return 0
         elif hw_class == "machineinfo":
-            class_type = MachineInformation
+            MachineInformation(self.server["id"], hardware)
+            return 0
         else:
             log_error("UNKNOWN CLASS TYPE `%s'" % hw_class)
             # Same trick: try-except and raise the exception so that Traceback
@@ -1118,6 +1116,8 @@ class Hardware:
             return 0
         self.__changed = 1
 
+        self.__reset_machine_id(sysid)
+
         for device_type in hardware.keys():
             for hw in hardware[device_type]:
                 hw.status = 2  # deleted
@@ -1128,6 +1128,10 @@ class Hardware:
                                            not (a.status == 2 and hasattr(a, "id") and a.id == 0),
                                            hardware[device_type])
         return 0
+
+    def __reset_machine_id(self, sysid):
+        """ Sets rhnServer.machine_id to null """
+        MachineInformation(sysid)
 
     def save_hardware_byid(self, sysid):
         """Save the hardware list """
