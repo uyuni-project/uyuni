@@ -8,6 +8,11 @@
 <body>
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
     <html:form method="post" action="/systems/details/SystemHardware.do?sid=${sid}">
+        <c:if test="${empty machine_id}">
+            <div class="alert alert-warning">
+                <bean:message key="sdc.details.hardware.machine_id_empty_warning" />
+            </div>
+        </c:if>
         <rhn:require acl="system_feature(ftr_hardware_refresh)">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -62,6 +67,18 @@
                         <th><bean:message key="sdc.details.hardware.swap" /></th>
                         <td>${system_swap}MB</td>
                     </tr>
+                    <c:if test="${not empty machine_id}">
+                    <tr>
+                        <th><bean:message key="sdc.details.hardware.machine_id" /></th>
+                        <td>
+                            ${machine_id}
+                        </td>
+                        <th></th>
+                        <td></td>
+                        <th></th>
+                        <td></td>
+                    </tr>
+                    </c:if>
                 </table>
             </div>
         </div>
