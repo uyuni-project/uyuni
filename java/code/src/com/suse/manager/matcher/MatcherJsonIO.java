@@ -56,6 +56,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -263,22 +264,17 @@ public class MatcherJsonIO {
      * require SUSE Manager entitlements for such systems).
      */
     private Stream<Long> productIdsForServer(Server server) {
-        Stream<Long> productIds = Stream.empty();
-
         SUSEProductSet productSet = server.getInstalledProductSet();
-        if (productSet != null) {
-            SUSEProduct baseProduct = productSet.getBaseProduct();
-            if (baseProduct != null) {
-                productIds = concat(
-                    of(baseProduct.getProductId()),
-                    productSet.getAddonProducts().stream()
-                        .map(p -> p.getProductId())
-                );
-                productIds = concat(productIds, entitlementIdsForServer(server));
-            }
+        if (productSet == null || productSet.getBaseProduct() == null) {
+            return empty();
         }
 
-        return productIds;
+        // concatenate base product, addon products and the SUSE Manager entitlements
+        return of(
+            of(productSet.getBaseProduct().getProductId()),
+            productSet.getAddonProducts().stream().map(p -> p.getProductId()),
+            entitlementIdsForServer(server)
+        ).flatMap(Function.identity());
     }
 
     /**
