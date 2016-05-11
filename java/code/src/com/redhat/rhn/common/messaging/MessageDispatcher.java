@@ -14,10 +14,15 @@
  */
 package com.redhat.rhn.common.messaging;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 
 import org.apache.log4j.Logger;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Polls the EventQueue for events and executes them
@@ -29,10 +34,25 @@ public class MessageDispatcher implements Runnable {
     private static Logger log = Logger.getLogger(MessageDispatcher.class);
     private boolean isStopped = false;
 
+    /* Thread pool for concurrent execution of message actions */
+    private ExecutorService threadPool = new MessageQueueThreadPool(
+            Config.get().getInt(ConfigDefaults.MESSAGE_QUEUE_THREAD_POOL_SIZE));
+
     /**
      * Signals the dispatcher to stop
      */
     public synchronized void stop() {
+        // Gracefully shut down the thread pool
+        threadPool.shutdown();
+        log.info("Awaiting termination of threads (for 1 minute)");
+        try {
+            final boolean done = threadPool.awaitTermination(1, TimeUnit.MINUTES);
+            log.info("Thread pool shut down: " + done);
+        }
+        catch (InterruptedException e) {
+            log.error("Interrupted while awaiting termination", e);
+        }
+
         isStopped = true;
     }
 
@@ -56,7 +76,7 @@ public class MessageDispatcher implements Runnable {
                     continue;
                 }
                 else if (actionHandler.canRunConcurrently()) {
-                    MessageQueueThreadPool.INSTANCE.submit(actionHandler);
+                    threadPool.execute(actionHandler);
                 }
                 else {
                     actionHandler.run();

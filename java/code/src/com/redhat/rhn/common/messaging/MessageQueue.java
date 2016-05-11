@@ -163,7 +163,6 @@ public class MessageQueue {
             logger.debug("stopMessaging() - start");
         }
         dispatcher.stop();
-        MessageQueueThreadPool.INSTANCE.shutdown();
         if (logger.isDebugEnabled()) {
             logger.debug("stopMessaging() - end");
         }
