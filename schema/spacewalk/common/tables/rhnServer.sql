@@ -53,6 +53,7 @@ CREATE TABLE rhnServer
                                 REFERENCES rhnProvisionState (id),
     channels_changed    timestamp with local time zone,
     cobbler_id          VARCHAR2(64),
+    machine_id          VARCHAR2(256),
     created             timestamp with local time zone
                             DEFAULT (current_timestamp) NOT NULL,
     modified            timestamp with local time zone
