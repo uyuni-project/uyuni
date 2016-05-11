@@ -17852,6 +17852,18 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="sdc.details.hardware.machine_id">
+        <source>Machine Id:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.hardware.machine_id_empty_warning">
+        <source>This system does not have a machine id. Use the Schedule Hardware Refresh button bellow to fill the machine id.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="sdc.details.notes.message">
         <source>The following notes are associated with this system.</source>
         <context-group name="ctx">
