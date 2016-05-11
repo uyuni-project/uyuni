@@ -1998,9 +1998,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return optional of MinionServer
      */
     public Optional<MinionServer> asMinionServer() {
-//        if (this instanceof MinionServer) {
-//            return Optional.of((MinionServer)this);
-//        }
+        if (this instanceof MinionServer) {
+            return Optional.of((MinionServer)this);
+        }
         return Optional.empty();
     }
 
