@@ -19,8 +19,7 @@ CREATE TABLE suseMinionInfo
                            CONSTRAINT suse_minion_info_sid_fk
                                REFERENCES rhnServer (id)
                                ON DELETE CASCADE,
-    minion_id          VARCHAR2(256) NOT NULL,
-    machine_id         VARCHAR2(256) NOT NULL
+    minion_id          VARCHAR2(256) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;
@@ -34,6 +33,3 @@ ALTER TABLE suseMinionInfo
 
 ALTER TABLE suseMinionInfo
     ADD CONSTRAINT rhn_minion_info_miid_uq UNIQUE (minion_id);
-
-ALTER TABLE suseMinionInfo
-    ADD CONSTRAINT rhn_minion_info_maid_uq UNIQUE (machine_id);
