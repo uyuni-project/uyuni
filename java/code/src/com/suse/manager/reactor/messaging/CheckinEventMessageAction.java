@@ -29,13 +29,6 @@ public class CheckinEventMessageAction extends AbstractDatabaseAction {
     private static final Logger LOG = Logger.getLogger(CheckinEventMessageAction.class);
 
     /**
-     * Default constructur.
-     */
-    public CheckinEventMessageAction() {
-        super();
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
