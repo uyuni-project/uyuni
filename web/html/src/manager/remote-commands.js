@@ -220,7 +220,7 @@ class RemoteCommand extends React.Component {
   }
 }
 
-errorMessageByStatus(status) {
+function errorMessageByStatus(status) {
   if (status == 401) {
     return [t("Session expired, please reload the page to run command on systems.")];
   }
