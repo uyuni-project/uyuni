@@ -258,8 +258,9 @@ public class MatcherJsonIO {
     }
 
     /**
-     * Returns SUSE product ids for a server, including ids
-     * for SUSE Manager entitlements.
+     * Returns SUSE product ids for a server, including ids for SUSE Manager entitlements.
+     * (For systems without a SUSE base product, empty stream is returned as we don't
+     * require SUSE Manager entitlements for such systems).
      */
     private Stream<Long> productIdsForServer(Server server) {
         Stream<Long> productIds = Stream.empty();
@@ -273,11 +274,11 @@ public class MatcherJsonIO {
                     productSet.getAddonProducts().stream()
                         .map(p -> p.getProductId())
                 );
-
+                productIds = concat(productIds, entitlementIdsForServer(server));
             }
         }
 
-        return concat(productIds, entitlementIdsForServer(server));
+        return productIds;
     }
 
     /**
