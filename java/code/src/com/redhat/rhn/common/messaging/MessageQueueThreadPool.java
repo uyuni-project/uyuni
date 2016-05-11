@@ -14,49 +14,70 @@
  */
 package com.redhat.rhn.common.messaging;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.frontend.events.TraceBackAction;
+import com.redhat.rhn.frontend.events.TraceBackEvent;
 
 import org.apache.log4j.Logger;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Message queue thread pool for concurrent dispatching of messages.
  */
-public enum MessageQueueThreadPool {
-
-    /* Singleton instance of this class */
-    INSTANCE;
+public class MessageQueueThreadPool extends ThreadPoolExecutor {
 
     /* Logger for this class */
     private final Logger log = Logger.getLogger(MessageQueueThreadPool.class);
 
-    /* The executor service to be used */
-    private final ExecutorService executorService;
-
-    MessageQueueThreadPool() {
-        int size = Config.get().getInt(ConfigDefaults.MESSAGE_QUEUE_THREAD_POOL_SIZE);
-        executorService = Executors.newFixedThreadPool(size);
+    /**
+     * Constructor for creating a thread pool for being used with the message queue.
+     *
+     * @param size the number of threads to create, i.e. pool size
+     */
+    public MessageQueueThreadPool(int size) {
+        super(size, size, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
         log.debug("Started message queue thread pool (size: " + size + ")");
     }
 
-    /**
-     * Submit a {@link Runnable} for execution.
-     *
-     * @param runnable the runnable to submit
-     */
-    public void submit(Runnable runnable) {
-        log.debug("Submitting new runnable for message queue thread pool");
-        executorService.submit(runnable);
-    }
+    @Override
+    protected void afterExecute(Runnable task, Throwable thrown) {
+        super.afterExecute(task, thrown);
 
-    /**
-     * Call shutdown() on the executor service.
-     */
-    public void shutdown() {
-        log.debug("Shutting down message queue thread pool");
-        executorService.shutdown();
+        if (thrown == null && task instanceof Future<?>) {
+            try {
+                ((Future<?>) task).get();
+            }
+            catch (CancellationException ce) {
+                thrown = ce;
+            }
+            catch (ExecutionException ee) {
+                thrown = ee.getCause();
+            }
+            catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        if (thrown != null) {
+            log.error("Error in message queue: " + thrown.getMessage(), thrown);
+
+            try {
+                // Email the admins about what is going on
+                TraceBackEvent evt = new TraceBackEvent();
+                evt.setUser(null);
+                evt.setRequest(null);
+                evt.setException(thrown);
+
+                TraceBackAction tba = new TraceBackAction();
+                tba.execute(evt);
+            }
+            catch (Throwable t) {
+                log.error("Error sending traceback email, logging for posterity.", t);
+            }
+        }
     }
 }
