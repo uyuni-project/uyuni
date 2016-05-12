@@ -14,6 +14,10 @@ When(/^I should see my hostname$/) do
   fail unless page.has_content?($myhostname)
 end
 
+When(/^I should not see my hostname$/) do
+  fail if page.has_content?($myhostname)
+end
+
 When(/^I expand the results$/) do
    find("div[id='#{$myhostname}']").click
 end
