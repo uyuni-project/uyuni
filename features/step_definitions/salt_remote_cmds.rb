@@ -22,7 +22,7 @@ When(/^I expand the results for "(.*)"$/) do |host|
    find("div[id=#{host}]").click
 end
 
-When(/^I verify the results$/) do
+When(/^the result should look like ls command output$/) do
   within("pre[id='#{$myhostname}-results']") do
     fail unless page.has_content?('.ssh')
     fail unless page.has_content?('spacewalk-testsuite-base')
