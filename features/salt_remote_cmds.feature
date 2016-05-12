@@ -19,6 +19,15 @@ Feature: Test the remote commands via salt
     And I expand the results
     Then I should see "SuSE-release" in the command output
 
+  Scenario: Run a remote command as non authorized user
+    Given I am authorized as an example user with no roles
+    Given I follow "Salt"
+    And I follow "Remote Commands"
+    And I should see a "Remote Commands" text
+    And I click on preview
+    Then I should not see my hostname
+    And I can cleanup the no longer needed user
+
   Scenario: Run a remote command from the systems overview page
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
