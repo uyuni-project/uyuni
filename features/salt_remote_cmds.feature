@@ -11,12 +11,13 @@ Feature: Test the remote commands via salt
     Given I follow "Salt"
     And I follow "Remote Commands"
     And I should see a "Remote Commands" text
+    Then I enter command "ls -lha /etc"
     And I click on preview
     Then I should see my hostname
     And I click on run
     Then I wait for "3" seconds
     And I expand the results
-    Then the result should look like ls command output
+    Then I should see "SuSE-release" in the command output
 
   Scenario: Run a remote command from the systems overview page
     Given I am authorized as "testing" with password "testing"
