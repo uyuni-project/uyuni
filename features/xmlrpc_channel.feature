@@ -20,7 +20,9 @@ Feature: Test XML-RPC "channel" namespace und sub-namespaces.
 
   Scenario: Create a custom software channel as the child of another one
     Given I am logged in via XML-RPC/channel as user "admin" and password "admin"
-    When I create a channel with label "foobar-child", name "foobar-child", summary "child of foobar", arch "channel-x86_64" and parent "foobar"
+    When I create the following channels:
+      |label  |name  |summary |arch           |parent|
+      |foobar-child |foobar-child|child of foobar |channel-x86_64 |foobar |
     Then "foobar-child" should get listed with a call of listSoftwareChannels
     And "foobar" should be the parent channel of "foobar-child"
 
