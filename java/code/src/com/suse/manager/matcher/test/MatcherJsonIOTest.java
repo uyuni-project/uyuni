@@ -100,7 +100,7 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
                 result.stream().filter(s -> s.getId().equals(h1.getId())).findFirst().get();
         assertNotNull(resultH1);
         assertEquals("host1.example.com", resultH1.getName());
-        assertEquals(2, resultH1.getProductIds().size());
+        assertEquals(0, resultH1.getProductIds().size());
 
         JsonSystem resultG1 =
                 result.stream().filter(s -> s.getId().equals(g1.getId())).findFirst().get();
