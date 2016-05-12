@@ -41,7 +41,7 @@ public class MessageQueueThreadPool extends ThreadPoolExecutor {
      */
     public MessageQueueThreadPool(int size) {
         super(size, size, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
-        log.debug("Started message queue thread pool (size: " + size + ")");
+        log.info("Started message queue thread pool (size: " + size + ")");
     }
 
     @Override
@@ -78,6 +78,9 @@ public class MessageQueueThreadPool extends ThreadPoolExecutor {
             catch (Throwable t) {
                 log.error("Error sending traceback email, logging for posterity.", t);
             }
+        }
+        else {
+            log.info("Finished: " + task);
         }
     }
 }
