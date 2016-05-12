@@ -76,6 +76,7 @@ public class MessageDispatcher implements Runnable {
                     continue;
                 }
                 else if (actionHandler.canRunConcurrently()) {
+                    log.info("Executing in thread pool: " + actionHandler);
                     threadPool.execute(actionHandler);
                 }
                 else {
