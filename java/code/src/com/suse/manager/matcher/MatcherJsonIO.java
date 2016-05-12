@@ -56,6 +56,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -258,26 +259,22 @@ public class MatcherJsonIO {
     }
 
     /**
-     * Returns SUSE product ids for a server, including ids
-     * for SUSE Manager entitlements.
+     * Returns SUSE product ids for a server, including ids for SUSE Manager entitlements.
+     * (For systems without a SUSE base product, empty stream is returned as we don't
+     * require SUSE Manager entitlements for such systems).
      */
     private Stream<Long> productIdsForServer(Server server) {
-        Stream<Long> productIds = Stream.empty();
-
         SUSEProductSet productSet = server.getInstalledProductSet();
-        if (productSet != null) {
-            SUSEProduct baseProduct = productSet.getBaseProduct();
-            if (baseProduct != null) {
-                productIds = concat(
-                    of(baseProduct.getProductId()),
-                    productSet.getAddonProducts().stream()
-                        .map(p -> p.getProductId())
-                );
-
-            }
+        if (productSet == null || productSet.getBaseProduct() == null) {
+            return empty();
         }
 
-        return concat(productIds, entitlementIdsForServer(server));
+        // concatenate base product, addon products and the SUSE Manager entitlements
+        return of(
+            of(productSet.getBaseProduct().getProductId()),
+            productSet.getAddonProducts().stream().map(p -> p.getProductId()),
+            entitlementIdsForServer(server)
+        ).flatMap(Function.identity());
     }
 
     /**
