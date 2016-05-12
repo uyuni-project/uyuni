@@ -460,9 +460,6 @@ public enum SaltAPIService implements SaltService {
         Set<String> saltMatches = match(target).keySet();
         Set<String> allowed = new HashSet<>(saltMatches);
 
-        Stream<MinionServer> visible = MinionServerFactory
-                .lookupVisibleToUser(user);
-
         List<String> minionIds = MinionServerFactory
                 .lookupVisibleToUser(user)
                 .map(MinionServer::getMinionId)
