@@ -34,6 +34,9 @@ public class MessageQueueThreadPool extends ThreadPoolExecutor {
     /* Logger for this class */
     private final Logger log = Logger.getLogger(MessageQueueThreadPool.class);
 
+    /* A warning is logged if the queue is growing bigger than this */
+    private static final int QUEUE_SIZE_WARNING_THRESHOLD = 50;
+
     /**
      * Constructor for creating a thread pool for being used with the message queue.
      *
@@ -42,6 +45,18 @@ public class MessageQueueThreadPool extends ThreadPoolExecutor {
     public MessageQueueThreadPool(int size) {
         super(size, size, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
         log.info("Started message queue thread pool (size: " + size + ")");
+    }
+
+    @Override
+    public void execute(Runnable command) {
+        int queueSize = getQueue().size();
+        if (queueSize >= QUEUE_SIZE_WARNING_THRESHOLD) {
+            log.warn("Thread pool queue size is: " + queueSize);
+        }
+        else if (log.isDebugEnabled()) {
+            log.debug("Thread pool queue size is: " + queueSize);
+        }
+        super.execute(command);
     }
 
     @Override
