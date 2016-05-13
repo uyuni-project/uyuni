@@ -25,7 +25,6 @@ Feature: Check the Salt package state UI
     Then I should see a "1 Changes" text
     Then I click save
     Then I click apply
-    And I wait for "10" seconds
     Then "milkyway-dummy" is not installed
 
    Scenario: Test package installation through the UI
