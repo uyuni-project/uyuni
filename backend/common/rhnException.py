@@ -119,6 +119,10 @@ on this system."),
      The architecture of the package is not supported by
      """ + PRODUCT_NAME),
     47: _("""Invalid RPM header"""),
+    48: _("""
+    This sever is already registered as a Salt Minion server. If you want to register it using
+    the traditional stack please delete first and then register it using the traditional tools.
+    """),
     # For the uploading tools
     50: _("Invalid information uploaded to the server"),
     53: _("Error uploading network interfaces configuration."),
