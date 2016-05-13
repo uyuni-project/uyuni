@@ -10,16 +10,16 @@ end
 def client_refresh_metadata
   if client_is_zypp?
     `zypper --non-interactive ref -s`
-    fail if ! $?.success?
+    fail unless $?.success?
   else
     `yum clean all`
-   fail if ! $?.success?
+   fail unless $?.success?
    `yum makecache`
-   fail if ! $?.success?
+   fail unless $?.success?
   end
 end
 
-def client_raw_repodata_dir( channel )
+def client_raw_repodata_dir(channel)
   if client_is_zypp?
     return "/var/cache/zypp/raw/spacewalk:#{channel}/repodata"
   else

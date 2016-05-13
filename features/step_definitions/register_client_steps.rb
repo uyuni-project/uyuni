@@ -12,16 +12,16 @@ Given(/^I am root$/) do
 end
 
 Given(/^I am on the Systems overview page of this client$/) do
-  steps %[
+  steps %(
     Given I am on the Systems page
     And I follow "Systems" in the left menu
     And I follow this client link
-  ]
+    )
 end
 
 Given(/^I update the profile of this client$/) do
   `rhn-profile-sync`
-  if ! $?.success?
+  unless $?.success?
     raise "Profile sync failed"
   end
 end
@@ -33,28 +33,28 @@ When(/^I register using "([^"]*)" key$/) do |arg1|
   regurl = "http://#{ENV['TESTHOST']}/XMLRPC"
 
   command = "rhnreg_ks --serverUrl=#{regurl} --activationkey=#{arg1}"
-  #print "Command: #{command}\n"
+  # print "Command: #{command}\n"
 
   output = `#{command} 2>&1`
-  if ! $?.success?
+  unless $?.success?
     raise "Registration failed '#{command}' #{$!}: #{output}"
   end
 end
 
 When(/^I register using an activation key$/) do
-  arch=`uname -m`
+  arch = `uname -m`
   arch.chomp!
   if arch != "x86_64"
     arch = "i586"
   end
-  step %[I register using "1-SUSE-DEV-#{arch}" key]
+  step %(I register using "1-SUSE-DEV-#{arch}" key)
 end
 
 Then(/^I should see this client in spacewalk$/) do
-  steps %[
+  steps %(
     Given I am on the Systems page
     Then I should see this client as link
-  ]
+    )
 end
 
 Then(/^this client should appear in spacewalk$/) do
@@ -62,10 +62,10 @@ Then(/^this client should appear in spacewalk$/) do
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         begin
-          steps %[
+          steps %(
             Given I am on the Systems page
             Then I should see this client as link
-          ]
+                    )
           break
         rescue Capybara::ElementNotFound
           sleep(1)
@@ -78,21 +78,21 @@ Then(/^this client should appear in spacewalk$/) do
 end
 
 Then(/^I should see this client as link$/) do
-  step %[I should see a "#{$myhostname}" link]
+  step %(I should see a "#{$myhostname}" link)
 end
 
 When(/^I follow this client link$/) do
-  step %[I follow "#{$myhostname}"]
+  step %(I follow "#{$myhostname}")
 end
 
 Then(/^config-actions are enabled$/) do
-  if not File.exist?('/etc/sysconfig/rhn/allowed-actions/configfiles/all')
+  unless File.exist?('/etc/sysconfig/rhn/allowed-actions/configfiles/all')
     raise "config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist"
   end
 end
 
 Then(/^remote-commands are enabled$/) do
-  if not File.exist?('/etc/sysconfig/rhn/allowed-actions/script/run')
+  unless File.exist?('/etc/sysconfig/rhn/allowed-actions/script/run')
     raise "remote-commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist"
   end
 end

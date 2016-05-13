@@ -11,7 +11,7 @@ When(/^I click on run$/) do
 end
 
 When(/^I should see my hostname$/) do
-  fail if not page.has_content?($myhostname)
+  fail unless page.has_content?($myhostname)
 end
 
 When(/^I expand the results$/) do
@@ -24,9 +24,9 @@ end
 
 When(/^I verify the results$/) do
   within("pre[id='#{$myhostname}-results']") do
-    fail if not page.has_content?('.ssh')
-    fail if not page.has_content?('spacewalk-testsuite-base')
-    fail if not page.has_content?('.bashrc')
+    fail unless page.has_content?('.ssh')
+    fail unless page.has_content?('spacewalk-testsuite-base')
+    fail unless page.has_content?('.bashrc')
   end
 end
 
@@ -41,5 +41,5 @@ When(/^"(.*)" exists on the filesystem$/) do |file|
   rescue Timeout::Error
     puts "timeout waiting for the file to appear"
   end
-  fail if not File.exist?(file)
+  fail unless File.exist?(file)
 end

@@ -30,7 +30,7 @@ When(/^I delete the repo with label "([^"]*)"$/) do |label|
 end
 
 Then(/^something should get listed with a call of listSoftwareChannels$/) do
-  assert_equal(rpctest.getSoftwareChannelsCount() < 1, false)
+  assert_equal(rpctest.getSoftwareChannelsCount < 1, false)
 end
 
 Then(/^"([^"]*)" should get listed with a call of listSoftwareChannels$/) do |label|
@@ -49,10 +49,10 @@ Then(/^channel "([^"]*)" should have attribute "([^"]*)" from type "([^"]*)"$/) 
   ret = rpctest.getChannelDetails(label)
   assert(ret)
   assert_equal(ret[attr].class.to_s, type)
-end 
+end
 
 Then(/^channel "([^"]*)" should not have attribute "([^"]*)"$/) do |label, attr|
   ret = rpctest.getChannelDetails(label)
   assert(ret)
   assert_equal(ret.key?(attr), false)
-end 
+end
