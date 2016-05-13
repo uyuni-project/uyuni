@@ -153,7 +153,9 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                     filter=options.filter)
         elif vars(options).has_key('add_target'):
             if 'channel' in options.add_target:
-                self._add_channels(channels=options.target, mirror=options.mirror)
+                self._add_channels(channels=options.target,
+                                   mirror=options.mirror,
+                                   no_optionals=options.no_optionals)
             elif 'credentials' in options.add_target:
                 self._add_credentials(options.primary, options.target)
             elif 'product' in options.add_target:
@@ -259,7 +261,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             self._execute_xmlrpc_method(self.conn.sync.content,
                                         "listChannels", self.auth.token()), self.log)
 
-    def _add_channels(self, channels, mirror=""):
+    def _add_channels(self, channels, mirror="", no_optionals=False):
         """ Add a list of channels.
 
         If the channel list is empty the interactive mode is started.
@@ -269,7 +271,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         current_channels = []
 
         if not channels:
-            channels = [self._select_channel_interactive_mode()]
+            channels = [self._select_channel_interactive_mode(no_optionals=no_optionals)]
             enable_checks = False
 
         current_channels = self._fetch_remote_channels()
@@ -353,14 +355,14 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 sys.stderr.write("Error, unable to schedule channel reposync: Taskomatic is not responding.\n")
                 sys.exit(1)
 
-    def _select_channel_interactive_mode(self):
+    def _select_channel_interactive_mode(self, no_optionals=False):
         """Show not installed channels prefixing a number, then reads
         user input and returns the label of the chosen channel
 
         """
         channels = self._list_channels(
             expand=False, filter=None, compact=False,
-            no_optionals=True, show_interactive_numbers=True)
+            no_optionals=no_optionals, show_interactive_numbers=True)
 
         validator = lambda i: re.search("\d+", i) and \
             int(i) in range(1, len(channels)+1)
