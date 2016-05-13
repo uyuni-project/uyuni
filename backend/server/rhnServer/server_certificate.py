@@ -34,7 +34,7 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.stringutils import to_string
 from server_lib import getServerSecret
-
+from server_lib import check_entitlement_by_machine_id
 
 def gen_secret():
     """ Generate a secret """
@@ -210,6 +210,16 @@ class Certificate:
     def valid(self):
         log_debug(4)
         # check for anonymous
+
+        if self.attrs.get('machine_id'):
+            entitlements = check_entitlement_by_machine_id(self.attrs.get('machine_id'))
+            log_debug(4, "found entitlements for machine_id", self.attrs.get('machine_id'), entitlements)
+            if 'salt_entitled' in entitlements:
+                raise rhnFault(48, """
+    This sever is already registered as a Salt Minion server. If you want to register it using
+    the traditional stack please delete it first and then register it using the traditional tools.
+                """)
+
         if 'type' in self.attrs and self.attrs['type'] \
                 and string.upper(self.attrs['type']) == "ANONYMOUS":
             raise rhnFault(28, """

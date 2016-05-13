@@ -16,6 +16,7 @@ from up2date_client import rhnserver
 from up2date_client import up2dateErrors
 from up2date_client import up2dateLog
 from up2date_client import up2dateUtils
+from up2dateUtils import getMachineId
 
 loginInfo = None
 pcklAuthFileName = "/var/spool/up2date/loginAuth.pkl"
@@ -30,6 +31,13 @@ def getSystemId():
     ret = f.read()
 
     f.close()
+
+    # add machine_id on the fly
+    cert = rpclib.xmlrpclib.loads(ret)
+    cert[0][0]["machine_id"] = getMachineId()
+    ret = rpclib.xmlrpclib.dumps(cert[0])
+    cert[0][0]["fields"].append("machine_id")
+
     return ret
 
 # if a user has upgraded to a newer release of Red Hat but still
