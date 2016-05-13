@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.user.User;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -43,6 +44,17 @@ public class MinionServerFactory extends HibernateFactory {
                 .createCriteria(MinionServer.class)
                 .add(Restrictions.eq("org.id", orgId))
                 .list();
+    }
+
+    /**
+     * Lookup all Servers that belong to an org
+     * @param user the user servers are visible to
+     * @return the Server found
+     */
+    public static Stream<MinionServer> lookupVisibleToUser(User user) {
+        return user.getServers().stream().flatMap(
+                s -> s.asMinionServer().map(Stream::of).orElseGet(Stream::empty)
+        );
     }
 
     @Override

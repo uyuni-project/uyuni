@@ -554,7 +554,7 @@ public interface User {
      * Returns the set of Server's this user has permissions to manage.
      * @return set of servers
      */
-    Set getServers();
+    Set<Server> getServers();
 
     /**
      * Give this user permission to manage a server.
