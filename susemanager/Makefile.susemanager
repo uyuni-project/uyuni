@@ -1,6 +1,6 @@
 # Docker tests variables
 DOCKER_CONTAINER_BASE = suma-2.1
-DOCKER_REGISTRY       = suma-docker-registry.mgr.suse.de
+DOCKER_REGISTRY       = registry.mgr.suse.de
 DOCKER_RUN_EXPORT     = "PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/suseRegisterInfo:/manager/client/rhel/rhn-client-tools/src"
 DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
 

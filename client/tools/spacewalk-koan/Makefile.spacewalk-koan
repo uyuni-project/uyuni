@@ -17,7 +17,7 @@ INSTALL_DATA    = $(INSTALL_BIN)
 
 # Docker tests variables
 DOCKER_IMAGE          = suma-2.1-spacewalkkoan
-DOCKER_REGISTRY       = suma-docker-registry.mgr.suse.de
+DOCKER_REGISTRY       = registry.mgr.suse.de
 DOCKER_RUN_EXPORT     = "PYTHONPATH=/manager/client/tools/"
 DOCKER_VOLUMES        = -v "$(CURDIR)/../../../:/manager"
 
