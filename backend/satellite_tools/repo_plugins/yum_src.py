@@ -457,18 +457,18 @@ class ContentSource:
                 # Import the key
                 result = yum.misc.import_key_to_pubring(info['raw_key'], info['hexkeyid'], gpgdir=repo.gpgdir)
                 if not result:
-                    raise ChannelException, 'Key import failed'
+                    raise ChannelException, 'GPG Key import failed'
                 elif self._is_expired(info['keyid'], repo.gpgdir):
                     # this may happen if we reimport an expired key
-                    raise ChannelException, 'The GPG keys listed for the "%s" repository are ' \
-                                            'already installed but they are expired.\n' % (repo)
+                    raise ChannelException, 'The GPG key for the "%s" repository is expired\n' % (repo)
                 key_installed = True
 
         if not key_installed:
-            raise ChannelException, 'The GPG keys listed for the "%s" repository are ' \
-                                    'already installed but they are not correct.\n' \
-                                    'Check that the correct key URLs are configured for ' \
-                                    'this repository.' % (repo)
+            raise ChannelException, 'The GPG key listed for the "%s" repository is ' \
+                                    'already installed but metadata verification failed.\n' \
+                                    'Check that the correct key URL is configured for ' \
+                                    'this repository and contact the repository vendor to ' \
+                                    'fix the signature.' % (repo)
 
     def _is_expired(self, keyid, gpgdir):
         os.environ['GNUPGHOME'] = gpgdir
@@ -520,7 +520,7 @@ class ContentSource:
                     raise ChannelException, \
                       'GPG key parsing failed: key does not have value %s' % info
                 thiskey[info] = keyinfo[info]
-            thiskey['keyid'] = str("%16x" % (thiskey['keyid'] & 0xffffffffffffffffL)).upper()
+            thiskey['keyid'] = str("%016x" % (thiskey['keyid'] & 0xffffffffffffffffL)).upper()
             thiskey['hexkeyid'] = yum.misc.keyIdToRPMVer(keyinfo['keyid']).upper()
             keys.append(thiskey)
 
