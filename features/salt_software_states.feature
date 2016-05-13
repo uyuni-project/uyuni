@@ -38,8 +38,7 @@ Feature: Check the Salt package state UI
     Then I should see a "1 Changes" text
     Then I click save
     Then I click apply
-    And I wait for "10" seconds
-    Then "milkyway-dummy" is installed
+    Then I wait for "milkyway-dummy" to be installed
 
    Scenario: Test package installation with any through the UI
     Given I am on the Systems overview page of this client
@@ -52,8 +51,7 @@ Feature: Check the Salt package state UI
     Then I should see a "1 Changes" text
     Then I click save
     Then I click apply
-    And I wait for "10" seconds
-    Then "virgo-dummy-1.0" is installed
+    Then I wait for "virgo-dummy-1.0" to be installed
 
   Scenario: Test package upgrade through the UI
     Given I am on the Systems overview page of this client
@@ -66,8 +64,7 @@ Feature: Check the Salt package state UI
     Then I should see a "1 Changes" text
     Then I click save
     Then I click apply
-    And I wait for "10" seconds
-    Then "andromeda-dummy-2.0-1.1" is installed
+    Then I wait for "andromeda-dummy-2.0-1.1" to be installed
 
   Scenario: I verify the system status of the salt ui
     Given I am on the Systems overview page of this client
