@@ -1,6 +1,0 @@
--- oracle equivalent source sha1 dddec3c3e41a7a0687b23a8ae2a20a159e7edf53
--- function index for rhnServer
-
-CREATE UNIQUE INDEX rhn_server_maid_uq
-  ON rhnServer
-  (machine_id) where machine_id is not null;

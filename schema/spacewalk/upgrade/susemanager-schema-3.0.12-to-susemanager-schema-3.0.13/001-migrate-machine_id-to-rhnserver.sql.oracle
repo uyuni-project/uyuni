@@ -1,5 +1,9 @@
 alter table rhnServer add column machine_id VARCHAR2(256);
 
+CREATE UNIQUE INDEX rhn_server_maid_uq
+  ON rhnServer
+  (CASE WHEN machine_id IS NULL THEN NULL ELSE machine_id END);
+
 update rhnServer s set machine_id=(select machine_id from suseMinionInfo m where m.server_id=s.id);
 
 alter table suseMinionInfo drop constraint if exists rhn_minion_info_miid_uq;
