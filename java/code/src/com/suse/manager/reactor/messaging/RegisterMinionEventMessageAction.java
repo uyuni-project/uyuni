@@ -117,13 +117,16 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 ServerFactory.save(registeredMinion);
             }
             return;
-        } else {
+        }
+        else {
             Optional<Server> optServer = ServerFactory.findByMachineId(machineId);
             if (optServer.isPresent()) {
                 // a traditional client with the same machine id is already registered
                 // migrate it to a minion server
-                ServerFactory.changeServerToMinionServer(optServer.get().getId(), machineId);
-                Optional<MinionServer> optNewMinion = MinionServerFactory.lookupById(optServer.get().getId());
+                ServerFactory.changeServerToMinionServer(
+                        optServer.get().getId(), machineId);
+                Optional<MinionServer> optNewMinion = MinionServerFactory
+                        .lookupById(optServer.get().getId());
                 minionServer = optNewMinion.get();
 
                 // disable token ?
@@ -145,7 +148,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 historyEvent.setDetails("System type was changed from Management to Salt");
                 minionServer.getHistory().add(historyEvent);
 
-            } else {
+            }
+            else {
                 // Create the server
                 minionServer = new MinionServer();
             }

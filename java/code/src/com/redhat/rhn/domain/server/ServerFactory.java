@@ -989,6 +989,11 @@ public class ServerFactory extends HibernateFactory {
         HibernateFactory.getSession().delete(device);
     }
 
+    /**
+     * Find a server by machine id.
+     * @param machineId the machine id
+     * @return the server if any
+     */
     public static Optional<Server> findByMachineId(String machineId) {
         Session session = getSession();
         Criteria criteria = session.createCriteria(Server.class);
@@ -996,6 +1001,12 @@ public class ServerFactory extends HibernateFactory {
         return Optional.ofNullable((Server) criteria.uniqueResult());
     }
 
+    /**
+     * Change the entity type from {@link Server} to {@link MinionServer}.
+     * This will insert a new record into the suseMinionInfo to hold the minion id.
+     * @param serverId the server id
+     * @param minionId the minion Salt id
+     */
     public static void changeServerToMinionServer(Long serverId, String minionId) {
         SystemManager.addMinionInfoToServer(serverId, minionId);
         Server server = lookupById(serverId);
