@@ -243,7 +243,7 @@ class RepoSync(object):
         """Trigger a reposync"""
         start_time = datetime.now()
         for data in self.urls:
-            self.set_repo_credentials(data)
+            data['source_url'] = self.set_repo_credentials(data)
             insecure = False
             if data['metadata_signed'] == 'N':
                 insecure = True
