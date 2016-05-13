@@ -2001,11 +2001,17 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return Optional.empty();
     }
 
+    /**
+     * @return the machine id
+     */
     public String getMachineId() {
         return machineId;
     }
 
-    public void setMachineId(String machineId) {
-        this.machineId = machineId;
+    /**
+     * @param machineIdIn the machine id
+     */
+    public void setMachineId(String machineIdIn) {
+        this.machineId = machineIdIn;
     }
 }
