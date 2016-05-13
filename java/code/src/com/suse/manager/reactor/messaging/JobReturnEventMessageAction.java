@@ -412,4 +412,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             }).orElseGet(Stream::empty);
         }).collect(Collectors.toSet());
     }
+
+    @Override
+    public boolean canRunConcurrently() {
+        return true;
+    }
 }
