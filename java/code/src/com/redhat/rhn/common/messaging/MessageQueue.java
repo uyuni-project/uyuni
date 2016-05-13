@@ -125,8 +125,8 @@ public class MessageQueue {
         }
     }
 
-    static Runnable popEventMessage() throws InterruptedException {
-        Runnable retval = (Runnable) messages.poll(500);
+    static ActionExecutor popEventMessage() throws InterruptedException {
+        ActionExecutor retval = (ActionExecutor) messages.poll(500);
         if (retval != null) {
             synchronized (ACTIONS) {
                 messageCount--;

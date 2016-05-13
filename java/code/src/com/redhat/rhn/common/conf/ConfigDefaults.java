@@ -200,6 +200,9 @@ public class ConfigDefaults {
      */
     public static final String SCC_URL = "server.susemanager.scc_url";
 
+    public static final String MESSAGE_QUEUE_THREAD_POOL_SIZE =
+            "java.message_queue_thread_pool_size";
+
     private ConfigDefaults() {
     }
 

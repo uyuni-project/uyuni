@@ -27,6 +27,19 @@ public interface MessageAction {
      * @param msg EventMessage to execute.
      */
     void execute(EventMessage msg);
+
+    /**
+     * Return true in case this action can run concurrently with others. Depending on this
+     * flag the action will either be executed in the main message queue dispatcher thread
+     * and thus block other messages from being dispatched, or (in case of true) there will
+     * be a background thread executing this action while the main dispatcher thread can go
+     * on dispatching other messages.
+     *
+     * @return true if this action can run concurrently with others, else false
+     */
+    default boolean canRunConcurrently() {
+        return false;
+    }
 }
 
 

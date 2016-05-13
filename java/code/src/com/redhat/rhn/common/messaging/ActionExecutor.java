@@ -76,4 +76,18 @@ class ActionExecutor implements Runnable {
             }
         }
     }
+
+    /**
+     * Return true if all message actions in this executor can run concurrently, else false.
+     *
+     * @return true if this action handler can run concurrently, else false
+     */
+    public boolean canRunConcurrently() {
+        return actionHandlers.stream().allMatch(MessageAction::canRunConcurrently);
+    }
+
+    @Override
+    public String toString() {
+        return "ActionExecutor[message=" + msg.getClass().getSimpleName() + "]";
+    }
 }

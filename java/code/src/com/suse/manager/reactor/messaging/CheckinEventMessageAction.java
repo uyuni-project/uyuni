@@ -45,4 +45,9 @@ public class CheckinEventMessageAction extends AbstractDatabaseAction {
                     checkinEventMessage.getServerId());
         }
     }
+
+    @Override
+    public boolean canRunConcurrently() {
+        return true;
+    }
 }
