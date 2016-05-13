@@ -14,6 +14,10 @@ When(/^I should see my hostname$/) do
   fail unless page.has_content?($myhostname)
 end
 
+When(/^I should not see my hostname$/) do
+  fail if page.has_content?($myhostname)
+end
+
 When(/^I expand the results$/) do
    find("div[id='#{$myhostname}']").click
 end
@@ -22,13 +26,16 @@ When(/^I expand the results for "(.*)"$/) do |host|
    find("div[id=#{host}]").click
 end
 
-When(/^I verify the results$/) do
+Then(/^I enter command "([^"]*)"$/) do |arg1|
+  fill_in "command", with: "ls -la /etc"
+end
+
+Then(/^I should see "([^"]*)" in the command output$/) do |arg1|
   within("pre[id='#{$myhostname}-results']") do
-    fail unless page.has_content?('.ssh')
-    fail unless page.has_content?('spacewalk-testsuite-base')
-    fail unless page.has_content?('.bashrc')
+    fail unless page.has_content?('SuSE-release')
   end
 end
+
 
 When(/^"(.*)" exists on the filesystem$/) do |file|
   begin
