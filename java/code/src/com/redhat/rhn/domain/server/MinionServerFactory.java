@@ -52,10 +52,9 @@ public class MinionServerFactory extends HibernateFactory {
      * @return the Server found
      */
     public static Stream<MinionServer> lookupVisibleToUser(User user) {
-        return user.getServers()
-                .stream().map(server -> server.asMinionServer())
-                .filter(server -> server.isPresent())
-                .map(Optional::get);
+        return user.getServers().stream().flatMap(
+                s -> s.asMinionServer().map(Stream::of).orElseGet(Stream::empty)
+        );
     }
 
     @Override
