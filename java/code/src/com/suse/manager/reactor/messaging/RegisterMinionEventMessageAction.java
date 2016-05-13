@@ -102,7 +102,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         //FIXME: refactor this whole function so we don't have to call get
         //in so many places.
         String machineId = optMachineId.get();
-        MinionServer minionServer = null;
+        MinionServer minionServer;
 
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         if (optMinion.isPresent()) {
@@ -129,7 +129,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 // disable token ?
                 // delete hardware ?
                 // if no creator_id use the activation key owner, else keep ?
-                // Generate a new secret for this server ?
+                // new secret will be generated later
 
                 // remove package profile
                 minionServer.getPackages().clear();
@@ -142,7 +142,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 historyEvent.setCreated(new Date());
                 historyEvent.setServer(minionServer);
                 historyEvent.setSummary("Server reactivated as Salt minion");
-                historyEvent.setDetails("");
+                historyEvent.setDetails("System type was changed from Management to Salt");
                 minionServer.getHistory().add(historyEvent);
 
             } else {
