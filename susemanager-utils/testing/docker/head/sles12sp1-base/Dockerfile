@@ -3,7 +3,7 @@
 # VERSION               0.1
 
 #FROM sles12sp1
-FROM suma-docker-registry.mgr.suse.de/sles12sp1
+FROM registry.mgr.suse.de/sles12sp1
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
 
 # remove packages not needed

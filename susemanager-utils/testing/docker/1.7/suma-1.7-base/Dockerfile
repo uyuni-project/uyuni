@@ -2,7 +2,7 @@
 #
 # VERSION               0.1
 
-FROM suma-docker-registry.mgr.suse.de/sle11sp2
+FROM registry.mgr.suse.de/sle11sp2
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
 
 
