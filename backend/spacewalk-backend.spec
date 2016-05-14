@@ -437,9 +437,11 @@ spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
 %endif
 
-pushd %{buildroot}
-find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
-popd
+if [ -x %py_libdir/py_compile.py ]; then
+    pushd %{buildroot}
+    find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
+    popd
+fi
 
 %if 0%{?fedora} && 0%{?fedora} >= 23
 rm -r $RPM_BUILD_ROOT%{python3rhnroot}/__pycache__
