@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.5.13.1
+Version: 2.5.15
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -29,24 +29,22 @@ Obsoletes: rhn-setup-gnome
 %endif
 Requires: rpm >= 4.2.3-24_nonptl
 Requires: rpm-python 
-Requires: python-ethtool >= 0.4
 Requires: gnupg
 Requires: sh-utils
+BuildRequires: python-devel
 %if 0%{?fedora} >= 23
-BuildRequires: python3-devel
 Requires: libgudev
 Requires: newt-python3
 Requires: python3-gobject-base
-%ifnarch s390 s390x
 Requires: python3-dmidecode
-%endif
+Requires: python3-netifaces
 Requires: python3-hwdata
 Requires: python3-rhnlib >= 2.5.78
 %else
-BuildRequires: python-devel
 %ifnarch s390 s390x
 Requires: python-dmidecode
 %endif
+Requires: python-ethtool >= 0.4
 Requires: rhnlib >= 2.5.78
 %if 0%{?fedora}
 Requires: newt-python
@@ -498,6 +496,13 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Thu May 12 2016 Gennadii Altukhov <galt@redhat.com> 2.5.15-1
+- change build dependency on python-devel, because we don't use Python3 during
+  package building
+
+* Wed May 11 2016 Gennadii Altukhov <galt@redhat.com> 2.5.14-1
+- 1326306 - use 'netifaces' module for Python3 instead of 'ethtools'
+
 * Fri Feb 19 2016 Jan Dobes 2.5.13-1
 - fixed 'exceptions.ValueError: invalid literal for int(): 0oxxx' to work in
   python 2.4 (RHEL5)

@@ -7,11 +7,18 @@
 %define rhn_check	 spacewalk-check
 %define rhnsd		 spacewalksd
 #
+%if 0%{?suse_version}
+%global pub_bootstrap_dir /srv/www/htdocs/pub/bootstrap
+%else
+%global pub_bootstrap_dir /var/www/html/pub/bootstrap
+%endif
+%global rhnroot %{_datadir}/rhn
+
 Name: spacewalk-certs-tools
 Summary: Spacewalk SSL Key/Cert Tool
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.1.2
+Version: 2.5.2
 Release: 1%{?dist}
 URL:      https://fedorahosted.org/spacewalk
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -43,21 +50,24 @@ Provides:  rhns-certs-tools = 5.3.0
 This package contains tools to generate the SSL certificates required by
 Spacewalk.
 
-%global rhnroot %{_datadir}/rhn
-
 %prep
 %setup -q
 
 %build
 #nothing to do here
 
+%if 0%{?suse_version}
+# we need to rewrite etc/httpd/conf => etc/apache2
+sed -i 's|etc/httpd/conf|etc/apache2|g' rhn_ssl_tool.py
+sed -i 's|etc/httpd/conf|etc/apache2|g' sslToolConfig.py
+sed -i 's|etc/httpd/conf|etc/apache2|g' sign.sh
+sed -i 's|etc/httpd/conf|etc/apache2|g' ssl-howto.txt
+%endif
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d -m 755 $RPM_BUILD_ROOT/%{rhnroot}/certs
 %if 0%{?suse_version}
-make PUB_BOOTSTRAP_DIR=/srv/www/htdocs/pub/bootstrap -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
-    MANDIR=%{_mandir}
-
 ln -s rhn-bootstrap $RPM_BUILD_ROOT/%{_bindir}/mgr-bootstrap
 ln -s rhn-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-ssl-tool
 ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
@@ -67,10 +77,9 @@ ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 %py_compile %{buildroot}/%{rhnroot}
 %py_compile -O %{buildroot}/%{rhnroot}
 
-%else
-make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
-    MANDIR=%{_mandir}
 %endif
+make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
+    MANDIR=%{_mandir} PUB_BOOTSTRAP_DIR=%{pub_bootstrap_dir}
 chmod 755 $RPM_BUILD_ROOT/%{rhnroot}/certs/{rhn_ssl_tool.py,client_config_update.py,rhn_bootstrap.py}
 
 %clean
@@ -91,22 +100,22 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_mandir}/man1/rhn-*.1*
 %doc LICENSE
 %doc ssl-howto-simple.txt ssl-howto.txt
+%{pub_bootstrap_dir}/client_config_update.py*
 %if 0%{?suse_version}
+%dir %{rhnroot}
 %dir /srv/www/htdocs/pub
-%dir /srv/www/htdocs/pub/bootstrap
-%dir /usr/share/rhn
-/srv/www/htdocs/pub/bootstrap/client_config_update.py*
+%dir %{pub_bootstrap_dir}
 %{_bindir}/mgr-bootstrap
 %{_bindir}/mgr-ssl-tool
 %{_bindir}/mgr-sudo-ssl-tool
 %{_sbindir}/mgr-push-register
 %{_sbindir}/mgr-ssh-push-init
-%else
-%{_var}/www/html/pub/bootstrap/client_config_update.py*
 %endif
 
-
 %changelog
+* Tue May 10 2016 Grant Gainey 2.5.2-1
+- spacewalk-certs-tools: build on openSUSE
+
 * Wed Feb 03 2016 Jan Dobes 2.5.1-1
 - 1302900 - not run on EL5 systems
 - Bumping package versions for 2.5.

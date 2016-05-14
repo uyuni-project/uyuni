@@ -36,7 +36,9 @@ if [ -e /lib/systemd/system/tomcat.service ]; then
    TOMCAT="tomcat"
 fi
 
-if [ -x /etc/init.d/apache2 ]; then
+HTTPD="httpd"
+
+if [ -e /lib/systemd/system/apache2.service -o -e /etc/init.d/apache2 ]; then
    HTTPD="apache2"
 fi
 

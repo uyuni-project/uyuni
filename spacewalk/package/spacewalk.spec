@@ -1,19 +1,12 @@
 %define release_name Smile
 %if 0%{?suse_version}
-%global with_selinux 0
-%global cobbler cobbler >= 2
 %global postgresql postgresql >= 8.4
 %else
-%global with_selinux 1
-%global cobbler cobbler2
 %global postgresql /usr/bin/psql
-%if 0%{?fedora} >= 22
-%global cobbler cobbler20
-%endif
 %endif
 
 Name:           spacewalk
-Version:        2.5.0.4
+Version:        2.5.1
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 URL:            https://fedorahosted.org/spacewalk
@@ -80,34 +73,29 @@ Requires:       susemanager-sls
 # Requires:       jabberpy
 Obsoletes:      spacewalk-monitoring < 2.3
 
+%if 0%{?rhel} || 0%{?fedora}
 # SELinux
-%if 0%{?with_selinux}
 Requires:       osa-dispatcher-selinux
 Requires:       spacewalk-selinux
 Obsoletes:      spacewalk-monitoring-selinux < 2.3
-%else
-Requires:       osa-dispatcher
 %endif
 
-%if 0%{?with_selinux}
 %if 0%{?rhel} == 5
 Requires:       jabberd-selinux
 %endif
 %if 0%{?rhel} == 6
 Requires:       selinux-policy-base >= 3.7.19-93
 %endif
-%endif
+
 
 Requires:       ace-editor >= 1.1.1
 
-Requires:       %{cobbler}
-
-# SUSE Manager
 %if 0%{?suse_version}
-Provides:       spacewalk = %{version}-%{release}
+Requires:       cobbler
 Requires:       susemanager-jsp_en
+%else
+Requires:       cobbler20
 %endif
-
 
 %description common
 Spacewalk is a systems management application that will
@@ -132,7 +120,7 @@ Requires: perl(DBD::Oracle)
 Requires: cx_Oracle
 Requires: spacewalk-backend-sql-oracle
 Requires: quartz-oracle
-%if 0%{?with_selinux}
+%if 0%{?rhel} || 0%{?fedora}
 Requires: oracle-instantclient-selinux
 Requires: oracle-instantclient-sqlplus-selinux
 %endif
@@ -157,7 +145,6 @@ Requires: spacewalk-backend-sql-postgresql
 Requires: %{postgresql}
 %if 0%{?rhel} == 5
 Requires: postgresql84-contrib
-Requires: postgresql84-pltcl
 %else
 Requires: postgresql-contrib >= 8.4
 %endif
@@ -205,6 +192,10 @@ rm -rf %{buildroot}
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
 
 %changelog
+* Tue May 10 2016 Grant Gainey 2.5.1-1
+- spacewalk: build on openSUSE
+- Bumping package versions for 2.5.
+
 * Fri Jul 24 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.2-1
 - require cobbler20 - Spacewalk is not working with upstream cobbler anyway
 
