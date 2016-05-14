@@ -5,9 +5,11 @@
 
 %if 0%{?suse_version}
 %global apache_group www
+%global apache_user wwwrun
 %global include_selinux_package 0
 %else
 %global apache_group apache
+%global apache_user apache
 %global include_selinux_package 1
 %endif
 
@@ -18,7 +20,7 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.11.68
+Version: 5.11.70
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -167,9 +169,6 @@ sed -i 's@^#!/usr/bin/python$@#!/usr/bin/python -s@' invocation.py
 
 %build
 make -f Makefile.osad all
-%if 0%{?fedora} >= 23
-    sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/*.py invocation.py
-%endif
 
 %if 0%{?include_selinux_package}
 %{__perl} -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' osa-dispatcher-selinux/%{modulename}.te
@@ -188,6 +187,9 @@ done
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{rhnroot}
 make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir}
+%if 0%{?fedora} >= 23
+    sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/sbin/osad
+%endif
 mkdir -p %{buildroot}%{_var}/log/rhn
 touch %{buildroot}%{_var}/log/osad
 touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
@@ -431,7 +433,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn/oracle
 %attr(770,root,root) %dir %{_var}/log/rhn/oracle/osa-dispatcher
 %doc LICENSE
-%ghost %attr(640,apache,root) %{_var}/log/rhn/osa-dispatcher.log
+%ghost %attr(640,%{apache_user},root) %{_var}/log/rhn/osa-dispatcher.log
 %if 0%{?suse_version}
 %{_sbindir}/rcosa-dispatcher
 %dir %attr(750, root, %{apache_group}) %{_sysconfdir}/rhn
@@ -458,6 +460,12 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Thu May 12 2016 Gennadii Altukhov <galt@redhat.com> 5.11.70-1
+- change interpreter on python2 for osa-dispatcher
+
+* Tue May 10 2016 Grant Gainey 5.11.69-1
+- osad: fix permissions on directories
+
 * Wed May 04 2016 Gennadii Altukhov <galt@redhat.com> 5.11.68-1
 - 1332224 - service osad doesn't work with selinux
 

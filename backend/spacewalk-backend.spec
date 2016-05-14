@@ -1,38 +1,46 @@
 %global rhnroot %{_prefix}/share/rhn
 %global rhnconfigdefaults %{rhnroot}/config-defaults
 %global rhnconf %{_sysconfdir}/rhn
-%global pylint_check 0
-%if 0%{?suse_version}
-%global apacheconfd %{_sysconfdir}/apache2/conf.d
-%global apache_user wwwrun
-%global apache_group www
-%else
+
+%if 0%{?rhel}
 %global apacheconfd %{_sysconfdir}/httpd/conf.d
 %global apache_user apache
 %global apache_group apache
+%global apache_pkg httpd
 %endif
-%if 0%{?rhel} || 0%{?suse_version}
-%{!?py_ver:     %define py_ver     %(python -c "import sys; v=sys.version_info[:2]; print '%%d.%%d'%%v" 2>/dev/null || echo PYTHON-NOT-FOUND)}
-%{!?py_prefix:  %define py_prefix  %(python -c "import sys; print sys.prefix" 2>/dev/null || echo PYTHON-NOT-FOUND)}
-%{!?py_libdir:  %define py_libdir  %{py_prefix}/%{_lib}/python%{py_ver}}
-%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-%endif
-%global pythonrhnroot %{python_sitelib}/spacewalk
 
-%if 0%{?fedora} && 0%{?fedora} >= 23
+%if 0%{?rhel} && 0%{?rhel} < 6
+%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%endif
+
+%if 0%{?fedora} >= 23
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %global python3rhnroot %{python3_sitelib}/spacewalk
 %endif
 
 %if 0%{?fedora}
 %{!?pylint_check: %global pylint_check 1}
+%global apacheconfd %{_sysconfdir}/httpd/conf.d
+%global apache_user apache
+%global apache_group apache
+%global apache_pkg httpd
 %endif
+
+%if 0%{?suse_version}
+%{!?pylint_check: %global pylint_check 0}
+%global apacheconfd %{_sysconfdir}/apache2/conf.d
+%global apache_user wwwrun
+%global apache_group www
+%global apache_pkg apache2
+%endif
+
+%global pythonrhnroot %{python_sitelib}/spacewalk
 
 Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.36
+Version: 2.5.40
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -41,27 +49,6 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if !0%{?suse_version} || 0%{?suse_version} >= 1120
 BuildArch: noarch
 %endif
-
-%if 0%{?suse_version} >= 1100
-# these are only needed for running the unittests in %check
-BuildRequires: python-mock
-%if 0%{?suse_version} <= 1310
-BuildRequires: python-unittest2
-%endif
-BuildRequires: yum
-
-%else
-BuildRequires: python-hashlib
-%endif
-
-%if 0%{?suse_version}
-Requires(pre): apache2
-%else
-Requires(pre): httpd
-%endif
-
-Requires:       python-enum34
-BuildRequires:  python-enum34
 
 Requires: python, rpm-python
 # /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
@@ -73,17 +60,13 @@ Requires: %{name}-libs >= 1.1.16-1
 %if 0%{?rhel} > 5 || 0%{?suse_version} >= 1315
 Requires: pyliblzma
 %endif
-%if 0%{?suse_version}
-BuildRequires: gettext
-%else
-BuildRequires: /usr/bin/msgfmt
-%endif
-BuildRequires: /usr/bin/docbook2man
-BuildRequires: docbook-utils
 %if 0%{?pylint_check}
 BuildRequires: spacewalk-pylint >= 2.2
 %endif
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version}
+BuildRequires: /usr/bin/msgfmt
+BuildRequires: /usr/bin/docbook2man
+BuildRequires: docbook-utils
+%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} > 1310
 BuildRequires: rhnlib >= 2.5.74
 BuildRequires: rhn-client-tools
 BuildRequires: rpm-python
@@ -92,6 +75,8 @@ BuildRequires: python-debian
 BuildRequires: python-gzipstream
 BuildRequires: yum
 %endif
+Requires(pre): %{apache_pkg}
+Requires: %{apache_pkg}
 Requires: %{name}-usix
 # we don't really want to require this redhat-release, so we protect
 # against installations on other releases using conflicts...
@@ -251,12 +236,6 @@ Summary: Spacewalk server and client tools libraries
 Group: Applications/Internet
 %if 0%{?suse_version}
 BuildRequires: python-devel
-%if 0%{?suse_version} >= 1110
-Requires: python-base
-%else
-Requires: python
-Requires: python-hashlib
-%endif
 %else
 BuildRequires: python2-devel
 Conflicts: %{name} < 1.7.0
@@ -277,13 +256,14 @@ Provides: %{name}-usix = %{version}-%{release}
 Library for writing code that runs on Python 2 and 3
 
 
-%if 0%{?fedora} && 0%{?fedora} >= 23
+%if 0%{?fedora} >= 23
 
 %package -n python3-%{name}-libs
 Summary: Spacewalk client tools libraries for Fedora 23
 Group: Applications/Internet
+BuildRequires: python2-devel
+BuildRequires: python-hashlib
 BuildRequires: python3-devel
-BuildRequires: python3-libs
 Conflicts: %{name} < 1.7.0
 Requires: python3-libs
 Requires: python3-%{name}-usix
@@ -295,6 +275,7 @@ Libraries required by Spacewalk client tools on Fedora 23.
 Summary: Spacewalk client micro six library
 Group: Applications/Internet
 Provides: python3-%{name}-usix = %{version}-%{release}
+BuildRequires: python2-devel
 
 %description -n python3-%{name}-usix
 Library for writing code that runs on Python 2 and 3
@@ -352,15 +333,15 @@ Requires: %{name}
 Requires: spacewalk-certs-tools
 Requires: spacewalk-admin >= 0.1.1-0
 Requires: python-gzipstream
-Requires: susemanager-tools
 %if 0%{?suse_version}
-Requires: python-base
+Requires: susemanager-tools
 Requires: apache2-prefork
-%else
-Requires: python-hashlib
+%endif
 %if 0%{?fedora} || 0%{?rhel} > 6
 Requires: pyliblzma
 %endif
+%if 0%{?fedora} || 0%{?rhel}
+Requires: python-hashlib
 Requires: mod_ssl
 %endif
 Requires: %{name}-xml-export-libs
@@ -393,9 +374,6 @@ Libraries required by various exporting tools
 %setup -q
 
 %build
-%if !0%{?suse_version}
-sed -i 's/^INSTALL_DEST.*/INSTALL_DEST = \/etc\/httpd\/conf.d/' apache-conf/Makefile
-%endif
 make -f Makefile.backend all
 
 %install
@@ -403,7 +381,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{rhnroot}
 install -d $RPM_BUILD_ROOT%{pythonrhnroot}
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
-    MANDIR=%{_mandir}
+    MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd}
 
 %if 0%{?fedora} && 0%{?fedora} >= 23
 install -d $RPM_BUILD_ROOT%{python3rhnroot}/common
@@ -411,7 +389,7 @@ cp $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py \
     $RPM_BUILD_ROOT%{python3rhnroot}/
 cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/{__init__.py,usix.py} \
     $RPM_BUILD_ROOT%{python3rhnroot}/common
-cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/{checksum.py,cli.py,rhn_deb.py,rhn_mpm.py,rhn_pkg.py,rhn_rpm.py,stringutils.py,fileutils.py} \
+cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/{checksum.py,cli.py,rhn_deb.py,rhn_mpm.py,rhn_pkg.py,rhn_rpm.py,stringutils.py,fileutils.py,rhnLib.py} \
     $RPM_BUILD_ROOT%{python3rhnroot}/common
 %endif
 export PYTHON_MODULE_NAME=%{name}
@@ -433,18 +411,22 @@ ln -s rhn-satellite-exporter $RPM_BUILD_ROOT/usr/bin/mgr-exporter
 
 %if 0%{?fedora} || 0%{?rhel} > 6
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
+sed -i 's/#DOCUMENTROOT#/\/var\/www\/html/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+%endif
+%if 0%{?suse_version}
+sed -i 's/#LOGROTATE-3.8#.*/    su root www/' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
+sed -i 's/#DOCUMENTROOT#/\/srv\/www\/htdocs/' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+pushd $RPM_BUILD_ROOT
+find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
+popd
 %endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %check
-export PYTHONPATH=%{buildroot}%{python_sitelib}:%{_datadir}/rhn
-# only run our unittests on versions where we have all the right BuildRequires
-%if 0%{?suse_version}
-make -f Makefile.backend unittest
-%endif
-make -f Makefile.backend test || :
+make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} test || :
+
 %if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn:/usr/share/rhn
@@ -474,16 +456,13 @@ fi
 %post server
 %if 0%{?suse_version}
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES perl
 %endif
+if [ ! -e %{rhnconf}/rhn.conf ]; then
+    exit 0
+fi
 
 # Is secret key in our config file?
 regex="^[[:space:]]*(server\.|)secret_key[[:space:]]*=.*$"
-
-if [ ! -d %{rhnconf} ]; then
-    # happens if we do not pre-require spacewalk-config
-    exit 0
-fi
 
 if grep -E -i $regex %{rhnconf}/rhn.conf > /dev/null 2>&1 ; then
     # secret key already there
@@ -516,7 +495,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/rhnConfig.py*
 %{pythonrhnroot}/common/rhnException.py*
 %{pythonrhnroot}/common/rhnFlags.py*
-%{pythonrhnroot}/common/rhnLib.py*
 %{pythonrhnroot}/common/rhnLog.py*
 %{pythonrhnroot}/common/rhnMail.py*
 %{pythonrhnroot}/common/rhnTB.py*
@@ -650,6 +628,11 @@ rm -f %{rhnconf}/rhnSecret.py*
 # logs and other stuff
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-server
 
+%if 0%{?suse_version}
+%dir %{rhnroot}/server
+%dir %{rhnroot}/server/handlers
+%endif
+
 %files xmlrpc
 %defattr(-,root,root)
 %doc LICENSE
@@ -729,6 +712,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/rhn_pkg.py*
 %{pythonrhnroot}/common/rhn_rpm.py*
 %{pythonrhnroot}/common/stringutils.py*
+%{pythonrhnroot}/common/rhnLib.py*
 
 %files usix
 %defattr(-,root,root)
@@ -750,6 +734,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{python3rhnroot}/common/rhn_pkg.py
 %{python3rhnroot}/common/rhn_rpm.py
 %{python3rhnroot}/common/stringutils.py
+%{python3rhnroot}/common/rhnLib.py*
 
 %files -n python3-%{name}-usix
 %doc LICENSE
@@ -804,6 +789,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files tools
 %defattr(-,root,root)
 %doc LICENSE
+%doc README.ULN
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
 %attr(755,root,root) %{_bindir}/rhn-charsets
@@ -850,8 +836,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,%{apache_group}) %dir %{_var}/log/rhn/reposync
 %{pythonrhnroot}/satellite_tools/repo_plugins/__init__.py*
 %{pythonrhnroot}/satellite_tools/repo_plugins/yum_src.py*
-%config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
 %{pythonrhnroot}/satellite_tools/repo_plugins/uln_src.py*
+%config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
 %{_mandir}/man8/rhn-satellite-exporter.8*
 %{_mandir}/man8/rhn-charsets.8*
 %{_mandir}/man8/rhn-schema-version.8*
@@ -887,6 +873,22 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Fri May 13 2016 Gennadii Altukhov <galt@redhat.com> 2.5.40-1
+- moving rhnLib.py into spacewalk-backend-libs package,
+- Fix check for local URI
+
+* Thu May 12 2016 Gennadii Altukhov <galt@redhat.com> 2.5.39-1
+- change build dependency on python-devel, because we don't use Python3 during
+  package building
+
+* Wed May 11 2016 Gennadii Altukhov <galt@redhat.com> 2.5.38-1
+- fix imports of usix
+
+* Tue May 10 2016 Grant Gainey 2.5.37-1
+- spacewalk-backend: build on openSUSE - specfile fixes
+- spacewalk-backend: build on openSUSE
+- 1331271 - fix string concatenation
+
 * Mon Apr 25 2016 Gennadii Altukhov <galt@redhat.com> 2.5.36-1
 - Add missing sys imports
 
@@ -900,7 +902,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - fix building of spacewalk-backend
 
 * Thu Apr 21 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.33-1
-- 
+-
 
 * Thu Apr 21 2016 Gennadii Altukhov <galt@redhat.com> 2.5.32-1.git.1.151aa47
 - Add missing import 'sys'

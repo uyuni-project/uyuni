@@ -108,20 +108,23 @@ mkdir -p $DIR/salt-states
 mkdir -p $DIR/subscription-matcher
 
 echo "    * copying configuration information"
-cp -fa /etc/apache2/conf* $DIR/conf/httpd
-if [ $IS_SUSE -eq 1 ]; then
-    cp -fa /etc/apache2/vhosts* $DIR/conf/httpd
+if [ -d /etc/httpd ]; then
+    cp -fapRd /etc/httpd/conf* $DIR/conf/httpd
+elif [ -d /etc/apache2 ]; then
+    cp -fapRd /etc/apache2/conf* $DIR/conf/httpd
+    cp -fapRd /etc/apache2/vhosts* $DIR/conf/httpd
 fi
-cp -faL /etc/rhn $DIR/conf/rhn
+cp -fapRd /etc/rhn $DIR/conf/rhn
+cp -fapRd /etc/sysconfig/rhn $DIR/conf/rhn/sysconfig
 sed -i 's/^server.susemanager.mirrcred_pass.*/server.susemanager.mirrcred_pass = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^server.secret_key.*/server.secret_key = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^session_secret_.*/session_secret_N = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^web.session_swap_secret_.*/web.session_swap_secret_N = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^db_password.*/db_password = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^server.satellite.http_proxy_password.*/server.satellite.http_proxy_password = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
-cp -fa /etc/sysconfig/rhn $DIR/conf/rhn/sysconfig
+
 if [ -f /etc/tnsnames.ora ] ; then
-    cp -fa /etc/tnsnames.ora $DIR/conf
+    cp -fad /etc/tnsnames.ora $DIR/conf
 fi
 
 # Copy all Salt Master configuration
@@ -175,12 +178,12 @@ if [ -d $MATCHER_DATA_DIR ]; then
 fi
 
 echo "    * copying logs"
-if [ $IS_SUSE -eq 1 ]; then
-    cp -fa /var/log/apache2 $DIR/httpd-logs
-else
-    cp -fa /var/log/httpd $DIR/httpd-logs
+if [ -d /var/log/httpd ]; then
+    cp -fapRd /var/log/httpd $DIR/httpd-logs
+elif [ -d /var/log/apache2 ]; then
+    cp -fapRd /var/log/apache2 $DIR/httpd-logs
 fi
-cp -fa /var/log/rhn* $DIR/rhn-logs
+cp -fapRd /var/log/rhn* $DIR/rhn-logs
 DB_INSTALL_LOG=/var/log/rhn/rhn-database-installation.log
 if [ -f "$DB_INSTALL_LOG" ] ; then
     mkdir -p $DIR/tmp
@@ -252,24 +255,14 @@ fi
 
 # /etc/passwd
 if [ -f /etc/passwd ] ; then
-    if [ $IS_SUSE -eq 1 ]; then
-	echo "    * copying wwwrun, oracle, tomcat entries from /etc/passwd"
-	getent passwd wwwrun tomcat oracle > $DIR/conf/passwd
-    else
 	echo "    * copying apache, postgres, tomcat entries from /etc/passwd"
-	getent passwd apache tomcat postgres > $DIR/conf/passwd
-    fi
+	getent passwd apache wwwrun tomcat postgres > $DIR/conf/passwd
 fi
 
 # /etc/group
 if [ -f /etc/group ] ; then
-    if [ $IS_SUSE -eq 1 ]; then
-	echo "    * copying www, oracle, tomcat entries from /etc/group"
-	getent group www tomcat oracle dba > $DIR/conf/group
-    else
 	echo "    * copying apache, postgres, tomcat entries from /etc/group"
-	getent group apache tomcat postgres > $DIR/conf/group
-    fi
+	getent group apache www tomcat postgres > $DIR/conf/group
 fi
 
 echo "    * querying RPM database (versioning of Spacewalk, etc.)"
@@ -325,8 +318,8 @@ if [ -f $PGSQL_ROOT/var/lib/pgsql/pgstartup.log ] ; then
 	cp -fa $PGSQL_ROOT/var/lib/pgsql/pgstartup.log $DIR/database
 fi
 if [ -f /var/lib/pgsql/initlog ] ; then
-	echo "    * copying initlog"
-	cp -fa /var/lib/pgsql/initlog $DIR/database
+       echo "    * copying initlog"
+       cp -fa /var/lib/pgsql/initlog $DIR/database
 fi
 
 ls $PGSQL_ROOT/var/lib/pgsql/data/*.conf $PGSQL_ROOT/var/lib/pgsql/data/pg_log/* 2>/dev/null | xargs -I file cp -fa file $DIR/database

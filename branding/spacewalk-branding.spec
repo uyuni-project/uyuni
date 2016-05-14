@@ -1,27 +1,23 @@
-%if  0%{?suse_version}
-%define version_major 2.1
-%define wwwdocroot /srv/www/htdocs
-%define apacheconfdir %{_sysconfdir}/apache2/conf.d
-%define apache_group www
-%global tomcat tomcat
-%define bootstrappkg susemanager-frontend-libs-devel
-%else
 %if  0%{?rhel} && 0%{?rhel} < 6
-%global tomcat tomcat5
+%global tomcat_path %{_var}/lib/tomcat5
+%global wwwdocroot %{_var}/www/html
 %else
 %if 0%{?fedora} || 0%{?rhel} >= 7
-%global tomcat tomcat
+%global tomcat_path %{_var}/lib/tomcat
+%global wwwdocroot %{_var}/www/html
 %else
-%global tomcat tomcat6
+%if 0%{?suse_version}
+%global tomcat_path /srv/tomcat
+%global wwwdocroot /srv/www/htdocs
+%else
+%global tomcat_path %{_var}/lib/tomcat6
+%global wwwdocroot %{_var}/www/html
 %endif
 %endif
-%define wwwdocroot %{_var}/www/html
-%define apacheconfdir %{_sysconfdir}/httpd/conf.d
-%define apache_group apache
-%define bootstrappkg bootstrap-less
 %endif
+
 Name:       spacewalk-branding
-Version:    2.5.2.8
+Version:    2.5.3
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -34,10 +30,11 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: java-devel >= 1.5.0
 BuildRequires: nodejs
 BuildRequires: nodejs-less
-BuildRequires: %{bootstrappkg}
-BuildRequires: apache2
-Requires:      apache2
+Requires:      httpd
+%if 0%{?suse_version}
 Requires(pre): tomcat
+BuildRequires: susemanager-frontend-libs-devel
+BuildRequires: apache2
 Requires:      susemanager(twitter-bootstrap-js)
 Requires:      susemanager(bootstrap-datepicker)
 Requires:      susemanager(font-awesome) = 4.4.0
@@ -53,6 +50,20 @@ Requires:      susemanager-getting-started_en-pdf
 Requires:      susemanager-reference_en-pdf
 Requires:      susemanager-best-practices_en-pdf
 Requires:      susemanager-advanced-topics_en-pdf
+%else
+BuildRequires: patternfly1
+Requires:      bootstrap <= 3.0.0
+Requires:      bootstrap-datepicker
+Requires:      font-awesome >= 4.0.0
+Requires:      jquery-timepicker >= 1.3.2
+Requires:      roboto >= 1.2
+Requires:      pwstrength-bootstrap
+Requires:      momentjs
+Requires:      jquery-ui
+Requires:      patternfly1
+Requires:      select2
+Requires:      select2-bootstrap-css
+%endif
 
 %description
 Spacewalk specific branding, CSS, and images.
@@ -70,6 +81,7 @@ CSS files.
 %setup -q
 
 %build
+
 javac java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 rm -f java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 jar -cf java-branding.jar -C java/code/src com
@@ -83,12 +95,13 @@ rm -f css/patternfly1
 
 %install
 rm -rf %{buildroot}
-install -d -m 755 %{buildroot}/%{wwwdocroot}
-install -d -m 755 %{buildroot}/%{wwwdocroot}/css
+install -d -m 755 %{buildroot}%{wwwdocroot}
+install -d -m 755 %{buildroot}%{wwwdocroot}/css
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
-install -d -m 755 %{buildroot}/srv/tomcat/webapps/rhn/WEB-INF/lib/
+install -d -m 755 %{buildroot}%{tomcat_path}/webapps/rhn/WEB-INF/lib/
+install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn
 install -d -m 755 %{buildroot}/%{_prefix}/share/rhn/config-defaults
 cp -pR css/* %{buildroot}/%{wwwdocroot}/css
 cp -pR fonts %{buildroot}/%{wwwdocroot}/
@@ -98,7 +111,7 @@ cp -pR img %{buildroot}/%{wwwdocroot}/
 cp -p img/favicon.ico %{buildroot}/%{wwwdocroot}/
 cp -pR setup  %{buildroot}%{_datadir}/spacewalk/
 cp -pR java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
-ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}/srv/tomcat/webapps/rhn/WEB-INF/lib/java-branding.jar
+ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
 
 %if  0%{?suse_version}
 cat > %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf <<-ENDOFCONFIG
@@ -107,10 +120,11 @@ docs.reference_guide=/rhn/help/reference/index.jsp
 docs.best_practices_guide=/rhn/help/best-practices/index.jsp
 docs.advanced_topics_guide=/rhn/help/advanced-topics/index.jsp
 docs.release_notes=/rhn/help/release-notes/manager/en-US/index.jsp
-docs.proxy_release_notes=http://www.suse.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/%{version_major}/
+docs.proxy_release_notes=http://www.novell.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/3.0/
 ENDOFCONFIG
 %else
 cp -p conf/rhn_docs.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf
+ln -s %{_datadir}/patternfly1/resources/fonts/* %{buildroot}%{wwwdocroot}/fonts/
 %endif
 
 %clean
@@ -118,33 +132,35 @@ rm -rf %{buildroot}
 
 
 %files
-%defattr(-,root,root)
-%dir /%{wwwdocroot}/css
-/%{wwwdocroot}/css/*.css
+%dir %{wwwdocroot}/css
+%{wwwdocroot}/css/*.css
+%dir %{wwwdocroot}/fonts
+%{wwwdocroot}/fonts/*
 %dir /%{wwwdocroot}/img
-/%{wwwdocroot}/img/*
-%dir /%{wwwdocroot}/fonts
-/%{wwwdocroot}/fonts/*
-/%{wwwdocroot}/favicon.ico
+%{wwwdocroot}/img/*
+%{wwwdocroot}/favicon.ico
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
-/srv/tomcat/webapps/rhn/WEB-INF/lib/java-branding.jar
+%{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
 %{_prefix}/share/rhn/config-defaults/rhn_docs.conf
-%attr(0755,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
-%dir /usr/share/rhn
-%dir /usr/share/rhn/lib
-
-%attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps/rhn
-%attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps/rhn/WEB-INF
-%attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps/rhn/WEB-INF/lib
-
 %doc LICENSE
+%if 0%{?suse_version}
+%attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn
+%attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn/WEB-INF
+%attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn/WEB-INF/lib/
+%dir %{_prefix}/share/rhn
+%dir %{_prefix}/share/rhn/lib
+%attr(755,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
+%endif
 
 %files devel
 %defattr(-,root,root)
-/%{wwwdocroot}/css/*.less
+%{wwwdocroot}/css/*.less
 
 %changelog
+* Tue May 10 2016 Grant Gainey 2.5.3-1
+- spacewalk-branding: build on openSUSE
+
 * Tue Dec 15 2015 Jan Dobes 2.5.2-1
 - fix %%tomcat in spacewalk-branding.spec for EL7
 

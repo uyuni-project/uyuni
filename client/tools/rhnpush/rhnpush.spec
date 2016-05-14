@@ -10,26 +10,24 @@ Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
 URL:           http://fedorahosted.org/spacewalk
-Version:       5.5.94
+Version:       5.5.95
 Release:       1%{?dist}
 Source0:       https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:     noarch
 Requires:      rpm-python
+BuildRequires: spacewalk-backend-libs > 1.8.33
+BuildRequires: python-devel
 
 %if 0%{?fedora} >= 23
 Requires:      python3-rhnlib
 Requires:      python3-spacewalk-backend-libs
 Requires:      python3-spacewalk-backend-usix
-BuildRequires: python3-spacewalk-backend-libs
-BuildRequires: python3-devel
 %else
 Requires:      rhnlib >= 2.5.74
 Requires:      spacewalk-backend-libs >= 1.7.17
 Requires:      spacewalk-backend-usix
-BuildRequires: spacewalk-backend-libs > 1.8.33
-BuildRequires: python-devel
 %endif
 
 Requires:      %{rhn_client_tools}
@@ -109,6 +107,10 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING
 
 %changelog
+* Thu May 12 2016 Gennadii Altukhov <galt@redhat.com> 5.5.95-1
+- change build dependency on python-devel, because we don't use Python3 during
+  package building
+
 * Fri Apr 22 2016 Gennadii Altukhov <galt@redhat.com> 5.5.94-1
 - Add some fixes to rhnpush for Python 3 compatibility - change mode for open()
   function - HTTPResponse getheaders() was renamed to get() - fix binary string
