@@ -150,7 +150,7 @@ rm -rf %{buildroot}
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn/WEB-INF/lib/
 %dir %{_prefix}/share/rhn
 %dir %{_prefix}/share/rhn/lib
-%attr(755,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
+%attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %endif
 
 %files devel
