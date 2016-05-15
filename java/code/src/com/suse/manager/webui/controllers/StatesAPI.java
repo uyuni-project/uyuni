@@ -48,11 +48,13 @@ import com.google.gson.GsonBuilder;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.MinionServerUtils;
+import com.suse.manager.webui.utils.SaltInclude;
 import com.suse.manager.webui.utils.gson.StateTargetType;
 import org.apache.http.HttpStatus;
 
@@ -107,6 +109,8 @@ public class StatesAPI {
 
     private static final Gson GSON = new GsonBuilder().create();
     public static final String SALT_PACKAGE_FILES = "packages";
+    public static final String SUMA_CHANNEL_REPO_FILE
+            = "/etc/zypp/repos.d/susemanager:channels.repo";
 
     private StatesAPI() { }
 
@@ -537,8 +541,11 @@ public class StatesAPI {
                 .latestPackageStates(server)
                 .orElseGet(HashSet::new);
         SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
+        pkgInstalled.addRequire("file", SUMA_CHANNEL_REPO_FILE);
         SaltPkgRemoved pkgRemoved = new SaltPkgRemoved();
+        pkgRemoved.addRequire("file", SUMA_CHANNEL_REPO_FILE);
         SaltPkgLatest pkgLatest = new SaltPkgLatest();
+        pkgLatest.addRequire("file", SUMA_CHANNEL_REPO_FILE);
 
         for (PackageState state : packageStates) {
             if (state.getPackageState() == PackageStates.INSTALLED) {
@@ -562,7 +569,8 @@ public class StatesAPI {
                     "packages_" + server.getDigitalServerId() + ".sls");
             SaltStateGenerator saltStateGenerator =
                     new SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(pkgInstalled, pkgRemoved, pkgLatest);
+            saltStateGenerator.generate(new SaltInclude(ApplyStatesEventMessage.CHANNELS),
+                    pkgInstalled, pkgRemoved, pkgLatest);
         }
         catch (IOException e) {
             LOG.error(e.getMessage(), e);

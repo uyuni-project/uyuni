@@ -32,7 +32,6 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.salt.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -64,6 +63,9 @@ public enum SaltServerActionService {
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
+    private static final String PACKAGES_INSTALLPKG = "packages.installpkg";
+    private static final String PACKAGES_PKGREMOVE = "packages.removepkg";
+    private static final String PARAM_PKGS = "param_pkgs";
 
     /**
      * @param actionIn the action
@@ -257,15 +259,16 @@ public enum SaltServerActionService {
                         .flatMap(Set::stream)
                         .collect(Collectors.toSet())
         ));
-        // Convert errata names to LocalCall objects of type Pkg.install
-        return collect.entrySet().stream().collect(Collectors.toMap(
-                entry -> Pkg.install(true, entry.getKey()
-                        .stream()
-                        .map(patch -> "patch:" + patch)
-                        .collect(Collectors.toList()))
-                ,
-                Map.Entry::getValue
-        ));
+        // Convert errata names to LocalCall objects of type State.apply
+        return collect.entrySet().stream()
+                .collect(Collectors.toMap(entry -> com.suse.manager.webui.utils.salt.State
+                        .apply(Arrays.asList(PACKAGES_INSTALLPKG),
+                        Optional.of(Collections.singletonMap(PARAM_PKGS,
+                                    entry.getKey().stream().collect(
+                                            Collectors.toMap(
+                                                    patch -> "patch:" + patch,
+                                                    patch -> ""))))),
+                Map.Entry::getValue));
     }
 
     private Map<LocalCall<?>, List<MinionServer>> packagesUpdateAction(
@@ -273,7 +276,9 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
-        ret.put(com.suse.manager.webui.utils.salt.Pkg.install(true, pkgs), minions);
+        ret.put(com.suse.manager.webui.utils.salt.State.apply(
+                Arrays.asList(PACKAGES_INSTALLPKG),
+                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs))), minions);
         return ret;
     }
 
@@ -282,7 +287,9 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
-        ret.put(com.suse.manager.webui.utils.salt.Pkg.remove(pkgs), minions);
+        ret.put(com.suse.manager.webui.utils.salt.State.apply(
+                Arrays.asList(PACKAGES_PKGREMOVE),
+                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs))), minions);
         return ret;
     }
 
