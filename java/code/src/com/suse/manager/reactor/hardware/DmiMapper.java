@@ -60,18 +60,18 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
                     Smbios.RecordType.BASEBOARD)
                     .map(ValueMap::new).orElseGet(ValueMap::new);
 
-            biosVendor = (String)bios.get("vendor").orElse(null);
-            biosVersion = (String)bios.get("version").orElse(null);
-            biosReleseDate = (String)bios.get("release_date").orElse(null);
+            biosVendor = bios.getOptionalAsString("vendor").orElse(null);
+            biosVersion = bios.getOptionalAsString("version").orElse(null);
+            biosReleseDate = bios.getOptionalAsString("release_date").orElse(null);
 
-            productName = (String)system.get("product_name").orElse(null);
-            systemVersion = (String)system.get("version").orElse(null);
-            systemSerial = (String)system.get("serial_number").orElse(null);
+            productName = system.getOptionalAsString("product_name").orElse(null);
+            systemVersion = system.getOptionalAsString("version").orElse(null);
+            systemSerial = system.getOptionalAsString("serial_number").orElse(null);
 
-            chassisSerial = (String)chassis.get("serial_number").orElse(null);
-            chassisTag = (String)chassis.get("asset_tag").orElse(null);
+            chassisSerial = chassis.getOptionalAsString("serial_number").orElse(null);
+            chassisTag = chassis.getOptionalAsString("asset_tag").orElse(null);
 
-            boardSerial = (String)board.get("serial_number").orElse(null);
+            boardSerial = board.getOptionalAsString("serial_number").orElse(null);
         }
         catch (com.google.gson.JsonSyntaxException e) {
             LOG.warn("Could not retrieve DMI info from minion '" + minionId + "': " +
