@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * YAML generator for the Salt Package State.
  */
-public class SaltPkgLatest implements SaltState {
+public class SaltPkgLatest extends AbstractSaltRequisites implements SaltState {
     /**
      * Package data
      */
@@ -81,6 +81,9 @@ public class SaltPkgLatest implements SaltState {
         map = new HashMap<>();
         map.put("pkgs", pkgsList);
         pkgs.add(map);
+
+        // require the Suma channel
+        addRequisites(map);
 
         // Put the policy
         Map<String, Object> policy = new LinkedHashMap<>();
