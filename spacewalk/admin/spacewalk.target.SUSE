@@ -1,14 +1,19 @@
 [Unit]
 Description=Spacewalk
+Wants=auditlog-keeper.service
 Requires=jabberd.service
 Requires=tomcat.service
 Requires=spacewalk-wait-for-tomcat.service
+Requires=salt-master.service
+Requires=salt-api.service
+Requires=spacewalk-wait-for-salt.service
 Requires=apache2.service
 Requires=spacewalk-wait-for-jabberd.service
 Requires=osa-dispatcher.service
 Requires=rhn-search.service
 Requires=cobblerd.service
 Requires=taskomatic.service
+Requires=spacewalk-wait-for-taskomatic.service
 
 [Install]
 WantedBy=multi-user.target
