@@ -105,7 +105,7 @@ public class MinionsAPI {
      * @param response the response object
      * @return json result of the API call
      */
-    public static String accept(Request request, Response response) {
+    public static String accept(Request request, Response response, User user) {
         String target = request.params("target");
         SALT_SERVICE.acceptKey(target);
         return json(response, true);
@@ -117,7 +117,7 @@ public class MinionsAPI {
      * @param response the response object
      * @return json result of the API call
      */
-    public static String delete(Request request, Response response) {
+    public static String delete(Request request, Response response, User user) {
         String target = request.params("target");
         SALT_SERVICE.deleteKey(target);
         return json(response, true);
@@ -129,7 +129,7 @@ public class MinionsAPI {
      * @param response the response object
      * @return json result of the API call
      */
-    public static String reject(Request request, Response response) {
+    public static String reject(Request request, Response response, User user) {
         String target = request.params("target");
         SALT_SERVICE.rejectKey(target);
         return json(response, true);
