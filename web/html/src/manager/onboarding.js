@@ -101,7 +101,8 @@ class Onboarding extends React.Component {
   reloadKeys() {
     return listKeys().then(data => {
         this.setState({
-            keys: processData(data)
+            keys: processData(data["fingerprints"]),
+            isOrgAdmin: data["isOrgAdmin"]
         });
     });
   }
