@@ -27,10 +27,13 @@ import spark.Response;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.http.HttpStatus;
 
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
 /**
@@ -93,9 +96,12 @@ public class MinionsAPI {
      * @param response the response object
      * @return json result of the API call
      */
-    public static String listKeys(Request request, Response response) {
+    public static String listKeys(Request request, Response response, User user) {
         Key.Fingerprints fingerprints = SALT_SERVICE.getFingerprints();
-        return json(response, fingerprints);
+        Map<String, Object> data = new TreeMap<>();
+        data.put("isOrgAdmin", user.hasRole(RoleFactory.ORG_ADMIN));
+        data.put("fingerprints", fingerprints);
+        return json(response, data);
     }
 
 
@@ -105,7 +111,7 @@ public class MinionsAPI {
      * @param response the response object
      * @return json result of the API call
      */
-    public static String accept(Request request, Response response) {
+    public static String accept(Request request, Response response, User user) {
         String target = request.params("target");
         SALT_SERVICE.acceptKey(target);
         return json(response, true);
@@ -117,7 +123,7 @@ public class MinionsAPI {
      * @param response the response object
      * @return json result of the API call
      */
-    public static String delete(Request request, Response response) {
+    public static String delete(Request request, Response response, User user) {
         String target = request.params("target");
         SALT_SERVICE.deleteKey(target);
         return json(response, true);
@@ -129,7 +135,7 @@ public class MinionsAPI {
      * @param response the response object
      * @return json result of the API call
      */
-    public static String reject(Request request, Response response) {
+    public static String reject(Request request, Response response, User user) {
         String target = request.params("target");
         SALT_SERVICE.rejectKey(target);
         return json(response, true);

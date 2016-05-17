@@ -44,10 +44,10 @@ function rejectKey(key) {
     return Network.post("/rhn/manager/api/minions/keys/" + key + "/reject").promise;
 }
 
-function actionsFor(id, state, update) {
-    const acc = () => <AsyncButton key="accept" title="accept" icon="check" action={() => acceptKey(id).then(update)} />;
-    const rej = () => <AsyncButton key="reject" title="reject" icon="times" action={() => rejectKey(id).then(update)} />;
-    const del = () => <AsyncButton key="delete" title="delete" icon="trash" action={() => deleteKey(id).then(update)} />;
+function actionsFor(id, state, update, enabled) {
+    const acc = () => <AsyncButton disabled={enabled?"":"disabled"} key="accept" title="accept" icon="check" action={() => acceptKey(id).then(update)} />;
+    const rej = () => <AsyncButton disabled={enabled?"":"disabled"} key="reject" title="reject" icon="times" action={() => rejectKey(id).then(update)} />;
+    const del = () => <AsyncButton disabled={enabled?"":"disabled"} key="delete" title="delete" icon="trash" action={() => deleteKey(id).then(update)} />;
     const mapping = {
         "minions": [del],
         "minions_pre": [acc, rej],
@@ -101,7 +101,8 @@ class Onboarding extends React.Component {
   reloadKeys() {
     return listKeys().then(data => {
         this.setState({
-            keys: processData(data)
+            keys: processData(data["fingerprints"]),
+            isOrgAdmin: data["isOrgAdmin"]
         });
     });
   }
@@ -151,7 +152,7 @@ class Onboarding extends React.Component {
                   },{
                       "header": t("Actions"),
                       "entryToCell": (entry) => entry,
-                      "renderCell": (cell) => actionsFor(cell.id, cell.state, this.reloadKeys),
+                      "renderCell": (cell) => actionsFor(cell.id, cell.state, this.reloadKeys, this.state.isOrgAdmin),
                       "ratio": 0.1
                   }
                 ]}
