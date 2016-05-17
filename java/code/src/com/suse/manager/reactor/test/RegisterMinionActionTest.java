@@ -17,12 +17,17 @@ package com.suse.manager.reactor.test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.redhat.rhn.domain.channel.Channel;
@@ -34,6 +39,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -42,6 +48,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.salt.netapi.calls.modules.Status;
 import org.jmock.Mock;
 
@@ -70,6 +77,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     public void testDoExecute()
             throws Exception {
+        executeTest(null);
+    }
+
+    public void executeTest(Consumer<MinionServer> assertions) throws Exception {
 
         // cleanup
         Mock saltServiceMock = mock(SaltService.class);
@@ -149,7 +160,27 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 .filter(minion::equals);
         assertTrue("Server should be a activated system on the activation key", server.isPresent());
 
+        if (assertions != null) {
+            assertions.accept(minion);
+        }
+
     }
+
+    public void testReRegisterTraditionalAsMinion() throws Exception {
+        ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        Server server = ServerTestUtils.createTestSystem(user);
+        server.setMachineId(MACHINE_ID);
+        ServerFactory.save(server);
+
+        executeTest(minion -> {
+            assertEquals(server.getId(), minion.getId());
+            List<ServerHistoryEvent> history = new ArrayList<>();
+            history.addAll(minion.getHistory());
+            Collections.sort(history, (h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
+            assertEquals(history.get(history.size()-1).getSummary(), "Server reactivated as Salt minion");
+        });
+    }
+
 
     private Optional<Map<String, Object>> getCpuInfo(String minionId) throws IOException, ClassNotFoundException {
         return Optional.of(new JsonParser<>(Status.cpuinfo().getReturnType()).parse(
