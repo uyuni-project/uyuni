@@ -1,6 +1,8 @@
 
 # Spacewalk Testsuite
 
+[![Build Status](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=master)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
+
 ## Introduction
 
 Testsuite to automatically test a Spacewalk installation
