@@ -8,4 +8,4 @@ gem "rubyzip"
 gem 'owasp_zap'
 gem 'net-ssh'
 gem 'jwt'
-gem 'rubocop', :require => false
+gem 'rubocop', "~> 0.31.0", :require => false
