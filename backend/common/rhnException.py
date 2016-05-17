@@ -110,8 +110,8 @@ on this system."),
      """ + PRODUCT_NAME),
     47: _("""Invalid RPM header"""),
     48: _("""
-    This sever is already registered as a Salt Minion server. If you want to register it using
-    the traditional stack please delete first and then register it using the traditional tools.
+    This system is already registered as a Salt Minion. If you want to register it as a traditional client
+    please delete it first from the Systems page and then register it using the traditional tools.
     """),
     # For the uploading tools
     50: _("Invalid information uploaded to the server"),

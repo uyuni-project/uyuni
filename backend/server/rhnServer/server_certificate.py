@@ -209,8 +209,8 @@ class Certificate:
             log_debug(4, "found entitlements for machine_id", self.attrs.get('machine_id'), entitlements)
             if 'salt_entitled' in entitlements:
                 raise rhnFault(48, """
-    This sever is already registered as a Salt Minion server. If you want to register it using
-    the traditional stack please delete it first and then register it using the traditional tools.
+    This system is already registered as a Salt Minion. If you want to register it as a traditional client
+    please delete it first from the Systems page and then register it using the traditional tools.
                 """)
 
         if self.attrs.has_key('type') and self.attrs['type'] \

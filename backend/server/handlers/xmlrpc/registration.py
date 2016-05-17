@@ -246,8 +246,8 @@ class Registration(rhnHandler):
             log_debug(4, "found entitlements for machine_id", data["machine_id"], entitlements)
             if entitlements and "salt_entitled" in entitlements:
                 raise rhnFault(48, """
-    This sever is already registered as a Salt Minion server. If you want to register it using
-    the traditional stack please delete it first and then register it using the traditional tools.
+    This system is already registered as a Salt Minion. If you want to register it as a traditional client
+    please delete it first from the Systems page and then register it using the traditional tools.
                 """)
 
         if profile_name is not None and not \
