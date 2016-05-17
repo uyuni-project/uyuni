@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.kickstart.test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -315,5 +316,34 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
             assertContains(Arrays.asList(tree.getDefaultInitrdPaths()),
                            String.format(entry.getValue()[2], entry.getValue()[0]));
         }
+    }
+
+    /**
+     * Tests listing candidates for the the cobbler backsync.
+     * @throws Exception if anything goes wrong
+     */
+    public void testListCandidatesForBacksync() throws Exception {
+        KickstartableTree k = createTestKickstartableTree(
+                ChannelFactoryTest.createTestChannel(user));
+
+        assertEquals(Collections.singletonList(k),
+                KickstartFactory.listCandidatesForBacksync());
+    }
+
+    /**
+     * Tests listing candidates for the the cobbler backsync when there are no candidates.
+     * @throws Exception if anything goes wrong
+     */
+    public void testListCandidatesForBacksyncNoSync() throws Exception {
+        KickstartableTree k = createTestKickstartableTree(
+                ChannelFactoryTest.createTestChannel(user));
+        k.setKernelOptions("option1=val1");
+        KickstartFactory.saveKickstartableTree(k);
+        KickstartableTree k2 = createTestKickstartableTree(
+                ChannelFactoryTest.createTestChannel(user));
+        k2.setKernelOptionsPost("option2=val2");
+        KickstartFactory.saveKickstartableTree(k2);
+
+        assertTrue(KickstartFactory.listCandidatesForBacksync().isEmpty());
     }
 }
