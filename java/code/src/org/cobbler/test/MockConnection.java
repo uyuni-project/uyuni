@@ -40,7 +40,6 @@ public class MockConnection extends CobblerConnection {
 
     private Logger log = Logger.getLogger(MockConnection.class);
 
-
     private static List<Map> profiles = new ArrayList<Map>();
     private static List<Map> distros = new ArrayList<Map>();
     private static List<Map> systems = new ArrayList<Map>();
@@ -54,6 +53,14 @@ public class MockConnection extends CobblerConnection {
 
     private static List<String> powerCommands = new ArrayList<String>();
 
+    private static final Map<String, String> remapKeys = new HashMap<>();
+
+    static {
+        remapKeys.put("kopts", "kernel_options");
+        remapKeys.put("kopts_post", "kernel_options_post");
+        remapKeys.put("ksmeta", "ks_meta");
+    }
+
     /**
      * Mock constructors for Cobbler connection
      * Don't care..
@@ -61,8 +68,7 @@ public class MockConnection extends CobblerConnection {
      * @param userIn user
      * @param passIn password
      */
-    public MockConnection(String urlIn,
-            String userIn, String passIn) {
+    public MockConnection(String urlIn, String userIn, String passIn) {
         super();
         url = urlIn;
     }
@@ -89,7 +95,6 @@ public class MockConnection extends CobblerConnection {
         super();
         url = urlIn;
     }
-
 
    public Object invokeMethod(String name, Object... args) {
     //no op -> mock version ..
@@ -144,7 +149,7 @@ public class MockConnection extends CobblerConnection {
     else if (name.equals("modify_distro")) {
         log.debug("DISTRO: Modify  w/ handle" + args[0] + ", set " + args[1] +
                 "to " + args[2]);
-        distroMap.get(args[0]).put(args[1], args[2]);
+        modifyDistro(args[0], args[1], args[2]);
     }
     else if ("get_distro".equals(name)) {
         return findByName((String)args[0], distros);
@@ -257,6 +262,18 @@ public class MockConnection extends CobblerConnection {
     }
     return "";
    }
+
+    private void modifyDistro(Object arg, Object arg1, Object arg2) {
+        Map distro = distroMap.get(arg);
+        distro.put(arg1, arg2);
+
+        // Some cobbler options have 2 names (the first name is used for writing to cobbler,
+        // and the second one for reading from cobbler. Here we make sure the second one
+        // is updated too.
+        if (remapKeys.containsKey(arg1)) {
+            distro.put(remapKeys.get(arg1), arg2);
+        }
+    }
 
     private String newProfile() {
         Map profile = new HashMap();
