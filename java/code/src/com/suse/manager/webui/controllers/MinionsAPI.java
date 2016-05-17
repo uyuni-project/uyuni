@@ -94,6 +94,7 @@ public class MinionsAPI {
      * API endpoint to get all minions matching a target glob
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return json result of the API call
      */
     public static String listKeys(Request request, Response response, User user) {
@@ -109,6 +110,7 @@ public class MinionsAPI {
      * API endpoint to accept minion keys
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return json result of the API call
      */
     public static String accept(Request request, Response response, User user) {
@@ -121,6 +123,7 @@ public class MinionsAPI {
      * API endpoint to delete minion keys
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return json result of the API call
      */
     public static String delete(Request request, Response response, User user) {
@@ -133,6 +136,7 @@ public class MinionsAPI {
      * API endpoint to reject minion keys
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return json result of the API call
      */
     public static String reject(Request request, Response response, User user) {
