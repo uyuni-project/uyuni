@@ -9,3 +9,4 @@ gem 'owasp_zap'
 gem 'net-ssh'
 gem 'jwt'
 gem 'rubocop', :require => false
+gem 'cucumber_lint', :require => false
