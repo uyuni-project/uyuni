@@ -106,12 +106,7 @@ Feature: Check client registration
     And I should see a "Snapshot Tags" link in the content area
     And I should see a "Schedule" link in the content area
 
-  # If cobbler test was running there is a profile
-  # And I should see a "No profiles found that are compatible with this System.
-  # Either you haven't created any Kickstart Profiles
-  # or this system does not have a Base Channel." text
-
-  Scenario: check tab links "Groups"
+  # If cobbler test was running there is a profile  # And I should see a "No profiles found that are compatible with this System.  # Either you haven't created any Kickstart Profiles  # or this system does not have a Base Channel." text  Scenario: check tab links "Groups"
     Given I am on the Systems overview page of this client
     When I follow "Groups" in the content area
     Then I should see a "Details" link in the content area
@@ -207,7 +202,7 @@ Feature: Check client registration
   Scenario: check tab links "Software" => "Errata"
     Given I am on the Systems overview page of this client
     When I follow "Software" in the content area
-    When I follow "Errata" in the content area
+    And I follow "Errata" in the content area
     Then I should see a "Relevant Errata" text
     And I should see a "Show" button
     And I should see a "Test update for virgo-dummy" text
@@ -217,7 +212,7 @@ Feature: Check client registration
   Scenario: check tab links "Software" => "Software Channels"
     Given I am on the Systems overview page of this client
     When I follow "Software" in the content area
-    When I follow "Software Channels" in the content area
+    And I follow "Software Channels" in the content area
     Then I should see a "Software Channel Subscriptions" text
     And I should see a "Base Software Channel" text
     And I should see a "Change Subscriptions" button
@@ -226,7 +221,7 @@ Feature: Check client registration
   Scenario: check tab links "Configuration" => "View/Modify Files"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "View/Modify Files" in the content area
+    And I follow "View/Modify Files" in the content area
     Then I should see a "Configuration Overview" text
     And I should see a "Centrally-Managed Files" link in the content area
     And I should see a "Locally-Managed Files" link in the content area
@@ -236,7 +231,7 @@ Feature: Check client registration
   Scenario: check tab links "Configuration" => "Add Files"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "Add Files" in the content area
+    And I follow "Add Files" in the content area
     Then I should see a "Upload Local File" text
     And I should see a "Upload File" link in the content area
     And I should see a "Import Files" link in the content area
@@ -255,8 +250,8 @@ Feature: Check client registration
   Scenario: check tab links "Configuration" => "Add Files" => "Import Files"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "Add Files" in the content area
-    When I follow "Import Files" in the content area
+    And I follow "Add Files" in the content area
+    And I follow "Import Files" in the content area
     Then I should see a "Import Configuration Files from" text
     And I should see a "contents" element in "configFileForm" form
     And I should see a "Import Configuration Files" button
@@ -264,8 +259,8 @@ Feature: Check client registration
   Scenario: check tab links "Configuration" => "Add Files" => "Create File"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "Add Files" in the content area
-    When I follow "Create File" in the content area
+    And I follow "Add Files" in the content area
+    And I follow "Create File" in the content area
     Then I should see a "Create Local File" text
     And I should see a "file_radio" element in "configFileForm" form
     And I should see a "dir_radio" element in "configFileForm" form
@@ -284,19 +279,19 @@ Feature: Check client registration
   Scenario: check tab links "Configuration" => "Deploy Files"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "Deploy Files" in the content area
+    And I follow "Deploy Files" in the content area
     Then I should see a "Deploy Files" text
 
   Scenario: check tab links "Configuration" => "Compare Files"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "Compare Files" in the content area
+    And I follow "Compare Files" in the content area
     Then I should see a "Compare Files" text
 
   Scenario: check tab links "Configuration" => "Manage Configuration Channels"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "Manage Configuration Channels" in the content area
+    And I follow "Manage Configuration Channels" in the content area
     Then I should see a "Configuration Channels" text
     And I should see a "List/Unsubscribe from Channels" link in the content area
     And I should see a "Subscribe to Channels" link in the content area
