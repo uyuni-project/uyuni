@@ -34,7 +34,7 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
 end
 
 # Listing chains
-When(/^I call XML\-RPC\/createChain with chain_label "(.*?)"$/) do |label|
+When(/^I call XML\-RPC\/createChain with chainLabel "(.*?)"$/) do |label|
   action_id = rpc.createChain(label)
   refute(action_id < 1)
   $chain_label = label
