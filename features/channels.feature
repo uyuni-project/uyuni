@@ -29,7 +29,7 @@ Feature: Explore the Channels page
 
   Scenario: Completeness of Channels page
     When I follow "Channels"
-    When I follow "Popular Channels" in the left menu
+    And I follow "Popular Channels" in the left menu
     Then I should see a "Popular Channels" text
 
   Scenario: Check Packages in SLES11-SP3-Updates x86_64 Channel

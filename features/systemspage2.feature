@@ -31,7 +31,7 @@ Feature: Explore the main landing page
   Scenario: Completeness of the Virtual System table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "Virtual Systems" in the left menu
+    And I follow "Virtual Systems" in the left menu
     Then The table should have a column named "System"
     And The table should have a column named "Updates"
     And The table should have a column named "Status"
@@ -40,7 +40,7 @@ Feature: Explore the main landing page
   Scenario: Completeness of the Out-of-Date System table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "Out of Date" in the left menu
+    And I follow "Out of Date" in the left menu
     Then The table should have a column named "System"
     And The table should have a column named "Updates"
     And The table should have a column named "Patches"
@@ -52,7 +52,7 @@ Feature: Explore the main landing page
   Scenario: Completeness of the Requiring Reeboot System table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "Requiring Reboot" in the left menu
+    And I follow "Requiring Reboot" in the left menu
     Then The table should have a column named "System"
     And The table should have a column named "Updates"
     And The table should have a column named "Patches"
@@ -64,7 +64,7 @@ Feature: Explore the main landing page
   Scenario: Completeness of the Non Compliant System table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "Non Compliant" in the left menu
+    And I follow "Non Compliant" in the left menu
     Then The table should have a column named "System"
     And The table should have a column named "Packages"
     And The table should have a column named "Base Channel"
@@ -73,7 +73,7 @@ Feature: Explore the main landing page
   Scenario: Completeness of the Without System Type table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "Without System Type" in the left menu
+    And I follow "Without System Type" in the left menu
     Then The table should have a column named "System"
     And The table should have a column named "Updates"
     And The table should have a column named "Patches"
@@ -85,7 +85,7 @@ Feature: Explore the main landing page
   Scenario: Completeness of the Ungrouped System table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "Ungrouped" in the left menu
+    And I follow "Ungrouped" in the left menu
     Then The table should have a column named "System"
     And The table should have a column named "Updates"
     And The table should have a column named "Patches"
@@ -97,7 +97,7 @@ Feature: Explore the main landing page
   Scenario: Completeness of the Inactive System table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "Inactive" in the left menu
+    And I follow "Inactive" in the left menu
     Then The table should have a column named "System"
     And The table should have a column named "Updates"
     And The table should have a column named "Patches"
@@ -109,9 +109,9 @@ Feature: Explore the main landing page
   Scenario: Completeness of the Recently Registered System table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "Recently Registered" in the left menu
+    And I follow "Recently Registered" in the left menu
     Then The table should have a column named "System"
-    Then The table should have a column named "Updates"
+    And The table should have a column named "Updates"
     And The table should have a column named "Base Channel"
     And The table should have a column named "Date Registered"
     And The table should have a column named "Registered by"
@@ -120,7 +120,7 @@ Feature: Explore the main landing page
   Scenario: Completeness of the Proxy System table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "Proxy" in the left menu
+    And I follow "Proxy" in the left menu
     Then The table should have a column named "System"
     And The table should have a column named "Updates"
     And The table should have a column named "Patches"
@@ -132,14 +132,14 @@ Feature: Explore the main landing page
   Scenario: Completeness of the Duplicate System table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "Duplicate Systems" in the left menu
+    And I follow "Duplicate Systems" in the left menu
     Then The table should have a column named "System"
     And The table should have a column named "Last Checked in"
 
   Scenario: Completeness of the System currency table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "System Currency" in the left menu
+    And I follow "System Currency" in the left menu
     Then The table should have a column named "System"
     And The table should have a column named "Security (Critical)"
     And The table should have a column named "Security (Important)"

@@ -32,7 +32,7 @@ Feature: smdba database helper tool
     Then I want to see if the database is "online"
     And when I check internally configuration for "wal_level" option
     Then I expect to see the configuration is set to "hot_standby"
-    Then I issue command "smdba system-check"
+    And I issue command "smdba system-check"
     And when I stop the database with the command "smdba db-stop"
     And I start database with the command "smdba db-start"
     And when I check internally configuration for "wal_level" option
@@ -49,30 +49,30 @@ Feature: smdba database helper tool
 
   Scenario: Check SMDBA backup setup facility
     Given a postgresql database is running
-    Given there is no such "/smdba-backup-test" directory
+    And there is no such "/smdba-backup-test" directory
     When I create backup directory "/smdba-backup-test" with UID "root" and GID "root"
     And when I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
     Then I should see error message that asks "/smdba-backup-test" belong to the same UID/GID as "/var/lib/pgsql/data" directory
-    Then I remove backup directory "/smdba-backup-test"
+    And I remove backup directory "/smdba-backup-test"
     When I create backup directory "/smdba-backup-test" with UID "postgres" and GID "postgres"
     And when I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
     Then I should see error message that asks "/smdba-backup-test" has same permissions as "/var/lib/pgsql/data" directory
-    Then I remove backup directory "/smdba-backup-test"
+    And I remove backup directory "/smdba-backup-test"
 
   Scenario: Take backup with SMDBA
     Given a postgresql database is running
-    Given there is no such "/smdba-backup-test" directory
+    And there is no such "/smdba-backup-test" directory
     When I create backup directory "/smdba-backup-test" with UID "postgres" and GID "postgres"
     And when I change Access Control List on "/smdba-backup-test" directory to "0700"
     And when I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
     Then base backup is taken
-    Then in "/smdba-backup-test" directory there is "base.tar.gz" file and at least one backup checkpoint file
-    Then parameter "archive_command" in the configuration file "/var/lib/pgsql/data/postgresql.conf" is "/usr/bin/smdba-pgarchive"
-    Then "/usr/bin/smdba-pgarchive" destination should be set to "/smdba-backup-test" in configuration file
+    And in "/smdba-backup-test" directory there is "base.tar.gz" file and at least one backup checkpoint file
+    And parameter "archive_command" in the configuration file "/var/lib/pgsql/data/postgresql.conf" is "/usr/bin/smdba-pgarchive"
+    And "/usr/bin/smdba-pgarchive" destination should be set to "/smdba-backup-test" in configuration file
 
   Scenario: Restore backup with SMDBA
     Given a postgresql database is running
-    Given database "susemanager" has no table "dummy"
+    And database "susemanager" has no table "dummy"
     When I set a checkpoint
     And when I issue command "smdba backup-hot"
     And when in the database I create dummy table "dummy" with column "test" and value "bogus data"
@@ -80,6 +80,6 @@ Feature: smdba database helper tool
     And when I restore database from the backup
     And when I issue command "smdba db-status"
     Given a postgresql database is running
-    Given database "susemanager" has no table "dummy"
+    And database "susemanager" has no table "dummy"
     Then I disable backup in the directory "/smdba-backup-test" 
-    Then I remove backup directory "/smdba-backup-test"
+    And I remove backup directory "/smdba-backup-test"

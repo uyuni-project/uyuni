@@ -12,5 +12,5 @@ Feature: Check the SP Migration feature
   Scenario: check the warning message on tab "Software" => "SP Migration"
     Given I am on the Systems overview page of this client
     When I follow "Software" in the content area
-    When I follow "SP Migration" in the content area
+    And I follow "SP Migration" in the content area
     Then I should see a "There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available." text

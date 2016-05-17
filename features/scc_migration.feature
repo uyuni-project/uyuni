@@ -8,35 +8,35 @@ Feature: Check the SCC Migration UI
 
   Scenario: SUSE Customer Center is not available
     Given I am authorized as "admin" with password "admin"
-    Given migration state saved
-    Given the server is not yet migrated to SCC
-    Given the SCC is not yet the default customer center
+    And migration state saved
+    And the server is not yet migrated to SCC
+    And the SCC is not yet the default customer center
     When I follow "Admin"
-    When I follow "SUSE Manager Configuration"
-    When I follow "SUSE Customer Center" in the left menu
+    And I follow "SUSE Manager Configuration"
+    And I follow "SUSE Customer Center" in the left menu
     Then I should see a "The SUSE Customer Center is not yet available." text
-    Then I restore migration state
+    And I restore migration state
 
   Scenario: SUSE Manager is still connected to NCC
     Given I am authorized as "admin" with password "admin"
-    Given migration state saved
-    Given the server is not yet migrated to SCC
-    Given the SCC is the default customer center
+    And migration state saved
+    And the server is not yet migrated to SCC
+    And the SCC is the default customer center
     When I follow "Admin"
-    When I follow "SUSE Manager Configuration"
-    When I follow "SUSE Customer Center" in the left menu
+    And I follow "SUSE Manager Configuration"
+    And I follow "SUSE Customer Center" in the left menu
     Then I should see a "SUSE Manager is still connected to the Novell Customer Center." text
-    Then I should see a "Migration is a straightforward process but may take some minutes." text
-    Then I should see a "Start Migration to SUSE Customer Center" text
-    Then I restore migration state
+    And I should see a "Migration is a straightforward process but may take some minutes." text
+    And I should see a "Start Migration to SUSE Customer Center" text
+    And I restore migration state
 
   Scenario: SUSE Manager is already migrated to SCC
     Given I am authorized as "admin" with password "admin"
-    Given migration state saved
-    Given the server is migrated to SCC
-    Given the SCC is the default customer center
+    And migration state saved
+    And the server is migrated to SCC
+    And the SCC is the default customer center
     When I follow "Admin"
-    When I follow "SUSE Manager Configuration"
-    When I follow "SUSE Customer Center" in the left menu
+    And I follow "SUSE Manager Configuration"
+    And I follow "SUSE Customer Center" in the left menu
     Then I should see a "Congratulations! SUSE Manager is migrated to the SUSE Customer Center." text
-    Then I restore migration state
+    And I restore migration state
