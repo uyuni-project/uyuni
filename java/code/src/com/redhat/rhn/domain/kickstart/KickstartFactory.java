@@ -35,6 +35,7 @@ import org.cobbler.Profile;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import java.io.File;
 import java.util.Collections;
@@ -1178,6 +1179,22 @@ public class KickstartFactory extends HibernateFactory {
                 .getNamedQuery("KickstartPackage.findByKickstartDataAndPackageName")
                 .setLong("ks_data", ksData.getId())
                 .setLong("package_name", packageName.getId())
+                .list();
+    }
+
+    /**
+     * Lists trees that are candidates for backward synchronization of 'kernel options'
+     * and 'kernel options post' parameters.
+     *
+     * @return list of trees with non-null cobbler id and null kernel options and kernel
+     * options post
+     */
+    public static List<KickstartableTree> listCandidatesForBacksync() {
+        return HibernateFactory.getSession()
+                .createCriteria(KickstartableTree.class)
+                .add(Restrictions.isNotNull("cobblerId"))
+                .add(Restrictions.isNull("kernelOptions"))
+                .add(Restrictions.isNull("kernelOptionsPost"))
                 .list();
     }
 }

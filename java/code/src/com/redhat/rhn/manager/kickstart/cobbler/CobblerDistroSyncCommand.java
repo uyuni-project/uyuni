@@ -33,16 +33,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * @author paji
  * @version $Rev$
  */
 public class CobblerDistroSyncCommand extends CobblerCommand {
 
-
     private Logger log;
-
 
     /**
      * Constructor to create a
@@ -53,7 +50,6 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
         log = Logger.getLogger(this.getClass());
     }
 
-
     protected Map<String, Distro> getDistros() {
         Map<String, Distro> toReturn = new HashMap<String, Distro>();
         List<Distro> distros = Distro.list(CobblerXMLRPCHelper.getAutomatedConnection());
@@ -62,7 +58,6 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
         }
         return toReturn;
     }
-
 
     /**
      * Sync spacewalk distros that have a null cobblerId
@@ -123,7 +118,31 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
         return new ValidatorError("kickstart.cobbler.distro.syncfail", messages);
     }
 
+    /**
+     * Initial population of 'kernel options' and 'kernel options post' in the database.
+     */
+    public void backsyncKernelOptions() {
+        for (KickstartableTree candidate : KickstartFactory.listCandidatesForBacksync()) {
+            Distro distro = Distro.lookupById(
+                    CobblerXMLRPCHelper.getAutomatedConnection(),
+                    candidate.getCobblerId());
+            if (hasDistroKernelOptions(distro)) {
+                log.info(String.format("Kernel options of kickstartable tree id %d are" +
+                        " empty, but corresponding fields in its cobbler distro (uid %s)" +
+                        " are populated. Aligning the kickstartable tree with the cobbler" +
+                        " distro now.", candidate.getId(), distro.getUid()));
+                candidate.setKernelOptions(distro.getKernelOptionsString());
+                candidate.setKernelOptionsPost(distro.getKernelOptionsPostString());
+                KickstartFactory.saveKickstartableTree(candidate);
+            }
+        }
+    }
 
+    private static boolean hasDistroKernelOptions(Distro distro) {
+        return distro != null &&
+                (distro.getKernelOptions() != null ||
+                        distro.getKernelOptionsPost() != null);
+    }
 
     /**
      * {@inheritDoc}
