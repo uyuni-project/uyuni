@@ -20,11 +20,12 @@ end
 
 Then(/^"([^"]*)" is not installed$/) do |package|
   uninstalled = false
+  output = ""
   begin
     Timeout.timeout(60) do
       loop do
         output = `rpm -q #{package} 2>&1`
-        if ! $?.success?
+        unless $?.success?
           uninstalled = true
           break
         end
@@ -32,16 +33,17 @@ Then(/^"([^"]*)" is not installed$/) do |package|
       end
     end
   end
-  raise "exec rpm removal failed (Code #{$?}): #{$!}: #{output}" if !uninstalled
+  raise "exec rpm removal failed (Code #{$?}): #{$!}: #{output}" unless uninstalled
 end
 
 Then(/^I wait for "([^"]*)" to be installed$/) do |package|
   installed = false
+  output = ""
   begin
     Timeout.timeout(60) do
       loop do
         output = `rpm -q #{package} 2>&1`
-        if  $?.success?
+        if $?.success?
           installed = true
           break
         end
@@ -51,7 +53,7 @@ Then(/^I wait for "([^"]*)" to be installed$/) do |package|
   rescue Timeout::Error
     raise "exec rpm installation failed: timeout"
   end
-  raise "exec rpm installation failed (Code #{$?}): #{$!}: #{output}" if !installed
+  raise "exec rpm installation failed (Code #{$?}): #{$!}: #{output}" unless installed
 end
 
 When(/^I click undo for "(.*?)"$/) do |pkg|
