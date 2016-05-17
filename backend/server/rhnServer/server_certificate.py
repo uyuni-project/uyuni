@@ -217,7 +217,7 @@ class Certificate:
             if 'salt_entitled' in entitlements:
                 raise rhnFault(48, """
     This system is already registered as a Salt Minion. If you want to register it as a traditional client
-    please delete it first from the Systems page and then register it using the traditional tools.
+    please delete it first via the web UI or API and then register it using the traditional tools.
                 """)
 
         if 'type' in self.attrs and self.attrs['type'] \
