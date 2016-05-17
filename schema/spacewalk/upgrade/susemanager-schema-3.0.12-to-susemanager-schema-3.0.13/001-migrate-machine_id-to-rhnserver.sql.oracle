@@ -6,5 +6,5 @@ CREATE UNIQUE INDEX rhn_server_maid_uq
 
 update rhnServer s set machine_id=(select machine_id from suseMinionInfo m where m.server_id=s.id);
 
-alter table suseMinionInfo drop constraint if exists rhn_minion_info_miid_uq;
+alter table suseMinionInfo drop constraint rhn_minion_info_miid_uq;
 alter table suseMinionInfo drop column machine_id;
