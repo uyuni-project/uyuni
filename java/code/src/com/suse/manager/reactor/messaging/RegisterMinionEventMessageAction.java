@@ -120,39 +120,32 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
         else {
             Optional<Server> optServer = ServerFactory.findByMachineId(machineId);
-            if (optServer.isPresent()) {
-                // a traditional client with the same machine id is already registered
+            minionServer = optServer.map(server -> {
                 // migrate it to a minion server
                 ServerFactory.changeServerToMinionServer(
                         optServer.get().getId(), machineId);
-                Optional<MinionServer> optNewMinion = MinionServerFactory
-                        .lookupById(optServer.get().getId());
-                minionServer = optNewMinion.get();
+                MinionServer minion = MinionServerFactory
+                        .lookupById(server.getId())
+                        .get();
 
-                // disable token ?
-                // delete hardware ?
-                // if no creator_id use the activation key owner, else keep ?
                 // new secret will be generated later
 
                 // remove package profile
-                minionServer.getPackages().clear();
+                minion.getPackages().clear();
 
                 // change base channel
-                minionServer.getChannels().clear();
+                minion.getChannels().clear();
 
                 // add reactivation event to server history
                 ServerHistoryEvent historyEvent = new ServerHistoryEvent();
                 historyEvent.setCreated(new Date());
-                historyEvent.setServer(minionServer);
+                historyEvent.setServer(minion);
                 historyEvent.setSummary("Server reactivated as Salt minion");
                 historyEvent.setDetails("System type was changed from Management to Salt");
-                minionServer.getHistory().add(historyEvent);
+                minion.getHistory().add(historyEvent);
 
-            }
-            else {
-                // Create the server
-                minionServer = new MinionServer();
-            }
+                return minion;
+            }).orElseGet(MinionServer::new);
         }
 
         try {
