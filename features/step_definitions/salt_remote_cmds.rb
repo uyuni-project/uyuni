@@ -36,7 +36,6 @@ Then(/^I should see "([^"]*)" in the command output$/) do |arg1|
   end
 end
 
-
 When(/^"(.*)" exists on the filesystem$/) do |file|
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
