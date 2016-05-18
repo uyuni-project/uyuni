@@ -14,6 +14,7 @@
 %define appdir          /srv/tomcat/webapps
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
 %define run_checkstyle  0
+%define with_oracle     1
 %else
 %define appdir          %{_localstatedir}/lib/tomcat6/webapps
 %define jardir          %{_localstatedir}/lib/tomcat6/webapps/rhn/WEB-INF/lib
