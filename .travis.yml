@@ -1,11 +1,12 @@
 sudo: false
 language: ruby
-
+gemfile:
+  - Gemfile.checks
 rvm:
   - 2.3.0
 before_install: gem update --remote bundler
 install:
-  - bundle install --gemfile=Gemfile.checks --retry=3
+  - bundle install --retry=3
 script:
   - bundle exec rubocop
   - bundle exec cucumber_lint
