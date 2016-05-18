@@ -51,8 +51,6 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
 
     private Path saltGenerationTempDir;
 
-    private boolean executionError;
-
     /**
      * No arg constructor.
      */
@@ -73,6 +71,21 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
 
     @Override
     protected void doExecute(EventMessage msg) {
+        try {
+            refreshFiles();
+        }
+        catch (IOException e) {
+            log.error("Could not regenerate org and group sls files in " +
+                    saltGenerationTempDir, e);
+        }
+    }
+
+    /**
+     * Regenerate all state assignment .sls files for orgs and groups.
+     * Is public to allow testing.
+     * @throws IOException in case files could not be written
+     */
+    public void refreshFiles() throws IOException {
         Path tempSaltRootPath = null;
         try {
             // generate org and group files to temp dir /srv/susemanager/tmp/saltXXXX
@@ -139,11 +152,6 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
 
             log.info("Regenerated org and group .sls files in " + saltPath);
         }
-        catch (IOException e) {
-            executionError = true;
-            log.error("Could not regenerate org and group sls files in " +
-                    saltGenerationTempDir, e);
-        }
         finally {
             if (tempSaltRootPath != null) {
                 try {
@@ -156,14 +164,6 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                 }
             }
         }
-    }
-
-    /**
-     * Needed for unit tests.
-     * @return true in case an error has occurred during execution
-     */
-    public boolean isExecutionError() {
-        return executionError;
     }
 
 }

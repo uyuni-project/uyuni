@@ -82,13 +82,12 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
 
         RefreshGeneratedSaltFilesEventMessageAction action = new RefreshGeneratedSaltFilesEventMessageAction(
                 tmpSaltRoot.toString(), tmpFileRoot.toString());
-        action.execute(new RefreshGeneratedSaltFilesEventMessage());
+        action.refreshFiles();
 
         checkAssertions(action);
     }
 
     private void checkAssertions(RefreshGeneratedSaltFilesEventMessageAction action) throws IOException {
-        assertFalse(action.isExecutionError());
 
         Path customPath = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR);
         for (Org org : OrgFactory.lookupAllOrgs()) {
