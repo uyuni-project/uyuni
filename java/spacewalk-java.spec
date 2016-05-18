@@ -285,6 +285,7 @@ and taskomatic process.
 %package oracle
 Summary: Oracle database backend support files for Spacewalk Java
 Group: Applications/Internet
+BuildRequires: ojdbc14
 Requires: ojdbc14
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires: tomcat >= 7
