@@ -128,6 +128,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         .lookupById(server.getId())
                         .get();
 
+                // hardware will be refreshed anyway
                 // new secret will be generated later
 
                 // remove package profile
