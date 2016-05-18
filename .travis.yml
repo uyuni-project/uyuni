@@ -3,11 +3,9 @@ language: ruby
 
 rvm:
   - 2.3.0
-env:
-  - BUNDLE_GEMFILE=Gemfile.checks
 before_install: gem update --remote bundler
 install:
-  - bundle install --retry=3
+  - bundle install --gemfile=Gemfile.checks --retry=3
 script:
   - bundle exec rubocop
   - bundle exec cucumber_lint
