@@ -17,7 +17,7 @@ When(/^I create the following channels:/) do |table|
   channels.each do |ch|
     assert_equal(
       rpctest.create(
-        ch['label'], ch['name'], ch['summary'], ch['arch'], ch['parent']), 1)
+        ch['LABEL'], ch['NAME'], ch['SUMMARY'], ch['ARCH'], ch['PARENT']), 1)
   end
 end
 
