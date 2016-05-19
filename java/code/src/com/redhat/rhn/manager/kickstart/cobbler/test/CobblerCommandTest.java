@@ -35,6 +35,9 @@ import com.redhat.rhn.testing.TestUtils;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * CobblerCommandTest
  */
@@ -123,6 +126,66 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
             assertNotNull(Distro.lookupById(con, kickstartableTree.getCobblerId()));
             assertNotNull(Distro.lookupById(con, kickstartableTree.getCobblerXenId()));
         }
+    }
+
+    /**
+     * Tests that 'kernel options' and 'kernel options post' are back-synced from cobbler
+     * in case they are null.
+     */
+    public void testKernelOptionsBacksync() {
+        // re-use the KS tree created in setUp
+        KickstartableTree tree = KickstartFactory.lookupKickstartTrees().get(0);
+        String cobblerId = tree.getCobblerId();
+        // make sure they have null kernel options and kernel options post
+        tree.setKernelOptions(null);
+        tree.setKernelOptionsPost(null);
+        KickstartFactory.saveKickstartableTree(tree);
+
+        // modify the kernel options of the cobbler distro
+        CobblerConnection con = CobblerXMLRPCHelper.getAutomatedConnection();
+        Distro distro = Distro.lookupById(con, cobblerId);
+        Map<String, Object> kernelOptions = new HashMap<>();
+        kernelOptions.put("option1", "val1");
+        distro.setKernelOptions(kernelOptions);
+        Map<String, Object> kernelOptionsPost = new HashMap<>();
+        kernelOptionsPost.put("otherOption", "val2");
+        distro.setKernelOptionsPost(kernelOptionsPost);
+
+        // backsync
+        CobblerDistroSyncCommand syncCommand = new CobblerDistroSyncCommand();
+        syncCommand.backsyncKernelOptions();
+
+        KickstartableTree fromDb = KickstartFactory
+                .lookupKickstartTreeByCobblerIdOrXenId(cobblerId);
+        // after the backsync command, the kickstartable tree in the db should have
+        // the kernel options updated
+        assertEquals("option1=val1", fromDb.getKernelOptions().trim());
+        assertEquals("otherOption=val2", fromDb.getKernelOptionsPost().trim());
+    }
+
+    /**
+     * Tests that non-null 'kernel options' field of the kickstartable tree
+     * remains untouched on the backsync.
+     */
+    public void testKernelOptionsDontBacksync() {
+        // re-use the KS tree created in setUp
+        KickstartableTree tree = KickstartFactory.lookupKickstartTrees().get(0);
+        String cobblerId = tree.getCobblerId();
+        // make sure some kernel options are not null
+        tree.setKernelOptions("option1=value1");
+        tree.setKernelOptionsPost(null);
+        KickstartFactory.saveKickstartableTree(tree);
+
+        // backsync
+        CobblerDistroSyncCommand syncCommand = new CobblerDistroSyncCommand();
+        syncCommand.backsyncKernelOptions();
+
+        KickstartableTree fromDb = KickstartFactory
+                .lookupKickstartTreeByCobblerIdOrXenId(cobblerId);
+        // after the backsync command, the kernel options of the kickstartable tree in the
+        // db should remain untouched
+        assertEquals("option1=value1", fromDb.getKernelOptions().trim());
+        assertNull(fromDb.getKernelOptionsPost());
     }
 
     public void testDistroDelete() throws Exception {
