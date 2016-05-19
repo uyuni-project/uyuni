@@ -17852,6 +17852,18 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="sdc.details.hardware.machine_id">
+        <source>Machine ID:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.hardware.machine_id_empty_warning">
+        <source>This system does not have a machine id. This is needed in the event of re-registering it as a Salt minion. Make sure the system has the latest version of the client tools installed and use the Schedule Hardware Refresh button bellow to fill the machine id.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="sdc.details.notes.message">
         <source>The following notes are associated with this system.</source>
         <context-group name="ctx">

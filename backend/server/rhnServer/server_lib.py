@@ -260,6 +260,15 @@ def check_entitlement(server_id,want_array=False):
     return ents
 
 
+def check_entitlement_by_machine_id(machine_id):
+    h = rhnSQL.prepare("""
+    select e.label from rhnServer s, rhnServerEntitlementView e
+    where s.machine_id=:machine_id and s.id=e.server_id
+    """)
+    h.execute(machine_id=machine_id)
+    rows = h.fetchall_dict()
+    return [row["label"] for row in rows] if rows else []
+
 # Push client related
 # XXX should be moved to a different file?
 _query_update_push_client_registration = rhnSQL.Statement("""

@@ -241,6 +241,15 @@ class Registration(rhnHandler):
               and new_system_user_pass | new_system_activation_key (>= rhel5)
         """
 
+        if "machine_id" in data:
+            entitlements = server_lib.check_entitlement_by_machine_id(data["machine_id"])
+            log_debug(4, "found entitlements for machine_id", data["machine_id"], entitlements)
+            if entitlements and "salt_entitled" in entitlements:
+                raise rhnFault(48, """
+    This system is already registered as a Salt Minion. If you want to register it as a traditional client
+    please delete it first via the web UI or API and then register it using the traditional tools.
+                """)
+
         if profile_name is not None and not \
            rhnFlags.test("re_registration_token") and \
            len(profile_name) < 1:
