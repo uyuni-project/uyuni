@@ -1,3 +1,4 @@
+-- oracle equivalent source sha1 f77ff11522423a51ed4462c0c37bf794eae82e45
 --
 -- Copyright (c) 2016 SUSE LLC
 --
@@ -12,21 +13,23 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
 --
+-- CONSTRAINT names are different in the oracle version
+-- pg names will be aligned again with 3.0.13/010-shorten-constraints-names
 
 CREATE TABLE rhnActionApplyStatesResult
 (
-    server_id              NUMBER NOT NULL
+    server_id              NUMERIC NOT NULL
                                CONSTRAINT rhn_apply_states_result_sid_fk
                                    REFERENCES rhnServer (id)
                                    ON DELETE CASCADE,
-    action_apply_states_id NUMBER NOT NULL
+    action_apply_states_id NUMERIC NOT NULL
                                CONSTRAINT rhn_apply_states_result_aasid_fk
                                    REFERENCES rhnActionApplyStates (id)
                                    ON DELETE CASCADE,
-    output                 BLOB,
-    return_code            NUMBER NOT NULL
+    output                 BYTEA,
+    return_code            NUMERIC NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_apply_states_result_saas_uq
@@ -34,5 +37,5 @@ CREATE UNIQUE INDEX rhn_apply_states_result_saas_uq
 
 CREATE INDEX rhn_apply_states_result_aasid_idx
     ON rhnActionApplyStatesResult (action_apply_states_id)
-    NOLOGGING;
+    ;
 
