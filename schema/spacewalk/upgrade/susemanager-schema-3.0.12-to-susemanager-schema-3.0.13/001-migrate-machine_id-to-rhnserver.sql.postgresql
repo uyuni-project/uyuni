@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 12cdc968cbddf404d891c02c5e0eb563420f8b1c
+-- oracle equivalent source sha1 1997cd15e7607e514098c4bd7f1d7a151a6d87c8
 -- function index for rhnServer
 alter table rhnServer add column machine_id VARCHAR(256);
 
