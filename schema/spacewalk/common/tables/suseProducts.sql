@@ -23,7 +23,7 @@ suseProducts
                   REFERENCES rhnPackageArch (id),
     release       varchar2(256),
     product_id    NUMBER NOT NULL,
-    free          CHAR(1) NOT NULL DEFAULT 'N',
+    free          CHAR(1) DEFAULT ('N') NOT NULL,
     created   timestamp with local time zone
                   DEFAULT (current_timestamp) NOT NULL,
     modified  timestamp with local time zone
