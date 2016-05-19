@@ -29,7 +29,7 @@ CREATE TABLE suseSCCSubscription
     status         VARCHAR(20),
     regcode        VARCHAR(256) NOT NULL,
     subtype        VARCHAR(20) NOT NULL,
-    system_limit   NUMBER NOT NULL DEFAULT(0),
+    system_limit   NUMBER DEFAULT(0) NOT NULL,
     created        timestamp with local time zone
                        DEFAULT (current_timestamp) NOT NULL,
     modified       timestamp with local time zone

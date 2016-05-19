@@ -28,7 +28,7 @@ CREATE TABLE rhnLockedPackages
                          REFERENCES rhnPackageEVR (id),
     arch_id          NUMBER
                          REFERENCES rhnPackageArch (id),
-    pending          CHAR(1) DEFAULT 'L'
+    pending          CHAR(1) DEFAULT ('L')
                          CONSTRAINT rhn_lockedpackages_pending_ck
                            CHECK (pending in ('L', 'U'))
 )
