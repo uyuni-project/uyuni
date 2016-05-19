@@ -1293,24 +1293,23 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Returns a count of systems without a certain entitlement in a set.
+     * Returns a count of systems without
+     * a certain set of entitlements in a set of systems.
      *
      * @param user user making the request
      * @param setLabel label of the set
-     * @param entitlementLabel label of the entitlement
-     * @return number of systems in the set without the entitlement
+     * @param entitlements list of entitlement labels
+     * @return number of systems in the set without those entitlements
      */
     public static int countSystemsInSetWithoutEntitlement(User user, String setLabel,
-        String entitlementLabel) {
+        List<String> entitlements) {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "count_systems_in_set_without_entitlement");
 
         Map params = new HashMap();
         params.put("user_id", user.getId());
         params.put("set_label", setLabel);
-        params.put("entitlement_label", entitlementLabel);
-
-        DataResult dr = makeDataResult(params, null, null, m);
+        DataResult dr = m.execute(params, entitlements);
         return ((Long)((HashMap)dr.get(0)).get("count")).intValue();
     }
 
