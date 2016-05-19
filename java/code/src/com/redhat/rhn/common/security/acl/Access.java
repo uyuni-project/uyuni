@@ -36,6 +36,7 @@ import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -203,7 +204,7 @@ public class Access extends BaseHandler {
         User user = (User) map.get("user");
 
         return SystemManager.countSystemsInSetWithoutEntitlement(user,
-                RhnSetDecl.SYSTEMS.getLabel(), params[0]) == 0;
+                RhnSetDecl.SYSTEMS.getLabel(), Arrays.asList(params)) == 0;
     }
 
     /**
