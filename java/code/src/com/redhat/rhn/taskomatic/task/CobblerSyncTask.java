@@ -76,6 +76,7 @@ public class CobblerSyncTask extends RhnJavaJob {
             }
 
             CobblerDistroSyncCommand distSync = new CobblerDistroSyncCommand();
+            distSync.backsyncKernelOptions();
             ValidatorError ve = distSync.syncNullDistros();
             if (ve != null && distroWarnCount < 1) {
                 TaskHelper.sendErrorEmail(log, ve.getMessage());
