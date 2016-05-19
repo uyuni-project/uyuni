@@ -537,12 +537,16 @@ do_setup() {
     if [ -z "$MANAGER_DB_NAME" ]; then
         MANAGER_DB_NAME="susemanager"
     fi
-    DB_BACKEND="postgresql"
+    if [ -z "$DB_BACKEND" ]; then
+        DB_BACKEND="postgresql"
+    fi
     check_re_install
     echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
     setup_swap
     setup_mail
-    setup_db_postgres
+    if [ "$DB_BACKEND" = "postgresql" ]; then
+        setup_db_postgres
+    fi
 
     # should be done by cobbler with "--sync" but we had a case where those
     # files were missing (bnc#668908)
