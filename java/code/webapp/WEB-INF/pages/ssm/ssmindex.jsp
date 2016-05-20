@@ -49,6 +49,10 @@
                     </div>
                     <div class="col-sm-10">
                         <bean:message key="ssm.overview.packages.upgrade"/>
+                        / <bean:message key="ssm.overview.packages.install"/>
+                        / <bean:message key="ssm.overview.packages.remove"/>
+                        / <bean:message key="ssm.overview.packages.verify"/>
+                        <bean:message key="ssm.overview.packages"/>
                     </div>
                 </div>
             </li>
@@ -113,7 +117,10 @@
                 <div class="col-sm-10">
                     <ul>
                         <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
-                            <li><bean:message key="ssm.overview.misc.updateprofiles"/></li>
+                            <li>
+                                <bean:message key="update"/> <bean:message key="ssm.overview.misc.updateprofiles"/>
+                                <bean:message key="and"/> <bean:message key="ssm.overview.misc.systempreferences"/>
+                            </li>
                         </rhn:require>
                         <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
                           <li><bean:message key="ssm.overview.misc.customvalues"/></li>
