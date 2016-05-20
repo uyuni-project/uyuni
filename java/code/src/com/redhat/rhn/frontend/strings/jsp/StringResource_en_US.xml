@@ -4386,7 +4386,16 @@ organization. You may grant or remove the organization administrator role in the
           <source>Packages</source>
         </trans-unit>
         <trans-unit id="ssm.overview.packages.upgrade">
-          <source>&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Upgrade&lt;/a&gt; / &lt;a href="/rhn/ssm/PackageInstall.do"&gt;Install&lt;/a&gt; / &lt;a href="/rhn/ssm/PackageRemove.do"&gt;Remove&lt;/a&gt; / &lt;a href="/rhn/ssm/PackageVerify.do"&gt;Verify&lt;/a&gt; packages</source>
+          <source>&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Upgrade&lt;/a&gt;</source>
+        </trans-unit>
+        <trans-unit id="ssm.overview.packages.install">
+          <source>&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Install&lt;/a&gt;</source>
+        </trans-unit>
+        <trans-unit id="ssm.overview.packages.remove">
+          <source>&lt;a href="/rhn/ssm/PackageRemove.do"&gt;Remove&lt;/a&gt;</source>
+        </trans-unit>
+        <trans-unit id="ssm.overview.packages.verify">
+          <source>&lt;a href="/rhn/ssm/PackageVerify.do"&gt;Verify&lt;/a&gt;</source>
         </trans-unit>
         <trans-unit id="ssm.overview.groups">
           <source>Groups</source>
@@ -4478,7 +4487,10 @@ organization. You may grant or remove the organization administrator role in the
           <source>Misc</source>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.updateprofiles">
-          <source>Update &lt;a href="/rhn/systems/ssm/misc/Index.do#profiles"&gt;hardware/package profiles&lt;/a&gt; and &lt;a href="/rhn/systems/ssm/misc/Index.do#sysprefs"&gt;system preferences&lt;/a&gt;</source>
+          <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#profiles"&gt;hardware/package profiles&lt;/a&gt;</source>
+        </trans-unit>
+        <trans-unit id="ssm.overview.misc.systempreferences">
+          <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#sysprefs"&gt;system preferences&lt;/a&gt;</source>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.customvalues">
           <source>&lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;Set and remove&lt;/a&gt; custom values for selected systems</source>
@@ -4506,6 +4518,9 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.errata.message.queued">
           <source>Errata updates have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
+        </trans-unit>
+        <trans-unit id="and">
+          <source>and</source>
         </trans-unit>
       </group>
       <!-- SSM System List -->
