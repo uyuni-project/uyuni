@@ -144,7 +144,7 @@ public enum SaltStateGeneratorService {
      * @param minion the minion server
      */
     public void removePillar(MinionServer minion) {
-        LOG.debug("Removing pillar file for server name= " + minion.getMinionId());
+        LOG.debug("Removing pillar file for minion: " + minion.getMinionId());
         Path filePath = pillarDataPath.resolve(
                 getServerPillarFileName(minion));
         try {
