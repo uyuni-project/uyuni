@@ -71,6 +71,21 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
 
     @Override
     protected void doExecute(EventMessage msg) {
+        try {
+            refreshFiles();
+        }
+        catch (IOException e) {
+            log.error("Could not regenerate org and group sls files in " +
+                    saltGenerationTempDir, e);
+        }
+    }
+
+    /**
+     * Regenerate all state assignment .sls files for orgs and groups.
+     * Is public to allow testing.
+     * @throws IOException in case files could not be written
+     */
+    public void refreshFiles() throws IOException {
         Path tempSaltRootPath = null;
         try {
             // generate org and group files to temp dir /srv/susemanager/tmp/saltXXXX
@@ -115,25 +130,27 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
 
             // copy /srv/susemanager/salt/custom/custom_*.sls
             // to /srv/susemanager/tmp/salt
-            for (Path serverSls : Files.newDirectoryStream(saltPath,
-                    SALT_SERVER_STATE_FILE_PREFIX + "*.sls")) {
-                Files.copy(serverSls, tempCustomPath.resolve(serverSls.getFileName()));
+            if (Files.exists(saltPath)) {
+                for (Path serverSls : Files.newDirectoryStream(saltPath,
+                        SALT_SERVER_STATE_FILE_PREFIX + "*.sls")) {
+                    Files.copy(serverSls, tempCustomPath.resolve(serverSls.getFileName()));
+                }
             }
 
             // rm -rf /srv/susemanager/tmp/custom_todelete
             FileUtils.deleteDirectory(oldSaltPath.toFile());
             // mv /srv/susemanager/salt/custom -> /srv/susemanager/tmp/custom_todelete
-            Files.move(saltPath, oldSaltPath, StandardCopyOption.ATOMIC_MOVE);
+            if (Files.exists(saltPath)) {
+                Files.move(saltPath, oldSaltPath, StandardCopyOption.ATOMIC_MOVE);
+            }
             // mv /srv/susemanager/tmp/saltXXXX -> /srv/susemanager/salt/custom
             Files.move(tempCustomPath, saltPath, StandardCopyOption.ATOMIC_MOVE);
             // rm -rf /srv/susemanager/tmp/custom_todelete
-            FileUtils.deleteDirectory(oldSaltPath.toFile());
+            if (Files.exists(oldSaltPath)) {
+                FileUtils.deleteDirectory(oldSaltPath.toFile());
+            }
 
             log.info("Regenerated org and group .sls files in " + saltPath);
-        }
-        catch (IOException e) {
-            log.error("Could not regenerate org and group sls files in " +
-                    saltGenerationTempDir, e);
         }
         finally {
             if (tempSaltRootPath != null) {
