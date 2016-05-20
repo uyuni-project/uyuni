@@ -26,7 +26,6 @@ import java.util.Optional;
 public class MinionServer extends Server {
 
     private String minionId;
-    private String machineId;
 
     /**
      * Constructs a MinionServer instance.
@@ -47,20 +46,6 @@ public class MinionServer extends Server {
      */
     public void setMinionId(String minionIdIn) {
         this.minionId = minionIdIn;
-    }
-
-    /**
-     * @return the machine id
-     */
-    public String getMachineId() {
-        return machineId;
-    }
-
-    /**
-     * @param machineIdIn the machine id to set
-     */
-    public void setMachineId(String machineIdIn) {
-        this.machineId = machineIdIn;
     }
 
     /**

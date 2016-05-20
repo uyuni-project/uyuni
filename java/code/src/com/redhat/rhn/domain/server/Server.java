@@ -119,6 +119,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private CrashCount crashCount;
     private Set<Crash> crashes;
     private Set<InstalledProduct> installedProducts = new HashSet<>();
+    private String machineId;
 
     public static final String VALID_CNAMES = "valid_cnames_";
 
@@ -1998,5 +1999,19 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public Optional<MinionServer> asMinionServer() {
         return Optional.empty();
+    }
+
+    /**
+     * @return the machine id
+     */
+    public String getMachineId() {
+        return machineId;
+    }
+
+    /**
+     * @param machineIdIn the machine id
+     */
+    public void setMachineId(String machineIdIn) {
+        this.machineId = machineIdIn;
     }
 }

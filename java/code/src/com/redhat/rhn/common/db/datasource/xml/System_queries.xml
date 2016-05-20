@@ -2380,4 +2380,11 @@ SELECT SP.server_id ID, S.name
   </query>
 </write-mode>
 
+<write-mode name="add_minion_info">
+    <query params="sid, minion_id">
+        insert into suseMinionInfo (server_id, minion_id)
+        values (:sid, :minion_id)
+    </query>
+</write-mode>
+
 </datasource_modes>

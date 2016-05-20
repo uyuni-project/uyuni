@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerStateRevision;
@@ -100,6 +101,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         //FIXME: refactor this whole function so we don't have to call get
         //in so many places.
         String machineId = optMachineId.get();
+        MinionServer minionServer;
 
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         if (optMinion.isPresent()) {
@@ -115,9 +117,41 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             }
             return;
         }
+        else {
+            minionServer = ServerFactory.findByMachineId(machineId)
+                .flatMap(server -> {
+                    // migrate it to a minion server
+                    ServerFactory.changeServerToMinionServer(
+                            server.getId(), machineId);
+                    return MinionServerFactory
+                            .lookupById(server.getId());
+                })
+                .map(minion -> {
+                    // hardware will be refreshed anyway
+                    // new secret will be generated later
+
+                    // remove package profile
+                    minion.getPackages().clear();
+
+                    // change base channel
+                    minion.getChannels().clear();
+
+                    // add reactivation event to server history
+                    ServerHistoryEvent historyEvent = new ServerHistoryEvent();
+                    historyEvent.setCreated(new Date());
+                    historyEvent.setServer(minion);
+                    historyEvent.setSummary("Server reactivated as Salt minion");
+                    historyEvent.setDetails(
+                            "System type was changed from Management to Salt");
+                    minion.getHistory().add(historyEvent);
+
+                    return minion;
+            }).orElseGet(MinionServer::new);
+        }
+
         try {
-            // Create the server
-            MinionServer server = new MinionServer();
+            MinionServer server = minionServer;
+
             server.setMachineId(machineId);
             server.setMinionId(minionId);
             server.setName(minionId);

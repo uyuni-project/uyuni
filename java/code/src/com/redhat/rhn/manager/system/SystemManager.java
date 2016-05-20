@@ -3343,4 +3343,19 @@ public class SystemManager extends BaseManager {
         params.put("version", version);
         m.executeUpdate(params);
     }
+
+    /**
+     * Insert a new record into suseMinionInfo to hold the minion id.
+     * @param sid server id
+     * @param minionId the Salt minion id
+     */
+    public static void addMinionInfoToServer(Long sid, String minionId) {
+        WriteMode m = ModeFactory.getWriteMode("System_queries",
+                "add_minion_info");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("sid", sid);
+        params.put("minion_id", minionId);
+        m.executeUpdate(params);
+    }
+
 }
