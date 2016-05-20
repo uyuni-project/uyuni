@@ -80,7 +80,7 @@ public enum SaltStateGeneratorService {
      * @param minion the minion server
      */
     public void generatePillar(MinionServer minion) {
-        LOG.debug("Generating pillar file for server name= " + minion.getMinionId());
+        LOG.debug("Generating pillar file for minion: " + minion.getMinionId());
 
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(minion);
         List<Long> groupIds = groups.stream()
