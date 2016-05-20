@@ -1,4 +1,8 @@
 #!/bin/bash
+set -e
+
+umount /dev/shm
+mount tmpfs -t tmpfs -o defaults /dev/shm
 
 /etc/init.d/oracle start
 
