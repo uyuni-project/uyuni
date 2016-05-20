@@ -661,6 +661,7 @@ public class ActionManager extends BaseManager {
         else {
             ActionFactory.rescheduleAllServerActions(action, 5L);
         }
+        MessageQueue.publish(new ActionScheduledEventMessage(action));
     }
 
     /**
