@@ -129,10 +129,7 @@ def getMachineId():
     '''
     def _file_to_string(path):
         if os.path.isfile(path) and os.access(path, os.R_OK):
-            fd = open(path, "r")
-            content = fd.read().strip()
-            fd.close()
-            return content
+            return open(path, "r").read().strip()
 
     # try first /etc/machine-id
     machineId = _file_to_string("/etc/machine-id")
