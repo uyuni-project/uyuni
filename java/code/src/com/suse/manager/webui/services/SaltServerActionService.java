@@ -63,8 +63,8 @@ public enum SaltServerActionService {
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
-    private static final String PACKAGES_INSTALLPKG = "packages.installpkg";
-    private static final String PACKAGES_PKGREMOVE = "packages.removepkg";
+    private static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
+    private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
     private static final String PARAM_PKGS = "param_pkgs";
 
     /**
@@ -262,7 +262,7 @@ public enum SaltServerActionService {
         // Convert errata names to LocalCall objects of type State.apply
         return collect.entrySet().stream()
                 .collect(Collectors.toMap(entry -> com.suse.manager.webui.utils.salt.State
-                        .apply(Arrays.asList(PACKAGES_INSTALLPKG),
+                        .apply(Arrays.asList(PACKAGES_PKGINSTALL),
                         Optional.of(Collections.singletonMap(PARAM_PKGS,
                                     entry.getKey().stream().collect(
                                             Collectors.toMap(
@@ -277,7 +277,7 @@ public enum SaltServerActionService {
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
         ret.put(com.suse.manager.webui.utils.salt.State.apply(
-                Arrays.asList(PACKAGES_INSTALLPKG),
+                Arrays.asList(PACKAGES_PKGINSTALL),
                 Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs))), minions);
         return ret;
     }
