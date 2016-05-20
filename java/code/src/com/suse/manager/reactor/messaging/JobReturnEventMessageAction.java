@@ -148,7 +148,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
                 jobReturnEvent.getMinionId());
         if (minion.isPresent()) {
-            MessageQueue.publish(new CheckinEventMessage(minion.get().getId()));
+            minion.get().updateServerInfo();
         }
         else {
             // Or trigger registration if minion is not present
