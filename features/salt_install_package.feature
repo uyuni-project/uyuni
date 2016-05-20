@@ -12,4 +12,4 @@ Feature: Install a pactch the client via salt through the UI
     And I click on "Confirm"
     And I wait for "5" seconds
     Then I should see a "1 errata update has been scheduled for" text
-    And "virgo-dummy-2.0-1.1" is installed
+    And I wait for "virgo-dummy-2.0-1.1" to be installed
