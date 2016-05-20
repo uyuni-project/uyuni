@@ -26,6 +26,7 @@ zypper in -y  cx_Oracle \
               python-configobj \
               python-crypto \
               python-curl \
+              python-dateutil \
               python-debian \
               python-devel \
               python-dmidecode \
