@@ -1,7 +1,7 @@
 admin-email=galaxy-devel@suse.de
 db-backend=oracle
-db-user=SPACEWALK
-db-password=spacewalk
+db-user=susemanager
+db-password=susemanager
 db-name=susemanager
 db-host=localhost
 db-port=1521
