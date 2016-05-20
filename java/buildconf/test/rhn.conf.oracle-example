@@ -1,7 +1,7 @@
 # Database configuration
 db_backend = oracle
-db_user = spacewalk
-db_password = spacewalk
+db_user = susemanager
+db_password = susemanager
 db_name = susemanager
 db_host = localhost
 db_port = 1521
