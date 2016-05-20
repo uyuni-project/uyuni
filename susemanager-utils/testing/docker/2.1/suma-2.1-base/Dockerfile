@@ -1,6 +1,6 @@
-# Container used to test SUSE Manager 1.7
+# Container used to test SUSE Manager 2.1
 #
-# VERSION               0.1
+# VERSION               1.0.0
 
 FROM registry.mgr.suse.de/sle11sp3
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
