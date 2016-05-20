@@ -1,14 +1,17 @@
-#!/bin/bash -x 
+#!/bin/bash -ex 
 
+#systemctl stop apparmor.service
+#systemctl disable apparmor.service
 #grep name packages.xml | cut -d'"' -f2
 zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/3.0/images/repo/SUSE-Manager-Server-3.0-POOL-x86_64-Media1/ suma3
-zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/SLE_13_SP1/ devel_head
-zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/images/repo/SLE-12-Manager-Tools-POOL-x86_64-Media1/ suma3_tools
+#zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/SLE_12_SP1/ devel_head
+#zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/images/repo/SLE-12-Manager-Tools-POOL-x86_64-Media1/ suma3_tools
+#zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/3.0/SLE_12_SP1_Update/Devel:Galaxy:Manager:3.0.repo
 
 zypper -n --gpg-auto-import-keys ref
-zypper -n in susemanager smdba spacewalk-postgresql spacewalk-reports cyrus-sasl-digestmd5
+zypper -n in -t pattern suma_server
 
-zypper -n in perl-TimeDate susemanager-tftpsync salt-master salt-api python-ws4py
+zypper -n in timezone
 echo "+++++++++++++++++++++++"
 echo "installing packages ok"
 echo "+++++++++++++++++++++++"
@@ -32,8 +35,8 @@ SCC_USER="UCUSER"
 SCC_PASS="UCPASSWORD"
 ' > /root/setup_env.sh
 
-/usr/lib/susemanager/bin/migration.sh -l /var/log/susemanager_setup.log -s 
-
+bash -x /usr/lib/susemanager/bin/migration.sh -l /var/log/susemanager_setup.log -s 
+if [ $? -ne 0]; then exit 1; fi
 cat  /var/log/susemanager_setup.log
-#echo -e "\nserver.susemanager.mirror = http://smt-scc.nue.suse.com" >> /etc/rhn/rhn.conf
-#sed -i "s/^server.satellite.no_proxy[[:space:]]*=.*/server.satellite.no_proxy = smt-scc.nue.suse.com/" /etc/rhn/rhn.conf
+echo -e "\nserver.susemanager.mirror = http://smt-scc.nue.suse.com" >> /etc/rhn/rhn.conf
+sed -i "s/^server.satellite.no_proxy[[:space:]]*=.*/server.satellite.no_proxy = smt-scc.nue.suse.com/" /etc/rhn/rhn.conf

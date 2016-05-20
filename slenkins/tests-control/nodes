@@ -4,6 +4,8 @@ repository    ${CHANNEL_SLENKINS_SERVER}
 repository    ${CHANNEL_UPDATES_SERVER}
 repository    http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/SLE_12_SP1/Devel:Galaxy:Manager:Head.repo
 install       tests-suse-manager-tests-server
+model 	      m1.medium 
+
 
 node          client
 repository    ${CHANNEL_GALAXY_CLIENT}

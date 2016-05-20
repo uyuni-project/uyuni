@@ -6,10 +6,11 @@ import traceback
 import twopence
 import susetest
 import suselog
-
+from susetest_api.assertions import *
+from susetest_api.files import *
 
 journal = None
-suite = "/var/lib/slenkins/tests-tomcat"
+suite = "/var/lib/slenkins/tests-suse-manager"
 client = None
 server = None
 minion = None
@@ -17,44 +18,36 @@ minion = None
 def setup():
     global client, server, journal, minion
 
-    config = susetest.Config("tests-tomcat")
+    config = susetest.Config("tests-suse-manager")
     journal = config.journal
 
     client = config.target("client")
     server = config.target("server")
     minion = config.target("minion")
 
-## HELPERs FUNCTION
-def run_command(node, command, msg):
-        journal.beginTest("Running commands for {}".format(msg))
-        if not node.run(command, timeout = 8000):
-                journal.failure("{} FAIL!".format(msg))
-                return False
-        journal.success("{} OK! ".format(msg))
-        return True
-
-
 ######################
 # MAIN 
 #####################
-
 setup()
 
-# basic commands for running cucumber.
-SET_SUMA_ENVS = "TESTHOST=#{SERVER_IP}; BROWSER=phantomjs; export TESTHOST; export phantomjs"
 SET_SUMAPWD =  "chpasswd <<< \"root:linux\""
 SERVER_INIT= "/var/lib/slenkins/tests-suse-manager/tests-server/bin/suma_init.sh"
 
-# We run the cucumber suite from jail. Sett the environment and run it with rake.
-jail_cmd = "cp -R /var/lib/slenkins/tests-suse-manager/tests-control/cucumber/ $WORKSPACE; export TESTHOST={}; export BROWSER=phantomjs; cd $WORKSPACE/cucumber;  rake".format(server.ipaddr)
-
+jail_cmd = "cp -R /var/lib/slenkins/tests-suse-manager/tests-control/cucumber/ $WORKSPACE; export TESTHOST={}; export BROWSER=phantomjs; cd $WORKSPACE/cucumber;  rake".format(server.ipaddr_ext)
 
 try:
+    # bug workaround 
+    change_hostname = "echo \"{}     suma-server\" > /etc/hosts; echo \"suma-server\" > /etc/hostname;  hostname -f".format(server.ipaddr)
+	
+    run_cmd(server, "hostname suma-server",  "change hostname ", 8000)
+    run_cmd(server, "sed -i '$ d' /etc/hosts;", "change hosts file", 100)
+    run_cmd(server, change_hostname, "verify change hostsfile",  200)
+
     journal.beginGroup("init suma-machines")
-    run_command(server, SERVER_INIT,  "INIT_SERVER")
-    run_command(server, SET_SUMAPWD, "change root pwd to linux")
-    run_command(client, SET_SUMAPWD, "change root pwd to linux")
-    run_command(minion, SET_SUMAPWD, "change root pwd to linux")
+    run_cmd(server, SERVER_INIT,  "INIT_SERVER", 8000)
+    run_cmd(server, SET_SUMAPWD, "change root pwd to linux")
+    run_cmd(client, SET_SUMAPWD, "change root pwd to linux")
+    run_cmd(minion, SET_SUMAPWD, "change root pwd to linux")
 
     journal.beginGroup("running cucumber-suite on jail")
     subprocess.call(jail_cmd, shell=True)
