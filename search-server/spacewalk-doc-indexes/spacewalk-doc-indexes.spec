@@ -1,7 +1,7 @@
 %define crawl_output crawl_output
 
 Name: spacewalk-doc-indexes
-Version: 2.5.1.2
+Version: 2.5.2
 Release: 1%{?dist}
 Summary: Lucene indexes of help documentation for spacewalk
 
@@ -27,6 +27,7 @@ documentation/help searches
 %prep
 %setup -q
 
+
 %build
 ./crawl_jsp.sh /srv/tomcat/webapps/rhn/help
 
@@ -41,15 +42,20 @@ done
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+
 %files
-%defattr(644,root,root,755)
-%{_datadir}/rhn/search/indexes/docs/
-%dir %{_datadir}/rhn/
-%dir %{_datadir}/rhn/search
-%dir %{_datadir}/rhn/search/indexes
+%{_prefix}/share/rhn/search/indexes/docs
+%if 0%{?suse_version}
+%dir %{_prefix}/share/rhn
+%dir %{_prefix}/share/rhn/search
+%dir %{_prefix}/share/rhn/search/indexes
 %doc licenses/*
+%endif
 
 %changelog
+* Fri May 20 2016 Grant Gainey 2.5.2-1
+- spacewalk-doc-indexes: build on openSUSE
+
 * Thu Oct 15 2015 Jan Dobes 2.5.1-1
 - updating doc indexes
 - updating doc URLs
