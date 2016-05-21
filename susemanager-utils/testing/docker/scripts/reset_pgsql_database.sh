@@ -16,6 +16,7 @@ export SYSTEMD_NO_WRAP=1
 rcpostgresql restart
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
+touch /etc/rhn/rhn.conf
 
 spacewalk-setup --clear-db --db-only --answer-file=clear-db-answers-pgsql.txt --external-postgresql --non-interactive
 
