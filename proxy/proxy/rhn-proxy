@@ -1,8 +1,16 @@
 #!/bin/sh
 
-SERVICES="squid apache2 jabberd"
+HTTPD="httpd"
 
-test -s /etc/rc.status && . /etc/rc.status && rc_reset
+if [ -e /lib/systemd/system/apache2.service -o -e /etc/init.d/apache2 ]; then
+    HTTPD="apache2"
+fi
+
+SERVICES="squid $HTTPD jabberd"
+
+if [ -e /etc/init.d/functions ]; then
+    . /etc/init.d/functions
+fi
 
 RETVAL=0
 
