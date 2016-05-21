@@ -137,7 +137,7 @@ between an Spacewalk Proxy Server and parent Spacewalk server.
 Group:   Applications/Internet
 Summary: Modules shared by Spacewalk Proxy components
 %if 0%{?suse_version}
-Requires: apache2-prefork
+BuildRequires: apache2
 %else
 Requires: mod_ssl
 %endif
