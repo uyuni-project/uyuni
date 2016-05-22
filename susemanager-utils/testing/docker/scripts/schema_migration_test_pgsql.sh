@@ -16,6 +16,7 @@ echo Going to reset pgsql database
 echo $PATH
 echo $PERLLIB
 
+sysctl -w kernel.shmmax=18446744073709551615
 rcpostgresql restart
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
@@ -25,7 +26,6 @@ spacewalk-setup --skip-system-version-test --skip-selinux-test --skip-fqdn-test 
 
 # SUSE Manager initialization
 cp /root/rhn.conf /etc/rhn/rhn.conf
-sysctl -w kernel.shmmax=18446744073709551615
 smdba system-check autotuning
 
 # this copy the latest schema from the git into the system

@@ -18,6 +18,7 @@ echo $PERLLIB
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 
+sysctl -w kernel.shmmax=18446744073709551615
 /etc/init.d/oracle start
 
 # this command will fail with certificate error. This is ok, so ignore the error
@@ -25,7 +26,6 @@ spacewalk-setup --skip-system-version-test --skip-selinux-test --skip-fqdn-test 
 
 # SUSE Manager initialization
 cp /root/rhn.conf /etc/rhn/rhn.conf
-sysctl -w kernel.shmmax=18446744073709551615
 smdba system-check autotuning
 
 # this copy the latest schema from the git into the system
