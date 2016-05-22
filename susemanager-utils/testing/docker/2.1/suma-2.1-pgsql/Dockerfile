@@ -1,6 +1,6 @@
 # Container used to test java code of SUSE Manager
 #
-# VERSION               1.0.0
+# VERSION               1.0.2
 
 FROM registry.mgr.suse.de/suma-2.1-base:1.0.0
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
