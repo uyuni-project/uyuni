@@ -13,6 +13,7 @@ echo $PERLLIB
 ./build-schema.sh
 
 export SYSTEMD_NO_WRAP=1
+sysctl -w kernel.shmmax=18446744073709551615
 rcpostgresql restart
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf

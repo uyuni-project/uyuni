@@ -23,17 +23,16 @@ echo $PATH
 echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
+sysctl -w kernel.shmmax=18446744073709551615
 rcpostgresql restart
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
+# SUSE Manager initialization
+cp /root/rhn.conf /etc/rhn/rhn.conf
+smdba system-check autotuning
 
 # this command will fail with certificate error. This is ok, so ignore the error
 spacewalk-setup --skip-system-version-test --skip-selinux-test --skip-fqdn-test --skip-gpg-key-import --skip-ssl-cert-generation --skip-ssl-vhost-setup --skip-services-check --clear-db --answer-file=clear-db-answers-pgsql.txt --external-postgresql --non-interactive ||:
-
-# SUSE Manager initialization
-cp /root/rhn.conf /etc/rhn/rhn.conf
-sysctl -w kernel.shmmax=18446744073709551615
-smdba system-check autotuning
 
 # this copy the latest schema from the git into the system
 ./build-schema.sh
