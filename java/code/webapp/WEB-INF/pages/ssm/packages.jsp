@@ -21,7 +21,9 @@
     <li><a href="PackageInstall.do"><bean:message key="ssm.package.install"/></a></li>
     <li><a href="PackageUpgrade.do"><bean:message key="ssm.package.upgrade"/></a></li>
     <li><a href="PackageRemove.do"><bean:message key="ssm.package.remove"/></a></li>
-    <li><a href="PackageVerify.do"><bean:message key="ssm.package.verify"/></a></li>
+    <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
+        <li><a href="PackageVerify.do"><bean:message key="ssm.package.verify"/></a></li>
+    </rhn:require>
 </ul>
 
 </body>

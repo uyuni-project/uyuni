@@ -15,13 +15,13 @@
   <p><a href="/rhn/systems/ssm/misc/CustomValue.do"><bean:message key="ssm.misc.index.csi.summary"/></a></p>
 </div>
 
-<a id="entitle">&#160;</a>
-<h2><bean:message key="ssm.misc.index.entitle.header"/></h2>
-<div class="page-summary">
-  <p>
-    <strong><bean:message key="ssm.misc.index.entitle.summary"/></strong>
-  </p>
-</div>
+<rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
+    <a id="entitle">&#160;</a>
+    <h2><bean:message key="ssm.misc.index.entitle.header"/></h2>
+    <div class="page-summary">
+        <p><strong><bean:message key="ssm.misc.index.entitle.summary"/></strong></p>
+    </div>
+</rhn:require>
 
 <a id="sysprefs">&#160;</a><h2><bean:message key="ssm.misc.index.syspref.header"/></h2>
 <div class="page-summary">
