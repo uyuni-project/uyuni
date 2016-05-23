@@ -2210,7 +2210,7 @@ SELECT channel_arch_id
             FROM rhnServerFeaturesView
             WHERE rhnSet.element = rhnServerFeaturesView.server_id
               AND rhnServerFeaturesView.label = :feature_label
-        ) = 0;
+        ) = 0
   </query>
 </mode>
 
