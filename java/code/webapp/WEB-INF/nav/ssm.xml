@@ -4,11 +4,11 @@
     <rhn-tab name="Systems">
         <rhn-tab-url>/rhn/systems/ssm/ListSystems.do</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Patches" acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
+    <rhn-tab name="Patches" acl="all_systems_in_set_have_entitlement(enterprise_entitled, salt_entitled)">
         <rhn-tab-url>/rhn/systems/ssm/ListErrata.do</rhn-tab-url>
     </rhn-tab>
 
-   <rhn-tab name="Packages" acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
+   <rhn-tab name="Packages" acl="all_systems_in_set_have_entitlement(enterprise_entitled, salt_entitled)">
             <rhn-tab-url>/rhn/ssm/Packages.do</rhn-tab-url>
             <rhn-tab name="Install">
                 <rhn-tab-url>/rhn/ssm/PackageInstall.do</rhn-tab-url>
@@ -19,23 +19,23 @@
             <rhn-tab name="Upgrade">
                 <rhn-tab-url>/rhn/ssm/PackageUpgrade.do</rhn-tab-url>
             </rhn-tab>
-            <rhn-tab name="Verify">
+            <rhn-tab name="Verify" acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
                 <rhn-tab-url>/rhn/ssm/PackageVerify.do</rhn-tab-url>
             </rhn-tab>
    </rhn-tab>
 
-    <rhn-tab name="Groups" acl="user_role(org_admin); all_systems_in_set_have_entitlement(enterprise_entitled)">
+    <rhn-tab name="Groups" acl="user_role(org_admin); all_systems_in_set_have_entitlement(enterprise_entitled, salt_entitled)">
         <rhn-tab-url>/rhn/systems/ssm/groups/Manage.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/ssm/groups/Confirm.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/ssm/groups/Create.do</rhn-tab-url>
     </rhn-tab>
 
-        <rhn-tab name="Channels" acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
+        <rhn-tab name="Channels" acl="all_systems_in_set_have_entitlement(enterprise_entitled, salt_entitled)">
             <rhn-tab-url>/rhn/channel/ssm/ChildSubscriptions.do</rhn-tab-url>
             <rhn-tab name="Base Channels">
                 <rhn-tab-url>/rhn/channel/ssm/BaseChannelSubscribe.do</rhn-tab-url>
             </rhn-tab>
-            <rhn-tab name="Child Channels">
+            <rhn-tab name="Child Channels" acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
                 <rhn-tab-url>/rhn/channel/ssm/ChildSubscriptions.do</rhn-tab-url>
                 <rhn-tab-url>/rhn/channel/ssm/ChildSubscriptionsConfirm.do</rhn-tab-url>
             </rhn-tab>
@@ -96,11 +96,11 @@
 	</rhn-tab>
 
 	<rhn-tab name="Misc" url="/rhn/systems/ssm/misc/Index.do">
-            <rhn-tab name="ssm.misc.index.tabs.hardware" url="/rhn/systems/ssm/misc/HardwareRefresh.do" acl="all_systems_in_set_have_entitlement(enterprise_entitled)"/>
-            <rhn-tab name="ssm.misc.index.tabs.software" url="/rhn/systems/ssm/misc/SoftwareRefresh.do" acl="all_systems_in_set_have_entitlement(enterprise_entitled)"/>
+            <rhn-tab name="ssm.misc.index.tabs.hardware" url="/rhn/systems/ssm/misc/HardwareRefresh.do" acl="all_systems_in_set_have_entitlement(enterprise_entitled, salt_entitled)"/>
+            <rhn-tab name="ssm.misc.index.tabs.software" url="/rhn/systems/ssm/misc/SoftwareRefresh.do" acl="all_systems_in_set_have_entitlement(enterprise_entitled, salt_entitled)"/>
             <rhn-tab name="ssm.misc.index.tabs.migrate" url="/rhn/systems/ssm/MigrateSystems.do"/>
             <rhn-tab name="ssm.misc.index.tabs.lockunlock" url="/rhn/systems/ssm/misc/LockUnlockSystem.do" acl="all_systems_in_set_have_entitlement(enterprise_entitled)"/>
-            <rhn-tab name="ssm.misc.index.tabs.reboot" url="/rhn/systems/ssm/misc/RebootSystem.do" acl="all_systems_in_set_have_entitlement(enterprise_entitled)"/>
+            <rhn-tab name="ssm.misc.index.tabs.reboot" url="/rhn/systems/ssm/misc/RebootSystem.do" acl="all_systems_in_set_have_entitlement(enterprise_entitled, salt_entitled)"/>
             <rhn-tab name="ssm.misc.index.tabs.delete" url="/rhn/systems/ssm/DeleteConfirm.do"/>
             <rhn-tab-url>/rhn/systems/ssm/misc/ConfirmSystemPreferences.do</rhn-tab-url>
             <rhn-tab-url>/rhn/systems/ssm/DeleteConfirm.do</rhn-tab-url>
