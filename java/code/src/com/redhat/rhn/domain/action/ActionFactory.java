@@ -785,6 +785,16 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Returns all pending actions that contain minions
+     * @return list of pending minions that contain minions
+     */
+    public static List<Action> pendingMinionServerActions() {
+        List<Action> result = singleton.listObjectsByNamedQuery(
+                "Action.lookupPendingMinionActions", null);
+        return result;
+    }
+
+    /**
      * Reschedule Server Action associated with an action and system
      * @param action the action who's server actions you are rescheduling
      * @param tries the number of tries to set (should be set to 5)
