@@ -95,6 +95,7 @@ When(/^I copy to server "([^"]*)"$/) do |arg1|
 end
 
 Then(/^the pxe-default-profile should be enabled$/) do
+  sleep(1)
   step %(file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT\ pxe-default-profile")
 end
 
