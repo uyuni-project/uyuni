@@ -64,6 +64,7 @@ public enum SaltServerActionService {
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
     private static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
+    private static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
     private static final String PARAM_PKGS = "param_pkgs";
 
@@ -262,7 +263,7 @@ public enum SaltServerActionService {
         // Convert errata names to LocalCall objects of type State.apply
         return collect.entrySet().stream()
                 .collect(Collectors.toMap(entry -> com.suse.manager.webui.utils.salt.State
-                        .apply(Arrays.asList(PACKAGES_PKGINSTALL),
+                        .apply(Arrays.asList(PACKAGES_PATCHINSTALL),
                         Optional.of(Collections.singletonMap(PARAM_PKGS,
                                     entry.getKey().stream().collect(
                                             Collectors.toMap(
