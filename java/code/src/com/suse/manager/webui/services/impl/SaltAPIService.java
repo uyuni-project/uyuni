@@ -25,8 +25,10 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.utils.salt.Jobs;
 import com.suse.manager.webui.utils.salt.LocalCallWithMetadata;
 import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.utils.salt.Saltutil;
 import com.suse.manager.webui.utils.salt.Timezone;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
@@ -275,6 +277,47 @@ public enum SaltAPIService implements SaltService {
                     SALT_CLIENT, target,
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result;
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, List<Saltutil.RunningInfo>> running(Target<?> target) {
+        try {
+            Map<String, List<Saltutil.RunningInfo>> result = Saltutil.running().callSync(
+                    SALT_CLIENT, target,
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return result;
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Jobs.ListJobsEntry> jobsByMetadata(Object metadata) {
+        try {
+            return Jobs.listJobs(metadata).callSync(
+                    SALT_CLIENT, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Jobs.ListJobResult listJob(String jid) {
+        try {
+            return Jobs.listJob(jid).callSync(
+                    SALT_CLIENT, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);

@@ -15,6 +15,8 @@
 package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.user.User;
+import com.suse.manager.webui.utils.salt.Jobs;
+import com.suse.manager.webui.utils.salt.Saltutil;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.events.EventStream;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
@@ -132,6 +134,32 @@ public interface SaltService {
      * @return the output of the command
      */
     Map<String, String> runRemoteCommand(Target<?> target, String cmd);
+
+
+    /**
+     * Returns the currently running jobs on the target
+     *
+     * @param target the target
+     * @return list of running jobs
+     */
+    Map<String, List<Saltutil.RunningInfo>> running(Target<?> target);
+
+
+    /**
+     * Return the jobcache filtered by metadata
+     *
+     * @param metadata search metadata
+     * @return list of running jobs
+     */
+    Map<String, Jobs.ListJobsEntry> jobsByMetadata(Object metadata);
+
+    /**
+     * Return the result for a jobId
+     *
+     * @param jid the job id
+     * @return map from minion to result
+     */
+    Jobs.ListJobResult listJob(String jid);
 
     /**
      * Match the salt minions against a target glob.
