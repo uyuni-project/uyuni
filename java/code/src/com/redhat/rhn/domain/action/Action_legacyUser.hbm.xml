@@ -508,4 +508,25 @@ select sa.server_id
          WHERE SA.action_id = :aid
     </sql-query>
 
+
+    <sql-query name="Action.lookupPendingMinionActions">
+        <![CDATA[select {ra.*}
+                     from rhnAction {ra},
+                     (select NULL as uuid from dual) ra_1_,
+                     (select NULL as uuid from dual) ra_2_,
+                     (select NULL as uuid from dual) ra_3_,
+                     (select NULL as uuid from dual) ra_4_,
+                     (select NULL as uuid from dual) ra_5_,
+                     (select NULL as uuid from dual) ra_6_,
+                     (select NULL as uuid, NULL as memory from dual) ra_7_,
+                     (select NULL as uuid, NULL as vcpu from dual) ra_8_
+                     where ra.id = (select ac.id
+                                   from rhnAction ac
+                                      inner join rhnServerAction sa on ac.id = sa.action_id
+                                      inner join suseMinionInfo mi on sa.server_id = mi.server_id
+                                   where sa.status in (0, 1))
+        ]]>
+        <return alias="ra" class="com.redhat.rhn.domain.action.Action"/>
+    </sql-query>
+
 </hibernate-mapping>
