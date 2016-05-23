@@ -129,7 +129,7 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                     .resolve(SALT_CUSTOM_STATES_DIR);
 
             // copy /srv/susemanager/salt/custom/custom_*.sls
-            // to /srv/susemanager/tmp/salt
+            // to /srv/susemanager/tmpXXXX/salt/custom
             if (Files.exists(saltPath)) {
                 for (Path serverSls : Files.newDirectoryStream(saltPath,
                         SALT_SERVER_STATE_FILE_PREFIX + "*.sls")) {
@@ -143,8 +143,11 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
             if (Files.exists(saltPath)) {
                 Files.move(saltPath, oldSaltPath, StandardCopyOption.ATOMIC_MOVE);
             }
-            // mv /srv/susemanager/tmp/saltXXXX -> /srv/susemanager/salt/custom
-            Files.move(tempCustomPath, saltPath, StandardCopyOption.ATOMIC_MOVE);
+            // mv /srv/susemanager/tmp/saltXXXX/custom -> /srv/susemanager/salt/custom
+            if (Files.exists(tempCustomPath)) {
+                // this condition is needed only at setup time when there are no orgs yet
+                Files.move(tempCustomPath, saltPath, StandardCopyOption.ATOMIC_MOVE);
+            }
             // rm -rf /srv/susemanager/tmp/custom_todelete
             if (Files.exists(oldSaltPath)) {
                 FileUtils.deleteDirectory(oldSaltPath.toFile());
