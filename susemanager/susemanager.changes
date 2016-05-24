@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue May 24 16:09:59 CEST 2016 - kwalter@suse.com
+
+- version 3.0.15-1
+- fix help output for mgr-setup; no longer migration from RHN (bsc#975746)
+- for SLES11 SP2 and lower we do not support salt (bsc#978788)
+- mgr-sync: use bulk channel reposync (bsc#961002)
+- show optional channels in mgr-sync add channel and add an option to hide
+  optional channels (bsc#977579)
+- add more packages to bootstrap repo (bsc#971237)
+
+-------------------------------------------------------------------
 Mon Apr 11 09:26:14 CEST 2016 - mc@suse.de
 
 - version 3.0.14-1
