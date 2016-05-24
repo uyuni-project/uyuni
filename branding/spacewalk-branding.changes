@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 24 15:27:12 CEST 2016 - kwalter@suse.com
+
+- version 2.5.2.9-1
+- Add missing label definition for task.status.gatherer and task.status.matcher
+
+-------------------------------------------------------------------
 Wed Apr 06 08:39:38 CEST 2016 - mc@suse.de
 
 - version 2.5.2.8-1
