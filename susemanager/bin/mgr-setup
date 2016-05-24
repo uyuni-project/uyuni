@@ -48,7 +48,7 @@ function help() {
 Usage: $0 [OPTION]
 helper script to do migration or setup of SUSE Manager
 
-  -m             full migration of an existing RHN Satellite
+  -m             full migration of an existing SUSE Manager
   -s             fresh setup of the SUSE Manager installation
   -r             only sync remote files (useful for migration only)
   -w             wait between steps (in case you do -r -m)
