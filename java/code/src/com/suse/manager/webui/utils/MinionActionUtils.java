@@ -86,7 +86,8 @@ public class MinionActionUtils {
             ServerAction serverAction = jobCache.entrySet().stream().findFirst()
                     .map(entry -> {
                         String jid = entry.getKey();
-                        Optional<JsonElement> result = SALT_SERVICE.listJob(jid)
+                        Jobs.ListJobResult job = SALT_SERVICE.listJob(jid);
+                        Optional<JsonElement> result = job
                                 .getResult(server.getMinionId(), JsonElement.class);
                         // the result should only be missing if its still running
                         // since we know at this point that its not running result
@@ -103,8 +104,8 @@ public class MinionActionUtils {
                                 return sa;
                             }
                             else {
-                                JobReturnEventMessageAction
-                                        .updateServerAction(sa, 0L, true, jid, o);
+                                JobReturnEventMessageAction.updateServerAction(sa, 0L,
+                                        true, jid, o, job.getFunction());
                                 return sa;
                             }
                         }).orElseGet(() -> {

@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging;
 
+import com.google.gson.JsonElement;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
@@ -53,6 +54,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import com.suse.utils.Json;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -125,7 +127,12 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                             LOG.debug("Updating action for server: " +
                                     minionServer.getId());
                         }
-                        updateServerAction(sa, jobReturnEvent);
+                        updateServerAction(sa,
+                                jobReturnEvent.getData().getRetcode(),
+                                jobReturnEvent.getData().isSuccess(),
+                                jobReturnEvent.getJobId(),
+                                jobReturnEvent.getData().getResult(JsonElement.class),
+                                jobReturnEvent.getData().getFun());
                         ActionFactory.save(sa);
                     });
                 });
@@ -161,19 +168,21 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * Update a given server action based on data from the corresponding job return event.
      *
      * @param serverAction the server action to update
-     * @param event the event to read the update data from
+     * @param retcode return code
+     * @param success if the action was successful
+     * @param jid salt job id for the action
+     * @param jsonResult the result of the action as json
+     * @param function salt function used for the action
      */
-    private void updateServerAction(ServerAction serverAction, JobReturnEvent event) {
-        JobReturnEvent.Data eventData = event.getData();
+    public static void updateServerAction(ServerAction serverAction, long retcode,
+            boolean success, String jid, JsonElement jsonResult, String function) {
         serverAction.setCompletionTime(new Date());
-
-        final long retcode = eventData.getRetcode();
 
         // Set the result code defaulting to 0
         serverAction.setResultCode(retcode);
 
         // Determine the final status of the action
-        if (actionFailed(eventData)) {
+        if (actionFailed(function, jsonResult, success, retcode)) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
         }
         else {
@@ -191,7 +200,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
             // Set the output to the result
             statesResult.setOutput(YamlHelper.INSTANCE
-                    .dump(eventData.getResult()).getBytes());
+                    .dump(Json.GSON.fromJson(jsonResult, Object.class)).getBytes());
 
             // Create the result message depending on the action status
             String states = applyStatesAction.getDetails().getStates() != null ?
@@ -203,7 +212,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             serverAction.setResultMsg(message);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            CmdExecCodeAllResult result = eventData.getResult(CmdExecCodeAllResult.class);
+            CmdExecCodeAllResult result = Json.GSON.fromJson(jsonResult,
+                    CmdExecCodeAllResult.class);
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = new ScriptResult();
             scriptAction.getScriptActionDetails().addResult(scriptResult);
@@ -220,11 +230,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             // Depending on the status show stdout or stderr in the output
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
                 serverAction.setResultMsg("Failed to execute script. [jid=" +
-                        event.getJobId() + "]");
+                        jid + "]");
             }
             else {
                 serverAction.setResultMsg("Script executed successfully. [jid=" +
-                        event.getJobId() + "]");
+                        jid + "]");
             }
             StringBuilder sb = new StringBuilder();
             if (StringUtils.isNotEmpty(result.getStderr())) {
@@ -247,13 +257,13 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 serverAction.setResultMsg("Success");
             }
             serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                handlePackageProfileUpdate(minionServer, eventData.getResult(
+                handlePackageProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
                         PkgProfileUpdateSlsResult.class));
             });
         }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
-            Object returnObject = eventData.getResult();
+            Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String json = gson.toJson(returnObject);
             serverAction.setResultMsg(json.length() > 1024 ?
@@ -322,14 +332,16 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      *
      * @return true if the action has failed, false otherwise
      */
-    private boolean actionFailed(JobReturnEvent.Data eventData) {
+    private static boolean actionFailed(String function, JsonElement rawResult,
+            boolean success, long retcode) {
         // For state.apply based actions verify the result of each state
         boolean stateApplySuccess = true;
-        if (eventData.getFun().equals("state.apply")) {
+        if (function.equals("state.apply")) {
             TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
                     new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
             Map<String, StateApplyResult<Map<String, Object>>> results =
-                    eventData.getResult(typeToken);
+                    Json.GSON.fromJson(rawResult, typeToken.getType());
+
             for (StateApplyResult<Map<String, Object>> result : results.values()) {
                 if (!result.isResult()) {
                     stateApplySuccess = false;
@@ -338,7 +350,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             }
         }
 
-        return !(eventData.isSuccess() && eventData.getRetcode() == 0 && stateApplySuccess);
+        return !(success && retcode == 0 && stateApplySuccess);
     }
 
     /**
@@ -347,7 +359,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @param server the minion server
      * @param result the result of the call as parsed from event data
      */
-    private void handlePackageProfileUpdate(MinionServer server,
+    private static void handlePackageProfileUpdate(MinionServer server,
             PkgProfileUpdateSlsResult result) {
         Instant start = Instant.now();
 
@@ -364,7 +376,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         Optional<List<ProductInfo>> productInfo = Optional.of(
                 result.getListProducts().getChanges().getRet());
         productInfo
-                .map(this::getInstalledProducts)
+                .map(JobReturnEventMessageAction::getInstalledProducts)
                 .ifPresent(server::setInstalledProducts);
 
         ServerFactory.save(server);
@@ -386,7 +398,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @param server server this package will be added to
      * @return the InstalledPackage object
      */
-    private InstalledPackage createPackageFromSalt(
+    private static InstalledPackage createPackageFromSalt(
             String name, Pkg.Info info, Server server) {
         String epoch = info.getEpoch().orElse(null);
         String release = info.getRelease().orElse("0");
@@ -410,7 +422,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @param productsIn list of products as received from Salt
      * @return set of installed products
      */
-    private Set<InstalledProduct> getInstalledProducts(
+    private static Set<InstalledProduct> getInstalledProducts(
             List<ProductInfo> productsIn) {
         return productsIn.stream().flatMap(saltProduct -> {
             String name = saltProduct.getName();
