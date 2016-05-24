@@ -1,6 +1,0 @@
-[SUSE:SLE-11:GA]
-name=SUSE:SLE-11:GA
-enabled=1
-autorefresh=1
-baseurl=http://download.suse.de/ibs/SUSE:/SLE-11:/GA/standard/
-type=rpm-md

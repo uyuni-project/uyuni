@@ -1,6 +1,0 @@
-[SUSE:SLE-11-SP1:Update:Manager]
-name=SUSE:SLE-11-SP1:Update:Manager
-enabled=1
-autorefresh=1
-baseurl=http://download.suse.de/ibs/SUSE:/SLE-11-SP1:/Update:/Manager/standard/
-type=rpm-md
