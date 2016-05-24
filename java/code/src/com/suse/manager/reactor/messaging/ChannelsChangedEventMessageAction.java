@@ -15,37 +15,42 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.redhat.rhn.manager.errata.ErrataManager;
+
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 /**
- * Generate repo files for managed systems whenever their channel assignments have changed.
+ * Handle changes of channel assignments on minions: trigger a refresh of the errata cache,
+ * regenerate pillar data and propagate the changes to the minion via state application.
  */
-public class ChannelsChangedEventMessageAction implements MessageAction {
+public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void execute(EventMessage event) {
+    protected void doExecute(EventMessage event) {
         long serverId = ((ChannelsChangedEventMessage) event).getServerId();
-        // Generate repo files only for salt minions
+
+        // This message action acts only on salt minions
         MinionServerFactory.lookupById(serverId).ifPresent(minion -> {
-            if (minion.hasEntitlement(EntitlementManager.SALT)) {
-                SaltStateGeneratorService.INSTANCE.generatePillar(minion);
-                if (event.getUserId() != null) {
-                    MessageQueue.publish(new ApplyStatesEventMessage(serverId,
-                            event.getUserId(), true, ApplyStatesEventMessage.CHANNELS)
-                    );
-                }
-                else {
-                    MessageQueue.publish(new ApplyStatesEventMessage(
-                            serverId, true, ApplyStatesEventMessage.CHANNELS)
-                    );
-                }
+
+            // Trigger update of the errata cache
+            ErrataManager.insertErrataCacheTask(minion);
+
+            // Regenerate the pillar data
+            SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+
+            // Propagate changes to the minion via state.apply
+            if (event.getUserId() != null) {
+                MessageQueue.publish(new ApplyStatesEventMessage(serverId,
+                        event.getUserId(), ApplyStatesEventMessage.CHANNELS)
+                );
+            }
+            else {
+                MessageQueue.publish(new ApplyStatesEventMessage(
+                        serverId, ApplyStatesEventMessage.CHANNELS)
+                );
             }
         });
     }

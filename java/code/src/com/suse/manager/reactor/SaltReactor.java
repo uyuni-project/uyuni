@@ -24,8 +24,6 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
-import com.suse.manager.reactor.messaging.CheckinEventMessage;
-import com.suse.manager.reactor.messaging.CheckinEventMessageAction;
 import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
@@ -94,8 +92,6 @@ public class SaltReactor implements EventListener {
                 ActionScheduledEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(),
                 JobReturnEventMessage.class);
-        MessageQueue.registerAction(new CheckinEventMessageAction(),
-                CheckinEventMessage.class);
         MessageQueue.registerAction(new RefreshHardwareEventMessageAction(SALT_SERVICE),
                 RefreshHardwareEventMessage.class);
         MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
