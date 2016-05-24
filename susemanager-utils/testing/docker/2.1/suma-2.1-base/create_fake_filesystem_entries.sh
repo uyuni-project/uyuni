@@ -23,6 +23,9 @@ ln -s /manager/spacewalk/setup/bin/spacewalk-setup-sudoers /usr/bin/
 mkdir -p /var/lib/rhn/rhn-satellite-prep/etc/rhn
 
 mkdir -p /usr/share/rhn/config-defaults
+ln -s /manager/backend/satellite_tools/rhn-satellite-activate /usr/bin
+ln -s /manager/backend/satellite_tools/rhn-satellite-activate /usr/sbin
+ln -s /manager/suseRegisterInfo/suseRegister /usr/lib64/python2.6/site-packages/suseRegister
 ln -s /manager/backend/rhn-conf/{rhn.conf,rhn_server.conf,rhn_server_satellite.conf} /usr/share/rhn/config-defaults/
 ln -s /manager/web/conf/rhn_web.conf /usr/share/rhn/config-defaults/
 ln -s /manager/backend /usr/lib64/python2.6/site-packages/spacewalk
