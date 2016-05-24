@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Tue May 24 15:08:01 CEST 2016 - kwalter@suse.com
+
+- version 2.5.24.4-1
+- spacewalk-repo-sync - Improved date handling (bsc#975161)
+- better error message for system that is already registered as minion
+- Only trigger virtualization notification on server save when the
+  virtualization data is not falsy (bsc#975120)
+- fix GPG bad signature detection and improve error messages (bsc#979313)
+- send and save machine_id on traditional registration
+- vendor channels may have no repo assigned (bsc#977781)
+- do not crash now that multiple urls are passed (bnc#970951)
+
+-------------------------------------------------------------------
 Wed Apr 06 08:40:42 CEST 2016 - mc@suse.de
 
 - version 2.5.24.3-1
