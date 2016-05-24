@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue May 24 15:32:18 CEST 2016 - kwalter@suse.com
+
+- version 2.5.7.8-1
+- Disable action buttons to add/reject/delete minions if user is non org-admin
+- handle and show error message when session expires in remote-command page
+  (bsc#974891)
+- Enable Run button in remote-command page only if a preview exists
+- show both Preview and Run buttons to improve usability of remote
+  command feature (bsc#974288)
+
+-------------------------------------------------------------------
 Wed Apr 06 08:42:16 CEST 2016 - mc@suse.de
 
 - version 2.5.7.7-1
