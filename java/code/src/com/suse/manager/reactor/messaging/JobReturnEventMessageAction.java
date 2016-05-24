@@ -148,7 +148,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
                 jobReturnEvent.getMinionId());
         if (minion.isPresent()) {
-            MessageQueue.publish(new CheckinEventMessage(minion.get().getId()));
+            minion.get().updateServerInfo();
         }
         else {
             // Or trigger registration if minion is not present
@@ -172,12 +172,12 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         // Set the result code defaulting to 0
         serverAction.setResultCode(retcode);
 
-        // The final status of the action depends on "success" and "retcode"
-        if (eventData.isSuccess() && retcode == 0) {
-            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+        // Determine the final status of the action
+        if (actionFailed(eventData)) {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
         }
         else {
-            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
 
         Action action = serverAction.getParentAction();
@@ -313,6 +313,32 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 return false;
             default: return false;
         }
+    }
+
+    /**
+     * Check if an action is failed based on the return event data. The status depends on
+     * the "success" and "retcode" attributes as well as on the single states results in
+     * case we are looking at the results of a state.apply.
+     *
+     * @return true if the action has failed, false otherwise
+     */
+    private boolean actionFailed(JobReturnEvent.Data eventData) {
+        // For state.apply based actions verify the result of each state
+        boolean stateApplySuccess = true;
+        if (eventData.getFun().equals("state.apply")) {
+            TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
+                    new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
+            Map<String, StateApplyResult<Map<String, Object>>> results =
+                    eventData.getResult(typeToken);
+            for (StateApplyResult<Map<String, Object>> result : results.values()) {
+                if (!result.isResult()) {
+                    stateApplySuccess = false;
+                    break;
+                }
+            }
+        }
+
+        return !(eventData.isSuccess() && eventData.getRetcode() == 0 && stateApplySuccess);
     }
 
     /**
