@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 24 14:46:06 CEST 2016 - kwalter@suse.com
+
+- version 2.5.5.2-1
+- make spacecmd createRepo compatible with SUSE Manager 2.1 API
+  (bsc#977264)
+
+-------------------------------------------------------------------
 Wed Feb 10 08:40:17 CET 2016 - mc@suse.de
 
 - version 2.5.5.1-1
