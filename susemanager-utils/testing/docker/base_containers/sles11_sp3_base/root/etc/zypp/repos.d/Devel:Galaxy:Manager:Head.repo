@@ -1,6 +1,0 @@
-[Devel:Galaxy:Manager:Head]
-name=Devel:Galaxy:Manager:Head
-enabled=1
-autorefresh=1
-baseurl=http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/SLE_11_SP3/
-type=rpm-md

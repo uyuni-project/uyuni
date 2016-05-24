@@ -1,6 +1,0 @@
-[SUSE:SLE-11-SP2:Update:Products:Test]
-name=SUSE:SLE-11-SP2:Update:Products:Test
-enabled=1
-autorefresh=1
-baseurl=http://download.suse.de/ibs/SUSE:/SLE-11-SP2:/Update:/Products:/Test/standard/
-type=rpm-md

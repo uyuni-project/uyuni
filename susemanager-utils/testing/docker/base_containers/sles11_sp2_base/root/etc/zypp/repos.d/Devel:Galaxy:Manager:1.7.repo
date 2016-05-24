@@ -1,6 +1,0 @@
-[Devel:Galaxy:Manager:1.7]
-name=Devel:Galaxy:Manager:1.7
-enabled=1
-autorefresh=1
-baseurl=http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/1.7/SLE_11_SP2/
-type=rpm-md
