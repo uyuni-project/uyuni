@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue May 24 15:55:53 CEST 2016 - kwalter@suse.com
+
+- version 3.0.13-1
+- move machine_id from suseMinionInfo to rhnServer table
+- fix removing nonlinux entitlement during migration
+- fix migrating and cleanup system types during migration (bsc#977465)
+- Enable ftr_package_refresh for minions
+
+-------------------------------------------------------------------
 Wed Apr 06 08:43:47 CEST 2016 - mc@suse.de
 
 - version 3.0.12-1
