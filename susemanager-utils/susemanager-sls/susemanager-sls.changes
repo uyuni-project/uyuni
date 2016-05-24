@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 24 16:04:20 CEST 2016 - kwalter@suse.com
+
+- version 0.1.13-1
+- require refresh channels before pkg states (bsc#975424)
+- use pillar and static states to install/remove packages (bsc#975424)
+
+-------------------------------------------------------------------
 Tue Apr 12 17:15:01 CEST 2016 - mc@suse.de
 
 - version 0.1.12-1
