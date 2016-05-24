@@ -1,6 +1,6 @@
 # Container used to test SUSE Manager 3.0
 #
-# VERSION               1.0.1
+# VERSION               1.0.2
 
 FROM registry.mgr.suse.de/sles12sp1:0.1.0
 MAINTAINER Flavio Castelli "fcastelli@suse.com"

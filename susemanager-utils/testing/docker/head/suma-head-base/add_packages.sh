@@ -31,6 +31,7 @@ zypper --non-interactive in  \
               python-argparse \
               python-base \
               python-configobj \
+              python-dateutil \
               python-debian \
               python-devel \
               python-dmidecode \
