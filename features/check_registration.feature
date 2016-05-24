@@ -106,12 +106,11 @@ Feature: Check client registration
     And I should see a "Snapshot Tags" link in the content area
     And I should see a "Schedule" link in the content area
 
-  # If cobbler test was running there is a profile
-  # And I should see a "No profiles found that are compatible with this System.
-  # Either you haven't created any Kickstart Profiles
-  # or this system does not have a Base Channel." text
-
   Scenario: check tab links "Groups"
+    # If cobbler test was running there is a profile
+    # And I should see a "No profiles found that are compatible with this System.
+    # Either you haven't created any Kickstart Profiles
+    # or this system does not have a Base Channel." text
     Given I am on the Systems overview page of this client
     When I follow "Groups" in the content area
     Then I should see a "Details" link in the content area
