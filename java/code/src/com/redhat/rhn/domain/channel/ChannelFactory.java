@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.user.User;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -1257,10 +1258,11 @@ public class ChannelFactory extends HibernateFactory {
      * @return vendor content source if it exists
      */
     public static ContentSource findVendorContentSourceByRepo(String repoUrl) {
+        String repoUrlPrefix = repoUrl.split("\\?")[0];
         Criteria criteria = getSession().createCriteria(ContentSource.class);
         criteria.add(Restrictions.isNull("org"));
         criteria.add(Restrictions.eq("type", ChannelFactory.CONTENT_SOURCE_TYPE_YUM));
-        criteria.add(Restrictions.eq("sourceUrl", repoUrl));
+        criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix, MatchMode.START));
         return (ContentSource) criteria.uniqueResult();
     }
 

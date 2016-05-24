@@ -1323,8 +1323,12 @@ public class ContentSyncManager {
                 source.setOrg(null);
                 source.setSourceUrl(url);
                 source.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
-                ChannelFactory.save(source);
             }
+            else {
+                // update the URL as the token might have changed
+                source.setSourceUrl(url);
+            }
+            ChannelFactory.save(source);
             dbChannel.getSources().add(source);
         }
 
