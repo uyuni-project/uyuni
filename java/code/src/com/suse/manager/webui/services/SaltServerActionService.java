@@ -31,9 +31,9 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.salt.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.State;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Schedule;
-import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 
