@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 24 15:29:34 CEST 2016 - kwalter@suse.com
+
+- version 2.5.6.4-1
+- taskotop: a utility to monitor what Taskomatic is doing
+
+-------------------------------------------------------------------
 Wed Apr 06 08:48:55 CEST 2016 - mc@suse.de
 
 - version 2.5.6.3-1
