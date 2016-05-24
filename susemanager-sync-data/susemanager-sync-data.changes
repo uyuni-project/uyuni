@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue May 24 15:04:56 CEST 2016 - kwalter@suse.com
+
+- version 3.0.9-1
+- support SUSE Enterprise Storage 3 (bsc#966441)
+- support SLE-Module-Certifications12 (bsc#976203)
+- support SLE-POS 11 SP3 as addon for SLES 11 SP4 (bsc#976194)
+- handle product class changes for SUSE Manager Server
+
+-------------------------------------------------------------------
 Mon Mar 21 16:24:15 CET 2016 - mc@suse.de
 
 - version 3.0.8-1
