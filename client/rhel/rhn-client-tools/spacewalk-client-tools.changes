@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 24 15:58:15 CEST 2016 - kwalter@suse.com
+
+- version 2.5.13.4-1
+- send and save machine_id on traditional registration
+
+-------------------------------------------------------------------
 Mon Apr 11 18:01:52 CEST 2016 - mc@suse.de
 
 - version 2.5.13.3-1
