@@ -95,11 +95,13 @@ When(/^I copy to server "([^"]*)"$/) do |arg1|
 end
 
 Then(/^the pxe-default-profile should be enabled$/) do
-  step %(file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT\ pxe-default-profile")
+  sleep(1)
+  step %(file "/srv/tftpboot/pxelinux.cfg/default" contains "'ONTIMEOUT pxe-default-profile'")
 end
 
 Then(/^the pxe-default-profile should be disabled$/) do
-  step "file \"/srv/tftpboot/pxelinux.cfg/default\" contains \"ONTIMEOUT\\ local\""
+  sleep(1)
+  step %(file "/srv/tftpboot/pxelinux.cfg/default" contains "'ONTIMEOUT local'")
 end
 
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
