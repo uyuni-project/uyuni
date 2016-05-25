@@ -3,10 +3,10 @@ Author: Bo Maryniuk <bo@suse.de>
 '''
 import os
 import sys
-from mock import MagicMock, patch
-from testing_utils import load_module
 
-pkgset = load_module("salt/_beacons/pkgset.py")
+from mock import MagicMock, patch
+from ..beacons import pkgset
+
 pkgset.__context__ = dict()
 
 
