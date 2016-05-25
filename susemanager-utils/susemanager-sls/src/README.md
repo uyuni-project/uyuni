@@ -1,10 +1,20 @@
 ## Python Code Maintenance
 
-If the code not yet in here but on older places:
+Test are written with PyTest. This way:
 
-1. Move your .py file to the appropriate location (_modules -> modules, _beacons -> beacons etc)
-2. Write a test as a separate .py test file in "tests"
-3. Run tests, using PyTest
-4. Update .spec file accordingly
+1. Create your "test_foo.py" file.
 
-If all the Python code is already here and tested, delete __this__ README file.
+2. Import with double-dot your package,
+   so it will be included in the sys path, e.g.:
+
+   from ..beacons import pkgset
+
+3. Create a test function "def test_my_foo(..."
+
+4. Rock-n-roll by simply calling "py.test".
+
+
+Don't mind `.cache` and `__pycache__` directories,
+they are ignored in an explicit `.gitignore`.
+
+Have fun. :)
