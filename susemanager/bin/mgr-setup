@@ -254,7 +254,11 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
         echo "ssl-use-existing-certs = N" >> /root/spacewalk-answers
     fi
 
-    PARAM_DB="--external-postgresql"
+    if [ "$DB_BACKEND" = "oracle" ]; then
+        PARAM_DB="--external-oracle"
+    else
+        PARAM_DB="--external-postgresql"
+    fi
 
     if [ "$DO_MIGRATION" = "1" ]; then
         /usr/bin/spacewalk-setup --disconnected --skip-db-population --skip-ssl-cert-generation --answer-file=/root/spacewalk-answers $PARAM_DB
