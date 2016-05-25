@@ -43,7 +43,7 @@ import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.parser.JsonParser;
 
-import org.jmock.Mock;
+import org.jmock.Expectations;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,7 +81,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     public void executeTest(Consumer<MinionServer> assertions) throws Exception {
 
         // cleanup
-        Mock saltServiceMock = mock(SaltService.class);
+        SaltService saltServiceMock = mock(SaltService.class);
 
         MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
         Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
@@ -101,23 +101,22 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         // Register a minion via RegisterMinionAction and mocked SaltService
 
-        saltServiceMock.stubs().method("getMachineId").with(eq(MINION_ID)).will(
-                returnValue(Optional.of(MACHINE_ID)));
-        saltServiceMock.stubs().method("getGrains").with(eq(MINION_ID)).will(
-                returnValue(getGrains(MINION_ID, key.getKey())));
-        saltServiceMock.stubs().method("getCpuInfo").with(eq(MINION_ID)).will(
-                returnValue(getCpuInfo(MINION_ID)));
-        saltServiceMock.stubs().method("syncGrains");
-        saltServiceMock.stubs().method("syncModules");
+        context().checking(new Expectations() { {
+            allowing(saltServiceMock).getMachineId(MINION_ID);
+            will(returnValue(Optional.of(MACHINE_ID)));
+            allowing(saltServiceMock).getGrains(MINION_ID);
+            will(returnValue(getGrains(MINION_ID, key.getKey())));
+            allowing(saltServiceMock).getCpuInfo(MINION_ID);
+            will(returnValue(getCpuInfo(MINION_ID)));
+            allowing(saltServiceMock).syncGrains(with(any(String.class)));
+            allowing(saltServiceMock).syncModules(with(any(String.class)));
+        } });
 
-        SaltService saltService = (SaltService) saltServiceMock.proxy();
-
-
-        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltService);
+        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock);
         action.doExecute(new RegisterMinionEventMessage(MINION_ID));
 
         // Verify the resulting system entry
-        String machineId = saltService.getMachineId(MINION_ID).get();
+        String machineId = saltServiceMock.getMachineId(MINION_ID).get();
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         assertTrue(optMinion.isPresent());
         MinionServer minion = optMinion.get();

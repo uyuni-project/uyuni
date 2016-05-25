@@ -2,14 +2,15 @@
     <info organisation="suse" module="manager" />
     <dependencies>
         <dependency org="suse" name="ant" rev="1.9.4" />
-        <dependency org="suse" name="antlr" rev="2.7.7" />
         <dependency org="suse" name="ant-contrib" rev="1.0b2" />
         <dependency org="suse" name="ant-junit" rev="1.9.4" />
+        <dependency org="suse" name="antlr" rev="2.7.7" />
         <dependency org="suse" name="asm" rev="1.5.3" />
         <dependency org="suse" name="asm-attrs" rev="1.5.3" />
         <dependency org="suse" name="bcel" rev="5.1" />
         <dependency org="suse" name="c3p0" rev="0.9.1.2" />
         <dependency org="suse" name="cglib" rev="2.1.3" />
+        <dependency org="suse" name="cglib-nodep" rev="2.2.3" />
         <dependency org="suse" name="checkstyle-all" rev="6.11.2" />
         <dependency org="suse" name="commons-beanutils" rev="1.9.2" />
         <dependency org="suse" name="commons-cli" rev="1.2" />
@@ -32,6 +33,8 @@
         <dependency org="suse" name="ehcache" rev="1.2.3" />
         <dependency org="suse" name="google-gson" rev="2.3.1" />
         <dependency org="suse" name="gsbase" rev="2.0.1" />
+        <dependency org="suse" name="hamcrest-core" rev="1.3" />
+        <dependency org="suse" name="hamcrest-library" rev="1.3" />
         <dependency org="suse" name="hibernate3" rev="3.2.7" />
         <dependency org="suse" name="httpclient" rev="4.5" />
         <dependency org="suse" name="httpcore" rev="4.4.1" />
@@ -43,8 +46,9 @@
         <dependency org="suse" name="jcommon" rev="1.0.16" />
         <dependency org="suse" name="jdom" rev="1.0" />
         <dependency org="suse" name="jfreechart" rev="1.0.13" />
-        <dependency org="suse" name="jmock" rev="1.2.0" />
-        <dependency org="suse" name="jmock-cglib" rev="1.2.0" />
+        <dependency org="suse" name="jmock" rev="2.6.0" />
+        <dependency org="suse" name="jmock-junit3" rev="2.6.0" />
+        <dependency org="suse" name="jmock-legacy" rev="2.6.0" />
         <dependency org="suse" name="jose4j" rev="0.4.4" />
         <dependency org="suse" name="jsch" rev="0.1.53" />
         <dependency org="suse" name="jta" rev="1.1" />
@@ -54,6 +58,7 @@
         <dependency org="suse" name="mockobjects" rev="0.09" />
         <dependency org="suse" name="mockobjects-core" rev="0.09" />
         <dependency org="suse" name="mockobjects-jdk1.4-j2ee1.3" rev="0.09" />
+        <dependency org="suse" name="objenesis" rev="1.0" />
         <dependency org="suse" name="ojdbc5" rev="11.2.0.3" />
         <dependency org="suse" name="oro" rev="2.0.8" />
         <dependency org="suse" name="oscache" rev="2.2" />
@@ -67,6 +72,7 @@
         <dependency org="suse" name="sitemesh" rev="2.1" />
         <dependency org="suse" name="simple-core" rev="3.1.3" />
         <dependency org="suse" name="simple-xml" rev="2.6.2" />
+        <dependency org="suse" name="sitemesh" rev="2.1" />
         <dependency org="suse" name="slf4j-api" rev="1.7.12" />
         <dependency org="suse" name="slf4j-log4j12" rev="1.7.12" />
         <dependency org="suse" name="snakeyaml" rev="1.10" />
