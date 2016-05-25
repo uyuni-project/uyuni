@@ -124,7 +124,8 @@ public class SSHPushWorker implements QueueWorker {
     }
 
     /**
-     * Get the primary proxy's hostname for a given server or null.
+     * Get the primary proxy's IP address or hostname (in case the ssh_push_use_hostname
+     * option is set to true) for a given server or null in case there is no proxy involved.
      * @return primary proxy for server or null
      */
     private String getPrimaryProxy(Server server) {
@@ -140,7 +141,16 @@ public class SSHPushWorker implements QueueWorker {
                for (Iterator<?> itr = retval.iterator(); itr.hasNext();) {
                    ServerPath path = (ServerPath) itr.next();
                    if (path.getPosition().toString().equals("1")) {
-                       proxyHost = path.getHostname();
+                       if (Config.get().getBoolean(CONFIG_KEY_USE_HOSTNAME)) {
+                           proxyHost = path.getHostname();
+                       }
+                       else {
+                           // Load the proxy server object to determine the IP address
+                           Server proxy = (Server) HibernateFactory.getSession().load(
+                                   Server.class, path.getId());
+                           proxyHost = proxy.getIpAddress();
+                       }
+
                        break;
                    }
                }
