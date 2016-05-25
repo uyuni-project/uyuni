@@ -21,8 +21,8 @@ import com.suse.scc.client.SCCClientUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.integration.junit3.MockObjectTestCase;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -67,20 +67,19 @@ public class SCCClientUtilTest extends MockObjectTestCase {
                 new ByteArrayInputStream(expected.getBytes("UTF-8"));
 
         // get fake connection to TEST_URL that returns fake data above
-        Mock entityMock = mock(HttpEntity.class);
-        entityMock.expects(atLeastOnce()).method("getContent")
-            .will(returnValue(expectedInputStream));
-
-        Mock mockResponse =
-                mock(HttpResponse.class);
-        mockResponse.expects(atLeastOnce()).method("getEntity")
-                .will(returnValue(entityMock.proxy()));
-        mockResponse.expects(once()).method("getFirstHeader").withAnyArguments();
-        HttpResponse request = (HttpResponse) mockResponse.proxy();
+        HttpEntity entityMock = mock(HttpEntity.class);
+        HttpResponse mockResponse = mock(HttpResponse.class);
+        context().checking(new Expectations() { {
+            atLeast(1).of(entityMock).getContent();
+            will(returnValue(expectedInputStream));
+            atLeast(1).of(mockResponse).getEntity();
+            will(returnValue(entityMock));
+            oneOf(mockResponse).getFirstHeader(with(any(String.class)));
+        } });
 
         // get reader
         BufferedReader reader =
-                SCCClientUtils.getLoggingReader(uri, request, TEST_USER_NAME,
+                SCCClientUtils.getLoggingReader(uri, mockResponse, TEST_USER_NAME,
                         System.getProperty("java.io.tmpdir"));
 
         // expect to read fake data from reader
