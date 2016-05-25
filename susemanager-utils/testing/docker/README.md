@@ -51,6 +51,7 @@ docker build -t suma-<branch>-<base|pgsql|ora> .
 The Oracle container requires some extra care:
   1) Run the following command: `docker run --privileged -t -i -v <dir containing git checkout>:/manager suma-<branch>-ora /bin/bash`
   2) From inside of the container run the following command: `/manager/susemanager-utils/testing/docker/<branch>/suma-<branch>-ora/setup-db-oracle.sh`
+     or `/manager/susemanager-utils/testing/docker/<branch>/suma-<branch>-ora/db-setup`
   3) Once the Oracle setup is done open a new terminal and run the following command: `docker commit <id of the container> suma-<branch>-ora`
      The id of the container is the hostname of the running container. Otherwise you can obtain it by doing: `docker ps`
 These painful steps are going to disappear once docker's build system supports prileged containers.
