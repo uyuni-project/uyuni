@@ -41,6 +41,9 @@ mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
 cp -R salt/* %{buildroot}/usr/share/susemanager/salt
 cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
 
+# Manually install Python part to already prepared structure
+cp src/beacons/pkgset.py %{buildroot}/usr/share/susemanager/salt/_beacons
+
 %post
 # HACK! Create broken link when it will be replaces with the real file
 ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
