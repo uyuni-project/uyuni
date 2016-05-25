@@ -24,9 +24,12 @@ import com.suse.manager.webui.utils.salt.custom.Udevdb;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Smbios;
+import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 import com.suse.salt.netapi.calls.modules.Status;
+import com.suse.salt.netapi.datatypes.target.Target;
+
 import org.apache.commons.io.IOUtils;
-import org.jmock.Mock;
+import org.jmock.Expectations;
 
 import java.io.IOException;
 import java.util.Date;
@@ -51,9 +54,17 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
     public void testDmiRuntimeException() throws Exception {
         doTest(ARCH_X86,
-            (apiMock, minionId) -> apiMock.stubs()
-                    .method("getDmiRecords")
-                    .will(throwException(new RuntimeException("test exception"))),
+            (apiMock, minionId) -> context().checking(new Expectations() { {
+                allowing(apiMock).getDmiRecords(with(any(String.class)),
+                        with(any(RecordType.class)));
+                will(throwException(
+                        new RuntimeException("test exception")));
+                allowing(apiMock).getCpuInfo(minionId);
+                Map<String, Object> cpuinfo =
+                        parse("status.cpuinfo.longval", ARCH_X86,
+                                Status.cpuinfo().getReturnType());
+                will(returnValue(Optional.of(cpuinfo)));
+            } }),
             (server, action) -> {
                 assertNotNull(server);
                 assertNotNull(server.getCpu());
@@ -68,9 +79,16 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
     public void testDmiJsonSyntaxException() throws Exception {
         doTest(ARCH_X86,
-            (apiMock, minionId) -> apiMock.stubs()
-                .method("getDmiRecords")
-                .will(throwException(new JsonSyntaxException("test exception"))),
+            (apiMock, minionId) -> context().checking(new Expectations() { {
+                allowing(apiMock).getDmiRecords(with(any(String.class)),
+                        with(any(RecordType.class)));
+                will(throwException(new JsonSyntaxException("test exception")));
+                allowing(apiMock).getCpuInfo(minionId);
+                Map<String, Object> cpuinfo =
+                        parse("status.cpuinfo.longval", ARCH_X86,
+                                Status.cpuinfo().getReturnType());
+                will(returnValue(Optional.of(cpuinfo)));
+            } }),
             (server, action) -> {
                 assertNotNull(server);
                 assertNotNull(server.getCpu());
@@ -89,34 +107,47 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
     public void testRefreshHardwareX86() throws Exception {
         doTest(ARCH_X86,
-            (apiMock, minionId) -> {
-                try {
-                    List<Smbios.Record> smbiosSystem = parse("smbios.records.system", ARCH_X86,
-                            Smbios.records(Smbios.RecordType.SYSTEM).getReturnType());
-                    apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.SYSTEM)).
-                            will(returnValue(Optional.of(smbiosSystem.get(0).getData())));
+                (apiMock, minionId) -> context().checking(new Expectations() { {
+                    List<Smbios.Record> smbiosSystem =
+                            parse("smbios.records.system", ARCH_X86,
+                                    Smbios.records(RecordType.SYSTEM)
+                                            .getReturnType());
+                    allowing(apiMock).getDmiRecords(minionId,
+                            RecordType.SYSTEM);
+                    will(returnValue(
+                            Optional.of(smbiosSystem.get(0).getData())));
 
-                    List<Smbios.Record> smbiosBios = parse("smbios.records.bios", ARCH_X86,
-                            Smbios.records(Smbios.RecordType.BIOS).getReturnType());
-                    apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BIOS)).
-                            will(returnValue(Optional.of(smbiosBios.get(0).getData())));
+                    List<Smbios.Record> smbiosBios =
+                            parse("smbios.records.bios", ARCH_X86,
+                                    Smbios.records(RecordType.BIOS)
+                                            .getReturnType());
+                    allowing(apiMock).getDmiRecords(minionId,
+                            RecordType.BIOS);
+                    will(returnValue(Optional.of(smbiosBios.get(0).getData())));
 
-                    List<Smbios.Record> smbiosChassis = parse("smbios.records.chassis", ARCH_X86,
-                            Smbios.records(Smbios.RecordType.CHASSIS).getReturnType());
-                    apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.CHASSIS)).
-                            will(returnValue(Optional.of(smbiosChassis.get(0).getData())));
+                    List<Smbios.Record> smbiosChassis =
+                            parse("smbios.records.chassis", ARCH_X86,
+                                    Smbios.records(RecordType.CHASSIS)
+                                            .getReturnType());
+                    allowing(apiMock).getDmiRecords(minionId,
+                            RecordType.CHASSIS);
+                    will(returnValue(
+                            Optional.of(smbiosChassis.get(0).getData())));
 
-                    List<Smbios.Record> smbiosBaseboard = parse("smbios.records.chassis", ARCH_X86,
-                            Smbios.records(Smbios.RecordType.BASEBOARD).getReturnType());
-                    apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BASEBOARD)).
-                            will(returnValue(Optional.of(smbiosBaseboard.get(0).getData())));
-
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                    fail("Could not setup mock " + e.getMessage());
-                }
-            },
+                    List<Smbios.Record> smbiosBaseboard =
+                            parse("smbios.records.chassis", ARCH_X86,
+                                    Smbios.records(RecordType.BASEBOARD)
+                                            .getReturnType());
+                    allowing(apiMock).getDmiRecords(minionId,
+                            RecordType.BASEBOARD);
+                    will(returnValue(
+                            Optional.of(smbiosBaseboard.get(0).getData())));
+                    allowing(apiMock).getCpuInfo(minionId);
+                    Map<String, Object> cpuinfo =
+                            parse("status.cpuinfo", ARCH_X86,
+                                    Status.cpuinfo().getReturnType());
+                    will(returnValue(Optional.of(cpuinfo)));
+                } }),
             (server, action) -> {
                 assertNotNull(server);
                 assertNotNull(server.getCpu());
@@ -194,24 +225,19 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
     public void testRefreshHardwareX86LongCPUValues() throws Exception {
         doTest(ARCH_X86,
-                (apiMock, minionId) -> {
-                    try {
-                        // not interested in DMI, just skip it
-                        apiMock.stubs()
-                            .method("getDmiRecords")
-                            .will(throwException(new JsonSyntaxException("test exception")));
-
-                        Map<String, Object> cpuinfo = parse("status.cpuinfo.longval", ARCH_X86, Status.cpuinfo().getReturnType());
-                        apiMock.stubs().method("getCpuInfo").with(eq(minionId)).will(returnValue(Optional.of(cpuinfo)));
-
-                        Map<String, Object> grains = parse("grains.items.longval", ARCH_X86, Grains.items(false).getReturnType());
-                        apiMock.stubs().method("getGrains").with(eq(minionId)).will(returnValue(Optional.of(grains)));
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                        fail("Could not setup mock " + e.getMessage());
-                    }
-                },
+                (apiMock, minionId) -> context().checking(new Expectations() { {
+                    allowing(apiMock).getDmiRecords(with(any(String.class)),
+                            with(any(RecordType.class)));
+                    will(throwException(new JsonSyntaxException("test exception")));
+                    allowing(apiMock).getCpuInfo(minionId);
+                    Map<String, Object> cpuinfo = parse("status.cpuinfo.longval",
+                            ARCH_X86, Status.cpuinfo().getReturnType());
+                    will(returnValue(Optional.of(cpuinfo)));
+                    allowing(apiMock).getGrains(minionId);
+                    Map<String, Object> grains = parse("grains.items.longval",
+                            ARCH_X86, Grains.items(false).getReturnType());
+                    will(returnValue(Optional.of(grains)));
+                } }),
                 (server, action) -> {
                     assertNotNull(server);
                     assertNotNull(server.getCpu());
@@ -230,7 +256,12 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
     public void testRefreshHardwarePPC64() throws Exception {
         doTest(ARCH_PPC64,
-            (apiMock, minionId) -> { },
+            (apiMock, minionId) -> context().checking(new Expectations() { {
+                allowing(apiMock).getCpuInfo(minionId);
+                Map<String, Object> cpuinfo = parse("status.cpuinfo",
+                        ARCH_PPC64, Status.cpuinfo().getReturnType());
+                will(returnValue(Optional.of(cpuinfo)));
+            } }),
             (server, action) -> {
                 verifyCompleted(action);
                 assertNotNull(server);
@@ -248,7 +279,7 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                 Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
                         eth -> eth.getName(),
                         Function.identity()
-                ));                
+                ));
 
                 assertEquals("00:00:00:00:00:00", ethNames.get("lo").getHwaddr());
                 assertEquals("52:54:00:d7:4f:20", ethNames.get("eth0").getHwaddr());
@@ -276,21 +307,23 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                 assertEquals("ibmveth", ethNames.get("eth0").getModule());
 
                 assertEquals(null, ethNames.get("lo").getPrimary());
-                assertEquals("Y", ethNames.get("eth0").getPrimary());                
+                assertEquals("Y", ethNames.get("eth0").getPrimary());
             });
     }
 
     public void testRefreshHardwareS390() throws Exception {
         doTest(ARCH_S390,
-                (apiMock, minionId) -> {
-                    try {
-                        String readValues = parse("mainframesysinfo.read_values", ARCH_S390, MainframeSysinfo.readValues().getReturnType());
-                        apiMock.stubs().method("getMainframeSysinfoReadValues").with(eq(minionId)).will(returnValue(Optional.of(readValues)));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        fail("Could not setup mock " + e.getMessage());
-                    }
-                },
+                (apiMock, minionId) -> context().checking(new Expectations() { {
+                    String readValues = parse("mainframesysinfo.read_values",
+                            ARCH_S390,
+                            MainframeSysinfo.readValues().getReturnType());
+                    allowing(apiMock).getMainframeSysinfoReadValues(minionId);
+                    will(returnValue(Optional.of(readValues)));
+                    allowing(apiMock).getCpuInfo(minionId);
+                    Map<String, Object> cpuinfo = parse("status.cpuinfo",
+                            ARCH_S390, Status.cpuinfo().getReturnType());
+                    will(returnValue(Optional.of(cpuinfo)));
+                } }),
                 (server, action) -> {
 
                     verifyCompleted(action);
@@ -378,43 +411,55 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         assertEquals(serverAction.getStatus(), ActionFactory.STATUS_FAILED);
     }
 
-    private void doTest(String arch, BiConsumer<Mock, String> stubs, BiConsumer<MinionServer, Action> assertions) throws Exception {
+    private void doTest(String arch, BiConsumer<SaltService, String> stubs, BiConsumer<MinionServer, Action> assertions) throws Exception {
         MinionServer server = (MinionServer) ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         String minionId = server.getMinionId();
 
-        Mock apiMock = mock(SaltService.class);
+        SaltService apiMock = mock(SaltService.class);
 
-        apiMock.stubs().method("getFileContent").with(isA(String.class), isA(String.class)).will(returnValue(Optional.empty()));
+        context().checking(new Expectations() { {
+            allowing(apiMock).getFileContent(with(any(String.class)), with(any(String.class)));
 
-        Map<String, Object> grains = parse("grains.items", arch, Grains.items(false).getReturnType());
-        apiMock.stubs().method("getGrains").with(eq(minionId)).will(returnValue(Optional.of(grains)));
+            Map<String, Object> grains =
+                    parse("grains.items", arch, Grains.items(false).getReturnType());
+            allowing(apiMock).getGrains(minionId);
+            will(returnValue(Optional.of(grains)));
 
-        List<Map<String, Object>> udevdb = parse("udevdb.exportdb", arch, Udevdb.exportdb().getReturnType());
-        apiMock.stubs().method("getUdevdb").with(eq(minionId)).will(returnValue(Optional.of(udevdb)));
+            List<Map<String, Object>> udevdb =
+                    parse("udevdb.exportdb", arch, Udevdb.exportdb().getReturnType());
+            allowing(apiMock).getUdevdb(minionId);
+            will(returnValue(Optional.of(udevdb)));
 
-        Map<String, Object> cpuinfo = parse("status.cpuinfo", arch, Status.cpuinfo().getReturnType());
-        apiMock.stubs().method("getCpuInfo").with(eq(minionId)).will(returnValue(Optional.of(cpuinfo)));
+            Map<String, Network.Interface> netif = parse("network.interfaces", arch,
+                    Network.interfaces().getReturnType());
+            allowing(apiMock).getNetworkInterfacesInfo(minionId);
+            will(returnValue(Optional.of(netif)));
 
-        Map<String, Network.Interface> netif = parse("network.interfaces", arch, Network.interfaces().getReturnType());
-        apiMock.stubs().method("getNetworkInterfacesInfo").with(eq(minionId)).will(returnValue(Optional.of(netif)));
+            Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips =
+                    parse("sumautil.primary_ips", arch,
+                            SumaUtil.primaryIps().getReturnType());
+            allowing(apiMock).getPrimaryIps(minionId);
+            will(returnValue(Optional.of(ips)));
 
-        Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse("sumautil.primary_ips", arch, SumaUtil.primaryIps().getReturnType());
-        apiMock.stubs().method("getPrimaryIps").with(eq(minionId)).will(returnValue(Optional.of(ips)));
+            Map<String, String> netmodules = parse("sumautil.get_net_modules", arch,
+                    SumaUtil.getNetModules().getReturnType());
+            allowing(apiMock).getNetModules(minionId);
+            will(returnValue(Optional.of(netmodules)));
 
-        Map<String, String> netmodules = parse("sumautil.get_net_modules", arch, SumaUtil.getNetModules().getReturnType());
-        apiMock.stubs().method("getNetModules").with(eq(minionId)).will(returnValue(Optional.of(netmodules)));
+            Map<String, Boolean> ping = new HashMap<>();
+            ping.put(minionId, true);
+            allowing(apiMock).ping(with(any(Target.class)));
+            will(returnValue(ping));
+        } });
 
-        Map<String, Boolean> ping = new HashMap<>();
-        ping.put(minionId, true);
-        apiMock.stubs().method("ping").will(returnValue(ping));
 
         if (stubs != null) {
             stubs.accept(apiMock, minionId);
         }
 
-        RefreshHardwareEventMessageAction action = new RefreshHardwareEventMessageAction((SaltService)apiMock.proxy());
+        RefreshHardwareEventMessageAction action = new RefreshHardwareEventMessageAction(apiMock);
 
         Action scheduledAction = ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
         RefreshHardwareEventMessage msg = new RefreshHardwareEventMessage(minionId, scheduledAction);
@@ -429,9 +474,14 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         assertions.accept(server, scheduledAction);
     }
 
-    private <T> T parse(String name, String arch, TypeToken<T> returnType) throws IOException {
-        String str = IOUtils.toString(getClass().getResourceAsStream(name + (arch != null ? "." + arch : "") + ".json"));
-        return gson.fromJson(str, returnType.getType());
+    private <T> T parse(String name, String arch, TypeToken<T> returnType) {
+        try {
+            String str = IOUtils.toString(getClass().getResourceAsStream(name +
+                    (arch != null ? "." + arch : "") + ".json"));
+            return gson.fromJson(str, returnType.getType());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
