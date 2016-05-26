@@ -20,7 +20,7 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.11.70
+Version: 5.11.71
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -460,6 +460,9 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Wed May 25 2016 Tomas Kasparek <tkasparek@redhat.com> 5.11.71-1
+- updating copyright years
+
 * Thu May 12 2016 Gennadii Altukhov <galt@redhat.com> 5.11.70-1
 - change interpreter on python2 for osa-dispatcher
 

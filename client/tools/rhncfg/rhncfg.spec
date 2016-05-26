@@ -15,7 +15,7 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.10.92
+Version: 5.10.93
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -157,6 +157,9 @@ fi
 %ghost %attr(600,root,root) %{_localstatedir}/log/rhncfg-actions
 
 %changelog
+* Wed May 25 2016 Tomas Kasparek <tkasparek@redhat.com> 5.10.93-1
+- updating copyright years
+
 * Wed May 18 2016 Tomas Kasparek <tkasparek@redhat.com> 5.10.92-1
 - convert string to work in python 3
 - method os.path.walk doesn't exist in Python 3

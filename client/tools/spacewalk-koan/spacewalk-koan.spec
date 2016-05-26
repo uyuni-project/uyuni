@@ -10,7 +10,7 @@ Group: System Environment/Kernel
 License: GPLv2
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 2.5.1
+Version: 2.5.2
 Release: 1%{?dist}
 URL:            https://fedorahosted.org/spacewalk
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -61,6 +61,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/rhn/actions/
 
 %changelog
+* Wed May 25 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.2-1
+- updating copyright years
+
 * Tue Apr 26 2016 Gennadii Altukhov <galt@redhat.com> 2.5.1-1
 - Adapt spacewalk-koan for Python 2/3 compatibility
 - Bumping package versions for 2.5.
