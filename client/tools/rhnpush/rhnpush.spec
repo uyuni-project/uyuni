@@ -10,7 +10,7 @@ Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
 URL:           http://fedorahosted.org/spacewalk
-Version:       5.5.97
+Version:       5.5.98
 Release:       1%{?dist}
 Source0:       https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
@@ -107,6 +107,9 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING
 
 %changelog
+* Wed May 25 2016 Tomas Kasparek <tkasparek@redhat.com> 5.5.98-1
+- updating copyright years
+
 * Wed May 18 2016 Tomas Kasparek <tkasparek@redhat.com> 5.5.97-1
 - convert binary data to string to work correctly in Python 3
 

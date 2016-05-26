@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2015 Red Hat, Inc.
+ * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,20 +13,6 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.channel.software;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.StopWatch;
-import org.apache.log4j.Logger;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.InvalidCertificateException;
@@ -95,6 +81,20 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
+
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.StopWatch;
+import org.apache.log4j.Logger;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * ChannelSoftwareHandler
@@ -1388,12 +1388,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             ChannelManager.removePackages(channel, packagesToRemove, loggedInUser);
 
             // refresh the channel
-            ChannelManager.refreshWithNewestPackages(channel, "api");
-
-            // Mark the affected channel to have it's metadata evaluated, where necessary
-            // (RHEL5+, mostly)
-            ChannelManager.queueChannelChange(channel.getLabel(), "java::removeErrata",
-                    loggedInUser.getLogin());
+            ChannelManager.refreshWithNewestPackages(channel, "java::removeErrata");
 
             List<Long> cids = new ArrayList<Long>();
             cids.add(channel.getId());
@@ -2250,12 +2245,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
         mergeTo.getPackages().addAll(differentPackages);
         ChannelFactory.save(mergeTo);
-        ChannelManager.refreshWithNewestPackages(mergeTo, "api");
-
-        // Mark the affected channel to have it's metadata evaluated, where necessary
-        // (RHEL5+, mostly)
-        ChannelManager.queueChannelChange(mergeTo.getLabel(), "java::mergePackages",
-            loggedInUser.getLogin());
+        ChannelManager.refreshWithNewestPackages(mergeTo, "java::mergePackages");
 
         List<Long> cids = new ArrayList<Long>();
         cids.add(mergeTo.getId());

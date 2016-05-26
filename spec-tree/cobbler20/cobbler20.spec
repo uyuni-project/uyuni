@@ -7,7 +7,7 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 57%{?dist}
+Release: 59%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
@@ -32,7 +32,7 @@ Patch18: disable_https.patch
 Patch19: buildiso-boot-options.patch
 Patch20: buildiso-no-local-hdd.patch
 Patch21: cobbler-s390-kernel-options.patch
-Patch22: cobbler-ipv6-autoconfig.patch
+Patch22: cobbler-ipv6.patch
 Group: Applications/System
 Requires: python >= 2.3
 
@@ -492,6 +492,13 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Tue May 24 2016 Jiri Precechtel <jprecech@redhat.com> 2.0.11-59
+- Revert "1302323 - fix usage of not initiated variable in snippet
+  post_install_network_config"
+
+* Tue May 24 2016 Jiri Precechtel <jprecech@redhat.com> 2.0.11-58
+- 784912 - applying ipv6 support Sat. patch to SW
+
 * Wed May 18 2016 Jiri Precechtel <jprecech@redhat.com> 2.0.11-57
 - 1302323 - fix usage of not initiated variable in snippet
   post_install_network_config

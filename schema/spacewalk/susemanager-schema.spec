@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        SQL schema for Spacewalk server
 
-Version:        3.5.20
+Version:        2.5.21
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -77,6 +77,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Wed May 25 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.21-1
+- updating copyright years
+- 1303886 - remove Oracle from summary
+
 * Thu Apr 14 2016 Jiri Precechtel <jprecech@redhat.com> 2.5.20-1
 - 1320119 - added delete of data in referrenced table
 

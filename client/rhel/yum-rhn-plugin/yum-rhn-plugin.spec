@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.5.4.1
+Version: 2.5.5
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,11 @@ fi
 
 
 %changelog
+* Tue May 24 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.5-1
+- updating copyright years
+- Regenerating .po and .pot files for rhn-client-tools.
+- Updating .po translations from Zanata
+
 * Fri Feb 19 2016 Jiri Dostal <jdostal@redhat.com> 2.5.4-1
 - 1302198, 1292288 - remote package upgrade saying newer package is installed,
   but it is not

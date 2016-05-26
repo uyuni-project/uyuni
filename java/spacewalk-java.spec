@@ -25,7 +25,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.96
+Version: 2.5.98
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -982,6 +982,15 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu May 26 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.98-1
+- fix checkstyle
+
+* Wed May 25 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.97-1
+- call 'queue channel change' only once per channel change
+- removing unused code
+- updating copyright years
+- Merging frontend L10N from Zanata
+
 * Fri May 20 2016 Grant Gainey 2.5.96-1
 - Don't modify request map when rendering alphabar, since it may fail depending
   on the implementation of ServletRequest
