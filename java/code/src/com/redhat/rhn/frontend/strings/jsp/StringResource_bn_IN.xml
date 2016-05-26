@@ -1500,7 +1500,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference">
-        <source>To set up your Satellite to authenticate against LDAP, Kerberos, or other network-based authentication systems, visit the &lt;a href="/rhn/help/reference/en-US/s1-maintenance-pam-auth.jsp"&gt;Installation guide&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>To set up your Satellite to authenticate against LDAP, Kerberos, or other network-based authentication systems, visit the &lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;Installation guide&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
@@ -7710,19 +7710,11 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="keys.jsp.summary">
-<<<<<<< HEAD
-        <source>You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.  A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.  For more information, see the &lt;a href="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.keys" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
-        </context-group>
-        <target>আপনি এই সমস্ত কি এবং/অথবা সার্টিফিকেটগুলি আপনার kickstart প্রোফাইলের মধ্যে উল্লেখ করতে পারেন যার ফলে kickstart-র সময় সিস্টেমের মধ্যে এই সমস্ত কি/সার্টিফিকেট ইনস্টল করা হবে। সিস্টেমে স্বাক্ষরিত প্যাকেজ ইনস্টল করার জন্য সঠিক কি উপস্থিত থাকা আবশ্যক। @@PRODUCT_NAME@@ Proxy Server অথবা @@PRODUCT_NAME@@ সার্ভার-র সাহায্যে সিস্টেম kickstart করার জন্য সঠিক সার্টিফিকেট থাকা আবশ্যক। অধিক বিবরণের জন্য &lt;a href=&quot;/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#s3-sm-system-kick-keys&quot; target=&quot;_blank&quot; &gt;RHN Reference Guide&lt;/a&gt; পড়ুন।</target>
-=======
         <source>You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.  A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.  For more information, see the &lt;a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;</source>
         <target>আপনি এই সমস্ত কি এবং/অথবা সার্টিফিকেটগুলি আপনার kickstart প্রোফাইলের মধ্যে উল্লেখ করতে পারেন যার ফলে kickstart-র সময় সিস্টেমের মধ্যে এই সমস্ত কি/সার্টিফিকেট ইনস্টল করা হবে। সিস্টেমে স্বাক্ষরিত প্যাকেজ ইনস্টল করার জন্য সঠিক কি উপস্থিত থাকা আবশ্যক। @@PRODUCT_NAME@@ Proxy Server অথবা @@PRODUCT_NAME@@ সার্ভার-র সাহায্যে সিস্টেম kickstart করার জন্য সঠিক সার্টিফিকেট থাকা আবশ্যক। অধিক বিবরণের জন্য &lt;a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN Reference Guide&lt;/a&gt; পড়ুন।</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
->>>>>>> master
       </trans-unit>
       <trans-unit id="keys.jsp.toolbar">
         <source>GPG Public Keys and SSL Certificates</source>
@@ -7857,19 +7849,11 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="preservation_list.jsp.summary">
-<<<<<<< HEAD
-        <source>File preservation lists are lists of files that will be restored to a system during a particular kickstart.  You can reference a file preservation list in a kickstart profile.  For more information refer to the &lt;a href="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.  The following file preservation lists have been created for use by your organization:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
-        </context-group>
-        <target>কোনো kickstart কর্ম সমাপনের পরে পুনরায় স্থাপনের উদ্দেশ্যে চিহ্নিত ফাইলগুলির নাম ফাইল সংরক্ষণ তালিকায় উল্লিখিত হয়। Kickstart প্রোফাইলের মধ্যে ফাইল সংরক্ষণ তালিকা উল্লেখ করা যাবে। এই বিষয়ে অধিক জানতে &lt;a href=&quot;/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#s3-sm-system-kick-preserve&quot; target=&quot;_blank&quot; &gt;RHN রেফারেন্স গাইড&lt;/a&gt; পড়ুন। আপনার প্রতিষ্ঠানের জন্য নিম্নলিখিত ফাইল সংরক্ষণ তালিকা নির্মিত হয়েছে :</target>
-=======
         <source>File preservation lists are lists of files that will be restored to a system during a particular kickstart.  You can reference a file preservation list in a kickstart profile.  For more information refer to the &lt;a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.  The following file preservation lists have been created for use by your organization:</source>
         <target>কোনো kickstart কর্ম সমাপনের পরে পুনরায় স্থাপনের উদ্দেশ্যে চিহ্নিত ফাইলগুলির নাম ফাইল সংরক্ষণ তালিকায় উল্লিখিত হয়। Kickstart প্রোফাইলের মধ্যে ফাইল সংরক্ষণ তালিকা উল্লেখ করা যাবে। এই বিষয়ে অধিক জানতে &lt;a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN রেফারেন্স গাইড&lt;/a&gt; পড়ুন। আপনার প্রতিষ্ঠানের জন্য নিম্নলিখিত ফাইল সংরক্ষণ তালিকা নির্মিত হয়েছে :</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
->>>>>>> master
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.summary">
         <source>Are you sure you want to delete the selected File List(s)?  &lt;strong&gt;WARNING: Deleting the selected File List(s) will delete all its associated files.&lt;/strong&gt;</source>
@@ -7989,19 +7973,11 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary">
-<<<<<<< HEAD
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
-        </context-group>
-        <target>এই তালিকায় উপস্থিত সমস্ত ফাইল ও ডিরেক্টরি kickstart সমাপনের পরে অপরিবর্তিত রাখা হবে। প্রতিটি ফাইল অথবা ডিরেক্টরি উল্লেখ করার জন্য পৃথক পংক্তি ব্যবহার করুন।&lt;br/&gt;তালিকার সর্বোচ্চ মাপ &lt;strong&gt;১ মেগাবাইট&lt;/strong&gt;-র মধ্যে সীমিত রাখা আবশ্যক। অধিক বিবরণের জন্য &lt;a href=&quot;/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#s3-sm-system-kick-preserve&quot; target=&quot;_blank&quot; &gt;RHN রেফারেন্স গাইড&lt;/a&gt; পড়ুন।</target>
-=======
         <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.</source>
         <target>এই তালিকায় উপস্থিত সমস্ত ফাইল ও ডিরেক্টরি kickstart সমাপনের পরে অপরিবর্তিত রাখা হবে। প্রতিটি ফাইল অথবা ডিরেক্টরি উল্লেখ করার জন্য পৃথক পংক্তি ব্যবহার করুন।&lt;br/&gt;তালিকার সর্বোচ্চ মাপ &lt;strong&gt;১ মেগাবাইট&lt;/strong&gt;-র মধ্যে সীমিত রাখা আবশ্যক। অধিক বিবরণের জন্য &lt;a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN রেফারেন্স গাইড&lt;/a&gt; পড়ুন।</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
->>>>>>> master
       </trans-unit>
       <trans-unit id="softwareedit.jsp.summary1">
         <source>You can modify the software this kickstart profile will deploy below.</source>
@@ -12096,45 +12072,9 @@ any of these revisions.  Are you sure you want to do this?</source>
         <source>Schedule configuration file deploys for no sooner than:</source>
         <target>উল্লিখিত সময়ের পরে ফাইল স্থাপনা কর্ম নির্ধারণ করুন:</target>
       </trans-unit>
-<<<<<<< HEAD
-      <!-- KS Distributions List Page -->
-      <group>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
-        </context-group>
-        <trans-unit id="kickstart.distributions.jsp.nolists">
-          <source>No kickstartable distributions available.</source>
-        </trans-unit>
-        <trans-unit id="kickstart.kickstartable_distro_create_new.jsp">
-          <source>Create Distribution</source>
-          
-        </trans-unit>
-        <trans-unit id="kickstart.kickstartable_distributions.jsp">
-          <source>Kickstartable Distributions</source>
-          <target>Kickstart করার যোগ্য ডিস্ট্রিবউশন</target>
-        </trans-unit>
-        <trans-unit id="kickstart.kickstartable_distributions_text.jsp">
-          <source>The following kickstart distributions are available.</source>
-          <target>নিম্নলিখিত kickstart ডিস্ট্রিবিউশনগুলি উপস্থিত রয়েছে।</target>
-        </trans-unit>
-        <trans-unit id="kickstarts.distro.is-valid.tooltip">
-          <source>Kickstart distributions may be invalid due wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source>
-        </trans-unit>
-        <trans-unit id="kickstart.distro.is-valid.jsp">
-          <source>Valid</source>
-        </trans-unit>
-      </group>
-      <trans-unit id="preferences.jsp.lang.bn_IN">
-        <source>Bengali</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
-        </context-group>
-        <target>বাংলা</target>
-=======
       <trans-unit id="ssm.config.subscribe.jsp.header">
         <source>Subscribe to Configuration Channels</source>
         <target>কনফিগারেশন চ্যানেলে সাবস্ক্রাইব করুন</target>
->>>>>>> master
       </trans-unit>
       <trans-unit id="ssm.config.subscribe.jsp.summary">
         <source>Below are available configuration channels to which you may subscribe systems. After selecting the channels to which you wish to subscribe, you will be given a chance to rank those channels. No changes will be made to your system set until after you have ranked channels.</source>
@@ -14171,12 +14111,6 @@ Kickstart করার সময় অনুগ্রহ করে সিস্ট
         <source>Issue Date</source>
         <target>প্রকাশনার তারিখ</target>
       </trans-unit>
-<<<<<<< HEAD
-      <trans-unit id="sdc.details.proxy.unlicensed">
-        <source>The WebUI @@PRODUCT_NAME@@ Proxy installer is obsolete. Please use the command line installer from package spacewalk-proxy-installer.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
-=======
       <trans-unit id="virtualization.provision.first.jsp.no.profiles">
         <source>No profiles currently available for kickstarting guests. Please &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;create a new kickstart profile with a Virtualization Type other than none.&lt;/a&gt;</source>
         <target>গেস্ট সিস্টেম Kickstart-র জন্য বর্তমানে কোনো প্রোফাইল উপস্থিত নেই। অনুগ্রহ করে &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;শূণ্য ব্যতীত পৃথক ভার্চুয়ালাইজেন প্রকৃতি সহ একটি নতুন kickstart প্রোফাইল নির্মাণ করুন।&lt;/a&gt;</target>
@@ -14189,18 +14123,13 @@ Kickstart করার সময় অনুগ্রহ করে সিস্ট
         <target>তথ্য সংক্রান্ত আইকন</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Pages with an info icon</context>
->>>>>>> master
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.jsp.header">
         <source>System Set Manager</source>
         <target>System Set Manager</target>
         <context-group name="ctx">
-<<<<<<< HEAD
-          <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
-=======
           <context context-type="sourcefile">System Set Manager header</context>
->>>>>>> master
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.jsp.imgAlt">
