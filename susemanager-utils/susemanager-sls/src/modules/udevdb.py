@@ -53,9 +53,7 @@ def exportdb():
             if query == 'E':
                 if query not in dev:
                     dev[query] = {}
-                val = line[1].strip().split('=', 1)
-                key = str(val[0])
-                val = val[1]
+                key, val = data.strip().split('=', 1)
 
                 try:
                     val = int(val)
