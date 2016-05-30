@@ -36,7 +36,9 @@ provided for the integration between infrastructure components.
 %build
 
 %install
-mkdir -p %{buildroot}/usr/share/susemanager/salt
+mkdir -p %{buildroot}/usr/share/susemanager/salt/_grains
+mkdir -p %{buildroot}/usr/share/susemanager/salt/_beacons
+mkdir -p %{buildroot}/usr/share/susemanager/salt/_modules
 mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
 cp -R salt/* %{buildroot}/usr/share/susemanager/salt
 cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
