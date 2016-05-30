@@ -80,6 +80,12 @@ def exportdb():
 
 
 def normalize(dev):
+    '''
+    Replace list with only one element to the value of the element.
+
+    :param dev:
+    :return:
+    '''
     for sect, val in dev.items():
         if len(val) == 1:
             dev[sect] = val[0]
