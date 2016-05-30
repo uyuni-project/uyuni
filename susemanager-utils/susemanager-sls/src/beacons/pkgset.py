@@ -50,7 +50,9 @@ def beacon(config):
         with open(config.get('cookie')) as ck_file:
             ck_data = ck_file.read().strip()
             if __context__.get(__virtualname__, "") != ck_data:
-                ret.append({'zypper/pkgset/changed': 'true'})
+                ret.append({
+                    'tag': 'changed'
+                })
                 __context__[__virtualname__] = ck_data
 
     return ret
