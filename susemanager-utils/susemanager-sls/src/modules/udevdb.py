@@ -44,12 +44,9 @@ def exportdb():
 
     devices = []
     dev = {}
-    for line in udev_result['stdout'].splitlines():
-        line = line.strip()
+    for line in (line.strip() for line in udev_result['stdout'].splitlines()):
         if line:
             line = line.split(':', 1)
-            query = str(line[0])
-
             if query == 'E':
                 if query not in dev:
                     dev[query] = {}
