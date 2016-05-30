@@ -27,3 +27,13 @@ def test_virtual():
     with patch('salt.utils.which_bin', MagicMock(return_value="/bogus/path")):
         assert udevdb.__virtual__() is True
 
+
+def test_normalize():
+    '''
+    Test if udevdb.normalize does not returns nested lists that contains only one item.
+
+    :return:
+    '''
+    data = {'key': ['value', 'here'], 'foo': ['bar'], 'some': 'data'}
+    udevdb.normalize(data)
+    assert data == {'foo': 'bar', 'some': 'data', 'key': ['value', 'here']}
