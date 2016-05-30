@@ -49,6 +49,7 @@ def exportdb():
             line = line.split(':', 1)
             if len(line) != 2:
                 continue
+            query, data = line
             if query == 'E':
                 if query not in dev:
                     dev[query] = {}
@@ -66,15 +67,14 @@ def exportdb():
             else:
                 if query not in dev:
                     dev[query] = []
-                dev[query].append(line[1].strip())
-
+                dev[query].append(data.strip())
         else:
-            normalize(dev)
-            devices.append(dev)
-            dev = {}
+            if dev:
+                devices.append(normalize(dev))
+                dev = {}
     if dev:
         normalize(dev)
-        devices.append(dev)
+        devices.append(normalize(dev))
 
     return devices
 
