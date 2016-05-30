@@ -56,11 +56,11 @@ def exportdb():
 
                 try:
                     val = int(val)
-                except:  # pylint: disable=bare-except
+                except ValueError:
                     try:
                         val = float(val)
-                    except:  # pylint: disable=bare-except
-                        pass
+                    except ValueError:
+                        pass  # Quiet, this is not a number.
 
                 dev[query][key] = val
             else:
