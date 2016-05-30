@@ -89,3 +89,5 @@ def normalize(dev):
     for sect, val in dev.items():
         if len(val) == 1:
             dev[sect] = val[0]
+
+    return dev
