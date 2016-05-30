@@ -75,7 +75,7 @@ def exportdb():
             normalize(dev)
             devices.append(dev)
             dev = {}
-    if bool(dev):
+    if dev:
         normalize(dev)
         devices.append(dev)
 
