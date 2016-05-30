@@ -47,6 +47,8 @@ def exportdb():
     for line in (line.strip() for line in udev_result['stdout'].splitlines()):
         if line:
             line = line.split(':', 1)
+            if len(line) != 2:
+                continue
             if query == 'E':
                 if query not in dev:
                     dev[query] = {}
