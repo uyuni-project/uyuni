@@ -3,13 +3,14 @@ Author: Bo Maryniuk <bo@suse.de>
 '''
 
 import sys
+import pytest
 from mock import MagicMock, patch
 
 sys.modules['salt'] = MagicMock()
 sys.modules['salt.utils'] = MagicMock()
 sys.modules['salt.modules'] = MagicMock()
 sys.modules['salt.modules.cmdmod'] = MagicMock()
-sys.modules['salt.exceptions'] = MagicMock()
+sys.modules['salt.exceptions'] = MagicMock(CommandExecutionError=Exception)
 
 from ..modules import mainframesysinfo
 
@@ -26,3 +27,22 @@ def test_virtual():
 
     with patch('os.access', MagicMock(return_value=False)):
         assert mainframesysinfo.__virtual__() is False
+
+
+def test_read_values():
+    '''
+    Test the read_values method.
+
+    :return:
+    '''
+    bogus_data = "bogus data"
+    run_all = {'stdout': bogus_data, 'retcode': 0, 'stderr': ''}
+    with patch.dict(mainframesysinfo.__salt__, {'cmd.run_all': MagicMock(return_value=run_all)}):
+        assert mainframesysinfo.read_values() == bogus_data
+
+    run_all['retcode'] = 1
+    run_all['stderr'] = 'error here'
+    with patch.dict(mainframesysinfo.__salt__, {'cmd.run_all': MagicMock(return_value=run_all)}):
+        with pytest.raises(Exception) as x:
+            mainframesysinfo.read_values()
+        assert str(x.value) == run_all['stderr']
