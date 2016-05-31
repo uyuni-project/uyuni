@@ -74,15 +74,13 @@ def _dmidecode():
     if dmidecode is not None:
         try:
             log.debug("Trying dmidecode to get CPU socket count")
-            cmd = dmidecode + " -t processor"
-            ret = __salt__['cmd.run_all'](cmd, output_loglevel='quiet')
+            ret = __salt__['cmd.run_all']("{0} -t processor".format(dmidecode), output_loglevel='quiet')
             if ret['retcode'] == 0:
-                lines = ret['stdout']
                 count = 0
-                for line in lines.splitlines():
+                for line in ret['stdout'].strip().splitlines():
                     if 'Processor Information' in line:
                         count += 1
-                if count > 0:
+                if count:
                     return {'cpusockets': count}
         except Exception as error:
             log.error(str(error))
