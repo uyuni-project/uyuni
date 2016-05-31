@@ -1,4 +1,5 @@
 import sys
+import os
 from mock import MagicMock
 
 
@@ -12,3 +13,13 @@ def setup_environment():
     sys.modules['salt.modules'] = MagicMock()
     sys.modules['salt.modules.cmdmod'] = MagicMock()
     sys.modules['salt.exceptions'] = MagicMock(CommandExecutionError=Exception)
+
+
+def get_test_data(filename):
+    '''
+    Get a test data.
+
+    :param filename:
+    :return:
+    '''
+    return open(os.path.sep.join([os.path.abspath(''), 'data', filename]), 'r').read()
