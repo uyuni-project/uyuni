@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,7 +79,7 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
                 Device device = new Device();
                 device.setBus(subsys);
                 device.setDriver(props.getValueAsString("DRIVER"));
-                device.setPcitype(clasifyPcyType(subsys));
+                device.setPcitype(classifyPciType(subsys));
                 device.setDetached(0L);
                 device.setDeviceClass(clasifyClass(minionId, dbdev));
                 device.setDescription(getDeviceDesc(props));
@@ -142,6 +143,23 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
                     if (StringUtils.isNotBlank(modelId)) {
                         device.setProp2(modelId);
                     }
+                }
+                else if (subsys.equals("scsi")) {
+                    // skip scsi hosts and targets
+                    if (!props.getValueAsString("DEVTYPE").equals("scsi_device")) {
+                        return;
+                    }
+                    // check if this scsi device is already listed as a block device
+                    if (udevdb.get().stream().anyMatch(dev ->
+                        Objects.toString(dev.get("P"), "").startsWith(devpath) &&
+                            Optional.ofNullable(dev.get("E"))
+                                .filter(Map.class::isInstance)
+                                .map(Map.class::cast)
+                                .filter(m -> "block".equals(m.get("SUBSYSTEM"))
+                                ).isPresent())) {
+                        return;
+                    }
+
                 }
 
                 if (props.getValueAsString("ID_BUS").equals("scsi")) {
@@ -420,7 +438,7 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
     }
 
 
-    private Long clasifyPcyType(String subsys) {
+    private Long classifyPciType(String subsys) {
         if ("pci".equals(subsys)) {
             return 1L;
         }
