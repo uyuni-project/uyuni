@@ -62,13 +62,16 @@ public class MinionActionUtils {
                     .compose(flatMap(Json.getField(ScheduleMetadata.SUMA_ACTION_ID)))
                     .compose(Json::asObj);
 
-
     /**
+     * Checks the current status of the ServerAction by looking
+     * at running jobs on the minion and the job cache using the
+     * action id we add to the job as metadata.
+     *
      * @param sa ServerAction to check
      * @param server MinionServer of this ServerAction
      * @param running list of running jobs on the MinionServer
      */
-    public static void checkServerAction(ServerAction sa,
+    public static void updateMinionActionStatus(ServerAction sa,
             MinionServer server, List<Saltutil.RunningInfo> running) {
         long actionId = sa.getParentAction().getId();
         boolean actionIsRunning = running.stream().filter(r ->
@@ -159,7 +162,7 @@ public class MinionActionUtils {
                     List<Saltutil.RunningInfo> runningInfos =
                             Optional.ofNullable(running.get(minion.getMinionId()))
                                     .orElseGet(Collections::emptyList);
-                    checkServerAction(sa, minion, runningInfos);
+                    updateMinionActionStatus(sa, minion, runningInfos);
                 })
         );
     }
