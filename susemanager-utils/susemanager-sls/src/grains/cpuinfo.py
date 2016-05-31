@@ -13,14 +13,12 @@ __salt__ = {
 log = logging.getLogger(__name__)
 
 
-def cpusockets():
-    """
-    Returns the number of CPU sockets.
-    """
-    grains = {}
-    physids = {}
+def _lscpu():
+    '''
+    Use lscpu method
 
-    # First try lscpu command if available
+    :return:
+    '''
     lscpu = salt.utils.which_bin(['lscpu'])
     if lscpu is not None:
         try:
@@ -30,7 +28,7 @@ def cpusockets():
             if ret['retcode'] == 0:
                 lines = ret['stdout']
                 max_socket_index = -1
-                for line in lines.splitlines():
+                for line in lines.strip().splitlines():
                     if line.startswith('#'):
                         continue
                     # get the socket index from the output
@@ -38,12 +36,18 @@ def cpusockets():
                     if socket_index > max_socket_index:
                         max_socket_index = socket_index
                 if max_socket_index > -1:
-                    grains['cpusockets'] = 1 + max_socket_index
-                    return grains
-        except:
-            pass
+                    return {'cpusockets': (1 + max_socket_index)}
+        except Exception as error:
+            log.error(str(error))
 
-    # Next try parsing /proc/cpuinfo
+
+def _parse_cpuinfo():
+    '''
+    Use parsing /proc/cpuinfo method.
+
+    :return:
+    '''
+    physids = {}
     if os.access("/proc/cpuinfo", os.R_OK):
         try:
             log.debug("Trying /proc/cpuinfo to get CPU socket count")
@@ -58,12 +62,17 @@ def cpusockets():
                         val = comps[1].strip()
                         physids[val] = True
             if physids and len(physids) > 0:
-                grains['cpusockets'] = len(physids)
-                return grains
-        except:
-            pass
+                return {'cpusockets': len(physids)}
+        except Exception as error:
+            log.error(str(error))
 
-    # Next try dmidecode
+
+def _dmidecode():
+    '''
+    Use dmidecode method.
+
+    :return:
+    '''
     dmidecode = salt.utils.which_bin(['dmidecode'])
     if dmidecode is not None:
         try:
@@ -77,12 +86,19 @@ def cpusockets():
                     if 'Processor Information' in line:
                         count += 1
                 if count > 0:
-                    grains['cpusockets'] = count
-                    return grains
-        except:
-            pass
+                    return {'cpusockets': count}
+        except Exception as error:
+            log.error(str(error))
 
-    log.warn("Could not determine CPU socket count")
+
+def cpusockets():
+    """
+    Returns the number of CPU sockets.
+    """
+    grains = _lscpu() or _parse_cpuinfo() or _dmidecode()
+    if not grains:
+        log.warn("Could not determine CPU socket count")
+
     return grains
 
 
