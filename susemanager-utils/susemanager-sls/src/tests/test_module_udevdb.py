@@ -123,7 +123,7 @@ E: XKBMODEL=pc105
         data = udevdb.exportdb()
         assert data == filter(None, data)
 
-        for d_idx, d_section in enumerate(out):
+        for d_idx, d_section in enumerate(data):
             assert out[d_idx]['P'] == d_section['P']
             assert out[d_idx].get('N') == d_section.get('N')
             for key, value in d_section['E'].items():
