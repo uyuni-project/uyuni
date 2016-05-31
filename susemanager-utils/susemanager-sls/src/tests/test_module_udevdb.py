@@ -35,8 +35,7 @@ def test_normalize():
     :return:
     '''
     data = {'key': ['value', 'here'], 'foo': ['bar'], 'some': 'data'}
-    udevdb.normalize(data)
-    assert data == {'foo': 'bar', 'some': 'data', 'key': ['value', 'here']}
+    assert udevdb.normalize(data) == {'foo': 'bar', 'some': 'data', 'key': ['value', 'here']}
 
 
 def test_exportdb():
