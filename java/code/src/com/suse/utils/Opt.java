@@ -28,18 +28,6 @@ public class Opt {
     }
 
     /**
-     * Given a function from T to R returns a function that
-     * operates on Optional of T instead.
-     * @param fn the function to transform
-     * @param <T> argument type of the function
-     * @param <R> return type of the function
-     * @return a function operating on Optional of T
-     */
-    public static <T, R> Function<Optional<T>, Optional<R>> map(Function<T, R> fn) {
-        return o -> o.map(fn);
-    }
-
-    /**
      * Given a function from T to Optional of R returns a function that
      * operates on Optional of T instead.
      * @param fn the function to transform

@@ -41,17 +41,4 @@ public class Fn {
         return predicate.test(value) ? Optional.of(fn.apply(value)) : Optional.empty();
     }
 
-
-    /**
-     * Helper function to "cast" a lambda or method reference to a function to
-     * call andThen and compose on it.
-     * @param fn the function
-     * @param <T> argument type of the function
-     * @param <R> return type of the function
-     * @return fn
-     */
-    public static <T, R> Function<T, R> fn(Function<T, R> fn) {
-        return fn;
-    }
-
 }
