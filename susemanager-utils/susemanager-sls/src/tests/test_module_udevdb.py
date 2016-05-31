@@ -38,48 +38,7 @@ def test_exportdb():
 
     :return:
     '''
-    udev_data = """
-P: /devices/LNXSYSTM:00/LNXPWRBN:00
-E: DEVPATH=/devices/LNXSYSTM:00/LNXPWRBN:00
-E: DRIVER=button
-E: MODALIAS=acpi:LNXPWRBN:
-E: SUBSYSTEM=acpi
-
-P: /devices/LNXSYSTM:00/LNXPWRBN:00/input/input2
-E: DEVPATH=/devices/LNXSYSTM:00/LNXPWRBN:00/input/input2
-E: EV=3
-E: ID_FOR_SEAT=input-acpi-LNXPWRBN_00
-E: ID_INPUT=1
-E: ID_INPUT_KEY=1
-E: ID_PATH=acpi-LNXPWRBN:00
-E: ID_PATH_TAG=acpi-LNXPWRBN_00
-E: KEY=10000000000000 0
-E: MODALIAS=input:b0019v0000p0001e0000-e0,1,k74,ramlsfw
-E: NAME="Power Button"
-E: PHYS="LNXPWRBN/button/input0"
-E: PRODUCT=19/0/1/0
-E: PROP=0
-E: SUBSYSTEM=input
-E: TAGS=:seat:
-E: USEC_INITIALIZED=2010022
-
-P: /devices/LNXSYSTM:00/LNXPWRBN:00/input/input2/event2
-N: input/event2
-E: BACKSPACE=guess
-E: DEVNAME=/dev/input/event2
-E: DEVPATH=/devices/LNXSYSTM:00/LNXPWRBN:00/input/input2/event2
-E: ID_INPUT=1
-E: ID_INPUT_KEY=1
-E: ID_PATH=acpi-LNXPWRBN:00
-E: ID_PATH_TAG=acpi-LNXPWRBN_00
-E: MAJOR=13
-E: MINOR=66
-E: SUBSYSTEM=input
-E: TAGS=:power-switch:
-E: USEC_INITIALIZED=2076101
-E: XKBLAYOUT=us
-E: XKBMODEL=pc105
-    """
+    udev_data = mockery.get_test_data('udev.sample')
     out = [{'P': '/devices/LNXSYSTM:00/LNXPWRBN:00',
             'E': {'MODALIAS': 'acpi:LNXPWRBN:',
                   'SUBSYSTEM': 'acpi',
