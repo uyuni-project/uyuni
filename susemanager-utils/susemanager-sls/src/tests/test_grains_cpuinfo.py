@@ -33,7 +33,15 @@ def test_cpusockets_parse_cpuinfo():
 
     :return:
     '''
+    cpuinfo.log = MagicMock()
     sample = mockery.get_test_data('cpuinfo.sample')
+    with patch('os.access', MagicMock(return_value=True)):
+        with patch.object(cpuinfo, 'open', mockery.mock_open(sample), create=True):
+            out = cpuinfo._parse_cpuinfo()
+            assert type(out) == dict
+            assert 'cpusockets' in out
+            assert out['cpusockets'] == 1
+
 
 def test_cpusockets_lscpu():
     '''
