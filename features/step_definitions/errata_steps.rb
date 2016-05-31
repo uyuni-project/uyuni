@@ -19,3 +19,18 @@ end
 Then(/^I should see an update in the list$/) do
   fail unless has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a")
 end
+
+Given /^Patches are visible for the registered client$/ do
+    step "I am on the errata page"
+    step "I follow \"Relevant\" in the left menu"
+    for c in 0..20
+      begin
+          step "I should see an update in the list"
+      rescue
+          puts "wait 5 seconds"
+          sleep 5
+      else
+          break
+      end
+    end
+end
