@@ -37,11 +37,7 @@ def mock_open(data=None):
     mock = MagicMock(spec=file)
     handle = MagicMock(spec=file)
     handle.write.return_value = None
-    if data is None:
-        handle.__enter__.return_value = handle
-    else:
-        handle.__enter__.return_value = data
-
+    handle.__enter__.return_value = data or handle
     mock.return_value = handle
 
     return mock
