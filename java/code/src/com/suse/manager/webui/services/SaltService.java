@@ -19,6 +19,7 @@ import com.suse.manager.webui.utils.salt.Jobs;
 import com.suse.manager.webui.utils.salt.Saltutil;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.events.EventStream;
+import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -49,6 +50,15 @@ public interface SaltService {
      * or none if the minion did not respond.
      */
     <R> Optional<R> callSync(LocalCall<R> call, String minionId);
+
+    /**
+     * Executes a salt runner module function
+     *
+     * @param call salt function to call
+     * @param <R> result type of the salt function
+     * @return the result of the function
+     */
+    <R> R callSync(RunnerCall<R> call);
 
     /**
      * Get the minion keys from salt with their respective status.

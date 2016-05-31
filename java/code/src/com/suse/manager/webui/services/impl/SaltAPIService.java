@@ -37,6 +37,7 @@ import com.suse.manager.webui.utils.salt.events.EventStream;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.WheelResult;
 import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.Grains;
@@ -114,6 +115,18 @@ public enum SaltAPIService implements SaltService {
                         " on minion " + minionId + " (minion did not respond in time)");
             }
             return result;
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public <R> R callSync(RunnerCall<R> call) {
+        try {
+            return call.callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -315,13 +328,7 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public Jobs.ListJobResult listJob(String jid) {
-        try {
-            return Jobs.listJob(jid).callSync(
-                    SALT_CLIENT, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
+        return callSync(Jobs.listJob(jid));
     }
 
     /**
