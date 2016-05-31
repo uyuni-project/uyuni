@@ -47,21 +47,18 @@ def _parse_cpuinfo():
 
     :return:
     '''
-    physids = {}
+    physids = set()
     if os.access("/proc/cpuinfo", os.R_OK):
         try:
             log.debug("Trying /proc/cpuinfo to get CPU socket count")
-            with open('/proc/cpuinfo') as f:
-                for line in f:
+            with open('/proc/cpuinfo') as handle:
+                for line in handle:
                     if line.strip().startswith('physical id'):
                         comps = line.split(':')
-                        if not len(comps) > 1:
+                        if len(comps) < 2 or len(comps[1]) < 2:
                             continue
-                        if not len(comps[1]) > 1:
-                            continue
-                        val = comps[1].strip()
-                        physids[val] = True
-            if physids and len(physids) > 0:
+                        physids.add(comps[1].strip())
+            if physids:
                 return {'cpusockets': len(physids)}
         except Exception as error:
             log.error(str(error))
