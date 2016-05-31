@@ -2,15 +2,9 @@
 Author: Bo Maryniuk <bo@suse.de>
 '''
 
-import sys
 from mock import MagicMock, patch
-
-# Mock the imports for the udevdb
-sys.modules['salt'] = MagicMock()
-sys.modules['salt.utils'] = MagicMock()
-sys.modules['salt.modules'] = MagicMock()
-sys.modules['salt.modules.cmdmod'] = MagicMock()
-sys.modules['salt.exceptions'] = MagicMock()
+import mockery
+mockery.setup_environment()
 
 from ..modules import udevdb
 

@@ -2,15 +2,10 @@
 Author: Bo Maryniuk <bo@suse.de>
 '''
 
-import sys
 import pytest
 from mock import MagicMock, patch
-
-sys.modules['salt'] = MagicMock()
-sys.modules['salt.utils'] = MagicMock()
-sys.modules['salt.modules'] = MagicMock()
-sys.modules['salt.modules.cmdmod'] = MagicMock()
-sys.modules['salt.exceptions'] = MagicMock(CommandExecutionError=Exception)
+import mockery
+mockery.setup_environment()
 
 from ..modules import mainframesysinfo
 
