@@ -1,6 +1,5 @@
 UPDATE rhnChannelContentSource
   SET source_id = (
-
     -- first, construct a temporary view on duplicates
     -- that is, couples of ids of rhnCountentSource rows that only differ by the URL token
     WITH duplicates AS (
@@ -18,7 +17,6 @@ UPDATE rhnChannelContentSource
         -- finally, they have equal initial (non-token) part
           AND c1.source_url LIKE substr(c2.source_url, 0, instr(c2.source_url, '?') - 1) || '%'
     )
-
     -- second, the new source id is simply the new_id from the duplicates table
     SELECT duplicates.new_id
       FROM duplicates
