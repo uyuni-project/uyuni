@@ -27,6 +27,23 @@ def test_total_num_cpus():
             assert cpus['total_num_cpus'] == 4
 
 
+def test_cpusockets_dmidecode():
+    '''
+    Test dmidecode sub in cpusockets function.
+
+    :return:
+    '''
+
+    sample = mockery.get_test_data('dmidecode.sample')
+    cpuinfo.log = MagicMock()
+    with patch('salt.utils.which_bin', MagicMock(return_value="/bogus/path")):
+        with patch.dict(cpuinfo.__salt__, {'cmd.run_all': MagicMock(return_value={'retcode': 0, 'stdout': sample})}):
+            out = cpuinfo._dmidecode()
+            assert type(out) == dict
+            assert 'cpusockets' in out
+            assert out['cpusockets'] == 1
+
+
 def test_cpusockets_parse_cpuinfo():
     '''
     Test parse_cpuinfo sub in cpusockets function.
