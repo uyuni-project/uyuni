@@ -23,22 +23,19 @@ def _lscpu():
     if lscpu is not None:
         try:
             log.debug("Trying lscpu to get CPU socket count")
-            cmd = lscpu + " -p"
-            ret = __salt__['cmd.run_all'](cmd, output_loglevel='quiet')
+            ret = __salt__['cmd.run_all']('{0} -p'.format(lscpu), output_loglevel='quiet')
             if ret['retcode'] == 0:
-                lines = ret['stdout']
                 max_socket_index = -1
-                for line in lines.strip().splitlines():
+                for line in ret['stdout'].strip().splitlines():
                     if line.startswith('#'):
                         continue
-                    # get the socket index from the output
                     socket_index = int(line.split(',')[2])
                     if socket_index > max_socket_index:
                         max_socket_index = socket_index
                 if max_socket_index > -1:
                     return {'cpusockets': (1 + max_socket_index)}
         except Exception as error:
-            log.error(str(error))
+            log.debug(str(error))
 
 
 def _parse_cpuinfo():
@@ -61,7 +58,7 @@ def _parse_cpuinfo():
             if physids:
                 return {'cpusockets': len(physids)}
         except Exception as error:
-            log.error(str(error))
+            log.debug(str(error))
 
 
 def _dmidecode():
@@ -83,7 +80,7 @@ def _dmidecode():
                 if count:
                     return {'cpusockets': count}
         except Exception as error:
-            log.error(str(error))
+            log.debug(str(error))
 
 
 def cpusockets():
