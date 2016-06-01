@@ -38,7 +38,7 @@ def test_cpusockets_dmidecode():
     cpuinfo.log = MagicMock()
     with patch('salt.utils.which_bin', MagicMock(return_value="/bogus/path")):
         with patch.dict(cpuinfo.__salt__, {'cmd.run_all': MagicMock(return_value={'retcode': 0, 'stdout': sample})}):
-            out = cpuinfo._dmidecode()
+            out = cpuinfo._dmidecode([])
             assert type(out) == dict
             assert 'cpusockets' in out
             assert out['cpusockets'] == 1
@@ -55,11 +55,11 @@ def test_cpusockets_parse_cpuinfo():
     for sample_name in ['cpuinfo.s390.sample', 'cpuinfo.ppc64le.sample']:
         with patch('os.access', MagicMock(return_value=True)):
             with patch.object(cpuinfo, 'open', mockery.mock_open(mockery.get_test_data(sample_name)), create=True):
-                assert cpuinfo._parse_cpuinfo() is None
+                assert cpuinfo._parse_cpuinfo([]) is None
 
     with patch('os.access', MagicMock(return_value=True)):
         with patch.object(cpuinfo, 'open', mockery.mock_open(mockery.get_test_data('cpuinfo.sample')), create=True):
-            out = cpuinfo._parse_cpuinfo()
+            out = cpuinfo._parse_cpuinfo([])
             assert type(out) == dict
             assert 'cpusockets' in out
             assert out['cpusockets'] == 1
@@ -77,7 +77,7 @@ def test_cpusockets_lscpu():
             with patch.dict(cpuinfo.__salt__,
                             {'cmd.run_all': MagicMock(return_value={'retcode': 0,
                                                                     'stdout': mockery.get_test_data(fn_smpl)})}):
-                out = cpuinfo._lscpu()
+                out = cpuinfo._lscpu([])
                 assert type(out) == dict
                 assert 'cpusockets' in out
                 assert out['cpusockets'] == 1

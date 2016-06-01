@@ -13,7 +13,7 @@ __salt__ = {
 log = logging.getLogger(__name__)
 
 
-def _lscpu():
+def _lscpu(feedback):
     '''
     Use lscpu method
 
@@ -35,10 +35,11 @@ def _lscpu():
                 if max_socket_index > -1:
                     return {'cpusockets': (1 + max_socket_index)}
         except Exception as error:
+            feedback.append("lscpu: {0}".format(str(error)))
             log.debug(str(error))
 
 
-def _parse_cpuinfo():
+def _parse_cpuinfo(feedback):
     '''
     Use parsing /proc/cpuinfo method.
 
@@ -59,9 +60,12 @@ def _parse_cpuinfo():
                 return {'cpusockets': len(physids)}
         except Exception as error:
             log.debug(str(error))
+            feedback.append("/proc/cpuinfo: {0}".format(str(error)))
+        else:
+            feedback.append('/proc/cpuinfo: format is not applicable')
 
 
-def _dmidecode():
+def _dmidecode(feedback):
     '''
     Use dmidecode method.
 
@@ -81,15 +85,19 @@ def _dmidecode():
                     return {'cpusockets': count}
         except Exception as error:
             log.debug(str(error))
+            feedback.append("dmidecode: {0}".format(str(error)))
+    else:
+        feedback.append("dmidecode: executable not found")
 
 
 def cpusockets():
     """
     Returns the number of CPU sockets.
     """
-    grains = _lscpu() or _parse_cpuinfo() or _dmidecode()
+    feedback = list()
+    grains = _lscpu(feedback) or _parse_cpuinfo(feedback) or _dmidecode(feedback)
     if not grains:
-        log.warn("Could not determine CPU socket count")
+        log.warn("Could not determine CPU socket count: {0}".format(' '.join(feedback)))
 
     return grains
 
