@@ -34,7 +34,7 @@ Feature: Test Bare-metal discovery
     And I should see a "Number of CPUs" text
     And I should see a "2" text
     And I should see a "Clock frquency" text
-    And I should see a "1 GHz" text
+    And I should see the CPU frequency of the client
     And I should see a "RAM" text
     And I check the ram value
     And I should see a "Number of disks" text
