@@ -1887,6 +1887,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="bunch.jsp.description.gatherer-matcher-bunch">
         <source>Runs Virtual Host Gatherer on Virtual Host Managers and processes its results. After this Subscription Matcher job is run.</source>
       </trans-unit>
+      <trans-unit id="bunch.jsp.description.minion-action-cleanup-bunch">
+          <source>Cleanup actions on minions for which we missed the job result event</source>
+      </trans-unit>
 
       <!-- Server Contact Methods -->
       <trans-unit id="server.contact-method.label">
@@ -2670,6 +2673,9 @@ You may grant provisioning entitlements _here_.
       </trans-unit>
       <trans-unit id="task.status.gatherer">
         <source>Virtual Host Manager Data Refresh</source>
+      </trans-unit>
+      <trans-unit id="task.status.minion-action-cleanup">
+          <source>Minion Action Cleanup</source>
       </trans-unit>
     </body>
   </file>
