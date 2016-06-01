@@ -94,6 +94,7 @@
            memoryMaximumSize="256m"
            includeAntRuntime="false"
            classpathref="libjars"
+    	   excludes="**/*Test*.java"
     >
       <src>
         <path location="code/src" />
