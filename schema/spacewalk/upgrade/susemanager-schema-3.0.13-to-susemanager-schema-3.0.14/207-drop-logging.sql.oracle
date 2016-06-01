@@ -1,0 +1,11 @@
+create or replace package body logging is
+  procedure clear_log_id is begin return; end clear_log_id;
+  procedure set_log_auth(user_id in number) is begin return; end set_log_auth;
+  function get_log_id return number is begin return 0; end get_log_id;
+  function get_pk_column(table_name_in in varchar) return varchar is begin return ''; end get_pk_column;
+  function get_ddl_columns(table_name_in in varchar, pk_column_in in varchar) return varchar is begin return ''; end get_ddl_columns;
+  procedure recreate_trigger(table_name_in in varchar) is begin return; end recreate_trigger;
+  procedure enable_logging(table_name_in in varchar) is begin return; end enable_logging;
+end logging;
+/
+show errors;
