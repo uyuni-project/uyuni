@@ -12,5 +12,5 @@ end
 
 Then(/^I should see the CPU frequency of the client$/) do
    cpu_freq = `cat /proc/cpuinfo  | grep MHz | awk '{print $4}'`
-   step %(I should see a "#{cpu_freq.to_i/1000} GHz" text)
+   step %(I should see a "#{cpu_freq.to_i / 1000} GHz" text)
 end
