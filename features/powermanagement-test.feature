@@ -29,7 +29,8 @@ Feature: Test Powermanagement
     Given I am on the Systems overview page of this client
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
-    Then I click on "Get status"
+    Then I click on "Power On"
+    And I click on "Get status"
     And I should see the power is "On"
     And I click on "Power Off"
     And I should see a "system has been powered off" text
