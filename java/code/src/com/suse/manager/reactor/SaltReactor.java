@@ -43,8 +43,8 @@ import com.suse.manager.webui.utils.salt.events.Event;
 import com.suse.manager.webui.utils.salt.events.EventListener;
 import com.suse.manager.webui.utils.salt.events.EventStream;
 import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
+import com.suse.manager.webui.utils.salt.events.BeaconEvent;
 import com.suse.manager.webui.utils.salt.events.MinionStartEvent;
-import com.suse.manager.webui.utils.salt.events.ZypperEvent;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -150,7 +150,7 @@ public class SaltReactor implements EventListener {
         Runnable runnable =
                 MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
                 JobReturnEvent.parse(event).map(this::onJobReturnEvent).orElseGet(() ->
-                ZypperEvent.parse(event).map(this::onZypperEvent).orElse(() -> { })));
+                BeaconEvent.parse(event).map(this::onBeaconEvent).orElse(() -> { })));
         executorService.submit(runnable);
     }
 
@@ -180,22 +180,23 @@ public class SaltReactor implements EventListener {
     }
 
     /**
-     * Trigger handling of zypper events
+     * Trigger handling of beacon events
      *
-     * @param zypperEvent the suma custom event
+     * @param beaconEvent beacon event
      * @return event handler runnable
      */
-    private Runnable onZypperEvent(ZypperEvent zypperEvent) {
+    private Runnable onBeaconEvent(BeaconEvent beaconEvent) {
         return () -> {
-            if (zypperEvent.asPackageSetChanged().isPresent()) {
+            if (beaconEvent.getBeacon().equals("pkgset") &&
+                    beaconEvent.getAdditional().equals("changed")) {
                 MessageQueue.publish(
-                        new RunnableEventMessage("ZypperEvent.PackageSetChanged", () -> {
-                    MinionServerFactory
-                        .findByMinionId(zypperEvent.getMinionId())
-                        .ifPresent(minionServer ->
+                    new RunnableEventMessage("ZypperEvent.PackageSetChanged", () -> {
+                        MinionServerFactory
+                            .findByMinionId(beaconEvent.getMinionId())
+                            .ifPresent(minionServer ->
                                 ActionManager.schedulePackageRefresh(minionServer.getOrg(),
                                         minionServer)
-                        );
+                            );
                 }));
             }
         };
