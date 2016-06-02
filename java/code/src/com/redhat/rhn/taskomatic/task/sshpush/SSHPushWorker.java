@@ -127,7 +127,8 @@ public class SSHPushWorker implements QueueWorker {
     }
 
     /**
-     * Get the primary proxy's hostname for a given server or null.
+     * Get the primary proxy's IP address or hostname (in case the ssh_push_use_hostname
+     * option is set to true) for a given server or null in case there is no proxy involved.
      * @return primary proxy for server or null
      */
     private String getPrimaryProxy(Server server) {
@@ -143,7 +144,16 @@ public class SSHPushWorker implements QueueWorker {
                for (Iterator<?> itr = retval.iterator(); itr.hasNext();) {
                    ServerPath path = (ServerPath) itr.next();
                    if (path.getPosition().toString().equals("1")) {
-                       proxyHost = path.getHostname();
+                       if (Config.get().getBoolean(CONFIG_KEY_USE_HOSTNAME)) {
+                           proxyHost = path.getHostname();
+                       }
+                       else {
+                           // Load the proxy server object to determine the IP address
+                           Server proxy = (Server) HibernateFactory.getSession().load(
+                                   Server.class, path.getId());
+                           proxyHost = proxy.getIpAddress();
+                       }
+
                        break;
                    }
                }
@@ -175,14 +185,15 @@ public class SSHPushWorker implements QueueWorker {
                 sudoUser = Config.get().getString(CONFIG_KEY_SUDO_USER);
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("Running 'rhn_check' for: " + client);
-            }
-
             // Get the server's primary proxy (if any)
             proxy = getPrimaryProxy(server);
 
             maxWait = Config.get().getInt(CONFIG_KEY_TASK_TIMEOUT);
+
+            if (log.isDebugEnabled()) {
+                String proxySuffix = proxy == null ? "" : " (proxy: " + proxy + ")";
+                log.debug("Running 'rhn_check': " + client + proxySuffix);
+            }
 
             // Connect to the client
             rhnCheck();
