@@ -81,11 +81,6 @@
           unless="precompiled"
           description="Compiles the main codebase"
   >
-    <condition property="exclude-classes" value="**/*Test*.java">
-      <not>
-        <equals arg1="${compile-test-classes}" arg2="true" />
-      </not>
-    </condition>
     <mkdir dir="${build.dir}/classes" />
     <javac destdir="${build.dir}/classes"
            optimize="off"
@@ -99,7 +94,7 @@
            memoryMaximumSize="256m"
            includeAntRuntime="false"
            classpathref="libjars"
-           excludes="${exclude-classes}"
+    	   excludes="**/*Test*.java"
     >
       <src>
         <path location="code/src" />
@@ -264,12 +259,7 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat" />
 
-  <target name="set-compile-test-classes" >
-    <echo message="Setting compile-test-classes flag. Tests will be compiled." />
-    <property name="compile-test-classes" value="true"/>
-  </target>
-
-  <target name="test" depends="set-compile-test-classes, jar" description="Run unit tests">
+  <target name="test" depends="jar" description="Run unit tests">    
     <mkdir dir="${tests.results.dir}" />
 
     <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
