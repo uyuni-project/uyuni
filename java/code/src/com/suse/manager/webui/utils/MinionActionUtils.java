@@ -30,6 +30,8 @@ import com.suse.utils.Json;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -139,7 +141,8 @@ public class MinionActionUtils {
         List<ServerAction> serverActions =
             ActionFactory.pendingMinionServerActions().stream().flatMap(a -> {
                     if (a.getEarliestAction().toInstant()
-                            .atZone(ZoneId.systemDefault()).isBefore(now)) {
+                            .atZone(ZoneId.systemDefault())
+                            .isBefore(now.minus(5, ChronoUnit.MINUTES))) {
                         return a.getServerActions()
                                 .stream()
                                 .filter(sa -> sa.getServer().asMinionServer().isPresent());
