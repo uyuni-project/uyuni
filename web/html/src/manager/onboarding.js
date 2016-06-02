@@ -10,6 +10,11 @@ const Functions = require("../utils/functions");
 const Comparators = Functions.Comparators;
 const Filters = Functions.Filters;
 const Renderer = Functions.Renderer;
+const STables = require("../components/tableng.js");
+const STable = STables.STable;
+const SColumn = STables.SColumn;
+const SHeader = STables.SHeader;
+const SOutput = STables.SOutput;
 
 
 function listKeys() {
@@ -163,7 +168,125 @@ class Onboarding extends React.Component {
 
 }
 
+
+
+
+
+
+
+
+var dummyData = [];
+
+var stooges = ["Moe", "Curly", "Larry"]
+
+var j = 0;
+for (var i=0; i < 100; i++) {
+  dummyData.push({id: i, name: stooges[j++] + i, address: "Address " + i});
+  if (j > 2) {
+     j = 0;
+  }
+}
+
+function Highlight(props) {
+  var text = props.text;
+  var high = props.highlight;
+
+  if (!props.enabled) {
+    return <span>{text}</span>
+  }
+
+  var chunks = text.split(new RegExp("^" + high));
+
+  return <span>{chunks
+    .map((e) => e == "" ? <span style={{color: 'red'}}>{high}</span> : <span>{e}</span>)}</span>;
+}
+
+
+
+
+
+
+
+
+class Onboarding2 extends React.Component {
+
+  constructor(props) {
+    super();
+    ["sortById", "searchData", "sortByName"].forEach(method => this[method] = this[method].bind(this));
+    this.state = {
+        keys: [],
+        tableData: dummyData
+    };
+//    this.reloadKeys();
+  }
+
+//  reloadKeys() {
+//    return listKeys().then(data => {
+//        this.setState({
+//            keys: processData(data["fingerprints"]),
+//            isOrgAdmin: data["isOrgAdmin"]
+//        });
+//    });
+//  }
+
+  sortById(data, direction) {
+    return data.sort((a, b) => direction * (a.id - b.id));
+  }
+
+  sortByName(data, direction) {
+     return data.sort((a, b) => {
+         if (a.name > b.name) {
+           return direction * 1;
+         }
+         if (a.name < b.name) {
+           return direction * -1;
+         }
+         return 0
+       });
+  }
+
+  searchData(data, criteria) {
+      if (!criteria || criteria == "") {
+        return data;
+      }
+
+      return data.filter((e) => e.name.startsWith(criteria));
+  }
+
+  render() {
+    const minions = this.state.keys;
+    const panelButtons = <div className="pull-right btn-group">
+      <AsyncButton id="reload" icon="refresh" name="Refresh" text action={this.reloadKeys} />
+    </div>;
+
+    return (
+        <Panel title="Onboarding" icon="fa-desktop" button={ panelButtons }>
+            <STable data={this.state.tableData} searchFn={this.searchData}>
+              <SColumn columnKey="id">
+                <SHeader sortFn={this.sortById}>Id</SHeader>
+                <SOutput value={ (row) => row.id}/>
+              </SColumn>
+              <SColumn>
+                <SHeader sortFn={this.sortByName}>Name</SHeader>
+                <SOutput value={ (row, table) => <Highlight enabled={table.state.filtered} text={row.name} highlight={table.state.search}/> } />
+              </SColumn>
+              <SColumn>
+                <SHeader>Address</SHeader>
+                <SOutput value={ (row) => row.address } />
+              </SColumn>
+            </STable>
+        </Panel>
+    );
+  }
+
+}
+
 React.render(
   <Onboarding />,
   document.getElementById('onboarding')
+);
+
+React.render(
+  <Onboarding2 />,
+  document.getElementById('onboarding2')
 );
