@@ -38,6 +38,10 @@ gulp.task('bundle-manager', function(done) {
                 .external("react") // exclude react from these bundles
                 .external("react-dom") // exclude react-dom from these bundles
                 .bundle() // Create the initial bundle when starting the task
+                .on('error', function (err) {
+                    console.log(err.toString());
+                    this.emit("end");
+                })
                 .pipe(source(entry)) // this is a surrogate file name //'org-state-catalog-app.js'
                 .pipe(rename({
                     dirname: '',
@@ -51,6 +55,20 @@ gulp.task('bundle-manager', function(done) {
     })
 });
 
+
+gulp.task("watch", function(event) {
+    var watcher1 = gulp.watch(["./manager/*.js"], ["bundle-manager"]);
+    watcher1.on('change', function(event) {
+        gutil.log('File changed: ' + event.path);
+    });
+    var watcher1 = gulp.watch(["./components/*.js"], ["bundle-manager"]);
+    watcher1.on('change', function(event) {
+        gutil.log('File changed: ' + event.path);
+    })
+})
+
 gulp.task('default', ['prod-opts', 'bundle-manager']);
 
 gulp.task('devel', ['devel-opts', 'bundle-manager']);
+
+gulp.task('devel-watch', ['devel-opts', 'watch', 'bundle-manager']);
