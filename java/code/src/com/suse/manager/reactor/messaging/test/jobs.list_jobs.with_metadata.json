@@ -1,0 +1,23 @@
+{
+  "20160602085832364245": {
+    "Function": "state.apply",
+    "Target": [
+      "minionsles12-suma3pg.vagrant.local"
+    ],
+    "Target-type": "list",
+    "User": "admin",
+    "StartTime": "2016, Jun 02 08:58:32.364245",
+    "Arguments": [
+      {
+        "queue": true,
+        "mods": [
+          "packages"
+        ],
+        "__kwarg__": true
+      }
+    ],
+    "Metadata": {
+      "suma-action-id": 7
+    }
+  }
+}
