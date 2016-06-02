@@ -517,9 +517,7 @@
            encoding="utf-8"
            fork="yes"
            memoryMaximumSize="256m"
-           classpathref="alljars"
- 	   	   excludes="**/*Test*.java"
-      >
+           classpathref="alljars" >
       <src>
         <path location="${build.dir}/src" />
         <path location="code/src" />
