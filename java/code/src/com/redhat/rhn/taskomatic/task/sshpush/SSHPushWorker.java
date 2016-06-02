@@ -185,14 +185,15 @@ public class SSHPushWorker implements QueueWorker {
                 sudoUser = Config.get().getString(CONFIG_KEY_SUDO_USER);
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("Running 'rhn_check' for: " + client);
-            }
-
             // Get the server's primary proxy (if any)
             proxy = getPrimaryProxy(server);
 
             maxWait = Config.get().getInt(CONFIG_KEY_TASK_TIMEOUT);
+
+            if (log.isDebugEnabled()) {
+                String proxySuffix = proxy == null ? "" : " (proxy: " + proxy + ")";
+                log.debug("Running 'rhn_check': " + client + proxySuffix);
+            }
 
             // Connect to the client
             rhnCheck();
