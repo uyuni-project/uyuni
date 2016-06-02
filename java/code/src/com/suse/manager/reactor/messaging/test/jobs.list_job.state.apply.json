@@ -1,0 +1,61 @@
+{
+  "Arguments": [
+    {
+      "__kwarg__": true,
+      "mods": [
+        "packages"
+      ],
+      "queue": true
+    }
+  ],
+  "Function": "state.apply",
+  "Metadata": {
+    "suma-action-id": 8
+  },
+  "Minions": [
+    "minionsles12-suma3pg.vagrant.local"
+  ],
+  "Result": {
+    "minionsles12-suma3pg.vagrant.local": {
+      "out": "highstate",
+      "return": {
+        "file_|-/etc/zypp/repos.d/susemanager:channels.repo_|-/etc/zypp/repos.d/susemanager:channels.repo_|-managed": {
+          "__run_num__": 0,
+          "changes": {},
+          "comment": "File /etc/zypp/repos.d/susemanager:channels.repo is in the correct state",
+          "duration": 87.65,
+          "name": "/etc/zypp/repos.d/susemanager:channels.repo",
+          "result": true,
+          "start_time": "12:09:10.410423"
+        },
+        "pkg_|-pkg_installed_|-pkg_installed_|-installed": {
+          "__run_num__": 1,
+          "changes": {},
+          "comment": "No packages to install provided",
+          "duration": 0.626,
+          "name": "pkg_installed",
+          "result": true,
+          "start_time": "12:09:11.995427"
+        },
+        "pkg_|-pkg_latest_|-pkg_latest_|-latest": {
+          "__run_num__": 3,
+          "changes": {},
+          "comment": "No packages to install provided",
+          "duration": 0.661,
+          "name": "pkg_latest",
+          "result": true,
+          "start_time": "12:09:12.334958"
+        },
+        "pkg_|-pkg_removed_|-pkg_removed_|-removed": {
+          "__run_num__": 2,
+          "changes": {},
+          "comment": "All specified packages are already absent",
+          "duration": 338.313,
+          "name": "pkg_removed",
+          "result": true,
+          "start_time": "12:09:11.996282"
+        }
+      }
+    }
+  }
+}

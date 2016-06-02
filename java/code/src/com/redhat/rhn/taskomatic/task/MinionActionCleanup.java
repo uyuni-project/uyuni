@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import org.quartz.JobExecutionContext;
 
@@ -37,7 +38,7 @@ public class MinionActionCleanup extends RhnJavaJob {
 
         // Measure time and calculate the total duration
         long start = System.currentTimeMillis();
-        MinionActionUtils.cleanupMinionActions();
+        MinionActionUtils.cleanupMinionActions(SaltAPIService.INSTANCE);
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;
