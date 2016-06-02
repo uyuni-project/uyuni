@@ -149,9 +149,9 @@ public class SSHPushWorker implements QueueWorker {
                        }
                        else {
                            // Load the proxy server object to determine the IP address
-                           Server proxy = (Server) HibernateFactory.getSession().load(
-                                   Server.class, path.getId());
-                           proxyHost = proxy.getIpAddress();
+                           Server proxyServer = (Server) HibernateFactory.getSession()
+                                   .load(Server.class, path.getId());
+                           proxyHost = proxyServer.getIpAddress();
                        }
 
                        break;
