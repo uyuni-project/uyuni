@@ -49,8 +49,6 @@ import static com.suse.utils.Opt.flatMap;
  */
 public class MinionActionUtils {
 
-    private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
-
     private MinionActionUtils() {
     }
 
@@ -73,7 +71,7 @@ public class MinionActionUtils {
      * @param server MinionServer of this ServerAction
      * @param running list of running jobs on the MinionServer
      */
-    public static void updateMinionActionStatus(ServerAction sa,
+    public static ServerAction updateMinionActionStatus(SaltService salt, ServerAction sa,
             MinionServer server, List<Saltutil.RunningInfo> running) {
         long actionId = sa.getParentAction().getId();
         boolean actionIsRunning = running.stream().filter(r ->
@@ -87,11 +85,11 @@ public class MinionActionUtils {
             Map<String, Object> metadata = new HashMap<>();
             metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionId);
             Map<String, Jobs.ListJobsEntry> jobCache =
-                    SALT_SERVICE.jobsByMetadata(metadata);
+                    salt.jobsByMetadata(metadata);
             ServerAction serverAction = jobCache.entrySet().stream().findFirst()
                     .map(entry -> {
                         String jid = entry.getKey();
-                        Jobs.ListJobResult job = SALT_SERVICE.listJob(jid);
+                        Jobs.ListJobResult job = salt.listJob(jid);
                         Optional<JsonElement> result = job
                                 .getResult(server.getMinionId(), JsonElement.class);
                         // the result should only be missing if its still running
@@ -127,14 +125,17 @@ public class MinionActionUtils {
                         sa.setResultCode(-1L);
                         return sa;
                     });
-            ActionFactory.save(serverAction);
+            return serverAction;
+        }
+        else {
+            return sa;
         }
     }
 
     /**
      * Cleanup all minion actions for which we missed the JobReturnEvent
      */
-    public static void cleanupMinionActions() {
+    public static void cleanupMinionActions(SaltService salt) {
         ZonedDateTime now = ZonedDateTime.now();
         // Select only ServerActions that are for minions and where the Action
         // should already be executed or running
@@ -159,13 +160,13 @@ public class MinionActionUtils {
                         .orElseGet(Stream::empty)
         ).collect(Collectors.toList());
         Map<String, List<Saltutil.RunningInfo>> running =
-                SALT_SERVICE.running(new MinionList(minionIds));
+                salt.running(new MinionList(minionIds));
         serverActions.stream().forEach(sa ->
                 sa.getServer().asMinionServer().ifPresent(minion -> {
                     List<Saltutil.RunningInfo> runningInfos =
                             Optional.ofNullable(running.get(minion.getMinionId()))
                                     .orElseGet(Collections::emptyList);
-                    updateMinionActionStatus(sa, minion, runningInfos);
+                    ActionFactory.save(updateMinionActionStatus(salt, sa, minion, runningInfos));
                 })
         );
     }
