@@ -1,7 +1,10 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Install a pactch the client via salt through the UI
+Feature: Install a patch the client via salt through the UI
+
+   Scenario: wait for taskomatic finished required jobs
+    Given Patches are visible for the registered client
 
    Scenario: Install an erratum to the client
     Given I am on the Systems overview page of this client
