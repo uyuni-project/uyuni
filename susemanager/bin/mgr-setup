@@ -441,8 +441,11 @@ do_migration() {
         umask 0022
         mkdir -p $TMPDIR
     fi
-    echo "Ensuring postgresql has read permissions on $TMPDIR for database dump..."
-    chmod go+rx $TMPDIR
+
+    if [ "$DB_BACKEND" = "postgresql" ]; then
+        echo "Ensuring postgresql has read permissions on $TMPDIR for database dump..."
+        chmod go+rx $TMPDIR
+    fi
 
     echo
     echo
@@ -482,15 +485,17 @@ do_migration() {
     do_setup
     wait_step
 
-    dump_remote_db
-    wait_step
+    if [ "$DB_BACKEND" = "postgresql" ]; then
+        dump_remote_db
+        wait_step
 
-    echo "Reconfigure postgresql for high performance..."
-    postgres_fast
-    import_db
-    wait_step
-    echo "Reconfigure postgresql for normal safe operation..."
-    postgres_safe
+        echo "Reconfigure postgresql for high performance..."
+        postgres_fast
+        import_db
+        wait_step
+        echo "Reconfigure postgresql for normal safe operation..."
+        postgres_safe
+    fi
 
     upgrade_schema
     wait_step
@@ -651,8 +656,8 @@ fi
 wait_step
 
 if [ "$DO_MIGRATION" = "1" ]; then
-    if [ -z "$DB_BACKEND" -o "$DB_BACKEND" != "postgresql" ]; then
-        echo "Migration only supported with postgresql DB Backend" >&2
+    if [ "$DB_BACKEND" != "oracle" -a "$DB_BACKEND" != "postgresql" ]; then
+        echo "Unknown DB Backend!" >&2
         exit 1
     fi
     do_migration
