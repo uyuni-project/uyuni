@@ -9,3 +9,7 @@ create or replace package body logging is
 end logging;
 /
 show errors;
+
+DROP TRIGGER web_contact_log_trig;
+DROP TRIGGER rhnserver_log_trig;
+DROP TRIGGER rhnservergroup_log_trig;
