@@ -1,4 +1,4 @@
-# Container used to test SUSE Manager 1.7
+# Container used to test SUSE Manager Head
 #
 # VERSION               1.0.0
 
