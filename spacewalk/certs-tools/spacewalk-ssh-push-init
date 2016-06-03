@@ -6,6 +6,12 @@ echo "* Setup a client to be managed via SSH push"
 # This script's name
 ME=`basename $0`
 
+# Exit if someone is running this with sudo
+if [ -n "$SUDO_USER" ]; then
+  echo "ERROR: Do not run this command with sudo, sudo will be used internally where necessary!"
+  exit 1
+fi
+
 # Print usage instructions
 function usage() {
   if [ -n "$1" ] ; then
@@ -64,9 +70,9 @@ PATH_RHN_DEFAULTS=/usr/share/rhn/config-defaults/rhn_web.conf
 # Setup sudo user from the config
 SUDO_USER_KEY=ssh_push_sudo_user
 
-SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+SUDO_USER=$( sudo grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
 if [ -z "${SUDO_USER}" ]; then
-  SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+  SUDO_USER=$( sudo grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
 fi
 
 # Set the sudo command, it'll be blank if no sudo user was set
@@ -85,26 +91,16 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   PORT_HTTP_KEY=ssh_push_port_http
   PORT_HTTPS_KEY=ssh_push_port_https
 
-  # Check config files existence
-  if [ ! -f "${PATH_RHN_CONF}" ]; then
-    echo "ERROR: SUSE Manager configuration not found: ${PATH_RHN_CONF}"
-    exit 1
-  fi
-  if [ ! -f "${PATH_RHN_DEFAULTS}" ]; then
-    echo "ERROR: SUSE Manager default configuration not found: ${PATH_RHN_DEFAULTS}"
-    exit 1
-  fi
-
   # Try /etc/rhn/rhn.conf first, then go to defaults
-  PORT_HTTP=$( grep -E -m1 "^${PORT_HTTP_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${PORT_HTTP_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+  PORT_HTTP=$( sudo grep -E -m1 "^${PORT_HTTP_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${PORT_HTTP_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
   if [ -z "${PORT_HTTP}" ]; then
-    PORT_HTTP=$( grep -E -m1 "^${PORT_HTTP_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${PORT_HTTP_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+    PORT_HTTP=$( sudo grep -E -m1 "^${PORT_HTTP_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${PORT_HTTP_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
   fi
 
   # Same for HTTPS
-  PORT_HTTPS=$( grep -E -m1 "^${PORT_HTTPS_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${PORT_HTTPS_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+  PORT_HTTPS=$( sudo grep -E -m1 "^${PORT_HTTPS_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${PORT_HTTPS_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
   if [ -z "${PORT_HTTPS}" ]; then
-    PORT_HTTPS=$( grep -E -m1 "^${PORT_HTTPS_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${PORT_HTTPS_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+    PORT_HTTPS=$( sudo grep -E -m1 "^${PORT_HTTPS_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${PORT_HTTPS_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
   fi
 
   # Exit if we still don't have the ports
@@ -182,7 +178,7 @@ SSH_IDENTITY=~/.ssh/id_susemanager
 # Logfile for this script
 LOGFILE=/var/log/rhn/${ME}.log
 # set -x
-exec > >(tee -a $LOGFILE) 2>&1
+exec > >(sudo tee -a $LOGFILE) 2>&1
 
 # Run key generation if key doesn't exist
 if [ ! -f "${SSH_IDENTITY}" ]; then
