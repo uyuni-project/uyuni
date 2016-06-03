@@ -11,5 +11,6 @@ zypper in -y bc \
              oracle-instantclient12.1-sqlplus \
              oracle-lib-compat \
              perl-DBD-ODBC \
-             perl-DBD-Oracle
+             perl-DBD-Oracle \
+             cx_Oracle
 
