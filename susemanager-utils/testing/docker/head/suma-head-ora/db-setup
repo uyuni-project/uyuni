@@ -1,51 +1,28 @@
 #!/bin/bash
-set -e
 
 umount /dev/shm
 mount tmpfs -t tmpfs -o defaults /dev/shm
 
-# oracle only
-DEFAULT_TABLESPACE="data_tbs"
-SYS_DB_PASS="spacewalk"
-MANAGER_USER="spacewalk"
-MANAGER_PASS="spacewalk"
-MANAGER_DB_NAME="susemanager"
+echo "Setting up Oracle 12 database..."
+chkconfig oracle on
+/etc/init.d/oracle start
 
-compute_oracle_mem() {
-  # SGA & PGA algo
-   sgamin=146800640
-   pgamin=16777216
-   TM=`cat /proc/meminfo | grep '^MemTotal' | awk '{print $2}'`
-   TM=`echo $TM / 1024 | bc`
-   TM=`echo 0.40 \* $TM | bc | sed "s/\..*//"`
-   TMSP=`echo $TM-40 | bc`
-   sga_target=`echo 0.75 \* $TMSP | bc`
-   pga_target=`echo 0.25 \* $TMSP | bc `
-   sga=`echo $sga_target \* 1048576  | bc | sed "s/\..*//"`
-   pga=`echo $pga_target \* 1048576  | bc | sed "s/\..*//"`
-   check=`echo $sga \< $sgamin | bc`
-   if test $check != 0
-   then
-           sga=$sgamin
-   fi
+export MANAGER_USER=susemanager
+export MANAGER_PASS=susemanager
+export DEFAULT_TABLESPACE=data_tbs
 
-   check=`echo $pga \< $pgamin | bc`
-   if test $check != 0
-   then
-           pga=$pgamin
-   fi
+MYHOSTNAME="localhost"
 
-   echo "sga=$sga"
-   echo "pga=$pga"
-}
+echo "
+LISTENER =
+  (DESCRIPTION_LIST =
+    (DESCRIPTION =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = $MYHOSTNAME)(PORT = 1521))
+      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))
+    )
+  )
+" > /opt/apps/oracle/product/12.1.0/dbhome_1/network/admin/listener.ora
 
-compute_oracle_mem
-
-/opt/apps/oracle/setup "$SYS_DB_PASS"
-# remove suid bits for bnc#736240
-find /opt/apps/oracle/product/ -perm -4000 -exec chmod -s {} \;
-cp /opt/apps/oracle/product/11gR2/dbhome_1/network/admin/tnsnames.ora /etc
-smdba-netswitch localhost
 echo "Create database user for SUSE Manager..."
 echo "select value from nls_database_parameters where parameter='NLS_CHARACTERSET';
 shutdown immediate;
@@ -76,8 +53,6 @@ grant create role to $MANAGER_USER;
 grant alter session to $MANAGER_USER;
 alter system set processes = 400 scope=spfile;
 alter system set deferred_segment_creation=FALSE;
-alter system set sga_target=$sga scope=spfile;
-alter system set pga_aggregate_target=$pga scope=spfile;
 alter system set nls_territory='AMERICA' scope=spfile;
 BEGIN
 dbms_sqltune.set_auto_tuning_task_parameter( 'ACCEPT_SQL_PROFILES', 'TRUE');
@@ -86,11 +61,5 @@ END;
 quit
 " > /tmp/dbsetup.sql
 
-# See http://stackoverflow.com/questions/4153807/oracle-sequence-starting-with-2-instead-of-1
-#
-# alter system set deferred_segment_creation=FALSE;
-#
-
-su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus / as sysdba @/tmp/dbsetup.sql;"
-rm /tmp/dbsetup.sql
-
+su -s /bin/bash - oracle -c "ORACLE_SID=susemanager sqlplus / as sysdba @/tmp/dbsetup.sql;"
+/etc/init.d/oracle restart
