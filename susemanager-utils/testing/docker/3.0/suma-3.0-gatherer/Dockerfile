@@ -2,7 +2,7 @@
 #
 # VERSION               1.0.0
 
-FROM registry.mgr.suse.de/sles12sp1:0.1.0
+FROM registry.mgr.suse.de/sles12sp1
 MAINTAINER Michael Calmer "mc@suse.com"
 
 
