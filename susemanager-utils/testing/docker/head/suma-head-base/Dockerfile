@@ -27,7 +27,7 @@ ADD ssh /root/.ssh
 RUN chown -R root:root /root/.ssh
 RUN chmod 600 /root/.ssh/*
 
-ADD spacewalk-public.cert /usr/share/spacewalk/setup/spacewalk-public.cert
+#ADD spacewalk-public.cert /usr/share/spacewalk/setup/spacewalk-public.cert
 
 ADD gnupg /.gnupg
 ADD webapp-keyring.gpg /etc/webapp-keyring.gpg
