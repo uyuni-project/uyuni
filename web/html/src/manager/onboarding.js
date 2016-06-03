@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require("react");
+const ReactDOM = require("react-dom");
 const Buttons = require("../components/buttons");
 const AsyncButton = Buttons.AsyncButton;
 const Panel = require("../components/panel").Panel;
@@ -198,7 +199,7 @@ function Highlight(props) {
   var chunks = text.split(new RegExp("^" + high));
 
   return <span>{chunks
-    .map((e) => e == "" ? <span style={{color: 'red'}}>{high}</span> : <span>{e}</span>)}</span>;
+    .map((e, i) => e == "" ? <span key="highlight" style={{color: 'red'}}>{high}</span> : <span key={i}>{e}</span>)}</span>;
 }
 
 
@@ -212,7 +213,7 @@ class Onboarding2 extends React.Component {
 
   constructor(props) {
     super();
-    ["sortById", "searchData", "sortByName"].forEach(method => this[method] = this[method].bind(this));
+    ["sortById", "searchData", "sortByName", "rowKey"].forEach(method => this[method] = this[method].bind(this));
     this.state = {
         keys: [],
         tableData: dummyData
@@ -228,6 +229,10 @@ class Onboarding2 extends React.Component {
 //        });
 //    });
 //  }
+
+  rowKey(rowData) {
+    return rowData.id;
+  }
 
   sortById(data, direction) {
     return data.sort((a, b) => direction * (a.id - b.id));
@@ -261,14 +266,15 @@ class Onboarding2 extends React.Component {
 
     return (
         <Panel title="Onboarding" icon="fa-desktop" button={ panelButtons }>
-            <STable data={this.state.tableData} searchFn={this.searchData}>
+            <STable data={this.state.tableData} searchFn={this.searchData} rowKeyFn={this.rowKey}>
               <SColumn columnKey="id">
                 <SHeader sortFn={this.sortById}>Id</SHeader>
                 <SOutput value={ (row) => row.id}/>
               </SColumn>
-              <SColumn>
+              <SColumn columnKey="name">
                 <SHeader sortFn={this.sortByName}>Name</SHeader>
-                <SOutput value={ (row, table) => <Highlight enabled={table.state.filtered} text={row.name} highlight={table.state.search}/> } />
+                <SOutput value={ (row, table) => <Highlight enabled={table.state.dataModel.filtered} text={row.name}
+                    highlight={table.state.dataModel.filteredText}/> } />
               </SColumn>
               <SColumn>
                 <SHeader>Address</SHeader>
@@ -281,12 +287,12 @@ class Onboarding2 extends React.Component {
 
 }
 
-React.render(
+ReactDOM.render(
   <Onboarding />,
   document.getElementById('onboarding')
 );
 
-React.render(
+ReactDOM.render(
   <Onboarding2 />,
   document.getElementById('onboarding2')
 );

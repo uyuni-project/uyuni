@@ -42,35 +42,111 @@ const ItemsPerPageSelector = (props) =>
   </select>
 ;
 
+const FilterField = (props) =>
+  <input className="form-control table-input-search"
+    value={props.defaultValue}
+    placeholder={props.placeholder}
+    type="text"
+    onChange={(e) => props.onChange(e.target.value)}
+  />
+;
+
+class DataModel {
+
+  constructor(data, itemsPerPage) {
+    this.data = data;
+    this.itemsPerPage = itemsPerPage;
+    this.currentPage = 1;
+    this.currentData = data;
+    this.filtered = false;
+    this.filteredText = null;
+  }
+
+  filter(filterFn, criteria) {
+    if (!criteria) {
+      this.currentData = this.data;
+      this.filtered = false;
+      this.filteredText = null;
+    } else {
+      this.currentData = filterFn(this.data, criteria);
+      this.filtered = true;
+      this.filteredText = criteria;
+    }
+  }
+
+  sort(columnKey, sortFn, sortDirection) {
+    this.currentData = sortFn(this.currentData, sortDirection);
+  }
+
+  goToPage(page) {
+    if (page < 1) {
+        this.currentPage = 1;
+        return;
+    }
+    if (page > this.lastPage) {
+        this.currentPage = this.lastPage;
+        return;
+    }
+    this.currentPage = page;
+  }
+
+  get currentPageData() {
+     return this.currentData.slice(this.firstPageItemIndex, this.lastPageItemIndex);
+  }
+
+  get lastPage() {
+      const lastPage = Math.ceil(this.currentData.length / this.itemsPerPage);
+      if (lastPage == 0) {
+        return 1;
+      }
+      return lastPage;
+  }
+
+  get firstPageItemIndex() {
+    return (this.currentPage - 1) * this.itemsPerPage;
+  }
+
+  get lastPageItemIndex() {
+    return this.firstPageItemIndex + this.itemsPerPage > this.currentData.length ?
+        this.currentData.length : this.firstPageItemIndex + this.itemsPerPage;
+  }
+
+  get size() {
+    return this.currentData.length;
+  }
+
+}
+
 
 class Table extends React.Component {
 
   constructor(props) {
     super(props);
-    ["_onChangeSearch", "_onSearch", "sort"].forEach(method => this[method] = this[method].bind(this));
-    this.state = {search: "", data: props.data, filtered: false};
+    ["onFilterTextChange", "sort", "onPageChange", "onItemsPerPageChange"].forEach(method => this[method] = this[method].bind(this));
+    const pageItemsCount = 15;
+    this.state = {
+        dataModel: new DataModel(props.data, pageItemsCount),
+        itemsPerPage: pageItemsCount
+    };
   }
 
-  _onChangeSearch(event) {
-      this.setState({search: event.target.value});
-  }
-
-  _onSearch(event) {
-    var filteredData = this.props.searchFn(this.state.data, this.state.search);
-    this.setState({data: filteredData, filtered: true});
+  onFilterTextChange(text) {
+    this.state.dataModel.filter(this.props.searchFn, text);
+    this.forceUpdate();
   }
 
   sort(columnKey, sortFn, sortDirection) {
-    var sortedData = sortFn(this.state.data, sortDirection);
-    this.setState({data: sortedData, sortKey: columnKey});
+    this.state.dataModel.sort(columnKey, sortFn, sortDirection);
+    this.setState({sortKey: columnKey});
   }
 
   onItemsPerPageChange() {
 
   }
 
-  onPageChange() {
-
+  onPageChange(page) {
+    this.state.dataModel.goToPage(page);
+    this.forceUpdate();
   }
 
   render() {
@@ -79,21 +155,34 @@ class Table extends React.Component {
         (column) => {
           React.Children.forEach(column.props.children, (child) => {
              if (child.type === Header) {
-                var head = React.cloneElement(child, {columnKey: column.props.columnKey, table: this});
+                var head = React.cloneElement(child, {
+                    key: headers.length,
+                    columnKey: column.props.columnKey,
+                    currentSortKey: this.state.sortKey,
+                    onSort: this.sort
+                    });
                 headers.push(head);
              }
           });
       });
 
-  	let rows = this.state.data.map((element) => {
+  	let rows = this.state.dataModel.currentPageData.map((element) => {
   			let cells = React.Children.map(this.props.children,
         	     (column) => React.cloneElement(column, {data: element, table: this})
      		);
-    		return <tr>{cells}</tr>;
+    		return <tr key={this.props.rowKeyFn(element)}>{cells}</tr>;
     });
 
-    var currentPage = 1;
-    var itemsPerPage = 10;
+    const filterField = this.props.searchFn ?
+      <FilterField key="filteredField"
+        onChange={this.onFilterTextChange}
+        defaultValue={this.state.dataModel.filterText}
+        placeholder={this.props.filterPlaceholder}
+      /> :
+      null
+    ;
+    const itemCounter = <span>{t("Items {0} - {1} of {2}", this.state.dataModel.firstPageItemIndex + 1,
+    this.state.dataModel.lastPageItemIndex, this.state.dataModel.size)}</span>;
 
     return (
       <div className="spacewalk-list">
@@ -101,21 +190,17 @@ class Table extends React.Component {
           <div className="panel-heading">
             <div className="spacewalk-list-head-addons">
               <div className="spacewalk-list-filter table-search-wrapper">
-                <input type="text" value={this.state.search} onChange={this._onChangeSearch}/>
-                <span>{t("Items {0} - {1} of {2}", 1, 1, 1)}</span>
+                {filterField} {itemCounter}
               </div>
               <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
-                <ItemsPerPageSelector
-                  currentValue={itemsPerPage}
+                <ItemsPerPageSelector key="itemsPerPageSelector"
+                  currentValue={this.state.itemsPerPage}
                   onChange={this.onItemsPerPageChange}
                 /> {t("items per page")}
               </div>
             </div>
           </div>
-
         <div>
-
-            <button onClick={this._onSearch}>Search</button>
             <div className="table-responsive">
                 <table className="table table-striped">
                    <thead>
@@ -130,9 +215,9 @@ class Table extends React.Component {
 
         <div className="panel-footer">
             <div className="spacewalk-list-bottom-addons">
-              <PaginationBlock
-                currentPage={currentPage}
-                lastPage={1}
+              <PaginationBlock key="paginationBlock"
+                currentPage={this.state.dataModel.currentPage}
+                lastPage={this.state.dataModel.lastPage}
                 onPageChange={this.onPageChange}
               />
             </div>
@@ -154,7 +239,7 @@ class Column extends React.Component {
        }});
 
       let widgets = children.map(
-        (widget) => React.cloneElement(widget, {data: this.props.data, table: this.props.table})
+        (widget) => React.cloneElement(widget, {key: "widget", data: this.props.data, table: this.props.table})
       );
      return <td>{widgets}</td>;
   }
@@ -165,29 +250,29 @@ class Header extends React.Component {
 
   constructor(props) {
     super(props);
-    ["_sort"].forEach(method => this[method] = this[method].bind(this));
+    ["sort"].forEach(method => this[method] = this[method].bind(this));
     this.state = {sortDirection: null};
   }
 
-  _sort() {
+  sort() {
     var sortDir = this.state.sortDirection;
     if (!sortDir) {
         sortDir = 1;
     } else {
         sortDir = -sortDir;
     }
-    this.props.table.sort(this.props.columnKey, this.props.sortFn, sortDir);
+    this.props.onSort(this.props.columnKey, this.props.sortFn, sortDir);
     this.setState({sortDirection: sortDir});
   }
 
   render() {
-     if (this.props.sortFn && this.props.table) {
+     if (this.props.sortFn && this.props.columnKey) {
         var thClass = null;
-        if (this.props.table.state.sortKey == this.props.columnKey) {
+        if (this.props.currentSortKey == this.props.columnKey) {
             thClass = !this.state.sortDirection ? "" : (this.state.sortDirection > 0 ? "ascSort" : "descSort")
         }
         return (<th className={ thClass }>
-            <a className="orderBy" onClick={this._sort}>{this.props.children}</a>
+            <a className="orderBy" onClick={this.sort}>{this.props.children}</a>
         </th>);
      }
      return <th>{this.props.children}</th>;
