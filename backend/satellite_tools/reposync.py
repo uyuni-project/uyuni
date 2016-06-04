@@ -33,6 +33,7 @@ from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload, s
 from spacewalk.common import fileutils, rhnMail, rhnLog, suseLib, rhn_pkg
 from spacewalk.common.rhnTB import fetchTraceback
 from spacewalk.common.rhnLog import log_debug
+from spacewalk.common.rhnLib import isSUSE
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Bug, Keyword
@@ -172,7 +173,10 @@ class RepoSync(object):
             dlevel = 0
         rhnLog.initLOG(default_log_location + log_filename, dlevel)
         #os.fchown isn't in 2.4 :/
-        os.system("chgrp www " + default_log_location + log_filename)
+        if isSUSE():
+            os.system("chgrp www " + default_log_location + log_filename)
+        else:
+            os.system("chgrp apache " + default_log_location + log_filename)
 
         self.log_msg("\nSync started: %s" % (time.asctime(time.localtime())))
         self.log_msg(str(sys.argv))
