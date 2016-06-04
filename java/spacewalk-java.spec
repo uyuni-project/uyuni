@@ -26,7 +26,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.98
+Version: 2.6.4
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -555,9 +555,9 @@ install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 
 # Need to use 2 versions of rhn.xml, Tomcat 8 changed syntax
 %if 0%{?fedora} >= 23
-install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+install -m 644 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %else
-install -m 755 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %endif
 
 %else
@@ -568,14 +568,14 @@ install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalin
 %else
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat6
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/
-install -m 755 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
+install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
 %endif
 %endif
 
 # check spelling errors in all resources for English if aspell installed
 [ -x "$(which aspell)" ] && scripts/spelling/check_java.sh .. en_US
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1310
 install -d -m 755 $RPM_BUILD_ROOT%{_sbindir}
 install -d -m 755 $RPM_BUILD_ROOT%{_unitdir}
 %else
@@ -645,18 +645,16 @@ install -m 644 conf/logrotate/gatherer $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 %if 0%{?fedora} || 0%{?rhel} > 6
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 %endif
-%if 0%{?fedora} || 0%{?suse_version}
-mkdir -p $RPM_BUILD_ROOT%{_sbindir}
-mkdir -p $RPM_BUILD_ROOT%{_unitdir}
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1310
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_sbindir}
-install -m 755 scripts/taskomatic.service $RPM_BUILD_ROOT%{_unitdir}
+install -m 644 scripts/taskomatic.service $RPM_BUILD_ROOT%{_unitdir}
 %else
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_initrddir}
 %endif
 # add rc link
 ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rctaskomatic
 
-install -m 755 scripts/unittest.xml $RPM_BUILD_ROOT/%{_datadir}/rhn/
+install -m 644 scripts/unittest.xml $RPM_BUILD_ROOT/%{_datadir}/rhn/
 install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
 %if ! 0%{?omit_tests} > 0
 install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn-test.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
@@ -709,7 +707,7 @@ ln -s -f %{_javadir}/mchange-commons.jar $RPM_BUILD_ROOT%{jardir}/mchange-common
 
 # install docbook sources
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}/xml
-install -m 755 build/reports/apidocs/docbook/susemanager_api_doc.xml $RPM_BUILD_ROOT%{_docdir}/%{name}/xml/susemanager_api_doc.xml
+install -m 644 build/reports/apidocs/docbook/susemanager_api_doc.xml $RPM_BUILD_ROOT%{_docdir}/%{name}/xml/susemanager_api_doc.xml
 
 # delete JARs which must not be deployed
 rm -rf $RPM_BUILD_ROOT%{jardir}/jspapi.jar
@@ -941,9 +939,9 @@ fi
 
 %files -n spacewalk-taskomatic
 %defattr(644,root,root,775)
-%if 0%{?fedora} || 0%{?suse_version}
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1310
 %attr(755, root, root) %{_sbindir}/taskomatic
-%attr(755, root, root) %{_unitdir}/taskomatic.service
+%attr(644, root, root) %{_unitdir}/taskomatic.service
 %else
 %attr(755, root, root) %{_initrddir}/taskomatic
 %endif
@@ -983,6 +981,24 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Jun 03 2016 Jiri Precechtel <jprecech@redhat.com> 2.6.4-1
+- 1288818 - added API method actionchain.addErrataUpdate()
+
+* Fri May 27 2016 Jan Dobes 2.6.3-1
+- removing couple of execute permissions in spacewalk-java
+- control taskomatic by systemd on rhel 7
+
+* Fri May 27 2016 Jiri Precechtel <jprecech@redhat.com> 2.6.2-1
+- 1116426 - "Delete Group" and "Work With Group" buttons are not be displayed
+  on the Delete Group confirmation page now
+
+* Fri May 27 2016 Jiri Precechtel <jprecech@redhat.com> 2.6.1-1
+- 1304093 - remove migrated systems from SSM if they are selected
+- Bumping package versions for 2.6.
+
+* Thu May 26 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.99-1
+- bumping java.apiversion for 2.5
+
 * Thu May 26 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.98-1
 - fix checkstyle
 

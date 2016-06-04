@@ -1,5 +1,5 @@
 Name:           spacewalk-setup-jabberd
-Version:        2.5.0.2
+Version:        2.6.0
 Release:        1%{?dist}
 Summary:        Tools to setup jabberd for Spacewalk
 Group:          Applications/System
@@ -24,14 +24,6 @@ Spacewalk server or Spacewalk proxy.
 %prep
 %setup -q
 
-%post
-if [ $1 = 2 ]; then
-    # in case of upgrade
-    # remove jabberd database
-    # especially required for upgrade from 1.2 to 1.7
-    # because osad dispatcher password moved from rhn.conf to DB
-    rm -f /var/lib/jabberd/db/*
-fi;
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS=vendor

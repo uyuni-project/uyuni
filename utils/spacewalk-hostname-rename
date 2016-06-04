@@ -49,7 +49,7 @@ elif [ "$DB_BACKEND" = "postgresql" ]; then
     DBSHELL_QUIET="
 \set QUIET on
 \t"
-    if [ -x /etc/init.d/postgresql ]; then
+    if [ -x /etc/init.d/postgresql -o -f /usr/lib/systemd/system/postgresql.service ]; then
         DB_SERVICE="postgresql"
     fi
     if [ -x /etc/init.d/postgresql92-postgresql ]; then
@@ -430,7 +430,7 @@ echo "hostname: $HOSTNAME" | tee -a $LOG
 echo "=============================================" | tee -a $LOG
 
 # stop services
-echo -n "Stopping spacewalk-service services ... " | tee -a $LOG
+echo -n "Stopping spacewalk services ... " | tee -a $LOG
 /usr/sbin/spacewalk-service stop >> $LOG 2>&1
 if [ "$DB_SERVICE" != "" ]
 then
@@ -534,7 +534,7 @@ fi
 rm -f /var/lib/jabberd/db/*
 print_status $?
 
-echo -n "Starting spacewalk-service services ... " | tee -a $LOG
+echo -n "Starting spacewalk services ... " | tee -a $LOG
 if [ "$DB_SERVICE" != "" ]
 then
 /sbin/service $DB_SERVICE stop >> $LOG 2>&1

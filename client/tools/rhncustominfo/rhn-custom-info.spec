@@ -15,7 +15,6 @@ Requires: python3-rhnlib
 Requires: rhnlib
 %endif
 
-Requires: spacewalk-client-tools
 %if 0%{?rhel} >= 5 || 0%{?fedora} && 0%{?fedora} < 22
 Requires: yum-rhn-plugin
 %else
