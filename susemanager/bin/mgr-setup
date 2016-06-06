@@ -80,11 +80,17 @@ if [ $SWAP -eq 0 ]; then
     if [ $FREESPACE -le 3000000 ]; then
         echo "Not enough space on /. Not adding swap space. Good luck..."
     else
-        dd if=/dev/zero of=/SWAPFILE bs=1M count=2000
-        sync
-        mkswap -f /SWAPFILE
-        echo "/SWAPFILE swap swap defaults 0 0" >> /etc/fstab
-        swapon -a
+        FSTYPE=`df -T / | tail -1 | awk '{print $2}'`
+        if [ $FSTYPE == "btrfs" ]; then
+            echo "Will *NOT* create swapfile on btrfs. Make sure you have enough RAM!"
+        else
+            dd if=/dev/zero of=/SWAPFILE bs=1M count=2000
+            sync
+            mkswap -f /SWAPFILE
+            echo "/SWAPFILE swap swap defaults 0 0" >> /etc/fstab
+            swapon -a
+            echo "ok."
+        fi
     fi
 fi
 }
