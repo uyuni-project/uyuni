@@ -2,8 +2,8 @@
 # Licensed under the terms of the MIT license.
 
 Given(/^I am root$/) do
-  uid = `id -u`
-  if ! $?.success? || uid.to_i != 0
+  uid = sshcmd("id -u")
+  if ! uid == 0
     raise "You are not root!"
   end
   if $myhostname == "linux"
