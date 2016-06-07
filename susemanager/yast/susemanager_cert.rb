@@ -24,7 +24,7 @@ module Yast
         return deep_copy(@ret)
       end
 
-      @invalid_pw_chars = "\"$'!+%`=\#@/"
+      @invalid_pw_chars = "\\\"$'!+%`=\#@/"
       @valid_chars = ",.:;#'+*~?][(){}/§&%$\"!@0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_- "
 
       @settings = {
