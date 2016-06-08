@@ -135,7 +135,8 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     public void testExistingVirtInstanceWithExistingServer() throws Exception {
         // create a host
-        Server existingHost = ServerTestUtils.createForeignSystem(user, "existing_host_id");
+        Server existingHost =
+                ServerTestUtils.createForeignSystem(user, "101-existing_host_id");
         // create a VI for host
         VirtualInstance virtualInstance = new VirtualInstance();
         virtualInstance.setConfirmed(1L);
@@ -196,7 +197,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * @throws Exception - if anything goes wrong
      */
     public void testGuestVirtInstanceUpdated() throws Exception {
-        createRegisteredGuestWithForeignHost("id_of_my_guest", "existing_host_id");
+        createRegisteredGuestWithForeignHost("id_of_my_guest", "101-existing_host_id");
 
         // do the mapping
         Map<String, JSONHost> data = createHostData("existing_host_id",
@@ -248,6 +249,8 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     /**
      * When the state of the guest virtual instance was other than 'unknown', the update
      * should set it to 'unknown'.
+     *
+     * @throws Exception - if anything goes wrong
      */
     public void testGuestStateSetToUnknown() throws Exception {
         VirtualInstance guest =
