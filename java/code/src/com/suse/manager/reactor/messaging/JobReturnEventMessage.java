@@ -15,8 +15,8 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
 
+import com.suse.salt.netapi.event.JobReturnEvent;
 
 /**
  * Event message to handle job return events via the MessageQueue as we get them from the

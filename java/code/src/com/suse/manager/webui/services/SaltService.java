@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.utils.salt.Jobs;
 import com.suse.manager.webui.utils.salt.Saltutil;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
-import com.suse.manager.webui.utils.salt.events.EventStream;
 import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
@@ -27,6 +26,7 @@ import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 
