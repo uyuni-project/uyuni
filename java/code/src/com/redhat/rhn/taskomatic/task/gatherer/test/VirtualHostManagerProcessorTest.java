@@ -182,6 +182,8 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         assertEquals("id_of_my_guest", guestFromDb.getUuid());
         assertEquals(Long.valueOf(1L), guestFromDb.getConfirmed());
         assertEquals("myVM", guestFromDb.getName());
+        assertEquals(VirtualInstanceFactory.getInstance().getUnknownState(),
+                guestFromDb.getState());
     }
 
     /**
@@ -241,6 +243,26 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstance guest = VirtualInstanceFactory.getInstance()
                 .lookupVirtualInstanceByUuid("uuid").iterator().next();
         assertEquals("new name", guest.getName());
+    }
+
+    /**
+     * When the state of the guest virtual instance was other than 'unknown', the update
+     * should set it to 'unknown'.
+     */
+    public void testGuestStateSetToUnknown() throws Exception {
+        VirtualInstance guest =
+                createRegisteredGuestWithForeignHost("guestid", "101-hostid");
+        guest.setName("guestname");
+        guest.setState(VirtualInstanceFactory.getInstance().getStoppedState());
+
+        Map<String, JSONHost> data = createHostData("hostid",
+                pairsToMap("guestname", "guestid"));
+        new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
+
+        VirtualInstance dbGuest = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid("guestid").iterator().next();
+        assertEquals(VirtualInstanceFactory.getInstance().getUnknownState(),
+                dbGuest.getState());
     }
 
     /**
@@ -482,7 +504,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
             .createGuest()
             .withUuid(guestUuid)
             .withForeignEntitledHost(digitalServerId)
-            .inStoppedState()
+            .inUnknownState()
             .asFullyVirtGuest()
             .build();
     }
@@ -492,7 +514,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
             .createGuest()
             .withUuid(guestUuid)
             .withVirtHost()
-            .inStoppedState()
+            .inUnknownState()
             .asFullyVirtGuest()
             .build();
     }
