@@ -192,7 +192,7 @@ public class VirtualHostManagerProcessor {
         virtualInstance.setUuid(vmGuid);
         virtualInstance.setConfirmed(1L);
         virtualInstance.setGuestSystem(guest);
-        virtualInstance.setState(VirtualInstanceFactory.getInstance().getStoppedState());
+        virtualInstance.setState(VirtualInstanceFactory.getInstance().getUnknownState());
         virtualInstance.setName(name);
         virtualInstance.setType(type);
 
@@ -212,7 +212,10 @@ public class VirtualHostManagerProcessor {
         Server oldHost = virtualInstance.getHostSystem();
         if (oldHost == null ||
                 !oldHost.getId().equals(server.getId()) ||
-                !name.equals(virtualInstance.getName())) {
+                !name.equals(virtualInstance.getName()) ||
+                // we want all virtual guests in the 'unknown' state
+                !virtualInstance.getState().equals(
+                        VirtualInstanceFactory.getInstance().getUnknownState())) {
             VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(virtualInstance);
             addGuestVirtualInstance(virtualInstance.getUuid(), name,
                     virtualInstance.getType(), server, virtualInstance.getGuestSystem());
