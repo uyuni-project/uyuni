@@ -44,11 +44,11 @@ import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.ScheduleMetadata;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
-import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
 import com.suse.manager.webui.utils.salt.results.CmdExecCodeAllResult;
 import com.suse.manager.webui.utils.salt.results.StateApplyResult;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.event.JobReturnEvent;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

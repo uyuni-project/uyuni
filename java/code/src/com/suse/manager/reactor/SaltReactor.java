@@ -39,12 +39,13 @@ import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.manager.webui.utils.salt.events.Event;
-import com.suse.manager.webui.utils.salt.events.EventListener;
-import com.suse.manager.webui.utils.salt.events.EventStream;
-import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
-import com.suse.manager.webui.utils.salt.events.BeaconEvent;
-import com.suse.manager.webui.utils.salt.events.MinionStartEvent;
+import com.suse.salt.netapi.datatypes.Event;
+import com.suse.salt.netapi.event.BeaconEvent;
+import com.suse.salt.netapi.event.EventListener;
+import com.suse.salt.netapi.event.EventStream;
+import com.suse.salt.netapi.event.JobReturnEvent;
+import com.suse.salt.netapi.event.MinionStartEvent;
+
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
