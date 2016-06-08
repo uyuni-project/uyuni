@@ -284,4 +284,8 @@ public class GuestBuilder {
         return this;
     }
 
+    public GuestBuilder inUnknownState() {
+        guest.setState(guestDAO.getUnknownState());
+        return this;
+    }
 }
