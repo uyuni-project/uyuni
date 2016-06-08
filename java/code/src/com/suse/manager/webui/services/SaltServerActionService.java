@@ -36,6 +36,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.results.Result;
 
 import org.apache.log4j.Logger;
 
@@ -101,7 +102,7 @@ public enum SaltServerActionService {
             ZonedDateTime now = ZonedDateTime.now();
             if (earliestAction.isBefore(now) || earliestAction.equals(now)) {
                 LOG.debug("Action will be executed directly using callAsync()");
-                final Map<String, Boolean> responding =
+                final Map<String, Result<Boolean>> responding =
                     SaltAPIService.INSTANCE.ping(new MinionList(minionIds));
                 final List<String> present = minionIds.stream()
                         .filter(responding::containsKey)
@@ -127,12 +128,13 @@ public enum SaltServerActionService {
             }
             else {
                 LOG.debug("Action will be scheduled for later using schedule()");
-                Map<String, Schedule.Result> results = SaltAPIService.INSTANCE
+                Map<String, Result<Schedule.Result>> results = SaltAPIService.INSTANCE
                         .schedule("scheduled-action-" + actionIn.getId(), call,
                                 new MinionList(minionIds), earliestAction, metadata);
                 return minions.stream()
                         .collect(Collectors.partitioningBy(minion ->
                                 Optional.ofNullable(results.get(minion.getMinionId()))
+                                        .flatMap(Result::result)
                                         .map(Schedule.Result::getResult)
                                         .orElse(false)
                         ));

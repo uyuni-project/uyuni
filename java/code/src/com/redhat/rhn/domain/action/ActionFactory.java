@@ -66,6 +66,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.results.Result;
+
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -164,7 +166,7 @@ public class ActionFactory extends HibernateFactory {
                 .lookupByIds(sids)
                 .collect(Collectors.toList());
 
-        Map<String, Schedule.Result> results = SaltAPIService.INSTANCE.deleteSchedule(
+        Map<String, Result<Schedule.Result>> results = SaltAPIService.INSTANCE.deleteSchedule(
                 "scheduled-action-" + aid,
                 new MinionList(
                         minions.stream()
@@ -173,7 +175,7 @@ public class ActionFactory extends HibernateFactory {
                 )
         );
         return minions.stream().filter(minionServer -> {
-            Schedule.Result result = results.get(minionServer.getMinionId());
+            Schedule.Result result = results.get(minionServer.getMinionId()).result().get();
             return result != null && result.getResult();
         })
           .map(MinionServer::getId)
