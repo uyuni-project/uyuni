@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.apache.http.HttpStatus;
 
@@ -63,7 +64,18 @@ public class MinionsAPI {
 
         MinionList minionList = new MinionList(minionTargets
                 .toArray(new String[minionTargets.size()]));
-        Map<String, String> result = SALT_SERVICE.runRemoteCommand(minionList, cmd);
+        Map<String, String> result = SALT_SERVICE.runRemoteCommand(minionList, cmd)
+                .entrySet().stream().collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> e.getValue().fold(
+                                err -> err.fold(
+                                        Object::toString,
+                                        Object::toString,
+                                        genError -> "Generic error running remote command"
+                                ),
+                                res -> res
+                        )
+                ));
 
         return json(response, result);
     }

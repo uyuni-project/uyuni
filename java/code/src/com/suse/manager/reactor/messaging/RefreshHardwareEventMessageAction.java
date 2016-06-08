@@ -34,6 +34,8 @@ import com.suse.manager.webui.services.SaltGrains;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.results.Result;
+
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -83,7 +85,7 @@ public class RefreshHardwareEventMessageAction extends AbstractDatabaseAction {
                     Boolean minionIsUp = null;
                     List<String> errors = new LinkedList<>();
                     try {
-                        Map<String, Boolean> ping = saltService
+                        Map<String, Result<Boolean>> ping = saltService
                                 .ping(new MinionList(minionServer.getMinionId()));
                         minionIsUp = ping.containsKey(minionServer.getMinionId());
                     }
