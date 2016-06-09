@@ -32,6 +32,7 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.salt.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -315,7 +316,7 @@ public enum SaltServerActionService {
             List<MinionServer> minions, String script) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         // FIXME: This supports only bash at the moment
-        ret.put(com.suse.manager.webui.utils.salt.Cmd.execCodeAll(
+        ret.put(Cmd.execCodeAll(
                 "bash",
                 // remove \r or bash will fail
                 script.replaceAll("\r\n", "\n")), minions);
