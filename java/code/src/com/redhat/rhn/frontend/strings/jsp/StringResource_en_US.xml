@@ -7662,7 +7662,7 @@ Please note that some manual configuration of these scripts may still be require
           </context-group>
         </trans-unit>
         <trans-unit id="bootstrapsystemlist.jsp.cpu_clock_frequency">
-          <source>Clock frquency</source>
+          <source>Clock frequency</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
           </context-group>
@@ -7692,7 +7692,7 @@ Please note that some manual configuration of these scripts may still be require
           </context-group>
         </trans-unit>
         <trans-unit id="cpuClockFrequency">
-          <source>Clock frquency</source>
+          <source>Clock frequency</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
           </context-group>
