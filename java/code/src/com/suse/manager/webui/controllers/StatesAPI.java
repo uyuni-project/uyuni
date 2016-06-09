@@ -72,6 +72,7 @@ import com.suse.manager.webui.utils.gson.JSONCustomState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
 import com.suse.manager.webui.utils.gson.JSONServerCustomStates;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
@@ -615,9 +616,9 @@ public class StatesAPI {
                 .map(minion -> {
                     final String minionId = minion.getMinionId();
                     try {
-                        Map<String, Result<Object>> result = SaltAPIService.INSTANCE.callSync(
-                                com.suse.manager.webui.utils.salt.State.showHighstate(),
-                                new MinionList(minionId), Optional.empty());
+                        Map<String, Result<Object>> result = SaltAPIService.INSTANCE
+                                .callSync(State.showHighstate(), new MinionList(minionId),
+                                        Optional.empty());
 
                         return Optional.ofNullable(result.get(minionId))
                                 .map(r -> r.fold(
