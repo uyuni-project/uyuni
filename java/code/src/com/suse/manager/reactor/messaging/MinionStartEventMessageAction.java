@@ -54,13 +54,13 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
 
             Target<?> target = new MinionList(minion.getMinionId());
             // get uptime
-            LocalCall<String> uptimeCall = Status.uptime();
+            LocalCall<Float> uptimeCall = Status.uptime();
             try {
-                Map<String, Result<String>> uptimes = SaltAPIService.INSTANCE
+                Map<String, Result<Float>> uptimes = SaltAPIService.INSTANCE
                         .callSync(uptimeCall, target, Optional.empty());
                 if (uptimes.containsKey(minion.getMinionId())) {
-                    Long uptime = Long.parseLong(uptimes.get(minion.getMinionId())
-                            .result().get());
+                    Long uptime = uptimes.get(minion.getMinionId())
+                            .result().get().longValue();
 
                     Date bootTime = new Date(System.currentTimeMillis() - (uptime * 1000));
                     LOG.debug("set last boot for " +
