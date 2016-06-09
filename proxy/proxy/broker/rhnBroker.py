@@ -28,6 +28,7 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common import rhnFlags, apache
 from spacewalk.common.rhnTranslate import _
+from spacewalk.common import suseLib
 
 # local module imports
 from proxy.rhnShared import SharedHandler
@@ -67,6 +68,8 @@ class BrokerHandler(SharedHandler):
         self.authChannels = None
         self.clientServerId = None
         self.rhnParentXMLRPC = None
+        self.authToken = None
+        self.fullRequestURL = None
         hostname = ''
         # should *always* exist and be my ip address
         my_ip_addr = req.headers_in['SERVER_ADDR']
@@ -147,6 +150,15 @@ class BrokerHandler(SharedHandler):
                 effectiveURI_parts.fragment]))
 
         if req.method == 'GET':
+            self.fullRequestURL = "%s://%s%s" % (self.req.headers_in['REQUEST_SCHEME'], self.rhnParent, effectiveURI)
+            self.authToken =  effectiveURI_parts.query
+            effectiveURI_parts = urlparse(urlunparse([
+                effectiveURI_parts.scheme,
+                effectiveURI_parts.netloc,
+                effectiveURI_parts.path,
+                effectiveURI_parts.params,
+                '',
+                effectiveURI_parts.fragment]))
             scheme = 'http'
             self.httpProxy = CFG.SQUID
             self.caChain = self.httpProxyUsername = self.httpProxyPassword = ''
@@ -244,6 +256,12 @@ class BrokerHandler(SharedHandler):
         _oto['X-RHN-Proxy-Auth'] = ','.join(tokens)
         log_debug(5, '    (auth token after): %s'
                   % repr(_oto['X-RHN-Proxy-Auth']))
+
+        if self.fullRequestURL:
+            if not suseLib.accessible(self.fullRequestURL):
+                return apache.HTTP_FORBIDDEN
+        if self.authToken:
+            _oto['X-SUSE-Auth-Token'] = self.authToken
 
         log_debug(3, 'Trying to connect to parent')
 
