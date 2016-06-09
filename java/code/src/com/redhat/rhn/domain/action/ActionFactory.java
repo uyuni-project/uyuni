@@ -166,13 +166,13 @@ public class ActionFactory extends HibernateFactory {
                 .lookupByIds(sids)
                 .collect(Collectors.toList());
 
-        Map<String, Result<Schedule.Result>> results = SaltAPIService.INSTANCE.deleteSchedule(
-                "scheduled-action-" + aid,
-                new MinionList(
-                        minions.stream()
-                               .map(MinionServer::getMinionId)
-                               .collect(Collectors.toList())
-                )
+        Map<String, Result<Schedule.Result>> results = SaltAPIService.INSTANCE
+                .deleteSchedule(
+                        "scheduled-action-" + aid,
+                        new MinionList(minions.stream()
+                                .map(MinionServer::getMinionId)
+                                .collect(Collectors.toList())
+                        )
         );
         return minions.stream().filter(minionServer -> {
             Schedule.Result result = results.get(minionServer.getMinionId()).result().get();
