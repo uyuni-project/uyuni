@@ -267,12 +267,11 @@ public interface SaltService {
      * @param <T> the return type of the call
      * @param call the call to execute
      * @param target minions targeted by the call
-     * @param metadata extra metadata to add to the job
      * @return the result of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    <T> Map<String, Result<T>> callSync(LocalCall<T> call, Target<?> target,
-           Optional<Map<String, ?>> metadata) throws SaltException;
+    <T> Map<String, Result<T>> callSync(LocalCall<T> call, Target<?> target)
+            throws SaltException;
 
     /**
      * Execute a LocalCall asynchronously on the default Salt client.
@@ -280,12 +279,11 @@ public interface SaltService {
      * @param <T> the return type of the call
      * @param call the call to execute
      * @param target minions targeted by the call
-     * @param metadata extra metadata to add to the job
      * @return the LocalAsyncResult of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target,
-            Optional<Map<String, ?>> metadata) throws SaltException;
+    <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target)
+            throws SaltException;
 
     /**
      * Get the IP routing that the minion uses to connect to the master.
