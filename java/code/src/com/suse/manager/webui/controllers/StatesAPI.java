@@ -617,8 +617,7 @@ public class StatesAPI {
                     final String minionId = minion.getMinionId();
                     try {
                         Map<String, Result<Object>> result = SaltAPIService.INSTANCE
-                                .callSync(State.showHighstate(), new MinionList(minionId),
-                                        Optional.empty());
+                                .callSync(State.showHighstate(), new MinionList(minionId));
 
                         return Optional.ofNullable(result.get(minionId))
                                 .map(r -> r.fold(
