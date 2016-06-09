@@ -51,6 +51,7 @@ BuildRequires: python-hashlib
 
 %if 0%{?suse_version}
 Requires(pre): apache2
+Requires: python-pycurl
 %else
 Requires(pre): httpd
 %endif
