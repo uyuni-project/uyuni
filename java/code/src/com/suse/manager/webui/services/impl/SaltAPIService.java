@@ -23,7 +23,6 @@ import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.salt.Jobs;
-import com.suse.manager.webui.utils.salt.LocalCallWithMetadata;
 import com.suse.manager.webui.utils.salt.Saltutil;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
@@ -436,23 +435,19 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public <T> Map<String, Result<T>> callSync(LocalCall<T> call, Target<?> target,
-            Optional<Map<String, ?>> metadata) throws SaltException {
-        LocalCallWithMetadata<T> callWithMetadata =
-                new LocalCallWithMetadata<>(call, metadata);
-        return callWithMetadata
-                .callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+    public <T> Map<String, Result<T>> callSync(LocalCall<T> call, Target<?> target)
+            throws SaltException {
+        return call.callSync(
+                SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
     }
 
     /**
      * {@inheritDoc}
      */
-    public <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target,
-            Optional<Map<String, ?>> metadata) throws SaltException {
-        LocalCallWithMetadata<T> callWithMetadata =
-                new LocalCallWithMetadata<>(call, metadata);
-        return callWithMetadata
-                .callAsync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+    public <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target)
+            throws SaltException {
+        return call.callAsync(
+                SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
     }
 
     /**
@@ -587,8 +582,7 @@ public enum SaltAPIService implements SaltService {
     public Map<String, Result<Boolean>> ping(Target<?> targetIn) throws SaltException {
         return callSync(
             Test.ping(),
-            targetIn,
-            Optional.empty()
+            targetIn
         );
     }
 
