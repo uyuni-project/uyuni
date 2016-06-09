@@ -21,7 +21,12 @@ import pycurl
 
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
-from spacewalk.server import rhnSQL
+try:
+    from spacewalk.server import rhnSQL
+    has_sql = True
+except ImportError:
+    has_sql = False
+
 from rhn.connections import idn_puny_to_unicode
 
 YAST_PROXY = "/root/.curlrc"
@@ -308,6 +313,8 @@ def get_proxy(url=None):
 
 
 def findProduct(product):
+    if not has_sql:
+        return None
     q_version = ""
     q_release = ""
     q_arch = ""
@@ -369,6 +376,8 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
     org_id and user_id are used to check for permissions.
 
     """
+    if not has_sql:
+        return None
 
     product_id = findProduct(product)
     if not product_id:
@@ -473,6 +482,8 @@ def get_mirror_credentials():
 
 
 def isAllowedSlave(hostname):
+    if not has_sql:
+        return False
     rhnSQL.initDB()
     if not rhnSQL.fetchone_dict("select 1 from rhnISSSlave where slave = :hostname and enabled = 'Y'",
                                 hostname=idn_puny_to_unicode(hostname)):
@@ -482,6 +493,8 @@ def isAllowedSlave(hostname):
 
 
 def hasISSSlaves():
+    if not has_sql:
+        return False
     rhnSQL.initDB()
     if rhnSQL.fetchone_dict("select 1 from rhnISSSlave where enabled = 'Y'"):
         return True
@@ -489,6 +502,8 @@ def hasISSSlaves():
 
 
 def hasISSMaster():
+    if not has_sql:
+        return False
     rhnSQL.initDB()
     if rhnSQL.fetchone_dict("select 1 from rhnISSMaster where is_current_master = 'Y'"):
         return True
@@ -496,6 +511,8 @@ def hasISSMaster():
 
 
 def getISSCurrentMaster():
+    if not has_sql:
+        return None
     rhnSQL.initDB()
     master = rhnSQL.fetchone_dict(
         "select label from rhnISSMaster where is_current_master = 'Y'")
@@ -566,7 +583,8 @@ def _get_proxy_from_rhn_conf():
 
     """
     comp = CFG.getComponent()
-    initCFG("server.satellite")
+    if not CFG.has_key("http_proxy"):
+        initCFG("server.satellite")
     result = None
     if CFG.http_proxy:
         # CFG.http_proxy format is <hostname>[:<port>] in 1.7
@@ -602,7 +620,8 @@ def _useProxyFor(url):
     if hostname in ["localhost", "127.0.0.1", "::1"]:
         return False
     comp = CFG.getComponent()
-    initCFG("server.satellite")
+    if not CFG.has_key("no_proxy"):
+        initCFG("server.satellite")
     if not CFG.has_key('no_proxy'):
         initCFG(comp)
         return True

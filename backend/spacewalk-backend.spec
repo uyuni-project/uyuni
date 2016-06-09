@@ -78,6 +78,11 @@ BuildRequires: yum
 Requires(pre): %{apache_pkg}
 Requires: %{apache_pkg}
 Requires: %{name}-usix
+
+%if 0%{?suse_version}
+Requires: python-pycurl
+%endif
+
 # we don't really want to require this redhat-release, so we protect
 # against installations on other releases using conflicts...
 Obsoletes: rhns-common < 5.3.0
