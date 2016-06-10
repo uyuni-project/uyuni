@@ -892,6 +892,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/cdn-activate
 %attr(755,root,root) %{_bindir}/cdn-sync
+%dir %{pythonrhnroot}/cdn_tools
 %{pythonrhnroot}/cdn_tools/*.py*
 
 %changelog
