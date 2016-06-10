@@ -308,7 +308,8 @@ public enum SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionServer>> rebootAction(List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(com.suse.manager.webui.utils.salt.System.reboot(Optional.empty()), minions);
+        ret.put(com.suse.salt.netapi.calls.modules.System
+                .reboot(Optional.empty()), minions);
         return ret;
     }
 
