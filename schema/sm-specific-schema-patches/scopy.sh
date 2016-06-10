@@ -64,7 +64,7 @@ basepath="$basepath/upgrade/"
 echo "P: $basepath"
 echo "T: $templatedir"
 
-dirs=(spacewalk-schema-2.4-to-spacewalk-schema-2.5)
+dirs=(spacewalk-schema-2.4-to-spacewalk-schema-2.5 spacewalk-schema-2.5-to-spacewalk-schema-2.6)
 
 for d in ${dirs[*]}; do
     for i in $basepath/$d/*; do
