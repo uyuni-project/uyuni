@@ -14,10 +14,10 @@
  */
 package com.suse.manager.webui.utils.salt.custom;
 
-import com.suse.manager.webui.utils.salt.Zypper;
-import com.suse.manager.webui.utils.salt.results.Ret;
-import com.suse.manager.webui.utils.salt.results.StateApplyResult;
 import com.suse.salt.netapi.calls.modules.Pkg;
+import com.suse.salt.netapi.calls.modules.Zypper;
+import com.suse.salt.netapi.results.Ret;
+import com.suse.salt.netapi.results.StateApplyResult;
 
 import com.google.gson.annotations.SerializedName;
 
