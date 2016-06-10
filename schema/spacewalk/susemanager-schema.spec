@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        SQL schema for Spacewalk server
 
-Version:        2.6.0
+Version:        2.6.2
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -77,6 +77,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Jun 10 2016 Jan Dobes 2.6.2-1
+- change rhnContentSourceSsl table to possibly connect to channel family
+  (instead of content source) and rename to rhnContentSsl
+
+* Thu Jun 09 2016 Jan Dobes 2.6.1-1
+- fix dropping unused entitlements when multiple orgs are available
+- Bumping package versions for 2.6.
+
 * Wed May 25 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.21-1
 - updating copyright years
 - 1303886 - remove Oracle from summary

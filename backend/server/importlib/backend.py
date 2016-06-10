@@ -1061,15 +1061,16 @@ class Backend:
                 cf_ids.append(cf.id)
 
         h_private_del = self.dbmodule.prepare("""
-            delete from rhnPublicChannelFamily
-             where channel_family_id = :channel_family_id
+            delete from rhnPublicChannelFamily pcf
+             where (select org_id from rhnChannelFamily cf
+                    where pcf.channel_family_id = cf.id) is null
         """)
         h_private_ins = self.dbmodule.prepare("""
             insert into rhnPublicChannelFamily (channel_family_id)
             values (:channel_family_id)
         """)
 
-        h_private_del.executemany(channel_family_id=cf_ids)
+        h_private_del.execute()
         h_private_ins.executemany(channel_family_id=cf_ids)
 
     def processDistChannelMap(self, dcms):
@@ -1114,6 +1115,27 @@ class Backend:
         statement.execute(id=channel.id,
                           channel_product_id=channel['channel_product_id'])
 
+    def processChannelContentSources(self, channel):
+        """ Associate content sources with channel """
+
+        delete_sql = self.dbmodule.prepare("""
+            delete from rhnChannelContentSource
+            where channel_id = :channel_id
+        """)
+
+        insert_sql = self.dbmodule.prepare("""
+           insert into rhnChannelContentSource
+               (source_id, channel_id)
+           values (:source_id, :channel_id)
+        """)
+
+        delete_sql.execute(channel_id=channel.id)
+        for source in channel['content-sources']:
+            insert_sql.execute(source_id=self.lookupContentSource(source['label']),
+                               channel_id=channel.id)
+
+
+
     def processProductNames(self, batch):
         """ Check if ProductName for channel in batch is already in DB.
             If not add it there.
@@ -1129,6 +1151,59 @@ class Backend:
             if not self.lookupProductNames(channel['label']):
                 statement.execute(product_label=channel['label'],
                                   product_name=channel['name'])
+
+    def processContentSources(self, batch):
+        """ Insert content source into DB, delete existing label-org combination. """
+
+        delete_sql = self.dbmodule.prepare("""
+            delete from rhnContentSource
+            where label = :label and
+                  org_id is null
+        """)
+
+        insert_sql = self.dbmodule.prepare("""
+            insert into rhnContentSource
+                (id, label, source_url, type_id)
+            values (sequence_nextval('rhn_chan_content_src_id_seq'),
+                    :label, :source_url, :type_id)
+        """)
+
+        for cs in batch:
+            delete_sql.execute(label=cs['label'])
+            insert_sql.execute(label=cs['label'], source_url=cs['source_url'],
+                               type_id=self.lookupContentSourceType('yum'))
+
+    def lookupContentSource(self, label):
+        """ Get id for given content source """
+
+        sql = self.dbmodule.prepare("""
+            select id from rhnContentSource where label = :label and org_id is null
+        """)
+
+        sql.execute(label=label)
+
+        content_source = sql.fetchone_dict()
+
+        if content_source:
+            return content_source['id']
+
+        return
+
+    def lookupContentSourceType(self, label):
+        """ Get id for given content type label """
+
+        sql = self.dbmodule.prepare("""
+            select id from rhnContentSourceType where label = :label
+        """)
+
+        sql.execute(label=label)
+
+        source_type = sql.fetchone_dict()
+
+        if source_type:
+            return source_type['id']
+
+        return
 
     def lookupProductNames(self, label):
         """ For given label of product return its id.

@@ -72,8 +72,8 @@ echo "" > $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/rhn.conf
 mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/certs/
 mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/private/
 %if 0%{?suse_version}
-ln -sf  %{apacheconfdir}/ssl.key/spacewalk.key $RPM_BUILD_ROOT/etc/pki/tls/private/spacewalk.key
-ln -sf  %{apacheconfdir}/ssl.crt/spacewalk.crt $RPM_BUILD_ROOT/etc/pki/tls/certs/spacewalk.crt
+ln -sf  %{apacheconfdir}/ssl.key/server.key $RPM_BUILD_ROOT/etc/pki/tls/private/spacewalk.key
+ln -sf  %{apacheconfdir}/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/certs/spacewalk.crt
 %else
 ln -sf  %{apacheconfdir}/conf/ssl.key/server.key $RPM_BUILD_ROOT/etc/pki/tls/private/spacewalk.key
 ln -sf  %{apacheconfdir}/conf/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/certs/spacewalk.crt
