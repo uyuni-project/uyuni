@@ -227,7 +227,7 @@ class RepoSync(object):
                 source_url=[item['source_url']],
                 metadata_signed=item['metadata_signed'],
                 label=item['label'],
-                channel_family_id=row['channel_family_id']
+                channel_family_id=item['channel_family_id']
             ) for item in sources
         ]
 
@@ -281,7 +281,7 @@ class RepoSync(object):
                                 on rhncontentssl.ssl_client_key_id = k3.id
                         where rhncontentssl.content_source_id = :repo_id
                         or rhncontentssl.channel_family_id = :channel_family_id
-                        """, repo_id=int(data['id']), channel_family_id=int(data['channel_family_id']))
+                        """, repo_id=int(data['id']), channel_family_id=data['channel_family_id'])
                         if keys and ('ca_cert' in keys):
                             plugin.set_ssl_options(keys['ca_cert'], keys['client_cert'], keys['client_key'])
 
