@@ -40,7 +40,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.0
+Version: 2.6.2
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -371,6 +371,16 @@ Provides: rhns-xml-export-libs = 1:%{version}-%{release}
 %description xml-export-libs
 Libraries required by various exporting tools
 
+%package cdn
+Summary: CDN tools
+Group: Applications/Internet
+Requires: %{name}-server = %{version}-%{release}
+Requires: %{name}-usix
+Requires: subscription-manager
+
+%description cdn
+Tools for syncing content from Red Hat CDN
+
 %prep
 %setup -q
 
@@ -434,6 +444,7 @@ export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn:/usr/share/rhn
 spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_tools \
+                 $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
 %endif
@@ -597,6 +608,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/importlib/productNamesImport.py*
 %{pythonrhnroot}/server/importlib/userAuth.py*
 %{pythonrhnroot}/server/importlib/orgImport.py*
+%{pythonrhnroot}/server/importlib/contentSourcesImport.py*
 %{pythonrhnroot}/server/importlib/supportInformationImport.py*
 %{pythonrhnroot}/server/importlib/suseProductsImport.py*
 %{rhnroot}/server/handlers/__init__.py*
@@ -813,6 +825,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/spacewalk-update-signatures
 %attr(755,root,root) %{_bindir}/spacewalk-data-fsck
 %attr(755,root,root) %{_bindir}/spacewalk-fips-tool
+%{pythonrhnroot}/satellite_tools/contentRemove.py*
 %{pythonrhnroot}/satellite_tools/SequenceServer.py*
 %{pythonrhnroot}/satellite_tools/messages.py*
 %{pythonrhnroot}/satellite_tools/progress_bar.py*
@@ -875,7 +888,52 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/exportLib.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
+%files cdn
+%defattr(-,root,root)
+%attr(755,root,root) %{_bindir}/cdn-activate
+%attr(755,root,root) %{_bindir}/cdn-sync
+%{pythonrhnroot}/cdn_tools/*.py*
+
 %changelog
+* Fri Jun 10 2016 Jan Dobes 2.6.2-1
+- make possible to clear packages in null-org outside channels (partially
+  synced channels)
+- add functions to remove content outside channels
+- move spacewalk-remove-channel code into new module
+- sync content strictly - only packages from batch will be in channel
+- allow reposync to subscribe packages to channel strictly
+- show which channel is processed
+- support --no-errata
+- support --no-packages
+- fixing synced channel indicator
+- list skipped errata
+- it's not an error
+- channel families may not be in filtered list
+- find ssl keys for families
+- unlock null org channels
+- run sync
+- import content sources for channels
+- teach backend to insert content sources
+- dist channel mapping
+- insert channel metadata
+- adding available channel listing
+- add linking channel families with certificates
+- refactor to class
+- insert families matching product data only
+- old families should not be visible after reactivation
+- lookup in separate function
+- fix rhnContentSourceSsl -> rhnContentSsl in code
+- import channel families
+- reusing previously dropped satellite certificate class
+- insert SSL credentials from file and manifest into DB
+- start to build -cdn package
+- refactoring satCerts to make possible insert into single org/null org
+
+* Tue Jun 07 2016 Jan Dobes 2.6.1-1
+- print() prints '()' in python 2 instead of expected empty line
+- fix chgrp call on openSUSE
+- Bumping package versions for 2.6.
+
 * Wed May 25 2016 Tomas Kasparek <tkasparek@redhat.com> 2.5.43-1
 - fix missing new line in translation
 - updating copyright years

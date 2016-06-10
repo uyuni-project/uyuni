@@ -255,6 +255,13 @@ class ChannelTrust(Information):
     }
 
 
+class ContentSource(Information):
+    attributeTypes = {
+        'label': StringType,
+        'source_url': StringType,
+    }
+
+
 class Channel(Information):
     attributeTypes = {
         'label'             : StringType,
@@ -292,6 +299,7 @@ class Channel(Information):
         'export-type': StringType,
         'export-end-date': StringType,
         'export-start-date': StringType,
+        'content-sources': [ContentSource],
     }
 
 

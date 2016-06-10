@@ -146,7 +146,8 @@ class RepoSync(object):
 
     def __init__(self, channel_label, repo_type, url=None, fail=False,
                  quiet=False, noninteractive=False, filters=None,
-                 deep_verify=False, no_errata=False, sync_kickstart = False, latest=False):
+                 deep_verify=False, no_errata=False, sync_kickstart = False, latest=False,
+                 strict=0):
         self.regen = False
         self.fail = fail
         self.quiet = quiet
@@ -185,18 +186,20 @@ class RepoSync(object):
         self.repo_plugin = self.load_plugin(repo_type)
         self.channel = self.load_channel()
         if not self.channel:
-            self.print_msg("Channel does not exist or is not custom.")
+            self.print_msg("Channel does not exist.")
             sys.exit(1)
 
         if not url:
             # TODO:need to look at user security across orgs
             h = rhnSQL.prepare(
                 """
-                select s.id, s.source_url, s.metadata_signed, s.label
-                from rhnContentSource s, rhnChannelContentSource cs
-                where s.id = cs.source_id and cs.channel_id = :channel_id
-                """
-            )
+                select s.id, s.source_url, s.metadata_signed, s.label, fm.channel_family_id
+                from rhnContentSource s,
+                     rhnChannelContentSource cs,
+                     rhnChannelFamilyMembers fm
+                where s.id = cs.source_id
+                  and cs.channel_id = fm.channel_id
+                  and cs.channel_id = :channel_id""")
             h.execute(channel_id=int(self.channel['id']))
             sources = h.fetchall_dict()
             if sources:
@@ -212,9 +215,10 @@ class RepoSync(object):
                     sys.exit(0)
                 sys.exit(1)
         else:
-            self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N', 'label': None}]
+            self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N', 'label': None, 'channel_family_id': None}]
 
         self.arches = get_compatible_arches(int(self.channel['id']))
+        self.strict = strict
 
     def _format_sources(self, sources):
         return [
@@ -222,7 +226,8 @@ class RepoSync(object):
                 id=item['id'],
                 source_url=[item['source_url']],
                 metadata_signed=item['metadata_signed'],
-                label=item['label']
+                label=item['label'],
+                channel_family_id=row['channel_family_id']
             ) for item in sources
         ]
 
@@ -266,17 +271,18 @@ class RepoSync(object):
                         url, self.channel_label, insecure, self.quiet, self.interactive)
                     if data['id'] is not None:
                         keys = rhnSQL.fetchone_dict("""
-                            select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
-                            from rhncontentsourcessl
-                                    join rhncryptokey k1
-                                    on rhncontentsourcessl.ssl_ca_cert_id = k1.id
-                                    left outer join rhncryptokey k2
-                                    on rhncontentsourcessl.ssl_client_cert_id = k2.id
-                                    left outer join rhncryptokey k3
-                                    on rhncontentsourcessl.ssl_client_key_id = k3.id
-                            where rhncontentsourcessl.content_source_id = :repo_id
-                            """, repo_id=int(data['id']))
-                        if keys and 'ca_cert' in keys:
+                        select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
+                        from rhncontentssl
+                                join rhncryptokey k1
+                                on rhncontentssl.ssl_ca_cert_id = k1.id
+                                left outer join rhncryptokey k2
+                                on rhncontentssl.ssl_client_cert_id = k2.id
+                                left outer join rhncryptokey k3
+                                on rhncontentssl.ssl_client_key_id = k3.id
+                        where rhncontentssl.content_source_id = :repo_id
+                        or rhncontentssl.channel_family_id = :channel_family_id
+                        """, repo_id=int(data['id']), channel_family_id=int(data['channel_family_id']))
+                        if keys and ('ca_cert' in keys):
                             plugin.set_ssl_options(keys['ca_cert'], keys['client_cert'], keys['client_key'])
 
                     # update the checksum type of channels with org_id NULL
@@ -558,7 +564,7 @@ class RepoSync(object):
         self.regen = True
 
     def upload_updates(self, notices):
-        skipped_updates = 0
+        skipped_updates = []
         batch = []
         typemap = {
                   'security'    : 'Security Advisory',
@@ -629,7 +635,7 @@ class RepoSync(object):
             # One or more package references could not be found in the Database.
             # To not provide incomplete patches we skip this update
             if not e['packages']:
-                skipped_updates = skipped_updates + 1
+                skipped_updates.append(e['advisory_name'])
                 continue
 
             e['keywords'] = _update_keywords(notice)
@@ -649,8 +655,10 @@ class RepoSync(object):
                 importer.run()
                 batch = []
 
-        if skipped_updates > 0:
-            self.print_msg("%d patches skipped because of empty package list." % skipped_updates)
+        if skipped_updates:
+            self.print_msg("%d patches skipped because of empty package list." % len(skipped_updates))
+            for update in skipped_updates:
+                self.print_msg(" %s" % update)
         if len(batch) > 0:
             importer = ErrataImport(batch, backend)
             importer.run()
@@ -1218,7 +1226,8 @@ class RepoSync(object):
     def _importer_run(self, package, caller, backend):
         importer = ChannelPackageSubscription(
             [IncompletePackage().populate(package)],
-            backend, caller=caller, repogen=False)
+            backend, caller=caller, repogen=False,
+            strict=self.strict)
         importer.run()
 
     def load_channel(self):
@@ -1262,7 +1271,7 @@ class RepoSync(object):
         if pxeboot is None:
             if not re.search(r'/$', url):
                 url = url + '/'
-            self.error_msg("ERROR: kickstartable tree not detected (no %s%s)" % (url, pxeboot_path))
+            self.print_msg("Kickstartable tree not detected (no %s%s)" % (url, pxeboot_path))
             return
         channel_id = int(self.channel['id'])
 
