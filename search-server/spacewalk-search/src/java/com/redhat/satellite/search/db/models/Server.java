@@ -463,7 +463,7 @@ public class Server extends GenericRecord {
      */
     public void setCpuMHz(String cpuMHzIn) {
         if (cpuMHzIn != null) {
-            this.cpuMHz = NumberTools.longToString(Long.parseLong(cpuMHzIn));
+            this.cpuMHz = NumberTools.longToString(Math.round(Double.valueOf(cpuMHzIn)));
         }
         else {
             this.cpuMHz = null;
