@@ -230,12 +230,12 @@ if [ \$1 = 0 ]; then
     # Make sure the permissions are okay
     umask 077
 
-    if [ ! -f /etc/apache2/ssl.key/spacewalk.key ] ; then
-        /usr/bin/openssl genrsa -rand /proc/apm:/proc/cpuinfo:/proc/dma:/proc/filesystems:/proc/interrupts:/proc/ioports:/proc/pci:/proc/rtc:/proc/uptime 1024 > /etc/apache2/ssl.key/spacewalk.key 2> /dev/null
+    if [ ! -f /etc/httpd/conf/ssl.key/server.key ] ; then
+        /usr/bin/openssl genrsa -rand /proc/apm:/proc/cpuinfo:/proc/dma:/proc/filesystems:/proc/interrupts:/proc/ioports:/proc/pci:/proc/rtc:/proc/uptime 1024 > /etc/httpd/conf/ssl.key/server.key 2> /dev/null
     fi
 
-    if [ ! -f /etc/apache2/ssl.crt/spacewalk.crt ] ; then
-        cat << EOF | /usr/bin/openssl req -new -key /etc/apache2/ssl.key/spacewalk.key -x509 -days 365 -out /etc/apache2/ssl.crt/spacewalk.crt 2>/dev/null
+    if [ ! -f /etc/httpd/conf/ssl.crt/server.crt ] ; then
+        cat << EOF | /usr/bin/openssl req -new -key /etc/httpd/conf/ssl.key/server.key -x509 -days 365 -out /etc/httpd/conf/ssl.crt/server.crt 2>/dev/null
 --
 SomeState
 SomeCity
@@ -245,7 +245,7 @@ localhost.localdomain
 root@localhost.localdomain
 EOF
     fi
-    /sbin/service apache2 graceful
+    /sbin/service httpd graceful || /sbin/service httpd try-restart
     exit 0
 fi
 EOSCRIPTLET
@@ -256,8 +256,8 @@ $GENRPM --name $SERVER_RPM_NAME --version $version \
     --summary "server private SSL key and certificate for the $PROD_NAME" \
     --description "server private SSL key and certificate for the $PROD_NAME" \
     --postun postun.scriptlet \
-    /etc/apache2/ssl.crt/spacewalk.crt=spacewalk.crt \
-    /etc/apache2/ssl.key/spacewalk.key:0600=${SERVER_KEY} || exit 1
+    /etc/httpd/conf/ssl.crt/server.crt=server.crt \
+    /etc/httpd/conf/ssl.key/server.key:0600=${SERVER_KEY} || exit 1
 chmod 0600 ${SERVER_RPM_NAME}-${version}-${release}.{src,noarch}.rpm
 rm -f postun.scriptlet
 
