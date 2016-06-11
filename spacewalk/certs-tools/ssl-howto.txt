@@ -147,8 +147,8 @@ Build the RPMs:
 ---------------
 This one is installed on the RHN server (satellite/proxy):
 rhn-org-httpd-ssl-key-pair<-MACHINENAME>-VERSION-RELEASE:
-  /etc/apache2/ssl.crt/spacewalk.crt
-  /etc/apache2/ssl.key/spacewalk.key
+  /etc/httpd/conf/ssl.crt/server.crt
+  /etc/httpd/conf/ssl.key/server.key
 
 This one is used by XMLRPC clients to talk to RHN servers (satellite/proxy):
 rhn-org-trusted-ssl-cert-VERSION-RELEASE:
