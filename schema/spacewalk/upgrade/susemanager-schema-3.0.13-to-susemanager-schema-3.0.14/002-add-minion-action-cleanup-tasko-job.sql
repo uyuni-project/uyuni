@@ -1,5 +1,5 @@
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
-             VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'minion-action-cleanup-bunch', 'Cleanup action on minions for which we missed the job result event', null);
+             VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'minion-action-cleanup-bunch', 'Cleanup actions for Minions', null);
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'minion-action-cleanup-default',
