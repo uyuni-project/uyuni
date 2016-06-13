@@ -13,76 +13,92 @@ __salt__ = {
 log = logging.getLogger(__name__)
 
 
-def cpusockets():
-    """
-    Returns the number of CPU sockets.
-    """
-    grains = {}
-    physids = {}
+def _lscpu(feedback):
+    '''
+    Use lscpu method
 
-    # First try lscpu command if available
+    :return:
+    '''
     lscpu = salt.utils.which_bin(['lscpu'])
     if lscpu is not None:
         try:
             log.debug("Trying lscpu to get CPU socket count")
-            cmd = lscpu + " -p"
-            ret = __salt__['cmd.run_all'](cmd, output_loglevel='quiet')
+            ret = __salt__['cmd.run_all']('{0} -p'.format(lscpu), output_loglevel='quiet')
             if ret['retcode'] == 0:
-                lines = ret['stdout']
                 max_socket_index = -1
-                for line in lines.splitlines():
+                for line in ret['stdout'].strip().splitlines():
                     if line.startswith('#'):
                         continue
-                    # get the socket index from the output
                     socket_index = int(line.split(',')[2])
                     if socket_index > max_socket_index:
                         max_socket_index = socket_index
                 if max_socket_index > -1:
-                    grains['cpusockets'] = 1 + max_socket_index
-                    return grains
-        except:
-            pass
+                    return {'cpusockets': (1 + max_socket_index)}
+        except Exception as error:
+            feedback.append("lscpu: {0}".format(str(error)))
+            log.debug(str(error))
 
-    # Next try parsing /proc/cpuinfo
+
+def _parse_cpuinfo(feedback):
+    '''
+    Use parsing /proc/cpuinfo method.
+
+    :return:
+    '''
+    physids = set()
     if os.access("/proc/cpuinfo", os.R_OK):
         try:
             log.debug("Trying /proc/cpuinfo to get CPU socket count")
-            with open('/proc/cpuinfo') as f:
-                for line in f:
+            with open('/proc/cpuinfo') as handle:
+                for line in handle:
                     if line.strip().startswith('physical id'):
                         comps = line.split(':')
-                        if not len(comps) > 1:
+                        if len(comps) < 2 or len(comps[1]) < 2:
                             continue
-                        if not len(comps[1]) > 1:
-                            continue
-                        val = comps[1].strip()
-                        physids[val] = True
-            if physids and len(physids) > 0:
-                grains['cpusockets'] = len(physids)
-                return grains
-        except:
-            pass
+                        physids.add(comps[1].strip())
+            if physids:
+                return {'cpusockets': len(physids)}
+        except Exception as error:
+            log.debug(str(error))
+            feedback.append("/proc/cpuinfo: {0}".format(str(error)))
+        else:
+            feedback.append('/proc/cpuinfo: format is not applicable')
 
-    # Next try dmidecode
+
+def _dmidecode(feedback):
+    '''
+    Use dmidecode method.
+
+    :return:
+    '''
     dmidecode = salt.utils.which_bin(['dmidecode'])
     if dmidecode is not None:
         try:
             log.debug("Trying dmidecode to get CPU socket count")
-            cmd = dmidecode + " -t processor"
-            ret = __salt__['cmd.run_all'](cmd, output_loglevel='quiet')
+            ret = __salt__['cmd.run_all']("{0} -t processor".format(dmidecode), output_loglevel='quiet')
             if ret['retcode'] == 0:
-                lines = ret['stdout']
                 count = 0
-                for line in lines.splitlines():
+                for line in ret['stdout'].strip().splitlines():
                     if 'Processor Information' in line:
                         count += 1
-                if count > 0:
-                    grains['cpusockets'] = count
-                    return grains
-        except:
-            pass
+                if count:
+                    return {'cpusockets': count}
+        except Exception as error:
+            log.debug(str(error))
+            feedback.append("dmidecode: {0}".format(str(error)))
+    else:
+        feedback.append("dmidecode: executable not found")
 
-    log.warn("Could not determine CPU socket count")
+
+def cpusockets():
+    """
+    Returns the number of CPU sockets.
+    """
+    feedback = list()
+    grains = _lscpu(feedback) or _parse_cpuinfo(feedback) or _dmidecode(feedback)
+    if not grains:
+        log.warn("Could not determine CPU socket count: {0}".format(' '.join(feedback)))
+
     return grains
 
 
