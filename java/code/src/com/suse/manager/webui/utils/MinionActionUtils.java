@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.salt.Jobs;
 import com.suse.manager.webui.utils.salt.Saltutil;
 import com.suse.manager.webui.utils.salt.ScheduleMetadata;
@@ -31,7 +30,6 @@ import com.suse.utils.Json;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,9 +65,11 @@ public class MinionActionUtils {
      * at running jobs on the minion and the job cache using the
      * action id we add to the job as metadata.
      *
-     * @param sa ServerAction to check
+     * @param salt the salt service to use
+     * @param sa ServerAction to update
      * @param server MinionServer of this ServerAction
      * @param running list of running jobs on the MinionServer
+     * @return the updated ServerAction
      */
     public static ServerAction updateMinionActionStatus(SaltService salt, ServerAction sa,
             MinionServer server, List<Saltutil.RunningInfo> running) {
@@ -134,6 +134,8 @@ public class MinionActionUtils {
 
     /**
      * Cleanup all minion actions for which we missed the JobReturnEvent
+     *
+     * @param salt the salt service to use
      */
     public static void cleanupMinionActions(SaltService salt) {
         ZonedDateTime now = ZonedDateTime.now();
@@ -166,7 +168,8 @@ public class MinionActionUtils {
                     List<Saltutil.RunningInfo> runningInfos =
                             Optional.ofNullable(running.get(minion.getMinionId()))
                                     .orElseGet(Collections::emptyList);
-                    ActionFactory.save(updateMinionActionStatus(salt, sa, minion, runningInfos));
+                    ActionFactory.save(updateMinionActionStatus(
+                            salt, sa, minion, runningInfos));
                 })
         );
     }
