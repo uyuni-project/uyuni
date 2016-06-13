@@ -838,10 +838,6 @@ class IncompatibleArchError(ImportException):
         self.arch1 = arch1
         self.arch2 = arch2
 
-class InvalidSeverityError(ImportException):
-    def __init__(self, *rest):
-        ImportException.__init__(self, rest)
-
 class TransactionError(ImportException):
     def __init__(self, *rest):
         ImportException.__init__(self, rest)
