@@ -16,7 +16,7 @@
 CREATE TABLE suseStateRevisionCustomState
 (
     state_revision_id NUMBER NOT NULL
-                          CONSTRAINT suse_server_state_rev_id_fk
+                          CONSTRAINT suse_salt_state_rev_id_fk
                               REFERENCES suseStateRevision (id)
                               ON DELETE CASCADE,
     state_id NUMBER NOT NULL

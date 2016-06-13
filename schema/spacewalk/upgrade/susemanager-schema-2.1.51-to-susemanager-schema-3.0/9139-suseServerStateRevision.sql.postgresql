@@ -1,5 +1,6 @@
+-- oracle equivalent source sha1 9765e462e1ae52cb940e2cfd9f6375541cb740d6
 --
--- Copyright (c) 2016 SUSE LLC
+-- Copyright (c) 2015 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,20 +13,22 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
 --
+-- CONSTRAINT names are different in the oracle version
+-- pg names will be aligned again with 3.0.13/010-shorten-constraints-names
 
-CREATE TABLE suseServerGroupStateRevision
+CREATE TABLE suseServerStateRevision
 (
-    group_id         NUMBER NOT NULL
-                          CONSTRAINT suse_server_group_gr_id_fk
-                              REFERENCES rhnServerGroup (id)
+    server_id         NUMERIC NOT NULL
+                          CONSTRAINT suse_server_state_rev_sid_fk
+                              REFERENCES rhnServer (id)
                               ON DELETE CASCADE,
-    state_revision_id NUMBER NOT NULL
-                          CONSTRAINT suse_server_group_sr_id_fk
+    state_revision_id NUMERIC NOT NULL
+                          CONSTRAINT suse_server_state_rev_id_fk
                               REFERENCES suseStateRevision (id)
                               ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
-ALTER TABLE suseServerGroupStateRevision
-    ADD CONSTRAINT suse_server_group_rev_grid_uq UNIQUE (group_id, state_revision_id);
+ALTER TABLE suseServerStateRevision
+    ADD CONSTRAINT suse_server_state_rev_id_sid_uq UNIQUE (server_id, state_revision_id);
