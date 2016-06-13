@@ -111,10 +111,7 @@ Requires:  spacewalk-common = %{version}-%{release}
 Conflicts: spacewalk-postgresql
 Provides:  spacewalk-db-virtual = %{version}-%{release}
 
-Requires: oracle-instantclient11.2-basic
-Requires: oracle-instantclient11.2-sqlplus
-Conflicts: oracle-instantclient-basic <= 10.2.0.4
-Conflicts: oracle-instantclient-sqlplus <= 10.2.0.4
+Requires: oracle-lib-compat
 Requires: spacewalk-java-oracle
 Requires: perl(DBD::Oracle)
 Requires: cx_Oracle

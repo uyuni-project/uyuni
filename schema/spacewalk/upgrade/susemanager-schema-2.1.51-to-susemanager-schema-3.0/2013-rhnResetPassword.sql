@@ -23,7 +23,7 @@ CREATE TABLE rhnResetPassword
                       ON DELETE CASCADE,
     token         VARCHAR(64) NOT NULL
                       CONSTRAINT rhn_rstpwd_token_uq UNIQUE,
-    is_valid      char(1) DEFAULT 'Y' NOT NULL
+    is_valid      char(1) DEFAULT ('Y') NOT NULL
                       CONSTRAINT rhn_rstpwd_is_valid_ck CHECK (is_valid IN ('Y', 'N')),
     created       timestamp with local time zone DEFAULT (current_timestamp) NOT NULL,
     modified      timestamp with local time zone DEFAULT (current_timestamp) NOT NULL

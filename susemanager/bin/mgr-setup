@@ -254,7 +254,11 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
         echo "ssl-use-existing-certs = N" >> /root/spacewalk-answers
     fi
 
-    PARAM_DB="--external-postgresql"
+    if [ "$DB_BACKEND" = "oracle" ]; then
+        PARAM_DB="--external-oracle"
+    else
+        PARAM_DB="--external-postgresql"
+    fi
 
     if [ "$DO_MIGRATION" = "1" ]; then
         /usr/bin/spacewalk-setup --disconnected --skip-db-population --skip-ssl-cert-generation --answer-file=/root/spacewalk-answers $PARAM_DB
@@ -437,8 +441,11 @@ do_migration() {
         umask 0022
         mkdir -p $TMPDIR
     fi
-    echo "Ensuring postgresql has read permissions on $TMPDIR for database dump..."
-    chmod go+rx $TMPDIR
+
+    if [ "$DB_BACKEND" = "postgresql" ]; then
+        echo "Ensuring postgresql has read permissions on $TMPDIR for database dump..."
+        chmod go+rx $TMPDIR
+    fi
 
     echo
     echo
@@ -478,15 +485,17 @@ do_migration() {
     do_setup
     wait_step
 
-    dump_remote_db
-    wait_step
+    if [ "$DB_BACKEND" = "postgresql" ]; then
+        dump_remote_db
+        wait_step
 
-    echo "Reconfigure postgresql for high performance..."
-    postgres_fast
-    import_db
-    wait_step
-    echo "Reconfigure postgresql for normal safe operation..."
-    postgres_safe
+        echo "Reconfigure postgresql for high performance..."
+        postgres_fast
+        import_db
+        wait_step
+        echo "Reconfigure postgresql for normal safe operation..."
+        postgres_safe
+    fi
 
     upgrade_schema
     wait_step
@@ -537,12 +546,16 @@ do_setup() {
     if [ -z "$MANAGER_DB_NAME" ]; then
         MANAGER_DB_NAME="susemanager"
     fi
-    DB_BACKEND="postgresql"
+    if [ -z "$DB_BACKEND" ]; then
+        DB_BACKEND="postgresql"
+    fi
     check_re_install
     echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
     setup_swap
     setup_mail
-    setup_db_postgres
+    if [ "$DB_BACKEND" = "postgresql" ]; then
+        setup_db_postgres
+    fi
 
     # should be done by cobbler with "--sync" but we had a case where those
     # files were missing (bnc#668908)
@@ -643,8 +656,8 @@ fi
 wait_step
 
 if [ "$DO_MIGRATION" = "1" ]; then
-    if [ -z "$DB_BACKEND" -o "$DB_BACKEND" != "postgresql" ]; then
-        echo "Migration only supported with postgresql DB Backend" >&2
+    if [ "$DB_BACKEND" != "oracle" -a "$DB_BACKEND" != "postgresql" ]; then
+        echo "Unknown DB Backend!" >&2
         exit 1
     fi
     do_migration
