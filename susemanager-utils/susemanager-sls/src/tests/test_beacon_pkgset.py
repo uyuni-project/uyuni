@@ -1,8 +1,6 @@
 '''
 Author: Bo Maryniuk <bo@suse.de>
 '''
-import os
-import sys
 
 from mock import MagicMock, patch
 from ..beacons import pkgset

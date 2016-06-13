@@ -44,45 +44,50 @@ def exportdb():
 
     devices = []
     dev = {}
-    for line in udev_result['stdout'].splitlines():
-        line = line.strip()
+    for line in (line.strip() for line in udev_result['stdout'].splitlines()):
         if line:
             line = line.split(':', 1)
-            query = str(line[0])
-
+            if len(line) != 2:
+                continue
+            query, data = line
             if query == 'E':
                 if query not in dev:
                     dev[query] = {}
-                val = line[1].strip().split('=', 1)
-                key = str(val[0])
-                val = val[1]
+                key, val = data.strip().split('=', 1)
 
                 try:
                     val = int(val)
-                except:  # pylint: disable=bare-except
+                except ValueError:
                     try:
                         val = float(val)
-                    except:  # pylint: disable=bare-except
-                        pass
+                    except ValueError:
+                        pass  # Quiet, this is not a number.
 
                 dev[query][key] = val
             else:
                 if query not in dev:
                     dev[query] = []
-                dev[query].append(line[1].strip())
-
+                dev[query].append(data.strip())
         else:
-            normalize(dev)
-            devices.append(dev)
-            dev = {}
-    if bool(dev):
+            if dev:
+                devices.append(normalize(dev))
+                dev = {}
+    if dev:
         normalize(dev)
-        devices.append(dev)
+        devices.append(normalize(dev))
 
     return devices
 
 
 def normalize(dev):
+    '''
+    Replace list with only one element to the value of the element.
+
+    :param dev:
+    :return:
+    '''
     for sect, val in dev.items():
         if len(val) == 1:
             dev[sect] = val[0]
+
+    return dev
