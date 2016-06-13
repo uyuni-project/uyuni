@@ -14,44 +14,27 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
-import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
-import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
-import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
-import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.reactor.utils.ZonedDateTimeISOAdapter;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.Jobs;
 import com.suse.manager.webui.utils.salt.Saltutil;
-import com.suse.manager.webui.utils.salt.events.Event;
-import com.suse.manager.webui.utils.salt.events.EventStream;
-import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
-import com.suse.salt.netapi.datatypes.StartTime;
-import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.parser.JsonParser;
-import com.suse.utils.Json;
-import org.hibernate.Hibernate;
-import org.jmock.Mock;
+import org.jmock.Expectations;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,10 +42,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Date;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -91,18 +75,19 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         running.put(minion.getMinionId(), Collections.emptyList());
 
         Jobs.ListJobResult listJobResult = listJob("jobs.list_job.state.apply.json", action.getId());
+        SaltService saltServiceMock = mock(SaltService.class);
 
-        Mock saltServiceMock = mock(SaltService.class);
-        saltServiceMock.stubs().method("running").will(
-                returnValue(running));
-        saltServiceMock.stubs().method("jobsByMetadata").will(
-                returnValue(jobsByMetadata("jobs.list_jobs.with_metadata.json", action.getId())));
-        saltServiceMock.stubs().method("listJob").will(
-                returnValue(listJobResult));
+        context().checking(new Expectations() { {
+            allowing(saltServiceMock).running(with(any(Target.class)));
+            will(returnValue(running));
+            allowing(saltServiceMock).jobsByMetadata(with(any(Object.class)));
+            will(returnValue(jobsByMetadata("jobs.list_jobs.with_metadata.json", action.getId())));
+            allowing(saltServiceMock).listJob(with(any(String.class)));
+            will(returnValue(listJobResult));
+        } });
 
 
-        SaltService saltService = (SaltService) saltServiceMock.proxy();
-        MinionActionUtils.cleanupMinionActions(saltService);
+        MinionActionUtils.cleanupMinionActions(saltServiceMock);
 
         ServerAction sa = action.getServerActions().stream().findFirst().get();
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
