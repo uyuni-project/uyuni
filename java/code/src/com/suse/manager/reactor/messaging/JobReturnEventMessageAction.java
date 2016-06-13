@@ -229,8 +229,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
             // Depending on the status show stdout or stderr in the output
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                serverAction.setResultMsg("Failed to execute script. [jid=" +
-                        jid + "]");
+                serverAction.setResultMsg("Failed to execute script. [jid=" + jid + "]");
             }
             else {
                 serverAction.setResultMsg("Script executed successfully. [jid=" +
