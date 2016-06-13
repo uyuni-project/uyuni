@@ -315,13 +315,7 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public Map<String, Jobs.ListJobsEntry> jobsByMetadata(Object metadata) {
-        try {
-            return Jobs.listJobs(metadata).callSync(
-                    SALT_CLIENT, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
+        return callSync(Jobs.listJobs(metadata));
     }
 
     /**
