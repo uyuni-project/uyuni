@@ -91,6 +91,6 @@ INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
              VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'uuid-cleanup-bunch', 'purge orphaned uuid records', null);
 
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
-             VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'minion-action-cleanup-bunch', 'Cleanup action on minions for which we missed the job result event', null);
+             VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'minion-action-cleanup-bunch', 'Cleanup actions for Minions', null);
 
 commit;

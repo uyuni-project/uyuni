@@ -1888,7 +1888,7 @@ tree will not be usable for autoinstalling.
         <source>Runs Virtual Host Gatherer on Virtual Host Managers and processes its results. After this Subscription Matcher job is run.</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.minion-action-cleanup-bunch">
-          <source>Cleanup actions on minions for which we missed the job result event</source>
+          <source>Cleanup actions for Minions</source>
       </trans-unit>
 
       <!-- Server Contact Methods -->
