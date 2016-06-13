@@ -7,7 +7,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -401,19 +400,19 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     public void testRefreshHardwareScsiDevices() throws Exception {
         doTest(ARCH_X86,
                 (apiMock, minionId) -> {
-                    try {
-                        List<Map<String, Object>> udevdb = parse("udevdb.exportdb_scsi", ARCH_X86, Udevdb.exportdb().getReturnType());
-                        apiMock.stubs().method("getUdevdb").with(eq(minionId)).will(returnValue(Optional.of(udevdb)));
-
+                    List<Map<String, Object>> udevdb = parse("udevdb.exportdb_scsi", ARCH_X86, Udevdb.exportdb().getReturnType());
+                    context().checking(new Expectations() { {
+                        allowing(apiMock).getUdevdb(minionId);
+                        will(returnValue(Optional.of(udevdb)));
                         // not interested in DMI, just skip it
-                        apiMock.stubs()
-                                .method("getDmiRecords")
-                                .will(throwException(new JsonSyntaxException("test exception")));
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                        fail("Could not setup mock " + e.getMessage());
-                    }
+                        allowing(apiMock).getDmiRecords(with(any(String.class)), with(any(RecordType.class)));
+                        will(throwException(new JsonSyntaxException("test exception")));
+                        allowing(apiMock).getCpuInfo(minionId);
+                        Map<String, Object> cpuinfo =
+                                parse("status.cpuinfo", ARCH_X86,
+                                        Status.cpuinfo().getReturnType());
+                        will(returnValue(Optional.of(cpuinfo)));
+                    }});
                 },
                 (server, action) -> {
                     assertEquals(1, server.getDevices().stream().filter(d -> "HD".equals(d.getDeviceClass()) && "scsi".equals(d.getBus())).count());
@@ -443,6 +442,10 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         String minionId = server.getMinionId();
 
         SaltService apiMock = mock(SaltService.class);
+
+        if (stubs != null) {
+            stubs.accept(apiMock, minionId);
+        }
 
         context().checking(new Expectations() { {
             allowing(apiMock).getFileContent(with(any(String.class)), with(any(String.class)));
@@ -478,11 +481,6 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
             allowing(apiMock).ping(with(any(Target.class)));
             will(returnValue(ping));
         } });
-
-
-        if (stubs != null) {
-            stubs.accept(apiMock, minionId);
-        }
 
         RefreshHardwareEventMessageAction action = new RefreshHardwareEventMessageAction(apiMock);
 
