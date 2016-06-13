@@ -91,6 +91,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1157,8 +1158,10 @@ public class SystemManagerTest extends RhnBaseTestCase {
             this.getClass().getSimpleName());
 
         String setLabel = TestUtils.randomString();
+        List<String> entitlements = new ArrayList<String>();
+        entitlements.add(EntitlementManager.ENTERPRISE_ENTITLED);
         int actual = SystemManager.countSystemsInSetWithoutEntitlement(user, setLabel,
-                        EntitlementManager.ENTERPRISE_ENTITLED);
+                entitlements);
         assertEquals(0, actual);
 
         Server server = ServerFactoryTest.createTestServer(user, true,
@@ -1169,7 +1172,7 @@ public class SystemManagerTest extends RhnBaseTestCase {
         RhnSetManager.store(set);
 
         actual = SystemManager.countSystemsInSetWithoutEntitlement(user, setLabel,
-                        EntitlementManager.ENTERPRISE_ENTITLED);
+                entitlements);
         assertEquals(0, actual);
 
         Server unentitledServer = ServerFactoryTest.createUnentitledTestServer(user, true,
@@ -1178,11 +1181,11 @@ public class SystemManagerTest extends RhnBaseTestCase {
         RhnSetManager.store(set);
 
         actual = SystemManager.countSystemsInSetWithoutEntitlement(user, setLabel,
-                        EntitlementManager.ENTERPRISE_ENTITLED);
+                entitlements);
         assertEquals(1, actual);
 
         actual = SystemManager.countSystemsInSetWithoutEntitlement(user, "non matching",
-                        EntitlementManager.ENTERPRISE_ENTITLED);
+                entitlements);
         assertEquals(0, actual);
     }
 
@@ -1191,8 +1194,10 @@ public class SystemManagerTest extends RhnBaseTestCase {
             this.getClass().getSimpleName());
 
         String setLabel = TestUtils.randomString();
+        List<String> entitlements = new ArrayList<String>();
+        entitlements.add(EntitlementManager.ENTERPRISE_ENTITLED);
         int actual = SystemManager.countSystemsInSetWithoutEntitlement(user, setLabel,
-                        EntitlementManager.ENTERPRISE_ENTITLED);
+                entitlements);
         assertEquals(0, actual);
 
         Server server = ServerFactoryTest.createTestServer(user, true,
