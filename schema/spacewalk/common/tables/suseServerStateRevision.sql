@@ -28,4 +28,4 @@ ENABLE ROW MOVEMENT
 ;
 
 ALTER TABLE suseServerStateRevision
-    ADD CONSTRAINT suse_server_state_rev_id_sid_uq UNIQUE (server_id, state_revision_id);
+    ADD CONSTRAINT suse_server_state_rev_srev_uq UNIQUE (server_id, state_revision_id);

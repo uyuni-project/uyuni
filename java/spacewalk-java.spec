@@ -14,6 +14,7 @@
 %define appdir          /srv/tomcat/webapps
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
 %define run_checkstyle  0
+%define with_oracle     1
 %else
 %define appdir          %{_localstatedir}/lib/tomcat6/webapps
 %define jardir          %{_localstatedir}/lib/tomcat6/webapps/rhn/WEB-INF/lib
@@ -284,6 +285,7 @@ and taskomatic process.
 %package oracle
 Summary: Oracle database backend support files for Spacewalk Java
 Group: Applications/Internet
+BuildRequires: ojdbc14
 Requires: ojdbc14
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires: tomcat >= 7

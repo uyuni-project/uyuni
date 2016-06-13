@@ -13,19 +13,19 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseStateRevisionCustomState
+CREATE TABLE suseServerGroupStateRevision
 (
-    state_revision_id NUMBER NOT NULL
-                          CONSTRAINT suse_server_state_rev_id_fk
-                              REFERENCES suseStateRevision (id)
+    group_id         NUMBER NOT NULL
+                          CONSTRAINT suse_server_group_gr_id_fk
+                              REFERENCES rhnServerGroup (id)
                               ON DELETE CASCADE,
-    state_id NUMBER NOT NULL
-                          CONSTRAINT suse_salt_state_id_fk
-                              REFERENCES suseCustomState (id)
+    state_revision_id NUMBER NOT NULL
+                          CONSTRAINT suse_server_group_sr_id_fk
+                              REFERENCES suseStateRevision (id)
                               ON DELETE CASCADE
 )
 ENABLE ROW MOVEMENT
 ;
 
-ALTER TABLE suseStateRevisionCustomState
-    ADD CONSTRAINT suse_state_rev_id_state_id_uq UNIQUE (state_revision_id, state_id);
+ALTER TABLE suseServerGroupStateRevision
+    ADD CONSTRAINT suse_server_group_rev_grid_uq UNIQUE (group_id, state_revision_id);
