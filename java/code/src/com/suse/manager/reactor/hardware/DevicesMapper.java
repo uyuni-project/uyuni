@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,6 +39,8 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
     private static final Logger LOG = Logger.getLogger(DevicesMapper.class);
 
     private static final Pattern PRINTER_REGEX = Pattern.compile(".*/lp\\d+$");
+    private static final String SYSFS_PATH = "P";
+    private static final String ENTRIES = "E";
 
     /**
      * The constructor.
@@ -66,9 +69,9 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
         }
 
         udevdb.get().forEach(dbdev -> {
-            String devpath = (String)dbdev.get("P"); // sysfs path without /sys
+            String devpath = (String)dbdev.get(SYSFS_PATH); // sysfs path without /sys
             @SuppressWarnings("unchecked")
-            ValueMap props = new ValueMap((Map<String, Object>)dbdev.get("E"));
+            ValueMap props = new ValueMap((Map<String, Object>)dbdev.get(ENTRIES));
             String subsys = props.getValueAsString("SUBSYSTEM");
 
             if ("pci".equals(subsys) || "usb".equals(subsys) ||
@@ -78,7 +81,7 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
                 Device device = new Device();
                 device.setBus(subsys);
                 device.setDriver(props.getValueAsString("DRIVER"));
-                device.setPcitype(clasifyPcyType(subsys));
+                device.setPcitype(classifyPciType(subsys));
                 device.setDetached(0L);
                 device.setDeviceClass(clasifyClass(minionId, dbdev));
                 device.setDescription(getDeviceDesc(props));
@@ -142,6 +145,23 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
                     if (StringUtils.isNotBlank(modelId)) {
                         device.setProp2(modelId);
                     }
+                }
+                else if (subsys.equals("scsi")) {
+                    // skip scsi hosts and targets
+                    if (!props.getValueAsString("DEVTYPE").equals("scsi_device")) {
+                        return;
+                    }
+                    // check if this scsi device is already listed as a block device
+                    if (udevdb.get().stream().anyMatch(dev ->
+                        Objects.toString(dev.get(SYSFS_PATH), "").startsWith(devpath) &&
+                            Optional.ofNullable(dev.get(ENTRIES))
+                                .filter(Map.class::isInstance)
+                                .map(Map.class::cast)
+                                .filter(m -> "block".equals(m.get("SUBSYSTEM"))
+                                ).isPresent())) {
+                        return;
+                    }
+
                 }
 
                 if (props.getValueAsString("ID_BUS").equals("scsi")) {
@@ -248,9 +268,9 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
     }
 
     private String clasifyClass(String minionId, Map<String, Object> device) {
-        String sysfsPath = (String)device.get("P");
+        String sysfsPath = (String)device.get(SYSFS_PATH);
         @SuppressWarnings("unchecked")
-        ValueMap attrs = new ValueMap((Map<String, Object>)device.get("E"));
+        ValueMap attrs = new ValueMap((Map<String, Object>)device.get(ENTRIES));
 
         String subsys = attrs.getValueAsString("SUBSYSTEM");
         String pciClass = attrs.getValueAsString("PCI_CLASS");
@@ -420,7 +440,7 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
     }
 
 
-    private Long clasifyPcyType(String subsys) {
+    private Long classifyPciType(String subsys) {
         if ("pci".equals(subsys)) {
             return 1L;
         }
