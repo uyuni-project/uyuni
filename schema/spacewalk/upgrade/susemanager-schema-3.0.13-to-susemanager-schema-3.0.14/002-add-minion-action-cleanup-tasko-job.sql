@@ -4,7 +4,7 @@ INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'minion-action-cleanup-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='minion-action-cleanup-bunch'),
-        current_timestamp, '0 0 23 ? * *');
+        current_timestamp, '0 0 * * * ?');
 
 INSERT INTO rhnTaskoTask (id, name, class)
          VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'minion-action-cleanup', 'com.redhat.rhn.taskomatic.task.MinionActionCleanup');
