@@ -33,7 +33,7 @@ public class MinionActionCleanup extends RhnJavaJob {
     @Override
     public void execute(JobExecutionContext context) {
         if (log.isDebugEnabled()) {
-            log.debug("Finding relevant channels");
+            log.debug("start minion action cleanup");
         }
 
         // Measure time and calculate the total duration
