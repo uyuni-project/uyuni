@@ -533,9 +533,7 @@ cd $RPM_BUILD_ROOT
 
 %install
 export NO_BRP_CHECK_BYTECODE_VERSION=true
-%ifarch s390x
 export NO_BRP_STALE_LINK_ERROR=yes
-%endif
 rm -rf $RPM_BUILD_ROOT
 
 # on Fedora 19 some jars are named differently
