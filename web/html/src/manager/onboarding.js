@@ -199,7 +199,7 @@ function Highlight(props) {
   var chunks = text.split(new RegExp("^" + high));
 
   return <span>{chunks
-    .map((e, i) => e == "" ? <span key="highlight" style={{color: 'red'}}>{high}</span> : <span key={i}>{e}</span>)}</span>;
+    .map((e, i) => e == "" ? <span key="highlight" style={{backgroundColor: "#f0ad4e", borderRadius: "2px"}}>{high}</span> : <span key={i}>{e}</span>)}</span>;
 }
 
 
