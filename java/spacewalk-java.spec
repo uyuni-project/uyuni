@@ -534,6 +534,7 @@ cd $RPM_BUILD_ROOT
 
 %install
 export NO_BRP_CHECK_BYTECODE_VERSION=true
+export NO_BRP_STALE_LINK_ERROR=yes
 rm -rf $RPM_BUILD_ROOT
 
 # on Fedora 19 some jars are named differently
