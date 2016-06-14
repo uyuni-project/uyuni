@@ -115,15 +115,19 @@ Then(/^I clean the search index on the server$/) do
 end
 
 When(/^I execute spacewalk\-channel and pass "([^"]*)"$/) do |arg1|
-  $command_output = `spacewalk-channel #{arg1} 2>&1`
-  if ! $?.success?
-    raise "spacewalk-channel with #{arg1} command failed #{$command_output}"
+  command = "spacewalk-channel #{arg1} 2>&1"
+  output = sshcmd(command)[:stdout] 
+  code = sshcmd("echo $?")
+  if code != 0
+    raise "spacewalk-channel with #{arg1} command failed #{output}"
   end
 end
 
 When(/^spacewalk\-channel fails with "([^"]*)"$/) do |arg1|
-  $command_output = `spacewalk-channel #{arg1} 2>&1`
-  if $?.success? #|| $command_status.exitstatus != arg1.to_i
+  command = "spacewalk-channel #{arg1} 2>&1"
+  command_output = sshcmd(command)
+  code = "echo $?"
+  if code == 0
     raise "Executed command was successful: #{$status}"
   end
 end

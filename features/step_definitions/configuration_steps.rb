@@ -12,10 +12,8 @@ Given(/^I am testing configuration$/) do
 end
 
 When(/^I change the local file "([^"]*)" to "([^"]*)"$/) do |filename, content|
-    fail unless File.exist?(filename)
-    File.open(filename, 'w') do |f|
-      f.write(content)
-    end
+    sshcmd("stat #{filename}")
+    sshcmd("echo \"#{content}\" > #{filename}")
 end
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/) do |arg1, arg2, arg3|
@@ -41,8 +39,10 @@ Then(/^On this client the File "([^"]*)" should have the content "([^"]*)"$/) do
 end
 
 When(/^I enable all actions$/) do
-   $out = `rhn-actions-control --enable-all`
-   if ! $?.success?
-     raise "Execute command failed: #{$!}: #{$out}"
+   output = command = "rhn-actions-control --enable-all"
+   sshcmd(command)
+   code = sshcmd("echo $?")
+   if code != 0
+     raise "Execute command failed #{output} !"
    end
 end

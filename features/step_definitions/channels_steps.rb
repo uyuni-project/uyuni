@@ -43,7 +43,7 @@ When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} 2>&1"
   sshcmd(command)
   code = sshcmd("echo $?")
-  if ! output
+  if ! code
     raise "rhnpush failed '#{command}' #{$!}: #{output}"
   end
 end

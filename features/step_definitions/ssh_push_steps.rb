@@ -1,10 +1,10 @@
-# Copyright (c) 2013 Novell, Inc.
+# Copyright (c) 2013-2016 Novell, Inc, SUSE-LINUX
 # Licensed under the terms of the MIT license.
 
 When(/^I register this client for SSH push via tunnel$/) do
   # Create backups of /etc/hosts and up2date config
-  FileUtils.cp('/etc/hosts', '/etc/hosts.BACKUP');
-  FileUtils.cp('/etc/sysconfig/rhn/up2date', '/etc/sysconfig/rhn/up2date.BACKUP');
+  sshcmd("cp /etc/hosts /etc/hosts.BACKUP", ignore_err: true)
+  sshcmd("/etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP", ignore_err: true)
 
   # Generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
@@ -21,6 +21,6 @@ When(/^I register this client for SSH push via tunnel$/) do
   end
 
   # Restore files from backups
-  FileUtils.mv('/etc/hosts.BACKUP', '/etc/hosts')
-  FileUtils.mv('/etc/sysconfig/rhn/up2date.BACKUP', '/etc/sysconfig/rhn/up2date')
+  sshcmd("mv /etc/hosts.BACKUP /etc/hosts", ignore_err: true)
+  sshcmd("mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date'", ignore_err: true)
 end

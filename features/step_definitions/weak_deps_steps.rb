@@ -2,8 +2,9 @@
 # Licensed under the terms of the MIT license.
 
 When(/^I refresh the metadata$/) do
-  output = `rhn_check -vvv 2>&1`
-    if ! $?.success?
+  sshcmd("rhn_check -vvv 2>&1")
+  code = sshcmd("echo $?")
+    if code =! 0
       raise "rhn_check failed: #{$!}: #{output}"
     end
   client_refresh_metadata
