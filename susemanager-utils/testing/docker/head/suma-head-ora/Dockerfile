@@ -1,6 +1,6 @@
 # Container used to test java code of SUSE Manager
 #
-# VERSION               1.0.1
+# VERSION               1.0.2
 
 FROM registry.mgr.suse.de/suma-head-base
 MAINTAINER Michael Calmer "mc@suse.de"
