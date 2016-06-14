@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 14 12:55:04 UTC 2016 - kwalter@suse.com
+
+- send machine info only if server has machine info capability
+
+-------------------------------------------------------------------
 Tue May 24 15:58:15 CEST 2016 - kwalter@suse.com
 
 - version 2.5.13.4-1
