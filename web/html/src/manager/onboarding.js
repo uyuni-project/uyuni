@@ -15,7 +15,7 @@ const STables = require("../components/tableng.js");
 const STable = STables.STable;
 const SColumn = STables.SColumn;
 const SHeader = STables.SHeader;
-const SOutput = STables.SOutput;
+const SCell = STables.SCell;
 
 
 function listKeys() {
@@ -93,6 +93,7 @@ function labelFor(state) {
     return <span className={"label label-" + mapping.label}>{ mapping.uiName }</span>
 }
 
+/*
 class Onboarding extends React.Component {
 
   constructor(props) {
@@ -168,25 +169,8 @@ class Onboarding extends React.Component {
   }
 
 }
+*/
 
-
-
-
-
-
-
-
-var dummyData = [];
-
-var stooges = ["Moe", "Curly", "Larry"]
-
-var j = 0;
-for (var i=0; i < 100; i++) {
-  dummyData.push({id: i, name: stooges[j++] + i, address: "Address " + i});
-  if (j > 2) {
-     j = 0;
-  }
-}
 
 function Highlight(props) {
   var text = props.text;
@@ -202,33 +186,26 @@ function Highlight(props) {
     .map((e, i) => e == "" ? <span key="highlight" style={{backgroundColor: "#f0ad4e", borderRadius: "2px"}}>{high}</span> : <span key={i}>{e}</span>)}</span>;
 }
 
-
-
-
-
-
-
-
-class Onboarding2 extends React.Component {
+class Onboarding extends React.Component {
 
   constructor(props) {
     super();
-    ["sortById", "searchData", "sortByName", "rowKey"].forEach(method => this[method] = this[method].bind(this));
+    ["sortById", "searchData", "sortByFingerprint", "rowKey", "reloadKeys"].forEach(method => this[method] = this[method].bind(this));
     this.state = {
-        keys: [],
-        tableData: dummyData
+        tableData: [],
+        isOrgAdmin: false
     };
-//    this.reloadKeys();
+    this.reloadKeys();
   }
 
-//  reloadKeys() {
-//    return listKeys().then(data => {
-//        this.setState({
-//            keys: processData(data["fingerprints"]),
-//            isOrgAdmin: data["isOrgAdmin"]
-//        });
-//    });
-//  }
+  reloadKeys() {
+    return listKeys().then(data => {
+        this.setState({
+            tableData: processData(data["fingerprints"]),
+            isOrgAdmin: data["isOrgAdmin"]
+        });
+    });
+  }
 
   rowKey(rowData) {
     return rowData.id;
@@ -238,28 +215,38 @@ class Onboarding2 extends React.Component {
     return data.sort((a, b) => direction * (a.id - b.id));
   }
 
-  sortByName(data, direction) {
+  sortByFingerprint(data, direction) {
      return data.sort((a, b) => {
-         if (a.name > b.name) {
+         if (a.fingerprint > b.fingerprint) {
            return direction * 1;
          }
-         if (a.name < b.name) {
+         if (a.fingerprint < b.fingerprint) {
            return direction * -1;
          }
          return 0
-       });
+     });
+  }
+
+  sortByState(data, direction) {
+     return data.sort((a, b) => {
+         if (a.state > b.state) {
+           return direction * 1;
+         }
+         if (a.state < b.state) {
+           return direction * -1;
+         }
+         return 0
+     });
   }
 
   searchData(data, criteria) {
       if (!criteria || criteria == "") {
         return data;
       }
-
-      return data.filter((e) => e.name.startsWith(criteria));
+      return data.filter((e) => e.id.startsWith(criteria) || e.fingerprint.startsWith(criteria));
   }
 
   render() {
-    const minions = this.state.keys;
     const panelButtons = <div className="pull-right btn-group">
       <AsyncButton id="reload" icon="refresh" name="Refresh" text action={this.reloadKeys} />
     </div>;
@@ -267,18 +254,35 @@ class Onboarding2 extends React.Component {
     return (
         <Panel title="Onboarding" icon="fa-desktop" button={ panelButtons }>
             <STable data={this.state.tableData} searchFn={this.searchData} rowKeyFn={this.rowKey}>
-              <SColumn columnKey="id">
-                <SHeader sortFn={this.sortById}>Id</SHeader>
-                <SOutput value={ (row) => row.id}/>
+              <SColumn columnKey="id" width="30%">
+                <SHeader sortFn={this.sortById}>{t('Name')}</SHeader>
+                <SCell value={ (row, table) => {
+                         if(row.state == "minions") {
+                            return <a href={ "/rhn/manager/minions/" + row.id }>
+                                <Highlight enabled={table.state.dataModel.filtered}
+                                  text={row.id}
+                                  highlight={table.state.dataModel.filteredText}/>
+                                </a>;
+                         } else {
+                            return <Highlight enabled={table.state.dataModel.filtered}
+                                text={row.id}
+                                highlight={table.state.dataModel.filteredText}/>;
+                         }
+                    }}/>
               </SColumn>
-              <SColumn columnKey="name">
-                <SHeader sortFn={this.sortByName}>Name</SHeader>
-                <SOutput value={ (row, table) => <Highlight enabled={table.state.dataModel.filtered} text={row.name}
-                    highlight={table.state.dataModel.filteredText}/> } />
+              <SColumn columnKey="fingerprint" width="50%">
+                <SHeader sortFn={this.sortByFingerprint}>{t('Fingerprint')}</SHeader>
+                <SCell value={ (row, table) => <Highlight enabled={table.state.dataModel.filtered}
+                            text={row.fingerprint}
+                            highlight={table.state.dataModel.filteredText}/> } />
               </SColumn>
-              <SColumn>
-                <SHeader>Address</SHeader>
-                <SOutput value={ (row) => row.address } />
+              <SColumn columnKey="state" width="10%">
+                <SHeader sortFn={this.sortByState}>{t('State')}</SHeader>
+                <SCell value={ (row) => labelFor(row.state) } />
+              </SColumn>
+              <SColumn width="10%">
+                <SHeader>{t('Actions')}</SHeader>
+                <SCell value={ (row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)} />
               </SColumn>
             </STable>
         </Panel>
@@ -290,9 +294,4 @@ class Onboarding2 extends React.Component {
 ReactDOM.render(
   <Onboarding />,
   document.getElementById('onboarding')
-);
-
-ReactDOM.render(
-  <Onboarding2 />,
-  document.getElementById('onboarding2')
 );
