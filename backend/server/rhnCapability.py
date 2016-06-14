@@ -181,6 +181,7 @@ def _set_server_capabilities():
         'cpu_sockets': {'version': 1, 'value': 1},
         'queue.update_status': {'version': 1, 'value': 1},
         'mainframe_sysinfo': {'version': 1, 'value': 1},
+        'machine_info': {'version': 1, 'value': 1},
     }
     l = []
     for name, hashval in capabilities.items():

@@ -923,6 +923,9 @@ def get_sysinfo():
 
 
 def read_machineinfo():
+    s = rhnserver.RhnServer()
+    if not s.capabilities.hasCapability('machine_info'):
+        return
     machineinfo = {}
     machineinfo["class"] = "MACHINEINFO"
     machine_id = getMachineId()
