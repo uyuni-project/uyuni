@@ -20,33 +20,26 @@ Given(/^I am on the Systems overview page of this client$/) do
 end
 
 Given(/^I update the profile of this client$/) do
-  `rhn-profile-sync`
-  if ! $?.success?
+  sshcmd("rhn-profile-sync")
+  code = sshcmd("echo $?")
+  if code != 0
     raise "Profile sync failed"
   end
 end
 
 When(/^I register using "([^"]*)" key$/) do |arg1|
   # remove systemid file
-  `rm -f /etc/sysconfig/rhn/systemid`
+  sshcmd("rm -f /etc/sysconfig/rhn/systemid")
 
   regurl = "http://#{ENV['TESTHOST']}/XMLRPC"
 
-  command = "rhnreg_ks --serverUrl=#{regurl} --activationkey=#{arg1}"
-  #print "Command: #{command}\n"
-
-  output = `#{command} 2>&1`
-  if ! $?.success?
-    raise "Registration failed '#{command}' #{$!}: #{output}"
-  end
+  command = "rhnreg_ks --serverUrl=#{regurl} --activationkey=#{arg1} 2>$1"
+  output = sshcmd(command, ignore_err: true)[:stdout] 
+  puts output
 end
 
 When(/^I register using an activation key$/) do
-  arch=`uname -m`
-  arch.chomp!
-  if arch != "x86_64"
-    arch = "i586"
-  end
+  arch = sshcmd("uname -m")[:stdout]
   step %[I register using "1-SUSE-DEV-#{arch}" key]
 end
 
