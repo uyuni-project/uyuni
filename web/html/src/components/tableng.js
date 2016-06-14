@@ -71,6 +71,7 @@ class DataModel {
       this.currentData = filterFn(this.data, criteria);
       this.filtered = true;
       this.filteredText = criteria;
+      this.currentPage = 1;
     }
   }
 
@@ -115,6 +116,11 @@ class DataModel {
     return this.currentData.length;
   }
 
+  changeItemsPerPage(newPageSize) {
+    this.goToPage(1);
+    this.itemsPerPage = newPageSize;
+  }
+
 }
 
 
@@ -140,13 +146,20 @@ class Table extends React.Component {
     this.setState({sortKey: columnKey});
   }
 
-  onItemsPerPageChange() {
-
+  onItemsPerPageChange(pageSize) {
+    this.state.dataModel.changeItemsPerPage(pageSize);
+    this.forceUpdate();
   }
 
   onPageChange(page) {
     this.state.dataModel.goToPage(page);
     this.forceUpdate();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+        dataModel: new DataModel(nextProps.data, 15)
+    });
   }
 
   render() {
@@ -159,7 +172,8 @@ class Table extends React.Component {
                     key: headers.length,
                     columnKey: column.props.columnKey,
                     currentSortKey: this.state.sortKey,
-                    onSort: this.sort
+                    onSort: this.sort,
+                    width: column.props.width
                     });
                 headers.push(head);
              }
@@ -266,16 +280,22 @@ class Header extends React.Component {
   }
 
   render() {
+     var thClass = null;
+     var thStyle = null;
+     if (this.props.width) {
+        thStyle = { width: this.props.width };
+     }
+
      if (this.props.sortFn && this.props.columnKey) {
-        var thClass = null;
         if (this.props.currentSortKey == this.props.columnKey) {
             thClass = !this.state.sortDirection ? "" : (this.state.sortDirection > 0 ? "ascSort" : "descSort")
         }
-        return (<th className={ thClass }>
+        return (<th style={ thStyle } className={ thClass }>
             <a className="orderBy" onClick={this.sort}>{this.props.children}</a>
         </th>);
      }
-     return <th>{this.props.children}</th>;
+
+     return <th style={ thStyle }>{this.props.children}</th>;
   }
 
 }
@@ -297,7 +317,7 @@ class Button extends React.Component {
   }
 }
 
-class Output extends React.Component {
+class Cell extends React.Component {
 
   render() {
      let text = "";
@@ -311,41 +331,9 @@ class Output extends React.Component {
 
 }
 
-
-/*class SortableHeader extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this._onSortChange = this._onSortChange.bind(this);
-    this.state = {sortDirection: 1};
-  }
-
-  _onSortChange() {
-     this.props.sortFn(this.state.sortDirection);
-     this.setState({sortDirection: -this.sortDirection})
-  }
-
-  render() {
-     return <a onClick={this._onSortChange}>{this.props.children}</a>;
-  }
-
-}*/
-
 module.exports = {
     STable : Table,
     SColumn : Column,
     SHeader : Header,
-    SOutput : Output
+    SCell : Cell
 }
-
-
-
-
-
-
-
-
-
-
-
-
