@@ -29,7 +29,7 @@
          filterBy="systemlist.jsp.system"
          domainClass="systems"
          >
-        <rhn:set value="${current.id}"/>
+        <rhn:set value="${current.id}" disabled="${not current.selectable}"/>
             <rhn:column header="systemlist.jsp.status"
                         style="text-align: center;">
                 ${current.statusDisplay}
