@@ -39,9 +39,9 @@ Then(/^On this client the File "([^"]*)" should have the content "([^"]*)"$/) do
 end
 
 When(/^I enable all actions$/) do
-   output = command = "rhn-actions-control --enable-all"
-   sshcmd(command)
-   code = sshcmd("echo $?")
+   command = "rhn-actions-control --enable-all"
+   output , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
+   puts output
    if code != 0
      raise "Execute command failed #{output} !"
    end

@@ -1,7 +1,6 @@
 # Copyright (c) 2010-2011 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
-install ="/var/lib/slenkins/tests-suse-manager/tests-server/install"
 
 Given(/^I am on the Systems page$/) do
   step %[I am authorized]
@@ -23,7 +22,7 @@ Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |ar
   if ct.distro_exists( arg1 )
     raise "distro " + arg1 + " already exists"
   end
-  ct.distro_create( arg1,  "#{install}/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux", "#{install}/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd")
+  ct.distro_create( arg1,  "/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux", "install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd")
 end
 
 Given(/distro "([^"]*)" exists/) do |arg1|
@@ -39,7 +38,7 @@ Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |a
   if ct.profile_exists( arg1 )
     raise "profile " + arg1 + " already exists"
   end
-  ct.profile_create( "testprofile", "testdistro", "#{install}/empty.xml" )
+  ct.profile_create( "testprofile", "testdistro", "install/empty.xml" )
 end
 
 Given(/profile "([^"]*)" exists/) do |arg1|

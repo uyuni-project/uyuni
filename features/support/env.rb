@@ -27,8 +27,7 @@ World(MiniTest::Assertions)
 # basic support for rebranding of strings in the UI
 BRANDING = ENV['BRANDING'] || 'suse'
 
-DEFAULT_TIMEOUT=20
-
+DEFAULT_TIMEOUT=100
 # Returns current url
 def current_url
   driver.current_url
