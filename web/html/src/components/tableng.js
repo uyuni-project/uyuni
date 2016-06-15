@@ -76,7 +76,7 @@ class DataModel {
   }
 
   sort(columnKey, sortFn, sortDirection) {
-    this.currentData = sortFn(this.currentData, sortDirection);
+    this.currentData = sortFn(this.currentData, sortDirection, columnKey);
   }
 
   goToPage(page) {
@@ -166,6 +166,7 @@ class Table extends React.Component {
       let headers = [];
       React.Children.forEach(this.props.children,
         (column) => {
+          var hasHeader = false;
           React.Children.forEach(column.props.children, (child) => {
              if (child.type === Header) {
                 var head = React.cloneElement(child, {
@@ -176,8 +177,12 @@ class Table extends React.Component {
                     width: column.props.width
                     });
                 headers.push(head);
+                hasHeader = true;
              }
           });
+          if (!hasHeader) {
+               headers.push(<Header key={headers.length}/>);
+          }
       });
 
   	let rows = this.state.dataModel.currentPageData.map((element) => {
