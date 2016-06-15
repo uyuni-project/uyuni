@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require("react");
-
+var ReactDOM = require("react-dom");
 var Panel = require("../components/panel").Panel;
 var Messages = require("../components/messages").Messages;
 var Network = require("../utils/network");
@@ -117,7 +117,7 @@ var BootstrapMinions = React.createClass({
     }
 });
 
-React.render(
+ReactDOM.render(
   <BootstrapMinions />,
   document.getElementById('bootstrap-minions')
 );
