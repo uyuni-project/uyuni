@@ -17,4 +17,5 @@
 - features/install_package.feature
 - features/install_errata-npn.feature
 - features/clone_channel-npn.feature
+- features/check_VHM.feature
 - features/setup_wizard.feature
