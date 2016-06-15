@@ -16,8 +16,6 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.salt.netapi.calls.wheel.Key;
@@ -44,7 +42,6 @@ public class MinionsAPI {
     public static final String SALT_CMD_RUN_TARGETS = "salt_cmd_run_targets";
 
     private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
-    private static final Gson GSON = new GsonBuilder().create();
 
     private MinionsAPI() { }
 
