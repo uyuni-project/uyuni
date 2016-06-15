@@ -14,9 +14,6 @@
  */
 package com.suse.manager.webui.services.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -87,8 +84,6 @@ public enum SaltAPIService implements SaltService {
     private final String SALT_USER = "admin";
     private final String SALT_PASSWORD = "";
     private final AuthModule AUTH_MODULE = AuthModule.AUTO;
-    // JSON serializer
-    private static final Gson GSON = new GsonBuilder().create();
 
     // Shared salt client instance
     private final SaltClient SALT_CLIENT = new SaltClient(SALT_MASTER_URI);
