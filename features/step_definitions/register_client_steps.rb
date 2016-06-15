@@ -1,15 +1,14 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+#Copyright (c) 2010-2016 Novell, Inc.
 # Licensed under the terms of the MIT license.
-
 Given(/^I am root$/) do
-  uid = sshcmd("id -u")
-  if ! uid == 0
+  user, local, remote, code = $client.test_and_store_results_together("whoami", "root", 500)
+  if  user.strip != "root"
+    puts  "user on client was #{user}" 
     raise "You are not root!"
   end
-  if $myhostname == "linux"
-    raise "Invalid hostname"
-  end
 end
+
+
 
 Given(/^I am on the Systems overview page of this client$/) do
   steps %[
@@ -20,26 +19,29 @@ Given(/^I am on the Systems overview page of this client$/) do
 end
 
 Given(/^I update the profile of this client$/) do
-  sshcmd("rhn-profile-sync")
-  code = sshcmd("echo $?")
+  local, remote, code = $client.test_and_print_results("rhn-profile-sync", "root", 500)
   if code != 0
     raise "Profile sync failed"
   end
 end
 
 When(/^I register using "([^"]*)" key$/) do |arg1|
-  # remove systemid file
-  sshcmd("rm -f /etc/sysconfig/rhn/systemid")
-
+  #FIXME: for moment this exist? first time it doesn't exist. remove systemid file
+  "rm -f /etc/sysconfig/rhn/systemid"
   regurl = "http://#{ENV['TESTHOST']}/XMLRPC"
-
-  command = "rhnreg_ks --serverUrl=#{regurl} --activationkey=#{arg1} 2>$1"
-  output = sshcmd(command, ignore_err: true)[:stdout] 
-  puts output
+  command ="rhnreg_ks --serverUrl=#{regurl} --activationkey=#{arg1}"
+  out , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
+  puts out
+  if code != 0
+    out , local, remote, code = $client.test_and_store_results_together("cat /var/log/up2date", "root", 600)
+    puts out
+    raise "Profil registration failed"
+  end
+  puts "registration client ok ! #{out}"
 end
 
 When(/^I register using an activation key$/) do
-  arch = sshcmd("uname -m")[:stdout]
+  arch, local, remote, code = $client.test_and_store_results_together("uname -m", "root", 600)
   step %[I register using "1-SUSE-DEV-#{arch}" key]
 end
 
@@ -71,11 +73,11 @@ Then(/^this client should appear in spacewalk$/) do
 end
 
 Then(/^I should see this client as link$/) do
-  step %[I should see a "#{$myhostname}" link]
+  step %[I should see a "#{$client_hostname}" link]
 end
 
 When(/^I follow this client link$/) do
-  step %[I follow "#{$myhostname}"]
+  step %[I follow "#{$client_hostname}"]
 end
 
 Then(/^config-actions are enabled$/) do

@@ -9,18 +9,28 @@ When(/^I wait for "(\d+)" seconds$/) do |arg1|
 end
 
 When(/^I run rhn_check on this client$/) do
-  sshcmd("rhn_check -vvv 2>&1")
-  code = sshcmd("echo $?")
+  output, local, remote, code =  $client.test_and_store_results_together("rhn_check -vvv")
   if code != 0
       raise "rhn_check failed: #{$!}: #{output}"
   end
 end
 
 Then(/^I download the SSL certificate$/) do
-  # FIXME: this need to be run in client 1
-  #   and we testhost must my parsed.
-  server = ENV['TESTHOST'] 
+  server = ENV['TESTHOST']
   client = ENV['CLIENT']
-  sshcmd("curl -S -k -o /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{server}/pub/RHN-ORG-TRUSTED-SSL-CERT",  host: client)
-end
 
+  $client = Twopence::init("ssh:#{client}")
+  $server = Twopence::init("ssh:#{server}")
+
+  # download certicate on the client from the server via ssh protocol.
+  local, remote, command = $client.test_and_print_results("curl -S -k -o /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{server}/pub/RHN-ORG-TRUSTED-SSL-CERT", "root", 500)
+  local, remote, command = $server.test_and_print_results("curl -S -k -o /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{server}/pub/RHN-ORG-TRUSTED-SSL-CERT", "root", 500)
+  puts command
+  if command != 0 and local != 0 and remote != 0
+	raise "fail to download the ssl certificate"
+  end
+  local, remote, command = $client.test_and_print_results("ls /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT", "root", 500)
+  local, remote, command = $server.test_and_print_results("ls /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT", "root", 500)
+  puts command
+    
+end
