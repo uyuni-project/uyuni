@@ -17,7 +17,7 @@ URL:      https://fedorahosted.org/spacewalk
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
-Requires: openssl rpm-build
+Requires: openssl rpm-build spacewalk-base-minimal-config
 %if 0%{?suse_version} || 0%{?rhel} >= 5
 Requires: %{rhn_client_tools}
 %endif
