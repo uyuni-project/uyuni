@@ -2650,6 +2650,9 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="Onboarding">
         <source>Onboarding</source>
       </trans-unit>
+      <trans-unit id="Bootstrapping">
+        <source>Bootstrapping</source>
+      </trans-unit>
       <trans-unit id="Remote Commands">
         <source>Remote Commands</source>
       </trans-unit>

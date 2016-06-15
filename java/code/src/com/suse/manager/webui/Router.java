@@ -50,6 +50,10 @@ public class Router implements SparkApplication {
 
         // Salt Master pages
         get("/manager/minions", withCsrfToken(MinionController::list), jade);
+        get("/manager/minions/bootstrap",
+                withCsrfToken(withOrgAdmin(MinionController::bootstrap)),
+                jade);
+        post("/manager/minions/bootstrap", withOrgAdmin(MinionsAPI::bootstrap));
         // Remote command page
         get("/manager/minions/cmd", withCsrfToken(MinionController::cmd), jade);
         get("/manager/minions/:id", MinionController::show);
