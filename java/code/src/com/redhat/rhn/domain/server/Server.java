@@ -24,7 +24,9 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
+import com.redhat.rhn.domain.entitlement.BootstrapEntitlement;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.entitlement.ForeignEntitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
@@ -1725,6 +1727,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return boolean if its compatible with this server.
      */
     public boolean isEntitlementAllowed(Entitlement entIn) {
+        if (this.getBaseEntitlement() instanceof ForeignEntitlement ||
+                this.getBaseEntitlement() instanceof BootstrapEntitlement) {
+            // no addon entitlement allowed for these
+            return false;
+        }
         // Check virt entitlements.
         if (this.isVirtualGuest()) {
             if (entIn instanceof VirtualizationEntitlement) {
