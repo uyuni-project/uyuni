@@ -185,11 +185,12 @@ class Table extends React.Component {
           }
       });
 
-  	let rows = this.state.dataModel.currentPageData.map((element) => {
+  	let rows = this.state.dataModel.currentPageData.map((element, index) => {
   			let cells = React.Children.map(this.props.children,
         	     (column) => React.cloneElement(column, {data: element, table: this})
      		);
-    		return <tr key={this.props.rowKeyFn(element)}>{cells}</tr>;
+     		const classes = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
+    		return <tr className={classes} key={this.props.rowKeyFn(element)} >{cells}</tr>;
     });
 
     const filterField = this.props.searchFn ?
@@ -221,7 +222,7 @@ class Table extends React.Component {
           </div>
         <div>
             <div className="table-responsive">
-                <table className="table table-striped">
+                <table className="table table-striped vertical-middle">
                    <thead>
                       <tr>{headers}</tr>
                    </thead>
