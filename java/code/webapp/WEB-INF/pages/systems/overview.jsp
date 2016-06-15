@@ -10,6 +10,8 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-system" imgAlt="overview.jsp.alt"
+ creationUrl="/rhn/manager/minions/bootstrap"
+ creationType="systems"
  helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#ref.webui.systems.overview">
   <bean:message key="overview.jsp.header"/>
 </rhn:toolbar>
