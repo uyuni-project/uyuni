@@ -611,7 +611,11 @@ where a.user_id = :formvar_uid
 
 <mode name="system_entitlement_list" class="com.redhat.rhn.frontend.dto.SystemOverview">
         <query params="user_id">
-          SELECT  S.id, S.name, 1 as selectable
+          SELECT  S.id, S.name,
+                  (SELECT 1 from rhnServerEntitlementView sev
+                    where sev.server_id = s.id
+                      and sev.is_base = 'Y' and sev.label not in ('foreign_entitled','bootstrap_entitled')
+                  ) as selectable
             FROM  rhnServer S
                 INNER JOIN rhnUserServerPerms USP on S.id = USP.server_id
                 INNER JOIN rhnServerInfo SInfo on Sinfo.server_id = S.id
