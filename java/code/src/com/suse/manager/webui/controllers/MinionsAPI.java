@@ -154,4 +154,14 @@ public class MinionsAPI {
         return json(response, true);
     }
 
+    /**
+     * API endpoint for bootstrapping minions.
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return json result of the API call
+     */
+    public static String bootstrap(Request request, Response response, User user) {
+        return json(response, true);
+    }
 }

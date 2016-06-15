@@ -213,4 +213,17 @@ public class MinionController {
         data.put("server", server);
         return new ModelAndView(data, "minion/highstate.jade");
     }
+
+    /**
+     * Handler for the bootstrapping page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView bootstrap(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        return new ModelAndView(data, "minion/bootstrap.jade");
+    }
 }
