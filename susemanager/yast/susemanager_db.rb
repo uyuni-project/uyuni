@@ -24,7 +24,7 @@ module Yast
       @display_info = UI.GetDisplayInfo
       @text_mode = Ops.get_boolean(@display_info, "TextMode", false)
 
-      @invalid_pw_chars = "\"'!+%`=@/"
+      @invalid_pw_chars = "\\\"$'!+%`=\#@/"
 
       @settings = {
         "DB_BACKEND"          => "postgresql",
