@@ -85,4 +85,33 @@ insert into rhnFeature (id, label, name)
 values (sequence_nextval('rhn_feature_seq'), 'ftr_xen_provision_domain', 'Provision new Xen domains');
 insert into rhnFeature (id, label, name)
 values (sequence_nextval('rhn_feature_seq'), 'ftr_xen_manage_domains', 'Manage existing Xen domains');
-
+insert into rhnFeature (id, label, name, created, modified)
+values (sequence_nextval('rhn_feature_seq'), 'ftr_channel_membership', 'Channel Memberships',
+        current_timestamp, current_timestamp);
+insert into rhnFeature (id, label, name, created, modified)
+values (sequence_nextval('rhn_feature_seq'), 'ftr_channel_config_subscription', 'Config Channel Subscriptions',
+        current_timestamp, current_timestamp);
+insert into rhnFeature (id, label, name, created, modified)
+values (sequence_nextval('rhn_feature_seq'), 'ftr_channel_deploy_diff', 'Deploy/Diff Config Channel',
+        current_timestamp, current_timestamp);
+insert into rhnFeature (id, label, name, created, modified)
+values (sequence_nextval('rhn_feature_seq'), 'ftr_tag_system', 'Tag System',
+        current_timestamp, current_timestamp);
+insert into rhnFeature (id, label, name, created, modified)
+values (sequence_nextval('rhn_feature_seq'), 'ftr_power_management', 'Power Management Operations',
+        current_timestamp, current_timestamp);
+insert into rhnFeature (id, label, name, created, modified)
+values (sequence_nextval('rhn_feature_seq'), 'ftr_system_preferences', 'System Preferences',
+        current_timestamp, current_timestamp);
+insert into rhnFeature (id, label, name, created, modified)
+values (sequence_nextval('rhn_feature_seq'), 'ftr_system_custom_values', 'System Custom Values',
+        current_timestamp, current_timestamp);
+insert into rhnFeature (id, label, name, created, modified)
+values (sequence_nextval('rhn_feature_seq'), 'ftr_add_rm_addon_type', 'Add/Remove Addon Type',
+        current_timestamp, current_timestamp);
+insert into rhnFeature (id, label, name, created, modified)
+values (sequence_nextval('rhn_feature_seq'), 'ftr_system_lock', 'Lock System',
+        current_timestamp, current_timestamp);
+insert into rhnFeature (id, label, name, created, modified)
+values (sequence_nextval('rhn_feature_seq'), 'ftr_system_audit', 'Audit System',
+        current_timestamp, current_timestamp);
