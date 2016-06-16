@@ -20,12 +20,16 @@ const UnmatchedProducts = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
-    return {selectedProductId: null};
+    return {
+        selectedProductId: null,
+        tableData: this.buildData(this.props)
+    };
+
   },
 
-  buildData: function() {
-      const products = this.props.products;
-      return this.props.unmatchedProductIds.map((pid) => {
+  buildData: function(props) {
+      const products = props.products;
+      return props.unmatchedProductIds.map((pid) => {
           const productName = products[pid].productName;
           const systemCount = products[pid].unmatchedSystemCount;
           return {
@@ -64,7 +68,7 @@ const UnmatchedProducts = React.createClass({
       body = (
         <div>
 
-          <STable data={this.buildData()} rowKeyFn={this.rowKey}>
+          <STable data={this.state.tableData} rowKeyFn={this.rowKey}>
             <SColumn columnKey="name">
                 <SHeader sortFn={this.sortByName}>{t("Product name")}</SHeader>
                 <SCell value={ (row) => row.productName } />
@@ -109,11 +113,22 @@ const UnmatchedProducts = React.createClass({
   }
 });
 
+
 const UnmatchedSystemPopUp = React.createClass({
 
-  buildData: function() {
-    const product = this.props.products[this.props.selectedProductId];
-    const systems = this.props.systems;
+  getInitialState: function() {
+    return {
+        tableData: this.buildTableData(this.props)
+    };
+  },
+
+  buildTableData: function(props) {
+    console.log("UnmatchedSystemPopUp.buildTableData");
+    if (!props.selectedProductId) {
+        return null;
+    }
+    const product = props.products[props.selectedProductId];
+    const systems = props.systems;
     return product.unmatchedSystemIds.map((sid) => {
       return {
         id: sid,
@@ -133,17 +148,25 @@ const UnmatchedSystemPopUp = React.createClass({
     return rowData.id;
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    if (!this.state.tableData ||
+        this.props.selectedProductId != nextProps.selectedProductId ||
+        this.props.products != nextProps.products ||
+        this.props.systems != nextProps.systems) {
+
+        this.setState({tableData: this.buildTableData(nextProps)})
+    }
+  },
+
   render: function() {
-    const popUpContent = this.props.selectedProductId == null ?
+    const popUpContent = !this.state.tableData ?
       null :
-      <STable data={this.buildData()} rowKeyFn={this.rowKey}>
+      <STable data={this.state.tableData} rowKeyFn={this.rowKey}>
         <SColumn columnKey="name">
             <SHeader sortFn={this.sortByName}>{t("System name")}</SHeader>
             <SCell value={ (row) => <SystemLabel type={row.type} name={row.systemName} /> } />
         </SColumn>
-      </STable>
-
-    ;
+      </STable>;
 
     return (
       <PopUp title={t("Unmatched systems")}
