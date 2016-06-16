@@ -17,7 +17,6 @@ const SColumn = STables.SColumn;
 const SHeader = STables.SHeader;
 const SCell = STables.SCell;
 
-
 function listKeys() {
     return Network.get("/rhn/manager/api/minions/keys").promise;
 }
@@ -93,85 +92,6 @@ function labelFor(state) {
     return <span className={"label label-" + mapping.label}>{ mapping.uiName }</span>
 }
 
-/*
-class Onboarding extends React.Component {
-
-  constructor(props) {
-    super();
-    ["reloadKeys"].forEach(method => this[method] = this[method].bind(this));
-    this.state = {
-        keys: []
-    };
-    this.reloadKeys();
-  }
-
-  reloadKeys() {
-    return listKeys().then(data => {
-        this.setState({
-            keys: processData(data["fingerprints"]),
-            isOrgAdmin: data["isOrgAdmin"]
-        });
-    });
-  }
-
-  render() {
-    const minions = this.state.keys;
-    const panelButtons = <div className="pull-right btn-group">
-      <AsyncButton id="reload" icon="refresh" name="Refresh" text action={this.reloadKeys} />
-    </div>;
-
-    return (
-        <Panel title="Onboarding" icon="fa-desktop" button={ panelButtons }>
-            <Table
-                data={ minions }
-                keyFn={ entry => entry.id + entry.fingerprint }
-                options={{
-                }}
-                columns={[
-                  {
-                      "header": t("Name"),
-                      "entryToCell": (entry) => entry,
-                      "renderCell": (entry, filter) => {
-                        if(entry.state == "minions") {
-                            return <a href={ "/rhn/manager/minions/" + entry.id }>{ Renderer.highlightSubstring(entry.id, filter) }</a>;
-                        } else {
-                            return Renderer.highlightSubstring(entry.id, filter);
-                        }
-                      },
-                      "sort": Comparators.mapping(Comparators.locale, (entry) => entry.id),
-                      "filter": Filters.mapping(Filters.substring, (entry) => entry.id),
-                      "ratio": 0.3
-                  },{
-                      "header": t("Fingerprint"),
-                      "entryToCell": (entry) => entry.fingerprint,
-                      "renderCell": Renderer.highlightSubstring,
-                      "sort": Comparators.locale,
-                      "filter": Filters.substring,
-                      "ratio": 0.5,
-                      "className": "fingerprintCell"
-                  },{
-                      "header": t("State"),
-                      "entryToCell": (entry) => entry.state,
-                      "renderCell": (cell) => labelFor(cell),
-                      "sort": Comparators.mapping(Comparators.locale, stateUiName),
-                      "filter": Filters.mapping(Filters.substring, stateUiName),
-                      "ratio": 0.1
-                  },{
-                      "header": t("Actions"),
-                      "entryToCell": (entry) => entry,
-                      "renderCell": (cell) => actionsFor(cell.id, cell.state, this.reloadKeys, this.state.isOrgAdmin),
-                      "ratio": 0.1
-                  }
-                ]}
-            />
-        </Panel>
-    );
-  }
-
-}
-*/
-
-
 function Highlight(props) {
   var text = props.text;
   var high = props.highlight;
@@ -190,9 +110,9 @@ class Onboarding extends React.Component {
 
   constructor(props) {
     super();
-    ["sortById", "searchData", "sortByFingerprint", "rowKey", "reloadKeys"].forEach(method => this[method] = this[method].bind(this));
+    ["sortByName", "searchData", "sortByFingerprint", "sortByState", "rowKey", "reloadKeys"].forEach(method => this[method] = this[method].bind(this));
     this.state = {
-        tableData: [],
+        keys: [],
         isOrgAdmin: false
     };
     this.reloadKeys();
@@ -201,7 +121,7 @@ class Onboarding extends React.Component {
   reloadKeys() {
     return listKeys().then(data => {
         this.setState({
-            tableData: processData(data["fingerprints"]),
+            keys: processData(data["fingerprints"]),
             isOrgAdmin: data["isOrgAdmin"]
         });
     });
@@ -211,8 +131,8 @@ class Onboarding extends React.Component {
     return rowData.id;
   }
 
-  sortById(data, direction) {
-    return data.sort((a, b) => direction * (a.id - b.id));
+  sortByName(data, direction) {
+    return data.sort((a, b) => direction * a.id.toLowerCase().localeCompare(b.id.toLowerCase()));
   }
 
   sortByFingerprint(data, direction) {
@@ -250,24 +170,25 @@ class Onboarding extends React.Component {
     const panelButtons = <div className="pull-right btn-group">
       <AsyncButton id="reload" icon="refresh" name="Refresh" text action={this.reloadKeys} />
     </div>;
-
     return (
+    <span>
+        <h4>{this.state.selectedProductId}</h4>
         <Panel title="Onboarding" icon="fa-desktop" button={ panelButtons }>
-            <STable data={this.state.tableData} searchFn={this.searchData} rowKeyFn={this.rowKey}>
+            <STable data={this.state.keys} searchFn={this.searchData} rowKeyFn={this.rowKey} pageSize={15}>
               <SColumn columnKey="id" width="30%">
-                <SHeader sortFn={this.sortById}>{t('Name')}</SHeader>
+                <SHeader sortFn={this.sortByName}>{t('Name')}</SHeader>
                 <SCell value={ (row, table) => {
-                         if(row.state == "minions") {
-                            return <a href={ "/rhn/manager/minions/" + row.id }>
-                                <Highlight enabled={table.state.dataModel.filtered}
-                                  text={row.id}
-                                  highlight={table.state.dataModel.filteredText}/>
-                                </a>;
-                         } else {
-                            return <Highlight enabled={table.state.dataModel.filtered}
-                                text={row.id}
-                                highlight={table.state.dataModel.filteredText}/>;
-                         }
+                     if(row.state == "minions") {
+                        return <a href={ "/rhn/manager/minions/" + row.id }>
+                            <Highlight enabled={table.state.dataModel.filtered}
+                              text={row.id}
+                              highlight={table.state.dataModel.filteredText}/>
+                            </a>;
+                     } else {
+                        return <Highlight enabled={table.state.dataModel.filtered}
+                            text={row.id}
+                            highlight={table.state.dataModel.filteredText}/>;
+                     }
                     }}/>
               </SColumn>
               <SColumn columnKey="fingerprint" width="50%">
@@ -280,12 +201,13 @@ class Onboarding extends React.Component {
                 <SHeader sortFn={this.sortByState}>{t('State')}</SHeader>
                 <SCell value={ (row) => labelFor(row.state) } />
               </SColumn>
-              <SColumn width="10%">
+              <SColumn width="5%">
                 <SHeader>{t('Actions')}</SHeader>
                 <SCell value={ (row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)} />
               </SColumn>
             </STable>
         </Panel>
+    </span>
     );
   }
 
