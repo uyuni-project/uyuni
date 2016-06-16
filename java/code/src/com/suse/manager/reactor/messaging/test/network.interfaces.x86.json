@@ -42,7 +42,7 @@
         {
           "prefixlen": "64",
           "scope": "link",
-          "address": "fe80::5054:ff:feeb:513d"
+          "address": "fe80::5054:ff:fefc:19a4"
         }
       ]
     },
@@ -61,7 +61,7 @@
         {
           "prefixlen": "64",
           "scope": "link",
-          "address": "fe80::5054:ff:feaf:7f30"
+          "address": "fe80::5054:ff:fed0:91"
         }
       ]
     }
