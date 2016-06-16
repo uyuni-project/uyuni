@@ -1,7 +1,8 @@
 /etc/zypp/repos.d/susemanager:bootstrap.repo:
   file.managed:
     - source:
-      - salt://bootstrap/{{ grains['osfullname'] + grains['osrelease'].replace('.', '_') }}.repo
+      - salt://bootstrap/bootstrap.repo
+    - template: jinja
     - user: root
     - group: root
     - mode: 644
@@ -20,6 +21,7 @@ salt-minion:
   file.managed:
     - source:
       - salt://bootstrap/susemanager.conf
+    - template: jinja
     - user: root
     - group: root
     - mode: 644
