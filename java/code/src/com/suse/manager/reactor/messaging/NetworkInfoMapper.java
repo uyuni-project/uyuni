@@ -85,6 +85,7 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
         primaryIPv4.ifPresent(network::setIpaddr);
         primaryIPv6.ifPresent(network::setIp6addr);
 
+        server.getNetworks().clear();
         server.addNetwork(network);
 
         interfaces.forEach((name, saltIface) -> {
