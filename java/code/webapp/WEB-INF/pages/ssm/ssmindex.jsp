@@ -29,7 +29,7 @@
                 </div>
             </div>
         </li>
-        <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled, salt_entitled)">
+        <rhn:require acl="all_systems_in_set_have_feature(ftr_errata_updates)">
             <li class="list-group-item">
                 <div class="row">
                     <div class="col-sm-2">
@@ -41,6 +41,8 @@
                     </div>
                 </div>
             </li>
+        </rhn:require>
+        <rhn:require acl="all_systems_in_set_have_feature(ftr_package_updates)">
             <li class="list-group-item">
                 <div class="row">
                     <div class="col-sm-2">
@@ -49,28 +51,34 @@
                     </div>
                     <div class="col-sm-10">
                         <bean:message key="ssm.overview.packages.upgrade"/>
-                        / <bean:message key="ssm.overview.packages.install"/>
-                        / <bean:message key="ssm.overview.packages.remove"/>
-                        <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_package_refresh)">
+                            / <bean:message key="ssm.overview.packages.install"/>
+                        </rhn:require>
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_package_remove)">
+                            / <bean:message key="ssm.overview.packages.remove"/>
+                        </rhn:require>
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_package_verify)">
                             / <bean:message key="ssm.overview.packages.verify"/>
                         </rhn:require>
                         <bean:message key="ssm.overview.packages"/>
                     </div>
                 </div>
             </li>
-            <rhn:require acl="user_role(org_admin)">
-                <li class="list-group-item">
-                    <div class="row">
-                        <div class="col-sm-2">
-                          <rhn:icon type="header-system-groups" title="ssm.overview.groups" />
-                            <bean:message key="ssm.overview.groups"/>
-                        </div>
-                        <div class="col-sm-10">
-                            <bean:message key="ssm.overview.groups.create"/>
-                        </div>
+        </rhn:require>
+        <rhn:require acl="user_role(org_admin); all_systems_in_set_have_feature(ftr_system_grouping)">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <rhn:icon type="header-system-groups" title="ssm.overview.groups" />
+                        <bean:message key="ssm.overview.groups"/>
                     </div>
-                </li>
-            </rhn:require>
+                    <div class="col-sm-10">
+                        <bean:message key="ssm.overview.groups.create"/>
+                    </div>
+                </div>
+            </li>
+        </rhn:require>
+        <rhn:require acl="all_systems_in_set_have_feature(ftr_channel_membership)">
             <li class="list-group-item">
                 <div class="row">
                     <div class="col-sm-2">
@@ -81,9 +89,12 @@
                         <ul>
                             <li><bean:message key="ssm.overview.channels.memberships"/></li>
                             <rhn:require acl="user_role(config_admin);
-                                    all_systems_in_set_have_entitlement(enterprise_entitled)">
-                              <li><bean:message key="ssm.overview.channels.subscriptions"/></li>
-                              <li><bean:message key="ssm.overview.channels.deploy"/></li>
+                                    all_systems_in_set_have_feature(ftr_channel_config_subscription)">
+                                <li><bean:message key="ssm.overview.channels.subscriptions"/></li>
+                            </rhn:require>
+                            <rhn:require acl="user_role(config_admin);
+                                    all_systems_in_set_have_feature(ftr_channel_deploy_diff)">
+                                <li><bean:message key="ssm.overview.channels.deploy"/></li>
                             </rhn:require>
                         </ul>
                     </div>
@@ -99,13 +110,19 @@
                     </div>
                     <div class="col-sm-10">
                         <ul>
-                            <li><bean:message key="ssm.overview.provisioning.kickstart"/></li>
-                            <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
+                            <rhn:require acl="all_systems_in_set_have_feature(ftr_kickstart)">
+                                <li><bean:message key="ssm.overview.provisioning.kickstart"/></li>
+                            </rhn:require>
+                            <rhn:require acl="all_systems_in_set_have_feature(ftr_tag_system)">
                                 <li><bean:message key="ssm.overview.provisioning.rollback"/></li>
+                            </rhn:require>
+                            <rhn:require acl="all_systems_in_set_have_feature(ftr_remote_command)">
                                 <li><bean:message key="ssm.overview.provisioning.remotecommands"/></li>
                             </rhn:require>
-                            <li><bean:message key="ssm.overview.provisioning.powermanagement.configure"/></li>
-                            <li><bean:message key="ssm.overview.provisioning.powermanagement.operations"/></li>
+                            <rhn:require acl="all_systems_in_set_have_feature(ftr_power_management)">
+                                <li><bean:message key="ssm.overview.provisioning.powermanagement.configure"/></li>
+                                <li><bean:message key="ssm.overview.provisioning.powermanagement.operations"/></li>
+                            </rhn:require>
                         </ul>
                     </div>
                 </div>
@@ -119,27 +136,29 @@
                 </div>
                 <div class="col-sm-10">
                     <ul>
-                        <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled, salt_entitled)">
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_hardware_refresh)">
                             <li>
                                 <bean:message key="update"/> <bean:message key="ssm.overview.misc.updateprofiles"/>
-                                <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
+                                <rhn:require acl="all_systems_in_set_have_feature(ftr_system_preferences)">
                                     <bean:message key="and"/> <bean:message key="ssm.overview.misc.systempreferences"/>
                                 </rhn:require>
                             </li>
                         </rhn:require>
-                        <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled, salt_entitled)">
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_system_custom_values)">
                           <li><bean:message key="ssm.overview.misc.customvalues"/></li>
                         </rhn:require>
-                        <rhn:require acl="user_role(org_admin); all_systems_in_set_have_entitlement(enterprise_entitled)">
+                        <rhn:require acl="user_role(org_admin); all_systems_in_set_have_feature(ftr_add_rm_addon_type)">
                             <li><bean:message key="ssm.overview.misc.entitlements"/></li>
                         </rhn:require>
                         <li><bean:message key="ssm.overview.misc.delete"/></li>
-                        <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled, salt_entitled)">
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_reboot)">
                             <li><bean:message key="ssm.overview.misc.reboot"/></li>
                         </rhn:require>
                         <li><bean:message key="ssm.overview.misc.migrate"/></li>
-                        <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_system_lock)">
                             <li><bean:message key="ssm.overview.misc.lock"/></li>
+                       </rhn:require>
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_system_audit)">
                             <li><bean:message key="ssm.overview.misc.scap"/></li>
                         </rhn:require>
                     </ul>

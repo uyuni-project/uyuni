@@ -18,10 +18,16 @@
 </div>
 
 <ul>
-    <li><a href="PackageUpgrade.do"><bean:message key="ssm.package.upgrade"/></a></li>
-    <li><a href="PackageInstall.do"><bean:message key="ssm.package.install"/></a></li>
-    <li><a href="PackageRemove.do"><bean:message key="ssm.package.remove"/></a></li>
-    <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
+    <rhn:require acl="all_systems_in_set_have_feature(ftr_package_updates)">
+        <li><a href="PackageUpgrade.do"><bean:message key="ssm.package.upgrade"/></a></li>
+    </rhn:require>
+    <rhn:require acl="all_systems_in_set_have_feature(ftr_package_refresh)">
+        <li><a href="PackageInstall.do"><bean:message key="ssm.package.install"/></a></li>
+    </rhn:require>
+    <rhn:require acl="all_systems_in_set_have_feature(ftr_package_remove)">
+        <li><a href="PackageRemove.do"><bean:message key="ssm.package.remove"/></a></li>
+    </rhn:require>
+    <rhn:require acl="all_systems_in_set_have_feature(ftr_package_verify)">
         <li><a href="PackageVerify.do"><bean:message key="ssm.package.verify"/></a></li>
     </rhn:require>
 </ul>
