@@ -39,6 +39,7 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(NetworkInfoMapper.class);
+    private boolean hasPrimaryInterfaceSet = false;
 
     /**
      * The constructor.
@@ -129,6 +130,7 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
                 ServerNetworkFactory.saveServerNetAddress4(ipv4);
 
                 if (StringUtils.equals(ipv4.getAddress(), primaryIPv4.orElse(null))) {
+                    hasPrimaryInterfaceSet = true;
                     iface.setPrimary("Y");
                 }
             });
@@ -151,12 +153,23 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
                 ipv6.setScope(Optional.ofNullable(addr6.getScope()).orElse("unknown"));
 
                 ServerNetworkFactory.saveServerNetAddress6(ipv6);
-
-                if (StringUtils.equals(ipv6.getAddress(), primaryIPv6.orElse(null))) {
-                    iface.setPrimary("Y");
-                }
             });
         });
+
+        if (!hasPrimaryInterfaceSet && primaryIPv6.isPresent()) {
+            for (NetworkInterface iface : server.getNetworkInterfaces()) {
+                for (ServerNetAddress6 ipv6 : iface.getIPv6Addresses()) {
+                    if (StringUtils.equals(ipv6.getAddress(), primaryIPv6.get())) {
+                        iface.setPrimary("Y");
+                        hasPrimaryInterfaceSet = true;
+                        break;
+                    }
+                }
+                if (hasPrimaryInterfaceSet) {
+                    break;
+                }
+            }
+        }
 
         return server;
     }
