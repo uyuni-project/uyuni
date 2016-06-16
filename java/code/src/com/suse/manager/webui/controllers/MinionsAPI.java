@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.salt.netapi.calls.wheel.Key;
@@ -23,17 +24,25 @@ import spark.Request;
 import spark.Response;
 
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.salt.netapi.datatypes.target.MinionList;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Controller class providing backend code for the minions page.
@@ -43,6 +52,13 @@ public class MinionsAPI {
     public static final String SALT_CMD_RUN_TARGETS = "salt_cmd_run_targets";
 
     private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
+
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
+            .serializeNulls()
+            .create();
+
+    private static final Logger LOG = Logger.getLogger(MinionsAPI.class);
 
     private MinionsAPI() { }
 
@@ -162,6 +178,24 @@ public class MinionsAPI {
      * @return json result of the API call
      */
     public static String bootstrap(Request request, Response response, User user) {
+        @SuppressWarnings("unchecked")
+        Map<String, String> formData = GSON.fromJson(request.body(), Map.class);
+        String host = formData.get("host");
+        LOG.info("bootstrapping host: " + host);
+
+        // Apply the bootstrap state
+        Map<String, Object> pillarData = new HashMap<>();
+        pillarData.put("master", ConfigDefaults.get().getCobblerHost());
+        Map<String, Object> results = SALT_SERVICE.applyStateSSH(
+                new MinionList(host), Optional.of(pillarData),
+                Arrays.asList(ApplyStatesEventMessage.CERTIFICATE, "bootstrap"));
+        LOG.debug("bootstrap results: " + results);
+
+        // TODO: Check if bootstrap was successful
+        // boolean success = results.get("return").entrySet().stream().allMatch(result ->
+        //         (Boolean) ((Map<String, Object>) result.getValue()).get("result"));
+        // LOG.debug("bootstrap success? " + success);
+
         return json(response, true);
     }
 }

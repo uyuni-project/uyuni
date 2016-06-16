@@ -66,6 +66,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.stream.Stream;
 
 /**
@@ -231,6 +232,25 @@ public enum SaltAPIService implements SaltService {
         try {
             Key.reject(minionId).callSync(SALT_CLIENT,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Object> applyStateSSH(Target<?> target,
+            Optional<Map<String, Object>> pillar, List<String> mods) {
+        try {
+            Map<String, Object> kwargs = new LinkedHashMap<>();
+            kwargs.put("mods", mods);
+            if (pillar.isPresent()) {
+                kwargs.put("pillar", pillar.get());
+            }
+            return SALT_CLIENT.run(null, null, AuthModule.AUTO, "ssh", target,
+                    "state.apply", null, kwargs);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
