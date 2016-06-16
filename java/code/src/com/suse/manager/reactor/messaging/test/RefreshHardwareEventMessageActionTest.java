@@ -160,8 +160,8 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                 assertEquals("52:54:00:eb:51:3d", ethNames.get("eth1").getHwaddr());
 
                 assertEquals("::1", ethNames.get("lo").getIPv6Addresses().get(0).getAddress());
-                assertEquals("fe80::5054:ff:feaf:7f30", ethNames.get("eth0").getIPv6Addresses().get(0).getAddress());
-                assertEquals("fe80::5054:ff:feeb:513d", ethNames.get("eth1").getIPv6Addresses().get(0).getAddress());
+                assertEquals("fe80::5054:ff:fed0:91", ethNames.get("eth0").getIPv6Addresses().get(0).getAddress());
+                assertEquals("fe80::5054:ff:fefc:19a4", ethNames.get("eth1").getIPv6Addresses().get(0).getAddress());
 
                 assertEquals("128", ethNames.get("lo").getIPv6Addresses().get(0).getNetmask());
                 assertEquals("64", ethNames.get("eth0").getIPv6Addresses().get(0).getNetmask());
