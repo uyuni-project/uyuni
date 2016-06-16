@@ -51,7 +51,7 @@ const FilterField = (props) =>
   />
 ;
 
-class DataModel {
+class SimpleTableDataModel {
 
   constructor(data, itemsPerPage) {
     this.data = data;
@@ -60,6 +60,12 @@ class DataModel {
     this.currentData = data;
     this.filtered = false;
     this.filteredText = null;
+    ["getFilteredText", "filter", "sort", "goToPage", "getCurrentPageData", "getLastPage", "getFirstPageItemIndex",
+    "getLastPageItemIndex", "getSize", "changeItemsPerPage", "getItemsPerPage", "getCurrentPage"].forEach(method => this[method] = this[method].bind(this));
+  }
+
+  getFilteredText() {
+    return this.filteredText;
   }
 
   filter(filterFn, criteria) {
@@ -91,11 +97,11 @@ class DataModel {
     this.currentPage = page;
   }
 
-  get currentPageData() {
-     return this.currentData.slice(this.firstPageItemIndex, this.lastPageItemIndex);
+  getCurrentPageData() {
+     return this.currentData.slice(this.getFirstPageItemIndex(), this.getLastPageItemIndex());
   }
 
-  get lastPage() {
+  getLastPage() {
       const lastPage = Math.ceil(this.currentData.length / this.itemsPerPage);
       if (lastPage == 0) {
         return 1;
@@ -103,22 +109,30 @@ class DataModel {
       return lastPage;
   }
 
-  get firstPageItemIndex() {
+  getFirstPageItemIndex() {
     return (this.currentPage - 1) * this.itemsPerPage;
   }
 
-  get lastPageItemIndex() {
+  getLastPageItemIndex() {
     return this.firstPageItemIndex + this.itemsPerPage > this.currentData.length ?
-        this.currentData.length : this.firstPageItemIndex + this.itemsPerPage;
+        this.currentData.length : this.getFirstPageItemIndex() + this.itemsPerPage;
   }
 
-  get size() {
+  getSize() {
     return this.currentData.length;
   }
 
   changeItemsPerPage(newPageSize) {
     this.goToPage(1);
     this.itemsPerPage = newPageSize;
+  }
+
+  getItemsPerPage() {
+    return this.itemsPerPage;
+  }
+
+  getCurrentPage() {
+    return this.currentPage;
   }
 
 }
@@ -128,12 +142,15 @@ class Table extends React.Component {
 
   constructor(props) {
     super(props);
-    ["onFilterTextChange", "sort", "onPageChange", "onItemsPerPageChange"].forEach(method => this[method] = this[method].bind(this));
-    const pageItemsCount = 15;
+    ["onFilterTextChange", "sort", "onPageChange", "onItemsPerPageChange", "initDataModel"].forEach(method => this[method] = this[method].bind(this));
     this.state = {
-        dataModel: new DataModel(props.data, pageItemsCount),
-        itemsPerPage: pageItemsCount
+        dataModel: this.initDataModel(props.data, props.pageSize)
     };
+  }
+
+  initDataModel(data, pageSize) {
+    console.log("initDataModel " + data + " " + pageSize)
+    return new SimpleTableDataModel(data, pageSize);
   }
 
   onFilterTextChange(text) {
@@ -142,6 +159,7 @@ class Table extends React.Component {
   }
 
   sort(columnKey, sortFn, sortDirection) {
+    console.log("sort " + columnKey + " " + sortDirection);
     this.state.dataModel.sort(columnKey, sortFn, sortDirection);
     this.setState({sortKey: columnKey});
   }
@@ -152,14 +170,18 @@ class Table extends React.Component {
   }
 
   onPageChange(page) {
+    console.log("onPageChange " + page);
     this.state.dataModel.goToPage(page);
     this.forceUpdate();
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-        dataModel: new DataModel(nextProps.data, 15)
-    });
+    console.log("componentWillReceiveProps " + nextProps)
+    if (this.props.data != nextProps.data) {
+        this.setState({
+            dataModel: this.initDataModel(nextProps.data, this.state.dataModel.getItemsPerPage())
+        });
+    }
   }
 
   render() {
@@ -185,7 +207,7 @@ class Table extends React.Component {
           }
       });
 
-  	let rows = this.state.dataModel.currentPageData.map((element, index) => {
+  	let rows = this.state.dataModel.getCurrentPageData().map((element, index) => {
   			let cells = React.Children.map(this.props.children,
         	     (column) => React.cloneElement(column, {data: element, table: this})
      		);
@@ -196,13 +218,13 @@ class Table extends React.Component {
     const filterField = this.props.searchFn ?
       <FilterField key="filteredField"
         onChange={this.onFilterTextChange}
-        defaultValue={this.state.dataModel.filterText}
+        defaultValue={this.state.dataModel.getFilteredText()}
         placeholder={this.props.filterPlaceholder}
       /> :
       null
     ;
-    const itemCounter = <span>{t("Items {0} - {1} of {2}", this.state.dataModel.firstPageItemIndex + 1,
-    this.state.dataModel.lastPageItemIndex, this.state.dataModel.size)}</span>;
+    const itemCounter = <span>{t("Items {0} - {1} of {2}", this.state.dataModel.getFirstPageItemIndex() + 1,
+    this.state.dataModel.getLastPageItemIndex(), this.state.dataModel.getSize())}</span>;
 
     return (
       <div className="spacewalk-list">
@@ -214,7 +236,7 @@ class Table extends React.Component {
               </div>
               <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
                 <ItemsPerPageSelector key="itemsPerPageSelector"
-                  currentValue={this.state.itemsPerPage}
+                  currentValue={this.state.dataModel.getItemsPerPage()}
                   onChange={this.onItemsPerPageChange}
                 /> {t("items per page")}
               </div>
@@ -236,8 +258,8 @@ class Table extends React.Component {
         <div className="panel-footer">
             <div className="spacewalk-list-bottom-addons">
               <PaginationBlock key="paginationBlock"
-                currentPage={this.state.dataModel.currentPage}
-                lastPage={this.state.dataModel.lastPage}
+                currentPage={this.state.dataModel.getCurrentPage()}
+                lastPage={this.state.dataModel.getLastPage()}
                 onPageChange={this.onPageChange}
               />
             </div>
@@ -248,6 +270,8 @@ class Table extends React.Component {
   }
 
 }
+
+Table.defaultProps = { pageSize : 15 };
 
 class Column extends React.Component {
 
@@ -341,5 +365,6 @@ module.exports = {
     STable : Table,
     SColumn : Column,
     SHeader : Header,
-    SCell : Cell
+    SCell : Cell,
+    SimpleTableDataModel: SimpleTableDataModel
 }
