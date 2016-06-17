@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.results.Result;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -75,13 +77,13 @@ public class SystemPendingEventsCancelAction extends RhnAction {
                     server.asMinionServer().map(minionServer -> {
                 List<SystemPendingEventDto> actions = new LinkedList<>();
                 for (SystemPendingEventDto action : result) {
-                    Map<String, Schedule.Result> stringResultMap = SaltAPIService.INSTANCE
-                            .deleteSchedule(
+                    Map<String, Result<Schedule.Result>> stringResultMap =
+                            SaltAPIService.INSTANCE.deleteSchedule(
                                     "scheduled-action-" + action.getId(),
                                     new MinionList(minionServer.getMinionId())
                             );
                     Schedule.Result result1 = stringResultMap
-                            .get(minionServer.getMinionId());
+                            .get(minionServer.getMinionId()).result().get();
                     if (result1 != null && result1.getResult()) {
                         actions.add(action);
                     }

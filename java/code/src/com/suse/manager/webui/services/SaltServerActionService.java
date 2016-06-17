@@ -30,12 +30,14 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.manager.webui.utils.salt.ScheduleMetadata;
-import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.Schedule;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.results.Result;
 
 import org.apache.log4j.Logger;
 
@@ -101,7 +103,7 @@ public enum SaltServerActionService {
             ZonedDateTime now = ZonedDateTime.now();
             if (earliestAction.isBefore(now) || earliestAction.equals(now)) {
                 LOG.debug("Action will be executed directly using callAsync()");
-                final Map<String, Boolean> responding =
+                final Map<String, Result<Boolean>> responding =
                     SaltAPIService.INSTANCE.ping(new MinionList(minionIds));
                 final List<String> present = minionIds.stream()
                         .filter(responding::containsKey)
@@ -116,7 +118,7 @@ public enum SaltServerActionService {
                 }
                 else {
                     List<String> results = SaltAPIService.INSTANCE
-                            .callAsync(call, new MinionList(present), Optional.of(metadata))
+                            .callAsync(call.withMetadata(metadata), new MinionList(present))
                             .getMinions();
                     return minions.stream()
                             .collect(Collectors.partitioningBy(minion ->
@@ -127,12 +129,13 @@ public enum SaltServerActionService {
             }
             else {
                 LOG.debug("Action will be scheduled for later using schedule()");
-                Map<String, Schedule.Result> results = SaltAPIService.INSTANCE
+                Map<String, Result<Schedule.Result>> results = SaltAPIService.INSTANCE
                         .schedule("scheduled-action-" + actionIn.getId(), call,
                                 new MinionList(minionIds), earliestAction, metadata);
                 return minions.stream()
                         .collect(Collectors.partitioningBy(minion ->
                                 Optional.ofNullable(results.get(minion.getMinionId()))
+                                        .flatMap(Result::result)
                                         .map(Schedule.Result::getResult)
                                         .orElse(false)
                         ));
@@ -262,13 +265,14 @@ public enum SaltServerActionService {
         ));
         // Convert errata names to LocalCall objects of type State.apply
         return collect.entrySet().stream()
-                .collect(Collectors.toMap(entry -> com.suse.manager.webui.utils.salt.State
-                        .apply(Arrays.asList(PACKAGES_PATCHINSTALL),
-                        Optional.of(Collections.singletonMap(PARAM_PKGS,
-                                    entry.getKey().stream().collect(
-                                            Collectors.toMap(
-                                                    patch -> "patch:" + patch,
-                                                    patch -> ""))))),
+                .collect(Collectors.toMap(entry -> State.apply(
+                        Arrays.asList(PACKAGES_PATCHINSTALL),
+                        Optional.of(Collections.singletonMap(PARAM_PKGS, entry.getKey()
+                                .stream().collect(Collectors.toMap(
+                                        patch -> "patch:" + patch,
+                                        patch -> "")))),
+                        Optional.of(true)
+                ),
                 Map.Entry::getValue));
     }
 
@@ -277,9 +281,9 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
-        ret.put(com.suse.manager.webui.utils.salt.State.apply(
-                Arrays.asList(PACKAGES_PKGINSTALL),
-                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs))), minions);
+        ret.put(State.apply(Arrays.asList(PACKAGES_PKGINSTALL),
+                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs)),
+                Optional.of(true)), minions);
         return ret;
     }
 
@@ -288,9 +292,9 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
                 d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
-        ret.put(com.suse.manager.webui.utils.salt.State.apply(
-                Arrays.asList(PACKAGES_PKGREMOVE),
-                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs))), minions);
+        ret.put(State.apply(Arrays.asList(PACKAGES_PKGREMOVE),
+                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs)),
+                Optional.of(true)), minions);
         return ret;
     }
 
@@ -304,7 +308,8 @@ public enum SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionServer>> rebootAction(List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(com.suse.manager.webui.utils.salt.System.reboot(Optional.empty()), minions);
+        ret.put(com.suse.salt.netapi.calls.modules.System
+                .reboot(Optional.empty()), minions);
         return ret;
     }
 
@@ -312,7 +317,7 @@ public enum SaltServerActionService {
             List<MinionServer> minions, String script) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         // FIXME: This supports only bash at the moment
-        ret.put(com.suse.manager.webui.utils.salt.Cmd.execCodeAll(
+        ret.put(Cmd.execCodeAll(
                 "bash",
                 // remove \r or bash will fail
                 script.replaceAll("\r\n", "\n")), minions);

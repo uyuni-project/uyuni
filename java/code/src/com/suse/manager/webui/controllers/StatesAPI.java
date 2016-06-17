@@ -72,8 +72,10 @@ import com.suse.manager.webui.utils.gson.JSONCustomState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
 import com.suse.manager.webui.utils.gson.JSONServerCustomStates;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.results.Result;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -614,19 +616,19 @@ public class StatesAPI {
                 .map(minion -> {
                     final String minionId = minion.getMinionId();
                     try {
-                        Map<String, Object> result = SaltAPIService.INSTANCE.callSync(
-                                com.suse.manager.webui.utils.salt.State.showHighstate(),
-                                new MinionList(minionId), Optional.empty());
-                        // if the response is a List containing only one String element
-                        // it may be an error from Salt so use that String directly
-                        // without dumping it to Yaml
-                        return Optional.ofNullable(result.get(minionId)).map(r ->
-                                r instanceof List &&
-                                ((List<?>)r).size() == 1 &&
-                                ((List<?>)r).get(0) instanceof String ?
-                                        (String)((List<?>)r).get(0) :
-                                        YamlHelper.INSTANCE.dump(r)
-                        ).orElse("No reply from minion: " + minionId);
+                        Map<String, Result<Object>> result = SaltAPIService.INSTANCE
+                                .callSync(State.showHighstate(), new MinionList(minionId));
+
+                        return Optional.ofNullable(result.get(minionId))
+                                .map(r -> r.fold(
+                                        err -> err.fold(
+                                                Object::toString,
+                                                Object::toString,
+                                                e -> "Error during state.show_highstate"
+                                        ),
+                                        YamlHelper.INSTANCE::dump
+                                ))
+                                .orElse("No reply from minion: " + minionId);
                     }
                     catch (SaltException e) {
                         response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);

@@ -15,19 +15,20 @@
 package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.user.User;
-import com.suse.manager.webui.utils.salt.Jobs;
-import com.suse.manager.webui.utils.salt.Saltutil;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
-import com.suse.manager.webui.utils.salt.events.EventStream;
 import com.suse.salt.netapi.calls.RunnerCall;
+import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Schedule;
+import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.results.Result;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -96,7 +97,7 @@ public interface SaltService {
      * @param target the targeted minions
      * @return the timezone offsets of the targeted minions
      */
-    Map<String, String> getTimezoneOffsets(Target<?> target);
+    Map<String, Result<String>> getTimezoneOffsets(Target<?> target);
 
     /**
      * Accept all keys matching the given pattern
@@ -143,7 +144,7 @@ public interface SaltService {
      * @param cmd the command
      * @return the output of the command
      */
-    Map<String, String> runRemoteCommand(Target<?> target, String cmd);
+    Map<String, Result<String>> runRemoteCommand(Target<?> target, String cmd);
 
 
     /**
@@ -152,7 +153,7 @@ public interface SaltService {
      * @param target the target
      * @return list of running jobs
      */
-    Map<String, List<Saltutil.RunningInfo>> running(Target<?> target);
+    Map<String, Result<List<SaltUtil.RunningInfo>>> running(Target<?> target);
 
 
     /**
@@ -169,7 +170,7 @@ public interface SaltService {
      * @param jid the job id
      * @return map from minion to result
      */
-    Jobs.ListJobResult listJob(String jid);
+    Jobs.Info listJob(String jid);
 
     /**
      * Match the salt minions against a target glob.
@@ -177,7 +178,7 @@ public interface SaltService {
      * @param target the target glob
      * @return a map from minion name to boolean representing if they matched the target
      */
-    Map<String, Boolean> match(String target);
+    Map<String, Result<Boolean>> match(String target);
 
     /**
      * Get the CPU info from a minion.
@@ -247,7 +248,7 @@ public interface SaltService {
      * @return the result of the schedule call
      * @throws SaltException in case there is an error scheduling the job
      */
-    Map<String, Schedule.Result> schedule(String name, LocalCall<?> call,
+    Map<String, Result<Schedule.Result>> schedule(String name, LocalCall<?> call,
             Target<?> target, ZonedDateTime scheduleDate, Map<String, ?> metadata)
             throws SaltException;
 
@@ -258,7 +259,7 @@ public interface SaltService {
      * @param target the target
      * @return the result
      */
-    Map<String, Schedule.Result> deleteSchedule(String name, Target<?> target);
+    Map<String, Result<Schedule.Result>> deleteSchedule(String name, Target<?> target);
 
     /**
      * Execute a LocalCall synchronously on the default Salt client.
@@ -266,12 +267,11 @@ public interface SaltService {
      * @param <T> the return type of the call
      * @param call the call to execute
      * @param target minions targeted by the call
-     * @param metadata extra metadata to add to the job
      * @return the result of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    <T> Map<String, T> callSync(LocalCall<T> call, Target<?> target,
-           Optional<Map<String, ?>> metadata) throws SaltException;
+    <T> Map<String, Result<T>> callSync(LocalCall<T> call, Target<?> target)
+            throws SaltException;
 
     /**
      * Execute a LocalCall asynchronously on the default Salt client.
@@ -279,12 +279,11 @@ public interface SaltService {
      * @param <T> the return type of the call
      * @param call the call to execute
      * @param target minions targeted by the call
-     * @param metadata extra metadata to add to the job
      * @return the LocalAsyncResult of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target,
-            Optional<Map<String, ?>> metadata) throws SaltException;
+    <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target)
+            throws SaltException;
 
     /**
      * Get the IP routing that the minion uses to connect to the master.
@@ -362,7 +361,7 @@ public interface SaltService {
      * @return a Map from minion ids which responded to the ping to Boolean.TRUE
      * @throws SaltException if we get a failure from Salt
      */
-    Map<String, Boolean> ping(Target<?> target) throws SaltException;
+    Map<String, Result<Boolean>> ping(Target<?> target) throws SaltException;
 
     /**
      * Get the directory where custom state files are stored on disk.
