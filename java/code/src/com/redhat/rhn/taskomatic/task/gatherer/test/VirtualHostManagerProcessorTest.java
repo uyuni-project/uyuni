@@ -135,7 +135,8 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     public void testExistingVirtInstanceWithExistingServer() throws Exception {
         // create a host
-        Server existingHost = ServerTestUtils.createForeignSystem(user, "existing_host_id");
+        Server existingHost =
+                ServerTestUtils.createForeignSystem(user, "101-existing_host_id");
         // create a VI for host
         VirtualInstance virtualInstance = new VirtualInstance();
         virtualInstance.setConfirmed(1L);
@@ -182,6 +183,8 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         assertEquals("id_of_my_guest", guestFromDb.getUuid());
         assertEquals(Long.valueOf(1L), guestFromDb.getConfirmed());
         assertEquals("myVM", guestFromDb.getName());
+        assertEquals(VirtualInstanceFactory.getInstance().getUnknownState(),
+                guestFromDb.getState());
     }
 
     /**
@@ -194,7 +197,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * @throws Exception - if anything goes wrong
      */
     public void testGuestVirtInstanceUpdated() throws Exception {
-        createRegisteredGuestWithForeignHost("id_of_my_guest", "existing_host_id");
+        createRegisteredGuestWithForeignHost("id_of_my_guest", "101-existing_host_id");
 
         // do the mapping
         Map<String, JSONHost> data = createHostData("existing_host_id",
@@ -241,6 +244,28 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstance guest = VirtualInstanceFactory.getInstance()
                 .lookupVirtualInstanceByUuid("uuid").iterator().next();
         assertEquals("new name", guest.getName());
+    }
+
+    /**
+     * When the state of the guest virtual instance was other than 'unknown', the update
+     * should set it to 'unknown'.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testGuestStateSetToUnknown() throws Exception {
+        VirtualInstance guest =
+                createRegisteredGuestWithForeignHost("guestid", "101-hostid");
+        guest.setName("guestname");
+        guest.setState(VirtualInstanceFactory.getInstance().getStoppedState());
+
+        Map<String, JSONHost> data = createHostData("hostid",
+                pairsToMap("guestname", "guestid"));
+        new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
+
+        VirtualInstance dbGuest = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid("guestid").iterator().next();
+        assertEquals(VirtualInstanceFactory.getInstance().getUnknownState(),
+                dbGuest.getState());
     }
 
     /**
@@ -482,7 +507,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
             .createGuest()
             .withUuid(guestUuid)
             .withForeignEntitledHost(digitalServerId)
-            .inStoppedState()
+            .inUnknownState()
             .asFullyVirtGuest()
             .build();
     }
@@ -492,7 +517,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
             .createGuest()
             .withUuid(guestUuid)
             .withVirtHost()
-            .inStoppedState()
+            .inUnknownState()
             .asFullyVirtGuest()
             .build();
     }
