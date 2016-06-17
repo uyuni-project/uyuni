@@ -15,15 +15,15 @@
 package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.user.User;
-import com.suse.manager.webui.utils.salt.Jobs;
-import com.suse.manager.webui.utils.salt.Saltutil;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.RunnerCall;
+import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Schedule;
+import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.event.EventStream;
@@ -153,7 +153,7 @@ public interface SaltService {
      * @param target the target
      * @return list of running jobs
      */
-    Map<String, Result<List<Saltutil.RunningInfo>>> running(Target<?> target);
+    Map<String, Result<List<SaltUtil.RunningInfo>>> running(Target<?> target);
 
 
     /**
@@ -170,7 +170,7 @@ public interface SaltService {
      * @param jid the job id
      * @return map from minion to result
      */
-    Jobs.ListJobResult listJob(String jid);
+    Jobs.Info listJob(String jid);
 
     /**
      * Match the salt minions against a target glob.

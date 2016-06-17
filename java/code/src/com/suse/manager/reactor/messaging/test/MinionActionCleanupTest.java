@@ -41,13 +41,9 @@ import com.suse.manager.reactor.utils.ZonedDateTimeISOAdapter;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.salt.Jobs;
-import com.suse.manager.webui.utils.salt.Saltutil;
-import com.suse.manager.webui.utils.salt.events.Event;
-import com.suse.manager.webui.utils.salt.events.EventStream;
-import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
-import com.suse.salt.netapi.datatypes.StartTime;
-import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.calls.modules.SaltUtil;
+import com.suse.salt.netapi.calls.runner.Jobs;
+import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.utils.Json;
 import org.hibernate.Hibernate;
@@ -87,10 +83,10 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 Date.from(Instant.now().minus(6, ChronoUnit.MINUTES)));
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
 
-        Map<String, List<Saltutil.RunningInfo>> running = new HashMap<>();
+        Map<String, List<SaltUtil.RunningInfo>> running = new HashMap<>();
         running.put(minion.getMinionId(), Collections.emptyList());
 
-        Jobs.ListJobResult listJobResult = listJob("jobs.list_job.state.apply.json", action.getId());
+        Jobs.Info listJobResult = listJob("jobs.list_job.state.apply.json", action.getId());
 
         Mock saltServiceMock = mock(SaltService.class);
         saltServiceMock.stubs().method("running").will(
@@ -117,13 +113,13 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
     }
 
-    private Jobs.ListJobResult listJob(String filename, long actionId) throws Exception {
+    private Jobs.Info listJob(String filename, long actionId) throws Exception {
         Path path = new File(TestUtils.findTestData(
                 "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
         String eventString = Files.lines(path)
                 .collect(Collectors.joining("\n"))
                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
-        JsonParser<Jobs.ListJobResult> jsonParser = new JsonParser(new TypeToken<Jobs.ListJobResult>() {});
+        JsonParser<Jobs.Info> jsonParser = new JsonParser(new TypeToken<Jobs.Info>() {});
         return jsonParser.parse(eventString);
     }
 
