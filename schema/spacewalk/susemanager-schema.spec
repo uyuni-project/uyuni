@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        SQL schema for Spacewalk server
 
-Version:        2.6.2
+Version:        2.6.5
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -23,6 +23,9 @@ Requires:       %{sbinpath}/restorecon
 Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
 
+%if 0%{?suse_version}
+BuildRequires:  fdupes
+%endif
 
 %define rhnroot /etc/sysconfig/rhn/
 %define oracle %{rhnroot}/oracle
@@ -62,6 +65,10 @@ cp -p spacewalk-schema-upgrade.1 $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-sql.1 $RPM_BUILD_ROOT%{_mandir}/man1
 %fdupes -s $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 
+%if 0%{?suse_version}
+%fdupes %{buildroot}/%{rhnroot}
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -75,8 +82,20 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/spacewalk-sql
 %{_mandir}/man1/spacewalk-schema-upgrade*
 %{_mandir}/man1/spacewalk-sql*
+%if 0%{?suse_version}
+%dir %{rhnroot}
+%endif
 
 %changelog
+* Mon Jun 13 2016 Grant Gainey 2.6.5-1
+- spacewalk-schema: build on openSUSE
+
+* Mon Jun 13 2016 Jan Dobes 2.6.4-1
+- sequence is still there
+
+* Mon Jun 13 2016 Jan Dobes 2.6.3-1
+- fixing invalid syntax
+
 * Fri Jun 10 2016 Jan Dobes 2.6.2-1
 - change rhnContentSourceSsl table to possibly connect to channel family
   (instead of content source) and rename to rhnContentSsl
