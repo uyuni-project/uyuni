@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Jun 17 18:08:17 CEST 2016 - mc@suse.de
+
+- version 2.1.165.24-1
+- support OES 2015 (bsc#934560)
+- Use the IP address when doing ssh push via proxy (bsc#940927)
+- Don't allow URLs that only differ on the authorization token (bsc#976184)
+- redirect migration with no Org to the first step (bsc#969529)
+- enhance list of channel families for SUSE Manager Server
+
+-------------------------------------------------------------------
 Tue May 03 17:23:30 CEST 2016 - jrenner@suse.com
 
 - version 2.1.165.23-1
