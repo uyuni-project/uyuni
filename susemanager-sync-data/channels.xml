@@ -134,6 +134,26 @@
 			<product_id name="Open_Enterprise_Server" version="11">1232</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="Open Enterprise Server 2015" family="OES2" is_signed="Y" label="oes2015-pool-x86_64" name="OES2015-Pool for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2015" source_url="https://nu.novell.com/repo/$RCE/OES2015-Pool/sle-11-x86_64/" summary="Open Enterprise Server 2015" update_tag="oes2015">
+		<products>
+			<product_id name="Open_Enterprise_Server" version="2015">42</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Open Enterprise Server 2015 SP1" family="OES2" is_signed="Y" label="oes2015-sp1-pool-x86_64" name="OES2015-SP1-Pool for x86_64" optional="N" parent="sles11-sp4-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2015.1" source_url="https://nu.novell.com/repo/$RCE/OES2015-SP1-Pool/sle-11-x86_64/" summary="Open Enterprise Server 2015 SP1" update_tag="oes2015sp1">
+		<products>
+			<product_id name="Open_Enterprise_Server" version="2015.1">43</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Open Enterprise Server 2015 SP1" family="OES2" is_signed="Y" label="oes2015-sp1-updates-x86_64" name="OES2015-SP1-Updates for x86_64" optional="N" parent="sles11-sp4-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2015.1" source_url="https://nu.novell.com/repo/$RCE/OES2015-SP1-Updates/sle-11-x86_64/" summary="Open Enterprise Server 2015 SP1" update_tag="oes2015sp1">
+		<products>
+			<product_id name="Open_Enterprise_Server" version="2015.1">43</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Open Enterprise Server 2015" family="OES2" is_signed="Y" label="oes2015-updates-x86_64" name="OES2015-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="Open_Enterprise_Server" product_version="2015" source_url="https://nu.novell.com/repo/$RCE/OES2015-Updates/sle-11-x86_64/" summary="Open Enterprise Server 2015" update_tag="oes2015">
+		<products>
+			<product_id name="Open_Enterprise_Server" version="2015">42</product_id>
+		</products>
+	</channel>
 	<channel arch="i386" description="SUSE-Manager-Tools" family="RES" is_signed="Y" label="res4-as-suse-manager-tools-i386" name="RES4 AS SUSE-Manager-Tools i386" optional="N" parent="rhel-i386-as-4" product_name="RES" product_version="4" source_url="https://updates.suse.com/repo/$RCE/RES4-SUSE-Manager-Tools/i386/" summary="SUSE-Manager-Tools" update_tag="res4ct">
 		<products>
 			<product_id name="RES" version="4">1127</product_id>

@@ -330,6 +330,11 @@ public class ContentSyncManager {
                 "Novell Open Enterprise Server 2 11.1", "OES2"));
         products.add(new SCCProduct(1242, "Open_Enterprise_Server", "11.2", null, null,
                 "Novell Open Enterprise Server 2 11.2", "OES2"));
+        products.add(new SCCProduct(42, "Open_Enterprise_Server", "2015", null, null,
+                "Open Enterprise Server 2015", "OES2"));
+        products.add(new SCCProduct(43, "Open_Enterprise_Server", "2015.1", null, null,
+                "Open Enterprise Server 2015 SP1", "OES2"));
+
     }
 
     /**
