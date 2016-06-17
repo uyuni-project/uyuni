@@ -53,7 +53,7 @@ Requires: snakeyaml
 Requires: sudo
 Requires: jade4j
 Requires: jose4j
-Requires: salt-netapi-client
+Requires: salt-netapi-client >= 0.8.0
 Requires: spark
 Requires: spark-template-jade
 Requires: hibernate3 = 3.2.7
@@ -72,7 +72,7 @@ BuildRequires: log4j
 # Spark and Salt integration
 BuildRequires: jade4j
 BuildRequires: jose4j
-BuildRequires: salt-netapi-client
+BuildRequires: salt-netapi-client >= 0.8.0
 BuildRequires: spark
 BuildRequires: spark-template-jade
 BuildRequires: httpcomponents-client
