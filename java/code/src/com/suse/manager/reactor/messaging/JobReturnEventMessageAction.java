@@ -41,14 +41,14 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.salt.ScheduleMetadata;
-import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
-import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
-import com.suse.manager.webui.utils.salt.results.CmdExecCodeAllResult;
-import com.suse.manager.webui.utils.salt.results.StateApplyResult;
+import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.Pkg;
+import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.event.JobReturnEvent;
+import com.suse.salt.netapi.results.CmdExecCodeAllResult;
+import com.suse.salt.netapi.results.StateApplyResult;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
