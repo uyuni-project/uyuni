@@ -22,8 +22,6 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.utils.salt.Jobs;
-import com.suse.manager.webui.utils.salt.Saltutil;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
@@ -43,6 +41,7 @@ import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.modules.Timezone;
+import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.config.ClientConfig;
@@ -53,6 +52,7 @@ import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 
+import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -105,12 +105,17 @@ public enum SaltAPIService implements SaltService {
         try {
             Map<String, Result<R>> stringRMap = call.callSync(SALT_CLIENT,
                     new MinionList(minionId), SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            Optional<R> result = stringRMap.get(minionId).result();
-            if (!result.isPresent()) {
+
+            return Opt.fold(Optional.ofNullable(stringRMap.get(minionId)), () -> {
                 LOG.warn("Got no result for " + call.getPayload().get("fun") +
                         " on minion " + minionId + " (minion did not respond in time)");
-            }
-            return result;
+                return Optional.empty();
+            }, r ->
+                r.fold(error -> {
+                    LOG.warn(error.toString());
+                    return Optional.empty();
+                }, Optional::of)
+            );
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -295,9 +300,9 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, Result<List<Saltutil.RunningInfo>>> running(Target<?> target) {
+    public Map<String, Result<List<SaltUtil.RunningInfo>>> running(Target<?> target) {
         try {
-            return Saltutil.running().callSync(
+            return SaltUtil.running().callSync(
                     SALT_CLIENT, target,
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
         }
@@ -316,7 +321,7 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Jobs.ListJobResult listJob(String jid) {
+    public Jobs.Info listJob(String jid) {
         return callSync(Jobs.listJob(jid));
     }
 
