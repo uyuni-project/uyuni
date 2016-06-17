@@ -21,16 +21,17 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.utils.salt.Jobs;
-import com.suse.manager.webui.utils.salt.Saltutil;
-import com.suse.manager.webui.utils.salt.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.salt.netapi.calls.modules.SaltUtil;
+import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Json;
+import org.apache.log4j.Logger;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,8 @@ import static com.suse.utils.Opt.flatMap;
  * Utilities for minion actions
  */
 public class MinionActionUtils {
+
+    private static final Logger LOG = Logger.getLogger(MinionActionUtils.class);
 
     private MinionActionUtils() {
     }
@@ -72,7 +75,7 @@ public class MinionActionUtils {
      * @return the updated ServerAction
      */
     public static ServerAction updateMinionActionStatus(SaltService salt, ServerAction sa,
-            MinionServer server, List<Saltutil.RunningInfo> running) {
+            MinionServer server, List<SaltUtil.RunningInfo> running) {
         long actionId = sa.getParentAction().getId();
         boolean actionIsRunning = running.stream().filter(r ->
                 r.getMetadata(JsonElement.class)
@@ -89,7 +92,7 @@ public class MinionActionUtils {
             ServerAction serverAction = jobCache.entrySet().stream().findFirst()
                     .map(entry -> {
                         String jid = entry.getKey();
-                        Jobs.ListJobResult job = salt.listJob(jid);
+                        Jobs.Info job = salt.listJob(jid);
                         Optional<JsonElement> result = job
                                 .getResult(server.getMinionId(), JsonElement.class);
                         // the result should only be missing if its still running
@@ -161,15 +164,19 @@ public class MinionActionUtils {
                         .map(Stream::of)
                         .orElseGet(Stream::empty)
         ).collect(Collectors.toList());
-        Map<String, List<Saltutil.RunningInfo>> running =
+        Map<String, Result<List<SaltUtil.RunningInfo>>> running =
                 salt.running(new MinionList(minionIds));
         serverActions.stream().forEach(sa ->
                 sa.getServer().asMinionServer().ifPresent(minion -> {
-                    List<Saltutil.RunningInfo> runningInfos =
-                            Optional.ofNullable(running.get(minion.getMinionId()))
-                                    .orElseGet(Collections::emptyList);
-                    ActionFactory.save(updateMinionActionStatus(
-                            salt, sa, minion, runningInfos));
+                    Optional.ofNullable(running.get(minion.getMinionId())).ifPresent(r -> {
+                        r.consume(error -> {
+                            LOG.error(error.toString());
+                        },
+                        runningInfos -> {
+                            ActionFactory.save(updateMinionActionStatus(
+                                    salt, sa, minion, runningInfos));
+                        });
+                    });
                 })
         );
     }
