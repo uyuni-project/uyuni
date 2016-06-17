@@ -48,6 +48,8 @@ import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.utils.Json;
 import org.hibernate.Hibernate;
 import org.jmock.Mock;
+import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.utils.Xor;
 
 import java.io.File;
 import java.io.IOException;
@@ -83,8 +85,8 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 Date.from(Instant.now().minus(6, ChronoUnit.MINUTES)));
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
 
-        Map<String, List<SaltUtil.RunningInfo>> running = new HashMap<>();
-        running.put(minion.getMinionId(), Collections.emptyList());
+        Map<String, Result<List<SaltUtil.RunningInfo>>> running = new HashMap<>();
+        running.put(minion.getMinionId(), new Result<>(Xor.right(Collections.emptyList())));
 
         Jobs.Info listJobResult = listJob("jobs.list_job.state.apply.json", action.getId());
 

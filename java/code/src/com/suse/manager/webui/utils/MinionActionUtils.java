@@ -166,7 +166,7 @@ public class MinionActionUtils {
         ).collect(Collectors.toList());
         Map<String, Result<List<SaltUtil.RunningInfo>>> running =
                 salt.running(new MinionList(minionIds));
-        serverActions.stream().forEach(sa ->
+        serverActions.forEach(sa ->
                 sa.getServer().asMinionServer().ifPresent(minion -> {
                     Optional.ofNullable(running.get(minion.getMinionId())).ifPresent(r -> {
                         r.consume(error -> {
