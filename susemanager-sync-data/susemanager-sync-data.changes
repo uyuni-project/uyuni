@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jun 17 11:50:36 CEST 2016 - mc@suse.de
+
+- version 2.1.16-1
+- support SUSE Enterprise Storage 3 (bsc#966441)
+- support SLE-Module-Certifications12 (bsc#976203)
+- handle product class changes for SUSE Manager Server
+
+-------------------------------------------------------------------
 Fri Apr 29 11:38:48 CEST 2016 - jrenner@suse.com
 
 - version 2.1.15-1
