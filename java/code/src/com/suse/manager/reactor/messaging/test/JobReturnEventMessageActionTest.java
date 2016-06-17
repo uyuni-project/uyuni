@@ -26,9 +26,11 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
-import com.suse.manager.webui.utils.salt.events.Event;
-import com.suse.manager.webui.utils.salt.events.EventStream;
-import com.suse.manager.webui.utils.salt.events.JobReturnEvent;
+import com.suse.salt.netapi.datatypes.Event;
+import com.suse.salt.netapi.event.JobReturnEvent;
+import com.suse.salt.netapi.parser.JsonParser;
+
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -40,6 +42,10 @@ import java.util.stream.Collectors;
  * Tests for {@link JobReturnEventMessageAction}.
  */
 public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
+
+    // JsonParser for parsing events from files
+    public static final JsonParser<Event> EVENTS =
+            new JsonParser<>(new TypeToken<Event>(){});
 
     /**
      * Test the processing of packages.profileupdate job return event.
@@ -114,6 +120,6 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
         String eventString = Files.lines(path)
                 .collect(Collectors.joining("\n"))
                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
-        return EventStream.EVENTS.parse(eventString);
+        return EVENTS.parse(eventString);
     }
 }

@@ -22,15 +22,9 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.utils.salt.Jobs;
-import com.suse.manager.webui.utils.salt.LocalCallWithMetadata;
-import com.suse.manager.webui.utils.salt.State;
-import com.suse.manager.webui.utils.salt.Saltutil;
-import com.suse.manager.webui.utils.salt.Timezone;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
-import com.suse.manager.webui.utils.salt.events.EventStream;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -43,15 +37,22 @@ import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.Smbios;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
+import com.suse.salt.netapi.calls.modules.Timezone;
+import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.config.ClientConfig;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.results.Result;
+
+import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -102,14 +103,19 @@ public enum SaltAPIService implements SaltService {
      */
     public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
         try {
-            Map<String, R> stringRMap = call.callSync(SALT_CLIENT, new MinionList(minionId),
-                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            Optional<R> result = Optional.ofNullable(stringRMap.get(minionId));
-            if (!result.isPresent()) {
+            Map<String, Result<R>> stringRMap = call.callSync(SALT_CLIENT,
+                    new MinionList(minionId), SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+
+            return Opt.fold(Optional.ofNullable(stringRMap.get(minionId)), () -> {
                 LOG.warn("Got no result for " + call.getPayload().get("fun") +
                         " on minion " + minionId + " (minion did not respond in time)");
-            }
-            return result;
+                return Optional.empty();
+            }, r ->
+                r.fold(error -> {
+                    LOG.warn(error.toString());
+                    return Optional.empty();
+                }, Optional::of)
+            );
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -182,10 +188,10 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, String> getTimezoneOffsets(Target<?> target) {
+    public Map<String, Result<String>> getTimezoneOffsets(Target<?> target) {
         try {
-            Map<String, String> offsets = Timezone.getOffset().callSync(SALT_CLIENT, target,
-                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            Map<String, Result<String>> offsets = Timezone.getOffset().callSync(
+                    SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return offsets;
         }
         catch (SaltException e) {
@@ -279,9 +285,9 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, String> runRemoteCommand(Target<?> target, String cmd) {
+    public Map<String, Result<String>> runRemoteCommand(Target<?> target, String cmd) {
         try {
-            Map<String, String> result = Cmd.run(cmd).callSync(
+            Map<String, Result<String>> result = Cmd.run(cmd).callSync(
                     SALT_CLIENT, target,
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result;
@@ -294,12 +300,11 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, List<Saltutil.RunningInfo>> running(Target<?> target) {
+    public Map<String, Result<List<SaltUtil.RunningInfo>>> running(Target<?> target) {
         try {
-            Map<String, List<Saltutil.RunningInfo>> result = Saltutil.running().callSync(
+            return SaltUtil.running().callSync(
                     SALT_CLIENT, target,
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-            return result;
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -316,16 +321,16 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Jobs.ListJobResult listJob(String jid) {
+    public Jobs.Info listJob(String jid) {
         return callSync(Jobs.listJob(jid));
     }
 
     /**
      * {@inheritDoc}
      */
-    public Map<String, Boolean> match(String target) {
+    public Map<String, Result<Boolean>> match(String target) {
         try {
-            Map<String, Boolean> result = Match.glob(target).callSync(
+            Map<String, Result<Boolean>> result = Match.glob(target).callSync(
                     SALT_CLIENT, new Glob(target),
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result;
@@ -402,13 +407,13 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, Schedule.Result> schedule(String name,
+    public Map<String, Result<Schedule.Result>> schedule(String name,
             LocalCall<?> call, Target<?> target, ZonedDateTime scheduleDate,
             Map<String, ?> metadata) throws SaltException {
         // We do one Salt call per timezone: group minions by their timezone offsets
-        Map<String, String> minionOffsets = getTimezoneOffsets(target);
+        Map<String, Result<String>> minionOffsets = getTimezoneOffsets(target);
         Map<String, List<String>> offsetMap = minionOffsets.keySet().stream()
-                .collect(Collectors.groupingBy(minionOffsets::get));
+                .collect(Collectors.groupingBy(k -> minionOffsets.get(k).result().get()));
         if (LOG.isDebugEnabled()) {
             LOG.debug("Minions grouped by timezone offsets: " + offsetMap);
         }
@@ -419,7 +424,7 @@ public enum SaltAPIService implements SaltService {
                     .withOffsetSameInstant(ZoneOffset.of(entry.getKey())).toLocalDateTime();
             try {
                 Target<?> timezoneTarget = new MinionList(entry.getValue());
-                Map<String, Schedule.Result> result = Schedule
+                Map<String, Result<Schedule.Result>> result = Schedule
                         .add(name, call, targetScheduleDate, metadata)
                         .callSync(SALT_CLIENT, timezoneTarget,
                                 SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
@@ -435,29 +440,26 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public <T> Map<String, T> callSync(LocalCall<T> call, Target<?> target,
-            Optional<Map<String, ?>> metadata) throws SaltException {
-        LocalCallWithMetadata<T> callWithMetadata =
-                new LocalCallWithMetadata<>(call, metadata);
-        return callWithMetadata
-                .callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+    public <T> Map<String, Result<T>> callSync(LocalCall<T> call, Target<?> target)
+            throws SaltException {
+        return call.callSync(
+                SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
     }
 
     /**
      * {@inheritDoc}
      */
-    public <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target,
-            Optional<Map<String, ?>> metadata) throws SaltException {
-        LocalCallWithMetadata<T> callWithMetadata =
-                new LocalCallWithMetadata<>(call, metadata);
-        return callWithMetadata
-                .callAsync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+    public <T> LocalAsyncResult<T> callAsync(LocalCall<T> call, Target<?> target)
+            throws SaltException {
+        return call.callAsync(
+                SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
     }
 
     /**
      * {@inheritDoc}
      */
-    public Map<String, Schedule.Result> deleteSchedule(String name, Target<?> target) {
+    public Map<String, Result<Schedule.Result>> deleteSchedule(
+            String name, Target<?> target) {
         try {
             return Schedule.delete(name).callSync(
                     SALT_CLIENT, target,
@@ -466,7 +468,6 @@ public enum SaltAPIService implements SaltService {
         catch (SaltException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     /**
@@ -583,11 +584,10 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Boolean> ping(Target<?> targetIn) throws SaltException {
+    public Map<String, Result<Boolean>> ping(Target<?> targetIn) throws SaltException {
         return callSync(
             Test.ping(),
-            targetIn,
-            Optional.empty()
+            targetIn
         );
     }
 

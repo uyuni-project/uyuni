@@ -17,6 +17,7 @@ package com.suse.utils;
 
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 
 /**
@@ -38,5 +39,26 @@ public class Opt {
     public static <T, R> Function<Optional<T>, Optional<R>> flatMap(
             Function<T, Optional<R>> fn) {
         return o -> o.flatMap(fn);
+    }
+
+    /**
+     * Takes an Optional and transforms it to a value depending
+     * on the state of the Optional even if it is empty.
+     *
+     * @param opt the Optional
+     * @param empty supplier in case Optional is empty
+     * @param present function transforming the content of the Optional if present
+     * @param <T> content type of the supplied Optional
+     * @param <C> type of the resulting value
+     * @return transformed value
+     */
+    public static <T, C> C fold(Optional<T> opt, Supplier<? extends C> empty,
+            Function<? super T, ? extends C> present) {
+        if (!opt.isPresent()) {
+            return empty.get();
+        }
+        else {
+           return present.apply(opt.get());
+        }
     }
 }
