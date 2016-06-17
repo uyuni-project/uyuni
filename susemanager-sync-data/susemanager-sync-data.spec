@@ -6,6 +6,7 @@ Group:          Productivity/Other
 License:        GPLv2
 URL:            http://www.suse.com
 Source0:        %{name}-%{version}.tar.gz
+Requires:       spacewalk-java >= 2.1.165.24
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
