@@ -15,6 +15,7 @@
 import json
 
 import constants
+from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.server import rhnSQL
 from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.contentSourcesImport import ContentSourcesImport
@@ -31,6 +32,8 @@ class CdnSync(object):
 
     def __init__(self):
         rhnSQL.initDB()
+        initCFG('server.satellite')
+
         # Channel families mapping to channels
         with open(constants.CHANNEL_FAMILY_MAPPING_PATH, 'r') as f:
             self.families = json.load(f)
@@ -53,14 +56,13 @@ class CdnSync(object):
             for channel in self.families[family]['channels']:
                 self.channel_to_family[channel] = family
 
-    def _list_synced_channels(self):
+        # Set already synced channels
         h = rhnSQL.prepare("""
             select label from rhnChannel where org_id is null
         """)
         h.execute()
         channels = h.fetchall_dict() or []
-        channels = [ch['label'] for ch in channels]
-        return channels
+        self.synced_channels = [ch['label'] for ch in channels]
 
     def _list_available_channels(self):
         h = rhnSQL.prepare("""
@@ -88,14 +90,13 @@ class CdnSync(object):
 
     def print_channel_tree(self):
         available_channel_tree = self._list_available_channels()
-        synced_channels = self._list_synced_channels()
 
         print("p = previously imported/synced channel")
         print(". = channel not yet imported/synced")
 
         print("Base channels:")
         for channel in sorted(available_channel_tree):
-            status = 'p' if channel in synced_channels else '.'
+            status = 'p' if channel in self.synced_channels else '.'
             print("    %s %s" % (status, channel))
 
         for channel in sorted(available_channel_tree):
@@ -103,7 +104,7 @@ class CdnSync(object):
             if len(available_channel_tree[channel]) > 0:
                 print("%s:" % channel)
                 for child in sorted(available_channel_tree[channel]):
-                    status = 'p' if child in synced_channels else '.'
+                    status = 'p' if child in self.synced_channels else '.'
                     print("    %s %s" % (status, child))
 
     def _update_product_names(self, channels):
@@ -121,14 +122,17 @@ class CdnSync(object):
         importer = ProductNamesImport(batch, backend)
         importer.run()
 
-    def _get_content_sources(self, channel):
+    def _get_content_sources(self, channel, backend):
         batch = []
+        type_id = backend.lookupContentSourceType('yum')
         sources = self.content_source_mapping[channel]
         for source in sources:
             if not source['pulp_content_category'] == "source":
                 content_source = ContentSource()
                 content_source['label'] = source['pulp_repo_label_v2']
-                content_source['source_url'] = constants.CDN_URL + source['relative_url']
+                content_source['source_url'] = CFG.CDN_ROOT + source['relative_url']
+                content_source['org_id'] = None
+                content_source['type_id'] = type_id
                 batch.append(content_source)
         return batch
 
@@ -171,11 +175,11 @@ class CdnSync(object):
                     dists.append(d)
             except KeyError:
                 pass
-                
+
             channel_object['dists'] = dists
             channel_object['release'] = releases
 
-            sources = self._get_content_sources(label)
+            sources = self._get_content_sources(label, backend)
             content_sources_batch.extend(sources)
             channel_object['content-sources'] = sources
 
@@ -187,7 +191,8 @@ class CdnSync(object):
         importer = ChannelImport(channels_batch, backend)
         importer.run()
 
-    def _sync_channel(self, channel, no_errata=False):
+    @staticmethod
+    def _sync_channel(channel, no_errata=False):
         print "======================================"
         print "| Channel: %s" % channel
         print "======================================"
@@ -204,10 +209,9 @@ class CdnSync(object):
         sync.sync()
 
     def sync(self, channels=None, no_packages=False, no_errata=False):
-        synced_channels = self._list_synced_channels()
         # If no channels specified, sync already synced channels
         if channels is None:
-            channels = synced_channels
+            channels = self.synced_channels
 
         # Need to update channel metadata
         self._update_channels_metadata(channels)

@@ -28,8 +28,10 @@ from rhn import rpclib
 Output = rpclib.transports.Output
 
 try: # python2
+    PY3 = False
     import xmlrpclib
 except ImportError: # python3
+    PY3 = True
     import xmlrpc.client as xmlrpclib
     basestring = (str, bytes)
 
@@ -413,7 +415,7 @@ def get_server_capability(s):
     if headers is None:
         # No request done yet
         return {}
-    if hasattr(headers, 'get_all'):
+    if PY3:
         cap_headers = ["X-RHN-Server-Capability: %s" % val for val in headers.get_all("X-RHN-Server-Capability")]
     else:
         cap_headers = headers.getallmatchingheaders("X-RHN-Server-Capability")
