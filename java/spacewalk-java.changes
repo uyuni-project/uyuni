@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Fri Jun 17 18:10:20 CEST 2016 - mc@suse.de
+
+- version 2.5.59.7-1
+- support OES 2015 (bsc#934560)
+- align reboot behavior of salt and tranditional clients (bsc#975534)
+- update to latest salt netapi library
+- Report the state of virtual guests from virtual host manager as
+  'unknown'(bsc#983344)
+- add taskomatic job to clean up minion actions
+- replace ZypperEvent with default beacon event
+- move uuid cleanup logic into taskomatic
+- enable oracle support again (FATE#320213)
+- Enable minions to be worked with SSM only on available features
+- Use the IP address when doing ssh push via proxy (bsc#940927)
+- Don't allow URLs that only differ on the authorization token (bsc#976184)
+- Fix typo in Systems column (bsc#983916)
+- Salt hw reg: ignore virtual scsi devices (bsc#962588)
+
+-------------------------------------------------------------------
 Tue May 24 16:33:00 CEST 2016 - kwalter@suse.com
 
 - version 2.5.59.6-1
