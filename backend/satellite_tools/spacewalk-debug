@@ -105,7 +105,6 @@ mkdir -p $DIR/database/trc
 mkdir -p $DIR/cobbler-lib
 mkdir -p $DIR/tasko
 mkdir -p $DIR/salt-states
-mkdir -p $DIR/subscription-matcher
 
 echo "    * copying configuration information"
 cp -fa /etc/apache2/conf* $DIR/conf/httpd
@@ -171,7 +170,7 @@ done
 MATCHER_DATA_DIR=/var/lib/spacewalk/subscription-matcher
 if [ -d $MATCHER_DATA_DIR ]; then
   echo "    * copying Subscription Matcher files"
-  cp -fa $MATCHER_DATA_DIR/* $DIR/subscription-matcher
+  cp -fa $MATCHER_DATA_DIR $DIR/
 fi
 
 echo "    * copying logs"
