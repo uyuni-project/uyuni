@@ -1245,7 +1245,6 @@ public class ChannelFactory extends HibernateFactory {
     public static List<ContentSource> listVendorContentSources() {
         Criteria criteria = getSession().createCriteria(ContentSource.class);
         criteria.add(Restrictions.isNull("org"));
-        criteria.add(Restrictions.eq("type", ChannelFactory.CONTENT_SOURCE_TYPE_YUM));
         return criteria.list();
     }
 
@@ -1258,7 +1257,6 @@ public class ChannelFactory extends HibernateFactory {
         String repoUrlPrefix = repoUrl.split("\\?")[0];
         Criteria criteria = getSession().createCriteria(ContentSource.class);
         criteria.add(Restrictions.isNull("org"));
-        criteria.add(Restrictions.eq("type", ChannelFactory.CONTENT_SOURCE_TYPE_YUM));
         criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix, MatchMode.START));
         return (ContentSource) criteria.uniqueResult();
     }
