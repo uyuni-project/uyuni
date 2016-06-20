@@ -275,6 +275,18 @@ public interface SaltService {
             throws SaltException;
 
     /**
+     * Execute a LocalCall synchronously using salt-ssh.
+     *
+     * @param <T> the return type of the call
+     * @param call the call to execute
+     * @param target minions targeted by the call
+     * @param rosterFile alternative roster file to use (default: /etc/salt/roster)
+     * @return result of the call
+     */
+    <T> Map<String, Result<T>> callSyncSSH(LocalCall<T> call, Target<?> target,
+            Optional<String> rosterFile);
+
+    /**
      * Execute a LocalCall asynchronously on the default Salt client.
      *
      * @param <T> the return type of the call
