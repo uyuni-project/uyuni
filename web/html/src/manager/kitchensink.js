@@ -69,7 +69,16 @@ class TableDemo extends React.Component {
   }
 
   sortById(data, direction) {
-    return data.sort((a, b) => direction * (a - b));
+      return data.sort((a, b) => {
+          if (a.id < b.id) {
+            return -direction;
+          }
+          if (a.id > b.id) {
+            return direction;
+          }
+          // a must be equal to b
+          return 0;
+      });
   }
 
   sortByName(data, direction) {
