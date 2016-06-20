@@ -66,7 +66,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.stream.Stream;
 
 /**
@@ -449,6 +448,19 @@ public enum SaltAPIService implements SaltService {
             throws SaltException {
         return call.callSync(
                 SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public <T> Map<String, Result<T>> callSyncSSH(LocalCall<T> call, Target<?> target,
+            Optional<String> rosterFile) {
+        try {
+            return call.callSyncSSH(SALT_CLIENT, target, rosterFile);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

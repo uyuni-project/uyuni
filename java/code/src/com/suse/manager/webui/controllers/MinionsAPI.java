@@ -19,6 +19,8 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.wheel.Key;
 import spark.Request;
 import spark.Response;
@@ -26,6 +28,7 @@ import spark.Response;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -40,6 +43,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.results.Result;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -183,12 +187,20 @@ public class MinionsAPI {
         String host = formData.get("host");
         LOG.info("bootstrapping host: " + host);
 
-        // Apply the bootstrap state
+        // Pillar data for applying the bootstrap state
         Map<String, Object> pillarData = new HashMap<>();
         pillarData.put("master", ConfigDefaults.get().getCobblerHost());
-        Map<String, Object> results = SALT_SERVICE.applyStateSSH(
-                new MinionList(host), Optional.of(pillarData),
-                Arrays.asList(ApplyStatesEventMessage.CERTIFICATE, "bootstrap"));
+
+        // Construct the call
+        List<String> bootstrapMods = Arrays.asList(
+                ApplyStatesEventMessage.CERTIFICATE, "bootstrap");
+        LocalCall<Map<String, Object>> stateApplyCall = State.apply(
+                bootstrapMods, Optional.of(pillarData), Optional.of(true));
+
+        // TODO: Generate the roster file based on data from the UI
+        Optional<String> rosterFile = Optional.of("/tmp/susemanager-roster");
+        Map<String, Result<Map<String, Object>>> results = SaltAPIService.INSTANCE
+                .callSyncSSH(stateApplyCall, new MinionList(host), rosterFile);
         LOG.debug("bootstrap results: " + results);
 
         // TODO: Check if bootstrap was successful
