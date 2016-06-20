@@ -137,7 +137,7 @@ public class SaltServiceInvoker {
      * @param minionId the minion id
      * @return the network info as a map.
      */
-    public Optional<Map<String, String>> getNetModules(String minionId) {
+    public Optional<Map<String, Optional<String>>> getNetModules(String minionId) {
         return getOrInvoke("netModules", () -> saltService.getNetModules(minionId));
     }
 

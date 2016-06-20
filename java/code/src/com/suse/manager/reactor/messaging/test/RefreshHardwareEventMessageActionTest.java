@@ -26,6 +26,7 @@ import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Smbios;
 import com.suse.salt.netapi.calls.modules.Status;
+import com.suse.salt.netapi.parser.JsonParser;
 import org.apache.commons.io.IOUtils;
 import org.jmock.Mock;
 
@@ -428,7 +429,7 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse("sumautil.primary_ips", arch, SumaUtil.primaryIps().getReturnType());
         apiMock.stubs().method("getPrimaryIps").with(eq(minionId)).will(returnValue(Optional.of(ips)));
 
-        Map<String, String> netmodules = parse("sumautil.get_net_modules", arch, SumaUtil.getNetModules().getReturnType());
+        Map<String, Optional<String>> netmodules = parse("sumautil.get_net_modules", arch, SumaUtil.getNetModules().getReturnType());
         apiMock.stubs().method("getNetModules").with(eq(minionId)).will(returnValue(Optional.of(netmodules)));
 
         Map<String, Boolean> ping = new HashMap<>();
@@ -456,7 +457,7 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
     private <T> T parse(String name, String arch, TypeToken<T> returnType) throws IOException {
         String str = IOUtils.toString(getClass().getResourceAsStream(name + (arch != null ? "." + arch : "") + ".json"));
-        return gson.fromJson(str, returnType.getType());
+        return JsonParser.GSON.fromJson(str, returnType.getType());
     }
 
 }

@@ -43,7 +43,7 @@ public class SumaUtil {
     public static class IPRoute {
 
         private String destination;
-        private String gateway;
+        private Optional<String> gateway;
         @SerializedName("interface")
         private String netInterface;
         private String source;
@@ -60,7 +60,7 @@ public class SumaUtil {
          * Gateway, if any.
          * @return an IPv4 or IPv6 address
          */
-        public String getGateway() {
+        public Optional<String> getGateway() {
             return gateway;
         }
 
@@ -111,9 +111,9 @@ public class SumaUtil {
      * Call 'sumautil.get_net_modules'
      * @return a {@link LocalCall} to pass to the SaltClient
      */
-    public static LocalCall<Map<String, String>> getNetModules() {
+    public static LocalCall<Map<String, Optional<String>>> getNetModules() {
         return new LocalCall<>("sumautil.get_net_modules", Optional.empty(),
-                Optional.empty(), new TypeToken<Map<String, String>>() {
+                Optional.empty(), new TypeToken<Map<String, Optional<String>>>() {
         });
     }
 }

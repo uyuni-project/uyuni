@@ -62,7 +62,7 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
                 .orElse(Collections.emptyMap());
         Optional<Map<SumaUtil.IPVersion, SumaUtil.IPRoute>> primaryIps =
                 saltInvoker.getPrimaryIps(minionId);
-        Map<String, String> netModules = saltInvoker.getNetModules(minionId)
+        Map<String, Optional<String>> netModules = saltInvoker.getNetModules(minionId)
                 .orElse(Collections.emptyMap());
 
         if (interfaces.isEmpty()) {
@@ -97,7 +97,7 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
             final NetworkInterface iface = ifaceEntity;
 
             iface.setHwaddr(saltIface.getHWAddr());
-            iface.setModule(netModules.get(name));
+            iface.setModule(netModules.get(name).orElse(null));
             iface.setServer(server);
             iface.setName(name);
 
@@ -121,9 +121,9 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
                     ipv4 = new ServerNetAddress4();
                 }
                 ipv4.setInterfaceId(iface.getInterfaceId());
-                ipv4.setAddress(addr4.getAddress());
-                ipv4.setNetmask(addr4.getNetmask());
-                ipv4.setBroadcast(addr4.getBroadcast());
+                ipv4.setAddress(addr4.getAddress().orElse(null));
+                ipv4.setNetmask(addr4.getNetmask().orElse(null));
+                ipv4.setBroadcast(addr4.getBroadcast().orElse(null));
 
                 ServerNetworkFactory.saveServerNetAddress4(ipv4);
 

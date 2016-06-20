@@ -489,7 +489,7 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Optional<Map<String, String>> getNetModules(String minionId) {
+    public Optional<Map<String, Optional<String>>> getNetModules(String minionId) {
         return callSync(SumaUtil.getNetModules(), minionId);
     }
 
