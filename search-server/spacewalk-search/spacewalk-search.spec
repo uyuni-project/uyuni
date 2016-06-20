@@ -108,7 +108,7 @@ BuildRequires: systemd
 %endif
 %if 0%{?suse_version}
 BuildRequires: doc-indexes
-Requires:      apache-nutch
+Requires:      nutch
 %endif
 
 %description
@@ -159,7 +159,7 @@ ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BU
 sed -i 's/log4j.jar/log4j-1.jar/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 %endif
 %if 0%{?suse_version} >= 1315
-sed -i 's/^wrapper.java.classpath.19=.*/wrapper.java.classpath.19=\/usr\/share\/nutch\/apache-nutch-1.9.jar/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
+sed -i 's/^wrapper.java.classpath.19=.*/wrapper.java.classpath.19=\/usr\/share\/nutch\/nutch-2008-12-01_04-01-21.jar/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 %endif
 
 # add rc link
