@@ -902,6 +902,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       <trans-unit id="yourrhn.jsp.tasks.kickstart">
         <source>Manage &lt;strong&gt;Autoinstallations&lt;/strong&gt;</source>
       </trans-unit>
+      <trans-unit id="debuginfo.unavailable">
+        <source>If available, an appropriate debuginfo package can be downloaded from the SUSE Customer Center from the respective debuginfo child channel. Note: Not all packages have published debuginfo packages.</source>
+      </trans-unit>
       <trans-unit id="channels.vendor.jsp.header1">
         <source>The software channels listed below are @@VENDOR_NAME@@ channels or child channels of @@VENDOR_NAME@@ Channels.</source>
       </trans-unit>
