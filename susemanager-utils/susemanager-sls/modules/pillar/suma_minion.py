@@ -38,6 +38,9 @@ def ext_pillar(minion_id, pillar, path):
 
     ret = dict()
     data_filename = os.path.join(path, 'pillar_{minion_id}.yml'.format(minion_id=minion_id))
+    if not os.path.exists(data_filename):
+        # during onboarding the file do not exist which is ok
+        return ret
     try:
         ret = yaml.load(open(data_filename).read())
     except Exception as error:
