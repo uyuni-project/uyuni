@@ -28,6 +28,7 @@ import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.datatypes.target.Target;
 
+import com.suse.salt.netapi.parser.JsonParser;
 import org.apache.commons.io.IOUtils;
 import org.jmock.Expectations;
 
@@ -471,7 +472,7 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
             allowing(apiMock).getPrimaryIps(minionId);
             will(returnValue(Optional.of(ips)));
 
-            Map<String, String> netmodules = parse("sumautil.get_net_modules", arch,
+            Map<String, Optional<String>> netmodules = parse("sumautil.get_net_modules", arch,
                     SumaUtil.getNetModules().getReturnType());
             allowing(apiMock).getNetModules(minionId);
             will(returnValue(Optional.of(netmodules)));
@@ -498,12 +499,12 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     }
 
     private <T> T parse(String name, String arch, TypeToken<T> returnType) {
+        String filename = name + "." + arch + ".json";
         try {
-            String str = IOUtils.toString(getClass().getResourceAsStream(name +
-                    (arch != null ? "." + arch : "") + ".json"));
-            return gson.fromJson(str, returnType.getType());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            String str = IOUtils.toString(getClass().getResourceAsStream(filename));
+            return JsonParser.GSON.fromJson(str, returnType.getType());
+        } catch (Exception e) {
+            throw new RuntimeException(filename, e);
         }
     }
 
