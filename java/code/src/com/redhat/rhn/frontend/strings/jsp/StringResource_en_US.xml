@@ -2392,10 +2392,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       <trans-unit id="actionchain.jsp.summarydetail">
         <source>
             You add Actions to this Action Chain by scheduling any supported operation, such as
-            &lt;a href="/rhn/ssm/PackageInstall.do"&gt;installing&lt;/a&gt; or
-            &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;upgrading&lt;/a&gt; a package, running a
-            &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote command&lt;/a&gt; or
-            &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;deploying a configuration file&lt;/a&gt;.
+            installing or upgrading a package, running a remote command or deploying a configuration file.
             Both System Set Manager and single system actions are supported.
         </source>
         <context-group name="ctx">
