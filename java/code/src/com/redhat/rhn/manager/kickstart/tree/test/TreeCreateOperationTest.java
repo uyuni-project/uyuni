@@ -47,6 +47,7 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
         cmd.store();
         assertContains(cmd.getKernelOptions(), "install=");
         assertContains(cmd.getKernelOptions(), "self_update=0");
+        assertContains(cmd.getKernelOptions(), "pt.options=self_update");
     }
 
     public void testPopulateKernelOptsForSuseBreed() throws Exception {
