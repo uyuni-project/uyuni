@@ -298,7 +298,7 @@ public interface SaltService {
      * @return a map with the network interface name as key and
      * the kernel module name or null as a value
      */
-    Optional<Map<String, String>> getNetModules(String minionId);
+    Optional<Map<String, Optional<String>>> getNetModules(String minionId);
 
     /**
      * Find all minions matching the target expression and
