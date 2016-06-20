@@ -201,7 +201,7 @@ class Onboarding extends React.Component {
                 <SHeader sortFn={this.sortByState}>{t('State')}</SHeader>
                 <SCell value={ (row) => labelFor(row.state) } />
               </SColumn>
-              <SColumn width="5%">
+              <SColumn width="10%">
                 <SHeader>{t('Actions')}</SHeader>
                 <SCell value={ (row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)} />
               </SColumn>
