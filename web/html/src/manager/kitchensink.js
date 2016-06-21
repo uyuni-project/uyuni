@@ -9,14 +9,7 @@ const Functions = require("../utils/functions");
 const Comparators = Functions.Comparators;
 const Filters = Functions.Filters;
 const Renderer = Functions.Renderer;
-const Tables = require("../components/tableng.js");
-const Table = Tables.Table;
-const Column = Tables.Column;
-const Header = Tables.Header;
-const Cell = Tables.Cell;
-const SearchPanel = Tables.SearchPanel;
-const SearchField = Tables.SearchField;
-const Highlight = Tables.Highlight;
+const {Table, Column, SearchField, Highlight} = require("../components/tableng.js");
 
 var tableData = [];
 
@@ -59,7 +52,6 @@ class TableDemo extends React.Component {
       if (a.id > b.id) {
         return 1;
       }
-      // a must be equal to b
       return 0;
   }
 
@@ -81,77 +73,46 @@ class TableDemo extends React.Component {
     <span>
         <h4>You have selected {this.state.selectedName}</h4>
         <Panel title="Table demo" icon="fa-desktop">
-            <Table data={this.state.tableData} rowKeyFn={this.rowKey} pageSize={15}>
-              <SearchPanel>
-                <SearchField searchFn={this.searchData}/>
-              </SearchPanel>
-              <Column columnKey="id" width="10%">
-                <Header sortFn={this.sortById}>{t('Id')}</Header>
-                <Cell content={ (row) => row.id } />
-              </Column>
-              <Column columnKey="name" width="30%">
-                <Header sortFn={this.sortByName}>{t('Name')}</Header>
-                <Cell content={ (row, table) => <Highlight enabled={table.state.dataModel.filtered}
-                            text={row.name}
-                            highlight={table.state.dataModel.criteria}/>
-                    }/>
-              </Column>
-              <Column columnKey="address" width="50%">
-                <Header sortFn={this.sortByAddress}>{t('Address')}</Header>
-                <Cell content={ (row, table) => <Highlight enabled={table.state.dataModel.filtered}
-                            text={row.address}
-                            highlight={table.state.dataModel.criteria}/> } />
-              </Column>
-              <Column width="10%">
-                <Header>{t('Actions')}</Header>
-                <Cell content={ (row) => <Button text="Select" handler={() => this.setState({selectedName: row.name}) }/> } />
-              </Column>
+            <Table
+                data={this.state.tableData}
+                rowKeyFn={this.rowKey}
+                pageSize={15}
+                searchPanel={
+                    <SearchField searchFn={this.searchData} placeholder="Search by name or address"/>
+                }>
+              <Column
+                    columnKey="id"
+                    width="10%"
+                    sortFn={this.sortById}
+                    header={<span style={{color: 'red'}}>{t('Id')}</span>}
+                    cell={ (row) => row.id }
+                    />
+              <Column
+                    columnKey="name"
+                    width="30%"
+                    header={<span style={{color: 'yellow'}}>{t('Name')}</span>}
+                    sortFn={this.sortByName}
+                    cell={(row, table) => <Highlight enabled={table.state.dataModel.filtered}
+                                              text={row.name}
+                                              highlight={table.state.dataModel.criteria}/>}
+                    />
+              <Column
+                    columnKey="address"
+                    width="50%"
+                    header={<span style={{color: 'blue'}}>{t('Address')}</span>}
+                    sortFn={this.sortByAddress}
+                    cell={ (row, table) => <Highlight enabled={table.state.dataModel.filtered}
+                                             text={row.address}
+                                             highlight={table.state.dataModel.criteria}/> }
+                    />
+              <Column width="10%"
+                    header={t('Actions')}
+                    cell={ (row) => <Button text="Select" handler={() => this.setState({selectedName: row.name}) }/> }
+                    />
             </Table>
         </Panel>
     </span>
     );
-
-//    return (
-//    <span>
-//        <h4>You have selected {this.state.selectedName}</h4>
-//        <Panel title="Table demo" icon="fa-desktop">
-//            <Table
-//                data={this.state.tableData}
-//                rowKeyFn={this.rowKey}
-//                pageSize={15}
-//                searchPanel={
-//                    <SearchField searchFn={this.searchData}/>
-//                }>
-//              <Column
-//                    columnKey="id"
-//                    width="10%"
-//                    sortFn={this.sortById}
-//                    header={t('Id')}
-//                    cell={ (row) => row.id }>
-//              </Column>
-//              <Column
-//                    columnKey="name"
-//                    width="30%"
-//                    header=>{t('Name')}
-//                    sortFn={this.sortByName}
-//                    cell={(row, table) => <Highlight enabled={table.state.dataModel.filtered}
-//                                              text={row.name}
-//                                              highlight={table.state.dataModel.criteria}/>}>
-//              </Column>
-//              <Column columnKey="address" width="50%">
-//                <Header sortFn={this.sortByAddress}>{t('Address')}</Header>
-//                <Cell content={ (row, table) => <Highlight enabled={table.state.dataModel.filtered}
-//                            text={row.address}
-//                            highlight={table.state.dataModel.criteria}/> } />
-//              </Column>
-//              <Column width="10%">
-//                <Header>{t('Actions')}</Header>
-//                <Cell content={ (row) => <Button text="Select" handler={() => this.setState({selectedName: row.name}) }/> } />
-//              </Column>
-//            </Table>
-//        </Panel>
-//    </span>
-//    );
   }
 
 }
