@@ -1,20 +1,12 @@
 "use strict";
 
 const React = require("react");
-const TableComponent = require("../components/table");
-const Table = TableComponent.Table;
-const TableCell = TableComponent.TableCell;
-const TableRow = TableComponent.TableRow;
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const UtilComponent = require("./subscription-matching-util");
 const CsvLink = UtilComponent.CsvLink;
 const SystemLabel = UtilComponent.SystemLabel;
 const PopUp = require("../components/popup").PopUp;
-const STables = require("../components/tableng.js");
-const STable = STables.STable;
-const SColumn = STables.SColumn;
-const SHeader = STables.SHeader;
-const SCell = STables.SCell;
+const {Table, Column, SearchField, Highlight} = require("../components/tableng.js");
 
 const UnmatchedProducts = React.createClass({
   mixins: [StatePersistedMixin],
@@ -44,14 +36,12 @@ const UnmatchedProducts = React.createClass({
     return rowData.id;
   },
 
-  sortByName: function(data, direction) {
-    return data.sort((a, b) => direction *
-        a.productName.toLowerCase().localeCompare(b.productName.toLowerCase())
-    );
+  sortByName: function(a, b) {
+    return a.productName.toLowerCase().localeCompare(b.productName.toLowerCase());
   },
 
-  sortByCpuCount: function(data, direction) {
-    return data.sort((a, b) => direction * (a.systemCount - b.systemCount));
+  sortByCpuCount: function(a, b) {
+    return a.systemCount - b.systemCount;
   },
 
   showPopUp: function(id) {
@@ -67,27 +57,31 @@ const UnmatchedProducts = React.createClass({
     if (this.props.unmatchedProductIds.length > 0) {
       body = (
         <div>
-
-          <STable data={this.state.tableData} rowKeyFn={this.rowKey}>
-            <SColumn columnKey="name">
-                <SHeader sortFn={this.sortByName}>{t("Product name")}</SHeader>
-                <SCell value={ (row) => row.productName } />
-            </SColumn>
-            <SColumn columnKey="cpuCount">
-                <SHeader sortFn={this.sortByCpuCount}>{t("Unmatched system count")}</SHeader>
-                <SCell value={ (row) => row.systemCount } />
-            </SColumn>
-            <SColumn>
-                <SCell value={ (row) =>  <button
+          <Table
+            data={this.state.tableData}
+            rowKeyFn={this.rowKey}>
+            <Column
+                columnKey="name"
+                sortFn={this.sortByName}
+                header={t("Product name")}
+                cell={ (row) => row.productName }
+                />
+            <Column
+                columnKey="cpuCount"
+                sortFn={this.sortByCpuCount}
+                header={t("Unmatched system count")}
+                cell={ (row) => row.systemCount }
+                />
+            <Column
+                cell={ (row) =>  <button
                                 className="btn btn-default btn-cell"
                                 onClick={() => {this.showPopUp(row.id);}}
                                 data-toggle="modal"
                                 data-target="#unmatchedProductsPopUp">
                                 {t("Show system list")}
-                              </button>
-                 } />
-            </SColumn>
-          </STable>
+                              </button> }
+                />
+          </Table>
 
           <CsvLink name="unmatched_product_report.csv" />
 
@@ -123,7 +117,6 @@ const UnmatchedSystemPopUp = React.createClass({
   },
 
   buildTableData: function(props) {
-    console.log("UnmatchedSystemPopUp.buildTableData");
     if (!props.selectedProductId) {
         return null;
     }
@@ -138,10 +131,12 @@ const UnmatchedSystemPopUp = React.createClass({
     });
   },
 
-  sortByName: function(data, direction) {
-    return data.sort((a, b) => direction *
-        a.systemName.toLowerCase().localeCompare(b.systemName.toLowerCase())
-    );
+  sortByName: function(a, b) {
+    return a.systemName.toLowerCase().localeCompare(b.systemName.toLowerCase());
+  },
+
+  searchData: function(data, criteria) {
+    return data.filter((row) => row.systemName.toLowerCase().indexOf(criteria.toLowerCase()) > -1);
   },
 
   rowKey: function(rowData) {
@@ -161,12 +156,19 @@ const UnmatchedSystemPopUp = React.createClass({
   render: function() {
     const popUpContent = !this.state.tableData ?
       null :
-      <STable data={this.state.tableData} rowKeyFn={this.rowKey}>
-        <SColumn columnKey="name">
-            <SHeader sortFn={this.sortByName}>{t("System name")}</SHeader>
-            <SCell value={ (row) => <SystemLabel type={row.type} name={row.systemName} /> } />
-        </SColumn>
-      </STable>;
+      <Table
+        data={this.state.tableData}
+        rowKeyFn={this.rowKey}
+        searchPanel={
+            <SearchField searchFn={this.searchData} placeholder="Filter by name"/>
+        }>
+        >
+        <Column
+            columnKey="name"
+            sortFn={this.sortByName}
+            header={t("System name")}
+            cell={ (row) => <SystemLabel type={row.type} name={row.systemName} /> } />
+      </Table>;
 
     return (
       <PopUp title={t("Unmatched systems")}
