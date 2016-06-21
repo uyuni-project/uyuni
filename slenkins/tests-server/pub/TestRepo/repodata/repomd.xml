@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repomd xmlns="http://linux.duke.edu/metadata/repo" xmlns:rpm="http://linux.duke.edu/metadata/rpm">
+ <revision>1436435242</revision>
+ <tags>
+   <repo>obsrepository://build.suse.de/Devel:Galaxy:TestsuiteRepo/SLE_12_SP1</repo>
+ </tags>
+<data type="filelists">
+  <checksum type="sha256">06288a8a3ec708ceabe3197087e9aa93cbf4d5b81a391857c0cbec9a676fdba2</checksum>
+  <open-checksum type="sha256">4c8e9b1865da6972832da25c8921c031a371a62d9379d939d27cad0c8ed60914</open-checksum>
+  <location href="repodata/06288a8a3ec708ceabe3197087e9aa93cbf4d5b81a391857c0cbec9a676fdba2-filelists.xml.gz"/>
+  <timestamp>1436435243</timestamp>
+  <size>1350</size>
+  <open-size>5643</open-size>
+</data>
+<data type="updateinfo">
+  <checksum type="sha256">0967c2f17755f88a7e8b2185a9b2a87d72cc3f10cc3574e3fcedd997e84db42b</checksum>
+  <open-checksum type="sha256">4eb64a988cb6cb21e658aa651071cc739e53c814ca8a5d4cb24870a2679ccbe0</open-checksum>
+  <location href="repodata/0967c2f17755f88a7e8b2185a9b2a87d72cc3f10cc3574e3fcedd997e84db42b-updateinfo.xml.gz"/>
+  <timestamp>1436435243</timestamp>
+  <size>1043</size>
+</data>
+<data type="other">
+  <checksum type="sha256">f08a89e1946493d15313244a30a2962e7a43fc07205b9f7fca1ebeec3c6d2d2e</checksum>
+  <open-checksum type="sha256">7f889037cdbe7d627bbac6e0b3ba227b7b7bed42a775918de9b9abef4d7169a7</open-checksum>
+  <location href="repodata/f08a89e1946493d15313244a30a2962e7a43fc07205b9f7fca1ebeec3c6d2d2e-other.xml.gz"/>
+  <timestamp>1436435243</timestamp>
+  <size>1275</size>
+  <open-size>6045</open-size>
+</data>
+<data type="primary">
+  <checksum type="sha256">dadb7d32493327d1afdead2b4f191f8bcd449bcfe48fda241a0b94555c5495f6</checksum>
+  <open-checksum type="sha256">298c425d3792ea8fc5b19fe212870894ddd1d93d5c4fe2436dec44f9287cb9f6</open-checksum>
+  <location href="repodata/dadb7d32493327d1afdead2b4f191f8bcd449bcfe48fda241a0b94555c5495f6-primary.xml.gz"/>
+  <timestamp>1436435243</timestamp>
+  <size>2654</size>
+  <open-size>22982</open-size>
+</data>
+</repomd>

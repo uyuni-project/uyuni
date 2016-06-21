@@ -25,24 +25,26 @@ def setup():
     server = config.target("server")
     minion = config.target("minion")
 
-def runOrRaise(node, command, msg, time_out = 60):
-        ''' exec command on node, with msg (fail/succ message for journal)
-            and use tiimeout = 60 as default, but as optional param. so can be modified.'''
-        node.journal.beginTest("{}".format(msg))
-        status = node.run(command, timeout = time_out)
-        if not status and status.code != 0 :
-               node.journal.failure("{} FAIL!".format(msg))
-               raise susetest.SlenkinsError(1)
-        node.journal.success("{} OK! ".format(msg))
-        return True
-
 def client_setup():
         init_client = ''' zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/3.0/images/repo/SUSE-Manager-Server-3.0-POOL-x86_64-Media1/ suma3;  zypper -n --gpg-auto-import-keys ref; 
                         zypper -n in subscription-tools;
                         zypper -n in spacewalk-client-setup;
-                        zypper -n in spacewalk-check; '''
+                        zypper -n in spacewalk-check; 
+			zypper -n in rhncfg-actions'''
         run_cmd(client, init_client, "init client", 600)
+	#change_hostname = "echo \"{}     client\" >> /etc/hosts; echo \"client\" > /etc/hostname;  hostname -f".format(client.ipaddr)
+	#run_cmd(client, "hostname client",  "change hostname ", 8000)
+	#run_cmd(client, "sed -i '$ d' /etc/hosts;", "change hosts file", 100)
+	#run_cmd(client, change_hostname, "change hostsfile",  200)
+	
 
+def setup_server():		
+	change_hostname = "echo \"{}     suma-server.example.com\" >> /etc/hosts; echo \"suma-server.example.com\" > /etc/hostname;  hostname -f".format(server.ipaddr)
+	run_cmd(server, "hostname suma-server.example.com",  "change hostname ", 8000)
+	run_cmd(server, "sed -i '$ d' /etc/hosts;", "change hosts file", 100)
+	run_cmd(server, change_hostname, "change hostsfile",  200)
+	run_cmd(server, "cat /etc/hosts; cat /etc/hostname", "verification hosts", 300)
+	run_cmd(server, "mv  /var/lib/slenkins/tests-suse-manager/tests-server/install/ /", "move install", 900)
 
 
 ######################
@@ -86,37 +88,33 @@ def run_single_features():
 		else :
 			journal.failure("feature: {} fail!".format(feature))
 
-def modify_clobberd():
+def post_install_server():
+	# modify clobberd
 	journal.beginTest("Set up clobberd right configuraiton")
-        replace_clobber = {'redhat_management_permissive: 0' : 'redhat_management_permissive: 1' }
+	replace_clobber = {'redhat_management_permissive: 0' : 'redhat_management_permissive: 1' }
 	replace_string(server, replace_clobber, "/etc/cobbler/settings")
 	journal.success("done clobberd conf !")
 	run_cmd(server, "systemctl restart cobblerd.service && systemctl status cobblerd.service", "restarting cobllerd after configuration changes") 
-
-def setup_server():		
-	change_hostname = "echo \"{}     suma-server.example.com\" >> /etc/hosts; echo \"suma-server.example.com\" > /etc/hostname;  hostname -f".format(server.ipaddr)
-	run_cmd(server, "hostname suma-server.example.com",  "change hostname ", 8000)
-	run_cmd(server, "sed -i '$ d' /etc/hosts;", "change hosts file", 100)
-	run_cmd(server, change_hostname, "change hostsfile",  200)
-	run_cmd(server, "cat /etc/hosts; cat /etc/hostname", "verification hosts", 300)
-	run_cmd(server, "mv  /var/lib/slenkins/tests-suse-manager/tests-server/install/ /", "move install", 900)
-
+	# files needed for tests
+	runOrRaise(server, "mv  /var/lib/slenkins/tests-suse-manager/tests-server/pub/* /srv/www/htdocs/pub/", "move to pub", 900)
+	runOrRaise(server, "mv  /var/lib/slenkins/tests-suse-manager/tests-server/vCenter.json /tmp/", "move to pub", 900)
 ###################################### MAIN ################################################################################
 try:
-    # change hostname, and move the install dir
+    # change hostname, and move the install(fedora kernel, etc) dir to /
     setup_server()
-    # change password to linux
+    # change password to linux to all systems
     for node in (server, client, minion): 
     	run_cmd(node, SET_SUMAPWD, "change root pwd to linux")
     # install some spacewalk packages on client
     client_setup()
-    
+    # run migration.sh script
     journal.beginGroup("init suma-machines")
     runOrRaise(server, SERVER_INIT,  "INIT_SERVER", 8000)
-    modify_clobberd()
+    post_install_server()
+
+    
     journal.beginGroup("running cucumber-suite on jail")
     run_all_feature() 
-    #run_single_features()
 
 except susetest.SlenkinsError as e:
     journal.writeReport()

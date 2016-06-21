@@ -38,7 +38,7 @@ Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |a
   if ct.profile_exists( arg1 )
     raise "profile " + arg1 + " already exists"
   end
-  ct.profile_create( "testprofile", "testdistro", "install/empty.xml" )
+  ct.profile_create( "testprofile", "testdistro", "/install/empty.xml" )
 end
 
 Given(/profile "([^"]*)" exists/) do |arg1|

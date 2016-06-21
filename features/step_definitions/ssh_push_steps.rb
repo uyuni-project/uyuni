@@ -3,24 +3,23 @@
 
 When(/^I register this client for SSH push via tunnel$/) do
   # Create backups of /etc/hosts and up2date config
-  sshcmd("cp /etc/hosts /etc/hosts.BACKUP", ignore_err: true)
-  sshcmd("/etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP", ignore_err: true)
+  run_cmd($client, "cp /etc/hosts /etc/hosts.BACKUP", 600)
+  run_cmd($client, "/etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP", 600)
 
   # Generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
-  expectFile = ExpectFileGenerator.new("#{$myhostname}", bootstrap)
+  expectFile = ExpectFileGenerator.new("#{$client_hostname}", bootstrap)
   step "I copy to server \"" + expectFile.path + "\""
 
   # Perform the registration
   filename = expectFile.filename
   command = "echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST expect #{filename} 2>&1"
-  $sshout = ''
-  $sshout = `#{command}`
-  unless $?.success?
+  code = run_cmd($client, command, 600)
+  if code != 0
     raise "Execute command failed: #{$!}: #{$sshout}"
   end
 
   # Restore files from backups
-  sshcmd("mv /etc/hosts.BACKUP /etc/hosts", ignore_err: true)
-  sshcmd("mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date'", ignore_err: true)
+  run_cmd($client, "mv /etc/hosts.BACKUP /etc/hosts", 500)
+  run_cmd($client, "mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date", 500)
 end

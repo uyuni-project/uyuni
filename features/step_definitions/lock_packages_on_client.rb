@@ -3,7 +3,7 @@
 
 Then(/^"(.*?)" is locked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
-  fail unless File.exist?(zypp_lock_file)
+  fail unless file_exist($client, zypp_lock_file)
 
   locks = read_zypp_lock_file(zypp_lock_file)
   fail unless locks.find{|lock| pkg =~ /^#{lock['solvable_name']}/ }

@@ -41,5 +41,6 @@ When(/^"(.*)" exists on the filesystem$/) do |file|
   rescue Timeout::Error
     puts "timeout waiting for the file to appear"
   end
-  fail if not File.exist?(file)
+  out , local, remote, code = $client.test_and_store_results_together("test -f #{file}", "root", 600)
+  fail if code != 0
 end

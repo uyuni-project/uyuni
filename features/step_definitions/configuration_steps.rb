@@ -1,6 +1,5 @@
 # Copyright (c) 2010-2011 Novell, Inc.
 # Licensed under the terms of the MIT license.
-
 #
 # Initial step for channel testing
 #
@@ -12,8 +11,11 @@ Given(/^I am testing configuration$/) do
 end
 
 When(/^I change the local file "([^"]*)" to "([^"]*)"$/) do |filename, content|
-    sshcmd("stat #{filename}")
-    sshcmd("echo \"#{content}\" > #{filename}")
+    out, local, remote, code = $client.test_and_store_results_together("echo \"#{content}\" > #{filename}", "root", 600)
+    puts out
+    if code != 0
+      raise "Execute command failed #{out} !"
+    end
 end
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/) do |arg1, arg2, arg3|
@@ -30,19 +32,34 @@ Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
 end
 
 Then(/^On this client the File "([^"]*)" should exists$/) do |arg1|
-   fail if not File.exist?(arg1)
+    out, local, remote, code = $client.test_and_store_results_together("test -f #{arg1}", "root", 600)
+    puts out
+    if code != 0
+      raise "Execute command failed #{out} !"
+    end
+
 end
 
 Then(/^On this client the File "([^"]*)" should have the content "([^"]*)"$/) do |filename, content|
-    fail if not File.exist?(filename)
-    fail if not File.read(filename).include?(content)
+    out, local, remote, code = $client.test_and_store_results_together("test -f #{filename}", "root", 600)
+    puts out
+    if code != 0
+      raise "Execute command failed #{out} !"
+    end
+    # Example: 
+    #And On this client the File "/etc/mgr-test-file.cnf" should have the content "MGR_PROXY=yes"'
+    out, local, remote, code = $client.test_and_store_results_together("grep #{content} #{filename}", "root", 600)
+    puts out
+    if code != 0
+      raise "content #{content} not found #{out} !"
+    end
 end
 
 When(/^I enable all actions$/) do
    command = "rhn-actions-control --enable-all"
-   output , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
-   puts output
+   out , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
+   puts out
    if code != 0
-     raise "Execute command failed #{output} !"
+     raise "Execute command failed #{out} !"
    end
 end
