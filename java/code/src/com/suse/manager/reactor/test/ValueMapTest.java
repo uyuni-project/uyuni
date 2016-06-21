@@ -15,15 +15,12 @@
 package com.suse.manager.reactor.test;
 
 import com.suse.manager.reactor.utils.ValueMap;
-import junit.framework.TestCase;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import junit.framework.TestCase;
 
 /**
  * Test for {@link com.suse.manager.reactor.utils.ValueMap}

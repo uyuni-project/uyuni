@@ -14,42 +14,30 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
-import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
-import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
-import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
-import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.reactor.utils.ZonedDateTimeISOAdapter;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs;
-import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.parser.JsonParser;
-import com.suse.utils.Json;
-import org.hibernate.Hibernate;
-import org.jmock.Mock;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
+
+import org.jmock.Mock;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,10 +45,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Date;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**

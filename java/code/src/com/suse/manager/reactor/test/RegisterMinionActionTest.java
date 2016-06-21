@@ -14,22 +14,6 @@
  */
 package com.suse.manager.reactor.test;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -47,19 +31,33 @@ import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
-import com.suse.salt.netapi.calls.modules.Status;
-import org.jmock.Mock;
-
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.salt.netapi.calls.modules.Grains;
+import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.parser.JsonParser;
+
+import org.jmock.Mock;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Tests for {@link RegisterMinionEventMessageAction}.

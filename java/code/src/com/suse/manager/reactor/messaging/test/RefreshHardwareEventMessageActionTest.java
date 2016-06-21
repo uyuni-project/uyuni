@@ -1,13 +1,9 @@
 package com.suse.manager.reactor.messaging.test;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -16,6 +12,10 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.RefreshHardwareEventMessage;
 import com.suse.manager.reactor.messaging.RefreshHardwareEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
@@ -27,6 +27,7 @@ import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Smbios;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.parser.JsonParser;
+
 import org.apache.commons.io.IOUtils;
 import org.jmock.Mock;
 
@@ -250,7 +251,7 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                 Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
                         eth -> eth.getName(),
                         Function.identity()
-                ));                
+                ));
 
                 assertEquals("00:00:00:00:00:00", ethNames.get("lo").getHwaddr());
                 assertEquals("52:54:00:d7:4f:20", ethNames.get("eth0").getHwaddr());
@@ -278,7 +279,7 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                 assertEquals("ibmveth", ethNames.get("eth0").getModule());
 
                 assertEquals(null, ethNames.get("lo").getPrimary());
-                assertEquals("Y", ethNames.get("eth0").getPrimary());                
+                assertEquals("Y", ethNames.get("eth0").getPrimary());
             });
     }
 
