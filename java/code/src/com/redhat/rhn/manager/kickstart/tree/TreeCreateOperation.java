@@ -64,7 +64,6 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
         }
 
         if (this.tree.getInstallType().isSUSE()) {
-
             String kopts = StringUtils.defaultString(this.tree.getKernelOptions());
             if (!kopts.contains("install=")) {
                 String localhost = this.getServerName();
@@ -80,7 +79,11 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
 
                 this.tree.setKernelOptions(kopts);
             }
-
+            // disable YaST self update for SLE
+            if (!kopts.contains("self_update=")) {
+                kopts = kopts + " self_update=0 pt.options=self_update";
+                this.tree.setKernelOptions(kopts);
+            }
         }
 
         return super.store();
