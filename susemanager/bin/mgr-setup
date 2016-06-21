@@ -5,6 +5,14 @@ if [ ! $UID -eq 0 ]; then
     exit 1
 fi
 
+# check for uppercase chars in hostname
+HOSTNAME=`hostname -f`
+if [ "$HOSTNAME" != "$(echo $HOSTNAME | tr '[:upper:]' '[:lower:]')" ]
+then
+    echo "Uppercase characters are not allowed for SUSE Manager hostname."
+    exit 1
+fi
+
 TMPDIR="/var/spacewalk/tmp"
 DO_MIGRATION=0
 DO_SETUP=0
