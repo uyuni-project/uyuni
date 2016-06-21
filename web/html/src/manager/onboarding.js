@@ -5,17 +5,19 @@ const ReactDOM = require("react-dom");
 const Buttons = require("../components/buttons");
 const AsyncButton = Buttons.AsyncButton;
 const Panel = require("../components/panel").Panel;
-const Table = require("../components/table2").Table;
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Comparators = Functions.Comparators;
 const Filters = Functions.Filters;
 const Renderer = Functions.Renderer;
-const STables = require("../components/tableng.js");
-const STable = STables.STable;
-const SColumn = STables.SColumn;
-const SHeader = STables.SHeader;
-const SCell = STables.SCell;
+const Tables = require("../components/tableng.js");
+const Table = Tables.Table;
+const Column = Tables.Column;
+const Header = Tables.Header;
+const Cell = Tables.Cell;
+const SearchPanel = Tables.SearchPanel;
+const SearchField = Tables.SearchField;
+const Highlight = Tables.Highlight;
 
 function listKeys() {
     return Network.get("/rhn/manager/api/minions/keys").promise;
@@ -92,20 +94,6 @@ function labelFor(state) {
     return <span className={"label label-" + mapping.label}>{ mapping.uiName }</span>
 }
 
-function Highlight(props) {
-  var text = props.text;
-  var high = props.highlight;
-
-  if (!props.enabled) {
-    return <span>{text}</span>
-  }
-
-  var chunks = text.split(new RegExp("^" + high));
-
-  return <span>{chunks
-    .map((e, i) => e == "" ? <span key="highlight" style={{backgroundColor: "#f0ad4e", borderRadius: "2px"}}>{high}</span> : <span key={i}>{e}</span>)}</span>;
-}
-
 class Onboarding extends React.Component {
 
   constructor(props) {
@@ -131,39 +119,21 @@ class Onboarding extends React.Component {
     return rowData.id;
   }
 
-  sortByName(data, direction) {
-    return data.sort((a, b) => direction * a.id.toLowerCase().localeCompare(b.id.toLowerCase()));
+  sortByName(a, b) {
+    return a.id.toLowerCase().localeCompare(b.id.toLowerCase());
   }
 
-  sortByFingerprint(data, direction) {
-     return data.sort((a, b) => {
-         if (a.fingerprint > b.fingerprint) {
-           return direction * 1;
-         }
-         if (a.fingerprint < b.fingerprint) {
-           return direction * -1;
-         }
-         return 0
-     });
+  sortByFingerprint(a, b) {
+     return a.localeCompare(b);
   }
 
-  sortByState(data, direction) {
-     return data.sort((a, b) => {
-         if (a.state > b.state) {
-           return direction * 1;
-         }
-         if (a.state < b.state) {
-           return direction * -1;
-         }
-         return 0
-     });
+  sortByState(a, b) {
+    return a.state.localeCompare(b.state);
   }
 
   searchData(data, criteria) {
-      if (!criteria || criteria == "") {
-        return data;
-      }
-      return data.filter((e) => e.id.startsWith(criteria) || e.fingerprint.startsWith(criteria));
+      return data.filter((e) => e.id.toLocaleLowerCase().includes(criteria.toLocaleLowerCase()) ||
+        e.fingerprint.toLocaleLowerCase().startsWith(criteria.toLocaleLowerCase()));
   }
 
   render() {
@@ -174,38 +144,41 @@ class Onboarding extends React.Component {
     <span>
         <h4>{this.state.selectedProductId}</h4>
         <Panel title="Onboarding" icon="fa-desktop" button={ panelButtons }>
-            <STable data={this.state.keys} searchFn={this.searchData} rowKeyFn={this.rowKey} pageSize={15}>
-              <SColumn columnKey="id" width="30%">
-                <SHeader sortFn={this.sortByName}>{t('Name')}</SHeader>
-                <SCell value={ (row, table) => {
+            <Table data={this.state.keys} rowKeyFn={this.rowKey} pageSize={15}>
+              <SearchPanel>
+                <SearchField searchFn={this.searchData}/>
+              </SearchPanel>
+              <Column columnKey="id" width="30%">
+                <Header sortFn={this.sortByName}>{t('Name')}</Header>
+                <Cell content={ (row, table) => {
                      if(row.state == "minions") {
                         return <a href={ "/rhn/manager/minions/" + row.id }>
                             <Highlight enabled={table.state.dataModel.filtered}
                               text={row.id}
-                              highlight={table.state.dataModel.filteredText}/>
+                              highlight={table.state.dataModel.criteria}/>
                             </a>;
                      } else {
                         return <Highlight enabled={table.state.dataModel.filtered}
                             text={row.id}
-                            highlight={table.state.dataModel.filteredText}/>;
+                            highlight={table.state.dataModel.criteria}/>;
                      }
                     }}/>
-              </SColumn>
-              <SColumn columnKey="fingerprint" width="50%">
-                <SHeader sortFn={this.sortByFingerprint}>{t('Fingerprint')}</SHeader>
-                <SCell value={ (row, table) => <Highlight enabled={table.state.dataModel.filtered}
+              </Column>
+              <Column columnKey="fingerprint" width="50%">
+                <Header sortFn={this.sortByFingerprint}>{t('Fingerprint')}</Header>
+                <Cell content={ (row, table) => <Highlight enabled={table.state.dataModel.filtered}
                             text={row.fingerprint}
-                            highlight={table.state.dataModel.filteredText}/> } />
-              </SColumn>
-              <SColumn columnKey="state" width="10%">
-                <SHeader sortFn={this.sortByState}>{t('State')}</SHeader>
-                <SCell value={ (row) => labelFor(row.state) } />
-              </SColumn>
-              <SColumn width="10%">
-                <SHeader>{t('Actions')}</SHeader>
-                <SCell value={ (row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)} />
-              </SColumn>
-            </STable>
+                            highlight={table.state.dataModel.criteria}/> } />
+              </Column>
+              <Column columnKey="state" width="10%">
+                <Header sortFn={this.sortByState}>{t('State')}</Header>
+                <Cell content={ (row) => labelFor(row.state) } />
+              </Column>
+              <Column width="10%">
+                <Header>{t('Actions')}</Header>
+                <Cell content={ (row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)} />
+              </Column>
+            </Table>
         </Panel>
     </span>
     );
