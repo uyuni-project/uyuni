@@ -4,18 +4,19 @@
 require 'nokogiri'
 
 def client_is_zypp?
-  File.stat("/usr/bin/zypper").executable?
+   out, local, remote, code = $client.test_and_store_results_together("test -x /usr/bin/zypper", "root", 600)
+   return out
 end
 
 def client_refresh_metadata
   if client_is_zypp?
-    `zypper --non-interactive ref -s`
-    fail if ! $?.success?
+     out, local, remote, code = $client.test_and_store_results_together("zypper --non-interactive ref -s", "root", 600)
+     fail if code != 0
   else
-    `yum clean all`
-   fail if ! $?.success?
-   `yum makecache`
-   fail if ! $?.success?
+     out, local, remote, code = $client.test_and_store_results_together("yum clean all", "root", "600")
+     fail if code != 0
+     out, local, remote, code = $client.test_and_store_results_together("yum makecache", "root", "600")
+     fail if code != 0
   end
 end
 
@@ -28,8 +29,9 @@ def client_raw_repodata_dir( channel )
 end
 
 def client_system_id
-  xml = Nokogiri::XML(File.read('/etc/sysconfig/rhn/systemid'))
-  xml.xpath('/params/param/value/struct/member[name="system_id"]/value').text
+  out, local, remote, code = $client.test_and_store_results_together("cat /etc/sysconfig/rhn/systemid", "root", 600)
+   puts out
+   fail if code != 1
 end
 
 def client_system_id_to_i
