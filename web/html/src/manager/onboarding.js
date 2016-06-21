@@ -10,14 +10,7 @@ const Functions = require("../utils/functions");
 const Comparators = Functions.Comparators;
 const Filters = Functions.Filters;
 const Renderer = Functions.Renderer;
-const Tables = require("../components/tableng.js");
-const Table = Tables.Table;
-const Column = Tables.Column;
-const Header = Tables.Header;
-const Cell = Tables.Cell;
-const SearchPanel = Tables.SearchPanel;
-const SearchField = Tables.SearchField;
-const Highlight = Tables.Highlight;
+const {Table, Column, SearchField, Highlight} = require("../components/tableng.js");
 
 function listKeys() {
     return Network.get("/rhn/manager/api/minions/keys").promise;
@@ -144,40 +137,54 @@ class Onboarding extends React.Component {
     <span>
         <h4>{this.state.selectedProductId}</h4>
         <Panel title="Onboarding" icon="fa-desktop" button={ panelButtons }>
-            <Table data={this.state.keys} rowKeyFn={this.rowKey} pageSize={15}>
-              <SearchPanel>
-                <SearchField searchFn={this.searchData}/>
-              </SearchPanel>
-              <Column columnKey="id" width="30%">
-                <Header sortFn={this.sortByName}>{t('Name')}</Header>
-                <Cell content={ (row, table) => {
-                     if(row.state == "minions") {
-                        return <a href={ "/rhn/manager/minions/" + row.id }>
-                            <Highlight enabled={table.state.dataModel.filtered}
-                              text={row.id}
-                              highlight={table.state.dataModel.criteria}/>
-                            </a>;
-                     } else {
-                        return <Highlight enabled={table.state.dataModel.filtered}
-                            text={row.id}
-                            highlight={table.state.dataModel.criteria}/>;
-                     }
-                    }}/>
-              </Column>
-              <Column columnKey="fingerprint" width="50%">
-                <Header sortFn={this.sortByFingerprint}>{t('Fingerprint')}</Header>
-                <Cell content={ (row, table) => <Highlight enabled={table.state.dataModel.filtered}
-                            text={row.fingerprint}
-                            highlight={table.state.dataModel.criteria}/> } />
-              </Column>
-              <Column columnKey="state" width="10%">
-                <Header sortFn={this.sortByState}>{t('State')}</Header>
-                <Cell content={ (row) => labelFor(row.state) } />
-              </Column>
-              <Column width="10%">
-                <Header>{t('Actions')}</Header>
-                <Cell content={ (row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)} />
-              </Column>
+            <Table
+                data={this.state.keys}
+                rowKeyFn={this.rowKey}
+                pageSize={15}
+                searchPanel={
+                    <SearchField searchFn={this.searchData}/>
+                }>
+              <Column
+                columnKey="id"
+                width="30%"
+                sortFn={this.sortByName}
+                header={t('Name')}
+                cell={ (row, table) => {
+                      if(row.state == "minions") {
+                         return <a href={ "/rhn/manager/minions/" + row.id }>
+                             <Highlight enabled={table.state.dataModel.filtered}
+                               text={row.id}
+                               highlight={table.state.dataModel.criteria}/>
+                             </a>;
+                      } else {
+                         return <Highlight enabled={table.state.dataModel.filtered}
+                             text={row.id}
+                             highlight={table.state.dataModel.criteria}/>;
+                      }
+                     }}
+                />
+              <Column
+                columnKey="fingerprint"
+                width="50%"
+                sortFn={this.sortByFingerprint}
+                header={t('Fingerprint')}
+                cell={ (row, table) =>
+                    <Highlight enabled={table.state.dataModel.filtered}
+                         text={row.fingerprint}
+                         highlight={table.state.dataModel.criteria}/> }
+                />
+              <Column
+                columnKey="state"
+                width="10%"
+                sortFn={this.sortByState}
+                header={t('State')}
+                cell={ (row) => labelFor(row.state) }
+                />
+              <Column
+                width="10%"
+                header={t('Actions')}
+                cell={ (row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)}
+                />
             </Table>
         </Panel>
     </span>

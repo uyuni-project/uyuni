@@ -42,27 +42,21 @@ const ItemsPerPageSelector = (props) =>
   </select>
 ;
 
-class SearchPanel extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-      const dataModel = this.props.table.state.dataModel;
-      const itemCounter = <span>{t("Items {0} - {1} of {2}", dataModel.getFirstPageItemIndex() + 1,
+const SearchPanel = (props) => {
+    let itemCounter = null;
+    let children = null;
+    if (props.table) {
+        const dataModel = props.table.state.dataModel;
+        itemCounter = <span>{t("Items {0} - {1} of {2}", dataModel.getFirstPageItemIndex() + 1,
             dataModel.getLastPageItemIndex(), dataModel.getSize())}</span>;
 
-      const children = React.Children.map(this.props.children,
-        (child) => React.cloneElement(child, { table: this.props.table }),
-        this);
-
-      return <div className="spacewalk-list-filter table-search-wrapper">
+        children = React.Children.map(props.children,
+            (child) => React.cloneElement(child, { table: props.table }));
+    }
+    return <div className="spacewalk-list-filter table-search-wrapper">
                 {children} {itemCounter}
              </div>
-  }
-
-}
+};
 
 class SearchField extends React.Component {
 
@@ -82,7 +76,6 @@ class SearchField extends React.Component {
   }
 
   render() {
-
       return <input className="form-control table-input-search"
         value={this.state.value}
         placeholder={this.props.placeholder}
@@ -179,149 +172,17 @@ class SimpleTableDataModel {
 
 }
 
-
-class Table extends React.Component {
-
-  constructor(props) {
-    super(props);
-    ["onSearch", "sort", "onPageChange", "onItemsPerPageChange", "initDataModel"].forEach(method => this[method] = this[method].bind(this));
-    this.state = {
-        dataModel: this.initDataModel(props.data, props.pageSize)
-    };
-  }
-
-  initDataModel(data, pageSize) {
-    return new SimpleTableDataModel(data, pageSize);
-  }
-
-  onSearch(searchFn, criteria) {
-    this.state.dataModel.filter(searchFn, criteria);
-    this.forceUpdate();
-  }
-
-  sort(columnKey, sortFn, sortDirection) {
-    this.state.dataModel.sort(columnKey, sortFn, sortDirection);
-    this.setState({sortKey: columnKey});
-  }
-
-  onItemsPerPageChange(pageSize) {
-    this.state.dataModel.changeItemsPerPage(pageSize);
-    this.forceUpdate();
-  }
-
-  onPageChange(page) {
-    this.state.dataModel.goToPage(page);
-    this.forceUpdate();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.data != nextProps.data) {
-        this.setState({
-            dataModel: this.initDataModel(nextProps.data, this.state.dataModel.getItemsPerPage())
-        });
-    }
-  }
-
-  render() {
-      let headers = [];
-      let searchPanel = null;
-      React.Children.forEach(this.props.children,
-        (child) => {
-          if (child.type === Column) {
-              const column = child;
-
-              let hasHeader = false;
-              React.Children.forEach(column.props.children, (child) => {
-                 if (child.type === Header) {
-                    const head = React.cloneElement(child, {
-                        key: headers.length,
-                        columnKey: column.props.columnKey,
-                        currentSortKey: this.state.sortKey,
-                        onSort: this.sort,
-                        width: column.props.width
-                        });
-                    headers.push(head);
-                    hasHeader = true;
-                 }
-              });
-              if (!hasHeader) {
-                   headers.push(<Header key={headers.length}/>);
-              }
-
-          } else if (child.type === SearchPanel) {
-            searchPanel = React.cloneElement(child, {
-                table: this
-            });
-          }
-      });
-
-  	let rows = this.state.dataModel.getCurrentPageData().map((element, index) => {
-  			let cells = React.Children.toArray(this.props.children)
-  			    .filter((child) => child.type === Column)
-  			    .map((column) => React.cloneElement(column, {data: element, table: this})
-     		);
-     		const classes = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
-    		return <tr className={classes} key={this.props.rowKeyFn(element)} >{cells}</tr>;
-    });
-
-    return (
-      <div className="spacewalk-list">
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <div className="spacewalk-list-head-addons">
-              {searchPanel}
-              <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
-                <ItemsPerPageSelector key="itemsPerPageSelector"
-                  currentValue={this.state.dataModel.getItemsPerPage()}
-                  onChange={this.onItemsPerPageChange}
-                /> {t("items per page")}
-              </div>
-            </div>
-          </div>
-        <div>
-            <div className="table-responsive">
-                <table className="table table-striped vertical-middle">
-                   <thead>
-                      <tr>{headers}</tr>
-                   </thead>
-                   <tbody>
-                      {rows}
-                   </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div className="panel-footer">
-            <div className="spacewalk-list-bottom-addons">
-              <PaginationBlock key="paginationBlock"
-                currentPage={this.state.dataModel.getCurrentPage()}
-                lastPage={this.state.dataModel.getLastPage()}
-                onPageChange={this.onPageChange}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-}
-
-Table.defaultProps = { pageSize : 15 };
-
 class Column extends React.Component {
 
   render() {
-      let children = [];
-      React.Children.forEach(this.props.children,
-       (child) => {if (child.type !== Header) {
-         children.push(child);
-       }});
+     let content = null;
+     if (typeof this.props.cell === "function") {
+        content = this.props.cell(this.props.data, this.props.table);
+     } else {
+        content = this.props.cell;
+     }
 
-      let widgets = children.map(
-        (widget) => React.cloneElement(widget, {key: "widget", data: this.props.data, table: this.props.table})
-      );
-     return <td>{widgets}</td>;
+     return (<td>{content}</td>)
   }
 
 }
@@ -383,21 +244,6 @@ class Button extends React.Component {
   }
 }
 
-class Cell extends React.Component {
-
-  render() {
-     let text = "";
-     if (typeof this.props.content === "function") {
-     	 text = this.props.content(this.props.data, this.props.table);
-     } else {
-         text = this.props.content;
-     }
-     return <span>{ text }</span>;
-  }
-
-}
-
-
 function Highlight(props) {
   let text = props.text;
   let high = props.highlight;
@@ -423,12 +269,131 @@ function Highlight(props) {
 }
 
 
+class Table extends React.Component {
+
+  constructor(props) {
+    super(props);
+    ["onSearch", "sort", "onPageChange", "onItemsPerPageChange", "initDataModel"].forEach(method => this[method] = this[method].bind(this));
+    this.state = {
+        dataModel: this.initDataModel(props.data, props.pageSize)
+    };
+  }
+
+  initDataModel(data, pageSize) {
+    return new SimpleTableDataModel(data, pageSize);
+  }
+
+  onSearch(searchFn, criteria) {
+    this.state.dataModel.filter(searchFn, criteria);
+    this.forceUpdate();
+  }
+
+  sort(columnKey, sortFn, sortDirection) {
+    this.state.dataModel.sort(columnKey, sortFn, sortDirection);
+    this.setState({sortKey: columnKey});
+  }
+
+  onItemsPerPageChange(pageSize) {
+    this.state.dataModel.changeItemsPerPage(pageSize);
+    this.forceUpdate();
+  }
+
+  onPageChange(page) {
+    this.state.dataModel.goToPage(page);
+    this.forceUpdate();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data != nextProps.data) {
+        this.setState({
+            dataModel: this.initDataModel(nextProps.data, this.state.dataModel.getItemsPerPage())
+        });
+    }
+  }
+
+  render() {
+    let headers = React.Children.toArray(this.props.children)
+        .filter((child) => child.type === Column)
+        .map((column, index) => {
+            if (column.props.header) {
+                return <Header
+                    key={index}
+                    columnKey={column.props.columnKey}
+                    currentSortKey={this.state.sortKey}
+                    onSort={this.sort}
+                    width={column.props.width}
+                    sortFn={column.props.sortFn}>
+                        {column.props.header}
+                    </Header>;
+            } else {
+                return <Header key={index}/>;
+            }
+        });
+
+  	let rows = this.state.dataModel.getCurrentPageData().map((element, index) => {
+        let cells = React.Children.toArray(this.props.children)
+            .filter((child) => child.type === Column)
+            .map((column) => React.cloneElement(column, {data: element, table: this})
+        );
+        const classes = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
+        return <tr className={classes} key={this.props.rowKeyFn(element)} >{cells}</tr>;
+    });
+
+    let searchPanel = this.props.searchPanel ?
+        <SearchPanel table={this}>
+            {this.props.searchPanel}
+        </SearchPanel>
+        : <SearchPanel/>;
+
+    return (
+      <div className="spacewalk-list">
+        <div className="panel panel-default">
+          <div className="panel-heading">
+            <div className="spacewalk-list-head-addons">
+              {searchPanel}
+              <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
+                <ItemsPerPageSelector key="itemsPerPageSelector"
+                  currentValue={this.state.dataModel.getItemsPerPage()}
+                  onChange={this.onItemsPerPageChange}
+                /> {t("items per page")}
+              </div>
+            </div>
+          </div>
+        <div>
+            <div className="table-responsive">
+                <table className="table table-striped vertical-middle">
+                   <thead>
+                      <tr>{headers}</tr>
+                   </thead>
+                   <tbody>
+                      {rows}
+                   </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div className="panel-footer">
+            <div className="spacewalk-list-bottom-addons">
+              <PaginationBlock key="paginationBlock"
+                currentPage={this.state.dataModel.getCurrentPage()}
+                lastPage={this.state.dataModel.getLastPage()}
+                onPageChange={this.onPageChange}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+}
+
+Table.defaultProps = { pageSize : 15 };
+
+
 module.exports = {
     Table : Table,
     Column : Column,
-    Header : Header,
-    Cell : Cell,
-    SearchPanel: SearchPanel,
     SearchField: SearchField,
     Highlight: Highlight
 }
