@@ -45,10 +45,16 @@ var BootstrapMinions = React.createClass({
         var promise = Network.post(window.location.href, JSON.stringify(formData), "application/json").promise;
         if (promise) {
             promise.then(data => {
+                console.log("data: " + data);
                 this.setState({
-                    success: true,
+                    success: data,
                     errors: null
                 });
+                if (!data) {
+                    this.setState({
+                        errors: [t("Bootstrap failed")]
+                    });
+                }
             },
             (xhr) => {
                if (xhr.status == 400) {
