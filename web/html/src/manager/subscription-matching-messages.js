@@ -1,25 +1,34 @@
 "use strict";
 
 const React = require("react");
-const TableComponent = require("../components/table");
-const Table = TableComponent.Table;
-const TableCell = TableComponent.TableCell;
-const TableRow = TableComponent.TableRow;
+//const TableComponent = require("../components/table");
+//const Table = TableComponent.Table;
+//const TableCell = TableComponent.TableCell;
+//const TableRow = TableComponent.TableRow;
+const {Table, Column, SearchField, Highlight, SimpleTableDataModel} = require("../components/tableng.js");
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const CsvLink = require("./subscription-matching-util").CsvLink;
 
 const Messages = React.createClass({
   mixins: [StatePersistedMixin],
 
-  rowComparator: function(a, b, columnIndex, ascending) {
-    const orderCondition = ascending ? 1 : -1;
-    const aValue = a.props.message;
-    const bValue = b.props.message;
-    return aValue.toLowerCase().localeCompare(bValue.toLowerCase()) * orderCondition;
+  getInitialState: function() {
+    return {tableModel: new SimpleTableDataModel(this.buildRows(this.props.messages, this.props.systems))};
+  },
+
+  rowComparator: function(aValue, bValue) {
+    return aValue.message.toLowerCase().localeCompare(bValue.message.toLowerCase());
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.subscriptions != nextProps.subscriptions) {
+        console.log("componentWillReceiveProps:");
+        this.setState({tableModel: new SimpleTableDataModel(this.buildRows(nextProps.props.messages, nextProps.props.systems))});
+    }
   },
 
   buildRows: function(rawMessages, systems) {
-    const result = rawMessages.map(function(rawMessage, index) {
+    return rawMessages.map(function(rawMessage, index) {
       const data = rawMessage["data"];
       var message;
       var additionalInformation;
@@ -44,13 +53,12 @@ const Messages = React.createClass({
           message = rawMessage["type"];
           additionalInformation = data;
       }
-      const columns = [
-        <TableCell key="message" content={message} />,
-        <TableCell key="additionalInformation" content={additionalInformation} />
-      ];
-      return <TableRow key={index} columns={columns} message={message} />;
+      return {
+        id: index,
+        message: message,
+        info: additionalInformation
+      };
     });
-    return result;
   },
 
   render: function() {
@@ -60,13 +68,23 @@ const Messages = React.createClass({
         <div>
           <p>{t("Please review warning and information messages below.")}</p>
           <Table
-            headers={[t("Message"), t("Additional information")]}
-            rows={this.buildRows(this.props.messages, this.props.systems)}
-            loadState={this.props.loadState}
-            saveState={this.props.saveState}
-            rowComparator={this.rowComparator}
-            sortableColumnIndexes={[0]}
-          />
+            dataModel={this.state.tableModel}
+            rowKeyFn={(row) => row.id}
+            initialSort="message"
+            >
+            <Column
+                columnKey="message"
+                sortFn={this.rowComparator}
+                header={t("Message")}
+                cell={ (row) => row.message }
+                />
+            <Column
+                columnKey="info"
+                header={t("Additional information")}
+                cell={ (row) => row.info }
+                />
+          </Table>
+
           <CsvLink name="message_report.csv" />
         </div>
       );
