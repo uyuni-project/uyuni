@@ -218,15 +218,29 @@ public class MinionsAPI {
             Files.delete(rosterFilePath);
 
             // Check if bootstrap was successful (all states have result = true)
-            boolean success = results.get(host).fold(error -> {
-                LOG.error("Error during bootstrap: " + error.toString());
-                return false;
-            }, r -> {
-                return r.getReturn().entrySet().stream().allMatch(
-                        res -> res.getValue().isResult()) && r.getRetcode() == 0;
-            });
+            boolean success = results.get(host).fold(
+                    error -> {
+                        LOG.error("Error during bootstrap: " + error.toString());
+                        return false;
+                    },
+                    r -> {
+                        boolean stateApplyResult = r.getReturn().isPresent();
+                        if (stateApplyResult) {
+                            for (State.ApplyResult apply : r.getReturn().get().values()) {
+                                if (!apply.isResult()) {
+                                    stateApplyResult = false;
+                                    break;
+                                }
+                            }
+                        }
+                        else {
+                            LOG.info("No result for minion: " + host);
+                        }
+                        return stateApplyResult && r.getRetcode() == 0;
+                    }
+            );
 
-            LOG.debug("Bootstrap success? " + success);
+            LOG.debug("Bootstrap success: " + success);
             return json(response, success);
         }
         catch (IOException e) {
