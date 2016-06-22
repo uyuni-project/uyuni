@@ -126,7 +126,7 @@ class Onboarding extends React.Component {
 
   searchData(data, criteria) {
       return data.filter((e) => e.id.toLocaleLowerCase().includes(criteria.toLocaleLowerCase()) ||
-        e.fingerprint.toLocaleLowerCase().startsWith(criteria.toLocaleLowerCase()));
+        e.fingerprint.toLocaleLowerCase().includes(criteria.toLocaleLowerCase()));
   }
 
   render() {
