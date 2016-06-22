@@ -19,12 +19,16 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.wheel.Key;
 import spark.Request;
 import spark.Response;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,6 +48,7 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.results.SSHResult;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -181,33 +186,52 @@ public class MinionsAPI {
      * @param user the current user
      * @return json result of the API call
      */
+    @SuppressWarnings("unchecked")
     public static String bootstrap(Request request, Response response, User user) {
-        @SuppressWarnings("unchecked")
         Map<String, String> formData = GSON.fromJson(request.body(), Map.class);
         String host = formData.get("host");
-        LOG.info("bootstrapping host: " + host);
+        LOG.info("Bootstrapping host: " + host);
 
-        // Pillar data for applying the bootstrap state
+        // Setup pillar data to be passed when applying the bootstrap state
         Map<String, Object> pillarData = new HashMap<>();
         pillarData.put("master", ConfigDefaults.get().getCobblerHost());
 
-        // Construct the call
-        List<String> bootstrapMods = Arrays.asList(
-                ApplyStatesEventMessage.CERTIFICATE, "bootstrap");
-        LocalCall<Map<String, Object>> stateApplyCall = State.apply(
-                bootstrapMods, Optional.of(pillarData), Optional.of(true));
+        try {
+            // Generate (temporary) roster file based on data from the UI
+            SaltRoster roster = new SaltRoster();
+            roster.addHost(host, formData.get("user"), formData.get("password"));
+            Path rosterFilePath = roster.persistInTempFile();
+            String rosterFile = rosterFilePath.toString();
+            LOG.debug("Roster file: " + rosterFile);
 
-        // TODO: Generate the roster file based on data from the UI
-        Optional<String> rosterFile = Optional.of("/tmp/susemanager-roster");
-        Map<String, Result<Map<String, Object>>> results = SaltAPIService.INSTANCE
-                .callSyncSSH(stateApplyCall, new MinionList(host), rosterFile);
-        LOG.debug("bootstrap results: " + results);
+            // Apply the bootstrap state
+            List<String> bootstrapMods = Arrays.asList(
+                    ApplyStatesEventMessage.CERTIFICATE, "bootstrap");
+            LocalCall<Map<String, State.ApplyResult>> stateApplyCall = State.apply(
+                    bootstrapMods, Optional.of(pillarData), Optional.of(true));
+            Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> results =
+                    SaltAPIService.INSTANCE.callSyncSSH(
+                            stateApplyCall, new MinionList(host), Optional.of(rosterFile));
+            LOG.debug("Bootstrap results: " + results);
 
-        // TODO: Check if bootstrap was successful
-        // boolean success = results.get("return").entrySet().stream().allMatch(result ->
-        //         (Boolean) ((Map<String, Object>) result.getValue()).get("result"));
-        // LOG.debug("bootstrap success? " + success);
+            // Delete the roster file
+            Files.delete(rosterFilePath);
 
-        return json(response, true);
+            // Check if bootstrap was successful (all states have result = true)
+            boolean success = results.get(host).fold(error -> {
+                LOG.error("Error during bootstrap: " + error.toString());
+                return false;
+            }, r -> {
+                return r.getReturn().entrySet().stream().allMatch(
+                        res -> res.getValue().isResult()) && r.getRetcode() == 0;
+            });
+
+            LOG.debug("Bootstrap success? " + success);
+            return json(response, success);
+        }
+        catch (IOException e) {
+            LOG.error("Error operating on roster file: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 }
