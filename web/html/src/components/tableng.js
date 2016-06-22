@@ -63,7 +63,7 @@ class SearchField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        value: ""
+        value: props.table.state.dataModel.criteria
     };
     ["onChange"].forEach(method => this[method] = this[method].bind(this));
   }
@@ -90,13 +90,14 @@ class SimpleTableDataModel {
 
   constructor(data, itemsPerPage) {
     this.data = data;
-    this.itemsPerPage = itemsPerPage;
+    this.itemsPerPage = itemsPerPage ? itemsPerPage : 15;
     this.currentPage = 1;
     this.currentData = data;
     this.filtered = false;
     this.criteria = null;
     ["getCriteria", "filter", "sort", "goToPage", "getCurrentPageData", "getLastPage", "getFirstPageItemIndex",
-    "getLastPageItemIndex", "getSize", "changeItemsPerPage", "getItemsPerPage", "getCurrentPage"].forEach(method => this[method] = this[method].bind(this));
+    "getLastPageItemIndex", "getSize", "changeItemsPerPage", "getItemsPerPage", "getCurrentPage", "setItemsPerPage"]
+        .forEach(method => this[method] = this[method].bind(this));
   }
 
   getCriteria() {
@@ -162,6 +163,10 @@ class SimpleTableDataModel {
     this.itemsPerPage = newPageSize;
   }
 
+  setItemsPerPage(newPageSize) {
+      this.itemsPerPage = newPageSize;
+  }
+
   getItemsPerPage() {
     return this.itemsPerPage;
   }
@@ -192,7 +197,7 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     ["sort"].forEach(method => this[method] = this[method].bind(this));
-    this.state = {sortDirection: null};
+    this.state = {sortDirection: this.props.currentSortDirection};
   }
 
   sort() {
@@ -273,13 +278,59 @@ class Table extends React.Component {
 
   constructor(props) {
     super(props);
-    ["onSearch", "sort", "onPageChange", "onItemsPerPageChange", "initDataModel"].forEach(method => this[method] = this[method].bind(this));
+    ["onSearch", "sort", "onPageChange", "onItemsPerPageChange", "initialDataModel", "newDataModel"].forEach(method => this[method] = this[method].bind(this));
+
     this.state = {
-        dataModel: this.initDataModel(props.data, props.pageSize)
+        dataModel: this.initialDataModel(props.data, props.pageSize),
+        sortKey: props.initialSort,
+        initialSortNeeded: props.initialSort ? true : false
     };
   }
 
-  initDataModel(data, pageSize) {
+//  componentWillMount() {
+//      // save/restore the state of the table
+//      if (this.props.loadStateFn && this.props.saveStateFn) {
+//          let savedState = this.props.loadStateFn();
+//          if (savedState) {
+//              this.setState(savedState);
+//          } else {
+//              // saving can be done here since only a reference will be saved not a copy of the state
+//              this.props.saveStateFn(this.state);
+//          }
+//      }
+//  }
+
+  componentDidMount() {
+    if (this.state.initialSortNeeded) {
+        let sortFn = React.Children.toArray(this.props.children)
+                .filter((child) => child.type === Column)
+                .filter((column) => column.props.columnKey == this.props.initialSort)
+                .map((column) => column.props.sortFn);
+
+        if (sortFn && sortFn.length > 0 && sortFn[0]) {
+            this.sort(this.props.initialSort, sortFn[0], 1);
+        }
+        this.setState({initialSortNeeded: false});
+    }
+  }
+
+  initialDataModel(data, pageSize) {
+    if (this.props.dataModel) {
+        console.log("initialDataModel: found dataModel in props")
+        this.props.dataModel.setItemsPerPage(this.props.pageSize);
+        return this.props.dataModel;
+    }
+
+//    if (this.state && this.state.dataModel) {
+//        console.log("initialDataModel: found dataModel in state")
+//        return this.state.dataModel;
+//    }
+    console.log("initialDataModel: create new data model")
+    return new SimpleTableDataModel(data, pageSize);
+  }
+
+  newDataModel(data, pageSize) {
+    console.log("newDataModel: create new data model")
     return new SimpleTableDataModel(data, pageSize);
   }
 
@@ -306,7 +357,13 @@ class Table extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
         this.setState({
-            dataModel: this.initDataModel(nextProps.data, this.state.dataModel.getItemsPerPage())
+            dataModel: this.newDataModel(nextProps.data, this.state.dataModel.getItemsPerPage())
+        });
+    } else
+    if (this.props.dataModel != nextProps.dataModel) {
+        nextProps.dataModel.setItemsPerPage(this.props.pageSize);
+        this.setState({
+            dataModel: nextProps.dataModel
         });
     }
   }
@@ -320,6 +377,7 @@ class Table extends React.Component {
                     key={index}
                     columnKey={column.props.columnKey}
                     currentSortKey={this.state.sortKey}
+                    currentSortDirection={this.state.initialSortNeeded ? 1 : null}
                     onSort={this.sort}
                     width={column.props.width}
                     sortFn={column.props.sortFn}>
@@ -335,15 +393,17 @@ class Table extends React.Component {
             .filter((child) => child.type === Column)
             .map((column) => React.cloneElement(column, {data: element, table: this})
         );
-        const classes = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
-        return <tr className={classes} key={this.props.rowKeyFn(element)} >{cells}</tr>;
+
+        let rowClass = this.props.rowClassFn ? this.props.rowClassFn(element, index) : "";
+        let evenOddClass = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
+        return <tr className={rowClass + " " + evenOddClass} key={this.props.rowKeyFn(element)} >{cells}</tr>;
     });
 
     let searchPanel = this.props.searchPanel ?
         <SearchPanel table={this}>
             {this.props.searchPanel}
         </SearchPanel>
-        : <SearchPanel/>;
+        : <SearchPanel table={this}/>;
 
     return (
       <div className="spacewalk-list">
@@ -395,5 +455,6 @@ module.exports = {
     Table : Table,
     Column : Column,
     SearchField: SearchField,
-    Highlight: Highlight
+    Highlight: Highlight,
+    SimpleTableDataModel: SimpleTableDataModel
 }
