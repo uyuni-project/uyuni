@@ -14,6 +14,8 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.gatherer.JSONHost;
 
+import org.hibernate.criterion.Projections;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -277,6 +279,12 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * @throws Exception - if anything goes wrong
      */
     public void testUpdateAlreadyRegisteredGuest() throws Exception {
+        // if database is not empty, we should add existing systems
+        // to the final count
+        Integer existingSystems =
+                (Integer) HibernateFactory.getSession().createCriteria(VirtualInstance.class)
+                .setProjection(Projections.rowCount()).uniqueResult();
+
         // guest already registered by usual registration process
         VirtualInstance registeredGuest = new GuestBuilder(user)
                 .createGuest()
@@ -298,9 +306,10 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstance guestFromDb = VirtualInstanceFactory.getInstance()
                 .lookupVirtualInstanceByUuid("vmuuid").iterator().next();
         assertEquals(hostServer, guestFromDb.getHostSystem());
-        // 2 VirtualInstances should be persisted
+
+        // (existingSystems + 2) VirtualInstances should be persisted
         // (one for the host system, one for the guest)
-        assertEquals(2, HibernateFactory.getSession().createCriteria(VirtualInstance.class)
+        assertEquals(existingSystems + 2, HibernateFactory.getSession().createCriteria(VirtualInstance.class)
                 .list().size());
     }
 
