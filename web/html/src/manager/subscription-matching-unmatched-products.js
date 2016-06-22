@@ -16,7 +16,6 @@ const UnmatchedProducts = React.createClass({
         selectedProductId: null,
         tableData: this.buildData(this.props)
     };
-
   },
 
   buildData: function(props) {
@@ -59,7 +58,9 @@ const UnmatchedProducts = React.createClass({
         <div>
           <Table
             data={this.state.tableData}
-            rowKeyFn={this.rowKey}>
+            rowKeyFn={this.rowKey}
+            initialSort="name"
+            >
             <Column
                 columnKey="name"
                 sortFn={this.sortByName}
