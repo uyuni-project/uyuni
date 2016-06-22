@@ -322,8 +322,7 @@ public class VirtualHostManagerProcessor {
         Network n = new Network();
         n.setHostname(hostId);
         n.setServer(server);
-        Set<Network> networks = new HashSet<>();
-        networks.add(n);
-        server.setNetworks(networks);
+        server.getNetworks().clear();
+        server.getNetworks().add(n);
     }
 }
