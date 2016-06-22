@@ -212,7 +212,6 @@ public class MinionsAPI {
             Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> results =
                     SaltAPIService.INSTANCE.callSyncSSH(
                             stateApplyCall, new MinionList(host), Optional.of(rosterFile));
-            LOG.debug("Bootstrap results: " + results);
 
             // Delete the roster file
             Files.delete(rosterFilePath);
