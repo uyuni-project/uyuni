@@ -72,11 +72,13 @@ class TableDemo extends React.Component {
     return (
     <span>
         <h4>You have selected {this.state.selectedName}</h4>
+        <Button text="Clear selection" handler={() => this.setState({selectedName: null}) }/>
+        <Button text="Clear table" handler={() => {this.setState({tableData: []}); }}/>
         <Panel title="Table demo" icon="fa-desktop">
             <Table
                 data={this.state.tableData}
                 rowKeyFn={this.rowKey}
-                pageSize={15}
+                pageSize={10}
                 searchPanel={
                     <SearchField searchFn={this.searchData} placeholder="Search by name or address"/>
                 }>
