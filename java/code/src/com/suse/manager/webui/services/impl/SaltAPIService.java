@@ -50,7 +50,7 @@ import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
-
+import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
@@ -453,8 +453,8 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public <T> Map<String, Result<T>> callSyncSSH(LocalCall<T> call, Target<?> target,
-            Optional<String> rosterFile) {
+    public <T> Map<String, Result<SSHResult<T>>> callSyncSSH(LocalCall<T> call,
+            Target<?> target, Optional<String> rosterFile) {
         try {
             return call.callSyncSSH(SALT_CLIENT, target, rosterFile);
         }

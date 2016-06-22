@@ -29,6 +29,7 @@ import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.results.SSHResult;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -283,7 +284,7 @@ public interface SaltService {
      * @param rosterFile alternative roster file to use (default: /etc/salt/roster)
      * @return result of the call
      */
-    <T> Map<String, Result<T>> callSyncSSH(LocalCall<T> call, Target<?> target,
+    <T> Map<String, Result<SSHResult<T>>> callSyncSSH(LocalCall<T> call, Target<?> target,
             Optional<String> rosterFile);
 
     /**
