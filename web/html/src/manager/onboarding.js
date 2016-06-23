@@ -128,12 +128,12 @@ class Onboarding extends React.Component {
     </div>;
     return (
       <span>
-        <h4>{this.state.selectedProductId}</h4>
         <Panel title="Onboarding" icon="fa-desktop" button={ panelButtons }>
           <Table
               data={this.state.keys}
               identifier={this.rowKey}
               initialSortColumnKey="id"
+              initialItemsPerPage={userPrefPageSize}
               searchField={
                   <SearchField filter={this.searchData} criteria={""} />
               }>
@@ -150,10 +150,6 @@ class Onboarding extends React.Component {
                           text={row.id} highlight={criteria} />
                       </a>
                     );
-                  }
-                  else {
-                    return <Highlight enabled={this.isFiltered(criteria)}
-                        text={row.id} highlight={criteria} />;
                   }
                 }
               }

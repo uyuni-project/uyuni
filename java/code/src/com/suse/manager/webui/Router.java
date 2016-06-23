@@ -47,9 +47,8 @@ public class Router implements SparkApplication {
     @Override
     public void init() {
         JadeTemplateEngine jade = setup();
-
         // Salt Master pages
-        get("/manager/minions", withCsrfToken(MinionController::list), jade);
+        get("/manager/minions", withCsrfToken(withUser(MinionController::list)), jade);
         get("/manager/minions/bootstrap",
                 withCsrfToken(withOrgAdmin(MinionController::bootstrap)),
                 jade);

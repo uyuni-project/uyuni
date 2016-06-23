@@ -1,3 +1,5 @@
+include ../common.jade
+
 #subscription-matching
 
 script(src='/javascript/reactjs/react.bundle.js', type='text/javascript')
@@ -5,4 +7,5 @@ script(src='/javascript/momentjs/moment-with-langs.min.js', type='text/javascrip
 
 script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
++userPreferences
 script(src='/javascript/manager/subscription-matching.bundle.js', type='text/javascript')

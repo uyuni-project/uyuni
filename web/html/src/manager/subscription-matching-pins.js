@@ -91,6 +91,7 @@ const Pins = React.createClass({
             identifier={(row) => row.id}
             loadState={this.props.loadState}
             saveState={this.props.saveState}
+            initialItemsPerPage={userPrefPageSize}
             initialSortColumnKey="systemName"
             >
             <Column
@@ -224,6 +225,7 @@ const AddPinPopUp = React.createClass({
             loadState={this.props.loadState}
             saveState={this.props.saveState}
             initialSortColumnKey="name"
+            initialItemsPerPage={userPrefPageSize}
             searchField={
                 <SearchField filter={this.searchData}
                     placeholder={t("Filter by name")}/>
@@ -314,6 +316,7 @@ const PinSubscriptionSelector = React.createClass({
           <Table key="table"
             data={this.props.subscriptions}
             identifier={(row) => row.id}
+            initialItemsPerPage={userPrefPageSize}
             >
             <Column
                 columnKey="partNumber"

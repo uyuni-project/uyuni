@@ -57,6 +57,7 @@ const Subscriptions = React.createClass({
             loadState={this.props.loadState}
             saveState={this.props.saveState}
             initialSortColumnKey="partNumber"
+            initialItemsPerPage={userPrefPageSize}
             searchField={
                 <SearchField filter={this.searchData}
                     criteria={""}
