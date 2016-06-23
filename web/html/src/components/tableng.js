@@ -95,8 +95,13 @@ class SimpleTableDataModel {
     this.currentData = data;
     this.filtered = false;
     this.criteria = null;
+    this.sortFn = null;
+    this.sortDirection = null;
+    this.sortColumnKey = null;
+    this.initialized = false;
     ["getCriteria", "filter", "sort", "goToPage", "getCurrentPageData", "getLastPage", "getFirstPageItemIndex",
-    "getLastPageItemIndex", "getSize", "changeItemsPerPage", "getItemsPerPage", "getCurrentPage", "setItemsPerPage"]
+    "getLastPageItemIndex", "getSize", "changeItemsPerPage", "getItemsPerPage", "getCurrentPage", "setItemsPerPage",
+    "mergeData", "isFiltered"]
         .forEach(method => this[method] = this[method].bind(this));
   }
 
@@ -105,20 +110,28 @@ class SimpleTableDataModel {
   }
 
   filter(filterFn, criteria) {
+    console.log("filter " + criteria);
     if (!criteria) {
       this.currentData = this.data;
-      this.filtered = false;
+      this.filterFn = null;
       this.criteria = null;
     } else {
       this.currentData = filterFn(this.data, criteria);
-      this.filtered = true;
+      this.filterFn = filterFn;
       this.criteria = criteria;
       this.currentPage = 1;
     }
+    this.sortFn = null;
+    this.sortDirection = 1;
+    this.sortColumnKey = null;
   }
 
   sort(columnKey, sortFn, sortDirection) {
-    this.currentData = this.currentData.sort((a, b) => sortDirection * sortFn(a, b, columnKey))
+    console.log("sort " + columnKey + " " + sortFn + " " + sortDirection);
+    this.currentData = this.currentData.sort((a, b) => sortDirection * sortFn(a, b, columnKey));
+    this.sortFn = sortFn;
+    this.sortDirection = sortDirection;
+    this.sortColumnKey = columnKey;
   }
 
   goToPage(page) {
@@ -173,6 +186,25 @@ class SimpleTableDataModel {
 
   getCurrentPage() {
     return this.currentPage;
+  }
+
+  isFiltered() {
+    return this.filterFn ? true : false;
+  }
+
+  mergeData(dataToMerge) {
+    this.data = dataToMerge;
+    if (this.filterFn) {
+        this.currentData = this.filterFn(this.data, this.criteria);
+    } else {
+        this.currentData = dataToMerge;
+    }
+    if (this.sortFn && this.sortDirection && this.sortColumnKey) {
+        this.sort(this.sortColumnKey, this.sortFn, this.sortDirection);
+    }
+    if (this.getFirstPageItemIndex() > this.currentData.length) {
+        this.goToPage(1);
+    }
   }
 
 }
@@ -281,52 +313,42 @@ class Table extends React.Component {
     ["onSearch", "sort", "onPageChange", "onItemsPerPageChange", "initialDataModel", "newDataModel"].forEach(method => this[method] = this[method].bind(this));
 
     this.state = {
-        dataModel: this.initialDataModel(props.data, props.pageSize),
-        sortKey: props.initialSort,
-        initialSortNeeded: props.initialSort ? true : false
+        dataModel: this.initialDataModel(props)
     };
   }
 
-//  componentWillMount() {
-//      // save/restore the state of the table
-//      if (this.props.loadStateFn && this.props.saveStateFn) {
-//          let savedState = this.props.loadStateFn();
-//          if (savedState) {
-//              this.setState(savedState);
-//          } else {
-//              // saving can be done here since only a reference will be saved not a copy of the state
-//              this.props.saveStateFn(this.state);
-//          }
-//      }
-//  }
+  initialDataModel(props) {
+    const {data, pageSize, dataModel} = props;
+    if (dataModel) {
+        // found an external dataModel in props
+        console.log("initialDataModel: found dataModel in props " + dataModel.criteria + " " + dataModel.sortColumnKey) ;
+        if (!dataModel.initialized) {
+            this.doInitialSort(dataModel, props);
+            dataModel.initialized = true;
 
-  componentDidMount() {
-    if (this.state.initialSortNeeded) {
-        let sortFn = React.Children.toArray(this.props.children)
-                .filter((child) => child.type === Column)
-                .filter((column) => column.props.columnKey == this.props.initialSort)
-                .map((column) => column.props.sortFn);
-
-        if (sortFn && sortFn.length > 0 && sortFn[0]) {
-            this.sort(this.props.initialSort, sortFn[0], 1);
         }
-        this.setState({initialSortNeeded: false});
+        return dataModel;
     }
+
+    // dataModel is internal, go ahead and create an initial one
+    console.log("initialDataModel: create new data model");
+    const newDataModel = new SimpleTableDataModel(data, pageSize);
+    this.doInitialSort(newDataModel, props);
+    newDataModel.initialized = true;
+    return newDataModel;
   }
 
-  initialDataModel(data, pageSize) {
-    if (this.props.dataModel) {
-        console.log("initialDataModel: found dataModel in props")
-        this.props.dataModel.setItemsPerPage(this.props.pageSize);
-        return this.props.dataModel;
+  doInitialSort(dataModel, props) {
+    if (props.initialSort) {
+        let sortFn = React.Children.toArray(props.children)
+                .filter((child) => child.type === Column)
+                .filter((column) => column.props.columnKey == props.initialSort)
+                .map((column) => column.props.sortFn);
+        if (sortFn && sortFn.length > 0 && sortFn[0]) {
+            dataModel.sort(props.initialSort, sortFn[0], 1);
+        }
     }
 
-//    if (this.state && this.state.dataModel) {
-//        console.log("initialDataModel: found dataModel in state")
-//        return this.state.dataModel;
-//    }
-    console.log("initialDataModel: create new data model")
-    return new SimpleTableDataModel(data, pageSize);
   }
 
   newDataModel(data, pageSize) {
@@ -341,7 +363,7 @@ class Table extends React.Component {
 
   sort(columnKey, sortFn, sortDirection) {
     this.state.dataModel.sort(columnKey, sortFn, sortDirection);
-    this.setState({sortKey: columnKey});
+    this.forceUpdate();
   }
 
   onItemsPerPageChange(pageSize) {
@@ -359,9 +381,9 @@ class Table extends React.Component {
         this.setState({
             dataModel: this.newDataModel(nextProps.data, this.state.dataModel.getItemsPerPage())
         });
-    } else
-    if (this.props.dataModel != nextProps.dataModel) {
-        nextProps.dataModel.setItemsPerPage(this.props.pageSize);
+    }
+    else if (this.props.dataModel != nextProps.dataModel) {
+        console.log("componentWillReceiveProps: got new dataModel in props")
         this.setState({
             dataModel: nextProps.dataModel
         });
@@ -376,8 +398,8 @@ class Table extends React.Component {
                 return <Header
                     key={index}
                     columnKey={column.props.columnKey}
-                    currentSortKey={this.state.sortKey}
-                    currentSortDirection={this.state.initialSortNeeded ? 1 : null}
+                    currentSortKey={this.state.dataModel.sortColumnKey}
+                    currentSortDirection={this.state.dataModel.sortDirection}
                     onSort={this.sort}
                     width={column.props.width}
                     sortFn={column.props.sortFn}>

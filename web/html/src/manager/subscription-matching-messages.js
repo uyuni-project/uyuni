@@ -22,8 +22,8 @@ const Messages = React.createClass({
 
   componentWillReceiveProps(nextProps) {
     if (this.props.subscriptions != nextProps.subscriptions) {
-        console.log("componentWillReceiveProps:");
-        this.setState({tableModel: new SimpleTableDataModel(this.buildRows(nextProps.props.messages, nextProps.props.systems))});
+        this.state.tableModel.mergeData(this.buildRows(nextProps.props.messages, nextProps.props.systems));
+        this.forceUpdate();
     }
   },
 
