@@ -198,11 +198,11 @@ public class MinionsAPI {
 
         try {
             // Generate (temporary) roster file based on data from the UI
-            SaltRoster roster = new SaltRoster();
-            roster.addHost(host, formData.get("user"), formData.get("password"));
-            Path rosterFilePath = roster.persistInTempFile();
-            String rosterFile = rosterFilePath.toString();
-            LOG.debug("Roster file: " + rosterFile);
+            SaltRoster saltRoster = new SaltRoster();
+            saltRoster.addHost(host, formData.get("user"), formData.get("password"));
+            Path rosterFilePath = saltRoster.persistInTempFile();
+            String roster = rosterFilePath.toString();
+            LOG.debug("Roster file: " + roster);
 
             // Apply the bootstrap state
             List<String> bootstrapMods = Arrays.asList(
@@ -210,8 +210,8 @@ public class MinionsAPI {
             LocalCall<Map<String, State.ApplyResult>> stateApplyCall = State.apply(
                     bootstrapMods, Optional.of(pillarData), Optional.of(true));
             Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> results =
-                    SaltAPIService.INSTANCE.callSyncSSH(
-                            stateApplyCall, new MinionList(host), Optional.of(rosterFile));
+                    SaltAPIService.INSTANCE.callSyncSSH(stateApplyCall,
+                            new MinionList(host), Optional.of(roster), Optional.of(true));
 
             // Delete the roster file
             Files.delete(rosterFilePath);
