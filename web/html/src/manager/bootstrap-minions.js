@@ -5,7 +5,7 @@ var ReactDOM = require("react-dom");
 var Panel = require("../components/panel").Panel;
 var Messages = require("../components/messages").Messages;
 var Network = require("../utils/network");
-var Button = require("../components/buttons").Button;
+const AsyncButton = require("../components/buttons").AsyncButton;
 var LinkButton = require("../components/buttons").LinkButton;
 
 var BootstrapMinions = React.createClass({
@@ -36,36 +36,38 @@ var BootstrapMinions = React.createClass({
         });
     },
 
-    onBootstrap: function(event) {
+    onBootstrap: function() {
         var formData = {};
         formData['host'] = this.state.host.trim();
         formData['user'] = this.state.user.trim();
         formData['password'] = this.state.password.trim();
 
-        var promise = Network.post(window.location.href, JSON.stringify(formData), "application/json").promise;
-        if (promise) {
-            promise.then(data => {
-                console.log("data: " + data);
-                this.setState({
-                    success: data,
-                    errors: null
-                });
-                if (!data) {
-                    this.setState({
-                        errors: [t("Bootstrap failed")]
-                    });
-                }
-            },
-            (xhr) => {
-               if (xhr.status == 400) {
-                   // validation err
-                   var errs = JSON.parse(xhr.responseText);
-                   this.setState({errors: errs});
-               } else {
-                   this.setState({errors: [t("An error occurred")]});
-               }
+        const request = Network.post(
+            window.location.href,
+            JSON.stringify(formData),
+            "application/json"
+        ).promise.then(data => {
+            this.setState({
+                success: data,
+                errors: null
             });
-        }
+            if (!data) {
+                this.setState({
+                    errors: [t("Bootstrap failed")]
+                });
+            }
+        }, (xhr) => {
+            try {
+                this.setState({
+                    errors: JSON.parse(xhr.responseText)
+                })
+            } catch (err) {
+                this.setState({
+                    errors: errorMessageByStatus(xhr.status)
+                })
+            }
+        });
+        return request;
     },
 
     render: function() {
@@ -83,7 +85,7 @@ var BootstrapMinions = React.createClass({
 
         var buttons = [];
         buttons.push(
-            <Button id="bootstrap-btn" className="btn-success" icon="fa-plus" text={t("Bootstrap")} handler={this.onBootstrap}/>
+            <AsyncButton id="bootstrap-btn" className="btn-success" icon="plus" name={t("Bootstrap")} action={this.onBootstrap}/>
         );
         buttons.push(
             <LinkButton id="cancel-btn" className="btn-default form-horizontal pull-right" text={t("Back to System Overview")} href="/rhn/systems/Overview.do"/>
@@ -93,7 +95,7 @@ var BootstrapMinions = React.createClass({
         <Panel title={t("Bootstrap Minions")} icon="spacewalk-icon-salt-add">
             {errs}
             {msg}
-            <form className="form-horizontal">
+            <div className="form-horizontal">
                 <div className="form-group">
                     <label className="col-md-3 control-label">Host:</label>
                     <div className="col-md-6">
@@ -117,11 +119,23 @@ var BootstrapMinions = React.createClass({
                         {buttons}
                     </div>
                 </div>
-            </form>
+            </div>
         </Panel>
         )
     }
 });
+
+function errorMessageByStatus(status) {
+    if (status == 401) {
+        return [t("Session expired, please reload the page.")];
+    } else if (status == 403) {
+        return [t("Authorization error, please reload the page or try to logout/login again.")];
+    } else if (status >= 500) {
+        return [t("Server error, please check log files.")];
+    } else {
+        return [];
+    }
+}
 
 ReactDOM.render(
   <BootstrapMinions />,
