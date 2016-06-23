@@ -211,7 +211,8 @@ public class MinionsAPI {
                     bootstrapMods, Optional.of(pillarData), Optional.of(true));
             Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> results =
                     SaltAPIService.INSTANCE.callSyncSSH(stateApplyCall,
-                            new MinionList(host), Optional.of(roster), Optional.of(true));
+                            new MinionList(host), Optional.of(roster), Optional.of(true),
+                            Optional.of(!"root".equals(formData.get("user"))));
 
             // Delete the roster file
             Files.delete(rosterFilePath);
