@@ -9,13 +9,15 @@
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
 
-<a id="profiles">&#160;</a>
-<h2><bean:message key="ssm.misc.index.csi.header"/></h2>
-<div class="page-summary">
-  <p><a href="/rhn/systems/ssm/misc/CustomValue.do"><bean:message key="ssm.misc.index.csi.summary"/></a></p>
-</div>
+<rhn:require acl="all_systems_in_set_have_feature(ftr_system_custom_values)">
+    <a id="profiles">&#160;</a>
+    <h2><bean:message key="ssm.misc.index.csi.header"/></h2>
+    <div class="page-summary">
+      <p><a href="/rhn/systems/ssm/misc/CustomValue.do"><bean:message key="ssm.misc.index.csi.summary"/></a></p>
+    </div>
+</rhn:require>
 
-<rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
+<rhn:require acl="user_role(org_admin); all_systems_in_set_have_feature(ftr_add_rm_addon_type)">
     <a id="entitle">&#160;</a>
     <h2><bean:message key="ssm.misc.index.entitle.header"/></h2>
     <div class="page-summary">
@@ -23,58 +25,58 @@
     </div>
 </rhn:require>
 
-<a id="sysprefs">&#160;</a><h2><bean:message key="ssm.misc.index.syspref.header"/></h2>
-<div class="page-summary">
-<p><bean:message key="ssm.misc.index.syspref.summary"/></p>
-</div>
+<rhn:require acl="all_systems_in_set_have_feature(ftr_system_preferences)">
+    <a id="sysprefs">&#160;</a><h2><bean:message key="ssm.misc.index.syspref.header"/></h2>
+    <div class="page-summary">
+        <p><bean:message key="ssm.misc.index.syspref.summary"/></p>
+    </div>
 
-<form action="/rhn/systems/ssm/misc/Index.do" method="post">
-  <rhn:csrf />
-  <rhn:submitted />
+    <form action="/rhn/systems/ssm/misc/Index.do" method="post">
+        <rhn:csrf />
+        <rhn:submitted />
 
-  <table width="96%" cellspacing="0" cellpadding="0" class="list" align="center">
-    <thead>
-      <tr>
-        <th align="left"><bean:message key="ssm.misc.index.syspref.preference"/></th>
-        <th width="5%"><bean:message key="yes"/></th>
-        <th width="5%"><bean:message key="no"/></th>
-        <th width="5%"><bean:message key="ssm.misc.index.syspref.nochange"/></th>
-      </tr>
-    </thead>
+        <table width="96%" cellspacing="0" cellpadding="0" class="list" align="center">
+            <thead>
+                <tr>
+                    <th align="left"><bean:message key="ssm.misc.index.syspref.preference"/></th>
+                    <th width="5%"><bean:message key="yes"/></th>
+                    <th width="5%"><bean:message key="no"/></th>
+                    <th width="5%"><bean:message key="ssm.misc.index.syspref.nochange"/></th>
+                </tr>
+            </thead>
 
-    <tr class="list-row-odd">
-      <td><bean:message key="ssm.misc.index.syspref.notify"/></td>
-      <td align="center"><input type="radio" name="notify" value="yes" /></td>
-      <td align="center"><input type="radio" name="notify" value="no" /></td>
+            <tr class="list-row-odd">
+                <td><bean:message key="ssm.misc.index.syspref.notify"/></td>
+                <td align="center"><input type="radio" name="notify" value="yes" /></td>
+                <td align="center"><input type="radio" name="notify" value="no" /></td>
 
-      <td align="center"><input type="radio" name="notify" value="no_change" checked="1" /></td>
-    </tr>
+                <td align="center"><input type="radio" name="notify" value="no_change" checked="1" /></td>
+            </tr>
 
-    <tr class="list-row-even">
-      <td><bean:message key="ssm.misc.index.syspref.dailysummary"/></td>
-      <td align="center"><input type="radio" name="summary" value="yes" /></td>
-      <td align="center"><input type="radio" name="summary" value="no" /></td>
-      <td align="center"><input type="radio" name="summary" value="no_change" checked="1" /></td>
-    </tr>
+            <tr class="list-row-even">
+                <td><bean:message key="ssm.misc.index.syspref.dailysummary"/></td>
+                <td align="center"><input type="radio" name="summary" value="yes" /></td>
+                <td align="center"><input type="radio" name="summary" value="no" /></td>
+                <td align="center"><input type="radio" name="summary" value="no_change" checked="1" /></td>
+            </tr>
 
-    <tr class="list-row-odd">
-      <td><bean:message key="ssm.misc.index.syspref.update"/></td>
-      <td align="center"><input type="radio" name="update" value="yes" /></td>
-      <td align="center"><input type="radio" name="update" value="no" /></td>
-      <td align="center"><input type="radio" name="update" value="no_change" checked="1" /></td>
-    </tr>
+            <tr class="list-row-odd">
+                <td><bean:message key="ssm.misc.index.syspref.update"/></td>
+                <td align="center"><input type="radio" name="update" value="yes" /></td>
+                <td align="center"><input type="radio" name="update" value="no" /></td>
+                <td align="center"><input type="radio" name="update" value="no_change" checked="1" /></td>
+            </tr>
 
-  </table>
+        </table>
 
-  <div class="text-right">
-    <hr />
+        <div class="text-right">
+            <hr />
 
-    <input class="btn btn-default" type="submit" name="sscd_change_system_prefs" value="<bean:message key='ssm.misc.index.syspref.changepreferences'/>" />
-  </div>
+            <input class="btn btn-default" type="submit" name="sscd_change_system_prefs" value="<bean:message key='ssm.misc.index.syspref.changepreferences'/>" />
+        </div>
 
-</form>
-
-
+    </form>
+</rhn:require>
 
 </body>
 </html>
