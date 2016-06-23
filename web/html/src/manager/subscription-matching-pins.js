@@ -29,7 +29,8 @@ const Pins = React.createClass({
         this.props.systems != nextProps.systems ||
         this.props.subscriptions != nextProps.subscriptions
     ) {
-        this.setState({tableModel: new SimpleTableDataModel(this.buildRows(nextProps))});
+        this.state.tableModel.mergeData(this.buildRows(nextProps));
+        this.forceUpdate();
     }
   },
 
@@ -208,7 +209,8 @@ const AddPinPopUp = React.createClass({
 
   componentWillReceiveProps(nextProps) {
     if (this.props.subscriptions != nextProps.subscriptions) {
-        this.setState({tableModel: new SimpleTableDataModel(this.buildRows())});
+        this.state.tableModel.mergeData(this.buildRows());
+        this.forceUpdate();
     }
   },
 
