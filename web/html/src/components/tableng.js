@@ -127,7 +127,7 @@ class SimpleTableDataModel {
   }
 
   sort(columnKey, sortFn, sortDirection) {
-    console.log("sort " + columnKey + " " + sortFn + " " + sortDirection);
+    console.log("SimpleTableDataModel.sort " + columnKey + " " + sortFn + " " + sortDirection);
     this.currentData = this.currentData.sort((a, b) => sortDirection * sortFn(a, b, columnKey));
     this.sortFn = sortFn;
     this.sortDirection = sortDirection;
@@ -332,10 +332,7 @@ class Table extends React.Component {
 
     // dataModel is internal, go ahead and create an initial one
     console.log("initialDataModel: create new data model");
-    const newDataModel = new SimpleTableDataModel(data, pageSize);
-    this.doInitialSort(newDataModel, props);
-    newDataModel.initialized = true;
-    return newDataModel;
+    return this.newDataModel(props, data, pageSize);
   }
 
   doInitialSort(dataModel, props) {
@@ -348,12 +345,14 @@ class Table extends React.Component {
             dataModel.sort(props.initialSort, sortFn[0], 1);
         }
     }
-
   }
 
-  newDataModel(data, pageSize) {
+  newDataModel(props, data, pageSize) {
     console.log("newDataModel: create new data model")
-    return new SimpleTableDataModel(data, pageSize);
+    const newDataModel =  new SimpleTableDataModel(data, pageSize);
+    this.doInitialSort(newDataModel, props);
+    newDataModel.initialized = true;
+    return newDataModel;
   }
 
   onSearch(searchFn, criteria) {
@@ -379,7 +378,7 @@ class Table extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
         this.setState({
-            dataModel: this.newDataModel(nextProps.data, this.state.dataModel.getItemsPerPage())
+            dataModel: this.newDataModel(nextProps, nextProps.data, this.state.dataModel.getItemsPerPage())
         });
     }
     else if (this.props.dataModel != nextProps.dataModel) {
