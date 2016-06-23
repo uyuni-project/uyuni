@@ -108,47 +108,9 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
     public void testRefreshHardwareX86() throws Exception {
         doTest(ARCH_X86,
-                (apiMock, minionId) -> context().checking(new Expectations() { {
-                    List<Smbios.Record> smbiosSystem =
-                            parse("smbios.records.system", ARCH_X86,
-                                    Smbios.records(RecordType.SYSTEM)
-                                            .getReturnType());
-                    allowing(apiMock).getDmiRecords(minionId,
-                            RecordType.SYSTEM);
-                    will(returnValue(
-                            Optional.of(smbiosSystem.get(0).getData())));
-
-                    List<Smbios.Record> smbiosBios =
-                            parse("smbios.records.bios", ARCH_X86,
-                                    Smbios.records(RecordType.BIOS)
-                                            .getReturnType());
-                    allowing(apiMock).getDmiRecords(minionId,
-                            RecordType.BIOS);
-                    will(returnValue(Optional.of(smbiosBios.get(0).getData())));
-
-                    List<Smbios.Record> smbiosChassis =
-                            parse("smbios.records.chassis", ARCH_X86,
-                                    Smbios.records(RecordType.CHASSIS)
-                                            .getReturnType());
-                    allowing(apiMock).getDmiRecords(minionId,
-                            RecordType.CHASSIS);
-                    will(returnValue(
-                            Optional.of(smbiosChassis.get(0).getData())));
-
-                    List<Smbios.Record> smbiosBaseboard =
-                            parse("smbios.records.chassis", ARCH_X86,
-                                    Smbios.records(RecordType.BASEBOARD)
-                                            .getReturnType());
-                    allowing(apiMock).getDmiRecords(minionId,
-                            RecordType.BASEBOARD);
-                    will(returnValue(
-                            Optional.of(smbiosBaseboard.get(0).getData())));
-                    allowing(apiMock).getCpuInfo(minionId);
-                    Map<String, Object> cpuinfo =
-                            parse("status.cpuinfo", ARCH_X86,
-                                    Status.cpuinfo().getReturnType());
-                    will(returnValue(Optional.of(cpuinfo)));
-                } }),
+            (apiMock, minionId) -> {
+                setupX86Stubs(apiMock, minionId);
+            },
             (server, action) -> {
                 assertNotNull(server);
                 assertNotNull(server.getCpu());
@@ -425,32 +387,7 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     public void testPrimaryIPv4Only() throws Exception {
         doTestPrimaryInterfaces("sumautil.primary_ips_ipv4only", ARCH_X86,
                 (apiMock, minionId) -> {
-                    try {
-                        List<Smbios.Record> smbiosSystem = parse("smbios.records.system", ARCH_X86,
-                                Smbios.records(Smbios.RecordType.SYSTEM).getReturnType());
-                        apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.SYSTEM)).
-                                will(returnValue(Optional.of(smbiosSystem.get(0).getData())));
-
-                        List<Smbios.Record> smbiosBios = parse("smbios.records.bios", ARCH_X86,
-                                Smbios.records(Smbios.RecordType.BIOS).getReturnType());
-                        apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BIOS)).
-                                will(returnValue(Optional.of(smbiosBios.get(0).getData())));
-
-                        List<Smbios.Record> smbiosChassis = parse("smbios.records.chassis", ARCH_X86,
-                                Smbios.records(Smbios.RecordType.CHASSIS).getReturnType());
-                        apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.CHASSIS)).
-                                will(returnValue(Optional.of(smbiosChassis.get(0).getData())));
-
-                        List<Smbios.Record> smbiosBaseboard = parse("smbios.records.chassis", ARCH_X86,
-                                Smbios.records(Smbios.RecordType.BASEBOARD).getReturnType());
-                        apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BASEBOARD)).
-                                will(returnValue(Optional.of(smbiosBaseboard.get(0).getData())));
-
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                        fail("Could not setup mock " + e.getMessage());
-                    }
+                    setupX86Stubs(apiMock, minionId);
                 },
                 (server, action) -> {
                     Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -468,32 +405,7 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     public void testPrimaryIPv6Only() throws Exception {
         doTestPrimaryInterfaces("sumautil.primary_ips_ipv6only", ARCH_X86,
                 (apiMock, minionId) -> {
-                    try {
-                        List<Smbios.Record> smbiosSystem = parse("smbios.records.system", ARCH_X86,
-                                Smbios.records(Smbios.RecordType.SYSTEM).getReturnType());
-                        apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.SYSTEM)).
-                                will(returnValue(Optional.of(smbiosSystem.get(0).getData())));
-
-                        List<Smbios.Record> smbiosBios = parse("smbios.records.bios", ARCH_X86,
-                                Smbios.records(Smbios.RecordType.BIOS).getReturnType());
-                        apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BIOS)).
-                                will(returnValue(Optional.of(smbiosBios.get(0).getData())));
-
-                        List<Smbios.Record> smbiosChassis = parse("smbios.records.chassis", ARCH_X86,
-                                Smbios.records(Smbios.RecordType.CHASSIS).getReturnType());
-                        apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.CHASSIS)).
-                                will(returnValue(Optional.of(smbiosChassis.get(0).getData())));
-
-                        List<Smbios.Record> smbiosBaseboard = parse("smbios.records.chassis", ARCH_X86,
-                                Smbios.records(Smbios.RecordType.BASEBOARD).getReturnType());
-                        apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BASEBOARD)).
-                                will(returnValue(Optional.of(smbiosBaseboard.get(0).getData())));
-
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                        fail("Could not setup mock " + e.getMessage());
-                    }
+                    setupX86Stubs(apiMock, minionId);
                 },
                 (server, action) -> {
                     Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -511,32 +423,7 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     public void testPrimaryIPv4IPv6() throws Exception {
         doTestPrimaryInterfaces("sumautil.primary_ips_ipv4ipv6", ARCH_X86,
                 (apiMock, minionId) -> {
-                    try {
-                        List<Smbios.Record> smbiosSystem = parse("smbios.records.system", ARCH_X86,
-                                Smbios.records(Smbios.RecordType.SYSTEM).getReturnType());
-                        apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.SYSTEM)).
-                                will(returnValue(Optional.of(smbiosSystem.get(0).getData())));
-
-                        List<Smbios.Record> smbiosBios = parse("smbios.records.bios", ARCH_X86,
-                                Smbios.records(Smbios.RecordType.BIOS).getReturnType());
-                        apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BIOS)).
-                                will(returnValue(Optional.of(smbiosBios.get(0).getData())));
-
-                        List<Smbios.Record> smbiosChassis = parse("smbios.records.chassis", ARCH_X86,
-                                Smbios.records(Smbios.RecordType.CHASSIS).getReturnType());
-                        apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.CHASSIS)).
-                                will(returnValue(Optional.of(smbiosChassis.get(0).getData())));
-
-                        List<Smbios.Record> smbiosBaseboard = parse("smbios.records.chassis", ARCH_X86,
-                                Smbios.records(Smbios.RecordType.BASEBOARD).getReturnType());
-                        apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BASEBOARD)).
-                                will(returnValue(Optional.of(smbiosBaseboard.get(0).getData())));
-
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                        fail("Could not setup mock " + e.getMessage());
-                    }
+                    setupX86Stubs(apiMock, minionId);
                 },
                 (server, action) -> {
                     Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -549,6 +436,56 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
                     verifyCompleted(action);
                 });
+    }
+
+    private void setupX86Stubs(Mock apiMock, String minionId) {
+        try {
+            context().checking(new Expectations() { {
+                List<Smbios.Record> smbiosSystem =
+                        parse("smbios.records.system", ARCH_X86,
+                                Smbios.records(RecordType.SYSTEM)
+                                        .getReturnType());
+                allowing(apiMock).getDmiRecords(minionId,
+                        RecordType.SYSTEM);
+                will(returnValue(
+                        Optional.of(smbiosSystem.get(0).getData())));
+
+                List<Smbios.Record> smbiosBios =
+                        parse("smbios.records.bios", ARCH_X86,
+                                Smbios.records(RecordType.BIOS)
+                                        .getReturnType());
+                allowing(apiMock).getDmiRecords(minionId,
+                        RecordType.BIOS);
+                will(returnValue(Optional.of(smbiosBios.get(0).getData())));
+
+                List<Smbios.Record> smbiosChassis =
+                        parse("smbios.records.chassis", ARCH_X86,
+                                Smbios.records(RecordType.CHASSIS)
+                                        .getReturnType());
+                allowing(apiMock).getDmiRecords(minionId,
+                        RecordType.CHASSIS);
+                will(returnValue(
+                        Optional.of(smbiosChassis.get(0).getData())));
+
+                List<Smbios.Record> smbiosBaseboard =
+                        parse("smbios.records.chassis", ARCH_X86,
+                                Smbios.records(RecordType.BASEBOARD)
+                                        .getReturnType());
+                allowing(apiMock).getDmiRecords(minionId,
+                        RecordType.BASEBOARD);
+                will(returnValue(
+                        Optional.of(smbiosBaseboard.get(0).getData())));
+                allowing(apiMock).getCpuInfo(minionId);
+                Map<String, Object> cpuinfo =
+                        parse("status.cpuinfo", ARCH_X86,
+                                Status.cpuinfo().getReturnType());
+                will(returnValue(Optional.of(cpuinfo)));
+        } });
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            fail("Could not setup mock " + e.getMessage());
+        }
     }
 
     private void verifyCompleted(Action action) {
