@@ -62,22 +62,16 @@ class SearchField extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-        value: props.table.state.dataModel.criteria
-    };
     ["onChange"].forEach(method => this[method] = this[method].bind(this));
   }
 
   onChange(text) {
-    this.setState({
-        value: text
-    });
     this.props.table.onSearch(this.props.searchFn, text);
   }
 
   render() {
       return <input className="form-control table-input-search"
-        value={this.state.value}
+        value={this.props.table.state.dataModel.criteria}
         placeholder={this.props.placeholder}
         type="text"
         onChange={(e) => this.onChange(e.target.value)}
