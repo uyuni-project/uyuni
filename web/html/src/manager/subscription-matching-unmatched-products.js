@@ -6,7 +6,7 @@ const UtilComponent = require("./subscription-matching-util");
 const CsvLink = UtilComponent.CsvLink;
 const SystemLabel = UtilComponent.SystemLabel;
 const PopUp = require("../components/popup").PopUp;
-const {Table, Column, SearchField, Highlight} = require("../components/tableng.js");
+const {Table, Column, SearchField, SimpleTableDataModel} = require("../components/tableng");
 
 const UnmatchedProducts = React.createClass({
   mixins: [StatePersistedMixin],
@@ -14,8 +14,16 @@ const UnmatchedProducts = React.createClass({
   getInitialState: function() {
     return {
         selectedProductId: null,
-        tableData: this.buildData(this.props)
+        tableModel: new SimpleTableDataModel(this.buildData(this.props))
     };
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.products != nextProps.products ||
+        this.props.unmatchedProductIds != nextProps.unmatchedProductIds) {
+        this.state.tableModel.mergeData(this.buildData(this.props));
+        this.forceUpdate();
+    }
   },
 
   buildData: function(props) {
@@ -57,7 +65,7 @@ const UnmatchedProducts = React.createClass({
       body = (
         <div>
           <Table
-            data={this.state.tableData}
+            dataModel={this.state.tableModel}
             rowKeyFn={this.rowKey}
             initialSort="name"
             >
