@@ -18,7 +18,8 @@ const Subscriptions = React.createClass({
 
   componentWillReceiveProps(nextProps) {
     if (this.props.subscriptions != nextProps.subscriptions) {
-        this.setState({tableModel: new SimpleTableDataModel(this.buildRows(nextProps.subscriptions))});
+        this.state.tableModel.mergeData(this.buildRows(nextProps.subscriptions));
+        this.forceUpdate();
     }
   },
 

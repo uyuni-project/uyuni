@@ -160,6 +160,7 @@ const UnmatchedSystemPopUp = React.createClass({
       <Table
         data={this.state.tableData}
         rowKeyFn={this.rowKey}
+        initialSort="name"
         searchPanel={
             <SearchField searchFn={this.searchData} placeholder="Filter by name"/>
         }>

@@ -79,6 +79,7 @@ class TableDemo extends React.Component {
                 data={this.state.tableData}
                 rowKeyFn={this.rowKey}
                 pageSize={10}
+                initialSort="name"
                 searchPanel={
                     <SearchField searchFn={this.searchData} placeholder="Search by name or address"/>
                 }>
@@ -94,7 +95,7 @@ class TableDemo extends React.Component {
                     width="30%"
                     header={<span style={{color: 'yellow'}}>{t('Name')}</span>}
                     sortFn={this.sortByName}
-                    cell={(row, table) => <Highlight enabled={table.state.dataModel.filtered}
+                    cell={(row, table) => <Highlight enabled={table.state.dataModel.isFiltered()}
                                               text={row.name}
                                               highlight={table.state.dataModel.criteria}/>}
                     />
@@ -103,7 +104,7 @@ class TableDemo extends React.Component {
                     width="50%"
                     header={<span style={{color: 'blue'}}>{t('Address')}</span>}
                     sortFn={this.sortByAddress}
-                    cell={ (row, table) => <Highlight enabled={table.state.dataModel.filtered}
+                    cell={ (row, table) => <Highlight enabled={table.state.dataModel.isFiltered()}
                                              text={row.address}
                                              highlight={table.state.dataModel.criteria}/> }
                     />

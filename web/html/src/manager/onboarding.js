@@ -152,12 +152,12 @@ class Onboarding extends React.Component {
                 cell={ (row, table) => {
                       if(row.state == "minions") {
                          return <a href={ "/rhn/manager/minions/" + row.id }>
-                             <Highlight enabled={table.state.dataModel.filtered}
+                             <Highlight enabled={table.state.dataModel.isFiltered()}
                                text={row.id}
                                highlight={table.state.dataModel.criteria}/>
                              </a>;
                       } else {
-                         return <Highlight enabled={table.state.dataModel.filtered}
+                         return <Highlight enabled={table.state.dataModel.isFiltered()}
                              text={row.id}
                              highlight={table.state.dataModel.criteria}/>;
                       }
@@ -169,7 +169,7 @@ class Onboarding extends React.Component {
                 sortFn={this.sortByFingerprint}
                 header={t('Fingerprint')}
                 cell={ (row, table) =>
-                    <Highlight enabled={table.state.dataModel.filtered}
+                    <Highlight enabled={table.state.dataModel.isFiltered()}
                          text={row.fingerprint}
                          highlight={table.state.dataModel.criteria}/> }
                 />
