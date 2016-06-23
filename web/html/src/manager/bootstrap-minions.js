@@ -1,12 +1,12 @@
 'use strict';
 
-var React = require("react");
-var ReactDOM = require("react-dom");
-var Panel = require("../components/panel").Panel;
-var Messages = require("../components/messages").Messages;
-var Network = require("../utils/network");
+const React = require("react");
+const ReactDOM = require("react-dom");
+const Panel = require("../components/panel").Panel;
+const Messages = require("../components/messages").Messages;
+const Network = require("../utils/network");
 const AsyncButton = require("../components/buttons").AsyncButton;
-var LinkButton = require("../components/buttons").LinkButton;
+const LinkButton = require("../components/buttons").LinkButton;
 
 var BootstrapMinions = React.createClass({
 
