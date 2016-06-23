@@ -1,14 +1,10 @@
 'use strict';
 
 var React = require("react");
-var TableComponent = require("../components/table");
+const {Table, Column, SearchField} = require("../components/tableng");
 var PanelComponent = require("../components/panel");
 var Messages = require("../components/messages").Messages;
 var Network = require("../utils/network");
-
-var Table = TableComponent.Table;
-var TableCell = TableComponent.TableCell;
-var TableRow = TableComponent.TableRow;
 var Panel = PanelComponent.Panel;
 var PanelButton = PanelComponent.PanelButton;
 
@@ -24,7 +20,7 @@ var StateCatalog = React.createClass({
 
     refreshServerData: function() {
         Network.get("/rhn/manager/state_catalog/data").promise.then(data => {
-          this.setState({"serverData" : data});
+          this.setState({serverData : data});
         });
     },
 
@@ -32,12 +28,16 @@ var StateCatalog = React.createClass({
         this.refreshServerData();
     },
 
-    compareRows: function(a, b, columnIndex, order) {
-        var orderCondition = order ? 1 : -1;
-        var aValue = a.props["raw_data"];
-        var bValue = b.props["raw_data"];
-        var result = aValue.localeCompare(bValue);
-        return result * orderCondition;
+    compareRows: function(aValue, bValue) {
+        return aValue.localeCompare(bValue);
+    },
+
+    rowKey: function(rowData) {
+        return rowData;
+    },
+
+    searchData: function(data, criteria) {
+        return data.filter((row) => row.toLowerCase().includes(criteria.toLowerCase()));
     },
 
     render: function() {
@@ -52,31 +52,28 @@ var StateCatalog = React.createClass({
             <Panel title="States Catalog" icon="spacewalk-icon-salt-add" button={button}>
                 {msg}
                 <div>
-                    <Table headers={[t("State")]}
-                      rows={statesToRows(this.state.serverData)}
-                      loadState={this.props.loadState}
-                      saveState={this.props.saveState}
-                      rowComparator={this.compareRows}
-                      sortableColumnIndexes={[0]}
-                      rowFilter={(tableRow, searchValue) => tableRow.props["raw_data"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-                      filterPlaceholder={t("Filter by state name:")}
-                    />
+                    <Table
+                        data={this.state.serverData}
+                        rowKeyFn={this.rowKey}
+                        initialSort="name"
+                        searchPanel={
+                            <SearchField searchFn={this.searchData}
+                                placeholder={t("Filter by state name")}/>
+                        }>
+                        <Column
+                            columnKey="name"
+                            sortFn={this.compareRows}
+                            header={t("State")}
+                            cell={ (s) =>
+                                <a href={"/rhn/manager/state_catalog/state/" + s}>{s}</a> }
+                            />
+                        </Table>
                 </div>
             </Panel>
         );
     }
 
 });
-
-function statesToRows(serverData) {
-  return serverData.map((s) => {
-    var link = <a href={"/rhn/manager/state_catalog/state/" + s}>{s}</a>
-    var columns = [
-      <TableCell content={link} />,
-    ];
-    return <TableRow columns={columns} raw_data={s} />
-  });
-}
 
 React.render(
   <StateCatalog flashMessages={flashMessage()}/>,
