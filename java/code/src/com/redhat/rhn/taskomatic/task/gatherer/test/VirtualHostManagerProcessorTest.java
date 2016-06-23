@@ -14,8 +14,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.gatherer.JSONHost;
 
-import org.hibernate.criterion.Projections;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -279,38 +277,31 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * @throws Exception - if anything goes wrong
      */
     public void testUpdateAlreadyRegisteredGuest() throws Exception {
-        // if database is not empty, we should add existing systems
-        // to the final count
-        Integer existingSystems =
-                (Integer) HibernateFactory.getSession().createCriteria(VirtualInstance.class)
-                .setProjection(Projections.rowCount()).uniqueResult();
-
         // guest already registered by usual registration process
+        String vmUuid = TestUtils.randomString();
         VirtualInstance registeredGuest = new GuestBuilder(user)
                 .createGuest()
-                .withUuid("vmuuid")
+                .withUuid(vmUuid)
                 .inStoppedState()
                 .asFullyVirtGuest()
                 .build();
         assertNull(registeredGuest.getHostSystem());
 
         // gatherer reports this guest belonging to a host _after_ registration
+        String foreignSystemId = "foreign_system_id" + TestUtils.randomString();
         Server hostServer = ServerTestUtils
-                .createForeignSystem(user, "101-foreign_system_id");
-        Map<String, JSONHost> data = createHostData("foreign_system_id",
-                pairsToMap("vm name", "vmuuid"));
+                .createForeignSystem(user, "101-" + foreignSystemId);
+        Map<String, JSONHost> data = createHostData(foreignSystemId,
+                pairsToMap("vm name", vmUuid));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         // verify that processor linked this guest to its host
         VirtualInstance guestFromDb = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("vmuuid").iterator().next();
+                .lookupVirtualInstanceByUuid(vmUuid).iterator().next();
         assertEquals(hostServer, guestFromDb.getHostSystem());
-
-        // (existingSystems + 2) VirtualInstances should be persisted
-        // (one for the host system, one for the guest)
-        assertEquals(existingSystems + 2, HibernateFactory.getSession().createCriteria(VirtualInstance.class)
-                .list().size());
+        assertEquals(hostServer.getGuests().size(), 1);
+        assertContains(hostServer.getGuests(), guestFromDb);
     }
 
     /**
