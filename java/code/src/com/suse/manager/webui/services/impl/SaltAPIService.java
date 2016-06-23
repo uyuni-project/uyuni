@@ -454,9 +454,10 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public <T> Map<String, Result<SSHResult<T>>> callSyncSSH(LocalCall<T> call,
-            Target<?> target, Optional<String> rosterFile) {
+            Target<?> target, Optional<String> rosterFile,
+            Optional<Boolean> ignoreHostKeys) {
         try {
-            return call.callSyncSSH(SALT_CLIENT, target, rosterFile);
+            return call.callSyncSSH(SALT_CLIENT, target, rosterFile, ignoreHostKeys);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
