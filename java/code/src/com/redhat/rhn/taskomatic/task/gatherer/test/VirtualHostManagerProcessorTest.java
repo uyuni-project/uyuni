@@ -15,6 +15,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.gatherer.JSONHost;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -278,30 +279,32 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     public void testUpdateAlreadyRegisteredGuest() throws Exception {
         // guest already registered by usual registration process
+        String vmUuid = TestUtils.randomString();
         VirtualInstance registeredGuest = new GuestBuilder(user)
                 .createGuest()
-                .withUuid("vmuuid")
+                .withUuid(vmUuid)
                 .inStoppedState()
                 .asFullyVirtGuest()
                 .build();
         assertNull(registeredGuest.getHostSystem());
 
         // gatherer reports this guest belonging to a host _after_ registration
+        String foreignSystemId = "foreign_system_id" + TestUtils.randomString();
         Server hostServer = ServerTestUtils
-                .createForeignSystem(user, "101-foreign_system_id");
-        Map<String, JSONHost> data = createHostData("foreign_system_id",
-                pairsToMap("vm name", "vmuuid"));
+                .createForeignSystem(user, "101-" + foreignSystemId);
+        Map<String, JSONHost> data = createHostData(foreignSystemId,
+                pairsToMap("vm name", vmUuid));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         // verify that processor linked this guest to its host
-        VirtualInstance guestFromDb = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("vmuuid").iterator().next();
+        List<VirtualInstance> guestsFromDb = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid(vmUuid);
+        assertEquals(1, guestsFromDb.size());
+        VirtualInstance guestFromDb = guestsFromDb.iterator().next();
         assertEquals(hostServer, guestFromDb.getHostSystem());
-        // 2 VirtualInstances should be persisted
-        // (one for the host system, one for the guest)
-        assertEquals(2, HibernateFactory.getSession().createCriteria(VirtualInstance.class)
-                .list().size());
+        assertEquals(1, hostServer.getGuests().size());
+        assertContains(hostServer.getGuests(), guestFromDb);
     }
 
     /**
