@@ -140,7 +140,7 @@ const Table = React.createClass({
   getInitialState: function() {
     return {
       currentPage: 1,
-      itemsPerPage: this.props.initalItemsPerPage || 15,
+      itemsPerPage: this.props.initialItemsPerPage || 15,
       criteria: null,
       sortColumnKey: this.props.initialSortColumnKey || null,
       sortDirection: 1
