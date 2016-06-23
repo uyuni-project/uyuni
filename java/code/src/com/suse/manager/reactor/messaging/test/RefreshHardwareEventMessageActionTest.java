@@ -93,7 +93,7 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     public void testRefreshHardwareX86() throws Exception {
         doTest(ARCH_X86,
             (apiMock, minionId) -> {
-                setupX86Stubs(apiMock, minionId);
+                setupX86Stubs(apiMock, minionId, "sumautil.primary_ips");
             },
             (server, action) -> {
                 assertNotNull(server);
@@ -367,9 +367,9 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     }
 
     public void testPrimaryIPv4Only() throws Exception {
-        doTestPrimaryInterfaces("sumautil.primary_ips_ipv4only", ARCH_X86,
+        doTest(ARCH_X86,
                 (apiMock, minionId) -> {
-                    setupX86Stubs(apiMock, minionId);
+                    setupX86Stubs(apiMock, minionId, "sumautil.primary_ips_ipv4only");
                 },
                 (server, action) -> {
                     Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -385,9 +385,9 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     }
 
     public void testPrimaryIPv6Only() throws Exception {
-        doTestPrimaryInterfaces("sumautil.primary_ips_ipv6only", ARCH_X86,
+        doTest(ARCH_X86,
                 (apiMock, minionId) -> {
-                    setupX86Stubs(apiMock, minionId);
+                    setupX86Stubs(apiMock, minionId, "sumautil.primary_ips_ipv6only");
                 },
                 (server, action) -> {
                     Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -403,9 +403,9 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     }
 
     public void testPrimaryIPv4IPv6() throws Exception {
-        doTestPrimaryInterfaces("sumautil.primary_ips_ipv4ipv6", ARCH_X86,
+        doTest(ARCH_X86,
                 (apiMock, minionId) -> {
-                    setupX86Stubs(apiMock, minionId);
+                    setupX86Stubs(apiMock, minionId, "sumautil.primary_ips_ipv4ipv6");
                 },
                 (server, action) -> {
                     Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
@@ -420,7 +420,7 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                 });
     }
 
-    private void setupX86Stubs(Mock apiMock, String minionId) {
+    private void setupX86Stubs(Mock apiMock, String minionId, String primaryIpFilename) {
         try {
             List<Smbios.Record> smbiosSystem = parse("smbios.records.system", ARCH_X86,
                     Smbios.records(Smbios.RecordType.SYSTEM).getReturnType());
@@ -441,6 +441,9 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                     Smbios.records(Smbios.RecordType.BASEBOARD).getReturnType());
             apiMock.stubs().method("getDmiRecords").with(eq(minionId), eq(Smbios.RecordType.BASEBOARD)).
                     will(returnValue(Optional.of(smbiosBaseboard.get(0).getData())));
+
+            Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse(primaryIpFilename, ARCH_X86, SumaUtil.primaryIps().getReturnType());
+            apiMock.stubs().method("getPrimaryIps").with(eq(minionId)).will(returnValue(Optional.of(ips)));
 
         }
         catch (IOException e) {
@@ -486,55 +489,6 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         apiMock.stubs().method("getNetworkInterfacesInfo").with(eq(minionId)).will(returnValue(Optional.of(netif)));
 
         Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse("sumautil.primary_ips", arch, SumaUtil.primaryIps().getReturnType());
-        apiMock.stubs().method("getPrimaryIps").with(eq(minionId)).will(returnValue(Optional.of(ips)));
-
-        Map<String, Optional<String>> netmodules = parse("sumautil.get_net_modules", arch, SumaUtil.getNetModules().getReturnType());
-        apiMock.stubs().method("getNetModules").with(eq(minionId)).will(returnValue(Optional.of(netmodules)));
-
-        Map<String, Boolean> ping = new HashMap<>();
-        ping.put(minionId, true);
-        apiMock.stubs().method("ping").will(returnValue(ping));
-
-        if (stubs != null) {
-            stubs.accept(apiMock, minionId);
-        }
-
-        RefreshHardwareEventMessageAction action = new RefreshHardwareEventMessageAction((SaltService)apiMock.proxy());
-
-        Action scheduledAction = ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
-        RefreshHardwareEventMessage msg = new RefreshHardwareEventMessage(minionId, scheduledAction);
-        action.execute(msg);
-
-        this.commitHappened(); // force cleanup on tearDown()
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-        server = MinionServerFactory.findByMinionId(minionId).orElse(null);
-
-        assertions.accept(server, scheduledAction);
-    }
-
-    private void doTestPrimaryInterfaces(String filename, String arch, BiConsumer<Mock, String> stubs, BiConsumer<MinionServer, Action> assertions) throws Exception {
-        MinionServer server = (MinionServer) ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeSaltEntitled(),
-                ServerFactoryTest.TYPE_SERVER_MINION);
-        String minionId = server.getMinionId();
-
-        Mock apiMock = mock(SaltService.class);
-
-        Map<String, Object> grains = parse("grains.items", arch, Grains.items(false).getReturnType());
-        apiMock.stubs().method("getGrains").with(eq(minionId)).will(returnValue(Optional.of(grains)));
-
-        Map<String, Object> cpuinfo = parse("status.cpuinfo", arch, Status.cpuinfo().getReturnType());
-        apiMock.stubs().method("getCpuInfo").with(eq(minionId)).will(returnValue(Optional.of(cpuinfo)));
-
-        List<Map<String, Object>> udevdb = parse("udevdb.exportdb", arch, Udevdb.exportdb().getReturnType());
-        apiMock.stubs().method("getUdevdb").with(eq(minionId)).will(returnValue(Optional.of(udevdb)));
-
-        Map<String, Network.Interface> netif = parse("network.interfaces", arch, Network.interfaces().getReturnType());
-        apiMock.stubs().method("getNetworkInterfacesInfo").with(eq(minionId)).will(returnValue(Optional.of(netif)));
-
-        Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse(filename, arch, SumaUtil.primaryIps().getReturnType());
         apiMock.stubs().method("getPrimaryIps").with(eq(minionId)).will(returnValue(Optional.of(ips)));
 
         Map<String, Optional<String>> netmodules = parse("sumautil.get_net_modules", arch, SumaUtil.getNetModules().getReturnType());
