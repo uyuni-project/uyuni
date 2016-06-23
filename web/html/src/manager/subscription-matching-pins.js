@@ -1,7 +1,6 @@
 "use strict";
 
 const React = require("react");
-const TableComponent = require("../components/table");
 const {Table, Column, SearchField, Highlight, SimpleTableDataModel} = require("../components/tableng.js");
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const PopUp = require("../components/popup").PopUp;
@@ -115,10 +114,7 @@ const Pins = React.createClass({
             dataModel={this.state.tableModel}
             rowKeyFn={(row) => row.id}
             initialSort="systemName"
-            searchPanel={
-                <SearchField searchFn={this.searchData}
-                    placeholder={t("Filter by description")}/>
-            }>
+            >
             <Column
                 columnKey="systemName"
                 sortFn={this.rowComparator}
