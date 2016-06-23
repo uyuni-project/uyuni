@@ -21,7 +21,7 @@ const UnmatchedProducts = React.createClass({
   componentWillReceiveProps(nextProps) {
     if (this.props.products != nextProps.products ||
         this.props.unmatchedProductIds != nextProps.unmatchedProductIds) {
-        this.state.tableModel.mergeData(this.buildData(this.props));
+        this.state.tableModel.mergeData(this.buildData(nextProps));
         this.forceUpdate();
     }
   },
@@ -121,13 +121,23 @@ const UnmatchedSystemPopUp = React.createClass({
 
   getInitialState: function() {
     return {
-        tableData: this.buildTableData(this.props)
+        tableModel: new SimpleTableDataModel(this.buildTableData(this.props))
     };
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.selectedProductId != nextProps.selectedProductId ||
+        this.props.products != nextProps.products ||
+        this.props.systems != nextProps.systems
+        ) {
+        this.state.tableModel.mergeData(this.buildTableData(nextProps));
+        this.forceUpdate();
+    }
   },
 
   buildTableData: function(props) {
     if (!props.selectedProductId) {
-        return null;
+        return [];
     }
     const product = props.products[props.selectedProductId];
     const systems = props.systems;
@@ -152,27 +162,14 @@ const UnmatchedSystemPopUp = React.createClass({
     return rowData.id;
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    if (!this.state.tableData ||
-        this.props.selectedProductId != nextProps.selectedProductId ||
-        this.props.products != nextProps.products ||
-        this.props.systems != nextProps.systems) {
-
-        this.setState({tableData: this.buildTableData(nextProps)})
-    }
-  },
-
   render: function() {
-    const popUpContent = !this.state.tableData ?
-      null :
-      <Table
-        data={this.state.tableData}
+    const popUpContent = <Table
+        dataModel={this.state.tableModel}
         rowKeyFn={this.rowKey}
         initialSort="name"
         searchPanel={
             <SearchField searchFn={this.searchData} placeholder="Filter by name"/>
         }>
-        >
         <Column
             columnKey="name"
             sortFn={this.sortByName}
