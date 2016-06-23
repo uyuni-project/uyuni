@@ -319,7 +319,6 @@ class Table extends React.Component {
         if (!dataModel.initialized) {
             this.doInitialSort(dataModel, props);
             dataModel.initialized = true;
-
         }
         return dataModel;
     }
@@ -377,6 +376,10 @@ class Table extends React.Component {
     }
     else if (this.props.dataModel != nextProps.dataModel) {
         console.log("componentWillReceiveProps: got new dataModel in props")
+        if (!nextProps.dataModel.initialized) {
+            this.doInitialSort(nextProps.dataModel, nextProps);
+            nextProps.dataModel.initialized = true;
+        }
         this.setState({
             dataModel: nextProps.dataModel
         });

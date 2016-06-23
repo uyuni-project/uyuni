@@ -332,13 +332,12 @@ const ProductTableCell = (props) => {
 
   const firstProductName = props.products[props.productIds[0]].productName;
   if (productLength == 1) {
-    return <TableCell content={firstProductName} />;
+    return <span>{firstProductName}</span>;
   }
 
   const productNames = props.productIds
     .map(i => props.products[i].productName)
-    .reduce((previousValue, currentValue) => previousValue + ", " + currentValue)
-  ;
+    .reduce((previousValue, currentValue) => previousValue + ", " + currentValue);
   return (
       <ToolTip
         content={firstProductName + ", ..."}
