@@ -15,6 +15,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.gatherer.JSONHost;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -297,10 +298,12 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         // verify that processor linked this guest to its host
-        VirtualInstance guestFromDb = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid(vmUuid).iterator().next();
+        List<VirtualInstance> guestsFromDb = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid(vmUuid);
+        assertEquals(1, guestsFromDb.size());
+        VirtualInstance guestFromDb = guestsFromDb.iterator().next();
         assertEquals(hostServer, guestFromDb.getHostSystem());
-        assertEquals(hostServer.getGuests().size(), 1);
+        assertEquals(1, hostServer.getGuests().size());
         assertContains(hostServer.getGuests(), guestFromDb);
     }
 
