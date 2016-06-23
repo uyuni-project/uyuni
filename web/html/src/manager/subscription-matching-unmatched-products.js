@@ -126,10 +126,11 @@ const UnmatchedSystemPopUp = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.selectedProductId != nextProps.selectedProductId ||
-        this.props.products != nextProps.products ||
-        this.props.systems != nextProps.systems
-        ) {
+    if (this.props.selectedProductId != nextProps.selectedProductId) {
+        this.setState({tableModel: new SimpleTableDataModel(this.buildTableData(nextProps))});
+    }
+    else if (this.props.products != nextProps.products ||
+            this.props.systems != nextProps.systems) {
         this.state.tableModel.mergeData(this.buildTableData(nextProps));
         this.forceUpdate();
     }
