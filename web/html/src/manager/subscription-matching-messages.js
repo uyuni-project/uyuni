@@ -56,6 +56,7 @@ const Messages = React.createClass({
             loadState={this.props.loadState}
             saveState={this.props.saveState}
             initialSortColumnKey="message"
+            initialItemsPerPage={userPrefPageSize}
           >
             <Column
                 columnKey="message"

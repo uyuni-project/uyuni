@@ -4,3 +4,7 @@
 mixin csrfToken
   input(type="hidden", name="csrf_token", value="#{csrf_token}")
 
+
+mixin userPreferences
+  script(type='text/javascript').
+      const userPrefPageSize = #{pageSize};

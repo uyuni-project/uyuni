@@ -56,6 +56,7 @@ const UnmatchedProducts = React.createClass({
             loadState={this.props.loadState}
             saveState={this.props.saveState}
             initialSortColumnKey="productName"
+            initialItemsPerPage={userPrefPageSize}
             >
             <Column
                 columnKey="productName"
@@ -136,6 +137,7 @@ const UnmatchedSystemPopUp = React.createClass({
         loadState={this.props.loadState}
         saveState={this.props.saveState}
         initialSortColumnKey="systemName"
+        initialItemsPerPage={userPrefPageSize}
         searchField={
             <SearchField filter={this.searchData}
               criteria={""}
