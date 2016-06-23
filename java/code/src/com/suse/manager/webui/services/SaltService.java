@@ -283,10 +283,12 @@ public interface SaltService {
      * @param target minions targeted by the call
      * @param rosterFile alternative roster file to use (default: /etc/salt/roster)
      * @param ignoreHostKeys use this option to disable 'StrictHostKeyChecking'
+     * @param sudo run command via sudo (default: false)
      * @return result of the call
      */
     <T> Map<String, Result<SSHResult<T>>> callSyncSSH(LocalCall<T> call, Target<?> target,
-            Optional<String> rosterFile, Optional<Boolean> ignoreHostKeys);
+            Optional<String> rosterFile, Optional<Boolean> ignoreHostKeys,
+            Optional<Boolean> sudo);
 
     /**
      * Execute a LocalCall asynchronously on the default Salt client.
