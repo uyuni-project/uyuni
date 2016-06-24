@@ -63,7 +63,7 @@ var BootstrapMinions = React.createClass({
                 })
             } catch (err) {
                 this.setState({
-                    errors: errorMessageByStatus(xhr.status)
+                    errors: Network.errorMessageByStatus(xhr.status)
                 })
             }
         });
@@ -124,18 +124,6 @@ var BootstrapMinions = React.createClass({
         )
     }
 });
-
-function errorMessageByStatus(status) {
-    if (status == 401) {
-        return [t("Session expired, please reload the page.")];
-    } else if (status == 403) {
-        return [t("Authorization error, please reload the page or try to logout/login again.")];
-    } else if (status >= 500) {
-        return [t("Server error, please check log files.")];
-    } else {
-        return [];
-    }
-}
 
 ReactDOM.render(
   <BootstrapMinions />,
