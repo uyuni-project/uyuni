@@ -104,7 +104,6 @@ class SimpleTableDataModel {
   }
 
   filter(filterFn, criteria) {
-    console.log("filter " + criteria);
     if (!criteria) {
       this.currentData = this.data;
       this.filterFn = null;
@@ -118,7 +117,6 @@ class SimpleTableDataModel {
   }
 
   sort(columnKey, sortFn, sortDirection) {
-    console.log("SimpleTableDataModel.sort " + columnKey + " " + sortFn + " " + sortDirection);
     this.currentData = this.currentData.sort((a, b) => sortDirection * sortFn(a, b, columnKey));
     this.sortFn = sortFn;
     this.sortDirection = sortDirection;
@@ -312,7 +310,6 @@ class Table extends React.Component {
     const {data, pageSize, dataModel} = props;
     if (dataModel) {
         // found an external dataModel in props
-        console.log("initialDataModel: found dataModel in props " + dataModel.criteria + " " + dataModel.sortColumnKey) ;
         if (!dataModel.initialized) {
             this.doInitialSort(dataModel, props);
             dataModel.initialized = true;
@@ -321,7 +318,6 @@ class Table extends React.Component {
     }
 
     // dataModel is internal, go ahead and create an initial one
-    console.log("initialDataModel: create new data model");
     return this.newDataModel(props, data, pageSize);
   }
 
@@ -338,7 +334,6 @@ class Table extends React.Component {
   }
 
   newDataModel(props, data, pageSize) {
-    console.log("newDataModel: create new data model")
     const newDataModel =  new SimpleTableDataModel(data, pageSize);
     this.doInitialSort(newDataModel, props);
     newDataModel.initialized = true;
@@ -372,7 +367,6 @@ class Table extends React.Component {
         });
     }
     else if (this.props.dataModel != nextProps.dataModel) {
-        console.log("componentWillReceiveProps: got new dataModel in props")
         if (!nextProps.dataModel.initialized) {
             this.doInitialSort(nextProps.dataModel, nextProps);
             nextProps.dataModel.initialized = true;
