@@ -12,7 +12,7 @@ var BootstrapMinions = React.createClass({
 
     getInitialState: function() {
         return {
-            host: "my.future.minion",
+            host: "",
             user: "root",
             password: "linux"
         };
@@ -80,15 +80,15 @@ var BootstrapMinions = React.createClass({
 
         var msg = null;
         if (this.state.success) {
-            msg = <Messages items={[{severity: "info", text: t("Successfully bootstrapped minion!")}]}/>;
+            msg = <Messages items={[{severity: "info", text: t("Successfully bootstrapped host!")}]}/>;
         }
 
         var buttons = [];
         buttons.push(
-            <AsyncButton id="bootstrap-btn" className="btn-success" icon="plus" name={t("Bootstrap")} action={this.onBootstrap}/>
+            <AsyncButton id="bootstrap-btn" icon="plus" name={t("Bootstrap")} action={this.onBootstrap}/>
         );
         buttons.push(
-            <LinkButton id="cancel-btn" className="btn-default form-horizontal pull-right" text={t("Back to System Overview")} href="/rhn/systems/Overview.do"/>
+            <LinkButton id="cancel-btn" className="btn-default pull-right" text={t("Back to System Overview")} href="/rhn/systems/Overview.do"/>
         );
 
         return (
@@ -99,7 +99,7 @@ var BootstrapMinions = React.createClass({
                 <div className="form-group">
                     <label className="col-md-3 control-label">Host:</label>
                     <div className="col-md-6">
-                        <input name="hostname" className="form-control" type="text" defaultValue={this.state.host} onChange={this.hostChanged}/>
+                        <input name="hostname" className="form-control" type="text" placeholder={t("IP address or DNS name")} onChange={this.hostChanged}/>
                     </div>
                 </div>
                 <div className="form-group">
