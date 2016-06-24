@@ -156,19 +156,15 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
             });
         });
 
-        if (!hasPrimaryInterfaceSet && primaryIPv6.isPresent()) {
-            for (NetworkInterface iface : server.getNetworkInterfaces()) {
-                for (ServerNetAddress6 ipv6 : iface.getIPv6Addresses()) {
-                    if (StringUtils.equals(ipv6.getAddress(), primaryIPv6.orElse(null))) {
-                        iface.setPrimary("Y");
-                        hasPrimaryInterfaceSet = true;
-                        break;
-                    }
-                }
-                if (hasPrimaryInterfaceSet) {
-                    break;
-                }
-            }
+        if (!hasPrimaryInterfaceSet) {
+            primaryIPv6.ifPresent(ipv6Primary -> {
+                server.getNetworkInterfaces().stream()
+                        .filter(networkInterface -> networkInterface.getIPv6Addresses()
+                                .stream()
+                                .anyMatch(sna6 -> StringUtils.equals(sna6.getAddress(),
+                                        ipv6Primary)))
+                        .findFirst().ifPresent(s -> s.setPrimary("Y"));
+            });
         }
 
         return server;
