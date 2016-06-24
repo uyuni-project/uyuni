@@ -48,12 +48,12 @@ var BootstrapMinions = React.createClass({
             "application/json"
         ).promise.then(data => {
             this.setState({
-                success: data,
+                success: data.success,
                 errors: null
             });
-            if (!data) {
+            if (!data.success) {
                 this.setState({
-                    errors: [t("Bootstrap failed")]
+                    errors: [data.errorMessage]
                 });
             }
         }, (xhr) => {
