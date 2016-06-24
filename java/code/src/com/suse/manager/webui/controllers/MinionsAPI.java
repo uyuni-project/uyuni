@@ -39,6 +39,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
@@ -188,8 +189,17 @@ public class MinionsAPI {
      */
     @SuppressWarnings("unchecked")
     public static String bootstrap(Request request, Response response, User user) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        // Return immediately if host or username is empty
         Map<String, String> formData = GSON.fromJson(request.body(), Map.class);
         String host = formData.get("host");
+        String sshUser = formData.get("user");
+        if (StringUtils.isEmpty(host) || StringUtils.isEmpty(sshUser)) {
+            resultMap.put("success", false);
+            resultMap.put("errorMessage", "Host and a username are required fields!");
+            return json(response, resultMap);
+        }
         LOG.info("Bootstrapping host: " + host);
 
         // Setup pillar data to be passed when applying the bootstrap state
@@ -199,7 +209,7 @@ public class MinionsAPI {
         try {
             // Generate (temporary) roster file based on data from the UI
             SaltRoster saltRoster = new SaltRoster();
-            saltRoster.addHost(host, formData.get("user"), formData.get("password"));
+            saltRoster.addHost(host, sshUser, formData.get("password"));
             Path rosterFilePath = saltRoster.persistInTempFile();
             String roster = rosterFilePath.toString();
             LOG.debug("Roster file: " + roster);
@@ -212,36 +222,47 @@ public class MinionsAPI {
             Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> results =
                     SaltAPIService.INSTANCE.callSyncSSH(stateApplyCall,
                             new MinionList(host), Optional.of(roster), Optional.of(true),
-                            Optional.of(!"root".equals(formData.get("user"))));
+                            Optional.of(!"root".equals(sshUser)));
 
             // Delete the roster file
             Files.delete(rosterFilePath);
 
-            // Check if bootstrap was successful (all states have result = true)
-            boolean success = results.get(host).fold(
+            // Check if bootstrap was successful
+            resultMap = results.get(host).fold(
                     error -> {
                         LOG.error("Error during bootstrap: " + error.toString());
-                        return false;
+                        Map<String, Object> ret = new HashMap<>();
+                        ret.put("success", false);
+                        ret.put("errorMessage", error.toString());
+                        return ret;
                     },
                     r -> {
+                        // We have results, check if result = true for all the single states
+                        Optional<String> message = Optional.empty();
                         boolean stateApplyResult = r.getReturn().isPresent();
                         if (stateApplyResult) {
                             for (State.ApplyResult apply : r.getReturn().get().values()) {
                                 if (!apply.isResult()) {
                                     stateApplyResult = false;
+                                    message = Optional.of("Bootstrap failed (" +
+                                            r.getRetcode() + ")");
                                     break;
                                 }
                             }
                         }
                         else {
-                            LOG.info("No result for minion: " + host);
+                            message = Optional.of("No result for host: " + host);
+                            LOG.info(message.get());
                         }
-                        return stateApplyResult && r.getRetcode() == 0;
+                        Map<String, Object> ret = new HashMap<>();
+                        ret.put("success", stateApplyResult && r.getRetcode() == 0);
+                        message.ifPresent(m -> ret.put("errorMessage", m));
+                        return ret;
                     }
             );
 
-            LOG.debug("Bootstrap success: " + success);
-            return json(response, success);
+            LOG.debug("Bootstrap success: " + resultMap.get("success"));
+            return json(response, resultMap);
         }
         catch (IOException e) {
             LOG.error("Error operating on roster file: " + e.getMessage());
