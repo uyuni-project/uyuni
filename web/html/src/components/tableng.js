@@ -115,9 +115,6 @@ class SimpleTableDataModel {
       this.criteria = criteria;
       this.currentPage = 1;
     }
-    this.sortFn = null;
-    this.sortDirection = 1;
-    this.sortColumnKey = null;
   }
 
   sort(columnKey, sortFn, sortDirection) {
