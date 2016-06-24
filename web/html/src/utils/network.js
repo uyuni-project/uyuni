@@ -35,9 +35,22 @@ function get(url, contentType) {
     return request(url, "GET", {}, {}, contentType);
 }
 
+function errorMessageByStatus(status) {
+    if (status == 401) {
+        return [t("Session expired, please reload the page.")];
+    } else if (status == 403) {
+        return [t("Authorization error, please reload the page or try to logout/login again.")];
+    } else if (status >= 500) {
+        return [t("Server error, please check log files.")];
+    } else {
+        return [];
+    }
+}
+
 module.exports = {
     get: get,
     post: post,
     put: put,
-    del: del
+    del: del,
+    errorMessageByStatus: errorMessageByStatus
 }
