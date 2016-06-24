@@ -16,8 +16,12 @@ const Messages = React.createClass({
     return {tableModel: new SimpleTableDataModel(this.buildRows(this.props.messages, this.props.systems))};
   },
 
-  rowComparator: function(aValue, bValue) {
+  sortByMessage: function(aValue, bValue) {
     return aValue.message.toLowerCase().localeCompare(bValue.message.toLowerCase());
+  },
+
+  sortByInfo: function(aValue, bValue) {
+    return aValue.info.toLowerCase().localeCompare(bValue.info.toLowerCase());
   },
 
   componentWillReceiveProps(nextProps) {
@@ -74,12 +78,13 @@ const Messages = React.createClass({
             >
             <Column
                 columnKey="message"
-                sortFn={this.rowComparator}
+                sortFn={this.sortByMessage}
                 header={t("Message")}
                 cell={ (row) => row.message }
                 />
             <Column
                 columnKey="info"
+                sortFn={this.sortByInfo}
                 header={t("Additional information")}
                 cell={ (row) => row.info }
                 />
