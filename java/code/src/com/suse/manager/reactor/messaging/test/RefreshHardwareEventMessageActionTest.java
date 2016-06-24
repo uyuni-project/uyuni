@@ -108,47 +108,9 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
     public void testRefreshHardwareX86() throws Exception {
         doTest(ARCH_X86,
-                (apiMock, minionId) -> context().checking(new Expectations() { {
-                    List<Smbios.Record> smbiosSystem =
-                            parse("smbios.records.system", ARCH_X86,
-                                    Smbios.records(RecordType.SYSTEM)
-                                            .getReturnType());
-                    allowing(apiMock).getDmiRecords(minionId,
-                            RecordType.SYSTEM);
-                    will(returnValue(
-                            Optional.of(smbiosSystem.get(0).getData())));
-
-                    List<Smbios.Record> smbiosBios =
-                            parse("smbios.records.bios", ARCH_X86,
-                                    Smbios.records(RecordType.BIOS)
-                                            .getReturnType());
-                    allowing(apiMock).getDmiRecords(minionId,
-                            RecordType.BIOS);
-                    will(returnValue(Optional.of(smbiosBios.get(0).getData())));
-
-                    List<Smbios.Record> smbiosChassis =
-                            parse("smbios.records.chassis", ARCH_X86,
-                                    Smbios.records(RecordType.CHASSIS)
-                                            .getReturnType());
-                    allowing(apiMock).getDmiRecords(minionId,
-                            RecordType.CHASSIS);
-                    will(returnValue(
-                            Optional.of(smbiosChassis.get(0).getData())));
-
-                    List<Smbios.Record> smbiosBaseboard =
-                            parse("smbios.records.chassis", ARCH_X86,
-                                    Smbios.records(RecordType.BASEBOARD)
-                                            .getReturnType());
-                    allowing(apiMock).getDmiRecords(minionId,
-                            RecordType.BASEBOARD);
-                    will(returnValue(
-                            Optional.of(smbiosBaseboard.get(0).getData())));
-                    allowing(apiMock).getCpuInfo(minionId);
-                    Map<String, Object> cpuinfo =
-                            parse("status.cpuinfo", ARCH_X86,
-                                    Status.cpuinfo().getReturnType());
-                    will(returnValue(Optional.of(cpuinfo)));
-                } }),
+            (apiMock, minionId) -> {
+                setupX86Stubs(apiMock, minionId, "sumautil.primary_ips");
+            },
             (server, action) -> {
                 assertNotNull(server);
                 assertNotNull(server.getCpu());
@@ -189,8 +151,8 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                 assertEquals("52:54:00:eb:51:3d", ethNames.get("eth1").getHwaddr());
 
                 assertEquals("::1", ethNames.get("lo").getIPv6Addresses().get(0).getAddress());
-                assertEquals("fe80::5054:ff:feaf:7f30", ethNames.get("eth0").getIPv6Addresses().get(0).getAddress());
-                assertEquals("fe80::5054:ff:feeb:513d", ethNames.get("eth1").getIPv6Addresses().get(0).getAddress());
+                assertEquals("fe80::5054:ff:fed0:91", ethNames.get("eth0").getIPv6Addresses().get(0).getAddress());
+                assertEquals("fe80::5054:ff:fefc:19a4", ethNames.get("eth1").getIPv6Addresses().get(0).getAddress());
 
                 assertEquals("128", ethNames.get("lo").getIPv6Addresses().get(0).getNetmask());
                 assertEquals("64", ethNames.get("eth0").getIPv6Addresses().get(0).getNetmask());
@@ -422,6 +384,110 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                 });
     }
 
+    public void testPrimaryIPv4Only() throws Exception {
+        doTest(ARCH_X86,
+                (apiMock, minionId) -> {
+                    setupX86Stubs(apiMock, minionId, "sumautil.primary_ips_ipv4only");
+                },
+                (server, action) -> {
+                    Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
+                            eth -> eth.getName(),
+                            Function.identity()
+                    ));
+                    assertEquals(null, ethNames.get("lo").getPrimary());
+                    assertEquals(null, ethNames.get("eth0").getPrimary());
+                    assertEquals("Y", ethNames.get("eth1").getPrimary());
+
+                    verifyCompleted(action);
+                });
+    }
+
+    public void testPrimaryIPv6Only() throws Exception {
+        doTest(ARCH_X86,
+                (apiMock, minionId) -> {
+                    setupX86Stubs(apiMock, minionId, "sumautil.primary_ips_ipv6only");
+                },
+                (server, action) -> {
+                    Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
+                            eth -> eth.getName(),
+                            Function.identity()
+                    ));
+                    assertEquals(null, ethNames.get("lo").getPrimary());
+                    assertEquals("Y", ethNames.get("eth0").getPrimary());
+                    assertEquals(null, ethNames.get("eth1").getPrimary());
+
+                    verifyCompleted(action);
+                });
+    }
+
+    public void testPrimaryIPv4IPv6() throws Exception {
+        doTest(ARCH_X86,
+                (apiMock, minionId) -> {
+                    setupX86Stubs(apiMock, minionId, "sumautil.primary_ips_ipv4ipv6");
+                },
+                (server, action) -> {
+                    Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
+                            eth -> eth.getName(),
+                            Function.identity()
+                    ));
+                    assertEquals(null, ethNames.get("lo").getPrimary());
+                    assertEquals(null, ethNames.get("eth0").getPrimary());
+                    assertEquals("Y", ethNames.get("eth1").getPrimary());
+
+                    verifyCompleted(action);
+                });
+    }
+
+    private void setupX86Stubs(SaltService apiMock, String minionId,
+            String primaryIpFilename) {
+        context().checking(new Expectations() { {
+            List<Smbios.Record> smbiosSystem =
+                    parse("smbios.records.system", ARCH_X86,
+                            Smbios.records(RecordType.SYSTEM)
+                                    .getReturnType());
+            allowing(apiMock).getDmiRecords(minionId,
+                    RecordType.SYSTEM);
+            will(returnValue(
+                    Optional.of(smbiosSystem.get(0).getData())));
+
+            List<Smbios.Record> smbiosBios =
+                    parse("smbios.records.bios", ARCH_X86,
+                            Smbios.records(RecordType.BIOS)
+                                    .getReturnType());
+            allowing(apiMock).getDmiRecords(minionId,
+                    RecordType.BIOS);
+            will(returnValue(Optional.of(smbiosBios.get(0).getData())));
+
+            List<Smbios.Record> smbiosChassis =
+                    parse("smbios.records.chassis", ARCH_X86,
+                            Smbios.records(RecordType.CHASSIS)
+                                    .getReturnType());
+            allowing(apiMock).getDmiRecords(minionId,
+                    RecordType.CHASSIS);
+            will(returnValue(
+                    Optional.of(smbiosChassis.get(0).getData())));
+
+            List<Smbios.Record> smbiosBaseboard =
+                    parse("smbios.records.chassis", ARCH_X86,
+                            Smbios.records(RecordType.BASEBOARD)
+                                    .getReturnType());
+            allowing(apiMock).getDmiRecords(minionId,
+                    RecordType.BASEBOARD);
+            will(returnValue(
+                    Optional.of(smbiosBaseboard.get(0).getData())));
+            allowing(apiMock).getCpuInfo(minionId);
+            Map<String, Object> cpuinfo =
+                    parse("status.cpuinfo", ARCH_X86,
+                            Status.cpuinfo().getReturnType());
+            will(returnValue(Optional.of(cpuinfo)));
+
+            Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse(primaryIpFilename,
+                    ARCH_X86, SumaUtil.primaryIps().getReturnType());
+            allowing(apiMock).getPrimaryIps(minionId);
+            will(returnValue(Optional.of(ips)));
+        } });
+    }
+
     private void verifyCompleted(Action action) {
         ServerAction serverAction = action.getServerActions().stream().findFirst().get();
         assertEquals(new Long(0L), serverAction.getResultCode());
@@ -503,7 +569,8 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         try {
             String str = IOUtils.toString(getClass().getResourceAsStream(filename));
             return JsonParser.GSON.fromJson(str, returnType.getType());
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new RuntimeException(filename, e);
         }
     }
