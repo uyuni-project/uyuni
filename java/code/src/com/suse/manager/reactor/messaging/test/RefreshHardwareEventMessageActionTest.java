@@ -438,59 +438,54 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
                 });
     }
 
-    private void setupX86Stubs(Mock apiMock, String minionId, String primaryIpFilename) {
-        try {
-            context().checking(new Expectations() { {
-                List<Smbios.Record> smbiosSystem =
-                        parse("smbios.records.system", ARCH_X86,
-                                Smbios.records(RecordType.SYSTEM)
-                                        .getReturnType());
-                allowing(apiMock).getDmiRecords(minionId,
-                        RecordType.SYSTEM);
-                will(returnValue(
-                        Optional.of(smbiosSystem.get(0).getData())));
+    private void setupX86Stubs(SaltService apiMock, String minionId,
+            String primaryIpFilename) {
+        context().checking(new Expectations() { {
+            List<Smbios.Record> smbiosSystem =
+                    parse("smbios.records.system", ARCH_X86,
+                            Smbios.records(RecordType.SYSTEM)
+                                    .getReturnType());
+            allowing(apiMock).getDmiRecords(minionId,
+                    RecordType.SYSTEM);
+            will(returnValue(
+                    Optional.of(smbiosSystem.get(0).getData())));
 
-                List<Smbios.Record> smbiosBios =
-                        parse("smbios.records.bios", ARCH_X86,
-                                Smbios.records(RecordType.BIOS)
-                                        .getReturnType());
-                allowing(apiMock).getDmiRecords(minionId,
-                        RecordType.BIOS);
-                will(returnValue(Optional.of(smbiosBios.get(0).getData())));
+            List<Smbios.Record> smbiosBios =
+                    parse("smbios.records.bios", ARCH_X86,
+                            Smbios.records(RecordType.BIOS)
+                                    .getReturnType());
+            allowing(apiMock).getDmiRecords(minionId,
+                    RecordType.BIOS);
+            will(returnValue(Optional.of(smbiosBios.get(0).getData())));
 
-                List<Smbios.Record> smbiosChassis =
-                        parse("smbios.records.chassis", ARCH_X86,
-                                Smbios.records(RecordType.CHASSIS)
-                                        .getReturnType());
-                allowing(apiMock).getDmiRecords(minionId,
-                        RecordType.CHASSIS);
-                will(returnValue(
-                        Optional.of(smbiosChassis.get(0).getData())));
+            List<Smbios.Record> smbiosChassis =
+                    parse("smbios.records.chassis", ARCH_X86,
+                            Smbios.records(RecordType.CHASSIS)
+                                    .getReturnType());
+            allowing(apiMock).getDmiRecords(minionId,
+                    RecordType.CHASSIS);
+            will(returnValue(
+                    Optional.of(smbiosChassis.get(0).getData())));
 
-                List<Smbios.Record> smbiosBaseboard =
-                        parse("smbios.records.chassis", ARCH_X86,
-                                Smbios.records(RecordType.BASEBOARD)
-                                        .getReturnType());
-                allowing(apiMock).getDmiRecords(minionId,
-                        RecordType.BASEBOARD);
-                will(returnValue(
-                        Optional.of(smbiosBaseboard.get(0).getData())));
-                allowing(apiMock).getCpuInfo(minionId);
-                Map<String, Object> cpuinfo =
-                        parse("status.cpuinfo", ARCH_X86,
-                                Status.cpuinfo().getReturnType());
-                will(returnValue(Optional.of(cpuinfo)));
+            List<Smbios.Record> smbiosBaseboard =
+                    parse("smbios.records.chassis", ARCH_X86,
+                            Smbios.records(RecordType.BASEBOARD)
+                                    .getReturnType());
+            allowing(apiMock).getDmiRecords(minionId,
+                    RecordType.BASEBOARD);
+            will(returnValue(
+                    Optional.of(smbiosBaseboard.get(0).getData())));
+            allowing(apiMock).getCpuInfo(minionId);
+            Map<String, Object> cpuinfo =
+                    parse("status.cpuinfo", ARCH_X86,
+                            Status.cpuinfo().getReturnType());
+            will(returnValue(Optional.of(cpuinfo)));
 
-                Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse(primaryIpFilename, ARCH_X86, SumaUtil.primaryIps().getReturnType());
-                will(returnValue(Optional.of(ips)));
-
-
+            Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse(primaryIpFilename,
+                    ARCH_X86, SumaUtil.primaryIps().getReturnType());
+            allowing(apiMock).getPrimaryIps(minionId);
+            will(returnValue(Optional.of(ips)));
         } });
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            fail("Could not setup mock " + e.getMessage());
-        }
     }
 
     private void verifyCompleted(Action action) {
@@ -569,122 +564,15 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         assertions.accept(server, scheduledAction);
     }
 
-<<<<<<< HEAD
-    private void doTestPrimaryInterfaces(String filename, String arch, BiConsumer<Mock, String> stubs, BiConsumer<MinionServer, Action> assertions) throws Exception {
-        MinionServer server = (MinionServer) ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeSaltEntitled(),
-                ServerFactoryTest.TYPE_SERVER_MINION);
-        String minionId = server.getMinionId();
-
-        Mock apiMock = mock(SaltService.class);
-
-        Map<String, Object> grains = parse("grains.items", arch, Grains.items(false).getReturnType());
-        apiMock.stubs().method("getGrains").with(eq(minionId)).will(returnValue(Optional.of(grains)));
-
-        Map<String, Object> cpuinfo = parse("status.cpuinfo", arch, Status.cpuinfo().getReturnType());
-        apiMock.stubs().method("getCpuInfo").with(eq(minionId)).will(returnValue(Optional.of(cpuinfo)));
-
-        List<Map<String, Object>> udevdb = parse("udevdb.exportdb", arch, Udevdb.exportdb().getReturnType());
-        apiMock.stubs().method("getUdevdb").with(eq(minionId)).will(returnValue(Optional.of(udevdb)));
-
-        Map<String, Network.Interface> netif = parse("network.interfaces", arch, Network.interfaces().getReturnType());
-        apiMock.stubs().method("getNetworkInterfacesInfo").with(eq(minionId)).will(returnValue(Optional.of(netif)));
-
-        Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse(filename, arch, SumaUtil.primaryIps().getReturnType());
-        apiMock.stubs().method("getPrimaryIps").with(eq(minionId)).will(returnValue(Optional.of(ips)));
-
-        Map<String, Optional<String>> netmodules = parse("sumautil.get_net_modules", arch, SumaUtil.getNetModules().getReturnType());
-        apiMock.stubs().method("getNetModules").with(eq(minionId)).will(returnValue(Optional.of(netmodules)));
-
-        Map<String, Boolean> ping = new HashMap<>();
-        ping.put(minionId, true);
-        apiMock.stubs().method("ping").will(returnValue(ping));
-
-        if (stubs != null) {
-            stubs.accept(apiMock, minionId);
-        }
-
-        RefreshHardwareEventMessageAction action = new RefreshHardwareEventMessageAction((SaltService)apiMock.proxy());
-
-        Action scheduledAction = ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
-        RefreshHardwareEventMessage msg = new RefreshHardwareEventMessage(minionId, scheduledAction);
-        action.execute(msg);
-
-        this.commitHappened(); // force cleanup on tearDown()
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-        server = MinionServerFactory.findByMinionId(minionId).orElse(null);
-
-        assertions.accept(server, scheduledAction);
-    }
-
     private <T> T parse(String name, String arch, TypeToken<T> returnType) {
         String filename = name + "." + arch + ".json";
         try {
             String str = IOUtils.toString(getClass().getResourceAsStream(filename));
             return JsonParser.GSON.fromJson(str, returnType.getType());
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new RuntimeException(filename, e);
         }
-||||||| parent of edc60ab... Refactoring
-    private void doTestPrimaryInterfaces(String filename, String arch, BiConsumer<Mock, String> stubs, BiConsumer<MinionServer, Action> assertions) throws Exception {
-        MinionServer server = (MinionServer) ServerFactoryTest.createTestServer(user, true,
-                ServerConstants.getServerGroupTypeSaltEntitled(),
-                ServerFactoryTest.TYPE_SERVER_MINION);
-        String minionId = server.getMinionId();
-
-        Mock apiMock = mock(SaltService.class);
-
-        Map<String, Object> grains = parse("grains.items", arch, Grains.items(false).getReturnType());
-        apiMock.stubs().method("getGrains").with(eq(minionId)).will(returnValue(Optional.of(grains)));
-
-        Map<String, Object> cpuinfo = parse("status.cpuinfo", arch, Status.cpuinfo().getReturnType());
-        apiMock.stubs().method("getCpuInfo").with(eq(minionId)).will(returnValue(Optional.of(cpuinfo)));
-
-        List<Map<String, Object>> udevdb = parse("udevdb.exportdb", arch, Udevdb.exportdb().getReturnType());
-        apiMock.stubs().method("getUdevdb").with(eq(minionId)).will(returnValue(Optional.of(udevdb)));
-
-        Map<String, Network.Interface> netif = parse("network.interfaces", arch, Network.interfaces().getReturnType());
-        apiMock.stubs().method("getNetworkInterfacesInfo").with(eq(minionId)).will(returnValue(Optional.of(netif)));
-
-        Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse(filename, arch, SumaUtil.primaryIps().getReturnType());
-        apiMock.stubs().method("getPrimaryIps").with(eq(minionId)).will(returnValue(Optional.of(ips)));
-
-        Map<String, Optional<String>> netmodules = parse("sumautil.get_net_modules", arch, SumaUtil.getNetModules().getReturnType());
-        apiMock.stubs().method("getNetModules").with(eq(minionId)).will(returnValue(Optional.of(netmodules)));
-
-        Map<String, Boolean> ping = new HashMap<>();
-        ping.put(minionId, true);
-        apiMock.stubs().method("ping").will(returnValue(ping));
-
-        if (stubs != null) {
-            stubs.accept(apiMock, minionId);
-        }
-
-        RefreshHardwareEventMessageAction action = new RefreshHardwareEventMessageAction((SaltService)apiMock.proxy());
-
-        Action scheduledAction = ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
-        RefreshHardwareEventMessage msg = new RefreshHardwareEventMessage(minionId, scheduledAction);
-        action.execute(msg);
-
-        this.commitHappened(); // force cleanup on tearDown()
-
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-        server = MinionServerFactory.findByMinionId(minionId).orElse(null);
-
-        assertions.accept(server, scheduledAction);
-    }
-
-    private <T> T parse(String name, String arch, TypeToken<T> returnType) throws IOException {
-        String str = IOUtils.toString(getClass().getResourceAsStream(name + (arch != null ? "." + arch : "") + ".json"));
-        return JsonParser.GSON.fromJson(str, returnType.getType());
-=======
-    private <T> T parse(String name, String arch, TypeToken<T> returnType) throws IOException {
-        String str = IOUtils.toString(getClass().getResourceAsStream(name + (arch != null ? "." + arch : "") + ".json"));
-        return JsonParser.GSON.fromJson(str, returnType.getType());
->>>>>>> edc60ab... Refactoring
     }
 
 }
