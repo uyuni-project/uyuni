@@ -159,11 +159,11 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
         if (!hasPrimaryInterfaceSet) {
             primaryIPv6.ifPresent(ipv6Primary -> {
                 server.getNetworkInterfaces().stream()
-                        .filter(networkInterface -> networkInterface.getIPv6Addresses()
-                                .stream()
-                                .anyMatch(sna6 -> StringUtils.equals(sna6.getAddress(),
-                                        ipv6Primary)))
-                        .findFirst().ifPresent(s -> s.setPrimary("Y"));
+                    .filter(netIf -> netIf.getIPv6Addresses().stream()
+                        .anyMatch(address -> ipv6Primary.equals(address.getAddress()))
+                    )
+                    .findFirst()
+                    .ifPresent(primaryNetIf -> primaryNetIf.setPrimary("Y"));
             });
         }
 
