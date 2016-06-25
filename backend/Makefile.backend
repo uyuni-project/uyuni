@@ -55,12 +55,12 @@ docker_no_db_tests ::
 docker_pgsql_tests ::
 	mkdir -p $(CURDIR)/reports
 	@echo "Running Postgresql tests"
-	docker run --privileged --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql sh -c "/sbin/sysctl -w kernel.shmmax=4067832832; /etc/init.d/postgresql start; nosetests --with-xunit --xunit-file /manager/backend/reports/pgsql_tests.xml /manager/backend/test/runtests-postgresql.py; /etc/init.d/postgresql stop"
+	docker run --privileged --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql sh -c "/sbin/sysctl -w kernel.shmmax=4067832832; /etc/init.d/postgresql start; cp /root/rhn.conf /etc/rhn/rhn.conf; nosetests --with-xunit --xunit-file /manager/backend/reports/pgsql_tests.xml /manager/backend/test/runtests-postgresql.py; /etc/init.d/postgresql stop"
 
 docker_oracle_tests ::
 	mkdir -p $(CURDIR)/reports
 	@echo "Running Oracle tests"
-	docker run --privileged --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-ora sh -c "/manager/backend/test/oracle-init.sh; nosetests --with-xunit --xunit-file /manager/backend/reports/oracle_tests.xml /manager/backend/test/runtests-oracle.py; /etc/init.d/oracle stop"
+	docker run --privileged --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-ora sh -c "/manager/backend/test/oracle-init.sh; cp /root/rhn.conf /etc/rhn/rhn.conf; nosetests --with-xunit --xunit-file /manager/backend/reports/oracle_tests.xml /manager/backend/test/runtests-oracle.py; /etc/init.d/oracle stop"
 
 docker_pylint ::
 	mkdir -p $(CURDIR)/reports
