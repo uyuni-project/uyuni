@@ -169,7 +169,7 @@ public class RepoDetailsAction extends RhnAction {
     private void setupContentTypes(RequestContext context) {
         List<LabelValueBean> contentTypes = new ArrayList<LabelValueBean>();
         for (ContentSourceType ct : ChannelFactory.listContentSourceTypes()) {
-            contentTypes.add(lv(ct.getLabel(), ct.getId().toString()));
+            contentTypes.add(lv(ct.getLabel(), ct.getLabel()));
         }
         context.getRequest().setAttribute("contenttypes", contentTypes);
     }
@@ -192,7 +192,7 @@ public class RepoDetailsAction extends RhnAction {
         form.set(LABEL, repo.getLabel());
         form.set(URL, repo.getSourceUrl());
         form.set(SOURCEID, repo.getId());
-        form.set(TYPE, repo.getType().getId().toString());
+        form.set(TYPE, repo.getType().getLabel());
         if (repo.isSsl()) {
             SslContentSource sslRepo = (SslContentSource) repo;
             form.set(SSL_CA_CERT, getStringId(sslRepo.getCaCert()));
@@ -284,6 +284,7 @@ public class RepoDetailsAction extends RhnAction {
         RequestContext context = new RequestContext(request);
         String url = form.getString(URL);
         String label = form.getString(LABEL);
+        String type = form.getString(TYPE);
         String sfilters = form.getString(FILTERS);
         Boolean metadataSigned = (Boolean) form.get(METADATA_SIGNED);
         if (metadataSigned == null) {
@@ -303,7 +304,7 @@ public class RepoDetailsAction extends RhnAction {
 
         repoCmd.setLabel(label);
         repoCmd.setUrl(url);
-        repoCmd.setType(parseIdFromForm(form, TYPE));
+        repoCmd.setType(type);
         repoCmd.setSslCaCertId(parseIdFromForm(form, SSL_CA_CERT));
         repoCmd.setSslClientCertId(parseIdFromForm(form, SSL_CLIENT_CERT));
         repoCmd.setSslClientKeyId(parseIdFromForm(form, SSL_CLIENT_KEY));

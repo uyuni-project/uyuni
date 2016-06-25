@@ -2405,14 +2405,14 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * Creates a repository
     * @param loggedInUser The current user
     * @param label of the repo to be created
-    * @param type of the repo (YUM only for now)
+    * @param type of the repo
     * @param url of the repo
     * @return new ContentSource
     *
     * @xmlrpc.doc Creates a repository
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("string", "label", "repository label")
-    * @xmlrpc.param #param_desc("string", "type", "repository type (only YUM is supported)")
+    * @xmlrpc.param #param_desc("string", "type", "repository type (yum, uln...)")
     * @xmlrpc.param #param_desc("string", "url", "repository url")
     * @xmlrpc.returntype $ContentSourceSerializer
    **/
@@ -2431,7 +2431,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * Creates a repository
      * @param loggedInUser The current user
      * @param label of the repo to be created
-     * @param type of the repo (YUM only for now)
+     * @param type of the repo
      * @param url of the repo
      * @param sslCaCert CA certificate description
      * @param sslCliCert Client certificate description
@@ -2442,7 +2442,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "label", "repository label")
      * @xmlrpc.param #param_desc("string", "type",
-     * "repository type (only YUM is supported)")
+     * "repository type (yum, uln...)")
      * @xmlrpc.param #param_desc("string", "url", "repository url")
      * @xmlrpc.param #param_desc("string", "sslCaCert", "SSL CA cert description")
      * @xmlrpc.param #param_desc("string", "sslCliCert", "SSL Client cert description")
@@ -2460,11 +2460,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
              throw new InvalidParameterException("url might not be empty");
          }
 
-         BaseRepoCommand repoCmd = null;
-         repoCmd = new CreateRepoCommand(loggedInUser.getOrg());
+         BaseRepoCommand repoCmd = new CreateRepoCommand(loggedInUser.getOrg());
 
          repoCmd.setLabel(label);
          repoCmd.setUrl(url);
+
+         repoCmd.setType(type);
 
          // check SSL-certificates parameters
          if (!StringUtils.isEmpty(sslCaCert)) {
