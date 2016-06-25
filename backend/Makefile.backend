@@ -48,9 +48,9 @@ unittest ::
 docker_no_db_tests ::
 	mkdir -p $(CURDIR)/reports
 	@echo "Running satellite_tools/test/unit tests inside of docker $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql container"
-	docker run --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql nosetests --with-xunit --xunit-file /manager/backend/reports/satellite_tools_tests.xml -s /manager/backend/satellite_tools/test/unit/
+	docker run --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql sh -c "touch /etc/rhn/rhn.conf; nosetests --with-xunit --xunit-file /manager/backend/reports/satellite_tools_tests.xml -s /manager/backend/satellite_tools/test/unit/"
 	@echo "Running common/test/unit-test inside of docker $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql container"
-	docker run --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql nosetests --with-xunit --xunit-file /manager/backend/reports/common_tests.xml -s /manager/backend/common/test/unit-test/
+	docker run --rm=true -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql sh -c "touch /etc/rhn/rhn.conf; nosetests --with-xunit --xunit-file /manager/backend/reports/common_tests.xml -s /manager/backend/common/test/unit-test/"
 
 docker_pgsql_tests ::
 	mkdir -p $(CURDIR)/reports
