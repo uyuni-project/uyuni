@@ -1224,8 +1224,7 @@ public class ContentSyncManager {
                 source.setMetadataSigned(channel.isSigned());
                 source.setOrg(null);
                 source.setSourceUrl(url);
-                // FIXME: the first content source type is yum
-                source.setType(ChannelFactory.listContentSourceTypes().get(0));
+                source.setType(ChannelFactory.lookupContentSourceType("yum"));
             }
             else {
                 // update the URL as the token might have changed

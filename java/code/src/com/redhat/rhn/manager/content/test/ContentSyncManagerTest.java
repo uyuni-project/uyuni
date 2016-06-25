@@ -163,7 +163,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             ContentSource cs = new ContentSource();
             cs.setLabel(c.getLabel());
             cs.setSourceUrl("UPDATE ME!");
-            cs.setType(ChannelFactory.listContentSourceTypes().get(0));
+            cs.setType(ChannelFactory.lookupContentSourceType("yum"));
             cs.setOrg(null);
             cs = (ContentSource) TestUtils.saveAndReload(cs);
             c.getSources().add(cs);
@@ -990,7 +990,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             for (ContentSource cs : c.getSources()) {
                 assertEquals(xmlChannel.getLabel(), cs.getLabel());
                 assertEquals(xmlChannel.getSourceUrl(), cs.getSourceUrl());
-                assertEquals(ChannelFactory.listContentSourceTypes().get(0), cs.getType());
+                assertEquals(ChannelFactory.lookupContentSourceType("yum"), cs.getType());
             }
 
             // Verify product to channel relationship
