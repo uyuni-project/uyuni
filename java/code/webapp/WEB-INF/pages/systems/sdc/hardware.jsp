@@ -159,9 +159,13 @@
                     <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
                         <tr>
                             <th><c:out value="Primary network interface:" /></th>
-                            <td><html:select property="primaryInterface" styleId="primaryInterface">
+                            <td>
+                              <c:if test="${not empty networkInterfaces}">
+                                <html:select property="primaryInterface" styleId="primaryInterface">
                                     <html:options collection="networkInterfaces" property="value" labelProperty="display" />
-                                </html:select></td>
+                                </html:select>
+                              </c:if>
+                            </td>
                         </tr>
                     </rhn:require>
 
@@ -172,9 +176,11 @@
 
         <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
             <div class="text-right margin-bottom-sm">
+              <c:if test="${not empty networkInterfaces}">
                 <html:submit property="update_interface" styleClass="btn btn-default">
                     <bean:message key="sdc.details.edit.update" />
                 </html:submit>
+              </c:if>
             </div>
         </rhn:require>
 
