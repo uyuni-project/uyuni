@@ -14,6 +14,13 @@
  */
 package com.suse.manager.webui.services;
 
+import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.TaskoRun;
+
+import com.suse.manager.webui.utils.TaskoTopJob;
+
+import java.util.List;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Collect data for the TaskoTop web UI page
@@ -26,6 +33,18 @@ public class TaskoTopCollector {
      * @return the data
      */
     public Object getData() {
-        return null;
+        List<TaskoTopJob> jobs = TaskoFactory.listUnfinishedRuns().stream()
+                .map(t -> {
+                    TaskoRun r = TaskoFactory.lookupRunById(t.getId());
+                    return new TaskoTopJob(
+                        r.getId(),
+                        r.getTemplate().getTask().getName(),
+                        r.getStartTime(),
+                        r.getEndTime(),
+                        TaskoFactory.lookupScheduleById(r.getScheduleId()).getData());
+                })
+                .sorted((j1, j2) -> -j1.getStartTime().compareTo(j2.getStartTime()))
+                .collect(toList());
+        return jobs;
     }
 }
