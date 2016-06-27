@@ -2294,6 +2294,11 @@ tree will not be usable for autoinstalling.
         <source>Virtual Host Managers</source>
       </trans-unit>
 
+      <!-- TaskoTop -->
+      <trans-unit id="taskotop.nav.title">
+        <source>Taskotop</source>
+      </trans-unit>
+
       <!-- rename system entitlements to system types -->
       <trans-unit id="system-legend.jsp.unentitled">
         <source>No System Types</source>

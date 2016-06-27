@@ -30,6 +30,7 @@ import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
+import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 
@@ -155,5 +156,11 @@ public class Router implements SparkApplication {
                 withOrgAdmin(StateCatalogController::update));
         delete("/manager/state_catalog/state/:name",
                 withOrgAdmin(StateCatalogController::delete));
+
+        // TaskoTop
+        get("/manager/taskotop",
+                withProductAdmin(TaskoTop::show), jade);
+        get("/manager/taskotop/data",
+                withProductAdmin(TaskoTop::data));
     }
 }
