@@ -24,13 +24,25 @@ CERT_DIR=/usr/share/rhn
 CERT_FILE=RHN-ORG-TRUSTED-SSL-CERT
 TRUST_DIR=/etc/pki/ca-trust/source/anchors
 UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
-if [ -d /etc/pki/trust/anchors/ ]; then
-    TRUST_DIR=/etc/pki/trust/anchors/
-fi
-if [ -x /usr/sbin/update-ca-certificates ]; then
+if [ -d /etc/pki/trust/anchors/ -a -x /usr/sbin/update-ca-certificates ]; then
+    # SLE 12
+    TRUST_DIR=/etc/pki/trust/anchors
     UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
+elif [ -d /etc/ssl/certs -a -x /usr/bin/c_rehash ]; then
+    # SLE 11
+    TRUST_DIR=/etc/ssl/certs
+    UPDATE_TRUST_CMD="/usr/bin/c_rehash"
+    rm -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT.pem
+    rm -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT-*.pem
+    if [ -f $CERT_DIR/$CERT_FILE ]; then
+        ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT.pem
+        if [ $(grep -- "-----BEGIN CERTIFICATE-----" $CERT_DIR/$CERT_FILE | wc -l) -gt 1 ]; then
+            csplit -b "%02d.pem" -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT- $CERT_DIR/$CERT_FILE '/-----BEGIN CERTIFICATE-----/' '{*}'
+        fi
+    fi
+    $UPDATE_TRUST_CMD >/dev/null
+    exit 0
 fi
-
 
 # Not on EL5
 if [ ! -d $TRUST_DIR ]; then
