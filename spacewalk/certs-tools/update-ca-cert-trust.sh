@@ -24,7 +24,9 @@ CERT_DIR=/usr/share/rhn
 CERT_FILE=RHN-ORG-TRUSTED-SSL-CERT
 TRUST_DIR=/etc/pki/ca-trust/source/anchors
 UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
-if [ -d /etc/pki/trust/anchors/ -a -x /usr/sbin/update-ca-certificates ]; then
+if [ -d /etc/pki/ca-trust/source/anchors ]; then
+    TRUST_DIR=/etc/pki/ca-trust/source/anchors
+elif [ -d /etc/pki/trust/anchors/ -a -x /usr/sbin/update-ca-certificates ]; then
     # SLE 12
     TRUST_DIR=/etc/pki/trust/anchors
     UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
