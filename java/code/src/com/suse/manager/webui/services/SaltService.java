@@ -287,8 +287,7 @@ public interface SaltService {
      * @return result of the call
      */
     <T> Map<String, Result<SSHResult<T>>> callSyncSSH(LocalCall<T> call, Target<?> target,
-            Optional<String> rosterFile, Optional<Boolean> ignoreHostKeys,
-            Optional<Boolean> sudo);
+            boolean ignoreHostKeys, String rosterFile, boolean sudo);
 
     /**
      * Execute a LocalCall asynchronously on the default Salt client.
