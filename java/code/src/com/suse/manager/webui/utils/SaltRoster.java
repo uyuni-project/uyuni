@@ -52,7 +52,7 @@ public class SaltRoster {
      * @throws IOException in case there is an I/O error writing the roster file
      */
     public Path persistInTempFile() throws IOException {
-        Path filePath = Files.createTempFile(FILE_PREFIX, null);
+        Path filePath = Files.createTempFile(FILE_PREFIX, ".tmp");
         FileUtils.writeStringToFile(YamlHelper.INSTANCE.dump(data), filePath.toString());
         return filePath;
     }
