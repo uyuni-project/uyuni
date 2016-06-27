@@ -29,6 +29,7 @@ import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.RunnerCall;
+import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.WheelResult;
 import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.Grains;
@@ -454,10 +455,15 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public <T> Map<String, Result<SSHResult<T>>> callSyncSSH(LocalCall<T> call,
-            Target<?> target, Optional<String> rosterFile,
-            Optional<Boolean> ignoreHostKeys, Optional<Boolean> sudo) {
+            Target<?> target, boolean ignoreHostKeys, String rosterFile, boolean sudo) {
         try {
-            return call.callSyncSSH(SALT_CLIENT, target, rosterFile, ignoreHostKeys, sudo);
+            SaltSSHConfig sshConfig = new SaltSSHConfig.Builder()
+                    .ignoreHostKeys(ignoreHostKeys)
+                    .rosterFile(rosterFile)
+                    .sudo(sudo)
+                    .build();
+
+            return call.callSyncSSH(SALT_CLIENT, target, sshConfig);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
