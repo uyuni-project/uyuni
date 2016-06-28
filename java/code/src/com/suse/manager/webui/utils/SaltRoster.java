@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Abstraction of salt-ssh roster data to be dumped as yaml.
@@ -36,12 +38,14 @@ public class SaltRoster {
      * @param host The IP address or DNS name of the remote host
      * @param user The user to login as
      * @param passwd The password to login with
+     * @param port The target system's ssh port number
      */
-    public void addHost(String host, String user, String passwd) {
-        Map<String, Object> hostData = new HashMap<>();
+    public void addHost(String host, String user, String passwd, Optional<Integer> port) {
+        Map<String, Object> hostData = new LinkedHashMap<>();
         hostData.put("host", host);
         hostData.put("user", user);
-        hostData.put("password", passwd);
+        hostData.put("passwd", passwd);
+        port.ifPresent(value -> hostData.put("port", value));
         data.put(host, hostData);
     }
 
