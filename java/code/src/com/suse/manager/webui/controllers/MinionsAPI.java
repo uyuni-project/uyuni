@@ -250,7 +250,8 @@ public class MinionsAPI {
                             }
                         }
                         else {
-                            message = Optional.of("No result for host: " + host);
+                            message = Optional.of(r.getStderr()
+                                    .orElse("No result for host: " + host));
                             LOG.info(message.get());
                         }
                         Map<String, Object> ret = new HashMap<>();
