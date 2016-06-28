@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.utils;
 
+import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.TaskoRun;
+
 import com.suse.manager.model.products.Channel;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -52,6 +55,21 @@ public class TaskoTopJob {
         startTime = startTimeIn;
         endTime = endTimeIn;
         data = dataIn;
+    }
+
+    /**
+     * Generate a TaskoTopJob object from a TaskoRun source
+     * @param taskoRun the source object
+     * @return a TaskoTopJob object with the taskoRun source values
+     */
+    public static TaskoTopJob generateTaskoTopJobFromTaskoRun(TaskoRun taskoRun) {
+        return new TaskoTopJob(
+                taskoRun.getId(),
+                taskoRun.getTemplate().getTask().getName(),
+                taskoRun.getStartTime(),
+                taskoRun.getEndTime(),
+                TaskoFactory.lookupScheduleById(taskoRun.getScheduleId()).getData()
+                );
     }
 
     /**
