@@ -243,8 +243,8 @@ public class MinionsAPI {
                             for (State.ApplyResult apply : r.getReturn().get().values()) {
                                 if (!apply.isResult()) {
                                     stateApplyResult = false;
-                                    message = Optional.of("Bootstrap failed (" +
-                                            r.getRetcode() + ")");
+                                    message = Optional.of("Bootstrap failed (retcode=" +
+                                            r.getRetcode() + "): " + apply.getComment());
                                     break;
                                 }
                             }
