@@ -23,11 +23,12 @@ import sys
 from spacewalk.common import rhn_rpm
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
+from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.stringutils import to_string
 from spacewalk.server import rhnSQL, rhnChannel, taskomatic
 from importLib import Diff, Package, IncompletePackage, Erratum, \
     AlreadyUploadedError, InvalidPackageError, TransactionError, \
-    InvalidSeverityError, SourcePackage
+    SourcePackage
 from backendLib import TableCollection, sanitizeValue, TableDelete, \
     TableUpdate, TableLookup, addHash, TableInsert
 
@@ -565,7 +566,8 @@ class Backend:
         row = h.fetchone_dict()
 
         if not row:
-            raise InvalidSeverityError("Invalid severity: %s" % severity_label)
+            log_debug(2, "Invalid severity: %s. Returning None." % severity_label)
+            return None
 
         return row['id']
 
