@@ -107,7 +107,10 @@ class NCCSync(object):
             self.mirror = mirror
 
         if self.mirror and not suseLib.accessible(self.mirror):
-            self.error_msg("""Mirror (%s) not accessible.""" % self.mirror)
+            if suseLib.accessible(self.mirror + '/repo'):
+                self.mirror = self.mirror + '/repo'
+            else:
+                self.error_msg("""Mirror (%s) not accessible.""" % self.mirror)
 
         self.smtguid  = suseLib.getProductProfile()['guid']
         self.authuser = CFG.mirrcred_user
