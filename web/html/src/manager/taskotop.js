@@ -71,6 +71,7 @@ const TaskoTop = React.createClass({
           <div className="spacewalk-toolbar-h1">
             <h1><i className="fa fa-tasks"></i>{t("TaskoTop")}</h1>
             <ErrorMessage error={this.state.error} />
+            <p>{t('Taskomatic executed the following tasks during the latest 5 minutes.')}</p>
           </div>
           <Table
             headers={[t("id"), t("name"), t("startTime"), t("endTime"), t('elapsedTime')]}

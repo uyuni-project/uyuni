@@ -18,7 +18,12 @@ import com.redhat.rhn.taskomatic.TaskoFactory;
 
 import com.suse.manager.webui.utils.TaskoTopJob;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -35,8 +40,17 @@ public class TaskoTopCollector {
         List<TaskoTopJob> jobs = TaskoFactory.listUnfinishedRuns().stream()
                 .map(t -> TaskoTopJob.generateTaskoTopJobFromTaskoRun(
                         TaskoFactory.lookupRunById(t.getId())))
-                .sorted((j1, j2) -> -j1.getStartTime().compareTo(j2.getStartTime()))
+                .sorted((j1, j2) -> j2.getStartTime().compareTo(j1.getStartTime()))
                 .collect(toList());
+
+        Date limitTime = new Date(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(5));
+
+        jobs.addAll(TaskoFactory.listRunsNewerThan(limitTime).stream()
+                .map(t -> TaskoTopJob.generateTaskoTopJobFromTaskoRun(
+                        TaskoFactory.lookupRunById(t.getId())))
+                .sorted((j1, j2) -> j2.getStartTime().compareTo(j1.getStartTime()))
+                .collect(toList()));
+
         return jobs;
     }
 }
