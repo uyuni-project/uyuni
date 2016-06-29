@@ -65,7 +65,7 @@ public class TaskoTop {
      * @return JSON result of the API call
      */
     public static String data(Request request, Response response, User user) {
-        Object data = new TaskoTopCollector().getData();
+        Object data = new TaskoTopCollector().getData(user);
 
         response.type("application/json");
         return GSON.toJson(data);
