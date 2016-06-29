@@ -185,7 +185,7 @@
     <url-pattern>/manager/vhms/*</url-pattern>
     <url-pattern>/manager/subscription-matching/*</url-pattern>
     <url-pattern>/manager/state_catalog/*</url-pattern>
-    <url-pattern>/manager/taskotop/*</url-pattern>
+    <url-pattern>/manager/schedule/taskotop/*</url-pattern>
   </filter-mapping>
 
   <filter-mapping>
