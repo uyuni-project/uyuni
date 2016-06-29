@@ -32,6 +32,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -189,16 +190,13 @@ public class MinionsAPI {
      */
     @SuppressWarnings("unchecked")
     public static String bootstrap(Request request, Response response, User user) {
-        Map<String, Object> resultMap = new HashMap<>();
-
         // Return immediately if host or username is empty
         Map<String, String> formData = GSON.fromJson(request.body(), Map.class);
         String host = formData.get("host");
         String sshUser = formData.get("user");
         if (StringUtils.isEmpty(host) || StringUtils.isEmpty(sshUser)) {
-            resultMap.put("success", false);
-            resultMap.put("errorMessage", "Host and a username are required fields!");
-            return json(response, resultMap);
+            return returnBootstrap(response, false,
+                    Optional.of("We need at least a host and a username."));
         }
         LOG.info("Bootstrapping host: " + host);
 
@@ -227,13 +225,11 @@ public class MinionsAPI {
             Files.delete(rosterFilePath);
 
             // Check if bootstrap was successful
-            resultMap = results.get(host).fold(
+            return results.get(host).fold(
                     error -> {
                         LOG.error("Error during bootstrap: " + error.toString());
-                        Map<String, Object> ret = new HashMap<>();
-                        ret.put("success", false);
-                        ret.put("errorMessage", error.toString());
-                        return ret;
+                        return returnBootstrap(response,
+                                false, Optional.of(error.toString()));
                     },
                     r -> {
                         // We have results, check if result = true for all the single states
@@ -254,19 +250,25 @@ public class MinionsAPI {
                                     .orElse("No result for host: " + host));
                             LOG.info(message.get());
                         }
-                        Map<String, Object> ret = new HashMap<>();
-                        ret.put("success", stateApplyResult && r.getRetcode() == 0);
-                        message.ifPresent(m -> ret.put("errorMessage", m));
-                        return ret;
+                        return returnBootstrap(response,
+                                stateApplyResult && r.getRetcode() == 0, message);
                     }
             );
-
-            LOG.debug("Bootstrap success: " + resultMap.get("success"));
-            return json(response, resultMap);
         }
         catch (IOException e) {
             LOG.error("Error operating on roster file: " + e.getMessage());
             throw new RuntimeException(e);
         }
+    }
+
+    private static String returnBootstrap(Response response, boolean success,
+            Optional<String> message) {
+        Map<String, Object> ret = new LinkedHashMap<>();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Bootstrap success: " + success);
+        }
+        ret.put("success", success);
+        message.ifPresent(value -> ret.put("errorMessage", value));
+        return json(response, ret);
     }
 }
