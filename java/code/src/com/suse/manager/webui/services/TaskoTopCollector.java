@@ -48,9 +48,11 @@ public class TaskoTopCollector {
         Date limitTime = new Date(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(5));
 
         jobs.addAll(TaskoFactory.listRunsNewerThan(limitTime).stream()
+                .filter(j -> j.getEndTime() != null)
                 .map(t -> generateTaskoTopJobFromTaskoRun(
                         TaskoFactory.lookupRunById(t.getId()), userIn))
                 .sorted((j1, j2) -> j2.getStartTime().compareTo(j1.getStartTime()))
+                .sorted((j1, j2) -> j2.getEndTime().compareTo(j1.getEndTime()))
                 .collect(toList()));
 
         return jobs;
