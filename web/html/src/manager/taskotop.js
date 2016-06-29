@@ -55,7 +55,8 @@ const TaskoTop = React.createClass({
             rawJob["endTime"] == null ?
             moment().diff(moment(rawJob["startTime"]), 'seconds') :
             moment(rawJob["endTime"]).diff(moment(rawJob["startTime"]), 'seconds')
-          } />
+          } />,
+        <TableCell key="data" content={rawJob["data"].map(c => <div>{c}</div>)} />
       ];
       return <TableRow key={index}
           className={rawJob["endTime"] == null ? 'info' : ''}
@@ -77,7 +78,7 @@ const TaskoTop = React.createClass({
             <p>{t('Taskomatic executed the following tasks during the latest 5 minutes.')}</p>
           </div>
           <Table
-            headers={[t("id"), t("name"), t("startTime"), t("endTime"), t('elapsedTime')]}
+            headers={[t("id"), t("name"), t("startTime"), t("endTime"), t('elapsedTime'), t('data')]}
             rows={this.buildRows(data)}
           />
         </div>
