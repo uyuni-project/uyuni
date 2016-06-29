@@ -14,16 +14,12 @@
  */
 package com.suse.manager.webui.utils;
 
-import com.redhat.rhn.taskomatic.TaskoFactory;
-import com.redhat.rhn.taskomatic.TaskoRun;
-
-import com.suse.manager.model.products.Channel;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * A Taskomatic Job Object.
@@ -34,7 +30,7 @@ public class TaskoTopJob {
     private String name;
     private Date startTime;
     private Date endTime;
-    private byte[] data;
+    private List<String> data;
 
     /**
      * Constructor.
@@ -49,27 +45,12 @@ public class TaskoTopJob {
      * @param endTimeIn
      * @param dataIn
      */
-    public TaskoTopJob(Long idIn, String nameIn, Date startTimeIn, Date endTimeIn, byte[] dataIn) {
+    public TaskoTopJob(Long idIn, String nameIn, Date startTimeIn, Date endTimeIn, List<String> dataIn) {
         id = idIn;
         name = nameIn;
         startTime = startTimeIn;
         endTime = endTimeIn;
         data = dataIn;
-    }
-
-    /**
-     * Generate a TaskoTopJob object from a TaskoRun source
-     * @param taskoRun the source object
-     * @return a TaskoTopJob object with the taskoRun source values
-     */
-    public static TaskoTopJob generateTaskoTopJobFromTaskoRun(TaskoRun taskoRun) {
-        return new TaskoTopJob(
-                taskoRun.getId(),
-                taskoRun.getTemplate().getTask().getName(),
-                taskoRun.getStartTime(),
-                taskoRun.getEndTime(),
-                TaskoFactory.lookupScheduleById(taskoRun.getScheduleId()).getData()
-                );
     }
 
     /**
@@ -131,14 +112,14 @@ public class TaskoTopJob {
     /**
      * @return Returns the data.
      */
-    public byte[] getData() {
+    public List<String> getData() {
         return data;
     }
 
     /**
      * @param data The data to set.
      */
-    public void setData(byte[] data) {
+    public void setData(List<String> data) {
         this.data = data;
     }
 

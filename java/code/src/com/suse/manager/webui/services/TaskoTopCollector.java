@@ -14,13 +14,15 @@
  */
 package com.suse.manager.webui.services;
 
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.TaskoRun;
 
 import com.suse.manager.webui.utils.TaskoTopJob;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -36,21 +38,55 @@ public class TaskoTopCollector {
      *
      * @return the data
      */
-    public Object getData() {
+    public Object getData(User userIn) {
         List<TaskoTopJob> jobs = TaskoFactory.listUnfinishedRuns().stream()
-                .map(t -> TaskoTopJob.generateTaskoTopJobFromTaskoRun(
-                        TaskoFactory.lookupRunById(t.getId())))
+                .map(t -> generateTaskoTopJobFromTaskoRun(
+                        TaskoFactory.lookupRunById(t.getId()), userIn))
                 .sorted((j1, j2) -> j2.getStartTime().compareTo(j1.getStartTime()))
                 .collect(toList());
 
         Date limitTime = new Date(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(5));
 
         jobs.addAll(TaskoFactory.listRunsNewerThan(limitTime).stream()
-                .map(t -> TaskoTopJob.generateTaskoTopJobFromTaskoRun(
-                        TaskoFactory.lookupRunById(t.getId())))
+                .map(t -> generateTaskoTopJobFromTaskoRun(
+                        TaskoFactory.lookupRunById(t.getId()), userIn))
                 .sorted((j1, j2) -> j2.getStartTime().compareTo(j1.getStartTime()))
                 .collect(toList()));
 
         return jobs;
+    }
+
+    /**
+     * Decode data assuming that if there is any value it contains channel ids,
+     * then extract the channel names
+     * @param dataIn the blob data
+     * @return a List of String of channel names
+     */
+    public static List<String>formatChannelsData (byte[] dataIn, User user) {
+        List<String> channelIds = new LinkedList<String>();
+        if (dataIn != null && dataIn.length > 0) {
+            for (byte b : dataIn) {
+                channelIds.add(String.valueOf(b));
+            }
+        }
+        return channelIds.stream()
+                .distinct()
+                .filter(id -> ChannelFactory.lookupByIdAndUser(Long.valueOf(id), user) != null)
+                .map(id -> ChannelFactory.lookupByIdAndUser(Long.valueOf(id), user).getName())
+                .collect(toList());
+    }
+
+    /**
+     * Generate a TaskoTopJob object from a TaskoRun source
+     * @param taskoRun the source object
+     * @return a TaskoTopJob object with the taskoRun source values
+     */
+    public static TaskoTopJob generateTaskoTopJobFromTaskoRun(TaskoRun taskoRun, User user) {
+        return new TaskoTopJob(
+                taskoRun.getId(),
+                taskoRun.getTemplate().getTask().getName(),
+                taskoRun.getStartTime(),
+                taskoRun.getEndTime(),
+                formatChannelsData(TaskoFactory.lookupScheduleById(taskoRun.getScheduleId()).getData(), user));
     }
 }
