@@ -25,7 +25,7 @@ const TaskoTop = React.createClass({
   },
 
   refreshServerData: function() {
-    Network.get("/rhn/manager/taskotop/data", "application/json").promise
+    Network.get("/rhn/manager/schedule/taskotop/data", "application/json").promise
       .then(data => {
         this.setState({
           serverData: data,

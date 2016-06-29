@@ -158,9 +158,9 @@ public class Router implements SparkApplication {
                 withOrgAdmin(StateCatalogController::delete));
 
         // TaskoTop
-        get("/manager/taskotop",
+        get("/manager/schedule/taskotop",
                 withProductAdmin(TaskoTop::show), jade);
-        get("/manager/taskotop/data",
+        get("/manager/schedule/taskotop/data",
                 withProductAdmin(TaskoTop::data));
     }
 }
