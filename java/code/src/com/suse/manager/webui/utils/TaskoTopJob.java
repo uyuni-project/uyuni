@@ -14,11 +14,19 @@
  */
 package com.suse.manager.webui.utils;
 
+import static java.util.stream.Collectors.toList;
+
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.TaskoRun;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -51,6 +59,40 @@ public class TaskoTopJob {
         startTime = startTimeIn;
         endTime = endTimeIn;
         data = dataIn;
+    }
+
+    /**
+     * Generate a TaskoTopJob object from a TaskoRun source
+     * @param taskoRun the source object
+     * @return a TaskoTopJob object with the taskoRun source values
+     */
+    public TaskoTopJob generateFromTaskoRun(TaskoRun taskoRun, User user) {
+        return new TaskoTopJob(
+                taskoRun.getId(),
+                taskoRun.getTemplate().getTask().getName(),
+                taskoRun.getStartTime(),
+                taskoRun.getEndTime(),
+                formatChannelsData(TaskoFactory.lookupScheduleById(taskoRun.getScheduleId()).getData(), user));
+    }
+
+    /**
+     * Decode data assuming that if there is any value it contains channel ids,
+     * then extract the channel names
+     * @param dataIn the blob data
+     * @return a List of String of channel names
+     */
+    public List<String>formatChannelsData (byte[] dataIn, User user) {
+        List<String> channelIds = new LinkedList<String>();
+        if (dataIn != null && dataIn.length > 0) {
+            for (byte b : dataIn) {
+                channelIds.add(String.valueOf(b));
+            }
+        }
+        return channelIds.stream()
+                .distinct()
+                .filter(id -> ChannelFactory.lookupByIdAndUser(Long.valueOf(id), user) != null)
+                .map(id -> ChannelFactory.lookupByIdAndUser(Long.valueOf(id), user).getName())
+                .collect(toList());
     }
 
     /**
