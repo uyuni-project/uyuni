@@ -46,11 +46,11 @@ const TaskoTop = React.createClass({
       const columns = [
         <TableCell key="runId" content={rawJob["id"]} />,
         <TableCell key="name" content={rawJob["name"]} />,
-        <TableCell key="startTime" content={moment(rawJob["startTime"]).format("DD/MMM/YYYY, HH:mm:ss (SSS)")} />,
+        <TableCell key="startTime" content={moment(rawJob["startTime"]).format("DD/MMM/YYYY, HH:mm:ss")} />,
         <TableCell key="endTime" content={
             rawJob["endTime"] == null ?
             "" :
-            moment(rawJob["endTime"]).format("DD/MMM/YYYY, HH:mm:ss (SSS)")} />,
+            moment(rawJob["endTime"]).format("DD/MMM/YYYY, HH:mm:ss")} />,
         <TableCell key="elapsedTime" content={
             rawJob["endTime"] == null ?
             moment().diff(moment(rawJob["startTime"]), 'seconds') :
