@@ -57,7 +57,10 @@ const TaskoTop = React.createClass({
             moment(rawJob["endTime"]).diff(moment(rawJob["startTime"]), 'seconds')
           } />
       ];
-      return <TableRow key={index} columns={columns} rawData={rawJob} />;
+      return <TableRow key={index}
+          className={rawJob["endTime"] == null ? 'info' : ''}
+          columns={columns}
+          rawData={rawJob} />;
     });
     return result;
   },
