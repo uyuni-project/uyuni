@@ -62,15 +62,8 @@ const TaskoTop = React.createClass({
         <TableCell key="runId" content={rawJob["id"]} />,
         <TableCell key="name" content={rawJob["name"]} />,
         <TableCell key="startTime" content={moment(rawJob["startTime"]).format("HH:mm:ss")} />,
-        <TableCell key="endTime" content={
-            rawJob["endTime"] == null ?
-            "" :
-            moment(rawJob["endTime"]).format("HH:mm:ss")} />,
-        <TableCell key="elapsedTime" content={
-            rawJob["elapsedTime"] == null ?
-            "" :
-            rawJob["elapsedTime"] + ' seconds'
-          } />,
+        <TableCell key="endTime" content={rawJob["endTime"] == null ? "" : moment(rawJob["endTime"]).format("HH:mm:ss")} />,
+        <TableCell key="elapsedTime" content={rawJob["elapsedTime"] == null ? "" : rawJob["elapsedTime"] + ' seconds'} />,
         <TableCell key="status" content={thisObject.decodeStatus(rawJob["status"])} />,
         <TableCell key="data" content={rawJob["data"].map(c => <div>{c}</div>)} />
       ];
