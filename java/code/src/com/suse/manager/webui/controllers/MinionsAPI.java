@@ -246,9 +246,10 @@ public class MinionsAPI {
                             }
                         }
                         else {
-                            message = Optional.of(r.getStderr()
-                                    .orElse("No result for host: " + host));
-                            LOG.info(message.get());
+                            message = Optional.of(r.getStdout().filter(s -> !s.isEmpty())
+                                    .orElseGet(() -> r.getStderr().filter(s -> !s.isEmpty())
+                                            .orElse("No result for host: " + host)));
+                            message.ifPresent(msg -> LOG.info(msg));
                         }
                         return bootstrapResult(response,
                                 stateApplyResult && r.getRetcode() == 0, message);
