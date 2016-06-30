@@ -138,7 +138,7 @@ var BootstrapMinions = React.createClass({
                         <div className="checkbox">
                             <label>
                                 <input name="ignoreHostKeys" type="checkbox" checked={this.state.ignoreHostKeys} onChange={this.ignoreHostKeysChanged}/>
-                                <span>Disable 'StrictHostKeyChecking'</span>
+                                <span>Disable strict host key checking</span>
                             </label>
                         </div>
                     </div>
