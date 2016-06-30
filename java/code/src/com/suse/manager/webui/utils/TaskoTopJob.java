@@ -41,6 +41,7 @@ public class TaskoTopJob {
     private Date endTime;
     private Long elapsedTime;
     private List<String> data;
+    private String status;
 
     /**
      * Constructor.
@@ -55,15 +56,17 @@ public class TaskoTopJob {
      * @param endTimeIn
      * @param elapsedTimeIn
      * @param dataIn
+     * @param statusIn
      */
     public TaskoTopJob(Long idIn, String nameIn, Date startTimeIn, Date endTimeIn,
-            Long elapsedTimeIn, List<String> dataIn) {
+            Long elapsedTimeIn, List<String> dataIn, String statusIn) {
         id = idIn;
         name = nameIn;
         startTime = startTimeIn;
         endTime = endTimeIn;
         elapsedTime = elapsedTimeIn;
         data = dataIn;
+        status = statusIn;
     }
 
     /**
@@ -83,7 +86,8 @@ public class TaskoTopJob {
                         (new Date(System.currentTimeMillis()).getTime() -
                                 taskoRun.getStartTime().getTime()) / 1000,
                 formatChannelsData(
-                        TaskoFactory.lookupScheduleById(taskoRun.getScheduleId()).getData(), user)
+                        TaskoFactory.lookupScheduleById(taskoRun.getScheduleId()).getData(), user),
+                taskoRun.getStatus().toLowerCase()
                 );
     }
 
@@ -198,6 +202,20 @@ public class TaskoTopJob {
     }
 
     /**
+     * @return Returns the status.
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status The status to set.
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -210,6 +228,7 @@ public class TaskoTopJob {
             .append(getId(), otherJob.getId())
             .append(getName(), otherJob.getName())
             .append(getStartTime(), otherJob.getStartTime())
+            .append(getStatus(), otherJob.getStatus())
             .isEquals();
     }
 
@@ -222,8 +241,9 @@ public class TaskoTopJob {
             .append(getId())
             .append(getName())
             .append(getStartTime())
-            .append(getData())
             .append(getElapsedTime())
+            .append(getData())
+            .append(getStatus())
             .toHashCode();
     }
 
@@ -239,6 +259,7 @@ public class TaskoTopJob {
         .append("EndTime", getEndTime())
         .append("ElapsedTime", getElapsedTime())
         .append("Data", getData())
+        .append("Status", getStatus())
         .toString();
     }
 }
