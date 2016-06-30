@@ -52,9 +52,9 @@ const TaskoTop = React.createClass({
             "" :
             moment(rawJob["endTime"]).format("DD/MMM/YYYY, HH:mm:ss")} />,
         <TableCell key="elapsedTime" content={
-            rawJob["endTime"] == null ?
-            moment().diff(moment(rawJob["startTime"]), 'seconds') :
-            moment(rawJob["endTime"]).diff(moment(rawJob["startTime"]), 'seconds')
+            rawJob["elapsedTime"] == null ?
+            "" :
+            rawJob["elapsedTime"] + ' seconds'
           } />,
         <TableCell key="data" content={rawJob["data"].map(c => <div>{c}</div>)} />
       ];

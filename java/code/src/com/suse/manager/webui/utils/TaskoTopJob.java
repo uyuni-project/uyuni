@@ -39,6 +39,7 @@ public class TaskoTopJob {
     private String name;
     private Date startTime;
     private Date endTime;
+    private Long elapsedTime;
     private List<String> data;
 
     /**
@@ -52,13 +53,16 @@ public class TaskoTopJob {
      * @param nameIn
      * @param startTimeIn
      * @param endTimeIn
+     * @param elapsedTimeIn
      * @param dataIn
      */
-    public TaskoTopJob(Long idIn, String nameIn, Date startTimeIn, Date endTimeIn, List<String> dataIn) {
+    public TaskoTopJob(Long idIn, String nameIn, Date startTimeIn, Date endTimeIn,
+            Long elapsedTimeIn, List<String> dataIn) {
         id = idIn;
         name = nameIn;
         startTime = startTimeIn;
         endTime = endTimeIn;
+        elapsedTime = elapsedTimeIn;
         data = dataIn;
     }
 
@@ -73,7 +77,14 @@ public class TaskoTopJob {
                 taskoRun.getTemplate().getTask().getName(),
                 taskoRun.getStartTime(),
                 taskoRun.getEndTime(),
-                formatChannelsData(TaskoFactory.lookupScheduleById(taskoRun.getScheduleId()).getData(), user));
+                taskoRun.getEndTime() != null ?
+                        (taskoRun.getEndTime().getTime() -
+                                taskoRun.getStartTime().getTime()) / 1000 :
+                        (new Date(System.currentTimeMillis()).getTime() -
+                                taskoRun.getStartTime().getTime()) / 1000,
+                formatChannelsData(
+                        TaskoFactory.lookupScheduleById(taskoRun.getScheduleId()).getData(), user)
+                );
     }
 
     /**
@@ -159,6 +170,20 @@ public class TaskoTopJob {
     }
 
     /**
+     * @return Returns the elapsedTime.
+     */
+    public Long getElapsedTime() {
+        return elapsedTime;
+    }
+
+    /**
+     * @param elapsedTime The elapsedTime to set.
+     */
+    public void setElapsedTime(Long elapsedTime) {
+        this.elapsedTime = elapsedTime;
+    }
+
+    /**
      * @return Returns the data.
      */
     public List<String> getData() {
@@ -198,6 +223,7 @@ public class TaskoTopJob {
             .append(getName())
             .append(getStartTime())
             .append(getData())
+            .append(getElapsedTime())
             .toHashCode();
     }
 
@@ -211,6 +237,7 @@ public class TaskoTopJob {
         .append("Name", getName())
         .append("StartTime", getStartTime())
         .append("EndTime", getEndTime())
+        .append("ElapsedTime", getElapsedTime())
         .append("Data", getData())
         .toString();
     }
