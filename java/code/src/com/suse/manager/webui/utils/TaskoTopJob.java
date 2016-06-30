@@ -49,7 +49,8 @@ public class TaskoTopJob {
     public TaskoTopJob() { }
 
     /**
-     * 
+     * Constructor with all parameters
+     *
      * @param idIn
      * @param nameIn
      * @param startTimeIn
