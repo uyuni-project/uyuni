@@ -195,7 +195,7 @@ public class MinionsAPI {
         String host = formData.get("host");
         String sshUser = formData.get("user");
         if (StringUtils.isEmpty(host) || StringUtils.isEmpty(sshUser)) {
-            return returnBootstrap(response, false,
+            return bootstrapResult(response, false,
                     Optional.of("We need at least a host and a username."));
         }
         LOG.info("Bootstrapping host: " + host);
@@ -228,7 +228,7 @@ public class MinionsAPI {
             return results.get(host).fold(
                     error -> {
                         LOG.error("Error during bootstrap: " + error.toString());
-                        return returnBootstrap(response,
+                        return bootstrapResult(response,
                                 false, Optional.of(error.toString()));
                     },
                     r -> {
@@ -250,7 +250,7 @@ public class MinionsAPI {
                                     .orElse("No result for host: " + host));
                             LOG.info(message.get());
                         }
-                        return returnBootstrap(response,
+                        return bootstrapResult(response,
                                 stateApplyResult && r.getRetcode() == 0, message);
                     }
             );
@@ -261,7 +261,7 @@ public class MinionsAPI {
         }
     }
 
-    private static String returnBootstrap(Response response, boolean success,
+    private static String bootstrapResult(Response response, boolean success,
             Optional<String> message) {
         Map<String, Object> ret = new LinkedHashMap<>();
         if (LOG.isDebugEnabled()) {
