@@ -44,7 +44,11 @@ const TaskoTop = React.createClass({
   buildRows: function(rawJobs) {
     const result = rawJobs.map(function(rawJob, index) {
       const columns = [
-        <TableCell key="runId" content={rawJob["id"]} />,
+        <TableCell key="runId" content={
+          rawJob["endTime"] == null ?
+          <div><i className="fa fa-cog fa-spin"></i>{rawJob["id"]}</div>
+          : rawJob["id"]
+        } />,
         <TableCell key="name" content={rawJob["name"]} />,
         <TableCell key="startTime" content={moment(rawJob["startTime"]).format("DD/MMM/YYYY, HH:mm:ss")} />,
         <TableCell key="endTime" content={
@@ -73,7 +77,7 @@ const TaskoTop = React.createClass({
       return (
         <div>
           <div className="spacewalk-toolbar-h1">
-            <h1><i className="fa fa-tasks"></i>{t("TaskoTop")}</h1>
+            <h1><i className="fa fa-gears"></i>{t("TaskoTop")}</h1>
             <ErrorMessage error={this.state.error} />
             <p>{t('Taskomatic executed the following tasks during the latest 5 minutes.')}</p>
             <p>{t('Data are refreshed every ')}{this.props.refreshInterval/1000}{t(' seconds')}</p>
