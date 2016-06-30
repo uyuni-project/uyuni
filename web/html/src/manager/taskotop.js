@@ -83,7 +83,7 @@ const TaskoTop = React.createClass({
             <p>{t('Data are refreshed every ')}{this.props.refreshInterval/1000}{t(' seconds')}</p>
           </div>
           <Table
-            headers={[t("id"), t("name"), t("startTime"), t("endTime"), t('elapsedTime'), t('data')]}
+            headers={[t("Task Id"), t("Task Name"), t("Start Time"), t("End Time"), t('Elapsed Time'), t('Data')]}
             rows={this.buildRows(data)}
           />
         </div>
