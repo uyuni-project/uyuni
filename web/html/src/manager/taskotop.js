@@ -29,7 +29,7 @@ const TaskoTop = React.createClass({
       .then(data => {
         this.setState({
           serverData: data,
-          error: null
+          error: null,
         });
       })
       .catch(response => {
@@ -76,6 +76,7 @@ const TaskoTop = React.createClass({
             <h1><i className="fa fa-tasks"></i>{t("TaskoTop")}</h1>
             <ErrorMessage error={this.state.error} />
             <p>{t('Taskomatic executed the following tasks during the latest 5 minutes.')}</p>
+            <p>{t('Data are refreshed every ')}{this.props.refreshInterval/1000}{t(' seconds')}</p>
           </div>
           <Table
             headers={[t("id"), t("name"), t("startTime"), t("endTime"), t('elapsedTime'), t('data')]}
