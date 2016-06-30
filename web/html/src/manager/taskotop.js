@@ -41,14 +41,25 @@ const TaskoTop = React.createClass({
       });
   },
 
+  decodeStatus: function(status) {
+    var cell;
+    switch(status) {
+      case 'running': cell = <div><i className="fa fa-cog fa-spin"></i>{t(' running')}</div>; break;
+      case 'finished': cell = <div><i className="fa fa-thumbs-o-up"></i>{t(' finished')}</div>; break;
+      case 'failed': cell = <div><i className="fa fa-exclamation-triangle"></i>{t(' failed')}</div>; break;
+      case 'interrupted': cell = <div><i className="fa fa-stop-circle-o"></i>{t(' interrupted')}</div>; break;
+      case 'ready_to_run': cell = <div><i className="fa fa-list-ul"></i>{t(' ready to run')}</div>; break;
+      case 'skipped': cell = <div><i className="fa fa-angle-double-right"></i>{t(' skipped')}</div>; break;
+      default: cell = null;
+    }
+    return cell;
+  },
+
   buildRows: function(rawJobs) {
+    const thisObject = this;
     const result = rawJobs.map(function(rawJob, index) {
       const columns = [
-        <TableCell key="runId" content={
-          rawJob["endTime"] == null ?
-          <div><i className="fa fa-cog fa-spin"></i>{rawJob["id"]}</div>
-          : rawJob["id"]
-        } />,
+        <TableCell key="runId" content={rawJob["id"]} />,
         <TableCell key="name" content={rawJob["name"]} />,
         <TableCell key="startTime" content={moment(rawJob["startTime"]).format("DD/MMM/YYYY, HH:mm:ss")} />,
         <TableCell key="endTime" content={
@@ -60,10 +71,11 @@ const TaskoTop = React.createClass({
             "" :
             rawJob["elapsedTime"] + ' seconds'
           } />,
-        <TableCell key="data" content={rawJob["data"].map(c => <div>{c}</div>)} />
+        <TableCell key="data" content={rawJob["data"].map(c => <div>{c}</div>)} />,
+        <TableCell key="status" content={thisObject.decodeStatus(rawJob["status"])} />
       ];
       return <TableRow key={index}
-          className={rawJob["endTime"] == null ? 'info' : ''}
+          className={rawJob["status"] == 'running' ? 'info' : ''}
           columns={columns}
           rawData={rawJob} />;
     });
@@ -83,7 +95,7 @@ const TaskoTop = React.createClass({
             <p>{t('Data are refreshed every ')}{this.props.refreshInterval/1000}{t(' seconds')}</p>
           </div>
           <Table
-            headers={[t("Task Id"), t("Task Name"), t("Start Time"), t("End Time"), t('Elapsed Time'), t('Data')]}
+            headers={[t("Task Id"), t("Task Name"), t("Start Time"), t("End Time"), t('Elapsed Time'), t('Data'), t('Status')]}
             rows={this.buildRows(data)}
           />
         </div>
