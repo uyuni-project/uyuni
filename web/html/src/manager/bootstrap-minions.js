@@ -13,6 +13,7 @@ var BootstrapMinions = React.createClass({
     getInitialState: function() {
         return {
             host: "",
+            port: "22",
             user: "root",
             password: "linux"
         };
@@ -21,6 +22,12 @@ var BootstrapMinions = React.createClass({
     hostChanged: function(event) {
         this.setState({
             host: event.target.value
+        });
+    },
+
+    portChanged: function(event) {
+        this.setState({
+            port: event.target.value
         });
     },
 
@@ -39,6 +46,7 @@ var BootstrapMinions = React.createClass({
     onBootstrap: function() {
         var formData = {};
         formData['host'] = this.state.host.trim();
+        formData['port'] = this.state.port.trim();
         formData['user'] = this.state.user.trim();
         formData['password'] = this.state.password.trim();
 
@@ -100,6 +108,12 @@ var BootstrapMinions = React.createClass({
                     <label className="col-md-3 control-label">Host:</label>
                     <div className="col-md-6">
                         <input name="hostname" className="form-control" type="text" placeholder={t("IP address or DNS name")} onChange={this.hostChanged}/>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="col-md-3 control-label">SSH Port:</label>
+                    <div className="col-md-6">
+                        <input name="port" className="form-control" type="text" defaultValue={this.state.port} onChange={this.portChanged}/>
                     </div>
                 </div>
                 <div className="form-group">
