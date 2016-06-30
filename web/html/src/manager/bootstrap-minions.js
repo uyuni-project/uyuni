@@ -15,7 +15,8 @@ var BootstrapMinions = React.createClass({
             host: "",
             port: "22",
             user: "root",
-            password: "linux"
+            password: "linux",
+            ignoreHostKeys: false
         };
     },
 
@@ -43,12 +44,19 @@ var BootstrapMinions = React.createClass({
         });
     },
 
+    ignoreHostKeysChanged: function(event) {
+        this.setState({
+            ignoreHostKeys: event.target.checked
+        });
+    },
+
     onBootstrap: function() {
         var formData = {};
         formData['host'] = this.state.host.trim();
         formData['port'] = this.state.port.trim();
         formData['user'] = this.state.user.trim();
         formData['password'] = this.state.password.trim();
+        formData['ignoreHostKeys'] = this.state.ignoreHostKeys;
 
         const request = Network.post(
             window.location.href,
@@ -126,6 +134,17 @@ var BootstrapMinions = React.createClass({
                     <label className="col-md-3 control-label">Password:</label>
                     <div className="col-md-6">
                         <input name="password" className="form-control" type="password" defaultValue={this.state.password} onChange={this.passwordChanged}/>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <div className="col-md-3"></div>
+                    <div className="col-md-6">
+                        <div className="checkbox">
+                            <label>
+                                <input name="ignoreHostKeys" type="checkbox" checked={this.state.ignoreHostKeys} onChange={this.ignoreHostKeysChanged}/>
+                                <span>Disable 'StrictHostKeyChecking'</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div className="form-group">
