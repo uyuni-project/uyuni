@@ -5,8 +5,7 @@ const ReactDOM = require("react-dom");
 const Panel = require("../components/panel").Panel;
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
-const AsyncButton = require("../components/buttons").AsyncButton;
-const LinkButton = require("../components/buttons").LinkButton;
+const {AsyncButton, LinkButton} = require("../components/buttons");
 
 var BootstrapMinions = React.createClass({
 
@@ -99,13 +98,10 @@ var BootstrapMinions = React.createClass({
             msg = <Messages items={[{severity: "info", text: t("Successfully bootstrapped host!")}]}/>;
         }
 
-        var buttons = [];
-        buttons.push(
-            <AsyncButton id="bootstrap-btn" icon="plus" name={t("Bootstrap")} action={this.onBootstrap}/>
-        );
-        buttons.push(
+        var buttons = [
+            <AsyncButton id="bootstrap-btn" icon="plus" name={t("Bootstrap")} action={this.onBootstrap}/>,
             <LinkButton id="cancel-btn" className="btn-default pull-right" text={t("Back to System Overview")} href="/rhn/systems/Overview.do"/>
-        );
+        ];
 
         return (
         <Panel title={t("Bootstrap Minions")} icon="spacewalk-icon-salt-add">
