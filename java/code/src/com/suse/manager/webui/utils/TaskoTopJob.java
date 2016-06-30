@@ -16,6 +16,7 @@ package com.suse.manager.webui.utils;
 
 import static java.util.stream.Collectors.toList;
 
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskoFactory;
@@ -82,16 +83,22 @@ public class TaskoTopJob {
      * @return a List of String of channel names
      */
     public List<String>formatChannelsData (byte[] dataIn, User user) {
-        List<String> channelIds = new LinkedList<String>();
+        List<Long> channelIds = new LinkedList<Long>();
         if (dataIn != null && dataIn.length > 0) {
             for (byte b : dataIn) {
-                channelIds.add(String.valueOf(b));
+                channelIds.add(Byte.toUnsignedLong(b));
             }
         }
+
         return channelIds.stream()
                 .distinct()
-                .filter(id -> ChannelFactory.lookupByIdAndUser(Long.valueOf(id), user) != null)
-                .map(id -> ChannelFactory.lookupByIdAndUser(Long.valueOf(id), user).getName())
+                .map(id -> {
+                    Channel c = ChannelFactory.lookupByIdAndUser(id, user);
+                    return c != null ? c.getName() : null;
+                })
+                .collect(toList()).stream()
+                .filter(c -> c != null)
+                .sorted((c1, c2) -> c1.compareToIgnoreCase(c2))
                 .collect(toList());
     }
 
