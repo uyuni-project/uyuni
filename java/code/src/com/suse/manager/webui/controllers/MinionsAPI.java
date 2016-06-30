@@ -263,7 +263,7 @@ public class MinionsAPI {
                         else {
                             message = Optional.of(r.getStdout().filter(s -> !s.isEmpty())
                                     .orElseGet(() -> r.getStderr().filter(s -> !s.isEmpty())
-                                            .orElse("No result for host: " + host)));
+                                    .orElseGet(() -> "No result for host: " + host)));
                             message.ifPresent(msg -> LOG.info(msg));
                         }
                         return bootstrapResult(response,
