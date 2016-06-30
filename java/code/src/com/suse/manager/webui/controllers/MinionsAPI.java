@@ -198,6 +198,20 @@ public class MinionsAPI {
             return bootstrapResult(response, false,
                     Optional.of("We need at least a host and a username."));
         }
+        Optional<Integer> port = Optional.empty();
+        if (!StringUtils.isEmpty(formData.get("port"))) {
+            try {
+                port = Optional.of(Integer.valueOf(formData.get("port")));
+            }
+            catch (NumberFormatException nfe) {
+                return bootstrapResult(response, false,
+                        Optional.of("Given port is not a valid number."));
+            }
+        }
+        if (port.filter(p -> p < 1 || p > 65535).isPresent()) {
+            return bootstrapResult(response, false,
+                    Optional.of("Given port is outside the valid range (1-65535)."));
+        }
         LOG.info("Bootstrapping host: " + host);
 
         // Setup pillar data to be passed when applying the bootstrap state
@@ -207,7 +221,7 @@ public class MinionsAPI {
         try {
             // Generate (temporary) roster file based on data from the UI
             SaltRoster saltRoster = new SaltRoster();
-            saltRoster.addHost(host, sshUser, formData.get("password"), Optional.empty());
+            saltRoster.addHost(host, sshUser, formData.get("password"), port);
             Path rosterFilePath = saltRoster.persistInTempFile();
             String roster = rosterFilePath.toString();
             LOG.debug("Roster file: " + roster);
