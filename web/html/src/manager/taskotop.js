@@ -108,6 +108,6 @@ const ErrorMessage = (props) => <MessageContainer items={
 ;
 
 ReactDOM.render(
-  <TaskoTop refreshInterval={1 * 1000} />,
+  <TaskoTop refreshInterval={5 * 1000} />,
   document.getElementById("taskotop")
 );
