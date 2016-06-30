@@ -191,17 +191,17 @@ public class MinionsAPI {
     @SuppressWarnings("unchecked")
     public static String bootstrap(Request request, Response response, User user) {
         // Return immediately if host or username is empty
-        Map<String, String> formData = GSON.fromJson(request.body(), Map.class);
-        String host = formData.get("host");
-        String sshUser = formData.get("user");
+        Map<String, Object> formData = GSON.fromJson(request.body(), Map.class);
+        String host = (String) formData.get("host");
+        String sshUser = (String) formData.get("user");
         if (StringUtils.isEmpty(host) || StringUtils.isEmpty(sshUser)) {
             return bootstrapResult(response, false,
                     Optional.of("We need at least a host and a username."));
         }
         Optional<Integer> port = Optional.empty();
-        if (!StringUtils.isEmpty(formData.get("port"))) {
+        if (!StringUtils.isEmpty((String) formData.get("port"))) {
             try {
-                port = Optional.of(Integer.valueOf(formData.get("port")));
+                port = Optional.of(Integer.valueOf((String) formData.get("port")));
             }
             catch (NumberFormatException nfe) {
                 return bootstrapResult(response, false,
@@ -221,7 +221,7 @@ public class MinionsAPI {
         try {
             // Generate (temporary) roster file based on data from the UI
             SaltRoster saltRoster = new SaltRoster();
-            saltRoster.addHost(host, sshUser, formData.get("password"), port);
+            saltRoster.addHost(host, sshUser, (String) formData.get("password"), port);
             Path rosterFilePath = saltRoster.persistInTempFile();
             String roster = rosterFilePath.toString();
             LOG.debug("Roster file: " + roster);
@@ -232,8 +232,9 @@ public class MinionsAPI {
             LocalCall<Map<String, State.ApplyResult>> stateApplyCall = State.apply(
                     bootstrapMods, Optional.of(pillarData), Optional.of(true));
             Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> results =
-                    SaltAPIService.INSTANCE.callSyncSSH(stateApplyCall,
-                            new MinionList(host), true, roster, !"root".equals(sshUser));
+                    SALT_SERVICE.callSyncSSH(stateApplyCall, new MinionList(host),
+                            (Boolean) formData.get("ignoreHostKeys"), roster,
+                            !"root".equals(sshUser));
 
             // Delete the roster file
             Files.delete(rosterFilePath);
