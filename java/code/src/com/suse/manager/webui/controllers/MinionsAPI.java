@@ -198,6 +198,8 @@ public class MinionsAPI {
             return bootstrapResult(response, false,
                     Optional.of("We need at least a host and a username."));
         }
+
+        // Validate the port number
         Optional<Integer> port = Optional.empty();
         if (!StringUtils.isEmpty((String) formData.get("port"))) {
             try {
@@ -212,7 +214,6 @@ public class MinionsAPI {
             return bootstrapResult(response, false,
                     Optional.of("Given port is outside the valid range (1-65535)."));
         }
-        LOG.info("Bootstrapping host: " + host);
 
         // Setup pillar data to be passed when applying the bootstrap state
         Map<String, Object> pillarData = new HashMap<>();
@@ -227,6 +228,7 @@ public class MinionsAPI {
             LOG.debug("Roster file: " + roster);
 
             // Apply the bootstrap state
+            LOG.info("Bootstrapping host: " + host);
             List<String> bootstrapMods = Arrays.asList(
                     ApplyStatesEventMessage.CERTIFICATE, "bootstrap");
             LocalCall<Map<String, State.ApplyResult>> stateApplyCall = State.apply(
