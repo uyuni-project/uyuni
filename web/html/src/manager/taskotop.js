@@ -91,7 +91,7 @@ const TaskoTop = React.createClass({
           <div className="spacewalk-toolbar-h1">
             <h1><i className="fa fa-gears"></i>{t("TaskoTop")}</h1>
             <ErrorMessage error={this.state.error} />
-            <p>{t('Taskomatic executed the following tasks during the latest 5 minutes.')}</p>
+            <p>{t('Taskomatic is running or has finished executing the following tasks during the latest 5 minutes.')}</p>
             <p>{t('Data are refreshed every ')}{this.props.refreshInterval/1000}{t(' seconds')}</p>
           </div>
           <Table
