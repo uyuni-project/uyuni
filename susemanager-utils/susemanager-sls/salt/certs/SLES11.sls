@@ -4,8 +4,8 @@
       - salt://certs/RHN-ORG-TRUSTED-SSL-CERT
 
 c_rehash:
-  cmd.run:
+  cmd.wait:
     - name: /usr/bin/c_rehash
     - user: root
-    - require:
+    - watch:
       - file: /etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem
