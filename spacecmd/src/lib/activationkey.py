@@ -835,10 +835,7 @@ def do_activationkey_details(self, args):
                     self.session, key)
 
             # API returns 0/1 instead of boolean
-            if config_channel_deploy == 1:
-                config_channel_deploy = True
-            else:
-                config_channel_deploy = False
+            config_channel_deploy = config_channel_deploy == 1
         except xmlrpclib.Fault:
             logging.warning('%s is not a valid activation key' % key)
             return
@@ -1288,7 +1285,7 @@ def import_activationkey_fromdetails(self, keydetails):
         gids = []
         for grp in keydetails['server_groups']:
             grpdetails = self.client.systemgroup.getDetails(self.session, grp)
-            if grpdetails == None:
+            if grpdetails is None:
                 logging.info("System group %s doesn't exist, creating" % grp)
                 grpdetails = self.client.systemgroup.create(self.session, grp,
                                                             grp)
