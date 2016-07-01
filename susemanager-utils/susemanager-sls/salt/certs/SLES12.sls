@@ -4,8 +4,8 @@
       - salt://certs/RHN-ORG-TRUSTED-SSL-CERT
 
 update-ca-certificates:
-  cmd.run:
+  cmd.wait:
     - name: /usr/sbin/update-ca-certificates
     - user: root
-    - require:
+    - watch:
       - file: /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
