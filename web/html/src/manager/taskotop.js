@@ -47,7 +47,7 @@ const TaskoTop = React.createClass({
       case 'running': cell = <div><i className="fa fa-cog fa-spin"></i>{t(' running')}</div>; break;
       case 'finished': cell = <div className="text-success"><i className="fa fa-thumbs-o-up"></i>{t(' finished')}</div>; break;
       case 'failed': cell = <div className="text-danger"><i className="fa fa-exclamation-triangle"></i>{t(' failed')}</div>; break;
-      case 'interrupted': cell = <div className="text-warning"><i className="fa fa-stop-circle-o"></i>{t(' interrupted')}</div>; break;
+      case 'interrupted': cell = <div className="text-warning"><i className="fa fa-stop"></i>{t(' interrupted')}</div>; break;
       case 'ready_to_run': cell = <div className="text-primary"><i className="fa fa-list-ul"></i>{t(' ready to run')}</div>; break;
       case 'skipped': cell = <div className="text-muted"><i className="fa fa-angle-double-right"></i>{t(' skipped')}</div>; break;
       default: cell = null;
