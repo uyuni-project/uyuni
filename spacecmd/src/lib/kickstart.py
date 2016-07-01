@@ -34,9 +34,9 @@ from getpass import getpass
 from operator import itemgetter
 from optparse import Option
 from urllib2 import urlopen, HTTPError
-from spacecmd.utils import *
 import re
 import xmlrpclib
+from spacecmd.utils import *
 
 KICKSTART_OPTIONS = ['autostep', 'interactive', 'install', 'upgrade',
                      'text', 'network', 'cdrom', 'harddrive', 'nfs',
@@ -2322,7 +2322,7 @@ def import_kickstart_fromdetails(self, ksdetails):
     logging.warning(" * Details->Comment")
     # Org default gets exported but no way to set it, so we can just show this
     # warning if they are trying to import an org_default profile
-    if ksdetails['org_default'] == True:
+    if ksdetails['org_default']:
         logging.warning(" * Details->Organization Default Profile")
     # No way to set the kernel options
     logging.warning(" * Details->Kernel Options")
