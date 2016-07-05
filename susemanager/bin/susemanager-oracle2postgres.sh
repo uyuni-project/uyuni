@@ -25,6 +25,21 @@ fi
 TIMESTAMP=`date "+%Y%m%d%H%M%S"`
 DUMPFILE="/var/tmp/oracle-db.dump.gz"
 
+postgres_fast() {
+    cp -a /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.migrate
+    echo "fsync = off" >> /var/lib/pgsql/data/postgresql.conf
+    echo "checkpoint_segments = 256" >> /var/lib/pgsql/data/postgresql.conf
+    echo "checkpoint_completion_target = 0.9" >> /var/lib/pgsql/data/postgresql.conf
+    systemctl restart postgresql
+}
+
+postgres_safe() {
+    if [ -f /var/lib/pgsql/data/postgresql.conf.migrate ]; then
+        mv /var/lib/pgsql/data/postgresql.conf.migrate /var/lib/pgsql/data/postgresql.conf
+        systemctl restart postgresql
+    fi
+}
+
 read_value() {
     local key=$1
     local val=$( egrep -m1 "^$key[[:space:]]*=" /etc/rhn/rhn.conf | sed "s/^$key[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
@@ -272,9 +287,13 @@ switch_oracle2postgres
 
 setup_postgres
 
+postgres_fast
+
 configure_suma
 
 import_schema
+
+postgres_safe
 
 spacewalk-service start
 
