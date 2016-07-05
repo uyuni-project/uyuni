@@ -7,49 +7,52 @@ const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {AsyncButton, LinkButton} = require("../components/buttons");
 
-var BootstrapMinions = React.createClass({
+class BootstrapMinions extends React.Component {
 
-    getInitialState: function() {
-        return {
+    constructor(props) {
+        super(props);
+        this.state = {
             host: "",
             port: "22",
             user: "root",
-            password: "linux",
+            password: "",
             ignoreHostKeys: false
         };
-    },
+        ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged"]
+            .forEach(method => this[method] = this[method].bind(this));
+    }
 
-    hostChanged: function(event) {
+    hostChanged(event) {
         this.setState({
             host: event.target.value
         });
-    },
+    }
 
-    portChanged: function(event) {
+    portChanged(event) {
         this.setState({
             port: event.target.value
         });
-    },
+    }
 
-    userChanged: function(event) {
+    userChanged(event) {
         this.setState({
             user: event.target.value
         });
-    },
+    }
 
-    passwordChanged: function(event) {
+    passwordChanged(event) {
         this.setState({
             password: event.target.value
         });
-    },
+    }
 
-    ignoreHostKeysChanged: function(event) {
+    ignoreHostKeysChanged(event) {
         this.setState({
             ignoreHostKeys: event.target.checked
         });
-    },
+    }
 
-    onBootstrap: function() {
+    onBootstrap() {
         var formData = {};
         formData['host'] = this.state.host.trim();
         formData['port'] = this.state.port.trim();
@@ -83,9 +86,9 @@ var BootstrapMinions = React.createClass({
             }
         });
         return request;
-    },
+    }
 
-    render: function() {
+    render() {
         var errs = null;
         if (this.state.errors) {
             errs = <Messages items={this.state.errors.map(function(error) {
@@ -111,7 +114,7 @@ var BootstrapMinions = React.createClass({
                 <div className="form-group">
                     <label className="col-md-3 control-label">Host:</label>
                     <div className="col-md-6">
-                        <input name="hostname" className="form-control" type="text" placeholder={t("IP address or DNS name")} onChange={this.hostChanged}/>
+                        <input name="hostname" className="form-control" type="text" placeholder={t("e.g., host@domain.com")} onChange={this.hostChanged}/>
                     </div>
                 </div>
                 <div className="form-group">
@@ -129,7 +132,7 @@ var BootstrapMinions = React.createClass({
                 <div className="form-group">
                     <label className="col-md-3 control-label">Password:</label>
                     <div className="col-md-6">
-                        <input name="password" className="form-control" type="password" defaultValue={this.state.password} onChange={this.passwordChanged}/>
+                        <input name="password" className="form-control" type="password" placeholder={t("e.g., ••••••••••••")} onChange={this.passwordChanged}/>
                     </div>
                 </div>
                 <div className="form-group">
@@ -152,9 +155,9 @@ var BootstrapMinions = React.createClass({
         </Panel>
         )
     }
-});
+}
 
 ReactDOM.render(
-  <BootstrapMinions />,
-  document.getElementById('bootstrap-minions')
+    <BootstrapMinions />,
+    document.getElementById('bootstrap-minions')
 );
