@@ -37,7 +37,6 @@ import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.Smbios;
-import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.modules.Timezone;
@@ -231,20 +230,6 @@ public enum SaltAPIService implements SaltService {
     public void rejectKey(String minionId) {
         try {
             Key.reject(minionId).callSync(SALT_CLIENT,
-                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public LocalAsyncResult<Map<String, Object>> applyState(Target<?> target,
-                                                       List<String> mods) {
-        try {
-            return State.apply(mods).callAsync(SALT_CLIENT, target,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
         catch (SaltException e) {
