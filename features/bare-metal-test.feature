@@ -88,7 +88,7 @@ Feature: Test Bare-metal discovery
     And I should see a "Migrate" link in the content area
     And I should not see a "Errata" link in the content area
     And I should not see a "Packages" link in the content area
-    And I should not see a "Groups" link in the content area
+    And I should see a "Groups" link in the content area
     And I should not see a "Channels" link in the content area
     And I should not see a "Audit" link in the content area
     And I follow "Clear"
