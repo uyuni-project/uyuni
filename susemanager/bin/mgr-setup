@@ -170,8 +170,9 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
     systemctl restart postgresql
 }
 
-check_var_spacewalk() {
+check_btrfs_dirs() {
 SPACEWALK_DIR="/var/spacewalk"
+CACHE_DIR="/var/cache/rhn"
 
 if [ ! -d $SPACEWALK_DIR ]; then
     FSTYPE=`df -T \`dirname $SPACEWALK_DIR\` | tail -1 | awk '{print $2}'`
@@ -189,6 +190,24 @@ if [ ! -d $SPACEWALK_DIR ]; then
     fi
 else
     echo "$SPACEWALK_DIR already exists. Leaving it untouched."
+fi
+
+if [ ! -d $CACHE_DIR ]; then
+    FSTYPE=`df -T \`dirname $CACHE_DIR\` | tail -1 | awk '{print $2}'`
+    echo -n "Filesystem type for $CACHE_DIR is $FSTYPE - "
+    if [ $FSTYPE == "btrfs" ]; then
+        echo "creating nCoW subvolume."
+        if [ -x /usr/sbin/mksubvolume ]; then
+            /usr/sbin/mksubvolume --nocow $CACHE_DIR
+            chown wwwrun $CACHE_DIR
+        else
+            echo "Cannot execute /usr/sbin/mksubvolume. Package snapper is outdated."
+        fi
+    else
+        echo "ok."
+    fi
+else
+    echo "$CACHE_DIR already exists. Leaving it untouched."
 fi
 }
 
@@ -626,7 +645,7 @@ for p in $@; do
         . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`getent hosts $SATELLITE_FQDN | cut -f 1 -d " "`
-        check_var_spacewalk
+        check_btrfs_dirs
         create_ssh_key
         check_remote_type
         copy_remote_files
@@ -654,7 +673,7 @@ fi
 
 if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     wait_step
-    check_var_spacewalk
+    check_btrfs_dirs
     open_firewall_ports
 fi
 
