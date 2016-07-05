@@ -171,44 +171,26 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
 }
 
 check_btrfs_dirs() {
-SPACEWALK_DIR="/var/spacewalk"
-CACHE_DIR="/var/cache/rhn"
-
-if [ ! -d $SPACEWALK_DIR ]; then
-    FSTYPE=`df -T \`dirname $SPACEWALK_DIR\` | tail -1 | awk '{print $2}'`
-    echo -n "Filesystem type for $SPACEWALK_DIR is $FSTYPE - "
-    if [ $FSTYPE == "btrfs" ]; then
-        echo "creating nCoW subvolume."
-        if [ -x /usr/sbin/mksubvolume ]; then
-            /usr/sbin/mksubvolume --nocow $SPACEWALK_DIR
-            chown wwwrun $SPACEWALK_DIR
+BTRFS_DIRS="/var/spacewalk /var/cache/rhn"
+for DIR in $BTRFS_DIRS
+do
+    if [ ! -d $DIR ]; then
+        FSTYPE=`df -T \`dirname $DIR\` | tail -1 | awk '{print $2}'`
+        echo -n "Filesystem type for $DIR is $FSTYPE - "
+        if [ $FSTYPE == "btrfs" ]; then
+            echo "creating nCoW subvolume."
+            if [ -x /usr/sbin/mksubvolume ]; then
+                /usr/sbin/mksubvolume --nocow $DIR
+            else
+                echo "Cannot execute /usr/sbin/mksubvolume. Package snapper is outdated."
+            fi
         else
-            echo "Cannot execute /usr/sbin/mksubvolume. Package snapper is outdated."
+            echo "ok."
         fi
     else
-        echo "ok."
+        echo "$DIR already exists. Leaving it untouched."
     fi
-else
-    echo "$SPACEWALK_DIR already exists. Leaving it untouched."
-fi
-
-if [ ! -d $CACHE_DIR ]; then
-    FSTYPE=`df -T \`dirname $CACHE_DIR\` | tail -1 | awk '{print $2}'`
-    echo -n "Filesystem type for $CACHE_DIR is $FSTYPE - "
-    if [ $FSTYPE == "btrfs" ]; then
-        echo "creating nCoW subvolume."
-        if [ -x /usr/sbin/mksubvolume ]; then
-            /usr/sbin/mksubvolume --nocow $CACHE_DIR
-            chown wwwrun $CACHE_DIR
-        else
-            echo "Cannot execute /usr/sbin/mksubvolume. Package snapper is outdated."
-        fi
-    else
-        echo "ok."
-    fi
-else
-    echo "$CACHE_DIR already exists. Leaving it untouched."
-fi
+done
 }
 
 open_firewall_ports() {
