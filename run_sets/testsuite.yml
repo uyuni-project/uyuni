@@ -51,8 +51,8 @@
 - features/nagios.feature
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
-#- features/walk_hrefs.feature
-- features/powermanagement-test.feature
+# features/walk_hrefs.feature
+#- features/powermanagement-test.feature
 - features/CVE-ID-new-syntax.feature
 - features/datepicker.feature
 - features/delete_system_profile.feature

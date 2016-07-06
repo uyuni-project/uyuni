@@ -1,16 +1,20 @@
 #!/bin/bash -ex 
+sut_dir="/var/lib/slenkins/tests-suse-manager/tests-server"
 
-#systemctl stop apparmor.service
-#systemctl disable apparmor.service
-#grep name packages.xml | cut -d'"' -f2
+mv $sut_dir/*.rpm /root/
+
 zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/3.0/images/repo/SUSE-Manager-Server-3.0-POOL-x86_64-Media1/ suma3
-#zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/SLE_12_SP1/ devel_head
 #zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/images/repo/SLE-12-Manager-Tools-POOL-x86_64-Media1/ suma3_tools
-#zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/3.0/SLE_12_SP1_Update/Devel:Galaxy:Manager:3.0.repo
 
 zypper -n --gpg-auto-import-keys ref
-zypper -n in -t pattern suma_server
+# here we should need the source packages.
+zypper -n in subscription-tools
+zypper -n in spacewalk-client-setup
+zypper -n in spacewalk-check
+zypper -n in rhncfg-actions
+zypper -n in spacewalk-oscap
 
+zypper -n in -t pattern suma_server
 zypper -n in timezone
 echo "+++++++++++++++++++++++"
 echo "installing packages ok"

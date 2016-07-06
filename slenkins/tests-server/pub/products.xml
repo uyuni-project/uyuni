@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+  <product>
+    <name>SUSE_SLES</name>
+    <version ver="11.3" rel="99.1" epoch="0" />
+    <arch>x86_64</arch>
+    <vendor>SUSE LINUX Products GmbH, Nuernberg, Germany</vendor>
+    <summary>SUSE Linux Enterprise Server 11 SP3</summary>
+    <description>SUSE Linux Enterprise offers a comprehensive
+        suite of products built on a single code base.
+        The platform addresses business needs from
+        the smallest thin-client devices to the world’s
+        most powerful high-performance computing
+        and mainframe servers. SUSE Linux Enterprise
+        offers common management tools and technology
+        certifications across the platform, and
+        each product is enterprise-class.</description>
+  </product>
+</products>
