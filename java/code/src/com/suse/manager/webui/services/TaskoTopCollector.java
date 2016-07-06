@@ -36,6 +36,8 @@ public class TaskoTopCollector {
      * @return the data
      */
     public Object getData(User userIn) {
+
+        // collect unfinished tasks
         List<TaskoTopJob> jobs = TaskoFactory.listUnfinishedRuns().stream()
                 .map(t -> new TaskoTopJob().generateFromTaskoRun(
                         TaskoFactory.lookupRunById(t.getId()), userIn))
@@ -43,8 +45,8 @@ public class TaskoTopCollector {
                 .sorted((j1, j2) -> j2.getId().compareTo(j1.getId()))
                 .collect(toList());
 
+        // collect tasks ended in the latest 5 minutes
         Date limitTime = new Date(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(5));
-
         jobs.addAll(TaskoFactory.listRunsNewerThan(limitTime).stream()
                 .filter(j -> j.getEndTime() != null)
                 .map(t -> new TaskoTopJob().generateFromTaskoRun(
