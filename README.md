@@ -9,6 +9,17 @@ Testsuite to automatically test a Spacewalk installation
 
 ## Running
 
+You can run the Spacewalk Testsuite basically with two options:
+
+* with SLEnkins framework 
+* static setup 
+
+### Run Spacewalk Testsuite within SLEnkins Testing Framework
+
+[SLEnkins documentation](docs/SLEnkins-howto.md)
+
+
+### Static setup
 * The SUSE Manager official testsuite applicance has all the gems pre-installed as rpms. Alternatively you can use [rbenv](http://rbenv.org/) (packages available [here](https://software.opensuse.org/download/package?project=devel:languages:ruby:extensions&package=rbenv))
 
 ```console
