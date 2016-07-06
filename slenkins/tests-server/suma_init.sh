@@ -12,6 +12,7 @@ zypper -n in subscription-tools
 zypper -n in spacewalk-client-setup
 zypper -n in spacewalk-check
 zypper -n in rhncfg-actions
+zypper -n in spacewalk-oscap
 
 zypper -n in -t pattern suma_server
 zypper -n in timezone

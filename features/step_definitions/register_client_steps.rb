@@ -8,8 +8,6 @@ Given(/^I am root$/) do
   end
 end
 
-
-
 Given(/^I am on the Systems overview page of this client$/) do
   steps %[
     Given I am on the Systems page
@@ -26,10 +24,9 @@ Given(/^I update the profile of this client$/) do
 end
 
 When(/^I register using "([^"]*)" key$/) do |arg1|
-  #FIXME: for moment this exist? first time it doesn't exist. remove systemid file
-  "rm -f /etc/sysconfig/rhn/systemid"
+ # out , local, remote, code = $server.test_and_store_results_together("rm -f /etc/sysconfig/rhn/systemid", "root", 600)
   regurl = "http://#{ENV['TESTHOST']}/XMLRPC"
-  command ="rhnreg_ks --serverUrl=#{regurl} --activationkey=#{arg1}"
+  command ="rhnreg_ks --force --serverUrl=#{regurl} --activationkey=#{arg1}"
   out , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
   puts out
   if code != 0

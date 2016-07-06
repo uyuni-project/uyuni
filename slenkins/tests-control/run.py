@@ -8,7 +8,6 @@ import susetest
 import suselog
 from susetest_api.assertions import *
 from susetest_api.files import *
-
 journal = None
 suite = "/var/lib/slenkins/tests-suse-manager"
 client = None
@@ -30,6 +29,7 @@ def client_setup():
                         zypper -n in subscription-tools;
                         zypper -n in spacewalk-client-setup;
                         zypper -n in spacewalk-check; 
+                        zypper -n in spacewalk-oscap; 
 			zypper -n in rhncfg-actions'''
         run_cmd(client, init_client, "init client", 600)
 	#change_hostname = "echo \"{}     client\" >> /etc/hosts; echo \"client\" > /etc/hostname;  hostname -f".format(client.ipaddr)

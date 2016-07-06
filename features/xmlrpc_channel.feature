@@ -13,7 +13,7 @@ Feature: Test XML-RPC "channel" namespace und sub-namespaces.
 
   Scenario: Create a repo
     Given I am logged in via XML-RPC/channel as user "admin" and password "admin"
-    When I create a repo with label "foobar" and url "http://localhost/pub/AnotherRepo/"
+    When I create a repo with label "foobar" and url
     And I associate repo "foobar" with channel "foobar"
     Then channel "foobar" should have attribute "last_modified" from type "XMLRPC::DateTime"
     And channel "foobar" should not have attribute "yumrepo_last_sync"

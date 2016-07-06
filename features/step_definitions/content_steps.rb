@@ -19,7 +19,7 @@ end
 #
 Then(/^I should see a "([^"]*)" text$/) do |arg1|
   if not page.has_content?(debrand_string(arg1))
-    sleep 10
+    sleep 30
     fail if not page.has_content?(debrand_string(arg1))
   end
 end

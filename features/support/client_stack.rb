@@ -29,11 +29,12 @@ def client_raw_repodata_dir( channel )
 end
 
 def client_system_id
-  out, local, remote, code = $client.test_and_store_results_together("cat /etc/sysconfig/rhn/systemid", "root", 600)
+  out, local, remote, code = $client.test_and_store_results_together("grep \"system_id\" /etc/sysconfig/rhn/systemid", "root", 600)
    puts out
-   fail if code != 1
 end
 
 def client_system_id_to_i
-  client_system_id.gsub(/ID-/, '').to_i
+  #FIXME
+  out, local, remote, code = $client.test_and_store_results_together("grep \"system_id\" /etc/sysconfig", "root", 600)
+   puts out
 end

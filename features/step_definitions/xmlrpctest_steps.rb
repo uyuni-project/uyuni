@@ -14,6 +14,7 @@ When(/^I call getApiNamespaces, I should get (\d+) namespaces$/) do |apiCount|
 end
 
 When(/^I call getVersion, I should get "([^"]*)" as result$/) do |version|
+  print("rpci version #{rpcApiTester.getVersion()} expected is {#version}")
   assert(rpcApiTester.getVersion().include? version)
 end
 
