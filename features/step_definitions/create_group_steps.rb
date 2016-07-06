@@ -9,6 +9,6 @@ Given(/^I am on the groups page$/) do
 end
 
 When(/^I check this client$/) do
-  step %[I check "#{$myhostname}" in the list]
+  step %[I check "#{$client_hostname}" in the list]
 end
 

@@ -117,7 +117,7 @@ Feature: Create a configuration channel
     When I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     And I follow "Import Files" in the content area
-    And I enter "/etc/sysconfig/bootsplash" as "contents"
+    And I enter "/etc/sysconfig/cron" as "contents"
     And I click on "Import Configuration Files"
     And I click on "Confirm"
     Then I should see a "1 files scheduled for upload." text
@@ -126,7 +126,7 @@ Feature: Create a configuration channel
     And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
-    Then I should see a table line with "/etc/sysconfig/bootsplash", "Revision 1"
+    Then I should see a table line with "/etc/sysconfig/cron", "Revision 1"
 
   Scenario: Copy Sandbox file to Centrally-Managed
     Given I am on the Systems overview page of this client
@@ -140,12 +140,12 @@ Feature: Create a configuration channel
     Then I should see a "1 file copied into 1 central configuration channel" text
     And I should see a table line with "/etc/mgr-test-file.cnf", "Revision 2"
     And I follow "Local Sandbox" in the content area
-    And I check "/etc/sysconfig/bootsplash" in the list
+    And I check "/etc/sysconfig/cron" in the list
     And I click on "Copy Latest to Central Channel"
     And I check "New Test Channel" in the list
     And I click on "Copy To Central Channels"
     Then I should see a "1 file copied into 1 central configuration channel" text
-    And I should see a table line with "/etc/sysconfig/bootsplash", "Revision 1"
+    And I should see a table line with "/etc/sysconfig/cron", "Revision 1"
 
   Scenario: Add another config file to newtestchannel
     Given I am testing configuration
@@ -165,7 +165,7 @@ Feature: Create a configuration channel
     When I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
-    And I check "/etc/sysconfig/bootsplash" in the list
+    And I check "/etc/sysconfig/cron" in the list
     And I check "/tmp/mycache.txt" in the list
     And I click on "Compare Files"
     And I click on "Schedule Compare"
@@ -177,7 +177,7 @@ Feature: Create a configuration channel
     Then I should see a "Show differences between profiled config files and deployed config files scheduled by testing" link
     When I follow first "Show differences between profiled config files and deployed config files"
     Then I should see a "Differences exist" link
-    And I should see a "/etc/mgr-test-file.cnf (rev. 2) Differences exist /etc/sysconfig/bootsplash (rev. 1) /tmp/mycache.txt (rev. 1) Missing file" text
+    And I should see a "/etc/mgr-test-file.cnf (rev. 2) Differences exist /etc/sysconfig/cron (rev. 1) /tmp/mycache.txt (rev. 1) Missing file" text
     When I follow "Differences exist"
     Then I should not see a "Differences exist in a file that is not readable by all. Re-deployment of configuration file is recommended." text
     And I should see a "+MGR_PROXY=yes" text

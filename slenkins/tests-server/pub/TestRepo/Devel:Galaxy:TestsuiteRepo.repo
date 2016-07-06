@@ -1,0 +1,7 @@
+[Devel_Galaxy_TestsuiteRepo]
+name=Build packages for the testsuite repo (SLE_12_SP1)
+type=rpm-md
+baseurl=http://download.suse.de/ibs/Devel:/Galaxy:/TestsuiteRepo/SLE_12_SP1/
+gpgcheck=1
+gpgkey=http://download.suse.de/ibs/Devel:/Galaxy:/TestsuiteRepo/SLE_12_SP1/repodata/repomd.xml.key
+enabled=1

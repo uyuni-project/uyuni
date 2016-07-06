@@ -1,26 +1,25 @@
-# Copyright (c) 2013 Novell, Inc.
+# Copyright (c) 2013-2016 Novell, Inc, SUSE-LINUX
 # Licensed under the terms of the MIT license.
 
 When(/^I register this client for SSH push via tunnel$/) do
   # Create backups of /etc/hosts and up2date config
-  FileUtils.cp('/etc/hosts', '/etc/hosts.BACKUP');
-  FileUtils.cp('/etc/sysconfig/rhn/up2date', '/etc/sysconfig/rhn/up2date.BACKUP');
+  run_cmd($client, "cp /etc/hosts /etc/hosts.BACKUP", 600)
+  run_cmd($client, "/etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP", 600)
 
   # Generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
-  expectFile = ExpectFileGenerator.new("#{$myhostname}", bootstrap)
+  expectFile = ExpectFileGenerator.new("#{$client_hostname}", bootstrap)
   step "I copy to server \"" + expectFile.path + "\""
 
   # Perform the registration
-  filename = expectFile.filename
-  command = "echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST expect #{filename} 2>&1"
-  $sshout = ''
-  $sshout = `#{command}`
-  unless $?.success?
-    raise "Execute command failed: #{$!}: #{$sshout}"
+  filename = expectFile.path
+  command = "expect #{filename}"
+  out, local, remote, code = $client.test_and_store_results_together(command, "root", 600)
+  if code != 0
+    raise "Execute command failed: #{out}"
   end
 
   # Restore files from backups
-  FileUtils.mv('/etc/hosts.BACKUP', '/etc/hosts')
-  FileUtils.mv('/etc/sysconfig/rhn/up2date.BACKUP', '/etc/sysconfig/rhn/up2date')
+  run_cmd($client, "mv /etc/hosts.BACKUP /etc/hosts", 500)
+  run_cmd($client, "mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date", 500)
 end

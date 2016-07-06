@@ -11,6 +11,7 @@ node          client
 repository    ${CHANNEL_GALAXY_CLIENT}
 repository    ${CHANNEL_SLENKINS_CLIENT}
 repository    ${CHANNEL_UPDATES_CLIENT}
+repository    http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/SLE_12_SP1/Devel:Galaxy:Manager:Head.repo
 install       tests-suse-manager-tests-client
 
 node          minion
