@@ -126,8 +126,8 @@ end
 
 When(/^spacewalk\-channel fails with "([^"]*)"$/) do |arg1|
   command = "spacewalk-channel #{arg1}"
-  output , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
-  puts output
+  $command_output , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
+  puts $command_output
   if code == 0
     raise "Executed command was successful: #{$status}"
   end

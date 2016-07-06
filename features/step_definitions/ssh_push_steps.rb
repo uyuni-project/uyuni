@@ -12,11 +12,11 @@ When(/^I register this client for SSH push via tunnel$/) do
   step "I copy to server \"" + expectFile.path + "\""
 
   # Perform the registration
-  filename = expectFile.filename
-  command = "echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST expect #{filename} 2>&1"
-  code = run_cmd($client, command, 600)
+  filename = expectFile.path
+  command = "expect #{filename}"
+  out, local, remote, code = $client.test_and_store_results_together(command, "root", 600)
   if code != 0
-    raise "Execute command failed: #{$!}: #{$sshout}"
+    raise "Execute command failed: #{out}"
   end
 
   # Restore files from backups
