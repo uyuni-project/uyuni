@@ -2,9 +2,8 @@
 
 Basically the slenkins-suite use twopence, this allow to define targets for remote command execution.
 
-In the SLEnkins suite, is added in Gemfile the requirement Twopence, and in the support directory, you can see that twopence.init.rb
-
-
+In the SLEnkins suite, is added in Gemfile the requirement Twopence, and in the support directory,
+twopence.init.rb
 https://github.com/SUSE/spacewalk-testsuite-base/blob/slenkins/features/support/twopence_init.rb#L4
 
 ```
@@ -15,12 +14,16 @@ $client = Twopence::init("ssh:#{$client_ip}")
 $server = Twopence::init("ssh:#{$server_ip}")
 ```
 
-In this snippet, we define 2 target, that use ssh as protocol for communication. (could be also virtio, but for cloud is not already supported).
-So ssh is the universal protocol for moment.
+In this snippet, we define 2 target, that use ssh as protocol for communication. (virtio is another protocl, but for cloud is not already supported).
 
-The machines(vms), network, disk-space, ram ares setted up dinamically by slenkins-engine, so nothing is hardcoded. (and the parameter can be setted on the node file)
+The machines(vms), network, disk-space, ram ares setted up dinamically by slenkins-engine, so nothing is hardcoded. (and this parameters can be setted on the node file)
+https://github.com/SUSE/spacewalk-testsuite-base/blob/slenkins/slenkins/tests-control/nodes
 
-Some changes in testcases of cucumber were added, because the cucumber features and step_definitions resides all in the control_node.
+
+Some changes in testcases of cucumber were added, because in SLEnkins suite the cucumber features and step_definitions resides all in the control_node.
+The control-node is a systemd-container. SLE-12-sp1 that execute the suite on system under tests SUT. (these are twopence targets)
+
+At moment, we have 3 machines: server, client (is without salt), minion (salt client).
 
 For a quick design explanation, look here:
 https://github.com/okirch/susetest/blob/master/doc/susetest_design.jpg
@@ -52,8 +55,8 @@ end
 ```
 
 So the main difference, that is overall on the features/step_definitions, is :
-1) Twopence commands, that give a target
-  No more commands without Targets specification
+1) Twopence commands, that give a target -->
+This imply No more commands without Targets specification. (it make also the code more readeable, and ordered, since we know where is executed (on server, client, minion)
 
 
 1) ```user, local, remote, code = $client.test_and_store_results_together("whoami", "root", 500)``
