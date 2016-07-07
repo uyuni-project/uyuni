@@ -2,7 +2,9 @@
 
 #### Official and complete documentation is here:
 http://slenkins.suse.de/doc/
-  
+
+### The difference between master suite and the SLEnkins suite.
+[What has changed](doc/changes.md)
 
 
 ### HOWTO TOPICS:
