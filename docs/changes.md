@@ -1,9 +1,12 @@
 # What is different between the master suite and the slenkins suite
 
 #### What has changed? (quick summary for impatients)
-1) Twopence -> replaced almostly the sshcmd call.
-2) packages are not in kiwi images, but are installed dinamically by run.py
-3) nothing hardcoded on specific images. 
+  
+  1) Twopence -> replaced almostly the sshcmd call.
+  
+  2) packages are not in kiwi images, but are installed dinamically by run.py
+  
+  3) nothing hardcoded on specific images. 
 
 
 Basically the slenkins-suite use twopence, this allow to define targets for remote command execution.
@@ -67,8 +70,10 @@ This imply No more commands without Targets specification. (it make also the cod
 
 1) ```user, local, remote, code = $client.test_and_store_results_together("whoami", "root", 500)``
 
-user is th output
+user is th output.
+
 code is the retcode from command.
+
 the other 2 vars, are for debugging twopence and for testing we can avoid to use them.
 
 You can specify easyly target ( this are defined by twopence init in support)
