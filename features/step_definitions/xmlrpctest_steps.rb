@@ -15,7 +15,7 @@ end
 
 When(/^I call getVersion, I should get "([^"]*)" as result$/) do |version|
   print("rpci version #{rpcApiTester.getVersion()} expected is {#version}")
-  assert(rpcApiTester.getVersion().include? version)
+  assert_equal(rpcApiTester.getVersion().include? version)
 end
 
 When(/^I call systemVersion, I should get "([^"]*)" as result$/) do |version|
