@@ -19,7 +19,9 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.SaltRoster;
+import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.wheel.Key;
@@ -40,7 +42,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
@@ -188,31 +189,12 @@ public class MinionsAPI {
      * @param user the current user
      * @return json result of the API call
      */
-    @SuppressWarnings("unchecked")
     public static String bootstrap(Request request, Response response, User user) {
-        // Return immediately if host or username is empty
-        Map<String, Object> formData = GSON.fromJson(request.body(), Map.class);
-        String host = (String) formData.get("host");
-        String sshUser = (String) formData.get("user");
-        if (StringUtils.isEmpty(host) || StringUtils.isEmpty(sshUser)) {
-            return bootstrapResult(response, false,
-                    Optional.of("We need at least a host and a username."));
-        }
-
-        // Validate the port number
-        Optional<Integer> port = Optional.empty();
-        if (!StringUtils.isEmpty((String) formData.get("port"))) {
-            try {
-                port = Optional.of(Integer.valueOf((String) formData.get("port")));
-            }
-            catch (NumberFormatException nfe) {
-                return bootstrapResult(response, false,
-                        Optional.of("Given port is not a valid number."));
-            }
-        }
-        if (port.filter(p -> p < 1 || p > 65535).isPresent()) {
-            return bootstrapResult(response, false,
-                    Optional.of("Given port is outside the valid range (1-65535)."));
+        JSONBootstrapHosts input = GSON.fromJson(request.body(), JSONBootstrapHosts.class);
+        List<String> validationErrors = InputValidator.validateBootstrapInput(input);
+        if (!validationErrors.isEmpty()) {
+            // TODO: Display lists of error messages in the UI
+            return bootstrapResult(response, false, Optional.of(validationErrors.get(0)));
         }
 
         // Setup pillar data to be passed when applying the bootstrap state
@@ -222,27 +204,28 @@ public class MinionsAPI {
         try {
             // Generate (temporary) roster file based on data from the UI
             SaltRoster saltRoster = new SaltRoster();
-            saltRoster.addHost(host, sshUser, (String) formData.get("password"), port);
+            saltRoster.addHost(input.getHost(), input.getUser(), input.getPassword(),
+                    input.getPortInteger());
             Path rosterFilePath = saltRoster.persistInTempFile();
             String roster = rosterFilePath.toString();
             LOG.debug("Roster file: " + roster);
 
             // Apply the bootstrap state
-            LOG.info("Bootstrapping host: " + host);
+            LOG.info("Bootstrapping host: " + input.getHost());
             List<String> bootstrapMods = Arrays.asList(
                     ApplyStatesEventMessage.CERTIFICATE, "bootstrap");
-            LocalCall<Map<String, State.ApplyResult>> stateApplyCall = State.apply(
+            LocalCall<Map<String, State.ApplyResult>> call = State.apply(
                     bootstrapMods, Optional.of(pillarData), Optional.of(true));
             Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> results =
-                    SALT_SERVICE.callSyncSSH(stateApplyCall, new MinionList(host),
-                            (Boolean) formData.get("ignoreHostKeys"), roster,
-                            !"root".equals(sshUser));
+                    SALT_SERVICE.callSyncSSH(call, new MinionList(input.getHost()),
+                            input.getIgnoreHostKeys(), roster,
+                            !"root".equals(input.getUser()));
 
             // Delete the roster file
             Files.delete(rosterFilePath);
 
             // Check if bootstrap was successful
-            return results.get(host).fold(
+            return results.get(input.getHost()).fold(
                     error -> {
                         LOG.error("Error during bootstrap: " + error.toString());
                         return bootstrapResult(response,
@@ -265,7 +248,7 @@ public class MinionsAPI {
                         else {
                             message = Optional.of(r.getStdout().filter(s -> !s.isEmpty())
                                     .orElseGet(() -> r.getStderr().filter(s -> !s.isEmpty())
-                                    .orElseGet(() -> "No result for host: " + host)));
+                                    .orElseGet(() -> "No result for " + input.getHost())));
                             message.ifPresent(msg -> LOG.info(msg));
                         }
                         return bootstrapResult(response,
