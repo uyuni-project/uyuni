@@ -1,5 +1,11 @@
 # What is different between the master suite and the slenkins suite
 
+#### What has changed? (quick summary for impatients)
+1) Twopence -> replaced almostly the sshcmd call.
+2) packages are not in kiwi images, but are installed dinamically by run.py
+3) nothing hardcoded on specific images. 
+
+
 Basically the slenkins-suite use twopence, this allow to define targets for remote command execution.
 
 In the SLEnkins suite, is added in Gemfile the requirement Twopence, and in the support directory,
