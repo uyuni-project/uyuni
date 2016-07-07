@@ -6,8 +6,15 @@ http://slenkins.suse.de/doc/
 ### The difference between master suite and the SLEnkins suite.
 [What has changed](changes.md)
 
+### Where are the official results for slenkins-suite-cucumber ? 
+http://slenkins.suse.de/cucumber_suse_manager_latest.html
 
-### HOWTO TOPICS:
+### Where is the code of the slenkins-cucumber ?
+branch slenkins
+https://github.com/SUSE/spacewalk-testsuite-base/tree/slenkins
+
+
+### HOWTO Topics:
 
 *  1) Installation of SLEnkins in your machine.
 *  2) How to run the Spacewalk Suite on you local machine *DINAMIC-SETUP*
