@@ -1,17 +1,23 @@
 # SLEnkins Spacewalk Suite HOWTO:
 
-#### Official and complete documentation is here:
-http://slenkins.suse.de/doc/
-
 ### The difference between master suite and the SLEnkins suite.
 [What has changed](changes.md)
 
 ### Where are the official results for slenkins-suite-cucumber ? 
 http://slenkins.suse.de/cucumber_suse_manager_latest.html
+**Note 01** this results are from a local run. ( you can run local or on cloud). 
+It could be that cloud and local differ a little. ( i focused on the fixes integration locally)
+
+Cloud:
+**Note 02**  The suite run on cloude, so the output.hmtl is in the workspace (jenkins).
+https://slenkins.suse.de/jenkins/view/Test%20suites/job/suite-suse-manager/
 
 ### Where is the code of the slenkins-cucumber ?
 branch slenkins
 https://github.com/SUSE/spacewalk-testsuite-base/tree/slenkins
+
+#### Official and complete documentation is here:
+http://slenkins.suse.de/doc/
 
 
 ### HOWTO Topics:
