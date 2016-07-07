@@ -34,7 +34,6 @@ def client_system_id
 end
 
 def client_system_id_to_i
-  #FIXME
-  out, local, remote, code = $client.test_and_store_results_together("grep \"system_id\" /etc/sysconfig", "root", 600)
+  out, local, remote, code = $client.test_and_store_results_together("grep \"ID\" /etc/sysconfig/rhn/systemid | tr -d -c 0-9", "root", 600)
    puts out
 end
