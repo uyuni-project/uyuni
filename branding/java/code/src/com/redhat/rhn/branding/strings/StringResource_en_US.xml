@@ -2690,7 +2690,7 @@ You may grant provisioning entitlements _here_.
           <source>Minion Action Cleanup</source>
       </trans-unit>
       <trans-unit id="toolbar.create.systems">
-        <source>Bootstrap Systems</source>
+        <source>Add Systems</source>
       </trans-unit>
     </body>
   </file>
