@@ -10,7 +10,7 @@ const Functions = require("../utils/functions");
 const Comparators = Functions.Comparators;
 const Filters = Functions.Filters;
 const Renderer = Functions.Renderer;
-const {Table, Column, SearchField, Highlight} = require("../components/tableng.js");
+const {Table, Column, SearchField, Highlight} = require("../components/table");
 
 function listKeys() {
     return Network.get("/rhn/manager/api/minions/keys").promise;
