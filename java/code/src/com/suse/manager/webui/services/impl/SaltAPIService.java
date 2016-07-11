@@ -29,6 +29,7 @@ import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.RunnerCall;
+import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.WheelResult;
 import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.Grains;
@@ -50,7 +51,7 @@ import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
-
+import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
@@ -66,6 +67,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.stream.Stream;
 
 /**
@@ -231,6 +233,25 @@ public enum SaltAPIService implements SaltService {
         try {
             Key.reject(minionId).callSync(SALT_CLIENT,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Object> applyStateSSH(Target<?> target,
+            Optional<Map<String, Object>> pillar, List<String> mods) {
+        try {
+            Map<String, Object> kwargs = new LinkedHashMap<>();
+            kwargs.put("mods", mods);
+            if (pillar.isPresent()) {
+                kwargs.put("pillar", pillar.get());
+            }
+            return SALT_CLIENT.run(null, null, AuthModule.AUTO, "ssh", target,
+                    "state.apply", null, kwargs);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -429,6 +450,25 @@ public enum SaltAPIService implements SaltService {
             throws SaltException {
         return call.callSync(
                 SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public <T> Map<String, Result<SSHResult<T>>> callSyncSSH(LocalCall<T> call,
+            Target<?> target, boolean ignoreHostKeys, String rosterFile, boolean sudo) {
+        try {
+            SaltSSHConfig sshConfig = new SaltSSHConfig.Builder()
+                    .ignoreHostKeys(ignoreHostKeys)
+                    .rosterFile(rosterFile)
+                    .sudo(sudo)
+                    .build();
+
+            return call.callSyncSSH(SALT_CLIENT, target, sshConfig);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
