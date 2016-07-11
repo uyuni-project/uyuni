@@ -28,7 +28,7 @@ end
 
 
 When(/^I fetch "([^"]*)" from server$/) do |arg1|
-   output , local, remote, code = $client.test_and_store_results_together("wget http://FIXME/#{arg1}", "root", 600)
+   output , local, remote, code = $client.test_and_store_results_together("wget --no-check-certificate https:/#$server_ip//#{arg1}", "root", 600)
    if code != 0
     raise "Execute command failed: #{$!}: #{output}"
   end
@@ -117,10 +117,9 @@ end
 
 When(/^I execute spacewalk\-channel and pass "([^"]*)"$/) do |arg1|
   command = "spacewalk-channel #{arg1}"
-  output , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
-  puts output
+  $command_output , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
   if code != 0
-    raise "spacewalk-channel with #{arg1} command failed #{output}"
+    raise "spacewalk-channel with #{arg1} command failed #{$command_output}"
   end
 end
 
