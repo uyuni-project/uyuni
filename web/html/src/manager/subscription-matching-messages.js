@@ -1,10 +1,6 @@
 "use strict";
 
 const React = require("react");
-//const TableComponent = require("../components/table");
-//const Table = TableComponent.Table;
-//const TableCell = TableComponent.TableCell;
-//const TableRow = TableComponent.TableRow;
 const {Table, Column, SearchField, Highlight, SimpleTableDataModel} = require("../components/tableng.js");
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const CsvLink = require("./subscription-matching-util").CsvLink;
