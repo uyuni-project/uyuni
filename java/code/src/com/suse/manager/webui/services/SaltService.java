@@ -29,6 +29,7 @@ import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.results.SSHResult;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -119,6 +120,17 @@ public interface SaltService {
      * @param minionId id of the minion
      */
     void rejectKey(String minionId);
+
+    /**
+     * Apply states on a given target using salt-ssh.
+     *
+     * @param target the target to apply the states to
+     * @param pillar custom pillar values as a dictionary of key-value pairs
+     * @param mods a list of states to apply
+     * @return result of the state application
+     */
+    Map<String, Object> applyStateSSH(Target<?> target,
+            Optional<Map<String, Object>> pillar, List<String> mods);
 
     /**
      * Return the stream of events happening in salt.
@@ -262,6 +274,20 @@ public interface SaltService {
      */
     <T> Map<String, Result<T>> callSync(LocalCall<T> call, Target<?> target)
             throws SaltException;
+
+    /**
+     * Execute a LocalCall synchronously using salt-ssh.
+     *
+     * @param <T> the return type of the call
+     * @param call the call to execute
+     * @param target minions targeted by the call
+     * @param rosterFile alternative roster file to use (default: /etc/salt/roster)
+     * @param ignoreHostKeys use this option to disable 'StrictHostKeyChecking'
+     * @param sudo run command via sudo (default: false)
+     * @return result of the call
+     */
+    <T> Map<String, Result<SSHResult<T>>> callSyncSSH(LocalCall<T> call, Target<?> target,
+            boolean ignoreHostKeys, String rosterFile, boolean sudo);
 
     /**
      * Execute a LocalCall asynchronously on the default Salt client.
