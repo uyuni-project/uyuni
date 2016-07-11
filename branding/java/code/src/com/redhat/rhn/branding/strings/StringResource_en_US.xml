@@ -2296,7 +2296,7 @@ tree will not be usable for autoinstalling.
 
       <!-- TaskoTop -->
       <trans-unit id="taskotop.nav.title">
-        <source>Taskotop</source>
+        <source>TaskoTop</source>
       </trans-unit>
 
       <!-- rename system entitlements to system types -->
