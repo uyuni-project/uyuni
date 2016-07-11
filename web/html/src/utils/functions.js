@@ -3,14 +3,11 @@
 const React = require("react")
 
 const mappingComparator = (comparator, map) => (a, b) => comparator(map(a), map(b));
-const mappingFilter = (filter, map) => (cell, filterValue) => filter(map(cell), filterValue);
 
 const stringLocaleComparator = (a, b) => a.localeCompare(b);
 const numberComparator = (a, b) => a > b ? 1 : a === b ? 0 : -1;
 
 const lengthComparator = mappingComparator(numberComparator, (x) => x.length);
-
-const stringSubstringFilter = (cell, filterValue) => cell.indexOf(filterValue) > -1;
 
 const cancelable = (promise, onCancel) => {
     var rejectFn;
@@ -58,10 +55,6 @@ module.exports = {
         locale: stringLocaleComparator,
         number: numberComparator,
         length: lengthComparator
-    },
-    Filters: {
-        mapping: mappingFilter,
-        substring: stringSubstringFilter
     },
     Utils: {
         cancelable: cancelable
