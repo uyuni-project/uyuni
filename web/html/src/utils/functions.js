@@ -2,13 +2,6 @@
 
 const React = require("react")
 
-const mappingComparator = (comparator, map) => (a, b) => comparator(map(a), map(b));
-
-const stringLocaleComparator = (a, b) => a.localeCompare(b);
-const numberComparator = (a, b) => a > b ? 1 : a === b ? 0 : -1;
-
-const lengthComparator = mappingComparator(numberComparator, (x) => x.length);
-
 const cancelable = (promise, onCancel) => {
     var rejectFn;
     var isCanceled = false;
@@ -50,12 +43,6 @@ function LocalDateTime(date) {
 }
 
 module.exports = {
-    Comparators : {
-        mapping: mappingComparator,
-        locale: stringLocaleComparator,
-        number: numberComparator,
-        length: lengthComparator
-    },
     Utils: {
         cancelable: cancelable
     },
