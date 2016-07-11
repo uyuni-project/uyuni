@@ -66,7 +66,7 @@ public class JSONBootstrapHosts {
     }
 
     /**
-     * Helper method to return the port number as an Optional<Integer>.
+     * Helper method to return the port as an Optional<Integer>.
      *
      * @return port as an Optional<Integer>
      */
