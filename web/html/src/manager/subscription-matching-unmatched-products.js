@@ -6,7 +6,7 @@ const UtilComponent = require("./subscription-matching-util");
 const CsvLink = UtilComponent.CsvLink;
 const SystemLabel = UtilComponent.SystemLabel;
 const PopUp = require("../components/popup").PopUp;
-const {Table, Column, SearchField, SimpleTableDataModel} = require("../components/tableng");
+const {Table, Column, SearchField, SimpleTableDataModel} = require("../components/table");
 
 const UnmatchedProducts = React.createClass({
   mixins: [StatePersistedMixin],
