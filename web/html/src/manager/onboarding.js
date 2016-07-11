@@ -9,7 +9,6 @@ const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Comparators = Functions.Comparators;
 const Filters = Functions.Filters;
-const Renderer = Functions.Renderer;
 const {Table, Column, SearchField, Highlight} = require("../components/table");
 
 function listKeys() {
