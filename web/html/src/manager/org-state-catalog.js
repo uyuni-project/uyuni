@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require("react");
-const {Table, Column, SearchField} = require("../components/tableng");
+const {Table, Column, SearchField} = require("../components/table");
 var PanelComponent = require("../components/panel");
 var Messages = require("../components/messages").Messages;
 var Network = require("../utils/network");
