@@ -114,7 +114,7 @@ class BootstrapMinions extends React.Component {
                 <div className="form-group">
                     <label className="col-md-3 control-label">Host:</label>
                     <div className="col-md-6">
-                        <input name="hostname" className="form-control" type="text" placeholder={t("e.g., host@domain.com")} onChange={this.hostChanged}/>
+                        <input name="hostname" className="form-control" type="text" placeholder={t("e.g., host.domain.com")} onChange={this.hostChanged}/>
                     </div>
                 </div>
                 <div className="form-group">
