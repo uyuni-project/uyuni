@@ -39,8 +39,11 @@ public class InputValidator {
     public static List<String> validateBootstrapInput(JSONBootstrapHosts input) {
         List<String> errors = new LinkedList<>();
 
-        if (StringUtils.isEmpty(input.getHost()) || StringUtils.isEmpty(input.getUser())) {
-            errors.add("Host and username are required.");
+        if (StringUtils.isEmpty(input.getHost())) {
+            errors.add("Host is required.");
+        }
+        if (StringUtils.isEmpty(input.getUser())) {
+            errors.add("User is required.");
         }
 
         Optional<Integer> port = Optional.empty();
