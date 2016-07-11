@@ -193,8 +193,8 @@ public class MinionsAPI {
         JSONBootstrapHosts input = GSON.fromJson(request.body(), JSONBootstrapHosts.class);
         List<String> validationErrors = InputValidator.validateBootstrapInput(input);
         if (!validationErrors.isEmpty()) {
-            // TODO: Display lists of error messages in the UI
-            return bootstrapResult(response, false, Optional.of(validationErrors.get(0)));
+            return bootstrapResult(response, false,
+                    validationErrors.toArray(new String[validationErrors.size()]));
         }
 
         // Setup pillar data to be passed when applying the bootstrap state
@@ -228,28 +228,27 @@ public class MinionsAPI {
             return results.get(input.getHost()).fold(
                     error -> {
                         LOG.error("Error during bootstrap: " + error.toString());
-                        return bootstrapResult(response,
-                                false, Optional.of(error.toString()));
+                        return bootstrapResult(response, false, error.toString());
                     },
                     r -> {
                         // We have results, check if result = true for all the single states
-                        Optional<String> message = Optional.empty();
+                        String message = "Successfully bootstrapped " + input.getHost();
                         boolean stateApplyResult = r.getReturn().isPresent();
                         if (stateApplyResult) {
                             for (State.ApplyResult apply : r.getReturn().get().values()) {
                                 if (!apply.isResult()) {
                                     stateApplyResult = false;
-                                    message = Optional.of("Bootstrap failed (retcode=" +
-                                            r.getRetcode() + "): " + apply.getComment());
+                                    message = "Bootstrap failed (retcode=" +
+                                            r.getRetcode() + "): " + apply.getComment();
                                     break;
                                 }
                             }
                         }
                         else {
-                            message = Optional.of(r.getStdout().filter(s -> !s.isEmpty())
+                            message = r.getStdout().filter(s -> !s.isEmpty())
                                     .orElseGet(() -> r.getStderr().filter(s -> !s.isEmpty())
-                                    .orElseGet(() -> "No result for " + input.getHost())));
-                            message.ifPresent(msg -> LOG.info(msg));
+                                    .orElseGet(() -> "No result for " + input.getHost()));
+                            LOG.info(message);
                         }
                         return bootstrapResult(response,
                                 stateApplyResult && r.getRetcode() == 0, message);
@@ -263,13 +262,11 @@ public class MinionsAPI {
     }
 
     private static String bootstrapResult(Response response, boolean success,
-            Optional<String> message) {
+            String... messages) {
+        LOG.info("Bootstrap success: " + success);
         Map<String, Object> ret = new LinkedHashMap<>();
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Bootstrap success: " + success);
-        }
         ret.put("success", success);
-        message.ifPresent(value -> ret.put("errorMessage", value));
+        ret.put("messages", messages);
         return json(response, ret);
     }
 }
