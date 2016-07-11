@@ -10,14 +10,12 @@ var es = require('event-stream');
 var rename = require('gulp-rename')
 
 var bundlerOpts = null;
-var devel = false;
 
 gulp.task('devel-opts', function(done) {
     bundlerOpts = {
         debug: true, // Gives us sourcemapping
         cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
     };
-    devel = true;
 });
 
 gulp.task('prod-opts', function(done) {
@@ -54,11 +52,7 @@ gulp.task('bundle-manager', function(done) {
             });
 
         es.merge(tasks).on('end', done);
-    });
-    if (devel) {
-        gulp.src('./manager/kitchensink.html')
-          .pipe(gulp.dest('../javascript/manager'));
-    }
+    })
 });
 
 
