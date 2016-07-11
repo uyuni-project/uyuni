@@ -28,7 +28,7 @@ end
 
 
 When(/^I fetch "([^"]*)" from server$/) do |arg1|
-   output , local, remote, code = $client.test_and_store_results_together("wget --no-check-certificate https:/#$server_ip//#{arg1}", "root", 600)
+   output , local, remote, code = $client.test_and_store_results_together("wget --no-check-certificate https:/#{$server_ip}//#{arg1}", "root", 600)
    if code != 0
     raise "Execute command failed: #{$!}: #{output}"
   end
