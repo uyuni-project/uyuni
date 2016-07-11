@@ -16,7 +16,8 @@ class BootstrapMinions extends React.Component {
             port: "22",
             user: "root",
             password: "",
-            ignoreHostKeys: false
+            ignoreHostKeys: false,
+            messages: []
         };
         ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged"]
             .forEach(method => this[method] = this[method].bind(this));
@@ -67,21 +68,18 @@ class BootstrapMinions extends React.Component {
         ).promise.then(data => {
             this.setState({
                 success: data.success,
-                errors: null
+                messages: data.messages
             });
-            if (!data.success) {
-                this.setState({
-                    errors: [data.errorMessage]
-                });
-            }
         }, (xhr) => {
             try {
                 this.setState({
-                    errors: JSON.parse(xhr.responseText)
+                    success: false,
+                    messages: [JSON.parse(xhr.responseText)]
                 })
             } catch (err) {
                 this.setState({
-                    errors: Network.errorMessageByStatus(xhr.status)
+                    success: false,
+                    messages: [Network.errorMessageByStatus(xhr.status)]
                 })
             }
         });
@@ -89,16 +87,15 @@ class BootstrapMinions extends React.Component {
     }
 
     render() {
-        var errs = null;
-        if (this.state.errors) {
-            errs = <Messages items={this.state.errors.map(function(error) {
-                return {severity: "error", text: error};
+        var messages = [];
+        if (this.state.success && this.state.messages.length > 0) {
+            messages = <Messages items={this.state.messages.map(function(msg) {
+                return {severity: "info", text: msg};
             })}/>;
-        }
-
-        var msg = null;
-        if (this.state.success) {
-            msg = <Messages items={[{severity: "info", text: t("Successfully bootstrapped host!")}]}/>;
+        } else if (this.state.messages.length > 0) {
+            messages = <Messages items={this.state.messages.map(function(msg) {
+                return {severity: "error", text: msg};
+            })}/>;
         }
 
         var buttons = [
@@ -108,8 +105,7 @@ class BootstrapMinions extends React.Component {
 
         return (
         <Panel title={t("Bootstrap Minions")} icon="spacewalk-icon-salt-add">
-            {errs}
-            {msg}
+            {messages}
             <div className="form-horizontal">
                 <div className="form-group">
                     <label className="col-md-3 control-label">Host:</label>
