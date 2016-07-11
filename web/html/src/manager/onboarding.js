@@ -7,7 +7,6 @@ const AsyncButton = Buttons.AsyncButton;
 const Panel = require("../components/panel").Panel;
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
-const Comparators = Functions.Comparators;
 const {Table, Column, SearchField, Highlight} = require("../components/table");
 
 function listKeys() {
