@@ -12,17 +12,6 @@ const {Table, Column, SearchField, Highlight, SimpleTableDataModel} = require(".
 const Subscriptions = React.createClass({
   mixins: [StatePersistedMixin],
 
-  getInitialState: function() {
-    return {tableModel: new SimpleTableDataModel(this.buildRows(this.props.subscriptions))};
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.subscriptions != nextProps.subscriptions) {
-        this.state.tableModel.mergeData(this.buildRows(nextProps.subscriptions));
-        this.forceUpdate();
-    }
-  },
-
   rowComparator: function(aRaw, bRaw, columnKey) {
     var result = 0;
     if (columnKey == "policy") {
@@ -67,9 +56,11 @@ const Subscriptions = React.createClass({
       body = (
         <div>
           <Table
-            dataModel={this.state.tableModel}
+            data={this.buildRows(this.props.subscriptions)}
             rowKeyFn={(row) => row.id}
             rowClassFn={(row) => moment(row.endDate).isBefore(moment()) ? "text-muted" : null }
+            loadState={this.props.loadState}
+            saveState={this.props.saveState}
             initialSort="partNumber"
             searchPanel={
                 <SearchField searchFn={this.searchData}
