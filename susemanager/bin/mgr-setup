@@ -477,6 +477,9 @@ do_migration() {
         echo -n "MANAGER_USER";      read MANAGER_USER
         echo -n "MANAGER_PASS";      read MANAGER_PASS
     fi;
+
+    MANAGER_DB_NAME=$SATELLITE_DB_SID
+
     setup_hostname
 
     # those values will be overwritten by the copied certificate
