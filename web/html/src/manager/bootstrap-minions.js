@@ -16,12 +16,15 @@ class BootstrapMinions extends React.Component {
             port: "22",
             user: "root",
             password: "",
+            availableActivationKeys: availableActivationKeys,
+            activationKey: "",
             ignoreHostKeys: false,
             messages: []
         };
-        ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged"]
+        ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "activationKeyChanged"]
             .forEach(method => this[method] = this[method].bind(this));
     }
+
 
     hostChanged(event) {
         this.setState({
@@ -53,12 +56,19 @@ class BootstrapMinions extends React.Component {
         });
     }
 
+    activationKeyChanged(event) {
+        this.setState({
+            activationKey: event.target.value
+        });
+    }
+
     onBootstrap() {
         var formData = {};
         formData['host'] = this.state.host.trim();
         formData['port'] = this.state.port.trim();
         formData['user'] = this.state.user.trim();
         formData['password'] = this.state.password.trim();
+        formData['activationKeys'] = this.state.activationKey === "" ? [] : [this.state.activationKey] ;
         formData['ignoreHostKeys'] = this.state.ignoreHostKeys;
 
         const request = Network.post(
@@ -129,6 +139,19 @@ class BootstrapMinions extends React.Component {
                     <label className="col-md-3 control-label">Password:</label>
                     <div className="col-md-6">
                         <input name="password" className="form-control" type="password" placeholder={t("e.g., ••••••••••••")} onChange={this.passwordChanged}/>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="col-md-3 control-label">Activation Key:</label>
+                    <div className="col-md-6">
+                       <select value={this.state.activationKey} onChange={this.activationKeyChanged} className="form-control" name="activationKeys">
+                         <option key="none" value="">None</option>
+                         {
+                             this.state.availableActivationKeys.map(k =>
+                                <option key={k} value={k}>{ k }</option>
+                             )
+                         }
+                       </select>
                     </div>
                 </div>
                 <div className="form-group">

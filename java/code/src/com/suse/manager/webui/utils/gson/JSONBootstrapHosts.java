@@ -16,6 +16,7 @@ package com.suse.manager.webui.utils.gson;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,6 +29,7 @@ public class JSONBootstrapHosts {
     private String port;
     private String user;
     private String password;
+    private List<String> activationKeys;
     private boolean ignoreHostKeys;
 
     /**
@@ -63,6 +65,13 @@ public class JSONBootstrapHosts {
      */
     public boolean getIgnoreHostKeys() {
         return ignoreHostKeys;
+    }
+
+    /**
+     * @return value of activationKeys
+     */
+    public List<String> getActivationKeys() {
+        return activationKeys;
     }
 
     /**

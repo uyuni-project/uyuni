@@ -16,6 +16,8 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
@@ -41,6 +43,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -200,6 +203,12 @@ public class MinionsAPI {
         // Setup pillar data to be passed when applying the bootstrap state
         Map<String, Object> pillarData = new HashMap<>();
         pillarData.put("master", ConfigDefaults.get().getCobblerHost());
+        ActivationKeyManager.getInstance().findAll(user)
+                .stream()
+                .filter(ak -> input.getActivationKeys().contains(ak.getKey()))
+                .findFirst()
+                .ifPresent(ak -> pillarData.put("activation_key", ak.getKey()));
+
 
         try {
             // Generate (temporary) roster file based on data from the UI
