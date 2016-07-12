@@ -13,17 +13,8 @@ const UnmatchedProducts = React.createClass({
 
   getInitialState: function() {
     return {
-        selectedProductId: null,
-        tableModel: new SimpleTableDataModel(this.buildData(this.props))
+        selectedProductId: null
     };
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.products != nextProps.products ||
-        this.props.unmatchedProductIds != nextProps.unmatchedProductIds) {
-        this.state.tableModel.mergeData(this.buildData(nextProps));
-        this.forceUpdate();
-    }
   },
 
   buildData: function(props) {
@@ -65,9 +56,11 @@ const UnmatchedProducts = React.createClass({
       body = (
         <div>
           <Table
-            dataModel={this.state.tableModel}
+            data={this.buildData(this.props)}
             rowKeyFn={this.rowKey}
             initialSort="name"
+            loadState={this.props.loadState}
+            saveState={this.props.saveState}            
             >
             <Column
                 columnKey="name"
@@ -119,23 +112,6 @@ const UnmatchedProducts = React.createClass({
 
 const UnmatchedSystemPopUp = React.createClass({
 
-  getInitialState: function() {
-    return {
-        tableModel: new SimpleTableDataModel(this.buildTableData(this.props))
-    };
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.selectedProductId != nextProps.selectedProductId) {
-        this.setState({tableModel: new SimpleTableDataModel(this.buildTableData(nextProps))});
-    }
-    else if (this.props.products != nextProps.products ||
-            this.props.systems != nextProps.systems) {
-        this.state.tableModel.mergeData(this.buildTableData(nextProps));
-        this.forceUpdate();
-    }
-  },
-
   buildTableData: function(props) {
     if (!props.selectedProductId) {
         return [];
@@ -165,7 +141,7 @@ const UnmatchedSystemPopUp = React.createClass({
 
   render: function() {
     const popUpContent = <Table
-        dataModel={this.state.tableModel}
+        data={this.buildTableData(this.props)}
         rowKeyFn={this.rowKey}
         initialSort="name"
         searchPanel={
