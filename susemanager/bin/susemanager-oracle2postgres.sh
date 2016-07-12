@@ -167,12 +167,14 @@ import_schema() {
 }
 
 switch_oracle2postgres() {
-    /etc/init.d/oracle stop
-    if [ "$?" != "0" ]; then
-        echo "Failed to stop oracle DB."
-        exit 1
+    if [ "$DBHOST" == "localhost" ]; then
+       /etc/init.d/oracle stop
+       if [ "$?" != "0" ]; then
+          echo "Failed to stop oracle DB."
+          exit 1
+       fi
+       insserv -r oracle
     fi
-    insserv -r oracle
     zypper --non-interactive in \
               +spacewalk-postgresql +spacewalk-java-postgresql +spacewalk-backend-sql-postgresql \
               -spacewalk-oracle -spacewalk-java-oracle -spacewalk-backend-sql-oracle
@@ -242,6 +244,7 @@ db-port=5432
 
     cp "/etc/rhn/rhn.conf.$TIMESTAMP" /etc/rhn/rhn.conf
     change_value db_backend postgresql
+    change_value db_host localhost
     change_value db_name $DBNAME
     change_value db_port 5432
     change_value hibernate.dialect org.hibernate.dialect.PostgreSQLDialect
