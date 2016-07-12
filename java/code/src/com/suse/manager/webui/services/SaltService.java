@@ -122,17 +122,6 @@ public interface SaltService {
     void rejectKey(String minionId);
 
     /**
-     * Apply states on a given target using salt-ssh.
-     *
-     * @param target the target to apply the states to
-     * @param pillar custom pillar values as a dictionary of key-value pairs
-     * @param mods a list of states to apply
-     * @return result of the state application
-     */
-    Map<String, Object> applyStateSSH(Target<?> target,
-            Optional<Map<String, Object>> pillar, List<String> mods);
-
-    /**
      * Return the stream of events happening in salt.
      *
      * @return the event stream
