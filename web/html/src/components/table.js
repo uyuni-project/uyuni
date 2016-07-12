@@ -362,9 +362,8 @@ class Table extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
-        this.setState({
-            dataModel: this.newDataModel(nextProps, nextProps.data, this.state.dataModel.getItemsPerPage())
-        });
+        this.state.dataModel.mergeData(nextProps.data);
+        this.forceUpdate();
     }
     else if (this.props.dataModel != nextProps.dataModel) {
         if (!nextProps.dataModel.initialized) {
@@ -374,6 +373,20 @@ class Table extends React.Component {
         this.setState({
             dataModel: nextProps.dataModel
         });
+    }
+  }
+
+  componentWillMount() {
+    if (this.props.loadState) {
+      if (this.props.loadState()) {
+        this.state = this.props.loadState();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.saveState) {
+      this.props.saveState(this.state);
     }
   }
 
