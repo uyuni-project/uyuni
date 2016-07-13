@@ -151,9 +151,41 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
+    public boolean keyExists(String id) {
+        boolean ret = false;
+        Key.Names keys = getKeys();
+        if (keys.getMinions().contains(id) ||
+                keys.getUnacceptedMinions().contains(id) ||
+                keys.getRejectedMinions().contains(id) ||
+                keys.getDeniedMinions().contains(id) ||
+                keys.getLocal().contains(id)) {
+            ret = true;
+        }
+        return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Key.Fingerprints getFingerprints() {
         try {
             WheelResult<Key.Fingerprints> result = Key.finger("*")
+                    .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            return result.getData().getResult();
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public com.suse.manager.webui.utils.salt.Key.Pair generateKeysAndAccept(String id,
+            boolean force) {
+        try {
+            WheelResult<com.suse.manager.webui.utils.salt.Key.Pair> result =
+                    com.suse.manager.webui.utils.salt.Key.genAccept(id, Optional.of(force))
                     .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return result.getData().getResult();
         }
