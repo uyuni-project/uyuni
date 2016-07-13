@@ -207,6 +207,17 @@ public class MinionsAPI {
                 .findFirst()
                 .ifPresent(ak -> pillarData.put("activation_key", ak.getKey()));
 
+        // Generate minion keys and accept the public key
+        if (SALT_SERVICE.keyExists(input.getHost())) {
+            return bootstrapResult(response, false, "A key for this host (" +
+                    input.getHost() + ") seems to already exist, please check!");
+        }
+        com.suse.manager.webui.utils.salt.Key.Pair keyPair =
+                SALT_SERVICE.generateKeysAndAccept(input.getHost(), false);
+        if (keyPair.getPub().isPresent() && keyPair.getPriv().isPresent()) {
+            pillarData.put("minion_pub", keyPair.getPub().get());
+            pillarData.put("minion_pem", keyPair.getPriv().get());
+        }
 
         try {
             // Generate (temporary) roster file based on data from the UI
@@ -235,6 +246,7 @@ public class MinionsAPI {
             return results.get(input.getHost()).fold(
                     error -> {
                         LOG.error("Error during bootstrap: " + error.toString());
+                        SALT_SERVICE.deleteKey(input.getHost());
                         return bootstrapResult(response, false, error.toString());
                     },
                     r -> {
@@ -257,13 +269,19 @@ public class MinionsAPI {
                                     .orElseGet(() -> "No result for " + input.getHost()));
                             LOG.info(message);
                         }
-                        return bootstrapResult(response,
-                                stateApplyResult && r.getRetcode() == 0, message);
+
+                        // Clean up the generated key pair in case of failure
+                        boolean success = stateApplyResult && r.getRetcode() == 0;
+                        if (!success) {
+                            SALT_SERVICE.deleteKey(input.getHost());
+                        }
+                        return bootstrapResult(response, success, message);
                     }
             );
         }
         catch (IOException e) {
             LOG.error("Error operating on roster file: " + e.getMessage());
+            SALT_SERVICE.deleteKey(input.getHost());
             throw new RuntimeException(e);
         }
     }
