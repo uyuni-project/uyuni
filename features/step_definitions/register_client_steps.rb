@@ -42,7 +42,7 @@ When(/^I register using an activation key$/) do
   if arch != "x86_64"
     arch = "i586"
   end
-  step %[I register using "1-SUSE-DEV-#{arch}" key]
+  step %([I register using "1-SUSE-DEV-#{arch}" key])
 end
 
 Then(/^I should see this client in spacewalk$/) do

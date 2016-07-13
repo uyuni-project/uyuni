@@ -4,7 +4,7 @@
 When(/^I refresh the metadata$/) do
   sshcmd("rhn_check -vvv 2>&1")
   code = sshcmd("echo $?")
-    if code !=  0
+    if code != 0
       raise "rhn_check failed: #{$!}: #{output}"
     end
   client_refresh_metadata
