@@ -31,20 +31,18 @@ salt-minion:
     - require:
       - file: /etc/zypp/repos.d/susemanager:bootstrap.repo
   service.running:
-    - watch:
-      - file: /etc/salt/minion.d/susemanager.conf
-      - file: /etc/salt/pki/minion/minion.pem
-      - file: /etc/salt/pki/minion/minion.pub
     - require:
       - pkg: salt-minion
+      - file: /etc/salt/pki/minion/minion.pem
+      - file: /etc/salt/pki/minion/minion.pub
+      - file: /etc/salt/minion.d/susemanager.conf
 {% else %}
 salt-minion:
   pkg.installed:
     - require:
       - file: /etc/zypp/repos.d/susemanager:bootstrap.repo
   service.running:
-    - watch:
-      - file: /etc/salt/minion.d/susemanager.conf
     - require:
       - pkg: salt-minion
+      - file: /etc/salt/minion.d/susemanager.conf
 {% endif %}
