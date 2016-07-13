@@ -25,7 +25,6 @@ class BootstrapMinions extends React.Component {
             .forEach(method => this[method] = this[method].bind(this));
     }
 
-
     hostChanged(event) {
         this.setState({
             host: event.target.value
