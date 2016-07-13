@@ -126,7 +126,9 @@ class BootstrapMinions extends React.Component {
                 <div className="form-group">
                     <label className="col-md-3 control-label">SSH Port:</label>
                     <div className="col-md-6">
-                        <input name="port" className="form-control" type="text" defaultValue={this.state.port} onChange={this.portChanged}/>
+                        <input name="port" className="form-control numeric" type="text" maxLength="5"
+                          defaultValue={this.state.port} onChange={this.portChanged} onKeyPress={numericValidate}
+                          title={t('Port range: 1 - 65535')}/>
                     </div>
                 </div>
                 <div className="form-group">
