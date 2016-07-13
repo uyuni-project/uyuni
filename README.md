@@ -1,7 +1,9 @@
 
 # Spacewalk Testsuite
 
-[![Build Status](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=master)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
+[![Build Status SLEnkins branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=slenkins)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
+[![Build Status Master branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=master)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
+
 
 ## Introduction
 
