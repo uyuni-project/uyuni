@@ -13,7 +13,7 @@ class BootstrapMinions extends React.Component {
         super(props);
         this.state = {
             host: "",
-            port: "22",
+            port: "",
             user: "root",
             password: "",
             availableActivationKeys: availableActivationKeys,
@@ -127,7 +127,7 @@ class BootstrapMinions extends React.Component {
                     <label className="col-md-3 control-label">SSH Port:</label>
                     <div className="col-md-6">
                         <input name="port" className="form-control numeric" type="text" maxLength="5"
-                          defaultValue={this.state.port} onChange={this.portChanged} onKeyPress={numericValidate}
+                          placeholder={t("22")} onChange={this.portChanged} onKeyPress={numericValidate}
                           title={t('Port range: 1 - 65535')}/>
                     </div>
                 </div>
