@@ -241,3 +241,14 @@ function numericValidate(evt) {
     if(theEvent.preventDefault) theEvent.preventDefault();
   }
 }
+
+/*
+* Fix input width if it has a maxlenght attribute
+*/
+$(document).ready(function() {
+  $('input').each(function() {
+    if ($(this).attr('maxlength') != null) {
+      $(this).css('width', $(this).attr('maxlength') + 'em');
+    }
+  });
+});
