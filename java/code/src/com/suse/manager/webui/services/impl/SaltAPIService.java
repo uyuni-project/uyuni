@@ -152,15 +152,11 @@ public enum SaltAPIService implements SaltService {
      * {@inheritDoc}
      */
     public boolean keyExists(String id) {
-        boolean ret = false;
         Key.Names keys = getKeys();
-        if (keys.getMinions().contains(id) ||
+        return keys.getMinions().contains(id) ||
                 keys.getUnacceptedMinions().contains(id) ||
                 keys.getRejectedMinions().contains(id) ||
-                keys.getDeniedMinions().contains(id)) {
-            ret = true;
-        }
-        return ret;
+                keys.getDeniedMinions().contains(id);
     }
 
     /**
