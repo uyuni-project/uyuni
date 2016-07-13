@@ -16,7 +16,6 @@ class BootstrapMinions extends React.Component {
             port: "",
             user: "root",
             password: "",
-            availableActivationKeys: availableActivationKeys,
             activationKey: "",
             ignoreHostKeys: false,
             messages: []
@@ -148,7 +147,7 @@ class BootstrapMinions extends React.Component {
                        <select value={this.state.activationKey} onChange={this.activationKeyChanged} className="form-control" name="activationKeys">
                          <option key="none" value="">None</option>
                          {
-                             this.state.availableActivationKeys.map(k =>
+                             this.props.availableActivationKeys.map(k =>
                                 <option key={k} value={k}>{ k }</option>
                              )
                          }
@@ -178,6 +177,6 @@ class BootstrapMinions extends React.Component {
 }
 
 ReactDOM.render(
-    <BootstrapMinions />,
+    <BootstrapMinions availableActivationKeys={availableActivationKeys} />,
     document.getElementById('bootstrap-minions')
 );
