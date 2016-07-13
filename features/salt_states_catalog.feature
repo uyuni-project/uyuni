@@ -8,19 +8,19 @@ Feature: Check the Salt package state UI
   Scenario: Verify the states catalog UI
     Given I am authorized as "testing" with password "testing"
     Then I follow "Salt"
-    Then I follow "States Catalog"
-    Then I should see a "States Catalog" text
-    Then I should see a "Items 0 - 0 of 0" text
+    And I follow "States Catalog"
+    And I should see a "States Catalog" text
+    And I should see a "Items 0 - 0 of 0" text
 
   Scenario: I add a state through the UI
     Given I am authorized as "testing" with password "testing"
     Then I follow "Salt"
-    Then I follow "States Catalog"
-    Then I should see a "States Catalog" text
+    And I follow "States Catalog"
+    And I should see a "States Catalog" text
     And I follow "Create state"
     Then I should see a "Create State" text
-    Then I should see a "Name*:" text
-    Then I should see a "Content*:" text
+    And I should see a "Name*:" text
+    And I should see a "Content*:" text
     And I enter "teststate" in the css "input[name='name']"
     And I enter the salt state
       """
@@ -35,11 +35,11 @@ Feature: Check the Salt package state UI
     Given I am on the Systems overview page of this client
     And I follow "States"
     Then I follow "Custom"
-    Then I should see a "Custom States" text
+    And I should see a "Custom States" text
     And I click on the css "button#search-states"
     Then I should see a "teststate" text
     And I select the state "teststate"
     Then I should see a "1 Changes" text
-    Then I click on the css "button#save-btn"
+    And I click on the css "button#save-btn"
     And I click on the css "button#apply-btn"
     Then I wait for the file "/root/foobar"

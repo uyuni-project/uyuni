@@ -11,11 +11,11 @@ Given(/^I am logged in via XML\-RPC\/virtualhostmanager as user "([^"]*)" and pa
 end
 
 When(/^I call virtualhostmanager.listAvailableVirtualHostGathererModules\(\)$/) do
-  modules = virtualhostmanager.listAvailableVirtualHostGathererModules()
+  modules = virtualhostmanager.listAvailableVirtualHostGathererModules
 end
 
 When(/^I call virtualhostmanager.listVirtualHostManagers\(\)$/) do
-  vhms = virtualhostmanager.listVirtualHostManagers()
+  vhms = virtualhostmanager.listVirtualHostManagers
 end
 
 When(/^I call virtualhostmanager.getModuleParameters\(\) for "([^"]*)"$/) do |moduleName|
@@ -38,11 +38,11 @@ When(/^I call virtualhostmanager.getDetail\("([^"]*)"\)$/) do |label|
 end
 
 Then(/^I should get two modules$/) do
-  assert(modules.length == 2, "Expect: 'number of modules' == 2, but found '#{modules.length}' modules" )
+  assert(modules.length == 2, "Expect: 'number of modules' == 2, but found '#{modules.length}' modules")
 end
 
 Then(/^I should get ([0-9]+) returned$/) do |num|
-  assert(vhms.length == num.to_i, "Expect: 'number of VHMs' == '#{num}', but found '#{vhms.length}' VHMs" )
+  assert(vhms.length == num.to_i, "Expect: 'number of VHMs' == '#{num}', but found '#{vhms.length}' VHMs")
 end
 
 Then(/^I should get "([^"]*)"$/) do |key|
@@ -62,5 +62,3 @@ end
 Then(/^I logout from XML\-RPC\/virtualhostmanager$/) do
   virtualhostmanager.logout
 end
-
-

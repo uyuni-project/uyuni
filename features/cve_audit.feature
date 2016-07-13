@@ -58,4 +58,4 @@ Feature: CVE Audit
     When I follow "Manage"
     And I follow "Systems" in the content area
     Then I should see this client as link
-    Then I follow "Clear"
+    And I follow "Clear"

@@ -28,9 +28,9 @@ class XMLRPCSystemTest < XMLRPCBaseTest
   # No need to write monstrous scenario for a little checks.
   # We just do it all at once instead.
   def getSysInfo(server)
-    serverId = server['id']
-    connPath = @connection.call('system.getConnectionPath', @sid, serverId)
-    puts connPath
+    server_id = server['id']
+    conn_path = @connection.call('system.getConnectionPath', @sid, server_id)
+    puts conn_path
   end
 
   # Create a cobbler system record for a system that is not registered
