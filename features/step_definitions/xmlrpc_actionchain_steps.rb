@@ -23,8 +23,8 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
 
     hostname = $client_hostname
     $client_id = servers
-                .select {|s| s['name'] == hostname }
-                .map {|s| s['id'] }.first
+                .select { |s| s['name'] == hostname }
+                .map { |s| s['id'] }.first
     refute_nil($client_id, "Client #{hostname} is not yet registered?")
   end
 
