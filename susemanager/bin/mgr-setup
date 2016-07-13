@@ -171,26 +171,42 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
 }
 
 check_btrfs_dirs() {
-BTRFS_DIRS="/var/spacewalk /var/cache/rhn"
-for DIR in $BTRFS_DIRS
-do
-    if [ ! -d $DIR ]; then
-        FSTYPE=`df -T \`dirname $DIR\` | tail -1 | awk '{print $2}'`
-        echo -n "Filesystem type for $DIR is $FSTYPE - "
-        if [ $FSTYPE == "btrfs" ]; then
-            echo "creating nCoW subvolume."
-            if [ -x /usr/sbin/mksubvolume ]; then
-                /usr/sbin/mksubvolume --nocow $DIR
-            else
-                echo "Cannot execute /usr/sbin/mksubvolume. Package snapper is outdated."
-            fi
-        else
-            echo "ok."
-        fi
+DIR="/var/spacewalk"
+if [ ! -d $DIR ]; then
+    FSTYPE=`df -T \`dirname $DIR\` | tail -1 | awk '{print $2}'`
+    echo -n "Filesystem type for $DIR is $FSTYPE - "
+    if [ $FSTYPE == "btrfs" ]; then
+        echo "creating nCoW subvolume."
+        mksubvolume --nocow $DIR
     else
-        echo "$DIR already exists. Leaving it untouched."
+        echo "ok."
     fi
-done
+else
+    echo "$DIR already exists. Leaving it untouched."
+fi
+
+DIR="/var/cache"
+if [ ! -d $DIR ]; then
+    mkdir $DIR
+fi
+FSTYPE=`df -T $DIR | tail -1 | awk '{print $2}'`
+echo -n "Filesystem type for $DIR is $FSTYPE - "
+if [ $FSTYPE == "btrfs" ]; then
+    btrfs subvolume list /var | grep "$DIR" > /dev/null
+    if [ ! $? -eq 0 ]; then
+        echo "creating subvolume."
+        mv $DIR ${DIR}.sav
+        mksubvolume $DIR
+        touch ${DIR}.sav/foobar.dummy
+        mv ${DIR}.sav/* $DIR
+        rmdir ${DIR}.sav
+        rm -f $DIR/foobar.dummy
+    else
+        echo "subvolume for $DIR already exists. Fine."
+    fi
+else
+    echo "ok."
+fi
 }
 
 open_firewall_ports() {
