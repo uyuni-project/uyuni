@@ -1,6 +1,8 @@
 # Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+require 'timeout'
+
 When(/^I list packages with "(.*?)"$/) do |str|
   find('input#package-search').set(str)
   find('button#search').click
@@ -17,11 +19,41 @@ When(/^I change the state of "([^"]*)" to "([^"]*)" and "([^"]*)"$/) do |pkg, st
 end
 
 Then(/^"([^"]*)" is not installed$/) do |package|
-  output = `rpm -q #{package} 2>&1`
-  puts output
-  if  $?.success?
-    raise "exec rpm removal failed (Code #{$?}): #{$!}: #{output}"
+  uninstalled = false
+  output = ""
+  begin
+    Timeout.timeout(60) do
+      loop do
+        output = `rpm -q #{package} 2>&1`
+        unless $?.success?
+          uninstalled = true
+          break
+        end
+        sleep 1
+      end
+    end
   end
+  raise "exec rpm removal failed (Code #{$?}): #{$!}: #{output}" unless uninstalled
+end
+
+Then(/^I wait for "([^"]*)" to be installed$/) do |package|
+  installed = false
+  output = ""
+  begin
+    Timeout.timeout(60) do
+      loop do
+        output = `rpm -q #{package} 2>&1`
+        if $?.success?
+          installed = true
+          break
+        end
+        sleep 1
+      end
+    end
+  rescue Timeout::Error
+    raise "exec rpm installation failed: timeout"
+  end
+  raise "exec rpm installation failed (Code #{$?}): #{$!}: #{output}" unless installed
 end
 
 When(/^I click undo for "(.*?)"$/) do |pkg|

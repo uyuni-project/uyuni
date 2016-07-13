@@ -11,7 +11,7 @@ end
 When(/^I call system\.listSystems\(\), I should get a list of them\.$/) do
   # This also assumes the test is called *after* the regular test.
   servers = systest.listSystems
-  assert(servers.length > 0, "Expect: 'number of system' > 0, but found only '#{servers.length}' servers" )
+  assert(servers.length > 0, "Expect: 'number of system' > 0, but found only '#{servers.length}' servers")
   rabbit = servers[0]
 end
 

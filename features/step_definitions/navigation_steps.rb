@@ -5,7 +5,7 @@
 # Test the current path of the URL
 #
 Then(/^the current path is "([^"]*)"$/) do |arg1|
-  fail if not (current_path == arg1)
+  fail unless (current_path == arg1)
 end
 
 #
@@ -70,7 +70,7 @@ end
 # the given "id"
 When(/^I follow "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\"]") do
-    step %[I follow "#{arg1}"]
+    step %(I follow "#{arg1}")
   end
 end
 
@@ -91,18 +91,18 @@ When(/^I click on First Page$/) do
 end
 
 When(/^I click the div "([^"]*)"$/) do |arg1|
-  #must give . or # for class or id
+  # must give . or # for class or id
   within("#spacewalk-content") do
-    fail if not find(arg1).click
+    fail unless find(arg1).click
   end
 end
 
 When(/^I click element by css "([^"]*)"$/) do |arg1|
-  fail if not find(arg1).click
+  fail unless find(arg1).click
 end
 
 When(/^I want to add a new credential$/) do
-  fail if not find("i.fa-plus-circle").click
+  fail unless find("i.fa-plus-circle").click
 end
 
 When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
@@ -114,7 +114,7 @@ When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
   end
 
   within(:xpath, "//#{tag}") do
-    step %[I follow "#{arg1}"]
+    step %(I follow "#{arg1}")
   end
 end
 

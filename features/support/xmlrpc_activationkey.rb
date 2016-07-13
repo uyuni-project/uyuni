@@ -12,23 +12,23 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
 
   def listActivatedSystems(key)
     systems = @connection.call("activationkey.listActivatedSystems", @sid, key)
-    return systems == nil ? 0 : systems.length
+    systems.nil? ? 0 : systems.length
   end
 
   def getActivationKeysCount
     @keys = @connection.call("activationkey.listActivationKeys", @sid)
-    return @keys == nil ? 0 : @keys.length
+    @keys.nil? ? 0 : @keys.length
   end
 
   def verifyKey(kid)
     @connection.call("activationkey.listActivationKeys", @sid)
-      .map {|key| key['key'] }
+      .map { |key| key['key'] }
       .include?(kid)
   end
 
   def getConfigChannelsCount(key)
     channels = @connection.call("activationkey.listConfigChannels", @sid, key)
-    return channels == nil ? 0 : channels.length
+    channels.nil? ? 0 : channels.length
   end
 
   def addConfigChannel(key, name)
@@ -49,11 +49,11 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
     keyinfo = @connection.call("activationkey.getDetails", @sid, key)
     puts "      Key info for the key " + keyinfo['key']
 
-    keyinfo.each_pair do |k,v|
+    keyinfo.each_pair do |k, v|
       puts "        " + k.to_s + ": " + v.to_s
     end
 
     res = ('Test description of the key ' + key) == keyinfo['description']
-    return res
+    res
   end
 end

@@ -32,10 +32,7 @@ def client_setup():
                         zypper -n in spacewalk-oscap; 
 			zypper -n in rhncfg-actions'''
         run_cmd(client, init_client, "init client", 600)
-	#change_hostname = "echo \"{}     client\" >> /etc/hosts; echo \"client\" > /etc/hostname;  hostname -f".format(client.ipaddr)
-	#run_cmd(client, "hostname client",  "change hostname ", 8000)
-	#run_cmd(client, "sed -i '$ d' /etc/hosts;", "change hosts file", 100)
-	#run_cmd(client, change_hostname, "change hostsfile",  200)
+	run_cmd(client, " zypper -n in andromeda-dummy milkyway-dummy virgo-dummy", "install dummy package needed by tests", 900)
 	
 
 def setup_server():		
@@ -43,9 +40,7 @@ def setup_server():
 	run_cmd(server, "hostname suma-server.example.com",  "change hostname ", 8000)
 	run_cmd(server, "sed -i '$ d' /etc/hosts;", "change hosts file", 100)
 	run_cmd(server, change_hostname, "change hostsfile",  200)
-	run_cmd(server, "cat /etc/hosts; cat /etc/hostname", "verification hosts", 300)
 	run_cmd(server, "mv  /var/lib/slenkins/tests-suse-manager/tests-server/install/ /", "move install", 900)
-
 
 ######################
 # MAIN 

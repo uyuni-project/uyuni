@@ -9,8 +9,7 @@ Feature: Regression tests
   Background:
     Given I am testing channels
 
-  #bug 821968
-  Scenario: Check local metdata not contain \n at the end of the summary
-    Given I am root
+  #bug 821968  Scenario: Check local metdata not contain \n at the end of the summary
+    And I am root
     When I refresh the metadata
     Then I should have 'summary.*</summary' in the metadata

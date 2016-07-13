@@ -2,7 +2,6 @@
 # Licensed under the terms of the MIT license.
 
 When(/^I perform a nagios check patches$/) do
-
   command = "/usr/lib/nagios/plugins/check_suma_patches #{$server_hostname} > /tmp/nagios.out"
   output, local, remote, code = $server.test_and_store_results_together(command, "root", 600)
 end
@@ -39,7 +38,7 @@ Then(/^I should see an unknown system message$/) do
   command = "grep -i \"^Unknown system:.*does.not.exist\" /tmp/nagios.out 2>&1"
   output, local, remote, code = $server.test_and_store_results_together(command, "root", 600)
   if code != 0
-     run_cmd($server, "cat /tmp/nagios.out", 600)
-     raise "Nagios check patches for nonexisting system failed '#{command}' #{$!}: #{output}"
+    run_cmd($server, "cat /tmp/nagios.out", 600)
+    raise "Nagios check patches for nonexisting system failed '#{command}' #{$!}: #{output}"
   end
 end

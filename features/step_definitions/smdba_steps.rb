@@ -2,12 +2,12 @@
 
 Given(/^a postgresql database is running$/) do
   $output = sshcmd("file /var/lib/pgsql/data/postgresql.conf", ignore_err: true)
-  if !$output[:stdout].include? "ASCII text"
+  unless $output[:stdout].include? "ASCII text"
     puts "Tests require Postgresql database, skipping..."
     pending
   end
 
-  if not sshcmd("smdba db-status")[:stdout].include? "online"
+  if !sshcmd("smdba db-status")[:stdout].include? "online"
     sshcmd("smdba db-start")
     assert_includes(sshcmd("smdba db-status")[:stdout], "online")
   else
@@ -175,4 +175,3 @@ end
 When(/^when I destroy "(.*?)" directory$/) do |pg_xlog|
   sshcmd("rm -rf #{pg_xlog}")
 end
-

@@ -2,13 +2,12 @@
 # Licensed under the terms of the MIT license.
 
 Given(/^I am on the groups page$/) do
-  steps %[
+  steps %(
     Given I am on the Systems page
     And I follow "System Groups" in the left menu
-  ]
+    )
 end
 
 When(/^I check this client$/) do
-  step %[I check "#{$client_hostname}" in the list]
+  step %(I check "#{$client_hostname}" in the list)
 end
-

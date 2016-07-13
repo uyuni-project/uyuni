@@ -35,7 +35,7 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   def getSoftwareChannelsCount
     channels = @connection.call("channel.listSoftwareChannels", @sid)
-    return channels == nil ? 0 : channels.length
+    channels.nil? ? 0 : channels.length
   end
 
   #
@@ -43,7 +43,7 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   def verifyChannel(label)
     @connection.call("channel.listSoftwareChannels", @sid)
-      .map {|c| c['label']}
+      .map { |c| c['label'] }
       .include?(label)
   end
 
@@ -76,4 +76,3 @@ class XMLRPCChannelTest < XMLRPCBaseTest
     end
   end
 end
-

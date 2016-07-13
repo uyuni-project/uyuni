@@ -17,7 +17,7 @@ require File.join(File.dirname(__FILE__), 'zypp_lock_helper')
 require 'owasp_zap'
 include OwaspZap
 
-browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :firefox
+browser = (ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil) || :firefox
 host = ENV['TESTHOST'] || 'andromeda.suse.de'
 proxy = ENV['ZAP_PROXY'].to_s || nil
 
@@ -26,8 +26,8 @@ World(MiniTest::Assertions)
 
 # basic support for rebranding of strings in the UI
 BRANDING = ENV['BRANDING'] || 'suse'
+DEFAULT_TIMEOUT = 100
 
-DEFAULT_TIMEOUT=100
 # Returns current url
 def current_url
   driver.current_url
@@ -91,7 +91,7 @@ when :phantomjs
                                                              '--ssl-protocol=TLSv1',
                                                              '--web-security=false'],
                                       :js_errors => false,
-				      :timeout => 200, 
+                                      :timeout => 200,
                                       :debug => false)
   end
   Capybara.default_driver = :poltergeist
@@ -108,7 +108,7 @@ when :firefox
       profile["network.proxy.ssl"] = proxy
       profile["network.proxy.ssl_port"] = 8080
     end
-    driver = Capybara::Selenium::Driver.new(app, :browser => :firefox,:profile=> profile)
+    driver = Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile)
     driver.browser.manage.window.resize_to(1280, 1024)
     driver
   end
@@ -133,7 +133,7 @@ end
 Before do
   sec_proxy = ENV['ZAP_PROXY']
   if sec_proxy && ['localhost', '127.0.0.1'].include?(sec_proxy)
-    $zap = Zap.new(:target=> "https://#{ENV['TESTHOST']}", :zap=>"/usr/share/owasp-zap/zap.sh")
+    $zap = Zap.new(:target => "https://#{ENV['TESTHOST']}", :zap => "/usr/share/owasp-zap/zap.sh")
     unless $zap.running?
       $zap.start(:daemon => true)
       until $zap.running?

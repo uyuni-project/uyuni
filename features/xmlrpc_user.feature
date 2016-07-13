@@ -13,7 +13,7 @@ Feature: Test XML-RPC "user" namespace.
     Given I make sure "testluser" is not present
     When I call user.create(sid, login, pwd, name, lastname, email) with login "testluser"
     Then when I call user.listUsers(), I should see a user "testluser"
-    Then I logout from XML-RPC/user namespace.
+    And I logout from XML-RPC/user namespace.
 
   @xmlrpc
   Scenario: Role operations
@@ -22,7 +22,7 @@ Feature: Test XML-RPC "user" namespace.
     Then I should see "org_admin" when I call user.listRoles() with "testluser"
     When I call user.removeRole() against uid "testluser" with the role "org_admin"
     Then I shall not see "org_admin" when I call user.listRoles() with "testluser" uid
-    Then I logout from XML-RPC/user namespace.
+    And I logout from XML-RPC/user namespace.
 
    @xmlrpc
   Scenario: Cleanup user tests

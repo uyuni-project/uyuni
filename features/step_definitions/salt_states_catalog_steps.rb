@@ -3,17 +3,17 @@
 When(/^I enter the salt state$/) do |multiline|
   within(:xpath, "//section") do
     x = find('textarea[name="content"]')
-    x.set(multiline) #find("#{arg1}") #.set(lines)
-  end 
+    x.set(multiline) # find("#{arg1}") #.set(lines)
+  end
 end
 
 When(/^I click on the css "(.*)"$/) do |css|
   find(css).click
-end 
+end
 
 When(/^I enter "(.*)" in the css "(.*)"$/) do |input, css|
   find(css).set(input)
-end 
+end
 
 When(/^I select the state "(.*)"$/) do |state|
   find("input##{state}-cbox").click
@@ -25,5 +25,5 @@ When(/^I wait for the file "(.*)"$/) do |file|
     break if File.exist?(file)
     sleep 1
   end
-  fail if not File.exist?(file)
+  fail unless File.exist?(file)
 end
