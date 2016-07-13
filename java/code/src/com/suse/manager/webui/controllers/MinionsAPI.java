@@ -192,10 +192,10 @@ public class MinionsAPI {
      */
     public static String bootstrap(Request request, Response response, User user) {
         JSONBootstrapHosts input = GSON.fromJson(request.body(), JSONBootstrapHosts.class);
-        List<String> validationErrors = InputValidator.validateBootstrapInput(input);
-        if (!validationErrors.isEmpty()) {
+        List<String> errors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        if (!errors.isEmpty()) {
             return bootstrapResult(response, false,
-                    validationErrors.toArray(new String[validationErrors.size()]));
+                    errors.toArray(new String[errors.size()]));
         }
 
         // Setup pillar data to be passed when applying the bootstrap state
