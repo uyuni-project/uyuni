@@ -4,8 +4,7 @@
 require 'nokogiri'
 
 def client_is_zypp?
-  out, _local, _remote, _code = $client.test_and_store_results_together("test -x /usr/bin/zypper", "root", 600)
-  return out
+  _out, _local, _remote, _code = $client.test_and_store_results_together("test -x /usr/bin/zypper", "root", 600)
 end
 
 def client_refresh_metadata

@@ -16,10 +16,11 @@ When(/^I run rhn_check on this client$/) do
 end
 
 Then(/^I download the SSL certificate$/) do
-  # download certicate on the client from the server via ssh protocol.
-  local, _remote, command = $client.test_and_print_results("curl -S -k -o /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{server}/pub/RHN-ORG-TRUSTED-SSL-CERT", "root", 500)
-  if command != 0 and local != 0 and remote != 0
-	raise "fail to download the ssl certificate"
+  # download certicate on the client from the server via ssh protocol
+  cert_path = "/usr/share/RHN-ORG-TRUSTED-SSL-CERT"
+  local, _remote, command = $client.test_and_print_results("curl -S -k -o #{cert_path} http://#{server}/pub/RHN-ORG-TRUSTED-SSL-CERT", "root", 500)
+  if command != 0 && local != 0 && remote != 0
+    raise "fail to download the ssl certificate"
   end
-  _local, _remote, command = $client.test_and_print_results("ls /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT", "root", 500)
+  _out, _local, _remote, _code = $client.test_and_print_results("ls #{cert_path}", "root", 500)
 end

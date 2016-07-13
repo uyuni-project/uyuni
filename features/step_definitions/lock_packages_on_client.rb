@@ -8,8 +8,8 @@ Then(/^"(.*?)" is locked on this client$/) do |pkg|
   out, _local, _remote, code = $client.test_and_store_results_together(command, "root", 600)
   puts out
   if code != 0
-     puts out
-     raise "Package is not locked on client #{out}"
+    puts out
+    raise "Package is not locked on client #{out}"
   end
 end
 
