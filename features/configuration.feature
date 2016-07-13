@@ -34,7 +34,7 @@ Feature: Check configuration page/tab
     Given I am testing configuration
     When I follow "View All Managed Configuration Files"
     Then I should see a "Centrally Managed Files" link in the left menu
-    Then I should see a "Locally Managed Files" link in the left menu
+    And I should see a "Locally Managed Files" link in the left menu
 
   Scenario: Check "View All Managed Configuration Channels"
     Given I am testing configuration
@@ -45,7 +45,7 @@ Feature: Check configuration page/tab
     Given I am testing configuration
     When I follow "Enable Configuration Management on Systems"
     Then I should see a "Managed Systems" link in the left menu
-    Then I should see a "Target Systems" link in the left menu
+    And I should see a "Target Systems" link in the left menu
 
   Scenario: Check "Create a New Configuration Channel"
     Given I am testing configuration

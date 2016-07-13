@@ -1,9 +1,9 @@
 When(/^I check radio button "(.*?)"$/) do |arg1|
-   fail if not choose(arg1)
+   fail unless choose(arg1)
 end
 
-When(/^I open the action chain box$/) do 
-   fail if not find('#s2id_action-chain span.select2-arrow').click
+When(/^I open the action chain box$/) do
+   fail unless find('#s2id_action-chain span.select2-arrow').click
 end
 
 When(/^I enter "(.*?)" in action-chain$/) do |arg1|
@@ -14,7 +14,6 @@ When(/^I enter as remote command this script in$/) do |multiline|
  #  lines = arg1.strip.split('\n')
    within(:xpath, "//section") do
       x = find('textarea#fSptInput')
-      x.set(multiline) #find("#{arg1}") #.set(lines)
+      x.set(multiline) # find("#{arg1}") #.set(lines)
    end
 end
-   

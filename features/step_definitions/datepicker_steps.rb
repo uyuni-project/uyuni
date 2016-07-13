@@ -64,12 +64,12 @@ end
 
 Then(/^the date picker title should be the current month and year$/) do
   now = DateTime.now.strftime('%B %Y')
-  step %[the date picker title should be "#{now}"]
+  step %(the date picker title should be "#{now}")
 end
 
 Then(/^the date picker title should be "([^"]*)"$/) do |arg1|
   if page.has_no_css?('.datepicker')
-    step %[I open the date picker]
+    step %(I open the date picker)
   end
   switch = find('.datepicker .datepicker-days th.datepicker-switch')
   fail unless switch.has_content?(arg1)
