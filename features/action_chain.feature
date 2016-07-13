@@ -3,6 +3,9 @@
 
 Feature: Test action chaining
 
+  Scenario: wait for taskomatic finished required jobs
+    Given Patches are visible for the registered client
+
   Scenario: I add a package installation to an action chain
     Given I am on the Systems overview page of this client
     When I follow "Software" in the content area

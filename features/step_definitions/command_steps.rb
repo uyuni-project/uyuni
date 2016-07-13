@@ -18,7 +18,7 @@ When(/^I execute mgr\-sync refresh$/) do
 end
 
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
-  arch=`uname -m`
+  arch = `uname -m`
   arch.chomp!
   if arch != "x86_64"
     arch = "i586"
@@ -28,7 +28,7 @@ end
 
 
 When(/^I fetch "([^"]*)" from server$/) do |arg1|
-   output , local, remote, code = $client.test_and_store_results_together("wget --no-check-certificate https:/#{$server_ip}//#{arg1}", "root", 600)
+   output , local, remote, code = $client.test_and_store_results_together("wget http://FIXME/#{arg1}", "root", 600)
    if code != 0
     raise "Execute command failed: #{$!}: #{output}"
   end
@@ -36,7 +36,7 @@ end
 
 When(/^I execute "([^"]*)"$/) do |arg1|
   output = `sh ./#{arg1} 2>&1`
-  if ! $?.success?
+  unless $?.success?
     raise "Execute command (#{arg1}) failed(#{$?}): #{$!}: #{output}"
   end
 end
@@ -59,14 +59,14 @@ end
 
 When(/^I check the tomcat logs for errors$/) do
   output = sshcmd("grep ERROR /var/log/tomcat6/catalina.out", ignore_err: true)[:stdout]
-  output.each_line() do |line|
+  output.each_line do |line|
     puts line
   end
 end
 
 When(/^I check the tomcat logs for NullPointerExceptions$/) do
   output = sshcmd("grep -n1 NullPointer /var/log/tomcat6/catalina.out", ignore_err: true)[:stdout]
-  output.each_line() do |line|
+  output.each_line do |line|
     puts line
   end
 end
@@ -82,7 +82,7 @@ end
 When(/^I copy "([^"]*)"$/) do |arg1|
   user = "root@"
   $command_output = `echo | scp -o StrictHostKeyChecking=no #{user}$TESTHOST:#{arg1} . 2>&1`
-  if ! $?.success?
+  unless $?.success?
     raise "Execute command failed: #{$!}: #{$command_output}"
   end
 end
@@ -90,17 +90,19 @@ end
 When(/^I copy to server "([^"]*)"$/) do |arg1|
   user = "root@"
   $command_output = `echo | scp -o StrictHostKeyChecking=no #{arg1} #{user}$TESTHOST: 2>&1`
-  if ! $?.success?
+  unless $?.success?
     raise "Execute command failed: #{$!}: #{$command_output}"
   end
 end
 
 Then(/^the pxe-default-profile should be enabled$/) do
-  step %[file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT\\ pxe-default-profile"]
+  sleep(1)
+  step %(file "/srv/tftpboot/pxelinux.cfg/default" contains "'ONTIMEOUT pxe-default-profile'")
 end
 
 Then(/^the pxe-default-profile should be disabled$/) do
-  step "file \"/srv/tftpboot/pxelinux.cfg/default\" contains \"ONTIMEOUT\\ local\""
+  sleep(1)
+  step %(file "/srv/tftpboot/pxelinux.cfg/default" contains "'ONTIMEOUT local'")
 end
 
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
@@ -117,9 +119,10 @@ end
 
 When(/^I execute spacewalk\-channel and pass "([^"]*)"$/) do |arg1|
   command = "spacewalk-channel #{arg1}"
-  $command_output , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
+  output , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
+  puts output
   if code != 0
-    raise "spacewalk-channel with #{arg1} command failed #{$command_output}"
+    raise "spacewalk-channel with #{arg1} command failed #{output}"
   end
 end
 
@@ -134,20 +137,20 @@ end
 
 Then(/^I want to get "([^"]*)"$/) do |arg1|
   found = false
-  $command_output.each_line() do |line|
+  $command_output.each_line do |line|
     if line.include?(arg1)
       found = true
       break
     end
   end
-  if not found
+  unless found
     raise "'#{arg1}' not found in output '#{$command_output}'"
   end
 end
 
 Then(/^I wont get "([^"]*)"$/) do |arg1|
   found = false
-  $command_output.each_line() do |line|
+  $command_output.each_line do |line|
     if line.include?(arg1)
       found = true
       break

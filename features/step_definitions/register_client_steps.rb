@@ -9,11 +9,11 @@ Given(/^I am root$/) do
 end
 
 Given(/^I am on the Systems overview page of this client$/) do
-  steps %[
+  steps %(
     Given I am on the Systems page
     And I follow "Systems" in the left menu
     And I follow this client link
-  ]
+    )
 end
 
 Given(/^I update the profile of this client$/) do
@@ -24,7 +24,6 @@ Given(/^I update the profile of this client$/) do
 end
 
 When(/^I register using "([^"]*)" key$/) do |arg1|
- # out , local, remote, code = $server.test_and_store_results_together("rm -f /etc/sysconfig/rhn/systemid", "root", 600)
   regurl = "http://#{ENV['TESTHOST']}/XMLRPC"
   command ="rhnreg_ks --force --serverUrl=#{regurl} --activationkey=#{arg1}"
   out , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
@@ -32,21 +31,25 @@ When(/^I register using "([^"]*)" key$/) do |arg1|
   if code != 0
     out , local, remote, code = $client.test_and_store_results_together("cat /var/log/up2date", "root", 600)
     puts out
-    raise "Profil registration failed"
+    raise "Registration failed"
   end
   puts "registration client ok ! #{out}"
 end
 
 When(/^I register using an activation key$/) do
   arch, local, remote, code = $client.test_and_store_results_together("uname -m", "root", 600)
+  arch.chomp!
+  if arch != "x86_64"
+    arch = "i586"
+  end
   step %[I register using "1-SUSE-DEV-#{arch}" key]
 end
 
 Then(/^I should see this client in spacewalk$/) do
-  steps %[
+  steps %(
     Given I am on the Systems page
     Then I should see this client as link
-  ]
+    )
 end
 
 Then(/^this client should appear in spacewalk$/) do
@@ -54,10 +57,10 @@ Then(/^this client should appear in spacewalk$/) do
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         begin
-          steps %[
+          steps %(
             Given I am on the Systems page
             Then I should see this client as link
-          ]
+                    )
           break
         rescue Capybara::ElementNotFound
           sleep(1)
@@ -70,21 +73,21 @@ Then(/^this client should appear in spacewalk$/) do
 end
 
 Then(/^I should see this client as link$/) do
-  step %[I should see a "#{$client_hostname}" link]
+  step %(I should see a "#{$client_hostname}" link)
 end
 
 When(/^I follow this client link$/) do
-  step %[I follow "#{$client_hostname}"]
+  step %(I follow "#{$client_hostname}")
 end
 
 Then(/^config-actions are enabled$/) do
-  if not File.exist?('/etc/sysconfig/rhn/allowed-actions/configfiles/all')
+  unless File.exist?('/etc/sysconfig/rhn/allowed-actions/configfiles/all')
     raise "config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist"
   end
 end
 
 Then(/^remote-commands are enabled$/) do
-  if not File.exist?('/etc/sysconfig/rhn/allowed-actions/script/run')
+  unless File.exist?('/etc/sysconfig/rhn/allowed-actions/script/run')
     raise "remote-commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist"
   end
 end

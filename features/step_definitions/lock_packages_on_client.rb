@@ -7,9 +7,9 @@ Then(/^"(.*?)" is locked on this client$/) do |pkg|
   command = "zypper locks  --solvables | grep #{pkg}"
   out, local, remote, code = $client.test_and_store_results_together(command, "root", 600)
   puts out
-  if code != 0 
+  if code != 0
      puts out
-     raise "FAIL! :package is not on client #{out}"
+     raise "Package is not locked on client #{out}"
   end
 end
 
@@ -18,23 +18,22 @@ Then(/^Package "(.*?)" is reported as locked$/) do |pkg|
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
 
   fail if locked_pkgs.empty?
-  fail unless locked_pkgs.find{|a| a.text =~ /^#{pkg}/}
+  fail unless locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
 Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
   fail unless file_exist($client, zypp_lock_file)
-  command = "grep solvable_name: #{pkg} /etc/zypp/locks"
-  out, local, remote, code = $client.test_and_store_results_together(command, "root", 600)
-  # fail if grep return 0, so package is founded
-  fail if code == 0
+
+  locks = read_zypp_lock_file(zypp_lock_file)
+  fail if locks.find { |lock| pkg =~ /^#{lock['solvable_name']}/ }
 end
 
 Then(/^Package "(.*?)" is reported as unlocked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
 
-  fail if locked_pkgs.find{|a| a.text =~ /^#{pkg}/}
+  fail if locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
 Then(/^The package scheduled is "(.*?)"$/) do |pkg|
@@ -45,7 +44,7 @@ Then(/^The package scheduled is "(.*?)"$/) do |pkg|
 end
 
 Then(/^The action status is "(.*?)"$/) do |status|
-  step %[I should see a "This action's status is: #{status}" text]
+  step %(I should see a "This action's status is: #{status}" text)
 end
 
 Then(/^Package "(.*?)" is reported as pending to be locked$/) do |pkg|
@@ -70,13 +69,13 @@ Then(/^Package "(.*?)" cannot be selected$/) do |pkg|
     "td[ " + # there's another td which contains
       "a[text()='#{pkg}'] and " + # a link with a certain text
       "i[@class='fa fa-clock-o'] and " + # and the clock icon
-      "span[@class='label label-info']"  + # and the "Locking..."/"Unlocking" label
+      "span[@class='label label-info']" + # and the "Locking..."/"Unlocking" label
     "]]"
   find(:xpath, xpath_query)
 end
 
 Then(/^Only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
-  pkgs = pkgs.split(",").map{|pkg| pkg.strip}
+  pkgs = pkgs.split(",").map(&:strip)
 
   # ensure these packages are found as pending to be unlocked
   pkgs.each do |pkg|

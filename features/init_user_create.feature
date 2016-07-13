@@ -57,24 +57,24 @@ Feature: Create initial users
 
   Scenario: check services which should run
     Then Service "atftpd" is enabled on the Server
-    Then Service "atftpd" is running on the Server
-    Then Service "auditlog-keeper" is enabled on the Server
-    Then Service "auditlog-keeper" is running on the Server
-    Then Service "cobblerd" is enabled on the Server
-    Then Service "cobblerd" is running on the Server
-    Then Service "jabberd" is enabled on the Server
-    Then Service "jabberd" is running on the Server
-    Then Service "osa-dispatcher" is enabled on the Server
-    Then Service "osa-dispatcher" is running on the Server
-    Then Service "rhn-search" is enabled on the Server
-    Then Service "rhn-search" is running on the Server
-    Then Service "salt-api" is enabled on the Server
-    Then Service "salt-api" is running on the Server
-    Then Service "salt-master" is enabled on the Server
-    Then Service "salt-master" is running on the Server
-    Then Service "taskomatic" is enabled on the Server
-    Then Service "taskomatic" is running on the Server
-    Then Service "apache2" is enabled on the Server
-    Then Service "apache2" is running on the Server
-    Then Service "tomcat" is enabled on the Server
-    Then Service "tomcat" is running on the Server
+    And Service "atftpd" is running on the Server
+    And Service "auditlog-keeper" is enabled on the Server
+    And Service "auditlog-keeper" is running on the Server
+    And Service "cobblerd" is enabled on the Server
+    And Service "cobblerd" is running on the Server
+    And Service "jabberd" is enabled on the Server
+    And Service "jabberd" is running on the Server
+    And Service "osa-dispatcher" is enabled on the Server
+    And Service "osa-dispatcher" is running on the Server
+    And Service "rhn-search" is enabled on the Server
+    And Service "rhn-search" is running on the Server
+    And Service "salt-api" is enabled on the Server
+    And Service "salt-api" is running on the Server
+    And Service "salt-master" is enabled on the Server
+    And Service "salt-master" is running on the Server
+    And Service "taskomatic" is enabled on the Server
+    And Service "taskomatic" is running on the Server
+    And Service "apache2" is enabled on the Server
+    And Service "apache2" is running on the Server
+    And Service "tomcat" is enabled on the Server
+    And Service "tomcat" is running on the Server

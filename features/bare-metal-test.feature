@@ -33,8 +33,8 @@ Feature: Test Bare-metal discovery
     And I should see a "Detected on" text
     And I should see a "Number of CPUs" text
     And I should see a "2" text
-    And I should see a "Clock frquency" text
-    And I should see a "2 GHz" text
+    And I should see a "Clock frequency" text
+    And I should see the CPU frequency of the client
     And I should see a "RAM" text
     And I check the ram value
     And I should see a "Number of disks" text
@@ -75,7 +75,7 @@ Feature: Test Bare-metal discovery
     When I check this client
     And I wait for "30" seconds
     And I follow "System Set Manager" in the left menu
-    Then I should see a "At least one system in the set does not have the management system type: some actions will not be available." text
+    Then I should see a "At least one system in the set does not have the management system type: some actions will not be available" text
 
   Scenario: check SSM page for bare-metal system
     Given I am on the Systems page
@@ -88,7 +88,7 @@ Feature: Test Bare-metal discovery
     And I should see a "Migrate" link in the content area
     And I should not see a "Errata" link in the content area
     And I should not see a "Packages" link in the content area
-    And I should not see a "Groups" link in the content area
+    And I should see a "Groups" link in the content area
     And I should not see a "Channels" link in the content area
     And I should not see a "Audit" link in the content area
     And I follow "Clear"

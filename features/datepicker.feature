@@ -19,5 +19,5 @@ Feature: Pick dates
     And I pick "2016-08-27" as date
     And I pick "5:30 pm" as time
     Then the date field is set to "2016-08-27"
-    Then the time field is set to "17:30"
+    And the time field is set to "17:30"
     And the date picker is closed
