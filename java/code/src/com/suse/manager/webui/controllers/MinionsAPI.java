@@ -66,7 +66,7 @@ public class MinionsAPI {
 
     private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
 
-    private static final Gson GSON = new GsonBuilder()
+    public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .serializeNulls()
             .create();
