@@ -157,8 +157,7 @@ public enum SaltAPIService implements SaltService {
         if (keys.getMinions().contains(id) ||
                 keys.getUnacceptedMinions().contains(id) ||
                 keys.getRejectedMinions().contains(id) ||
-                keys.getDeniedMinions().contains(id) ||
-                keys.getLocal().contains(id)) {
+                keys.getDeniedMinions().contains(id)) {
             ret = true;
         }
         return ret;
