@@ -14,7 +14,11 @@ When(/^I register this client for SSH push via tunnel$/) do
   # Perform the registration
   filename = expect_file.path
   command = "expect #{filename}"
-  out, local, remote, code = $client.test_and_store_results_together(command, "root", 600)
+  _out, _local, _remote, code = $client.test_and_store_results_together("mv #{filename} /tmp", "root", 600)
+  if code != 0
+    raise "Execute command failed: #{out}"
+  end
+  _out, _local, _remote, code = $client.test_and_store_results_together(command, "root", 600)
   if code != 0
     raise "Execute command failed: #{out}"
   end

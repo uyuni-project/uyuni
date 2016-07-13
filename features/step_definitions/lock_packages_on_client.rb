@@ -5,7 +5,7 @@ Then(/^"(.*?)" is locked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
   fail unless file_exist($client, zypp_lock_file)
   command = "zypper locks  --solvables | grep #{pkg}"
-  out, local, remote, code = $client.test_and_store_results_together(command, "root", 600)
+  out, _local, _remote, code = $client.test_and_store_results_together(command, "root", 600)
   puts out
   if code != 0
      puts out

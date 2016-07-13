@@ -26,9 +26,8 @@ When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
   $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-PKG-#{arch} #{arg1}")[:stdout]
 end
 
-
 When(/^I fetch "([^"]*)" from server$/) do |arg1|
-   output , local, remote, code = $client.test_and_store_results_together("wget http://FIXME/#{arg1}", "root", 600)
+   output, _local, _remote, code = $client.test_and_store_results_together("wget http://FIXME/#{arg1}", "root", 600)
    if code != 0
     raise "Execute command failed: #{$!}: #{output}"
   end
@@ -119,7 +118,7 @@ end
 
 When(/^I execute spacewalk\-channel and pass "([^"]*)"$/) do |arg1|
   command = "spacewalk-channel #{arg1}"
-  output , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
+  output, _local, _remote, code = $client.test_and_store_results_together(command, "root", 600)
   puts output
   if code != 0
     raise "spacewalk-channel with #{arg1} command failed #{output}"
@@ -128,7 +127,7 @@ end
 
 When(/^spacewalk\-channel fails with "([^"]*)"$/) do |arg1|
   command = "spacewalk-channel #{arg1}"
-  $command_output , local, remote, code = $client.test_and_store_results_together(command, "root", 600)
+  $command_output, _local, __remote, code = $client.test_and_store_results_together(command, "root", 600)
   puts $command_output
   if code == 0
     raise "Executed command was successful: #{$status}"

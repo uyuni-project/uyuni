@@ -244,7 +244,6 @@ Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^"([^"]*)" is installed$/) do |package|
-  output = `rpm -q #{package} 2>&1`
   code = run_cmd($client, "rpm -q #{package} 2>&1", 600)
   if code != 0
      raise "exec rpm failed (Code #{code}:"
@@ -260,7 +259,7 @@ When(/^I check "([^"]*)" in the list$/) do |arg1|
       # use div/div/div for cve audit which has two tables
       row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
       if row.nil?
-          sleep 10 
+          sleep 10
           $stderr.puts "ERROR - try again"
           row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
       end
