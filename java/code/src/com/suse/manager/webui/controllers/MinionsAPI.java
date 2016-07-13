@@ -251,7 +251,8 @@ public class MinionsAPI {
                     },
                     r -> {
                         // We have results, check if result = true for all the single states
-                        String message = "Successfully bootstrapped " + input.getHost();
+                        String message = "Successfully bootstrapped host: " +
+                                input.getHost();
                         boolean stateApplyResult = r.getReturn().isPresent();
                         if (stateApplyResult) {
                             for (State.ApplyResult apply : r.getReturn().get().values()) {
