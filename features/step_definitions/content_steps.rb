@@ -61,7 +61,7 @@ end
 Then(/^I should see a "([^"]*)" link$/) do |arg1|
   link = first(:link, debrand_string(arg1))
   if link.nil?
-    sleep 10 
+    sleep 10
     $stderr.puts "ERROR - try again"
     fail unless first(:link, debrand_string(arg1)).visible?
   else
