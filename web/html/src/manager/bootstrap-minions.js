@@ -108,10 +108,15 @@ class BootstrapMinions extends React.Component {
     }
 
     render() {
-        var messages = [];
+        var messages = <Messages items={[{severity: "info", text:
+            <span>This is a <b>brand new feature</b>: Any system with SSH access can now easily be connected to
+            SUSE Manager by installing and running the salt-minion. Simply provide a hostname and credentials
+            below to bootstrap a managed client. We would be glad to receive any kind of feedback via
+            the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">forum</a>.</span>
+        }]}/>;
         if (this.state.success && this.state.messages.length > 0) {
             messages = <Messages items={this.state.messages.map(function(msg) {
-                return {severity: "info", text: msg};
+                return {severity: "success", text: msg};
             })}/>;
         } else if (this.state.messages.length > 0) {
             messages = <Messages items={this.state.messages.map(function(msg) {
