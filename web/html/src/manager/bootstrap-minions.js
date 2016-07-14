@@ -145,7 +145,7 @@ class BootstrapMinions extends React.Component {
                 <div className="form-group">
                     <label className="col-md-3 control-label">User:</label>
                     <div className="col-md-6">
-                        <input name="user" className="form-control" type="text" defaultValue={this.state.user} value={this.state.user} onChange={this.userChanged}/>
+                        <input name="user" className="form-control" type="text" placeholder={this.state.user} value={this.state.user} onChange={this.userChanged}/>
                     </div>
                 </div>
                 <div className="form-group">
