@@ -130,7 +130,7 @@ class BootstrapMinions extends React.Component {
         ];
 
         return (
-        <Panel title={t("Bootstrap Minions")} icon="spacewalk-icon-salt-add">
+        <Panel title={t("Bootstrap Minions")} icon="fa fa-rocket">
             {messages}
             <div className="form-horizontal">
                 <div className="form-group">
