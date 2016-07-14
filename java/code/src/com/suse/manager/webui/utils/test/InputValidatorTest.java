@@ -30,13 +30,24 @@ public class InputValidatorTest extends TestCase {
     /**
      * Test the check for required fields.
      */
-    public void testValidateBootstrapInputEmpty() {
-        String json = "{}";
+    public void testValidateBootstrapInputUserEmpty() {
+        String json = "{user: ''}";
         JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 2);
         assertTrue(validationErrors.contains("Host is required."));
         assertTrue(validationErrors.contains("User is required."));
+    }
+
+    /**
+     * Test the check for required fields, user is "root" per default.
+     */
+    public void testValidateBootstrapInputDefaultUser() {
+        String json = "{}";
+        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        assertTrue(validationErrors.size() == 1);
+        assertTrue(validationErrors.contains("Host is required."));
     }
 
     /**
