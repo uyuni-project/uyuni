@@ -41,9 +41,9 @@ class AsyncButton extends React.Component {
     let style = "btn ";
     switch (this.state.value) {
         case "failure": style += "btn-danger"; break;
-        case "success": style += "btn-success"; break;
         case "waiting": style += "btn-default"; break;
         case "initial": style += this.props.defaultType ? this.props.defaultType : "btn-default"; break;
+        default: style += this.props.defaultType ? this.props.defaultType : "btn-default"; break;
     }
     const margin = this.props.name != undefined ? "" : " no-margin"
     return (
