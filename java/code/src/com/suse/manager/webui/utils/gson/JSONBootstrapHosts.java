@@ -27,7 +27,7 @@ public class JSONBootstrapHosts {
     /** Host IP address or DNS name */
     private String host;
     private String port;
-    private String user;
+    private String user = "root";
     private String password;
     private List<String> activationKeys;
     private boolean ignoreHostKeys;

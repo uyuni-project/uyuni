@@ -14,7 +14,7 @@ class BootstrapMinions extends React.Component {
         this.state = {
             host: "",
             port: "",
-            user: "root",
+            user: "",
             password: "",
             activationKey: "",
             ignoreHostKeys: false,
@@ -64,7 +64,7 @@ class BootstrapMinions extends React.Component {
         var formData = {};
         formData['host'] = this.state.host.trim();
         formData['port'] = this.state.port.trim();
-        formData['user'] = this.state.user.trim();
+        formData['user'] = this.state.user.trim() === "" ? undefined : this.state.user.trim();
         formData['password'] = this.state.password.trim();
         formData['activationKeys'] = this.state.activationKey === "" ? [] : [this.state.activationKey] ;
         formData['ignoreHostKeys'] = this.state.ignoreHostKeys;
@@ -98,7 +98,7 @@ class BootstrapMinions extends React.Component {
       this.setState({
           host: "",
           port: "",
-          user: "root",
+          user: "",
           password: "",
           activationKey: "",
           ignoreHostKeys: false,
@@ -145,7 +145,7 @@ class BootstrapMinions extends React.Component {
                 <div className="form-group">
                     <label className="col-md-3 control-label">User:</label>
                     <div className="col-md-6">
-                        <input name="user" className="form-control" type="text" placeholder={this.state.user} value={this.state.user} onChange={this.userChanged}/>
+                        <input name="user" className="form-control" type="text" placeholder={t("root")} value={this.state.user} onChange={this.userChanged}/>
                     </div>
                 </div>
                 <div className="form-group">
