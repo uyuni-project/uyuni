@@ -143,7 +143,7 @@ class BootstrapMinions extends React.Component {
                     <label className="col-md-3 control-label">SSH Port:</label>
                     <div className="col-md-6">
                         <input name="port" className="form-control numeric set-maxlength-width" type="text" maxLength="5"
-                          placeholder={t("22")} onChange={this.portChanged} onKeyPress={numericValidate} value={this.state.port}
+                          placeholder="22" onChange={this.portChanged} onKeyPress={numericValidate} value={this.state.port}
                           title={t('Port range: 1 - 65535')}/>
                     </div>
                 </div>
