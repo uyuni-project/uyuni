@@ -107,8 +107,7 @@ class BootstrapMinions extends React.Component {
         }
 
         var buttons = [
-            <AsyncButton id="bootstrap-btn" defaultType="btn-success" icon="plus" name={t("Bootstrap it")} action={this.onBootstrap}/>,
-            <LinkButton id="cancel-btn" className="btn-default pull-right" text={t("Back to System Overview")} href="/rhn/systems/Overview.do"/>
+            <AsyncButton id="bootstrap-btn" defaultType="btn-success" icon="plus" name={t("Bootstrap it")} action={this.onBootstrap}/>
         ];
 
         return (
