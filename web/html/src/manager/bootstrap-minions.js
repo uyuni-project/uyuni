@@ -20,7 +20,7 @@ class BootstrapMinions extends React.Component {
             ignoreHostKeys: false,
             messages: []
         };
-        ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "activationKeyChanged"]
+        ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "activationKeyChanged", "clearFields"]
             .forEach(method => this[method] = this[method].bind(this));
     }
 
@@ -94,6 +94,19 @@ class BootstrapMinions extends React.Component {
         return request;
     }
 
+    clearFields() {
+      this.setState({
+          host: "",
+          port: "",
+          user: "root",
+          password: "",
+          activationKey: "",
+          ignoreHostKeys: false,
+          messages: []
+      });
+      return;
+    }
+
     render() {
         var messages = [];
         if (this.state.success && this.state.messages.length > 0) {
@@ -107,7 +120,8 @@ class BootstrapMinions extends React.Component {
         }
 
         var buttons = [
-            <AsyncButton id="bootstrap-btn" defaultType="btn-success" icon="plus" name={t("Bootstrap it")} action={this.onBootstrap}/>
+            <AsyncButton id="bootstrap-btn" defaultType="btn-success" icon="plus" name={t("Bootstrap it")} action={this.onBootstrap}/>,
+            <AsyncButton id="clear-btn" defaultType="btn-default pull-right" icon="eraser" name={t("Clear fields")} action={this.clearFields}/>
         ];
 
         return (
@@ -117,27 +131,27 @@ class BootstrapMinions extends React.Component {
                 <div className="form-group">
                     <label className="col-md-3 control-label">Host:</label>
                     <div className="col-md-6">
-                        <input name="hostname" className="form-control" type="text" placeholder={t("e.g., host.domain.com")} onChange={this.hostChanged}/>
+                        <input name="hostname" className="form-control" type="text" placeholder={t("e.g., host.domain.com")} value={this.state.host} onChange={this.hostChanged}/>
                     </div>
                 </div>
                 <div className="form-group">
                     <label className="col-md-3 control-label">SSH Port:</label>
                     <div className="col-md-6">
                         <input name="port" className="form-control numeric set-maxlength-width" type="text" maxLength="5"
-                          placeholder={t("22")} onChange={this.portChanged} onKeyPress={numericValidate}
+                          placeholder={t("22")} onChange={this.portChanged} onKeyPress={numericValidate} value={this.state.port}
                           title={t('Port range: 1 - 65535')}/>
                     </div>
                 </div>
                 <div className="form-group">
                     <label className="col-md-3 control-label">User:</label>
                     <div className="col-md-6">
-                        <input name="user" className="form-control" type="text" defaultValue={this.state.user} onChange={this.userChanged}/>
+                        <input name="user" className="form-control" type="text" defaultValue={this.state.user} value={this.state.user} onChange={this.userChanged}/>
                     </div>
                 </div>
                 <div className="form-group">
                     <label className="col-md-3 control-label">Password:</label>
                     <div className="col-md-6">
-                        <input name="password" className="form-control" type="password" placeholder={t("e.g., ••••••••••••")} onChange={this.passwordChanged}/>
+                        <input name="password" className="form-control" type="password" placeholder={t("e.g., ••••••••••••")} value={this.state.password} onChange={this.passwordChanged}/>
                     </div>
                 </div>
                 <div className="form-group">
