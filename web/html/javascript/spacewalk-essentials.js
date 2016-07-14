@@ -50,12 +50,11 @@ function columnHeight() {
   // Detect if side menu is really side and not whole screen wide. Detecting indirectly with section width because aside can be hidden.
   if ($(".spacewalk-main-column-layout section").outerWidth() < $(".spacewalk-main-column-layout").outerWidth()) {
     var asideHeight = $(".spacewalk-main-column-layout aside").height();
-    var navbarHeight = $("header").height();
-    var footerHeight = $("footer").height();
+    var navbarHeight = $("header").outerHeight();
+    var footerHeight = $("footer").outerHeight();
     var heightDoc = $(document).height();
     // Column heights should equal the document height minus the header height and footer height
-    // extra 10px to have scrollbar always visible
-    var newHeight = heightDoc - asideHeight - navbarHeight - footerHeight + 10 + "px";
+    var newHeight = heightDoc - asideHeight - navbarHeight - footerHeight + "px";
     $(".spacewalk-main-column-layout aside").css("padding-bottom", newHeight);
   };
 };
