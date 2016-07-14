@@ -285,3 +285,22 @@ function t(key) {
 
   return result;
 }
+
+/*
+* Create an Observer object that monitors if something in the HTML has changes,
+* if that happens it fires the window resize computation event
+* https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+*/
+$(document).ready(function() {
+  var target = document.getElementById('spacewalk-content');
+  // create an observer instance
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      $(window).trigger('resize');
+    });
+  });
+  // configuration of the observer:
+  var config = { childList: true, characterData: true, subtree: true };
+  // pass in the target node, as well as the observer options
+  observer.observe(target, config);
+});
