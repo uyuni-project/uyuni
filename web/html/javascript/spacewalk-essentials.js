@@ -41,9 +41,15 @@ $(window).load(function () {
 
 // On window resize
 $(window).resize(function () {
+  alignContentDimensions();
+});
+
+// A container function for what should be fired
+// to set HTML tag dimensions
+function alignContentDimensions() {
   $(".spacewalk-main-column-layout aside").css("padding-bottom", "");
   columnHeight();
-});
+}
 
 // Make columns 100% in height
 function columnHeight() {
@@ -296,7 +302,7 @@ $(document).ready(function() {
   // create an observer instance
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
-      $(window).trigger('resize');
+      alignContentDimensions();
     });
   });
   // configuration of the observer:
