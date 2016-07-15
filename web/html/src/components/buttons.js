@@ -38,7 +38,13 @@ class AsyncButton extends React.Component {
   }
 
   render() {
-    const style = this.state.value == "failure" ? "btn btn-danger" : "btn btn-default";
+    let style = "btn ";
+    switch (this.state.value) {
+        case "failure": style += "btn-danger"; break;
+        case "waiting": style += "btn-default"; break;
+        case "initial": style += this.props.defaultType ? this.props.defaultType : "btn-default"; break;
+        default: style += this.props.defaultType ? this.props.defaultType : "btn-default"; break;
+    }
     const margin = this.props.name != undefined ? "" : " no-margin"
     return (
         <button id={this.props.id} title={t(this.props.title)} className={style} disabled={this.state.value == "waiting" || this.props.disabled} onClick={this.trigger}>

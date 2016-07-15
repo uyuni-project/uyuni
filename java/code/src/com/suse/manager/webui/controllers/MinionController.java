@@ -22,11 +22,14 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -224,6 +227,11 @@ public class MinionController {
      */
     public static ModelAndView bootstrap(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
+        ActivationKeyManager akm = ActivationKeyManager.getInstance();
+        List<String> visibleBootstrapKeys = akm.findAll(user)
+                .stream().map(ak -> "'" + ak.getKey() + "'")
+                .collect(Collectors.toList());
+        data.put("availableActivationKeys", visibleBootstrapKeys);
         return new ModelAndView(data, "minion/bootstrap.jade");
     }
 }
