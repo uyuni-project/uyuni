@@ -109,8 +109,7 @@ class BootstrapMinions extends React.Component {
 
     render() {
         var messages = <Messages items={[{severity: "info", text:
-            <p>{t('This is a ')} <strong>{t('brand new feature')}</strong>{t(': any system with SSH access can now easily be connected to SUSE Manager by installing and running the salt-minion. Simply provide a hostname and credentials below to bootstrap a managed client.')}<br/>
-            {t('We would be glad to receive any kind of feedback via the ')} <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
+            <p>{t('This is a ')} <strong>{t('brand new feature')}</strong>{t(': any system with SSH access can now easily be connected to SUSE Manager by installing and running the salt-minion. Simply provide a hostname and credentials below to bootstrap a managed client. We would be glad to receive any kind of feedback via the ')} <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
         }]}/>;
         if (this.state.success && this.state.messages.length > 0) {
             messages = <Messages items={this.state.messages.map(function(msg) {
