@@ -109,12 +109,12 @@ class BootstrapMinions extends React.Component {
 
     render() {
         var messages = <Messages items={[{severity: "info", text:
-            <p>{t('This is a ')} <strong>{t('brand new feature')}</strong>{t(': any system with SSH access can now easily be connected to SUSE Manager by installing and running the salt-minion. Simply provide a hostname and credentials below to bootstrap a managed client. We would be glad to receive any kind of feedback via the ')} <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
+            <p><strong>{t('This is a feature preview')}</strong>{t(': You can add systems to be managed by providing SSH credentials only. SUSE Manager will take care of installing the required software agent (salt-minion) remotely and perform the registration. We would be glad to receive your feedback via the ')} <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
         }]}/>;
-        if (this.state.success && this.state.messages.length > 0) {
-            messages = <Messages items={this.state.messages.map(function(msg) {
-                return {severity: "success", text: msg};
-            })}/>;
+        if (this.state.success) {
+            messages = <Messages items={[{severity: "success", text:
+                <p>Successfully bootstrapped host! Your system should appear in <a href="/rhn/systems/Overview.do">System Overview</a> shortly.</p>
+            }]}/>;
         } else if (this.state.messages.length > 0) {
             messages = <Messages items={this.state.messages.map(function(msg) {
                 return {severity: "error", text: msg};
