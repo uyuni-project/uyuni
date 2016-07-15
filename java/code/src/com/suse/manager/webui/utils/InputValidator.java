@@ -25,10 +25,12 @@ import java.util.Optional;
 /**
  * Input validation helper methods.
  */
-public class InputValidator {
+public enum InputValidator {
 
-    private InputValidator() {
-    }
+    /**
+     * Singleton instance
+     */
+    INSTANCE;
 
     /**
      * Validate input as sent from the minion bootstrapping UI.
@@ -36,7 +38,7 @@ public class InputValidator {
      * @param input the data as entered in the form
      * @return list of validation error messages
      */
-    public static List<String> validateBootstrapInput(JSONBootstrapHosts input) {
+    public List<String> validateBootstrapInput(JSONBootstrapHosts input) {
         List<String> errors = new LinkedList<>();
 
         if (StringUtils.isEmpty(input.getHost())) {

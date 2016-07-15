@@ -227,3 +227,28 @@ function disableAutoComplete(){
 			document.getElementsByTagName('input').item(i).setAttribute('autocomplete', 'off');
 	};
 }
+
+/*
+* Allow only numeric values
+*/
+function numericValidate(evt) {
+  var theEvent = evt || window.event;
+  var key = theEvent.keyCode || theEvent.which;
+  key = String.fromCharCode( key );
+  var regex = /[0-9]/;
+  if( !regex.test(key) ) {
+    theEvent.returnValue = false;
+    if(theEvent.preventDefault) theEvent.preventDefault();
+  }
+}
+
+/*
+* Fix input width if it has a maxlenght attribute
+*/
+$(document).ready(function() {
+  $('input.set-maxlength-width').each(function() {
+    if ($(this).attr('maxlength') != null) {
+      $(this).css('width', $(this).attr('maxlength') + 'em');
+    }
+  });
+});

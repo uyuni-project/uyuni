@@ -67,7 +67,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.stream.Stream;
 
 /**
@@ -152,9 +151,36 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
+    public boolean keyExists(String id) {
+        Key.Names keys = getKeys();
+        return keys.getMinions().contains(id) ||
+                keys.getUnacceptedMinions().contains(id) ||
+                keys.getRejectedMinions().contains(id) ||
+                keys.getDeniedMinions().contains(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Key.Fingerprints getFingerprints() {
         try {
             WheelResult<Key.Fingerprints> result = Key.finger("*")
+                    .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            return result.getData().getResult();
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public com.suse.manager.webui.utils.salt.Key.Pair generateKeysAndAccept(String id,
+            boolean force) {
+        try {
+            WheelResult<com.suse.manager.webui.utils.salt.Key.Pair> result =
+                    com.suse.manager.webui.utils.salt.Key.genAccept(id, Optional.of(force))
                     .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return result.getData().getResult();
         }
@@ -233,25 +259,6 @@ public enum SaltAPIService implements SaltService {
         try {
             Key.reject(minionId).callSync(SALT_CLIENT,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Map<String, Object> applyStateSSH(Target<?> target,
-            Optional<Map<String, Object>> pillar, List<String> mods) {
-        try {
-            Map<String, Object> kwargs = new LinkedHashMap<>();
-            kwargs.put("mods", mods);
-            if (pillar.isPresent()) {
-                kwargs.put("pillar", pillar.get());
-            }
-            return SALT_CLIENT.run(null, null, AuthModule.AUTO, "ssh", target,
-                    "state.apply", null, kwargs);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);

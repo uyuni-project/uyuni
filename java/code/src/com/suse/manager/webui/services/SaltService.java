@@ -70,11 +70,29 @@ public interface SaltService {
     Key.Names getKeys();
 
     /**
+     * For a given id check if there is a minion key in any status.
+     *
+     * @param id the id to check for
+     * @return true if there is a key with the given id, false otherwise
+     */
+    boolean keyExists(String id);
+
+    /**
      * Get the minion keys from salt with their respective status and fingerprint.
      *
      * @return the keys with their respective status and fingerprint as returned from salt
      */
     Key.Fingerprints getFingerprints();
+
+    /**
+     * Generate a key pair for the given id and accept the public key.
+     *
+     * @param id the id to use
+     * @param force set true to overwrite an already existing key
+     * @return the generated key pair
+     */
+    com.suse.manager.webui.utils.salt.Key.Pair generateKeysAndAccept(String id,
+            boolean force);
 
     /**
      * Get the grains for a given minion.
@@ -120,17 +138,6 @@ public interface SaltService {
      * @param minionId id of the minion
      */
     void rejectKey(String minionId);
-
-    /**
-     * Apply states on a given target using salt-ssh.
-     *
-     * @param target the target to apply the states to
-     * @param pillar custom pillar values as a dictionary of key-value pairs
-     * @param mods a list of states to apply
-     * @return result of the state application
-     */
-    Map<String, Object> applyStateSSH(Target<?> target,
-            Optional<Map<String, Object>> pillar, List<String> mods);
 
     /**
      * Return the stream of events happening in salt.
