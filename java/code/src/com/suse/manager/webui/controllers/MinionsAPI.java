@@ -201,6 +201,7 @@ public class MinionsAPI {
         // Setup pillar data to be passed when applying the bootstrap state
         Map<String, Object> pillarData = new HashMap<>();
         pillarData.put("master", ConfigDefaults.get().getCobblerHost());
+        pillarData.put("minion_id", input.getHost());
         ActivationKeyManager.getInstance().findAll(user)
                 .stream()
                 .filter(ak -> input.getActivationKeys().contains(ak.getKey()))
