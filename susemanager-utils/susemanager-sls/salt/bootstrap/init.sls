@@ -15,16 +15,19 @@
     - user: root
     - group: root
     - mode: 644
+    - makedirs: True
 
 # Manage minion key files in case they are provided in the pillar
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
 /etc/salt/pki/minion/minion.pub:
   file.managed:
     - contents_pillar: minion_pub
+    - makedirs: True
 
 /etc/salt/pki/minion/minion.pem:
   file.managed:
     - contents_pillar: minion_pem
+    - makedirs: True
 
 salt-minion:
   pkg.installed:
