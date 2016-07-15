@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
+import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
@@ -65,7 +66,7 @@ public class MinionsAPI {
 
     private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
 
-    private static final Gson GSON = new GsonBuilder()
+    public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .serializeNulls()
             .create();
@@ -191,15 +192,33 @@ public class MinionsAPI {
      */
     public static String bootstrap(Request request, Response response, User user) {
         JSONBootstrapHosts input = GSON.fromJson(request.body(), JSONBootstrapHosts.class);
-        List<String> validationErrors = InputValidator.validateBootstrapInput(input);
-        if (!validationErrors.isEmpty()) {
+        List<String> errors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        if (!errors.isEmpty()) {
             return bootstrapResult(response, false,
-                    validationErrors.toArray(new String[validationErrors.size()]));
+                    errors.toArray(new String[errors.size()]));
         }
 
         // Setup pillar data to be passed when applying the bootstrap state
         Map<String, Object> pillarData = new HashMap<>();
         pillarData.put("master", ConfigDefaults.get().getCobblerHost());
+        pillarData.put("minion_id", input.getHost());
+        ActivationKeyManager.getInstance().findAll(user)
+                .stream()
+                .filter(ak -> input.getActivationKeys().contains(ak.getKey()))
+                .findFirst()
+                .ifPresent(ak -> pillarData.put("activation_key", ak.getKey()));
+
+        // Generate minion keys and accept the public key
+        if (SALT_SERVICE.keyExists(input.getHost())) {
+            return bootstrapResult(response, false, "A key for this host (" +
+                    input.getHost() + ") seems to already exist, please check!");
+        }
+        com.suse.manager.webui.utils.salt.Key.Pair keyPair =
+                SALT_SERVICE.generateKeysAndAccept(input.getHost(), false);
+        if (keyPair.getPub().isPresent() && keyPair.getPriv().isPresent()) {
+            pillarData.put("minion_pub", keyPair.getPub().get());
+            pillarData.put("minion_pem", keyPair.getPriv().get());
+        }
 
         try {
             // Generate (temporary) roster file based on data from the UI
@@ -228,11 +247,12 @@ public class MinionsAPI {
             return results.get(input.getHost()).fold(
                     error -> {
                         LOG.error("Error during bootstrap: " + error.toString());
+                        SALT_SERVICE.deleteKey(input.getHost());
                         return bootstrapResult(response, false, error.toString());
                     },
                     r -> {
                         // We have results, check if result = true for all the single states
-                        String message = "Successfully bootstrapped " + input.getHost();
+                        String message = null;
                         boolean stateApplyResult = r.getReturn().isPresent();
                         if (stateApplyResult) {
                             for (State.ApplyResult apply : r.getReturn().get().values()) {
@@ -250,13 +270,19 @@ public class MinionsAPI {
                                     .orElseGet(() -> "No result for " + input.getHost()));
                             LOG.info(message);
                         }
-                        return bootstrapResult(response,
-                                stateApplyResult && r.getRetcode() == 0, message);
+
+                        // Clean up the generated key pair in case of failure
+                        boolean success = stateApplyResult && r.getRetcode() == 0;
+                        if (!success) {
+                            SALT_SERVICE.deleteKey(input.getHost());
+                        }
+                        return bootstrapResult(response, success, message);
                     }
             );
         }
         catch (IOException e) {
             LOG.error("Error operating on roster file: " + e.getMessage());
+            SALT_SERVICE.deleteKey(input.getHost());
             throw new RuntimeException(e);
         }
     }
