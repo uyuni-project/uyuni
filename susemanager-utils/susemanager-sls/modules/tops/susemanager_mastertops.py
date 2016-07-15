@@ -45,7 +45,7 @@ def top(**kwargs):
                   kwargs['opts']['environment'])
         return {}
 
-    log.debug('Merging top.sls files in: %s', kwargs['opts']['file_roots']['base'])
+    log.debug('Merging top.sls files in: %s', __opts__['file_roots']['base'])
     top_tree = {"base": []}
     opts = copy.deepcopy(kwargs['opts'])
     opts['id'] = kwargs['grains']['id']
