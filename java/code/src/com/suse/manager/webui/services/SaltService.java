@@ -348,6 +348,9 @@ public interface SaltService {
      */
     Set<String> getAllowedMinions(User user, String target);
 
+
+    public Optional<List<Zypper.ProductInfo>> getListProducts(String minionId);
+
     /**
      * Save a Salt .sls file.
      * @param orgId the organization id
