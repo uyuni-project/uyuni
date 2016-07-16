@@ -353,6 +353,10 @@ public enum SaltAPIService implements SaltService {
         }
     }
 
+    public Optional<List<Zypper.ProductInfo>> getListProducts(String minionId) {
+        return callSync(Zypper.listProducts(false), minionId);
+    }
+
     /**
      * {@inheritDoc}
      */
