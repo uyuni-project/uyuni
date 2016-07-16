@@ -189,6 +189,20 @@ public class SUSEProductFactory extends HibernateFactory {
         return (SUSEProduct) c.uniqueResult();
     }
 
+    public static SUSEProductChannel lookupSUSEProductBaseChannel(String name, String version, String arch) {
+        Session session = getSession();
+        Criteria c = session.createCriteria(SUSEProductChannel.class)
+         .add(Restrictions.isNull("parentChannelLabel"))
+         .createCriteria("product")
+         .add(Restrictions.eq("name", name))
+         .add(Restrictions.eq("version", version))
+         .createCriteria("arch")
+         .add(Restrictions.eq("name", arch));
+
+
+        return (SUSEProductChannel) c.uniqueResult();
+    }
+
     /**
      * Find all {@link SUSEProductChannel} relationships.
      * @return list of SUSE product channel relationships

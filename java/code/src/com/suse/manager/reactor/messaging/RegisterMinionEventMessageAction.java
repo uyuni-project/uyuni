@@ -19,7 +19,9 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.state.PackageState;
@@ -187,6 +189,20 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
+
+            if (!activationKey.isPresent() && server.getChannels().isEmpty()) {
+                LOG.info("No base channel added, adding default channel (if applicable)");
+                ProductInfo pi = SALT_SERVICE.getListProducts(minionId).get().get(0);
+                String osName = pi.getName().toLowerCase();
+                String osVersion = pi.getVersion();
+                String osArch = pi.getArch();
+                Channel c = SUSEProductFactory
+                        .lookupSUSEProductBaseChannel(osName, osVersion, osArch)
+                        .getChannel();
+                LOG.info("Channel " + c.getName() + " found for OS: " + osName + ", version: " + osVersion
+                    + ", arch: " + osArch + " - adding channel");
+                server.addChannel(c);
+            }
 
             server.updateServerInfo();
 
