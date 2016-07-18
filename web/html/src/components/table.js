@@ -416,7 +416,7 @@ class Table extends React.Component {
             .map((column) => React.cloneElement(column, {data: element, table: this})
         );
 
-        let rowClass = this.props.rowClassFn ? this.props.rowClassFn(element, index) : "";
+        let rowClass = this.props.cssClassFunction ? this.props.cssClassFunction(element, index) : "";
         let evenOddClass = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
         return <tr className={rowClass + " " + evenOddClass} key={this.props.identifier(element)} >{cells}</tr>;
     });
