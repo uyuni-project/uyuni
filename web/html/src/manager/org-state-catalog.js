@@ -62,7 +62,7 @@ var StateCatalog = React.createClass({
                         }>
                         <Column
                             columnKey="name"
-                            sortFn={this.compareRows}
+                            comparator={this.compareRows}
                             header={t("State")}
                             cell={ (s) =>
                                 <a href={"/rhn/manager/state_catalog/state/" + s}>{s}</a> }

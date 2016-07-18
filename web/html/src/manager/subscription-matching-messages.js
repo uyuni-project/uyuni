@@ -74,13 +74,13 @@ const Messages = React.createClass({
             >
             <Column
                 columnKey="message"
-                sortFn={this.sortByMessage}
+                comparator={this.sortByMessage}
                 header={t("Message")}
                 cell={ (row) => row.message }
                 />
             <Column
                 columnKey="info"
-                sortFn={this.sortByInfo}
+                comparator={this.sortByInfo}
                 header={t("Additional information")}
                 cell={ (row) => row.info }
                 />

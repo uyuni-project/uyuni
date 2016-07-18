@@ -144,7 +144,7 @@ class Onboarding extends React.Component {
               <Column
                 columnKey="id"
                 width="30%"
-                sortFn={this.sortByName}
+                comparator={this.sortByName}
                 header={t('Name')}
                 cell={ (row, table) => {
                       if(row.state == "minions") {
@@ -163,7 +163,7 @@ class Onboarding extends React.Component {
               <Column
                 columnKey="fingerprint"
                 width="50%"
-                sortFn={this.sortByFingerprint}
+                comparator={this.sortByFingerprint}
                 header={t('Fingerprint')}
                 cell={ (row, table) =>
                     <Highlight enabled={table.state.dataModel.isFiltered()}
@@ -173,7 +173,7 @@ class Onboarding extends React.Component {
               <Column
                 columnKey="state"
                 width="10%"
-                sortFn={this.sortByState}
+                comparator={this.sortByState}
                 header={t('State')}
                 cell={ (row) => labelFor(row.state) }
                 />

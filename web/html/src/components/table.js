@@ -89,7 +89,7 @@ class SimpleTableDataModel {
     this.currentData = data;
     this.filtered = false;
     this.criteria = null;
-    this.sortFn = null;
+    this.comparator = null;
     this.sortDirection = null;
     this.sortColumnKey = null;
     this.initialized = false;
@@ -116,9 +116,9 @@ class SimpleTableDataModel {
     }
   }
 
-  sort(columnKey, sortFn, sortDirection) {
-    this.currentData = this.currentData.sort((a, b) => sortDirection * sortFn(a, b, columnKey));
-    this.sortFn = sortFn;
+  sort(columnKey, comparator, sortDirection) {
+    this.currentData = this.currentData.sort((a, b) => sortDirection * comparator(a, b, columnKey));
+    this.comparator = comparator;
     this.sortDirection = sortDirection;
     this.sortColumnKey = columnKey;
   }
@@ -188,8 +188,8 @@ class SimpleTableDataModel {
     } else {
         this.currentData = dataToMerge;
     }
-    if (this.sortFn && this.sortDirection && this.sortColumnKey) {
-        this.sort(this.sortColumnKey, this.sortFn, this.sortDirection);
+    if (this.comparator && this.sortDirection && this.sortColumnKey) {
+        this.sort(this.sortColumnKey, this.comparator, this.sortDirection);
     }
     if (this.getFirstPageItemIndex() > this.currentData.length) {
         this.goToPage(1);
@@ -228,7 +228,7 @@ class Header extends React.Component {
     } else {
         sortDir = -sortDir;
     }
-    this.props.onSort(this.props.columnKey, this.props.sortFn, sortDir);
+    this.props.onSort(this.props.columnKey, this.props.comparator, sortDir);
     this.setState({sortDirection: sortDir});
   }
 
@@ -239,7 +239,7 @@ class Header extends React.Component {
         thStyle = { width: this.props.width };
      }
 
-     if (this.props.sortFn && this.props.columnKey) {
+     if (this.props.comparator && this.props.columnKey) {
         if (this.props.currentSortKey == this.props.columnKey) {
             thClass = !this.state.sortDirection ? "" : (this.state.sortDirection > 0 ? "ascSort" : "descSort")
         }
@@ -323,12 +323,12 @@ class Table extends React.Component {
 
   doInitialSort(dataModel, props) {
     if (props.initialSort) {
-        let sortFn = React.Children.toArray(props.children)
+        let comparator = React.Children.toArray(props.children)
                 .filter((child) => child.type === Column)
                 .filter((column) => column.props.columnKey == props.initialSort)
-                .map((column) => column.props.sortFn);
-        if (sortFn && sortFn.length > 0 && sortFn[0]) {
-            dataModel.sort(props.initialSort, sortFn[0], 1);
+                .map((column) => column.props.comparator);
+        if (comparator && comparator.length > 0 && comparator[0]) {
+            dataModel.sort(props.initialSort, comparator[0], 1);
         }
     }
   }
@@ -345,8 +345,8 @@ class Table extends React.Component {
     this.forceUpdate();
   }
 
-  sort(columnKey, sortFn, sortDirection) {
-    this.state.dataModel.sort(columnKey, sortFn, sortDirection);
+  sort(columnKey, comparator, sortDirection) {
+    this.state.dataModel.sort(columnKey, comparator, sortDirection);
     this.forceUpdate();
   }
 
@@ -402,7 +402,7 @@ class Table extends React.Component {
                     currentSortDirection={this.state.dataModel.sortDirection}
                     onSort={this.sort}
                     width={column.props.width}
-                    sortFn={column.props.sortFn}>
+                    comparator={column.props.comparator}>
                         {column.props.header}
                     </Header>;
             } else {
