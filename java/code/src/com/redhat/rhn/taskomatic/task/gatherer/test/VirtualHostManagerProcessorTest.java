@@ -15,7 +15,6 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.gatherer.JSONHost;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
