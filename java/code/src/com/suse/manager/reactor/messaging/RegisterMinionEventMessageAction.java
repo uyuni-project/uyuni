@@ -19,6 +19,8 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -33,9 +35,10 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltService;
@@ -278,12 +281,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         String osName = pi.getName().toLowerCase();
         String osVersion = pi.getVersion();
         String osArch = pi.getArch();
-        Channel c = SUSEProductFactory
-                .lookupSUSEProductBaseChannel(osName, osVersion, osArch)
-                .getChannel();
-        LOG.info("Channel " + c.getName() + " found for OS: " + osName
-                + ", version: " + osVersion + ", arch: " + osArch
-                + " - adding channel");
+        SUSEProduct sp =
+                SUSEProductFactory.findSUSEProduct(osName, osVersion, null, osArch, false);
+        Channel c = ChannelFactory
+                .lookupById(DistUpgradeManager.getProductBaseChannelDto(sp.getId(),
+                        ChannelFactory.lookupArchByName(osArch)).getId());
+        LOG.info("Channel " + c.getName() + " found for OS: " + osName + ", version: "
+                + osVersion + ", arch: " + osArch + " - adding channel");
         server.addChannel(c);
     }
 
