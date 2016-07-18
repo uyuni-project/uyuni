@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul 18 13:54:23 CEST 2016 - jrenner@suse.com
+
+- version 2.5.13.5-1
+- fix syntax error prevent reading HW data correctly (bsc#984622)
+- machine_info capability and check for client tool compatibility with Suma 2.1
+
+-------------------------------------------------------------------
 Tue Jun 14 12:55:04 UTC 2016 - kwalter@suse.com
 
 - send machine info only if server has machine info capability
