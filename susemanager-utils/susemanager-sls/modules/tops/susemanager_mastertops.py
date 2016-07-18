@@ -19,8 +19,8 @@ from __future__ import absolute_import
 import logging
 import yaml
 import os
-import salt
 import copy
+from salt.state import HighState
 
 # Define the module's virtual name
 __virtualname__ = 'susemanager_mastertops'
@@ -46,19 +46,21 @@ def top(**kwargs):
         return {}
 
     log.debug('Merging top.sls files in: %s', __opts__['file_roots']['base'])
+
     top_tree = {"base": []}
-    opts = copy.deepcopy(kwargs['opts'])
+    opts = copy.deepcopy(__opts__)
     opts['id'] = kwargs['grains']['id']
+    opts['grains'] = kwargs['grains']
+    opts['environment'] = "base"
 
     for top_path in __opts__['file_roots']['base']:
         top_file = os.path.join(top_path, "top.sls")
         if os.path.isfile(top_file):
-            top_yaml = yaml.load(open(top_file))
+            file_roots_prio = [top_path] + list(set(__opts__['file_roots']['base']) - set([top_path]))
+            opts['file_roots'] = {"base": file_roots_prio}
 
-            for item in top_yaml['base']:
-                # Only provide this information if the target match
-                # with the current minion
-                matcher = salt.minion.Matcher(opts=opts)
-                if matcher.compound_match(item):
-                    top_tree['base'].extend(top_yaml['base'][item])
+            st_ = HighState(opts)
+            top_ = st_.get_top()
+            top_info = st_.top_matches(top_)
+            top_tree['base'].extend(top_info.get("base"))
     return top_tree
