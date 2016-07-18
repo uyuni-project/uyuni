@@ -112,7 +112,7 @@ const Pins = React.createClass({
         {this.props.pinnedMatches.length > 0 ?
           <Table key="table"
             dataModel={this.state.tableModel}
-            rowKeyFn={(row) => row.id}
+            identifier={(row) => row.id}
             initialSort="systemName"
             >
             <Column
@@ -262,7 +262,7 @@ const AddPinPopUp = React.createClass({
 
           <Table key="table"
             dataModel={this.state.tableModel}
-            rowKeyFn={(row) => row.id}
+            identifier={(row) => row.id}
             initialSort="name"
             searchPanel={
                 <SearchField searchFn={this.searchData}
@@ -353,7 +353,7 @@ const PinSubscriptionSelector = React.createClass({
        return (
           <Table key="table"
             data={this.props.subscriptions}
-            rowKeyFn={(row) => row.id}
+            identifier={(row) => row.id}
             >
             <Column
                 columnKey="partNumber"

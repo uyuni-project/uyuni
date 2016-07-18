@@ -418,7 +418,7 @@ class Table extends React.Component {
 
         let rowClass = this.props.rowClassFn ? this.props.rowClassFn(element, index) : "";
         let evenOddClass = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
-        return <tr className={rowClass + " " + evenOddClass} key={this.props.rowKeyFn(element)} >{cells}</tr>;
+        return <tr className={rowClass + " " + evenOddClass} key={this.props.identifier(element)} >{cells}</tr>;
     });
 
     let searchPanel = this.props.searchPanel ?

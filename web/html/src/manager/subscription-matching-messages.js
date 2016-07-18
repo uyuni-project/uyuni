@@ -69,7 +69,7 @@ const Messages = React.createClass({
           <p>{t("Please review warning and information messages below.")}</p>
           <Table
             dataModel={this.state.tableModel}
-            rowKeyFn={(row) => row.id}
+            identifier={(row) => row.id}
             initialSort="message"
             >
             <Column
