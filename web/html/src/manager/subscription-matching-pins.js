@@ -265,7 +265,7 @@ const AddPinPopUp = React.createClass({
             identifier={(row) => row.id}
             initialSort="name"
             searchPanel={
-                <SearchField searchFn={this.searchData}
+                <SearchField filter={this.searchData}
                     placeholder={t("Filter by name")}/>
             }>
             <Column
