@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Mon Jul 18 14:19:05 CEST 2016 - jrenner@suse.com
+
+- version 3.0.16-1
+- allow migration from external Oracle db to local posgresql db (bsc#987795)
+- make sure migration with external database works for DB names other than
+  susemanager (bsc#987870)
+- create nCoW subvolume for /var/cache/rhn on btrfs (bsc#987614)
+- use performance optimized database configuration also for migration from
+  Oracle to postgresql (bsc#987550)
+- check for uppercase characters in hostname (bsc#980482)
+- add support for migrating SUMA21 to SUMA3 with external Oracle DB
+- call spacewalk-setup with correct parameter depending on database
+- allow DB_BACKEND to be oracle again
+- Forbid some more special characters for db and cert passwords (bsc#983295)
+- Do not create swapfile when / is on btrfs (bsc#977804)
+
+-------------------------------------------------------------------
 Tue May 24 16:09:59 CEST 2016 - kwalter@suse.com
 
 - version 3.0.15-1
