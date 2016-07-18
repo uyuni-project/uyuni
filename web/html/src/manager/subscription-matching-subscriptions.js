@@ -58,7 +58,7 @@ const Subscriptions = React.createClass({
           <Table
             data={this.buildRows(this.props.subscriptions)}
             identifier={(row) => row.id}
-            rowClassFn={(row) => moment(row.endDate).isBefore(moment()) ? "text-muted" : null }
+            cssClassFunction={(row) => moment(row.endDate).isBefore(moment()) ? "text-muted" : null }
             loadState={this.props.loadState}
             saveState={this.props.saveState}
             initialSort="partNumber"
