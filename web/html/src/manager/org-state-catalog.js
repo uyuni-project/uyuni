@@ -57,7 +57,7 @@ var StateCatalog = React.createClass({
                         identifier={this.rowKey}
                         initialSort="name"
                         searchPanel={
-                            <SearchField searchFn={this.searchData}
+                            <SearchField filter={this.searchData}
                                 placeholder={t("Filter by state name")}/>
                         }>
                         <Column

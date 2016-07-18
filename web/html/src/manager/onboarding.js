@@ -139,7 +139,7 @@ class Onboarding extends React.Component {
                 identifier={this.rowKey}
                 pageSize={15}
                 searchPanel={
-                    <SearchField searchFn={this.searchData}/>
+                    <SearchField filter={this.searchData}/>
                 }>
               <Column
                 columnKey="id"

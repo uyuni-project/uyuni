@@ -66,7 +66,7 @@ class SearchField extends React.Component {
   }
 
   onChange(text) {
-    this.props.table.onSearch(this.props.searchFn, text);
+    this.props.table.onSearch(this.props.filter, text);
   }
 
   render() {
@@ -340,8 +340,8 @@ class Table extends React.Component {
     return newDataModel;
   }
 
-  onSearch(searchFn, criteria) {
-    this.state.dataModel.filter(searchFn, criteria);
+  onSearch(filter, criteria) {
+    this.state.dataModel.filter(filter, criteria);
     this.forceUpdate();
   }
 
