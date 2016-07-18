@@ -190,7 +190,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
-            if (!activationKey.isPresent() && server.getChannels().isEmpty()) {
+            if (!activationKey.isPresent()) {
                 LOG.info("No base channel added, adding default channel (if applicable)");
                 ProductInfo pi = SALT_SERVICE.getListProducts(minionId).get().get(0);
                 String osName = pi.getName().toLowerCase();
