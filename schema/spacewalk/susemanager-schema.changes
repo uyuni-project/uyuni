@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Jul 18 14:12:49 CEST 2016 - jrenner@suse.com
+
+- version 3.0.14-1
+- Add missing power_management feature for bootstrap_entitlement systems
+- Fix HW Refresh duplicate insert (bsc#971622)
+- add taskomatic job to clean up minion actions
+- provide seperate migration scripts for oracle
+- shorten constaint names and fix syntax (FATE#320213)
+- Remove duplicates from rhnChannelContentSource (bsc#976184)
+
+-------------------------------------------------------------------
 Tue May 24 15:55:53 CEST 2016 - kwalter@suse.com
 
 - version 3.0.13-1
