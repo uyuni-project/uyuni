@@ -136,7 +136,7 @@ class Onboarding extends React.Component {
         <Panel title="Onboarding" icon="fa-desktop" button={ panelButtons }>
             <Table
                 data={this.state.keys}
-                rowKeyFn={this.rowKey}
+                identifier={this.rowKey}
                 pageSize={15}
                 searchPanel={
                     <SearchField searchFn={this.searchData}/>

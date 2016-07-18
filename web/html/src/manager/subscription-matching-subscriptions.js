@@ -57,7 +57,7 @@ const Subscriptions = React.createClass({
         <div>
           <Table
             data={this.buildRows(this.props.subscriptions)}
-            rowKeyFn={(row) => row.id}
+            identifier={(row) => row.id}
             rowClassFn={(row) => moment(row.endDate).isBefore(moment()) ? "text-muted" : null }
             loadState={this.props.loadState}
             saveState={this.props.saveState}
