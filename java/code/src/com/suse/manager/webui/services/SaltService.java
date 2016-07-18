@@ -356,7 +356,7 @@ public interface SaltService {
      * @param minionId the minion id
      * @return a list of ProductInfo associated to the minion
      */
-    public Optional<List<Zypper.ProductInfo>> getListProducts(String minionId);
+    Optional<List<Zypper.ProductInfo>> getListProducts(String minionId);
 
     /**
      * Save a Salt .sls file.
