@@ -350,7 +350,12 @@ public interface SaltService {
      */
     Set<String> getAllowedMinions(User user, String target);
 
-
+    /**
+     * Find all products associated with a minion
+     *
+     * @param minionId the minion id
+     * @return a list of ProductInfo associated to the minion
+     */
     public Optional<List<Zypper.ProductInfo>> getListProducts(String minionId);
 
     /**
