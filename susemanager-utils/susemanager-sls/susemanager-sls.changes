@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Jul 18 14:23:32 CEST 2016 - jrenner@suse.com
+
+- version 0.1.14-1
+- Initial version of the boostrap sls file
+- update trust store when multiple certs in one file are available on SLE11
+- update ca certificates only when they have changed
+- assume no pillar data if the yml file for the minion does not exist
+  (bsc#980354)
+- Add distributable pkgset beacon for RPM database notifications
+
+-------------------------------------------------------------------
 Tue May 24 16:04:20 CEST 2016 - kwalter@suse.com
 
 - version 0.1.13-1
