@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Mon Jul 18 14:28:06 CEST 2016 - jrenner@suse.com
+
+- version 2.5.59.8-1
+- Initial version of the bootstrapping UI
+- Integrate bootstrapping with System Overview
+- support SP Migration for OES 2015 to 2015 SP1
+- Fix for minion w/ multiple interfaces (bsc#985707)
+- Fix HW Refresh duplicate insert (bsc#971622)
+- no addon entitlements allowed for Foreign and Bootstrap systems (bsc#983826)
+- disable checkboxes for foreign and bootstrap systems in system types page
+  (bsc#983826)
+- Tell linuxrc that self_update is an user option so that it'll pass it to
+  autoyast but doesn't process it further and add this to the tests
+- Disable YaST self update for new autoinstallation trees for SLE
+- remove misleading links from action chain page (bsc#983297)
+
+-------------------------------------------------------------------
 Fri Jun 17 18:10:20 CEST 2016 - mc@suse.de
 
 - version 2.5.59.7-1
