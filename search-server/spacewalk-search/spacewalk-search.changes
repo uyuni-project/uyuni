@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul 18 14:18:01 CEST 2016 - jrenner@suse.com
+
+- version 2.5.2.2-1
+- round CPU MHz number to a long value
+- provide 12.1 instant client lib dir to search daemon
+
+-------------------------------------------------------------------
 Wed Jun 15 10:43:10 CEST 2016 - mc@suse.de
 
 - round CPU MHz number correctly to a long value (bsc#979745)
