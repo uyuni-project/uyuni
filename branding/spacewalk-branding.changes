@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Jul 18 14:07:20 CEST 2016 - jrenner@suse.com
+
+- version 2.5.2.10-1
+- Get rid of scrollbar when it's not needed
+- Initial version of the bootstrapping UI
+- Integrate bootstrapping UI with System Overview
+- fix warning string (bsc#983826)
+- fix message about debuginfo packages (bsc#972156)
+
+-------------------------------------------------------------------
 Tue May 24 15:27:12 CEST 2016 - kwalter@suse.com
 
 - version 2.5.2.9-1
