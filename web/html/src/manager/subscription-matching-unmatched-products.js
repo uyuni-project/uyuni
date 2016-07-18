@@ -64,13 +64,13 @@ const UnmatchedProducts = React.createClass({
             >
             <Column
                 columnKey="name"
-                sortFn={this.sortByName}
+                comparator={this.sortByName}
                 header={t("Product name")}
                 cell={ (row) => row.productName }
                 />
             <Column
                 columnKey="cpuCount"
-                sortFn={this.sortByCpuCount}
+                comparator={this.sortByCpuCount}
                 header={t("Unmatched system count")}
                 cell={ (row) => row.systemCount }
                 />
@@ -149,7 +149,7 @@ const UnmatchedSystemPopUp = React.createClass({
         }>
         <Column
             columnKey="name"
-            sortFn={this.sortByName}
+            comparator={this.sortByName}
             header={t("System name")}
             cell={ (row) => <SystemLabel type={row.type} name={row.systemName} /> } />
       </Table>;
