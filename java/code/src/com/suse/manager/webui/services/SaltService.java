@@ -15,6 +15,8 @@
 package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.user.User;
+
+import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.modules.SaltUtil;

@@ -41,6 +41,7 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
