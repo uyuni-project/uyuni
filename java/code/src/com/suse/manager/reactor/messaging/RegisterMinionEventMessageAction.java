@@ -193,16 +193,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             if (!activationKey.isPresent()) {
                 LOG.info("No base channel added, adding default channel (if applicable)");
-                ProductInfo pi = SALT_SERVICE.getListProducts(minionId).get().get(0);
-                String osName = pi.getName().toLowerCase();
-                String osVersion = pi.getVersion();
-                String osArch = pi.getArch();
-                Channel c = SUSEProductFactory
-                        .lookupSUSEProductBaseChannel(osName, osVersion, osArch)
-                        .getChannel();
-                LOG.info("Channel " + c.getName() + " found for OS: " + osName + ", version: " + osVersion
-                    + ", arch: " + osArch + " - adding channel");
-                server.addChannel(c);
+                lookupAndAddDefaultChannel(minionId, server);
             }
 
             server.updateServerInfo();
@@ -280,6 +271,20 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         catch (Throwable t) {
             LOG.error("Error registering minion for event: " + event, t);
         }
+    }
+
+    private void lookupAndAddDefaultChannel(String minionId, MinionServer server) {
+        ProductInfo pi = SALT_SERVICE.getListProducts(minionId).get().get(0);
+        String osName = pi.getName().toLowerCase();
+        String osVersion = pi.getVersion();
+        String osArch = pi.getArch();
+        Channel c = SUSEProductFactory
+                .lookupSUSEProductBaseChannel(osName, osVersion, osArch)
+                .getChannel();
+        LOG.info("Channel " + c.getName() + " found for OS: " + osName
+                + ", version: " + osVersion + ", arch: " + osArch
+                + " - adding channel");
+        server.addChannel(c);
     }
 
     private void mapHardwareGrains(MinionServer server, ValueMap grains) {
