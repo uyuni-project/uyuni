@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jul 18 14:09:44 CEST 2016 - jrenner@suse.com
+
+- version 2.5.7.9-1
+- BugFix: recompute window dimensions when content changes (bsc#971559)
+- Fix aside column height computation (bsc#969834)
+- Initial version of the bootstrapping UI
+
+-------------------------------------------------------------------
 Tue May 24 15:32:18 CEST 2016 - kwalter@suse.com
 
 - version 2.5.7.8-1
