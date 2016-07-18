@@ -60,7 +60,7 @@ const UnmatchedProducts = React.createClass({
             identifier={this.rowKey}
             initialSort="name"
             loadState={this.props.loadState}
-            saveState={this.props.saveState}            
+            saveState={this.props.saveState}
             >
             <Column
                 columnKey="name"
