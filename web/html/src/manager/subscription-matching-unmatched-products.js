@@ -57,7 +57,7 @@ const UnmatchedProducts = React.createClass({
         <div>
           <Table
             data={this.buildData(this.props)}
-            rowKeyFn={this.rowKey}
+            identifier={this.rowKey}
             initialSort="name"
             loadState={this.props.loadState}
             saveState={this.props.saveState}            
@@ -142,7 +142,7 @@ const UnmatchedSystemPopUp = React.createClass({
   render: function() {
     const popUpContent = <Table
         data={this.buildTableData(this.props)}
-        rowKeyFn={this.rowKey}
+        identifier={this.rowKey}
         initialSort="name"
         searchPanel={
             <SearchField searchFn={this.searchData} placeholder="Filter by name"/>
