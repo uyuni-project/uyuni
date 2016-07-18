@@ -63,7 +63,7 @@ const Subscriptions = React.createClass({
             saveState={this.props.saveState}
             initialSort="partNumber"
             searchPanel={
-                <SearchField searchFn={this.searchData}
+                <SearchField filter={this.searchData}
                     placeholder={t("Filter by description")}/>
             }>
             <Column
