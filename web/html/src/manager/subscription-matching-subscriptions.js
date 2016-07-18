@@ -68,32 +68,32 @@ const Subscriptions = React.createClass({
             }>
             <Column
                 columnKey="partNumber"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("Part number")}
                 cell={ (row) => row.partNumber }
                 />
             <Column
                 columnKey="description"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("Description")}
                 cell={ (row) => row.description }
                 />
            <Column
                 columnKey="policy"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("Policy")}
                 cell={ (row) => humanReadablePolicy(row.policy) }
                 />
            <Column
                 columnKey="quantity"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("Matched/Total")}
                 cell={ (row) =>
                     <QuantityCell matched={row.matchedQuantity} total={row.totalQuantity} /> }
                 />
            <Column
                 columnKey="startDate"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("Start date")}
                 cell={ (row) =>
                     <ToolTip content={moment(row.startDate).fromNow()}
@@ -101,7 +101,7 @@ const Subscriptions = React.createClass({
                 />
            <Column
                 columnKey="endDate"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("End date")}
                 cell={ (row) =>
                     <span>

@@ -117,38 +117,38 @@ const Pins = React.createClass({
             >
             <Column
                 columnKey="systemName"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("Part number")}
                 cell={ (p) => <SystemLabel id={p.systemId} name={p.systemName} type={p.systemType} /> }
                 />
             <Column
                 columnKey="subscriptionDescription"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("Subscription")}
                 cell={ (p) => p.subscriptionDescription }
                 />
             <Column
                 columnKey="subscriptionPolicy"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("Policy")}
                 cell={ (p) => humanReadablePolicy(p.subscriptionPolicy) }
                 />
             <Column
                 columnKey="subscriptionEndDate"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("End date")}
                 cell={ (p) => <ToolTip content={moment(p.subscriptionEndDate).fromNow()}
                                 title={moment(p.subscriptionEndDate).format("LL")} /> }
                 />
             <Column
                 columnKey="subscriptionPartNumber"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("Part number")}
                 cell={ (p) => p.subscriptionPartNumber }
                 />
             <Column
                 columnKey="status"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("Status")}
                 cell={ (p) => <PinStatus status={p.status} /> }
                 />
@@ -270,13 +270,13 @@ const AddPinPopUp = React.createClass({
             }>
             <Column
                 columnKey="name"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("System")}
                 cell={ (s) => <SystemLabel id={s.id} name={s.name} type={s.type} /> }
                 />
             <Column
                 columnKey="cpuCount"
-                sortFn={this.rowComparator}
+                comparator={this.rowComparator}
                 header={t("Socket/IFL count")}
                 cell={ (s) => s.cpuCount }
                 />
