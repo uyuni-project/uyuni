@@ -7,7 +7,7 @@ const ToolTip = UtilComponent.ToolTip;
 const CsvLink = UtilComponent.CsvLink;
 const humanReadablePolicy = UtilComponent.humanReadablePolicy;
 const WarningIcon =  require("./subscription-matching-util").WarningIcon;
-const {Table, Column, SearchField, Highlight, SimpleTableDataModel} = require("../components/table");
+const {Table, Column, SearchField, Highlight} = require("../components/table");
 
 const Subscriptions = React.createClass({
   mixins: [StatePersistedMixin],
