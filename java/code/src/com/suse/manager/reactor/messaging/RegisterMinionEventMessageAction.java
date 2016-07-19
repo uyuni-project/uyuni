@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -33,6 +34,7 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
@@ -289,6 +291,14 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         LOG.info("Channel " + c.getName() + " found for OS: " + osName + ", version: "
                 + osVersion + ", arch: " + osArch + " - adding channel");
         server.addChannel(c);
+        SUSEProductSet installedProducts = new SUSEProductSet();
+        installedProducts.setBaseProduct(sp);
+        List<EssentialChannelDto> requiredChannels =
+                DistUpgradeManager.getRequiredChannels(installedProducts, c.getId());
+        for (EssentialChannelDto channel : requiredChannels) {
+            server.addChannel(ChannelFactory.lookupById(channel.getId()));
+            LOG.info("adding required channel: " + channel.getName());
+        }
     }
 
     private void mapHardwareGrains(MinionServer server, ValueMap grains) {
