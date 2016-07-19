@@ -1,16 +1,12 @@
 "use strict";
 
 const React = require("react");
-const {Table, Column, SearchField, Highlight, SimpleTableDataModel} = require("../components/table");
+const {Table, Column, SearchField, Highlight} = require("../components/table");
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const CsvLink = require("./subscription-matching-util").CsvLink;
 
 const Messages = React.createClass({
   mixins: [StatePersistedMixin],
-
-  getInitialState: function() {
-    return {tableModel: new SimpleTableDataModel(this.buildRows(this.props.messages, this.props.systems))};
-  },
 
   sortByMessage: function(aValue, bValue) {
     return aValue.message.toLowerCase().localeCompare(bValue.message.toLowerCase());
@@ -18,13 +14,6 @@ const Messages = React.createClass({
 
   sortByInfo: function(aValue, bValue) {
     return aValue.info.toLowerCase().localeCompare(bValue.info.toLowerCase());
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.subscriptions != nextProps.subscriptions) {
-        this.state.tableModel.mergeData(this.buildRows(nextProps.props.messages, nextProps.props.systems));
-        this.forceUpdate();
-    }
   },
 
   buildRows: function(rawMessages, systems) {
@@ -68,7 +57,7 @@ const Messages = React.createClass({
         <div>
           <p>{t("Please review warning and information messages below.")}</p>
           <Table
-            dataModel={this.state.tableModel}
+            data={this.buildRows(this.props.messages, this.props.systems)}
             identifier={(row) => row.id}
             initialSort="message"
             >
