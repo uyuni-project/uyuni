@@ -277,20 +277,17 @@ function Highlight(props) {
   return <span key="hl">{chunk1}{chunk2}{chunk3}</span>;
 }
 
-
-class Table extends React.Component {
-
-  constructor(props) {
-    super(props);
-    ["onSearch", "sort", "onPageChange", "onItemsPerPageChange", "initialDataModel", "newDataModel"].forEach(method => this[method] = this[method].bind(this));
-
-    this.state = {
-        dataModel: this.initialDataModel(props)
+const Table = React.createClass({
+  getInitialState: function() {
+    return {
+        dataModel: this.initialDataModel(this.props)
     };
-  }
+  },
 
-  initialDataModel(props) {
-    const {data, pageSize, dataModel} = props;
+  initialDataModel: function(props) {
+    const data = props.data;
+    const pageSize = props.pageSize ? props.pageSize : 15;
+    const dataModel = props.dataModel;
     if (dataModel) {
         // found an external dataModel in props
         if (!dataModel.initialized) {
@@ -302,9 +299,9 @@ class Table extends React.Component {
 
     // dataModel is internal, go ahead and create an initial one
     return this.newDataModel(props, data, pageSize);
-  }
+  },
 
-  doInitialSort(dataModel, props) {
+  doInitialSort: function(dataModel, props) {
     if (props.initialSort) {
         let comparator = React.Children.toArray(props.children)
                 .filter((child) => child.type === Column)
@@ -314,36 +311,36 @@ class Table extends React.Component {
             dataModel.sort(props.initialSort, comparator[0], 1);
         }
     }
-  }
+  },
 
-  newDataModel(props, data, pageSize) {
+  newDataModel: function(props, data, pageSize) {
     const newDataModel =  new SimpleTableDataModel(data, pageSize);
     this.doInitialSort(newDataModel, props);
     newDataModel.initialized = true;
     return newDataModel;
-  }
+  },
 
-  onSearch(filter, criteria) {
+  onSearch: function(filter, criteria) {
     this.state.dataModel.filter(filter, criteria);
     this.forceUpdate();
-  }
+  },
 
-  sort(columnKey, comparator, sortDirection) {
+  sort: function(columnKey, comparator, sortDirection) {
     this.state.dataModel.sort(columnKey, comparator, sortDirection);
     this.forceUpdate();
-  }
+  },
 
-  onItemsPerPageChange(pageSize) {
+  onItemsPerPageChange: function(pageSize) {
     this.state.dataModel.changeItemsPerPage(pageSize);
     this.forceUpdate();
-  }
+  },
 
-  onPageChange(page) {
+  onPageChange: function(page) {
     this.state.dataModel.goToPage(page);
     this.forceUpdate();
-  }
+  },
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps: function(nextProps) {
     if (this.props.data != nextProps.data) {
         this.state.dataModel.mergeData(nextProps.data);
         this.forceUpdate();
@@ -357,23 +354,23 @@ class Table extends React.Component {
             dataModel: nextProps.dataModel
         });
     }
-  }
+  },
 
-  componentWillMount() {
+  componentWillMount: function() {
     if (this.props.loadState) {
       if (this.props.loadState()) {
         this.state = this.props.loadState();
       }
     }
-  }
+  },
 
-  componentWillUnmount() {
+  componentWillUnmount: function() {
     if (this.props.saveState) {
       this.props.saveState(this.state);
     }
-  }
+  },
 
-  render() {
+  render: function() {
     let headers = React.Children.toArray(this.props.children)
         .filter((child) => child.type === Column)
         .map((column, index) => {
@@ -450,11 +447,7 @@ class Table extends React.Component {
       </div>
     );
   }
-
-}
-
-Table.defaultProps = { pageSize : 15 };
-
+});
 
 module.exports = {
     Table : Table,
