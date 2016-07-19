@@ -191,9 +191,8 @@ class SimpleTableDataModel {
 
 }
 
-class Column extends React.Component {
-
-  render() {
+const Column = React.createClass({
+  render: function() {
      let content = null;
      if (typeof this.props.cell === "function") {
         content = this.props.cell(this.props.data, this.props.table);
@@ -203,8 +202,8 @@ class Column extends React.Component {
 
      return (<td>{content}</td>)
   }
+});
 
-}
 
 class Header extends React.Component {
 
