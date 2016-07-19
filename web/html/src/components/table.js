@@ -453,6 +453,5 @@ module.exports = {
     Table : Table,
     Column : Column,
     SearchField: SearchField,
-    Highlight: Highlight,
-    SimpleTableDataModel: SimpleTableDataModel
+    Highlight: Highlight
 }
