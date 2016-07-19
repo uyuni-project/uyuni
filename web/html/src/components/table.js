@@ -243,22 +243,15 @@ const Header = React.createClass({
 });
 
 
-
-class Button extends React.Component {
-
-  constructor(props) {
-    super(props);
-    ["trigger"].forEach(method => this[method] = this[method].bind(this));
-  }
-
-  trigger() {
+const Button = React.createClass({
+  trigger: function() {
   	this.props.handler(this.props.data);
-  }
+  },
 
-  render() {
+  render: function() {
      return <button onClick={this.trigger}>{this.props.label}</button>
   }
-}
+});
 
 function Highlight(props) {
   let text = props.text;
