@@ -58,27 +58,20 @@ const SearchPanel = (props) => {
              </div>
 };
 
-class SearchField extends React.Component {
-
-  constructor(props) {
-    super(props);
-    ["onChange"].forEach(method => this[method] = this[method].bind(this));
-  }
-
-  onChange(text) {
+const SearchField = React.createClass({
+  onChange: function(text) {
     this.props.table.onSearch(this.props.filter, text);
-  }
+  },
 
-  render() {
-      return <input className="form-control table-input-search"
-        value={this.props.table.state.dataModel.criteria}
-        placeholder={this.props.placeholder}
-        type="text"
-        onChange={(e) => this.onChange(e.target.value)}
-      />
+  render: function() {
+    return <input className="form-control table-input-search"
+      value={this.props.table.state.dataModel.criteria}
+      placeholder={this.props.placeholder}
+      type="text"
+      onChange={(e) => this.onChange(e.target.value)}
+    />
   }
-
-}
+});
 
 class SimpleTableDataModel {
 
