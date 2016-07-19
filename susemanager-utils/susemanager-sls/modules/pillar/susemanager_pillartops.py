@@ -52,9 +52,9 @@ def ext_pillar(*args, **kwargs):
     )
 
     top_tree = {}
+    opts = copy.deepcopy(__opts__)
     for pillar_root in __opts__['pillar_roots']['base']:
         if os.path.isfile(os.path.join(pillar_root, "top.sls")):
-            opts = copy.deepcopy(__opts__)
             opts['file_roots'] = {"base": [pillar_root]}
             opts['pillar_roots'] = {"base": [pillar_root]}
             opts['ext_pillar'] = []
