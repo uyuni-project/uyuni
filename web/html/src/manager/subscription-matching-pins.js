@@ -1,7 +1,7 @@
 "use strict";
 
 const React = require("react");
-const {Table, Column, SearchField, Highlight, SimpleTableDataModel} = require("../components/table");
+const {Table, Column, SearchField, Highlight} = require("../components/table");
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const PopUp = require("../components/popup").PopUp;
 const UtilComponent =  require("./subscription-matching-util");
@@ -17,20 +17,8 @@ const Pins = React.createClass({
 
   getInitialState: function() {
     return {
-        showPopUp: false,
-        tableModel: new SimpleTableDataModel(this.buildRows(this.props))
+        showPopUp: false
     };
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.pinnedMatches != nextProps.pinnedMatches ||
-        this.props.subscriptions != nextProps.subscriptions ||
-        this.props.systems != nextProps.systems ||
-        this.props.subscriptions != nextProps.subscriptions
-    ) {
-        this.state.tableModel.mergeData(this.buildRows(nextProps));
-        this.forceUpdate();
-    }
   },
 
   rowComparator: function(aRaw, bRaw, columnKey) {
@@ -111,7 +99,7 @@ const Pins = React.createClass({
 
         {this.props.pinnedMatches.length > 0 ?
           <Table key="table"
-            dataModel={this.state.tableModel}
+            data={this.buildRows(this.props)}
             identifier={(row) => row.id}
             initialSort="systemName"
             >
@@ -198,16 +186,8 @@ const AddPinPopUp = React.createClass({
 
   getInitialState:function() {
     return {
-        systemId: null,
-        tableModel: new SimpleTableDataModel(this.buildRows())
-        };
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.subscriptions != nextProps.subscriptions) {
-        this.state.tableModel.mergeData(this.buildRows());
-        this.forceUpdate();
-    }
+      systemId: null
+    };
   },
 
   rowComparator: function(aRaw, bRaw, columnKey, ascending) {
@@ -261,7 +241,7 @@ const AddPinPopUp = React.createClass({
           <p>{t("Step 1/2: select the system to pin from the table below.")}</p>
 
           <Table key="table"
-            dataModel={this.state.tableModel}
+            data={this.buildRows()}
             identifier={(row) => row.id}
             initialSort="name"
             searchPanel={
