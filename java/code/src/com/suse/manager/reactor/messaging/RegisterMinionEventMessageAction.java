@@ -157,10 +157,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setName(minionId);
             server.setDigitalServerId(machineId);
 
-
-            SALT_SERVICE.syncGrains(minionId);
-            SALT_SERVICE.syncModules(minionId);
-
             ValueMap grains = new ValueMap(
                     SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
 
