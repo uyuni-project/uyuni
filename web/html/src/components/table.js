@@ -204,16 +204,14 @@ const Column = React.createClass({
   }
 });
 
+const Header = React.createClass({
+  getInitialState: function() {
+    return {
+        sortDirection: this.props.currentSortDirection
+    };
+  },
 
-class Header extends React.Component {
-
-  constructor(props) {
-    super(props);
-    ["sort"].forEach(method => this[method] = this[method].bind(this));
-    this.state = {sortDirection: this.props.currentSortDirection};
-  }
-
-  sort() {
+  sort: function() {
     var sortDir = this.state.sortDirection;
     if (!sortDir) {
         sortDir = 1;
@@ -222,9 +220,9 @@ class Header extends React.Component {
     }
     this.props.onSort(this.props.columnKey, this.props.comparator, sortDir);
     this.setState({sortDirection: sortDir});
-  }
+  },
 
-  render() {
+  render: function() {
      var thClass = null;
      var thStyle = null;
      if (this.props.width) {
@@ -242,8 +240,8 @@ class Header extends React.Component {
 
      return <th style={ thStyle }>{this.props.children}</th>;
   }
+});
 
-}
 
 
 class Button extends React.Component {
