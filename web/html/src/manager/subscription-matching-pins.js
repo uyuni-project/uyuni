@@ -21,18 +21,15 @@ const Pins = React.createClass({
     };
   },
 
-  rowComparator: function(aRaw, bRaw, columnKey) {
-    const aValue = aRaw[columnKey];
-    const bValue = bRaw[columnKey];
+  sortById: function(aRaw, bRaw) {
+    const aId = aRaw["id"];
+    const bId = bRaw["id"];
+    return aId > bId ? 1 : (aId < bId ? -1 : 0);
+  },
 
-    var result = aValue.localeCompare(bValue);
-    if (result == 0) {
-      const aId = aRaw["id"];
-      const bId = bRaw["id"];
-      result = aId > bId ? 1 : (aId < bId ? -1 : 0);
-    }
-
-    return result;
+  sortByText: function(a, b, columnKey, sortDirection) {
+    var result = a[columnKey].toLowerCase().localeCompare(b[columnKey].toLowerCase());
+    return (result || this.sortById(a, b)) * sortDirection;
   },
 
   buildRows: function(props) {
@@ -101,42 +98,44 @@ const Pins = React.createClass({
           <Table key="table"
             data={this.buildRows(this.props)}
             identifier={(row) => row.id}
-            initialSort="systemName"
+            loadState={this.props.loadState}
+            saveState={this.props.saveState}
+            initialSortColumnKey="systemName"
             >
             <Column
                 columnKey="systemName"
-                comparator={this.rowComparator}
+                comparator={this.sortByText}
                 header={t("Part number")}
                 cell={ (p) => <SystemLabel id={p.systemId} name={p.systemName} type={p.systemType} /> }
                 />
             <Column
                 columnKey="subscriptionDescription"
-                comparator={this.rowComparator}
+                comparator={this.sortByText}
                 header={t("Subscription")}
                 cell={ (p) => p.subscriptionDescription }
                 />
             <Column
                 columnKey="subscriptionPolicy"
-                comparator={this.rowComparator}
+                comparator={this.sortByText}
                 header={t("Policy")}
                 cell={ (p) => humanReadablePolicy(p.subscriptionPolicy) }
                 />
             <Column
                 columnKey="subscriptionEndDate"
-                comparator={this.rowComparator}
+                comparator={this.sortByText}
                 header={t("End date")}
                 cell={ (p) => <ToolTip content={moment(p.subscriptionEndDate).fromNow()}
                                 title={moment(p.subscriptionEndDate).format("LL")} /> }
                 />
             <Column
                 columnKey="subscriptionPartNumber"
-                comparator={this.rowComparator}
+                comparator={this.sortByText}
                 header={t("Part number")}
                 cell={ (p) => p.subscriptionPartNumber }
                 />
             <Column
                 columnKey="status"
-                comparator={this.rowComparator}
+                comparator={this.sortByText}
                 header={t("Status")}
                 cell={ (p) => <PinStatus status={p.status} /> }
                 />
@@ -190,24 +189,20 @@ const AddPinPopUp = React.createClass({
     };
   },
 
-  rowComparator: function(aRaw, bRaw, columnKey, ascending) {
-    const aValue = aRaw[columnKey];
-    const bValue = bRaw[columnKey];
+  sortById: function(aRaw, bRaw) {
+    const aId = aRaw["id"];
+    const bId = bRaw["id"];
+    return aId > bId ? 1 : (aId < bId ? -1 : 0);
+  },
 
-    var result = 0;
-    if (columnKey == "name") {
-      result = aValue.localeCompare(bValue);
-    }
-    if (columnKey == "cpuCount") {
-      result = aValue - bValue;
-    }
+  sortByText: function(a, b, columnKey, sortDirection) {
+    var result = a[columnKey].toLowerCase().localeCompare(b[columnKey].toLowerCase());
+    return (result || this.sortById(a, b)) * sortDirection;
+  },
 
-    if (result == 0) {
-      const aId = aRaw["id"];
-      const bId = bRaw["id"];
-      result = aId - bId;
-    }
-    return result;
+  sortByCpuCount: function(a, b, columnKey, sortDirection) {
+    var result = a[columnKey]- b[columnKey];
+    return (result || this.sortById(a, b)) * sortDirection;
   },
 
   buildRows: function() {
@@ -228,8 +223,11 @@ const AddPinPopUp = React.createClass({
     this.props.onSavePin(this.state.systemId, subscriptionId);
   },
 
-  searchData: function(data, criteria) {
-    return data.filter((row) => row.name.toLowerCase().includes(criteria.toLowerCase()));
+  searchData: function(datum, criteria) {
+    if (criteria) {
+      return datum.name.toLowerCase().includes(criteria.toLowerCase());
+    }
+    return true;
   },
 
   render: function() {
@@ -243,20 +241,22 @@ const AddPinPopUp = React.createClass({
           <Table key="table"
             data={this.buildRows()}
             identifier={(row) => row.id}
-            initialSort="name"
-            searchPanel={
+            loadState={this.props.loadState}
+            saveState={this.props.saveState}
+            initialSortColumnKey="name"
+            searchField={
                 <SearchField filter={this.searchData}
                     placeholder={t("Filter by name")}/>
             }>
             <Column
                 columnKey="name"
-                comparator={this.rowComparator}
+                comparator={this.sortByText}
                 header={t("System")}
                 cell={ (s) => <SystemLabel id={s.id} name={s.name} type={s.type} /> }
                 />
             <Column
                 columnKey="cpuCount"
-                comparator={this.rowComparator}
+                comparator={this.sortByCpuCount}
                 header={t("Socket/IFL count")}
                 cell={ (s) => s.cpuCount }
                 />

@@ -12,38 +12,42 @@ const {Table, Column, SearchField, Highlight} = require("../components/table");
 const Subscriptions = React.createClass({
   mixins: [StatePersistedMixin],
 
-  rowComparator: function(aRaw, bRaw, columnKey) {
-    var result = 0;
-    if (columnKey == "policy") {
-      const aValue = humanReadablePolicy(aRaw[columnKey]);
-      const bValue = humanReadablePolicy(bRaw[columnKey]);
-      result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
-    }
-    else if (columnKey == "quantity") {
-      const aMatched = aRaw["matchedQuantity"];
-      const aTotal = aRaw["totalQuantity"];
-      const bMatched = bRaw["matchedQuantity"];
-      const bTotal = bRaw["totalQuantity"];
-      const aValue =  aMatched / aTotal;
-      const bValue =  bMatched / bTotal;
-      result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
-    }
-    else {
-      const aValue = aRaw[columnKey];
-      const bValue = bRaw[columnKey];
-      result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
-    }
-
-    if (result == 0) {
-      const aId = aRaw["id"];
-      const bId = bRaw["id"];
-      result = aId > bId ? 1 : (aId < bId ? -1 : 0);
-    }
-    return result;
+  sortById: function(aRaw, bRaw) {
+    const aId = aRaw["id"];
+    const bId = bRaw["id"];
+    return aId > bId ? 1 : (aId < bId ? -1 : 0);
   },
 
-  searchData: function(data, criteria) {
-    return data.filter((row) => row.description.toLowerCase().includes(criteria.toLowerCase()));
+  sortByText: function(aRaw, bRaw, columnKey, sortDirection) {
+    var result = aRaw[columnKey].toLowerCase().localeCompare(bRaw[columnKey].toLowerCase());
+    return (result || this.sortById(aRaw, bRaw)) * sortDirection;
+  },
+
+  sortByPolicy: function(aRaw, bRaw, columnKey, sortDirection) {
+    var result = 0;
+    const aValue = humanReadablePolicy(aRaw[columnKey]);
+    const bValue = humanReadablePolicy(bRaw[columnKey]);
+    result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+    return (result || this.sortById(aRaw, bRaw)) * sortDirection;
+  },
+
+  sortByQuantity: function(aRaw, bRaw, columnKey, sortDirection) {
+    var result = 0;
+    const aMatched = aRaw["matchedQuantity"];
+    const aTotal = aRaw["totalQuantity"];
+    const bMatched = bRaw["matchedQuantity"];
+    const bTotal = bRaw["totalQuantity"];
+    const aValue =  aMatched / aTotal;
+    const bValue = bMatched / bTotal;
+    result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
+    return (result || this.sortById(aRaw, bRaw)) * sortDirection;
+  },
+
+  searchData: function(datum, criteria) {
+    if (criteria) {
+      return datum.description.toLowerCase().includes(criteria.toLowerCase());
+    }
+    return true;
   },
 
   buildRows: function(subscriptions) {
@@ -61,39 +65,40 @@ const Subscriptions = React.createClass({
             cssClassFunction={(row) => moment(row.endDate).isBefore(moment()) ? "text-muted" : null }
             loadState={this.props.loadState}
             saveState={this.props.saveState}
-            initialSort="partNumber"
-            searchPanel={
+            initialSortColumnKey="partNumber"
+            searchField={
                 <SearchField filter={this.searchData}
-                    placeholder={t("Filter by description")}/>
+                    criteria={""}
+                    placeholder={t("Filter by description")} />
             }>
             <Column
                 columnKey="partNumber"
-                comparator={this.rowComparator}
+                comparator={this.sortByText}
                 header={t("Part number")}
                 cell={ (row) => row.partNumber }
                 />
             <Column
                 columnKey="description"
-                comparator={this.rowComparator}
+                comparator={this.sortByText}
                 header={t("Description")}
                 cell={ (row) => row.description }
                 />
            <Column
                 columnKey="policy"
-                comparator={this.rowComparator}
+                comparator={this.sortByPolicy}
                 header={t("Policy")}
                 cell={ (row) => humanReadablePolicy(row.policy) }
                 />
            <Column
                 columnKey="quantity"
-                comparator={this.rowComparator}
+                comparator={this.sortByQuantity}
                 header={t("Matched/Total")}
                 cell={ (row) =>
                     <QuantityCell matched={row.matchedQuantity} total={row.totalQuantity} /> }
                 />
            <Column
                 columnKey="startDate"
-                comparator={this.rowComparator}
+                comparator={this.sortByText}
                 header={t("Start date")}
                 cell={ (row) =>
                     <ToolTip content={moment(row.startDate).fromNow()}
@@ -101,7 +106,7 @@ const Subscriptions = React.createClass({
                 />
            <Column
                 columnKey="endDate"
-                comparator={this.rowComparator}
+                comparator={this.sortByText}
                 header={t("End date")}
                 cell={ (row) =>
                     <span>
