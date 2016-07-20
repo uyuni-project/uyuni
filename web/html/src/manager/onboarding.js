@@ -88,7 +88,7 @@ class Onboarding extends React.Component {
 
   constructor(props) {
     super();
-    ["sortByName", "searchData", "sortByFingerprint", "sortByState", "rowKey", "reloadKeys"].forEach(method => this[method] = this[method].bind(this));
+    ["sortById", "searchData", "sortByText", "rowKey", "reloadKeys"].forEach(method => this[method] = this[method].bind(this));
     this.state = {
         keys: [],
         isOrgAdmin: false
@@ -109,21 +109,27 @@ class Onboarding extends React.Component {
     return rowData.id;
   }
 
-  sortByName(a, b) {
-    return a.id.toLowerCase().localeCompare(b.id.toLowerCase());
+  sortById(aRaw, bRaw) {
+    const aId = this.rowKey(aRaw);
+    const bId = this.rowKey(bRaw);
+    return aId > bId ? 1 : (aId < bId ? -1 : 0);
   }
 
-  sortByFingerprint(a, b) {
-     return a.localeCompare(b);
+  sortByText(aRaw, bRaw, columnKey, sortDirection) {
+    var result = aRaw[columnKey].toLowerCase().localeCompare(bRaw[columnKey].toLowerCase());
+    return (result || this.sortById(aRaw, bRaw)) * sortDirection;
   }
 
-  sortByState(a, b) {
-    return a.state.localeCompare(b.state);
+  searchData(datum, criteria) {
+    if (criteria) {
+      return datum.id.toLocaleLowerCase().includes(criteria.toLocaleLowerCase()) ||
+        datum.fingerprint.toLocaleLowerCase().includes(criteria.toLocaleLowerCase());
+    }
+    return true;
   }
 
-  searchData(data, criteria) {
-      return data.filter((e) => e.id.toLocaleLowerCase().includes(criteria.toLocaleLowerCase()) ||
-        e.fingerprint.toLocaleLowerCase().includes(criteria.toLocaleLowerCase()));
+  isFiltered(criteria) {
+    return criteria && criteria.length > 0;
   }
 
   render() {
@@ -137,43 +143,43 @@ class Onboarding extends React.Component {
             <Table
                 data={this.state.keys}
                 identifier={this.rowKey}
-                pageSize={15}
-                searchPanel={
-                    <SearchField filter={this.searchData}/>
+                initialSortColumnKey="id"
+                searchField={
+                    <SearchField filter={this.searchData} criteria={""} />
                 }>
               <Column
                 columnKey="id"
                 width="30%"
-                comparator={this.sortByName}
+                comparator={this.sortByText}
                 header={t('Name')}
-                cell={ (row, table) => {
+                cell={ (row, criteria) => {
                       if(row.state == "minions") {
                          return <a href={ "/rhn/manager/minions/" + row.id }>
-                             <Highlight enabled={table.state.dataModel.isFiltered()}
+                             <Highlight enabled={this.isFiltered(criteria)}
                                text={row.id}
-                               highlight={table.state.dataModel.criteria}/>
+                               highlight={criteria}/>
                              </a>;
                       } else {
-                         return <Highlight enabled={table.state.dataModel.isFiltered()}
+                         return <Highlight enabled={this.isFiltered(criteria)}
                              text={row.id}
-                             highlight={table.state.dataModel.criteria}/>;
+                             highlight={criteria}/>;
                       }
                      }}
                 />
               <Column
                 columnKey="fingerprint"
                 width="50%"
-                comparator={this.sortByFingerprint}
+                comparator={this.sortByText}
                 header={t('Fingerprint')}
-                cell={ (row, table) =>
-                    <Highlight enabled={table.state.dataModel.isFiltered()}
+                cell={ (row, criteria) =>
+                    <Highlight enabled={this.isFiltered(criteria)}
                          text={row.fingerprint}
-                         highlight={table.state.dataModel.criteria}/> }
+                         highlight={criteria}/> }
                 />
               <Column
                 columnKey="state"
                 width="10%"
-                comparator={this.sortByState}
+                comparator={this.sortByText}
                 header={t('State')}
                 cell={ (row) => labelFor(row.state) }
                 />
