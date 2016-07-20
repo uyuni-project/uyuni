@@ -30,16 +30,20 @@ const UnmatchedProducts = React.createClass({
        });
   },
 
-  rowKey: function(rowData) {
-    return rowData.id;
+  sortById: function(aRaw, bRaw) {
+    const aId = aRaw["id"];
+    const bId = bRaw["id"];
+    return aId > bId ? 1 : (aId < bId ? -1 : 0);
   },
 
-  sortByName: function(a, b) {
-    return a.productName.toLowerCase().localeCompare(b.productName.toLowerCase());
+  sortByText: function(a, b, columnKey, sortDirection) {
+    var result = a[columnKey].toLowerCase().localeCompare(b[columnKey].toLowerCase());
+    return (result || this.sortById(a, b)) * sortDirection;
   },
 
-  sortByCpuCount: function(a, b) {
-    return a.systemCount - b.systemCount;
+  sortBySystemCount: function(a, b, columnKey, sortDirection) {
+    var result = a[columnKey]- b[columnKey];
+    return (result || this.sortById(a, b)) * sortDirection;
   },
 
   showPopUp: function(id) {
@@ -57,20 +61,20 @@ const UnmatchedProducts = React.createClass({
         <div>
           <Table
             data={this.buildData(this.props)}
-            identifier={this.rowKey}
-            initialSort="name"
+            identifier={(row) => row.id}
             loadState={this.props.loadState}
             saveState={this.props.saveState}
+            initialSortColumnKey="productName"
             >
             <Column
-                columnKey="name"
-                comparator={this.sortByName}
+                columnKey="productName"
+                comparator={this.sortByText}
                 header={t("Product name")}
                 cell={ (row) => row.productName }
                 />
             <Column
-                columnKey="cpuCount"
-                comparator={this.sortByCpuCount}
+                columnKey="systemCount"
+                comparator={this.sortBySystemCount}
                 header={t("Unmatched system count")}
                 cell={ (row) => row.systemCount }
                 />
@@ -127,29 +131,39 @@ const UnmatchedSystemPopUp = React.createClass({
     });
   },
 
-  sortByName: function(a, b) {
-    return a.systemName.toLowerCase().localeCompare(b.systemName.toLowerCase());
+  sortById: function(aRaw, bRaw) {
+    const aId = aRaw["id"];
+    const bId = bRaw["id"];
+    return aId > bId ? 1 : (aId < bId ? -1 : 0);
   },
 
-  searchData: function(data, criteria) {
-    return data.filter((row) => row.systemName.toLowerCase().indexOf(criteria.toLowerCase()) > -1);
+  sortByText: function(a, b, columnKey, sortDirection) {
+    var result = a[columnKey].toLowerCase().localeCompare(b[columnKey].toLowerCase());
+    return (result || this.sortById(a, b)) * sortDirection;
   },
 
-  rowKey: function(rowData) {
-    return rowData.id;
+  searchData: function(datum, criteria) {
+    if (criteria) {
+      return datum.systemName.toLowerCase().includes(criteria.toLowerCase());
+    }
+    return true;
   },
 
   render: function() {
     const popUpContent = <Table
         data={this.buildTableData(this.props)}
-        identifier={this.rowKey}
-        initialSort="name"
-        searchPanel={
-            <SearchField filter={this.searchData} placeholder="Filter by name"/>
+        identifier={(row) => row.id}
+        loadState={this.props.loadState}
+        saveState={this.props.saveState}
+        initialSortColumnKey="systemName"
+        searchField={
+            <SearchField filter={this.searchData}
+              criteria={""}
+              placeholder={t("Filter by name")} />
         }>
         <Column
-            columnKey="name"
-            comparator={this.sortByName}
+            columnKey="systemName"
+            comparator={this.sortByText}
             header={t("System name")}
             cell={ (row) => <SystemLabel type={row.type} name={row.systemName} /> } />
       </Table>;

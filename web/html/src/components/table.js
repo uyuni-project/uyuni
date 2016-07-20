@@ -1,6 +1,7 @@
 "use strict";
 
 const React = require("react");
+const StatePersistedMixin = require("./util").StatePersistedMixin;
 
 const PaginationBlock = (props) => {
   const currentPage = props.currentPage;
@@ -43,159 +44,33 @@ const ItemsPerPageSelector = (props) =>
 ;
 
 const SearchPanel = (props) => {
-    let itemCounter = null;
-    let children = null;
-    if (props.table) {
-        const dataModel = props.table.state.dataModel;
-        itemCounter = <span>{t("Items {0} - {1} of {2}", dataModel.getFirstPageItemIndex() + 1,
-            dataModel.getLastPageItemIndex(), dataModel.getSize())}</span>;
+    const itemCounter = <span>{t("Items {0} - {1} of {2}", props.fromItem,
+            props.toItem, props.itemCount)}</span>;
 
-        children = React.Children.map(props.children,
-            (child) => React.cloneElement(child, { table: props.table }));
-    }
+    const children = React.Children.map(props.children,
+            (child) => React.cloneElement(child, { criteria: props.criteria, onSearch: props.onSearch }));
+
     return <div className="spacewalk-list-filter table-search-wrapper">
                 {children} {itemCounter}
              </div>
 };
 
 const SearchField = React.createClass({
-  onChange: function(text) {
-    this.props.table.onSearch(this.props.filter, text);
-  },
-
   render: function() {
     return <input className="form-control table-input-search"
-      value={this.props.table.state.dataModel.criteria}
+      value={this.props.criteria}
       placeholder={this.props.placeholder}
       type="text"
-      onChange={(e) => this.onChange(e.target.value)}
+      onChange={(e) => this.props.onSearch(e.target.value)}
     />
   }
 });
-
-class SimpleTableDataModel {
-
-  constructor(data, itemsPerPage) {
-    this.data = data;
-    this.itemsPerPage = itemsPerPage ? itemsPerPage : 15;
-    this.currentPage = 1;
-    this.currentData = data;
-    this.filtered = false;
-    this.criteria = null;
-    this.comparator = null;
-    this.sortDirection = null;
-    this.sortColumnKey = null;
-    this.initialized = false;
-    ["getCriteria", "filter", "sort", "goToPage", "getCurrentPageData", "getLastPage", "getFirstPageItemIndex",
-    "getLastPageItemIndex", "getSize", "changeItemsPerPage", "getItemsPerPage", "getCurrentPage", "setItemsPerPage",
-    "mergeData", "isFiltered"]
-        .forEach(method => this[method] = this[method].bind(this));
-  }
-
-  getCriteria() {
-    return this.criteria;
-  }
-
-  filter(filterFn, criteria) {
-    if (!criteria) {
-      this.currentData = this.data;
-      this.filterFn = null;
-      this.criteria = null;
-    } else {
-      this.currentData = filterFn(this.data, criteria);
-      this.filterFn = filterFn;
-      this.criteria = criteria;
-      this.currentPage = 1;
-    }
-  }
-
-  sort(columnKey, comparator, sortDirection) {
-    this.currentData = this.currentData.sort((a, b) => sortDirection * comparator(a, b, columnKey));
-    this.comparator = comparator;
-    this.sortDirection = sortDirection;
-    this.sortColumnKey = columnKey;
-  }
-
-  goToPage(page) {
-    if (page < 1) {
-        this.currentPage = 1;
-        return;
-    }
-    if (page > this.lastPage) {
-        this.currentPage = this.lastPage;
-        return;
-    }
-    this.currentPage = page;
-  }
-
-  getCurrentPageData() {
-     return this.currentData.slice(this.getFirstPageItemIndex(), this.getLastPageItemIndex());
-  }
-
-  getLastPage() {
-      const lastPage = Math.ceil(this.currentData.length / this.itemsPerPage);
-      if (lastPage == 0) {
-        return 1;
-      }
-      return lastPage;
-  }
-
-  getFirstPageItemIndex() {
-    return (this.currentPage - 1) * this.itemsPerPage;
-  }
-
-  getLastPageItemIndex() {
-    return this.getFirstPageItemIndex() + this.itemsPerPage > this.currentData.length ?
-        this.currentData.length : this.getFirstPageItemIndex() + this.itemsPerPage;
-  }
-
-  getSize() {
-    return this.currentData.length;
-  }
-
-  changeItemsPerPage(newPageSize) {
-    this.goToPage(1);
-    this.itemsPerPage = newPageSize;
-  }
-
-  setItemsPerPage(newPageSize) {
-      this.itemsPerPage = newPageSize;
-  }
-
-  getItemsPerPage() {
-    return this.itemsPerPage;
-  }
-
-  getCurrentPage() {
-    return this.currentPage;
-  }
-
-  isFiltered() {
-    return this.filterFn ? true : false;
-  }
-
-  mergeData(dataToMerge) {
-    this.data = dataToMerge;
-    if (this.filterFn) {
-        this.currentData = this.filterFn(this.data, this.criteria);
-    } else {
-        this.currentData = dataToMerge;
-    }
-    if (this.comparator && this.sortDirection && this.sortColumnKey) {
-        this.sort(this.sortColumnKey, this.comparator, this.sortDirection);
-    }
-    if (this.getFirstPageItemIndex() > this.currentData.length) {
-        this.goToPage(1);
-    }
-  }
-
-}
 
 const Column = React.createClass({
   render: function() {
      let content = null;
      if (typeof this.props.cell === "function") {
-        content = this.props.cell(this.props.data, this.props.table);
+        content = this.props.cell(this.props.data, this.props.criteria);
      } else {
         content = this.props.cell;
      }
@@ -205,36 +80,24 @@ const Column = React.createClass({
 });
 
 const Header = React.createClass({
-  getInitialState: function() {
-    return {
-        sortDirection: this.props.currentSortDirection
-    };
-  },
-
-  sort: function() {
-    var sortDir = this.state.sortDirection;
-    if (!sortDir) {
-        sortDir = 1;
-    } else {
-        sortDir = -sortDir;
-    }
-    this.props.onSort(this.props.columnKey, this.props.comparator, sortDir);
-    this.setState({sortDirection: sortDir});
-  },
-
   render: function() {
-     var thClass = null;
-     var thStyle = null;
-     if (this.props.width) {
-        thStyle = { width: this.props.width };
-     }
+     const thStyle = this.props.width ?
+       { width: this.props.width } : null;
 
-     if (this.props.comparator && this.props.columnKey) {
-        if (this.props.currentSortKey == this.props.columnKey) {
-            thClass = !this.state.sortDirection ? "" : (this.state.sortDirection > 0 ? "ascSort" : "descSort")
-        }
+     if (this.props.comparator) {
+        const thClass = this.props.sortDirection == 0 ?
+          "" :
+          (this.props.sortDirection > 0 ? "ascSort" : "descSort");
+
+        const newDirection = this.props.sortDirection == 0 ?
+          1 :
+          this.props.sortDirection * -1;
+
         return (<th style={ thStyle } className={ thClass }>
-            <a className="orderBy" onClick={this.sort}>{this.props.children}</a>
+            <a className="orderBy"
+              onClick={() => this.props.onSortChange(this.props.columnKey, newDirection)}>
+              {this.props.children}
+            </a>
         </th>);
      }
 
@@ -278,109 +141,95 @@ function Highlight(props) {
 }
 
 const Table = React.createClass({
+  mixins: [StatePersistedMixin],
+
   getInitialState: function() {
     return {
-        dataModel: this.initialDataModel(this.props)
+      currentPage: 1,
+      itemsPerPage: this.props.initalItemsPerPage || 15,
+      criteria: null,
+      sortColumnKey: this.props.initialSortColumnKey || null,
+      sortDirection: 1
     };
   },
 
-  initialDataModel: function(props) {
-    const data = props.data;
-    const pageSize = props.pageSize ? props.pageSize : 15;
-    const dataModel = props.dataModel;
-    if (dataModel) {
-        // found an external dataModel in props
-        if (!dataModel.initialized) {
-            this.doInitialSort(dataModel, props);
-            dataModel.initialized = true;
-        }
-        return dataModel;
+  componentWillReceiveProps: function(nextProps) {
+    this.onPageCountChange(nextProps.data, this.state.criteria, this.state.itemsPerPage);
+  },
+
+  getLastPage: function(data, criteria, itemsPerPage) {
+    const rowCount = data.filter(this.getFilter(criteria)).length;
+
+    const lastPage = Math.ceil(rowCount / itemsPerPage);
+    return lastPage > 0 ? lastPage : 1;
+  },
+
+  getFilter: function(criteria) {
+    const searchField = this.props.searchField;
+    if (searchField) {
+      const filter = searchField.props.filter;
+      if (filter) {
+        return ((datum) => filter(datum, criteria));
+      }
     }
-
-    // dataModel is internal, go ahead and create an initial one
-    return this.newDataModel(props, data, pageSize);
+    return (datum) => true;
   },
 
-  doInitialSort: function(dataModel, props) {
-    if (props.initialSort) {
-        let comparator = React.Children.toArray(props.children)
-                .filter((child) => child.type === Column)
-                .filter((column) => column.props.columnKey == props.initialSort)
-                .map((column) => column.props.comparator);
-        if (comparator && comparator.length > 0 && comparator[0]) {
-            dataModel.sort(props.initialSort, comparator[0], 1);
-        }
+  getProcessedData: function() {
+    const comparators = React.Children.toArray(this.props.children)
+      .filter((child) => child.type === Column)
+      .filter((column) => column.props.columnKey == this.state.sortColumnKey)
+      .map((column) => column.props.comparator);
+
+    const comparator = comparators.length > 0 ?
+      comparators[0] : ((a, b) => 0);
+
+    return this.props.data
+        .filter(this.getFilter(this.state.criteria))
+        .sort((a, b) => comparator(a, b, this.state.sortColumnKey, this.state.sortDirection));
+  },
+
+  onSearch: function(criteria) {
+    this.setState({criteria: criteria});
+    this.onPageCountChange(this.props.data, criteria, this.state.itemsPerPage);
+  },
+
+  onItemsPerPageChange: function(itemsPerPage) {
+    this.setState({itemsPerPage: itemsPerPage});
+    this.onPageCountChange(this.props.data, this.state.criteria, itemsPerPage);
+  },
+
+  onPageCountChange: function(data, criteria, itemsPerPage) {
+    const lastPage = this.getLastPage(data, criteria, itemsPerPage);
+    if (this.state.currentPage > lastPage) {
+      this.setState({currentPage: lastPage});
     }
-  },
-
-  newDataModel: function(props, data, pageSize) {
-    const newDataModel =  new SimpleTableDataModel(data, pageSize);
-    this.doInitialSort(newDataModel, props);
-    newDataModel.initialized = true;
-    return newDataModel;
-  },
-
-  onSearch: function(filter, criteria) {
-    this.state.dataModel.filter(filter, criteria);
-    this.forceUpdate();
-  },
-
-  sort: function(columnKey, comparator, sortDirection) {
-    this.state.dataModel.sort(columnKey, comparator, sortDirection);
-    this.forceUpdate();
-  },
-
-  onItemsPerPageChange: function(pageSize) {
-    this.state.dataModel.changeItemsPerPage(pageSize);
-    this.forceUpdate();
   },
 
   onPageChange: function(page) {
-    this.state.dataModel.goToPage(page);
-    this.forceUpdate();
+    this.setState({currentPage: page});
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    if (this.props.data != nextProps.data) {
-        this.state.dataModel.mergeData(nextProps.data);
-        this.forceUpdate();
-    }
-    else if (this.props.dataModel != nextProps.dataModel) {
-        if (!nextProps.dataModel.initialized) {
-            this.doInitialSort(nextProps.dataModel, nextProps);
-            nextProps.dataModel.initialized = true;
-        }
-        this.setState({
-            dataModel: nextProps.dataModel
-        });
-    }
-  },
-
-  componentWillMount: function() {
-    if (this.props.loadState) {
-      if (this.props.loadState()) {
-        this.state = this.props.loadState();
-      }
-    }
-  },
-
-  componentWillUnmount: function() {
-    if (this.props.saveState) {
-      this.props.saveState(this.state);
-    }
+  onSortChange: function(sortColumnKey, sortDirection) {
+    this.setState({
+      sortColumnKey: sortColumnKey,
+      sortDirection: sortDirection
+    });
   },
 
   render: function() {
-    let headers = React.Children.toArray(this.props.children)
+    const headers = React.Children.toArray(this.props.children)
         .filter((child) => child.type === Column)
         .map((column, index) => {
             if (column.props.header) {
+                const sortDirection = column.props.columnKey == this.state.sortColumnKey ?
+                  this.state.sortDirection :
+                  0;
                 return <Header
                     key={index}
                     columnKey={column.props.columnKey}
-                    currentSortKey={this.state.dataModel.sortColumnKey}
-                    currentSortDirection={this.state.dataModel.sortDirection}
-                    onSort={this.sort}
+                    sortDirection={sortDirection}
+                    onSortChange={this.onSortChange}
                     width={column.props.width}
                     comparator={column.props.comparator}>
                         {column.props.header}
@@ -390,32 +239,41 @@ const Table = React.createClass({
             }
         });
 
-  	let rows = this.state.dataModel.getCurrentPageData().map((element, index) => {
+    const rows = this.getProcessedData().map((datum, index) => {
         let cells = React.Children.toArray(this.props.children)
             .filter((child) => child.type === Column)
-            .map((column) => React.cloneElement(column, {data: element, table: this})
+            .map((column) => React.cloneElement(column, {data: datum, criteria: this.state.criteria})
         );
 
-        let rowClass = this.props.cssClassFunction ? this.props.cssClassFunction(element, index) : "";
+        let rowClass = this.props.cssClassFunction ? this.props.cssClassFunction(datum, index) : "";
         let evenOddClass = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
-        return <tr className={rowClass + " " + evenOddClass} key={this.props.identifier(element)} >{cells}</tr>;
+        return <tr className={rowClass + " " + evenOddClass} key={this.props.identifier(datum)} >{cells}</tr>;
     });
 
-    let searchPanel = this.props.searchPanel ?
-        <SearchPanel table={this}>
-            {this.props.searchPanel}
-        </SearchPanel>
-        : <SearchPanel table={this}/>;
+    const itemsPerPage = this.state.itemsPerPage;
+    const currentPage = this.state.currentPage;
+    const firstItemIndex = (currentPage - 1) * itemsPerPage;
+
+    const itemCount = rows.length;
+    const fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
+    const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
 
     return (
       <div className="spacewalk-list">
         <div className="panel panel-default">
           <div className="panel-heading">
             <div className="spacewalk-list-head-addons">
-              {searchPanel}
+            <SearchPanel
+              fromItem={fromItem}
+              toItem={toItem}
+              itemCount={itemCount}
+              criteria={this.state.criteria}
+              onSearch={this.onSearch}
+            >{this.props.searchField}
+            </SearchPanel>
               <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
                 <ItemsPerPageSelector key="itemsPerPageSelector"
-                  currentValue={this.state.dataModel.getItemsPerPage()}
+                  currentValue={this.state.itemsPerPage}
                   onChange={this.onItemsPerPageChange}
                 /> {t("items per page")}
               </div>
@@ -428,7 +286,7 @@ const Table = React.createClass({
                       <tr>{headers}</tr>
                    </thead>
                    <tbody>
-                      {rows}
+                      {rows.slice(firstItemIndex, firstItemIndex + itemsPerPage)}
                    </tbody>
                 </table>
             </div>
@@ -437,8 +295,8 @@ const Table = React.createClass({
         <div className="panel-footer">
             <div className="spacewalk-list-bottom-addons">
               <PaginationBlock key="paginationBlock"
-                currentPage={this.state.dataModel.getCurrentPage()}
-                lastPage={this.state.dataModel.getLastPage()}
+                currentPage={this.state.currentPage}
+                lastPage={this.getLastPage(this.props.data, this.state.criteria, this.state.itemsPerPage)}
                 onPageChange={this.onPageChange}
               />
             </div>

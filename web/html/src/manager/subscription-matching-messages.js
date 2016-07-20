@@ -8,12 +8,15 @@ const CsvLink = require("./subscription-matching-util").CsvLink;
 const Messages = React.createClass({
   mixins: [StatePersistedMixin],
 
-  sortByMessage: function(aValue, bValue) {
-    return aValue.message.toLowerCase().localeCompare(bValue.message.toLowerCase());
+  sortById: function(aRaw, bRaw) {
+    const aId = aRaw["id"];
+    const bId = bRaw["id"];
+    return aId > bId ? 1 : (aId < bId ? -1 : 0);
   },
 
-  sortByInfo: function(aValue, bValue) {
-    return aValue.info.toLowerCase().localeCompare(bValue.info.toLowerCase());
+  sortByText: function(a, b, columnKey, sortDirection) {
+    var result = a[columnKey].toLowerCase().localeCompare(b[columnKey].toLowerCase());
+    return (result || this.sortById(a, b)) * sortDirection;
   },
 
   buildRows: function(rawMessages, systems) {
@@ -59,17 +62,19 @@ const Messages = React.createClass({
           <Table
             data={this.buildRows(this.props.messages, this.props.systems)}
             identifier={(row) => row.id}
-            initialSort="message"
+            loadState={this.props.loadState}
+            saveState={this.props.saveState}
+            initialSortColumnKey="message"
             >
             <Column
                 columnKey="message"
-                comparator={this.sortByMessage}
+                comparator={this.sortByText}
                 header={t("Message")}
                 cell={ (row) => row.message }
                 />
             <Column
                 columnKey="info"
-                comparator={this.sortByInfo}
+                comparator={this.sortByText}
                 header={t("Additional information")}
                 cell={ (row) => row.info }
                 />
