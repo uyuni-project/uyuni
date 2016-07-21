@@ -88,15 +88,15 @@ var StateDetail = React.createClass({
         var buttons = [];
         if (this.props.sls.action == "edit") {
             buttons.push(
-                <Button id="save-btn" className="btn-success" icon="fa-floppy-o" text={t("Update")} handler={this.handleUpdate}/>
+              <Button key="save-btn-update" id="save-btn" className="btn-success" icon="fa-floppy-o" text={t("Update")} handler={this.handleUpdate}/>
             );
         } else {
             buttons.push(
-                <Button id="save-btn" className="btn-success" icon="fa-floppy-o" text={t("Create State")} handler={this.handleCreate}/>
+                <Button key="save-btn-create" id="save-btn" className="btn-success" icon="fa-floppy-o" text={t("Create State")} handler={this.handleCreate}/>
             );
         }
         buttons.push(
-            <LinkButton id="cancel-btn" className="btn-default form-horizontal pull-right" text={t("Cancel")} href="/rhn/manager/state_catalog"/>
+            <LinkButton key="cancel-btn" id="cancel-btn" className="btn-default form-horizontal pull-right" text={t("Cancel")} href="/rhn/manager/state_catalog"/>
         );
 
         var deleteButton = null;

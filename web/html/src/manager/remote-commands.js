@@ -206,7 +206,7 @@ class RemoteCommand extends React.Component {
       const id = kv[0];
       const value = kv[1];
       elements.push(
-        <MinionResultView id={id} result={value} started={this.state.started} />
+        <MinionResultView key={id} id={id} result={value} started={this.state.started} />
       );
     }
     return <div>{elements}</div>;
