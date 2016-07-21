@@ -49,6 +49,7 @@ import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 
+import com.suse.utils.Opt;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
@@ -60,6 +61,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * Event handler to create system records for salt minions.
@@ -291,64 +295,59 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 String osName = pi.getName().toLowerCase();
                 String osVersion = pi.getVersion();
                 String osArch = pi.getArch();
-                Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
+                Optional<SUSEProduct> suseProduct = ofNullable(SUSEProductFactory
                         .findSUSEProduct(osName, osVersion, null, osArch, false));
                 if (!suseProduct.isPresent()) {
-                    LOG.warn("No product match found for: " + osName + " " + osVersion + " "
-                            + osArch);
+                    LOG.warn("No product match found for: " + osName + " " + osVersion +
+                            " " + osArch);
                 }
 
-                suseProduct.ifPresent(sp -> {
-                    lookupBaseAndRequiredChannels(server, osName, osVersion, osArch, sp);
+                Opt.stream(suseProduct).flatMap(sp ->
+                        lookupBaseAndRequiredChannels(osName, osVersion, osArch, sp)
+                ).forEach(reqChan -> {
+                    LOG.info("Adding required channel: " + reqChan.getName());
+                    server.addChannel(reqChan);
                 });
             });
         });
     }
 
-    private void lookupBaseAndRequiredChannels(MinionServer server, String osName,
+    private Stream<Channel> lookupBaseAndRequiredChannels(String osName,
             String osVersion, String osArch, SUSEProduct sp) {
         Optional<EssentialChannelDto> productBaseChannelDto =
-                Optional.ofNullable(DistUpgradeManager.getProductBaseChannelDto(sp.getId(),
+                ofNullable(DistUpgradeManager.getProductBaseChannelDto(sp.getId(),
                         ChannelFactory.lookupArchByName(osArch)));
-        if (!productBaseChannelDto.isPresent()) {
-            LOG.info("Product Base channel not found - refresh SCC sync?");
-        }
 
-        productBaseChannelDto.ifPresent(pbcd -> {
-            Optional<Channel> channel =
-                    Optional.ofNullable(ChannelFactory.lookupById(pbcd.getId()));
-            if (!channel.isPresent()) {
-                LOG.error("Can't retrieve channel id from database");
-            }
-
-            channel.ifPresent(c -> {
-                LOG.info("Base channel " + c.getName() + " found for OS: " + osName
-                        + ", version: " + osVersion + ", arch: " + osArch
-                        + " - adding channel");
-                server.addChannel(c);
+        return productBaseChannelDto.map(base ->
+            ofNullable(ChannelFactory.lookupById(base.getId())).map(c -> {
+                LOG.info("Base channel " + c.getName() + " found for OS: " + osName +
+                        ", version: " + osVersion + ", arch: " + osArch);
                 SUSEProductSet installedProducts = new SUSEProductSet();
                 installedProducts.setBaseProduct(sp);
-                List<EssentialChannelDto> requiredChannels = DistUpgradeManager
-                        .getRequiredChannels(installedProducts, c.getId());
-                addRequiredChannels(server, requiredChannels);
-            });
+                Stream<Channel> requiredChannels = DistUpgradeManager
+                    .getRequiredChannels(installedProducts, c.getId())
+                    .stream()
+                    .flatMap(reqChan ->
+                        ofNullable(ChannelFactory.lookupById(reqChan.getId()))
+                            .map(Stream::of)
+                            .orElseGet(() -> {
+                                LOG.error("Can't retrieve required channel id " +
+                                        "from database");
+                                return Stream.empty();
+                            })
+                    );
+                return Stream.concat(
+                    Stream.of(c),
+                    requiredChannels
+                );
+            }).orElseGet(() -> {
+                LOG.error("Can't retrieve channel id from database");
+                return Stream.empty();
+            })
+        ).orElseGet(() -> {
+            LOG.info("Product Base channel not found - refresh SCC sync?");
+            return Stream.empty();
         });
-    }
-
-    private void addRequiredChannels(MinionServer server,
-            List<EssentialChannelDto> requiredChannels) {
-        for (EssentialChannelDto reqChannel : requiredChannels) {
-            Optional<Channel> chan =
-                    Optional.ofNullable(ChannelFactory.lookupById(reqChannel.getId()));
-            if (!chan.isPresent()) {
-                LOG.error("Can't retrieve required channel id from database");
-            }
-
-            chan.ifPresent(c -> {
-                server.addChannel(c);
-                LOG.info("Adding required channel: " + c.getName());
-            });
-        }
     }
 
     private void mapHardwareGrains(MinionServer server, ValueMap grains) {
