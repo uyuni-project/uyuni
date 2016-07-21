@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require("react");
+const ReactDOM = require("react-dom");
 const {Table, Column, SearchField} = require("../components/table");
 var PanelComponent = require("../components/panel");
 var Messages = require("../components/messages").Messages;
@@ -75,7 +76,7 @@ var StateCatalog = React.createClass({
 
 });
 
-React.render(
+ReactDOM.render(
   <StateCatalog flashMessages={flashMessage()}/>,
   document.getElementById('state-catalog')
 );

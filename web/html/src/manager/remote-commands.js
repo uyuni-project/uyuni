@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require("react");
+const ReactDOM = require("react-dom");
 const Buttons = require("../components/buttons");
 const Network = require("../utils/network");
 const AsyncButton = Buttons.AsyncButton;
@@ -235,7 +236,7 @@ function errorMessageByStatus(status) {
   }
 }
 
-React.render(
+ReactDOM.render(
   <RemoteCommand />,
   document.getElementById('remote-commands')
 );
