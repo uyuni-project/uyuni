@@ -72,54 +72,55 @@ const Subscriptions = React.createClass({
                     placeholder={t("Filter by description")} />
             }>
             <Column
-                columnKey="partNumber"
-                comparator={this.sortByText}
-                header={t("Part number")}
-                cell={ (row) => row.partNumber }
-                />
+              columnKey="partNumber"
+              comparator={this.sortByText}
+              header={t("Part number")}
+              cell={ (row) => row.partNumber }
+            />
             <Column
-                columnKey="description"
-                comparator={this.sortByText}
-                header={t("Description")}
-                cell={ (row) => row.description }
-                />
-           <Column
-                columnKey="policy"
-                comparator={this.sortByPolicy}
-                header={t("Policy")}
-                cell={ (row) => humanReadablePolicy(row.policy) }
-                />
-           <Column
-                columnKey="quantity"
-                comparator={this.sortByQuantity}
-                header={t("Matched/Total")}
-                cell={ (row) =>
-                    <QuantityCell matched={row.matchedQuantity} total={row.totalQuantity} /> }
-                />
-           <Column
-                columnKey="startDate"
-                comparator={this.sortByText}
-                header={t("Start date")}
-                cell={ (row) =>
-                    <ToolTip content={moment(row.startDate).fromNow()}
-                                title={moment(row.startDate).format("LL")} />}
-                />
-           <Column
-                columnKey="endDate"
-                comparator={this.sortByText}
-                header={t("End date")}
-                cell={ (row) =>
-                    <span>
-                        <ToolTip content={moment(row.endDate).fromNow()}
-                                    title={moment(row.endDate).format("LL")} />
-                        { moment(row.endDate).isBefore(moment().add(6, "months")) &&
-                          moment(row.endDate).isAfter(moment()) ?
-                           <WarningIcon iconOnRight={true} /> : null }
-                    </span>
+              columnKey="description"
+              comparator={this.sortByText}
+              header={t("Description")}
+              cell={ (row) => row.description }
+            />
+            <Column
+              columnKey="policy"
+              comparator={this.sortByPolicy}
+              header={t("Policy")}
+              cell={ (row) => humanReadablePolicy(row.policy) }
+            />
+            <Column
+              columnKey="quantity"
+              comparator={this.sortByQuantity}
+              header={t("Matched/Total")}
+              cell={ (row) => <QuantityCell matched={row.matchedQuantity} total={row.totalQuantity} /> }
+            />
+            <Column
+              columnKey="startDate"
+              comparator={this.sortByText}
+              header={t("Start date")}
+              cell={ (row) =>
+                  <ToolTip content={moment(row.startDate).fromNow()}
+                    title={moment(row.startDate).format("LL")} />
+              }
+            />
+            <Column
+              columnKey="endDate"
+              comparator={this.sortByText}
+              header={t("End date")}
+              cell={ (row) =>
+                  <span>
+                    <ToolTip content={moment(row.endDate).fromNow()}
+                      title={moment(row.endDate).format("LL")} />
+                    {
+                      moment(row.endDate).isBefore(moment().add(6, "months")) &&
+                        moment(row.endDate).isAfter(moment()) ?
+                      <WarningIcon iconOnRight={true} /> : null
                     }
-                />
+                  </span>
+              }
+            />
           </Table>
-
           <CsvLink name="subscription_report.csv" />
         </div>
       );
@@ -135,7 +136,6 @@ const Subscriptions = React.createClass({
       </div>
     );
   }
-
 });
 
 const QuantityCell = (props) => {
