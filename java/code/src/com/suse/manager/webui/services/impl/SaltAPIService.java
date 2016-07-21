@@ -353,7 +353,6 @@ public enum SaltAPIService implements SaltService {
         }
     }
 
-
     /**
      * {@inheritDoc}
      */
