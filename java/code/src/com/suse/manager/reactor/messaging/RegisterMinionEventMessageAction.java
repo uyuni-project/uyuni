@@ -285,32 +285,27 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         if (!productList.isPresent()) {
             LOG.warn("no listed product returned from salt");
         }
-        else {
-            productList.ifPresent(pl -> {
-                ProductInfo pi = pl.get(0);
-                if (pi.getIsbase()) {
-                    String osName = pi.getName().toLowerCase();
-                    String osVersion = pi.getVersion();
-                    String osArch = pi.getArch();
-                    Optional<SUSEProduct> suseProduct =
-                            Optional.ofNullable(SUSEProductFactory.findSUSEProduct(osName,
-                                    osVersion, null, osArch, false));
-                    if (!suseProduct.isPresent()) {
-                        LOG.warn("No product match found for: " + osName + " " + osVersion
-                                + " " + osArch);
-                    }
-                    else {
-                        suseProduct.ifPresent(sp -> {
-                            lookupBaseAndRequiredChannels(server, osName, osVersion, osArch,
-                                    sp);
-                        });
-                    }
+
+        productList.ifPresent(pl -> {
+            pl.stream().filter(pif -> pif.getIsbase()).findFirst().ifPresent(pi -> {
+                String osName = pi.getName().toLowerCase();
+                String osVersion = pi.getVersion();
+                String osArch = pi.getArch();
+                Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
+                        .findSUSEProduct(osName, osVersion, null, osArch, false));
+                if (!suseProduct.isPresent()) {
+                    LOG.warn("No product match found for: " + osName + " " + osVersion + " "
+                            + osArch);
                 }
-                else {
-                    LOG.warn("Could not find base product for " + pi.getDescription());
-                }
+
+                suseProduct.ifPresent(sp -> {
+                    lookupBaseAndRequiredChannels(server, osName, osVersion, osArch, sp);
+                });
+
             });
-        }
+
+        });
+
     }
 
     private void lookupBaseAndRequiredChannels(MinionServer server, String osName,
@@ -321,44 +316,44 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         if (!productBaseChannelDto.isPresent()) {
             LOG.info("Product Base channel not found - refresh SCC sync?");
         }
-        else {
-            Optional<Channel> channel = Optional.ofNullable(
-                    ChannelFactory.lookupById(productBaseChannelDto.get().getId()));
+
+        productBaseChannelDto.ifPresent(pbcd -> {
+            Optional<Channel> channel =
+                    Optional.ofNullable(ChannelFactory.lookupById(pbcd.getId()));
             if (!channel.isPresent()) {
                 LOG.error("Can't retrieve channel id from database");
             }
-            else {
-                channel.ifPresent(c -> {
-                    LOG.info("Base channel " + c.getName() + " found for OS: " + osName
-                            + ", version: " + osVersion + ", arch: " + osArch
-                            + " - adding channel");
-                    server.addChannel(c);
-                    SUSEProductSet installedProducts = new SUSEProductSet();
-                    installedProducts.setBaseProduct(sp);
-                    List<EssentialChannelDto> requiredChannels = DistUpgradeManager
-                            .getRequiredChannels(installedProducts, c.getId());
-                    addRequiredChannels(server, requiredChannels);
-                });
-            }
-        }
+
+            channel.ifPresent(c -> {
+                LOG.info("Base channel " + c.getName() + " found for OS: " + osName
+                        + ", version: " + osVersion + ", arch: " + osArch
+                        + " - adding channel");
+                server.addChannel(c);
+                SUSEProductSet installedProducts = new SUSEProductSet();
+                installedProducts.setBaseProduct(sp);
+                List<EssentialChannelDto> requiredChannels = DistUpgradeManager
+                        .getRequiredChannels(installedProducts, c.getId());
+                addRequiredChannels(server, requiredChannels);
+            });
+
+        });
+
     }
 
     private void addRequiredChannels(MinionServer server,
             List<EssentialChannelDto> requiredChannels) {
         for (EssentialChannelDto reqChannel : requiredChannels) {
-            Optional<Channel> chan = Optional.ofNullable(
-                    ChannelFactory.lookupById(reqChannel.getId()));
+            Optional<Channel> chan =
+                    Optional.ofNullable(ChannelFactory.lookupById(reqChannel.getId()));
             if (!chan.isPresent()) {
-                LOG.error(
-                    "Can't retrieve required channel id from database");
+                LOG.error("Can't retrieve required channel id from database");
             }
-            else {
-                chan.ifPresent(c -> {
-                    server.addChannel(c);
-                    LOG.info("Adding required channel: "
-                            + c.getName());
-                });
-            }
+
+            chan.ifPresent(c -> {
+                server.addChannel(c);
+                LOG.info("Adding required channel: " + c.getName());
+            });
+
         }
     }
 
