@@ -18,6 +18,7 @@ package com.suse.utils;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 
 /**
@@ -39,6 +40,16 @@ public class Opt {
     public static <T, R> Function<Optional<T>, Optional<R>> flatMap(
             Function<T, Optional<R>> fn) {
         return o -> o.flatMap(fn);
+    }
+
+    /**
+     * Transforms a optional to a stream
+     * @param opt the Optional
+     * @param <T> element type
+     * @return a stream containing 0 or 1 element
+     */
+    public static <T> Stream<T> stream(Optional<T> opt) {
+        return opt.map(Stream::of).orElseGet(Stream::empty);
     }
 
     /**
