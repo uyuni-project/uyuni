@@ -301,11 +301,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 suseProduct.ifPresent(sp -> {
                     lookupBaseAndRequiredChannels(server, osName, osVersion, osArch, sp);
                 });
-
             });
-
         });
-
     }
 
     private void lookupBaseAndRequiredChannels(MinionServer server, String osName,
@@ -335,9 +332,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         .getRequiredChannels(installedProducts, c.getId());
                 addRequiredChannels(server, requiredChannels);
             });
-
         });
-
     }
 
     private void addRequiredChannels(MinionServer server,
@@ -353,7 +348,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 server.addChannel(c);
                 LOG.info("Adding required channel: " + c.getName());
             });
-
         }
     }
 
