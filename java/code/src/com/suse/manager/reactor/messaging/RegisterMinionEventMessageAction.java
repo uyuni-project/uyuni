@@ -46,6 +46,7 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -279,7 +280,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     }
 
     private void lookupAndAddDefaultChannel(String minionId, MinionServer server) {
-        ProductInfo pi = SALT_SERVICE.getListProducts(minionId).get().get(0);
+        ProductInfo pi =
+                SALT_SERVICE.callSync(Zypper.listProducts(false), minionId).get().get(0);
         String osName = pi.getName().toLowerCase();
         String osVersion = pi.getVersion();
         String osArch = pi.getArch();
