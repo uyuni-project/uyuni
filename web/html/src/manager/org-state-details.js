@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require("react")
-
+const ReactDOM = require("react-dom");
 var Panel = require("../components/panel").Panel
 var PanelButton = require("../components/panel").PanelButton
 var Messages = require("../components/messages").Messages
@@ -138,8 +138,7 @@ var StateDetail = React.createClass({
     }
 });
 
-React.render(
+ReactDOM.render(
   <StateDetail sls={stateData()}/>,
   document.getElementById('state-details')
 );
-
