@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
@@ -354,9 +353,6 @@ public enum SaltAPIService implements SaltService {
         }
     }
 
-    public Optional<List<Zypper.ProductInfo>> getListProducts(String minionId) {
-        return callSync(Zypper.listProducts(false), minionId);
-    }
 
     /**
      * {@inheritDoc}
