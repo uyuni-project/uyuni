@@ -26,7 +26,7 @@ const PaginationBlock = (props) => {
       {pagination}
     </div>
   );
-};
+}
 
 const PaginationButton = (props) =>
   <button type="button" className="btn btn-default"
@@ -43,72 +43,57 @@ const ItemsPerPageSelector = (props) =>
   </select>
 ;
 
-const SearchPanel = (props) => {
-    const itemCounter = <span>{t("Items {0} - {1} of {2}", props.fromItem,
-            props.toItem, props.itemCount)}</span>;
+const SearchPanel = (props) =>
+  <div className="spacewalk-list-filter table-search-wrapper">
+    {
+      React.Children.map(props.children,
+        (child) => React.cloneElement(child, { criteria: props.criteria, onSearch: props.onSearch }))
+    }
+    <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}</span>
+  </div>
+;
 
-    const children = React.Children.map(props.children,
-            (child) => React.cloneElement(child, { criteria: props.criteria, onSearch: props.onSearch }));
+const SearchField = (props) =>
+  <input className="form-control table-input-search"
+    value={props.criteria}
+    placeholder={props.placeholder}
+    type="text"
+    onChange={(e) => props.onSearch(e.target.value)}
+  />
+;
 
-    return <div className="spacewalk-list-filter table-search-wrapper">
-                {children} {itemCounter}
-             </div>
-};
-
-const SearchField = React.createClass({
-  render: function() {
-    return <input className="form-control table-input-search"
-      value={this.props.criteria}
-      placeholder={this.props.placeholder}
-      type="text"
-      onChange={(e) => this.props.onSearch(e.target.value)}
-    />
+const Column = (props) => {
+  let content = null;
+  if (typeof props.cell === "function") {
+    content = props.cell(props.data, props.criteria);
+  } else {
+    content = props.cell;
   }
-});
+  return <td>{content}</td>;
+}
 
-const Column = React.createClass({
-  render: function() {
-     let content = null;
-     if (typeof this.props.cell === "function") {
-        content = this.props.cell(this.props.data, this.props.criteria);
-     } else {
-        content = this.props.cell;
-     }
+const Header = (props) => {
+  const thStyle = props.width ? { width: props.width } : null;
 
-     return (<td>{content}</td>)
+  if (props.comparator) {
+    const thClass = props.sortDirection == 0 ? "" : (props.sortDirection > 0 ? "ascSort" : "descSort");
+    const newDirection = props.sortDirection == 0 ? 1 : props.sortDirection * -1;
+
+    return (
+      <th style={ thStyle } className={ thClass }>
+        <a className="orderBy"
+            onClick={() => props.onSortChange(props.columnKey, newDirection)}>
+          {props.children}
+        </a>
+      </th>
+    );
   }
-});
-
-const Header = React.createClass({
-  render: function() {
-     const thStyle = this.props.width ?
-       { width: this.props.width } : null;
-
-     if (this.props.comparator) {
-        const thClass = this.props.sortDirection == 0 ?
-          "" :
-          (this.props.sortDirection > 0 ? "ascSort" : "descSort");
-
-        const newDirection = this.props.sortDirection == 0 ?
-          1 :
-          this.props.sortDirection * -1;
-
-        return (<th style={ thStyle } className={ thClass }>
-            <a className="orderBy"
-              onClick={() => this.props.onSortChange(this.props.columnKey, newDirection)}>
-              {this.props.children}
-            </a>
-        </th>);
-     }
-
-     return <th style={ thStyle }>{this.props.children}</th>;
-  }
-});
-
+  return <th style={ thStyle }>{props.children}</th>;
+}
 
 const Button = React.createClass({
   trigger: function() {
-  	this.props.handler(this.props.data);
+    this.props.handler(this.props.data);
   },
 
   render: function() {
@@ -116,7 +101,7 @@ const Button = React.createClass({
   }
 });
 
-function Highlight(props) {
+const Highlight = (props) => {
   let text = props.text;
   let high = props.highlight;
 
