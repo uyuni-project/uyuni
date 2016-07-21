@@ -128,6 +128,15 @@ const Highlight = (props) => {
 const Table = React.createClass({
   mixins: [StatePersistedMixin],
 
+  propTypes: {
+    data: React.PropTypes.arrayOf(React.PropTypes.any).isRequired, // any type of data in and array, where each element is a row data
+    identifier: React.PropTypes.func.isRequired, // the unique key of the row
+    initialSortColumnKey: React.PropTypes.string, // the column key name of the initial sorted column
+    cssClassFunction: React.PropTypes.func, // a function that return a css class for each row
+    searchField: React.PropTypes.node, // the React Object that contains the filter search field
+    initialItemsPerPage: React.PropTypes.number // the initial number of how many row-per-page to show
+  },
+
   getInitialState: function() {
     return {
       currentPage: 1,
