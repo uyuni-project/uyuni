@@ -29,8 +29,8 @@ var StateCatalog = React.createClass({
         this.refreshServerData();
     },
 
-    compareRows: function(aValue, bValue) {
-        return aValue.localeCompare(bValue);
+    compareRows: function(aRaw, bRaw, columnKey, sortDirection) {
+      return aRaw.toLowerCase().localeCompare(bRaw.toLowerCase()) * sortDirection;
     },
 
     rowKey: function(rowData) {
@@ -56,7 +56,7 @@ var StateCatalog = React.createClass({
                     <Table
                         data={this.state.serverData}
                         identifier={this.rowKey}
-                        initialSort="name"
+                        initialSortColumnKey="name"
                         searchPanel={
                             <SearchField filter={this.searchData}
                                 placeholder={t("Filter by state name")}/>
