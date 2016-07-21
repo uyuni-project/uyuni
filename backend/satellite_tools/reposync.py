@@ -32,7 +32,7 @@ from yum.i18n import to_unicode
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload, suseEula
 from spacewalk.common import fileutils, rhnMail, rhnLog, suseLib, rhn_pkg
 from spacewalk.common.rhnTB import fetchTraceback
-from spacewalk.common.rhnLog import log_debug
+from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnLib import isSUSE
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhnConfig import CFG, initCFG
@@ -1530,12 +1530,23 @@ def _update_bugs(notice):
     if notice['references'] is None:
         return []
     for bz in notice['references']:
-        if bz['type'] == 'bugzilla' and bz['id'] not in bugs:
-            bug = Bug()
-            bug.populate({'bug_id': bz['id'],
-                          'summary': bz['title'] or ("Bug %s" % bz['id']),
-                          'href': bz['href']})
-            bugs[bz['id']] = bug
+        if bz['type'] == 'bugzilla':
+            # Fix: in case of non-integer id try to parse it from href
+            if not bz['id'].isdigit():
+                log_debug(2, "Bugzilla ID is wrong: {0}. Trying to parse ID from from URL".format(bz["id"]))
+                bz_id_match = re.search("/show_bug.cgi\?id=(\d+)", bz["href"])
+                if bz_id_match:
+                    bz["id"] = bz_id_match.group(1)
+                    log_debug(2, "Bugzilla ID found: {0}".format(bz["id"]))
+                else:
+                    log_error("Unable to found Bugzilla ID for {0}. Omitting".format(bz["id"]))
+                    continue
+            if bz['id'] not in bugs:
+                bug = Bug()
+                bug.populate({'bug_id': bz['id'],
+                              'summary': bz['title'] or ("Bug %s" % bz['id']),
+                              'href': bz['href']})
+                bugs[bz['id']] = bug
     return bugs.values()
 
 def _update_cve(notice):
