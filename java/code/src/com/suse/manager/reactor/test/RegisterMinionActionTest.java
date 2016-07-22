@@ -190,37 +190,17 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testRegisterMinionWithoutActivationKeyNoProductChannel() throws Exception {
-        // cleanup
-        Mock saltServiceMock = mock(SaltService.class);
-
-        MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        saltServiceMock.stubs().method("getMachineId").with(eq(MINION_ID))
-                .will(returnValue(Optional.of(MACHINE_ID)));
-        saltServiceMock.stubs().method("getGrains").with(eq(MINION_ID))
-                .will(returnValue(getGrains(MINION_ID, "foo")));
-        saltServiceMock.stubs().method("getCpuInfo").with(eq(MINION_ID))
-                .will(returnValue(getCpuInfo(MINION_ID)));
-        saltServiceMock.stubs().method("syncGrains");
-        saltServiceMock.stubs().method("syncModules");
-        List<ProductInfo> pil = new ArrayList<>();
-        ProductInfo pi =
-                new ProductInfo(TestUtils.randomString(), "x86_64", "descr", "eol", "epoch",
-                        "flavor", true, true, "productline", Optional.of("registerrelease"),
-                        "release", "repo", "shortname", "summary", "vendor", "1");
-        pil.add(pi);
-        saltServiceMock.stubs().method("callSync").will(returnValue(Optional.of(pil)));
-
-        SaltService saltService = (SaltService) saltServiceMock.proxy();
-
-        RegisterMinionEventMessageAction action =
-                new RegisterMinionEventMessageAction(saltService);
-        action.doExecute(new RegisterMinionEventMessage(MINION_ID));
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct product = setupChannelAndProduct(channelFamily);
+        SaltService saltService = setupStubs(product);
 
         // Verify the resulting system entry
         String machineId = saltService.getMachineId(MINION_ID).get();
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         assertTrue(optMinion.isPresent());
         MinionServer minion = optMinion.get();
+
+        // no base/required channels - e.g. we need an SCC sync
         assertEquals(MINION_ID, minion.getName());
         assertNull(minion.getBaseChannel());
         assertTrue(minion.getChannels().isEmpty());
@@ -230,8 +210,37 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         throws Exception {
 
         ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct product = setupChannelAndProduct(channelFamily);
+        Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
+
+        SaltService saltService = setupStubs(product);
+
+        // Verify the resulting system entry
+        String machineId = saltService.getMachineId(MINION_ID).get();
+        Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
+        assertTrue(optMinion.isPresent());
+        MinionServer minion = optMinion.get();
+        assertEquals(MINION_ID, minion.getName());
+
+        // base channel check
+        assertNotNull(minion.getBaseChannel());
+        assertEquals(baseChannelX8664, minion.getBaseChannel());
+
+        // required channels checks
+        assertFalse(minion.getChannels().isEmpty());
+        assertTrue(minion.getChannels().size() > 1);
+    }
+
+    private SUSEProduct setupChannelAndProduct(ChannelFamily channelFamily)
+        throws Exception {
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         product.setRelease(null);
+        return product;
+    }
+
+    private Channel setupBaseAndRequiredChannels(ChannelFamily channelFamily,
+            SUSEProduct product)
+        throws Exception {
         ChannelProduct channelProduct = createTestChannelProduct();
         ChannelArch channelArch = ChannelFactory.findArchByLabel("channel-x86_64");
         Channel baseChannelX8664 = DistUpgradeManagerTest
@@ -243,9 +252,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         channel3.setParentChannel(baseChannelX8664);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel2, product);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel3, product);
+        return baseChannelX8664;
+    }
 
-
-        // cleanup
+    private SaltService setupStubs(SUSEProduct product)
+        throws ClassNotFoundException, IOException {
         Mock saltServiceMock = mock(SaltService.class);
 
         MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
@@ -270,17 +281,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         RegisterMinionEventMessageAction action =
                 new RegisterMinionEventMessageAction(saltService);
         action.doExecute(new RegisterMinionEventMessage(MINION_ID));
-
-        // Verify the resulting system entry
-        String machineId = saltService.getMachineId(MINION_ID).get();
-        Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
-        assertTrue(optMinion.isPresent());
-        MinionServer minion = optMinion.get();
-        assertEquals(MINION_ID, minion.getName());
-        assertNotNull(minion.getBaseChannel());
-        assertEquals(baseChannelX8664, minion.getBaseChannel());
-        assertFalse(minion.getChannels().isEmpty());
-        assertTrue(minion.getChannels().size() > 1);
+        return saltService;
     }
 
 
