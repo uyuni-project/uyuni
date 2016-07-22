@@ -560,11 +560,15 @@ def generate_package_cache(self, force=False):
             longname = build_package_names(p)
 
             if not longname in self.all_packages:
-                self.all_packages[longname] = p.get('id')
+                self.all_packages[longname] = set([p.get('id')])
+            else:
+		self.all_packages[longname].add(p.get('id'))
 
     # keep a reverse dictionary so we can lookup package names by ID
-    self.all_packages_by_id = \
-        dict( (v, k) for k, v in self.all_packages.iteritems() )
+    self.all_packages_by_id = {}
+    for name, ids in self.all_packages.iteritems():
+        for id in ids:
+            self.all_packages_by_id[id] = name
 
     self.package_cache_expire = \
         datetime.now() + timedelta(seconds=self.PACKAGE_CACHE_TTL)
@@ -605,7 +609,7 @@ def get_package_id(self, name):
     self.generate_package_cache()
 
     try:
-        return self.all_packages[name]
+        return self.all_packages[name][0]
     except KeyError:
         return
 
