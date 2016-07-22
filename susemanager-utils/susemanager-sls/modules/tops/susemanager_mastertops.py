@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 '''
-Salt only merges top.sls contained in differents `saltenv`, but SUSE Manager
-provides the feature of define differents top.sls files in the differents
-`file_roots` directories of the `base` saltenv.
+SUSE Manager master_tops module
+-------------------------------
 
-This module merge top.sls files contained in the differents `file_roots`
-defined for the `base` saltenv and returns a the entire highstate information
-contained in the differents top.sls files.
+This module provides the base states top information from SUSE Manager.
+
+The top information returned by this module is merged by Salt with the 
+user custom data provided in /srv/salt/top.sls file.
 
 .. code-block:: yaml
 
@@ -16,16 +16,22 @@ contained in the differents top.sls files.
 
 # Import python libs
 from __future__ import absolute_import
-import logging
-import yaml
-import os
 import copy
-from salt.state import HighState
+import logging
 
 # Define the module's virtual name
 __virtualname__ = 'susemanager_mastertops'
 
 log = logging.getLogger(__name__)
+
+SUSEMANAGER_BASE_STATES = [
+    "channels",
+    "certs",
+    "packages",
+    "custom",
+    "custom_groups",
+    "custom_org"
+]
 
 
 def __virtual__():
@@ -40,27 +46,15 @@ def top(**kwargs):
     Returns state information for a minion based on merged top.sls files
     of `base` salt environment in `file_roots`.
     '''
-    if kwargs['opts']['environment'] not in [None, "base"]:
-        log.debug('Omitting merge of top.sls files outside "base" saltenv: %s',
-                  kwargs['opts']['environment'])
-        return {}
+    minion_states = []
 
-    log.debug('Merging top.sls files in: %s', __opts__['file_roots']['base'])
+    if kwargs['opts']['environment'] in [None, "base"]:
+        log.debug('Loading SUSE Manager base states')
 
-    top_tree = {"base": []}
-    opts = copy.deepcopy(__opts__)
-    opts['id'] = kwargs['grains']['id']
-    opts['grains'] = kwargs['grains']
-    opts['environment'] = "base"
+        minion_states = copy.deepcopy(SUSEMANAGER_BASE_STATES)
 
-    for top_path in __opts__['file_roots']['base']:
-        top_file = os.path.join(top_path, "top.sls")
-        if os.path.isfile(top_file):
-            file_roots_prio = [top_path] + list(set(__opts__['file_roots']['base']) - set([top_path]))
-            opts['file_roots'] = {"base": file_roots_prio}
+        # Fix: channels are not available for RHEL
+        if kwargs['grains']['os_family'] != "Suse":
+            minion_states.remove("channels")
 
-            st_ = HighState(opts)
-            top_ = st_.get_top()
-            top_info = st_.top_matches(top_)
-            top_tree['base'].extend(top_info.get("base"))
-    return top_tree
+    return {"base": minion_states} if minion_states else None
