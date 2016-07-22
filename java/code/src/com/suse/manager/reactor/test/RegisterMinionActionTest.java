@@ -14,8 +14,17 @@
  */
 package com.suse.manager.reactor.test;
 
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
+
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -31,6 +40,7 @@ import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
+import com.redhat.rhn.manager.distupgrade.test.DistUpgradeManagerTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -39,6 +49,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -176,6 +187,100 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             Collections.sort(history, (h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
             assertEquals(history.get(history.size()-1).getSummary(), "Server reactivated as Salt minion");
         });
+    }
+
+    public void testRegisterMinionWithoutActivationKeyNoProductChannel() throws Exception {
+        // cleanup
+        Mock saltServiceMock = mock(SaltService.class);
+
+        MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        saltServiceMock.stubs().method("getMachineId").with(eq(MINION_ID))
+                .will(returnValue(Optional.of(MACHINE_ID)));
+        saltServiceMock.stubs().method("getGrains").with(eq(MINION_ID))
+                .will(returnValue(getGrains(MINION_ID, "foo")));
+        saltServiceMock.stubs().method("getCpuInfo").with(eq(MINION_ID))
+                .will(returnValue(getCpuInfo(MINION_ID)));
+        saltServiceMock.stubs().method("syncGrains");
+        saltServiceMock.stubs().method("syncModules");
+        List<ProductInfo> pil = new ArrayList<>();
+        ProductInfo pi =
+                new ProductInfo(TestUtils.randomString(), "x86_64", "descr", "eol", "epoch",
+                        "flavor", true, true, "productline", Optional.of("registerrelease"),
+                        "release", "repo", "shortname", "summary", "vendor", "1");
+        pil.add(pi);
+        saltServiceMock.stubs().method("callSync").will(returnValue(Optional.of(pil)));
+
+        SaltService saltService = (SaltService) saltServiceMock.proxy();
+
+        RegisterMinionEventMessageAction action =
+                new RegisterMinionEventMessageAction(saltService);
+        action.doExecute(new RegisterMinionEventMessage(MINION_ID));
+
+        // Verify the resulting system entry
+        String machineId = saltService.getMachineId(MINION_ID).get();
+        Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
+        assertTrue(optMinion.isPresent());
+        MinionServer minion = optMinion.get();
+        assertEquals(MINION_ID, minion.getName());
+        assertNull(minion.getBaseChannel());
+        assertTrue(minion.getChannels().isEmpty());
+    }
+
+    public void testRegisterMinionWithoutActivationKeyWithProductChannel()
+        throws Exception {
+
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
+        product.setRelease(null);
+        ChannelProduct channelProduct = createTestChannelProduct();
+        ChannelArch channelArch = ChannelFactory.findArchByLabel("channel-x86_64");
+        Channel baseChannelX8664 = DistUpgradeManagerTest
+                .createTestBaseChannel(channelFamily, channelProduct, channelArch);
+        SUSEProductTestUtils.createTestSUSEProductChannel(baseChannelX8664, product);
+        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel3 = ChannelFactoryTest.createTestChannel(user);
+        channel2.setParentChannel(baseChannelX8664);
+        channel3.setParentChannel(baseChannelX8664);
+        SUSEProductTestUtils.createTestSUSEProductChannel(channel2, product);
+        SUSEProductTestUtils.createTestSUSEProductChannel(channel3, product);
+
+
+        // cleanup
+        Mock saltServiceMock = mock(SaltService.class);
+
+        MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        saltServiceMock.stubs().method("getMachineId").with(eq(MINION_ID))
+                .will(returnValue(Optional.of(MACHINE_ID)));
+        saltServiceMock.stubs().method("getGrains").with(eq(MINION_ID))
+                .will(returnValue(getGrains(MINION_ID, "foo")));
+        saltServiceMock.stubs().method("getCpuInfo").with(eq(MINION_ID))
+                .will(returnValue(getCpuInfo(MINION_ID)));
+        saltServiceMock.stubs().method("syncGrains");
+        saltServiceMock.stubs().method("syncModules");
+        List<ProductInfo> pil = new ArrayList<>();
+        ProductInfo pi = new ProductInfo(product.getName(), product.getArch().getLabel(),
+                "descr", "eol", "epoch", "flavor", true, true, "productline",
+                Optional.of("registerrelease"), "release", "repo", "shortname", "summary",
+                "vendor", product.getVersion());
+        pil.add(pi);
+        saltServiceMock.stubs().method("callSync").will(returnValue(Optional.of(pil)));
+
+        SaltService saltService = (SaltService) saltServiceMock.proxy();
+
+        RegisterMinionEventMessageAction action =
+                new RegisterMinionEventMessageAction(saltService);
+        action.doExecute(new RegisterMinionEventMessage(MINION_ID));
+
+        // Verify the resulting system entry
+        String machineId = saltService.getMachineId(MINION_ID).get();
+        Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
+        assertTrue(optMinion.isPresent());
+        MinionServer minion = optMinion.get();
+        assertEquals(MINION_ID, minion.getName());
+        assertNotNull(minion.getBaseChannel());
+        assertEquals(baseChannelX8664, minion.getBaseChannel());
+        assertFalse(minion.getChannels().isEmpty());
+        assertTrue(minion.getChannels().size() > 1);
     }
 
 
