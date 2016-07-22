@@ -24,7 +24,7 @@ __virtualname__ = 'susemanager_mastertops'
 
 log = logging.getLogger(__name__)
 
-SUSEMANAGER_BASE_STATES = [
+SUSEMANAGER_BASE_TOP = [
     "channels",
     "certs",
     "packages",
@@ -51,7 +51,7 @@ def top(**kwargs):
     if kwargs['opts']['environment'] in [None, "base"]:
         log.debug('Loading SUSE Manager base states')
 
-        suma_minion_top = copy.deepcopy(SUSEMANAGER_BASE_STATES)
+        suma_minion_top = copy.deepcopy(SUSEMANAGER_BASE_TOP)
 
         # Fix: channels are not available for RHEL
         if kwargs['grains']['os_family'] != "Suse":
