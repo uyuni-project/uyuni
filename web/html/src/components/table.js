@@ -234,7 +234,7 @@ const Table = React.createClass({
         });
 
     const rows = this.getProcessedData().map((datum, index) => {
-        let cells = React.Children.toArray(this.props.children)
+        const cells = React.Children.toArray(this.props.children)
             .filter((child) => child.type === Column)
             .map((column) => React.cloneElement(column, {data: datum, criteria: this.state.criteria})
         );
