@@ -65,19 +65,19 @@ const Messages = React.createClass({
             loadState={this.props.loadState}
             saveState={this.props.saveState}
             initialSortColumnKey="message"
-            >
+          >
             <Column
                 columnKey="message"
                 comparator={this.sortByText}
                 header={t("Message")}
                 cell={ (row) => row.message }
-                />
+            />
             <Column
                 columnKey="info"
                 comparator={this.sortByText}
                 header={t("Additional information")}
                 cell={ (row) => row.info }
-                />
+            />
           </Table>
 
           <CsvLink name="message_report.csv" />
