@@ -16,7 +16,6 @@ user custom data provided in /srv/salt/top.sls file.
 
 # Import python libs
 from __future__ import absolute_import
-import copy
 import logging
 
 # Define the module's virtual name
@@ -46,15 +45,7 @@ def top(**kwargs):
     Returns the SUSE Manager top state information of a minion
     for the `base` salt environment.
     '''
-    suma_minion_top = []
-
     if kwargs['opts']['environment'] in [None, "base"]:
-        log.debug('Loading SUSE Manager base states')
-
-        suma_minion_top = copy.deepcopy(SUSEMANAGER_BASE_TOP)
-
-        # Fix: channels are not available for RHEL
-        if kwargs['grains']['os_family'] != "Suse":
-            suma_minion_top.remove("channels")
-
-    return {"base": suma_minion_top} if suma_minion_top else None
+        log.debug('Loading SUSE Manager TOP state information for the "base" environment')
+        return {"base": SUSEMANAGER_BASE_TOP}
+    return None
