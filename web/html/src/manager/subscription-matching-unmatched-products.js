@@ -7,6 +7,8 @@ const CsvLink = UtilComponent.CsvLink;
 const SystemLabel = UtilComponent.SystemLabel;
 const PopUp = require("../components/popup").PopUp;
 const {Table, Column, SearchField} = require("../components/table");
+const Functions = require("../utils/functions");
+const Utils = Functions.Utils;
 
 const UnmatchedProducts = React.createClass({
   mixins: [StatePersistedMixin],
@@ -30,20 +32,9 @@ const UnmatchedProducts = React.createClass({
        });
   },
 
-  sortById: function(aRaw, bRaw) {
-    const aId = aRaw["id"];
-    const bId = bRaw["id"];
-    return aId > bId ? 1 : (aId < bId ? -1 : 0);
-  },
-
-  sortByText: function(a, b, columnKey, sortDirection) {
-    var result = a[columnKey].toLowerCase().localeCompare(b[columnKey].toLowerCase());
-    return (result || this.sortById(a, b)) * sortDirection;
-  },
-
   sortBySystemCount: function(a, b, columnKey, sortDirection) {
     var result = a[columnKey]- b[columnKey];
-    return (result || this.sortById(a, b)) * sortDirection;
+    return (result || Utils.sortById(a, b)) * sortDirection;
   },
 
   showPopUp: function(id) {
@@ -68,7 +59,7 @@ const UnmatchedProducts = React.createClass({
             >
             <Column
                 columnKey="productName"
-                comparator={this.sortByText}
+                comparator={Utils.sortByText}
                 header={t("Product name")}
                 cell={ (row) => row.productName }
                 />
@@ -131,17 +122,6 @@ const UnmatchedSystemPopUp = React.createClass({
     });
   },
 
-  sortById: function(aRaw, bRaw) {
-    const aId = aRaw["id"];
-    const bId = bRaw["id"];
-    return aId > bId ? 1 : (aId < bId ? -1 : 0);
-  },
-
-  sortByText: function(a, b, columnKey, sortDirection) {
-    var result = a[columnKey].toLowerCase().localeCompare(b[columnKey].toLowerCase());
-    return (result || this.sortById(a, b)) * sortDirection;
-  },
-
   searchData: function(datum, criteria) {
     if (criteria) {
       return datum.systemName.toLowerCase().includes(criteria.toLowerCase());
@@ -163,7 +143,7 @@ const UnmatchedSystemPopUp = React.createClass({
         }>
         <Column
             columnKey="systemName"
-            comparator={this.sortByText}
+            comparator={Utils.sortByText}
             header={t("System name")}
             cell={ (row) => <SystemLabel type={row.type} name={row.systemName} /> } />
       </Table>;

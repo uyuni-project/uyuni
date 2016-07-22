@@ -42,9 +42,22 @@ function LocalDateTime(date) {
            "T" + padTo(hours) + ":" + padTo(minutes) + ":" + padTo(seconds);
 }
 
+function sortById(aRaw, bRaw) {
+  const aId = aRaw["id"];
+  const bId = bRaw["id"];
+  return aId > bId ? 1 : (aId < bId ? -1 : 0);
+}
+
+function sortByText(aRaw, bRaw, columnKey, sortDirection) {
+  var result = aRaw[columnKey].toLowerCase().localeCompare(bRaw[columnKey].toLowerCase());
+  return (result || sortById(aRaw, bRaw)) * sortDirection;
+}
+
 module.exports = {
     Utils: {
-        cancelable: cancelable
+        cancelable: cancelable,
+        sortById: sortById,
+        sortByText: sortByText
     },
     Formats: {
         LocalDateTime: LocalDateTime
