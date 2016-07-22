@@ -43,18 +43,18 @@ def __virtual__():
 
 def top(**kwargs):
     '''
-    Returns state information for a minion based on merged top.sls files
-    of `base` salt environment in `file_roots`.
+    Returns the SUSE Manager top state information of a minion
+    for the `base` salt environment.
     '''
-    minion_states = []
+    suma_minion_top = []
 
     if kwargs['opts']['environment'] in [None, "base"]:
         log.debug('Loading SUSE Manager base states')
 
-        minion_states = copy.deepcopy(SUSEMANAGER_BASE_STATES)
+        suma_minion_top = copy.deepcopy(SUSEMANAGER_BASE_STATES)
 
         # Fix: channels are not available for RHEL
         if kwargs['grains']['os_family'] != "Suse":
-            minion_states.remove("channels")
+            suma_minion_top.remove("channels")
 
-    return {"base": minion_states} if minion_states else None
+    return {"base": suma_minion_top} if suma_minion_top else None
