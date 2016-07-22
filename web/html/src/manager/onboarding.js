@@ -153,19 +153,21 @@ class Onboarding extends React.Component {
               comparator={this.sortByText}
               header={t('Name')}
               cell={ (row, criteria) => {
-                    if(row.state == "minions") {
-                       return <a href={ "/rhn/manager/minions/" + row.id }>
-                           <Highlight enabled={this.isFiltered(criteria)}
-                             text={row.id}
-                             highlight={criteria}/>
-                           </a>;
-                    } else {
-                       return <Highlight enabled={this.isFiltered(criteria)}
-                           text={row.id}
-                           highlight={criteria}/>;
-                    }
-                   }}
-              />
+                  if(row.state == "minions") {
+                    return (
+                      <a href={ "/rhn/manager/minions/" + row.id }>
+                        <Highlight enabled={this.isFiltered(criteria)}
+                          text={row.id} highlight={criteria} />
+                      </a>
+                    );
+                  }
+                  else {
+                    return <Highlight enabled={this.isFiltered(criteria)}
+                        text={row.id} highlight={criteria} />;
+                  }
+                }
+              }
+            />
             <Column
               columnKey="fingerprint"
               width="50%"
@@ -173,21 +175,21 @@ class Onboarding extends React.Component {
               header={t('Fingerprint')}
               cell={ (row, criteria) =>
                   <Highlight enabled={this.isFiltered(criteria)}
-                       text={row.fingerprint}
-                       highlight={criteria}/> }
-              />
+                    text={row.fingerprint} highlight={criteria} />
+              }
+            />
             <Column
               columnKey="state"
               width="10%"
               comparator={this.sortByText}
               header={t('State')}
               cell={ (row) => labelFor(row.state) }
-              />
+            />
             <Column
               width="10%"
               header={t('Actions')}
               cell={ (row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)}
-              />
+            />
           </Table>
         </Panel>
       </span>
