@@ -7,6 +7,7 @@ const AsyncButton = Buttons.AsyncButton;
 const Panel = require("../components/panel").Panel;
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
+const Utils = Functions.Utils;
 const {Table, Column, SearchField, Highlight} = require("../components/table");
 
 function listKeys() {
@@ -88,7 +89,7 @@ class Onboarding extends React.Component {
 
   constructor(props) {
     super();
-    ["sortById", "searchData", "sortByText", "rowKey", "reloadKeys"].forEach(method => this[method] = this[method].bind(this));
+    ["searchData", "rowKey", "reloadKeys"].forEach(method => this[method] = this[method].bind(this));
     this.state = {
       keys: [],
       isOrgAdmin: false
@@ -107,17 +108,6 @@ class Onboarding extends React.Component {
 
   rowKey(rowData) {
     return rowData.id;
-  }
-
-  sortById(aRaw, bRaw) {
-    const aId = this.rowKey(aRaw);
-    const bId = this.rowKey(bRaw);
-    return aId > bId ? 1 : (aId < bId ? -1 : 0);
-  }
-
-  sortByText(aRaw, bRaw, columnKey, sortDirection) {
-    var result = aRaw[columnKey].toLowerCase().localeCompare(bRaw[columnKey].toLowerCase());
-    return (result || this.sortById(aRaw, bRaw)) * sortDirection;
   }
 
   searchData(datum, criteria) {
@@ -150,7 +140,7 @@ class Onboarding extends React.Component {
             <Column
               columnKey="id"
               width="30%"
-              comparator={this.sortByText}
+              comparator={Utils.sortByText}
               header={t('Name')}
               cell={ (row, criteria) => {
                   if(row.state == "minions") {
@@ -171,7 +161,7 @@ class Onboarding extends React.Component {
             <Column
               columnKey="fingerprint"
               width="50%"
-              comparator={this.sortByText}
+              comparator={Utils.sortByText}
               header={t('Fingerprint')}
               cell={ (row, criteria) =>
                   <Highlight enabled={this.isFiltered(criteria)}
@@ -181,7 +171,7 @@ class Onboarding extends React.Component {
             <Column
               columnKey="state"
               width="10%"
-              comparator={this.sortByText}
+              comparator={Utils.sortByText}
               header={t('State')}
               cell={ (row) => labelFor(row.state) }
             />

@@ -4,20 +4,11 @@ const React = require("react");
 const {Table, Column, SearchField, Highlight} = require("../components/table");
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const CsvLink = require("./subscription-matching-util").CsvLink;
+const Functions = require("../utils/functions");
+const Utils = Functions.Utils;
 
 const Messages = React.createClass({
   mixins: [StatePersistedMixin],
-
-  sortById: function(aRaw, bRaw) {
-    const aId = aRaw["id"];
-    const bId = bRaw["id"];
-    return aId > bId ? 1 : (aId < bId ? -1 : 0);
-  },
-
-  sortByText: function(a, b, columnKey, sortDirection) {
-    var result = a[columnKey].toLowerCase().localeCompare(b[columnKey].toLowerCase());
-    return (result || this.sortById(a, b)) * sortDirection;
-  },
 
   buildRows: function(rawMessages, systems) {
     return rawMessages.map(function(rawMessage, index) {
@@ -68,13 +59,13 @@ const Messages = React.createClass({
           >
             <Column
                 columnKey="message"
-                comparator={this.sortByText}
+                comparator={Utils.sortByText}
                 header={t("Message")}
                 cell={ (row) => row.message }
             />
             <Column
                 columnKey="info"
-                comparator={this.sortByText}
+                comparator={Utils.sortByText}
                 header={t("Additional information")}
                 cell={ (row) => row.info }
             />

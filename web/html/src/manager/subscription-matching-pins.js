@@ -11,6 +11,8 @@ const ToolTip = UtilComponent.ToolTip;
 const humanReadablePolicy = UtilComponent.humanReadablePolicy;
 const WarningIcon =  require("./subscription-matching-util").WarningIcon;
 const Network = require("../utils/network");
+const Functions = require("../utils/functions");
+const Utils = Functions.Utils;
 
 const Pins = React.createClass({
   mixins: [StatePersistedMixin],
@@ -19,17 +21,6 @@ const Pins = React.createClass({
     return {
         showPopUp: false
     };
-  },
-
-  sortById: function(aRaw, bRaw) {
-    const aId = aRaw["id"];
-    const bId = bRaw["id"];
-    return aId > bId ? 1 : (aId < bId ? -1 : 0);
-  },
-
-  sortByText: function(a, b, columnKey, sortDirection) {
-    var result = a[columnKey].toLowerCase().localeCompare(b[columnKey].toLowerCase());
-    return (result || this.sortById(a, b)) * sortDirection;
   },
 
   buildRows: function(props) {
@@ -104,38 +95,38 @@ const Pins = React.createClass({
             >
             <Column
                 columnKey="systemName"
-                comparator={this.sortByText}
+                comparator={Utils.sortByText}
                 header={t("Part number")}
                 cell={ (p) => <SystemLabel id={p.systemId} name={p.systemName} type={p.systemType} /> }
                 />
             <Column
                 columnKey="subscriptionDescription"
-                comparator={this.sortByText}
+                comparator={Utils.sortByText}
                 header={t("Subscription")}
                 cell={ (p) => p.subscriptionDescription }
                 />
             <Column
                 columnKey="subscriptionPolicy"
-                comparator={this.sortByText}
+                comparator={Utils.sortByText}
                 header={t("Policy")}
                 cell={ (p) => humanReadablePolicy(p.subscriptionPolicy) }
                 />
             <Column
                 columnKey="subscriptionEndDate"
-                comparator={this.sortByText}
+                comparator={Utils.sortByText}
                 header={t("End date")}
                 cell={ (p) => <ToolTip content={moment(p.subscriptionEndDate).fromNow()}
                                 title={moment(p.subscriptionEndDate).format("LL")} /> }
                 />
             <Column
                 columnKey="subscriptionPartNumber"
-                comparator={this.sortByText}
+                comparator={Utils.sortByText}
                 header={t("Part number")}
                 cell={ (p) => p.subscriptionPartNumber }
                 />
             <Column
                 columnKey="status"
-                comparator={this.sortByText}
+                comparator={Utils.sortByText}
                 header={t("Status")}
                 cell={ (p) => <PinStatus status={p.status} /> }
                 />
@@ -189,20 +180,9 @@ const AddPinPopUp = React.createClass({
     };
   },
 
-  sortById: function(aRaw, bRaw) {
-    const aId = aRaw["id"];
-    const bId = bRaw["id"];
-    return aId > bId ? 1 : (aId < bId ? -1 : 0);
-  },
-
-  sortByText: function(a, b, columnKey, sortDirection) {
-    var result = a[columnKey].toLowerCase().localeCompare(b[columnKey].toLowerCase());
-    return (result || this.sortById(a, b)) * sortDirection;
-  },
-
   sortByCpuCount: function(a, b, columnKey, sortDirection) {
     var result = a[columnKey]- b[columnKey];
-    return (result || this.sortById(a, b)) * sortDirection;
+    return (result || Utils.sortById(a, b)) * sortDirection;
   },
 
   buildRows: function() {
@@ -250,7 +230,7 @@ const AddPinPopUp = React.createClass({
             }>
             <Column
                 columnKey="name"
-                comparator={this.sortByText}
+                comparator={Utils.sortByText}
                 header={t("System")}
                 cell={ (s) => <SystemLabel id={s.id} name={s.name} type={s.type} /> }
                 />

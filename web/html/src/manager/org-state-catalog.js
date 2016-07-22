@@ -29,7 +29,7 @@ var StateCatalog = React.createClass({
     this.refreshServerData();
   },
 
-  compareRows: function(aRaw, bRaw, columnKey, sortDirection) {
+  sortByText: function(aRaw, bRaw, columnKey, sortDirection) {
     return aRaw.toLowerCase().localeCompare(bRaw.toLowerCase()) * sortDirection;
   },
 
@@ -62,7 +62,7 @@ var StateCatalog = React.createClass({
             }>
             <Column
               columnKey="name"
-              comparator={this.compareRows}
+              comparator={this.sortByText}
               header={t("State")}
               cell={ (s) =>
                 <a href={"/rhn/manager/state_catalog/state/" + s}>{s}</a> }

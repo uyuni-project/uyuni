@@ -8,27 +8,18 @@ const CsvLink = UtilComponent.CsvLink;
 const humanReadablePolicy = UtilComponent.humanReadablePolicy;
 const WarningIcon =  require("./subscription-matching-util").WarningIcon;
 const {Table, Column, SearchField, Highlight} = require("../components/table");
+const Functions = require("../utils/functions");
+const Utils = Functions.Utils;
 
 const Subscriptions = React.createClass({
   mixins: [StatePersistedMixin],
-
-  sortById: function(aRaw, bRaw) {
-    const aId = aRaw["id"];
-    const bId = bRaw["id"];
-    return aId > bId ? 1 : (aId < bId ? -1 : 0);
-  },
-
-  sortByText: function(aRaw, bRaw, columnKey, sortDirection) {
-    var result = aRaw[columnKey].toLowerCase().localeCompare(bRaw[columnKey].toLowerCase());
-    return (result || this.sortById(aRaw, bRaw)) * sortDirection;
-  },
 
   sortByPolicy: function(aRaw, bRaw, columnKey, sortDirection) {
     var result = 0;
     const aValue = humanReadablePolicy(aRaw[columnKey]);
     const bValue = humanReadablePolicy(bRaw[columnKey]);
     result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
-    return (result || this.sortById(aRaw, bRaw)) * sortDirection;
+    return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   },
 
   sortByQuantity: function(aRaw, bRaw, columnKey, sortDirection) {
@@ -40,7 +31,7 @@ const Subscriptions = React.createClass({
     const aValue =  aMatched / aTotal;
     const bValue = bMatched / bTotal;
     result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
-    return (result || this.sortById(aRaw, bRaw)) * sortDirection;
+    return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   },
 
   searchData: function(datum, criteria) {
@@ -73,13 +64,13 @@ const Subscriptions = React.createClass({
             }>
             <Column
               columnKey="partNumber"
-              comparator={this.sortByText}
+              comparator={Utils.sortByText}
               header={t("Part number")}
               cell={ (row) => row.partNumber }
             />
             <Column
               columnKey="description"
-              comparator={this.sortByText}
+              comparator={Utils.sortByText}
               header={t("Description")}
               cell={ (row) => row.description }
             />
@@ -97,7 +88,7 @@ const Subscriptions = React.createClass({
             />
             <Column
               columnKey="startDate"
-              comparator={this.sortByText}
+              comparator={Utils.sortByText}
               header={t("Start date")}
               cell={ (row) =>
                   <ToolTip content={moment(row.startDate).fromNow()}
@@ -106,7 +97,7 @@ const Subscriptions = React.createClass({
             />
             <Column
               columnKey="endDate"
-              comparator={this.sortByText}
+              comparator={Utils.sortByText}
               header={t("End date")}
               cell={ (row) =>
                   <span>
