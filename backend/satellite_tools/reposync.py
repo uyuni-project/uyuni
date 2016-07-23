@@ -73,7 +73,7 @@ class ChannelTimeoutException(ChannelException):
 
 def getChannelRepo():
 
-    initCFG('server')
+    initCFG('server.satellite')
     rhnSQL.initDB()
     items = {}
     sql = """
@@ -100,7 +100,7 @@ def getChannelRepo():
 
 def getParentsChilds(b_only_custom=False):
 
-    initCFG('server')
+    initCFG('server.satellite')
     rhnSQL.initDB()
 
     sql = """
