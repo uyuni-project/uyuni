@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.11
+Version: 2.6.17
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -984,6 +984,29 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Jul 19 2016 Grant Gainey 2.6.17-1
+- 1226329 - sense support for debian packages
+
+* Tue Jul 19 2016 Jiri Dostal <jdostal@redhat.com> 2.6.16-1
+- ISE kickstart AdvancedOptions with "url" field checked but not set
+
+* Mon Jul 11 2016 Jiri Dostal <jdostal@redhat.com> 2.6.15-1
+- 1324737 - API call to get list of Systems Requiring Reboot
+
+* Thu Jul 07 2016 Gennadii Altukhov <galt@redhat.com> 2.6.14-1
+- 1353210 - use Oracle and PostgreSQL compatible 'REGEXP_REPLACE' function
+  instead of 'SUBSTRING'
+
+* Tue Jul 05 2016 Grant Gainey 2.6.13-1
+- 1351695 - Traceback: comparison method violates its general contract Cleanup
+  of a few more suboptimal compare() methods
+
+* Tue Jul 05 2016 Grant Gainey 2.6.12-1
+- 1351695 - Fix SystemSearchHelper score-comparator This should fix the TimSort
+  issue, in addition to fixing a variety of broken edge-case behavior in this
+  comparator. Also adds a Junit for
+  SystemSearchHelper.SearchResultScoreComparator
+
 * Wed Jun 29 2016 Tomas Lestach <tlestach@redhat.com> 2.6.11-1
 - 1124809 - fix system sorting by last checkin
 
