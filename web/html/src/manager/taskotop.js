@@ -2,13 +2,11 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const TableComponent = require("../components/table");
-const Table = TableComponent.Table;
-const TableCell = TableComponent.TableCell;
-const TableRow = TableComponent.TableRow;
 const MessageContainer = require("../components/messages").Messages;
-const MessagesUtils = require("../components/messages").Utils;
+const {Table, Column, SearchField, Highlight} = require("../components/table");
 const Network = require("../utils/network");
+const Functions = require("../utils/functions");
+const Utils = Functions.Utils;
 
 const TaskoTop = React.createClass({
 
@@ -25,20 +23,28 @@ const TaskoTop = React.createClass({
   },
 
   refreshServerData: function() {
+    var currentObject = this;
     Network.get("/rhn/manager/schedule/taskotop/data", "application/json").promise
       .then(data => {
-        this.setState({
+        currentObject.setState({
           serverData: data,
           error: null,
         });
       })
       .catch(response => {
-        this.setState({
+        currentObject.setState({
           error: response.status == 401 ? "authentication" :
             response.status >= 500 ? "general" :
             null
         });
       });
+  },
+
+  searchData: function(datum, criteria) {
+      if (criteria) {
+        return datum.name.toLowerCase().includes(criteria.toLowerCase());
+      }
+      return true;
   },
 
   decodeStatus: function(status) {
@@ -55,32 +61,15 @@ const TaskoTop = React.createClass({
     return cell;
   },
 
-  buildRows: function(rawJobs) {
-    const thisObject = this;
-    const result = rawJobs.map(function(rawJob, index) {
-      const columns = [
-        <TableCell key="runId" content={rawJob["id"]} />,
-        <TableCell key="name" content={rawJob["name"]} />,
-        <TableCell key="startTime" content={moment(rawJob["startTime"]).format("HH:mm:ss")} />,
-        <TableCell key="endTime" content={rawJob["endTime"] == null ? "" : moment(rawJob["endTime"]).format("HH:mm:ss")} />,
-        <TableCell key="elapsedTime" content={rawJob["elapsedTime"] == null ? "" : rawJob["elapsedTime"] + ' seconds'} />,
-        <TableCell key="status" content={thisObject.decodeStatus(rawJob["status"])} />,
-        <TableCell key="data" content={rawJob["data"].map(c => <div>{c}</div>)} />
-      ];
-      return <TableRow key={index}
-          className={rawJob["status"] == 'running' ? 'info' : ''}
-          columns={columns}
-          rawData={rawJob} />;
-    });
-    return result;
+  buildRows: function(jobs) {
+    return Object.keys(jobs).map((id) => jobs[id]);
   },
 
   render: function() {
     const data = this.state.serverData;
-
-    if (data != null && data.length > 0) {
-      return (
-        <div>
+    if (data != null && Object.keys(data).length > 0) {
+      return  (
+        <div key="taskotop-content">
           <div className="spacewalk-toolbar-h1">
             <h1><i className="fa fa-gears"></i>{t("TaskoTop")}</h1>
             <ErrorMessage error={this.state.error} />
@@ -88,15 +77,64 @@ const TaskoTop = React.createClass({
             <p>{t('Data are refreshed every ')}{this.props.refreshInterval/1000}{t(' seconds')}</p>
           </div>
           <Table
-            headers={[t("Task Id"), t("Task Name"), t("Start Time"), t("End Time"), t('Elapsed Time'), t('Status'), t('Data')]}
-            rows={this.buildRows(data)}
-          />
+            data={this.buildRows(data)}
+            identifier={(row) => row["id"]}
+            cssClassFunction={(row) => row["status"] == 'skipped' ? 'text-muted' : null }
+            initialSortColumnKey="id"
+            searchField={
+                <SearchField filter={this.searchData}
+                    criteria={""}
+                    placeholder={t("Filter by name")} />
+            }>
+            <Column
+              columnKey="id"
+              comparator={Utils.sortById}
+              header={t("Task Id")}
+              cell={ (row) => row["id"] }
+            />
+            <Column
+              columnKey="name"
+              comparator={Utils.sortByText}
+              header={t("Task Name")}
+              cell={ (row) => row["name"] }
+            />
+            <Column
+              columnKey="startTime"
+              comparator={Utils.sortByText}
+              header={t("Start Time")}
+              cell={ (row) => moment(row["startTime"]).format("HH:mm:ss") }
+            />
+            <Column
+              columnKey="endTime"
+              comparator={Utils.sortByText}
+              header={t("End Time")}
+              cell={ (row) => row["endTime"] == null ? "" : moment(row["endTime"]).format("HH:mm:ss") }
+            />
+            <Column
+              columnKey="elapsedTime"
+              // comparator={this.sortByText}
+              header={t("Elapsed Time")}
+              cell={ (row) => row["elapsedTime"] == null ? "" : row["elapsedTime"] + ' seconds' }
+            />
+            <Column
+              columnKey="status"
+              // comparator={this.sortByText}
+              header={t("Status")}
+              cell={ (row) => this.decodeStatus(row["status"]) }
+            />
+            <Column
+              columnKey="data"
+              // comparator={this.sortByText}
+              header={t("Data")}
+              cell={ (row) => row["data"].map((c, index) => <div key={"data-" + index}>{c}</div>) }
+            />
+          </Table>
         </div>
       );
     }
     else {
       return (
-        <div>
+        <div key="taskotop-no-content">
           <div className="spacewalk-toolbar-h1">
             <h1><i className="fa fa-tasks"></i>{t("TaskoTop")}</h1>
             <p>{t('Taskomatic is not running any tasks at the moment.')}</p>
