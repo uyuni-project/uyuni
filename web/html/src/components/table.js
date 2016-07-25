@@ -233,24 +233,27 @@ const Table = React.createClass({
             }
         });
 
-    const rows = this.getProcessedData().map((datum, index) => {
-        const cells = React.Children.toArray(this.props.children)
-            .filter((child) => child.type === Column)
-            .map((column) => React.cloneElement(column, {data: datum, criteria: this.state.criteria})
-        );
-
-        let rowClass = this.props.cssClassFunction ? this.props.cssClassFunction(datum, index) : "";
-        let evenOddClass = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
-        return <tr className={rowClass + " " + evenOddClass} key={this.props.identifier(datum)} >{cells}</tr>;
-    });
+    const filteredData = this.getProcessedData();
 
     const itemsPerPage = this.state.itemsPerPage;
     const currentPage = this.state.currentPage;
     const firstItemIndex = (currentPage - 1) * itemsPerPage;
 
-    const itemCount = rows.length;
+    const itemCount = filteredData.length;
     const fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
     const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
+
+    const rows = filteredData.slice(firstItemIndex, firstItemIndex + itemsPerPage)
+        .map((datum, index) => {
+          const cells = React.Children.toArray(this.props.children)
+              .filter((child) => child.type === Column)
+              .map((column) => React.cloneElement(column, {data: datum, criteria: this.state.criteria})
+          );
+
+          let rowClass = this.props.cssClassFunction ? this.props.cssClassFunction(datum, index) : "";
+          let evenOddClass = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
+          return <tr className={rowClass + " " + evenOddClass} key={this.props.identifier(datum)} >{cells}</tr>;
+    });
 
     return (
       <div className="spacewalk-list">
@@ -280,7 +283,7 @@ const Table = React.createClass({
                       <tr>{headers}</tr>
                    </thead>
                    <tbody>
-                      {rows.slice(firstItemIndex, firstItemIndex + itemsPerPage)}
+                      {rows}
                    </tbody>
                 </table>
             </div>
