@@ -5,13 +5,13 @@ SUSE Manager master_tops module
 
 This module provides the base states top information from SUSE Manager.
 
-The top information returned by this module is merged by Salt with the 
+The top information returned by this module is merged by Salt with the
 user custom data provided in /srv/salt/top.sls file.
 
 .. code-block:: yaml
 
     master_tops:
-        - susemanager_mastertops: True
+      mgr_mastertops: True
 '''
 
 # Import python libs
@@ -19,11 +19,11 @@ from __future__ import absolute_import
 import logging
 
 # Define the module's virtual name
-__virtualname__ = 'susemanager_mastertops'
+__virtualname__ = 'mgr_mastertops'
 
 log = logging.getLogger(__name__)
 
-SUSEMANAGER_BASE_TOP = [
+MANAGER_BASE_TOP = [
     "channels",
     "certs",
     "packages",
@@ -47,5 +47,5 @@ def top(**kwargs):
     '''
     if kwargs['opts']['environment'] in [None, "base"]:
         log.debug('Loading SUSE Manager TOP state information for the "base" environment')
-        return {"base": SUSEMANAGER_BASE_TOP}
+        return {"base": MANAGER_BASE_TOP}
     return None
