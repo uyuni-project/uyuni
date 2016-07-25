@@ -2,10 +2,6 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const TableComponent = require("../components/table");
-const Table = TableComponent.Table;
-const TableCell = TableComponent.TableCell;
-const TableRow = TableComponent.TableRow;
 const TabContainer = require("../components/tab-container").TabContainer;
 const Subscriptions =  require("./subscription-matching-subscriptions").Subscriptions;
 const Pins =  require("./subscription-matching-pins").Pins;
@@ -52,8 +48,9 @@ const SubscriptionMatching = React.createClass({
     if (this.refreshRequest) {
       this.refreshRequest.cancel();
     }
-    this.state.serverData.pinnedMatches = pinnedMatches;
-    this.setState(this.state);
+    const serverData = this.state.serverData;
+    serverData.pinnedMatches = pinnedMatches;
+    this.setState({serverData: serverData});
   },
 
   onMatcherRunSchedule: function() {

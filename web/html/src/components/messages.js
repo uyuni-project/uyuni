@@ -15,10 +15,10 @@ var Messages = React.createClass({
   },
 
   render: function() {
-    var msgs = this.props.items.map(function(item) {
-                return (<div className={'alert alert-' + this._classNames[item.severity]}>{item.text}</div>);
+    var msgs = this.props.items.map(function(item, index) {
+                return (<div key={"msg" + index} className={'alert alert-' + this._classNames[item.severity]}>{item.text}</div>);
             }.bind(this));
-    return (<div>{msgs}</div>);
+    return (<div key={"messages-pop-up"}>{msgs}</div>);
   }
 
 });

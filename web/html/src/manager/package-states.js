@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require("react");
+const ReactDOM = require("react-dom");
 const Buttons = require("../components/buttons");
 const Network = require("../utils/network");
 const Fields = require("../components/fields");
@@ -391,7 +392,7 @@ class PackageStates extends React.Component {
   }
 }
 
-React.render(
+ReactDOM.render(
   <PackageStates />,
   document.getElementById('package-states')
 );

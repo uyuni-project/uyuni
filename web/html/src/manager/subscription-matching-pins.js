@@ -1,10 +1,7 @@
 "use strict";
 
 const React = require("react");
-const TableComponent = require("../components/table");
-const Table = TableComponent.Table;
-const TableCell = TableComponent.TableCell;
-const TableRow = TableComponent.TableRow;
+const {Table, Column, SearchField, Highlight} = require("../components/table");
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const PopUp = require("../components/popup").PopUp;
 const UtilComponent =  require("./subscription-matching-util");
@@ -14,36 +11,22 @@ const ToolTip = UtilComponent.ToolTip;
 const humanReadablePolicy = UtilComponent.humanReadablePolicy;
 const WarningIcon =  require("./subscription-matching-util").WarningIcon;
 const Network = require("../utils/network");
+const Functions = require("../utils/functions");
+const Utils = Functions.Utils;
 
 const Pins = React.createClass({
   mixins: [StatePersistedMixin],
 
   getInitialState: function() {
-    return {showPopUp: false};
+    return {
+        showPopUp: false
+    };
   },
 
-  rowComparator: function(a, b, columnIndex, ascending) {
-    const aRaw = a.props["rawData"];
-    const bRaw = b.props["rawData"];
-    const columnKeyInRawData=["systemName", "subscriptionDescription", "subscriptionPolicy", "subscriptionEndDate", "subscriptionPartNumber", "status"];
-    const columnKey = columnKeyInRawData[columnIndex];
-    const orderCondition = ascending ? 1 : -1;
+  buildRows: function(props) {
+    const {pinnedMatches, systems, subscriptions} = props;
 
-    const aValue = aRaw[columnKey];
-    const bValue = bRaw[columnKey];
-
-    var result = aValue.localeCompare(bValue);
-    if (result == 0) {
-      const aId = aRaw["id"];
-      const bId = bRaw["id"];
-      result = aId > bId ? 1 : (aId < bId ? -1 : 0);
-    }
-
-    return result * orderCondition;
-  },
-
-  buildRows: function(pins, systems, subscriptions, onClickAction) {
-    return pins.map((p) => {
+    return pinnedMatches.map((p) => {
       const system = systems[p.systemId];
       const systemName = system == null ? "System " + p.systemId : system.name;
       const systemType = system == null ? null : system.type;
@@ -52,34 +35,18 @@ const Pins = React.createClass({
       const subscriptionPolicy = subscription == null ? " " : subscription.policy;
       const subscriptionEndDate = subscription == null ? " " : subscription.endDate;
       const subscriptionPartNumber = subscription == null ? "" : subscription.partNumber;
-      const columns = [
-        <TableCell key="systemId" content={<SystemLabel id={p.systemId} name={systemName} type={systemType} />} />,
-        <TableCell key="subscription" content={subscriptionDescription} />,
-        <TableCell key="policy" content={humanReadablePolicy(subscriptionPolicy)} />,
-        <TableCell key="endDate" content={
-          <ToolTip content={moment(subscriptionEndDate).fromNow()}
-            title={moment(subscriptionEndDate).format("LL")} />}
-        />,
-        <TableCell key="partNumber" content={subscriptionPartNumber} />,
-        <TableCell key="status" content={<PinStatus status={p.status} />} />,
-        <TableCell key="button" content={
-          <PinButton
-            onClick={() => onClickAction(p.id)}
-            content={<span><i className="fa fa-trash-o"></i>{t("Delete Pin")}</span>}
-           />
-          }
-        />
-      ];
-      const rawData = {
+
+      return {
         id: p.id,
+        systemId: p.systemId,
         systemName: systemName,
+        systemType: systemType,
         subscriptionDescription: subscriptionDescription,
         subscriptionPolicy: subscriptionPolicy,
         subscriptionEndDate: subscriptionEndDate,
         subscriptionPartNumber: subscriptionPartNumber,
         status: p.status
-     };
-      return <TableRow key={p.id} columns={columns} rawData={rawData} />
+      };
     });
   },
 
@@ -103,6 +70,7 @@ const Pins = React.createClass({
     this.closePopUp();
   },
 
+
   render: function() {
     const popUpContent = this.state.showPopUp ? <AddPinPopUp products={this.props.products} systems={this.props.systems} subscriptions={this.props.subscriptions} onSavePin={this.savePin} /> : null;
     return (
@@ -118,13 +86,59 @@ const Pins = React.createClass({
         </p>
 
         {this.props.pinnedMatches.length > 0 ?
-          <Table headers={[t("System"), t("Subscription"), t("Policy"), t("End date"), t("Part number"), t("Status"), t("")]}
-            rows={this.buildRows(this.props.pinnedMatches, this.props.systems, this.props.subscriptions, this.onRemovePin)}
-            loadState={() => this.state["table"]}
-            saveState={(state) => {this.state["table"] = state;}}
-            rowComparator={this.rowComparator}
-            sortableColumnIndexes={[0, 1, 2, 3, 4, 5]}
-          /> :
+          <Table key="table"
+            data={this.buildRows(this.props)}
+            identifier={(row) => row.id}
+            loadState={this.props.loadState}
+            saveState={this.props.saveState}
+            initialSortColumnKey="systemName"
+            >
+            <Column
+                columnKey="systemName"
+                comparator={Utils.sortByText}
+                header={t("Part number")}
+                cell={ (p) => <SystemLabel id={p.systemId} name={p.systemName} type={p.systemType} /> }
+                />
+            <Column
+                columnKey="subscriptionDescription"
+                comparator={Utils.sortByText}
+                header={t("Subscription")}
+                cell={ (p) => p.subscriptionDescription }
+                />
+            <Column
+                columnKey="subscriptionPolicy"
+                comparator={Utils.sortByText}
+                header={t("Policy")}
+                cell={ (p) => humanReadablePolicy(p.subscriptionPolicy) }
+                />
+            <Column
+                columnKey="subscriptionEndDate"
+                comparator={Utils.sortByText}
+                header={t("End date")}
+                cell={ (p) => <ToolTip content={moment(p.subscriptionEndDate).fromNow()}
+                                title={moment(p.subscriptionEndDate).format("LL")} /> }
+                />
+            <Column
+                columnKey="subscriptionPartNumber"
+                comparator={Utils.sortByText}
+                header={t("Part number")}
+                cell={ (p) => p.subscriptionPartNumber }
+                />
+            <Column
+                columnKey="status"
+                comparator={Utils.sortByText}
+                header={t("Status")}
+                cell={ (p) => <PinStatus status={p.status} /> }
+                />
+            <Column
+                columnKey="actions"
+                cell={ (p) => <PinButton
+                      onClick={() => this.onRemovePin(p.id)}
+                      content={<span><i className="fa fa-trash-o"></i>{t("Delete Pin")}</span>}
+                      /> }
+                />
+          </Table>
+          :
           <p>{t("No pins defined. You can create one with the button below.")}</p>}
 
         <button type="button" className="btn btn-primary" onClick={this.showPopUp} data-toggle="modal" data-target="#addPinPopUp">
@@ -159,52 +173,21 @@ const PinButton = (props) =>
 ;
 
 const AddPinPopUp = React.createClass({
+
   getInitialState:function() {
-    return {systemId: null};
+    return {
+      systemId: null
+    };
   },
 
-  rowComparator: function(a, b, columnIndex, ascending) {
-    const aRaw = a.props["rawData"];
-    const bRaw = b.props["rawData"];
-    const columnKeyInRawData=["name", "cpuCount"];
-    const columnKey = columnKeyInRawData[columnIndex];
-    const orderCondition = ascending ? 1 : -1;
-
-    const aValue = aRaw[columnKey];
-    const bValue = bRaw[columnKey];
-
-    var result = 0;
-    if (columnKey == "name") {
-      result = aValue.localeCompare(bValue);
-    }
-    if (columnKey == "cpuCount") {
-      result = aValue - bValue;
-    }
-
-    if (result == 0) {
-      const aId = aRaw["id"];
-      const bId = bRaw["id"];
-      result = aId - bId;
-    }
-
-    return result * orderCondition;
+  sortByCpuCount: function(a, b, columnKey, sortDirection) {
+    var result = a[columnKey]- b[columnKey];
+    return (result || Utils.sortById(a, b)) * sortDirection;
   },
 
   buildRows: function() {
     return Object.keys(this.props.systems).map((id) => {
-      const s = this.props.systems[id];
-      const columns = [
-        <TableCell key="system" content={<SystemLabel id={id} name={s.name} type={s.type} />} />,
-        <TableCell key="cpuCount" content={s.cpuCount} />,
-        <ProductTableCell key="products" products={this.props.products} productIds={s.productIds} />,
-        <TableCell key="button" content={
-          <PinButton
-            onClick={() => this.onSystemSelected(id)}
-            content={<span>{t("Select")} <i className="fa fa-arrow-right fa-right"></i></span>}
-          />}
-        />
-      ];
-      return <TableRow key={id} columns={columns} rawData={s} />
+      return this.props.systems[id];
     });
   },
 
@@ -220,6 +203,13 @@ const AddPinPopUp = React.createClass({
     this.props.onSavePin(this.state.systemId, subscriptionId);
   },
 
+  searchData: function(datum, criteria) {
+    if (criteria) {
+      return datum.name.toLowerCase().includes(criteria.toLowerCase());
+    }
+    return true;
+  },
+
   render: function() {
     var popUpContent;
     if (this.state.systemId == null) {
@@ -227,12 +217,46 @@ const AddPinPopUp = React.createClass({
         <div>
           <h4 className="add-pin-popup-subtitle">{t("Available Systems")}</h4>
           <p>{t("Step 1/2: select the system to pin from the table below.")}</p>
-          <Table headers={[t("System"), t("Socket/IFL count"), t("Products"), t("")]} rows={this.buildRows()}
-            rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["name"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-            filterPlaceholder={t("Filter by name")}
-            sortableColumnIndexes={[0, 1]}
-            rowComparator={this.rowComparator}
-          />
+
+          <Table key="table"
+            data={this.buildRows()}
+            identifier={(row) => row.id}
+            loadState={this.props.loadState}
+            saveState={this.props.saveState}
+            initialSortColumnKey="name"
+            searchField={
+                <SearchField filter={this.searchData}
+                    placeholder={t("Filter by name")}/>
+            }>
+            <Column
+                columnKey="name"
+                comparator={Utils.sortByText}
+                header={t("System")}
+                cell={ (s) => <SystemLabel id={s.id} name={s.name} type={s.type} /> }
+                />
+            <Column
+                columnKey="cpuCount"
+                comparator={this.sortByCpuCount}
+                header={t("Socket/IFL count")}
+                cell={ (s) => s.cpuCount }
+                />
+            <Column
+                columnKey="products"
+                header={t("Products")}
+                cell={ (s) =>
+                    <ProductTableCell key="products" products={this.props.products}
+                        productIds={s.productIds} /> }
+                />
+            <Column
+                columnKey="actions"
+                cell={ (s) =>
+                      <PinButton
+                        onClick={() => this.onSystemSelected(s.id)}
+                        content={<span>{t("Select")} <i className="fa fa-arrow-right fa-right"></i></span>}
+                      /> }
+                />
+           </Table>
+
         </div>
       );
     }
@@ -263,59 +287,63 @@ const ProductTableCell = (props) => {
   const productLength = props.productIds.length;
 
   if (productLength == 0){
-    return <TableCell />;
+    return <span/>;
   }
 
   const firstProductName = props.products[props.productIds[0]].productName;
   if (productLength == 1) {
-    return <TableCell content={firstProductName} />;
+    return <span>{firstProductName}</span>;
   }
 
   const productNames = props.productIds
     .map(i => props.products[i].productName)
-    .reduce((previousValue, currentValue) => previousValue + ", " + currentValue)
-  ;
+    .reduce((previousValue, currentValue) => previousValue + ", " + currentValue);
   return (
-    <TableCell content={
       <ToolTip
         content={firstProductName + ", ..."}
         title={productNames}
-      />}
-    />
+      />
   );
 };
 
 const PinSubscriptionSelector = React.createClass({
-  buildRows: function(possibleSubscriptions, onClickAction) {
-    return possibleSubscriptions.map((s) => {
-      const columns = [
-        <TableCell key="partNumber" content={s.partNumber} />,
-        <TableCell key="description" content={s.description} />,
-        <TableCell key="policy" content={humanReadablePolicy(s.policy)} />,
-        <TableCell key="endDate" content={
-          <ToolTip content={moment(s.endDate).fromNow()}
-            title={moment(s.endDate).format("LL")} />}
-        />,
-        <TableCell key="button" content={
-          <PinButton
-            onClick={() => onClickAction(s.id)}
-            content={<span><i className="fa fa-map-pin"></i>{t("Save Pin")}</span>}
-          />}
-        />
-      ];
-      return <TableRow key={s.id} columns={columns} rawData={s} />
-    });
-  },
 
   render: function() {
     if (this.props.subscriptions.length > 0) {
-      return <Table headers={[t("Part number"),t("Description"), t("Policy"), t("End date"), t("")]}
-          rows={
-            this.buildRows(
-              this.props.subscriptions,
-              this.props.onSubscriptionSelected)
-            }
-        />;
+       return (
+          <Table key="table"
+            data={this.props.subscriptions}
+            identifier={(row) => row.id}
+            >
+            <Column
+                columnKey="partNumber"
+                header={t("Part number")}
+                cell={ (s) => s.partNumber }
+                />
+            <Column
+                columnKey="description"
+                header={t("Description")}
+                cell={ (s) => s.description }
+                />
+            <Column
+                columnKey="policy"
+                header={t("Policy")}
+                cell={ (s) => humanReadablePolicy(s.policy) }
+                />
+            <Column
+                columnKey="endDate"
+                header={t("End date")}
+                cell={ (s) => <ToolTip content={moment(s.endDate).fromNow()}
+                                  title={moment(s.endDate).format("LL")} /> }
+                />
+            <Column
+                columnKey="actions"
+                cell={ (s) => <PinButton
+                          onClick={() => this.props.onSubscriptionSelected(s.id)}
+                          content={<span><i className="fa fa-map-pin"></i>{t("Save Pin")}</span>}
+                        /> }
+                />
+          </Table>);
     }
     else {
       return <p>{t("No subscriptions have been found to match this system, considering all products installed, either directly or in virtual guests.")}</p>
