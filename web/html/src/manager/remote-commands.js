@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require("react");
+const ReactDOM = require("react-dom");
 const Buttons = require("../components/buttons");
 const Network = require("../utils/network");
 const AsyncButton = Buttons.AsyncButton;
@@ -56,11 +57,13 @@ class MinionResultView extends React.Component {
               }
            })()}
         </div>
-        {this.state.open && result != null ?
-        <div className="panel-body">
-           <pre id={id + '-results'}>{result}</pre>
-        </div>
-        : undefined }
+        {
+          this.state.open && result != null ?
+            <div className="panel-body">
+               <pre id={id + '-results'}>{result}</pre>
+            </div>
+            : undefined
+        }
       </div>
     )
   }
@@ -117,11 +120,9 @@ class RemoteCommand extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="panel-body">{
-                this.state.result != null ?
-                  this.commandResult(this.state.result) :
-                  <div></div>
-            }</div>
+            <div className="panel-body">
+              {this.commandResult(this.state.result)}
+            </div>
           </div>
       </div>
     );
@@ -130,10 +131,8 @@ class RemoteCommand extends React.Component {
   onPreview() {
     const cmd = this.state.command;
     const target = this.state.target;
-    console.log(cmd);
     return Network.get("/rhn/manager/api/minions/match?target=" + target, "application/json")
         .promise.then(data => {
-            console.log(data);
             this.setState({
               previewed: true,
               started: false,
@@ -156,7 +155,6 @@ class RemoteCommand extends React.Component {
   onRun() {
     const cmd = this.state.command;
     const target = this.state.target;
-    console.log(cmd);
     const m = new Map();
     for(var key of this.state.result.minions.keys()) {
       m.set(key, null);
@@ -170,7 +168,6 @@ class RemoteCommand extends React.Component {
     return Network.post("/rhn/manager/api/minions/cmd?cmd=" + cmd + "&target=" + target,
       null, "application/json"
     ).promise.then(data => {
-        console.log(data);
         this.setState({
           result: {
             minions: object2map(data)
@@ -206,17 +203,13 @@ class RemoteCommand extends React.Component {
   commandResult(result) {
     const elements = [];
     for(var kv of result.minions) {
-       const id = kv[0];
-       const value = kv[1];
-       elements.push(
-          <MinionResultView id={id} result={value} started={this.state.started} />
-       );
-     }
-    return (
-      <div>
-        {elements}
-      </div>
-    );
+      const id = kv[0];
+      const value = kv[1];
+      elements.push(
+        <MinionResultView key={id} id={id} result={value} started={this.state.started} />
+      );
+    }
+    return <div>{elements}</div>;
   }
 }
 
@@ -235,7 +228,7 @@ function errorMessageByStatus(status) {
   }
 }
 
-React.render(
+ReactDOM.render(
   <RemoteCommand />,
   document.getElementById('remote-commands')
 );

@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require("react");
+const ReactDOM = require("react-dom");
 const CustomStatesModule = require("../components/custom-states")
 const CustomStates = CustomStatesModule.CustomStates;
 const MessagesUtils = require("../components/messages").Utils;
@@ -43,8 +44,7 @@ function saveRequest(states) {
     );
 }
 
-React.render(
+ReactDOM.render(
   <CustomStates matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest}/>,
   document.getElementById('custom-states')
 );
-

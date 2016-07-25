@@ -1,98 +1,117 @@
 "use strict";
 
 const React = require("react");
-const TableComponent = require("../components/table");
-const Table = TableComponent.Table;
-const TableCell = TableComponent.TableCell;
-const TableRow = TableComponent.TableRow;
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const UtilComponent = require("./subscription-matching-util");
 const ToolTip = UtilComponent.ToolTip;
 const CsvLink = UtilComponent.CsvLink;
 const humanReadablePolicy = UtilComponent.humanReadablePolicy;
 const WarningIcon =  require("./subscription-matching-util").WarningIcon;
+const {Table, Column, SearchField, Highlight} = require("../components/table");
+const Functions = require("../utils/functions");
+const Utils = Functions.Utils;
 
 const Subscriptions = React.createClass({
   mixins: [StatePersistedMixin],
 
-  rowComparator: function(a, b, columnIndex, ascending) {
-    const columnKeyInRawData=["partNumber", "description", "policy", "quantity", "startDate", "endDate"];
-    const columnKey = columnKeyInRawData[columnIndex];
-    const orderCondition = ascending ? 1 : -1;
-    const aRaw = a.props["rawData"];
-    const bRaw = b.props["rawData"];
+  sortByPolicy: function(aRaw, bRaw, columnKey, sortDirection) {
     var result = 0;
-    if (columnKey == "policy") {
-      const aValue = humanReadablePolicy(aRaw[columnKey]);
-      const bValue = humanReadablePolicy(bRaw[columnKey]);
-      result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
-    }
-    else if (columnKey == "quantity") {
-      const aMatched = aRaw["matchedQuantity"];
-      const aTotal = aRaw["totalQuantity"];
-      const bMatched = bRaw["matchedQuantity"];
-      const bTotal = bRaw["totalQuantity"];
-      const aValue =  aMatched / aTotal;
-      const bValue =  bMatched / bTotal;
-      result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
-    }
-    else {
-      const aValue = aRaw[columnKey];
-      const bValue = bRaw[columnKey];
-      result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
-    }
+    const aValue = humanReadablePolicy(aRaw[columnKey]);
+    const bValue = humanReadablePolicy(bRaw[columnKey]);
+    result = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+    return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
+  },
 
-    if (result == 0) {
-      const aId = aRaw["id"];
-      const bId = bRaw["id"];
-      result = aId > bId ? 1 : (aId < bId ? -1 : 0);
+  sortByQuantity: function(aRaw, bRaw, columnKey, sortDirection) {
+    var result = 0;
+    const aMatched = aRaw["matchedQuantity"];
+    const aTotal = aRaw["totalQuantity"];
+    const bMatched = bRaw["matchedQuantity"];
+    const bTotal = bRaw["totalQuantity"];
+    const aValue =  aMatched / aTotal;
+    const bValue = bMatched / bTotal;
+    result = aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
+    return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
+  },
+
+  searchData: function(datum, criteria) {
+    if (criteria) {
+      return datum.description.toLowerCase().includes(criteria.toLowerCase());
     }
-    return result * orderCondition;
+    return true;
   },
 
   buildRows: function(subscriptions) {
-    return Object.keys(subscriptions).map((id) => {
-      const s = subscriptions[id];
-      const className = moment(s.endDate).isBefore(moment()) ? "text-muted" : null;
-      const warningIcon = moment(s.endDate).isBefore(moment().add(6, "months")) && moment(s.endDate).isAfter(moment()) ?
-        <WarningIcon iconOnRight={true} /> : null;
-
-      const columns = [
-        <TableCell key="partNumber" content={s.partNumber} />,
-        <TableCell key="description" content={s.description} />,
-        <TableCell key="policy" content={humanReadablePolicy(s.policy)} />,
-        <QuantityCell key="quantity" matched={s.matchedQuantity} total={s.totalQuantity} />,
-        <TableCell key="startDate" content={
-          <ToolTip content={moment(s.startDate).fromNow()}
-            title={moment(s.startDate).format("LL")} />}
-        />,
-        <TableCell key="endDate" content={
-          <span>
-            <ToolTip content={moment(s.endDate).fromNow()}
-              title={moment(s.endDate).format("LL")} />
-            {warningIcon}
-          </span>
-        } />,
-      ];
-
-      return <TableRow key={id} className={className} columns={columns} rawData={s} />
-    });
+    return Object.keys(subscriptions).map((id) => subscriptions[id]);
   },
 
   render: function() {
-    var body;
+    let body = null;
     if (Object.keys(this.props.subscriptions).length > 0) {
       body = (
         <div>
-          <Table headers={[t("Part number"), t("Description"), t("Policy"), t("Matched/Total"), t("Start date"), t("End date")]}
-            rows={this.buildRows(this.props.subscriptions)}
+          <Table
+            data={this.buildRows(this.props.subscriptions)}
+            identifier={(row) => row.id}
+            cssClassFunction={(row) => moment(row.endDate).isBefore(moment()) ? "text-muted" : null }
             loadState={this.props.loadState}
             saveState={this.props.saveState}
-            rowFilter={(tableRow, searchValue) => tableRow.props["rawData"]["description"].toLowerCase().indexOf(searchValue.toLowerCase()) > -1}
-            filterPlaceholder={t("Filter by description")}
-            rowComparator={this.rowComparator}
-            sortableColumnIndexes={[0,1,2,3,4,5]}
-          />
+            initialSortColumnKey="partNumber"
+            searchField={
+                <SearchField filter={this.searchData}
+                    criteria={""}
+                    placeholder={t("Filter by description")} />
+            }>
+            <Column
+              columnKey="partNumber"
+              comparator={Utils.sortByText}
+              header={t("Part number")}
+              cell={ (row) => row.partNumber }
+            />
+            <Column
+              columnKey="description"
+              comparator={Utils.sortByText}
+              header={t("Description")}
+              cell={ (row) => row.description }
+            />
+            <Column
+              columnKey="policy"
+              comparator={this.sortByPolicy}
+              header={t("Policy")}
+              cell={ (row) => humanReadablePolicy(row.policy) }
+            />
+            <Column
+              columnKey="quantity"
+              comparator={this.sortByQuantity}
+              header={t("Matched/Total")}
+              cell={ (row) => <QuantityCell matched={row.matchedQuantity} total={row.totalQuantity} /> }
+            />
+            <Column
+              columnKey="startDate"
+              comparator={Utils.sortByText}
+              header={t("Start date")}
+              cell={ (row) =>
+                  <ToolTip content={moment(row.startDate).fromNow()}
+                    title={moment(row.startDate).format("LL")} />
+              }
+            />
+            <Column
+              columnKey="endDate"
+              comparator={Utils.sortByText}
+              header={t("End date")}
+              cell={ (row) =>
+                  <span>
+                    <ToolTip content={moment(row.endDate).fromNow()}
+                      title={moment(row.endDate).format("LL")} />
+                    {
+                      moment(row.endDate).isBefore(moment().add(6, "months")) &&
+                        moment(row.endDate).isAfter(moment()) ?
+                      <WarningIcon iconOnRight={true} /> : null
+                    }
+                  </span>
+              }
+            />
+          </Table>
           <CsvLink name="subscription_report.csv" />
         </div>
       );
@@ -117,17 +136,15 @@ const QuantityCell = (props) => {
 
   if (matched == total) {
     return (
-      <TableCell content={
         <span>
           <strong>{content}</strong>
           &nbsp;
           <i className="fa fa-exclamation-triangle text-warning"></i>
         </span>
-      } />
-    );
+        );
   }
-  return <TableCell content={content} />;
-}
+  return <span>{content}</span>;
+};
 
 module.exports = {
   Subscriptions: Subscriptions,

@@ -2,24 +2,6 @@
 
 const React = require("react")
 
-const mappingComparator = (comparator, map) => (a, b) => comparator(map(a), map(b));
-const mappingFilter = (filter, map) => (cell, filterValue) => filter(map(cell), filterValue);
-
-const stringLocaleComparator = (a, b) => a.localeCompare(b);
-const numberComparator = (a, b) => a > b ? 1 : a === b ? 0 : -1;
-
-const lengthComparator = mappingComparator(numberComparator, (x) => x.length);
-
-const stringSubstringFilter = (cell, filterValue) => cell.indexOf(filterValue) > -1;
-
-const generateSubstringHighlightRenderer = (match, nomatch, container) => (cell, filter) => {
-  const elements = cell
-      .split(filter)
-      .map((x, i) => [nomatch(x, i)])
-      .reduce((p, c, i) => p.concat([match(filter, i)].concat(c)))
-  return container(elements)
-}
-
 const cancelable = (promise, onCancel) => {
     var rejectFn;
     var isCanceled = false;
@@ -44,12 +26,6 @@ const cancelable = (promise, onCancel) => {
     };
 }
 
-const stringSubstringHighlight = generateSubstringHighlightRenderer(
-    (match, index) => <span key={"m"+index} style={{backgroundColor: "#f0ad4e", borderRadius: "2px"}}>{ match }</span>,
-    (nomatch, index) => <span key={"n"+index}>{ nomatch }</span>,
-    (elements) => <strong>{ elements }</strong>
-);
-
 function LocalDateTime(date) {
     const padTo = (v) => {
         v = v.toString();
@@ -66,23 +42,22 @@ function LocalDateTime(date) {
            "T" + padTo(hours) + ":" + padTo(minutes) + ":" + padTo(seconds);
 }
 
+function sortById(aRaw, bRaw) {
+  const aId = aRaw["id"];
+  const bId = bRaw["id"];
+  return aId > bId ? 1 : (aId < bId ? -1 : 0);
+}
+
+function sortByText(aRaw, bRaw, columnKey, sortDirection) {
+  var result = aRaw[columnKey].toLowerCase().localeCompare(bRaw[columnKey].toLowerCase());
+  return (result || sortById(aRaw, bRaw)) * sortDirection;
+}
+
 module.exports = {
-    Comparators : {
-        mapping: mappingComparator,
-        locale: stringLocaleComparator,
-        number: numberComparator,
-        length: lengthComparator
-    },
-    Filters: {
-        mapping: mappingFilter,
-        substring: stringSubstringFilter
-    },
-    Renderer: {
-        generate: generateSubstringHighlightRenderer,
-        highlightSubstring: stringSubstringHighlight
-    },
     Utils: {
-        cancelable: cancelable
+        cancelable: cancelable,
+        sortById: sortById,
+        sortByText: sortByText
     },
     Formats: {
         LocalDateTime: LocalDateTime
