@@ -3,7 +3,7 @@
 
 Given(/^I am root$/) do
   uid = `id -u`
-  if ! $?.success? || uid.to_i != 0
+  if !$?.success? || uid.to_i.nonzero?
     raise "You are not root!"
   end
   if $myhostname == "linux"
