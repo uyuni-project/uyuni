@@ -56,4 +56,3 @@ Then(/^the response header "(.*?)" should not be present$/) do |arg1|
     pending('Current driver does not support checking response headers')
   end
 end
-
