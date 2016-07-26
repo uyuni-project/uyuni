@@ -56,3 +56,8 @@ Then(/^the response header "(.*?)" should not be present$/) do |arg1|
     pending('Current driver does not support checking response headers')
   end
 end
+
+Then(/^the login form does not contain a jsessionid$/) do
+  form = find(:xpath, '//form[@name="loginForm"]')
+  refute_includes(form['action'], 'jsessionid=', 'URL rewriting is enabled: jsessionid present')
+end

@@ -34,3 +34,8 @@ Feature: Basic web security measures and recommendations
   Scenario: Obsolete and problematic headers for static content
     Given I retrieve any static resource
     Then the response header "X-WebKit-CSP" should not be present
+
+  Scenario: Do not use jsession id
+    Given I am not authorized
+    Then the login form does not contain a jsessionid
+
