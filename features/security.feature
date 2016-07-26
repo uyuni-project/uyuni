@@ -14,6 +14,10 @@ Feature: Basic web security measures and recommendations
     And the response header "X-Content-Type-Options" should be "nosniff"
     And the response header "X-Permitted-Cross-Domain-Policies" should be "master-only"
 
+  Scenario: Obsolete and problematic headers for non-static content
+    Given I navigate to any non-static page
+    Then the response header "X-WebKit-CSP" should not be present
+
   Scenario: Caching should be enabled for static content
     Given I retrieve any static resource
     Then the response header "Cache-Control" should be "max-age=86400, public"
@@ -25,3 +29,6 @@ Feature: Basic web security measures and recommendations
     And the response header "X-Content-Type-Options" should be "nosniff"
     And the response header "X-Permitted-Cross-Domain-Policies" should be "master-only"
 
+  Scenario: Obsolete and problematic headers for static content
+    Given I retrieve any static resource
+    Then the response header "X-WebKit-CSP" should not be present
