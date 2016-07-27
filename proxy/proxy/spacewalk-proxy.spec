@@ -177,6 +177,26 @@ resources to package update and deployment.
 This package contains the Command rhn_package_manager, which  manages
 an Spacewalk Proxy Server's custom channel.
 
+%package salt
+Summary:        A ZeroMQ Proxy for Salt Minions
+Group:          Applications/Internet
+Requires:       python
+Requires:       python-pyzmq
+Requires:       python-PyYAML
+Requires:       systemd
+
+%if 0%{?suse_version} >= 1210
+BuildRequires: systemd-rpm-macros
+%endif
+
+%{?systemd_requires}
+
+# We don't want proxies and satellites on the same box
+Conflicts:      rhns-satellite-tools
+
+%description salt
+A ZeroMQ Proxy for Salt Minions
+
 %prep
 %setup -q
 
@@ -205,6 +225,13 @@ ln -sf rhn-proxy $RPM_BUILD_ROOT%{_sbindir}/spacewalk-proxy
 pushd %{buildroot}
 find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
+
+mkdir -p %{buildroot}/%{_sysconfdir}/saltproxy
+mkdir -p %{buildroot}/%{_var}/log/saltproxy
+mkdir -p %{buildroot}/%{_sysconfdir}/systemd/system
+install -m 0750 saltproxy/saltproxy %{buildroot}/%{_sbindir}
+install -m 0644 saltproxy/saltproxy.conf %{buildroot}/%{_sysconfdir}/saltproxy
+%__install -D -m 444 saltproxy/saltproxy.service %{buildroot}%{_unitdir}/saltproxy.service
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -298,6 +325,18 @@ fi > /dev/null 2>&1
 
 exit 0
 
+%pre salt
+%service_add_pre saltproxy.service
+
+%post salt
+%service_add_post saltproxy.service
+
+%preun salt
+%service_del_preun saltproxy.service
+
+%postun salt
+%service_del_postun saltproxy.service
+
 %preun broker
 if [ $1 -eq 0 ] ; then
     # nuke the cache
@@ -321,6 +360,14 @@ if [ -n "$1" ] ; then # anything but uninstall
     restorecon /var/cache/rhn/proxy-auth
 fi
 
+
+%files salt
+%defattr(-,root,root)
+%{_sbindir}/saltproxy
+%{_unitdir}/saltproxy.service
+%dir %{_sysconfdir}/saltproxy
+%attr(770,root,root) %dir %{_var}/log/saltproxy
+%config(noreplace) %{_sysconfdir}/saltproxy/saltproxy.conf
 
 %files broker
 %defattr(-,root,root)
