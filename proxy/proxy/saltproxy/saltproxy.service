@@ -1,0 +1,10 @@
+[Unit]
+Description=Salt ZeroMQ Proxy
+After=syslog.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/saltproxy
+
+[Install]
+WantedBy=multi-user.target
