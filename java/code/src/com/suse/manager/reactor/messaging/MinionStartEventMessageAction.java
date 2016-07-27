@@ -68,10 +68,7 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
     protected void doExecute(EventMessage msg) {
         MinionStartEventMessage startEvent = (MinionStartEventMessage) msg;
 
-        // even if there may not be registered, the custom grains and beacons will be
-        // required for registration.
-        // We do it here instead of RegisterMinionEventMessageAction to update them
-        // on every minion restart.
+        // Update custom grains, modules and beacons on every minion restart
         SALT_SERVICE.syncGrains(startEvent.getMinionId());
         SALT_SERVICE.syncModules(startEvent.getMinionId());
         SALT_SERVICE.syncBeacons(startEvent.getMinionId());
