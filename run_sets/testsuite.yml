@@ -72,3 +72,4 @@
 - features/tomcat_errors.feature
 - features/smdba.feature
 #- features/mgr_create_bootstrap_repo.feature
+- features/security.feature
