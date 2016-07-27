@@ -519,6 +519,29 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
+    public List<Long> deleteSchedulesForActionId(List<Long> sids, long aid) {
+        List<MinionServer> minions = MinionServerFactory
+                .lookupByIds(sids)
+                .collect(Collectors.toList());
+
+        Map<String, Result<Schedule.Result>> results = deleteSchedule(
+                "scheduled-action-" + aid,
+                new MinionList(minions.stream()
+                        .map(MinionServer::getMinionId)
+                        .collect(Collectors.toList())
+                )
+        );
+        return minions.stream().filter(minionServer -> {
+            Schedule.Result result = results.get(minionServer.getMinionId()).result().get();
+            return result != null && result.getResult();
+        })
+          .map(MinionServer::getId)
+          .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Optional<Map<String, Network.Interface>> getNetworkInterfacesInfo(
             String minionId) {
         return callSync(Network.interfaces(), minionId);
