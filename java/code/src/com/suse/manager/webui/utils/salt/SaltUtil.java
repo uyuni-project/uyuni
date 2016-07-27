@@ -1,3 +1,6 @@
+/**
+ * CHECKSTYLE:OFF
+ */
 package com.suse.manager.webui.utils.salt;
 
 import com.google.gson.reflect.TypeToken;
@@ -8,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * TODO move to netapi
+ * This is in salt-netapi-client with:
  * https://github.com/SUSE/salt-netapi-client/pull/168
  */
 public class SaltUtil {

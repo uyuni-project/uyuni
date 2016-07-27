@@ -200,7 +200,7 @@ public interface SaltService {
      * Call 'saltutil.sync_beacons' to sync the beacons to the target minion(s).
      * @param target a target glob
      */
-    public void syncBeacons(String target);
+    void syncBeacons(String target);
 
     /**
      * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
