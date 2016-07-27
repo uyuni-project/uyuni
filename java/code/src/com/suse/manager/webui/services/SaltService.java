@@ -277,6 +277,15 @@ public interface SaltService {
     Map<String, Result<Schedule.Result>> deleteSchedule(String name, Target<?> target);
 
     /**
+     * Remove a scheduled task (referenced via action id) on a list of servers.
+     *
+     * @param sids server ids
+     * @param aid action id
+     * @return the list of server ids that successfully removed the action
+     */
+    List<Long> deleteSchedulesForActionId(List<Long> sids, long aid);
+
+    /**
      * Execute a LocalCall synchronously on the default Salt client.
      *
      * @param <T> the return type of the call

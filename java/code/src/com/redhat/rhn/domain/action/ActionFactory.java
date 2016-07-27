@@ -55,8 +55,6 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
@@ -64,9 +62,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
 import com.suse.manager.webui.services.impl.SaltAPIService;
-import com.suse.salt.netapi.calls.modules.Schedule;
-import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.results.Result;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -83,7 +78,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * ActionFactory - the singleton class used to fetch and store
@@ -156,33 +150,6 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Tries to remove a scheduled task on a list of servers
-     * @param sids server ids
-     * @param aid action id
-     * @return the list of server ids that successfully removed the action
-     */
-    public static List<Long> removeSaltSchedule(List<Long> sids, long aid) {
-        List<MinionServer> minions = MinionServerFactory
-                .lookupByIds(sids)
-                .collect(Collectors.toList());
-
-        Map<String, Result<Schedule.Result>> results = SaltAPIService.INSTANCE
-                .deleteSchedule(
-                        "scheduled-action-" + aid,
-                        new MinionList(minions.stream()
-                                .map(MinionServer::getMinionId)
-                                .collect(Collectors.toList())
-                        )
-        );
-        return minions.stream().filter(minionServer -> {
-            Schedule.Result result = results.get(minionServer.getMinionId()).result().get();
-            return result != null && result.getResult();
-        })
-          .map(MinionServer::getId)
-          .collect(Collectors.toList());
-    }
-
-    /**
      * Remove an action for an rhnset of system ids with the given label
      * @param actionId the action to remove
      * @param setLabel the set label to pull the ids from
@@ -193,7 +160,7 @@ public class ActionFactory extends HibernateFactory {
             String setLabel, User user) {
 
         RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
-        List<Long> ids = removeSaltSchedule(
+        List<Long> ids = SaltAPIService.INSTANCE.deleteSchedulesForActionId(
                 new ArrayList<>(set.getElementValues()), actionId);
         int failed = 0;
         for (Long sid : ids) {
