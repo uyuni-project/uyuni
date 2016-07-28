@@ -261,7 +261,7 @@ class BrokerHandler(SharedHandler):
             if not suseLib.accessible(self.fullRequestURL):
                 return apache.HTTP_FORBIDDEN
         if self.authToken:
-            _oto['X-SUSE-Auth-Token'] = self.authToken
+            _oto['X-Suse-Auth-Token'] = self.authToken
 
         log_debug(3, 'Trying to connect to parent')
 
