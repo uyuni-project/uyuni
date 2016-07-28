@@ -18,6 +18,7 @@ import os
 import rpm
 from rhn.i18n import sstr
 from up2date_client import transaction
+from up2date_client import up2dateLog
 
 import gettext
 t = gettext.translation('rhn-client-tools', fallback=True)
@@ -134,6 +135,11 @@ def getInstalledPackageList(msgCallback = None, progressCallback = None,
     for h in dbmatch:
         if h == None:
             break
+        if not (is_utf8(sstr(h['name'])) and is_utf8(sstr(h['version']))
+                and is_utf8(sstr(h['release']))):
+            log = up2dateLog.initLog()
+            log.log_me('Package with invalid character set found: skipping')
+            continue
         package = {
             'name': sstr(h['name']),
             'epoch': h['epoch'],
@@ -175,3 +181,11 @@ def setDebugVerbosity():
         rpm.setVerbosity(rpm.RPMLOG_DEBUG)
     except AttributeError:
         print("extra verbosity not supported in this version of rpm")
+
+def is_utf8(text):
+    """Returns true if text is a valid UTF-8 string, False otherwise."""
+    try:
+        text.decode('utf-8')
+    except UnicodeError:
+        return False
+    return True
