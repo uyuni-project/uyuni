@@ -1,6 +1,6 @@
 [Unit]
 Description=Salt ZeroMQ Proxy
-After=syslog.target
+After=network.target
 
 [Service]
 Type=simple
