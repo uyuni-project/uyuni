@@ -27,10 +27,11 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  apache2
 Requires:       apache2-mod_wsgi
-Requires:       atftp
+Requires(pre):  atftp
 Requires:       spacewalk-backend
 Requires:       spacewalk-proxy-common
 Requires:       python
+Requires(pre):  coreutils
 
 
 %description
@@ -58,6 +59,10 @@ rm -rf %{buildroot}
 
 %post
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
+if [ -d /srv/tftpboot ] then
+    chmod 750 /srv/tftpboot
+    chown wwwrun:tftp /srv/tftpboot
+fi
 
 %files
 %defattr(-,wwwrun,root,-)

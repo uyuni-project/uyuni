@@ -174,7 +174,7 @@ fi
 ################################################################################
 # atftp needs to be able to read this dir, wwwrun needs to write it (bnc#877825)
 ################################################################################
-chown wwwrun.nogroup "$TFTPBOOT"
+chown wwwrun.tftp "$TFTPBOOT"
 chmod 750 "$TFTPBOOT"
 sed -i 's/^ATFTPD_DIRECTORY="\(.*\)"[[:space:]]*$/ATFTPD_DIRECTORY=""/' /etc/sysconfig/atftpd
 sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "$TFTPBOOT"
