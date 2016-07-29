@@ -102,6 +102,14 @@ PKGLIST12 = [
                 "zypper",
                 "yast2-packager",
                 "yast2-pkg-bindings",
+                "libgio-2_0-0",
+                "libgthread-2_0-0",
+                "shared-mime-info",
+                "gio-branding-SLE",
+                "wallpaper-branding-SLE",
+                "glib2-tools",
+                "libelf0"
+
             ]
 
 ENHANCE12 = [
