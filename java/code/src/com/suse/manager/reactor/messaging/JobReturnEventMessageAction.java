@@ -372,7 +372,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             oldPackages.retainAll(newPackages);
         });
 
-        Optional<List<ProductInfo>> productInfo = Optional.of(
+        Optional<List<ProductInfo>> productInfo = Optional.ofNullable(
                 result.getListProducts().getChanges().getRet());
         productInfo
                 .map(JobReturnEventMessageAction::getInstalledProducts)
