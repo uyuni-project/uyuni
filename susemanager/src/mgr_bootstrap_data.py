@@ -108,8 +108,10 @@ PKGLIST12 = [
                 "gio-branding-SLE",
                 "wallpaper-branding-SLE",
                 "glib2-tools",
-                "libelf0"
-
+                "libelf0",
+                "logrotate",
+                "cron",
+                "cronie"
             ]
 
 ENHANCE12 = [
