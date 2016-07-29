@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 56c9cd27d549f43a57bc72e4167699456d9c057e
+-- oracle equivalent source sha1 d562e838a459d956c4da969d504b78d41c491978
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -45,11 +45,15 @@ declare
                                 ('local_override','server_import')
                         and cct.id = cc.confchan_type_id;
 
+    is_virt boolean;
     update_lock numeric;
 begin
     -- lock the rhnServer row to prevent deadlocks
     -- we want rhnServer to be locked first, followed by tables that depend on it
     select id into update_lock from rhnServer where id = server_id_in for update;
+
+        perform rhn_channel.delete_server_channels(server_id_in);
+        -- rhn_channel.clear_subscriptions(server_id_in);
 
         -- filelists
         delete from rhnFileList where id in (
@@ -72,11 +76,21 @@ begin
 		perform rhn_config.delete_channel(configchannel.id);
 	end loop;
 
+      is_virt := exists (
+       select 1
+        from rhnServerEntitlementView
+       where server_id = server_id_in
+         and label in ('virtualization_host', 'virtualization_host_platform')
+      );
+
 	for sgm in servergroups loop
 		perform rhn_server.delete_from_servergroup(
 			sgm.server_id, sgm.server_group_id);
 	end loop;
 
+    if is_virt then
+        perform rhn_entitlements.repoll_virt_guest_entitlements(server_id_in);
+    end if;
 
         -- we're handling this instead of letting an "on delete
         -- set null" do it so that we don't run the risk
@@ -93,7 +107,7 @@ begin
                 where old_server_id = server_id_in
                    or new_server_id = server_id_in;
 
-        perform rhn_channel.clear_subscriptions(server_id_in, 1);
+        perform rhn_channel.clear_subscriptions(server_id_in, 1, 1);
 
         -- A little complicated here, but the goal is to
         -- delete records from rhnVirtualInstace only if we don't
@@ -137,7 +151,6 @@ begin
         -- here, now.  I'm hoping this will help aleviate our deadlock
         -- problem.
 
-        delete from rhnActionApplyStatesResult where server_id = server_id_in;
         delete from rhnActionConfigChannel where server_id = server_id_in;
         delete from rhnActionConfigRevision where server_id = server_id_in;
         delete from rhnActionPackageRemovalFailure where server_id = server_id_in;
@@ -190,8 +203,39 @@ begin
         delete from rhnUserServerPerms where server_id = server_id_in;
 
         delete from rhnServerNetInterface where server_id = server_id_in;
+        delete from rhn_server_monitoring_info where recid = server_id_in;
 
         delete from rhnServerUuid where server_id = server_id_in;
+
+    -- We delete all the probes running directly against this system
+    -- and any probes that were using this Server as a Proxy Scout.
+    DELETE FROM rhn_probe_state PS WHERE PS.probe_id IN (
+     SELECT CP.probe_id
+       FROM rhn_check_probe CP  
+      WHERE CP.host_id = server_id_in
+         OR CP.sat_cluster_id in
+    (SELECT SN.sat_cluster_id
+       FROM rhn_sat_node SN
+      WHERE SN.server_id = server_id_in)
+    );
+
+    DELETE FROM rhn_probe P  WHERE P.recid IN (
+     SELECT CP.probe_id
+       FROM rhn_check_probe CP  
+      WHERE CP.host_id = server_id_in
+         OR CP.sat_cluster_id in
+    (SELECT SN.sat_cluster_id
+       FROM rhn_sat_node SN
+      WHERE SN.server_id = server_id_in)
+    );
+
+        delete from rhn_check_probe where host_id = server_id_in;
+        delete from rhn_host_probe where host_id = server_id_in;
+
+    delete from rhn_sat_cluster where recid in
+      ( select sat_cluster_id from rhn_sat_node where server_id = server_id_in );
+
+        delete from rhn_sat_node where server_id = server_id_in;
 
         delete from rhnPushClient where server_id = server_id_in;
 
