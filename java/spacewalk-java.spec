@@ -5,6 +5,7 @@
 %define realcobsnippetsdir  %{_localstatedir}/lib/cobbler/snippets
 %define cobblerdir          %{_localstatedir}/lib/cobbler
 %define run_checkstyle  1
+%define omit_tests		1
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
