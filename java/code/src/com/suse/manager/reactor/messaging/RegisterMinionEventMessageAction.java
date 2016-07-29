@@ -50,10 +50,14 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
+
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -65,6 +69,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Optional.ofNullable;
+import java.util.stream.IntStream;
 
 /**
  * Event handler to create system records for salt minions.
@@ -186,7 +193,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     .ifPresent(channels -> channels.forEach(server::addChannel));
 
             String osfullname = grains.getValueAsString("osfullname");
-            String osrelease = grains.getValueAsString("osrelease");
+            String osrelease = getOsRelease(minionId, grains);
+
             String kernelrelease = grains.getValueAsString("kernelrelease");
             String osarch = grains.getValueAsString("osarch");
 
@@ -359,6 +367,46 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             LOG.info("Product Base channel not found - refresh SCC sync?");
             return Stream.empty();
         });
+    }
+
+    private String getOsRelease(String minionId, ValueMap grains) {
+        // java port of up2dataUtils._getOSVersionAndRelease()
+        String osRelease = grains.getValueAsString("osrelease");
+        if ("redhat".equalsIgnoreCase(grains.getValueAsString("os"))) {
+            MinionList target = new MinionList(Arrays.asList(minionId));
+            Map<String, Result<String>> whatprovidesRes = SALT_SERVICE.runRemoteCommand(target,
+                    "rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release");
+            // TODO err handling runRemoveCmd
+            if (!whatprovidesRes.isEmpty()) {
+                osRelease = Optional.ofNullable(whatprovidesRes.get(minionId))
+                        .flatMap(Result::result)
+                        .map(pkg -> {
+                            Map<String, Result<String>> pkgQuery = SALT_SERVICE.runRemoteCommand(target,
+                                    "rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" " + pkg);
+                            // TODO err handling runRemoveCmd
+                            return Optional.ofNullable(pkgQuery.get(minionId))
+                                    .flatMap(Result::result)
+                                    .map(this::parseRedhatReleseQuery)
+                                    .map(pkgtags -> {
+                                        String version = Optional.ofNullable(pkgtags.get("VERSION")).flatMap(v -> v.stream().findFirst()).orElse("unknown");
+                                        List<String> provideName = pkgtags.get("PROVIDENAME");
+                                        List<String> provideVersion = pkgtags.get("PROVIDEVERSION");
+                                        int idxReleasever = provideName.indexOf("system-release(releasever)");
+                                        if (idxReleasever > -1) {
+                                            version = provideVersion.size() > idxReleasever ? provideVersion.get(idxReleasever) : "unknown";
+                                        }
+                                        return version;
+                                    }).orElse("unknown");
+                        }).orElse("unknown");
+            }
+        }
+        return osRelease;
+    }
+
+    private Map<String, List<String>> parseRedhatReleseQuery(String result) {
+        return Arrays.stream(result.split("\\r?\\n")).map(line -> line.split("="))
+                .collect(Collectors.toMap(linetoks -> linetoks[0],
+                        linetoks -> Arrays.asList(StringUtils.split(linetoks[1], ","))));
     }
 
     private void mapHardwareGrains(MinionServer server, ValueMap grains) {
