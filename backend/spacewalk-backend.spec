@@ -371,7 +371,7 @@ Provides: rhns-xml-export-libs = 1:%{version}-%{release}
 %description xml-export-libs
 Libraries required by various exporting tools
 
-%if 0%{?rhel} > 5 || 0%{?fedora}
+%if 0%{?rhel} > 5 || 0%{?fedora} || 0%{?suse_version}
 %package cdn
 Summary: CDN tools
 Group: Applications/Internet
@@ -905,7 +905,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %if 0%{?rhel} > 5 || 0%{?fedora} || 0%{?suse_version}
-%files cdn
+%files dn
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/cdn-activate
 %attr(755,root,root) %{_bindir}/cdn-sync
