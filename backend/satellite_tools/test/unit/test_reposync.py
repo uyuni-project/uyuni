@@ -501,6 +501,7 @@ class RepoSyncTest(unittest.TestCase):
         pack.a_pkg = rhn_rpm.RPM_Package(None)
         pack.a_pkg.checksum = 'checksum1'
         pack.a_pkg.checksum_type = 'c_type1'
+        pack.a_pkg.header['epoch'] = 'epoch1'
         pack.checksums[1] = 'checksum1'
 
         mocked_backend = Mock()

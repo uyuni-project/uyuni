@@ -188,6 +188,7 @@ class RepoSync(object):
         self.channel = self.load_channel()
         if not self.channel:
             self.print_msg("Channel %s does not exist." % channel_label)
+            sys.exit(1)
 
         if not url:
             # TODO:need to look at user security across orgs
@@ -355,6 +356,7 @@ class RepoSync(object):
             if self.error_messages:
                 self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
                 sys.exit(1)
+            return elapsed_time
 
     def set_repo_credentials(self, url_dict):
         """Set the credentials in the url_dict['source_url'] url list from the config file"""
