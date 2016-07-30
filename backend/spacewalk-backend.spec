@@ -40,7 +40,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.14
+Version: 2.6.21
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -371,6 +371,7 @@ Provides: rhns-xml-export-libs = 1:%{version}-%{release}
 %description xml-export-libs
 Libraries required by various exporting tools
 
+%if 0%{?rhel} > 5 || 0%{?fedora}
 %package cdn
 Summary: CDN tools
 Group: Applications/Internet
@@ -384,6 +385,7 @@ BuildRequires: python-requests
 
 %description cdn
 Tools for syncing content from Red Hat CDN
+%endif
 
 %prep
 %setup -q
@@ -407,6 +409,12 @@ cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/{__init__.py,usix.py} \
 cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/{checksum.py,cli.py,rhn_deb.py,rhn_mpm.py,rhn_pkg.py,rhn_rpm.py,stringutils.py,fileutils.py,rhnLib.py} \
     $RPM_BUILD_ROOT%{python3rhnroot}/common
 %endif
+
+%if 0%{?rhel} && 0%{?rhel} < 6
+rm -rf $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools
+rm -rf $RPM_BUILD_ROOT%{_bindir}/cdn-*
+%endif
+
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
 
@@ -448,9 +456,13 @@ export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn:/usr/share/rhn
 spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_tools \
-                 $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
+
+%if 0%{?rhel} > 5 || 0%{?fedora}
+spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools
+%endif
+
 %endif
 
 if [ -x %py_libdir/py_compile.py ]; then
@@ -892,14 +904,51 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/exportLib.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
+%if 0%{?rhel} > 5 || 0%{?fedora}
 %files cdn
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/cdn-activate
 %attr(755,root,root) %{_bindir}/cdn-sync
 %dir %{pythonrhnroot}/cdn_tools
 %{pythonrhnroot}/cdn_tools/*.py*
+%endif
 
 %changelog
+* Fri Jul 29 2016 Jan Dobes 2.6.21-1
+- simplify and allow to use other parameters without channel parameter
+- rename to plural to have same parameter as in satsync
+- show more info like in satsync
+- Revert "check if DB is running"
+
+* Fri Jul 29 2016 Jan Dobes 2.6.20-1
+- check if DB is running
+
+* Thu Jul 28 2016 Gennadii Altukhov <galt@redhat.com> 2.6.19-1
+- cdn-sync - add handling of database connection error
+- bugfix - Check connection to a DB is open before make commit()
+- Make reraising of exception compatible with Python 2 and 3. Additional
+  changes to commit 20ba5c63b13b2afe0a4c0340cc5538dae8f5c018
+- simplify condition
+
+* Wed Jul 27 2016 Gennadii Altukhov <galt@redhat.com> 2.6.18-1
+- build cdn-sync only for RHEL > 5 and Fedora
+- cdn-sync - add syncing of kickstart repositories - reposync now doesn't
+  terminate a program if one of channels doesn't exist - add posibility to
+  exclude some repos from syncing
+
+* Wed Jul 27 2016 Jan Dobes 2.6.17-1
+- fixing typo
+- count total time of sync
+
+* Tue Jul 26 2016 Jan Dobes 2.6.16-1
+- distinct by checksum to connect multiple packages with same nevrao to
+  erratum, not only one of them
+- fixing multiple packages in null org without channel - pick the last one
+- support syncing only RPMs metadata
+
+* Tue Jul 26 2016 Eric Herget <eherget@redhat.com> 2.6.15-1
+- 1345843 - sane output when diff of binary config files
+
 * Wed Jul 20 2016 Gennadii Altukhov <galt@redhat.com> 2.6.14-1
 - cdn-sync -  fix pylint warnings and errors
 - bug fix in cache of reposync when several repos assigned on channel

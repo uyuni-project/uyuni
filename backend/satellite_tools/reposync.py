@@ -147,7 +147,7 @@ class RepoSync(object):
     def __init__(self, channel_label, repo_type, url=None, fail=False,
                  quiet=False, noninteractive=False, filters=None,
                  deep_verify=False, no_errata=False, sync_kickstart = False, latest=False,
-                 strict=0):
+                 metadata_only=False, strict=0, excluded_urls=None):
         self.regen = False
         self.fail = fail
         self.quiet = quiet
@@ -159,6 +159,7 @@ class RepoSync(object):
         self.error_messages = []
         self.available_packages = {}
         self.latest = latest
+        self.metadata_only = metadata_only
 
         initCFG('server.susemanager')
         rhnSQL.initDB()
@@ -186,8 +187,7 @@ class RepoSync(object):
         self.repo_plugin = self.load_plugin(repo_type)
         self.channel = self.load_channel()
         if not self.channel:
-            self.print_msg("Channel does not exist.")
-            sys.exit(1)
+            self.print_msg("Channel %s does not exist." % channel_label)
 
         if not url:
             # TODO:need to look at user security across orgs
@@ -202,8 +202,10 @@ class RepoSync(object):
                   and cs.channel_id = :channel_id""")
             h.execute(channel_id=int(self.channel['id']))
             sources = h.fetchall_dict()
+            if excluded_urls is None:
+                excluded_urls = []
             if sources:
-                self.urls = self._format_sources(sources)
+                self.urls = self._format_sources(sources, excluded_urls)
             else:
                 # generate empty metadata and quit
                 taskomatic.add_to_repodata_queue_for_channel_package_subscription(
@@ -220,16 +222,20 @@ class RepoSync(object):
         self.arches = get_compatible_arches(int(self.channel['id']))
         self.strict = strict
 
-    def _format_sources(self, sources):
-        return [
-            dict(
-                id=item['id'],
-                source_url=[item['source_url']],
-                metadata_signed=item['metadata_signed'],
-                label=item['label'],
-                channel_family_id=item['channel_family_id']
-            ) for item in sources
-        ]
+    def _format_sources(self, sources, excluded_urls):
+        ret = []
+        for item in sources:
+            if item['source_url'] not in excluded_urls:
+                ret.append(
+                    dict(
+                        id=item['id'],
+                        source_url=[item['source_url']],
+                        metadata_signed=item['metadata_signed'],
+                        label=item['label'],
+                        channel_family_id=item['channel_family_id']
+                    )
+                )
+        return ret
 
     def load_plugin(self, repo_type):
         """Try to import the repository plugin required to sync the repository
@@ -1099,16 +1105,22 @@ class RepoSync(object):
             to_link = True
             if db_pack['path']:
                 # if the package exists, but under a different org_id we have to download it again
-                if self.match_package_checksum(pack, db_pack):
+                if self.metadata_only or self.match_package_checksum(pack, db_pack):
                     # package is already on disk
                     to_download = False
                     pack.set_checksum(db_pack['checksum_type'], db_pack['checksum'])
                     if db_pack['channel_id'] == channel_id:
                         # package is already in the channel
                         to_link = False
+
                 elif db_pack['channel_id'] == channel_id:
                     # different package with SAME NVREA
                     self.disassociate_package(db_pack)
+
+                # just pass data from DB, they will be used if there is no RPM available
+                pack.checksum = db_pack['checksum']
+                pack.checksum_type = db_pack['checksum_type']
+                pack.epoch = db_pack['epoch']
 
             if to_download or to_link:
                 to_process.append((pack, to_download, to_link))
@@ -1139,10 +1151,9 @@ class RepoSync(object):
             try:
                 self.print_msg("%d/%d : %s" % (index + 1, num_to_process, pack.getNVREA()))
                 if to_download:
-                    pack.path = localpath = plug.get_package(pack)
-                pack.load_checksum_from_header()
-                if to_download:
-                    pack.upload_package(self.channel)
+                    pack.path = localpath = plug.get_package(pack, metadata_only=self.metadata_only)
+                    pack.load_checksum_from_header()
+                    pack.upload_package(self.channel, metadata_only=self.metadata_only)
                     finally_remove(localpath)
                 if to_link:
                     self.associate_package(pack)
@@ -1185,8 +1196,17 @@ class RepoSync(object):
         package['version'] = pack.version
         package['release'] = pack.release
         package['arch'] = pack.arch
-        package['checksum'] = pack.a_pkg.checksum
-        package['checksum_type'] = pack.a_pkg.checksum_type
+        if pack.a_pkg:
+            package['checksum'] = pack.a_pkg.checksum
+            package['checksum_type'] = pack.a_pkg.checksum_type
+            # use epoch from file header because createrepo puts epoch="0" to
+            # primary.xml even for packages with epoch=''
+            package['epoch'] = pack.a_pkg.header['epoch']
+        else:
+            # RPM not available but package metadata are in DB, reuse these values
+            package['checksum'] = pack.checksum
+            package['checksum_type'] = pack.checksum_type
+            package['epoch'] = pack.epoch
         package['channels'] = [{'label': self.channel_label,
                                 'id': self.channel['id']}]
         package['org_id'] = self.channel['org_id']
@@ -1287,17 +1307,21 @@ class RepoSync(object):
             select sequence_nextval('rhn_kstree_id_seq') as id from dual
             """)
         ks_id = row['id']
-        ks_path = 'rhn/kickstart/%s/%s' % (self.channel['org_id'], ks_tree_label)
+        ks_path = 'rhn/kickstart/'
+        if 'org_id' in self.channel and self.channel['org_id']:
+            ks_path += str(self.channel['org_id']) + '/' + CFG.MOUNT_POINT + ks_tree_label
+        else:
+            ks_path += ks_tree_label
 
         row = rhnSQL.execute("""
-            insert into rhnKickstartableTree (id, org_id, label, base_path, channel_id,
-                        kstree_type, install_type, last_modified, created, modified)
-            values (:id, :org_id, :label, :base_path, :channel_id,
-                        ( select id from rhnKSTreeType where label = 'externally-managed'),
-                        ( select id from rhnKSInstallType where label = 'generic_rpm'),
-                        current_timestamp, current_timestamp, current_timestamp)
-            """, id=ks_id, org_id=self.channel['org_id'], label=ks_tree_label,
-                             base_path=os.path.join(CFG.MOUNT_POINT, ks_path), channel_id=self.channel['id'])
+                   insert into rhnKickstartableTree (id, org_id, label, base_path, channel_id, kstree_type,
+                                                     install_type, last_modified, created, modified)
+                   values (:id, :org_id, :label, :base_path, :channel_id,
+                             ( select id from rhnKSTreeType where label = 'externally-managed'),
+                             ( select id from rhnKSInstallType where label = 'generic_rpm'),
+                             current_timestamp, current_timestamp, current_timestamp)""", id=ks_id,
+                             org_id=self.channel['org_id'], label=ks_tree_label, base_path=ks_path,
+                             channel_id=self.channel['id'])
 
         insert_h = rhnSQL.prepare("""
             insert into rhnKSTreeFile (kstree_id, relative_filename, checksum_id, file_size, last_modified, created, modified)
