@@ -19,7 +19,7 @@ import sys
 import unittest
 import json
 from StringIO import StringIO
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from mock import Mock, patch, call
 
@@ -501,7 +501,7 @@ class RepoSyncTest(unittest.TestCase):
         pack.a_pkg = rhn_rpm.RPM_Package(None)
         pack.a_pkg.checksum = 'checksum1'
         pack.a_pkg.checksum_type = 'c_type1'
-        pack.a_pkg.header['epoch'] = 'epoch1'
+        pack.a_pkg.header = {'epoch': 'epoch1'}
         pack.checksums[1] = 'checksum1'
 
         mocked_backend = Mock()
@@ -920,7 +920,8 @@ class RunScriptTest(unittest.TestCase):
                     'getChannelRepo.return_value': {
                         'chann_1': 'abc',
                         'chann_2': 'def'
-                    }
+                    },
+                    'RepoSync.return_value.sync.return_value': timedelta()
                 }
             ),
             clear_interrupted_downloads=Mock(),
