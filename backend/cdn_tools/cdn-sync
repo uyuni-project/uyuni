@@ -7,6 +7,7 @@ import os
 from spacewalk.cdn_tools.constants import CDN_REPODATA_ROOT
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.cdn_tools.cdnsync import CdnSync
+from spacewalk.server import rhnSQL
 from spacewalk.common.usix import raise_with_tb
 from rhn import rhnLockfile
 from spacewalk.server.importlib.importLib import InvalidArchError, \
@@ -34,6 +35,7 @@ def process_commandline():
     parser.add_argument("-c", "--channel", action="append", help="Sync this channel only.")
     parser.add_argument("--no-packages", action="store_true", help="Do not sync packages.")
     parser.add_argument("--no-errata", action="store_true", help="Do not sync errata.")
+    parser.add_argument("--no-kickstarts", action="store_true", help="Do not sync kickstart repositories.")
     parser.add_argument("--clear-cache", action="store_true", help="Delete partially synced channels.")
     parser.add_argument('--http-proxy', action='store', help="alternative http proxy (hostname:port)")
     parser.add_argument('--http-proxy-username', action='store', help="alternative http proxy username")
@@ -43,6 +45,7 @@ def process_commandline():
     parser.add_argument('-p', '--print-configuration', action='store_true', help='print the configuration and exit')
     parser.add_argument('--count-packages', action='store_true', help="Count number of packages in all"
                         "repositories for every channel")
+    parser.add_argument("--no-rpms", action="store_true", help="Do not sync RPMs (debug only)")
 
     cmd_args = parser.parse_args()
 
@@ -99,10 +102,9 @@ if __name__ == '__main__':
             cdnsync.count_packages()
         elif args.clear_cache:
             cdnsync.clear_cache()
-        elif args.channel:
-            cdnsync.sync(channels=args.channel, no_packages=args.no_packages, no_errata=args.no_errata)
         else:
-            cdnsync.sync()
+            cdnsync.sync(channels=args.channel, no_packages=args.no_packages, no_errata=args.no_errata,
+                         no_rpms=args.no_rpms, no_kickstarts=args.no_kickstarts)
 
     except KeyboardInterrupt:
         system_exit(0, "\nUser interrupted process.")
@@ -112,11 +114,14 @@ if __name__ == '__main__':
             LOCK.release()
         sys.exit(e.code)
     except rhnLockfile.LockfileLockedException:
-        system_exit(1, "SYNC ERROR: attempting to run more than one instance of satellite-sync. Exiting.")
+        system_exit(1, "SYNC ERROR: attempting to run more than one instance of cdn-sync. Exiting.")
     except (MissingParentChannelError, InvalidChannelFamilyError,
             InvalidChannelError, InvalidArchError):
         e = sys.exc_info()[1]
         system_exit(1, "SYNC ERROR: %s. Exiting." % str(e))
+    except rhnSQL.SQLConnectError:
+        e = sys.exc_info()[1]
+        system_exit(20, ["ERROR: Can't connect to the database: %s" % str(e), "Check if your database is running."])
     except Exception:
         e = sys.exc_info()[1]
         if LOCK:
