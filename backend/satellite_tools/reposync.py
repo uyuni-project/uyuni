@@ -350,9 +350,9 @@ class RepoSync(object):
                 taskomatic.add_to_erratacache_queue(self.channel_label)
             self.update_date()
             rhnSQL.commit()
-            total_time = datetime.now() - start_time
+            elapsed_time = datetime.now() - start_time
             self.print_msg("Sync completed.")
-            self.print_msg("Total time: %s" % str(total_time).split('.')[0])
+            self.print_msg("Total time: %s" % str(elapsed_time).split('.')[0])
             if self.error_messages:
                 self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
                 sys.exit(1)
