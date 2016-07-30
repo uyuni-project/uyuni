@@ -904,7 +904,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/exportLib.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
-%if 0%{?rhel} > 5 || 0%{?fedora}
+%if 0%{?rhel} > 5 || 0%{?fedora} || 0%{?suse_version}
 %files cdn
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/cdn-activate
