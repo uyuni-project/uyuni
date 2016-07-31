@@ -70,6 +70,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                  and cs in elements(c.sources)
                  ]]>
     </query>
+    <query name="ContentSource.findVendorContentSourceByChannel">
+        <![CDATA[SELECT cs from com.redhat.rhn.domain.channel.ContentSource as cs,
+                      com.redhat.rhn.domain.channel.Channel as c
+                 where cs.org is null
+                 and c = :channel
+                 and cs in elements(c.sources)
+                 ]]>
+    </query>
 
 
 

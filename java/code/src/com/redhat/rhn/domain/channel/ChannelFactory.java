@@ -143,10 +143,16 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<ContentSource> lookupContentSources(Org org, Channel c) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("org", org);
         params.put("channel", c);
-        return singleton.listObjectsByNamedQuery(
-                "ContentSource.findByOrgandChannel", params);
+        if (org != null) {
+            params.put("org", org);
+            return singleton.listObjectsByNamedQuery(
+                    "ContentSource.findByOrgandChannel", params);
+        }
+        else {
+            return singleton.listObjectsByNamedQuery(
+                    "ContentSource.findVendorContentSourceByChannel", params);
+        }
     }
 
     /**
