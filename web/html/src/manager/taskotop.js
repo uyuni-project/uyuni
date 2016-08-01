@@ -40,6 +40,14 @@ const TaskoTop = React.createClass({
       });
   },
 
+  sortByStatus: function(aRaw, bRaw, columnKey, sortDirection) {
+    var statusValues = {'running': 0, 'ready_to_run': 1, 'failed': 2, 'interrupted': 3, 'skipped': 4, 'finished': 5 };
+    var a = statusValues[aRaw[columnKey]];
+    var b = statusValues[bRaw[columnKey]];
+    var result = a > b ? 1 : (a < b ? -1 : 0);
+    return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
+  },
+
   searchData: function(datum, criteria) {
       if (criteria) {
         return datum.name.toLowerCase().includes(criteria.toLowerCase());
@@ -80,7 +88,7 @@ const TaskoTop = React.createClass({
             data={this.buildRows(data)}
             identifier={(row) => row["id"]}
             cssClassFunction={(row) => row["status"] == 'skipped' ? 'text-muted' : null }
-            initialSortColumnKey="id"
+            initialSortColumnKey="status"
             searchField={
                 <SearchField filter={this.searchData}
                     criteria={""}
@@ -118,7 +126,7 @@ const TaskoTop = React.createClass({
             />
             <Column
               columnKey="status"
-              // comparator={this.sortByText}
+              comparator={this.sortByStatus}
               header={t("Status")}
               cell={ (row) => this.decodeStatus(row["status"]) }
             />
