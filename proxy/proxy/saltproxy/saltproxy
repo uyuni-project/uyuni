@@ -34,6 +34,7 @@ import logging.handlers
 
 import yaml
 import os
+import re
 import signal
 import socket
 import sys
@@ -43,6 +44,7 @@ import time
 import zmq
 
 
+RHN_CONF_FILE = "/etc/rhn/rhn.conf"
 SALT_PROXY_CONF_FILE = "/etc/saltproxy/saltproxy.conf"
 SALT_PROXY_LOGFILE = "/var/log/saltproxy/saltproxy.log"
 SUPERVISOR_TIMEOUT = 5
@@ -296,6 +298,14 @@ class SaltProxy(object):
 
 
 if __name__ == "__main__":
+    # Try to get config from /etc/rhn/rhn.conf
+    rhn_parent = None
+    if os.path.isfile(RHN_CONF_FILE):
+        for line in open(RHN_CONF_FILE).readlines():
+            rhn_parent_re = re.search("^proxy.rhn_parent = (.+)", line)
+            if rhn_parent_re:
+                rhn_parent = rhn_parent_re.group(1)
+
     # Check for the config file
     if not os.path.isfile(SALT_PROXY_CONF_FILE):
         sys.exit("Config file not found: {0}".format(SALT_PROXY_CONF_FILE))
@@ -315,6 +325,10 @@ if __name__ == "__main__":
             sys.exit("Bad format in config file: {0}".format(SALT_PROXY_CONF_FILE))
 
         saltproxy_opts = _DEFAULT_OPTS.copy()
+
+        if rhn_parent:
+            saltproxy_opts.update({"master": rhn_parent})
+
         saltproxy_opts.update(config)
         proxy = SaltProxy(opts=saltproxy_opts)
         proxy.start()
