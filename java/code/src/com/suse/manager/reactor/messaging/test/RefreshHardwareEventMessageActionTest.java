@@ -441,44 +441,28 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     private void setupX86Stubs(SaltService apiMock, String minionId,
             String primaryIpFilename) {
         context().checking(new Expectations() { {
-            List<Smbios.Record> smbiosSystem =
-                    parse("smbios.records.system", ARCH_X86,
-                            Smbios.records(RecordType.SYSTEM)
-                                    .getReturnType());
-            allowing(apiMock).getDmiRecords(minionId,
-                    RecordType.SYSTEM);
-            will(returnValue(
-                    Optional.of(smbiosSystem.get(0).getData())));
+            List<Smbios.Record> smbiosSystem = parse("smbios.records.system", ARCH_X86,
+                    Smbios.records(RecordType.SYSTEM).getReturnType());
+            allowing(apiMock).getDmiRecords(minionId, RecordType.SYSTEM);
+            will(returnValue(Optional.of(smbiosSystem.get(0).getData())));
 
-            List<Smbios.Record> smbiosBios =
-                    parse("smbios.records.bios", ARCH_X86,
-                            Smbios.records(RecordType.BIOS)
-                                    .getReturnType());
-            allowing(apiMock).getDmiRecords(minionId,
-                    RecordType.BIOS);
+            List<Smbios.Record> smbiosBios = parse("smbios.records.bios", ARCH_X86,
+                    Smbios.records(RecordType.BIOS).getReturnType());
+            allowing(apiMock).getDmiRecords(minionId, RecordType.BIOS);
             will(returnValue(Optional.of(smbiosBios.get(0).getData())));
 
-            List<Smbios.Record> smbiosChassis =
-                    parse("smbios.records.chassis", ARCH_X86,
-                            Smbios.records(RecordType.CHASSIS)
-                                    .getReturnType());
-            allowing(apiMock).getDmiRecords(minionId,
-                    RecordType.CHASSIS);
-            will(returnValue(
-                    Optional.of(smbiosChassis.get(0).getData())));
+            List<Smbios.Record> smbiosChassis = parse("smbios.records.chassis",
+                    ARCH_X86, Smbios.records(RecordType.CHASSIS).getReturnType());
+            allowing(apiMock).getDmiRecords(minionId, RecordType.CHASSIS);
+            will(returnValue(Optional.of(smbiosChassis.get(0).getData())));
 
-            List<Smbios.Record> smbiosBaseboard =
-                    parse("smbios.records.chassis", ARCH_X86,
-                            Smbios.records(RecordType.BASEBOARD)
-                                    .getReturnType());
-            allowing(apiMock).getDmiRecords(minionId,
-                    RecordType.BASEBOARD);
-            will(returnValue(
-                    Optional.of(smbiosBaseboard.get(0).getData())));
+            List<Smbios.Record> smbiosBaseboard = parse("smbios.records.chassis",
+                    ARCH_X86, Smbios.records(RecordType.BASEBOARD).getReturnType());
+            allowing(apiMock).getDmiRecords(minionId, RecordType.BASEBOARD);
+            will(returnValue(Optional.of(smbiosBaseboard.get(0).getData())));
             allowing(apiMock).getCpuInfo(minionId);
             Map<String, Object> cpuinfo =
-                    parse("status.cpuinfo", ARCH_X86,
-                            Status.cpuinfo().getReturnType());
+                    parse("status.cpuinfo", ARCH_X86, Status.cpuinfo().getReturnType());
             will(returnValue(Optional.of(cpuinfo)));
 
             Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse(primaryIpFilename,
@@ -574,5 +558,4 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
             throw new RuntimeException(filename, e);
         }
     }
-
 }
