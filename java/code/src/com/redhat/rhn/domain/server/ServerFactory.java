@@ -40,7 +40,10 @@ import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 
 import java.sql.Types;
 import java.util.ArrayList;
@@ -155,6 +158,29 @@ public class ServerFactory extends HibernateFactory {
         params.put("server", s);
         return singleton.listObjectsByNamedQuery(
                 "Device.findStorageByServer", params);
+    }
+
+    /**
+     * Looks up a proxy server by hostname.
+     * @param hostname the hostname
+     * @return the server, if it is found
+     */
+    @SuppressWarnings("unchecked")
+    public static Optional<Server> lookupProxyServer(String hostname) {
+        DetachedCriteria matchingNameServerIds = DetachedCriteria.forClass(Network.class)
+                .add(Restrictions.eq("hostname", hostname))
+                .setProjection(Projections.property("server.id"));
+
+        DetachedCriteria proxyIds = DetachedCriteria.forClass(ProxyInfo.class)
+                .setProjection(Projections.property("server.id"));
+
+        List<Server> result = (List<Server>) HibernateFactory.getSession()
+            .createCriteria(Server.class)
+            .add(Subqueries.propertyIn("id", matchingNameServerIds))
+            .add(Subqueries.propertyIn("id", proxyIds))
+            .list();
+
+        return result.stream().findFirst();
     }
 
     /**
