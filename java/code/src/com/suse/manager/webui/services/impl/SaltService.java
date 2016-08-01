@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
@@ -59,6 +60,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -810,5 +812,22 @@ public class SaltService {
      */
     public String getCustomStateBaseDir(long orgId) {
         return customSaltStorageManager.getBaseDirPath();
+    }
+
+    /**
+     * Gets a minion's master hostname.
+     *
+     * @param minionId the minion id
+     * @return the master hostname
+     * @throws SaltException in case the hostname cannot be found
+     */
+    public String getMasterHostname(String minionId) throws SaltException {
+        return callSync(
+            new LocalCall<>("config.get",
+                    Optional.of(Arrays.asList("master")),
+                    Optional.empty(),
+                    new TypeToken<String>(){}
+            ), minionId)
+        .orElseThrow(() -> new SaltException("master not found in minion configuration"));
     }
 }
