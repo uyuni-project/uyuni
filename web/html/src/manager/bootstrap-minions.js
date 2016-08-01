@@ -18,9 +18,10 @@ class BootstrapMinions extends React.Component {
             password: "",
             activationKey: "",
             ignoreHostKeys: true,
+            manageWithSSH: false,
             messages: []
         };
-        ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "activationKeyChanged", "clearFields"]
+        ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "manageWithSSHChanged", "activationKeyChanged", "clearFields"]
             .forEach(method => this[method] = this[method].bind(this));
     }
 
@@ -54,6 +55,12 @@ class BootstrapMinions extends React.Component {
         });
     }
 
+    manageWithSSHChanged(event) {
+        this.setState({
+            manageWithSSH: event.target.checked
+        });
+    }
+
     activationKeyChanged(event) {
         this.setState({
             activationKey: event.target.value
@@ -68,6 +75,7 @@ class BootstrapMinions extends React.Component {
         formData['password'] = this.state.password.trim();
         formData['activationKeys'] = this.state.activationKey === "" ? [] : [this.state.activationKey] ;
         formData['ignoreHostKeys'] = this.state.ignoreHostKeys;
+        formData['manageWithSSH'] = this.state.manageWithSSH;
 
         const request = Network.post(
             "/rhn/manager/api/minions/bootstrap",
@@ -102,6 +110,7 @@ class BootstrapMinions extends React.Component {
           password: "",
           activationKey: "",
           ignoreHostKeys: true,
+          manageWithSSH: false,
           messages: []
       });
       return;
@@ -176,6 +185,17 @@ class BootstrapMinions extends React.Component {
                             <label>
                                 <input name="ignoreHostKeys" type="checkbox" checked={this.state.ignoreHostKeys} onChange={this.ignoreHostKeysChanged}/>
                                 <span>Disable strict host key checking</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <div className="col-md-3"></div>
+                    <div className="col-md-6">
+                        <div className="checkbox">
+                            <label>
+                                <input name="manageWithSSH" type="checkbox" checked={this.state.manageWithSSH} onChange={this.manageWithSSHChanged}/>
+                                <span>Manage system completely via SSH (will not install an agent)</span>
                             </label>
                         </div>
                     </div>
