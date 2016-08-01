@@ -14,7 +14,25 @@
  */
 package com.suse.manager.webui.controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.apache.http.HttpStatus;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.redhat.rhn.domain.formula.Formula;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -25,14 +43,13 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.webui.services.impl.SaltService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
+import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
 /**
  * Controller class providing backend code for the minions page.
@@ -41,6 +58,11 @@ public class MinionController {
 
     // Reference to the SaltService instance
     private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
+
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
+            .serializeNulls()
+            .create();
 
     private MinionController() { }
 
@@ -234,5 +256,188 @@ public class MinionController {
                 .collect(Collectors.toList());
         data.put("availableActivationKeys", visibleBootstrapKeys);
         return new ModelAndView(data, "minion/bootstrap.jade");
+    }
+
+    /**
+     * Handler for the server group formula page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView serverGroupFormula(Request request, Response response,
+                                                       User user) {
+        String serverGroupId = request.queryParams("sgid");
+        Map<String, Object> data = new HashMap<>();
+        data.put("groupId", serverGroupId);
+        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(new Long(serverGroupId),
+                user.getOrg()).getName());
+        data.put("info", FlashScopeHelper.flash(request));
+        return new ModelAndView(data, "groups/formulas.jade");
+    }
+
+    /**
+     * Return the JSON data to render a server groups formula selection page.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the JSON data
+     */
+    public static String serverGroupFormulaData(Request request, Response response, User user) {
+    	Map<String, Object> data = new HashMap<>();
+
+        String server_formulas = FormulaFactory.getFormulasByServerGroup(request.params("sgid"));
+		data.put("selected", server_formulas);
+		data.put("formulas", FormulaCatalogController.listFormulas());
+
+		response.type("application/json");
+		return GSON.toJson(data);
+    }
+
+    /**
+     * Handler to save a server groups selected formula.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return
+     */
+    public static String serverGroupFormulaApply(Request request, Response response, User user) {
+    	// Get data from request
+		Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
+    	String groupId = (String) map.get("groupId");
+    	String selectedFormula = (String) map.get("selectedFormula");
+
+    	try {
+    		if (selectedFormula.equals("none"))
+    			for (Server server : ServerGroupFactory.lookupByIdAndOrg(new Long(groupId), user.getOrg()).getServers())
+    				FormulaFactory.deleteServerFormula(server.getId());
+
+			FormulaFactory.saveServerGroupFormulas(groupId, selectedFormula);
+    	}
+    	catch (IOException e) {
+    		return errorResponse(response,
+                    Arrays.asList("Error while saving formula data: " + e.getMessage()));
+    	}
+
+        FlashScopeHelper.flash(request, "Formula applied!");
+    	Map<String, String> data = new HashMap<>();
+    	data.put("url", (String) map.get("url"));
+        response.type("application/json");
+        return GSON.toJson(data);
+	}
+
+    /**
+     * Handler for the minion formula page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView minionFormula(Request request, Response response) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("server", ServerFactory.lookupById(new Long(request.queryParams("sid"))));
+        data.put("info", FlashScopeHelper.flash(request));
+        return new ModelAndView(data, "minion/formula.jade");
+    }
+
+    /**
+     * Return the JSON data to render the minions formula edit page.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the JSON data
+     */
+    public static String minionFormulaData(Request request, Response response, User user) {
+        	// Find formulas of server groups
+        	Long serverId = new Long(request.params("sid"));
+        	Server server = ServerFactory.lookupByIdAndOrg(serverId, user.getOrg());
+        	List<ManagedServerGroup> groups = server.getManagedGroups();
+	        List<String> formulasOfGroups = new LinkedList<String>();
+
+        	for (ManagedServerGroup group : groups) {
+        		String group_formula = FormulaFactory.getFormulasByServerGroup(Long.valueOf(group.getId()).toString());
+        		if (!group_formula.equals("none"))
+        			formulasOfGroups.add(group_formula);
+        	}
+
+        	// Find a present formula
+	        Optional<Formula> formula = FormulaFactory.getFormulaByServerId(user.getOrg().getId(), serverId);
+	        Optional<String> formulaName;
+	        String formulaContent = "{}";
+
+	        if (formula.isPresent() && formulasOfGroups.contains(formula.get().getFormulaName())){
+	        	formulaName = Optional.of(formula.get().getFormulaName());
+	        	formulaContent = formula.get().getContent();
+	        }
+	        else
+	        	formulaName = formulasOfGroups.isEmpty() ? Optional.empty() : Optional.of(formulasOfGroups.get(0));
+
+	        // Return the formula data or "null" if no server group has a formula applied
+	        String form_data;
+	        if (formulaName.isPresent()) {
+		        try {
+		        	File parent_formula_file = new File("/usr/share/susemanager/salt/formulas/" + formulaName.get() + "/form.json");
+		        	if (!parent_formula_file.exists())
+		        		form_data = "null";
+		        	else {
+				        FileInputStream fis = new FileInputStream(parent_formula_file);
+				        byte[] parent_form_data = new byte[(int) parent_formula_file.length()];
+				        fis.read(parent_form_data);
+				        fis.close();
+
+				        form_data = "{\"formula_name\":\"" + formulaName.get() + "\", \"values\":" + formulaContent + ", \"layout\":" + new String(parent_form_data, "UTF-8") + "}";
+		        	}
+				} catch (IOException e) {
+					Spark.halt(HttpStatus.SC_NOT_FOUND); // TODO redirect to the default 404 page
+			        return null;
+				}
+	        }
+	        else
+	        	form_data = "null";
+
+	        response.type("application/json");
+			return form_data;
+    }
+
+    /**
+     * Handler to save a minions formula
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return
+     */
+    public static String minionSaveFormula(Request request, Response response, User user) {
+    	// Get data from request
+		Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
+    	String serverId = (String) map.get("serverId");
+    	Map<String, Object> formData = (Map<String, Object>) map.get("content");
+
+    	// Save data
+    	Formula formula = new Formula();
+    	formula.setFormulaName((String) map.get("formula_name"));
+    	formula.setServerId(new Long(serverId));
+    	formula.setOrg(user.getOrg());
+    	formula.setContent(GSON.toJson(formData));
+    	try {
+    		FormulaFactory.saveServerFormula(formula);
+    	}
+    	catch (IOException e) {
+    		return errorResponse(response,
+                    Arrays.asList("Error while saving formula data: " + e.getMessage()));
+    	}
+
+    	// Return answer
+        FlashScopeHelper.flash(request, "Formula saved!");
+    	Map<String, String> data = new HashMap<>();
+    	data.put("url", (String) map.get("url"));
+        response.type("application/json");
+        return GSON.toJson(data);
+	}
+
+    private static String errorResponse(Response response, List<String> errs) {
+        response.type("application/json");
+        response.status(HttpStatus.SC_BAD_REQUEST);
+        return GSON.toJson(errs);
     }
 }

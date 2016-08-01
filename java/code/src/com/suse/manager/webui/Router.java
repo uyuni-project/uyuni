@@ -26,12 +26,13 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 
 import com.suse.manager.webui.controllers.DownloadController;
+import com.suse.manager.webui.controllers.FormulaCatalogController;
+import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.TaskoTop;
-import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 
 import spark.servlet.SparkApplication;
@@ -170,5 +171,31 @@ public class Router implements SparkApplication {
                 DownloadController::downloadPackage);
         head("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
+
+        // Formula catalog
+        get("/manager/formula_catalog",
+                withOrgAdmin(FormulaCatalogController::list), jade);
+        get("/manager/formula_catalog/data",
+                withOrgAdmin(FormulaCatalogController::data));
+        get("/manager/formula_catalog/formula/:name",
+                withCsrfToken(withOrgAdmin(FormulaCatalogController::details)), jade);
+
+        // Formula Management Groups
+        get("/manager/groups/details/formulas",
+                withCsrfToken(withUser(MinionController::serverGroupFormula)),
+                jade);
+        get("/manager/groups/details/formulas/data/:sgid",
+                withOrgAdmin(MinionController::serverGroupFormulaData));
+        post("/manager/groups/details/formulas/apply",
+                withUser(MinionController::serverGroupFormulaApply));
+
+        // Formula Management system
+        get("/manager/systems/details/formula",
+                withCsrfToken(MinionController::minionFormula),
+                jade);
+        get("/manager/systems/details/formula/form/:sid",
+                withUser(MinionController::minionFormulaData));
+        post("/manager/systems/details/formula/form/save",
+                withUser(MinionController::minionSaveFormula));
     }
 }

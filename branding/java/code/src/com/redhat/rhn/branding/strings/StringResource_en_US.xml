@@ -2638,7 +2638,8 @@ You may grant provisioning entitlements _here_.
         <source>System Types Updated</source>
       </trans-unit>
 
-      <trans-unit id="Salt Entitled Servers">
+      <trans-unit id="
+ Entitled Servers">
         <source>Salt</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -2720,6 +2721,15 @@ You may grant provisioning entitlements _here_.
       </trans-unit>
       <trans-unit id="message.actionsCancelledWithErrors">
         <source>{0} action(s) could not be canceled or canceled only partially. {1} action(s) canceled completely.</source>
+      </trans-unit>
+      <trans-unit id="Formulas">
+          <source>Formulas</source>
+      </trans-unit>
+      <trans-unit id="Formula">
+          <source>Formula</source>
+      </trans-unit>
+      <trans-unit id="Formula Catalog">
+          <source>Formula Catalog</source>
       </trans-unit>
     </body>
   </file>
