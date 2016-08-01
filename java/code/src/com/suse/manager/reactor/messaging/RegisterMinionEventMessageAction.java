@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
+import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerStateRevision;
@@ -208,6 +209,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.updateServerInfo();
 
             mapHardwareGrains(server, grains);
+
+            String master = SALT_SERVICE.getMasterHostname(minionId);
+            ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
+                ServerPath path = ServerFactory.createServerPath(server, proxy, master);
+                ServerFactory.save(path);
+            });
 
             ServerFactory.save(server);
 
