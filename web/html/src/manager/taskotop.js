@@ -60,6 +60,13 @@ const TaskoTop = React.createClass({
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   },
 
+  sortByNumber: function(aRaw, bRaw, columnKey, sortDirection) {
+    var a = aRaw[columnKey];
+    var b = bRaw[columnKey];
+    var result = a > b ? 1 : (a < b ? -1 : 0);
+    return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
+  },
+
   searchData: function(datum, criteria) {
       if (criteria) {
         return datum.name.toLowerCase().includes(criteria.toLowerCase());
@@ -132,7 +139,7 @@ const TaskoTop = React.createClass({
             />
             <Column
               columnKey="elapsedTime"
-              // comparator={this.sortByText}
+              comparator={this.sortByNumber}
               header={t("Elapsed Time")}
               cell={ (row) => row["elapsedTime"] == null ? "" : row["elapsedTime"] + ' seconds' }
             />
