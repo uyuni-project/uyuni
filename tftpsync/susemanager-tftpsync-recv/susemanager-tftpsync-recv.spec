@@ -59,7 +59,7 @@ rm -rf %{buildroot}
 
 %post
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
-if [ -d /srv/tftpboot ] then
+if [ -d /srv/tftpboot ]; then
     chmod 750 /srv/tftpboot
     chown wwwrun:tftp /srv/tftpboot
 fi
