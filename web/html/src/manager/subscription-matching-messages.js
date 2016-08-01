@@ -1,25 +1,17 @@
 "use strict";
 
 const React = require("react");
-const TableComponent = require("../components/table");
-const Table = TableComponent.Table;
-const TableCell = TableComponent.TableCell;
-const TableRow = TableComponent.TableRow;
+const {Table, Column, SearchField, Highlight} = require("../components/table");
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const CsvLink = require("./subscription-matching-util").CsvLink;
+const Functions = require("../utils/functions");
+const Utils = Functions.Utils;
 
 const Messages = React.createClass({
   mixins: [StatePersistedMixin],
 
-  rowComparator: function(a, b, columnIndex, ascending) {
-    const orderCondition = ascending ? 1 : -1;
-    const aValue = a.props.message;
-    const bValue = b.props.message;
-    return aValue.toLowerCase().localeCompare(bValue.toLowerCase()) * orderCondition;
-  },
-
   buildRows: function(rawMessages, systems) {
-    const result = rawMessages.map(function(rawMessage, index) {
+    return rawMessages.map(function(rawMessage, index) {
       const data = rawMessage["data"];
       var message;
       var additionalInformation;
@@ -44,13 +36,12 @@ const Messages = React.createClass({
           message = rawMessage["type"];
           additionalInformation = data;
       }
-      const columns = [
-        <TableCell key="message" content={message} />,
-        <TableCell key="additionalInformation" content={additionalInformation} />
-      ];
-      return <TableRow key={index} columns={columns} message={message} />;
+      return {
+        id: index,
+        message: message,
+        info: additionalInformation
+      };
     });
-    return result;
   },
 
   render: function() {
@@ -60,13 +51,26 @@ const Messages = React.createClass({
         <div>
           <p>{t("Please review warning and information messages below.")}</p>
           <Table
-            headers={[t("Message"), t("Additional information")]}
-            rows={this.buildRows(this.props.messages, this.props.systems)}
+            data={this.buildRows(this.props.messages, this.props.systems)}
+            identifier={(row) => row.id}
             loadState={this.props.loadState}
             saveState={this.props.saveState}
-            rowComparator={this.rowComparator}
-            sortableColumnIndexes={[0]}
-          />
+            initialSortColumnKey="message"
+          >
+            <Column
+                columnKey="message"
+                comparator={Utils.sortByText}
+                header={t("Message")}
+                cell={ (row) => row.message }
+            />
+            <Column
+                columnKey="info"
+                comparator={Utils.sortByText}
+                header={t("Additional information")}
+                cell={ (row) => row.info }
+            />
+          </Table>
+
           <CsvLink name="message_report.csv" />
         </div>
       );

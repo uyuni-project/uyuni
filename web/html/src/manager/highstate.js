@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require("react");
+const ReactDOM = require("react-dom");
 const Messages = require("../components/messages").Messages;
 const DateTimePicker = require("../components/datetimepicker").DateTimePicker;
 const AsyncButton = require("../components/buttons").AsyncButton;
@@ -98,7 +99,7 @@ var Highstate = React.createClass({
     }
 });
 
-React.render(
+ReactDOM.render(
     <Highstate />,
     document.getElementById('highstate')
 );
