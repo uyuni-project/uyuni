@@ -1,10 +1,10 @@
 [Unit]
-Description=Salt ZeroMQ Proxy
+Description=Salt ZeroMQ Proxy (broker)
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/sbin/saltproxy
+ExecStart=/usr/bin/salt-broker
 
 [Install]
 WantedBy=multi-user.target
