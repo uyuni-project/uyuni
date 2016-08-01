@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Status;
@@ -44,9 +45,33 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(MinionStartEventMessageAction.class);
 
+    // Reference to the SaltService instance
+    private final SaltService SALT_SERVICE;
+
+    /**
+     * Default constructor.
+     */
+    public MinionStartEventMessageAction() {
+        this(SaltAPIService.INSTANCE);
+    }
+
+    /**
+     * Constructor taking a {@link SaltService} instance.
+     *
+     * @param saltService the salt service to use
+     */
+    public MinionStartEventMessageAction(SaltService saltService) {
+        SALT_SERVICE = saltService;
+    }
+
     @Override
     protected void doExecute(EventMessage msg) {
         MinionStartEventMessage startEvent = (MinionStartEventMessage) msg;
+
+        // Update custom grains, modules and beacons on every minion restart
+        SALT_SERVICE.syncGrains(startEvent.getMinionId());
+        SALT_SERVICE.syncModules(startEvent.getMinionId());
+        SALT_SERVICE.syncBeacons(startEvent.getMinionId());
 
         Optional<MinionServer> minionOpt =
                 MinionServerFactory.findByMinionId(startEvent.getMinionId());
