@@ -94,6 +94,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private String cobblerId;
     private Set<Device> devices;
     private ServerInfo serverInfo;
+    private ServerPath serverPath;
     private CPU cpu;
     private ServerLock lock;
     private ServerUuid serverUuid;
@@ -391,6 +392,25 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public void setServerInfo(ServerInfo serverInfoIn) {
         this.serverInfo = serverInfoIn;
     }
+
+    /**
+     * Gets the server path.
+     *
+     * @return the server path
+     */
+    public ServerPath getServerPath() {
+        return serverPath;
+    }
+
+    /**
+     * Sets the server path.
+     *
+     * @param serverPathIn the new server path
+     */
+    public void setServerPath(ServerPath serverPathIn) {
+        serverPath = serverPathIn;
+    }
+
     /**
      * Gets the last checkin date for this server
      * @return last checkin date
