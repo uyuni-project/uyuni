@@ -33,7 +33,6 @@ import com.suse.salt.netapi.parser.JsonParser;
 import org.apache.commons.io.IOUtils;
 import org.jmock.Expectations;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -441,39 +440,36 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
 
     private void setupX86Stubs(SaltService apiMock, String minionId,
             String primaryIpFilename) {
-        context().checking(new Expectations() {
+        context().checking(new Expectations() { {
+            List<Smbios.Record> smbiosSystem = parse("smbios.records.system", ARCH_X86,
+                    Smbios.records(RecordType.SYSTEM).getReturnType());
+            allowing(apiMock).getDmiRecords(minionId, RecordType.SYSTEM);
+            will(returnValue(Optional.of(smbiosSystem.get(0).getData())));
 
-            {
-                List<Smbios.Record> smbiosSystem = parse("smbios.records.system", ARCH_X86,
-                        Smbios.records(RecordType.SYSTEM).getReturnType());
-                allowing(apiMock).getDmiRecords(minionId, RecordType.SYSTEM);
-                will(returnValue(Optional.of(smbiosSystem.get(0).getData())));
+            List<Smbios.Record> smbiosBios = parse("smbios.records.bios", ARCH_X86,
+                    Smbios.records(RecordType.BIOS).getReturnType());
+            allowing(apiMock).getDmiRecords(minionId, RecordType.BIOS);
+            will(returnValue(Optional.of(smbiosBios.get(0).getData())));
 
-                List<Smbios.Record> smbiosBios = parse("smbios.records.bios", ARCH_X86,
-                        Smbios.records(RecordType.BIOS).getReturnType());
-                allowing(apiMock).getDmiRecords(minionId, RecordType.BIOS);
-                will(returnValue(Optional.of(smbiosBios.get(0).getData())));
+            List<Smbios.Record> smbiosChassis = parse("smbios.records.chassis",
+                    ARCH_X86, Smbios.records(RecordType.CHASSIS).getReturnType());
+            allowing(apiMock).getDmiRecords(minionId, RecordType.CHASSIS);
+            will(returnValue(Optional.of(smbiosChassis.get(0).getData())));
 
-                List<Smbios.Record> smbiosChassis = parse("smbios.records.chassis",
-                        ARCH_X86, Smbios.records(RecordType.CHASSIS).getReturnType());
-                allowing(apiMock).getDmiRecords(minionId, RecordType.CHASSIS);
-                will(returnValue(Optional.of(smbiosChassis.get(0).getData())));
+            List<Smbios.Record> smbiosBaseboard = parse("smbios.records.chassis",
+                    ARCH_X86, Smbios.records(RecordType.BASEBOARD).getReturnType());
+            allowing(apiMock).getDmiRecords(minionId, RecordType.BASEBOARD);
+            will(returnValue(Optional.of(smbiosBaseboard.get(0).getData())));
+            allowing(apiMock).getCpuInfo(minionId);
+            Map<String, Object> cpuinfo =
+                    parse("status.cpuinfo", ARCH_X86, Status.cpuinfo().getReturnType());
+            will(returnValue(Optional.of(cpuinfo)));
 
-                List<Smbios.Record> smbiosBaseboard = parse("smbios.records.chassis",
-                        ARCH_X86, Smbios.records(RecordType.BASEBOARD).getReturnType());
-                allowing(apiMock).getDmiRecords(minionId, RecordType.BASEBOARD);
-                will(returnValue(Optional.of(smbiosBaseboard.get(0).getData())));
-                allowing(apiMock).getCpuInfo(minionId);
-                Map<String, Object> cpuinfo =
-                        parse("status.cpuinfo", ARCH_X86, Status.cpuinfo().getReturnType());
-                will(returnValue(Optional.of(cpuinfo)));
-
-                Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse(primaryIpFilename,
-                        ARCH_X86, SumaUtil.primaryIps().getReturnType());
-                allowing(apiMock).getPrimaryIps(minionId);
-                will(returnValue(Optional.of(ips)));
-            }
-        });
+            Map<SumaUtil.IPVersion, SumaUtil.IPRoute> ips = parse(primaryIpFilename,
+                    ARCH_X86, SumaUtil.primaryIps().getReturnType());
+            allowing(apiMock).getPrimaryIps(minionId);
+            will(returnValue(Optional.of(ips)));
+        } });
     }
 
     private void verifyCompleted(Action action) {
