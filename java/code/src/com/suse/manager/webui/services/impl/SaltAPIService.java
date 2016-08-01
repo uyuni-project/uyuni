@@ -373,6 +373,20 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
+    public void syncBeacons(String target) {
+        try {
+            com.suse.manager.webui.utils.salt.SaltUtil.syncBeacons(
+                    Optional.of(true), Optional.empty()).callSync(SALT_CLIENT,
+                    new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void syncGrains(String target) {
         try {
             SaltUtil.syncGrains(Optional.empty(), Optional.empty()).callSync(SALT_CLIENT,

@@ -63,6 +63,17 @@ public enum SaltStateGeneratorService {
     // Singleton instance of this class
     INSTANCE;
 
+    private static final String PKGSET_COOKIE_PATH = "/var/cache/salt/minion/rpmdb.cookie";
+    private static final int PKGSET_INTERVAL = 5;
+    private static final  Map<String, Object> PKGSET_BEACON_CONFIG;
+    static {
+        PKGSET_BEACON_CONFIG = new HashMap<>();
+        Map<String, Object> pkgSetBeaconProps = new HashMap<>();
+        pkgSetBeaconProps.put("cookie", PKGSET_COOKIE_PATH);
+        pkgSetBeaconProps.put("interval",  PKGSET_INTERVAL);
+        PKGSET_BEACON_CONFIG.put("pkgset", pkgSetBeaconProps);
+    }
+
     /** Logger */
     private static final Logger LOG = Logger.getLogger(SaltStateGeneratorService.class);
 
@@ -112,11 +123,15 @@ public enum SaltStateGeneratorService {
 
             }
             pillar.add("channels", chanPillar);
+
+            // this add the configuration for the beacon that tell us when the
+            // minion packages are modified locally
+            pillar.add("beacons", PKGSET_BEACON_CONFIG);
         }
         catch (JoseException e) {
             LOG.error(String.format(
-                "Generating channel pillar for server with serverId '%s' failed.",
-                minion.getId()), e);
+                    "Generating pillar for server with serverId '%s' failed.",
+                    minion.getId()), e);
         }
 
         try {
