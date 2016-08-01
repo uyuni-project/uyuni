@@ -98,7 +98,7 @@ public class CobblerSyncTask extends RhnJavaJob {
                             .getId(), tree.getDefaultDownloadLocation());
                     if (StringUtils.isNotEmpty(profile.getCobblerId())) {
                         CobblerProfileEditCommand cpec = new CobblerProfileEditCommand(
-                                profile);
+                                profile, false);
                         cpec.store();
                     }
                 }

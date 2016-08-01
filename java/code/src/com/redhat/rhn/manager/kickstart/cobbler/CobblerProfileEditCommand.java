@@ -30,6 +30,9 @@ import java.io.File;
  * @version $Rev$
  */
 public class CobblerProfileEditCommand extends CobblerProfileCommand {
+
+    private boolean callCobblerSync;
+
     /**
      * Constructor
      * @param ksDataIn to sync
@@ -37,7 +40,19 @@ public class CobblerProfileEditCommand extends CobblerProfileCommand {
      */
     public CobblerProfileEditCommand(KickstartData ksDataIn,
             User userIn) {
+        this(ksDataIn, userIn, true);
+    }
+
+    /**
+     * Constructor
+     * @param ksDataIn to sync
+     * @param userIn - user wanting to sync with cobbler
+     * @param cobblerSync - should store() execute a cobbler sync
+     */
+    public CobblerProfileEditCommand(KickstartData ksDataIn,
+            User userIn, boolean cobblerSync) {
         super(ksDataIn, userIn);
+        callCobblerSync = cobblerSync;
     }
 
     /**
@@ -47,7 +62,19 @@ public class CobblerProfileEditCommand extends CobblerProfileCommand {
      * @param ksDataIn to sync
      */
     public CobblerProfileEditCommand(KickstartData ksDataIn) {
+        this(ksDataIn, true);
+    }
+
+    /**
+     * Call this if you want to use the taskomatic_user.
+     *
+     * Useful for automated non-user initiated syncs
+     * @param ksDataIn to sync
+     * @param cobblerSync - should store() execute a cobbler sync
+     */
+    public CobblerProfileEditCommand(KickstartData ksDataIn, boolean cobblerSync) {
         super(ksDataIn);
+        callCobblerSync = cobblerSync;
     }
 
     /**
@@ -76,7 +103,9 @@ public class CobblerProfileEditCommand extends CobblerProfileCommand {
                 prof.setKickstart(cobFileName);
             }
             updateCobblerFields(prof);
-            return new CobblerSyncCommand(user).store();
+            if (callCobblerSync) {
+                return new CobblerSyncCommand(user).store();
+            }
         }
         return null;
     }
