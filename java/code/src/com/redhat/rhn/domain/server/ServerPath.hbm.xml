@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.redhat.rhn.domain.server.ServerPath" table="rhnServerPath">
+        <id name="id" column="server_id">
+            <generator class="foreign">
+                <param name="property">server</param>
+            </generator>
+        </id>
+
+        <one-to-one name="server" class="com.redhat.rhn.domain.server.Server" constrained="true"/>
+        <many-to-one name="proxyServer" column="proxy_server_id" not-null="true" class="com.redhat.rhn.domain.server.Server"/>
+
+        <property name="position" column="position" type="long"/>
+        <property name="hostname" column="hostname" type="string"/>
+
+        <property name="created" column="created" type="date" insert="false" update="false"/>
+        <property name="modified" column="modified" type="date" insert="false" update="false"/>
+    </class>
+</hibernate-mapping>
