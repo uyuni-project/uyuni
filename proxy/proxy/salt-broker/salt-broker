@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 '''
-    saltproxy: A ZeroMQ Proxy for Salt Minions
+    saltbroker: A ZeroMQ Proxy (broker) for Salt Minions
 
     The main process spawns a process for each channel of Salt ZMQ transport:
 
@@ -45,15 +45,15 @@ import zmq
 
 
 RHN_CONF_FILE = "/etc/rhn/rhn.conf"
-SALT_PROXY_CONF_FILE = "/etc/saltproxy/saltproxy.conf"
-SALT_PROXY_LOGFILE = "/var/log/saltproxy/saltproxy.log"
+SALT_BROKER_CONF_FILE = "/etc/salt/broker"
+SALT_BROKER_LOGFILE = "/var/log/salt/broker"
 SUPERVISOR_TIMEOUT = 5
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
 loghandler = logging.handlers.RotatingFileHandler(
-    SALT_PROXY_LOGFILE, maxBytes=200000, backupCount=5)
+    SALT_BROKER_LOGFILE, maxBytes=200000, backupCount=5)
 
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 loghandler.setFormatter(formatter)
@@ -191,9 +191,9 @@ class RetChannelProxy(AbstractChannelProxy):
             raise self.ChannelException(msg)
 
 
-class SaltProxy(object):
+class SaltBroker(object):
     '''
-    Creates a SaltProxy that forward messages and responses from
+    Creates a SaltBroker that forward messages and responses from
     minions to Salt Master by creating a ZeroMQ proxy that manage
     the PUB/RET channels of the Salt ZMQ transport.
     '''
@@ -205,7 +205,7 @@ class SaltProxy(object):
         self.default_sigterm = signal.getsignal(signal.SIGTERM)
         self.pub_proxy_proc = None
         self.ret_proxy_proc = None
-        super(SaltProxy, self).__init__()
+        super(SaltBroker, self).__init__()
 
     def _start_pub_proxy(self):
         '''
@@ -265,7 +265,7 @@ class SaltProxy(object):
 
     def start(self):
         '''
-        Starts a SaltProxy. It spawns the PubChannelProxy and
+        Starts a SaltBroker. It spawns the PubChannelProxy and
         RetChannelProxy processes and also acts like a supervisor
         of these child process respawning them if they died.
         '''
@@ -307,8 +307,8 @@ if __name__ == "__main__":
                 rhn_parent = rhn_parent_re.group(1)
 
     # Check for the config file
-    if not os.path.isfile(SALT_PROXY_CONF_FILE):
-        sys.exit("Config file not found: {0}".format(SALT_PROXY_CONF_FILE))
+    if not os.path.isfile(SALT_BROKER_CONF_FILE):
+        sys.exit("Config file not found: {0}".format(SALT_BROKER_CONF_FILE))
 
     # default config
     _DEFAULT_OPTS = {
@@ -318,19 +318,19 @@ if __name__ == "__main__":
     }
 
     try:
-        config = yaml.load(open(SALT_PROXY_CONF_FILE))
+        config = yaml.load(open(SALT_BROKER_CONF_FILE))
         if not config:
             config = {}
         if not isinstance(config, dict):
-            sys.exit("Bad format in config file: {0}".format(SALT_PROXY_CONF_FILE))
+            sys.exit("Bad format in config file: {0}".format(SALT_BROKER_CONF_FILE))
 
-        saltproxy_opts = _DEFAULT_OPTS.copy()
+        saltbroker_opts = _DEFAULT_OPTS.copy()
 
         if rhn_parent:
-            saltproxy_opts.update({"master": rhn_parent})
+            saltbroker_opts.update({"master": rhn_parent})
 
-        saltproxy_opts.update(config)
-        proxy = SaltProxy(opts=saltproxy_opts)
+        saltbroker_opts.update(config)
+        proxy = SaltBroker(opts=saltbroker_opts)
         proxy.start()
 
     except yaml.scanner.ScannerError as exc:
