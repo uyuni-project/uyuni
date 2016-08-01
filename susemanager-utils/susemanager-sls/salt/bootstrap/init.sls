@@ -41,6 +41,7 @@ salt-minion:
     - enable: True
     - require:
       - pkg: salt-minion-package
+    - watch:
       - file: /etc/salt/minion_id
       - file: /etc/salt/pki/minion/minion.pem
       - file: /etc/salt/pki/minion/minion.pub
@@ -50,6 +51,7 @@ salt-minion:
   service.running:
     - require:
       - pkg: salt-minion-package
+    - watch:
       - file: /etc/salt/minion_id
       - file: /etc/salt/minion.d/susemanager.conf
 {% endif %}
