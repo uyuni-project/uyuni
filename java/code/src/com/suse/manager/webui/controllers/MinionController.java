@@ -23,8 +23,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.redhat.rhn.manager.token.ActivationKeyManager;
-import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +40,7 @@ import spark.Response;
 public class MinionController {
 
     // Reference to the SaltService instance
-    private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
+    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
 
     private MinionController() { }
 

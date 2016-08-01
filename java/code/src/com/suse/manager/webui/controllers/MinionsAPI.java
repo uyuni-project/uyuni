@@ -18,8 +18,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
@@ -64,7 +63,7 @@ public class MinionsAPI {
 
     public static final String SALT_CMD_RUN_TARGETS = "salt_cmd_run_targets";
 
-    private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
+    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())

@@ -41,7 +41,7 @@ import spark.Spark;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.domain.user.User;
-import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
 /**
@@ -108,7 +108,7 @@ public class StateCatalogController {
         Map<String, Object> stateData = new HashMap<>();
         stateData.put("action", "edit");
         stateData.put("name", SaltFileUtils.stripExtension(stateName));
-        Optional<String> content = SaltAPIService.INSTANCE
+        Optional<String> content = SaltService.INSTANCE
                 .getOrgStateContent(user.getOrg().getId(), stateName);
 
         stateData.put("content", content.orElse(""));
@@ -116,7 +116,7 @@ public class StateCatalogController {
         if (!content.isPresent()) {
             stateData.put("errors", Arrays.asList(
                     "'" + stateName + ".sls' was not found in " +
-                    SaltAPIService.INSTANCE
+                    SaltService.INSTANCE
                             .getCustomStateBaseDir(user.getOrg().getId())
             ));
             LOG.warn("Content of '" + stateName + "' was not found on disk");
@@ -135,14 +135,14 @@ public class StateCatalogController {
      */
     public static String content(Request request, Response response, User user) {
         String stateName = request.params("name");
-        String content = SaltAPIService.INSTANCE
+        String content = SaltService.INSTANCE
                 .getOrgStateContent(user.getOrg().getId(), stateName).orElse("");
         response.type("text/plain");
         return content;
     }
 
     private static boolean exists(User user, String stateName) {
-        return SaltAPIService.INSTANCE.orgStateExists(user.getOrg().getId(), stateName);
+        return SaltService.INSTANCE.orgStateExists(user.getOrg().getId(), stateName);
     }
 
     /**
@@ -153,7 +153,7 @@ public class StateCatalogController {
      * @return the JSON data
      */
     public static String data(Request request, Response response, User user) {
-        List<String> data = SaltAPIService.INSTANCE.getCatalogStates(user.getOrg().getId());
+        List<String> data = SaltService.INSTANCE.getCatalogStates(user.getOrg().getId());
         data.replaceAll(e -> StringUtils.substringBeforeLast(e, "."));
         response.type("application/json");
         return GSON.toJson(data);
@@ -193,7 +193,7 @@ public class StateCatalogController {
     public static String delete(Request request, Response response, User user) {
         String name = request.params("name");
         try {
-            SaltAPIService.INSTANCE.deleteCustomState(user.getOrg().getId(), name);
+            SaltService.INSTANCE.deleteCustomState(user.getOrg().getId(), name);
         }
         catch (RuntimeException e) {
             LOG.error("Could not delete state " + name, e);
@@ -214,7 +214,7 @@ public class StateCatalogController {
         }
         // TODO validate content?
         try {
-            SaltAPIService.INSTANCE.saveCustomState(user.getOrg().getId(), name,
+            SaltService.INSTANCE.saveCustomState(user.getOrg().getId(), name,
                     content, previousName, previousChecksum);
         }
         catch (SaltStateExistsException e) {

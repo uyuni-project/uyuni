@@ -14,7 +14,7 @@
  */
 package com.suse.manager.reactor.hardware;
 
-import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Smbios.RecordType;
@@ -64,7 +64,7 @@ public class SaltServiceInvoker {
     }
 
     /**
-     * @see SaltService#getUdevdb(String)
+     * @see SalServicetUdevdb(String)
      * @param minionId the minion id
      * @return the udev db as a map.
      */
