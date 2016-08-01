@@ -149,7 +149,7 @@ class BrokerHandler(SharedHandler):
                 effectiveURI_parts.query,
                 effectiveURI_parts.fragment]))
 
-        if req.method == 'GET':
+        if req.method == 'GET' or 'HEAD':
             self.fullRequestURL = "%s://%s%s" % (self.req.headers_in['REQUEST_SCHEME'], self.rhnParent, effectiveURI)
             self.authToken =  effectiveURI_parts.query
             effectiveURI_parts = urlparse(urlunparse([
