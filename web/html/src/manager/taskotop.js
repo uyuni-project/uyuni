@@ -40,6 +40,18 @@ const TaskoTop = React.createClass({
       });
   },
 
+  sortByEndTime: function(aRaw, bRaw, columnKey, sortDirection) {
+    if (aRaw[columnKey] == null || bRaw[columnKey] == null) {
+      // reset the sortDirection because if 'endTime' is null it means that its status
+      // it's 'running' so we want to keep it at the top of any other rows
+      sortDirection = 1;
+    }
+    var a = aRaw[columnKey] != null ? aRaw[columnKey] : "0000-01-01T00:00:00.000Z";
+    var b = bRaw[columnKey] != null ? bRaw[columnKey] : "0000-01-01T00:00:00.000Z";
+    var result = a.toLowerCase().localeCompare(b.toLowerCase());
+    return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
+  },
+
   sortByStatus: function(aRaw, bRaw, columnKey, sortDirection) {
     var statusValues = {'running': 0, 'ready_to_run': 1, 'failed': 2, 'interrupted': 3, 'skipped': 4, 'finished': 5 };
     var a = statusValues[aRaw[columnKey]];
@@ -88,7 +100,7 @@ const TaskoTop = React.createClass({
             data={this.buildRows(data)}
             identifier={(row) => row["id"]}
             cssClassFunction={(row) => row["status"] == 'skipped' ? 'text-muted' : null }
-            initialSortColumnKey="status"
+            initialSortColumnKey="endTime"
             searchField={
                 <SearchField filter={this.searchData}
                     criteria={""}
@@ -114,7 +126,7 @@ const TaskoTop = React.createClass({
             />
             <Column
               columnKey="endTime"
-              comparator={Utils.sortByText}
+              comparator={this.sortByEndTime}
               header={t("End Time")}
               cell={ (row) => row["endTime"] == null ? "" : moment(row["endTime"]).format("HH:mm:ss") }
             />
