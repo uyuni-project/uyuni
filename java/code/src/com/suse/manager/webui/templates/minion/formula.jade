@@ -1,3 +1,4 @@
+include ./minion-header.jade
 if info
   script(type="text/javascript").
      function flashMessage() {
@@ -8,8 +9,12 @@ else
      function flashMessage() {
          return [];
      }
+     
+#formula
 
-#state-catalog
+script(type='text/javascript').
+    var csrfToken = "#{csrf_token}";
+    var serverId = "#{server.id}";
 
 script(src='/javascript/reactjs/react.bundle.js')
-script(src='/javascript/manager/org-state-catalog.bundle.js')
+script(src='/javascript/manager/minion-formula.bundle.js', type='text/javascript')
