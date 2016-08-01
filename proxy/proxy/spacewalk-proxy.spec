@@ -184,6 +184,7 @@ Requires:       python
 Requires:       python-pyzmq
 Requires:       python-PyYAML
 Requires:       systemd
+Requires(pre):  salt
 
 %if 0%{?suse_version} >= 1210
 BuildRequires: systemd-rpm-macros
@@ -226,12 +227,12 @@ pushd %{buildroot}
 find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
 
-mkdir -p %{buildroot}/%{_sysconfdir}/saltproxy
-mkdir -p %{buildroot}/%{_var}/log/saltproxy
-mkdir -p %{buildroot}/%{_sysconfdir}/systemd/system
-install -m 0750 saltproxy/saltproxy %{buildroot}/%{_sbindir}
-install -m 0644 saltproxy/saltproxy.conf %{buildroot}/%{_sysconfdir}/saltproxy
-%__install -D -m 444 saltproxy/saltproxy.service %{buildroot}%{_unitdir}/saltproxy.service
+install -m 0750 salt-broker/salt-broker %{buildroot}/%{_bindir}/
+mkdir -p %{buildroot}/%{_sysconfdir}/salt/
+install -m 0644 salt-broker/broker %{buildroot}/%{_sysconfdir}/salt/
+install -d -m 755 %{buildroot}/%{_unitdir}/
+%__install -D -m 444 salt-broker/salt-broker.service %{buildroot}/%{_unitdir}/salt-broker.service
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -326,16 +327,18 @@ fi > /dev/null 2>&1
 exit 0
 
 %pre salt
-%service_add_pre saltproxy.service
+%service_add_pre salt-broker.service
 
 %post salt
-%service_add_post saltproxy.service
+%service_add_post salt-broker.service
+systemctl enable salt-broker.service > /dev/null 2>&1 || :
+systemctl start salt-broker.service > /dev/null 2>&1 || :
 
 %preun salt
-%service_del_preun saltproxy.service
+%service_del_preun salt-broker.service
 
 %postun salt
-%service_del_postun saltproxy.service
+%service_del_postun salt-broker.service
 
 %preun broker
 if [ $1 -eq 0 ] ; then
@@ -363,11 +366,9 @@ fi
 
 %files salt
 %defattr(-,root,root)
-%{_sbindir}/saltproxy
-%{_unitdir}/saltproxy.service
-%dir %{_sysconfdir}/saltproxy
-%attr(770,root,root) %dir %{_var}/log/saltproxy
-%config(noreplace) %{_sysconfdir}/saltproxy/saltproxy.conf
+%{_bindir}/salt-broker
+%{_unitdir}/salt-broker.service
+%config(noreplace) %{_sysconfdir}/salt/broker
 
 %files broker
 %defattr(-,root,root)
