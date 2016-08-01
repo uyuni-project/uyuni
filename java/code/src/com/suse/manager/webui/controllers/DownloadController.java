@@ -133,15 +133,20 @@ public class DownloadController {
      */
     private static String getTokenFromRequest(Request request) {
         Set<String> queryParams = request.queryParams();
-        if (queryParams.size() < 1) {
+        String header = request.headers("X-SUMA-TOKEN");
+        if (queryParams.size() < 1 && StringUtils.isEmpty(header)) {
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("You need a token to access %s", request.pathInfo()));
         }
-        if (queryParams.size() > 1) {
+        if ((queryParams.size() > 1 && StringUtils.isEmpty(header))||
+                (queryParams.size() > 0 && !StringUtils.isEmpty(header))) {
             halt(HttpStatus.SC_BAD_REQUEST, "Only one token is accepted");
         }
-
-        return queryParams.iterator().next();
+        if (queryParams.size() > 0) {
+            return queryParams.iterator().next();
+        } else {
+            return header;
+        }
     }
 
     /**
