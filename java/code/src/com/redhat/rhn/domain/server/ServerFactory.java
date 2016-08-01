@@ -33,6 +33,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 
+import com.suse.utils.Opt;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -170,6 +172,29 @@ public class ServerFactory extends HibernateFactory {
      */
     public static Server createServer() {
         return new Server();
+    }
+
+    /**
+     * Creates a new ServerPath object.
+     *
+     * @param server the server
+     * @param proxyServer the proxy server
+     * @param proxyHostname the proxy hostname
+     * @return the server path
+     */
+    public static ServerPath createServerPath(Server server, Server proxyServer,
+            String proxyHostname) {
+        ServerPath path = new ServerPath();
+        path.setServer(server);
+        path.setProxyServer(proxyServer);
+        long position = Opt.fold(
+            Optional.ofNullable(proxyServer.getServerPath()), // see if the proxy is itself proxied
+            () -> 0L,                                         // normal case: it is not, position is 0
+            p -> p.getPosition() + 1                          // proxied proxy: position is incremented
+        );
+        path.setPosition(position);
+        path.setHostname(proxyHostname);
+        return path;
     }
 
     /**
@@ -378,6 +403,14 @@ public class ServerFactory extends HibernateFactory {
 
         singleton.saveObject(serverIn);
         updateServerPerms(serverIn);
+    }
+
+    /**
+     * Insert or Update a ServerPath.
+     * @param serverIn ServerPath to be stored in database.
+     */
+    public static void save(ServerPath pathIn) {
+        singleton.saveObject(pathIn);
     }
 
     /**
