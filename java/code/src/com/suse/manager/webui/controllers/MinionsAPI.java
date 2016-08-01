@@ -230,8 +230,11 @@ public class MinionsAPI {
             String roster = rosterFilePath.toString();
             LOG.debug("Roster file: " + roster);
 
-            // Apply the bootstrap state
+            // Apply the bootstrap state/register system for SSH based management
             LOG.info("Bootstrapping host: " + input.getHost());
+            if (input.manageWithSSH()) {
+                LOG.info("TODO: Register host for SSH based management");
+            }
             List<String> bootstrapMods = Arrays.asList(
                     ApplyStatesEventMessage.CERTIFICATE, "bootstrap");
             LocalCall<Map<String, State.ApplyResult>> call = State.apply(
