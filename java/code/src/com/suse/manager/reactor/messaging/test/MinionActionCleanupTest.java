@@ -33,11 +33,12 @@ import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs;
+import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 
-import org.jmock.Mock;
+import org.jmock.Expectations;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,18 +79,19 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         running.put(minion.getMinionId(), new Result<>(Xor.right(Collections.emptyList())));
 
         Jobs.Info listJobResult = listJob("jobs.list_job.state.apply.json", action.getId());
+        SaltService saltServiceMock = mock(SaltService.class);
 
-        Mock saltServiceMock = mock(SaltService.class);
-        saltServiceMock.stubs().method("running").will(
-                returnValue(running));
-        saltServiceMock.stubs().method("jobsByMetadata").will(
-                returnValue(jobsByMetadata("jobs.list_jobs.with_metadata.json", action.getId())));
-        saltServiceMock.stubs().method("listJob").will(
-                returnValue(listJobResult));
+        context().checking(new Expectations() { {
+            allowing(saltServiceMock).running(with(any(Target.class)));
+            will(returnValue(running));
+            allowing(saltServiceMock).jobsByMetadata(with(any(Object.class)));
+            will(returnValue(jobsByMetadata("jobs.list_jobs.with_metadata.json", action.getId())));
+            allowing(saltServiceMock).listJob(with(any(String.class)));
+            will(returnValue(listJobResult));
+        } });
 
 
-        SaltService saltService = (SaltService) saltServiceMock.proxy();
-        MinionActionUtils.cleanupMinionActions(saltService);
+        MinionActionUtils.cleanupMinionActions(saltServiceMock);
 
         ServerAction sa = action.getServerActions().stream().findFirst().get();
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
