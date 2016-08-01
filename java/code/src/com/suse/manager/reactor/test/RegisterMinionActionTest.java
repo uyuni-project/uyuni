@@ -48,7 +48,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
-import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Grains;

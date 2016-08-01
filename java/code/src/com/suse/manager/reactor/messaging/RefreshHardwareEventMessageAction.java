@@ -31,7 +31,7 @@ import com.suse.manager.reactor.hardware.SysinfoMapper;
 import com.suse.manager.reactor.hardware.VirtualizationMapper;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltGrains;
-import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;

@@ -29,7 +29,7 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.controllers.StatesAPI;
-import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SaltCustomState;
 import com.suse.manager.webui.utils.SaltPillar;
 import com.suse.manager.webui.utils.TokenBuilder;
@@ -278,7 +278,7 @@ public enum SaltStateGeneratorService {
 
     private void generateCustomStateAssignmentFile(long orgId, String fileName,
         Set<String> stateNames, Path statePath) {
-        stateNames = SaltAPIService.INSTANCE.resolveOrgStates(
+        stateNames = SaltService.INSTANCE.resolveOrgStates(
                 orgId, stateNames);
 
         Path baseDir = statePath.resolve(SALT_CUSTOM_STATES_DIR);

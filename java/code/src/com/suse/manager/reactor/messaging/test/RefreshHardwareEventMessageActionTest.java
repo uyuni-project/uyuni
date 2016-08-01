@@ -18,7 +18,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.RefreshHardwareEventMessage;
 import com.suse.manager.reactor.messaging.RefreshHardwareEventMessageAction;
-import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
@@ -32,6 +32,7 @@ import com.suse.salt.netapi.parser.JsonParser;
 
 import org.apache.commons.io.IOUtils;
 import org.jmock.Expectations;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -52,6 +53,11 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
     private static final String ARCH_X86 = "x86";
     private static final String ARCH_PPC64 = "ppc64";
     private static final String ARCH_S390 = "s390";
+
+    public void setUp() throws Exception {
+        super.setUp();
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }
 
     public void testDmiRuntimeException() throws Exception {
         doTest(ARCH_X86,
