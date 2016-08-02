@@ -182,6 +182,7 @@ Requires:       python
 Requires:       python-pyzmq
 Requires:       python-PyYAML
 Requires:       systemd
+Requires(pre):  %{name}-common
 Requires(pre):  salt
 
 %if 0%{?suse_version} >= 1210
