@@ -19,9 +19,9 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.user.User;
 
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.utils.salt.Config;
 import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
@@ -53,6 +53,7 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
+
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -60,14 +61,13 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.HashSet;
 import java.util.stream.Stream;
 
 /**
@@ -820,12 +820,7 @@ public class SaltService {
      * @param minionId the minion id
      * @return the master hostname
      */
-    public Optional<String> getMasterHostname(String minionId) throws SaltException {
-        return callSync(
-            new LocalCall<>("config.get",
-                    Optional.of(Arrays.asList("master")),
-                    Optional.empty(),
-                    new TypeToken<String>(){}
-            ), minionId);
+    public Optional<String> getMasterHostname(String minionId) {
+        return callSync(Config.master(), minionId);
     }
 }
