@@ -819,15 +819,13 @@ public class SaltService {
      *
      * @param minionId the minion id
      * @return the master hostname
-     * @throws SaltException in case the hostname cannot be found
      */
-    public String getMasterHostname(String minionId) throws SaltException {
+    public Optional<String> getMasterHostname(String minionId) throws SaltException {
         return callSync(
             new LocalCall<>("config.get",
                     Optional.of(Arrays.asList("master")),
                     Optional.empty(),
                     new TypeToken<String>(){}
-            ), minionId)
-        .orElseThrow(() -> new SaltException("master not found in minion configuration"));
+            ), minionId);
     }
 }
