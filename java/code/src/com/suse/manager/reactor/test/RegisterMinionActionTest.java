@@ -50,6 +50,7 @@ import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -255,28 +256,34 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         return baseChannelX8664;
     }
 
+    @SuppressWarnings("unchecked")
     private SaltService setupStubs(SUSEProduct product)
         throws ClassNotFoundException, IOException {
-        Mock saltServiceMock = mock(SaltService.class);
+        SaltService saltService = mock(SaltService.class);
 
         MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        saltServiceMock.stubs().method("getMachineId").with(eq(MINION_ID))
-                .will(returnValue(Optional.of(MACHINE_ID)));
-        saltServiceMock.stubs().method("getGrains").with(eq(MINION_ID))
-                .will(returnValue(getGrains(MINION_ID, "foo")));
-        saltServiceMock.stubs().method("getCpuInfo").with(eq(MINION_ID))
-                .will(returnValue(getCpuInfo(MINION_ID)));
-        saltServiceMock.stubs().method("syncGrains");
-        saltServiceMock.stubs().method("syncModules");
-        List<ProductInfo> pil = new ArrayList<>();
-        ProductInfo pi = new ProductInfo(product.getName(), product.getArch().getLabel(),
-                "descr", "eol", "epoch", "flavor", true, true, "productline",
-                Optional.of("registerrelease"), "release", "repo", "shortname", "summary",
-                "vendor", product.getVersion());
-        pil.add(pi);
-        saltServiceMock.stubs().method("callSync").will(returnValue(Optional.of(pil)));
-
-        SaltService saltService = (SaltService) saltServiceMock.proxy();
+        context().checking(new Expectations() { {
+            allowing(saltService).getMachineId(MINION_ID);
+            will(returnValue(Optional.of(MACHINE_ID)));
+            allowing(saltService).getGrains(MINION_ID);
+            will(returnValue(getGrains(MINION_ID, "foo")));
+            allowing(saltService).getCpuInfo(MINION_ID);
+            will(returnValue(getCpuInfo(MINION_ID)));
+            allowing(saltService).syncGrains(with(any(String.class)));
+            allowing(saltService).syncModules(with(any(String.class)));
+            List<ProductInfo> pil = new ArrayList<>();
+            ProductInfo pi = new ProductInfo(
+                        product.getName(),
+                        product.getArch().getLabel(), "descr", "eol", "epoch", "flavor",
+                        true, true, "productline", Optional.of("registerrelease"),
+                        "release", "repo", "shortname", "summary", "vendor",
+                        product.getVersion());
+            pil.add(pi);
+            allowing(saltService).callSync(
+                     with(any(LocalCall.class)),
+                     with(any(String.class)));
+            will(returnValue(Optional.of(pil)));
+        } });
 
         RegisterMinionEventMessageAction action =
                 new RegisterMinionEventMessageAction(saltService);
