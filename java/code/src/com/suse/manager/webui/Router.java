@@ -66,6 +66,7 @@ public class Router implements SparkApplication {
 
         // Minions API
         post("/manager/api/minions/bootstrap", withOrgAdmin(MinionsAPI::bootstrap));
+        post("/manager/api/minions/bootstrapSSH", withOrgAdmin(MinionsAPI::bootstrapSSH));
         post("/manager/api/minions/cmd", withUser(MinionsAPI::run));
         get("/manager/api/minions/match", withUser(MinionsAPI::match));
         get("/manager/api/minions/keys", withUser(MinionsAPI::listKeys));

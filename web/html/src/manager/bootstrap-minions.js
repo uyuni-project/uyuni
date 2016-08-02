@@ -75,10 +75,9 @@ class BootstrapMinions extends React.Component {
         formData['password'] = this.state.password.trim();
         formData['activationKeys'] = this.state.activationKey === "" ? [] : [this.state.activationKey] ;
         formData['ignoreHostKeys'] = this.state.ignoreHostKeys;
-        formData['manageWithSSH'] = this.state.manageWithSSH;
 
         const request = Network.post(
-            "/rhn/manager/api/minions/bootstrap",
+            this.state.manageWithSSH ? "/rhn/manager/api/minions/bootstrapSSH" : "/rhn/manager/api/minions/bootstrap",
             JSON.stringify(formData),
             "application/json"
         ).promise.then(data => {
