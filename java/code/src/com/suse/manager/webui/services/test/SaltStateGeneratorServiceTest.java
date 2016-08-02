@@ -16,16 +16,20 @@ package com.suse.manager.webui.services.test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -131,6 +135,56 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
             assertTrue(values.containsKey("pkg_gpgcheck"));
             assertEquals("1", (String) values.get("pkg_gpgcheck"));
         }
+    }
+
+    /**
+     * Test that the "host" attribute of the channel of the minion connected to a proxy
+     * is populated with the proxy hostname.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testGeneratePillarForProxyServer() throws Exception {
+        // create a minion
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
+        ServerFactory.addServerToGroup(minion, group);
+        String machineId = TestUtils.randomString();
+        minion.setDigitalServerId(machineId);
+
+        // create a channel for the minion
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        minion.addChannel(channel);
+        ServerFactory.save(minion);
+
+        // create proxy server
+        Server proxy = ServerTestUtils.createTestSystem();
+        String proxyHostname = "proxyHostname";
+
+        // create a serverPath linking the minion to the proxy
+        ServerPath serverPath = ServerFactory.createServerPath(minion, proxy, proxyHostname);
+        ServerFactory.save(serverPath);
+
+        // flush session & refresh the minion object
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().refresh(minion);
+
+        SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+
+        Path filePath = tmpPillarRoot.resolve(
+                PILLAR_DATA_FILE_PREFIX + "_" +
+                minion.getMinionId() + "." +
+                PILLAR_DATA_FILE_EXT);
+
+        Map<String, Object> map;
+        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
+            map = new Yaml().loadAs(fi, Map.class);
+        }
+
+        Map<String, Object> channels = (Map<String, Object>) map.get("channels");
+        assertEquals(1, channels.size());
+        Map<String, Object> channelFromFile = (Map<String, Object>) channels.values().iterator().next();
+        assertEquals(proxyHostname, channelFromFile.get("host"));
     }
 
     public void testGenerateServerCustomState() throws Exception {
