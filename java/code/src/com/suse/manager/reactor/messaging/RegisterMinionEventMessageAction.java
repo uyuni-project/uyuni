@@ -52,6 +52,7 @@ import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.utils.Opt;
@@ -71,7 +72,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Optional.ofNullable;
-import java.util.stream.IntStream;
 
 /**
  * Event handler to create system records for salt minions.
@@ -369,44 +369,69 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         });
     }
 
-    private String getOsRelease(String minionId, ValueMap grains) {
-        // java port of up2dataUtils._getOSVersionAndRelease()
-        String osRelease = grains.getValueAsString("osrelease");
-        if ("redhat".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            MinionList target = new MinionList(Arrays.asList(minionId));
-            Map<String, Result<String>> whatprovidesRes = SALT_SERVICE.runRemoteCommand(target,
-                    "rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release");
-            // TODO err handling runRemoveCmd
-            if (!whatprovidesRes.isEmpty()) {
-                osRelease = Optional.ofNullable(whatprovidesRes.get(minionId))
-                        .flatMap(Result::result)
-                        .map(pkg -> {
-                            Map<String, Result<String>> pkgQuery = SALT_SERVICE.runRemoteCommand(target,
-                                    "rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" " + pkg);
-                            // TODO err handling runRemoveCmd
-                            return Optional.ofNullable(pkgQuery.get(minionId))
-                                    .flatMap(Result::result)
-                                    .map(this::parseRedhatReleseQuery)
-                                    .map(pkgtags -> {
-                                        String version = Optional.ofNullable(pkgtags.get("VERSION")).flatMap(v -> v.stream().findFirst()).orElse("unknown");
-                                        List<String> provideName = pkgtags.get("PROVIDENAME");
-                                        List<String> provideVersion = pkgtags.get("PROVIDEVERSION");
-                                        int idxReleasever = provideName.indexOf("system-release(releasever)");
-                                        if (idxReleasever > -1) {
-                                            version = provideVersion.size() > idxReleasever ? provideVersion.get(idxReleasever) : "unknown";
-                                        }
-                                        return version;
-                                    }).orElse("unknown");
-                        }).orElse("unknown");
-            }
-        }
-        return osRelease;
+    private Optional<String> rpmErrQueryRHELProvidesRelease(String minionId) {
+        LOG.error("No package providing 'redhat-release' found on RHEL minion " + minionId);
+        return Optional.empty();
     }
 
-    private Map<String, List<String>> parseRedhatReleseQuery(String result) {
+    private Optional<String> rpmErrQueryRHELRelease(SaltError err, String minionId) {
+        LOG.error("Error querying 'redhat-release' package on RHEL minion " + minionId + ": " + err);
+        return Optional.empty();
+    }
+
+    private String unknownRHELVersion(String minionId) {
+        LOG.error("Could not determine OS release version for RHEL minion " + minionId);
+        return "unknown";
+    }
+
+    private Map<String, List<String>> parseRHELReleseQuery(String result) {
         return Arrays.stream(result.split("\\r?\\n")).map(line -> line.split("="))
                 .collect(Collectors.toMap(linetoks -> linetoks[0],
                         linetoks -> Arrays.asList(StringUtils.split(linetoks[1], ","))));
+    }
+
+    private String getOsRelease(String minionId, ValueMap grains) {
+        // java port of up2dataUtils._getOSVersionAndRelease()
+        String osRelease = grains.getValueAsString("osrelease");
+
+        if ("redhat".equalsIgnoreCase(grains.getValueAsString("os"))) {
+            MinionList target = new MinionList(Arrays.asList(minionId));
+            Optional<Result<String>> whatprovidesRes = SALT_SERVICE.runRemoteCommand(target,
+                    "rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release").
+                    entrySet().stream().findFirst().map(e -> Optional.of(e.getValue())).orElse(Optional.empty());
+
+            osRelease = whatprovidesRes.flatMap(res -> res.fold(
+                    err -> err.fold(err1 -> rpmErrQueryRHELProvidesRelease(minionId),
+                            err2 -> rpmErrQueryRHELProvidesRelease(minionId),
+                            err3 -> rpmErrQueryRHELProvidesRelease(minionId)),
+                    r -> Optional.of(r)
+            ))
+            .flatMap(pkg ->
+                SALT_SERVICE.runRemoteCommand(target,
+                        "rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" " + pkg)
+                        .entrySet().stream().findFirst().map(e -> e.getValue())
+                        .flatMap(res -> res.fold(
+                                err -> err.fold(err1 -> rpmErrQueryRHELRelease(err1, minionId),
+                                        err2 -> rpmErrQueryRHELRelease(err2, minionId),
+                                        err3 -> rpmErrQueryRHELRelease(err3, minionId)),
+                                r -> Optional.of(r)
+                        ))
+                        .map(this::parseRHELReleseQuery)
+                        .map(pkgtags -> {
+                            Optional<String> version = Optional.ofNullable(pkgtags.get("VERSION")).map(v -> v.stream().findFirst()).orElse(Optional.empty());
+                            List<String> provideName = pkgtags.get("PROVIDENAME");
+                            List<String> provideVersion = pkgtags.get("PROVIDEVERSION");
+                            int idxReleasever = provideName.indexOf("system-release(releasever)");
+                            if (idxReleasever > -1) {
+                                version = provideVersion.size() > idxReleasever ? Optional.of(provideVersion.get(idxReleasever)) : Optional.empty();
+                            }
+                            return version;
+                        })
+                        .orElse(Optional.empty())
+            )
+            .orElseGet(() -> unknownRHELVersion(minionId));
+        }
+        return osRelease;
     }
 
     private void mapHardwareGrains(MinionServer server, ValueMap grains) {
