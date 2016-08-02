@@ -137,7 +137,17 @@ PKGLIST12 = [
                 "python-simplejson",
                 "python-tornado",
                 "salt",
-                "salt-minion"
+                "salt-minion",
+                "libgio-2_0-0",
+                "libgthread-2_0-0",
+                "shared-mime-info",
+                "gio-branding-SLE",
+                "wallpaper-branding-SLE",
+                "glib2-tools",
+                "libelf0",
+                "logrotate",
+                "cron",
+                "cronie"
             ]
 
 ENHANCE12 = [
