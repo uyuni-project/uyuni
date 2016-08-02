@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 
 /**
@@ -85,7 +87,29 @@ public class ProxyInfo {
         this.server = s;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
 
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
+        ProxyInfo proxyInfo = (ProxyInfo) o;
 
+        return new EqualsBuilder()
+                .append(server, proxyInfo.server)
+                .append(version, proxyInfo.version)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(server)
+                .append(version)
+                .toHashCode();
+    }
 }
