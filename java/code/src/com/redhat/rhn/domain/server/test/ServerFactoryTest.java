@@ -48,6 +48,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerInfo;
+import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.server.ServerSnapshotTagLink;
 import com.redhat.rhn.domain.server.SnapshotTag;
@@ -1004,5 +1005,67 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         errataName = out.get(server.getId()).get(ce.getId());
         assertContains(errataName, "slessp4-CL-ecryptfs-utils-12379");
+    }
+
+    /**
+     * Tests assignment of a server path to a minion.
+     * @throws Exception - if anything goes wrong.
+     */
+    public void testCreateServerPath() throws Exception {
+        Server minion = ServerTestUtils.createTestSystem();
+        Server proxy = ServerTestUtils.createTestSystem();
+        String proxyHostname = "proxyHostname";
+        ServerPath serverPath = ServerFactory.createServerPath(minion, proxy, proxyHostname);
+        ServerFactory.save(serverPath);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        assertEquals(serverPath, ServerFactory.lookupById(minion.getId()).getServerPath());
+    }
+
+    /**
+     * Tests that the position of server path of a server behind a proxied proxy is correctly
+     * set.
+     * @throws Exception - if anything goes wrong.
+     */
+    public void testNestedProxyPosition() throws Exception {
+        Server proxiedProxy = ServerTestUtils.createTestSystem();
+        Server proxy = ServerTestUtils.createTestSystem();
+        ServerPath serverPath = ServerFactory.createServerPath(proxiedProxy, proxy, "host1");
+        ServerFactory.save(serverPath);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        HibernateFactory.getSession().refresh(proxiedProxy);
+
+        Server minion = ServerTestUtils.createTestSystem();
+        ServerPath serverPath2 = ServerFactory.createServerPath(minion, proxiedProxy, "host2");
+        ServerFactory.save(serverPath2);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        HibernateFactory.getSession().refresh(minion);
+
+        assertEquals(Long.valueOf(1L), minion.getServerPath().getPosition());
+    }
+
+    /**
+     * Tests looking up of a proxy server by its hostname.
+     * @throws Exception - if anything goes wrong.
+     */
+    public void testLookupProxyServer() throws Exception {
+        Server s = createTestServer(user,
+                false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled(),
+                TYPE_SERVER_PROXY);
+        Network net = NetworkTest.createNetworkInstance();
+        net.setServer(s);
+        TestUtils.saveAndFlush(net);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        assertEquals(s, ServerFactory.lookupProxyServer(net.getHostname()).get());
     }
 }
