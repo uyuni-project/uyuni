@@ -31,7 +31,6 @@ public class JSONBootstrapHosts {
     private String password;
     private List<String> activationKeys;
     private boolean ignoreHostKeys;
-    private boolean manageWithSSH;
 
     /**
      * @return the host
@@ -66,13 +65,6 @@ public class JSONBootstrapHosts {
      */
     public boolean getIgnoreHostKeys() {
         return ignoreHostKeys;
-    }
-
-    /**
-     * @return value of manageWithSSH
-     */
-    public boolean manageWithSSH() {
-        return manageWithSSH;
     }
 
     /**

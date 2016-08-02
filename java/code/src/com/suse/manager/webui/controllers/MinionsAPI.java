@@ -230,11 +230,8 @@ public class MinionsAPI {
             String roster = rosterFilePath.toString();
             LOG.debug("Roster file: " + roster);
 
-            // Apply the bootstrap state/register system for SSH based management
+            // Apply the bootstrap state
             LOG.info("Bootstrapping host: " + input.getHost());
-            if (input.manageWithSSH()) {
-                LOG.info("TODO: Register host for SSH based management");
-            }
             List<String> bootstrapMods = Arrays.asList(
                     ApplyStatesEventMessage.CERTIFICATE, "bootstrap");
             LocalCall<Map<String, State.ApplyResult>> call = State.apply(
@@ -300,6 +297,25 @@ public class MinionsAPI {
             SALT_SERVICE.deleteKey(input.getHost());
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Bootstrap a system for being managed via SSH.
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return json result of the API call
+     */
+    public static String bootstrapSSH(Request request, Response response, User user) {
+        JSONBootstrapHosts input = GSON.fromJson(request.body(), JSONBootstrapHosts.class);
+        List<String> errors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        if (!errors.isEmpty()) {
+            return bootstrapResult(response, false,
+                    errors.toArray(new String[errors.size()]));
+        }
+
+        LOG.info("Register host for SSH based management: " + input.getHost());
+        return bootstrapResult(response, true);
     }
 
     private static String bootstrapResult(Response response, boolean success,
