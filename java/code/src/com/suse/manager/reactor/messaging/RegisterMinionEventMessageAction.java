@@ -18,8 +18,13 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.state.PackageState;
@@ -29,17 +34,22 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.salt.Zypper;
+import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 
+import com.suse.utils.Opt;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
@@ -51,6 +61,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * Event handler to create system records for salt minions.
@@ -188,6 +201,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
+            if (!activationKey.isPresent()) {
+                LOG.info("No base channel added, adding default channel (if applicable)");
+                lookupAndAddDefaultChannels(server);
+            }
+
             server.updateServerInfo();
 
             mapHardwareGrains(server, grains);
@@ -263,6 +281,73 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         catch (Throwable t) {
             LOG.error("Error registering minion for event: " + event, t);
         }
+    }
+
+    private void lookupAndAddDefaultChannels(MinionServer server) {
+        Optional<List<ProductInfo>> productList =
+                SALT_SERVICE.callSync(Zypper.listProducts(false), server.getMinionId());
+        if (!productList.isPresent()) {
+            LOG.warn("no listed product returned from salt");
+        }
+
+        productList.ifPresent(pl -> {
+            pl.stream().filter(pif -> pif.getIsbase()).findFirst().ifPresent(pi -> {
+                String osName = pi.getName().toLowerCase();
+                String osVersion = pi.getVersion();
+                String osArch = pi.getArch();
+                Optional<SUSEProduct> suseProduct = ofNullable(SUSEProductFactory
+                        .findSUSEProduct(osName, osVersion, null, osArch, false));
+                if (!suseProduct.isPresent()) {
+                    LOG.warn("No product match found for: " + osName + " " + osVersion +
+                            " " + osArch);
+                }
+
+                Opt.stream(suseProduct).flatMap(sp ->
+                        lookupBaseAndRequiredChannels(osName, osVersion, osArch, sp)
+                ).forEach(reqChan -> {
+                    LOG.info("Adding required channel: " + reqChan.getName());
+                    server.addChannel(reqChan);
+                });
+            });
+        });
+    }
+
+    private Stream<Channel> lookupBaseAndRequiredChannels(String osName,
+            String osVersion, String osArch, SUSEProduct sp) {
+        Optional<EssentialChannelDto> productBaseChannelDto =
+                ofNullable(DistUpgradeManager.getProductBaseChannelDto(sp.getId(),
+                        ChannelFactory.lookupArchByName(osArch)));
+
+        return productBaseChannelDto.map(base ->
+            ofNullable(ChannelFactory.lookupById(base.getId())).map(c -> {
+                LOG.info("Base channel " + c.getName() + " found for OS: " + osName +
+                        ", version: " + osVersion + ", arch: " + osArch);
+                SUSEProductSet installedProducts = new SUSEProductSet();
+                installedProducts.setBaseProduct(sp);
+                Stream<Channel> requiredChannels = DistUpgradeManager
+                    .getRequiredChannels(installedProducts, c.getId())
+                    .stream()
+                    .flatMap(reqChan ->
+                        ofNullable(ChannelFactory.lookupById(reqChan.getId()))
+                            .map(Stream::of)
+                            .orElseGet(() -> {
+                                LOG.error("Can't retrieve required channel id " +
+                                        "from database");
+                                return Stream.empty();
+                            })
+                    );
+                return Stream.concat(
+                    Stream.of(c),
+                    requiredChannels
+                );
+            }).orElseGet(() -> {
+                LOG.error("Can't retrieve channel id from database");
+                return Stream.empty();
+            })
+        ).orElseGet(() -> {
+            LOG.info("Product Base channel not found - refresh SCC sync?");
+            return Stream.empty();
+        });
     }
 
     private void mapHardwareGrains(MinionServer server, ValueMap grains) {
