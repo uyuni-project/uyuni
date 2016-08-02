@@ -25,14 +25,17 @@ import java.util.Optional;
  */
 public class Config {
 
+    /** The configuration key for the master's hostname. */
+    public static final String MASTER = "master";
+
     /**
-     * Returns the master hostname.
+     * Returns a configuration parameter.
      * @return the {@link LocalCall} object to make the call
      */
-    public static LocalCall<String> master() {
+    public static LocalCall<String> get(String key) {
         return new LocalCall<>(
             "config.get",
-            Optional.of(Arrays.asList("master")),
+            Optional.of(Arrays.asList(key)),
             Optional.empty(),
             new TypeToken<String>() { });
     }
