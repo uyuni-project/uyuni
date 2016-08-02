@@ -50,6 +50,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
+import com.suse.salt.netapi.exception.SaltException;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -210,7 +211,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             mapHardwareGrains(server, grains);
 
-            String master = SALT_SERVICE.getMasterHostname(minionId);
+            String master = SALT_SERVICE
+                    .getMasterHostname(minionId)
+                    .orElseThrow(() -> new SaltException("master not found in minion configuration"));
+
             ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
                 ServerPath path = ServerFactory.createServerPath(server, proxy, master);
                 ServerFactory.save(path);
