@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -1592,6 +1593,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
         }
         Server castOther = (Server) other;
 
+        Optional<PackageEvr> proxyVersion =
+                Optional.ofNullable(proxyInfo).map(ProxyInfo::getVersion);
+        Optional<PackageEvr> otherProxyVersion =
+                Optional.ofNullable(castOther.getProxyInfo()).map(ProxyInfo::getVersion);
+
         return new EqualsBuilder().append(os, castOther.getOs())
                 .append(release, castOther.getRelease())
                 .append(name, castOther.getName())
@@ -1602,7 +1608,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 .append(runningKernel, castOther.getRunningKernel())
                 .append(lastBoot, castOther.getLastBoot())
                 .append(channelsChanged, castOther.getChannelsChanged())
-                .append(getProxyInfo(), castOther.getProxyInfo())
+                .append(proxyVersion, otherProxyVersion)
                 .isEquals();
     }
 
@@ -1611,12 +1617,14 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     @Override
     public int hashCode() {
+        Optional<PackageEvr> proxyVersion =
+                Optional.ofNullable(getProxyInfo()).map(ProxyInfo::getVersion);
         return new HashCodeBuilder().append(id).append(digitalServerId).append(os)
                 .append(release).append(name).append(description)
                 .append(info).append(secret)
                 .append(autoUpdate).append(runningKernel)
                 .append(lastBoot).append(channelsChanged).
-                append(getProxyInfo())
+                append(proxyVersion)
                 .toHashCode();
     }
 
