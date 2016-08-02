@@ -821,6 +821,6 @@ public class SaltService {
      * @return the master hostname
      */
     public Optional<String> getMasterHostname(String minionId) {
-        return callSync(Config.master(), minionId);
+        return callSync(Config.get(Config.MASTER), minionId);
     }
 }
