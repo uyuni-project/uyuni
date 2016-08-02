@@ -23,9 +23,8 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
 try:
     from spacewalk.server import rhnSQL
-    has_sql = True
 except ImportError:
-    has_sql = False
+    log_debug(2, "Loading suseLib without rhnSQL")
 
 from rhn.connections import idn_puny_to_unicode
 
@@ -313,8 +312,6 @@ def get_proxy(url=None):
 
 
 def findProduct(product):
-    if not has_sql:
-        return None
     q_version = ""
     q_release = ""
     q_arch = ""
@@ -376,9 +373,6 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
     org_id and user_id are used to check for permissions.
 
     """
-    if not has_sql:
-        return None
-
     product_id = findProduct(product)
     if not product_id:
         return None
@@ -482,8 +476,6 @@ def get_mirror_credentials():
 
 
 def isAllowedSlave(hostname):
-    if not has_sql:
-        return False
     rhnSQL.initDB()
     if not rhnSQL.fetchone_dict("select 1 from rhnISSSlave where slave = :hostname and enabled = 'Y'",
                                 hostname=idn_puny_to_unicode(hostname)):
@@ -493,8 +485,6 @@ def isAllowedSlave(hostname):
 
 
 def hasISSSlaves():
-    if not has_sql:
-        return False
     rhnSQL.initDB()
     if rhnSQL.fetchone_dict("select 1 from rhnISSSlave where enabled = 'Y'"):
         return True
@@ -502,8 +492,6 @@ def hasISSSlaves():
 
 
 def hasISSMaster():
-    if not has_sql:
-        return False
     rhnSQL.initDB()
     if rhnSQL.fetchone_dict("select 1 from rhnISSMaster where is_current_master = 'Y'"):
         return True
@@ -511,8 +499,6 @@ def hasISSMaster():
 
 
 def getISSCurrentMaster():
-    if not has_sql:
-        return None
     rhnSQL.initDB()
     master = rhnSQL.fetchone_dict(
         "select label from rhnISSMaster where is_current_master = 'Y'")
