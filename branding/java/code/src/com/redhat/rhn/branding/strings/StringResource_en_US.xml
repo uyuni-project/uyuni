@@ -1929,7 +1929,7 @@ tree will not be usable for autoinstalling.
         <source>Contact Method:</source>
       </trans-unit>
       <trans-unit id="server.contact-method.default">
-        <source>Pull</source>
+        <source>Default</source>
       </trans-unit>
       <trans-unit id="server.contact-method.ssh-push">
         <source>Push via SSH</source>
