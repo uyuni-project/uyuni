@@ -78,7 +78,7 @@ public class SaltService {
     /**
      * Singleton instance of this class
      */
-    public final static SaltService INSTANCE = new SaltService();
+    public static final SaltService INSTANCE = new SaltService();
 
     // Logger
     private static final Logger LOG = Logger.getLogger(SaltService.class);
