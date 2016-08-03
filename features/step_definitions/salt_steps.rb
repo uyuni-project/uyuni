@@ -207,6 +207,10 @@ Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
   assert_match(/\*:#{port}/, output[:stdout])
 end
 
+Then(/^this minion should have a Base channel set$/) do
+  step %(I should not see a "This system has no Base Software Channel. You can select a Base Channel from the list below." text)
+end
+
 And(/^this minion is not registered in Spacewalk$/) do
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
