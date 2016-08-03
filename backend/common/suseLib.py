@@ -21,7 +21,11 @@ import pycurl
 
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
-from spacewalk.server import rhnSQL
+try:
+    from spacewalk.server import rhnSQL
+except ImportError:
+    log_debug(2, "Loading suseLib without rhnSQL")
+
 from rhn.connections import idn_puny_to_unicode
 
 YAST_PROXY = "/root/.curlrc"
@@ -369,7 +373,6 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
     org_id and user_id are used to check for permissions.
 
     """
-
     product_id = findProduct(product)
     if not product_id:
         return None
@@ -566,7 +569,8 @@ def _get_proxy_from_rhn_conf():
 
     """
     comp = CFG.getComponent()
-    initCFG("server.satellite")
+    if not CFG.has_key("http_proxy"):
+        initCFG("server.satellite")
     result = None
     if CFG.http_proxy:
         # CFG.http_proxy format is <hostname>[:<port>] in 1.7
@@ -602,7 +606,8 @@ def _useProxyFor(url):
     if hostname in ["localhost", "127.0.0.1", "::1"]:
         return False
     comp = CFG.getComponent()
-    initCFG("server.satellite")
+    if not CFG.has_key("no_proxy"):
+        initCFG("server.satellite")
     if not CFG.has_key('no_proxy'):
         initCFG(comp)
         return True

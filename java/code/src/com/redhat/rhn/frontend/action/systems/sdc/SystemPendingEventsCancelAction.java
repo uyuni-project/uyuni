@@ -22,7 +22,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
@@ -78,7 +78,7 @@ public class SystemPendingEventsCancelAction extends RhnAction {
                 List<SystemPendingEventDto> actions = new LinkedList<>();
                 for (SystemPendingEventDto action : result) {
                     Map<String, Result<Schedule.Result>> stringResultMap =
-                            SaltAPIService.INSTANCE.deleteSchedule(
+                            SaltService.INSTANCE.deleteSchedule(
                                     "scheduled-action-" + action.getId(),
                                     new MinionList(minionServer.getMinionId())
                             );

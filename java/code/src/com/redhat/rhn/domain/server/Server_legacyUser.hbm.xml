@@ -116,6 +116,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <one-to-one name="serverInfo"
             class="com.redhat.rhn.domain.server.ServerInfo" cascade="all" lazy="proxy"/>
 
+        <one-to-one name="serverPath"
+            class="com.redhat.rhn.domain.server.ServerPath" cascade="all" lazy="proxy"/>
+
         <one-to-one name="cpu" class="com.redhat.rhn.domain.server.CPU"
             property-ref="server" cascade="all" lazy="proxy"/>
 
