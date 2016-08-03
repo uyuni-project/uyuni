@@ -24,7 +24,7 @@ const TaskoTop = React.createClass({
 
   refreshServerData: function() {
     var currentObject = this;
-    Network.get("/rhn/manager/schedule/taskotop/data", "application/json").promise
+    Network.get("/rhn/manager/admin/runtime-status/data", "application/json").promise
       .then(data => {
         currentObject.setState({
           serverData: data,
@@ -98,9 +98,9 @@ const TaskoTop = React.createClass({
       return  (
         <div key="taskotop-content">
           <div className="spacewalk-toolbar-h1">
-            <h1><i className="fa fa-gears"></i>{t("TaskoTop")}</h1>
+            <h1><i className="fa fa-gears"></i>{t("Task Engine Runtime")}</h1>
             <ErrorMessage error={this.state.error} />
-            <p>{t('Taskomatic is running or has finished executing the following tasks during the latest 5 minutes.')}</p>
+            <p>{t('The server is running or has finished executing the following tasks during the latest 5 minutes.')}</p>
             <p>{t('Data are refreshed every ')}{this.props.refreshInterval/1000}{t(' seconds')}</p>
           </div>
           <Table
@@ -163,8 +163,8 @@ const TaskoTop = React.createClass({
       return (
         <div key="taskotop-no-content">
           <div className="spacewalk-toolbar-h1">
-            <h1><i className="fa fa-tasks"></i>{t("TaskoTop")}</h1>
-            <p>{t('Taskomatic is not running any tasks at the moment.')}</p>
+            <h1><i className="fa fa-tasks"></i>{t("Task Engine Runtime")}</h1>
+            <p>{t('There are no tasks running on the server at the moment.')}</p>
           </div>
         </div>
       );
