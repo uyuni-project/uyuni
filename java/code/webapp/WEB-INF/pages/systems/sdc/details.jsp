@@ -82,7 +82,7 @@
                         </div>
                     </div>
 
-                    <rhn:require acl="system_has_management_entitlement()">
+                    <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
                         <div class="form-group">
                             <label class="col-lg-3 control-label">
                                 <bean:message key="sdc.details.edit.notifications"/>
