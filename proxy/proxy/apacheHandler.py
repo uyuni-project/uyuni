@@ -53,6 +53,10 @@ def getComponentType(req):
         # Request comes from a client, Must be the broker
         return COMPONENT_BROKER
 
+    # Might be obsolete if proxy is traditionally registered
+    if req.headers_in.has_key('X-Suse-Auth-Token'):
+        return COMPONENT_REDIRECT
+
     # pull server id out of "t:o:k:e:n:hostname1,t:o:k:e:n:hostname2,..."
     proxy_auth = req.headers_in['X-RHN-Proxy-Auth']
     last_auth = proxy_auth.split(',')[-1]

@@ -33,12 +33,17 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 
+import com.suse.utils.Opt;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 
 import java.sql.Types;
 import java.util.ArrayList;
@@ -156,6 +161,29 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * Looks up a proxy server by hostname.
+     * @param hostname the hostname
+     * @return the server, if it is found
+     */
+    @SuppressWarnings("unchecked")
+    public static Optional<Server> lookupProxyServer(String hostname) {
+        DetachedCriteria matchingNameServerIds = DetachedCriteria.forClass(Network.class)
+                .add(Restrictions.eq("hostname", hostname))
+                .setProjection(Projections.property("server.id"));
+
+        DetachedCriteria proxyIds = DetachedCriteria.forClass(ProxyInfo.class)
+                .setProjection(Projections.property("server.id"));
+
+        List<Server> result = (List<Server>) HibernateFactory.getSession()
+            .createCriteria(Server.class)
+            .add(Subqueries.propertyIn("id", matchingNameServerIds))
+            .add(Subqueries.propertyIn("id", proxyIds))
+            .list();
+
+        return result.stream().findFirst();
+    }
+
+    /**
      * Get the Logger for the derived class so log messages show up on the
      * correct class
      */
@@ -170,6 +198,29 @@ public class ServerFactory extends HibernateFactory {
      */
     public static Server createServer() {
         return new Server();
+    }
+
+    /**
+     * Creates a new ServerPath object.
+     *
+     * @param server the server
+     * @param proxyServer the proxy server
+     * @param proxyHostname the proxy hostname
+     * @return the server path
+     */
+    public static ServerPath createServerPath(Server server, Server proxyServer,
+            String proxyHostname) {
+        ServerPath path = new ServerPath();
+        path.setServer(server);
+        path.setProxyServer(proxyServer);
+        long position = Opt.fold(
+            Optional.ofNullable(proxyServer.getServerPath()), // see if the proxy is itself proxied
+            () -> 0L,                                         // normal case: it is not, position is 0
+            p -> p.getPosition() + 1                          // proxied proxy: position is incremented
+        );
+        path.setPosition(position);
+        path.setHostname(proxyHostname);
+        return path;
     }
 
     /**
@@ -378,6 +429,14 @@ public class ServerFactory extends HibernateFactory {
 
         singleton.saveObject(serverIn);
         updateServerPerms(serverIn);
+    }
+
+    /**
+     * Insert or Update a ServerPath.
+     * @param serverIn ServerPath to be stored in database.
+     */
+    public static void save(ServerPath pathIn) {
+        singleton.saveObject(pathIn);
     }
 
     /**

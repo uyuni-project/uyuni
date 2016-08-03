@@ -61,7 +61,7 @@ import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
 import com.suse.manager.webui.services.StateRevisionService;
-import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPkgLatest;
 import com.suse.manager.webui.utils.SaltPkgRemoved;
@@ -204,7 +204,7 @@ public class StatesAPI {
                 .collect(Collectors.toList()));
 
         // Find matches among available catalog states
-        result.addAll(SaltAPIService.INSTANCE.getCatalogStates(user.getOrg().getId())
+        result.addAll(SaltService.INSTANCE.getCatalogStates(user.getOrg().getId())
                 .stream()
                 .filter(s -> s.toLowerCase().contains(targetLowerCase))
                 .map(s -> new JSONCustomState(s, false))
@@ -616,7 +616,7 @@ public class StatesAPI {
                 .map(minion -> {
                     final String minionId = minion.getMinionId();
                     try {
-                        Map<String, Result<Object>> result = SaltAPIService.INSTANCE
+                        Map<String, Result<Object>> result = SaltService.INSTANCE
                                 .callSync(State.showHighstate(), new MinionList(minionId));
 
                         return Optional.ofNullable(result.get(minionId))

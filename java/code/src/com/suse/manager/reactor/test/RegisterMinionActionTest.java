@@ -48,7 +48,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
-import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Grains;
@@ -56,6 +56,7 @@ import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.parser.JsonParser;
 
 import org.jmock.Expectations;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,7 +78,12 @@ import java.util.stream.Collectors;
 public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     private static final String MINION_ID = "suma3pg.vagrant.local";
-	private static final String MACHINE_ID = "003f13081ddd408684503111e066f921";
+    private static final String MACHINE_ID = "003f13081ddd408684503111e066f921";
+
+    public void setUp() throws Exception {
+        super.setUp();
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }
 
     /**
      * Test the minion registration.
@@ -114,6 +120,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         // Register a minion via RegisterMinionAction and mocked SaltService
 
         context().checking(new Expectations() { {
+            allowing(saltServiceMock).getMasterHostname(MINION_ID);
+            will(returnValue(Optional.of(MINION_ID)));
             allowing(saltServiceMock).getMachineId(MINION_ID);
             will(returnValue(Optional.of(MACHINE_ID)));
             allowing(saltServiceMock).getGrains(MINION_ID);
@@ -263,6 +271,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
         context().checking(new Expectations() { {
+            allowing(saltService).getMasterHostname(MINION_ID);
+            will(returnValue(Optional.of(MINION_ID)));
             allowing(saltService).getMachineId(MINION_ID);
             will(returnValue(Optional.of(MACHINE_ID)));
             allowing(saltService).getGrains(MINION_ID);

@@ -61,7 +61,7 @@ import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
-import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.services.impl.SaltService;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -160,7 +160,7 @@ public class ActionFactory extends HibernateFactory {
             String setLabel, User user) {
 
         RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
-        List<Long> ids = SaltAPIService.INSTANCE.deleteSchedulesForActionId(
+        List<Long> ids = SaltService.INSTANCE.deleteSchedulesForActionId(
                 new ArrayList<>(set.getElementValues()), actionId);
         int failed = 0;
         for (Long sid : ids) {
