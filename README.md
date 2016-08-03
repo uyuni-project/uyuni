@@ -25,7 +25,7 @@ You can run the Spacewalk Testsuite basically with two options:
 * The SUSE Manager official testsuite applicance has all the gems pre-installed as rpms. Alternatively you can use [rbenv](http://rbenv.org/) (packages available [here](https://software.opensuse.org/download/package?project=devel:languages:ruby:extensions&package=rbenv))
 
 ```console
-rbenv version $version
+rbenv local $version
 gem install bundler --pre
 bundle install
 ```
