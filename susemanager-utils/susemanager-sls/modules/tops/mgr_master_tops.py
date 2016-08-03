@@ -11,7 +11,7 @@ user custom data provided in /srv/salt/top.sls file.
 .. code-block:: yaml
 
     master_tops:
-      mgr_mastertops: True
+      mgr_master_tops: True
 '''
 
 # Import python libs
@@ -19,7 +19,7 @@ from __future__ import absolute_import
 import logging
 
 # Define the module's virtual name
-__virtualname__ = 'mgr_mastertops'
+__virtualname__ = 'mgr_master_tops'
 
 log = logging.getLogger(__name__)
 
