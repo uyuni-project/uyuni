@@ -10,7 +10,7 @@ mockery.setup_environment()
 import sys
 sys.path.append("../../modules/tops")
 
-import mgr_mastertops
+import mgr_master_tops
 
 TEST_MANAGER_STATIC_TOP = {
     "base": [
@@ -28,7 +28,7 @@ def test_virtual():
     '''
     Test virtual returns the module name
     '''
-    assert mgr_mastertops.__virtual__() == "mgr_mastertops"
+    assert mgr_master_tops.__virtual__() == "mgr_master_tops"
 
 
 def test_top_default_saltenv():
@@ -37,7 +37,7 @@ def test_top_default_saltenv():
     for base environment when no environment has been specified.
     '''
     kwargs = {'opts': {'environment': None}}
-    assert mgr_mastertops.top(**kwargs) == TEST_MANAGER_STATIC_TOP
+    assert mgr_master_tops.top(**kwargs) == TEST_MANAGER_STATIC_TOP
 
 
 def test_top_base_saltenv():
@@ -46,7 +46,7 @@ def test_top_base_saltenv():
     for base environment when environment is set to "base".
     '''
     kwargs = {'opts': {'environment': 'base'}}
-    assert mgr_mastertops.top(**kwargs) == TEST_MANAGER_STATIC_TOP
+    assert mgr_master_tops.top(**kwargs) == TEST_MANAGER_STATIC_TOP
 
 
 def test_top_unknown_saltenv():
@@ -54,4 +54,4 @@ def test_top_unknown_saltenv():
     Test if top function is returning None for unknown salt environments.
     '''
     kwargs = {'opts': {'environment': 'otherenv'}}
-    assert mgr_mastertops.top(**kwargs) == None
+    assert mgr_master_tops.top(**kwargs) == None
