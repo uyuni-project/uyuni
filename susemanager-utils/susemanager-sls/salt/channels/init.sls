@@ -33,3 +33,12 @@
        - file: /usr/share/yum-plugins/susemanagerplugin.py
        - file: /etc/yum/pluginconf.d/susemanagerplugin.conf
 {% endif %}
+
+{%- if grains['os_family'] == 'RedHat' %}
+yum_clean_all:
+  cmd.run:
+    - name: /usr/bin/yum clean all
+    - user: root
+    - require: 
+       - file: "/etc/yum.repos.d/susemanager:channels.repo"
+{%- endif %}
