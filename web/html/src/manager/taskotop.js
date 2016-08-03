@@ -94,6 +94,17 @@ const TaskoTop = React.createClass({
 
   render: function() {
     const data = this.state.serverData;
+    const title =
+      <div className="spacewalk-toolbar-h1">
+        <h1>
+          <i className="fa fa-tachometer"></i>
+          {t('Task Engine Status')}
+          <a href="/rhn/help/reference/en-US/s2-sattools-task-engine.jsp"
+              target="_blank"><i className="fa fa-question-circle spacewalk-help-link"></i>
+          </a>
+        </h1>
+      </div>
+    ;
     const headerTabs =
       <div className="spacewalk-content-nav">
         <ul className="nav nav-tabs">
@@ -103,83 +114,86 @@ const TaskoTop = React.createClass({
       </div>
     ;
 
-    if (data != null && Object.keys(data).length > 0) {
-      return  (
-        <div key="taskotop-content">
-          <div className="spacewalk-toolbar-h1">
-            <h1>
-              <i className="fa fa-tachometer"></i>
-              {t('Task Engine Status')}
-              <a href="/rhn/help/reference/en-US/s2-sattools-task-engine.jsp"
-                  target="_blank"><i className="fa fa-question-circle spacewalk-help-link"></i>
-              </a>
-            </h1>
+    if (data != null) {
+      if (Object.keys(data).length > 0) {
+        return  (
+          <div key="taskotop-content">
+            {title}
+            {headerTabs}
+            <ErrorMessage error={this.state.error} />
+            <p>{t('The server is running or has finished executing the following tasks during the latest 5 minutes.')}</p>
+            <p>{t('Data are refreshed every ')}{this.props.refreshInterval/1000}{t(' seconds')}</p>
+            <Table
+              data={this.buildRows(data)}
+              identifier={(row) => row["id"]}
+              cssClassFunction={(row) => row["status"] == 'skipped' ? 'text-muted' : null }
+              initialSortColumnKey="status"
+              searchField={
+                  <SearchField filter={this.searchData}
+                      criteria={""}
+                      placeholder={t("Filter by name")} />
+              }>
+              <Column
+                columnKey="id"
+                comparator={Utils.sortById}
+                header={t("Task Id")}
+                cell={ (row) => row["id"] }
+              />
+              <Column
+                columnKey="name"
+                comparator={Utils.sortByText}
+                header={t("Task Name")}
+                cell={ (row) => row["name"] }
+              />
+              <Column
+                columnKey="startTime"
+                comparator={Utils.sortByText}
+                header={t("Start Time")}
+                cell={ (row) => moment(row["startTime"]).format("HH:mm:ss") }
+              />
+              <Column
+                columnKey="endTime"
+                comparator={this.sortByEndTime}
+                header={t("End Time")}
+                cell={ (row) => row["endTime"] == null ? "" : moment(row["endTime"]).format("HH:mm:ss") }
+              />
+              <Column
+                columnKey="elapsedTime"
+                comparator={this.sortByNumber}
+                header={t("Elapsed Time")}
+                cell={ (row) => row["elapsedTime"] == null ? "" : row["elapsedTime"] + ' seconds' }
+              />
+              <Column
+                columnKey="status"
+                comparator={this.sortByStatus}
+                header={t("Status")}
+                cell={ (row) => this.decodeStatus(row["status"]) }
+              />
+              <Column
+                columnKey="data"
+                // comparator={this.sortByText}
+                header={t("Data")}
+                cell={ (row) => row["data"].map((c, index) => <div key={"data-" + index}>{c}</div>) }
+              />
+            </Table>
           </div>
-          {headerTabs}
-          <ErrorMessage error={this.state.error} />
-          <p>{t('The server is running or has finished executing the following tasks during the latest 5 minutes.')}</p>
-          <p>{t('Data are refreshed every ')}{this.props.refreshInterval/1000}{t(' seconds')}</p>
-          <Table
-            data={this.buildRows(data)}
-            identifier={(row) => row["id"]}
-            cssClassFunction={(row) => row["status"] == 'skipped' ? 'text-muted' : null }
-            initialSortColumnKey="status"
-            searchField={
-                <SearchField filter={this.searchData}
-                    criteria={""}
-                    placeholder={t("Filter by name")} />
-            }>
-            <Column
-              columnKey="id"
-              comparator={Utils.sortById}
-              header={t("Task Id")}
-              cell={ (row) => row["id"] }
-            />
-            <Column
-              columnKey="name"
-              comparator={Utils.sortByText}
-              header={t("Task Name")}
-              cell={ (row) => row["name"] }
-            />
-            <Column
-              columnKey="startTime"
-              comparator={Utils.sortByText}
-              header={t("Start Time")}
-              cell={ (row) => moment(row["startTime"]).format("HH:mm:ss") }
-            />
-            <Column
-              columnKey="endTime"
-              comparator={this.sortByEndTime}
-              header={t("End Time")}
-              cell={ (row) => row["endTime"] == null ? "" : moment(row["endTime"]).format("HH:mm:ss") }
-            />
-            <Column
-              columnKey="elapsedTime"
-              comparator={this.sortByNumber}
-              header={t("Elapsed Time")}
-              cell={ (row) => row["elapsedTime"] == null ? "" : row["elapsedTime"] + ' seconds' }
-            />
-            <Column
-              columnKey="status"
-              comparator={this.sortByStatus}
-              header={t("Status")}
-              cell={ (row) => this.decodeStatus(row["status"]) }
-            />
-            <Column
-              columnKey="data"
-              // comparator={this.sortByText}
-              header={t("Data")}
-              cell={ (row) => row["data"].map((c, index) => <div key={"data-" + index}>{c}</div>) }
-            />
-          </Table>
-        </div>
-      );
+        );
+      }
+      else {
+        return (
+          <div key="taskotop-no-content">
+            {title}
+            {headerTabs}
+            <p>{t('There are no tasks running on the server at the moment.')}</p>
+          </div>
+        );
+      }
     }
     else {
       return (
-        <div key="taskotop-no-content">
+        <div key="taskotop-content">
+          {title}
           {headerTabs}
-          <p>{t('There are no tasks running on the server at the moment.')}</p>
         </div>
       );
     }
