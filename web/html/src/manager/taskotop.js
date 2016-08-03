@@ -123,7 +123,7 @@ const TaskoTop = React.createClass({
             data={this.buildRows(data)}
             identifier={(row) => row["id"]}
             cssClassFunction={(row) => row["status"] == 'skipped' ? 'text-muted' : null }
-            initialSortColumnKey="endTime"
+            initialSortColumnKey="status"
             searchField={
                 <SearchField filter={this.searchData}
                     criteria={""}
