@@ -217,6 +217,7 @@ public enum SaltServerActionService {
                                         .map(Stream::of)
                                         .orElse(Stream.empty()))
                         .filter(m -> m.hasEntitlement(EntitlementManager.SALT))
+                        .filter(m -> m.getContactMethod().getLabel().equals("default"))
                         .collect(Collectors.toList())
                 )
                 .orElse(new LinkedList<>());
