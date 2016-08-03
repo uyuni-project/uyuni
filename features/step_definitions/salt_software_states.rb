@@ -27,6 +27,7 @@ Then(/^"([^"]*)" is not installed$/) do |package|
         output = `rpm -q #{package} 2>&1`
         unless $?.success?
           uninstalled = true
+          sleep 15
           break
         end
         sleep 1
@@ -45,6 +46,7 @@ Then(/^I wait for "([^"]*)" to be installed$/) do |package|
         output = `rpm -q #{package} 2>&1`
         if $?.success?
           installed = true
+          sleep 15
           break
         end
         sleep 1
