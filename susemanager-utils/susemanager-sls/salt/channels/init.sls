@@ -1,16 +1,16 @@
 {% if grains['os_family'] == 'RedHat' %}
-/usr/share/yum-plugins/sumaplugin.py:
+/usr/share/yum-plugins/susemanagerplugin.py:
   file.managed:
     - source:
-      - salt://channels/yum-suma-plugin/sumaplugin.py
+      - salt://channels/yum-susemanager-plugin/susemanagerplugin.py
     - user: root
     - group: root
     - mode: 644
 
-/etc/yum/pluginconf.d/sumaplugin.conf:
+/etc/yum/pluginconf.d/susemanagerplugin.conf:
   file.managed:
     - source:
-      - salt://channels/yum-suma-plugin/sumaplugin.conf
+      - salt://channels/yum-susemanager-plugin/susemanagerplugin.conf
     - user: root
     - group: root
     - mode: 644
@@ -30,6 +30,6 @@
     - mode: 644
 {% if grains['os_family'] == 'RedHat' %}
     - require:
-       - file: /usr/share/yum-plugins/sumaplugin.py
-       - file: /etc/yum/pluginconf.d/sumaplugin.conf
+       - file: /usr/share/yum-plugins/susemanagerplugin.py
+       - file: /etc/yum/pluginconf.d/susemanagerplugin.conf
 {% endif %}
