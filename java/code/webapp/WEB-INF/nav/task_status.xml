@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<rhn-navi-tree label="task_status" title-depth="1">
+  <rhn-tab name="task.status.last.execution">
+    <rhn-tab-url>/rhn/admin/TaskStatus.do</rhn-tab-url>
+  </rhn-tab>
+  <rhn-tab name="task.status.runtime.execution">
+    <rhn-tab-url>/rhn/manager/admin/runtime-status</rhn-tab-url>
+  </rhn-tab>
+</rhn-navi-tree>
