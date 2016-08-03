@@ -130,7 +130,9 @@ public enum SaltStateGeneratorService {
 
             // this add the configuration for the beacon that tell us when the
             // minion packages are modified locally
-            pillar.add("beacons", PKGSET_BEACON_CONFIG);
+            if(minion.getOs().toLowerCase().equals("sles")) {
+                pillar.add("beacons", PKGSET_BEACON_CONFIG);
+            }
         }
         catch (JoseException e) {
             LOG.error(String.format(
