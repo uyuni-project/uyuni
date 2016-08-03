@@ -14,12 +14,14 @@
  */
 package com.suse.manager.reactor.messaging;
 
+import static java.util.Optional.ofNullable;
+
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
@@ -27,6 +29,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
+import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerStateRevision;
@@ -43,13 +46,13 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
-import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
-
+import com.suse.salt.netapi.exception.SaltException;
 import com.suse.utils.Opt;
+
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
@@ -62,8 +65,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Optional.ofNullable;
 
 /**
  * Event handler to create system records for salt minions.
@@ -86,7 +87,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * Default constructor.
      */
     public RegisterMinionEventMessageAction() {
-        this(SaltAPIService.INSTANCE);
+        this(SaltService.INSTANCE);
     }
 
     /**
@@ -209,6 +210,15 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.updateServerInfo();
 
             mapHardwareGrains(server, grains);
+
+            String master = SALT_SERVICE
+                    .getMasterHostname(minionId)
+                    .orElseThrow(() -> new SaltException("master not found in minion configuration"));
+
+            ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
+                ServerPath path = ServerFactory.createServerPath(server, proxy, master);
+                ServerFactory.save(path);
+            });
 
             ServerFactory.save(server);
 

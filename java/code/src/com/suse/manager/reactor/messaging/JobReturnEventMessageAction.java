@@ -39,7 +39,7 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 
-import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -118,7 +118,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                             LOG.debug("Deleting schedule '" + scheduleName +
                                     "' from minion: " + minionServer.getMinionId());
                         }
-                        SaltAPIService.INSTANCE.deleteSchedule(scheduleName,
+                        SaltService.INSTANCE.deleteSchedule(scheduleName,
                                 new MinionList(jobReturnEvent.getMinionId()));
                     });
 

@@ -1,0 +1,339 @@
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
+'''
+    saltbroker: A ZeroMQ Proxy (broker) for Salt Minions
+
+    The main process spawns a process for each channel of Salt ZMQ transport:
+
+    - PubChannelProxy process provides the PUB channel for the minions
+    - RetChannelProxy process provides the RET channel for the minions
+
+    Also acts like a supervisor for the child process, respawning them if they die.
+
+    :depends:   python-PyYAML
+    :depends:   python-pyzmq
+
+    Copyright (c) 2016 SUSE LINUX Products GmbH, Nuernberg, Germany.
+
+    All modifications and additions to the file contributed by third parties
+    remain the property of their copyright owners, unless otherwise agreed
+    upon. The license for this file, and modifications and additions to the
+    file, is the same license as for the pristine package itself (unless the
+    license for the pristine package is not an Open Source License, in which
+    case the license is the MIT License). An "Open Source License" is a
+    license that conforms to the Open Source Definition (Version 1.9)
+    published by the Open Source Initiative.
+
+    Please submit bugfixes or comments via http://bugs.opensuse.org/
+'''
+
+# Import python libs
+import multiprocessing
+import logging
+import logging.handlers
+
+import yaml
+import os
+import signal
+import socket
+import sys
+import time
+
+# Import RHN libs
+from spacewalk.common.rhnConfig import RHNOptions
+
+# Import pyzmq lib
+import zmq
+
+
+RHN_CONF_FILE = "/etc/rhn/rhn.conf"
+SALT_BROKER_CONF_FILE = "/etc/salt/broker"
+SALT_BROKER_LOGFILE = "/var/log/salt/broker"
+SUPERVISOR_TIMEOUT = 5
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
+
+loghandler = logging.handlers.RotatingFileHandler(
+    SALT_BROKER_LOGFILE, maxBytes=200000, backupCount=5)
+
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+loghandler.setFormatter(formatter)
+log.addHandler(loghandler)
+
+
+class AbstractChannelProxy(multiprocessing.Process):
+    '''
+    Abstract class for ChannelProxy objects
+    '''
+    class ChannelException(Exception):
+        '''
+        Custom Exception definition
+        '''
+        pass
+
+    def __init__(self, opts):
+        self.opts = opts
+        if "master" not in self.opts:
+            raise self.ChannelException(
+                '[{0}] No "master" opts is provided'.format(
+                    self.__class__.__name__))
+        try:
+            self.opts['master_ip'] = socket.gethostbyname(self.opts['master'])
+        except socket.gaierror as exc:
+            raise self.ChannelException(
+                "[{0}] Error trying to resolve '{1}': {2}".format(
+                    self.__class__.__name__, self.opts['master'], exc)
+            )
+        super(AbstractChannelProxy, self).__init__()
+
+    def debug_log(self, msg):
+        '''
+        debug logging tagged with classname
+        '''
+        log.debug("[%s] %s", self.__class__.__name__, msg)
+
+    def info_log(self, msg):
+        '''
+        info logging tagged with classname
+        '''
+        log.info("[%s] %s", self.__class__.__name__, msg)
+
+    def error_log(self, msg):
+        '''
+        error logging tagged with classname
+        '''
+        log.error("[%s] %s", self.__class__.__name__, msg)
+
+    def terminate(self):
+        '''
+        custom terminate function for the child process
+        '''
+        self.info_log("Terminate called. Exiting")
+        super(AbstractChannelProxy, self).terminate()
+
+
+class PubChannelProxy(AbstractChannelProxy):
+    '''
+    Creates a Salt PUB Channel Proxy.
+
+    Subscribes to the zmq PUB channel in the Salt master and binds a zmq SUB
+    socket that allows minion to subscribe it and receive the forwarded
+    messages from the Salt master.
+    '''
+    def run(self):
+        try:
+            context = zmq.Context()
+
+            # Set up a XSUB sock
+            master_pub = 'tcp://{0}:{1}'.format(self.opts['master_ip'],
+                                                self.opts['publish_port'])
+
+            self.debug_log('setting up a XSUB sock on {0}'.format(master_pub))
+            backend = context.socket(zmq.XSUB)
+            backend.connect(master_pub)
+
+            # Set up a XPUB sock
+            pub_uri = 'tcp://{0}:{1}'.format(self.opts['interface'],
+                                             self.opts['publish_port'])
+
+            self.debug_log('setting up a XPUB sock on {0}'.format(pub_uri))
+            frontend = context.socket(zmq.XPUB)
+            frontend.bind(pub_uri)
+
+            # Forward all messages
+            zmq.proxy(frontend, backend)
+
+        except zmq.ZMQError as zmq_error:
+            msg = "ZMQ Error: {0}".format(zmq_error)
+            self.error_log(msg)
+            raise self.ChannelException(msg)
+
+
+class RetChannelProxy(AbstractChannelProxy):
+    '''
+    Creates a Salt RET Channel Proxy.
+
+    Connects to the zmq RET channel in the Salt master and binds a zmq ROUTER
+    socket to receive messages from minions which are then forwarded to
+    the Salt master.
+    '''
+    def run(self):
+        try:
+            context = zmq.Context()
+
+            # Set up a ROUTER sock to receive responses from minions
+            router_uri = 'tcp://{0}:{1}'.format(self.opts['interface'],
+                                                self.opts['ret_port'])
+
+            self.debug_log(
+                'setting up a ROUTER sock on {0}'.format(router_uri))
+
+            frontend = context.socket(zmq.ROUTER)
+            frontend.bind(router_uri)
+
+            # Set up a dealer sock to send results to master ret interface
+            self.opts['master_uri'] = 'tcp://{0}:{1}'.format(
+                self.opts['master_ip'],
+                self.opts['ret_port']
+            )
+
+            self.debug_log('setting up a DEALER sock on {0}'.format(
+                self.opts['master_uri']))
+
+            backend = context.socket(zmq.DEALER)
+            backend.connect(self.opts['master_uri'])
+
+            # Forward all responses
+            zmq.proxy(frontend, backend)
+
+        except zmq.ZMQError as zmq_error:
+            msg = "ZMQ Error: {0}".format(zmq_error)
+            self.error_log(msg)
+            raise self.ChannelException(msg)
+
+
+class SaltBroker(object):
+    '''
+    Creates a SaltBroker that forward messages and responses from
+    minions to Salt Master by creating a ZeroMQ proxy that manage
+    the PUB/RET channels of the Salt ZMQ transport.
+    '''
+    def __init__(self, opts):
+        log.debug('[%s] Readed config: %s',
+                  self.__class__.__name__, opts)
+        self.opts = opts
+        self.exit = False
+        self.default_sigterm = signal.getsignal(signal.SIGTERM)
+        self.pub_proxy_proc = None
+        self.ret_proxy_proc = None
+        super(SaltBroker, self).__init__()
+
+    def _start_pub_proxy(self):
+        '''
+        Spawn a new PubChannelProxy process
+        '''
+        # setting up the default SIGTERM handler for the new process
+        signal.signal(signal.SIGTERM, self.default_sigterm)
+
+        # Spawn a new PubChannelProxy process
+        pub_proxy = PubChannelProxy(opts=self.opts)
+        pub_proxy.start()
+
+        # setting up again the custom SIGTERM handler
+        signal.signal(signal.SIGTERM, self.sigterm_clean)
+
+        log.info('[%s] spawning PUB channel proxy process [PID: %s]',
+                 self.__class__.__name__,
+                 pub_proxy.pid)
+
+        return pub_proxy
+
+    def _start_ret_proxy(self):
+        '''
+        Spawn a new RetChannelProxy process
+        '''
+        # setting up the default SIGTERM handler for the new process
+        signal.signal(signal.SIGTERM, self.default_sigterm)
+
+        # Spawn a new RetChannelProxy process
+        ret_proxy = RetChannelProxy(opts=self.opts)
+        ret_proxy.start()
+
+        # setting up again the custom SIGTERM handler
+        signal.signal(signal.SIGTERM, self.sigterm_clean)
+
+        log.info('[%s] spawning RET channel proxy process [PID: %s]',
+                 self.__class__.__name__,
+                 ret_proxy.pid)
+
+        return ret_proxy
+
+    def sigterm_clean(self, signum, frame):
+        '''
+        Custom SIGTERM handler
+        '''
+        log.info('[%s] Caught signal %s, stopping all channels',
+                 self.__class__.__name__,
+                 signum)
+
+        if self.pub_proxy_proc:
+            self.pub_proxy_proc.terminate()
+        if self.ret_proxy_proc:
+            self.ret_proxy_proc.terminate()
+
+        self.exit = True
+        log.info('[%s] Terminating main process', self.__class__.__name__)
+
+    def start(self):
+        '''
+        Starts a SaltBroker. It spawns the PubChannelProxy and
+        RetChannelProxy processes and also acts like a supervisor
+        of these child process respawning them if they died.
+        '''
+        log.info('[%s] Starting Salt ZeroMQ Proxy [PID: %s]',
+                 self.__class__.__name__,
+                 os.getpid())
+
+        # Attach a handler for SIGTERM signal
+        signal.signal(signal.SIGTERM, self.sigterm_clean)
+
+        try:
+            self.pub_proxy_proc = self._start_pub_proxy()
+            self.ret_proxy_proc = self._start_ret_proxy()
+        except AbstractChannelProxy.ChannelException as exc:
+            log.error('[%s] %s', self.__class__.__name__, exc)
+            log.error('[%s] Exiting.', self.__class__.__name__)
+            sys.exit(exc)
+
+        # Supervisor. Restart a channel if died
+        while not self.exit:
+            if not self.pub_proxy_proc.is_alive():
+                log.error('[%s] PUB channel proxy has died. Respawning',
+                          self.__class__.__name__)
+                self.pub_proxy_proc = self._start_pub_proxy()
+            if not self.ret_proxy_proc.is_alive():
+                log.error('[%s] RET channel proxy has died. Respawning',
+                          self.__class__.__name__)
+                self.ret_proxy_proc = self._start_ret_proxy()
+            time.sleep(SUPERVISOR_TIMEOUT)
+
+
+if __name__ == "__main__":
+    # Try to get config from /etc/rhn/rhn.conf
+    rhn_parent = None
+    rhn_proxy_conf = RHNOptions(component="proxy")
+    rhn_proxy_conf.parse()
+    if rhn_proxy_conf.get("rhn_parent"):
+        log.debug("Using 'rhn_parent' from /etc/rhn/rhn.conf as 'master'")
+        rhn_parent = rhn_proxy_conf["rhn_parent"]
+
+    # Check for the config file
+    if not os.path.isfile(SALT_BROKER_CONF_FILE):
+        sys.exit("Config file not found: {0}".format(SALT_BROKER_CONF_FILE))
+
+    # default config
+    _DEFAULT_OPTS = {
+        "publish_port": "4505",
+        "ret_port": "4506",
+        "interface": "0.0.0.0",
+    }
+
+    try:
+        config = yaml.load(open(SALT_BROKER_CONF_FILE))
+        if not config:
+            config = {}
+        if not isinstance(config, dict):
+            sys.exit("Bad format in config file: {0}".format(SALT_BROKER_CONF_FILE))
+
+        saltbroker_opts = _DEFAULT_OPTS.copy()
+
+        if rhn_parent:
+            saltbroker_opts.update({"master": rhn_parent})
+
+        saltbroker_opts.update(config)
+        proxy = SaltBroker(opts=saltbroker_opts)
+        proxy.start()
+
+    except yaml.scanner.ScannerError as exc:
+        sys.exit("Error reading YAML config file: {0}".format(exc))

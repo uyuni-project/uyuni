@@ -29,7 +29,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Cmd;
@@ -104,7 +104,7 @@ public enum SaltServerActionService {
             if (earliestAction.isBefore(now) || earliestAction.equals(now)) {
                 LOG.debug("Action will be executed directly using callAsync()");
                 final Map<String, Result<Boolean>> responding =
-                    SaltAPIService.INSTANCE.ping(new MinionList(minionIds));
+                    SaltService.INSTANCE.ping(new MinionList(minionIds));
                 final List<String> present = minionIds.stream()
                         .filter(responding::containsKey)
                         .collect(Collectors.toList());
@@ -117,7 +117,7 @@ public enum SaltServerActionService {
                     return result;
                 }
                 else {
-                    List<String> results = SaltAPIService.INSTANCE
+                    List<String> results = SaltService.INSTANCE
                             .callAsync(call.withMetadata(metadata), new MinionList(present))
                             .getMinions();
                     return minions.stream()
@@ -129,7 +129,7 @@ public enum SaltServerActionService {
             }
             else {
                 LOG.debug("Action will be scheduled for later using schedule()");
-                Map<String, Result<Schedule.Result>> results = SaltAPIService.INSTANCE
+                Map<String, Result<Schedule.Result>> results = SaltService.INSTANCE
                         .schedule("scheduled-action-" + actionIn.getId(), call,
                                 new MinionList(minionIds), earliestAction, metadata);
                 return minions.stream()

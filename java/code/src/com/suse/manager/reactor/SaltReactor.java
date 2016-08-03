@@ -37,8 +37,7 @@ import com.suse.manager.reactor.messaging.RefreshHardwareEventMessage;
 import com.suse.manager.reactor.messaging.RefreshHardwareEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
-import com.suse.manager.webui.services.SaltService;
-import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BeaconEvent;
 import com.suse.salt.netapi.event.EventListener;
@@ -63,7 +62,7 @@ public class SaltReactor implements EventListener {
     private static final Logger LOG = Logger.getLogger(SaltReactor.class);
 
     // Reference to the SaltService instance
-    private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
+    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
 
     // The event stream object
     private EventStream eventStream;

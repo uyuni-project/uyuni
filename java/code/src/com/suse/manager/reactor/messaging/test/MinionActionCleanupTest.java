@@ -28,7 +28,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
-import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
@@ -39,6 +39,7 @@ import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 
 import org.jmock.Expectations;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,6 +58,11 @@ import java.util.stream.Collectors;
  * Tests for {@link JobReturnEventMessageAction}.
  */
 public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
+
+    public void setUp() throws Exception {
+        super.setUp();
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }
 
     /**
      * Test the processing of packages.profileupdate job return event.

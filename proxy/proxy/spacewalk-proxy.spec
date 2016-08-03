@@ -175,6 +175,25 @@ resources to package update and deployment.
 This package contains the Command rhn_package_manager, which  manages
 an Spacewalk Proxy Server's custom channel.
 
+%package salt
+Summary:        A ZeroMQ Proxy for Salt Minions
+Group:          Applications/Internet
+Requires:       systemd
+Requires(pre):  salt
+Requires(pre):  %{name}-common
+
+%if 0%{?suse_version} >= 1210
+BuildRequires: systemd-rpm-macros
+%endif
+
+%{?systemd_requires}
+
+# We don't want proxies and satellites on the same box
+Conflicts:      rhns-satellite-tools
+
+%description salt
+A ZeroMQ Proxy for Salt Minions
+
 %prep
 %setup -q
 
@@ -198,6 +217,13 @@ ln -sf rhn-proxy $RPM_BUILD_ROOT%{_sbindir}/spacewalk-proxy
 pushd %{buildroot}
 find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
+
+install -m 0750 salt-broker/salt-broker %{buildroot}/%{_bindir}/
+mkdir -p %{buildroot}/%{_sysconfdir}/salt/
+install -m 0644 salt-broker/broker %{buildroot}/%{_sysconfdir}/salt/
+install -d -m 755 %{buildroot}/%{_unitdir}/
+%__install -D -m 444 salt-broker/salt-broker.service %{buildroot}/%{_unitdir}/salt-broker.service
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -292,6 +318,20 @@ fi > /dev/null 2>&1
 
 exit 0
 
+%pre salt
+%service_add_pre salt-broker.service
+
+%post salt
+%service_add_post salt-broker.service
+systemctl enable salt-broker.service > /dev/null 2>&1 || :
+systemctl start salt-broker.service > /dev/null 2>&1 || :
+
+%preun salt
+%service_del_preun salt-broker.service
+
+%postun salt
+%service_del_postun salt-broker.service
+
 %preun broker
 if [ $1 -eq 0 ] ; then
     # nuke the cache
@@ -314,6 +354,12 @@ if [ -n "$1" ] ; then # anything but uninstall
     restorecon /var/cache/rhn/proxy-auth
 fi
 
+
+%files salt
+%defattr(-,root,root)
+%{_bindir}/salt-broker
+%{_unitdir}/salt-broker.service
+%config(noreplace) %{_sysconfdir}/salt/broker
 
 %files broker
 %defattr(-,root,root)
