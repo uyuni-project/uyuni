@@ -213,7 +213,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             String master = SALT_SERVICE
                     .getMasterHostname(minionId)
-                    .orElseThrow(() -> new SaltException("master not found in minion configuration"));
+                    .orElseThrow(() -> new SaltException(
+                            "master not found in minion configuration"));
 
             ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
                 ServerPath path = ServerFactory.createServerPath(server, proxy, master);
