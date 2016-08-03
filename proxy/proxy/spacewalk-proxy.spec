@@ -180,12 +180,9 @@ an Spacewalk Proxy Server's custom channel.
 %package salt
 Summary:        A ZeroMQ Proxy for Salt Minions
 Group:          Applications/Internet
-Requires:       python
-Requires:       python-pyzmq
-Requires:       python-PyYAML
 Requires:       systemd
-Requires(pre):  %{name}-common
 Requires(pre):  salt
+Requires(pre):  %{name}-common
 
 %if 0%{?suse_version} >= 1210
 BuildRequires: systemd-rpm-macros
