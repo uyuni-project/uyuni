@@ -28,8 +28,11 @@ public class Config {
     /** The configuration key for the master's hostname. */
     public static final String MASTER = "master";
 
+    private Config() { }
+
     /**
      * Returns a configuration parameter.
+     * @param key the parameter name
      * @return the {@link LocalCall} object to make the call
      */
     public static LocalCall<String> get(String key) {

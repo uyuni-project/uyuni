@@ -214,9 +214,9 @@ public class ServerFactory extends HibernateFactory {
         path.setServer(server);
         path.setProxyServer(proxyServer);
         long position = Opt.fold(
-            Optional.ofNullable(proxyServer.getServerPath()), // see if the proxy is itself proxied
-            () -> 0L,                                         // normal case: it is not, position is 0
-            p -> p.getPosition() + 1                          // proxied proxy: position is incremented
+            Optional.ofNullable(proxyServer.getServerPath()), // see if proxy is proxied
+            () -> 0L,                                         // it is not, position is 0
+            p -> p.getPosition() + 1                          // proxied proxy: position++
         );
         path.setPosition(position);
         path.setHostname(proxyHostname);
@@ -433,7 +433,7 @@ public class ServerFactory extends HibernateFactory {
 
     /**
      * Insert or Update a ServerPath.
-     * @param serverIn ServerPath to be stored in database.
+     * @param pathIn ServerPath to be stored in database.
      */
     public static void save(ServerPath pathIn) {
         singleton.saveObject(pathIn);
