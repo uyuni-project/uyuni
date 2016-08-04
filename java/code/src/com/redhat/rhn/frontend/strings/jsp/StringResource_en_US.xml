@@ -20486,7 +20486,7 @@ given channel.</source>
         <source>Last Execution Times</source>
       </trans-unit>
       <trans-unit id="task.status.runtime.execution">
-        <source>RunTime Execution</source>
+        <source>Runtime Execution</source>
       </trans-unit>
       <trans-unit id="task.status.taskomatic.on">
         <source>Scheduling Service</source>
