@@ -46,8 +46,8 @@ const TaskoTop = React.createClass({
       // it's 'running' so we want to keep it at the top of any other rows
       sortDirection = 1;
     }
-    var a = aRaw[columnKey] != null ? aRaw[columnKey] : "0000-01-01T00:00:00.000Z";
-    var b = bRaw[columnKey] != null ? bRaw[columnKey] : "0000-01-01T00:00:00.000Z";
+    var a = aRaw[columnKey] || "0000-01-01T00:00:00.000Z";
+    var b = bRaw[columnKey] || "0000-01-01T00:00:00.000Z";
     var result = a.toLowerCase().localeCompare(b.toLowerCase());
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   },
