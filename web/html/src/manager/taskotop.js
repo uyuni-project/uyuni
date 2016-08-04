@@ -109,7 +109,7 @@ const TaskoTop = React.createClass({
       <div className="spacewalk-content-nav">
         <ul className="nav nav-tabs">
           <li><a href="/rhn/admin/TaskStatus.do">{t('Last Execution Times')}</a></li>
-          <li className="active"><a href="">{t('RunTime Execution')}</a></li>
+          <li className="active"><a href="">{t('Runtime Execution')}</a></li>
         </ul>
       </div>
     ;
