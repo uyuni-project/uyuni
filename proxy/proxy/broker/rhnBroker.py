@@ -257,7 +257,7 @@ class BrokerHandler(SharedHandler):
         log_debug(5, '    (auth token after): %s'
                   % repr(_oto['X-RHN-Proxy-Auth']))
 
-        if self.fullRequestURL:
+        if self.fullRequestURL and self.authToken:
             if not suseLib.accessible(self.fullRequestURL):
                 return apache.HTTP_FORBIDDEN
         if self.authToken:
