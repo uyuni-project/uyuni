@@ -69,25 +69,23 @@ public class TaskoTopJob {
     }
 
     /**
-     * Generate a TaskoTopJob object from a TaskoRun source
+     * Constructor of a TaskoTopJob object build on a TaskoRun object
      * @param taskoRun the source object
-     * @return a TaskoTopJob object with the taskoRun source values
+     * @param user needed to get channels data
      */
-    public TaskoTopJob generateFromTaskoRun(TaskoRun taskoRun, User user) {
-        return new TaskoTopJob(
-                taskoRun.getId(),
-                taskoRun.getTemplate().getTask().getName(),
-                taskoRun.getStartTime(),
-                taskoRun.getEndTime(),
-                taskoRun.getEndTime() != null ?
-                        (taskoRun.getEndTime().getTime() -
-                                taskoRun.getStartTime().getTime()) / 1000 :
-                        (new Date(System.currentTimeMillis()).getTime() -
-                                taskoRun.getStartTime().getTime()) / 1000,
-                formatChannelsData(
-                        TaskoFactory.lookupScheduleById(taskoRun.getScheduleId()).getData(), user),
-                taskoRun.getStatus().toLowerCase()
-                );
+    public TaskoTopJob(TaskoRun taskoRun, User user) {
+        id = taskoRun.getId();
+        name = taskoRun.getTemplate().getTask().getName();
+        startTime = taskoRun.getStartTime();
+        endTime = taskoRun.getEndTime();
+        elapsedTime = taskoRun.getEndTime() != null ?
+                (taskoRun.getEndTime().getTime() -
+                        taskoRun.getStartTime().getTime()) / 1000 :
+                (new Date(System.currentTimeMillis()).getTime() -
+                        taskoRun.getStartTime().getTime()) / 1000;
+        data = formatChannelsData(
+                TaskoFactory.lookupScheduleById(taskoRun.getScheduleId()).getData(), user);
+        status = taskoRun.getStatus().toLowerCase();
     }
 
     /**
