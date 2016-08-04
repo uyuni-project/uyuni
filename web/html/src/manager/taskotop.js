@@ -56,7 +56,7 @@ const TaskoTop = React.createClass({
     var statusValues = {'running': 0, 'ready_to_run': 1, 'failed': 2, 'interrupted': 3, 'skipped': 4, 'finished': 5 };
     var a = statusValues[aRaw[columnKey]];
     var b = statusValues[bRaw[columnKey]];
-    var result = a > b ? 1 : (a < b ? -1 : 0);
+    var result = (a > b ? 1 : (a < b ? -1 : 0)) || this.sortByEndTime(aRaw, bRaw, 'endTime', sortDirection);
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   },
 
