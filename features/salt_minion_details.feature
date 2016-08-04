@@ -19,7 +19,7 @@ Feature: Verify the minion registration
     Then I should see a "aaa_base" text
     And I should see a "aaa_base-extras" text
 
-  Scenario: Accepted minion have a base channel
+  Scenario: Accepted minion has a base channel
     Given that this minion is registered in Spacewalk
     And I follow this client link
     And I follow "Software"
