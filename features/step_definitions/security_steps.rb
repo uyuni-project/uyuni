@@ -9,56 +9,49 @@ end
 Given(/^I navigate to any non-static page$/) do
   where = ['I am on the Systems page'].sample
   step(where)
-  @headers = Capybara.current_session.response_headers
-  @url = Capybara.current_session.current_url
+  @headers = {}
+  begin
+    Capybara.current_session
+      .response_headers.each do |header, value|
+      @headers[header.downcase] = value
+    end
+    @url = Capybara.current_session.current_url
+  rescue Capybara::NotSupportedByDriverError
+    pending('Current driver does not support checking response headers')
+  end
 end
 
 Given(/^I retrieve any static resource$/) do
   resource = ['/img/action-add.gif', '/css/spacewalk.css', '/fonts/DroidSans.ttf',
               '/javascript/actionchain.js'].sample
-  visit Capybara.app_host + resource
-  @headers = Capybara.current_session.response_headers
-  @url = Capybara.current_session.current_url
+  @url = Capybara.app_host + resource
+  open(@url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |f|
+    @headers = f.meta
+  end
 end
 
 And(/^the response header "(.*?)" should be "(.*?)"$/) do |arg1, arg2|
-  begin
-    assert_includes(@headers.keys, arg1,
-                    "Header '#{arg1}' not present in '#{@url}'")
-    assert_equal(arg2, Capybara.current_session.response_headers[arg1],
-                 "Header '#{arg1}' in '#{@url}' is not '#{arg2}'")
-  rescue Capybara::NotSupportedByDriverError
-    pending('Current driver does not support checking response headers')
-  end
+  assert_includes(@headers.keys, arg1.downcase,
+                  "Header '#{arg1}' not present in '#{@url}'")
+  assert_equal(arg2, @headers[arg1.downcase],
+               "Header '#{arg1}' in '#{@url}' is not '#{arg2}'")
 end
 
 And(/^the response header "(.*?)" should not be "(.*?)"$/) do |arg1, arg2|
-  begin
-    refute_equal(arg2, @headers[arg1],
-                 "Header '#{arg1}' in '#{@url}' is '#{arg2}'")
-  rescue Capybara::NotSupportedByDriverError
-    pending('Current driver does not support checking response headers')
-  end
+  refute_equal(arg2, @headers[arg1.downcase],
+               "Header '#{arg1}' in '#{@url}' is '#{arg2}'")
 end
 
 Then(/^the response header "(.*?)" should contain "(.*?)"$/) do |arg1, arg2|
-  begin
-    assert_includes(@headers.keys, arg1,
-                    "Header '#{arg1}' not present in '#{@url}'")
-    assert_includes(@headers[arg1], arg2,
-                    "Header '#{arg1}' in '#{@url}' does not contain '#{arg2}'")
-  rescue Capybara::NotSupportedByDriverError
-    pending('Current driver does not support checking response headers')
-  end
+  assert_includes(@headers.keys, arg1.downcase,
+                  "Header '#{arg1}' not present in '#{@url}'")
+  assert_includes(@headers[arg1.downcase], arg2,
+                  "Header '#{arg1}' in '#{@url}' does not contain '#{arg2}'")
 end
 
 Then(/^the response header "(.*?)" should not be present$/) do |arg1|
-  begin
-    refute_includes(@headers.keys, arg1,
+    refute_includes(@headers.keys, arg1.downcase,
                     "Header '#{arg1}' present in '#{@url}'")
-  rescue Capybara::NotSupportedByDriverError
-    pending('Current driver does not support checking response headers')
-  end
 end
 
 Then(/^the login form does not contain a jsessionid$/) do
