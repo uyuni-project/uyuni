@@ -30,6 +30,9 @@ import static java.util.stream.Collectors.toList;
  */
 public class TaskoTopCollector {
 
+    // latest slice of time to collect tasks is fixed to 5 minutes
+    public static final long SLICE_TIME = TimeUnit.MINUTES.toMillis(5);
+
     /**
      * Gets UI-ready data.
      *
@@ -44,8 +47,8 @@ public class TaskoTopCollector {
                 .sorted((j1, j2) -> j2.getId().compareTo(j1.getId()))
                 .collect(toList());
 
-        // collect tasks ended in the latest 5 minutes
-        Date limitTime = new Date(System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(5));
+        // collect tasks ended in the latest SLICE_TIME
+        Date limitTime = new Date(System.currentTimeMillis() - SLICE_TIME);
         jobs.addAll(TaskoFactory.listRunsNewerThan(limitTime).stream()
                 .filter(j -> j.getEndTime() != null)
                 .map(t -> new TaskoTopJob().generateFromTaskoRun(
