@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -31,7 +31,7 @@ import spark.Request;
 import spark.Response;
 
 /**
- * Controller class providing backend code for subscription-matcher pages.
+ * Controller class providing backend code for "Runtime Execution" (well known as TaskoTop) page.
  */
 public class TaskoTop {
 
