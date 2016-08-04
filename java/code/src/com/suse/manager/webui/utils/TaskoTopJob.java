@@ -220,38 +220,6 @@ public class TaskoTopJob {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof TaskoTopJob)) {
-            return false;
-        }
-        TaskoTopJob otherJob = (TaskoTopJob) other;
-        return new EqualsBuilder()
-            .append(getId(), otherJob.getId())
-            .append(getName(), otherJob.getName())
-            .append(getStartTime(), otherJob.getStartTime())
-            .append(getStatus(), otherJob.getStatus())
-            .isEquals();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .append(getName())
-            .append(getStartTime())
-            .append(getElapsedTime())
-            .append(getData())
-            .append(getStatus())
-            .toHashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String toString() {
         return new ToStringBuilder(this)
         .append("Id", getId())
