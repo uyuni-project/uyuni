@@ -41,4 +41,5 @@ yum_clean_all:
     - user: root
     - require: 
        - file: "/etc/yum.repos.d/susemanager:channels.repo"
+    -  unless: "/usr/bin/yum repolist | grep \"repolist: 0$\""
 {%- endif %}
