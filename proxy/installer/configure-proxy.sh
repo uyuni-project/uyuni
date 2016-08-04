@@ -678,6 +678,9 @@ else
     echo Use "/usr/sbin/rhn-proxy start" to manually start proxy.
 fi
 
+echo "Restarting salt-broker."
+/usr/bin/systemctl restart salt-broker
+
 # do not tell admin to configure proxy on next login anymore
 rm -f /etc/motd
 
