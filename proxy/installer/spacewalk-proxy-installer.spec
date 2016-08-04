@@ -24,7 +24,7 @@ Requires: glibc
 Requires: aaa_base
 Requires: apache2
 Requires(pre): spacewalk-proxy-common
-Requires(pre): spacewalk-proxy-salt
+Requires: spacewalk-proxy-salt
 %else
 Requires: glibc-common
 Requires: chkconfig
