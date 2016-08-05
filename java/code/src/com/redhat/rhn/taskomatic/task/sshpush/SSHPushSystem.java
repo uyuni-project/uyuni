@@ -30,6 +30,7 @@ public class SSHPushSystem {
     private long id;
     private Date lastCheckin;
     private String name;
+    private String minionId;
 
     /**
      * Return the contact method label.
@@ -122,6 +123,22 @@ public class SSHPushSystem {
      */
     public void setName(String nameIn) {
         this.name = nameIn;
+    }
+
+    /**
+     * Return the minionId of the system in case it is a minion.
+     * @return the minion id or null
+     */
+    public String getMinionId() {
+        return minionId;
+    }
+
+    /**
+     * Set the minion id of the system.
+     * @param minionIdIn the name to set
+     */
+    public void setMinionId(String minionIdIn) {
+        this.minionId = minionIdIn;
     }
 
     /**
