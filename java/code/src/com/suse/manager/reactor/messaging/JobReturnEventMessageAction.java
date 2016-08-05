@@ -66,6 +66,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -80,6 +83,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     /* List of Salt modules that could possibly change installed packages */
     private final List<String> packageChangingModules = Arrays.asList("pkg.install",
             "pkg.remove", "pkg_installed", "pkg_latest", "pkg_removed");
+
+    private static Pattern RHEL_RELEASE_MATCHER = Pattern.compile("(.*)\\srelease\\s([\\d.]+)\\s\\((.*)\\)");
 
     @Override
     public void doExecute(EventMessage msg) {
@@ -377,6 +382,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 .map(JobReturnEventMessageAction::getInstalledProducts)
                 .ifPresent(server::setInstalledProducts);
 
+        Optional.ofNullable(result.getRhelReleaseFile())
+                .map(content -> content.getChanges().getRet())
+                .map(c -> JobReturnEventMessageAction.getInstalledProductsForRhel(c, server))
+                .ifPresent(server::setInstalledProducts);
+
         ServerFactory.save(server);
         if (LOG.isDebugEnabled()) {
             long duration = Duration.between(start, Instant.now()).getSeconds();
@@ -449,8 +459,53 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         }).collect(Collectors.toSet());
     }
 
+    private static Set<InstalledProduct> getInstalledProductsForRhel(
+            String rhelReleaseContent, MinionServer server) {
+        Matcher matcher = RHEL_RELEASE_MATCHER.matcher(rhelReleaseContent);
+        if (matcher.matches()) {
+            String name = matcher.groupCount() > 0 ? matcher.group(1) : "";
+            name = name.replaceAll("(?i)linux", "").replaceAll(" ", "");
+            if (name.toLowerCase().startsWith("redhat") ||
+                    name.toLowerCase().startsWith("centos") ||
+                    name.toLowerCase().startsWith("slesexpandedsupportplatform")) {
+                name = "RES";
+            }
+            String version = matcher.groupCount() > 1 ? matcher.group(2) : "";
+            version = StringUtils.substringBefore(version, ".");
+            String release = matcher.groupCount() > 2 ? matcher.group(3) : "";
+            String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
+
+            // Find the corresponding SUSEProduct in the database
+            // Find the corresponding SUSEProduct in the database
+            Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
+                    .findSUSEProduct(name, version, release, arch, true));
+            if (!suseProduct.isPresent()) {
+                LOG.warn(String.format("No product match found for: %s %s %s %s",
+                        name, version, release, arch));
+            }
+
+            InstalledProduct installedProduct = new InstalledProduct();
+            installedProduct.setName(name);
+            installedProduct.setVersion(version);
+            installedProduct.setRelease(release);
+            installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
+            installedProduct.setBaseproduct(true);
+
+            return Collections.singleton(installedProduct);
+        }
+        return Collections.emptySet();
+    }
+
+
     @Override
     public boolean canRunConcurrently() {
         return true;
     }
+
+    public static void main(String[] args) {
+        String rhelReleaseContent = "Red Hat Enterprise Linux Server release 7.0 (Maipo)";
+        Matcher matcher = RHEL_RELEASE_MATCHER.matcher(rhelReleaseContent);
+
+    }
+
 }
