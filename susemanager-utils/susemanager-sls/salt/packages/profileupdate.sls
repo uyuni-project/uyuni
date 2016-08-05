@@ -9,5 +9,9 @@ packages:
 products:
   module.run:
     - name: pkg.list_products
+{% elif grains['os_family'] == 'RedHat' %}
+rhelrelease:
+  module.run:
+    - name: sumautil.cat
+    - path: /etc/redhat-release
 {% endif %}
-
