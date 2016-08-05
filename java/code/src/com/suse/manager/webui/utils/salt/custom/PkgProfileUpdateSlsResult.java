@@ -35,6 +35,9 @@ public class PkgProfileUpdateSlsResult {
    @SerializedName("module_|-packages_|-pkg.info_installed_|-run")
    private StateApplyResult<Ret<Map<String, Pkg.Info>>> infoInstalled;
 
+   @SerializedName("module_|-rhelrelease_|-sumautil.cat_|-run")
+   private StateApplyResult<Ret<String>> rhelReleaseFile;
+
    /**
     * @return the list of installed products
     */
@@ -47,5 +50,12 @@ public class PkgProfileUpdateSlsResult {
     */
    public StateApplyResult<Ret<Map<String, Pkg.Info>>> getInfoInstalled() {
       return infoInstalled;
+   }
+
+   /**
+    * @return the content of the file /etc/redhat-release
+    */
+   public StateApplyResult<Ret<String>> getRhelReleaseFile() {
+      return rhelReleaseFile;
    }
 }
