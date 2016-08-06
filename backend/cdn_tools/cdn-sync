@@ -4,14 +4,16 @@ import argparse
 import sys
 import os
 
-from spacewalk.cdn_tools.constants import CDN_REPODATA_ROOT
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.cdn_tools.cdnsync import CdnSync
 from spacewalk.server import rhnSQL
 from spacewalk.common.usix import raise_with_tb
 from rhn import rhnLockfile
+from rhn.connections import idn_ascii_to_puny
+from spacewalk.server.rhnChannel import ChannelNotFoundError
 from spacewalk.server.importlib.importLib import InvalidArchError, \
     InvalidChannelError, InvalidChannelFamilyError, MissingParentChannelError
+
 
 def system_exit(code, msgs=None):
     """Exit with a code and optional message(s). Saved a few lines of code."""
@@ -54,13 +56,16 @@ def process_commandline():
         sys.exit(0)
 
     if cmd_args.http_proxy:
-        CFG.set("HTTP_PROXY", cmd_args.http_proxy)
+        CFG.set("HTTP_PROXY", idn_ascii_to_puny(cmd_args.http_proxy))
         CFG.set("HTTP_PROXY_USERNAME", cmd_args.http_proxy_username)
         CFG.set("HTTP_PROXY_PASSWORD", cmd_args.http_proxy_password)
 
     # check the validity of the debug level
     if cmd_args.debug_level:
-        debug_level = int(cmd_args.debug_level)
+        try:
+            debug_level = int(cmd_args.debug_level)
+        except (ValueError, TypeError):
+            system_exit(1, "Incorrect debug-level value: %s" % str(cmd_args.debug_level))
         if not (0 <= debug_level <= 6):
             msg = ["ERROR: --debug-level takes an in integer value within the range [0 - 6]:",
                    "  0  - little logging/messaging.",
@@ -115,6 +120,11 @@ if __name__ == '__main__':
         sys.exit(e.code)
     except rhnLockfile.LockfileLockedException:
         system_exit(1, "SYNC ERROR: attempting to run more than one instance of cdn-sync. Exiting.")
+    except ChannelNotFoundError:
+        e = sys.exc_info()[1]
+        system_exit(12, ["ERROR: these channels either do not exist or are not available:",
+                         e,
+                         "(to see a list of channel labels: /usr/bin/cdn-sync --list-channels)"])
     except (MissingParentChannelError, InvalidChannelFamilyError,
             InvalidChannelError, InvalidArchError):
         e = sys.exc_info()[1]

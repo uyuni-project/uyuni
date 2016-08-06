@@ -30,6 +30,7 @@ except ImportError:
 import constants
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.server import rhnSQL
+from spacewalk.server.rhnChannel import ChannelNotFoundError
 from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.contentSourcesImport import ContentSourcesImport
 from spacewalk.server.importlib.channelImport import ChannelImport
@@ -291,7 +292,8 @@ class CdnSync(object):
         excluded_urls = []
         sync_kickstart = True
         if no_kickstarts:
-            excluded_urls = [CFG.CDN_ROOT + s['relative_url'] for s in self.kickstart_source_mapping[channel]]
+            if channel in self.kickstart_source_mapping:
+                excluded_urls = [CFG.CDN_ROOT + s['relative_url'] for s in self.kickstart_source_mapping[channel]]
             sync_kickstart = False
 
         print "======================================"
@@ -307,13 +309,25 @@ class CdnSync(object):
                                  sync_kickstart=sync_kickstart,
                                  latest=False,
                                  metadata_only=no_rpms,
-                                 excluded_urls=excluded_urls)
+                                 excluded_urls=excluded_urls,
+                                 strict=1)
+        sync.set_ks_tree_type('rhn-managed')
         return sync.sync()
 
     def sync(self, channels=None, no_packages=False, no_errata=False, no_rpms=False, no_kickstarts=False):
         # If no channels specified, sync already synced channels
         if not channels:
             channels = self.synced_channels
+
+        # Check channel availability before doing anything
+        not_available = []
+        for channel in channels:
+            if any(channel not in d for d in
+                   [self.channel_metadata, self.channel_to_family,  self.content_source_mapping]):
+                not_available.append(channel)
+
+        if not_available:
+            raise ChannelNotFoundError("  " + "\n  ".join(not_available))
 
         # Need to update channel metadata
         self._update_channels_metadata(channels)
@@ -325,8 +339,8 @@ class CdnSync(object):
         # Finally, sync channel content
         total_time = datetime.timedelta()
         for channel in channels:
-            elapsed_time = self._sync_channel(channel, no_errata=no_errata, no_rpms=no_rpms, no_kickstarts=no_kickstarts)
-            total_time += elapsed_time
+            cur_time = self._sync_channel(channel, no_errata=no_errata, no_rpms=no_rpms, no_kickstarts=no_kickstarts)
+            total_time += cur_time
 
         print("Total time: %s" % str(total_time).split('.')[0])
 
@@ -375,6 +389,10 @@ class CdnSync(object):
                                        suffix='Complete', bar_length=50)
         elapsed_time = int(time.time())
         print("Elapsed time: %d seconds" % (elapsed_time - start_time))
+        # remove temporary certificates
+        os.unlink(cert_prefix + "_client.cert")
+        os.unlink(cert_prefix + "_client.key")
+        os.unlink(cert_prefix + "_ca.cert")
 
     def print_channel_tree(self, repos=False):
         available_channel_tree = self._list_available_channels()

@@ -40,7 +40,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.21
+Version: 2.6.26
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -919,6 +919,37 @@ rm -f %{rhnconf}/rhnSecret.py*
 %endif
 
 %changelog
+* Fri Aug 05 2016 Gennadii Altukhov <galt@redhat.com> 2.6.26-1
+- Impove error message about missing parent channels
+- cdn-sync - add debug-level verification
+- cdn-sync - add proxy url convertor from ascii to puny
+- cdn-sync - remove temporary certificates
+
+* Fri Aug 05 2016 Gennadii Altukhov <galt@redhat.com> 2.6.25-1
+- fix pep8 'Line too long'
+- bugfix - typo in variable name
+- cdn-sync - add to syncing kickstartable trees: - parameterized values for
+  rhnKSTreeType and rhnKSInstallType - possibility to select kickstartable
+  trees with NULL organisation id
+- bugfix - remove temporary file if there is an error during downloading by
+  yum-wrapper
+- cdn-sync - exclude kickstart repositories only if we have them in config file
+
+* Thu Aug 04 2016 Jan Dobes 2.6.24-1
+- handle not existing channels
+- we don't support RHEL 5 already
+
+* Wed Aug 03 2016 Jan Dobes 2.6.23-1
+- better look for existing erratum by advisory name now
+- always set advisory with version number and be different than advisory_name
+- do not crash for now
+
+* Wed Aug 03 2016 Jan Dobes 2.6.22-1
+- support strict package subscription to channel
+- fixing pep8
+- unused import
+- unused variable
+
 * Fri Jul 29 2016 Jan Dobes 2.6.21-1
 - simplify and allow to use other parameters without channel parameter
 - rename to plural to have same parameter as in satsync
