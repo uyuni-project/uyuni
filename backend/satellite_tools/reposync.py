@@ -142,6 +142,7 @@ def getCustomChannels():
 
     return l_custom_ch
 
+
 class RepoSync(object):
 
     def __init__(self, channel_label, repo_type, url=None, fail=False,
@@ -160,6 +161,8 @@ class RepoSync(object):
         self.available_packages = {}
         self.latest = latest
         self.metadata_only = metadata_only
+        self.ks_tree_type = 'externally-managed'
+        self.ks_install_type = 'generic_rpm'
 
         initCFG('server.susemanager')
         rhnSQL.initDB()
@@ -222,6 +225,7 @@ class RepoSync(object):
 
         self.arches = get_compatible_arches(int(self.channel['id']))
         self.strict = strict
+        self.all_packages = []
 
     def _format_sources(self, sources, excluded_urls):
         ret = []
@@ -399,6 +403,12 @@ class RepoSync(object):
             # remove query parameter from url
             url.query = ""
         return url.getURL()
+
+    def set_ks_tree_type(self, tree_type='externally-managed'):
+        self.ks_tree_type = tree_type
+
+    def set_ks_install_type(self, install_type='generic_rpm'):
+        self.ks_install_type = install_type
 
     def update_date(self):
         """ Updates the last sync time"""
@@ -1069,6 +1079,7 @@ class RepoSync(object):
             filters = self.filters
 
         packages = plug.list_packages(filters, self.latest)
+        self.all_packages.extend(packages)
         to_process = []
         skipped = 0
         saveurl = suseLib.URL(url)
@@ -1132,7 +1143,9 @@ class RepoSync(object):
             self.print_msg("No new packages to sync.")
             if plug.num_packages == 0:
                 self.regen = True
-            return
+            # If we are just appending, we can exit
+            if not self.strict:
+                return
         else:
             self.print_msg("Packages already synced:      %5d" %
                            (num_passed - num_to_process))
@@ -1141,11 +1154,6 @@ class RepoSync(object):
         self.regen = True
         is_non_local_repo = (url.find("file:/") < 0)
 
-        def finally_remove(path):
-            if is_non_local_repo and path and os.path.exists(path):
-                os.remove(path)
-
-        # try/except/finally doesn't work in python 2.4 (RHEL5), so here's a hack
         for (index, what) in enumerate(to_process):
             pack, to_download, to_link = what
             localpath = None
@@ -1156,22 +1164,20 @@ class RepoSync(object):
                     pack.path = localpath = plug.get_package(pack, metadata_only=self.metadata_only)
                     pack.load_checksum_from_header()
                     pack.upload_package(self.channel, metadata_only=self.metadata_only)
-                    finally_remove(localpath)
                 if to_link:
                     self.associate_package(pack)
             except KeyboardInterrupt:
-                finally_remove(localpath)
                 raise
             except Exception:
                 e = sys.exc_info()[1]
                 self.error_msg(e)
-                finally_remove(localpath)
-                pack.clear_header()
                 if self.fail:
                     raise
-                else:
-                    self.error_messages.append(str(e))
+                to_process[index] = (pack, False, False)
                 continue
+            finally:
+                if is_non_local_repo and localpath and os.path.exists(localpath):
+                    os.remove(localpath)
             pack.clear_header()
 
     def match_package_checksum(self, md_pack, db_pack):
@@ -1285,14 +1291,11 @@ class RepoSync(object):
         rhnMail.send(headers, extra + body)
 
     def import_kickstart(self, plug, url, repo_label):
-        ks_tree_label = re.sub(r'[^-_0-9A-Za-z@.]', '', repo_label.replace(' ', '_'))
-        if len(ks_tree_label) < 4:
-            ks_tree_label += "_repo"
         pxeboot_path = 'images/pxeboot/'
         pxeboot = plug.get_file(pxeboot_path)
         if pxeboot is None:
             if not re.search(r'/$', url):
-                url = url + '/'
+                url += '/'
             self.print_msg("Kickstartable tree not detected (no %s%s)" % (url, pxeboot_path))
             return
         channel_id = int(self.channel['id'])
@@ -1312,8 +1315,12 @@ class RepoSync(object):
         ks_path = 'rhn/kickstart/'
         if 'org_id' in self.channel and self.channel['org_id']:
             ks_path += str(self.channel['org_id']) + '/' + CFG.MOUNT_POINT + ks_tree_label
+            row = rhnSQL.fetchone_dict(id_request + " and org_id = :org_id", channel_id=self.channel['id'],
+                                       label=ks_tree_label, org_id=self.channel['org_id'])
         else:
             ks_path += ks_tree_label
+            row = rhnSQL.fetchone_dict(id_request + " and org_id is NULL", channel_id=self.channel['id'],
+                                       label=ks_tree_label)
 
         row = rhnSQL.execute("""
                    insert into rhnKickstartableTree (id, org_id, label, base_path, channel_id, kstree_type,

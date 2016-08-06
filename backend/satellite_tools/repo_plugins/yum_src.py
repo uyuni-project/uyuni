@@ -633,6 +633,7 @@ class ContentSource:
 
     def get_file(self, path, local_base=None):
         try:
+            temp_file = ""
             if local_base is not None:
                 target_file = os.path.join(local_base, path)
                 target_dir = os.path.dirname(target_file)
@@ -648,6 +649,9 @@ class ContentSource:
                 return self.repo.grab.urlread(path)
         except URLGrabError:
             return
+        finally:
+            if os.path.exists(temp_file):
+                os.unlink(temp_file)
 
 def _fix_encoding(text):
     if text is None:
@@ -656,4 +660,3 @@ def _fix_encoding(text):
         return unicode.encode(text, 'utf-8')
     else:
         return str(text)
-
