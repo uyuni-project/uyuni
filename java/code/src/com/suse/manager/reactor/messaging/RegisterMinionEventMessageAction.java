@@ -44,6 +44,7 @@ import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -212,7 +213,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             if (!activationKey.isPresent()) {
                 LOG.info("No base channel added, adding default channel (if applicable)");
-                lookupAndAddDefaultChannels(server);
+                lookupAndAddDefaultChannels(server, grains);
             }
 
             server.updateServerInfo();
@@ -302,33 +303,53 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
     }
 
-    private void lookupAndAddDefaultChannels(MinionServer server) {
-        Optional<List<ProductInfo>> productList =
-                SALT_SERVICE.callSync(Zypper.listProducts(false), server.getMinionId());
-        if (!productList.isPresent()) {
-            LOG.warn("no listed product returned from salt");
-        }
+    private void lookupAndAddDefaultChannels(MinionServer server, ValueMap grains) {
+        if ("suse".equalsIgnoreCase(grains.getValueAsString("os"))) {
+            Optional<List<ProductInfo>> productList =
+                    SALT_SERVICE.callSync(Zypper.listProducts(false), server.getMinionId());
+            productList.ifPresent(pl -> {
+                pl.stream().filter(pif -> pif.getIsbase()).findFirst().ifPresent(pi -> {
+                    String osName = pi.getName().toLowerCase();
+                    String osVersion = pi.getVersion();
+                    String osArch = pi.getArch();
+                    Optional<SUSEProduct> suseProduct = ofNullable(SUSEProductFactory
+                            .findSUSEProduct(osName, osVersion, null, osArch, false));
+                    if (!suseProduct.isPresent()) {
+                        LOG.warn("No product match found for: " + osName + " " + osVersion +
+                                " " + osArch);
+                    }
 
-        productList.ifPresent(pl -> {
-            pl.stream().filter(pif -> pif.getIsbase()).findFirst().ifPresent(pi -> {
-                String osName = pi.getName().toLowerCase();
-                String osVersion = pi.getVersion();
-                String osArch = pi.getArch();
-                Optional<SUSEProduct> suseProduct = ofNullable(SUSEProductFactory
-                        .findSUSEProduct(osName, osVersion, null, osArch, false));
-                if (!suseProduct.isPresent()) {
-                    LOG.warn("No product match found for: " + osName + " " + osVersion +
-                            " " + osArch);
-                }
-
-                Opt.stream(suseProduct).flatMap(sp ->
-                        lookupBaseAndRequiredChannels(osName, osVersion, osArch, sp)
-                ).forEach(reqChan -> {
-                    LOG.info("Adding required channel: " + reqChan.getName());
-                    server.addChannel(reqChan);
+                    Opt.stream(suseProduct).flatMap(sp ->
+                            lookupBaseAndRequiredChannels(osName, osVersion, osArch, sp)
+                    ).forEach(reqChan -> {
+                        LOG.info("Adding required channel: " + reqChan.getName());
+                        server.addChannel(reqChan);
+                    });
                 });
             });
-        });
+        }
+        else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os"))) {
+            Optional<String> rhelReleaseContent = SALT_SERVICE
+                    .getFileContent(server.getMinionId(), "/etc/redhat-release");
+
+            rhelReleaseContent
+                .flatMap(content -> RhelUtils.getProductForRhel(server, content))
+                .ifPresent(info -> {
+                        if (!info.getSuseProduct().isPresent()) {
+                            LOG.warn("No product match found for: " + info.getName() + " " + info.getVersion() +
+                                    " " + info.getArch());
+                        }
+
+                        Opt.stream(info.getSuseProduct()).flatMap(sp ->
+                                lookupBaseAndRequiredChannels(info.getName(), info.getVersion(), info.getArch(), sp)
+                        ).forEach(reqChan -> {
+                            LOG.info("Adding required channel: " + reqChan.getName());
+                            server.addChannel(reqChan);
+                        });
+                    }
+                );
+
+        }
     }
 
     private Stream<Channel> lookupBaseAndRequiredChannels(String osName,

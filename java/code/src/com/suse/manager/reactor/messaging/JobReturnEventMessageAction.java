@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 
+import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
@@ -67,7 +68,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Collections;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -461,51 +461,37 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
     private static Set<InstalledProduct> getInstalledProductsForRhel(
             String rhelReleaseContent, MinionServer server) {
-        Matcher matcher = RHEL_RELEASE_MATCHER.matcher(rhelReleaseContent);
-        if (matcher.matches()) {
-            String name = matcher.groupCount() > 0 ? matcher.group(1) : "";
-            name = name.replaceAll("(?i)linux", "").replaceAll(" ", "");
-            if (name.toLowerCase().startsWith("redhat") ||
-                    name.toLowerCase().startsWith("centos") ||
-                    name.toLowerCase().startsWith("slesexpandedsupportplatform")) {
-                name = "RES";
-            }
-            String version = matcher.groupCount() > 1 ? matcher.group(2) : "";
-            version = StringUtils.substringBefore(version, ".");
-            String release = matcher.groupCount() > 2 ? matcher.group(3) : "";
+
+        Optional<RhelUtils.RhelProduct> rhelProductInfo = RhelUtils.getProductForRhel(server, rhelReleaseContent);
+
+        if (!rhelProductInfo.isPresent()) {
+            LOG.warn("Could not parse RHEL release info: " + rhelReleaseContent);
+            return Collections.emptySet();
+
+        } else if (!rhelProductInfo.get().getSuseProduct().isPresent()) {
+            LOG.warn(String.format("No product match found for: %s %s %s %s",
+                    rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
+                    rhelProductInfo.get().getRelease(), rhelProductInfo.get().getArch()));
+        }
+
+        return rhelProductInfo.get().getSuseProduct().map(product -> {
             String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
 
-            // Find the corresponding SUSEProduct in the database
-            // Find the corresponding SUSEProduct in the database
-            Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
-                    .findSUSEProduct(name, version, release, arch, true));
-            if (!suseProduct.isPresent()) {
-                LOG.warn(String.format("No product match found for: %s %s %s %s",
-                        name, version, release, arch));
-            }
-
             InstalledProduct installedProduct = new InstalledProduct();
-            installedProduct.setName(name);
-            installedProduct.setVersion(version);
-            installedProduct.setRelease(release);
+            installedProduct.setName(product.getName());
+            installedProduct.setVersion(product.getVersion());
+            installedProduct.setRelease(product.getRelease());
             installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
             installedProduct.setBaseproduct(true);
 
             return Collections.singleton(installedProduct);
-        }
-        return Collections.emptySet();
+        }).orElse(Collections.emptySet());
     }
 
 
     @Override
     public boolean canRunConcurrently() {
         return true;
-    }
-
-    public static void main(String[] args) {
-        String rhelReleaseContent = "Red Hat Enterprise Linux Server release 7.0 (Maipo)";
-        Matcher matcher = RHEL_RELEASE_MATCHER.matcher(rhelReleaseContent);
-
     }
 
 }
