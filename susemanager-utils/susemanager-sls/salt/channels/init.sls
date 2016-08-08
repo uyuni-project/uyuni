@@ -39,7 +39,7 @@ yum_clean_all:
   cmd.run:
     - name: /usr/bin/yum clean all
     - user: root
-    - require: 
+    - onchanges: 
        - file: "/etc/yum.repos.d/susemanager:channels.repo"
     -  unless: "/usr/bin/yum repolist | grep \"repolist: 0$\""
 {%- endif %}
