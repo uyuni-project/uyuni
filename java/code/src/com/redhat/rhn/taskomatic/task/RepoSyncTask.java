@@ -19,6 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 
+import com.redhat.rhn.domain.channel.ContentSource;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -116,8 +117,12 @@ public class RepoSyncTask extends RhnJavaJob {
         cmd.add("--channel");
         cmd.add(c.getLabel());
         cmd.add("--type");
-        cmd.add(ChannelFactory.lookupContentSources(c.getOrg(), c).get(0)
-                .getType().getLabel());
+        List<ContentSource> sources = ChannelFactory.lookupContentSources(c.getOrg(), c);
+        if (sources.isEmpty()) {
+            cmd.add("yum");
+        } else {
+            cmd.add(sources.get(0).getType().getLabel());
+        }
         cmd.add("--non-interactive");
         cmd.addAll(params);
         return cmd;
