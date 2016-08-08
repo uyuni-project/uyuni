@@ -42,4 +42,4 @@ def test_beacon():
     with patch.object(pkgset.os.path, 'exists', MagicMock(return_value=True)):
         with patch.object(pkgset, 'open', mock_content):
             data = pkgset.beacon({})
-            assert data == [{'zypper/pkgset/changed': 'true'}]
+            assert data == [{'tag': 'changed'}]
