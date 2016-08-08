@@ -50,8 +50,8 @@ Then(/^the response header "(.*?)" should contain "(.*?)"$/) do |arg1, arg2|
 end
 
 Then(/^the response header "(.*?)" should not be present$/) do |arg1|
-    refute_includes(@headers.keys, arg1.downcase,
-                    "Header '#{arg1}' present in '#{@url}'")
+  refute_includes(@headers.keys, arg1.downcase,
+                  "Header '#{arg1}' present in '#{@url}'")
 end
 
 Then(/^the login form does not contain a jsessionid$/) do
