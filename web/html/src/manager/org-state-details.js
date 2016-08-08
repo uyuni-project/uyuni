@@ -96,7 +96,7 @@ var StateDetail = React.createClass({
             );
         }
         buttons.push(
-            <LinkButton key="cancel-btn" id="cancel-btn" className="btn-default form-horizontal pull-right" text={t("Cancel")} href="/rhn/manager/state_catalog"/>
+            <LinkButton key="cancel-btn" id="cancel-btn" className="btn-default form-horizontal pull-right" text={t("Cancel")} href="/rhn/manager/state-catalog"/>
         );
 
         var deleteButton = null;
