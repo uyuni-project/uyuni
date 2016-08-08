@@ -49,6 +49,7 @@ public class MinionController {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the user
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView list(Request request, Response response, User user) {

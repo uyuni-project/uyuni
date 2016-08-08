@@ -120,7 +120,8 @@ public class RepoSyncTask extends RhnJavaJob {
         List<ContentSource> sources = ChannelFactory.lookupContentSources(c.getOrg(), c);
         if (sources.isEmpty()) {
             cmd.add("yum");
-        } else {
+        }
+        else {
             cmd.add(sources.get(0).getType().getLabel());
         }
         cmd.add("--non-interactive");
