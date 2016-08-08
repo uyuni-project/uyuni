@@ -184,7 +184,7 @@
     <url-pattern>/manager/api/*</url-pattern>
     <url-pattern>/manager/vhms/*</url-pattern>
     <url-pattern>/manager/subscription-matching/*</url-pattern>
-    <url-pattern>/manager/state_catalog/*</url-pattern>
+    <url-pattern>/manager/state-catalog/*</url-pattern>
     <url-pattern>/manager/admin/runtime-status/*</url-pattern>
   </filter-mapping>
 
