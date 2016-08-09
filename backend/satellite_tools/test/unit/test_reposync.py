@@ -660,12 +660,19 @@ class RepoSyncTest(unittest.TestCase):
         """
         Test for _to_db_date
         """
-        self.assertEqual(self.reposync._to_db_date('2015-01-02 01:02:03'), '2015-01-02 01:02:03')
-        self.assertEqual(self.reposync._to_db_date('1420160523'), '2015-01-02 02:02:03')
-        self.assertEqual(self.reposync._to_db_date('2015-01-02'), '2015-01-02 00:00:00')
-        self.assertEqual(self.reposync._to_db_date('2015-09-02 13:39:49 UTC'), '2015-09-02 13:39:49')
-        self.assertEqual(self.reposync._to_db_date('2015-01-02T02:02:03+0100'), '2015-01-02 01:02:03')
-        self.assertRaises(ValueError, self.reposync._to_db_date, '2015-01-02T01:02:03+nonsense')
+        # Unsure datetime.fromtimestamp is always returning UTC times
+        class DateTimeMock(datetime):
+            @classmethod
+            def fromtimestamp(cls, timestamp):
+                return cls.utcfromtimestamp(timestamp)
+
+        with patch("spacewalk.satellite_tools.reposync.datetime", DateTimeMock):
+            self.assertEqual(self.reposync._to_db_date('2015-01-02 01:02:03'), '2015-01-02 01:02:03')
+            self.assertEqual(self.reposync._to_db_date('1420160523'), '2015-01-02 01:02:03')
+            self.assertEqual(self.reposync._to_db_date('2015-01-02'), '2015-01-02 00:00:00')
+            self.assertEqual(self.reposync._to_db_date('2015-09-02 13:39:49 UTC'), '2015-09-02 13:39:49')
+            self.assertEqual(self.reposync._to_db_date('2015-01-02T02:02:03+0100'), '2015-01-02 01:02:03')
+            self.assertRaises(ValueError, self.reposync._to_db_date, '2015-01-02T01:02:03+nonsense')
 
     def _init_reposync(self, label="Label", repo_type=RTYPE, **kwargs):
         """Initialize the RepoSync object with some mocked attrs"""
