@@ -118,6 +118,8 @@ def list_labels():
 def create_repo(label):
     pdid = int(mgr_bootstrap_data.DATA[label]['PDID'])
     destdir = mgr_bootstrap_data.DATA[label]['DEST']
+    errors = 0
+    messages = []
 
     if not os.path.exists(destdir):
         if dryrun:
@@ -125,27 +127,41 @@ def create_repo(label):
         else:
             os.makedirs(destdir)
 
+    if label.startswith('RES'):
+        print "Creating bootstrap repo for latest Service Pack of {0}".format(label)
+    else:
+        print "Creating bootstrap repo for {0}".format(label)
+    print
+
     if options.usecustomchannels:
         h = rhnSQL.prepare(_sql_find_pkgs_with_custom_channels)
     else:
         h = rhnSQL.prepare(_sql_find_pkgs)
     for pkgname in mgr_bootstrap_data.DATA[label]['PKGLIST']:
         h.execute(pdid=pdid, pkgname=pkgname)
-        p = h.fetchone_dict() or None
-        if p is None:
-            print "ERROR: package '%s' not found" % pkgname
-            sys.exit(1)
-        rpmdir = os.path.join(destdir, p['arch'])
-        if not os.path.exists(rpmdir):
-            os.makedirs(rpmdir)
-        print "copy '%s'" % p['nvrea']
-        if not dryrun:
-            shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
+        pkgs = h.fetchall_dict() or []
+        if len(pkgs) == 0:
+            messages.append("ERROR: package '%s' not found" % pkgname)
+            errors += 1
+            continue
+        for p in pkgs:
+            rpmdir = os.path.join(destdir, p['arch'])
+            if not os.path.exists(rpmdir):
+                os.makedirs(rpmdir)
+            print "copy '%s'" % p['nvrea']
+            if not dryrun:
+                shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
 
     if dryrun:
         print "createrepo -s sha %s" % destdir
     else:
         os.system("createrepo -s sha %s" % destdir)
+    if errors:
+        for m in messages:
+            print m
+        if label.startswith('RES') and not options.usecustomchannels:
+            print "If the installation media was imported into a custom channel, try to run again with --with-custom-channel option"
+        sys.exit(1)
 
 
 parser = OptionParser()
