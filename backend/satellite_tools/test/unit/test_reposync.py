@@ -221,25 +221,36 @@ class RepoSyncTest(unittest.TestCase):
 
     def test_update_bugs(self):
         notice = {'references': [{'type': 'bugzilla',
-                                  'id': 'id1',
+                                  'id': '12345',
                                   'title': 'title1',
                                   'href': 'href1'},
                                  {'type': 'bugzilla',
-                                  'id': 'id2',
+                                  'id': 'string_id',
+                                  'title': 'title2',
+                                  'href': 'href2',
+                                  'this': 'non-integer bz ids should be skipped'},
+                                 {'type': 'bugzilla',
+                                  'id': 'string_id',
+                                  'title': 'title3',
+                                  'href': 'http://dummyhost/show_bug.cgi?id=11111',
+                                  'this': 'bz id parsed from href'},
+                                 {'type': 'bugzilla',
+                                  'id': '54321',
                                   'title': 'title2',
                                   'href': 'href2'},
                                  {'type': 'bugzilla',
-                                  'id': 'id2',
+                                  'id': '54321',
                                   'title': 'duplicate_id',
                                   'href': 'duplicate_id'},
                                  {'type': 'godzilla',
                                   'this': 'should be skipped'}]}
         bugs = self.reposync._update_bugs(notice)
 
-        bug_values = [set(['id1', 'title1', 'href1']),
-                      set(['id2', 'title2', 'href2'])]
+        bug_values = [set(['12345', 'title1', 'href1']),
+                      set(['54321', 'title2', 'href2']),
+                      set(['11111', 'title3', 'http://dummyhost/show_bug.cgi?id=11111'])]
 
-        self.assertEqual(len(bugs), 2)
+        self.assertEqual(len(bugs), 3)
         for bug in bugs:
             self.assertEqual(bug.keys(), ['bug_id', 'href', 'summary'])
             assert set(bug.values()) in bug_values, (
@@ -650,7 +661,7 @@ class RepoSyncTest(unittest.TestCase):
         Test for _to_db_date
         """
         self.assertEqual(self.reposync._to_db_date('2015-01-02 01:02:03'), '2015-01-02 01:02:03')
-        self.assertEqual(self.reposync._to_db_date('1420160523'), '2015-01-02 01:02:03')
+        self.assertEqual(self.reposync._to_db_date('1420160523'), '2015-01-02 02:02:03')
         self.assertEqual(self.reposync._to_db_date('2015-01-02'), '2015-01-02 00:00:00')
         self.assertEqual(self.reposync._to_db_date('2015-09-02 13:39:49 UTC'), '2015-09-02 13:39:49')
         self.assertEqual(self.reposync._to_db_date('2015-01-02T02:02:03+0100'), '2015-01-02 01:02:03')
