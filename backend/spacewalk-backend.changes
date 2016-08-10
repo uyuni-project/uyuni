@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Aug 10 09:17:21 CEST 2016 - mc@suse.de
+
+- version 2.1.55.26-1
+- Fix for non-integer IDs for bugzilla bug (bsc#975161)
+- silently ignore non-existing errata severity label on
+  errata import, remove non-used exception (bsc#984452)
+- spacewalk-repo-sync - use dateutil parser (bsc#975161)
+- Only trigger virtualization notification on server save when the
+  virtualization data is not falsy (bsc#975120)
+- fix GPG bad signature detection and improve error messages (bsc#979313)
+
+-------------------------------------------------------------------
 Fri Apr 29 11:36:08 CEST 2016 - jrenner@suse.com
 
 - version 2.1.55.25-1
