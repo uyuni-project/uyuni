@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Aug 10 09:13:55 CEST 2016 - mc@suse.de
+
+- version 2.1.165.25-1
+- call cobbler sync in profile edit only if requested (bsc#991440)
+- support SP Migration from OES 2015 to 2015 SP1
+- Disable YaST self update for new autoinstallation trees for SLE
+
+-------------------------------------------------------------------
 Fri Jun 17 18:08:17 CEST 2016 - mc@suse.de
 
 - version 2.1.165.24-1
