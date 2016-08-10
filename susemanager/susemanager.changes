@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Aug 10 09:23:54 CEST 2016 - mc@suse.de
+
+- version 2.1.25-1
+- Add dependency packages for JeOS (FATE#320809)
+- try to add /repo path to mirror at accessible check
+- show optional channels in mgr-sync add channel and add an option to hide
+  optional channels (bsc#977579)
+
+-------------------------------------------------------------------
 Fri Apr 29 10:48:00 CEST 2016 - jrenner@suse.com
 
 - version 2.1.24-1
