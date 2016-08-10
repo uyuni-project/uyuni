@@ -629,6 +629,10 @@ def get_package_id(self, name):
 
     try:
         return set(self.all_packages[name])
+    except TypeError:
+        # FIX: If we're using an old style cache (package_name -> integer_id)
+        # then we insert the integer id into a set.
+        return set([self.all_packages[name]])
     except KeyError:
         return
 
