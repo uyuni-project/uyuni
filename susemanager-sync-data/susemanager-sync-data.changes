@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Aug 10 09:28:48 CEST 2016 - mc@suse.de
+
+- version 2.1.17-1
+- support SLES12 LTSS (bsc#979288)
+- support SP Migration from OES 2015 to 2015 SP1
+- add requires to spacewalk-java with OES support
+- add support for OES 2015 and OES 2015 SP1 (bsc#934560)
+
+-------------------------------------------------------------------
 Fri Jun 17 11:50:36 CEST 2016 - mc@suse.de
 
 - version 2.1.16-1
