@@ -48,13 +48,11 @@ public class Router implements SparkApplication {
     @Override
     public void init() {
         JadeTemplateEngine jade = setup();
-        // Salt Master pages
+
+        // Minions pages
         get("/manager/minions", withCsrfToken(withUser(MinionController::list)), jade);
         get("/manager/minions/bootstrap",
-                withCsrfToken(withOrgAdmin(MinionController::bootstrap)),
-                jade);
-        post("/manager/minions/bootstrap", withOrgAdmin(MinionsAPI::bootstrap));
-        // Remote command page
+                withCsrfToken(withOrgAdmin(MinionController::bootstrap)), jade);
         get("/manager/minions/cmd", withCsrfToken(MinionController::cmd), jade);
         get("/manager/minions/:id", MinionController::show);
 
@@ -79,7 +77,8 @@ public class Router implements SparkApplication {
                 withCsrfToken(MinionController::highstate),
                 jade);
 
-        // Minion APIs
+        // Minions API
+        post("/manager/api/minions/bootstrap", withOrgAdmin(MinionsAPI::bootstrap));
         post("/manager/api/minions/cmd", withUser(MinionsAPI::run));
         get("/manager/api/minions/match", withUser(MinionsAPI::match));
         get("/manager/api/minions/keys", withUser(MinionsAPI::listKeys));
