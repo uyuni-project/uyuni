@@ -1068,7 +1068,7 @@ def do_softwarechannel_removeerrata(self, args):
     print
     print 'Packages'
     print '--------'
-    print '\n'.join(sorted([self.get_package_name(p) for p in package_ids]))
+    print '\n'.join(sorted([ self.get_package_name(p) for p in package_ids if self.get_package_name(p) ]))
 
     print
     print 'Total Errata:   %s' % str(len(errata)).rjust(3)
@@ -1384,7 +1384,7 @@ def do_softwarechannel_adderrata(self, args):
         print 'Packages'
         print '--------'
         print '\n'.join(
-            sorted([self.get_package_name(p) for p in package_ids]))
+            sorted([ self.get_package_name(p) for p in package_ids if self.get_package_name(p) ]))
 
         print
     print 'Total Errata:   %s' % str(len(errata)).rjust(3)
