@@ -70,7 +70,7 @@ class BootstrapMinions extends React.Component {
         formData['ignoreHostKeys'] = this.state.ignoreHostKeys;
 
         const request = Network.post(
-            window.location.href,
+            "/rhn/manager/api/minions/bootstrap",
             JSON.stringify(formData),
             "application/json"
         ).promise.then(data => {
