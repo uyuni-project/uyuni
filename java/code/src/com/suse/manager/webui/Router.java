@@ -49,33 +49,18 @@ public class Router implements SparkApplication {
     public void init() {
         JadeTemplateEngine jade = setup();
 
-        // Minions pages
-        get("/manager/minions", withCsrfToken(withUser(MinionController::list)), jade);
+        // Minions
+        get("/manager/minions",
+                withCsrfToken(withUser(MinionController::list)),
+                jade);
         get("/manager/minions/bootstrap",
-                withCsrfToken(withOrgAdmin(MinionController::bootstrap)), jade);
-        get("/manager/minions/cmd", withCsrfToken(MinionController::cmd), jade);
-        get("/manager/minions/:id", MinionController::show);
-
-        // Salt States Management
-        get("/manager/systems/details/packages",
-                withCsrfToken(MinionController::packageStates),
+                withCsrfToken(withOrgAdmin(MinionController::bootstrap)),
                 jade);
-
-        get("/manager/multiorg/details/custom",
-                withCsrfToken(MinionController::orgCustomStates),
+        get("/manager/minions/cmd",
+                withCsrfToken(MinionController::cmd),
                 jade);
-        get("/manager/yourorg/custom",
-                withCsrfToken(withUser(MinionController::yourOrgCustomStates)),
-                jade);
-        get("/manager/groups/details/custom",
-                withCsrfToken(withUser(MinionController::serverGroupCustomStates)),
-                jade);
-        get("/manager/systems/details/custom",
-                withCsrfToken(MinionController::minionCustomStates),
-                jade);
-        get("/manager/systems/details/highstate",
-                withCsrfToken(MinionController::highstate),
-                jade);
+        get("/manager/minions/:id",
+                MinionController::show);
 
         // Minions API
         post("/manager/api/minions/bootstrap", withOrgAdmin(MinionsAPI::bootstrap));
@@ -86,6 +71,26 @@ public class Router implements SparkApplication {
         post("/manager/api/minions/keys/:target/reject", withOrgAdmin(MinionsAPI::reject));
         post("/manager/api/minions/keys/:target/delete", withOrgAdmin(MinionsAPI::delete));
 
+        // States
+        get("/manager/systems/details/packages",
+                withCsrfToken(MinionController::packageStates),
+                jade);
+        get("/manager/systems/details/custom",
+                withCsrfToken(MinionController::minionCustomStates),
+                jade);
+        get("/manager/systems/details/highstate",
+                withCsrfToken(MinionController::highstate),
+                jade);
+        get("/manager/multiorg/details/custom",
+                withCsrfToken(MinionController::orgCustomStates),
+                jade);
+        get("/manager/yourorg/custom",
+                withCsrfToken(withUser(MinionController::yourOrgCustomStates)),
+                jade);
+        get("/manager/groups/details/custom",
+                withCsrfToken(withUser(MinionController::serverGroupCustomStates)),
+                jade);
+
         // States API
         post("/manager/api/states/apply", withUser(StatesAPI::apply));
         get("/manager/api/states/match", withUser(StatesAPI::matchStates));
@@ -94,16 +99,6 @@ public class Router implements SparkApplication {
         post("/manager/api/states/packages/save", withUser(StatesAPI::savePackages));
         get("/manager/api/states/packages/match", StatesAPI::matchPackages);
         get("/manager/api/states/highstate", StatesAPI::showHighstate);
-
-        // Download API
-        get("/manager/api/download/:channel/getPackage/:file",
-                DownloadController::downloadPackage);
-        get("/manager/api/download/:channel/repodata/:file",
-                DownloadController::downloadMetadata);
-        head("/manager/api/download/:channel/getPackage/:file",
-                DownloadController::downloadPackage);
-        head("/manager/api/download/:channel/repodata/:file",
-                DownloadController::downloadMetadata);
 
         // Virtual Host Managers
         get("/manager/vhms",
@@ -165,5 +160,15 @@ public class Router implements SparkApplication {
                 withOrgAdmin(TaskoTop::show), jade);
         get("/manager/api/admin/runtime-status/data",
                 withOrgAdmin(TaskoTop::data));
+
+        // Download API
+        get("/manager/api/download/:channel/getPackage/:file",
+                DownloadController::downloadPackage);
+        get("/manager/api/download/:channel/repodata/:file",
+                DownloadController::downloadMetadata);
+        head("/manager/api/download/:channel/getPackage/:file",
+                DownloadController::downloadPackage);
+        head("/manager/api/download/:channel/repodata/:file",
+                DownloadController::downloadMetadata);
     }
 }
