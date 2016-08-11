@@ -19,3 +19,4 @@
 - features/clone_channel-npn.feature
 - features/check_VHM.feature
 - features/setup_wizard.feature
+- features/add_proxy_channels.feature
