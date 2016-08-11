@@ -140,23 +140,24 @@ public class Router implements SparkApplication {
         post("/manager/api/subscription-matching/pins/:id/delete",
                 withProductAdmin(SubscriptionMatchingController::deletePin));
 
-        // Salt state catalog
+        // States Catalog
         get("/manager/state-catalog",
                 withOrgAdmin(StateCatalogController::list), jade);
-        get("/manager/state-catalog/data",
-                withOrgAdmin(StateCatalogController::data));
-
         get("/manager/state-catalog/state",
                 withCsrfToken(withOrgAdmin(StateCatalogController::add)), jade);
         get("/manager/state-catalog/state/:name",
                 withCsrfToken(withOrgAdmin(StateCatalogController::edit)), jade);
-        get("/manager/state-catalog/state/:name/content",
+
+        // States Catalog API
+        get("/manager/api/state-catalog/data",
+                withOrgAdmin(StateCatalogController::data));
+        get("/manager/api/state-catalog/state/:name/content",
                 withUser(StateCatalogController::content));
-        post("/manager/state-catalog/state",
+        post("/manager/api/state-catalog/state",
                 withOrgAdmin(StateCatalogController::create));
-        put("/manager/state-catalog/state/:name",
+        put("/manager/api/state-catalog/state/:name",
                 withOrgAdmin(StateCatalogController::update));
-        delete("/manager/state-catalog/state/:name",
+        delete("/manager/api/state-catalog/state/:name",
                 withOrgAdmin(StateCatalogController::delete));
 
         // TaskoTop
