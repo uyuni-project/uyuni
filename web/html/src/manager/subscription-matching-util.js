@@ -10,7 +10,7 @@ const ToolTip = (props) =>
 
 const CsvLink = (props) =>
   <div className="spacewalk-csv-download">
-    <a className="btn btn-link" href={"/rhn/manager/subscription-matching/" + props.name}>
+    <a className="btn btn-link" href={"/rhn/manager/api/subscription-matching/" + props.name}>
       <i className="fa spacewalk-icon-download-csv"></i>
       {t("Download CSV")}
     </a>

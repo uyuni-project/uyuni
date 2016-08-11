@@ -51,7 +51,7 @@ const Pins = React.createClass({
   },
 
   onRemovePin: function(pinId) {
-    Network.post("/rhn/manager/subscription-matching/pins/"+pinId+"/delete")
+    Network.post("/rhn/manager/api/subscription-matching/pins/"+pinId+"/delete")
       .promise.then(data => this.props.onPinChanged(data));
   },
 
@@ -64,7 +64,7 @@ const Pins = React.createClass({
   },
 
   savePin: function(systemId, subscriptionId) {
-    Network.post("/rhn/manager/subscription-matching/pins", {system_id: systemId, subscription_id: subscriptionId})
+    Network.post("/rhn/manager/api/subscription-matching/pins", {system_id: systemId, subscription_id: subscriptionId})
       .promise.then(data => this.props.onPinChanged(data));
     $("#addPinPopUp").modal("hide"); //to trigger popup close action
     this.closePopUp();
