@@ -6,7 +6,7 @@
 name={{ args['name'] }}
 enabled={{ args['enabled'] }}
 autorefresh={{ args['autorefresh'] }}
-baseurl=https://{{ args['host'] }}/rhn/manager/download/{{ chan }}?{{ args['token'] }}
+baseurl=https://{{ args['host'] }}/rhn/manager/api/download/{{ chan }}?{{ args['token'] }}
 type={{ args['type'] }}
 gpgcheck={{ args['gpgcheck'] }}
 repo_gpgcheck={{ args['repo_gpgcheck'] }}
