@@ -259,7 +259,7 @@ class CustomStates extends React.Component {
   }
 
   showPopUp(stateName) {
-    Network.get("/rhn/manager/state-catalog/state/" + stateName + "/content").promise.then(data => {
+    Network.get("/rhn/manager/api/state-catalog/state/" + stateName + "/content").promise.then(data => {
         this.setState({
             showSaltState: {name: stateName, content: data}
         })
