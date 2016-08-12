@@ -52,15 +52,15 @@ public class TaskoTopJob {
     public TaskoTopJob() { }
 
     /**
-     * Constructor with all parameters
+     * Constructor with all parameters.
      *
-     * @param idIn
-     * @param nameIn
-     * @param startTimeIn
-     * @param endTimeIn
-     * @param elapsedTimeIn
-     * @param dataIn
-     * @param statusIn
+     * @param idIn the id in
+     * @param nameIn the name in
+     * @param startTimeIn the start time in
+     * @param endTimeIn the end time in
+     * @param elapsedTimeIn the elapsed time in
+     * @param dataIn the data in
+     * @param statusIn the status in
      */
     public TaskoTopJob(Long idIn, String nameIn, Date startTimeIn, Date endTimeIn,
             Long elapsedTimeIn, List<String> dataIn, String statusIn) {
@@ -74,9 +74,10 @@ public class TaskoTopJob {
     }
 
     /**
-     * Constructor of a TaskoTopJob object build on a TaskoRun object
+     * Constructor of a TaskoTopJob object build on a TaskoRun object.
+     * 
      * @param taskoRun the source object
-     * @param user needed to get channels data
+     * @param user the current user, needed to get channels data
      */
     public TaskoTopJob(TaskoRun taskoRun, User user) {
         id = taskoRun.getId();
@@ -93,18 +94,21 @@ public class TaskoTopJob {
     }
 
     /**
-     * Decode data assuming that if there is any value it contains channel ids,
-     * then extract the channel names
-     * @param dataIn the blob data
+     * Decode data that contains channel ids,
+     * then extract the channel names.
+     * 
+     * @param scheduleId the id of the scheduled task
+     * @param user the current user
      * @return a List of String of channel names
      */
-    public List<String>formatChannelsData (Long scheduleId, User user) {
+    public List<String> formatChannelsData(Long scheduleId, User user) {
         Map<String, Object> map = TaskoFactory.lookupScheduleById(scheduleId).getDataMap();
         return ofNullable(map)
                 .map(RepoSyncTask::getChannelIds)
                 .orElseGet(LinkedList::new)
                 .stream()
-                .flatMap(id -> Opt.stream(ofNullable(ChannelFactory.lookupByIdAndUser(id, user))))
+                .flatMap(id -> Opt.stream(
+                        ofNullable(ChannelFactory.lookupByIdAndUser(id, user))))
                 .map(Channel::getName)
                 .collect(toList());
     }
