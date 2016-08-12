@@ -31,16 +31,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.WheelResult;
-import com.suse.salt.netapi.calls.modules.Cmd;
-import com.suse.salt.netapi.calls.modules.Grains;
-import com.suse.salt.netapi.calls.modules.Match;
-import com.suse.salt.netapi.calls.modules.Network;
-import com.suse.salt.netapi.calls.modules.SaltUtil;
-import com.suse.salt.netapi.calls.modules.Schedule;
-import com.suse.salt.netapi.calls.modules.Smbios;
-import com.suse.salt.netapi.calls.modules.Status;
-import com.suse.salt.netapi.calls.modules.Test;
-import com.suse.salt.netapi.calls.modules.Timezone;
+import com.suse.salt.netapi.calls.modules.*;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
@@ -488,10 +479,12 @@ public class SaltService {
      * Get the content of file from a minion.
      * @param minionId the minion id
      * @param path the path of the file
-     * @return the content of a file as a string
+     * @return the content of a file as a string or an empty optional if the
+     * file does not exist
      */
     public Optional<String> getFileContent(String minionId, String path) {
-        return callSync(SumaUtil.cat(path), minionId);
+        Optional<SumaUtil.CatResult> result = callSync(SumaUtil.cat(path), minionId);
+        return result.filter(r -> r.getRetcode() == 0).map(r -> r.getStdout());
     }
 
     /**

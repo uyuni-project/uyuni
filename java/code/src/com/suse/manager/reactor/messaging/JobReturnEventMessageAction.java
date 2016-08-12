@@ -382,10 +382,23 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 .map(JobReturnEventMessageAction::getInstalledProducts)
                 .ifPresent(server::setInstalledProducts);
 
-        Optional.ofNullable(result.getRhelReleaseFile())
-                .map(content -> content.getChanges().getRet())
-                .map(c -> JobReturnEventMessageAction.getInstalledProductsForRhel(c, server))
-                .ifPresent(server::setInstalledProducts);
+        Optional<String> rhelReleaseFile = Optional.ofNullable(result.getRhelReleaseFile())
+                .map(content -> content.getChanges())
+                .filter(ret -> ret.getStdout() != null)
+                .map(ret -> ret.getStdout());
+        Optional<String> centosReleseFile = Optional.ofNullable(result.getCentosReleaseFile())
+                .map(content -> content.getChanges())
+                .filter(ret -> ret.getStdout() != null)
+                .map(ret -> ret.getStdout());
+        Optional<String> resReleasePkg = Optional.ofNullable(result.getWhatProvidesResReleasePkg())
+                .map(content -> content.getChanges())
+                .filter(ret -> ret.getStdout() != null)
+                .map(ret -> ret.getStdout());
+        if (rhelReleaseFile.isPresent() || centosReleseFile.isPresent() || resReleasePkg.isPresent()) {
+            Set<InstalledProduct> products = JobReturnEventMessageAction
+                    .getInstalledProductsForRhel(server, resReleasePkg, rhelReleaseFile, centosReleseFile);
+            server.setInstalledProducts(products);
+        }
 
         ServerFactory.save(server);
         if (LOG.isDebugEnabled()) {
@@ -460,19 +473,23 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     }
 
     private static Set<InstalledProduct> getInstalledProductsForRhel(
-            String rhelReleaseContent, MinionServer server) {
+           MinionServer server,
+           Optional<String> resPackage,
+           Optional<String> rhelReleaseFile,
+           Optional<String> centosRelaseFile) {
 
-        Optional<RhelUtils.RhelProduct> rhelProductInfo = RhelUtils.getProductForRhel(server, rhelReleaseContent);
+        Optional<RhelUtils.RhelProduct> rhelProductInfo =
+                RhelUtils.detectRhelProduct(server, resPackage, rhelReleaseFile, centosRelaseFile);
 
         if (!rhelProductInfo.isPresent()) {
-            LOG.warn("Could not parse RHEL release info: " + rhelReleaseContent);
+            LOG.warn("Could not determine RHEL product type for minion: " + server.getMinionId() );
             return Collections.emptySet();
-
-        } else if (!rhelProductInfo.get().getSuseProduct().isPresent()) {
-            LOG.warn(String.format("No product match found for: %s %s %s %s",
-                    rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
-                    rhelProductInfo.get().getRelease(), rhelProductInfo.get().getArch()));
         }
+
+        LOG.debug(String.format("Detected minion %s as a RedHat compatible system: %s %s %s %s",
+                server.getMinionId(),
+                rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
+                rhelProductInfo.get().getRelease(), rhelProductInfo.get().getArch()));
 
         return rhelProductInfo.get().getSuseProduct().map(product -> {
             String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
