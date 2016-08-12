@@ -397,10 +397,13 @@ EOF
         zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME"
       fi
       # install missing packages
-      zypper --non-interactive in $Z_MISSING || {
+      zypper --non-interactive in $Z_MISSING
+      for P in $Z_MISSING; do
+	rpm -q "$P" || {
 	  echo "ERROR: Failed to install all missing packages."
 	  exit 1
 	}
+      done
 
     fi
   # remove client bootstrap repo
