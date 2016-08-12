@@ -17,7 +17,7 @@ Feature: Check the Salt package state UI
     Then I follow "Salt"
     And I follow "States Catalog"
     And I should see a "States Catalog" text
-    And I follow "Create state"
+    And I follow "Create State"
     Then I should see a "Create State" text
     And I should see a "Name*:" text
     And I should see a "Content*:" text
