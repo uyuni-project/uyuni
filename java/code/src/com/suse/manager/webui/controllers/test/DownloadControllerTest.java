@@ -124,7 +124,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     private Request getMockRequestWithParams(Map<String, String> params) {
         return SparkTestUtils.createMockRequestWithParams(
-                "http://localhost:8080/rhn/manager/api/download/:channel/getPackage/:file",
+                "http://localhost:8080/rhn/manager/download/:channel/getPackage/:file",
                 params,
                 channel.getLabel(), uriFile);
     }

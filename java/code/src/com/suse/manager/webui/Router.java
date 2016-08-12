@@ -161,14 +161,14 @@ public class Router implements SparkApplication {
         get("/manager/api/admin/runtime-status/data",
                 withOrgAdmin(TaskoTop::data));
 
-        // Download API
-        get("/manager/api/download/:channel/getPackage/:file",
+        // Download endpoint
+        get("/manager/download/:channel/getPackage/:file",
                 DownloadController::downloadPackage);
-        get("/manager/api/download/:channel/repodata/:file",
+        get("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
-        head("/manager/api/download/:channel/getPackage/:file",
+        head("/manager/download/:channel/getPackage/:file",
                 DownloadController::downloadPackage);
-        head("/manager/api/download/:channel/repodata/:file",
+        head("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
     }
 }
