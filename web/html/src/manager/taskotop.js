@@ -24,7 +24,7 @@ const TaskoTop = React.createClass({
 
   refreshServerData: function() {
     var currentObject = this;
-    Network.get("/rhn/manager/admin/runtime-status/data", "application/json").promise
+    Network.get("/rhn/manager/api/admin/runtime-status/data", "application/json").promise
       .then(data => {
         currentObject.setState({
           serverData: data,

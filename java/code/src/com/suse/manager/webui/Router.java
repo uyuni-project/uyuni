@@ -160,7 +160,7 @@ public class Router implements SparkApplication {
         // TaskoTop
         get("/manager/admin/runtime-status",
                 withOrgAdmin(TaskoTop::show), jade);
-        get("/manager/admin/runtime-status/data",
+        get("/manager/api/admin/runtime-status/data",
                 withOrgAdmin(TaskoTop::data));
     }
 }
