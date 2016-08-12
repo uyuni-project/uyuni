@@ -36,6 +36,7 @@ public class TaskoTopCollector {
     /**
      * Gets UI-ready data.
      *
+     * @param userIn the current user
      * @return the data
      */
     public Object getData(User userIn) {
