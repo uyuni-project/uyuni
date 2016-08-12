@@ -11,7 +11,15 @@ products:
     - name: pkg.list_products
 {% elif grains['os_family'] == 'RedHat' %}
 rhelrelease:
-  module.run:
-    - name: sumautil.cat
-    - path: /etc/redhat-release
+  cmd.run:
+    - name: cat /etc/redhat-release
+    - onlyif: test -f /etc/redhat-release
+centosrelease:
+  cmd.run:
+    - name: cat /etc/centos-release
+    - onlyif: test -f /etc/centos-release
+respkgquery:
+  cmd.run:
+    - name: rpm -q --whatprovides 'sles_es-release-server'
+    - onlyif: rpm -q --whatprovides 'sles_es-release-server'
 {% endif %}

@@ -82,6 +82,27 @@ public class SumaUtil {
 
     }
 
+    public static class CatResult {
+
+        long retcode;
+
+        String stderr;
+
+        String stdout;
+
+        public long getRetcode() {
+            return retcode;
+        }
+
+        public String getStderr() {
+            return stderr;
+        }
+
+        public String getStdout() {
+            return stdout;
+        }
+    }
+
     private SumaUtil() { }
 
     /**
@@ -89,11 +110,11 @@ public class SumaUtil {
      * @param path path of the file.
      * @return a {@link LocalCall} to pass to the SaltClient
      */
-    public static LocalCall<String> cat(String path) {
+    public static LocalCall<CatResult> cat(String path) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("path", path);
         return new LocalCall<>("sumautil.cat", Optional.empty(),
-                Optional.of(args), new TypeToken<String>() {
+                Optional.of(args), new TypeToken<CatResult>() {
         });
     }
 

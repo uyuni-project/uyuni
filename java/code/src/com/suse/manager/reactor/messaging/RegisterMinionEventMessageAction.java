@@ -52,6 +52,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Result;
@@ -71,8 +72,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Optional.ofNullable;
 
 /**
  * Event handler to create system records for salt minions.
@@ -329,23 +328,38 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             });
         }
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os"))) {
+            String minionId = server.getMinionId();
             Optional<String> rhelReleaseContent = SALT_SERVICE
                     .getFileContent(server.getMinionId(), "/etc/redhat-release");
+            Optional<String> centosReleaseContent = SALT_SERVICE
+                    .getFileContent(server.getMinionId(), "/etc/centos-release");
+            Optional<String> whatProvidesRes = SALT_SERVICE
+                    .runRemoteCommand(new MinionList(Arrays.asList(minionId)),
+                            "rpm -q --whatprovides 'sles_es-release-server'")
+                    .entrySet().stream().findFirst()
+                    .map(e -> e.getValue())
+                    .flatMap(res -> res.fold(
+                            err -> err.fold(err1 -> rpmErrQueryRHELProvidesRelease(minionId),
+                                    err2 -> rpmErrQueryRHELProvidesRelease(minionId),
+                                    err3 -> rpmErrQueryRHELProvidesRelease(minionId)),
+                            r -> Optional.of(r)
+                    ))
+                    .filter(output -> !output.startsWith("no package provides"));
 
-            rhelReleaseContent
-                .flatMap(content -> RhelUtils.getProductForRhel(server, content))
-                .ifPresent(info -> {
-                        if (!info.getSuseProduct().isPresent()) {
-                            LOG.warn("No product match found for: " + info.getName() + " " + info.getVersion() +
-                                    " " + info.getArch());
-                        }
-
-                        Opt.stream(info.getSuseProduct()).flatMap(sp ->
-                                lookupBaseAndRequiredChannels(info.getName(), info.getVersion(), info.getArch(), sp)
+            Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils
+                    .detectRhelProduct(server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);
+            rhelProduct
+                .ifPresent(rhel -> {
+                        Opt.stream(rhel.getSuseProduct()).flatMap(sp ->
+                                lookupBaseAndRequiredChannels(rhel.getName(), rhel.getVersion(), rhel.getArch(), sp)
                         ).forEach(reqChan -> {
                             LOG.info("Adding required channel: " + reqChan.getName());
                             server.addChannel(reqChan);
                         });
+                        if (!rhel.getSuseProduct().isPresent()) {
+                            LOG.info("Not setting default channels for minion: " + minionId + " os: " + rhel.getName() + " " + rhel.getVersion() +
+                                    " " + rhel.getArch());
+                        }
                     }
                 );
 
@@ -408,7 +422,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     private Map<String, List<String>> parseRHELReleseQuery(String result) {
         return Arrays.stream(result.split("\\r?\\n")).map(line -> line.split("="))
                 .collect(Collectors.toMap(linetoks -> linetoks[0],
-                        linetoks -> Arrays.asList(StringUtils.split(linetoks[1], ","))));
+                        linetoks -> Arrays.asList(StringUtils.splitPreserveAllTokens(linetoks[1], ","))));
     }
 
     private String getOsRelease(String minionId, ValueMap grains) {

@@ -38,9 +38,9 @@ def cat(path):
     result = __salt__['cmd.run_all'](cmd, output_loglevel='quiet')
 
     if result['retcode'] != 0:
-        raise CommandExecutionError(result['stderr'])
+       return {'retcode': 1, 'stderr': result['stderr']}
 
-    return result['stdout']
+    return {'retcode': 0, 'stdout': result['stdout']}
 
 
 def primary_ips():
