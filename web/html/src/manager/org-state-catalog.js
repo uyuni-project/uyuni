@@ -42,7 +42,7 @@ var StateCatalog = React.createClass({
   },
 
   render: function() {
-    var button = <PanelButton text="Create state" icon="fa-plus" action="/rhn/manager/state_catalog/state"/>;
+    var button = <PanelButton text="Create State" icon="fa-plus" action="/rhn/manager/state_catalog/state"/>;
     var msg = null;
 
     if(typeof this.props.flashMessages !== "undefined") {
