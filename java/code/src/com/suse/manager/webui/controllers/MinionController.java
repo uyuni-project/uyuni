@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.http.HttpStatus;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -63,6 +65,7 @@ public class MinionController {
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .serializeNulls()
             .create();
+    private static final Yaml yaml = new Yaml(new SafeConstructor());
 
     private MinionController() { }
 
@@ -377,16 +380,32 @@ public class MinionController {
 	        String form_data;
 	        if (formulaName.isPresent()) {
 		        try {
-		        	File parent_formula_file = new File("/usr/share/susemanager/salt/formulas/" + formulaName.get() + "/form.json");
-		        	if (!parent_formula_file.exists())
+		        	Map<String, Object> contentMap = null;
+		        	File parent_form_file = new File("/usr/share/susemanager/salt/formulas/" + formulaName.get() + "/form.yml");
+
+		        	if (parent_form_file.exists())
+		        		contentMap = (Map<String, Object>) yaml.load(new FileInputStream(parent_form_file));
+		        	else {
+		        		parent_form_file = new File("/usr/share/susemanager/salt/formulas/" + formulaName.get() + "/form.json");
+
+			        	if (parent_form_file.exists()) {
+			        		FileInputStream fis = new FileInputStream(parent_form_file);
+					        byte[] parent_form_data = new byte[(int) parent_form_file.length()];
+					        fis.read(parent_form_data);
+					        fis.close();
+
+					        contentMap = GSON.fromJson(new String(parent_form_data, "UTF-8"), Map.class);
+			        	}
+		        	}
+
+		        	if (contentMap == null)
 		        		form_data = "null";
 		        	else {
-				        FileInputStream fis = new FileInputStream(parent_formula_file);
-				        byte[] parent_form_data = new byte[(int) parent_formula_file.length()];
-				        fis.read(parent_form_data);
-				        fis.close();
-
-				        form_data = "{\"formula_name\":\"" + formulaName.get() + "\", \"values\":" + formulaContent + ", \"layout\":" + new String(parent_form_data, "UTF-8") + "}";
+		        		Map<String, Object> map = new HashMap<>();
+				        map.put("formula_name", formulaName.get());
+				        map.put("layout", contentMap);
+				        map.put("values", new HashMap<String, String>()); // map.put("values", GSON.fromJson(formulaContent, Map.class));
+				        form_data = GSON.toJson(map);
 		        	}
 				} catch (IOException e) {
 					Spark.halt(HttpStatus.SC_NOT_FOUND); // TODO redirect to the default 404 page
