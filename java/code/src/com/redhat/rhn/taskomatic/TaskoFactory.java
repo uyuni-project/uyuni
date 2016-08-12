@@ -195,6 +195,18 @@ public class TaskoFactory extends HibernateFactory {
     }
 
     /**
+     * lists runs newer than given date
+     * @param limitTime date of interest
+     * @return list of runs
+     */
+    public static List<TaskoRun> listRunsNewerThan(Date limitTime) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("limit_time", limitTime);
+        return singleton.listObjectsByNamedQuery(
+                "TaskoRun.listNewerThan", params);
+    }
+
+    /**
      * deletes specified tasko run
      * @param run run to delete
      */
