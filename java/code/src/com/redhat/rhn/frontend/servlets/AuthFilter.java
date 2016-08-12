@@ -111,8 +111,7 @@ public class AuthFilter implements Filter {
             HttpServletRequest servletRequest = (HttpServletRequest) request;
             HttpServletResponse servletResponse = (HttpServletResponse) response;
 
-            String contentType = servletRequest.getContentType();
-            if (contentType != null && contentType.equals("application/json")) {
+            if (servletRequest.getServletPath().startsWith("/manager/api/")) {
                 servletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
             else {
