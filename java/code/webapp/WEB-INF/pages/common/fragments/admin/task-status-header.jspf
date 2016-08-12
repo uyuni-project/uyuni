@@ -1,0 +1,5 @@
+<%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
+
+
+<rhn:dialogmenu mindepth="0" maxdepth="3" definition="/WEB-INF/nav/task_status.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
+

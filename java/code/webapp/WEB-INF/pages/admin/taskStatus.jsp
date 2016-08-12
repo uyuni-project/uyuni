@@ -11,6 +11,9 @@
     <bean:message key="task.status.title"/>
   </rhn:toolbar>
 
+
+<%@ include file="/WEB-INF/pages/common/fragments/admin/task-status-header.jspf" %>
+
   <p>
     <bean:message key="task.status.message"/>
   </p>
