@@ -16,6 +16,7 @@ package com.suse.manager.webui.utils.salt.custom;
 
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Zypper;
+import com.suse.salt.netapi.results.CmdExecCodeAllResult;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 
@@ -35,8 +36,14 @@ public class PkgProfileUpdateSlsResult {
    @SerializedName("module_|-packages_|-pkg.info_installed_|-run")
    private StateApplyResult<Ret<Map<String, Pkg.Info>>> infoInstalled;
 
-   @SerializedName("module_|-rhelrelease_|-sumautil.cat_|-run")
-   private StateApplyResult<Ret<String>> rhelReleaseFile;
+   @SerializedName("cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run")
+   private StateApplyResult<CmdExecCodeAllResult> rhelReleaseFile;
+
+   @SerializedName("cmd_|-centosrelease_|-cat /etc/centos-release_|-run")
+   private StateApplyResult<CmdExecCodeAllResult> centosReleaseFile;
+
+   @SerializedName("cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run")
+   private StateApplyResult<CmdExecCodeAllResult> whatProvidesResReleasePkg;
 
    /**
     * @return the list of installed products
@@ -55,7 +62,21 @@ public class PkgProfileUpdateSlsResult {
    /**
     * @return the content of the file /etc/redhat-release
     */
-   public StateApplyResult<Ret<String>> getRhelReleaseFile() {
+   public StateApplyResult<CmdExecCodeAllResult> getRhelReleaseFile() {
       return rhelReleaseFile;
+   }
+
+   /**
+    * @return the content of the file /etc/centos-release
+    */
+   public StateApplyResult<CmdExecCodeAllResult> getCentosReleaseFile() {
+      return centosReleaseFile;
+   }
+
+   /**
+    * @return the package that provides 'sles_es-release-server'
+    */
+   public StateApplyResult<CmdExecCodeAllResult> getWhatProvidesResReleasePkg() {
+      return whatProvidesResReleasePkg;
    }
 }
