@@ -122,12 +122,12 @@ public class Router implements SparkApplication {
         get("/manager/subscription-matching",
                 withProductAdmin(SubscriptionMatchingController::show),
                 jade);
+        get("/manager/subscription-matching/:filename",
+                withProductAdmin(SubscriptionMatchingController::csv));
 
         // Subscription Matching API
         get("/manager/api/subscription-matching/data",
                 withProductAdmin(SubscriptionMatchingController::data));
-        get("/manager/api/subscription-matching/:filename",
-                withProductAdmin(SubscriptionMatchingController::csv));
         post("/manager/api/subscription-matching/schedule-matcher-run",
                 withProductAdmin(SubscriptionMatchingController::scheduleMatcherRun));
         post("/manager/api/subscription-matching/pins",
