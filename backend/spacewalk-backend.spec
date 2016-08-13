@@ -40,7 +40,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.26
+Version: 2.6.32
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -874,6 +874,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/repo_plugins/__init__.py*
 %{pythonrhnroot}/satellite_tools/repo_plugins/yum_src.py*
 %{pythonrhnroot}/satellite_tools/repo_plugins/uln_src.py*
+%{pythonrhnroot}/satellite_tools/repo_plugins/deb_src.py*
 %config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
 %{_mandir}/man8/rhn-satellite-exporter.8*
 %{_mandir}/man8/rhn-charsets.8*
@@ -919,6 +920,36 @@ rm -f %{rhnconf}/rhnSecret.py*
 %endif
 
 %changelog
+* Fri Aug 12 2016 Jan Dobes 2.6.32-1
+- set header_end to value where we stop reading
+- split maximally once or we lost part of the release sometimes
+- get package format from filename
+- check downloaded file
+- add basic plug-in for syncing deb repo
+- there are errata with intentionally empty package list, cannot skip them
+
+* Thu Aug 11 2016 Gennadii Altukhov <galt@redhat.com> 2.6.31-1
+- share repodata between yum_src and cdnsync
+
+* Tue Aug 09 2016 Gennadii Altukhov <galt@redhat.com> 2.6.30-1
+- cdn-sync - check proxy port number
+
+* Tue Aug 09 2016 Jan Dobes 2.6.29-1
+- initialize before _load_entitlements is called
+- check if there are any available channels first
+- filter channel families with ssl credentials - they are 'activated'
+- fixing listing of channels for some empty channel families
+
+* Mon Aug 08 2016 Jan Dobes 2.6.28-1
+- handle missing cdn mappings
+- W0201: attribute defined outside init
+- string.join is deprecated
+
+* Mon Aug 08 2016 Jan Dobes 2.6.27-1
+- do not download comps if not downloading packages
+- pass less parameters inside class
+- fixing --no-packages
+
 * Fri Aug 05 2016 Gennadii Altukhov <galt@redhat.com> 2.6.26-1
 - Impove error message about missing parent channels
 - cdn-sync - add debug-level verification

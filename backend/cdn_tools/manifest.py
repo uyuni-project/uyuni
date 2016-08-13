@@ -24,6 +24,7 @@ class Manifest(object):
     ENTITLEMENTS_PATH = "export/entitlements"
 
     def __init__(self, zip_path):
+        self.all_entitlements = []
         # Open manifest from path
         try:
             top_zip = zipfile.ZipFile(zip_path, 'r')
