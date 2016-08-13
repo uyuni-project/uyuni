@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        SQL schema for Spacewalk server
 
-Version:        2.6.6
+Version:        2.6.7
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -87,6 +87,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Aug 12 2016 Jan Dobes 2.6.7-1
+- enable deb type
+
 * Fri Jun 17 2016 Jan Dobes 2.6.6-1
 - we already have unbreakable linux network reposync plugin
 

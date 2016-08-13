@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.6.2
+Version:	2.6.4
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -121,6 +121,12 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Fri Aug 12 2016 Grant Gainey 2.6.4-1
+- 1366343 - clean up style warnings
+
+* Thu Aug 11 2016 Grant Gainey 2.6.3-1
+- 1366343 - Clean up logging, add CLI output summary, clean up manpage
+
 * Mon Jul 18 2016 Tomas Lestach <tlestach@redhat.com> 2.6.2-1
 - fix typo in spacwalk-clone-by-date man page
 

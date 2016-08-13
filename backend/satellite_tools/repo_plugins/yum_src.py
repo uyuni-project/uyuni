@@ -25,6 +25,7 @@ import urlparse
 from os import mkdir
 import gpgme
 import time
+import errno
 
 import urlgrabber
 from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
@@ -36,6 +37,7 @@ from yum.config import ConfigParser
 from yum.packageSack import ListPackageSack
 from yum.update_md import UpdateMetadata, UpdateNoticeException, UpdateNotice
 from yum.yumRepo import YumRepository
+from yum.yumRepo import Errors as YumErrors
 from urlgrabber.grabber import URLGrabError
 
 try:
@@ -59,7 +61,7 @@ PATCHES = '{http://novell.com/package/metadata/suse/patches}'
 CACHE_DIR = '/var/cache/rhn/reposync/'
 GPG_DIR     = '/var/lib/spacewalk/gpgdir'
 YUMSRC_CONF = '/etc/rhn/spacewalk-repo-sync/yum.conf'
-
+METADATA_EXPIRE = 24*60*60  # Time (in seconds) after which the metadata will expire
 
 class YumWarnings:
 
@@ -132,7 +134,6 @@ class ContentSource:
         if not os.path.exists(yumsrc_conf):
             self.yumbase.preconf.fn = '/dev/null'
         self.configparser = ConfigParser()
-        self._clean_cache(CACHE_DIR + name)
 
         initCFG('server.satellite')
         self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
@@ -157,7 +158,7 @@ class ContentSource:
     def setup_repo(self, repo):
         """Fetch repository metadata"""
         repo.cache = 0
-        repo.metadata_expire = 0
+        repo.metadata_expire = METADATA_EXPIRE
         repo.mirrorlist = self.url
         repo.baseurl = [self.url]
         repo.basecachedir = CACHE_DIR
@@ -207,6 +208,15 @@ class ContentSource:
             return checksum[0] #tuple (checksum_type,checksum)
         else:
             return "sha1"
+
+    def number_of_packages(self):
+        for dummy_index in range(3):
+            try:
+                self.sack.populate(self.repo, 'metadata', None, 0)
+                break
+            except YumErrors.RepoError:
+                pass
+        return len(self.sack.returnPackages())
 
     def list_packages(self, filters, latest):
         """ list packages"""
@@ -336,7 +346,7 @@ class ContentSource:
         return pkg.verifyLocalPkg()
 
     @staticmethod
-    def _clean_cache(directory):
+    def clear_cache(directory=CACHE_DIR):
         rmtree(directory, True)
 
     def get_products(self):
@@ -607,7 +617,14 @@ class ContentSource:
     def set_ssl_options(self, ca_cert, client_cert, client_key):
         repo = self.repo
         ssldir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
-        mkdir(ssldir, int('0750', 8))
+        try:
+            mkdir(ssldir, int('0750', 8))
+        except OSError as exc:
+            if exc.errno == errno.EEXIST and os.path.isdir(ssldir):
+                pass
+            else:
+                raise
+
         repo.sslcacert = os.path.join(ssldir, 'ca.pem')
         f = open(repo.sslcacert, "w")
         f.write(str(ca_cert))
@@ -627,7 +644,7 @@ class ContentSource:
         repo = self.repo
         ssldir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
         try:
-            self._clean_cache(ssldir)
+            self.clear_cache(ssldir)
         except (OSError, IOError):
             pass
 

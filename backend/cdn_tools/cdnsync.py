@@ -13,22 +13,14 @@
 #
 
 import json
-import libxml2
-import requests
-import gzip
 import errno
 import os
 import sys
 import time
 import datetime
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
-
 import constants
-from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnChannel import ChannelNotFoundError
 from spacewalk.server.importlib.backendOracle import SQLBackend
@@ -39,34 +31,47 @@ from spacewalk.server.importlib.importLib import Channel, ChannelFamily, \
     ProductName, DistChannelMap, ContentSource
 from spacewalk.satellite_tools import reposync
 from spacewalk.satellite_tools import contentRemove
+from spacewalk.satellite_tools.repo_plugins import yum_src
 
 
 class CdnSync(object):
     """Main class of CDN sync run."""
 
-    def __init__(self):
+    def __init__(self, no_packages=False, no_errata=False, no_rpms=False, no_kickstarts=False):
+
+        self.no_packages = no_packages
+        self.no_errata = no_errata
+        self.no_rpms = no_rpms
+        self.no_kickstarts = no_kickstarts
+
         rhnSQL.initDB()
         initCFG('server.satellite')
 
-        # Channel families mapping to channels
-        with open(constants.CHANNEL_FAMILY_MAPPING_PATH, 'r') as f:
-            self.families = json.load(f)
+        try:
+            # Channel families mapping to channels
+            with open(constants.CHANNEL_FAMILY_MAPPING_PATH, 'r') as f:
+                self.families = json.load(f)
 
-        # Channel metadata
-        with open(constants.CHANNEL_DEFINITIONS_PATH, 'r') as f:
-            self.channel_metadata = json.load(f)
+            # Channel metadata
+            with open(constants.CHANNEL_DEFINITIONS_PATH, 'r') as f:
+                self.channel_metadata = json.load(f)
 
-        # Dist/Release channel mapping
-        with open(constants.CHANNEL_DIST_MAPPING_PATH, 'r') as f:
-            self.channel_dist_mapping = json.load(f)
+            # Dist/Release channel mapping
+            with open(constants.CHANNEL_DIST_MAPPING_PATH, 'r') as f:
+                self.channel_dist_mapping = json.load(f)
 
-        # Channel to repositories mapping
-        with open(constants.CONTENT_SOURCE_MAPPING_PATH, 'r') as f:
-            self.content_source_mapping = json.load(f)
+            # Channel to repositories mapping
+            with open(constants.CONTENT_SOURCE_MAPPING_PATH, 'r') as f:
+                self.content_source_mapping = json.load(f)
 
-        # Channel to kickstart repositories mapping
-        with open(constants.KICKSTART_SOURCE_MAPPING_PATH, 'r') as f:
-            self.kickstart_source_mapping = json.load(f)
+            # Channel to kickstart repositories mapping
+            with open(constants.KICKSTART_SOURCE_MAPPING_PATH, 'r') as f:
+                self.kickstart_source_mapping = json.load(f)
+        except IOError:
+            e = sys.exc_info()[1]
+            # TODO: print only on bigger debug level
+            print("ERROR: Problem with loading file: %s" % e)
+            raise CdnMappingsLoadError()
 
         # Map channels to their channel family
         self.channel_to_family = {}
@@ -107,9 +112,11 @@ class CdnSync(object):
         return self.family_keys[family_label]
 
     def _list_available_channels(self):
+        # Select from rhnContentSsl to filter cdn-activated channel families
         h = rhnSQL.prepare("""
             select label from rhnChannelFamilyPermissions cfp inner join
-                              rhnChannelFamily cf on cfp.channel_family_id = cf.id
+                              rhnChannelFamily cf on cfp.channel_family_id = cf.id inner join
+                              rhnContentSsl cs on cf.id = cs.channel_family_id
             where cf.org_id is null
         """)
         h.execute()
@@ -121,7 +128,8 @@ class CdnSync(object):
         for family in families:
             label = family['label']
             family = self.families[label]
-            all_channels.extend(family['channels'])
+            channels = [c for c in family['channels'] if c is not None]
+            all_channels.extend(channels)
 
         # fill base_channel
         for channel in all_channels:
@@ -228,70 +236,30 @@ class CdnSync(object):
         importer.run()
 
     @staticmethod
-    def _count_packages_in_repo(repo_source, cert, key, ca):
-        """
-        Download repomd.xml and primary.xml for given repository if they are absent
-        and count number of packages
-        """
-        download_repomd = True
-        download_primary = True
-        retries = 3
-        retry_delay = 1  # in seconds
+    def _count_packages_in_repo(repo_source, keys):
+        repo_label = (repo_source.split(CFG.CDN_ROOT)[1])[1:].replace('/', '_')
+        repo_plugin = yum_src.ContentSource(str(repo_source), str(repo_label))
+        repo_plugin.set_ssl_options(str(keys['ca_cert']), str(keys['client_cert']), str(keys['client_key']))
+
+        cdn_repodata_path = constants.CDN_REPODATA_ROOT + '/' +\
+                            (repo_source.split(CFG.CDN_ROOT)[1])[1:].replace('/', '_')
 
         # create directory for repo data if it doesn't exist
-        path = constants.CDN_REPODATA_ROOT + '/' + (repo_source.split(CFG.CDN_ROOT)[1])[1:].replace('/', '_')
         try:
-            os.makedirs(path)
+            os.makedirs(cdn_repodata_path)
         except OSError as exc:
-            if exc.errno == errno.EEXIST and os.path.isdir(path):
+            if exc.errno == errno.EEXIST and os.path.isdir(cdn_repodata_path):
                 pass
             else:
                 raise
 
-        for dummy_index in range(0, retries):
-            try:
-                # download repomd.xml
-                if download_repomd:
-                    repomd = requests.get(repo_source + '/repodata/repomd.xml', cert=(cert, key), verify=ca)
-                    if repomd.status_code == 200:
-                        download_repomd = False
-                        context = libxml2.parseDoc(repomd.content).xpathNewContext()
-                        context.xpathRegisterNs("repo", "http://linux.duke.edu/metadata/repo")
-                        primary_filename = context.xpathEval("string("
-                                                             "//repo:data[@type = 'primary']/repo:location/@href)")
-                    else:
-                        # FIXME: should log error
-                        # print("Cannot download repomd.xml, status %d" % repomd.status_code)
-                        pass
-                # download primary.xml only if it doesn't exist on filesystem
-                if not download_repomd and download_primary:
+        with open(cdn_repodata_path + '/' + "packages_num", 'w') as f_out:
+            f_out.write(str(repo_plugin.number_of_packages()))
 
-                    primary = requests.get(repo_source + '/' + primary_filename, cert=(cert, key), verify=ca)
-                    if primary.status_code == 200:
-                        download_primary = False
-                        decompressed_data = gzip.GzipFile(fileobj=StringIO(primary.content)).read()
-                        doc = libxml2.parseDoc(decompressed_data)
-                        packages_num = doc.children.properties.content
-                        with open(path + '/' + "packages_num", 'w') as f_out:
-                            f_out.write(packages_num)
-                    else:
-                        # FIXME: should log error
-                        # print("Cannot download primary.xml, status %d" % primary.status_code)
-                        pass
-
-                # if all staff are downloaded
-                if not download_primary and not download_repomd:
-                    return
-                else:
-                    time.sleep(retry_delay)
-
-            except requests.exceptions.RequestException:
-                pass
-
-    def _sync_channel(self, channel, no_errata=False, no_rpms=False, no_kickstarts=False):
+    def _sync_channel(self, channel):
         excluded_urls = []
         sync_kickstart = True
-        if no_kickstarts:
+        if self.no_kickstarts:
             if channel in self.kickstart_source_mapping:
                 excluded_urls = [CFG.CDN_ROOT + s['relative_url'] for s in self.kickstart_source_mapping[channel]]
             sync_kickstart = False
@@ -305,16 +273,17 @@ class CdnSync(object):
                                  fail=True,
                                  quiet=False,
                                  filters=False,
-                                 no_errata=no_errata,
+                                 no_packages=self.no_packages,
+                                 no_errata=self.no_errata,
                                  sync_kickstart=sync_kickstart,
                                  latest=False,
-                                 metadata_only=no_rpms,
+                                 metadata_only=self.no_rpms,
                                  excluded_urls=excluded_urls,
                                  strict=1)
         sync.set_ks_tree_type('rhn-managed')
         return sync.sync()
 
-    def sync(self, channels=None, no_packages=False, no_errata=False, no_rpms=False, no_kickstarts=False):
+    def sync(self, channels=None):
         # If no channels specified, sync already synced channels
         if not channels:
             channels = self.synced_channels
@@ -332,14 +301,10 @@ class CdnSync(object):
         # Need to update channel metadata
         self._update_channels_metadata(channels)
 
-        # Not going to sync anything
-        if no_packages:
-            return
-
         # Finally, sync channel content
         total_time = datetime.timedelta()
         for channel in channels:
-            cur_time = self._sync_channel(channel, no_errata=no_errata, no_rpms=no_rpms, no_kickstarts=no_kickstarts)
+            cur_time = self._sync_channel(channel)
             total_time += cur_time
 
         print("Total time: %s" % str(total_time).split('.')[0])
@@ -363,84 +328,67 @@ class CdnSync(object):
         for base_channel in sorted(base_channels):
             for child in sorted(base_channels[base_channel]):
                 family_label = self.channel_to_family[child]
-                cert_prefix = "/tmp/" + family_label
                 keys = self._get_family_keys(family_label)
-
-                if not os.path.isfile(cert_prefix + "_client.key"):
-                    with open(cert_prefix + "_client.key", "w") as key:
-                        key.write(str(keys['client_key']))
-
-                if not os.path.isfile(cert_prefix + "_client.cert"):
-                    with open(cert_prefix + "_client.cert", "w") as cert:
-                        cert.write(str(keys['client_cert']))
-
-                if not os.path.isfile(cert_prefix + "_ca.cert"):
-                    with open(cert_prefix + "_ca.cert", "w") as ca:
-                        ca.write(str(keys['ca_cert']))
 
                 sources = self._get_content_sources(child, backend)
                 for source in sources:
-                    self._count_packages_in_repo(source['source_url'],
-                                                 cert=cert_prefix + "_client.cert",
-                                                 key=cert_prefix + "_client.key",
-                                                 ca=cert_prefix + "_ca.cert")
+                    self._count_packages_in_repo(source['source_url'], keys)
                     already_downloaded += 1
                     print_progress_bar(already_downloaded, len(repo_list), prefix='Downloading repodata:',
                                        suffix='Complete', bar_length=50)
         elapsed_time = int(time.time())
         print("Elapsed time: %d seconds" % (elapsed_time - start_time))
-        # remove temporary certificates
-        os.unlink(cert_prefix + "_client.cert")
-        os.unlink(cert_prefix + "_client.key")
-        os.unlink(cert_prefix + "_ca.cert")
 
     def print_channel_tree(self, repos=False):
         available_channel_tree = self._list_available_channels()
         backend = SQLBackend()
 
-        print("p = previously imported/synced channel")
-        print(". = channel not yet imported/synced")
-        print("? = No CDN source provided to count number of packages")
+        if available_channel_tree:
+            print("p = previously imported/synced channel")
+            print(". = channel not yet imported/synced")
+            print("? = No CDN source provided to count number of packages")
 
-        print("Base channels:")
-        for channel in sorted(available_channel_tree):
-            status = 'p' if channel in self.synced_channels else '.'
-            print("    %s %s" % (status, channel))
-            if repos:
-                sources = self._get_content_sources(channel, backend)
-                if sources:
-                    for source in sources:
-                        print("        %s" % source['source_url'])
-                else:
-                    print("        No CDN source provided!")
-        for channel in sorted(available_channel_tree):
-            # Print only if there are any child channels
-            if len(available_channel_tree[channel]) > 0:
-                print("%s:" % channel)
-                for child in sorted(available_channel_tree[channel]):
-                    status = 'p' if child in self.synced_channels else '.'
-                    packages_number = '?'
-                    sources = self._get_content_sources(child, backend)
+            print("Base channels:")
+            for channel in sorted(available_channel_tree):
+                status = 'p' if channel in self.synced_channels else '.'
+                print("    %s %s" % (status, channel))
+                if repos:
+                    sources = self._get_content_sources(channel, backend)
                     if sources:
-                        packages_number = 0
                         for source in sources:
-                            pn_file = constants.CDN_REPODATA_ROOT + '/' +\
-                                      (source['source_url'].split(CFG.CDN_ROOT)[1])[1:].replace('/', '_') +\
-                                      "/packages_num"
-                            try:
-                                packages_number += int(open(pn_file, 'r').read())
-                            # pylint: disable=W0703
-                            except Exception:
-                                pass
-
-                    print("    %s %s %s" % (status, child, str(packages_number)))
-                    if repos:
-
+                            print("        %s" % source['source_url'])
+                    else:
+                        print("        No CDN source provided!")
+            for channel in sorted(available_channel_tree):
+                # Print only if there are any child channels
+                if len(available_channel_tree[channel]) > 0:
+                    print("%s:" % channel)
+                    for child in sorted(available_channel_tree[channel]):
+                        status = 'p' if child in self.synced_channels else '.'
+                        packages_number = '?'
+                        sources = self._get_content_sources(child, backend)
                         if sources:
+                            packages_number = 0
                             for source in sources:
-                                print("        %s" % source['source_url'])
-                        else:
-                            print("        No CDN source provided!")
+                                pn_file = constants.CDN_REPODATA_ROOT + '/' + \
+                                          (source['source_url'].split(CFG.CDN_ROOT)[1])[1:].replace('/', '_') + \
+                                          "/packages_num"
+                                try:
+                                    packages_number += int(open(pn_file, 'r').read())
+                                # pylint: disable=W0703
+                                except Exception:
+                                    pass
+
+                        print("    %s %s %s" % (status, child, str(packages_number)))
+                        if repos:
+
+                            if sources:
+                                for source in sources:
+                                    print("        %s" % source['source_url'])
+                            else:
+                                print("        No CDN source provided!")
+        else:
+            print("No available channels were found. Is your %s activated for CDN?" % PRODUCT_NAME)
 
     @staticmethod
     def clear_cache():
@@ -469,3 +417,7 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=2, bar_l
     if iteration == total:
         sys.stdout.write('\n')
         sys.stdout.flush()
+
+
+class CdnMappingsLoadError(Exception):
+    pass

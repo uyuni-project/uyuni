@@ -148,13 +148,15 @@ class RepoSync(object):
     def __init__(self, channel_label, repo_type, url=None, fail=False,
                  quiet=False, noninteractive=False, filters=None,
                  deep_verify=False, no_errata=False, sync_kickstart = False, latest=False,
-                 metadata_only=False, strict=0, excluded_urls=None):
+                 metadata_only=False, strict=0, excluded_urls=None,
+                 no_packages=False):
         self.regen = False
         self.fail = fail
         self.quiet = quiet
         self.interactive = not noninteractive
         self.filters = filters or []
         self.deep_verify = deep_verify
+        self.no_packages = no_packages
         self.no_errata = no_errata
         self.sync_kickstart = sync_kickstart
         self.error_messages = []
@@ -299,8 +301,10 @@ class RepoSync(object):
                     # update the checksum type of channels with org_id NULL
                     self.updateChannelChecksumType(plugin.get_md_checksum_type())
 
-                    self.import_packages(plugin, data['id'], url)
-                    self.import_groups(plugin, url)
+                    if not self.no_packages:
+                        self.import_packages(plugin, data['id'], url)
+                        self.import_groups(plugin, url)
+
                     if not self.no_errata:
                         self.import_updates(plugin, url)
                     # only for repos obtained from the DB
@@ -582,7 +586,6 @@ class RepoSync(object):
         self.regen = True
 
     def upload_updates(self, notices):
-        skipped_updates = []
         batch = []
         typemap = {
                   'security'    : 'Security Advisory',
@@ -653,8 +656,8 @@ class RepoSync(object):
             # One or more package references could not be found in the Database.
             # To not provide incomplete patches we skip this update
             if not e['packages']:
-                skipped_updates.append(e['advisory_name'])
-                continue
+                # FIXME: print only with higher debug option
+                print("Advisory %s has empty package list." % e['advisory_name'])
 
             e['keywords'] = _update_keywords(notice)
             e['bugs'] = _update_bugs(notice)
@@ -673,10 +676,6 @@ class RepoSync(object):
                 importer.run()
                 batch = []
 
-        if skipped_updates:
-            self.print_msg("%d patches skipped because of empty package list." % len(skipped_updates))
-            for update in skipped_updates:
-                self.print_msg(" %s" % update)
         if len(batch) > 0:
             importer = ErrataImport(batch, backend)
             importer.run()
