@@ -244,13 +244,7 @@ def get_info_for_package(pkg, channel_id, org_id):
 
     ret = h.fetchone_dict()
     if not ret:
-        return {'path':          None,
-                'channel_id': None,
-                'checksum_type': None,
-                'checksum':      None,
-                'org_id':        '',
-                'epoch':         None
-               }
+        return ret
     if ret['org_id'] == None:
         ret['org_id'] = ''
     else:
