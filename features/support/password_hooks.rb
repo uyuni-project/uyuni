@@ -29,13 +29,15 @@ def changepass(scenario, password)
     begin
         fill_in "desiredpassword", :with => "admin"
     rescue
-        sleep(2)
+        $stderr.puts "ERROR - try again"
+        sleep(5)
         fill_in "desiredpassword", :with => "admin"
     end
     begin
         fill_in "desiredpasswordConfirm", :with => "admin"
     rescue
-        sleep(2)
+        $stderr.puts "ERROR - try again"
+        sleep(5)
         fill_in "desiredpasswordConfirm", :with => "admin"
     end
     click_button "Update"
