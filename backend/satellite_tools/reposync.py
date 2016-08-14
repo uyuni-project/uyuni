@@ -473,7 +473,7 @@ class RepoSync(object):
         for notice in notices:
             notice = self.fix_notice(notice)
             patch_name = self._patch_naming(notice)
-            existing_errata = get_errata(patch_name)
+            existing_errata = self.get_errata(patch_name)
             if existing_errata and not self._is_old_suse_style(notice):
                 if int(existing_errata['advisory_rel']) < int(notice['version']):
                     # A disaster happens
@@ -492,9 +492,9 @@ class RepoSync(object):
                 # else: release match, so we update the errata
 
             if notice['updated']:
-                updated_date = _to_db_date(notice['updated'])
+                updated_date = self._to_db_date(notice['updated'])
             else:
-                updated_date = _to_db_date(notice['issued'])
+                updated_date = self._to_db_date(notice['issued'])
             if (existing_errata and
                 not self.errata_needs_update(existing_errata, notice['version'], updated_date)):
                 continue
@@ -512,7 +512,7 @@ class RepoSync(object):
                 e['synopsis'] = notice['severity'] + ': ' + e['synopsis']
             e['topic']         = ' '
             e['solution']      = ' '
-            e['issue_date']    = _to_db_date(notice['issued'])
+            e['issue_date']    = self._to_db_date(notice['issued'])
             e['update_date']   = updated_date
             e['org_id']        = self.channel['org_id']
             e['notes']         = ''
@@ -1066,11 +1066,11 @@ class RepoSync(object):
             e['advisory_type'] = typemap.get(category,
                                              'Product Enhancement Advisory')
 
-            existing_errata = get_errata(e['advisory'])
+            existing_errata = self.get_errata(e['advisory'])
 
             if (existing_errata and
                 not self.errata_needs_update(existing_errata, version,
-                                             _to_db_date(notice.get('timestamp')))):
+                                             self._to_db_date(notice.get('timestamp')))):
                 continue
             self.print_msg("Add Patch %s" % e['advisory'])
 
@@ -1097,7 +1097,7 @@ class RepoSync(object):
                     break
             e['topic']       = ' '
             e['solution']    = ' '
-            e['issue_date']  = _to_db_date(notice.get('timestamp'))
+            e['issue_date']  = self._to_db_date(notice.get('timestamp'))
             e['update_date'] = e['issue_date']
             e['notes']       = ''
             e['org_id']      = self.channel['org_id']
