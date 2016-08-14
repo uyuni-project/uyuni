@@ -630,6 +630,10 @@ class RepoSync(object):
                 # just pass data from DB, they will be used if there is no RPM available
                 pack.set_checksum(db_pack['checksum_type'], db_pack['checksum'])
                 pack.epoch = db_pack['epoch']
+            else:
+                # fix epoch
+                if pack.epoch == '0':
+                    pack.epoch = ''
 
             if to_download or to_link:
                 to_process.append((pack, to_download, to_link))
