@@ -70,7 +70,7 @@ public class StateCatalogController {
     public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("info", FlashScopeHelper.flash(request));
-        return new ModelAndView(data, "statecatalog/list.jade");
+        return new ModelAndView(data, "state-catalog/list.jade");
     }
 
     /**
@@ -86,7 +86,7 @@ public class StateCatalogController {
         stateData.put("action", "add");
         data.put("stateData", GSON.toJson(stateData));
 
-        return new ModelAndView(data, "statecatalog/state.jade");
+        return new ModelAndView(data, "state-catalog/state.jade");
     }
 
     /**
@@ -123,7 +123,7 @@ public class StateCatalogController {
         }
         data.put("stateData", GSON.toJson(stateData));
 
-        return new ModelAndView(data, "statecatalog/state.jade");
+        return new ModelAndView(data, "state-catalog/state.jade");
     }
 
     /**
