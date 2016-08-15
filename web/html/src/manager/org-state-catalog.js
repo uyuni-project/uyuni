@@ -49,7 +49,7 @@ var StateCatalog = React.createClass({
       msg = <Messages items={this.props.flashMessages}/>;
     }
     return (
-      <Panel title="States Catalog" icon="spacewalk-icon-salt-add" button={button}>
+      <Panel title="State Catalog" icon="spacewalk-icon-salt-add" button={button}>
         {msg}
         <div>
           <Table
