@@ -75,7 +75,7 @@ public class TaskoTopJob {
 
     /**
      * Constructor of a TaskoTopJob object build on a TaskoRun object.
-     * 
+     *
      * @param taskoRun the source object
      * @param user the current user, needed to get channels data
      */
@@ -96,7 +96,7 @@ public class TaskoTopJob {
     /**
      * Decode data that contains channel ids,
      * then extract the channel names.
-     * 
+     *
      * @param scheduleId the id of the scheduled task
      * @param user the current user
      * @return a List of String of channel names
@@ -107,8 +107,8 @@ public class TaskoTopJob {
                 .map(RepoSyncTask::getChannelIds)
                 .orElseGet(LinkedList::new)
                 .stream()
-                .flatMap(id -> Opt.stream(
-                        ofNullable(ChannelFactory.lookupByIdAndUser(id, user))))
+                .flatMap(cid -> Opt.stream(
+                        ofNullable(ChannelFactory.lookupByIdAndUser(cid, user))))
                 .map(Channel::getName)
                 .collect(toList());
     }
@@ -121,10 +121,10 @@ public class TaskoTopJob {
     }
 
     /**
-     * @param id The id to set.
+     * @param idIn The id to set.
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     /**
@@ -135,10 +135,10 @@ public class TaskoTopJob {
     }
 
     /**
-     * @param name The name to set.
+     * @param nameIn The name to set.
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
     /**
@@ -149,10 +149,10 @@ public class TaskoTopJob {
     }
 
     /**
-     * @param startTime The startTime to set.
+     * @param startTimeIn The startTime to set.
      */
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setStartTime(Date startTimeIn) {
+        this.startTime = startTimeIn;
     }
 
     /**
@@ -163,10 +163,10 @@ public class TaskoTopJob {
     }
 
     /**
-     * @param endTime The endTime to set.
+     * @param endTimeIn The endTime to set.
      */
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setEndTime(Date endTimeIn) {
+        this.endTime = endTimeIn;
     }
 
     /**
@@ -177,10 +177,10 @@ public class TaskoTopJob {
     }
 
     /**
-     * @param elapsedTime The elapsedTime to set.
+     * @param elapsedTimeIn The elapsedTime to set.
      */
-    public void setElapsedTime(Long elapsedTime) {
-        this.elapsedTime = elapsedTime;
+    public void setElapsedTime(Long elapsedTimeIn) {
+        this.elapsedTime = elapsedTimeIn;
     }
 
     /**
@@ -191,10 +191,10 @@ public class TaskoTopJob {
     }
 
     /**
-     * @param data The data to set.
+     * @param dataIn The data to set.
      */
-    public void setData(List<String> data) {
-        this.data = data;
+    public void setData(List<String> dataIn) {
+        this.data = dataIn;
     }
 
     /**
@@ -205,10 +205,10 @@ public class TaskoTopJob {
     }
 
     /**
-     * @param status The status to set.
+     * @param statusIn The status to set.
      */
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(String statusIn) {
+        this.status = statusIn;
     }
 
     /**
