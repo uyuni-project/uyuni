@@ -143,14 +143,12 @@ class Onboarding extends React.Component {
               comparator={Utils.sortByText}
               header={t('Name')}
               cell={ (row, criteria) => {
-                  if(row.state == "minions") {
-                    return (
-                      <a href={ "/rhn/manager/minions/" + row.id }>
-                        <Highlight enabled={this.isFiltered(criteria)}
-                          text={row.id} highlight={criteria} />
-                      </a>
-                    );
-                  }
+                  return (
+                    <a href={ "/rhn/manager/minions/" + row.id }>
+                      <Highlight enabled={this.isFiltered(criteria)}
+                        text={row.id} highlight={criteria} />
+                    </a>
+                  );
                 }
               }
             />
