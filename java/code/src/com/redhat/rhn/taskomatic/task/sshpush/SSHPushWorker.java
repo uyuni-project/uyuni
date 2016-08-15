@@ -363,7 +363,7 @@ public class SSHPushWorker implements QueueWorker {
             long elapsedTimeInMins =
                     TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - startTime);
             if (maxWait > 0 && elapsedTimeInMins > maxWait) {
-                log.error("Task took to long to complete");
+                log.error("Task took too long to complete");
                 channel.disconnect();
             }
             try {
