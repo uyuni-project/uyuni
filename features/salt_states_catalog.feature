@@ -8,15 +8,15 @@ Feature: Check the Salt package state UI
   Scenario: Verify the states catalog UI
     Given I am authorized as "testing" with password "testing"
     Then I follow "Salt"
-    And I follow "States Catalog"
-    And I should see a "States Catalog" text
+    And I follow "State Catalog"
+    And I should see a "State Catalog" text
     And I should see a "Items 0 - 0 of 0" text
 
   Scenario: I add a state through the UI
     Given I am authorized as "testing" with password "testing"
     Then I follow "Salt"
-    And I follow "States Catalog"
-    And I should see a "States Catalog" text
+    And I follow "State Catalog"
+    And I should see a "State Catalog" text
     And I follow "Create State"
     Then I should see a "Create State" text
     And I should see a "Name*:" text
