@@ -68,7 +68,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Collections;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -83,8 +82,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     /* List of Salt modules that could possibly change installed packages */
     private final List<String> packageChangingModules = Arrays.asList("pkg.install",
             "pkg.remove", "pkg_installed", "pkg_latest", "pkg_removed");
-
-    private static Pattern RHEL_RELEASE_MATCHER = Pattern.compile("(.*)\\srelease\\s([\\d.]+)\\s\\((.*)\\)");
 
     @Override
     public void doExecute(EventMessage msg) {
@@ -382,21 +379,26 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 .map(JobReturnEventMessageAction::getInstalledProducts)
                 .ifPresent(server::setInstalledProducts);
 
-        Optional<String> rhelReleaseFile = Optional.ofNullable(result.getRhelReleaseFile())
+        Optional<String> rhelReleaseFile =
+                Optional.ofNullable(result.getRhelReleaseFile())
                 .map(content -> content.getChanges())
                 .filter(ret -> ret.getStdout() != null)
                 .map(ret -> ret.getStdout());
-        Optional<String> centosReleseFile = Optional.ofNullable(result.getCentosReleaseFile())
+        Optional<String> centosReleseFile =
+                Optional.ofNullable(result.getCentosReleaseFile())
                 .map(content -> content.getChanges())
                 .filter(ret -> ret.getStdout() != null)
                 .map(ret -> ret.getStdout());
-        Optional<String> resReleasePkg = Optional.ofNullable(result.getWhatProvidesResReleasePkg())
+        Optional<String> resReleasePkg =
+                Optional.ofNullable(result.getWhatProvidesResReleasePkg())
                 .map(content -> content.getChanges())
                 .filter(ret -> ret.getStdout() != null)
                 .map(ret -> ret.getStdout());
-        if (rhelReleaseFile.isPresent() || centosReleseFile.isPresent() || resReleasePkg.isPresent()) {
+        if (rhelReleaseFile.isPresent() || centosReleseFile.isPresent() ||
+                resReleasePkg.isPresent()) {
             Set<InstalledProduct> products = JobReturnEventMessageAction
-                    .getInstalledProductsForRhel(server, resReleasePkg, rhelReleaseFile, centosReleseFile);
+                    .getInstalledProductsForRhel(server, resReleasePkg,
+                            rhelReleaseFile, centosReleseFile);
             server.setInstalledProducts(products);
         }
 
@@ -479,14 +481,17 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
            Optional<String> centosRelaseFile) {
 
         Optional<RhelUtils.RhelProduct> rhelProductInfo =
-                RhelUtils.detectRhelProduct(server, resPackage, rhelReleaseFile, centosRelaseFile);
+                RhelUtils.detectRhelProduct(server, resPackage,
+                        rhelReleaseFile, centosRelaseFile);
 
         if (!rhelProductInfo.isPresent()) {
-            LOG.warn("Could not determine RHEL product type for minion: " + server.getMinionId() );
+            LOG.warn("Could not determine RHEL product type for minion: " +
+                    server.getMinionId());
             return Collections.emptySet();
         }
 
-        LOG.debug(String.format("Detected minion %s as a RedHat compatible system: %s %s %s %s",
+        LOG.debug(String.format(
+                "Detected minion %s as a RedHat compatible system: %s %s %s %s",
                 server.getMinionId(),
                 rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
                 rhelProductInfo.get().getRelease(), rhelProductInfo.get().getArch()));

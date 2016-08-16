@@ -42,7 +42,8 @@ public class PkgProfileUpdateSlsResult {
    @SerializedName("cmd_|-centosrelease_|-cat /etc/centos-release_|-run")
    private StateApplyResult<CmdExecCodeAllResult> centosReleaseFile;
 
-   @SerializedName("cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run")
+   @SerializedName(
+           "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run")
    private StateApplyResult<CmdExecCodeAllResult> whatProvidesResReleasePkg;
 
    /**

@@ -331,29 +331,43 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os"))) {
             String minionId = server.getMinionId();
 
-            Optional<Map<String, State.ApplyResult>> applyResultMap = SALT_SERVICE.applyState(server.getMinionId(), "packages.redhatproductinfo");
-            Optional<String> centosReleaseContent = applyResultMap.map(map -> map.get("cmd_|-centosrelease_|-cat /etc/centos-release_|-run"))
+            Optional<Map<String, State.ApplyResult>> applyResultMap = SALT_SERVICE
+                    .applyState(server.getMinionId(), "packages.redhatproductinfo");
+            Optional<String> centosReleaseContent =
+                    applyResultMap.map(map ->
+                        map.get("cmd_|-centosrelease_|-cat /etc/centos-release_|-run"))
                     .map(r -> r.getChanges(CmdExecCodeAllResult.class))
                     .map(c -> c.getStdout());
-            Optional<String> rhelReleaseContent = applyResultMap.map(map -> map.get("cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run"))
+            Optional<String> rhelReleaseContent =
+                    applyResultMap.map(map ->
+                        map.get("cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run"))
                     .map(r -> r.getChanges(CmdExecCodeAllResult.class))
                     .map(c -> c.getStdout());
-            Optional<String> whatProvidesRes = applyResultMap.map(map -> map.get("cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run"))
+            Optional<String> whatProvidesRes =
+                    applyResultMap.map(map -> map.get(
+                        "cmd_|-respkgquery_|-rpm -q " +
+                                "--whatprovides 'sles_es-release-server'_|-run"))
                     .map(r -> r.getChanges(CmdExecCodeAllResult.class))
                     .map(c -> c.getStdout());
 
             Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils
-                    .detectRhelProduct(server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);
+                    .detectRhelProduct(
+                            server, whatProvidesRes,
+                            rhelReleaseContent, centosReleaseContent);
             rhelProduct
                 .ifPresent(rhel -> {
                         Opt.stream(rhel.getSuseProduct()).flatMap(sp ->
-                                lookupBaseAndRequiredChannels(rhel.getName(), rhel.getVersion(), rhel.getArch(), sp)
+                                lookupBaseAndRequiredChannels(
+                                        rhel.getName(), rhel.getVersion(),
+                                        rhel.getArch(), sp)
                         ).forEach(reqChan -> {
                             LOG.info("Adding required channel: " + reqChan.getName());
                             server.addChannel(reqChan);
                         });
                         if (!rhel.getSuseProduct().isPresent()) {
-                            LOG.info("Not setting default channels for minion: " + minionId + " os: " + rhel.getName() + " " + rhel.getVersion() +
+                            LOG.info("Not setting default channels for minion: " +
+                                    minionId + " os: " + rhel.getName() +
+                                    " " + rhel.getVersion() +
                                     " " + rhel.getArch());
                         }
                     }
@@ -406,7 +420,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     }
 
     private Optional<String> rpmErrQueryRHELRelease(SaltError err, String minionId) {
-        LOG.error("Error querying 'redhat-release' package on RHEL minion " + minionId + ": " + err);
+        LOG.error("Error querying 'redhat-release' package on RHEL minion " +
+                minionId + ": " + err);
         return Optional.empty();
     }
 
@@ -417,8 +432,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
     private Map<String, List<String>> parseRHELReleseQuery(String result) {
         return Arrays.stream(result.split("\\r?\\n")).map(line -> line.split("="))
-                .collect(Collectors.toMap(linetoks -> linetoks[0],
-                        linetoks -> Arrays.asList(StringUtils.splitPreserveAllTokens(linetoks[1], ","))));
+            .collect(Collectors.toMap(linetoks -> linetoks[0],
+                linetoks ->
+                    Arrays.asList(
+                            StringUtils.splitPreserveAllTokens(linetoks[1], ","))));
     }
 
     private String getOsRelease(String minionId, ValueMap grains) {
@@ -428,8 +445,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         if ("redhat".equalsIgnoreCase(grains.getValueAsString("os"))) {
             MinionList target = new MinionList(Arrays.asList(minionId));
             Optional<Result<String>> whatprovidesRes = SALT_SERVICE.runRemoteCommand(target,
-                    "rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release").
-                    entrySet().stream().findFirst().map(e -> Optional.of(e.getValue())).orElse(Optional.empty());
+                    "rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release")
+                    .entrySet()
+                    .stream()
+                    .findFirst()
+                    .map(e -> Optional.of(e.getValue()))
+                    .orElse(Optional.empty());
 
             osRelease = whatprovidesRes.flatMap(res -> res.fold(
                     err -> err.fold(err1 -> rpmErrQueryRHELProvidesRelease(minionId),
@@ -439,22 +460,32 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             ))
             .flatMap(pkg ->
                 SALT_SERVICE.runRemoteCommand(target,
-                        "rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" " + pkg)
+                        "rpm -q --queryformat \"" +
+                            "VERSION=%{VERSION}\\n" +
+                            "PROVIDENAME=[%{PROVIDENAME},]\\n" +
+                            "PROVIDEVERSION=[%{PROVIDEVERSION},]\" " + pkg)
                         .entrySet().stream().findFirst().map(e -> e.getValue())
                         .flatMap(res -> res.fold(
-                                err -> err.fold(err1 -> rpmErrQueryRHELRelease(err1, minionId),
+                                err -> err.fold(
+                                        err1 -> rpmErrQueryRHELRelease(err1, minionId),
                                         err2 -> rpmErrQueryRHELRelease(err2, minionId),
                                         err3 -> rpmErrQueryRHELRelease(err3, minionId)),
                                 r -> Optional.of(r)
                         ))
                         .map(this::parseRHELReleseQuery)
                         .map(pkgtags -> {
-                            Optional<String> version = Optional.ofNullable(pkgtags.get("VERSION")).map(v -> v.stream().findFirst()).orElse(Optional.empty());
+                            Optional<String> version = Optional
+                                    .ofNullable(pkgtags.get("VERSION"))
+                                    .map(v -> v.stream().findFirst())
+                                    .orElse(Optional.empty());
                             List<String> provideName = pkgtags.get("PROVIDENAME");
                             List<String> provideVersion = pkgtags.get("PROVIDEVERSION");
-                            int idxReleasever = provideName.indexOf("system-release(releasever)");
+                            int idxReleasever = provideName
+                                    .indexOf("system-release(releasever)");
                             if (idxReleasever > -1) {
-                                version = provideVersion.size() > idxReleasever ? Optional.of(provideVersion.get(idxReleasever)) : Optional.empty();
+                                version = provideVersion.size() > idxReleasever ?
+                                        Optional.of(provideVersion.get(idxReleasever)) :
+                                        Optional.empty();
                             }
                             return version;
                         })
