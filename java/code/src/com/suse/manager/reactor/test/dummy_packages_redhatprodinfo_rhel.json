@@ -1,0 +1,36 @@
+{
+  "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run": {
+    "comment": "onlyif execution failed",
+    "name": "rpm -q --whatprovides 'sles_es-release-server'",
+    "start_time": "07:57:57.503534",
+    "skip_watch": true,
+    "result": true,
+    "duration": 138.323,
+    "__run_num__": 2,
+    "changes": {}
+  },
+  "cmd_|-centosrelease_|-cat /etc/centos-release_|-run": {
+    "comment": "onlyif execution failed",
+    "name": "cat /etc/centos-release",
+    "start_time": "07:57:57.381446",
+    "skip_watch": true,
+    "result": true,
+    "duration": 121.715,
+    "__run_num__": 1,
+    "changes": {}
+  },
+  "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run": {
+    "comment": "Command \"cat /etc/redhat-release\" run",
+    "name": "cat /etc/redhat-release",
+    "start_time": "07:57:57.138995",
+    "result": true,
+    "duration": 242.195,
+    "__run_num__": 0,
+    "changes": {
+      "pid": 784,
+      "retcode": 0,
+      "stderr": "",
+      "stdout": "Red Hat Enterprise Linux Server release 7.2 (Maipo)"
+    }
+  }
+}
