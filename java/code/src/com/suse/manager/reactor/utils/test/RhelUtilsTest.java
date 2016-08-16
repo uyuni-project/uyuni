@@ -1,14 +1,43 @@
+/**
+ * Copyright (c) 2016 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.reactor.utils.test;
 
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ProductName;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.reactor.utils.RhelUtils;
-import junit.framework.TestCase;
+import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.parser.JsonParser;
+import com.suse.salt.netapi.results.CmdExecCodeAllResult;
+import org.jmock.lib.legacy.ClassImposteriser;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Test for {@link com.suse.manager.reactor.utils.RhelUtils}
  */
-public class RhelUtilsTest extends TestCase {
+public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
 
     private static String PLAIN_REDHAT_RELEASE =
             "Red Hat Enterprise Linux Server release 6.8 (Santiago)";
@@ -19,6 +48,18 @@ public class RhelUtilsTest extends TestCase {
             "# keep software compatibility.";
     private static String CENTOS_REDHAT_RELEASE =
             "CentOS Linux release 7.2.1511 (Core)";
+
+    @FunctionalInterface
+    private interface SetupMinionConsumer {
+
+        void accept(MinionServer minion) throws Exception;
+
+    }
+
+    public void setUp() throws Exception {
+        super.setUp();
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }
 
     public void testParseReleaseFileRedHat() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(PLAIN_REDHAT_RELEASE);
@@ -51,5 +92,83 @@ public class RhelUtilsTest extends TestCase {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile("GarbageOS 1.0 (Trash can)");
         assertFalse(os.isPresent());
     }
+
+    private void doTestDetectRhelProduct(String json, SetupMinionConsumer setupMinion, Consumer<Optional<RhelUtils.RhelProduct>> response)
+            throws Exception {
+        Map<String, State.ApplyResult> map = new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
+                TestUtils.readAll(TestUtils.findTestData(json)));
+        String centosReleaseContent = map.get("cmd_|-centosrelease_|-cat /etc/centos-release_|-run")
+                .getChanges(CmdExecCodeAllResult.class)
+                .getStdout();
+        String rhelReleaseContent = map.get("cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run")
+                .getChanges(CmdExecCodeAllResult.class)
+                .getStdout();
+        String whatProvidesRes = map.get("cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run")
+                .getChanges(CmdExecCodeAllResult.class)
+                .getStdout();
+        MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        if (setupMinion != null) {
+            setupMinion.accept(minionServer);
+        }
+        Optional<RhelUtils.RhelProduct> prod = RhelUtils.detectRhelProduct(minionServer,
+                Optional.ofNullable(whatProvidesRes),
+                Optional.ofNullable(rhelReleaseContent),
+                Optional.ofNullable(centosReleaseContent));
+        assertTrue(prod.isPresent());
+        response.accept(prod);
+
+    }
+
+    public void testDetectRhelProductRES() throws Exception {
+        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_res.json",
+                minionServer -> {
+                    Channel resChannel = createResChannel(user);
+                    minionServer.addChannel(resChannel);
+                },
+                prod -> {
+                    assertTrue(prod.get().getSuseProduct().isPresent());
+                    assertEquals("res", prod.get().getSuseProduct().get().getName());
+                    assertEquals("RedHatEnterpriseServer", prod.get().getName());
+                    assertEquals("Maipo", prod.get().getRelease());
+                    assertEquals("7", prod.get().getVersion());
+                    assertEquals("i386", prod.get().getArch());
+        });
+    }
+
+    public void testDetectRhelProductRHEL() throws Exception {
+        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_rhel.json",
+                null,
+                prod -> {
+                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertEquals("RedHatEnterpriseServer", prod.get().getName());
+                    assertEquals("Maipo", prod.get().getRelease());
+                    assertEquals("7", prod.get().getVersion());
+                    assertEquals("i386", prod.get().getArch());
+        });
+    }
+
+    public void testDetectRhelProductCentos() throws Exception {
+        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_centos.json",
+                null,
+                prod -> {
+                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertEquals("CentOS", prod.get().getName());
+                    assertEquals("Core", prod.get().getRelease());
+                    assertEquals("7", prod.get().getVersion());
+                    assertEquals("i386", prod.get().getArch());
+        });
+    }
+
+    public static Channel createResChannel(User user) throws Exception {
+        Channel c = ChannelFactoryTest.createTestChannel(user);
+        c.setOrg(user.getOrg());
+
+        ProductName pn = ChannelFactoryTest.lookupOrCreateProductName("RES");
+        c.setProductName(pn);
+
+        ChannelFactory.save(c);
+        return c;
+    }
+
 
 }

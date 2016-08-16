@@ -55,6 +55,7 @@ import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
+import com.suse.salt.netapi.results.CmdExecCodeAllResult;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.utils.Opt;
@@ -329,22 +330,17 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os"))) {
             String minionId = server.getMinionId();
-            Optional<String> rhelReleaseContent = SALT_SERVICE
-                    .getFileContent(server.getMinionId(), "/etc/redhat-release");
-            Optional<String> centosReleaseContent = SALT_SERVICE
-                    .getFileContent(server.getMinionId(), "/etc/centos-release");
-            Optional<String> whatProvidesRes = SALT_SERVICE
-                    .runRemoteCommand(new MinionList(Arrays.asList(minionId)),
-                            "rpm -q --whatprovides 'sles_es-release-server'")
-                    .entrySet().stream().findFirst()
-                    .map(e -> e.getValue())
-                    .flatMap(res -> res.fold(
-                            err -> err.fold(err1 -> rpmErrQueryRHELProvidesRelease(minionId),
-                                    err2 -> rpmErrQueryRHELProvidesRelease(minionId),
-                                    err3 -> rpmErrQueryRHELProvidesRelease(minionId)),
-                            r -> Optional.of(r)
-                    ))
-                    .filter(output -> !output.startsWith("no package provides"));
+
+            Optional<Map<String, State.ApplyResult>> applyResultMap = SALT_SERVICE.applyState(server.getMinionId(), "packages.redhatproductinfo");
+            Optional<String> centosReleaseContent = applyResultMap.map(map -> map.get("cmd_|-centosrelease_|-cat /etc/centos-release_|-run"))
+                    .map(r -> r.getChanges(CmdExecCodeAllResult.class))
+                    .map(c -> c.getStdout());
+            Optional<String> rhelReleaseContent = applyResultMap.map(map -> map.get("cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run"))
+                    .map(r -> r.getChanges(CmdExecCodeAllResult.class))
+                    .map(c -> c.getStdout());
+            Optional<String> whatProvidesRes = applyResultMap.map(map -> map.get("cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run"))
+                    .map(r -> r.getChanges(CmdExecCodeAllResult.class))
+                    .map(c -> c.getStdout());
 
             Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils
                     .detectRhelProduct(server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);

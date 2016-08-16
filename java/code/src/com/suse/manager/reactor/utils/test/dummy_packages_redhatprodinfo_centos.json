@@ -1,0 +1,40 @@
+{
+  "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run": {
+    "comment": "onlyif execution failed",
+    "name": "rpm -q --whatprovides 'sles_es-release-server'",
+    "start_time": "14:04:57.901731",
+    "skip_watch": true,
+    "result": true,
+    "duration": 139.57,
+    "__run_num__": 2,
+    "changes": {}
+  },
+  "cmd_|-centosrelease_|-cat /etc/centos-release_|-run": {
+    "comment": "Command \"cat /etc/centos-release\" run",
+    "name": "cat /etc/centos-release",
+    "start_time": "14:04:57.667941",
+    "result": true,
+    "duration": 233.474,
+    "__run_num__": 1,
+    "changes": {
+      "pid": 862,
+      "retcode": 0,
+      "stderr": "",
+      "stdout": "CentOS Linux release 7.2.1511 (Core)"
+    }
+  },
+  "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run": {
+    "comment": "Command \"cat /etc/redhat-release\" run",
+    "name": "cat /etc/redhat-release",
+    "start_time": "14:04:57.435091",
+    "result": true,
+    "duration": 232.599,
+    "__run_num__": 0,
+    "changes": {
+      "pid": 860,
+      "retcode": 0,
+      "stderr": "",
+      "stdout": "CentOS Linux release 7.2.1511 (Core)"
+    }
+  }
+}
