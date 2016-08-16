@@ -14,16 +14,20 @@ var FormulaDetail = React.createClass({
 
     getInitialState: function() {
         var st = {
-            "serverData": {"formula_name": "Loading...", "data":""},
+            "serverData": {"formula_name": "Loading..."},
             "messages": []
         };
-        Network.get("/rhn/manager/systems/details/formula/form/" + serverId).promise.then(data => {
+        Network.get("/rhn/manager/systems/details/formula/form/" + serverId + "/" + formulaId).promise.then(data => {
           this.setState({"serverData" : data});
         });
         return st;
     },
 
     applyHighstate: function() {
+    	// TODO: disabled only for testing, but: should you even be able to apply highstate from here?
+    	console.warn("Applying highstate is currently disabled for testing purposes!");
+    	return;
+    	
         const request = Network.post(
             "/rhn/manager/api/states/apply",
             JSON.stringify({
@@ -58,9 +62,6 @@ var FormulaDetail = React.createClass({
  			else
  				assignValueWithId(formData["content"], element.id, element.value);
 		});
-		console.log(JSON.stringify(formData));
-		console.warn("Formula update disabled for testing!");
-		return;
 		
         Network.post("/rhn/manager/systems/details/formula/form/save", JSON.stringify(formData), "application/json").promise.then(
 		(data) => {
@@ -106,15 +107,16 @@ var FormulaDetail = React.createClass({
 					</div>
 				</div>
 			);
-		}
+		}			
 		else {
 		    return (
 		    	<div>
+		    		{ generateFormulaNavBar(this.state.serverData.formulaList, formulaId || -1) }
 					{errs}{msg}
 					<form id="editFormulaForm" className="form-horizontal" onSubmit={this.updateFormula}>
 						<div className="panel panel-default">
 							<div className="panel-heading">
-								<h4>{ toTitle(this.state.serverData["formula_name"]) }</h4>
+								<h4>{ toTitle(this.state.serverData.formula_name || "Formula not found") }</h4>
 							</div>
 							<div className="panel-body">
 								{this.generateForm(this.state.serverData.values, this.state.serverData.layout, this.state.serverData.formula_name)}
@@ -122,15 +124,17 @@ var FormulaDetail = React.createClass({
 									<div className="col-md-2 col-md-offset-3">
 										<Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className="btn btn-success" handler={function(e){$('<input type="submit">').hide().appendTo($("#editFormulaForm")).click().remove();}} />
 									</div>
-								    <div className="col-md-3">
-								        <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} />
-								    </div>
 								</div>
 							</div>
 						</div>
 					</form>
 				</div>
 		    );
+		    /*
+		    <div className="col-md-3">
+		        <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} />
+		    </div>
+		    */
 		}
     },
     
@@ -157,6 +161,17 @@ var FormulaDetail = React.createClass({
 		return form;
     }
 });
+
+function generateFormulaNavBar(formulaList, activeId) {
+	var tabs = [];
+	for (var i in formulaList)
+		tabs.push(<li role="presentation" className={(i == activeId)?"active":""}><a href={ "/rhn/manager/systems/details/formula/" + i + "?sid=" + serverId}>{formulaList[i]}</a></li>);
+	return (
+		<ul className="nav nav-tabs">
+			{tabs}
+		</ul>
+	);
+}
 
 function assignValueWithId(dir, id, value) {
 	var parents = id.split("$");
@@ -317,7 +332,7 @@ function generateSelectList(data) {
 	return options;
 }
 
-// Add New Element to edit group
+// Add New Element to edit group (currently unused as edit_group is on hold)
 // TODO: should probably modify saved values and cause rerender
 function addElementToEditGroup(event) {
 	return;
@@ -357,7 +372,7 @@ function wrapLabel(text, label_for) {
 }
 
 function toTitle(str) {
-	return str.replace("_", " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+	return str.replace(new RegExp("_", 'g'), " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
 function msg(severityIn, textIn) {
