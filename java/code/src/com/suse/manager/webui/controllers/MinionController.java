@@ -14,27 +14,20 @@
  */
 package com.suse.manager.webui.controllers;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.apache.http.HttpStatus;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.redhat.rhn.domain.formula.Formula;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -51,7 +44,6 @@ import com.suse.manager.webui.utils.FlashScopeHelper;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 
 /**
  * Controller class providing backend code for the minions page.
@@ -65,7 +57,6 @@ public class MinionController {
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .serializeNulls()
             .create();
-    private static final Yaml yaml = new Yaml(new SafeConstructor());
 
     private MinionController() { }
 
@@ -290,7 +281,7 @@ public class MinionController {
     public static String serverGroupFormulaData(Request request, Response response, User user) {
     	Map<String, Object> data = new HashMap<>();
 
-        String server_formulas = FormulaFactory.getFormulasByServerGroup(request.params("sgid"));
+        String[] server_formulas = FormulaFactory.getFormulasByServerGroupId(Long.valueOf(request.params("sgid")));
 		data.put("selected", server_formulas);
 		data.put("formulas", FormulaCatalogController.listFormulas());
 
@@ -341,6 +332,7 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         data.put("server", ServerFactory.lookupById(new Long(request.queryParams("sid"))));
         data.put("info", FlashScopeHelper.flash(request));
+        data.put("formula_id", request.params("formula_id"));
         return new ModelAndView(data, "minion/formula.jade");
     }
 
@@ -352,71 +344,99 @@ public class MinionController {
      * @return the JSON data
      */
     public static String minionFormulaData(Request request, Response response, User user) {
-        	// Find formulas of server groups
-        	Long serverId = new Long(request.params("sid"));
-        	Server server = ServerFactory.lookupByIdAndOrg(serverId, user.getOrg());
-        	List<ManagedServerGroup> groups = server.getManagedGroups();
-	        List<String> formulasOfGroups = new LinkedList<String>();
+    	// Find formulas of server groups
+    	Long serverId = new Long(request.params("sid"));
+    	int formula_id = Integer.parseInt(request.params("formula_id"));
+    	String[] formulas = FormulaFactory.listServerFormulas(serverId);
 
-        	for (ManagedServerGroup group : groups) {
-        		String group_formula = FormulaFactory.getFormulasByServerGroup(Long.valueOf(group.getId()).toString());
-        		if (!group_formula.equals("none"))
-        			formulasOfGroups.add(group_formula);
+        String form_data;
+    	if (formulas.length == 0) {
+    		form_data = "null";
+    	}
+    	else {
+        	Map<String, Object> map = new HashMap<>();
+        	map.put("formulaList", formulas);
+
+        	if (formula_id < formulas.length) {
+        		String formula_name = formulas[formula_id];
+        		map.put("formula_name", formula_name);
+
+        		Optional<Map<String, Object>> layout = FormulaFactory.getFormulaLayoutByName(formula_name);
+        		if (layout.isPresent())
+        			map.put("layout", layout.get());
+
+        		Optional<Map<String, Object>> values = FormulaFactory.getFormulaValuesByNameAndServerId(formula_name, serverId);
+        		map.put("values", values.orElse(new HashMap<String, Object>()));
         	}
+        	form_data = GSON.toJson(map);
+    	}
 
-        	// Find a present formula
-	        Optional<Formula> formula = FormulaFactory.getFormulaByServerId(user.getOrg().getId(), serverId);
-	        Optional<String> formulaName;
-	        String formulaContent = "{}";
+        response.type("application/json");
+		return form_data;
 
-	        if (formula.isPresent() && formulasOfGroups.contains(formula.get().getFormulaName())){
-	        	formulaName = Optional.of(formula.get().getFormulaName());
-	        	formulaContent = formula.get().getContent();
-	        }
-	        else
-	        	formulaName = formulasOfGroups.isEmpty() ? Optional.empty() : Optional.of(formulasOfGroups.get(0));
+		// Old code, probably completly obsolete
+    	/*Server server = ServerFactory.lookupByIdAndOrg(serverId, user.getOrg());
+    	List<ManagedServerGroup> groups = server.getManagedGroups();
+        List<String> formulasOfGroups = new LinkedList<String>();
 
-	        // Return the formula data or "null" if no server group has a formula applied
-	        String form_data;
-	        if (formulaName.isPresent()) {
-		        try {
-		        	Map<String, Object> contentMap = null;
-		        	File parent_form_file = new File("/usr/share/susemanager/salt/formulas/" + formulaName.get() + "/form.yml");
+    	for (ManagedServerGroup group : groups) {
+    		String group_formula = FormulaFactory.getFormulasByServerGroup(Long.valueOf(group.getId()).toString());
+    		if (!group_formula.equals("none"))
+    			formulasOfGroups.add(group_formula);
+    	}*/
+    	/*
+    	// Find a present formula
+        Optional<Formula> formula = FormulaFactory.getFormulaByServerId(user.getOrg().getId(), serverId);
+        Optional<String> formulaName;
+        String formulaContent = "{}";
 
-		        	if (parent_form_file.exists())
-		        		contentMap = (Map<String, Object>) yaml.load(new FileInputStream(parent_form_file));
-		        	else {
-		        		parent_form_file = new File("/usr/share/susemanager/salt/formulas/" + formulaName.get() + "/form.json");
+        if (formula.isPresent() && formulasOfGroups.contains(formula.get().getFormulaName())){
+        	formulaName = Optional.of(formula.get().getFormulaName());
+        	formulaContent = formula.get().getContent();
+        }
+        else
+        	formulaName = formulasOfGroups.isEmpty() ? Optional.empty() : Optional.of(formulasOfGroups.get(0));
 
-			        	if (parent_form_file.exists()) {
-			        		FileInputStream fis = new FileInputStream(parent_form_file);
-					        byte[] parent_form_data = new byte[(int) parent_form_file.length()];
-					        fis.read(parent_form_data);
-					        fis.close();
+        // Return the formula data or "null" if no server group has a formula applied
+        if (formulaName.isPresent()) {
+	        try {
+	        	Map<String, Object> contentMap = null;
+	        	File parent_form_file = new File("/usr/share/susemanager/salt/formulas/" + formulaName.get() + "/form.yml");
 
-					        contentMap = GSON.fromJson(new String(parent_form_data, "UTF-8"), Map.class);
-			        	}
+	        	if (parent_form_file.exists())
+	        		contentMap = (Map<String, Object>) yaml.load(new FileInputStream(parent_form_file));
+	        	else {
+	        		parent_form_file = new File("/usr/share/susemanager/salt/formulas/" + formulaName.get() + "/form.json");
+
+		        	if (parent_form_file.exists()) {
+		        		FileInputStream fis = new FileInputStream(parent_form_file);
+				        byte[] parent_form_data = new byte[(int) parent_form_file.length()];
+				        fis.read(parent_form_data);
+				        fis.close();
+
+				        contentMap = GSON.fromJson(new String(parent_form_data, "UTF-8"), Map.class);
 		        	}
+	        	}
 
-		        	if (contentMap == null)
-		        		form_data = "null";
-		        	else {
-		        		Map<String, Object> map = new HashMap<>();
-				        map.put("formula_name", formulaName.get());
-				        map.put("layout", contentMap);
-				        map.put("values", new HashMap<String, String>()); // map.put("values", GSON.fromJson(formulaContent, Map.class));
-				        form_data = GSON.toJson(map);
-		        	}
-				} catch (IOException e) {
-					Spark.halt(HttpStatus.SC_NOT_FOUND); // TODO redirect to the default 404 page
-			        return null;
-				}
-	        }
-	        else
-	        	form_data = "null";
+	        	if (contentMap == null)
+	        		form_data = "null";
+	        	else {
+	        		Map<String, Object> map = new HashMap<>();
+			        map.put("formula_name", formulaName.get());
+			        map.put("layout", contentMap);
+			        map.put("values", new HashMap<String, String>()); // map.put("values", GSON.fromJson(formulaContent, Map.class));
+			        form_data = GSON.toJson(map);
+	        	}
+			} catch (IOException e) {
+				Spark.halt(HttpStatus.SC_NOT_FOUND); // TODO redirect to the default 404 page
+		        return null;
+			}
+        }
+        else
+        	form_data = "null";
 
-	        response.type("application/json");
-			return form_data;
+        response.type("application/json");
+		return form_data;*/
     }
 
     /**
@@ -429,19 +449,14 @@ public class MinionController {
     public static String minionSaveFormula(Request request, Response response, User user) {
     	// Get data from request
 		Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
-    	String serverId = (String) map.get("serverId");
+    	Long serverId = Long.valueOf((String) map.get("serverId"));
+    	String formulaName = (String) map.get("formula_name");
     	Map<String, Object> formData = (Map<String, Object>) map.get("content");
 
     	// Save data
-    	Formula formula = new Formula();
-    	formula.setFormulaName((String) map.get("formula_name"));
-    	formula.setServerId(new Long(serverId));
-    	formula.setOrg(user.getOrg());
-    	formula.setContent(GSON.toJson(formData));
     	try {
-    		FormulaFactory.saveServerFormula(formula);
-    	}
-    	catch (IOException e) {
+    		FormulaFactory.saveServerFormula(formData, serverId, formulaName);
+    	} catch (IOException e) {
     		return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " + e.getMessage()));
     	}

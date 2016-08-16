@@ -15,6 +15,7 @@ else
 script(type='text/javascript').
     var csrfToken = "#{csrf_token}";
     var serverId = "#{server.id}";
+    var formulaId = #{formula_id};
 
 script(src='/javascript/reactjs/react.bundle.js')
 script(src='/javascript/manager/minion-formula.bundle.js', type='text/javascript')

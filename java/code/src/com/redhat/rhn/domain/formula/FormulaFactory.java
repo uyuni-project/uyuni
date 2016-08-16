@@ -14,23 +14,32 @@
  */
 package com.redhat.rhn.domain.formula;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 
@@ -42,10 +51,12 @@ public class FormulaFactory extends HibernateFactory {
     private static Logger log = Logger.getLogger(FormulaFactory.class);
     private static FormulaFactory singleton = new FormulaFactory();
     private static final String FORMULA_DATA_DIRECTORY = "/srv/susemanager/formulas_data/";
+    private static final String FORMULA_DIRECTORY = "/usr/share/susemanager/salt/formulas/";
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .serializeNulls()
             .create();
+    private static final Yaml yaml = new Yaml(new SafeConstructor());
 
     private FormulaFactory() {
     }
@@ -72,32 +83,37 @@ public class FormulaFactory extends HibernateFactory {
 //                .uniqueResult();
 //        return Optional.ofNullable(formula);
 //    }
+
     
-    public static void saveServerFormula(Formula formula) throws IOException {
-    	File formula_file = new File(FORMULA_DATA_DIRECTORY + "pillar/" + ServerFactory.lookupById(formula.getServerId()).getName() + ".json");
+    public static void saveServerFormula(Map<String, Object> formData, Long serverId, String formulaName) throws IOException {
+    	File formula_file = new File(FORMULA_DATA_DIRECTORY + "pillar/" + serverId + "_" + formulaName + ".json");
     	try {
     		formula_file.getParentFile().mkdirs();
 			formula_file.createNewFile();
     	} catch (FileAlreadyExistsException e) {}
     	
     	BufferedWriter writer = new BufferedWriter(new FileWriter(formula_file));
+    	writer.write(GSON.toJson(formData));
+    	writer.close();
+    	/*
     	Map<String, Object> content = GSON.fromJson(formula.getContent(), Map.class);
     	content.put("form_id", formula.getFormulaName());
     	writer.write("{\"formula\": ");
     	writer.newLine();
     	writer.write(GSON.toJson(content));
     	writer.newLine();
-    	writer.write("}");
-    	writer.close();
+    	writer.write("}");*/
     }
-    
+
+    //OLD
     public static void deleteServerFormula(Long serverId) throws IOException {
     	File formula_file = new File(FORMULA_DATA_DIRECTORY + "pillar/" + ServerFactory.lookupById(serverId).getName() + ".json");
     	if (formula_file.exists()) {
     		formula_file.delete();
     	}
     }
-    
+
+    //OLD
     public static Optional<Formula> getFormulaByServerId(long orgId, Long serverId) {
     	File formula_file = new File(FORMULA_DATA_DIRECTORY + "pillar/" + ServerFactory.lookupById(serverId).getName() + ".json");
     	if (!formula_file.exists() || !formula_file.isFile())
@@ -124,27 +140,76 @@ public class FormulaFactory extends HibernateFactory {
     	}
     }
     
-    public static String getFormulasByServerGroup(String serverId) {
-    	File server_formulas_file = new File(FORMULA_DATA_DIRECTORY + "server_formulas.json");
+    public static String[] listServerFormulas(Long serverId) {
+    	LinkedList<String> formulas = new LinkedList<>();
+    	File server_formulas_file = new File(FORMULA_DATA_DIRECTORY + "group_formulas.json");
     	if (!server_formulas_file.exists())
-    		return "none";
+    		return new String[0];
     	
-    	// Read server_formulas file
     	try {
-	    	FileInputStream fis = new FileInputStream(server_formulas_file);
-	        byte[] server_formulas_file_content = new byte[(int) server_formulas_file.length()];
-	        fis.read(server_formulas_file_content);
-	        fis.close();
-			Map<String, String> server_formulas = (Map<String, String>) GSON.fromJson(new String(server_formulas_file_content, "UTF-8"), Map.class);
-			return server_formulas.getOrDefault(serverId, "none");
+			Map<String, List<String>> server_formulas = (Map<String, List<String>>) GSON.fromJson(new BufferedReader(new FileReader(server_formulas_file)), Map.class);
+			
+			for (ManagedServerGroup group : ServerFactory.lookupById(serverId).getManagedGroups())
+				formulas.addAll(server_formulas.getOrDefault(group.getId().toString(), new ArrayList<>(0)));
+	    	return formulas.toArray(new String[0]);
     	}
-    	catch (IOException e) {
-    		return "none";
+    	catch (FileNotFoundException e) {
+    		return new String[0];
     	}
     }
     
+    public static Optional<Map<String, Object>> getFormulaLayoutByName(String name) {
+    	File layout_file = new File(FORMULA_DIRECTORY + name + "/form.yml");
+    	
+    	try {
+			if (layout_file.exists())
+				return Optional.of((Map<String, Object>) yaml.load(new FileInputStream(layout_file)));
+			else {
+		    	layout_file = new File(FORMULA_DIRECTORY + name + "/form.json");
+		    	
+		    	if (layout_file.exists())
+		        	return Optional.of((Map<String, Object>) GSON.fromJson(new BufferedReader(new FileReader(layout_file)), Map.class));
+		    	else
+		    		return Optional.empty();
+			}
+    	} catch (FileNotFoundException e) {
+    		return Optional.empty();
+    	}
+    }
+    
+    public static Optional<Map<String, Object>> getFormulaValuesByNameAndServerId(String name, Long serverId) {
+    	File data_file = new File(FORMULA_DATA_DIRECTORY + "pillar/" + serverId + "_" + name + ".json");
+    	try {
+			if (data_file.exists())
+				return Optional.of((Map<String, Object>) GSON.fromJson(new BufferedReader(new FileReader(data_file)), Map.class));
+			else
+		    	return Optional.empty();
+    	} catch (FileNotFoundException e) {
+    		return Optional.empty();
+    	}
+    }
+    
+    public static String[] getFormulasByServerGroupId(Long groupId) {
+    	File group_formulas_file = new File(FORMULA_DATA_DIRECTORY + "group_formulas.json");
+    	if (!group_formulas_file.exists())
+    		return new String[0];
+    	
+    	// Read group_formulas file
+    	try {
+			Map<String, List<String>> server_formulas = (Map<String, List<String>>) GSON.fromJson(new BufferedReader(new FileReader(group_formulas_file)), Map.class);
+			if (server_formulas.containsKey(groupId.toString()))
+				return server_formulas.get(groupId.toString()).toArray(new String[0]);
+			else
+				return new String[0];
+    	}
+    	catch (IOException e) {
+    		return new String[0];
+    	}
+    }
+    
+    // TODO: Needs update!
     public static void saveServerGroupFormulas(String serverGroupId, String selectedFormula) throws IOException {
-    	File server_formulas_file = new File(FORMULA_DATA_DIRECTORY + "server_formulas.json");
+    	File server_formulas_file = new File(FORMULA_DATA_DIRECTORY + "group_formulas.json");
     	
     	Map<String, String> server_formulas;
     	if (!server_formulas_file.exists()) {
