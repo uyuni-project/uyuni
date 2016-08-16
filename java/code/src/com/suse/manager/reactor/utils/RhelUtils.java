@@ -46,41 +46,60 @@ public class RhelUtils {
 
         /**
          * Constructor.
-         * @param suseProduct the suse product that corresponds to this OS
-         * @param name the name of the OS
-         * @param version the version
-         * @param release the release name
-         * @param arch the arch
+         * @param suseProductIn the suse product that corresponds to this OS
+         * @param nameIn the name of the OS
+         * @param versionIn the version
+         * @param releaseIn the release name
+         * @param archIn the arch
          */
-        public RhelProduct(Optional<SUSEProduct> suseProduct, String name, String version, String release, String arch) {
-            this.suseProduct = suseProduct;
-            this.name = name;
-            this.version = version;
-            this.release = release;
-            this.arch = arch;
+        public RhelProduct(Optional<SUSEProduct> suseProductIn, String nameIn,
+                           String versionIn, String releaseIn, String archIn) {
+            this.suseProduct = suseProductIn;
+            this.name = nameIn;
+            this.version = versionIn;
+            this.release = releaseIn;
+            this.arch = archIn;
         }
 
+        /**
+         * @return the SUSE product, if any.
+         */
         public Optional<SUSEProduct> getSuseProduct() {
             return suseProduct;
         }
 
+        /**
+         * @return the name of the OS (RedHatEnterpriseServer or Centos)
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * @return the OS major version.
+         */
         public String getVersion() {
             return version;
         }
 
+        /**
+         * @return the release name
+         */
         public String getRelease() {
             return release;
         }
 
+        /**
+         * @return the architecture
+         */
         public String getArch() {
             return arch;
         }
     }
 
+    /**
+     * The content of the /etc/redhat|centos-release file.
+     */
     public static class ReleaseFile {
 
         private String name;
@@ -88,30 +107,55 @@ public class RhelUtils {
         private String minorVersion;
         private String release;
 
-        public ReleaseFile(String name, String majorVersion, String minorVersion, String release) {
-            this.name = name;
-            this.majorVersion = majorVersion;
-            this.minorVersion = minorVersion;
-            this.release = release;
+        /**
+         * All arg constructor.
+         * @param nameIn the name
+         * @param majorVersionIn the major version
+         * @param minorVersionIn the minor version
+         * @param releaseIn the release name
+         */
+        public ReleaseFile(String nameIn, String majorVersionIn,
+                           String minorVersionIn, String releaseIn) {
+            this.name = nameIn;
+            this.majorVersion = majorVersionIn;
+            this.minorVersion = minorVersionIn;
+            this.release = releaseIn;
         }
 
+        /**
+         * @return the name of the OS
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * @return the OS major version
+         */
         public String getMajorVersion() {
             return majorVersion;
         }
 
+        /**
+         * @return the minor version
+         */
         public String getMinorVersion() {
             return minorVersion;
         }
 
+        /**
+         * @return the release name
+         */
         public String getRelease() {
             return release;
         }
     }
 
+    /**
+     * Parse the /etc/redhat|centos-release
+     * @param releaseFile the content of the release file
+     * @return the parsed content of the release file
+     */
     public static Optional<ReleaseFile> parseReleaseFile(String releaseFile) {
         Matcher matcher = RHEL_RELEASE_MATCHER.matcher(releaseFile);
         if (matcher.matches()) {
@@ -125,27 +169,48 @@ public class RhelUtils {
         return Optional.empty();
     }
 
-    public static Optional<RhelProduct> detectRhelProduct(Server server, Optional<String> resReleasePackage,
-                                                          Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile) {
+    /**
+     * Guess the SUSE product for the RedHat minion and parse the
+     * /etc/redhat,centos-release file.
+     * 1) if the RES channel or a clone of the RES channel is
+     *    assigned to a system it is a RES system
+     * 2) if a RES release package (sles_es-release) is installed it is a RES.
+     * 3) otherwise it is not a RES system
+     * 4) is it a centos system? check if /etc/centos-release file exists
+     * 5) if it is not a centos we can say it is a original RHEL (maybe:-)
+     *
+     * @param server the minion
+     * @param resReleasePackage the package that provides 'sles_es-release'
+     * @param rhelReleaseFile the content of /etc/redhat-release
+     * @param centosReleaseFile the content of /etc/centos-release
+     * @return the {@link RhelProduct}
+     */
+    public static Optional<RhelProduct> detectRhelProduct(
+            Server server, Optional<String> resReleasePackage,
+            Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile) {
         String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
 
         // check first if it has RES channels assigned or the RES release package installed
         boolean hasRESChannels = server.getChannels().stream()
-                .filter(ch -> ch.getProductName() != null && "RES".equalsIgnoreCase(ch.getProductName().getName()))
+                .filter(ch -> ch.getProductName() != null &&
+                        "RES".equalsIgnoreCase(ch.getProductName().getName()))
                 .count() > 0;
         boolean hasRESReleasePackage = resReleasePackage
                 .filter(pkg -> StringUtils.startsWith(pkg, "sles_es-release")).isPresent();
         if (hasRESChannels || hasRESReleasePackage) {
             // we got a RES. find the corresponding SUSE product
-            Optional<ReleaseFile> releaseFile = rhelReleaseFile.flatMap(RhelUtils::parseReleaseFile);
+            Optional<ReleaseFile> releaseFile = rhelReleaseFile
+                    .flatMap(RhelUtils::parseReleaseFile);
             // Find the corresponding SUSEProduct in the database
             String name = releaseFile.map(ReleaseFile::getName).orElse("RES");
-            String majorVersion = releaseFile.map(ReleaseFile::getMajorVersion).orElse("unknown");
+            String majorVersion = releaseFile.map(ReleaseFile::getMajorVersion)
+                    .orElse("unknown");
             String release = releaseFile.map(ReleaseFile::getRelease).orElse("unknown");
 
             Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
                     .findSUSEProduct("RES", majorVersion, release, arch, true));
-            return Optional.of(new RhelProduct(suseProduct, name, majorVersion, release, arch));
+            return Optional.of(new RhelProduct(suseProduct, name,
+                    majorVersion, release, arch));
         }
 
         // next check if Centos
@@ -161,10 +226,12 @@ public class RhelUtils {
         return Optional.empty();
     }
 
-    private static RhelProduct detectPlainRHEL(String releaseFileContent, String arch, String defaultName) {
+    private static RhelProduct detectPlainRHEL(String releaseFileContent,
+                                               String arch, String defaultName) {
         Optional<ReleaseFile> releaseFile = parseReleaseFile(releaseFileContent);
         String name = releaseFile.map(ReleaseFile::getName).orElse(defaultName);
-        String majorVersion = releaseFile.map(ReleaseFile::getMajorVersion).orElse("unknown");
+        String majorVersion = releaseFile.map(ReleaseFile::getMajorVersion)
+                .orElse("unknown");
         String release = releaseFile.map(ReleaseFile::getRelease).orElse("unknown");
         return new RhelProduct(Optional.empty(), name, majorVersion, release, arch);
     }

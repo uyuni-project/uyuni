@@ -31,7 +31,17 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.WheelResult;
-import com.suse.salt.netapi.calls.modules.*;
+import com.suse.salt.netapi.calls.modules.Cmd;
+import com.suse.salt.netapi.calls.modules.Grains;
+import com.suse.salt.netapi.calls.modules.Match;
+import com.suse.salt.netapi.calls.modules.Network;
+import com.suse.salt.netapi.calls.modules.SaltUtil;
+import com.suse.salt.netapi.calls.modules.Schedule;
+import com.suse.salt.netapi.calls.modules.Smbios;
+import com.suse.salt.netapi.calls.modules.Status;
+import com.suse.salt.netapi.calls.modules.Test;
+import com.suse.salt.netapi.calls.modules.Timezone;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
@@ -817,7 +827,14 @@ public class SaltService {
         return callSync(Config.get(Config.MASTER), minionId);
     }
 
-    public Optional<Map<String, State.ApplyResult>> applyState(String minionId, String state) {
+    /**
+     * Apply a state synchronously.
+     * @param minionId the minion id
+     * @param state the state to apply
+     * @return the result of applying the state
+     */
+    public Optional<Map<String, State.ApplyResult>> applyState(
+            String minionId, String state) {
         return callSync(State.apply(state), minionId);
     }
 }
