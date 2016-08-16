@@ -104,6 +104,17 @@ public class AutoErrataTask extends RhnJavaJob {
      * @return maps of errata_id, server_id, and org_id that need actions
      */
     protected List<Map<String, Long>> getErrataToProcess() {
+        /*
+         * Additional check might be needed. Do not schedule anything
+         * if a task with bunch name "repo-sync-bunch" is ready or running.
+         *
+         * select 1
+         *  from rhnTaskoSchedule rts
+         *  join rhnTaskoBunch rtb on rts.bunch_id = rtb.id
+         *  join rhnTaskoRun rtr on rtr.schedule_id = rts.id
+         * where rtb.name = 'repo-sync-bunch'
+         *   and rtr.status in ('RUNNING','READY')
+         */
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_AUTO_ERRATA_CANDIDATES);
         @SuppressWarnings("unchecked")
