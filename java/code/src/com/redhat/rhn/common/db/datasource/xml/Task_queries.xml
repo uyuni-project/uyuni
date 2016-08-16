@@ -5,22 +5,21 @@
 select distinct s.id as server_id, s.org_id, snc.errata_id
   from rhnServer s,
        rhnServerFeaturesView sfv,
-       rhnServerNeededCache snc,
-       rhnServerChannel sc,
-       rhnChannel c,
-       rhnChannelErrata ce
+       rhnServerNeededCache snc
  where upper(s.auto_update) = 'Y'
    and s.id = sfv.server_id
    and sfv.label = 'ftr_auto_errata_updates'
    and s.id = snc.server_id
-   and s.id = sc.server_id
-   and sc.channel_id = c.id
-   and c.id = ce.channel_id
-   and ce.errata_id = snc.errata_id
-   and not exists ( -- not regenerating channel metadata
+   and snc.errata_id IS NOT NULL
+   and not exists ( -- not regenerating channel metadata where this errata exists
        select 1
          from rhnRepoRegenQueue rrq
-        where rrq.channel_label = c.label)
+        where rrq.channel_label in (
+                  select c.label
+                    from rhnChannel c
+                    join rhnChannelErrata ce ON c.id = ce.channel_id
+                   where ce.errata_id = snc.errata_id)
+        )
    and not exists ( -- haven't already scheduled action
        select 1
          from rhnServerAction sa,
