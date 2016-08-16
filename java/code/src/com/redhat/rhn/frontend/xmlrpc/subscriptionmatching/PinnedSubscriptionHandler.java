@@ -30,7 +30,7 @@ import java.util.List;
  * in the subscription data available either as a CSV (under [1]) or as a JSON (under [2]).
  *
  * [1]: rhn/manager/subscription-matching/subscription_report.csv
- * [2]: rhn/manager/subscription-matching/data
+ * [2]: rhn/manager/api/subscription-matching/data
  *
  * @xmlrpc.namespace subscriptionmatching.pinnedsubscription
  * @xmlrpc.doc Provides the namespace for operations on Pinned Subscriptions
