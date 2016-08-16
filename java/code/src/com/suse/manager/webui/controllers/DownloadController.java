@@ -144,7 +144,8 @@ public class DownloadController {
         }
         if (!queryParams.isEmpty()) {
             return queryParams.iterator().next();
-        } else {
+        }
+        else {
             return header;
         }
     }

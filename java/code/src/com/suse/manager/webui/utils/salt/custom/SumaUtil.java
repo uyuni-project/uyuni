@@ -82,22 +82,34 @@ public class SumaUtil {
 
     }
 
+    /**
+     * The result of the {@link #cat(String)} method.
+     */
     public static class CatResult {
 
-        long retcode;
+        private long retcode;
 
-        String stderr;
+        private String stderr;
 
-        String stdout;
+        private String stdout;
 
+        /**
+         * @return the cat command ret code
+         */
         public long getRetcode() {
             return retcode;
         }
 
+        /**
+         * @return the stderr
+         */
         public String getStderr() {
             return stderr;
         }
 
+        /**RegisterMinionEventMessageAction
+         * @return the stdout
+         */
         public String getStdout() {
             return stdout;
         }

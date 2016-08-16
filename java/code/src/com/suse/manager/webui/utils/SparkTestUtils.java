@@ -49,7 +49,8 @@ public class SparkTestUtils {
             String matchUrl,
             Map<String, String> queryParams,
             Object... vals) {
-        return createMockRequestWithParams(matchUrl, queryParams, Collections.emptyMap(), vals);
+        return createMockRequestWithParams(
+                matchUrl, queryParams, Collections.emptyMap(), vals);
     }
 
     /**
