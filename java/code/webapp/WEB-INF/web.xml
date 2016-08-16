@@ -180,16 +180,7 @@
 
   <filter-mapping>
     <filter-name>AuthFilterSpark</filter-name>
-    <url-pattern>/manager/minions/*</url-pattern>
-    <url-pattern>/manager/api/*</url-pattern>
-    <url-pattern>/manager/vhms/*</url-pattern>
-    <url-pattern>/manager/subscription-matching/*</url-pattern>
-    <url-pattern>/manager/state-catalog/*</url-pattern>
-    <url-pattern>/manager/admin/runtime-status/*</url-pattern>
-    <url-pattern>/manager/systems/*</url-pattern>
-    <url-pattern>/manager/groups/*</url-pattern>
-    <url-pattern>/manager/multiorg/*</url-pattern>
-    <url-pattern>/manager/yourorg/*</url-pattern>
+    <url-pattern>/manager/*</url-pattern>
   </filter-mapping>
 
   <filter-mapping>
