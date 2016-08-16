@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2016 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.reactor.utils;
 
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -14,8 +28,14 @@ import java.util.regex.Pattern;
  */
 public class RhelUtils {
 
-    private static Pattern RHEL_RELEASE_MATCHER = Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s\\((.+)\\).*", Pattern.DOTALL);
+    private RhelUtils() { }
 
+    private static final Pattern RHEL_RELEASE_MATCHER =
+            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s\\((.+)\\).*", Pattern.DOTALL);
+
+    /**
+     * Information about RHEL based OSes.
+     */
     public static class RhelProduct {
 
         private Optional<SUSEProduct> suseProduct;
@@ -24,6 +44,14 @@ public class RhelUtils {
         private String release;
         private String arch;
 
+        /**
+         * Constructor.
+         * @param suseProduct the suse product that corresponds to this OS
+         * @param name the name of the OS
+         * @param version the version
+         * @param release the release name
+         * @param arch the arch
+         */
         public RhelProduct(Optional<SUSEProduct> suseProduct, String name, String version, String release, String arch) {
             this.suseProduct = suseProduct;
             this.name = name;

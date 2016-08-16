@@ -816,4 +816,8 @@ public class SaltService {
     public Optional<String> getMasterHostname(String minionId) {
         return callSync(Config.get(Config.MASTER), minionId);
     }
+
+    public Optional<Map<String, State.ApplyResult>> applyState(String minionId, String state) {
+        return callSync(State.apply(state), minionId);
+    }
 }
