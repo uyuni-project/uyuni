@@ -42,7 +42,6 @@ public class RhelUtils {
         private String name;
         private String version;
         private String release;
-        private String arch;
 
         /**
          * Constructor.
@@ -58,7 +57,6 @@ public class RhelUtils {
             this.name = nameIn;
             this.version = versionIn;
             this.release = releaseIn;
-            this.arch = archIn;
         }
 
         /**
@@ -89,12 +87,6 @@ public class RhelUtils {
             return release;
         }
 
-        /**
-         * @return the architecture
-         */
-        public String getArch() {
-            return arch;
-        }
     }
 
     /**

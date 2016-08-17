@@ -30,20 +30,26 @@ import java.util.Map;
  */
 public class PkgProfileUpdateSlsResult {
 
+   public static final String PKG_PROFILE_REDHAT_RELEASE =
+           "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run";
+   public static final String PKG_PROFILE_CENTOS_RELEASE =
+           "cmd_|-centosrelease_|-cat /etc/centos-release_|-run";
+   public static final String PKG_PROFILE_WHATPROVIDES_SLES_RELEASE =
+           "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run";
+
    @SerializedName("module_|-products_|-pkg.list_products_|-run")
    private StateApplyResult<Ret<List<Zypper.ProductInfo>>> listProducts;
 
    @SerializedName("module_|-packages_|-pkg.info_installed_|-run")
    private StateApplyResult<Ret<Map<String, Pkg.Info>>> infoInstalled;
 
-   @SerializedName("cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run")
+   @SerializedName(PKG_PROFILE_REDHAT_RELEASE)
    private StateApplyResult<CmdExecCodeAllResult> rhelReleaseFile;
 
-   @SerializedName("cmd_|-centosrelease_|-cat /etc/centos-release_|-run")
+   @SerializedName(PKG_PROFILE_CENTOS_RELEASE)
    private StateApplyResult<CmdExecCodeAllResult> centosReleaseFile;
 
-   @SerializedName(
-           "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run")
+   @SerializedName(PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
    private StateApplyResult<CmdExecCodeAllResult> whatProvidesResReleasePkg;
 
    /**
