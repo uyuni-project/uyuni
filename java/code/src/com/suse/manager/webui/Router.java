@@ -48,21 +48,39 @@ public class Router implements SparkApplication {
     @Override
     public void init() {
         JadeTemplateEngine jade = setup();
-        // Salt Master pages
-        get("/manager/minions", withCsrfToken(withUser(MinionController::list)), jade);
+
+        // Minions
+        get("/manager/minions",
+                withCsrfToken(withUser(MinionController::list)),
+                jade);
         get("/manager/minions/bootstrap",
                 withCsrfToken(withOrgAdmin(MinionController::bootstrap)),
                 jade);
-        post("/manager/minions/bootstrap", withOrgAdmin(MinionsAPI::bootstrap));
-        // Remote command page
-        get("/manager/minions/cmd", withCsrfToken(MinionController::cmd), jade);
-        get("/manager/minions/:id", MinionController::show);
+        get("/manager/minions/cmd",
+                withCsrfToken(MinionController::cmd),
+                jade);
+        get("/manager/minions/:id",
+                MinionController::show);
 
-        // Salt States Management
+        // Minions API
+        post("/manager/api/minions/bootstrap", withOrgAdmin(MinionsAPI::bootstrap));
+        post("/manager/api/minions/cmd", withUser(MinionsAPI::run));
+        get("/manager/api/minions/match", withUser(MinionsAPI::match));
+        get("/manager/api/minions/keys", withUser(MinionsAPI::listKeys));
+        post("/manager/api/minions/keys/:target/accept", withOrgAdmin(MinionsAPI::accept));
+        post("/manager/api/minions/keys/:target/reject", withOrgAdmin(MinionsAPI::reject));
+        post("/manager/api/minions/keys/:target/delete", withOrgAdmin(MinionsAPI::delete));
+
+        // States
         get("/manager/systems/details/packages",
                 withCsrfToken(MinionController::packageStates),
                 jade);
-
+        get("/manager/systems/details/custom",
+                withCsrfToken(MinionController::minionCustomStates),
+                jade);
+        get("/manager/systems/details/highstate",
+                withCsrfToken(MinionController::highstate),
+                jade);
         get("/manager/multiorg/details/custom",
                 withCsrfToken(MinionController::orgCustomStates),
                 jade);
@@ -72,20 +90,6 @@ public class Router implements SparkApplication {
         get("/manager/groups/details/custom",
                 withCsrfToken(withUser(MinionController::serverGroupCustomStates)),
                 jade);
-        get("/manager/systems/details/custom",
-                withCsrfToken(MinionController::minionCustomStates),
-                jade);
-        get("/manager/systems/details/highstate",
-                withCsrfToken(MinionController::highstate),
-                jade);
-
-        // Minion APIs
-        post("/manager/api/minions/cmd", withUser(MinionsAPI::run));
-        get("/manager/api/minions/match", withUser(MinionsAPI::match));
-        get("/manager/api/minions/keys", withUser(MinionsAPI::listKeys));
-        post("/manager/api/minions/keys/:target/accept", withOrgAdmin(MinionsAPI::accept));
-        post("/manager/api/minions/keys/:target/reject", withOrgAdmin(MinionsAPI::reject));
-        post("/manager/api/minions/keys/:target/delete", withOrgAdmin(MinionsAPI::delete));
 
         // States API
         post("/manager/api/states/apply", withUser(StatesAPI::apply));
@@ -95,16 +99,6 @@ public class Router implements SparkApplication {
         post("/manager/api/states/packages/save", withUser(StatesAPI::savePackages));
         get("/manager/api/states/packages/match", StatesAPI::matchPackages);
         get("/manager/api/states/highstate", StatesAPI::showHighstate);
-
-        // Download endpoint
-        get("/manager/download/:channel/getPackage/:file",
-                DownloadController::downloadPackage);
-        get("/manager/download/:channel/repodata/:file",
-                DownloadController::downloadMetadata);
-        head("/manager/download/:channel/getPackage/:file",
-                DownloadController::downloadPackage);
-        head("/manager/download/:channel/repodata/:file",
-                DownloadController::downloadMetadata);
 
         // Virtual Host Managers
         get("/manager/vhms",
@@ -126,35 +120,39 @@ public class Router implements SparkApplication {
 
         // Subscription Matching
         get("/manager/subscription-matching",
-                withProductAdmin(SubscriptionMatchingController::show), jade);
-        get("/manager/subscription-matching/data",
-                withProductAdmin(SubscriptionMatchingController::data));
+                withProductAdmin(SubscriptionMatchingController::show),
+                jade);
         get("/manager/subscription-matching/:filename",
                 withProductAdmin(SubscriptionMatchingController::csv));
-        post("/manager/subscription-matching/schedule-matcher-run",
+
+        // Subscription Matching API
+        get("/manager/api/subscription-matching/data",
+                withProductAdmin(SubscriptionMatchingController::data));
+        post("/manager/api/subscription-matching/schedule-matcher-run",
                 withProductAdmin(SubscriptionMatchingController::scheduleMatcherRun));
-        post("/manager/subscription-matching/pins",
+        post("/manager/api/subscription-matching/pins",
                 withProductAdmin(SubscriptionMatchingController::createPin));
-        post("/manager/subscription-matching/pins/:id/delete",
+        post("/manager/api/subscription-matching/pins/:id/delete",
                 withProductAdmin(SubscriptionMatchingController::deletePin));
 
-        // Salt state catalog
-        get("/manager/state_catalog",
+        // States Catalog
+        get("/manager/state-catalog",
                 withOrgAdmin(StateCatalogController::list), jade);
-        get("/manager/state_catalog/data",
-                withOrgAdmin(StateCatalogController::data));
-
-        get("/manager/state_catalog/state",
+        get("/manager/state-catalog/state",
                 withCsrfToken(withOrgAdmin(StateCatalogController::add)), jade);
-        get("/manager/state_catalog/state/:name",
+        get("/manager/state-catalog/state/:name",
                 withCsrfToken(withOrgAdmin(StateCatalogController::edit)), jade);
-        get("/manager/state-catalog/state/:name/content",
+
+        // States Catalog API
+        get("/manager/api/state-catalog/data",
+                withOrgAdmin(StateCatalogController::data));
+        get("/manager/api/state-catalog/state/:name/content",
                 withUser(StateCatalogController::content));
-        post("/manager/state_catalog/state",
+        post("/manager/api/state-catalog/state",
                 withOrgAdmin(StateCatalogController::create));
-        put("/manager/state_catalog/state/:name",
+        put("/manager/api/state-catalog/state/:name",
                 withOrgAdmin(StateCatalogController::update));
-        delete("/manager/state_catalog/state/:name",
+        delete("/manager/api/state-catalog/state/:name",
                 withOrgAdmin(StateCatalogController::delete));
 
         // TaskoTop
@@ -162,5 +160,15 @@ public class Router implements SparkApplication {
                 withOrgAdmin(TaskoTop::show), jade);
         get("/manager/api/admin/runtime-status/data",
                 withOrgAdmin(TaskoTop::data));
+
+        // Download endpoint
+        get("/manager/download/:channel/getPackage/:file",
+                DownloadController::downloadPackage);
+        get("/manager/download/:channel/repodata/:file",
+                DownloadController::downloadMetadata);
+        head("/manager/download/:channel/getPackage/:file",
+                DownloadController::downloadPackage);
+        head("/manager/download/:channel/repodata/:file",
+                DownloadController::downloadMetadata);
     }
 }

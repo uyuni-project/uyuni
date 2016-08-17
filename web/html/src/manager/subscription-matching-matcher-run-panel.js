@@ -89,7 +89,7 @@ const MatcherTaskDescription = () =>
 
 const MatcherScheduleButton = React.createClass({
   onClick: function() {
-    Network.post("/rhn/manager/subscription-matching/schedule-matcher-run")
+    Network.post("/rhn/manager/api/subscription-matching/schedule-matcher-run")
       .promise.catch(() => this.props.onError());
     this.props.onScheduled();
   },

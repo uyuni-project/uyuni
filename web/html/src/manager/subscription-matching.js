@@ -27,7 +27,7 @@ const SubscriptionMatching = React.createClass({
   },
 
   refreshServerData: function() {
-    this.refreshRequest = Network.get("/rhn/manager/subscription-matching/data", "application/json");
+    this.refreshRequest = Network.get("/rhn/manager/api/subscription-matching/data", "application/json");
     this.refreshRequest.promise
       .then(data => {
         this.setState({

@@ -111,8 +111,12 @@ public class AuthFilter implements Filter {
             HttpServletRequest servletRequest = (HttpServletRequest) request;
             HttpServletResponse servletResponse = (HttpServletResponse) response;
 
-            String contentType = servletRequest.getContentType();
-            if (contentType != null && contentType.equals("application/json")) {
+            // Ignore all requests to the download endpoint
+            if (servletRequest.getServletPath().startsWith("/manager/download/")) {
+                chain.doFilter(request, response);
+            }
+            // Send 401 for unauthorized API requests, else redirect to login
+            else if (servletRequest.getServletPath().startsWith("/manager/api/")) {
                 servletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
             else {
