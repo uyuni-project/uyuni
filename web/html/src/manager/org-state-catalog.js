@@ -20,7 +20,7 @@ var StateCatalog = React.createClass({
   },
 
   refreshServerData: function() {
-    Network.get("/rhn/manager/state_catalog/data").promise.then(data => {
+    Network.get("/rhn/manager/api/state-catalog/data").promise.then(data => {
       this.setState({serverData : data});
     });
   },
@@ -42,7 +42,7 @@ var StateCatalog = React.createClass({
   },
 
   render: function() {
-    var button = <PanelButton text="Create State" icon="fa-plus" action="/rhn/manager/state_catalog/state"/>;
+    var button = <PanelButton text="Create State" icon="fa-plus" action="/rhn/manager/state-catalog/state"/>;
     var msg = null;
 
     if(typeof this.props.flashMessages !== "undefined") {
@@ -65,7 +65,7 @@ var StateCatalog = React.createClass({
               comparator={this.sortByText}
               header={t("State")}
               cell={ (s) =>
-                <a href={"/rhn/manager/state_catalog/state/" + s}>{s}</a> }
+                <a href={"/rhn/manager/state-catalog/state/" + s}>{s}</a> }
             />
           </Table>
         </div>

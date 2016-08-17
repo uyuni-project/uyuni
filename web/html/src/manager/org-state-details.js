@@ -51,12 +51,13 @@ var StateDetail = React.createClass({
         }
 
         var promise = null;
+        var endpoint = "/rhn/manager/api/state-catalog/state";
         if (httpMethod == "POST") {
-            promise = Network.post(window.location.href, JSON.stringify(formData), "application/json").promise;
+            promise = Network.post(endpoint, JSON.stringify(formData), "application/json").promise;
         } else if (httpMethod == "PUT") {
-            promise = Network.put(window.location.href, JSON.stringify(formData), "application/json").promise;
+            promise = Network.put(endpoint + "/" + this.props.sls.name, JSON.stringify(formData), "application/json").promise;
         } else if (httpMethod == "DELETE") {
-            promise = Network.del(window.location.href, JSON.stringify(formData), "application/json").promise;
+            promise = Network.del(endpoint + "/" + this.props.sls.name, JSON.stringify(formData), "application/json").promise;
         }
         if (promise) {
             promise.then(data => {
@@ -96,7 +97,7 @@ var StateDetail = React.createClass({
             );
         }
         buttons.push(
-            <LinkButton key="cancel-btn" id="cancel-btn" className="btn-default form-horizontal pull-right" text={t("Cancel")} href="/rhn/manager/state_catalog"/>
+            <LinkButton key="cancel-btn" id="cancel-btn" className="btn-default form-horizontal pull-right" text={t("Cancel")} href="/rhn/manager/state-catalog"/>
         );
 
         var deleteButton = null;
