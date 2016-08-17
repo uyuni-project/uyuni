@@ -131,7 +131,6 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     assertEquals("RedHatEnterpriseServer", prod.get().getName());
                     assertEquals("Maipo", prod.get().getRelease());
                     assertEquals("7", prod.get().getVersion());
-                    assertEquals("i386", prod.get().getArch());
         });
     }
 
@@ -143,7 +142,6 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     assertEquals("RedHatEnterpriseServer", prod.get().getName());
                     assertEquals("Maipo", prod.get().getRelease());
                     assertEquals("7", prod.get().getVersion());
-                    assertEquals("i386", prod.get().getArch());
         });
     }
 
@@ -155,7 +153,6 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     assertEquals("CentOS", prod.get().getName());
                     assertEquals("Core", prod.get().getRelease());
                     assertEquals("7", prod.get().getVersion());
-                    assertEquals("i386", prod.get().getArch());
         });
     }
 
@@ -169,6 +166,5 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         ChannelFactory.save(c);
         return c;
     }
-
 
 }

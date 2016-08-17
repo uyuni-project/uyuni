@@ -494,7 +494,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 "Detected minion %s as a RedHat compatible system: %s %s %s %s",
                 server.getMinionId(),
                 rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
-                rhelProductInfo.get().getRelease(), rhelProductInfo.get().getArch()));
+                rhelProductInfo.get().getRelease(), server.getServerArch().getName()));
 
         return rhelProductInfo.get().getSuseProduct().map(product -> {
             String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");

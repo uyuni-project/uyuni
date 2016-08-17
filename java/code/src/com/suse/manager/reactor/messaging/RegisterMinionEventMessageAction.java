@@ -52,6 +52,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
 
+import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
@@ -328,25 +329,27 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 });
             });
         }
-        else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os"))) {
+        else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
+                "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
             String minionId = server.getMinionId();
 
             Optional<Map<String, State.ApplyResult>> applyResultMap = SALT_SERVICE
                     .applyState(server.getMinionId(), "packages.redhatproductinfo");
             Optional<String> centosReleaseContent =
                     applyResultMap.map(map ->
-                        map.get("cmd_|-centosrelease_|-cat /etc/centos-release_|-run"))
+                        map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
                     .map(r -> r.getChanges(CmdExecCodeAllResult.class))
                     .map(c -> c.getStdout());
             Optional<String> rhelReleaseContent =
                     applyResultMap.map(map ->
-                        map.get("cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run"))
+                        map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE))
                     .map(r -> r.getChanges(CmdExecCodeAllResult.class))
                     .map(c -> c.getStdout());
             Optional<String> whatProvidesRes =
-                    applyResultMap.map(map -> map.get(
-                        "cmd_|-respkgquery_|-rpm -q " +
-                                "--whatprovides 'sles_es-release-server'_|-run"))
+                    applyResultMap.map(map ->
+                        map.get(
+                            PkgProfileUpdateSlsResult
+                                .PKG_PROFILE_WHATPROVIDES_SLES_RELEASE))
                     .map(r -> r.getChanges(CmdExecCodeAllResult.class))
                     .map(c -> c.getStdout());
 
@@ -356,10 +359,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                             rhelReleaseContent, centosReleaseContent);
             rhelProduct
                 .ifPresent(rhel -> {
+                        String arch = server.getServerArch()
+                                .getLabel().replace("-redhat-linux", "");
                         Opt.stream(rhel.getSuseProduct()).flatMap(sp ->
                                 lookupBaseAndRequiredChannels(
                                         rhel.getName(), rhel.getVersion(),
-                                        rhel.getArch(), sp)
+                                        arch, sp)
                         ).forEach(reqChan -> {
                             LOG.info("Adding required channel: " + reqChan.getName());
                             server.addChannel(reqChan);
@@ -368,11 +373,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                             LOG.info("Not setting default channels for minion: " +
                                     minionId + " os: " + rhel.getName() +
                                     " " + rhel.getVersion() +
-                                    " " + rhel.getArch());
+                                    " " + arch);
                         }
                     }
                 );
-
         }
     }
 
@@ -442,7 +446,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         // java port of up2dataUtils._getOSVersionAndRelease()
         String osRelease = grains.getValueAsString("osrelease");
 
-        if ("redhat".equalsIgnoreCase(grains.getValueAsString("os"))) {
+        if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
+                "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
             MinionList target = new MinionList(Arrays.asList(minionId));
             Optional<Result<String>> whatprovidesRes = SALT_SERVICE.runRemoteCommand(target,
                     "rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release")
