@@ -1409,6 +1409,12 @@ As a Channel Administrator, you may change the base channels your systems are su
       <trans-unit id="userdetails.jsp.enable">
         <source>Reactivate User</source>
       </trans-unit>
+      <trans-unit id="managedsystems.jsp.toolbar">
+        <source>Managed Systems</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
+        </context-group>
+      </trans-unit>
 
       <!-- code/src/com/redhat/rhn/frontend/strings/java/StringResource_en_US.xml -->
       <trans-unit id="Clone Errata">
