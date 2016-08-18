@@ -182,12 +182,19 @@ public class Router implements SparkApplication {
 
         // Formula Management Groups
         get("/manager/groups/details/formulas",
-                withCsrfToken(withUser(MinionController::serverGroupFormula)),
+                withCsrfToken(withUser(MinionController::serverGroupFormulas)),
                 jade);
         get("/manager/groups/details/formulas/data/:sgid",
-                withOrgAdmin(MinionController::serverGroupFormulaData));
+                withOrgAdmin(MinionController::serverGroupFormulasData));
+        get("/manager/groups/details/formula/:formula_id",
+        		withCsrfToken(withUser(MinionController::serverGroupFormula)),
+        		jade);
+        get("/manager/groups/details/formula/form/:sgid/:formula_id",
+                withUser(MinionController::serverGroupFormulaData));
         post("/manager/groups/details/formulas/apply",
-                withUser(MinionController::serverGroupFormulaApply));
+                withUser(MinionController::serverGroupFormulasApply));
+        post("/manager/groups/details/formula/form/save",
+                withUser(MinionController::serverGroupSaveFormula));
 
         // Formula management System
         get("/manager/systems/details/formula/:formula_id",
