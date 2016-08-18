@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.transaction.NotSupportedException;
+
 import org.apache.http.HttpStatus;
 
 import com.google.gson.Gson;
@@ -253,19 +255,105 @@ public class MinionController {
     }
 
     /**
-     * Handler for the server group formula page.
+     * Handler for a server group formula page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView serverGroupFormula(Request request, Response response, User user) {
+        String serverGroupId = request.queryParams("sgid");
+        Map<String, Object> data = new HashMap<>();
+        data.put("groupId", serverGroupId);
+        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
+                user.getOrg()).getName());
+        data.put("info", FlashScopeHelper.flash(request));
+        data.put("formula_id", request.params("formula_id"));
+        return new ModelAndView(data, "groups/formula.jade");
+    }
+
+    /**
+     * Return the JSON data to render a server groups formula edit page.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the JSON data
+     */
+    public static String serverGroupFormulaData(Request request, Response response, User user) {
+    	// Find formulas of server group
+    	Long groupId = new Long(request.params("sgid"));
+    	int formula_id = Integer.parseInt(request.params("formula_id"));
+    	List<String> formulas = FormulaFactory.getFormulasByGroupId(groupId);
+
+        String form_data;
+    	if (formulas.isEmpty()) {
+    		form_data = "null";
+    	}
+    	else {
+        	Map<String, Object> map = new HashMap<>();
+        	map.put("formulaList", formulas);
+
+        	if (formula_id < formulas.size()) {
+        		String formula_name = formulas.get(formula_id);
+        		map.put("formula_name", formula_name);
+
+        		Optional<Map<String, Object>> layout = FormulaFactory.getFormulaLayoutByName(formula_name);
+        		if (layout.isPresent())
+        			map.put("layout", layout.get());
+
+        		Optional<Map<String, Object>> values = FormulaFactory.getFormulaValuesByNameAndGroupId(formula_name, groupId);
+        		map.put("values", values.orElse(new HashMap<String, Object>()));
+        	}
+        	form_data = GSON.toJson(map);
+    	}
+
+        response.type("application/json");
+		return form_data;
+    }
+
+    /**
+     * Handler to save a server groups formula data
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return
+     */
+    public static String serverGroupSaveFormula(Request request, Response response, User user) {
+    	// Get data from request
+		Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
+    	Long groupId = Long.valueOf((String) map.get("groupId"));
+    	String formulaName = (String) map.get("formula_name");
+    	Map<String, Object> formData = (Map<String, Object>) map.get("content");
+
+    	// Save data
+    	try {
+    		FormulaFactory.saveGroupFormulaData(formData, groupId, formulaName);
+    	} catch (IOException e) {
+    		return errorResponse(response,
+                    Arrays.asList("Error while saving formula data: " + e.getMessage()));
+    	}
+
+    	// Return answer
+        FlashScopeHelper.flash(request, "Formula saved!");
+    	Map<String, String> data = new HashMap<>();
+    	data.put("url", (String) map.get("url"));
+        response.type("application/json");
+        return GSON.toJson(data);
+	}
+
+    /**
+     * Handler for the server group formulas page.
      *
      * @param request the request object
      * @param response the response object
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView serverGroupFormula(Request request, Response response,
-                                                       User user) {
+    public static ModelAndView serverGroupFormulas(Request request, Response response, User user) {
         String serverGroupId = request.queryParams("sgid");
         Map<String, Object> data = new HashMap<>();
         data.put("groupId", serverGroupId);
-        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(new Long(serverGroupId),
+        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
                 user.getOrg()).getName());
         data.put("info", FlashScopeHelper.flash(request));
         return new ModelAndView(data, "groups/formulas.jade");
@@ -278,10 +366,10 @@ public class MinionController {
      * @param user the current user
      * @return the JSON data
      */
-    public static String serverGroupFormulaData(Request request, Response response, User user) {
+    public static String serverGroupFormulasData(Request request, Response response, User user) {
     	Map<String, Object> data = new HashMap<>();
 
-        String[] server_formulas = FormulaFactory.getFormulasByServerGroupId(Long.valueOf(request.params("sgid")));
+        List<String> server_formulas = FormulaFactory.getFormulasByGroupId(Long.valueOf(request.params("sgid")));
 		data.put("selected", server_formulas);
 		data.put("formulas", FormulaCatalogController.listFormulas());
 
@@ -296,18 +384,14 @@ public class MinionController {
      * @param user the current user
      * @return
      */
-    public static String serverGroupFormulaApply(Request request, Response response, User user) {
+    public static String serverGroupFormulasApply(Request request, Response response, User user) {
     	// Get data from request
 		Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
-    	String groupId = (String) map.get("groupId");
-    	String selectedFormula = (String) map.get("selectedFormula");
+    	Long groupId = Long.valueOf((String) map.get("groupId"));
+    	List<String> selectedFormulas = (List<String>) map.get("selected");
 
     	try {
-    		if (selectedFormula.equals("none"))
-    			for (Server server : ServerGroupFactory.lookupByIdAndOrg(new Long(groupId), user.getOrg()).getServers())
-    				FormulaFactory.deleteServerFormula(server.getId());
-
-			FormulaFactory.saveServerGroupFormulas(groupId, selectedFormula);
+			FormulaFactory.saveServerGroupFormulas(groupId, selectedFormulas, user.getOrg());
     	}
     	catch (IOException e) {
     		return errorResponse(response,
@@ -347,18 +431,18 @@ public class MinionController {
     	// Find formulas of server groups
     	Long serverId = new Long(request.params("sid"));
     	int formula_id = Integer.parseInt(request.params("formula_id"));
-    	String[] formulas = FormulaFactory.listServerFormulas(serverId);
+    	List<String> formulas = FormulaFactory.getFormulasByServerId(serverId);
 
         String form_data;
-    	if (formulas.length == 0) {
+    	if (formulas.isEmpty()) {
     		form_data = "null";
     	}
     	else {
         	Map<String, Object> map = new HashMap<>();
         	map.put("formulaList", formulas);
 
-        	if (formula_id < formulas.length) {
-        		String formula_name = formulas[formula_id];
+        	if (formula_id < formulas.size()) {
+        		String formula_name = formulas.get(formula_id);
         		map.put("formula_name", formula_name);
 
         		Optional<Map<String, Object>> layout = FormulaFactory.getFormulaLayoutByName(formula_name);
@@ -440,7 +524,7 @@ public class MinionController {
     }
 
     /**
-     * Handler to save a minions formula
+     * Handler to save a minions formula data
      * @param request the http request
      * @param response the http response
      * @param user the current user
@@ -455,8 +539,8 @@ public class MinionController {
 
     	// Save data
     	try {
-    		FormulaFactory.saveServerFormula(formData, serverId, formulaName);
-    	} catch (IOException e) {
+    		FormulaFactory.saveServerFormulaData(formData, serverId, formulaName);
+    	} catch (IOException | NotSupportedException e) {
     		return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " + e.getMessage()));
     	}

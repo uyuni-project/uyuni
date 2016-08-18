@@ -9,62 +9,36 @@ var Network = require("../utils/network");
 const Formats = require("../utils/functions").Formats;
 var FormGenerator = require("../utils/form-generator");
 
-const basicInputTypes = ["text", "password", "email", "url", "date", "time"];
-
 var FormulaDetail = React.createClass({
 
     getInitialState: function() {
         var st = {
-            "serverData": {"formula_name": "Loading..."},
+            "serverData": null,
             "messages": []
         };
-        Network.get("/rhn/manager/systems/details/formula/form/" + serverId + "/" + formulaId).promise.then(data => {
+        Network.get("/rhn/manager/groups/details/formula/form/" + groupId + "/" + formulaId).promise.then(data => {
           this.setState({"serverData" : data});
         });
         return st;
     },
 
-    applyHighstate: function() {
-    	// TODO: disabled only for testing, but: should you even be able to apply highstate from here?
-    	console.warn("Applying highstate is currently disabled for testing purposes!");
-    	return;
-    	
-        const request = Network.post(
-            "/rhn/manager/api/states/apply",
-            JSON.stringify({
-                id: serverId,
-                type: "SERVER",
-                states: [],
-                earliest: Formats.LocalDateTime(new Date())
-            }),
-            "application/json"
-        ).promise.then(data => {
-            this.state.messages.push(msg('info', <span>{t("Applying the highstate has been ")}
-                    <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
-                    {t(".")}</span>))
-            this.setState({
-                messages: this.state.messages
-            });
-        });
-        return request;
-    },
-
 	updateFormula: function(e) {
 		e.preventDefault(); // prevent default form redirect
+		
 		var formData = {};
-		formData["serverId"] = serverId;
-		formData["url"] = window.location.href;
-		formData["formula_name"] = this.state.serverData["formula_name"];
-		formData["content"] = {};
+		formData.groupId = groupId;
+		formData.url = window.location.href;
+		formData.formula_name = this.state.serverData.formula_name;
+		formData.content = {};
 		$("#editFormulaForm input, #editFormulaForm select").each(function(index, element) {
 			if (element.id == "") return;
  			else if (element.type == "checkbox")
- 				assignValueWithId(formData["content"], element.id, element.checked);
+ 				assignValueWithId(formData.content, element.id, element.checked);
  			else
- 				assignValueWithId(formData["content"], element.id, element.value);
+ 				assignValueWithId(formData.content, element.id, element.value);
 		});
 		
-        Network.post("/rhn/manager/systems/details/formula/form/save", JSON.stringify(formData), "application/json").promise.then(
+        Network.post("/rhn/manager/groups/details/formula/form/save", JSON.stringify(formData), "application/json").promise.then(
 		(data) => {
 			window.location.href = data.url
 		},
@@ -100,10 +74,10 @@ var FormulaDetail = React.createClass({
 					{errs}{msg}
 					<div className="panel panel-default">
 						<div className="panel-heading">
-							<h4>No formula found!</h4>
+							<h4>Formula not found!</h4>
 						</div>
 						<div className="panel-body">
-							No formulas found for this server! Add a formula to a group this server is part of.
+							Click <a href={"/rhn/manager/groups/details/formulas?sgid=" + groupId}>here</a> to manage the formulas of this server group.
 						</div>
 					</div>
 				</div>
@@ -112,7 +86,7 @@ var FormulaDetail = React.createClass({
 		else {
 		    return (
 		    	<div>
-		    		{ generateFormulaNavBar(this.state.serverData.formulaList, formulaId) }
+		    		{generateFormulaNavBar(this.state.serverData.formulaList, formulaId)}
 					{errs}{msg}
 					<form id="editFormulaForm" className="form-horizontal" onSubmit={this.updateFormula}>
 						<div className="panel panel-default">
@@ -120,7 +94,7 @@ var FormulaDetail = React.createClass({
 								<h4>{ FormGenerator.toTitle(this.state.serverData.formula_name || "Formula not found") }</h4>
 							</div>
 							<div className="panel-body">
-								{FormGenerator.generateForm(this.state.serverData.values, this.state.serverData.layout, this.state.serverData.formula_name, "system")}
+								{FormGenerator.generateForm(this.state.serverData.values, this.state.serverData.layout, this.state.serverData.formula_name, "group")}
 								<div className="row">
 									<div className="col-md-2 col-md-offset-3">
 										<Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className="btn btn-success" handler={function(e){$('<input type="submit">').hide().appendTo($("#editFormulaForm")).click().remove();}} />
@@ -131,19 +105,14 @@ var FormulaDetail = React.createClass({
 					</form>
 				</div>
 		    );
-		    /*
-		    <div className="col-md-3">
-		        <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} />
-		    </div>
-		    */
 		}
-    },
+    }
 });
 
 function generateFormulaNavBar(formulaList, activeId) {
-	var tabs = [];
+	var tabs = [<li role="presentation"><a href={"/rhn/manager/groups/details/formulas?sgid=" + groupId}>Formulas</a></li>];
 	for (var i in formulaList)
-		tabs.push(<li role="presentation" className={(i == activeId)?"active":""}><a href={ "/rhn/manager/systems/details/formula/" + i + "?sid=" + serverId}>{FormGenerator.toTitle(formulaList[i])}</a></li>);
+		tabs.push(<li role="presentation" className={(i == activeId)?"active":""}><a href={ "/rhn/manager/groups/details/formula/" + i + "?sgid=" + groupId}>{FormGenerator.toTitle(formulaList[i])}</a></li>);
 	return (
 		<ul className="nav nav-tabs">
 			{tabs}
