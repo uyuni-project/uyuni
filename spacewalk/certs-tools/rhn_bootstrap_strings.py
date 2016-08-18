@@ -255,8 +255,8 @@ def getHeader(productName, activation_keys, org_gpg_key,
                       pubname, pubname)
 
 
-def getRegistrationStackSh():
-    return """\
+def getRegistrationStackSh(salt_enabled):
+    _registration = """\
 if [ "$INSTALLER" == zypper ]; then
   echo
   echo "CHECKING THE REGISTRATION STACK"
@@ -276,7 +276,7 @@ if [ "$INSTALLER" == zypper ]; then
   }
 
   function getZ_MISSING() {
-    local NEEDED="spacewalk-check spacewalk-client-setup spacewalk-client-tools zypp-plugin-spacewalk"
+    local NEEDED="%s"
     if [ "$Z_CLIENT_CODE_BASE" == "sle" -a "$Z_CLIENT_CODE_VERSION" == "10" ]; then
       # (bnc#789373) Code 10 product migration requires 'xsltproc' being installed
       which 'xsltproc' || NEEDED="$NEEDED libxslt"
@@ -289,7 +289,7 @@ if [ "$INSTALLER" == zypper ]; then
 
   function getZ_ZMD_TODEL() {
     local ZMD_STACK="zmd rug libzypp-zmd-backend yast2-registration zen-updater zmd-inventory suseRegister-jeos"
-    if rpm -q suseRegister --qf '%{VERSION}' | grep -q '^\(0\.\|1\.[0-3]\)\(\..*\)\?$'; then
+    if rpm -q suseRegister --qf '%%{VERSION}' | grep -q '^\(0\.\|1\.[0-3]\)\(\..*\)\?$'; then
       # we need the new suseRegister >= 1.4, so wipe an old one too
       ZMD_STACK="$ZMD_STACK suseRegister suseRegisterInfo spacewalk-client-tools"
     fi
@@ -353,7 +353,7 @@ if [ "$INSTALLER" == zypper ]; then
     #
     # Note: We try to install the missing packages even if adding the repo fails.
     # Might be some other system repo provides them instead.
-    if rpm -q zypper --qf '%{VERSION}' | grep -q '^0\(\..*\)\?$'; then
+    if rpm -q zypper --qf '%%{VERSION}' | grep -q '^0\(\..*\)\?$'; then
 
       # code10 zypper has no --gpg-auto-import-keys and no reliable return codes.
       if [ -n "$Z_CLIENT_REPO_URL" ]; then
@@ -425,7 +425,12 @@ EOF
 fi
 
 """
-
+    PKG_NAME = ""
+    if salt_enabled:
+        PKG_NAME = "salt salt-minion spacewalk-client-tools"
+    else:
+        PKG_NAME = "spacewalk-check spacewalk-client-setup spacewalk-client-tools zypp-plugin-spacewalk"
+    return _registration % (PKG_NAME)
 
 def getConfigFilesSh():
     return """\
