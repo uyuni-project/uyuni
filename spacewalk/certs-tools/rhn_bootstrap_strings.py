@@ -256,7 +256,12 @@ def getHeader(productName, activation_keys, org_gpg_key,
 
 
 def getRegistrationStackSh(salt_enabled):
-    _registration = """\
+    if salt_enabled:
+        PKG_NAME = "salt salt-minion spacewalk-client-tools"
+    else:
+        PKG_NAME = "spacewalk-check spacewalk-client-setup spacewalk-client-tools zypp-plugin-spacewalk"
+
+    return """\
 if [ "$INSTALLER" == zypper ]; then
   echo
   echo "CHECKING THE REGISTRATION STACK"
@@ -424,13 +429,7 @@ EOF
   fi
 fi
 
-"""
-    PKG_NAME = ""
-    if salt_enabled:
-        PKG_NAME = "salt salt-minion spacewalk-client-tools"
-    else:
-        PKG_NAME = "spacewalk-check spacewalk-client-setup spacewalk-client-tools zypp-plugin-spacewalk"
-    return _registration % (PKG_NAME)
+""" % (PKG_NAME)
 
 def getConfigFilesSh():
     return """\
@@ -683,12 +682,75 @@ fi
 
 """ % (productName, productName, productName)
 
+def getRegistrationSaltSh(productName):
+    return """\
+echo
+echo "REGISTRATION"
+echo "------------"
+# Should have created an activation key or keys on the %s's
+# website and edited the value of ACTIVATION_KEYS above.
+#
+# If you require use of several different activation keys, copy this file and
+# change the string as needed.
+#
 
-def getUp2dateTheBoxSh(productName):
+MINION_ID_FILE="/etc/salt/minion_id"
+SUSEMANAGER_MASTER_FILE="/etc/salt/minion.d/master.conf"
+
+if [ -z "$ACTIVATION_KEYS" ] ; then
+    echo "*** ERROR: in order to bootstrap %s clients, an activation key or keys"
+    echo "           must be created in the %s web user interface, and the"
+    echo "           corresponding key or keys string (XKEY,YKEY,...) must be mapped to"
+    echo "           the ACTIVATION_KEYS variable of this script."
+    exit 1
+fi
+
+if [ $REGISTER_THIS_BOX -eq 1 ] ; then
+    echo "* registering"
+
+    echo "$MYNAME" > "$MINION_ID_FILE"
+    echo "master: $HOSTNAME" > "SUSEMANAGER_MASTER_FILE"
+
+    if [ -z "$ACTIVATION_KEYS" ] ; then
+        cat <<EOF >"SUSEMANAGER_MASTER_FILE"
+grains:
+    susemanager:
+        activation_key: "$ACTIVATION_KEYS"
+EOF
+    fi
+fi
+
+Z_CLIENT_REPO_URL="https://${HOSTNAME}/pub/repositories}${Z_CLIENT_REPOS_ROOT}/${Z_CLIENT_CODE_BASE}/${Z_CLIENT_CODE_VERSION}/${Z_CLIENT_CODE_PATCHLEVEL}/bootstrap"
+$FETCH $Z_CLIENT_REPO_URL/salt/minion.pub 2> /dev/null
+if [ -f "minion.pub" ] ; then
+    echo "* provisioning pub and priv key for minion"
+    mv minion.pub /etc/salt/pki/minion/minion.pub
+    $FETCH $Z_CLIENT_REPO_URL/salt/minion.pem
+    systemctl enable salt-minion
+fi
+
+systemctl start salt-minion
+
+""" % (productName, productName, productName)
+
+
+def getUp2dateTheBoxSh(productName, salt_enabled):
+    if salt_enabled:
+        SALT_ENABLED=1
+        PKG_NAME_ZYPPER = PKG_NAME_ZYPPER_SYNC = \
+        PKG_NAME_YUM = PKG_NAME_YUM_SYNC = "salt salt-minion"
+    else:
+        SALT_ENABLED=0
+        PKG_NAME_ZYPPER = "zypp-plugin-spacewalk"
+        PKG_NAME_YUM = "yum-rhn-plugin"
+        PKG_NAME_ZYPPER_SYNC = PKG_NAME_ZYPPER + "; rhn-profile-sync"
+        PKG_NAME_YUM_SYNC = PKG_NAME_YUM + "; rhn-profile-sync"
+
     return """\
 echo
 echo "OTHER ACTIONS"
 echo "------------------------------------------------------"
+SALT_ENABLED=%s
 if [ $DISABLE_YAST_AUTOMATIC_ONLINE_UPDATE -eq 1 ]; then
     YAOU_SYSCFGFILE="/etc/sysconfig/automatic_online_update"
     if [ -f "$YAOU_SYSCFGFILE" ]; then
@@ -731,17 +793,17 @@ if [ $DISABLE_LOCAL_REPOS -eq 1 ]; then
 fi
 if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
     if [ "$INSTALLER" == zypper ] ; then
-        echo "zypper --non-interactive up zypper zypp-plugin-spacewalk; rhn-profile-sync; zypper --non-interactive up (conditional)"
+        echo "zypper --non-interactive up zypper %s; zypper --non-interactive up (conditional)"
     elif [ "$INSTALLER" == yum ] ; then
-        echo "yum -y upgrade yum yum-rhn-plugin; rhn-profile-sync; yum upgrade (conditional)"
+        echo "yum -y upgrade yum %s; yum upgrade (conditional)"
     else
         echo "up2date up2date; up2date -p; up2date -uf (conditional)"
     fi
 else
     if [ "$INSTALLER" == zypper ] ; then
-        echo "zypper --non-interactive up zypper zypp-plugin-spacewalk; rhn-profile-sync"
+        echo "zypper --non-interactive up zypper %s"
     elif [ "$INSTALLER" == yum ] ; then
-        echo "yum -y upgrade yum yum-rhn-plugin; rhn-profile-sync"
+        echo "yum -y upgrade yum %s"
     else
         echo "up2date up2date; up2date -p"
     fi
@@ -755,10 +817,14 @@ else
 fi
 if [ "$INSTALLER" == zypper ] ; then
     zypper lr -u
-    zypper --non-interactive ref -s
-    zypper --non-interactive up zypper zypp-plugin-spacewalk
+    if [ $SALT_ENABLED -eq 0 ] ; then
+        zypper --non-interactive ref -s
+    fi
+    zypper --non-interactive up zypper %s
     if [ -x /usr/sbin/rhn-profile-sync ] ; then
-        /usr/sbin/rhn-profile-sync
+        if [ $SALT_ENABLED -eq 0 ] ; then
+            /usr/sbin/rhn-profile-sync
+        fi
     else
         echo "Error updating system info in %s."
         echo "    Please ensure that rhn-profile-sync in installed and rerun it."
@@ -768,9 +834,11 @@ if [ "$INSTALLER" == zypper ] ; then
     fi
 elif [ "$INSTALLER" == yum ] ; then
     yum repolist
-    /usr/bin/yum -y upgrade yum yum-rhn-plugin
+    /usr/bin/yum -y upgrade yum %s
     if [ -x /usr/sbin/rhn-profile-sync ] ; then
-        /usr/sbin/rhn-profile-sync
+        if [ $SALT_ENABLED -eq 0 ] ; then
+            /usr/sbin/rhn-profile-sync
+        fi
     else
         echo "Error updating system info in %s."
         echo "    Please ensure that rhn-profile-sync in installed and rerun it."
@@ -786,13 +854,5 @@ else
     fi
 fi
 echo "-bootstrap complete-"
-""" % (productName, productName)
-
-
-
-
-
-
-
-
-
+""" % (SALT_ENABLED, PKG_NAME_ZYPPER_SYNC, PKG_NAME_YUM_SYNC, PKG_NAME_ZYPPER_SYNC, PKG_NAME_YUM_SYNC,
+    PKG_NAME_ZYPPER, productName, PKG_NAME_YUM, productName)
