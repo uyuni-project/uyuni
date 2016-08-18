@@ -600,7 +600,7 @@ def generateBootstrapScript(options):
     newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh()
 
     # SLES: install packages required for registration on systems that do not have them installed
-    newScript = newScript + getRegistrationStackSh() + getUp2dateScriptsSh()
+    newScript = newScript + getRegistrationStackSh(options.salt) + getUp2dateScriptsSh()
 
     newScript = newScript + getRegistrationSh(MY_PRODUCT_NAME)
 
