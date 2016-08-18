@@ -384,7 +384,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 .map(content -> content.getChanges())
                 .filter(ret -> ret.getStdout() != null)
                 .map(ret -> ret.getStdout());
-        Optional<String> centosReleseFile =
+        Optional<String> centosReleaseFile =
                 Optional.ofNullable(result.getCentosReleaseFile())
                 .map(content -> content.getChanges())
                 .filter(ret -> ret.getStdout() != null)
@@ -394,11 +394,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 .map(content -> content.getChanges())
                 .filter(ret -> ret.getStdout() != null)
                 .map(ret -> ret.getStdout());
-        if (rhelReleaseFile.isPresent() || centosReleseFile.isPresent() ||
+        if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                 resReleasePkg.isPresent()) {
             Set<InstalledProduct> products = JobReturnEventMessageAction
                     .getInstalledProductsForRhel(server, resReleasePkg,
-                            rhelReleaseFile, centosReleseFile);
+                            rhelReleaseFile, centosReleaseFile);
             server.setInstalledProducts(products);
         }
 
