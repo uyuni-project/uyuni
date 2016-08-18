@@ -1,0 +1,35 @@
+.spacewalk-toolbar-h1
+  .spacewalk-toolbar
+    a(href="/rhn/groups/Delete.do?sgid=#{groupId}")
+        i.fa.fa-trash-o(title='Delete Group')
+        | #{l.t("Delete Group")}
+    a(href="/rhn/systems/WorkWithGroup.do?sgid=#{groupId}")
+        i.fa.spacewalk-icon-system-groups(title='Work With Group')
+        | #{l.t("Work With Group")}
+
+  h1
+    i.fa.spacewalk-icon-system-groups
+    | #{" " + groupName + " "}
+
+!{h.renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml")}
+
+if info
+  script(type="text/javascript").
+     function flashMessage() {
+         return [{severity: "info", text:"#{info}"}];
+     }
+else
+  script(type="text/javascript").
+     function flashMessage() {
+         return [];
+     }
+
+#formula
+
+script(type='text/javascript').
+    var csrfToken = "#{csrf_token}";
+    var groupId = "#{groupId}";
+    var formulaId = #{formula_id};
+
+script(src='/javascript/reactjs/react.bundle.js')
+script(src='/javascript/manager/group-formula.bundle.js', type='text/javascript')

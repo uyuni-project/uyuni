@@ -25,6 +25,7 @@ import org.apache.http.HttpStatus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
@@ -77,11 +78,11 @@ public class FormulaCatalogController {
         File[] files = directory.listFiles();
         List<String> formulasList = new LinkedList<>();
         
-        // TODO: Check if directory is a real formula (contains form.json and state.sls)?
+        // TODO: Check if directory is a real formula (contains form.yml/form.json, init.sls and maybe even metadata.yml)?
         for (File f : files)
         	if (f.isDirectory())
         		formulasList.add(f.getName());
-        return formulasList;
+        return FormulaFactory.orderFormulas(formulasList);
     }
     
     /**
