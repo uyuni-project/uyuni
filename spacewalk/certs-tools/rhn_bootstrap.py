@@ -40,7 +40,7 @@ from rhn_bootstrap_strings import \
     getHeader, getConfigFilesSh, getUp2dateScriptsSh, getGPGKeyImportSh, \
     getCorpCACertSh, getRegistrationSh, getUp2dateTheBoxSh, \
     getAllowConfigManagement, getAllowRemoteCommands, \
-    getRegistrationStackSh
+    getRegistrationStackSh, getRegistrationSaltSh
 from sslToolConfig import CA_CRT_NAME, CA_CRT_RPM_NAME
 from spacewalk.common.fileutils import rotateFile, cleanupAbsPath
 from spacewalk.common.checksum  import getFileChecksum
@@ -304,7 +304,7 @@ Note: for rhn-bootstrap to work, certain files are expected to be
             'overrides': options.overrides or DEFAULT_OVERRIDES,
             'script': options.script or DEFAULT_SCRIPT,
             'hostname': options.hostname,
-            'salt': options.salt or 0,
+            'salt': options.salt,
             'ssl-cert': options.ssl_cert,
             'gpg-key': options.gpg_key,
             'http-proxy': options.http_proxy,
@@ -602,14 +602,17 @@ def generateBootstrapScript(options):
     # SLES: install packages required for registration on systems that do not have them installed
     newScript = newScript + getRegistrationStackSh(options.salt) + getUp2dateScriptsSh()
 
-    newScript = newScript + getRegistrationSh(MY_PRODUCT_NAME)
+    if (options.salt):
+        newScript = newScript + getRegistrationSaltSh(MY_PRODUCT_NAME)
+    else:
+        newScript = newScript + getRegistrationSh(MY_PRODUCT_NAME)
 
     #5/16/05 wregglej 159437 - moving stuff that messes with the allowed-action dir to after registration
     newScript = newScript + getAllowConfigManagement()
     newScript = newScript + getAllowRemoteCommands()
 
     #5/16/05 wregglej 159437 - moved the stuff that up2dates the entire box to after allowed-actions permissions are set.
-    newScript = newScript + getUp2dateTheBoxSh(MY_PRODUCT_NAME)
+    newScript = newScript + getUp2dateTheBoxSh(MY_PRODUCT_NAME, options.salt)
 
     _bootstrapDir = cleanupAbsPath(os.path.join(options.pub_tree, 'bootstrap'))
     _script = cleanupAbsPath(os.path.join(_bootstrapDir, options.script))
@@ -681,4 +684,3 @@ if __name__ == "__main__":
     except Exception:
         sys.stderr.write('Unhandled ERROR occurred.\n')
         raise # should exit with a 1 (errnoGeneral)
-
