@@ -113,6 +113,15 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   ENABLE=`mktemp`
   echo "* Generating tunnel setup script (${ENABLE})"
   echo "#!/bin/bash" >> ${ENABLE}
+  # Check if "hosts" are in /etc/nsswitch.conf
+  echo "if ! grep ^hosts /etc/nsswitch.conf > /dev/null; then" >> ${ENABLE}
+  echo "  echo '------------------------------------------------'" >> ${ENABLE}
+  echo "  echo 'ERROR: Missing hosts entry in /etc/nsswitch.conf'" >> ${ENABLE}
+  echo "  echo '       Registration has been aborted.'" >> ${ENABLE}
+  echo "  echo '------------------------------------------------'" >> ${ENABLE}
+  echo "  exit 1" >> ${ENABLE}
+  echo "fi" >> ${ENABLE}
+  # Add SUSE Manager to hosts
   echo "if [[ \`grep ^127.0.0.1 /etc/hosts\` != *${HOSTNAME}* ]]; then" >> ${ENABLE}
   echo "sed -i 's/\(127\.0\.0\.1.*\)/& ${HOSTNAME}/' /etc/hosts" >> ${ENABLE}
   echo "fi" >> ${ENABLE}
