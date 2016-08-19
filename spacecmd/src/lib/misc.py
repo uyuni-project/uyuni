@@ -584,9 +584,17 @@ def generate_package_cache(self, force=False):
                 self.all_packages[longname].append(p.get('id'))
 
     # keep a reverse dictionary so we can lookup package names by ID
+    # We assume that package IDs are unique, so one ID is only
+    # refering one package.
     self.all_packages_by_id = {}
     for (k, v) in self.all_packages.iteritems():
         for i in v:
+            # Alert in case of non-unique ID is detected.
+            if i in self.all_packages_by_id:
+                logging.warning(
+                    'Non-unique package id "%s" is detected. Taking "%s" ' \
+                    'instead of "%s"' % (i, k, self.all_packages_by_id[i]))
+
             self.all_packages_by_id[i] = k
 
     self.package_cache_expire = \
