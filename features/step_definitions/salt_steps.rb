@@ -114,6 +114,25 @@ Then(/^the list of the keys should contain this client's hostname$/) do
   puts "Total time waited: #{time_waited}"
 end
 
+Then(/^I wait until packages list state is completed on the minion$/) do
+  completed = false
+  output = ""
+  begin
+    Timeout.timeout(30) do
+      loop do
+        output = `cat /var/log/salt/minion | egrep "Completed.*pkg.info_installed" 2>&1`
+        if output != ""
+          completed = true
+          break
+        end
+        sleep 1
+      end
+    end
+  rescue Timeout::Error
+    raise "package list state has not been completed"
+  end
+end
+
 Given(/^this minion key is unaccepted$/) do
   step "I list unaccepted keys at Salt Master"
   @output = @action.call
