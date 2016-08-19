@@ -49,6 +49,7 @@ salt-minion:
 {% else %}
 salt-minion:
   service.running:
+    - enable: True
     - require:
       - pkg: salt-minion-package
     - watch:
