@@ -115,9 +115,11 @@ def list_labels():
         if mgr_bootstrap_data.DATA[label]['PDID'] in synced_products:
             print "%s" % label
 
-def create_repo(label):
+def create_repo(label, additional=[]):
     pdid = int(mgr_bootstrap_data.DATA[label]['PDID'])
     destdir = mgr_bootstrap_data.DATA[label]['DEST']
+    errors = 0
+    messages = []
 
     if not os.path.exists(destdir):
         if dryrun:
@@ -125,30 +127,46 @@ def create_repo(label):
         else:
             os.makedirs(destdir)
 
+    if label.startswith('RES'):
+        print "Creating bootstrap repo for latest Service Pack of {0}".format(label)
+    else:
+        print "Creating bootstrap repo for {0}".format(label)
+    print
+
     if options.usecustomchannels:
         h = rhnSQL.prepare(_sql_find_pkgs_with_custom_channels)
     else:
         h = rhnSQL.prepare(_sql_find_pkgs)
-    for pkgname in mgr_bootstrap_data.DATA[label]['PKGLIST']:
+    packagelist = mgr_bootstrap_data.DATA[label]['PKGLIST']
+    packagelist.extend(additional)
+    for pkgname in packagelist:
         h.execute(pdid=pdid, pkgname=pkgname)
-        p = h.fetchone_dict() or None
-        if p is None:
-            print "ERROR: package '%s' not found" % pkgname
-            sys.exit(1)
-        rpmdir = os.path.join(destdir, p['arch'])
-        if not os.path.exists(rpmdir):
-            os.makedirs(rpmdir)
-        print "copy '%s'" % p['nvrea']
-        if not dryrun:
-            shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
+        pkgs = h.fetchall_dict() or []
+        if len(pkgs) == 0:
+            messages.append("ERROR: package '%s' not found" % pkgname)
+            errors += 1
+            continue
+        for p in pkgs:
+            rpmdir = os.path.join(destdir, p['arch'])
+            if not os.path.exists(rpmdir):
+                os.makedirs(rpmdir)
+            print "copy '%s'" % p['nvrea']
+            if not dryrun:
+                shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
 
     if dryrun:
         print "createrepo -s sha %s" % destdir
     else:
         os.system("createrepo -s sha %s" % destdir)
+    if errors:
+        for m in messages:
+            print m
+        if label.startswith('RES') and not options.usecustomchannels:
+            print "If the installation media was imported into a custom channel, try to run again with --with-custom-channel option"
+        sys.exit(1)
 
-
-parser = OptionParser()
+usage = "usage: %prog [options] [additional_pkg1 additional_pkg2 ...]"
+parser = OptionParser(usage=usage)
 parser.add_option('-n', '--dryrun', action='store_true', dest='dryrun',
                   help='Dry run. Show only changes - do not execute them')
 parser.add_option('-i', '--interactive', action='store_true', dest='interactive',
@@ -190,13 +208,13 @@ if options.interactive:
         print "'%s' not found" % elabel
         sys.exit(1)
 
-    create_repo(elabel)
+    create_repo(elabel, additional=args)
 elif options.list:
     list_labels()
 elif options.create:
     if options.create not in mgr_bootstrap_data.DATA:
         print "'%s' not found" % options.create
         sys.exit(1)
-    create_repo(options.create)
+    create_repo(options.create, additional=args)
 
 

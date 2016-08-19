@@ -165,6 +165,55 @@ ENHANCE12SP1 = [
                 "python-ipaddress",
                ]
 
+RES6 = [
+        "salt",
+        "salt-minion",
+        "python-futures",
+        "python-jinja2",
+        "python-msgpack-python",
+        "python-psutil",
+        "python-pycrypto",
+        "python-requests",
+        "python-tornado",
+        "python-zmq",
+        "zeromq",
+        "python-backports-ssl_match_hostname",
+        "python-backports",
+        "python-certifi",
+        "python-simplejson",
+        "PyYAML",
+        "python-markupsafe",
+        "python-urllib3",
+        "libyaml",
+        "python-chardet",
+        "python-six",
+        "python-babel",
+        "dbus",
+       ]
+
+RES7 = [
+        "salt",
+        "salt-minion",
+        "python-futures",
+        "python-jinja2",
+        "python-msgpack-python",
+        "python-psutil",
+        "python-pycrypto",
+        "python-requests",
+        "python-tornado",
+        "python-zmq",
+        "zeromq",
+        "python-certifi",
+        "python-simplejson",
+        "PyYAML",
+        "python-markupsafe",
+        "python-urllib3",
+        "libyaml",
+        "python-chardet",
+        "python-six",
+        "python-babel",
+       ]
+
 DATA = {
     'SLE-11-SP1-i586' : {
                           'PDID' : 684, 'PKGLIST' : PKGLIST11,
@@ -334,6 +383,14 @@ DATA = {
                           'PDID' : 1346, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
                         },
+    'RES6-x86_64' : {
+                          'PDID' : 1138, 'PKGLIST' : RES6,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/res/6/bootstrap/'
+                    },
+    'RES7-x86_64' : {
+                          'PDID' : 1251, 'PKGLIST' : RES7,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/res/7/bootstrap/'
+                    },
 
 }
 
