@@ -14,25 +14,19 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.salt.netapi.calls.modules.Schedule;
-import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.results.Result;
+import com.redhat.rhn.domain.server.MinionServer;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -70,30 +64,24 @@ public class SystemPendingEventsCancelAction extends RhnAction {
         request.setAttribute(RequestContext.PAGE_LIST, result);
 
         if (context.wasDispatched("system.event.pending.cancel")) {
-            createSuccessMessage(request, "system.event.pending.canceled",
-                    new Integer(set.size()).toString());
+            int canceledEventsCount = 0;
+            for (SystemPendingEventDto action : result) {
+                Optional<ActionManager.CancelServerActionStatus> cancelStatus =
+                        ActionManager.cancelServerAction(action.getId(), sid);
 
-            Optional<List<SystemPendingEventDto>> systemPendingEventDtos =
-                    server.asMinionServer().map(minionServer -> {
-                List<SystemPendingEventDto> actions = new LinkedList<>();
-                for (SystemPendingEventDto action : result) {
-                    Map<String, Result<Schedule.Result>> stringResultMap =
-                            SaltService.INSTANCE.deleteSchedule(
-                                    "scheduled-action-" + action.getId(),
-                                    new MinionList(minionServer.getMinionId())
-                            );
-                    Schedule.Result result1 = stringResultMap
-                            .get(minionServer.getMinionId()).result().get();
-                    if (result1 != null && result1.getResult()) {
-                        actions.add(action);
-                    }
+                if (cancelStatus.isPresent() && ActionManager.CancelServerActionStatus
+                        .CANCEL_FAILED_MINION_DOWN.equals(cancelStatus.get())) {
+                    createErrorMessage(request,
+                            "system.event.pending.canceled.minion.down",
+                            server.asMinionServer()
+                                    .map(MinionServer::getMinionId).orElse(""));
+                    break; // skip the remaining events if the minion is down
                 }
-                return actions;
-            });
-
-            for (SystemPendingEventDto action : systemPendingEventDtos.orElse(result)) {
-                ActionFactory.removeActionForSystem(action.getId(), sid);
+                canceledEventsCount++;
             }
+            createSuccessMessage(request, "system.event.pending.canceled",
+                    Integer.toString(canceledEventsCount));
+
             set.clear();
             RhnSetManager.store(set);
             Map params = makeParamMap(request);

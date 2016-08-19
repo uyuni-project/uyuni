@@ -812,6 +812,14 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Delete a {@link ServerAction} object.
+     * @param serverAction the server action to delete
+     */
+    public static void delete(ServerAction serverAction) {
+        singleton.removeObject(serverAction);
+    }
+
+    /**
      * The constant representing the Action Status QUEUED
      */
     public static final ActionStatus STATUS_QUEUED =
@@ -1115,5 +1123,6 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_APPLY_STATES =
             lookupActionTypeByLabel("states.apply");
+
 }
 
