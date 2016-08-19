@@ -11,8 +11,8 @@ Feature: Verify the minion registration
 
   Scenario: Check if package list has been refreshed
     Given I am on the Systems overview page of this client
-    And I wait for "10" seconds
-    When I follow "Events"
+    When I wait until packages list state is completed on the minion
+    And I follow "Events"
     And I follow "History"
     Then I should see a "Package List Refresh scheduled by (none)" text
 
