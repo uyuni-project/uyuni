@@ -81,6 +81,10 @@ import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
 
+import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.salt.netapi.calls.modules.Schedule;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.results.Result;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.cobbler.Profile;
@@ -97,6 +101,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 /**
  * ActionManager - the singleton class used to provide Business Operations
@@ -121,6 +126,16 @@ public class ActionManager extends BaseManager {
      * but I wanted to retain that comment with regard to this value.
      */
     private static final Long REMAINING_TRIES = 10L;
+
+
+    /**
+     * The status of the minion job canceling.
+     */
+    public enum CancelServerActionStatus {
+        CANCELED,
+        CANCELED_NO_MINION_JOB,
+        CANCEL_FAILED_MINION_DOWN
+    }
 
     private ActionManager() {
     }
@@ -247,33 +262,43 @@ public class ActionManager extends BaseManager {
      * Cancels all actions in given list.
      * @param user User associated with the set of actions.
      * @param actionsToCancel List of actions to be cancelled.
+     * @return the status of the job cancelling for each target server of the action
      */
-    public static void cancelActions(User user, List actionsToCancel) {
+    public static Map<Action, Map<Server, CancelServerActionStatus>> cancelActions(
+            User user, List actionsToCancel) {
+        Map<Action, Map<Server, CancelServerActionStatus>> result = new HashMap<>();
         Iterator it = actionsToCancel.iterator();
         while (it.hasNext()) {
             Action a = (Action)it.next();
-            cancelAction(user, a);
+            Map<Server, CancelServerActionStatus> serverCancelStates =
+                    cancelAction(user, a);
+            result.put(a, serverCancelStates);
         }
+        return result;
     }
 
     /**
      * Cancels the server actions associated with a given action, and if
-     * required deals with associated pending kickstart actions.
+     * required deals with associated pending kickstart actions and minion
+     * jobs.
      *
      * Actions themselves are not deleted, only the ServerActions associated
      * with them.
      *
      * @param user User requesting the action be cancelled.
      * @param action Action to be cancelled.
+     * @return the status of the job cancelling for each target server of the action
      */
-    public static void cancelAction(User user, Action action) {
-        ActionManager.cancelAction(user, action, null);
+    public static Map<Server, CancelServerActionStatus> cancelAction(
+            User user, Action action) {
+        return ActionManager.cancelAction(user, action, null);
     }
 
 
     /**
      * Cancels the server actions associated with a given action, and if
-     * required deals with associated pending kickstart actions.
+     * required deals with associated pending kickstart actions and minion
+     * jobs.
      *
      * Actions themselves are not deleted, only the ServerActions associated
      * with them.
@@ -281,8 +306,10 @@ public class ActionManager extends BaseManager {
      * @param user User requesting the action be cancelled.
      * @param action Action to be cancelled.
      * @param cancelParams Canceling params to the specific cancelled action.
+     * @return the status of the job cancelling for each target server of the action
      */
-    public static void cancelAction(User user, Action action, Map cancelParams) {
+    public static Map<Server, CancelServerActionStatus> cancelAction(
+            User user, Action action, Map cancelParams) {
         log.debug("Cancelling action: " + action.getId() + " for user: " + user.getLogin());
 
         // Can only top level actions:
@@ -290,11 +317,11 @@ public class ActionManager extends BaseManager {
             throw new ActionIsChildException();
         }
 
-        Set actionsToDelete = new HashSet();
+        Set<Action> actionsToDelete = new HashSet();
         actionsToDelete.add(action);
         actionsToDelete.addAll(ActionFactory.lookupDependentActions(action));
 
-        Set servers = new HashSet();
+        Set<Server> servers = new HashSet<>();
         Iterator serverActionsIter = action.getServerActions().iterator();
         while (serverActionsIter.hasNext()) {
             ServerAction sa = (ServerAction)serverActionsIter.next();
@@ -302,13 +329,100 @@ public class ActionManager extends BaseManager {
         }
 
         KickstartFactory.failKickstartSessions(actionsToDelete, servers);
-        ActionFactory.deleteServerActionsByParent(actionsToDelete);
+
+        Map<Server, CancelServerActionStatus> result = new HashMap<>();
+        for (Action actionToDelete : actionsToDelete) {
+            List<ServerAction> serverActions = new LinkedList<>(actionToDelete.getServerActions());
+            for (ServerAction serverAction : serverActions) {
+                CancelServerActionStatus status =
+                        ActionManager.cancelServerAction(serverAction);
+                result.put(serverAction.getServer(), status);
+            }
+        }
 
         Iterator iter = actionsToDelete.iterator();
         while (iter.hasNext()) {
             Action a = (Action)iter.next();
             a.onCancelAction(cancelParams);
         }
+        return result;
+    }
+
+    /**
+     * Cancels the server actions associated with a given action, and if
+     * required deals with associated pending kickstart actions and minion
+     * jobs.
+     *
+     * @param actionId the id of the action
+     * @param serverId the id of the servre
+     * @return the status of the server action cancelling
+     */
+    public static Optional<CancelServerActionStatus> cancelServerAction(
+            long actionId, long serverId) {
+        Action action = ActionFactory.lookupById(actionId);
+
+        // get the correspoding server action
+        Optional<ServerAction> serverAction = action.getServerActions()
+                .stream()
+                .filter(sa -> sa.getServer().getId() == serverId)
+                .findFirst();
+        return serverAction.map(sa -> cancelServerAction(sa));
+    }
+
+    /**
+     * Cancels the server actions associated with a given action, and if
+     * required deals with associated pending kickstart actions and minion
+     * jobs.
+     *
+     * @param serverAction the server action to cancel
+     * @return the status of the server action cancelling
+     */
+    public static CancelServerActionStatus cancelServerAction(ServerAction serverAction) {
+
+        Server server = serverAction.getServer();
+        Action action = serverAction.getParentAction();
+
+        CancelServerActionStatus cancelingStatus =
+                server.asMinionServer().isPresent() ?
+                        // we got a minion
+                        server.asMinionServer().map(minionServer -> {
+                            // try to cancel the minon job
+                            Map<String, Result<Schedule.Result>> stringResultMap =
+                                    SaltService.INSTANCE.deleteSchedule(
+                                            "scheduled-action-" + action.getId(),
+                                            new MinionList(minionServer.getMinionId())
+                                    );
+                            if (!stringResultMap.isEmpty()) {
+                                // response is not empty -> minion is up
+                                Optional<Schedule.Result> result1 =
+                                        Optional.ofNullable(stringResultMap
+                                            .get(minionServer.getMinionId()))
+                                            .flatMap(r -> r.result());
+                                if (result1.isPresent() && result1.get().getResult()) {
+                                    // canceled job succesfully ->
+                                    //   ok to delete the server action
+                                    return CancelServerActionStatus.CANCELED;
+                                }
+                                else if (result1.isPresent() && result1.get()
+                                        .getComment().matches("Job .+ does not exist\\.")) {
+                                    // ok to delete the server action from db
+                                    // because it doesn't exist on the minion
+                                    return CancelServerActionStatus.CANCELED_NO_MINION_JOB;
+                                }
+                            }
+                            // if empty response -> minion is down
+                            return CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN;
+                        }).get() :
+                        // we got a traditional client -> simply delete from db
+                        CancelServerActionStatus.CANCELED;
+
+
+        // delete server action from db
+        if (!CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN.equals(cancelingStatus)) {
+            action.getServerActions().remove(serverAction);
+            ActionFactory.delete(serverAction);
+        }
+        return cancelingStatus;
     }
 
     /**
