@@ -233,7 +233,7 @@ fi
 
 
 def getHeader(productName, activation_keys, org_gpg_key,
-              overrides, hostname, orgCACert, isRpmYN,
+              overrides, hostname, saltEnabled, orgCACert, isRpmYN,
               using_ssl, using_gpg,
               allow_config_actions, allow_remote_commands, up2dateYN, pubname, apachePubDirectory):
     #2/14/06 wregglej 181407 If the org_gpg_key option has the path to the file
@@ -242,7 +242,7 @@ def getHeader(productName, activation_keys, org_gpg_key,
     if path_list[0] and path_list[0] != '':
         org_gpg_key = path_list[1]
 
-    if not activation_keys:
+    if not activation_keys and not saltEnabled:
         exit_call = "exit 1"
     else:
         exit_call = " "
@@ -255,8 +255,8 @@ def getHeader(productName, activation_keys, org_gpg_key,
                       pubname, pubname)
 
 
-def getRegistrationStackSh(salt_enabled):
-    if salt_enabled:
+def getRegistrationStackSh(saltEnabled):
+    if saltEnabled:
         PKG_NAME = "salt salt-minion spacewalk-client-tools"
     else:
         PKG_NAME = "spacewalk-check spacewalk-client-setup spacewalk-client-tools zypp-plugin-spacewalk"
@@ -697,19 +697,11 @@ echo "------------"
 MINION_ID_FILE="/etc/salt/minion_id"
 SUSEMANAGER_MASTER_FILE="/etc/salt/minion.d/master.conf"
 
-if [ -z "$ACTIVATION_KEYS" ] ; then
-    echo "*** ERROR: in order to bootstrap %s clients, an activation key or keys"
-    echo "           must be created in the %s web user interface, and the"
-    echo "           corresponding key or keys string (XKEY,YKEY,...) must be mapped to"
-    echo "           the ACTIVATION_KEYS variable of this script."
-    exit 1
-fi
-
 if [ $REGISTER_THIS_BOX -eq 1 ] ; then
     echo "* registering"
 
     echo "$MYNAME" > "$MINION_ID_FILE"
-    echo "master: $HOSTNAME" > "SUSEMANAGER_MASTER_FILE"
+    echo "master: $HOSTNAME" > "$SUSEMANAGER_MASTER_FILE"
 
     if [ -z "$ACTIVATION_KEYS" ] ; then
         cat <<EOF >"SUSEMANAGER_MASTER_FILE"
@@ -731,16 +723,14 @@ fi
 
 systemctl start salt-minion
 
-""" % (productName, productName, productName)
+""" % (productName)
 
 
-def getUp2dateTheBoxSh(productName, salt_enabled):
-    if salt_enabled:
-        SALT_ENABLED=1
+def getUp2dateTheBoxSh(productName, saltEnabled):
+    if saltEnabled:
         PKG_NAME_ZYPPER = PKG_NAME_ZYPPER_SYNC = \
         PKG_NAME_YUM = PKG_NAME_YUM_SYNC = "salt salt-minion"
     else:
-        SALT_ENABLED=0
         PKG_NAME_ZYPPER = "zypp-plugin-spacewalk"
         PKG_NAME_YUM = "yum-rhn-plugin"
         PKG_NAME_ZYPPER_SYNC = PKG_NAME_ZYPPER + "; rhn-profile-sync"
@@ -854,5 +844,5 @@ else
     fi
 fi
 echo "-bootstrap complete-"
-""" % (SALT_ENABLED, PKG_NAME_ZYPPER_SYNC, PKG_NAME_YUM_SYNC, PKG_NAME_ZYPPER_SYNC, PKG_NAME_YUM_SYNC,
+""" % (saltEnabled, PKG_NAME_ZYPPER_SYNC, PKG_NAME_YUM_SYNC, PKG_NAME_ZYPPER_SYNC, PKG_NAME_YUM_SYNC,
     PKG_NAME_ZYPPER, productName, PKG_NAME_YUM, productName)

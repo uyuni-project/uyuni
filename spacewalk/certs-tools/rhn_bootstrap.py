@@ -585,9 +585,10 @@ def generateBootstrapScript(options):
     # would print as such)
     newScript = getHeader(MY_PRODUCT_NAME, options.activation_keys,
                   options.gpg_key, options.overrides, options.hostname,
-                  orgCACert, isRpmYN, 1 - options.no_ssl, 1 - options.no_gpg,
-                  options.allow_config_actions, options.allow_remote_commands,
-                  options.up2date, pubname, DEFAULT_APACHE_PUB_DIRECTORY)
+                  options.salt, orgCACert, isRpmYN, 1 - options.no_ssl,
+                  1 - options.no_gpg, options.allow_config_actions,
+                  options.allow_remote_commands, options.up2date, pubname,
+                  DEFAULT_APACHE_PUB_DIRECTORY)
 
     writeYN = 1
 
