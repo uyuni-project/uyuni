@@ -3,7 +3,11 @@
 
 [SUSE-Manager-Bootstrap]
 type=rpm-md
+{% if "." in grains['osrelease'] %}
 baseurl=https://{{ salt['pillar.get']('master') }}/pub/repositories/sle/{{ grains['osrelease'].replace('.', '/') }}/bootstrap/
+{% else %}
+baseurl=https://{{ salt['pillar.get']('master') }}/pub/repositories/sle/{{ grains['osrelease'] }}/0/bootstrap/
+{% endif %}
 enabled=1
 autorefresh=1
 keeppackages=0
