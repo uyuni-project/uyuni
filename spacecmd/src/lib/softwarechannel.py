@@ -915,7 +915,7 @@ def do_softwarechannel_addpackages(self, args):
     # get the package IDs from the names
     package_ids = []
     for package in package_names:
-        package_ids.append(self.get_package_id(package))
+        package_ids += self.get_package_id(package)
 
     if not len(package_ids):
         logging.warning('No packages to add')
@@ -994,7 +994,7 @@ def do_softwarechannel_removeerrata(self, args):
     print
     print 'Packages'
     print '--------'
-    print '\n'.join(sorted([ self.get_package_name(p) for p in package_ids ]))
+    print '\n'.join(sorted([ self.get_package_name(p) for p in package_ids if self.get_package_name(p) ]))
 
     print
     print 'Total Errata:   %s' % str(len(errata)).rjust(3)
@@ -1061,7 +1061,7 @@ def do_softwarechannel_removepackages(self, args):
     # get the package IDs from the names
     package_ids = []
     for package in package_names:
-        package_ids.append(self.get_package_id(package))
+        package_ids += self.get_package_id(package)
 
     if not len(package_ids):
         logging.warning('No packages to remove')
@@ -1297,7 +1297,7 @@ def do_softwarechannel_adderrata(self, args):
         print
         print 'Packages'
         print '--------'
-        print '\n'.join(sorted([ self.get_package_name(p) for p in package_ids ]))
+        print '\n'.join(sorted([ self.get_package_name(p) for p in package_ids if self.get_package_name(p) ]))
 
         print
     print 'Total Errata:   %s' % str(len(errata)).rjust(3)

@@ -560,11 +560,23 @@ def generate_package_cache(self, force=False):
             longname = build_package_names(p)
 
             if not longname in self.all_packages:
-                self.all_packages[longname] = p.get('id')
+                self.all_packages[longname] = [p.get('id')]
+            else:
+                self.all_packages[longname].append(p.get('id'))
 
     # keep a reverse dictionary so we can lookup package names by ID
-    self.all_packages_by_id = \
-        dict( (v, k) for k, v in self.all_packages.iteritems() )
+    # We assume that package IDs are unique, so one ID is only
+    # refering one package.
+    self.all_packages_by_id = {}
+    for (k, v) in self.all_packages.iteritems():
+        for i in v:
+            # Alert in case of non-unique ID is detected.
+            if i in self.all_packages_by_id:
+                logging.warning(
+                    'Non-unique package id "%s" is detected. Taking "%s" ' \
+                    'instead of "%s"' % (i, k, self.all_packages_by_id[i]))
+
+            self.all_packages_by_id[i] = k
 
     self.package_cache_expire = \
         datetime.now() + timedelta(seconds=self.PACKAGE_CACHE_TTL)
@@ -605,7 +617,11 @@ def get_package_id(self, name):
     self.generate_package_cache()
 
     try:
-        return self.all_packages[name]
+        return set(self.all_packages[name])
+    except TypeError:
+        # FIX: If we're using an old style cache (package_name -> integer_id)
+        # then we insert the integer id into a set.
+        return set([self.all_packages[name]])
     except KeyError:
         return
 
