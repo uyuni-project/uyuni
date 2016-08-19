@@ -17,7 +17,7 @@ class BootstrapMinions extends React.Component {
             user: "",
             password: "",
             activationKey: "",
-            ignoreHostKeys: false,
+            ignoreHostKeys: true,
             messages: []
         };
         ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "activationKeyChanged", "clearFields"]
@@ -101,7 +101,7 @@ class BootstrapMinions extends React.Component {
           user: "",
           password: "",
           activationKey: "",
-          ignoreHostKeys: false,
+          ignoreHostKeys: true,
           messages: []
       });
       return;
