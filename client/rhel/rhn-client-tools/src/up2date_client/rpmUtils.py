@@ -138,7 +138,10 @@ def getInstalledPackageList(msgCallback = None, progressCallback = None,
         if not (is_utf8(sstr(h['name'])) and is_utf8(sstr(h['version']))
                 and is_utf8(sstr(h['release']))):
             log = up2dateLog.initLog()
-            log.log_me('Package with invalid character set found: skipping')
+            log.log_me("Package with invalid character set found. Skipping: '%s-%s-%s'" %
+                    (h['name'].decode('UTF-8', errors='replace'),
+                     h['version'].decode('UTF-8', errors='replace'),
+                     h['release'].decode('UTF-8', errors='replace'))
             continue
         package = {
             'name': sstr(h['name']),
