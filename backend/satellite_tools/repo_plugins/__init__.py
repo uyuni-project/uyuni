@@ -13,11 +13,13 @@
 # in this software or its documentation.
 #
 
+import re
+import rpm
 from spacewalk.common import rhn_pkg
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnPackageUpload
-import re
-import rpm
+
+
 class ContentPackage:
 
     def __init__(self):
@@ -36,7 +38,6 @@ class ContentPackage:
         self.arch = None
 
         self.path = None
-        self.file = None
 
         self.a_pkg = None
 
@@ -78,14 +79,13 @@ class ContentPackage:
     def load_checksum_from_header(self):
         if self.path is None:
             raise rhnFault(50, "Unable to load package", explain=0)
-        self.file = open(self.path, 'rb')
-        self.a_pkg = rhn_pkg.package_from_filename(self.path, stream=self.file)
+        self.a_pkg = rhn_pkg.package_from_filename(self.path)
         self.a_pkg.read_header()
         if self.checksum_type:
             self.a_pkg.set_checksum_type(self.checksum_type)
         if not self.a_pkg.checksum:
             self.a_pkg.payload_checksum()
-        self.file.close()
+        self.a_pkg.input_stream.close()
         if self.checksum != self.a_pkg.checksum:
             raise rhnFault(50, "checksums did not match %s vs %s" % (self.checksum, self.a_pkg.checksum), explain=0)
 

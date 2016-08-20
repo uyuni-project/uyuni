@@ -18,14 +18,15 @@
 import os
 import sys
 import time
-import connection
 
 # rhn imports
+from rhn import rpclib
+sys.path.append("/usr/share/rhn")
+from up2date_client import config
+
 from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import rhnLib
 from spacewalk.common.rhnConfig import CFG
-sys.path.append("/usr/share/rhn")
-from up2date_client import config
 
 # local imports
 from syncLib import log, log2, RhnSyncException
@@ -33,6 +34,7 @@ from syncLib import log, log2, RhnSyncException
 from rhn import rpclib
 
 from spacewalk.common.suseLib import get_proxy
+import connection
 
 class BaseWireSource:
 

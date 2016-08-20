@@ -15,8 +15,8 @@
 
 import os.path
 from shutil import rmtree
-import requests
 import time
+import requests
 from spacewalk.common import fileutils
 from spacewalk.satellite_tools.repo_plugins import ContentPackage
 from spacewalk.common.rhnConfig import CFG, initCFG
@@ -145,7 +145,7 @@ class ContentSource(object):
         self.proxy_pass = CFG.http_proxy_password
 
         self.repo = DebRepo(url, CACHE_DIR + name)
-        
+
         self.num_packages = 0
         self.num_excluded = 0
 
@@ -227,4 +227,8 @@ class ContentSource(object):
     @staticmethod
     def get_file(path, local_base=None):
         # Called from import_kickstarts, not working for deb repo
+        if local_base:
+            print("Unable to download path %s from deb repo into %s." % (path, local_base))
+        else:
+            print("Unable to download path %s from deb repo." % path)
         return None

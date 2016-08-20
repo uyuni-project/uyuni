@@ -15,6 +15,8 @@
 
 import sys
 
+import iss_ui
+
 
 class ActionDeps:
 
@@ -142,7 +144,6 @@ class ActionDeps:
         return self.step_hierarchy, self.action_dict
 
 if __name__ == "__main__":
-    import iss_ui
     a = iss_ui.UI()
     b = ActionDeps(a)
     print(b.get_actions())
