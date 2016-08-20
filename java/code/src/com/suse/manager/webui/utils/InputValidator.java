@@ -41,9 +41,8 @@ public enum InputValidator {
     public List<String> validateBootstrapInput(JSONBootstrapHosts input) {
         List<String> errors = new LinkedList<>();
 
-        if (StringUtils.isEmpty(input.getHost())) {
-            errors.add("Host is required.");
-        }
+        errors.addAll(validateBootstrapSSHManagedInput(input));
+
         if (StringUtils.isEmpty(input.getUser())) {
             errors.add("User is required.");
         }
@@ -59,6 +58,22 @@ public enum InputValidator {
         }
         if (port.filter(p -> p < 1 || p > 65535).isPresent()) {
             errors.add("Given port is outside of the valid range (1-65535).");
+        }
+
+        return errors;
+    }
+
+    /**
+     * Validate input as sent from the minion bootstrapping UI for salt-ssh minions.
+     *
+     * @param input the data as entered in the form
+     * @return list of validation error messages
+     */
+    public List<String> validateBootstrapSSHManagedInput(JSONBootstrapHosts input) {
+        List<String> errors = new LinkedList<>();
+
+        if (StringUtils.isEmpty(input.getHost())) {
+            errors.add("Host is required.");
         }
 
         return errors;
