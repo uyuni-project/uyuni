@@ -17,29 +17,26 @@
 import subprocess
 import sys
 import os
+from os import mkdir
 from shutil import rmtree
+import errno
 import re
 import gzip
 import xml.etree.ElementTree as etree
 import urlparse
-from os import mkdir
 import gpgme
 import time
-import errno
 
 import urlgrabber
 from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
 from rpmUtils.transaction import initReadOnlyTransaction
 import yum
-from spacewalk.common import fileutils
 from yum.Errors import RepoMDError
 from yum.config import ConfigParser
 from yum.packageSack import ListPackageSack
 from yum.update_md import UpdateMetadata, UpdateNoticeException, UpdateNotice
 from yum.yumRepo import YumRepository
 from yum.yumRepo import Errors as YumErrors
-from urlgrabber.grabber import URLGrabError
-
 try:
     from yum.misc import cElementTree_iterparse as iterparse
 except ImportError:
@@ -50,6 +47,9 @@ except ImportError:
         import cElementTree
     iterparse = cElementTree.iterparse
 from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException
+from urlgrabber.grabber import URLGrabError
+
+from spacewalk.common import fileutils
 from spacewalk.satellite_tools.repo_plugins import ContentPackage
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy
@@ -143,7 +143,6 @@ class ContentSource:
         else:
             repo = yum.yumRepo.YumRepository(name)
             repo.populate(self.configparser, name, self.yumbase.conf)
-
         self.repo = repo
         self.sack = None
 

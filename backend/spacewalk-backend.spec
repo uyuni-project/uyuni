@@ -40,7 +40,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.32
+Version: 2.6.37
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -829,6 +829,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
 %attr(755,root,root) %{_bindir}/rhn-charsets
+%attr(755,root,root) %{_bindir}/rhn-satellite-activate
 %attr(755,root,root) %{_bindir}/rhn-schema-version
 %attr(755,root,root) %{_bindir}/rhn-ssl-dbstore
 %attr(755,root,root) %{_bindir}/satellite-sync
@@ -856,6 +857,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/satComputePkgHeaders.py*
 %{pythonrhnroot}/satellite_tools/syncCache.py*
 %{pythonrhnroot}/satellite_tools/sync_handlers.py*
+%{pythonrhnroot}/satellite_tools/rhn_satellite_activate.py*
 %{pythonrhnroot}/satellite_tools/rhn_ssl_dbstore.py*
 %{pythonrhnroot}/satellite_tools/xmlWireSource.py*
 %{pythonrhnroot}/satellite_tools/updatePackages.py*
@@ -878,6 +880,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
 %{_mandir}/man8/rhn-satellite-exporter.8*
 %{_mandir}/man8/rhn-charsets.8*
+%{_mandir}/man8/rhn-satellite-activate.8*
 %{_mandir}/man8/rhn-schema-version.8*
 %{_mandir}/man8/rhn-ssl-dbstore.8*
 %{_mandir}/man8/rhn-db-stats.8*
@@ -920,6 +923,63 @@ rm -f %{rhnconf}/rhnSecret.py*
 %endif
 
 %changelog
+* Thu Aug 18 2016 Jan Dobes 2.6.37-1
+- fixing import
+- apply formatting changes on file in original location and drop it from cdn
+  dir
+- fixing pylint: too-many-nested-blocks, no need for else
+- adding support for release channel mapping
+
+* Wed Aug 17 2016 Jan Dobes <jdobes@redhat.com> 2.6.36-1
+- fixing pylint: wrong-import-position, wrong-import-order
+- fixing pylint: wrong-import-position
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-position
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-order,ungrouped-imports
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-position
+- fixing pylint: consider-using-enumerate
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-position
+- fixing pylint: wrong-import-position
+- fixing pylint: wrong-import-order
+- fixing pylint: No value for argument 'tb' in constructor call (no-value-for-
+  parameter)
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-order
+- fixed SyntaxError " b'' " for RHEL5
+
+* Tue Aug 16 2016 Jan Dobes 2.6.35-1
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-order
+- fixing pylint: simplifiable-if-statement
+- fixing pylint: unneeded-not
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-order
+- fixing pylint: wrong-import-position
+- sys.exitfunc is deprecated since Python 2.4
+- more pylint and pep8 fixes
+
+* Tue Aug 16 2016 Jan Dobes 2.6.34-1
+- fixing pylint issues
+- drop disconnected activation on spacewalk, there is not much to insert and
+  not possible to update counts
+- call signature check directly instead of calling external (also dropped) perl
+  script
+- include files in packages
+- bringing back tool for activation
+
+* Mon Aug 15 2016 Jan Dobes 2.6.33-1
+- do not change package_from_filename header
+
 * Fri Aug 12 2016 Jan Dobes 2.6.32-1
 - set header_end to value where we stop reading
 - split maximally once or we lost part of the release sometimes

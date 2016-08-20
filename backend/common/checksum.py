@@ -15,19 +15,19 @@
 
 import os
 
-hashlib_has_usedforsecurity = False
-
 try:
     import hashlib
     import inspect
-    if 'usedforsecurity' in inspect.getargspec(hashlib.new)[0]:
-        hashlib_has_usedforsecurity = True
+
+    hashlib_has_usedforsecurity = 'usedforsecurity' in inspect.getargspec(hashlib.new)[0]
 except ImportError:
     import md5
     import sha
     # pylint: disable=F0401
     # pylint can't find Crypto.Hash here, but it is present on older systems.
     from Crypto.Hash import SHA256 as sha256
+
+    hashlib_has_usedforsecurity = False
 
     class hashlib(object):
 
