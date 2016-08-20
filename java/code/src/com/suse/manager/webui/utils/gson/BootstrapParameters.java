@@ -17,8 +17,6 @@ package com.suse.manager.webui.utils.gson;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Optional.of;
-
 /**
  * Class representation of the data needed for bootstrapping hosts.
  */
@@ -60,7 +58,8 @@ public class BootstrapParameters {
      */
     public BootstrapParameters(JSONBootstrapHosts json) {
         this(json.getHost(), json.getPortInteger(), json.getUser(),
-                of(json.getPassword()), json.getActivationKeys(), json.getIgnoreHostKeys());
+                json.maybeGetPassword(), json.getActivationKeys(),
+                json.getIgnoreHostKeys());
     }
 
     /**
