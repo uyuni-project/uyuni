@@ -224,7 +224,7 @@ public class MinionsAPI {
         try {
             // Generate (temporary) roster file based on data from the UI
             SaltRoster saltRoster = new SaltRoster();
-            saltRoster.addHost(input.getHost(), input.getUser(), input.getPassword(),
+            saltRoster.addHost(input.getHost(), input.getUser(), Optional.of(input.getPassword()),
                     input.getPortInteger());
             Path rosterFilePath = saltRoster.persistInTempFile();
             String roster = rosterFilePath.toString();
