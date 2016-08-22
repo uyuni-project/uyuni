@@ -154,6 +154,7 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
         }
         assertEquals(3, minion.getPackages().size());
 
+        assertEquals(1, minion.getInstalledProducts().size());
         minion.getInstalledProducts().stream().forEach(product -> {
             assertEquals("res", product.getName());
             assertEquals("7", product.getVersion());
@@ -161,7 +162,6 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
             // in the case of RES the product arch is taken from the server arch
             assertEquals("i386", product.getArch().getName());
         });
-        assertEquals(1, minion.getInstalledProducts().size());
 
         // Verify the action status
         assertTrue(action.getServerActions().stream()
