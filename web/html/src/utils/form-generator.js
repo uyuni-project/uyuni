@@ -1,12 +1,13 @@
 "use strict";
 
 const React = require("react");
+var Button = require("../components/buttons").Button;
 
-const basicInputTypes = ["text", "password", "email", "url", "date", "time"];
+const basicInputTypes = ["text", "email", "url", "date", "time"];
 
 var globalScope = "system";
     
-function generateForm(values, layout, formula_name, global_scope) {
+function generateForm(layout, group_data, system_data, formula_name, global_scope) {
 	if (layout == undefined || layout == null) return;
 	layout = preprocessLayout(layout);
 	//console.log(JSON.stringify(layout));
@@ -14,7 +15,7 @@ function generateForm(values, layout, formula_name, global_scope) {
 	globalScope = global_scope;
 
 	var form = [];
-	values = generateValues(values, layout);
+	var values = generateValues(layout, group_data, system_data);
 	//console.log(JSON.stringify(values));
 
 	if ((Object.keys(layout).length == 1) && (formula_name in layout) && (layout[formula_name].$type == "group" || layout[formula_name].$type == "hidden-group")) {
@@ -31,24 +32,29 @@ function generateForm(values, layout, formula_name, global_scope) {
 	return form;
 }
 
-function generateValues(values, layout) {
+function generateValues(layout, group_data, system_data, scope="system") {
 	var result = {};
-	/*
-	if (layout.$type == "edit-group") {
-		for (var key in values) {
-			
-	}*/
 	
 	for (var key in layout) {
 		if (key.startsWith("$")) continue;
-
+		
+		var value = null
 		var element = layout[key];
+		var element_scope = element.$scope || scope;
+		
 		if (element.$type == "group" || element.$type == "hidden-group")
-			result[key] = generateValues(values[key] || {}, element);
+			value = generateValues(element, group_data[key] || {}, system_data[key] || {}, element_scope);
 		/*else if (element.$type == "edit-group")
-			result[key] = generateValues(values[key] || element.$default || {}, element);*/
-		else
-			result[key] = (values[key] || element.$default || "");
+			value = generateValues(values[key] || element.$default || {}, element);*/
+		else if (element_scope == "system")
+			value = (system_data[key] || group_data[key] || element.$default || null);
+		else if (element_scope == "group")
+			value = (group_data[key] || element.$default || null);
+		else if (element_scope == "readonly")
+			value = (element.$default || null);
+		
+		if (value != null)
+			result[key] = value
 	}
 	return result;
 }
@@ -62,6 +68,19 @@ function generateFormItem(element, value, parents) {
 		return wrapGroupWithLabel(element.$name,
 			<div className="col-lg-6">
 				<input type={element.$type} name={element.$name} id={id} className="form-control" disabled={isDisabled} defaultValue={value} />
+			</div>
+		);
+	else if (element.$type == "password")
+		return wrapGroupWithLabel(element.$name,
+			<div className="col-lg-6">
+				<div className="input-group">
+					<input type={element.$type} name={element.$name} id={id} className="form-control" disabled={isDisabled} defaultValue={value} />
+					<span className="input-group-btn">
+						<button className="btn btn-default" onClick={toggle_view_password}>
+							<i className="fa fa-eye" />
+						</button>
+					</span>
+				</div>
 			</div>
 		);
 	else if (element.$type == "datetime")
@@ -126,6 +145,21 @@ function generateFormItem(element, value, parents) {
 				</div>
 			</div>
 		);
+}
+
+function toggle_view_password(event) {
+	event.preventDefault();
+	
+	var target = $(event.target);
+	if (target.attr("class").startsWith("fa"))
+		target = target.parent();
+	var pwd_input = document.getElementById(target.parent().siblings("input").attr("id"));
+	if (pwd_input.type == "password")
+		pwd_input.type = "text";
+	else
+		pwd_input.type = "password";
+	target.children("i.fa").toggleClass("fa-eye");
+	target.children("i.fa").toggleClass("fa-eye-slash");
 }
 
 function preprocessLayout(layout, scope="system") {
