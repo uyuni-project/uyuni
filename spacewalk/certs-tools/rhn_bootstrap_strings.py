@@ -242,33 +242,28 @@ def getHeader(productName, activation_keys, org_gpg_key,
     if path_list[0] and path_list[0] != '':
         org_gpg_key = path_list[1]
 
-    if not activation_keys and not saltEnabled:
-        exit_call = "exit 1"
-    else:
-        exit_call = " "
+    exit_call = " " if activation_keys or saltEnabled else "exit 1"
 
-    return _header.format(  productName=productName,
-                            apachePubDirectory=apachePubDirectory,
-                            exit_call=exit_call,
-                            activation_keys=activation_keys,
-                            org_gpg_key=org_gpg_key,
-                            overrides=overrides,
-                            hostname=hostname,
-                            orgCACert=orgCACert,
-                            isRpmYN=isRpmYN,
-                            using_ssl=using_ssl,
-                            using_gpg=using_gpg,
-                            allow_config_actions=allow_config_actions,
-                            allow_remote_commands=allow_remote_commands,
-                            up2dateYN=up2dateYN,
-                            pubname=pubname)
-
+    return _header.format(productName=productName,
+                          apachePubDirectory=apachePubDirectory,
+                          exit_call=exit_call,
+                          activation_keys=activation_keys,
+                          org_gpg_key=org_gpg_key,
+                          overrides=overrides,
+                          hostname=hostname,
+                          orgCACert=orgCACert,
+                          isRpmYN=isRpmYN,
+                          using_ssl=using_ssl,
+                          using_gpg=using_gpg,
+                          allow_config_actions=allow_config_actions,
+                          allow_remote_commands=allow_remote_commands,
+                          up2dateYN=up2dateYN,
+                          pubname=pubname)
 
 def getRegistrationStackSh(saltEnabled):
-    if saltEnabled:
-        PKG_NAME = "salt salt-minion"
-    else:
-        PKG_NAME = "spacewalk-check spacewalk-client-setup spacewalk-client-tools zypp-plugin-spacewalk"
+    PKG_NAME = \
+    ['salt', 'salt-minion'] if saltEnabled else \
+    ['spacewalk-check', 'spacewalk-client-setup', 'spacewalk-client-tools', 'zypp-plugin-spacewalk']
 
     return """\
 if [ "$INSTALLER" == zypper ]; then
@@ -438,7 +433,7 @@ EOF
   fi
 fi
 
-""".format(PKG_NAME=PKG_NAME)
+""".format(PKG_NAME=' '.join(PKG_NAME))
 
 def getConfigFilesSh():
     return """\
@@ -853,9 +848,9 @@ else
     fi
 fi
 echo "-bootstrap complete-"
-""".format( saltEnabled=saltEnabled,
-            PKG_NAME_ZYPPER_SYNC=PKG_NAME_ZYPPER_SYNC,
-            PKG_NAME_YUM_SYNC=PKG_NAME_YUM_SYNC,
-            PKG_NAME_ZYPPER=PKG_NAME_ZYPPER,
-            PKG_NAME_YUM=PKG_NAME_YUM,
-            productName=productName)
+""".format(saltEnabled=saltEnabled,
+           PKG_NAME_ZYPPER_SYNC=PKG_NAME_ZYPPER_SYNC,
+           PKG_NAME_YUM_SYNC=PKG_NAME_YUM_SYNC,
+           PKG_NAME_ZYPPER=PKG_NAME_ZYPPER,
+           PKG_NAME_YUM=PKG_NAME_YUM,
+           productName=productName)
