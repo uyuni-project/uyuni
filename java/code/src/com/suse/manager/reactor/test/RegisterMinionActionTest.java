@@ -320,7 +320,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testRegisterRHELMinionWithRESActivationKey() throws Exception {
-        Channel resChannel = RhelUtilsTest.createResChannel(user);
+        Channel resChannel = RhelUtilsTest.createResChannel(user, "7", "Maipo");
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);
@@ -364,7 +364,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testRegisterRESMinionWithoutActivationKey() throws Exception {
-        RhelUtilsTest.createResChannel(user);
+        Channel resChannel = RhelUtilsTest.createResChannel(user, "7", "Maipo");
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
                     allowing(saltServiceMock).getMasterHostname(MINION_ID);

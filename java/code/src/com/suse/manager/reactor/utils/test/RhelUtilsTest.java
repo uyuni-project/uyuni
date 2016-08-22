@@ -18,6 +18,10 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
@@ -32,6 +36,7 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Consumer;
 
 /**
@@ -122,7 +127,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
     public void testDetectRhelProductRES() throws Exception {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_res.json",
                 minionServer -> {
-                    Channel resChannel = createResChannel(user);
+                    Channel resChannel = createResChannel(user, "7", "Maipo");
                     minionServer.addChannel(resChannel);
                 },
                 prod -> {
@@ -156,9 +161,19 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         });
     }
 
-    public static Channel createResChannel(User user) throws Exception {
+    public static Channel createResChannel(User user, String version, String release) throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         c.setOrg(user.getOrg());
+
+        SUSEProduct suseProduct = new SUSEProduct();
+        suseProduct.setName("res");
+        suseProduct.setVersion(version);
+        suseProduct.setRelease(release);
+        suseProduct.setFriendlyName("RES " + version);
+        suseProduct.setProductId(new Random().nextInt(999999));
+        PackageArch arch = PackageFactory.lookupPackageArchByLabel("i686");
+        suseProduct.setArch(arch);
+        SUSEProductFactory.save(suseProduct);
 
         ProductName pn = ChannelFactoryTest.lookupOrCreateProductName("RES");
         c.setProductName(pn);
