@@ -296,8 +296,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     ApplyStatesEventMessage.CERTIFICATE,
                     ApplyStatesEventMessage.CHANNELS,
                     ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS,
-                    ApplyStatesEventMessage.SETUP,
-                    ApplyStatesEventMessage.PACKAGES
+                    ApplyStatesEventMessage.PACKAGES,
+                    ApplyStatesEventMessage.SALT_MINION_SERVICE
             ));
         }
         catch (Throwable t) {
