@@ -247,7 +247,7 @@ Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
           found = true
           break
         end
-	visit current_url
+        visit current_url
       end
     end
   rescue Timeout::Error
