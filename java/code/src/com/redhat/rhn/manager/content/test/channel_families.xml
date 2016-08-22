@@ -4,6 +4,7 @@
 	<family default_nodecount="0" label="RES" name="SUSE Linux Enterprise RedHat Expanded Support"/>
 	<family default_nodecount="0" label="SMP" name="SUSE Manager Proxy"/>
 	<family default_nodecount="0" label="SUSE_CLOUD" name="SUSE Cloud"/>
+	<family default_nodecount="0" label="SLES12-GA-LTSS-Z" name="SUSE Linux Enterprise Server 12 LTSS (Z-Series)"/>
 	<family default_nodecount="0" label="SMS-Z" name="SUSE Manager Server System Z"/>
 	<family default_nodecount="0" label="DSMP" name="Data Synchronizer Mobility Pack"/>
 	<family default_nodecount="0" label="MONO" name="SUSE Linux Enterprise Mono Extension"/>
@@ -29,6 +30,7 @@
 	<family default_nodecount="0" label="AiO" name="SUSE Linux Enterprise Server for SAP"/>
 	<family default_nodecount="0" label="SLES-PPC" name="SUSE Linux Enterprise Server (PPC)"/>
 	<family default_nodecount="0" label="10040" name="SUSE Linux Enterprise Point of Service"/>
+	<family default_nodecount="0" label="SLES12-GA-LTSS-X86" name="SUSE Linux Enterprise Server 12 LTSS (x86)"/>
 	<family default_nodecount="-1" label="SLESMT" name="SUSE Linux Enterprise Subscription Management Tool"/>
 	<family default_nodecount="0" label="NAM-AGA" name="Novell Access Manager"/>
 	<family default_nodecount="0" label="STUDIOONSITE" name="SUSE Studio Onsite"/>
