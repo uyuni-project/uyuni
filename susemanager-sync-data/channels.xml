@@ -353,21 +353,6 @@
 			<product_id name="suse-sle12-cloud-compute" version="5">1317</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="7260" is_signed="Y" label="sle-12-ga-desktop-amd-driver-x86_64" name="SLE-12-GA-Desktop-AMD-Driver for x86_64" optional="N" parent="sled12-pool-x86_64" product_name="SLED" product_version="12" source_url="http://www2.ati.com/suse/sle12/" summary="SUSE Linux Enterprise Desktop 12 x86_64" update_tag="">
-		<products>
-			<product_id name="SLED" version="12">1118</product_id>
-		</products>
-	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="SLE-WE" is_signed="Y" label="sle-12-ga-desktop-amd-driver-x86_64-we" name="SLE-12-GA-Desktop-AMD-Driver for x86_64 WE" optional="N" parent="sles12-pool-x86_64" product_name="sle-we" product_version="12" source_url="http://www2.ati.com/suse/sle12/" summary="SUSE Linux Enterprise Desktop 12 x86_64" update_tag="">
-		<products>
-			<product_id name="sle-we" version="12">1222</product_id>
-		</products>
-	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="SLE-WE" is_signed="Y" label="sle-12-ga-desktop-amd-driver-x86_64-we-sap" name="SLE-12-GA-Desktop-AMD-Driver for x86_64 WE-SAP" optional="N" parent="sle12-sap-pool-x86_64" product_name="sle-we" product_version="12" source_url="http://www2.ati.com/suse/sle12/" summary="SUSE Linux Enterprise Desktop 12 x86_64" update_tag="">
-		<products>
-			<product_id name="sle-we" version="12">1222</product_id>
-		</products>
-	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="7260" is_signed="Y" label="sle-12-ga-desktop-nvidia-driver-x86_64" name="SLE-12-GA-Desktop-NVIDIA-Driver for x86_64" optional="N" parent="sled12-pool-x86_64" product_name="SLED" product_version="12" source_url="http://download.nvidia.com/novell/sle12/" summary="SUSE Linux Enterprise Desktop 12 x86_64" update_tag="">
 		<products>
 			<product_id name="SLED" version="12">1118</product_id>
