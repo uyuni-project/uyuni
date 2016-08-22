@@ -41,7 +41,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -116,45 +115,6 @@ public class FormulaFactory extends HibernateFactory {
     	writer.write(GSON.toJson(formData));
     	writer.close();
     }
-
-    public static void deleteServerFormulaData(Long serverId, String formulaName) throws IOException {
-    	try {
-	    	File formula_file = new File(FORMULA_PILLAR_DIRECTORY + getMinionId(serverId) + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
-	    	if (formula_file.exists()) {
-	    		formula_file.delete();
-	    	}
-    	} catch (NotSupportedException e) {
-    		//TODO: log error message?
-    	}
-    }
-
-    //OLD
-    /*
-    public static Optional<Formula> getFormulaByServerId(long orgId, Long serverId) {
-    	File formula_file = new File(FORMULA_PILLAR_DIRECTORY + ServerFactory.lookupById(serverId).getName() + "." + PILLAR_FILE_EXTENSION);
-    	if (!formula_file.exists() || !formula_file.isFile())
-    		return Optional.empty();
-    	
-    	try {
-	    	FileInputStream fis = new FileInputStream(formula_file);
-	        byte[] formula_file_data = new byte[(int) formula_file.length()];
-	        fis.read(formula_file_data);
-	        fis.close();
-	        String file_content = new String(formula_file_data, "UTF-8");
-	        Map<String, Object> map = (Map<String, Object>) GSON.fromJson(file_content, Map.class);
-	        Map<String, Object> content = (Map<String, Object>) map.get("formula");
-	        
-	        Formula formula = new Formula();
-	    	formula.setOrg(OrgFactory.lookupById(orgId));
-	    	formula.setServerId(serverId);
-	        formula.setFormulaName((String) content.remove("form_id"));
-	    	formula.setContent(GSON.toJson(content));
-	    	return Optional.of(formula);
-    	}
-    	catch (IOException e) {
-    		return Optional.empty();
-    	}
-    }*/
     
     public static List<String> getFormulasByGroupId(Long groupId) {
     	LinkedList<String> formulas = new LinkedList<>();
@@ -195,14 +155,8 @@ public class FormulaFactory extends HibernateFactory {
     	try {
 			if (layout_file.exists())
 				return Optional.of((Map<String, Object>) yaml.load(new FileInputStream(layout_file)));
-			else {
-		    	layout_file = new File(FORMULA_DIRECTORY + name + "/form.json");
-		    	
-		    	if (layout_file.exists())
-		        	return Optional.of((Map<String, Object>) GSON.fromJson(new BufferedReader(new FileReader(layout_file)), Map.class));
-		    	else
-		    		return Optional.empty();
-			}
+			else
+		    	return Optional.empty();
     	} catch (FileNotFoundException e) {
     		return Optional.empty();
     	}
@@ -218,6 +172,13 @@ public class FormulaFactory extends HibernateFactory {
     	} catch (FileNotFoundException | NotSupportedException e) {// TODO: maybe throw error if not supported? (means not a salt minion, @getMinionId)
     		return Optional.empty();
     	}
+    }
+    
+    public static Optional<Map<String, Object>> getGroupFormulaValuesByNameAndServerId(String name, Long serverId) {
+    	for (ManagedServerGroup group : ServerFactory.lookupById(serverId).getManagedGroups())
+    		if (getFormulasByGroupId(group.getId()).contains(name))
+    			return getFormulaValuesByNameAndGroupId(name, group.getId());
+    	return Optional.empty();
     }
     
     public static Optional<Map<String, Object>> getFormulaValuesByNameAndGroupId(String name, Long groupId) {
@@ -245,21 +206,41 @@ public class FormulaFactory extends HibernateFactory {
     	else server_formulas = (Map<String, List<String>>) GSON.fromJson(new BufferedReader(new FileReader(server_formulas_file)), Map.class);
     	
     	// Remove formula data of servers
-    	List<String> deletedFormulas = new LinkedList<>(server_formulas.get(groupId.toString()));
+    	List<String> deletedFormulas = new LinkedList<>(server_formulas.getOrDefault(groupId.toString(), new LinkedList<>()));
     	deletedFormulas.removeAll(selectedFormulas);
     	for (Server server : ServerGroupFactory.lookupByIdAndOrg(groupId, org).getServers()) {
     		Long serverId = server.getId();
     		for (String deletedFormula : deletedFormulas)
     			deleteServerFormulaData(serverId, deletedFormula);
     	}
+		for (String deletedFormula : deletedFormulas)
+			deleteGroupFormulaData(groupId, deletedFormula);
     	
 		// Save selected Formulas
-		server_formulas.put(groupId.toString(), selectedFormulas);
+		server_formulas.put(groupId.toString(), orderFormulas(selectedFormulas));
 		
 		// Write server_formulas file
     	BufferedWriter writer = new BufferedWriter(new FileWriter(server_formulas_file));
     	writer.write(GSON.toJson(server_formulas));
     	writer.close();
+    }
+
+    public static void deleteServerFormulaData(Long serverId, String formulaName) throws IOException {
+    	try {
+	    	File formula_file = new File(FORMULA_PILLAR_DIRECTORY + getMinionId(serverId) + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
+	    	if (formula_file.exists()) {
+	    		formula_file.delete();
+	    	}
+    	} catch (NotSupportedException e) {
+    		//TODO: log error message?
+    	}
+    }
+
+    public static void deleteGroupFormulaData(Long groupId, String formulaName) throws IOException {
+    	File formula_file = new File(FORMULA_GROUP_PILLAR_DIRECTORY + groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
+    	if (formula_file.exists()) {
+    		formula_file.delete();
+    	}
     }
     
     public static List<String> orderFormulas(List<String> formulasToOrder) {

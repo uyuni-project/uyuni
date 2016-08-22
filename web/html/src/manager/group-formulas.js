@@ -6,6 +6,7 @@ var Messages = require("../components/messages").Messages
 var Button = require("../components/buttons").Button;
 const Network = require("../utils/network");
 
+var toTitle = require("../utils/form-generator").toTitle;
 
 var GroupFormulas = React.createClass({
     
@@ -157,7 +158,7 @@ var GroupFormulas = React.createClass({
 function generateFormulaNavBar(formulaList) {
 	var tabs = [<li role="presentation" className="active"><a href={ "/rhn/manager/groups/details/formulas?sgid=" + groupId}>Formulas</a></li>];
 	for (var i in formulaList)
-		tabs.push(<li key={"nav-" + formulaList[i]} role="presentation"><a href={ "/rhn/manager/groups/details/formula/" + i + "?sgid=" + groupId}>{formulaList[i]}</a></li>);
+		tabs.push(<li key={"nav-" + formulaList[i]} role="presentation"><a href={ "/rhn/manager/groups/details/formula/" + i + "?sgid=" + groupId}>{toTitle(formulaList[i])}</a></li>);
 	return (
 		<ul className="nav nav-tabs">
 			{tabs}
