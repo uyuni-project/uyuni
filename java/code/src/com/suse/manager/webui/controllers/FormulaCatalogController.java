@@ -70,19 +70,7 @@ public class FormulaCatalogController {
      */
     public static String data(Request request, Response response, User user) {
         response.type("application/json");
-        return GSON.toJson(listFormulas());
-    }
-    
-    public static List<String> listFormulas() {
-    	File directory = new File(FORMULA_DIRECTORY);
-        File[] files = directory.listFiles();
-        List<String> formulasList = new LinkedList<>();
-        
-        // TODO: Check if directory is a real formula (contains form.yml/form.json, init.sls and maybe even metadata.yml)?
-        for (File f : files)
-        	if (f.isDirectory())
-        		formulasList.add(f.getName());
-        return FormulaFactory.orderFormulas(formulasList);
+        return GSON.toJson(FormulaFactory.listFormulas());
     }
     
     /**

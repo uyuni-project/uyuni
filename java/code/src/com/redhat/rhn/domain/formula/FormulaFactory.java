@@ -69,28 +69,17 @@ public class FormulaFactory extends HibernateFactory {
     private FormulaFactory() {
     }
     
-    // Code for using hibernate and a database to save formula data
-//    /**
-//     * Save a {@link Formula}.
-//     * @param formula the formula to save
-//     */
-//    public static void save(Formula formula) {
-//        singleton.saveObject(formula);
-//    }
-//    
-//    /**
-//     * Get a {@link Formula} object from the db by serverId
-//     * @param serverId the serverId
-//     * @param orgId the org id
-//     * @return an {@link Optional} containing a {@link Formula} object
-//     */
-//    public static Optional<Formula> getFormulaByServerId(long orgId, Long serverId) {
-//        Formula formula = (Formula) getSession().createCriteria(Formula.class)
-//                .add(Restrictions.eq("serverId", serverId))
-//                .add(Restrictions.eq("org.id", orgId))
-//                .uniqueResult();
-//        return Optional.ofNullable(formula);
-//    }
+    public static List<String> listFormulas() {
+    	File directory = new File(FORMULA_DIRECTORY);
+        File[] files = directory.listFiles();
+        List<String> formulasList = new LinkedList<>();
+        
+        // TODO: Check if directory is a real formula (contains form.yml/form.json, init.sls and maybe even metadata.yml)?
+        for (File f : files)
+        	if (f.isDirectory())
+        		formulasList.add(f.getName());
+        return FormulaFactory.orderFormulas(formulasList);
+    }
 
     public static void saveGroupFormulaData(Map<String, Object> formData, Long groupId, String formulaName) throws IOException {
     	File formula_file = new File(FORMULA_GROUP_PILLAR_DIRECTORY + groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);

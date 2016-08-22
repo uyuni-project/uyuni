@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.NotSupportedException;
 
@@ -36,11 +37,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
-
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.webui.services.impl.SaltService;
-
-import java.util.stream.Collectors;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import spark.ModelAndView;
@@ -371,7 +369,7 @@ public class MinionController {
 
         List<String> server_formulas = FormulaFactory.getFormulasByGroupId(Long.valueOf(request.params("sgid")));
 		data.put("selected", server_formulas);
-		data.put("formulas", FormulaCatalogController.listFormulas());
+		data.put("formulas", FormulaFactory.listFormulas());
 
 		response.type("application/json");
 		return GSON.toJson(data);
