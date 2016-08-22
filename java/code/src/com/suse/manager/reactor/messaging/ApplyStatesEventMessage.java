@@ -34,6 +34,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     public static final String PACKAGES_PROFILE_UPDATE = "packages.profileupdate";
     public static final String CHANNELS = "channels";
     public static final String CHANNELS_DISABLE_LOCAL_REPOS = "channels.disablelocalrepos";
+    public static final String SETUP = "setup";
 
     private final long serverId;
     private final Long userId;
