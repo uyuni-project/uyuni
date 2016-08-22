@@ -1,8 +1,8 @@
 'use strict';
 
-var React = require("react")
+var React = require("react");
 
-var Messages = require("../components/messages").Messages
+var Messages = require("../components/messages").Messages;
 var Button = require("../components/buttons").Button;
 const AsyncButton = require("../components/buttons").AsyncButton;
 var Network = require("../utils/network");
@@ -112,7 +112,7 @@ var FormulaDetail = React.createClass({
 		else {
 		    return (
 		    	<div>
-		    		{ generateFormulaNavBar(this.state.serverData.formulaList, formulaId) }
+		    		{ generateFormulaNavBar(this.state.serverData.formula_list, formulaId) }
 					{errs}{msg}
 					<form id="editFormulaForm" className="form-horizontal" onSubmit={this.updateFormula}>
 						<div className="panel panel-default">
@@ -120,7 +120,7 @@ var FormulaDetail = React.createClass({
 								<h4>{ FormGenerator.toTitle(this.state.serverData.formula_name || "Formula not found") }</h4>
 							</div>
 							<div className="panel-body">
-								{FormGenerator.generateForm(this.state.serverData.values, this.state.serverData.layout, this.state.serverData.formula_name, "system")}
+								{FormGenerator.generateForm(this.state.serverData.layout, this.state.serverData.group_data, this.state.serverData.system_data, this.state.serverData.formula_name, "system")}
 								<div className="row">
 									<div className="col-md-2 col-md-offset-3">
 										<Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className="btn btn-success" handler={function(e){$('<input type="submit">').hide().appendTo($("#editFormulaForm")).click().remove();}} />
