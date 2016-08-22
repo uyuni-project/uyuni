@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 
+import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
@@ -66,6 +67,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -372,11 +374,33 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             oldPackages.retainAll(newPackages);
         });
 
-        Optional<List<ProductInfo>> productInfo = Optional.of(
-                result.getListProducts().getChanges().getRet());
-        productInfo
+        Optional.ofNullable(result.getListProducts())
+                .map(products -> products.getChanges().getRet())
                 .map(JobReturnEventMessageAction::getInstalledProducts)
                 .ifPresent(server::setInstalledProducts);
+
+        Optional<String> rhelReleaseFile =
+                Optional.ofNullable(result.getRhelReleaseFile())
+                .map(content -> content.getChanges())
+                .filter(ret -> ret.getStdout() != null)
+                .map(ret -> ret.getStdout());
+        Optional<String> centosReleaseFile =
+                Optional.ofNullable(result.getCentosReleaseFile())
+                .map(content -> content.getChanges())
+                .filter(ret -> ret.getStdout() != null)
+                .map(ret -> ret.getStdout());
+        Optional<String> resReleasePkg =
+                Optional.ofNullable(result.getWhatProvidesResReleasePkg())
+                .map(content -> content.getChanges())
+                .filter(ret -> ret.getStdout() != null)
+                .map(ret -> ret.getStdout());
+        if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
+                resReleasePkg.isPresent()) {
+            Set<InstalledProduct> products = JobReturnEventMessageAction
+                    .getInstalledProductsForRhel(server, resReleasePkg,
+                            rhelReleaseFile, centosReleaseFile);
+            server.setInstalledProducts(products);
+        }
 
         ServerFactory.save(server);
         if (LOG.isDebugEnabled()) {
@@ -450,8 +474,46 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         }).collect(Collectors.toSet());
     }
 
+    private static Set<InstalledProduct> getInstalledProductsForRhel(
+           MinionServer server,
+           Optional<String> resPackage,
+           Optional<String> rhelReleaseFile,
+           Optional<String> centosRelaseFile) {
+
+        Optional<RhelUtils.RhelProduct> rhelProductInfo =
+                RhelUtils.detectRhelProduct(server, resPackage,
+                        rhelReleaseFile, centosRelaseFile);
+
+        if (!rhelProductInfo.isPresent()) {
+            LOG.warn("Could not determine RHEL product type for minion: " +
+                    server.getMinionId());
+            return Collections.emptySet();
+        }
+
+        LOG.debug(String.format(
+                "Detected minion %s as a RedHat compatible system: %s %s %s %s",
+                server.getMinionId(),
+                rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
+                rhelProductInfo.get().getRelease(), server.getServerArch().getName()));
+
+        return rhelProductInfo.get().getSuseProduct().map(product -> {
+            String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
+
+            InstalledProduct installedProduct = new InstalledProduct();
+            installedProduct.setName(product.getName());
+            installedProduct.setVersion(product.getVersion());
+            installedProduct.setRelease(product.getRelease());
+            installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
+            installedProduct.setBaseproduct(true);
+
+            return Collections.singleton(installedProduct);
+        }).orElse(Collections.emptySet());
+    }
+
+
     @Override
     public boolean canRunConcurrently() {
         return true;
     }
+
 }

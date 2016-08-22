@@ -44,16 +44,25 @@ import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.Zypper;
 import com.suse.manager.webui.utils.salt.Zypper.ProductInfo;
+
+import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
+import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.errors.SaltError;
+import com.suse.salt.netapi.results.CmdExecCodeAllResult;
+import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -186,7 +195,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     .ifPresent(channels -> channels.forEach(server::addChannel));
 
             String osfullname = grains.getValueAsString("osfullname");
-            String osrelease = grains.getValueAsString("osrelease");
+            String osrelease = getOsRelease(minionId, grains);
+
             String kernelrelease = grains.getValueAsString("kernelrelease");
             String osarch = grains.getValueAsString("osarch");
 
@@ -204,7 +214,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             if (!activationKey.isPresent()) {
                 LOG.info("No base channel added, adding default channel (if applicable)");
-                lookupAndAddDefaultChannels(server);
+                lookupAndAddDefaultChannels(server, grains);
             }
 
             server.updateServerInfo();
@@ -294,33 +304,80 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
     }
 
-    private void lookupAndAddDefaultChannels(MinionServer server) {
-        Optional<List<ProductInfo>> productList =
-                SALT_SERVICE.callSync(Zypper.listProducts(false), server.getMinionId());
-        if (!productList.isPresent()) {
-            LOG.warn("no listed product returned from salt");
-        }
+    private void lookupAndAddDefaultChannels(MinionServer server, ValueMap grains) {
+        if ("suse".equalsIgnoreCase(grains.getValueAsString("os"))) {
+            Optional<List<ProductInfo>> productList =
+                    SALT_SERVICE.callSync(Zypper.listProducts(false), server.getMinionId());
+            productList.ifPresent(pl -> {
+                pl.stream().filter(pif -> pif.getIsbase()).findFirst().ifPresent(pi -> {
+                    String osName = pi.getName().toLowerCase();
+                    String osVersion = pi.getVersion();
+                    String osArch = pi.getArch();
+                    Optional<SUSEProduct> suseProduct = ofNullable(SUSEProductFactory
+                            .findSUSEProduct(osName, osVersion, null, osArch, false));
+                    if (!suseProduct.isPresent()) {
+                        LOG.warn("No product match found for: " + osName + " " + osVersion +
+                                " " + osArch);
+                    }
 
-        productList.ifPresent(pl -> {
-            pl.stream().filter(pif -> pif.getIsbase()).findFirst().ifPresent(pi -> {
-                String osName = pi.getName().toLowerCase();
-                String osVersion = pi.getVersion();
-                String osArch = pi.getArch();
-                Optional<SUSEProduct> suseProduct = ofNullable(SUSEProductFactory
-                        .findSUSEProduct(osName, osVersion, null, osArch, false));
-                if (!suseProduct.isPresent()) {
-                    LOG.warn("No product match found for: " + osName + " " + osVersion +
-                            " " + osArch);
-                }
-
-                Opt.stream(suseProduct).flatMap(sp ->
-                        lookupBaseAndRequiredChannels(osName, osVersion, osArch, sp)
-                ).forEach(reqChan -> {
-                    LOG.info("Adding required channel: " + reqChan.getName());
-                    server.addChannel(reqChan);
+                    Opt.stream(suseProduct).flatMap(sp ->
+                            lookupBaseAndRequiredChannels(osName, osVersion, osArch, sp)
+                    ).forEach(reqChan -> {
+                        LOG.info("Adding required channel: " + reqChan.getName());
+                        server.addChannel(reqChan);
+                    });
                 });
             });
-        });
+        }
+        else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
+                "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
+            String minionId = server.getMinionId();
+
+            Optional<Map<String, State.ApplyResult>> applyResultMap = SALT_SERVICE
+                    .applyState(server.getMinionId(), "packages.redhatproductinfo");
+            Optional<String> centosReleaseContent =
+                    applyResultMap.map(map ->
+                        map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
+                    .map(r -> r.getChanges(CmdExecCodeAllResult.class))
+                    .map(c -> c.getStdout());
+            Optional<String> rhelReleaseContent =
+                    applyResultMap.map(map ->
+                        map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE))
+                    .map(r -> r.getChanges(CmdExecCodeAllResult.class))
+                    .map(c -> c.getStdout());
+            Optional<String> whatProvidesRes =
+                    applyResultMap.map(map ->
+                        map.get(
+                            PkgProfileUpdateSlsResult
+                                .PKG_PROFILE_WHATPROVIDES_SLES_RELEASE))
+                    .map(r -> r.getChanges(CmdExecCodeAllResult.class))
+                    .map(c -> c.getStdout());
+
+            Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils
+                    .detectRhelProduct(
+                            server, whatProvidesRes,
+                            rhelReleaseContent, centosReleaseContent);
+            rhelProduct
+                .ifPresent(rhel -> {
+                        String arch = server.getServerArch()
+                                .getLabel().replace("-redhat-linux", "");
+                        Opt.stream(rhel.getSuseProduct()).flatMap(sp ->
+                                lookupBaseAndRequiredChannels(
+                                        rhel.getName(), rhel.getVersion(),
+                                        arch, sp)
+                        ).forEach(reqChan -> {
+                            LOG.info("Adding required channel: " + reqChan.getName());
+                            server.addChannel(reqChan);
+                        });
+                        if (!rhel.getSuseProduct().isPresent()) {
+                            LOG.info("Not setting default channels for minion: " +
+                                    minionId + " os: " + rhel.getName() +
+                                    " " + rhel.getVersion() +
+                                    " " + arch);
+                        }
+                    }
+                );
+        }
     }
 
     private Stream<Channel> lookupBaseAndRequiredChannels(String osName,
@@ -359,6 +416,89 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             LOG.info("Product Base channel not found - refresh SCC sync?");
             return Stream.empty();
         });
+    }
+
+    private Optional<String> rpmErrQueryRHELProvidesRelease(String minionId) {
+        LOG.error("No package providing 'redhat-release' found on RHEL minion " + minionId);
+        return Optional.empty();
+    }
+
+    private Optional<String> rpmErrQueryRHELRelease(SaltError err, String minionId) {
+        LOG.error("Error querying 'redhat-release' package on RHEL minion " +
+                minionId + ": " + err);
+        return Optional.empty();
+    }
+
+    private String unknownRHELVersion(String minionId) {
+        LOG.error("Could not determine OS release version for RHEL minion " + minionId);
+        return "unknown";
+    }
+
+    private Map<String, List<String>> parseRHELReleseQuery(String result) {
+        return Arrays.stream(result.split("\\r?\\n")).map(line -> line.split("="))
+            .collect(Collectors.toMap(linetoks -> linetoks[0],
+                linetoks ->
+                    Arrays.asList(
+                            StringUtils.splitPreserveAllTokens(linetoks[1], ","))));
+    }
+
+    private String getOsRelease(String minionId, ValueMap grains) {
+        // java port of up2dataUtils._getOSVersionAndRelease()
+        String osRelease = grains.getValueAsString("osrelease");
+
+        if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
+                "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
+            MinionList target = new MinionList(Arrays.asList(minionId));
+            Optional<Result<String>> whatprovidesRes = SALT_SERVICE.runRemoteCommand(target,
+                    "rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release")
+                    .entrySet()
+                    .stream()
+                    .findFirst()
+                    .map(e -> Optional.of(e.getValue()))
+                    .orElse(Optional.empty());
+
+            osRelease = whatprovidesRes.flatMap(res -> res.fold(
+                    err -> err.fold(err1 -> rpmErrQueryRHELProvidesRelease(minionId),
+                            err2 -> rpmErrQueryRHELProvidesRelease(minionId),
+                            err3 -> rpmErrQueryRHELProvidesRelease(minionId)),
+                    r -> Optional.of(r)
+            ))
+            .flatMap(pkg ->
+                SALT_SERVICE.runRemoteCommand(target,
+                        "rpm -q --queryformat \"" +
+                            "VERSION=%{VERSION}\\n" +
+                            "PROVIDENAME=[%{PROVIDENAME},]\\n" +
+                            "PROVIDEVERSION=[%{PROVIDEVERSION},]\" " + pkg)
+                        .entrySet().stream().findFirst().map(e -> e.getValue())
+                        .flatMap(res -> res.fold(
+                                err -> err.fold(
+                                        err1 -> rpmErrQueryRHELRelease(err1, minionId),
+                                        err2 -> rpmErrQueryRHELRelease(err2, minionId),
+                                        err3 -> rpmErrQueryRHELRelease(err3, minionId)),
+                                r -> Optional.of(r)
+                        ))
+                        .map(this::parseRHELReleseQuery)
+                        .map(pkgtags -> {
+                            Optional<String> version = Optional
+                                    .ofNullable(pkgtags.get("VERSION"))
+                                    .map(v -> v.stream().findFirst())
+                                    .orElse(Optional.empty());
+                            List<String> provideName = pkgtags.get("PROVIDENAME");
+                            List<String> provideVersion = pkgtags.get("PROVIDEVERSION");
+                            int idxReleasever = provideName
+                                    .indexOf("system-release(releasever)");
+                            if (idxReleasever > -1) {
+                                version = provideVersion.size() > idxReleasever ?
+                                        Optional.of(provideVersion.get(idxReleasever)) :
+                                        Optional.empty();
+                            }
+                            return version;
+                        })
+                        .orElse(Optional.empty())
+            )
+            .orElseGet(() -> unknownRHELVersion(minionId));
+        }
+        return osRelease;
     }
 
     private void mapHardwareGrains(MinionServer server, ValueMap grains) {
