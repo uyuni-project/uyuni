@@ -578,45 +578,61 @@ def generateBootstrapScript(options):
     isRpmYN = processCACertPath(options)
     pubname = os.path.basename(options.pub_tree)
 
+    newScript = []
+
     # generate script
     # In processCommandline() we have turned all boolean values to 0 or 1
     # this means that we can negate those booleans with 1 - their current
     # value (instead of doing not value which can yield True/False, which
     # would print as such)
-    newScript = getHeader(MY_PRODUCT_NAME, options.activation_keys,
-                  options.gpg_key, options.overrides, options.hostname,
-                  options.salt, orgCACert, isRpmYN, 1 - options.no_ssl,
-                  1 - options.no_gpg, options.allow_config_actions,
-                  options.allow_remote_commands, options.up2date, pubname,
-                  DEFAULT_APACHE_PUB_DIRECTORY)
+    newScript.append(getHeader(MY_PRODUCT_NAME,
+                          options.activation_keys,
+                          options.gpg_key,
+                          options.overrides,
+                          options.hostname,
+                          options.salt,
+                          orgCACert,
+                          isRpmYN,
+                          1 - options.no_ssl,
+                          1 - options.no_gpg,
+                          options.allow_config_actions,
+                          options.allow_remote_commands,
+                          options.up2date,
+                          pubname,
+                          DEFAULT_APACHE_PUB_DIRECTORY)
+                    )
 
     writeYN = 1
 
     # concat all those script-bits
-    newScript = newScript + getConfigFilesSh()
+    newScript.append(getConfigFilesSh())
 
     # don't call this twice
     # getUp2dateScriptsSh()
 
-    newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh()
+    newScript.append(getGPGKeyImportSh())
+    newScript.append(getCorpCACertSh())
 
     # SLES: install packages required for registration on systems that do not have them installed
-    newScript = newScript + getRegistrationStackSh(options.salt) + getUp2dateScriptsSh()
+    newScript.append(getRegistrationStackSh(options.salt))
+    newScript.append(getUp2dateScriptsSh())
 
     if (options.salt):
-        newScript = newScript + getRegistrationSaltSh(MY_PRODUCT_NAME)
+        newScript.append(getRegistrationSaltSh(MY_PRODUCT_NAME))
     else:
-        newScript = newScript + getRegistrationSh(MY_PRODUCT_NAME)
+        newScript.append(getRegistrationSh(MY_PRODUCT_NAME))
 
     #5/16/05 wregglej 159437 - moving stuff that messes with the allowed-action dir to after registration
-    newScript = newScript + getAllowConfigManagement()
-    newScript = newScript + getAllowRemoteCommands()
+    newScript.append(getAllowConfigManagement())
+    newScript.append(getAllowRemoteCommands())
 
     #5/16/05 wregglej 159437 - moved the stuff that up2dates the entire box to after allowed-actions permissions are set.
-    newScript = newScript + getUp2dateTheBoxSh(MY_PRODUCT_NAME, options.salt)
+    newScript.append(getUp2dateTheBoxSh(MY_PRODUCT_NAME, options.salt))
 
     _bootstrapDir = cleanupAbsPath(os.path.join(options.pub_tree, 'bootstrap'))
     _script = cleanupAbsPath(os.path.join(_bootstrapDir, options.script))
+
+    newScript = ''.join(newScript)
 
     if os.path.exists(_script):
         oldScript = open(_script, 'rb').read()
