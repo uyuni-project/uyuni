@@ -22,6 +22,7 @@ import spark.RequestResponseFactory;
 import spark.routematch.RouteMatch;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,6 +49,27 @@ public class SparkTestUtils {
             String matchUrl,
             Map<String, String> queryParams,
             Object... vals) {
+        return createMockRequestWithParams(
+                matchUrl, queryParams, Collections.emptyMap(), vals);
+    }
+
+    /**
+     * Creates a mock request with given parametrized url, query parameters.
+     *
+     * @param matchUrl - the url with parameters (prefixed by a colon) in path, for example:
+     *     <code>http://localhost:8080/rhn/manager/:vhm/delete/:vhmlabel/</code>
+     * @param queryParams - POST or GET parameters (no multivalued parameters,
+     *                    for convenience)
+     * @param httpHeaders - HTTP headers
+     * @param vals - values that will substitute the parameters in matchUri
+     * @return Spark Request object corresponding to given URI (after params substitution)
+     * and query parameters
+     */
+    public static Request createMockRequestWithParams(
+            String matchUrl,
+            Map<String, String> queryParams,
+            Map<String, String> httpHeaders,
+            Object... vals) {
         final String requestUrl = substituteVariables(matchUrl, vals);
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
@@ -65,6 +87,9 @@ public class SparkTestUtils {
                 Collectors.toMap(v -> v.getKey(), v -> new String[]{v.getValue()})));
 
         mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
+
+        httpHeaders.forEach(
+                (name, val) -> mockRequest.setupGetHeader(name, val));
 
         return RequestResponseFactory.create(match, mockRequest);
     }
