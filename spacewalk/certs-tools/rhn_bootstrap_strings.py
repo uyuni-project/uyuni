@@ -722,8 +722,15 @@ EOF
     fi
 fi
 
-systemctl enable salt-minion
-systemctl start salt-minion
+echo "* starting salt daemon and enabling it during boot"
+
+if [ -f /usr/lib/systemd/system/salt-minion.service ] ; then
+    systemctl enable salt-minion
+    systemctl start salt-minion
+else
+    /etc/init.d/salt-minion start
+    /sbin/chkconfig --add salt-minion
+fi
 
 """.format(productName=productName)
 
