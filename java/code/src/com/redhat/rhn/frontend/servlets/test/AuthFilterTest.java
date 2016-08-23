@@ -83,6 +83,8 @@ public class AuthFilterTest extends MockObjectTestCase {
                     with(any(Object.class)));
             allowing(mockRequest).getCookies();
             will(returnValue(null));
+            allowing(mockRequest).getServletPath();
+            will(returnValue("/YourRhn.do"));
         } });
 
         filter.setAuthenticationService(mockAuthService);
