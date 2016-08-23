@@ -106,6 +106,17 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return c;
     }
 
+    public static Channel createTestChannel(User user, String channelLabel) throws Exception {
+        String query = "ChannelArch.findByLabel";
+        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheByLabel(channelLabel, query);
+        Channel c = createTestChannel(user.getOrg(), arch, user.getOrg().getPrivateChannelFamily());
+        // assume we want the user to have access to this channel once created
+        UserManager.addChannelPerm(user, c.getId(), "subscribe");
+        UserManager.addChannelPerm(user, c.getId(), "manage");
+        ChannelFactory.save(c);
+        return c;
+    }
+
     public static Channel createTestChannel(Org org) throws Exception {
         ChannelFamily cfam = org.getPrivateChannelFamily();
         Channel c =  ChannelFactoryTest.createTestChannel(org, cfam);
@@ -114,6 +125,12 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     }
 
     public static Channel createTestChannel(Org org, ChannelFamily cfam) throws Exception {
+        String query = "ChannelArch.findById";
+        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, query);
+        return createTestChannel(org, arch, cfam);
+    }
+
+    public static Channel createTestChannel(Org org, ChannelArch arch, ChannelFamily cfam) throws Exception {
         String label = "channellabel" + TestUtils.randomString().toLowerCase();
         String basedir = "TestChannel basedir";
         String name = "ChannelName" + TestUtils.randomString();
@@ -129,9 +146,6 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         cal.roll(Calendar.DATE, true);
         Date endoflife = new Date(System.currentTimeMillis() + Integer.MAX_VALUE);
 
-        Long testid = new Long(500);
-        String query = "ChannelArch.findById";
-        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(testid, query);
         Channel c = new Channel();
         c.setOrg(org);
         c.setLabel(label);

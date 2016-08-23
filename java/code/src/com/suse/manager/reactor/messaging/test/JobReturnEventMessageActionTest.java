@@ -20,12 +20,14 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -114,8 +116,10 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
      * @throws Exception in case of an error
      */
     public void testPackagesProfileUpdateRhel7RES() throws Exception {
+        RhelUtilsTest.createResChannel(user, "7");
         // Prepare test objects: minion server, products and action
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
         SUSEProductTestUtils.createVendorSUSEProducts();
         Action action = ActionFactoryTest.createAction(
@@ -160,7 +164,7 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
             assertEquals("7", product.getVersion());
             assertEquals(null, product.getRelease());
             // in the case of RES the product arch is taken from the server arch
-            assertEquals("i386", product.getArch().getName());
+            assertEquals("x86_64", product.getArch().getName());
         });
 
         // Verify the action status
