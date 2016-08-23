@@ -133,7 +133,7 @@ function generateFormItem(element, value, parents) {
 	else if (element.$type == "boolean")
 		return wrapGroupWithLabel(element.$name,
 			<div className="col-lg-6">
-				<input type="checkbox" name={element.$name} id={id} disabled={isDisabled} defaultChecked={value} />
+				<input type="checkbox" style={{width: 25 + "px", height: 25 + "px"}} name={element.$name} id={id} disabled={isDisabled} defaultChecked={value} />
 			</div>
 		);
 	else
@@ -206,6 +206,7 @@ function generateSelectList(data) {
 	return options;
 }
 
+// WIP
 function generateEditGroup(element, data, id) {
 	var groups = [];
 	for (var key in data) {
@@ -215,8 +216,7 @@ function generateEditGroup(element, data, id) {
 	return groups;
 }
 
-// Add New Element to edit group (currently unused as edit-group is on hold)
-// TODO: should probably modify saved values and cause rerender
+// WIP
 function addElementToEditGroup(event) {
 	return;
 	var target = event.target;
@@ -258,7 +258,31 @@ function toTitle(str) {
 	return str.replace(new RegExp("_|-", 'g'), " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
+function serializeValues(fields) {
+	var values = {};
+	fields.each(function(index, element) {
+			if (element.id == "") return;
+ 			else if (element.type == "checkbox")
+ 				assignValueWithId(values, element.id, element.checked);
+ 			else
+ 				assignValueWithId(values, element.id, element.value);
+		});
+	return values;
+}
+
+function assignValueWithId(dir, id, value) {
+	var parents = id.split("$");
+	
+	for (var i in parents.slice(0, -1)) {
+		if (dir[parents[i]] == undefined)
+			dir[parents[i]] = {};
+		dir = dir[parents[i]];
+	}
+	dir[parents[parents.length-1]] = value;
+}
+
 module.exports = {
     generateForm: generateForm,
-    toTitle: toTitle
+    toTitle: toTitle,
+    serializeValues: serializeValues
 }

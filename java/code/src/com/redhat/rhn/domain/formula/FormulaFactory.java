@@ -33,13 +33,11 @@ import java.util.Optional;
 
 import javax.transaction.NotSupportedException;
 
-import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -51,14 +49,13 @@ import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 /**
  * Factory class for working with formulas.
  */
-public class FormulaFactory extends HibernateFactory {
+public class FormulaFactory {
 
-    private static Logger log = Logger.getLogger(FormulaFactory.class);
-    private static FormulaFactory singleton = new FormulaFactory();
     private static final String FORMULA_DATA_DIRECTORY = "/srv/susemanager/formulas_data/";
     private static final String FORMULA_DIRECTORY = "/usr/share/susemanager/salt/formulas/";
     private static final String FORMULA_PILLAR_DIRECTORY = "/srv/susemanager/formulas_data/pillar/";
     private static final String FORMULA_GROUP_PILLAR_DIRECTORY = "/srv/susemanager/formulas_data/group_pillar/";
+    private static final String GROUP_FORMULAS_DATA_FILE = FORMULA_DATA_DIRECTORY + "group_formulas.json";
     private static final String PILLAR_FILE_EXTENSION = "json";
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -66,15 +63,14 @@ public class FormulaFactory extends HibernateFactory {
             .create();
     private static final Yaml yaml = new Yaml(new SafeConstructor());
 
-    private FormulaFactory() {
-    }
+    private FormulaFactory() {}
     
     public static List<String> listFormulas() {
     	File directory = new File(FORMULA_DIRECTORY);
         File[] files = directory.listFiles();
         List<String> formulasList = new LinkedList<>();
         
-        // TODO: Check if directory is a real formula (contains form.yml/form.json, init.sls and maybe even metadata.yml)?
+        // TODO: Check if directory is a real formula (contains form.yml/form.json and init.sls)?
         for (File f : files)
         	if (f.isDirectory())
         		formulasList.add(f.getName());
@@ -106,8 +102,7 @@ public class FormulaFactory extends HibernateFactory {
     }
     
     public static List<String> getFormulasByGroupId(Long groupId) {
-    	LinkedList<String> formulas = new LinkedList<>();
-    	File server_formulas_file = new File(FORMULA_DATA_DIRECTORY + "group_formulas.json");
+    	File server_formulas_file = new File(GROUP_FORMULAS_DATA_FILE);
     	if (!server_formulas_file.exists())
     		return new LinkedList<>();
     	
@@ -122,7 +117,7 @@ public class FormulaFactory extends HibernateFactory {
     
     public static List<String> getFormulasByServerId(Long serverId) {
     	LinkedList<String> formulas = new LinkedList<>();
-    	File server_formulas_file = new File(FORMULA_DATA_DIRECTORY + "group_formulas.json");
+    	File server_formulas_file = new File(GROUP_FORMULAS_DATA_FILE);
     	if (!server_formulas_file.exists())
     		return new LinkedList<String>();
     	
@@ -158,7 +153,7 @@ public class FormulaFactory extends HibernateFactory {
 				return Optional.of((Map<String, Object>) GSON.fromJson(new BufferedReader(new FileReader(data_file)), Map.class));
 			else
 		    	return Optional.empty();
-    	} catch (FileNotFoundException | NotSupportedException e) {// TODO: maybe throw error if not supported? (means not a salt minion, @getMinionId)
+    	} catch (FileNotFoundException | NotSupportedException e) {
     		return Optional.empty();
     	}
     }
@@ -166,11 +161,11 @@ public class FormulaFactory extends HibernateFactory {
     public static Optional<Map<String, Object>> getGroupFormulaValuesByNameAndServerId(String name, Long serverId) {
     	for (ManagedServerGroup group : ServerFactory.lookupById(serverId).getManagedGroups())
     		if (getFormulasByGroupId(group.getId()).contains(name))
-    			return getFormulaValuesByNameAndGroupId(name, group.getId());
+    			return getGroupFormulaValuesByNameAndGroupId(name, group.getId());
     	return Optional.empty();
     }
     
-    public static Optional<Map<String, Object>> getFormulaValuesByNameAndGroupId(String name, Long groupId) {
+    public static Optional<Map<String, Object>> getGroupFormulaValuesByNameAndGroupId(String name, Long groupId) {
     	File data_file = new File(FORMULA_GROUP_PILLAR_DIRECTORY + groupId + "_" + name + "." + PILLAR_FILE_EXTENSION);
     	try {
 			if (data_file.exists())
@@ -182,9 +177,8 @@ public class FormulaFactory extends HibernateFactory {
     	}
     }
     
-    // TODO: this probably needs synchronization!
-    public static void saveServerGroupFormulas(Long groupId, List<String> selectedFormulas, Org org) throws IOException {
-    	File server_formulas_file = new File(FORMULA_DATA_DIRECTORY + "group_formulas.json");
+    public static synchronized void saveServerGroupFormulas(Long groupId, List<String> selectedFormulas, Org org) throws IOException {
+    	File server_formulas_file = new File(GROUP_FORMULAS_DATA_FILE);
     	
     	Map<String, List<String>> server_formulas;
     	if (!server_formulas_file.exists()) {
@@ -194,14 +188,12 @@ public class FormulaFactory extends HibernateFactory {
     	}
     	else server_formulas = (Map<String, List<String>>) GSON.fromJson(new BufferedReader(new FileReader(server_formulas_file)), Map.class);
     	
-    	// Remove formula data of servers
+    	// Remove formula data for unselected formulas
     	List<String> deletedFormulas = new LinkedList<>(server_formulas.getOrDefault(groupId.toString(), new LinkedList<>()));
     	deletedFormulas.removeAll(selectedFormulas);
-    	for (Server server : ServerGroupFactory.lookupByIdAndOrg(groupId, org).getServers()) {
-    		Long serverId = server.getId();
+    	for (Server server : ServerGroupFactory.lookupByIdAndOrg(groupId, org).getServers())
     		for (String deletedFormula : deletedFormulas)
-    			deleteServerFormulaData(serverId, deletedFormula);
-    	}
+    			deleteServerFormulaData(server.getId(), deletedFormula);
 		for (String deletedFormula : deletedFormulas)
 			deleteGroupFormulaData(groupId, deletedFormula);
     	
@@ -217,9 +209,8 @@ public class FormulaFactory extends HibernateFactory {
     public static void deleteServerFormulaData(Long serverId, String formulaName) throws IOException {
     	try {
 	    	File formula_file = new File(FORMULA_PILLAR_DIRECTORY + getMinionId(serverId) + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
-	    	if (formula_file.exists()) {
+	    	if (formula_file.exists())
 	    		formula_file.delete();
-	    	}
     	} catch (NotSupportedException e) {
     		//TODO: log error message?
     	}
@@ -227,11 +218,11 @@ public class FormulaFactory extends HibernateFactory {
 
     public static void deleteGroupFormulaData(Long groupId, String formulaName) throws IOException {
     	File formula_file = new File(FORMULA_GROUP_PILLAR_DIRECTORY + groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
-    	if (formula_file.exists()) {
+    	if (formula_file.exists())
     		formula_file.delete();
-    	}
     }
-    
+
+	// TODO: not very efficient, there are much more efficient algorithms for dependency solving
     public static List<String> orderFormulas(List<String> formulasToOrder) {
     	LinkedList<String> formulas = new LinkedList<String>(formulasToOrder);
     	
@@ -243,26 +234,26 @@ public class FormulaFactory extends HibernateFactory {
     		dependencyMap.put(formula, dependsOnList);
     	}
 
-    	// TODO: not very efficient, better with spanning tree algorithm or something like that
     	int index = 0;
     	int minLength = formulas.size();
     	LinkedList<String> orderedList = new LinkedList<String>();
     	
     	while (!formulas.isEmpty()) {
     		String formula = formulas.removeFirst();
-    		if (orderedList.containsAll(dependencyMap.get(formula)))
+    		if (orderedList.containsAll(dependencyMap.get(formula))) {
     			orderedList.addLast(formula);
-    		else
-    			formulas.addLast(formula);
-    		
-    		// primitive safety check
-    		if (formulas.size() < minLength) {
-    			minLength = formulas.size();
-    			index = 0;
-    		} else if (index == minLength)
+
+				minLength = formulas.size();
+				index = 0;
+    		}
+    		else if (index == minLength) { // The algorithm run one complete cycle without any change
     			orderedList.addAll(formulas);
-    		else
+        		return orderedList;
+    		}
+    		else {
+    			formulas.addLast(formula);
     			index++;
+    		} 
     	}
     	return orderedList;
     }
@@ -287,13 +278,5 @@ public class FormulaFactory extends HibernateFactory {
     		return minionServer.get().getMinionId();
     	else
     		throw new NotSupportedException("The system is not a salt minion!");
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Logger getLogger() {
-        return log;
     }
 }
