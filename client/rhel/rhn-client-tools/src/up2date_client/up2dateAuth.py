@@ -34,8 +34,11 @@ def getSystemId():
 
     # add machine_id on the fly
     cert = rpclib.xmlrpclib.loads(ret)
-    cert[0][0]["machine_id"] = getMachineId()
-    # do not append machine_id to fields to avoid breaking the checksum and authentication
+    machine_id = getMachineId()
+    if machine_id:
+        # do not append machine_id to fields to avoid breaking
+        # the checksum and authentication.
+        cert[0][0]["machine_id"] = machine_id
     ret = rpclib.xmlrpclib.dumps(cert[0])
 
     return ret
