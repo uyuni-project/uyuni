@@ -17,8 +17,6 @@ package com.suse.manager.webui.controllers;
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpStatus;
@@ -46,7 +44,7 @@ public class FormulaCatalogController {
             .serializeNulls()
             .create();
 
-    private FormulaCatalogController() { }
+    private FormulaCatalogController() {}
 
     /**
      * Show the list of formulas.

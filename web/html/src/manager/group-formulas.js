@@ -63,12 +63,10 @@ var GroupFormulas = React.createClass({
 			else
 				serverData.removed.push(formula);
 		}
-		else if (serverData.added.indexOf(formula) >= 0) {
+		else if (serverData.added.indexOf(formula) >= 0)
 			serverData.added.splice(serverData.added.indexOf(formula), 1);
-		}
-		else {
+		else
 			serverData.added.push(formula);
-		}
 		this.forceUpdate();
 	},
 	
