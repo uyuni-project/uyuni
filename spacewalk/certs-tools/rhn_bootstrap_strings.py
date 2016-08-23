@@ -78,6 +78,9 @@ echo "  - edit the values of the VARIABLES below (in this script) as"
 echo "    appropriate:"
 echo "    - ACTIVATION_KEYS needs to reflect the activation key(s) value(s)"
 echo "      from the website. XKEY or XKEY,YKEY"
+echo "      Please note that if you are using this script to boostrap minions,"
+echo "      only the FIRST activation key will be used. Multiple activation keys"
+echo "      are not supported with salt"
 echo "    - ORG_GPG_KEY needs to be set to the name(s) of the corporate public"
 echo "      GPG key filename(s) (residing in {apachePubDirectory}) if appropriate. XKEY or XKEY,YKEY"
 echo
@@ -261,9 +264,12 @@ def getHeader(productName, activation_keys, org_gpg_key,
                           pubname=pubname)
 
 def getRegistrationStackSh(saltEnabled):
-    PKG_NAME = \
-    ['salt', 'salt-minion'] if saltEnabled else \
-    ['spacewalk-check', 'spacewalk-client-setup', 'spacewalk-client-tools', 'zypp-plugin-spacewalk']
+    """
+    Determines which packages and repositories needs to be
+    installed in order to register this system against SUMa server.
+    """
+    PKG_NAME = saltEnabled and ['salt', 'salt-minion'] or ['spacewalk-check', 'spacewalk-client-setup',
+                                                           'spacewalk-client-tools', 'zypp-plugin-spacewalk']
 
     return """\
 if [ "$INSTALLER" == zypper ]; then
@@ -699,7 +705,7 @@ echo "------------"
 #
 
 MINION_ID_FILE="/etc/salt/minion_id"
-SUSEMANAGER_MASTER_FILE="/etc/salt/minion.d/master.conf"
+SUSEMANAGER_MASTER_FILE="/etc/salt/minion.d/susemanager.conf"
 
 if [ $REGISTER_THIS_BOX -eq 1 ] ; then
     echo "* registering"
@@ -711,20 +717,12 @@ if [ $REGISTER_THIS_BOX -eq 1 ] ; then
         cat <<EOF >"SUSEMANAGER_MASTER_FILE"
 grains:
     susemanager:
-        activation_key: "$ACTIVATION_KEYS"
+        activation_key: "$(echo $ACTIVATION_KEYS | cut -d, -f1)"
 EOF
     fi
 fi
 
-Z_CLIENT_REPO_URL="https://${{HOSTNAME}}/pub/repositories/${{Z_CLIENT_REPOS_ROOT}}/${{Z_CLIENT_CODE_BASE}}/${{Z_CLIENT_CODE_VERSION}}/${{Z_CLIENT_CODE_PATCHLEVEL}}/bootstrap"
-$FETCH $Z_CLIENT_REPO_URL/salt/minion.pub 2> /dev/null
-if [ -f "minion.pub" ] ; then
-    echo "* provisioning pub and priv key for minion"
-    mv minion.pub /etc/salt/pki/minion/minion.pub
-    $FETCH $Z_CLIENT_REPO_URL/salt/minion.pem
-    systemctl enable salt-minion
-fi
-
+systemctl enable salt-minion
 systemctl start salt-minion
 
 """.format(productName=productName)
