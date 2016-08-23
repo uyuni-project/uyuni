@@ -253,7 +253,7 @@ public class MinionController {
     }
 
     /**
-     * Handler for a server group formula page.
+     * Handler for the server group formula page.
      *
      * @param request the request object
      * @param response the response object
@@ -271,14 +271,13 @@ public class MinionController {
     }
 
     /**
-     * Return the JSON data to render a server groups formula edit page.
+     * Return the JSON data to render a formula page of a server group.
      * @param request the http request
      * @param response the http response
      * @param user the current user
      * @return the JSON data
      */
     public static String serverGroupFormulaData(Request request, Response response, User user) {
-    	// Find formulas of server group
     	Long groupId = new Long(request.params("sgid"));
     	int formula_id = Integer.parseInt(request.params("formula_id"));
     	List<String> formulas = FormulaFactory.getFormulasByGroupId(groupId);
@@ -289,28 +288,26 @@ public class MinionController {
     	}
     	else {
         	Map<String, Object> map = new HashMap<>();
-        	map.put("formulaList", formulas);
+        	map.put("formula_list", formulas);
 
-        	if (formula_id < formulas.size()) {
+        	if (formula_id >= 0 && formula_id < formulas.size()) {
         		String formula_name = formulas.get(formula_id);
         		map.put("formula_name", formula_name);
 
         		Optional<Map<String, Object>> layout = FormulaFactory.getFormulaLayoutByName(formula_name);
         		if (layout.isPresent())
         			map.put("layout", layout.get());
-
-        		Optional<Map<String, Object>> values = FormulaFactory.getFormulaValuesByNameAndGroupId(formula_name, groupId);
+        		Optional<Map<String, Object>> values = FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formula_name, groupId);
         		map.put("values", values.orElse(new HashMap<String, Object>()));
         	}
         	form_data = GSON.toJson(map);
     	}
-
         response.type("application/json");
 		return form_data;
     }
 
     /**
-     * Handler to save a server groups formula data
+     * Save the server groups formula data
      * @param request the http request
      * @param response the http response
      * @param user the current user
@@ -340,7 +337,7 @@ public class MinionController {
 	}
 
     /**
-     * Handler for the server group formulas page.
+     * Handler for the server group formula selection page.
      *
      * @param request the request object
      * @param response the response object
@@ -358,7 +355,7 @@ public class MinionController {
     }
 
     /**
-     * Return the JSON data to render a server groups formula selection page.
+     * Return the JSON data to render the server groups formula selection page.
      * @param request the http request
      * @param response the http response
      * @param user the current user
@@ -376,7 +373,7 @@ public class MinionController {
     }
 
     /**
-     * Handler to save a server groups selected formula.
+     * Save the selected formulas of the server group.
      * @param request the http request
      * @param response the http response
      * @param user the current user
@@ -439,7 +436,7 @@ public class MinionController {
         	Map<String, Object> map = new HashMap<>();
         	map.put("formula_list", formulas);
 
-        	if (formula_id < formulas.size()) {
+        	if (formula_id >= 0 && formula_id < formulas.size()) {
         		String formula_name = formulas.get(formula_id);
         		map.put("formula_name", formula_name);
 
@@ -461,7 +458,7 @@ public class MinionController {
     }
 
     /**
-     * Handler to save a minions formula data
+     * Save the minions formula data
      * @param request the http request
      * @param response the http response
      * @param user the current user

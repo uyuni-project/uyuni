@@ -29,14 +29,7 @@ var FormulaDetail = React.createClass({
 		formData.groupId = groupId;
 		formData.url = window.location.href;
 		formData.formula_name = this.state.serverData.formula_name;
-		formData.content = {};
-		$("#editFormulaForm input, #editFormulaForm select").each(function(index, element) {
-			if (element.id == "") return;
- 			else if (element.type == "checkbox")
- 				assignValueWithId(formData.content, element.id, element.checked);
- 			else
- 				assignValueWithId(formData.content, element.id, element.value);
-		});
+		formData.content = FormGenerator.serializeValues($("#editFormulaForm input, #editFormulaForm select"));
 		
         Network.post("/rhn/manager/groups/details/formula/form/save", JSON.stringify(formData), "application/json").promise.then(
 		(data) => {
@@ -96,8 +89,10 @@ var FormulaDetail = React.createClass({
 							<div className="panel-body">
 								{FormGenerator.generateForm(this.state.serverData.layout, this.state.serverData.values, {}, this.state.serverData.formula_name, "group")}
 								<div className="row">
-									<div className="col-md-2 col-md-offset-3">
+									<div className="col-lg-6 col-lg-offset-3">
 										<Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className="btn btn-success" handler={function(e){$('<input type="submit">').hide().appendTo($("#editFormulaForm")).click().remove();}} />
+										<a id="next-btn" href={ "/rhn/manager/groups/details/formula/" + (formulaId + 1) + "?sgid=" + groupId} disabled={this.state.serverData.formula_list.length - 1 <= formulaId} className="btn btn-default pull-right">Next <i className="fa fa-arrow-right" /></a>
+										<a id="prev-btn" href={ "/rhn/manager/groups/details/formula/" + (formulaId - 1) + "?sgid=" + groupId} disabled={formulaId == 0} className="btn btn-default pull-right"><i className="fa fa-arrow-left" /> Prev</a>
 									</div>
 								</div>
 							</div>
@@ -118,17 +113,6 @@ function generateFormulaNavBar(formulaList, activeId) {
 			{tabs}
 		</ul>
 	);
-}
-
-function assignValueWithId(dir, id, value) {
-	var parents = id.split("$");
-	
-	for (var i in parents.slice(0, -1)) {
-		if (dir[parents[i]] == undefined)
-			dir[parents[i]] = {};
-		dir = dir[parents[i]];
-	}
-	dir[parents[parents.length-1]] = value;
 }
 
 function msg(severityIn, textIn) {
