@@ -615,7 +615,9 @@ def generateBootstrapScript(options):
 
     # SLES: install packages required for registration on systems that do not have them installed
     newScript.append(getRegistrationStackSh(options.salt))
-    newScript.append(getUp2dateScriptsSh())
+
+    if not options.salt:
+        newScript.append(getUp2dateScriptsSh())
 
     if (options.salt):
         newScript.append(getRegistrationSaltSh(MY_PRODUCT_NAME))
@@ -623,8 +625,9 @@ def generateBootstrapScript(options):
         newScript.append(getRegistrationSh(MY_PRODUCT_NAME))
 
     #5/16/05 wregglej 159437 - moving stuff that messes with the allowed-action dir to after registration
-    newScript.append(getAllowConfigManagement())
-    newScript.append(getAllowRemoteCommands())
+    if not options.salt:
+        newScript.append(getAllowConfigManagement())
+        newScript.append(getAllowRemoteCommands())
 
     #5/16/05 wregglej 159437 - moved the stuff that up2dates the entire box to after allowed-actions permissions are set.
     newScript.append(getUp2dateTheBoxSh(MY_PRODUCT_NAME, options.salt))
