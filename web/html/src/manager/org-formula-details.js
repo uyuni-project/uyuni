@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require("react")
+const ReactDOM = require("react-dom");
 
 var Panel = require("../components/panel").Panel
 var PanelButton = require("../components/panel").PanelButton
@@ -32,11 +33,10 @@ var FormulaDetail = React.createClass({
             </form>
         </Panel>
         )
-
     }
 });
 
-React.render(
+ReactDOM.render(
   <FormulaDetail sls={formulaData()}/>,
   document.getElementById('formula-details')
 );

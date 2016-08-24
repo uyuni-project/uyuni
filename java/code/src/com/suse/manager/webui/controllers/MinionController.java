@@ -58,7 +58,7 @@ public class MinionController {
             .serializeNulls()
             .create();
 
-    private MinionController() { }
+    private MinionController() {}
 
     /**
      * Displays a list of minions.
@@ -298,7 +298,7 @@ public class MinionController {
         		if (layout.isPresent())
         			map.put("layout", layout.get());
         		Optional<Map<String, Object>> values = FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formula_name, groupId);
-        		map.put("values", values.orElse(new HashMap<String, Object>()));
+        		map.put("group_data", values.orElse(new HashMap<String, Object>()));
         	}
         	form_data = GSON.toJson(map);
     	}
@@ -392,12 +392,8 @@ public class MinionController {
     		return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " + e.getMessage()));
     	}
-
-        FlashScopeHelper.flash(request, "Formula applied!");
-    	Map<String, String> data = new HashMap<>();
-    	data.put("url", (String) map.get("url"));
         response.type("application/json");
-        return GSON.toJson(data);
+        return GSON.toJson("");
 	}
 
     /**
@@ -480,11 +476,8 @@ public class MinionController {
     	}
 
     	// Return answer
-        FlashScopeHelper.flash(request, "Formula saved!");
-    	Map<String, String> data = new HashMap<>();
-    	data.put("url", (String) map.get("url"));
         response.type("application/json");
-        return GSON.toJson(data);
+        return GSON.toJson("");
 	}
 
     private static String errorResponse(Response response, List<String> errs) {
