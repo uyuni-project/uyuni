@@ -118,15 +118,6 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        ServerFactory.delete(this.server);
-    }
-
-    /**
      * Test action chain create.
      * @throws Exception if something bad happens
      */
