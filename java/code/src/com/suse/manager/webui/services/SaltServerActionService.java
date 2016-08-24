@@ -24,7 +24,9 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
@@ -154,7 +156,10 @@ public enum SaltServerActionService {
             List<MinionServer> minions) {
         ActionType actionType = actionIn.getActionType();
         if (actionType.equals(ActionFactory.TYPE_ERRATA)) {
-            return errataAction(minions, (ErrataAction) actionIn);
+            ErrataAction errataAction = (ErrataAction) actionIn;
+            Set<Long> errataIds = errataAction.getErrata().stream()
+                    .map(Errata::getId).collect(Collectors.toSet());
+            return errataAction(minions, errataIds);
         }
         else if (actionType.equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
             return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
@@ -245,13 +250,67 @@ public enum SaltServerActionService {
         }
     }
 
-    private Map<LocalCall<?>, List<MinionServer>> errataAction(List<MinionServer> minions,
-            ErrataAction errataAction) {
+    private Map<LocalCall<?>, List<MinionServer>> nonZypperErrataAction(
+            List<MinionServer> minions,
+            Set<Long> errataIds) {
+        Set<Long> minionIds = minions.stream()
+                .map(Server::getId).collect(Collectors.toSet());
+        Map<Long, Map<String, String>> longMapMap =
+                ServerFactory.listNewestPkgsForServerErrata(minionIds, errataIds);
+
+        // group minions by packages that need to be updated
+        Map<Map<String, String>, List<MinionServer>> collect1 = minions.stream().collect(
+                Collectors.groupingBy(a -> longMapMap.get(a.getId()))
+        );
+
+        return collect1.entrySet().stream().collect(Collectors.toMap(
+            m -> State.apply(
+                Collections.singletonList(PACKAGES_PATCHINSTALL),
+                Optional.of(Collections.singletonMap(PARAM_PKGS, m.getKey().entrySet()
+                    .stream().collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue)))),
+                Optional.of(true)
+            ),
+            Map.Entry::getValue
+        ));
+    }
+
+    /**
+     * This function will return a map with list of minions grouped by the
+     * salt netapi local call that executes what needs to be executed on
+     * those minions for the given errata ids and minions.
+     *
+     * @param minions list of minions
+     * @param errataIds list of errata ids
+     * @return minions grouped by local call
+     */
+    public Map<LocalCall<?>, List<MinionServer>> errataAction(List<MinionServer> minions,
+            Set<Long> errataIds) {
+        Map<Boolean, List<MinionServer>> zyppNonZypp = minions.stream().collect(
+                Collectors.partitioningBy(
+                        m -> PackageFactory.lookupByNameAndServer("zypper", m) != null
+                )
+        );
+
+        List<MinionServer> zypperMinions = zyppNonZypp.get(true);
+        List<MinionServer> nonZypperMinions = zyppNonZypp.get(false);
+
+        Map<LocalCall<?>, List<MinionServer>> patchInstalls =
+                zypperErrataAction(zypperMinions, errataIds);
+        Map<LocalCall<?>, List<MinionServer>> packageInstalls =
+                nonZypperErrataAction(nonZypperMinions, errataIds);
+        return Stream.concat(
+                patchInstalls.entrySet().stream(),
+                packageInstalls.entrySet().stream()
+        ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> zypperErrataAction(
+            List<MinionServer> minions,
+            Set<Long> errataIds) {
         Set<Long> serverIds = minions.stream()
                 .map(MinionServer::getId)
-                .collect(Collectors.toSet());
-        Set<Long> errataIds = errataAction.getErrata().stream()
-                .map(Errata::getId)
                 .collect(Collectors.toSet());
         Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory
                 .listErrataNamesForServers(serverIds, errataIds);
@@ -266,7 +325,7 @@ public enum SaltServerActionService {
         // Convert errata names to LocalCall objects of type State.apply
         return collect.entrySet().stream()
                 .collect(Collectors.toMap(entry -> State.apply(
-                        Arrays.asList(PACKAGES_PATCHINSTALL),
+                        Collections.singletonList(PACKAGES_PATCHINSTALL),
                         Optional.of(Collections.singletonMap(PARAM_PKGS, entry.getKey()
                                 .stream().collect(Collectors.toMap(
                                         patch -> "patch:" + patch,
