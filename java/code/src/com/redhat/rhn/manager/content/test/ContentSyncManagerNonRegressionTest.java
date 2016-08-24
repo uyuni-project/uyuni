@@ -153,7 +153,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
                     actualBase = actualProducts.next();
 
-                    checkProductMatches(friendlyName, version, arch, channelLabels, actualBase);
+                    checkProductMatches(friendlyName, version, arch, channelLabels, actualBase, null);
 
                     actualExtensions = actualBase.getExtensions().iterator();
                 }
@@ -165,7 +165,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                         ListedProduct extension = actualExtensions.next();
 
                         checkProductMatches(friendlyName, version, arch, channelLabels,
-                                extension);
+                                extension, actualBase);
                     }
                 }
             }
@@ -231,9 +231,12 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
      * @param product the actual product
      */
     public void checkProductMatches(String friendlyName, String version, String arch,
-            SortedSet<String> channelLabels, ListedProduct product) {
-        String preamble = "Product " + product.getId() + " (" + friendlyName
-                + ", " + arch + ") ";
+            SortedSet<String> channelLabels, ListedProduct product, ListedProduct base) {
+        String preamble = "Product " + product.getId() + " (" + product.getFriendlyName()
+                + ", " + product.getArch() + ") ";
+        if (base != null) {
+            preamble += "with base (" + base.getFriendlyName() + ", " + base.getArch() + ") ";
+        }
         checkEquals(preamble + "friendly name", friendlyName, product.getFriendlyName());
         checkEquals(preamble + "version", version, product.getVersion());
         checkEquals(preamble + "arch", arch, product.getArch());
