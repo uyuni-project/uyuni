@@ -585,21 +585,15 @@ def generateBootstrapScript(options):
     # this means that we can negate those booleans with 1 - their current
     # value (instead of doing not value which can yield True/False, which
     # would print as such)
-    newScript.append(getHeader(MY_PRODUCT_NAME,
-                          options.activation_keys,
-                          options.gpg_key,
-                          options.overrides,
-                          options.hostname,
-                          options.salt,
-                          orgCACert,
-                          isRpmYN,
-                          1 - options.no_ssl,
-                          1 - options.no_gpg,
-                          options.allow_config_actions,
-                          options.allow_remote_commands,
-                          options.up2date,
-                          pubname,
-                          DEFAULT_APACHE_PUB_DIRECTORY)
+    newScript.append(
+                    getHeader(
+                            MY_PRODUCT_NAME,
+                            options,
+                            orgCACert,
+                            isRpmYN,
+                            pubname,
+                            DEFAULT_APACHE_PUB_DIRECTORY
+                            )
                     )
 
     writeYN = 1
