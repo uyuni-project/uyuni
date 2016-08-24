@@ -235,32 +235,30 @@ fi
 """
 
 
-def getHeader(productName, activation_keys, org_gpg_key,
-              overrides, hostname, saltEnabled, orgCACert, isRpmYN,
-              using_ssl, using_gpg,
-              allow_config_actions, allow_remote_commands, up2dateYN, pubname, apachePubDirectory):
+def getHeader(productName, options, orgCACert, isRpmYN, pubname, apachePubDirectory):
     #2/14/06 wregglej 181407 If the org_gpg_key option has the path to the file
     #in it, remove it. It will cause the $FETCH to fail.
+    org_gpg_key = options.gpg_key
     path_list = os.path.split(org_gpg_key)
     if path_list[0] and path_list[0] != '':
         org_gpg_key = path_list[1]
 
-    exit_call = " " if activation_keys or saltEnabled else "exit 1"
+    exit_call = " " if options.activation_keys or options.salt else "exit 1"
 
     return _header.format(productName=productName,
                           apachePubDirectory=apachePubDirectory,
                           exit_call=exit_call,
-                          activation_keys=activation_keys,
+                          activation_keys=options.activation_keys,
                           org_gpg_key=org_gpg_key,
-                          overrides=overrides,
-                          hostname=hostname,
+                          overrides=options.overrides,
+                          hostname=options.hostname,
                           orgCACert=orgCACert,
                           isRpmYN=isRpmYN,
-                          using_ssl=using_ssl,
-                          using_gpg=using_gpg,
-                          allow_config_actions=allow_config_actions,
-                          allow_remote_commands=allow_remote_commands,
-                          up2dateYN=up2dateYN,
+                          using_ssl=1 - options.no_ssl,
+                          using_gpg=1 - options.no_gpg,
+                          allow_config_actions=options.allow_config_actions,
+                          allow_remote_commands=options.allow_remote_commands,
+                          up2dateYN=options.up2date,
                           pubname=pubname)
 
 def getRegistrationStackSh(saltEnabled):
