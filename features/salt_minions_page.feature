@@ -19,7 +19,7 @@ Feature: Explore the Minions page
     And I go to the minion onboarding page
     Then I should see this hostname as text
     And I see my fingerprint
-    Then I should see a "pending" text
+    Then I try to reload page until contains "pending" text
 
   Scenario: Reject and delete the pending minion key
     Given this minion key is unaccepted
