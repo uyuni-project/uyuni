@@ -17,9 +17,9 @@ Feature: Explore the Minions page
   Scenario: Minion is visible in the Pending section
     Given this minion key is unaccepted
     And I go to the minion onboarding page
-    Then I should see this hostname as text
+    Then I refresh page until see this hostname as text
     And I see my fingerprint
-    Then I try to reload page until contains "pending" text
+    And I should see a "pending" text
 
   Scenario: Reject and delete the pending minion key
     Given this minion key is unaccepted
