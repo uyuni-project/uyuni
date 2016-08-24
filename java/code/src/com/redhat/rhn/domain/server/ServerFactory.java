@@ -1032,6 +1032,36 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * list the newest packages required by the given errata ids
+     * for each of the given servers.
+     *
+     * @param serverIds set of server ids
+     * @param errataIds set of errata ids
+     * @return map from server id to map of package name to package version in evr format
+     */
+    @SuppressWarnings("unchecked")
+    public static Map<Long, Map<String, String>> listNewestPkgsForServerErrata(
+            Set<Long> serverIds, Set<Long> errataIds) {
+        if (serverIds.isEmpty() || errataIds.isEmpty()) {
+            return new HashMap<>();
+        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("serverIds", serverIds);
+        params.put("errataIds", errataIds);
+        List<Object[]> result = singleton.listObjectsByNamedQuery(
+                "Server.listNewestPkgsForServerErrata", params);
+
+        return result.stream().collect(
+                // Group by server id
+                Collectors.groupingBy(row -> (Long) row[0],
+                        // Map from package name to version (requires package names
+                        // to be unique which is guaranteed by the sql query
+                        Collectors.toMap(row -> (String)row[1], row -> (String)row[2])
+                )
+        );
+    }
+
+    /**
      * Save NetworkInterface
      * @param networkInterfaceIn the interface to save
      */
