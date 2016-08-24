@@ -192,6 +192,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     failures.add("Product was expected but not found: " +
                             friendlyName + ", " + version + ", " +
                             arch + ", " + channelLabels.first());
+                    failures.add(">>> Maybe you need to request a Beta Key?");
                 }
             }
 
