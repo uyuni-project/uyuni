@@ -40,7 +40,7 @@ from rhn_bootstrap_strings import \
     getHeader, getConfigFilesSh, getUp2dateScriptsSh, getGPGKeyImportSh, \
     getCorpCACertSh, getRegistrationSh, getUp2dateTheBoxSh, \
     getAllowConfigManagement, getAllowRemoteCommands, \
-    getRegistrationStackSh, getRegistrationSaltSh
+    getRegistrationStackSh, getRegistrationSaltSh, removeTLSCertificate
 from sslToolConfig import CA_CRT_NAME, CA_CRT_RPM_NAME
 from spacewalk.common.fileutils import rotateFile, cleanupAbsPath
 from spacewalk.common.checksum  import getFileChecksum
@@ -614,6 +614,7 @@ def generateBootstrapScript(options):
         newScript.append(getUp2dateScriptsSh())
 
     if (options.salt):
+        newScript.append(removeTLSCertificate())
         newScript.append(getRegistrationSaltSh(MY_PRODUCT_NAME))
     else:
         newScript.append(getRegistrationSh(MY_PRODUCT_NAME))

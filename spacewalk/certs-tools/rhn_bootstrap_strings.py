@@ -254,8 +254,8 @@ def getHeader(productName, options, orgCACert, isRpmYN, pubname, apachePubDirect
                           hostname=options.hostname,
                           orgCACert=orgCACert,
                           isRpmYN=isRpmYN,
-                          using_ssl=1 - options.no_ssl,
-                          using_gpg=1 - options.no_gpg,
+                          using_ssl=0 if bool(options.no_ssl) else 1,
+                          using_gpg=0 if bool(options.no_gpg) else 1,
                           allow_config_actions=options.allow_config_actions,
                           allow_remote_commands=options.allow_remote_commands,
                           up2dateYN=options.up2date,
@@ -302,7 +302,7 @@ if [ "$INSTALLER" == zypper ]; then
 
   function getZ_ZMD_TODEL() {{
     local ZMD_STACK="zmd rug libzypp-zmd-backend yast2-registration zen-updater zmd-inventory suseRegister-jeos"
-    if rpm -q suseRegister --qf '%%{{VERSION}}' | grep -q '^\(0\.\|1\.[0-3]\)\(\..*\)\?$'; then
+    if rpm -q suseRegister --qf '%{{VERSION}}' | grep -q '^\(0\.\|1\.[0-3]\)\(\..*\)\?$'; then
       # we need the new suseRegister >= 1.4, so wipe an old one too
       ZMD_STACK="$ZMD_STACK suseRegister suseRegisterInfo spacewalk-client-tools"
     fi
@@ -366,7 +366,7 @@ if [ "$INSTALLER" == zypper ]; then
     #
     # Note: We try to install the missing packages even if adding the repo fails.
     # Might be some other system repo provides them instead.
-    if rpm -q zypper --qf '%%{{VERSION}}' | grep -q '^0\(\..*\)\?$'; then
+    if rpm -q zypper --qf '%{{VERSION}}' | grep -q '^0\(\..*\)\?$'; then
 
       # code10 zypper has no --gpg-auto-import-keys and no reliable return codes.
       if [ -n "$Z_CLIENT_REPO_URL" ]; then
@@ -463,7 +463,6 @@ fi
 
 """
 
-
 def getUp2dateScriptsSh():
     return """\
 echo "* running the update scripts"
@@ -510,8 +509,57 @@ def getCorpCACertSh():
     return """\
 echo
 if [ $USING_SSL -eq 1 ] ; then
+
+    CERT_DIR=/usr/share/rhn
+    TRUST_DIR=/etc/pki/ca-trust/source/anchors
+    UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
+
+    if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
+      # get name from config
+      CERT_FILE=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
+    else
+      CERT_FILE=${ORG_CA_CERT}
+    fi
+
+    function updateCertificates() {
+        if [ -d /etc/pki/ca-trust/source/anchors ]; then
+            TRUST_DIR=/etc/pki/ca-trust/source/anchors
+        elif [ -d /etc/pki/trust/anchors/ -a -x /usr/sbin/update-ca-certificates ]; then
+            # SLE 12
+            TRUST_DIR=/etc/pki/trust/anchors
+            UPDATE_TRUST_CMD="/usr/sbin/update-ca-certificates"
+        elif [ -d /etc/ssl/certs -a -x /usr/bin/c_rehash ]; then
+            # SLE 11
+            TRUST_DIR=/etc/ssl/certs
+            UPDATE_TRUST_CMD="/usr/bin/c_rehash"
+            rm -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT.pem
+            rm -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT-*.pem
+            if [ -f $CERT_DIR/$CERT_FILE ]; then
+                ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT.pem
+                if [ $(grep -- "-----BEGIN CERTIFICATE-----" $CERT_DIR/$CERT_FILE | wc -l) -gt 1 ]; then
+                    csplit -b "%02d.pem" -f $TRUST_DIR/RHN-ORG-TRUSTED-SSL-CERT- $CERT_DIR/$CERT_FILE '/-----BEGIN CERTIFICATE-----/' '{*}'
+                fi
+            fi
+            $UPDATE_TRUST_CMD >/dev/null
+            return
+        fi
+
+        $UPDATE_TRUST_CMD
+
+        if [ ! -d $TRUST_DIR ]; then
+            return
+        fi
+
+        if [ -f $CERT_DIR/$CERT_FILE ]; then
+            ln -sf $CERT_DIR/$CERT_FILE $TRUST_DIR
+        else
+            rm -f $TRUST_DIR/$CERT_FILE
+        fi
+    }
+
     echo "* attempting to install corporate public CA cert"
-    test -d /usr/share/rhn || mkdir -p /usr/share/rhn
+
+    test -d ${CERT_DIR} || mkdir -p ${CERT_DIR}
     rm -f ${ORG_CA_CERT}
     $FETCH ${HTTP_PUB_DIRECTORY}/${ORG_CA_CERT}
 
@@ -519,47 +567,14 @@ if [ $USING_SSL -eq 1 ] ; then
         rpm -Uvh --force --replacefiles --replacepkgs ${ORG_CA_CERT}
         rm -f ${ORG_CA_CERT}
     else
-        mv ${ORG_CA_CERT} /usr/share/rhn/
+        mv ${ORG_CA_CERT} ${CERT_DIR}
     fi
 
-    if [ "$INSTALLER" == zypper ] ; then
-      function suseVersion() {
-        rpm --eval "%{suse_version}"
-      }
-
-      function sslCertDir() {
-        if [[ $(suseVersion) -ge 1315 ]]; then
-          echo "/etc/pki/trust/anchors"
-        else
-          echo "/etc/ssl/certs"
-        fi
-      }
-
-      function targetCertPath() {
-        echo "$(sslCertDir)/${ORG_CA_CERT}.pem"
-      }
-
-      function updateCertificates() {
-        if [[ $(suseVersion) -ge 1315 ]]; then
-          test -x /usr/sbin/update-ca-certificates && /usr/sbin/update-ca-certificates
-        else
-          test -x /usr/bin/c_rehash && /usr/bin/c_rehash /etc/ssl/certs/ | grep "${ORG_CA_CERT}"
-        fi
-      }
-
-      function symlinkCertificate() {
-        if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
-          # get name from config
-          ORG_CA_CERT=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
-        fi
-        test -e "$(targetCertPath)" || {
-          test -d $(sslCertDir) || mkdir -p $(sslCertDir)
-          ln -s "/usr/share/rhn/${ORG_CA_CERT}" "$(targetCertPath)"
-        }
-      }
-
-      symlinkCertificate
-      updateCertificates
+    if [  $ORG_CA_CERT_IS_RPM_YN -eq 0 ] ; then
+        # symlink & update certificates is already done in rpm post-install script
+        # no need to be done again if we have installed rpm
+        echo "* update certificates"
+        updateCertificates
     fi
 else
     echo "* configured not to use SSL: don't install corporate public CA cert"
@@ -711,7 +726,7 @@ if [ $REGISTER_THIS_BOX -eq 1 ] ; then
     echo "$MYNAME" > "$MINION_ID_FILE"
     echo "master: $HOSTNAME" > "$SUSEMANAGER_MASTER_FILE"
 
-    if [ -z "$ACTIVATION_KEYS" ] ; then
+    if [ -n "$ACTIVATION_KEYS" ] ; then
         cat <<EOF >"SUSEMANAGER_MASTER_FILE"
 grains:
     susemanager:
@@ -719,6 +734,11 @@ grains:
 EOF
     fi
 fi
+
+echo "* removing TLS certificate used for bootstrap"
+echo "  (will be re-added via salt state)"
+
+removeTLSCertificate
 
 echo "* starting salt daemon and enabling it during boot"
 
@@ -731,6 +751,34 @@ else
 fi
 
 """.format(productName=productName)
+
+
+def removeTLSCertificate():
+    """
+    This method adds bash instructions to the bootstrap script to correctly
+    remove TLS certificate used to install salt packages to bootstrap the
+    minion.
+    Since TLS certificates will be installed again with a Salt state during
+    onboarding, this is required to avoid duplicates in TLS certificates.
+    """
+
+    return """\
+function removeTLSCertificate() {
+    CERT_DIR=/usr/share/rhn
+    TRUST_DIR=/etc/pki/ca-trust/source/anchors
+    UPDATE_TRUST_CMD="/usr/bin/update-ca-trust extract"
+
+    if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
+        CERT_FILE=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
+        rpm -e `basename ${ORG_CA_CERT} .rpm`
+    else
+        CERT_FILE=${ORG_CA_CERT}
+        rm -f /usr/share/rhn/${ORG_CA_CERT}
+    fi
+    updateCertificates
+}
+
+    """
 
 
 def getUp2dateTheBoxSh(productName, saltEnabled):
@@ -761,7 +809,7 @@ fi
 if [ "$INSTALLER" == zypper ] ; then
   test -d /var/lib/suseRegister && touch /var/lib/suseRegister/neverRegisterOnBoot
 fi
-if [ $DISABLE_LOCAL_REPOS -eq 1 && $SALT_ENABLED -eq 0 ]; then
+if [ $DISABLE_LOCAL_REPOS -eq 1 ] && [ $SALT_ENABLED -eq 0 ] ; then
     if [ "$INSTALLER" == zypper ] ; then
 	echo "* Disable all repos not provided by SUSE Manager Server."
 	zypper ms -d --all
@@ -800,7 +848,7 @@ else
     if [ "$INSTALLER" == zypper ] ; then
         echo "zypper --non-interactive up zypper {PKG_NAME_ZYPPER_SYNC}"
     elif [ "$INSTALLER" == yum ] ; then
-        echo "yum -y upgrade yum PKG_NAME_YUM_SYNC"
+        echo "yum -y upgrade yum {PKG_NAME_YUM_SYNC}"
     else
         echo "up2date up2date; up2date -p"
     fi
