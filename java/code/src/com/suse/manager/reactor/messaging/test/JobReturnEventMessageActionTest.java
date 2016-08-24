@@ -20,12 +20,14 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -100,6 +102,70 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
             assertEquals("x86_64", product.getArch().getName());
         });
         assertEquals(1, minion.getInstalledProducts().size());
+
+        // Verify the action status
+        assertTrue(action.getServerActions().stream()
+                .filter(serverAction -> serverAction.getServer().equals(minion))
+                .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
+    }
+
+    /**
+     * Test the processing of packages.profileupdate job return event
+     * for RHEL7 with RES.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testPackagesProfileUpdateRhel7RES() throws Exception {
+        RhelUtilsTest.createResChannel(user, "7");
+        // Prepare test objects: minion server, products and action
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        minion.setMinionId("minionsles12-suma3pg.vagrant.local");
+        SUSEProductTestUtils.createVendorSUSEProducts();
+        Action action = ActionFactoryTest.createAction(
+                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
+
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("packages.profileupdate.rhel7res.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        // Verify the results
+        for (InstalledPackage pkg : minion.getPackages()) {
+            if (pkg.getName().getName().equals("aaa_base")) {
+                assertEquals("13.2+git20140911.61c1681", pkg.getEvr().getVersion());
+                assertEquals("12.1", pkg.getEvr().getRelease());
+                assertEquals("x86_64", pkg.getArch().getName());
+            }
+            else if (pkg.getName().getName().equals("bash")) {
+                assertEquals("4.2", pkg.getEvr().getVersion());
+                assertEquals("75.2", pkg.getEvr().getRelease());
+                assertEquals("x86_64", pkg.getArch().getName());
+            }
+            else if (pkg.getName().getName().equals("timezone-java")) {
+                assertEquals("2016c", pkg.getEvr().getVersion());
+                assertEquals("0.37.1", pkg.getEvr().getRelease());
+                assertEquals("noarch", pkg.getArch().getName());
+            }
+
+            // All packages have epoch null
+            assertNull(pkg.getEvr().getEpoch());
+        }
+        assertEquals(3, minion.getPackages().size());
+
+        assertEquals(1, minion.getInstalledProducts().size());
+        minion.getInstalledProducts().stream().forEach(product -> {
+            assertEquals("res", product.getName());
+            assertEquals("7", product.getVersion());
+            assertEquals(null, product.getRelease());
+            // in the case of RES the product arch is taken from the server arch
+            assertEquals("x86_64", product.getArch().getName());
+        });
 
         // Verify the action status
         assertTrue(action.getServerActions().stream()

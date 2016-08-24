@@ -6,7 +6,12 @@
 name={{ args['name'] }}
 enabled={{ args['enabled'] }}
 autorefresh={{ args['autorefresh'] }}
+{%- if grains['os_family'] == 'RedHat' %}
+baseurl=https://{{ args['host'] }}/rhn/manager/download/{{ chan }}
+susemanager_token={{ args['token'] }}
+{%- else %}
 baseurl=https://{{ args['host'] }}/rhn/manager/download/{{ chan }}?{{ args['token'] }}
+{%- endif %}
 type={{ args['type'] }}
 gpgcheck={{ args['gpgcheck'] }}
 repo_gpgcheck={{ args['repo_gpgcheck'] }}

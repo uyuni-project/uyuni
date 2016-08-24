@@ -41,6 +41,7 @@ import com.suse.salt.netapi.calls.modules.Smbios;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.modules.Timezone;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
@@ -488,10 +489,12 @@ public class SaltService {
      * Get the content of file from a minion.
      * @param minionId the minion id
      * @param path the path of the file
-     * @return the content of a file as a string
+     * @return the content of a file as a string or an empty optional if the
+     * file does not exist
      */
     public Optional<String> getFileContent(String minionId, String path) {
-        return callSync(SumaUtil.cat(path), minionId);
+        Optional<SumaUtil.CatResult> result = callSync(SumaUtil.cat(path), minionId);
+        return result.filter(r -> r.getRetcode() == 0).map(r -> r.getStdout());
     }
 
     /**
@@ -822,5 +825,16 @@ public class SaltService {
      */
     public Optional<String> getMasterHostname(String minionId) {
         return callSync(Config.get(Config.MASTER), minionId);
+    }
+
+    /**
+     * Apply a state synchronously.
+     * @param minionId the minion id
+     * @param state the state to apply
+     * @return the result of applying the state
+     */
+    public Optional<Map<String, State.ApplyResult>> applyState(
+            String minionId, String state) {
+        return callSync(State.apply(state), minionId);
     }
 }

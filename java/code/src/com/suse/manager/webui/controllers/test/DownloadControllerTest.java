@@ -37,10 +37,8 @@ import spark.Response;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
@@ -123,9 +121,20 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @return - Spark Request
      */
     private Request getMockRequestWithParams(Map<String, String> params) {
+        return getMockRequestWithParamsAndHeaders(params, Collections.emptyMap());
+    }
+
+    /**
+     * Helper method for creating a Spark Request with parameters.
+     *
+     * @param params - parameters
+     * @return - Spark Request
+     */
+    private Request getMockRequestWithParamsAndHeaders(Map<String, String> params, Map<String, String> headers) {
         return SparkTestUtils.createMockRequestWithParams(
                 "http://localhost:8080/rhn/manager/download/:channel/getPackage/:file",
                 params,
+                headers,
                 channel.getLabel(), uriFile);
     }
 
@@ -244,11 +253,39 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test a download with a correct channel in the token and the token
+     * in a query param.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testCorrectChannelWithTokenInUrl() throws Exception {
+        testCorrectChannel((tokenChannel) -> {
+            Map<String, String> params = new HashMap<>();
+            params.put(tokenChannel, "");
+            return getMockRequestWithParams(params);
+        });
+    }
+
+    /**
+     * Test a download with a correct channel in the token and the token
+     * in an http header.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testCorrectChannelWithTokenInHeader() throws Exception {
+        testCorrectChannel((tokenChannel) -> {
+            Map<String, String> headers = new HashMap<>();
+            headers.put("X-Mgr-Auth", tokenChannel);
+            return getMockRequestWithParamsAndHeaders(Collections.emptyMap(), headers);
+        });
+    }
+
+    /**
      * Test a download with a correct channel in the token.
      *
      * @throws Exception if anything goes wrong
      */
-    public void testCorrectChannel() throws Exception {
+    private void testCorrectChannel(Function<String, Request> requestFactory) throws Exception {
         TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
         tokenBuilder.onlyChannels(
@@ -256,10 +293,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                         Arrays.asList(channel.getLabel())));
         String tokenChannel = tokenBuilder.getToken();
 
-        Map<String, String> params = new HashMap<>();
-        params.put(tokenChannel, "");
-        Request request = getMockRequestWithParams(params);
-
+        Request request = requestFactory.apply(tokenChannel);
         try {
             assertNotNull(DownloadController.downloadPackage(request, response));
 

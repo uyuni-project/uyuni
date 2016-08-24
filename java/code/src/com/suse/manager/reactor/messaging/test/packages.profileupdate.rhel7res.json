@@ -1,0 +1,93 @@
+{
+    "tag": "salt/job/20160407084101455804/ret/minionsles12-suma3pg.vagrant.local",
+    "data": {
+        "fun_args": [
+            {
+                "mods": [
+                    "packages.profileupdate"
+                ]
+            }
+        ],
+        "jid": "20160407084101455804",
+        "return": {
+            "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run": {
+                "comment": "Command \"rpm -q --whatprovides 'sles_es-release-server'\" run",
+                "name": "rpm -q --whatprovides 'sles_es-release-server'",
+                "start_time": "15:12:28.730937",
+                "result": true,
+                "duration": 522.726,
+                "__run_num__": 3,
+                "changes": {
+                    "pid": 2036,
+                    "retcode": 0,
+                    "stderr": "",
+                    "stdout": "sles_es-release-server-7.2-9.el7.2.1.x86_64"
+                }
+            },
+            "cmd_|-centosrelease_|-cat /etc/centos-release_|-run": {
+                "comment": "onlyif execution failed",
+                "name": "cat /etc/centos-release",
+                "start_time": "15:12:28.510221",
+                "skip_watch": true,
+                "result": true,
+                "duration": 220.272,
+                "__run_num__": 2,
+                "changes": {}
+            },
+            "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run": {
+                "comment": "Command \"cat /etc/redhat-release\" run",
+                "name": "cat /etc/redhat-release",
+                "start_time": "15:12:28.047595",
+                "result": true,
+                "duration": 462.21,
+                "__run_num__": 1,
+                "changes": {
+                    "pid": 2033,
+                    "retcode": 0,
+                    "stderr": "",
+                    "stdout": "Red Hat Enterprise Linux Server release 7.2 (Maipo)\n# This is a \"SLES Expanded Support platform Server release 7.2\"\n# The above \"Red Hat Enterprise Linux \" string is only used to \n# keep software compatibility."
+                }
+            },
+            "module_|-packages_|-pkg.info_installed_|-run": {
+                "comment": "Module function pkg.info_installed executed",
+                "name": "pkg.info_installed",
+                "start_time": "15:12:26.913420",
+                "result": true,
+                "duration": 1118.274,
+                "__run_num__": 0,
+                "changes": {
+                    "ret": {
+                        "aaa_base": {
+                            "release": "12.1",
+                            "arch": "x86_64",
+                            "version": "13.2+git20140911.61c1681",
+                            "install_date": "2016-04-05T16:27:12Z"
+                        },
+                        "bash": {
+                            "release": "75.2",
+                            "arch": "x86_64",
+                            "version": "4.2",
+                            "install_date": "2016-04-05T16:27:06Z"
+                        },
+                        "timezone-java": {
+                            "release": "0.37.1",
+                            "arch": "noarch",
+                            "version": "2016c",
+                            "install_date": "2016-04-05T16:27:50Z"
+                        }
+                    }
+                }
+            }
+        },
+        "retcode": 0,
+        "success": true,
+        "cmd": "_return",
+        "_stamp": "2016-04-07T08:41:02.846934",
+        "fun": "state.apply",
+        "out": "highstate",
+        "id": "minionsles12-suma3pg.vagrant.local",
+        "metadata": {
+            "suma-action-id": 59
+        }
+    }
+}

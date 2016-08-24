@@ -1,0 +1,205 @@
+{
+  "biosversion": "rel-1.7.5-0-ge51488c-20150524_160643-cloud127",
+  "kernel": "Linux",
+  "domain": "vagrant.local",
+  "biosreleasedate": "04/01/2014",
+  "zmqversion": "4.0.4",
+  "kernelrelease": "3.12.48-52.27-default",
+  "pythonpath": [
+    "/usr/bin",
+    "/usr/lib/python27.zip",
+    "/usr/lib64/python2.7",
+    "/usr/lib64/python2.7/plat-linux2",
+    "/usr/lib64/python2.7/lib-tk",
+    "/usr/lib64/python2.7/lib-old",
+    "/usr/lib64/python2.7/lib-dynload",
+    "/usr/lib64/python2.7/site-packages",
+    "/usr/local/lib64/python2.7/site-packages",
+    "/usr/local/lib/python2.7/site-packages",
+    "/usr/lib/python2.7/site-packages"
+  ],
+  "ip_interfaces": {
+    "lo": [
+      "127.0.0.1",
+      "::1"
+    ],
+    "eth1": [
+      "172.16.37.5",
+      "fe80::5054:ff:feb0:1da2"
+    ],
+    "eth0": [
+      "192.168.121.35",
+      "fe80::5054:ff:fe4f:7102"
+    ]
+  },
+  "shell": "/bin/bash",
+  "mem_total": 489,
+  "saltversioninfo": [
+    2015,
+    8,
+    2,
+    0
+  ],
+  "SSDs": [],
+  "server": "suma3pg.vagrant.local",
+  "id": "clisles12-suma3pg.vagrant.local",
+  "osrelease": "12",
+  "ps": "ps -efH",
+  "server_id": 1617825398,
+  "uuid": "75299898-533c-ff48-8b5c-be026df56f74",
+  "ip6_interfaces": {
+    "lo": [
+      "::1"
+    ],
+    "eth1": [
+      "fe80::5054:ff:feb0:1da2"
+    ],
+    "eth0": [
+      "fe80::5054:ff:fe4f:7102"
+    ]
+  },
+  "num_cpus": 1,
+  "hwaddr_interfaces": {
+    "lo": "00:00:00:00:00:00",
+    "eth1": "52:54:00:b0:1d:a2",
+    "eth0": "52:54:00:4f:71:02"
+  },
+  "init": "systemd",
+  "ip4_interfaces": {
+    "lo": [
+      "127.0.0.1"
+    ],
+    "eth1": [
+      "172.16.37.5"
+    ],
+    "eth0": [
+      "192.168.121.35"
+    ]
+  },
+  "osfullname": "Red Hat Enterprise Linux Server",
+  "master": "suma3pg",
+  "ipv4": [
+    "127.0.0.1",
+    "172.16.37.5",
+    "192.168.121.35"
+  ],
+  "ipv6": [
+    "::1",
+    "fe80::5054:ff:fe4f:7102",
+    "fe80::5054:ff:feb0:1da2"
+  ],
+  "role": "client",
+  "cpusockets": 1,
+  "cpu_flags": [
+    "fpu",
+    "vme",
+    "de",
+    "pse",
+    "tsc",
+    "msr",
+    "pae",
+    "mce",
+    "cx8",
+    "apic",
+    "sep",
+    "mtrr",
+    "pge",
+    "mca",
+    "cmov",
+    "pat",
+    "pse36",
+    "clflush",
+    "mmx",
+    "fxsr",
+    "sse",
+    "sse2",
+    "ss",
+    "syscall",
+    "nx",
+    "pdpe1gb",
+    "rdtscp",
+    "lm",
+    "constant_tsc",
+    "rep_good",
+    "nopl",
+    "eagerfpu",
+    "pni",
+    "pclmulqdq",
+    "vmx",
+    "ssse3",
+    "fma",
+    "cx16",
+    "pcid",
+    "sse4_1",
+    "sse4_2",
+    "x2apic",
+    "movbe",
+    "popcnt",
+    "tsc_deadline_timer",
+    "aes",
+    "xsave",
+    "avx",
+    "f16c",
+    "rdrand",
+    "hypervisor",
+    "lahf_lm",
+    "abm",
+    "xsaveopt",
+    "vnmi",
+    "ept",
+    "fsgsbase",
+    "bmi1",
+    "avx2",
+    "smep",
+    "bmi2",
+    "erms",
+    "invpcid"
+  ],
+  "localhost": "clisles12-suma3pg",
+  "lsb_distrib_id": "Red Hat Enterprise Linux Server",
+  "fqdn_ip4": [
+    "127.0.0.1"
+  ],
+  "fqdn_ip6": [],
+  "nodename": "clisles12-suma3pg",
+  "saltversion": "2015.8.2",
+  "lsb_distrib_release": "12",
+  "systemd": {
+    "version": "210",
+    "features": "+PAM +LIBWRAP +AUDIT +SELINUX -IMA +SYSVINIT +LIBCRYPTSETUP +GCRYPT +ACL +XZ +SECCOMP +APPARMOR"
+  },
+  "saltpath": "/usr/lib/python2.7/site-packages/salt",
+  "host": "clisles12-suma3pg",
+  "os_family": "RedHat",
+  "oscodename": "Red Hat Enterprise Linux Server 7.2",
+  "gpus": [],
+  "pythonversion": [
+    2,
+    7,
+    9,
+    "final",
+    0
+  ],
+  "manufacturer": "QEMU",
+  "num_gpus": 0,
+  "virtual": "kvm",
+  "cpu_model": "Intel Xeon E312xx (Sandy Bridge)",
+  "fqdn": "clisles12-suma3pg.vagrant.local",
+  "pythonexecutable": "/usr/bin/python",
+  "productname": "Standard PC (i440FX + PIIX, 1996)",
+  "osarch": "x86_64",
+  "cpuarch": "x86_64",
+  "lsb_distrib_codename": "Red Hat Enterprise Linux Server 7.2",
+  "osrelease_info": [
+    7,
+    2
+  ],
+  "locale_info": {
+    "detectedencoding": "UTF-8",
+    "defaultlanguage": "en_US",
+    "defaultencoding": "UTF-8"
+  },
+  "path": "/sbin:/usr/sbin:/usr/local/sbin:/root/bin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib/mit/bin:/usr/lib/mit/sbin",
+  "machine_id": "44da3fc9b97b6552cc668bcd56498fe5",
+  "os": "RedHat"
+}

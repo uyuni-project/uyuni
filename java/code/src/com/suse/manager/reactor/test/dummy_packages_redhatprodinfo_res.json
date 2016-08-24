@@ -1,0 +1,40 @@
+{
+    "cmd_|-centosrelease_|-cat /etc/centos-release_|-run": {
+      "__run_num__": 1,
+      "changes": {},
+      "comment": "onlyif execution failed",
+      "duration": 118.726,
+      "name": "cat /etc/centos-release",
+      "result": true,
+      "skip_watch": true,
+      "start_time": "06:54:14.670755"
+    },
+    "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run": {
+      "__run_num__": 2,
+      "changes": {
+        "pid": 477,
+        "retcode": 0,
+        "stderr": "",
+        "stdout": "sles_es-release-server-7.2-9.el7.2.1.x86_64"
+      },
+      "comment": "Command \"rpm -q --whatprovides 'sles_es-release-server'\" run",
+      "duration": 281.741,
+      "name": "rpm -q --whatprovides 'sles_es-release-server'",
+      "result": true,
+      "start_time": "06:54:14.789762"
+    },
+    "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run": {
+      "__run_num__": 0,
+      "changes": {
+        "pid": 474,
+        "retcode": 0,
+        "stderr": "",
+        "stdout": "Red Hat Enterprise Linux Server release 7.2 (Maipo)\n# This is a \"SLES Expanded Support platform Server release 7.2\"\n# The above \"Red Hat Enterprise Linux \" string is only used to \n# keep software compatibility."
+      },
+      "comment": "Command \"cat /etc/redhat-release\" run",
+      "duration": 241.09,
+      "name": "cat /etc/redhat-release",
+      "result": true,
+      "start_time": "06:54:14.429386"
+    }
+  }
