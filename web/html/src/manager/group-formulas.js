@@ -4,6 +4,7 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 
 var Messages = require("../components/messages").Messages
+var MessagesUtils = require("../components/messages").Utils;
 var Button = require("../components/buttons").Button;
 const Network = require("../utils/network");
 
@@ -23,6 +24,7 @@ var GroupFormulas = React.createClass({
     getInitialState: function() {
         var st = {
             "serverData": {"selected": [], "added": [], "removed": []},
+            "messages": []
         };
         this.requestServerData();
         return st;
@@ -40,12 +42,12 @@ var GroupFormulas = React.createClass({
 		
         Network.post("/rhn/manager/groups/details/formulas/apply", JSON.stringify(formData), "application/json").promise.then(
 		data => {
-                console.log(data);
-                window.location.href = data.url;
+                this.state.messages = MessagesUtils.info(t("Formulas applied!"))
+                this.requestServerData();
 		},
         (xhr) => {
-           if (xhr.status == 400) {
-               // validation err
+           if (xhr.status == 400 || xhr.status == 403) {
+               // validation err or permission denied
                var errs = JSON.parse(xhr.responseText);
                this.setState({errors: errs});
            } else {
@@ -107,10 +109,10 @@ var GroupFormulas = React.createClass({
 	},
 
     render: function() {
-		var msg = null;
-        if(typeof this.props.flashMessages !== "undefined") {
-            msg = <Messages items={this.props.flashMessages}/>;
-        }
+		var messages = this.state.messages || [];
+        if(typeof this.props.flashMessages !== "undefined")
+			messages = messages.concat(this.props.flashMessages);
+        var msg = messages.length > 0 ? <Messages items={messages}/> : null;
         
         var errs = null;
         if (this.state.errors) {

@@ -81,7 +81,7 @@ public class FormulaCatalogController {
     public static ModelAndView details(Request request, Response response, User user) {
         String formulaName = request.params("name");
 
-        if (!exists(formulaName)) {
+        if (!FormulaFactory.listFormulas().contains(formulaName)) {
             Spark.halt(HttpStatus.SC_NOT_FOUND); // TODO redirect to the default 404 page
             return null;
         }
@@ -94,10 +94,5 @@ public class FormulaCatalogController {
         data.put("formulaData", GSON.toJson(formulaData));
 
         return new ModelAndView(data, "formula_catalog/formula.jade");
-    }
-    
-    private static boolean exists(String stateName) {
-        File formula = new File(FORMULA_DIRECTORY + "/" + stateName);
-        return formula.exists() && formula.isDirectory();
     }
 }

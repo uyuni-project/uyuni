@@ -87,7 +87,7 @@ class FormulaForm extends React.Component {
         }
 
 		if (this.state.serverData == null) {
-		    this.props.addFormulaNavBar(["Loading"], -1);
+		    this.props.addFormulaNavBar(["Not found"], 0);
 			return (
 		    	<div>
 					{errs}{msg}
@@ -96,7 +96,7 @@ class FormulaForm extends React.Component {
 							<h4>Formula not found!</h4>
 						</div>
 						<div className="panel-body">
-							{this.props.no_formula_text}
+							{this.props.noFormulaText}
 						</div>
 					</div>
 				</div>
