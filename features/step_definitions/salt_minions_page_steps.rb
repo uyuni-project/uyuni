@@ -43,6 +43,14 @@ When(/^I should see this hostname as text$/) do
   end
 end
 
+When(/^I refresh page until see this hostname as text$/) do
+  within('#spacewalk-content') do
+    steps %(
+     And I try to reload page until contains "#{$myhostname}" text
+      )
+  end
+end
+
 When(/^I should see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
     fail unless page.has_content?(txt)
