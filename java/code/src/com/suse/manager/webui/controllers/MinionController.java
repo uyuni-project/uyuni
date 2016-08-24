@@ -29,14 +29,19 @@ import org.apache.http.HttpStatus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.FlashScopeHelper;
@@ -44,6 +49,7 @@ import com.suse.manager.webui.utils.FlashScopeHelper;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
 /**
  * Controller class providing backend code for the minions page.
@@ -279,6 +285,8 @@ public class MinionController {
      */
     public static String serverGroupFormulaData(Request request, Response response, User user) {
     	Long groupId = new Long(request.params("sgid"));
+    	checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()));
+
     	int formula_id = Integer.parseInt(request.params("formula_id"));
     	List<String> formulas = FormulaFactory.getFormulasByGroupId(groupId);
 
@@ -319,6 +327,8 @@ public class MinionController {
     	Long groupId = Long.valueOf((String) map.get("groupId"));
     	String formulaName = (String) map.get("formula_name");
     	Map<String, Object> formData = (Map<String, Object>) map.get("content");
+
+    	checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()));
 
     	// Save data
     	try {
@@ -362,9 +372,11 @@ public class MinionController {
      * @return the JSON data
      */
     public static String serverGroupFormulasData(Request request, Response response, User user) {
-    	Map<String, Object> data = new HashMap<>();
+    	Long groupId = Long.valueOf(request.params("sgid"));
+    	checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()));
+        List<String> server_formulas = FormulaFactory.getFormulasByGroupId(groupId);
 
-        List<String> server_formulas = FormulaFactory.getFormulasByGroupId(Long.valueOf(request.params("sgid")));
+    	Map<String, Object> data = new HashMap<>();
 		data.put("selected", server_formulas);
 		data.put("formulas", FormulaFactory.listFormulas());
 
@@ -384,6 +396,7 @@ public class MinionController {
 		Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
     	Long groupId = Long.valueOf((String) map.get("groupId"));
     	List<String> selectedFormulas = (List<String>) map.get("selected");
+    	checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()));
 
     	try {
 			FormulaFactory.saveServerGroupFormulas(groupId, selectedFormulas, user.getOrg());
@@ -419,8 +432,10 @@ public class MinionController {
      * @return the JSON data
      */
     public static String minionFormulaData(Request request, Response response, User user) {
-    	// Find formulas of server groups
     	Long serverId = new Long(request.params("sid"));
+    	checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(serverId));
+
+    	// Find formulas of server groups
     	int formula_id = Integer.parseInt(request.params("formula_id"));
     	List<String> formulas = FormulaFactory.getFormulasByServerId(serverId);
 
@@ -464,6 +479,8 @@ public class MinionController {
     	// Get data from request
 		Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
     	Long serverId = Long.valueOf((String) map.get("serverId"));
+    	checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(serverId));
+
     	String formulaName = (String) map.get("formula_name");
     	Map<String, Object> formData = (Map<String, Object>) map.get("content");
 
@@ -484,5 +501,22 @@ public class MinionController {
         response.type("application/json");
         response.status(HttpStatus.SC_BAD_REQUEST);
         return GSON.toJson(errs);
+    }
+
+    private static void checkUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
+        try {
+            ServerGroupManager.getInstance().validateAccessCredentials(user, group,
+                    group.getName());
+            ServerGroupManager.getInstance().validateAdminCredentials(user);
+        }
+        catch (NullPointerException | PermissionException | LookupException e) {
+            Spark.halt(HttpStatus.SC_FORBIDDEN);
+        }
+    }
+
+    private static void checkUserHasPermissionsOnServer(User user, Server server) {
+        if (!SystemManager.isAvailableToUser(user, server.getId())) {
+            Spark.halt(HttpStatus.SC_FORBIDDEN);
+        }
     }
 }
