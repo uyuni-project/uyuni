@@ -191,7 +191,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         // Total seems to fluctuate, check for 30+:
         assertTrue(tzList.size() > 30);
         assertTrue(tzList.get(2) instanceof RhnTimeZone);
-        assertTrue(((RhnTimeZone)tzList.get(0)).getOlsonName().equals("America/New_York"));
+        assertEquals("Pacific/Easter", ((RhnTimeZone)tzList.get(0)).getOlsonName());
     }
 
     public void testCommitUser() throws Exception {
