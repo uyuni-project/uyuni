@@ -329,6 +329,9 @@ dump_remote_db() {
 }
 
 import_db() {
+    echo "`date +"%H:%M:%S"`   Checking the integrity of the database dump archive."
+    gzip -t $TMPDIR/$DBDUMPFILE || { echo "`date +"%H:%M:%S"`   FAILURE!"; exit 1; }
+
     echo "`date +"%H:%M:%S"`   Importing database dump. Please wait..."
     su -s /bin/bash - postgres -c "zcat $TMPDIR/$DBDUMPFILE | psql $MANAGER_DB_NAME > /dev/null"
     if [ $? -eq 0 ]; then
