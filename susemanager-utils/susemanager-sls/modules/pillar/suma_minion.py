@@ -11,7 +11,10 @@ Parameters:
 .. code-block:: yaml
 
     ext_pillar:
-      - suma_minion: /another/path/with/the/pillar/files
+      - suma_minion:
+        - /another/path/with/the/pillar/files
+        - /path/to/formula/layout/files
+        - /path/to/formula/data/files
 
 '''
 
@@ -33,9 +36,7 @@ def __virtual__():
     return True
 
 
-def ext_pillar(minion_id, pillar, path,
-    formula_layout_path="/usr/share/susemanager/salt/formulas",
-    formula_data_path="/srv/susemanager/formulas_data"):
+def ext_pillar(minion_id, pillar, path, formula_layout_path, formula_data_path):
     '''
     Find SUMA-related pillars for the registered minions and return the data.
     '''

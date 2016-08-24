@@ -51,10 +51,11 @@ import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
  */
 public class FormulaFactory {
 
-    private static final String FORMULA_DATA_DIRECTORY = "/srv/susemanager/formulas_data/";
-    private static final String FORMULA_DIRECTORY = "/usr/share/susemanager/salt/formulas/";
-    private static final String FORMULA_PILLAR_DIRECTORY = "/srv/susemanager/formulas_data/pillar/";
-    private static final String FORMULA_GROUP_PILLAR_DIRECTORY = "/srv/susemanager/formulas_data/group_pillar/";
+    private static final String FORMULA_DATA_DIRECTORY = "/srv/susemanager/formula_data/";
+    private static final String FORMULA_STATES_DIRECTORY = "/usr/share/susemanager/formulas/states/";
+    private static final String FORMULA_METADATA_DIRECTORY = "/usr/share/susemanager/formulas/metadata/";
+    private static final String FORMULA_PILLAR_DIRECTORY = FORMULA_DATA_DIRECTORY + "pillar/";
+    private static final String FORMULA_GROUP_PILLAR_DIRECTORY =FORMULA_DATA_DIRECTORY + "group_pillar/";
     private static final String GROUP_FORMULAS_DATA_FILE = FORMULA_DATA_DIRECTORY + "group_formulas.json";
     private static final String PILLAR_FILE_EXTENSION = "json";
     private static final Gson GSON = new GsonBuilder()
@@ -66,7 +67,7 @@ public class FormulaFactory {
     private FormulaFactory() {}
     
     public static List<String> listFormulas() {
-    	File directory = new File(FORMULA_DIRECTORY);
+    	File directory = new File(FORMULA_METADATA_DIRECTORY);
         File[] files = directory.listFiles();
         List<String> formulasList = new LinkedList<>();
         
@@ -134,7 +135,7 @@ public class FormulaFactory {
     }
     
     public static Optional<Map<String, Object>> getFormulaLayoutByName(String name) {
-    	File layout_file = new File(FORMULA_DIRECTORY + name + "/form.yml");
+    	File layout_file = new File(FORMULA_METADATA_DIRECTORY + name + "/form.yml");
     	
     	try {
 			if (layout_file.exists())
@@ -259,7 +260,7 @@ public class FormulaFactory {
     }
     
     public static Map<String, Object> getMetadata(String formula_name) {
-    	File metadata_file = new File(FORMULA_DIRECTORY + formula_name + "/metadata.yml");
+    	File metadata_file = new File(FORMULA_METADATA_DIRECTORY + formula_name + "/metadata.yml");
     	try {
     		return (Map<String, Object>) yaml.load(new FileInputStream(metadata_file));
     	}

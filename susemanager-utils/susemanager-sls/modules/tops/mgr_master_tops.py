@@ -29,7 +29,8 @@ MANAGER_BASE_TOP = [
     "packages",
     "custom",
     "custom_groups",
-    "custom_org"
+    "custom_org",
+    "formulas"
 ]
 
 
