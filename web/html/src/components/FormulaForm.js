@@ -1,47 +1,145 @@
 "use strict";
 
 const React = require("react");
+var Messages = require("../components/messages").Messages;
 var Button = require("../components/buttons").Button;
+const Network = require("../utils/network");
 
 const basicInputTypes = ["text", "email", "url", "date", "time"];
 
-var globalScope = "system";
-    
-function generateForm(layout, group_data, system_data, formula_name, global_scope) {
-	if (layout == undefined || layout == null) return;
-	layout = preprocessLayout(layout);
-	//console.log(JSON.stringify(layout));
-	
-	globalScope = global_scope;
-
-	var form = [];
-	var values = generateValues(layout, group_data, system_data);
-	//console.log(JSON.stringify(values));
-
-	if ((Object.keys(layout).length == 1) && (formula_name in layout) && (layout[formula_name].$type == "group" || layout[formula_name].$type == "hidden-group")) {
-		values = values[formula_name];
-		layout = layout[formula_name];
-		for (key in layout)
-			if (!key.startsWith("$"))
-				form.push(generateFormItem(layout[key], values[key], formula_name));
+//props:
+//dataUrl = url to get the server data
+//noFormulaText = text to display if no formula is found
+//addFormulaNavBar = function(formula_list, activeId) to add the formula nav bar
+//formulaId = the id of the formula to be shown
+//getFormulaUrl = function(formulaId) that returns the url to a formula page
+//updateFormula = function(component) that gets called when the save button is pressed
+//currentScope = current active scope (system or group)
+//flashMessages = list of messages to show
+class FormulaForm extends React.Component {
+	constructor(props) {
+		super(props);
+		
+		["init", "updateFormula", "generateForm", "serializeValues"]
+		.forEach(method => this[method] = this[method].bind(this));
+		
+        this.state = {
+            serverData: null,
+            messages: []
+        };
+        this.init();
 	}
-	else
+	
+	init() {
+		Network.get(this.props.dataUrl).promise.then(data => {
+			console.log(data);
+			this.setState({
+			serverData: data
+			});
+		});
+    }
+
+	updateFormula(e) {
+		e.preventDefault(); // prevent default form redirect
+		this.props.updateFormula(this);
+	}
+	
+	serializeValues() {
+		var values = {};
+		$("#editFormulaForm input, #editFormulaForm select")
+		.each(function(index, element) {
+				if (element.id == "") return;
+	 			else if (element.type == "checkbox")
+	 				assignValueWithId(values, element.id, element.checked);
+	 			else
+	 				assignValueWithId(values, element.id, element.value);
+			});
+		return values;
+	}
+	
+	generateForm() {
+		var layout = this.state.serverData.layout;
+		if (layout == undefined || layout == null) return;
+		layout = preprocessLayout(layout);
+		console.log(JSON.stringify(layout));
+
+		var form = [];
+		var values = generateValues(layout, this.state.serverData.group_data, this.state.serverData.system_data || {}, this.props.currentScope);
+		console.log(JSON.stringify(values));
+
 		for (var key in layout)
-			form.push(generateFormItem(layout[key], values[key], ""));
+			form.push(generateFormItem(layout[key], values[key], "", this.props.currentScope));
 
-	return form;
+		return form;
+	}
+    
+	render() {
+		var messages = this.state.messages;
+        if(typeof this.props.flashMessages !== "undefined")
+			messages = messages.concat(this.props.flashMessages);
+        var msg = messages.length > 0 ? <Messages items={messages}/> : null;
+
+        var errs = null;
+        if (this.state.errors) {
+            errs = <Messages items={this.state.errors.map(function(e) {
+                return {severity: "error", text: e};
+            })}/>;
+        }
+
+		if (this.state.serverData == null) {
+		    this.props.addFormulaNavBar(["Loading"], -1);
+			return (
+		    	<div>
+					{errs}{msg}
+					<div className="panel panel-default">
+						<div className="panel-heading">
+							<h4>Formula not found!</h4>
+						</div>
+						<div className="panel-body">
+							{this.props.no_formula_text}
+						</div>
+					</div>
+				</div>
+			);
+		}			
+		else {
+		    this.props.addFormulaNavBar(this.state.serverData.formula_list, formulaId);
+		    return (
+		    	<div>
+					{errs}{msg}
+					<form id="editFormulaForm" className="form-horizontal" onSubmit={this.updateFormula}>
+						<div className="panel panel-default">
+							<div className="panel-heading">
+								<h4>{toTitle(this.state.serverData.formula_name || "Formula not found")}</h4>
+							</div>
+							<div className="panel-body">
+								{this.generateForm()}
+								<div className="row">
+									<div className="col-lg-6 col-lg-offset-3">
+										<Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className="btn btn-success" handler={function(e){$('<input type="submit">').hide().appendTo($("#editFormulaForm")).click().remove();}} />
+										<a id="next-btn" href={this.props.getFormulaUrl(this.props.formulaId + 1)} disabled={this.state.serverData.formula_list.length - 1 <= this.props.formulaId} className="btn btn-default pull-right">Next <i className="fa fa-arrow-right" /></a>
+										<a id="prev-btn" href={this.props.getFormulaUrl(this.props.formulaId - 1)} disabled={this.props.formulaId == 0} className="btn btn-default pull-right"><i className="fa fa-arrow-left" /> Prev</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+		    );
+		}
+	}
 }
-
+	
 function generateValues(layout, group_data, system_data, scope="system") {
 	var result = {};
-	
+
 	for (var key in layout) {
 		if (key.startsWith("$")) continue;
-		
+	
 		var value = null
 		var element = layout[key];
 		var element_scope = element.$scope || scope;
-		
+	
 		if (element.$type == "group" || element.$type == "hidden-group")
 			value = generateValues(element, group_data[key] || {}, system_data[key] || {}, element_scope);
 		/*else if (element.$type == "edit-group")
@@ -52,17 +150,17 @@ function generateValues(layout, group_data, system_data, scope="system") {
 			value = (group_data[key] || element.$default || null);
 		else if (element_scope == "readonly")
 			value = (element.$default || null);
-		
+	
 		if (value != null)
 			result[key] = value
 	}
 	return result;
 }
 
-function generateFormItem(element, value, parents) {
+function generateFormItem(element, value, parents, currentScope) {
 	if (parents == "") var id = element.$name;
 	else var id = parents + "$" + element.$name;
-	var isDisabled = (globalScope == element.$scope || element.$scope == "system") ? "" : " disabled";
+	var isDisabled = (currentScope == element.$scope || element.$scope == "system") ? "" : " disabled";
 	
 	if (basicInputTypes.indexOf(element.$type) >= 0) //Element is a basic html input type
 		return wrapGroupWithLabel(element.$name,
@@ -102,7 +200,7 @@ function generateFormItem(element, value, parents) {
 				<h4>{ toTitle(element.$name) }</h4>
 			</div>
 			<div className="panel-body">
-				{ generateChildrenFormItems(element, value, id) }
+				{ generateChildrenFormItems(element, value, id, currentScope) }
 			</div>
 		</div>
 		);
@@ -116,7 +214,7 @@ function generateFormItem(element, value, parents) {
 			</div>
 			<div className="panel-body">
 				<div id={id + "$elements"}>
-					{ generateEditGroup(element, value, id) }
+					{ generateEditGroup(element, value, id, currentScope) }
 				</div>
 				<Button id={id + "$plus-button"} icon="fa-plus" text="Add Element" className="btn-default btn-3d btn-sm" handler={addElementToEditGroup} />
 			</div>
@@ -190,11 +288,11 @@ function preprocessLayout(layout, scope="system") {
 	return layout;
 }
 
-function generateChildrenFormItems(element, value, id) {
+function generateChildrenFormItems(element, value, id, currentScope) {
 	var child_items = [];
 	for (var child_name in element) {
 		if (child_name.startsWith("$")) continue;
-		child_items.push(generateFormItem(element[child_name], value[child_name], id));
+		child_items.push(generateFormItem(element[child_name], value[child_name], id, currentScope));
 	}
 	return child_items;
 }
@@ -258,18 +356,6 @@ function toTitle(str) {
 	return str.replace(new RegExp("_|-", 'g'), " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
-function serializeValues(fields) {
-	var values = {};
-	fields.each(function(index, element) {
-			if (element.id == "") return;
- 			else if (element.type == "checkbox")
- 				assignValueWithId(values, element.id, element.checked);
- 			else
- 				assignValueWithId(values, element.id, element.value);
-		});
-	return values;
-}
-
 function assignValueWithId(dir, id, value) {
 	var parents = id.split("$");
 	
@@ -282,7 +368,6 @@ function assignValueWithId(dir, id, value) {
 }
 
 module.exports = {
-    generateForm: generateForm,
-    toTitle: toTitle,
-    serializeValues: serializeValues
+    FormulaForm: FormulaForm,
+    toTitle: toTitle
 }

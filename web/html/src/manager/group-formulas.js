@@ -1,12 +1,13 @@
 'use strict';
 
 const React = require("react");
+const ReactDOM = require("react-dom");
 
 var Messages = require("../components/messages").Messages
 var Button = require("../components/buttons").Button;
 const Network = require("../utils/network");
 
-var toTitle = require("../utils/form-generator").toTitle;
+var toTitle = require("../components/FormulaForm").toTitle;
 
 var GroupFormulas = React.createClass({
     
@@ -117,10 +118,10 @@ var GroupFormulas = React.createClass({
                 return {severity: "error", text: e};
             })}/>;
         }
+		addFormulaNavBar(this.state.serverData.selected);
         
         return (
         	<div>
-		    	{generateFormulaNavBar(this.state.serverData.selected)}
 				{errs}{msg}
 				<div className="panel panel-default">
 					<div className="panel-heading">
@@ -153,18 +154,18 @@ var GroupFormulas = React.createClass({
     }
 });
 
-function generateFormulaNavBar(formulaList) {
-	var tabs = [<li role="presentation" className="active"><a href={ "/rhn/manager/groups/details/formulas?sgid=" + groupId}>Formulas</a></li>];
+function addFormulaNavBar(formulaList) {
+	$("#formula-nav-bar").remove();
+	
+	var navBar = "<ul class='nav nav-tabs nav-tabs-pf' id='formula-nav-bar'>\n"
+	navBar += "<li class='active'><a href='/rhn/manager/groups/details/formulas?sgid=" + groupId + "'>Formulas</a></li>\n";
 	for (var i in formulaList)
-		tabs.push(<li key={"nav-" + formulaList[i]} role="presentation"><a href={ "/rhn/manager/groups/details/formula/" + i + "?sgid=" + groupId}>{toTitle(formulaList[i])}</a></li>);
-	return (
-		<ul className="nav nav-tabs">
-			{tabs}
-		</ul>
-	);
+		navBar += "<li><a href='/rhn/manager/groups/details/formula/" + i + "?sgid=" + groupId + "'>" + toTitle(formulaList[i]) + "</a></li>\n";
+	navBar += "</ul>"
+	$(".spacewalk-content-nav").append(navBar);
 }
 
-React.render(
+ReactDOM.render(
   <GroupFormulas flashMessages={flashMessage()} />,
   document.getElementById('formulas')
 );
