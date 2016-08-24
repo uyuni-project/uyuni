@@ -44,12 +44,9 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.FlashScopeHelper;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 
 /**
  * Controller class providing backend code for the minions page.
@@ -271,7 +268,6 @@ public class MinionController {
         data.put("groupId", serverGroupId);
         data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
                 user.getOrg()).getName());
-        data.put("info", FlashScopeHelper.flash(request));
         data.put("formula_id", request.params("formula_id"));
         return new ModelAndView(data, "groups/formula.jade");
     }
@@ -285,7 +281,9 @@ public class MinionController {
      */
     public static String serverGroupFormulaData(Request request, Response response, User user) {
     	Long groupId = new Long(request.params("sgid"));
-    	checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()));
+
+    	if (!checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg())))
+    		deniedResponse(response);
 
     	int formula_id = Integer.parseInt(request.params("formula_id"));
     	List<String> formulas = FormulaFactory.getFormulasByGroupId(groupId);
@@ -328,7 +326,8 @@ public class MinionController {
     	String formulaName = (String) map.get("formula_name");
     	Map<String, Object> formData = (Map<String, Object>) map.get("content");
 
-    	checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()));
+    	if (!checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg())))
+    		deniedResponse(response);
 
     	// Save data
     	try {
@@ -339,11 +338,8 @@ public class MinionController {
     	}
 
     	// Return answer
-        FlashScopeHelper.flash(request, "Formula saved!");
-    	Map<String, String> data = new HashMap<>();
-    	data.put("url", (String) map.get("url"));
         response.type("application/json");
-        return GSON.toJson(data);
+        return "{}";
 	}
 
     /**
@@ -360,7 +356,6 @@ public class MinionController {
         data.put("groupId", serverGroupId);
         data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
                 user.getOrg()).getName());
-        data.put("info", FlashScopeHelper.flash(request));
         return new ModelAndView(data, "groups/formulas.jade");
     }
 
@@ -373,7 +368,9 @@ public class MinionController {
      */
     public static String serverGroupFormulasData(Request request, Response response, User user) {
     	Long groupId = Long.valueOf(request.params("sgid"));
-    	checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()));
+    	if (!checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg())))
+    		deniedResponse(response);
+
         List<String> server_formulas = FormulaFactory.getFormulasByGroupId(groupId);
 
     	Map<String, Object> data = new HashMap<>();
@@ -396,7 +393,8 @@ public class MinionController {
 		Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
     	Long groupId = Long.valueOf((String) map.get("groupId"));
     	List<String> selectedFormulas = (List<String>) map.get("selected");
-    	checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()));
+    	if (!checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg())))
+    		deniedResponse(response);
 
     	try {
 			FormulaFactory.saveServerGroupFormulas(groupId, selectedFormulas, user.getOrg());
@@ -419,7 +417,6 @@ public class MinionController {
     public static ModelAndView minionFormula(Request request, Response response) {
         Map<String, Object> data = new HashMap<>();
         data.put("server", ServerFactory.lookupById(new Long(request.queryParams("sid"))));
-        data.put("info", FlashScopeHelper.flash(request));
         data.put("formula_id", request.params("formula_id"));
         return new ModelAndView(data, "minion/formula.jade");
     }
@@ -433,7 +430,8 @@ public class MinionController {
      */
     public static String minionFormulaData(Request request, Response response, User user) {
     	Long serverId = new Long(request.params("sid"));
-    	checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(serverId));
+    	if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(serverId)))
+    		deniedResponse(response);
 
     	// Find formulas of server groups
     	int formula_id = Integer.parseInt(request.params("formula_id"));
@@ -479,7 +477,9 @@ public class MinionController {
     	// Get data from request
 		Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
     	Long serverId = Long.valueOf((String) map.get("serverId"));
-    	checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(serverId));
+
+    	if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(serverId)))
+    		deniedResponse(response);
 
     	String formulaName = (String) map.get("formula_name");
     	Map<String, Object> formData = (Map<String, Object>) map.get("content");
@@ -503,20 +503,25 @@ public class MinionController {
         return GSON.toJson(errs);
     }
 
-    private static void checkUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
+    private static String deniedResponse(Response response) {
+    	response.type("application/json");
+        response.status(HttpStatus.SC_FORBIDDEN);
+        return GSON.toJson("['Permission denied!']");
+    }
+
+    private static boolean checkUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
         try {
             ServerGroupManager.getInstance().validateAccessCredentials(user, group,
                     group.getName());
             ServerGroupManager.getInstance().validateAdminCredentials(user);
+            return true;
         }
         catch (NullPointerException | PermissionException | LookupException e) {
-            Spark.halt(HttpStatus.SC_FORBIDDEN);
+            return false;
         }
     }
 
-    private static void checkUserHasPermissionsOnServer(User user, Server server) {
-        if (!SystemManager.isAvailableToUser(user, server.getId())) {
-            Spark.halt(HttpStatus.SC_FORBIDDEN);
-        }
+    private static boolean checkUserHasPermissionsOnServer(User user, Server server) {
+        return SystemManager.isAvailableToUser(user, server.getId());
     }
 }

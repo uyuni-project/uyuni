@@ -23,8 +23,8 @@ function updateFormula(component) {
 		});
 	},
     (xhr) => {
-       if (xhr.status == 400) {
-           // validation err
+       if (xhr.status == 400 || xhr.status == 403) {
+           // validation err or permission denied
            var errs = JSON.parse(xhr.responseText);
            this.setState({errors: errs});
        } else {
