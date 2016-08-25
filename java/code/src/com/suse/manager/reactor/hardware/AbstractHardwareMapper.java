@@ -48,10 +48,8 @@ public abstract class AbstractHardwareMapper<T> {
      * Get the hardware information from the minion and store it in our db.
      * @param serverId the id of the {@link MinionServer}
      * @param grains the Salt grains
-     * @return the persisted bean(s)
      */
-    public T map(Long serverId, ValueMap grains) {
-        T result = null;
+    public void map(Long serverId, ValueMap grains) {
         String minionId = null;
         try {
             HibernateFactory.getSession().beginTransaction();
@@ -59,10 +57,9 @@ public abstract class AbstractHardwareMapper<T> {
                     .lookupById(serverId);
             if (!optionalServer.isPresent()) {
                 LOG.warn("Minion server not found: " + serverId);
-                result = null;
             }
             else {
-                result = doMap(optionalServer.get(), grains);
+                doMap(optionalServer.get(), grains);
                 minionId = optionalServer.get().getMinionId();
             }
 
@@ -78,8 +75,6 @@ public abstract class AbstractHardwareMapper<T> {
         finally {
             HibernateFactory.closeSession();
         }
-
-        return result;
     }
 
     protected abstract T doMap(MinionServer server, ValueMap grains);
