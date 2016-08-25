@@ -32,14 +32,19 @@ def getSystemId():
 
     f.close()
 
-    # add machine_id on the fly
-    cert = rpclib.xmlrpclib.loads(ret)
-    machine_id = getMachineId()
-    if machine_id:
-        # do not append machine_id to fields to avoid breaking
-        # the checksum and authentication.
-        cert[0][0]["machine_id"] = machine_id
-    ret = rpclib.xmlrpclib.dumps(cert[0])
+    try:
+        # add machine_id on the fly
+        cert = rpclib.xmlrpclib.loads(ret)
+        machine_id = getMachineId()
+        if machine_id:
+            # do not append machine_id to fields to avoid breaking
+            # the checksum and authentication.
+            cert[0][0]["machine_id"] = machine_id
+        ret = rpclib.xmlrpclib.dumps(cert[0])
+    except:
+        log = up2dateLog.initLog()
+        log.log_me("ERROR - Malformed XML file: {0}".format(path))
+        return None
 
     return ret
 
