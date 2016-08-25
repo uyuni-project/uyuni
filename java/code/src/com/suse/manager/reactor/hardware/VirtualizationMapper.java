@@ -43,7 +43,7 @@ public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance
     }
 
     @Override
-    public VirtualInstance doMap(MinionServer server, ValueMap grains) {
+    public void doMap(MinionServer server, ValueMap grains) {
         String virtType = grains.getValueAsString("virtual");
         String virtSubtype = grains.getValueAsString("virtual_subtype");
         String virtUuid = grains.getValueAsString("uuid");
@@ -145,10 +145,6 @@ public class VirtualizationMapper extends AbstractHardwareMapper<VirtualInstance
             else if (virtualInstance.getConfirmed() != 1L) {
                 virtualInstance.setConfirmed(1L);
             }
-
-            return virtualInstance;
         }
-
-        return null;
     }
 }
