@@ -37,8 +37,8 @@ def getSystemId():
                 # the checksum and authentication.
                 cert[0][0]["machine_id"] = machine_id
             ret = rpclib.xmlrpclib.dumps(cert[0])
-        except Exception as exc:
-            log.log_me("ERROR - Unable to read XML in {0} - {1}".format(path, exc))
+        except Exception, exc:
+            log.log_me("ERROR - Unable to read XML in %s - %s" % (path, exc))
     return ret
 
 # if a user has upgraded to a newer release of Red Hat but still
