@@ -347,8 +347,12 @@ def registerSystem(username = None, password = None,
     auth_dict = { "profile_name" : profileName,
                   "os_release" : up2dateUtils.getVersion(),
                   "release_name" : up2dateUtils.getOSRelease(),
-                  "architecture" : up2dateUtils.getArch(),
-                  "machine_id": up2dateUtils.getMachineId()}
+                  "architecture" : up2dateUtils.getArch() }
+
+    machine_id = up2dateUtils.getMachineId()
+    if machine_id:
+        auth_dict["machine_id"] = machine_id
+
     # dict of other bits to send
     if other:
         for (key, item) in other.items():
