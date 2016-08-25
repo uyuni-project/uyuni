@@ -28,18 +28,17 @@ def getSystemId():
     path = cfg["systemIdPath"]
     ret = None
     if os.access(path, os.R_OK):
-        with open(path, "r") as xml_file:
-            try:
-                # add machine_id on the fly
-                cert = rpclib.xmlrpclib.loads(xml_file.read())
-                machine_id = getMachineId()
-                if machine_id:
-                    # do not append machine_id to fields to avoid breaking
-                    # the checksum and authentication.
-                    cert[0][0]["machine_id"] = machine_id
-                ret = rpclib.xmlrpclib.dumps(cert[0])
-            except Exception as exc:
-                log.log_me("ERROR - Unable to read XML in {0} - {1}".format(path, exc))
+        try:
+            # add machine_id on the fly
+            cert = rpclib.xmlrpclib.loads(open(path, "r").read())
+            machine_id = getMachineId()
+            if machine_id:
+                # do not append machine_id to fields to avoid breaking
+                # the checksum and authentication.
+                cert[0][0]["machine_id"] = machine_id
+            ret = rpclib.xmlrpclib.dumps(cert[0])
+        except Exception as exc:
+            log.log_me("ERROR - Unable to read XML in {0} - {1}".format(path, exc))
     return ret
 
 # if a user has upgraded to a newer release of Red Hat but still
