@@ -32,7 +32,7 @@ def get_paginated(connection, headers, path):
 
 def save_json(content, path):
   with open(path, 'w') as out_file:
-    json.dump(content, out_file, sort_keys=True, indent=4)
+    json.dump(content, out_file, sort_keys=True, indent=2, separators=(',', ': '))
 
 connection = httplib.HTTPSConnection("scc.suse.com")
 token = base64.b64encode(b"UCUSER:UCPASSWORD").decode("ascii")
