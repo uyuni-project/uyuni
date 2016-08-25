@@ -77,7 +77,7 @@ public abstract class AbstractHardwareMapper<T> {
         }
     }
 
-    protected abstract T doMap(MinionServer server, ValueMap grains);
+    protected abstract void doMap(MinionServer server, ValueMap grains);
 
     /**
      * @return error messages
