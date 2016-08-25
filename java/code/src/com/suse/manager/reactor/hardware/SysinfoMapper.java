@@ -52,7 +52,7 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
     }
 
     @Override
-    public VirtualInstance doMap(MinionServer server, ValueMap grains) {
+    public void doMap(MinionServer server, ValueMap grains) {
         String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue())
                 .toLowerCase();
         String minionId = server.getMinionId();
@@ -200,8 +200,6 @@ public class SysinfoMapper extends AbstractHardwareMapper<VirtualInstance> {
             LOG.warn("Could not retrieve SYS info from minion '" + minionId +
                     "': " + e.getMessage());
         }
-
-        return null;
     }
 
 }

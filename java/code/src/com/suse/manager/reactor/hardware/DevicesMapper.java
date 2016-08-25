@@ -51,7 +51,7 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
     }
 
     @Override
-    public MinionServer doMap(MinionServer server, ValueMap grains) {
+    public void doMap(MinionServer server, ValueMap grains) {
         String minionId = server.getMinionId();
         Optional<List<Map<String, Object>>> udevdb = saltInvoker.getUdevdb(minionId);
 
@@ -65,7 +65,7 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
             setError("Salt module 'udevdb.exportdb' returned an empty list");
             LOG.warn("Salt module 'udevdb.exportdb' returned an empty list " +
                     "for minion: " + minionId);
-            return null;
+            return;
         }
 
         udevdb.get().forEach(dbdev -> {
@@ -189,8 +189,6 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
 
             }
         });
-
-        return server;
     }
 
     private String getDeviceDesc(ValueMap attrs) {

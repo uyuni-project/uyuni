@@ -40,7 +40,7 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
     }
 
     @Override
-    public Dmi doMap(MinionServer server, ValueMap grains) {
+    public void doMap(MinionServer server, ValueMap grains) {
         String biosVendor = null, biosVersion = null, biosReleseDate = null,
                 productName = null, systemVersion = null, systemSerial = null,
                 chassisSerial = null, chassisTag = null, boardSerial = null;
@@ -106,8 +106,6 @@ public class DmiMapper extends AbstractHardwareMapper<Dmi> {
 
         dmi.setServer(server);
         server.setDmi(dmi);
-
-        return dmi;
     }
 
 }
