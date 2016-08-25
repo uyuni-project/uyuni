@@ -437,10 +437,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
     private Map<String, List<String>> parseRHELReleseQuery(String result) {
         return Arrays.stream(result.split("\\r?\\n")).map(line -> line.split("="))
-            .collect(Collectors.toMap(linetoks -> linetoks[0],
-                linetoks ->
-                    Arrays.asList(
-                            StringUtils.splitPreserveAllTokens(linetoks[1], ","))));
+                .collect(
+                        Collectors.<String[], String, List<String>>toMap(
+                                linetoks -> linetoks[0],
+                                linetoks -> Arrays.asList(
+                                        StringUtils.splitPreserveAllTokens(linetoks[1], ",")
+                                        )));
     }
 
     private String getOsRelease(String minionId, ValueMap grains) {
