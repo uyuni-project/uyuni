@@ -22,6 +22,8 @@ loginInfo = None
 pcklAuthFileName = "/var/spool/up2date/loginAuth.pkl"
 
 def getSystemId():
+    log = up2dateLog.initLog()
+    log.log_debug("getSystemId invoked")
     cfg = config.initUp2dateConfig()
     path = cfg["systemIdPath"]
     if not os.access(path, os.R_OK):
@@ -42,7 +44,6 @@ def getSystemId():
             cert[0][0]["machine_id"] = machine_id
         ret = rpclib.xmlrpclib.dumps(cert[0])
     except:
-        log = up2dateLog.initLog()
         log.log_me("ERROR - Malformed XML file: {0}".format(path))
         return None
 
