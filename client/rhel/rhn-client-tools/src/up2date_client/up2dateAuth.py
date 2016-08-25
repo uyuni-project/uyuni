@@ -20,24 +20,26 @@ from up2dateUtils import getMachineId
 
 loginInfo = None
 pcklAuthFileName = "/var/spool/up2date/loginAuth.pkl"
+log = up2dateLog.initLog()
 
 def getSystemId():
+    log.log_debug("getSystemId invoked")
     cfg = config.initUp2dateConfig()
     path = cfg["systemIdPath"]
-    if not os.access(path, os.R_OK):
-        return None
-
-    f = open(path, "r")
-    ret = f.read()
-
-    f.close()
-
-    # add machine_id on the fly
-    cert = rpclib.xmlrpclib.loads(ret)
-    cert[0][0]["machine_id"] = getMachineId()
-    # do not append machine_id to fields to avoid breaking the checksum and authentication
-    ret = rpclib.xmlrpclib.dumps(cert[0])
-
+    ret = None
+    if os.access(path, os.R_OK):
+        with open(path, "r") as xml_file:
+            try:
+                # add machine_id on the fly
+                cert = rpclib.xmlrpclib.loads(xml_file.read())
+                machine_id = getMachineId()
+                if machine_id:
+                    # do not append machine_id to fields to avoid breaking
+                    # the checksum and authentication.
+                    cert[0][0]["machine_id"] = machine_id
+                ret = rpclib.xmlrpclib.dumps(cert[0])
+            except Exception as exc:
+                log.log_me("ERROR - Unable to read XML in {0} - {1}".format(path, exc))
     return ret
 
 # if a user has upgraded to a newer release of Red Hat but still
@@ -104,7 +106,6 @@ def writeCachedLogin():
     True    -- wrote loginInfo to a pickle file
     False   -- did _not_ write loginInfo to a pickle file
     """
-    log = up2dateLog.initLog()
     log.log_debug("writeCachedLogin() invoked")
     if not loginInfo:
         log.log_debug("writeCachedLogin() loginInfo is None, so bailing.")
@@ -134,7 +135,6 @@ def readCachedLogin():
     Read pickle info from a file
     Caches authorization info for connecting to the server.
     """
-    log = up2dateLog.initLog()
     log.log_debug("readCachedLogin invoked")
     if not os.access(pcklAuthFileName, os.R_OK):
         log.log_debug("Unable to read pickled loginInfo at: %s" % pcklAuthFileName)
@@ -191,7 +191,6 @@ def _updateLoginInfo(li):
 # allow to pass in a system id for use in rhnreg
 # a bit of a kluge to make caps work correctly
 def login(systemId=None, forceUpdate=False, timeout=None):
-    log = up2dateLog.initLog()
     log.log_debug("login(forceUpdate=%s) invoked" % (forceUpdate))
     if not forceUpdate and not loginInfo:
         if readCachedLogin():
@@ -228,7 +227,6 @@ def login(systemId=None, forceUpdate=False, timeout=None):
     return loginInfo
 
 def updateLoginInfo(timeout=None):
-    log = up2dateLog.initLog()
     log.log_me("updateLoginInfo() login info")
     # NOTE: login() updates the loginInfo object
     login(forceUpdate=True, timeout=timeout)
