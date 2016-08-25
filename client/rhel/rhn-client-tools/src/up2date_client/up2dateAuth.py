@@ -20,9 +20,9 @@ from up2dateUtils import getMachineId
 
 loginInfo = None
 pcklAuthFileName = "/var/spool/up2date/loginAuth.pkl"
+log = up2dateLog.initLog()
 
 def getSystemId():
-    log = up2dateLog.initLog()
     log.log_debug("getSystemId invoked")
     cfg = config.initUp2dateConfig()
     path = cfg["systemIdPath"]
@@ -113,7 +113,6 @@ def writeCachedLogin():
     True    -- wrote loginInfo to a pickle file
     False   -- did _not_ write loginInfo to a pickle file
     """
-    log = up2dateLog.initLog()
     log.log_debug("writeCachedLogin() invoked")
     if not loginInfo:
         log.log_debug("writeCachedLogin() loginInfo is None, so bailing.")
@@ -143,7 +142,6 @@ def readCachedLogin():
     Read pickle info from a file
     Caches authorization info for connecting to the server.
     """
-    log = up2dateLog.initLog()
     log.log_debug("readCachedLogin invoked")
     if not os.access(pcklAuthFileName, os.R_OK):
         log.log_debug("Unable to read pickled loginInfo at: %s" % pcklAuthFileName)
@@ -200,7 +198,6 @@ def _updateLoginInfo(li):
 # allow to pass in a system id for use in rhnreg
 # a bit of a kluge to make caps work correctly
 def login(systemId=None, forceUpdate=False, timeout=None):
-    log = up2dateLog.initLog()
     log.log_debug("login(forceUpdate=%s) invoked" % (forceUpdate))
     if not forceUpdate and not loginInfo:
         if readCachedLogin():
@@ -237,7 +234,6 @@ def login(systemId=None, forceUpdate=False, timeout=None):
     return loginInfo
 
 def updateLoginInfo(timeout=None):
-    log = up2dateLog.initLog()
     log.log_me("updateLoginInfo() login info")
     # NOTE: login() updates the loginInfo object
     login(forceUpdate=True, timeout=timeout)
