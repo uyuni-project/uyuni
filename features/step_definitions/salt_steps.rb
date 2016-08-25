@@ -4,6 +4,7 @@ require 'timeout'
 Given(/^the Salt Minion is configured$/) do
   # cleanup the key in case the image was reused
   # to run the test twice
+  step %(I delete this minion key in the Salt master)
   step %(I stop salt-minion)
   step %(I stop salt-master)
   key = '/etc/salt/pki/minion/minion_master.pub'
