@@ -544,8 +544,6 @@ if [ $USING_SSL -eq 1 ] ; then
             return
         fi
 
-        $UPDATE_TRUST_CMD
-
         if [ ! -d $TRUST_DIR ]; then
             return
         fi
@@ -555,6 +553,8 @@ if [ $USING_SSL -eq 1 ] ; then
         else
             rm -f $TRUST_DIR/$CERT_FILE
         fi
+
+        $UPDATE_TRUST_CMD
     }
 
     echo "* attempting to install corporate public CA cert"
@@ -727,7 +727,7 @@ if [ $REGISTER_THIS_BOX -eq 1 ] ; then
     echo "master: $HOSTNAME" > "$SUSEMANAGER_MASTER_FILE"
 
     if [ -n "$ACTIVATION_KEYS" ] ; then
-        cat <<EOF >"SUSEMANAGER_MASTER_FILE"
+        cat <<EOF >>"$SUSEMANAGER_MASTER_FILE"
 grains:
     susemanager:
         activation_key: "$(echo $ACTIVATION_KEYS | cut -d, -f1)"
@@ -866,13 +866,13 @@ if [ "$INSTALLER" == zypper ] ; then
         zypper --non-interactive ref -s
     fi
     zypper --non-interactive up zypper {PKG_NAME_ZYPPER}
-    if [ -x /usr/sbin/rhn-profile-sync ] ; then
-        if [ $SALT_ENABLED -eq 0 ] ; then
+    if [ $SALT_ENABLED -eq 0 ] ; then
+        if [ -x /usr/sbin/rhn-profile-sync ] ; then
             /usr/sbin/rhn-profile-sync
+        else
+            echo "Error updating system info in {productName}."
+            echo "    Please ensure that rhn-profile-sync in installed and rerun it."
         fi
-    else
-        echo "Error updating system info in {productName}."
-        echo "    Please ensure that rhn-profile-sync in installed and rerun it."
     fi
     if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
         zypper --non-interactive up
@@ -880,13 +880,13 @@ if [ "$INSTALLER" == zypper ] ; then
 elif [ "$INSTALLER" == yum ] ; then
     yum repolist
     /usr/bin/yum -y upgrade yum {PKG_NAME_YUM}
-    if [ -x /usr/sbin/rhn-profile-sync ] ; then
-        if [ $SALT_ENABLED -eq 0 ] ; then
+    if [ $SALT_ENABLED -eq 0 ] ; then
+        if [ -x /usr/sbin/rhn-profile-sync ] ; then
             /usr/sbin/rhn-profile-sync
+        else
+            echo "Error updating system info in {productName}."
+            echo "    Please ensure that rhn-profile-sync in installed and rerun it."
         fi
-    else
-        echo "Error updating system info in {productName}."
-        echo "    Please ensure that rhn-profile-sync in installed and rerun it."
     fi
     if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
         /usr/bin/yum -y upgrade
