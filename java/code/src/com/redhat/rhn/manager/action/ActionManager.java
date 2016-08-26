@@ -434,7 +434,7 @@ public class ActionManager extends BaseManager {
         }
 
         //if this is a pointless action, don't do it.
-        if (a.getRhnActionConfigFileName().size() < 1) {
+        if (a.getConfigFileNameAssociations().size() < 1) {
             return null;
         }
 
