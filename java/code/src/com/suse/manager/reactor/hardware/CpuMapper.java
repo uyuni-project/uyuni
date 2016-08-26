@@ -163,6 +163,4 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
     private String truncateFlags(String value) {
         return StringUtils.substring(value, 0, 2048);
     }
-
-
 }
