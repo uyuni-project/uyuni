@@ -3,7 +3,6 @@
 var React = require("react");
 const ReactDOM = require("react-dom");
 
-var MessagesUtils = require("../components/messages").Utils;
 var Network = require("../utils/network");
 var FormulaFormModule = require("../components/FormulaForm");
 var FormulaForm = FormulaFormModule.FormulaForm;
@@ -18,7 +17,7 @@ function updateFormula(component) {
     Network.post("/rhn/manager/groups/details/formula/form/save", JSON.stringify(formData), "application/json").promise.then(
 	(data) => {
 		component.setState({
-			messages: MessagesUtils.info(t("Formula saved!"))
+			messages: [t("Formula saved!")]
 		});
 	},
     (xhr) => {
@@ -43,16 +42,20 @@ function addFormulaNavBar(formulaList, activeId) {
 	$(".spacewalk-content-nav").append(navBar);
 }
 
+const noFormulaText = (
+	<div>
+		Click <a href={"/rhn/manager/groups/details/formulas?sgid=" + groupId}>here</a> to manage the formulas of this server group.
+	</div>
+);
 ReactDOM.render(
 	<FormulaForm
 	  	dataUrl={"/rhn/manager/groups/details/formula/form/" + groupId + "/" + formulaId}
-	  	noFormulaText={"Click <a href='/rhn/manager/groups/details/formulas?sgid=" + groupId + "'>here</a> to manage the formulas of this server group."}
+	  	noFormulaText={noFormulaText}
 	  	addFormulaNavBar={addFormulaNavBar}
 	  	formulaId={formulaId}
 	  	getFormulaUrl={function(id) {return "/rhn/manager/groups/details/formula/" + id + "?sgid=" + groupId;}}
 	  	updateFormula={updateFormula}
-	  	currentScope="group"
-	  	flashMessages={flashMessage()} />,
+	  	currentScope="group" />,
 	document.getElementById('formula')
 );
 

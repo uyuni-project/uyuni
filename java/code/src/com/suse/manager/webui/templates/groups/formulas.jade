@@ -13,17 +13,6 @@
 
 !{h.renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml")}
 
-if info
-  script(type="text/javascript").
-     function flashMessage() {
-         return [{severity: "info", text:"#{info}"}];
-     }
-else
-  script(type="text/javascript").
-     function flashMessage() {
-         return [];
-     }
-
 #formulas
 
 script(type='text/javascript').

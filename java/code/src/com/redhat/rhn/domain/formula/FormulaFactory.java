@@ -35,6 +35,7 @@ import javax.transaction.NotSupportedException;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
+import org.yaml.snakeyaml.error.YAMLException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -142,7 +143,7 @@ public class FormulaFactory {
 				return Optional.of((Map<String, Object>) yaml.load(new FileInputStream(layout_file)));
 			else
 		    	return Optional.empty();
-    	} catch (FileNotFoundException e) {
+    	} catch (FileNotFoundException | YAMLException e) {
     		return Optional.empty();
     	}
     }
@@ -264,7 +265,7 @@ public class FormulaFactory {
     	try {
     		return (Map<String, Object>) yaml.load(new FileInputStream(metadata_file));
     	}
-    	catch (IOException e) {
+    	catch (IOException | YAMLException e) {
     		return new HashMap<String, Object>();
     	}
     }

@@ -3,7 +3,6 @@
 var React = require("react");
 const ReactDOM = require("react-dom");
 
-var MessagesUtils = require("../components/messages").Utils;
 var Network = require("../utils/network");
 var FormulaFormModule = require("../components/FormulaForm");
 var FormulaForm = FormulaFormModule.FormulaForm;
@@ -19,7 +18,7 @@ function updateFormula(component) {
     Network.post("/rhn/manager/systems/details/formula/form/save", JSON.stringify(formData), "application/json").promise.then(
 	(data) => {
 		component.setState({
-			messages: MessagesUtils.info(t("Formula saved!"))
+			messages: [t("Formula saved!")]
 		});
 	},
     (xhr) => {
@@ -51,8 +50,7 @@ ReactDOM.render(
 	  	formulaId={formulaId}
 	  	getFormulaUrl={function(id) {return "/rhn/manager/systems/details/formula/" + id + "?sid=" + serverId;}}
 	  	updateFormula={updateFormula}
-	  	currentScope="system"
-	  	flashMessages={flashMessage()} />,
+	  	currentScope="system" />,
 	document.getElementById('formula')
 );
 

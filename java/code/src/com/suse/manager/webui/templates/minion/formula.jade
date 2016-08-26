@@ -1,14 +1,4 @@
 include ./minion-header.jade
-if info
-  script(type="text/javascript").
-     function flashMessage() {
-         return [{severity: "info", text:"#{info}"}];
-     }
-else
-  script(type="text/javascript").
-     function flashMessage() {
-         return [];
-     }
      
 #formula
 
