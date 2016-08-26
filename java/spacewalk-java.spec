@@ -628,7 +628,9 @@ wrapper.java.classpath.68=/usr/share/java/ehcache-core.jar" >> conf/default/rhn_
 %else
 %if 0%{suse_version}
 echo "hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider" >> conf/default/rhn_hibernate.conf
+echo "hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory" >> conf/default/rhn_hibernate.conf
 echo "hibernate.cache.provider_configuration_file_resource_path=../ehcache.xml" >> conf/default/rhn_hibernate.conf
+echo "hibernate.id.new_generator_mappings = false" >> conf/default/rhn_hibernate.conf
 echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
 echo "wrapper.java.classpath.66=/usr/share/java/ehcache.jar" >> conf/default/rhn_taskomatic_daemon.conf
 echo "wrapper.java.classpath.67=/usr/share/java/httpcore.jar" >> conf/default/rhn_taskomatic_daemon.conf
