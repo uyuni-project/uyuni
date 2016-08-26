@@ -437,13 +437,10 @@ public class DevicesMapper extends AbstractHardwareMapper<MinionServer> {
         return StringUtils.substring(pciClass, -4, -2);
     }
 
-
     private Long classifyPciType(String subsys) {
         if ("pci".equals(subsys)) {
             return 1L;
         }
         return -1L;
     }
-
-
 }
