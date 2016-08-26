@@ -3,10 +3,12 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 
-var Messages = require("../components/messages").Messages
-var MessagesUtils = require("../components/messages").Utils;
-var Button = require("../components/buttons").Button;
+const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
+const Buttons = require("../components/buttons")
+
+const Button = Buttons.Button;
+const AsyncButton = Buttons.AsyncButton;
 
 var toTitle = require("../components/FormulaForm").toTitle;
 
@@ -29,9 +31,33 @@ var GroupFormulas = React.createClass({
         this.requestServerData();
         return st;
     },
+    
+    applyRequest: function() {
+    	if (this.state.serverData.added.length > 0 || this.state.serverData.removed.length > 0) {
+			const response = confirm(t("There are unsaved changes. Do you want to proceed ?"))
+			if (response == false) {
+				return null;
+			}
+		}
+    
+		return Network.post(
+		    "/rhn/manager/api/states/apply",
+		    JSON.stringify({
+		        id: groupId,
+		        type: "GROUP",
+		        states: []
+		    }),
+		    "application/json"
+		    )
+		    .promise.then( data => {
+		      console.log("apply action queued:" + data)
+		      this.setState({
+		          messages: t("Applying the highstated has been scheduled for each minion server in this group")
+		      });
+		    });
+	},
 
-	updateFormula: function(e) {
-		e.preventDefault(); // block redirect from the form
+	saveRequest: function() {
 		var serverData = this.state.serverData;
 		var formData = {};
 		formData.groupId = groupId;
@@ -42,7 +68,7 @@ var GroupFormulas = React.createClass({
 		
         Network.post("/rhn/manager/groups/details/formulas/apply", JSON.stringify(formData), "application/json").promise.then(
 		data => {
-                this.state.messages = MessagesUtils.info(t("Formulas applied!"))
+                this.state.messages = [t("Formulas saved!")]
                 this.requestServerData();
 		},
         (xhr) => {
@@ -57,7 +83,6 @@ var GroupFormulas = React.createClass({
 	},
 	
 	onListItemClick: function(e) {
-		e.preventDefault();
 		var formula = (e.target.href == undefined ? e.target.parentElement.id : e.target.id);
 		var serverData = this.state.serverData;
 		if (serverData.selected.indexOf(formula) >= 0) {
@@ -109,14 +134,18 @@ var GroupFormulas = React.createClass({
 	},
 
     render: function() {
-		var messages = this.state.messages || [];
-        if(typeof this.props.flashMessages !== "undefined")
-			messages = messages.concat(this.props.flashMessages);
-        var msg = messages.length > 0 ? <Messages items={messages}/> : null;
+		var messages = <Messages items={[{severity: "info", text:
+            <p><strong>{t('This is a feature preview')}</strong>: On this page you can select <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt formulas</a> for this group, which can then be configured on group and system level. This allows you to automatically install and configure software. We would be glad to receive your feedback via the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
+        }]}/>;
+        if (this.state.messages.length > 0) {
+            messages = <Messages items={this.state.messages.map(function(msg) {
+                return {severity: "info", text: msg};
+            })}/>;
+        }
         
-        var errs = null;
+        var errors = null;
         if (this.state.errors) {
-            errs = <Messages items={this.state.errors.map(function(e) {
+            errors = <Messages items={this.state.errors.map(function(e) {
                 return {severity: "error", text: e};
             })}/>;
         }
@@ -124,13 +153,13 @@ var GroupFormulas = React.createClass({
         
         return (
         	<div>
-				{errs}{msg}
+				{errors}{messages}
 				<div className="panel panel-default">
 					<div className="panel-heading">
 						<h4>Formulas</h4>
 					</div>
 					<div className="panel-body">
-				    	<form id="chooseFormulaForm" className="form-horizontal" onSubmit={this.updateFormula}>
+				    	<form id="chooseFormulaForm" className="form-horizontal" onSubmit={function (e) {e.preventDefault();}}>
 				        	<div className="form-group">
 								<label htmlFor="chooseFormulas" className="col-lg-3 control-label">
 									Choose formulas:
@@ -144,7 +173,10 @@ var GroupFormulas = React.createClass({
 									
 				        	<div className="form-group">
 				        		<div className="col-lg-offset-3 col-lg-6">
-				        			<Button id="save-btn" icon="fa-floppy-o" text="Apply" className="btn btn-success" handler={this.updateFormula} />
+				        			<span className="btn-group">
+					        			<Button id="save-btn" className="btn btn-default" icon="fa-floppy-o" handler={this.saveRequest} text={t("Save")} />
+										<AsyncButton id="apply-btn" defaultType="btn-success" action={this.applyRequest} name={t("Apply Highstate")} />
+					        		</span>
 				        			<Button id="reset-btn" icon="fa-undo" text="Reset Changes" className="btn btn-default pull-right" handler={this.requestServerData} />
 				        		</div>
 				        	</div>
@@ -168,6 +200,6 @@ function addFormulaNavBar(formulaList) {
 }
 
 ReactDOM.render(
-  <GroupFormulas flashMessages={flashMessage()} />,
+  <GroupFormulas />,
   document.getElementById('formulas')
 );
