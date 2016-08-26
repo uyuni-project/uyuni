@@ -15,7 +15,6 @@ const basicInputTypes = ["text", "email", "url", "date", "time"];
 //getFormulaUrl = function(formulaId) that returns the url to a formula page
 //updateFormula = function(component) that gets called when the save button is pressed
 //currentScope = current active scope (system or group)
-//flashMessages = list of messages to show
 class FormulaForm extends React.Component {
 	constructor(props) {
 		super(props);
@@ -74,14 +73,17 @@ class FormulaForm extends React.Component {
 	}
     
 	render() {
-		var messages = this.state.messages;
-        if(typeof this.props.flashMessages !== "undefined")
-			messages = messages.concat(this.props.flashMessages);
-        var msg = messages.length > 0 ? <Messages items={messages}/> : null;
+		var messages = <Messages items={[{severity: "info", text:
+            <p><strong>{t('This is a feature preview')}</strong>: On this page you can configure <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt formulas</a> to automatically install and configure software. We would be glad to receive your feedback via the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
+        }]}/>;
+        if (this.state.messages.length > 0)
+            messages = <Messages items={this.state.messages.map(function(msg) {
+                return {severity: "info", text: msg};
+            })}/>;
 
-        var errs = null;
+        var errors = null;
         if (this.state.errors) {
-            errs = <Messages items={this.state.errors.map(function(e) {
+            errors = <Messages items={this.state.errors.map(function(e) {
                 return {severity: "error", text: e};
             })}/>;
         }
@@ -90,7 +92,7 @@ class FormulaForm extends React.Component {
 		    this.props.addFormulaNavBar(["Not found"], 0);
 			return (
 		    	<div>
-					{errs}{msg}
+					{errors}{messages}
 					<div className="panel panel-default">
 						<div className="panel-heading">
 							<h4>Formula not found!</h4>
@@ -101,12 +103,17 @@ class FormulaForm extends React.Component {
 					</div>
 				</div>
 			);
-		}			
+		}	
+		else if (this.state.serverData.layout == undefined || this.state.serverData.layout == null) {
+			return (
+				# DISPLAY MESSAGE: RENDER FAILED!
+			);
+		}
 		else {
 		    this.props.addFormulaNavBar(this.state.serverData.formula_list, formulaId);
 		    return (
 		    	<div>
-					{errs}{msg}
+					{errors}{messages}
 					<form id="editFormulaForm" className="form-horizontal" onSubmit={this.updateFormula}>
 						<div className="panel panel-default">
 							<div className="panel-heading">
@@ -129,6 +136,15 @@ class FormulaForm extends React.Component {
 		}
 	}
 }
+
+function generatePassword() {
+    var length = Math.floor(Math.random() * 10) + 15,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!'§$()+*#<>,;.:-_~@€[]{}",
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i)
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    return retVal;
+}
 	
 function generateValues(layout, group_data, system_data, scope="system") {
 	var result = {};
@@ -145,9 +161,11 @@ function generateValues(layout, group_data, system_data, scope="system") {
 		/*else if (element.$type == "edit-group")
 			value = generateValues(values[key] || element.$default || {}, element);*/
 		else if (element_scope == "system")
-			value = (system_data[key] || group_data[key] || element.$default || null);
+			if (element.$type == "password") value = (system_data[key] || group_data[key] || element.$default || generatePassword());
+			else value = (system_data[key] || group_data[key] || element.$default || null);
 		else if (element_scope == "group")
-			value = (group_data[key] || element.$default || null);
+			if (element.$type == "password") value = (group_data[key] || element.$default || generatePassword());
+			else value = (group_data[key] || element.$default || null);
 		else if (element_scope == "readonly")
 			value = (element.$default || null);
 	
@@ -158,9 +176,9 @@ function generateValues(layout, group_data, system_data, scope="system") {
 }
 
 function generateFormItem(element, value, parents, currentScope) {
-	if (parents == "") var id = element.$name;
-	else var id = parents + "$" + element.$name;
-	var isDisabled = (currentScope == element.$scope || element.$scope == "system") ? "" : " disabled";
+	if (parents == "") var id = element.$id;
+	else var id = parents + "$" + element.$id;
+	var isDisabled = ((currentScope == element.$scope || element.$scope == "system") ? "" : " disabled");
 	
 	if (basicInputTypes.indexOf(element.$type) >= 0) //Element is a basic html input type
 		return wrapGroupWithLabel(element.$name,
@@ -174,6 +192,9 @@ function generateFormItem(element, value, parents, currentScope) {
 				<div className="input-group">
 					<input type={element.$type} name={element.$name} id={id} className="form-control" disabled={isDisabled} defaultValue={value} />
 					<span className="input-group-btn">
+						<button className="btn btn-default" onClick={handleGeneratePassword}>
+							<i className="fa fa-key" />
+						</button>
 						<button className="btn btn-default" onClick={toggle_view_password}>
 							<i className="fa fa-eye" />
 						</button>
@@ -193,7 +214,7 @@ function generateFormItem(element, value, parents, currentScope) {
 				<input type="number" min="0" steps="1" name={element.$name} id={id} className="form-control" disabled={isDisabled} defaultValue={value} />
 			</div>
 		);
-	else if (element.$type == "group")
+	else if (element.$type == "group") {
 		return (
 		<div className="panel panel-default" id={id}>
 			<div className="panel-heading">
@@ -204,8 +225,9 @@ function generateFormItem(element, value, parents, currentScope) {
 			</div>
 		</div>
 		);
+	}
 	else if (element.$type == "hidden-group")
-		return generateChildrenFormItems(element, value, id);
+		return generateChildrenFormItems(element, value, id, currentScope);
 	else if (element.$type == "edit-group")
 		return (
 		<div className="panel panel-default" id={id}>
@@ -243,6 +265,18 @@ function generateFormItem(element, value, parents, currentScope) {
 				</div>
 			</div>
 		);
+}
+
+function handleGeneratePassword(event) {
+	event.preventDefault();
+	
+	var target = $(event.target);
+	if (target.attr("class").startsWith("fa"))
+		target = target.parent();
+	target = document.getElementById(target.parent().siblings("input").attr("id"));
+	if (target.disabled)
+		return
+	target.value = generatePassword();
 }
 
 function toggle_view_password(event) {
@@ -283,7 +317,8 @@ function preprocessLayout(layout, scope="system") {
 		else
 			child.$default = (child.$default || "");
 		
-		child.$name = (child.$name || child_name);
+		child.$name = (child.$name || toTitle(child_name));
+		child.$id = child_name;
 	}
 	return layout;
 }
@@ -334,14 +369,10 @@ function addElementToEditGroup(event) {
 function wrapGroupWithLabel(element_name, innerHTML) {
 	return (
 		<div className="form-group">
-			{ wrapLabelTitle(element_name) }
+			{ wrapLabel(element_name) }
 			{ innerHTML }
 		</div>
 	);
-}
-
-function wrapLabelTitle(text) {
-	return wrapLabel(toTitle(text), text);
 }
 
 function wrapLabel(text, label_for) {
