@@ -12,6 +12,7 @@
         <dependency org="suse" name="cglib" rev="2.1.3" />
         <dependency org="suse" name="cglib-nodep" rev="2.2.3" />
         <dependency org="suse" name="checkstyle-all" rev="6.11.2" />
+        <dependency org="suse" name="classmate" rev="1.3.0" />
         <dependency org="suse" name="commons-beanutils" rev="1.9.2" />
         <dependency org="suse" name="commons-cli" rev="1.2" />
         <dependency org="suse" name="commons-codec" rev="1.8" />
@@ -30,12 +31,16 @@
         <dependency org="suse" name="concurrentlinkedhashmap-lru" rev="1.3.1" />
         <dependency org="suse" name="dom4j" rev="1.6.1" />
         <dependency org="suse" name="dwr" rev="3.0rc2+svn4059" />
-        <dependency org="suse" name="ehcache" rev="1.2.3" />
+        <dependency org="suse" name="ehcache-core" rev="2.10.1" />
         <dependency org="suse" name="google-gson" rev="2.3.1" />
         <dependency org="suse" name="gsbase" rev="2.0.1" />
         <dependency org="suse" name="hamcrest-core" rev="1.3" />
         <dependency org="suse" name="hamcrest-library" rev="1.3" />
-        <dependency org="suse" name="hibernate3" rev="3.2.7" />
+        <dependency org="suse" name="hibernate-c3p0" rev="5.2.2" />
+        <dependency org="suse" name="hibernate-commons-annotations" rev="5.0.1" />
+        <dependency org="suse" name="hibernate-core" rev="5.2.2" />
+        <dependency org="suse" name="hibernate-ehcache" rev="5.2.2" />
+        <dependency org="suse" name="hibernate-jpa-2.1-api" rev="1.0.0" />
         <dependency org="suse" name="httpclient" rev="4.5" />
         <dependency org="suse" name="httpcore" rev="4.4.1" />
         <dependency org="suse" name="jacocoant" rev="0.7.7" />
@@ -43,9 +48,11 @@
         <dependency org="suse" name="jaf" rev="1.0.2" />
         <dependency org="suse" name="jasper" rev="8.0.23" />
         <dependency org="suse" name="jasper-el" rev="8.0.23" />
+        <dependency org="suse" name="javassist" rev="3.20.0" />
         <dependency org="suse" name="jcommon" rev="1.0.16" />
         <dependency org="suse" name="jdom" rev="1.0" />
         <dependency org="suse" name="jfreechart" rev="1.0.13" />
+        <dependency org="suse" name="jboss-logging" rev="3.3.0" />
         <dependency org="suse" name="jmock" rev="2.6.0" />
         <dependency org="suse" name="jmock-junit3" rev="2.6.0" />
         <dependency org="suse" name="jmock-legacy" rev="2.6.0" />
@@ -77,6 +84,7 @@
         <dependency org="suse" name="snakeyaml" rev="1.10" />
         <dependency org="suse" name="spark-core" rev="2.3" />
         <dependency org="suse" name="spark-template-jade" rev="2.3" />
+        <dependency org="suse" name="statistics" rev="1.0.2" />
         <dependency org="suse" name="stringtree-json" rev="2.0.9" />
         <dependency org="suse" name="struts" rev="1.2.9" />
         <dependency org="suse" name="strutstest" rev="2.1.3" />
@@ -92,6 +100,5 @@
         <dependency org="suse" name="websocket-api" rev="1.1" />
         <dependency org="suse" name="xalan-j2" rev="2.7.0" />
         <dependency org="suse" name="xerces-j2" rev="2.8.1" />
-        <dependency org="suse" name="xml-commons-apis" rev="1.0" />
     </dependencies>
 </ivy-module>
