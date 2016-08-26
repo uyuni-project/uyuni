@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -1001,6 +1002,7 @@ public class ContentSyncManager {
 
         SUSEProductFactory.removeAllExcept(processed);
         updateUpgradePaths(products);
+        updateProductExtensions(products);
     }
 
     /**
@@ -1135,6 +1137,42 @@ public class ContentSyncManager {
                     SUSEProduct fromProduct =
                             SUSEProductFactory.lookupByProductId(predecessorId);
                     updateUpgradePath(fromProduct, toProduct);
+                }
+            }
+        }
+    }
+
+    /**
+     * Recreate contents of the suseProductExtension table with extensions
+     * of products from SCC
+     *
+     * @param products Collection of SCC Products
+     * @throws ContentSyncException in case of an error
+     */
+    public void updateProductExtensions(Collection<SCCProduct> products)
+            throws ContentSyncException {
+        // Clear all migration targets from the database
+        SUSEProductFactory.clearProductExtensions();
+        Set<String> sourceTargetDone = new HashSet<>();
+        // Iterate through products from SCC and check extensions
+        for (SCCProduct baseProduct : products) {
+            if (baseProduct.getExtensions() == null) {
+                continue;
+            }
+            for (SCCProduct extensionProduct : baseProduct.getExtensions()) {
+                String ident = baseProduct.hashCode() + "-" + extensionProduct.hashCode();
+                if (!sourceTargetDone.contains(ident)) {
+                    // we do not check for extensions of targetProduct.
+                    // SCC repeat them in the output as a toplevel product.
+                    sourceTargetDone.add(ident);
+                    SUSEProduct suseBasePrd =
+                            SUSEProductFactory.lookupByProductId(baseProduct.getId());
+                    SUSEProduct suseExtPrd =
+                            SUSEProductFactory.lookupByProductId(extensionProduct.getId());
+                    if (suseBasePrd != null && suseExtPrd != null) {
+                        SUSEProductFactory.save(
+                                new SUSEProductExtension(suseBasePrd, suseExtPrd));
+                    }
                 }
             }
         }

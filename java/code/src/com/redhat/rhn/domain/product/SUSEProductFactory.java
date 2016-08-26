@@ -75,6 +75,14 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Insert or update a {@link SUSEProductExtension}.
+     * @param productExtension migration target to be inserted.
+     */
+    public static void save(SUSEProductExtension productExtension) {
+        singleton.saveObject(productExtension);
+    }
+
+    /**
      * Delete a {@link SUSEProduct} from the database.
      * @param product SUSE product to be deleted.
      */
@@ -292,6 +300,7 @@ public class SUSEProductFactory extends HibernateFactory {
         session.getNamedQuery("SUSEProductChannel.clear").executeUpdate();
         session.getNamedQuery("SUSEProduct.clear").executeUpdate();
         session.getNamedQuery("SUSEUpgradePath.clear").executeUpdate();
+        session.getNamedQuery("SUSEProductExtension.clear").executeUpdate();
     }
 
     /**
@@ -299,6 +308,14 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static void clearUpgradePaths() {
         getSession().getNamedQuery("SUSEUpgradePath.clear").executeUpdate();
+        getSession().clear();
+    }
+
+    /**
+     * Clear all upgrade paths from the database.
+     */
+    public static void clearProductExtensions() {
+        getSession().getNamedQuery("SUSEProductExtension.clear").executeUpdate();
         getSession().clear();
     }
 
