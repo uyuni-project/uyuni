@@ -40,7 +40,7 @@ from rhn_bootstrap_strings import \
     getHeader, getConfigFilesSh, getUp2dateScriptsSh, getGPGKeyImportSh, \
     getCorpCACertSh, getRegistrationSh, getUp2dateTheBoxSh, \
     getAllowConfigManagement, getAllowRemoteCommands, \
-    getRegistrationStackSh
+    getRegistrationStackSh, getRegistrationSaltSh, removeTLSCertificate
 from sslToolConfig import CA_CRT_NAME, CA_CRT_RPM_NAME
 from spacewalk.common.fileutils import rotateFile, cleanupAbsPath
 from spacewalk.common.checksum  import getFileChecksum
@@ -165,6 +165,7 @@ def getDefaultOptions():
             'overrides': DEFAULT_OVERRIDES,
             'script': DEFAULT_SCRIPT,
             'hostname': socket.getfqdn(),
+            'salt': 0,
             'ssl-cert': '', # will trigger a search
             'gpg-key': "",
             'http-proxy': "",
@@ -211,6 +212,10 @@ def getOptionsTable():
                action='store',
                type='string', default=defopts['hostname'],
                help='hostname (FQDN) to which clients connect (currently: %s)' % defopts['hostname']),
+        Option('--salt',
+               action='store_true',
+               default=defopts['salt'],
+               help='boolean; enables salt bootstrap and registration in place of traditional (currently: %s)' % getSetString(defopts['salt'])),
         Option('--ssl-cert',
                action='store',
                type='string', default=defopts['ssl-cert'],
@@ -299,6 +304,7 @@ Note: for rhn-bootstrap to work, certain files are expected to be
             'overrides': options.overrides or DEFAULT_OVERRIDES,
             'script': options.script or DEFAULT_SCRIPT,
             'hostname': options.hostname,
+            'salt': options.salt,
             'ssl-cert': options.ssl_cert,
             'gpg-key': options.gpg_key,
             'http-proxy': options.http_proxy,
@@ -383,7 +389,7 @@ ERROR: the value of --overrides and --script cannot be the same!
 
     # forcing numeric values
     for opt in ['allow_config_actions', 'allow_remote_commands', 'no_ssl',
-        'no_gpg', 'no_up2date', 'up2date', 'verbose']:
+        'no_gpg', 'no_up2date', 'salt', 'up2date', 'verbose']:
         # operator.truth should return (0, 1) or (False, True) depending on
         # the version of python; passing any of those values through int()
         # will return an int
@@ -572,41 +578,59 @@ def generateBootstrapScript(options):
     isRpmYN = processCACertPath(options)
     pubname = os.path.basename(options.pub_tree)
 
+    newScript = []
+
     # generate script
     # In processCommandline() we have turned all boolean values to 0 or 1
     # this means that we can negate those booleans with 1 - their current
     # value (instead of doing not value which can yield True/False, which
     # would print as such)
-    newScript = getHeader(MY_PRODUCT_NAME, options.activation_keys,
-                  options.gpg_key, options.overrides, options.hostname,
-                  orgCACert, isRpmYN, 1 - options.no_ssl, 1 - options.no_gpg,
-                  options.allow_config_actions, options.allow_remote_commands,
-                  options.up2date, pubname, DEFAULT_APACHE_PUB_DIRECTORY)
+    newScript.append(
+                    getHeader(
+                            MY_PRODUCT_NAME,
+                            options,
+                            orgCACert,
+                            isRpmYN,
+                            pubname,
+                            DEFAULT_APACHE_PUB_DIRECTORY
+                            )
+                    )
 
     writeYN = 1
 
     # concat all those script-bits
-    newScript = newScript + getConfigFilesSh()
+    newScript.append(getConfigFilesSh())
 
     # don't call this twice
     # getUp2dateScriptsSh()
 
-    newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh()
+    newScript.append(getGPGKeyImportSh())
+    newScript.append(getCorpCACertSh())
 
     # SLES: install packages required for registration on systems that do not have them installed
-    newScript = newScript + getRegistrationStackSh() + getUp2dateScriptsSh()
+    newScript.append(getRegistrationStackSh(options.salt))
 
-    newScript = newScript + getRegistrationSh(MY_PRODUCT_NAME)
+    if not options.salt:
+        newScript.append(getUp2dateScriptsSh())
+
+    if (options.salt):
+        newScript.append(removeTLSCertificate())
+        newScript.append(getRegistrationSaltSh(MY_PRODUCT_NAME))
+    else:
+        newScript.append(getRegistrationSh(MY_PRODUCT_NAME))
 
     #5/16/05 wregglej 159437 - moving stuff that messes with the allowed-action dir to after registration
-    newScript = newScript + getAllowConfigManagement()
-    newScript = newScript + getAllowRemoteCommands()
+    if not options.salt:
+        newScript.append(getAllowConfigManagement())
+        newScript.append(getAllowRemoteCommands())
 
     #5/16/05 wregglej 159437 - moved the stuff that up2dates the entire box to after allowed-actions permissions are set.
-    newScript = newScript + getUp2dateTheBoxSh(MY_PRODUCT_NAME)
+    newScript.append(getUp2dateTheBoxSh(MY_PRODUCT_NAME, options.salt))
 
     _bootstrapDir = cleanupAbsPath(os.path.join(options.pub_tree, 'bootstrap'))
     _script = cleanupAbsPath(os.path.join(_bootstrapDir, options.script))
+
+    newScript = ''.join(newScript)
 
     if os.path.exists(_script):
         oldScript = open(_script, 'rb').read()
@@ -675,4 +699,3 @@ if __name__ == "__main__":
     except Exception:
         sys.stderr.write('Unhandled ERROR occurred.\n')
         raise # should exit with a 1 (errnoGeneral)
-
