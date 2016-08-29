@@ -54,7 +54,7 @@ def ext_pillar(minion_id, pillar, path, formula_layout_path, formula_data_path):
         log.error('Error accessing "{pillar_file}": {message}'.format(pillar_file=data_filename, message=str(error)))
 
     try:
-        ret.update(formula_pillars(minion_id, ret.get("group_ids", []), formula_layout_path, formula_data_path))
+        ret.update(formula_pillars(minion_id, ret.get("group_ids", list()), formula_layout_path, formula_data_path))
     except Exception as error:
         log.error('Error accessing formula pillar data: {message}'.format(message=str(error)))
 
@@ -69,14 +69,14 @@ def formula_pillars(minion_id, group_ids, formula_layout_path, formula_data_path
     with open(os.path.join(formula_data_path, "group_formulas.json")) as f:
         group_formulas = json.load(f)
         for group in group_ids:
-            formulas[group] = group_formulas.get(unicode(group), [])
+            formulas[group] = group_formulas.get(unicode(group), list())
 
-	formulas_list = []
+    formulas_list = list()
     for key in formulas:
         for formula in formulas[key]:
-        	formulas_list.append(formula)
+            formulas_list.append(formula)
             ret.update(load_formula_pillar(minion_id, key, formula, formula_layout_path, formula_data_path))
-	ret["formulas"] = formulas_list
+    ret["formulas"] = formulas_list
     return ret
 
 def load_formula_pillar(minion_id, group_id, formula_name, formula_layout_path, formula_data_path):
@@ -84,12 +84,12 @@ def load_formula_pillar(minion_id, group_id, formula_name, formula_layout_path, 
     Load the data from a specific formula for a minion in a specific group, merge and return it.
     '''
     layout_filename = os.path.join(formula_layout_path, formula_name, "form.yml")
-    group_filename = os.path.join(formula_data_path, "group_pillar", str(group_id) + "_" + formula_name + ".json")
-    system_filename = os.path.join(formula_data_path, "pillar", str(minion_id) + "_" + formula_name + ".json")
+    group_filename = os.path.join(formula_data_path, "group_pillar", "{id}_{name}.json".format(id=group_id, name=formula_name))
+    system_filename = os.path.join(formula_data_path, "pillar", "{id}_{name}.json".format(id=minion_id, name=formula_name))
     try:
         layout = yaml.load(open(layout_filename).read())
-        group_data = json.load(open(group_filename)) if os.path.isfile(group_filename) else {}
-        system_data = json.load(open(system_filename)) if os.path.isfile(system_filename) else {}
+        group_data = json.load(open(group_filename)) if os.path.isfile(group_filename) else dict()
+        system_data = json.load(open(system_filename)) if os.path.isfile(system_filename) else dict()
     except Exception as error:
         log.error('Error loading data for formula "{formula}": {message}'.format(formula=formula_name, message=str(error)))
         return dict()
@@ -100,18 +100,21 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
     '''
     Merge the group and system formula data, respecting the scope of a value.
     '''
-    ret = {}
+    ret = dict()
 
     for element_name in layout:
         if element_name.startswith("$"):
             continue
 
-        value = None
         element = layout[element_name]
+        if not isinstance(element, dict):
+            continue
+            
         element_scope = element.get("$scope", scope)
-
+        value = None
+        
         if element.get("$type", "text") in ["group", "hidden-group"]:
-            value = merge_formula_data(element, group_data.get(element_name, {}), system_data.get(element_name, {}), element_scope)
+            value = merge_formula_data(element, group_data.get(element_name, dict()), system_data.get(element_name, dict()), element_scope)
         elif element_scope == "system":
             value = system_data.get(element_name, group_data.get(element_name, element.get("$default", None)))
         elif element_scope == "group":
@@ -119,6 +122,6 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
         elif element_scope == "readonly":
             value = element.get("$default", None)
 
-        if value != None:
+        if value is not None:
             ret[element_name] = value
     return ret
