@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers;
 
-import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,14 +36,12 @@ import spark.Spark;
  */
 public class FormulaCatalogController {
 
-    private static final String FORMULA_DIRECTORY = "/usr/share/susemanager/salt/formulas";
-
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .serializeNulls()
             .create();
 
-    private FormulaCatalogController() {}
+    private FormulaCatalogController() { }
 
     /**
      * Show the list of formulas.
@@ -70,7 +67,7 @@ public class FormulaCatalogController {
         response.type("application/json");
         return GSON.toJson(FormulaFactory.listFormulas());
     }
-    
+
     /**
      * Show the details page for an existing formula.
      * @param request the http request
@@ -85,7 +82,7 @@ public class FormulaCatalogController {
             Spark.halt(HttpStatus.SC_NOT_FOUND); // TODO redirect to the default 404 page
             return null;
         }
-        
+
         // TODO: show more details about the formula/allow editing?
         Map<String, Object> formulaData = new HashMap<>();
         formulaData.put("name", formulaName);
