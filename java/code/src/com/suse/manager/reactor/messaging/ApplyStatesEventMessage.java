@@ -32,6 +32,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     public static final String CERTIFICATE = "certs";
     public static final String PACKAGES = "packages";
     public static final String PACKAGES_PROFILE_UPDATE = "packages.profileupdate";
+    public static final String HARDWARE_PROFILE_UPDATE = "hardware.profileupdate";
     public static final String CHANNELS = "channels";
     public static final String CHANNELS_DISABLE_LOCAL_REPOS = "channels.disablelocalrepos";
     public static final String SALT_MINION_SERVICE = "services.salt-minion";
