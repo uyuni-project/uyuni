@@ -264,6 +264,17 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         PkgProfileUpdateSlsResult.class));
             });
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+                serverAction.setResultMsg("Failure");
+            }
+            else {
+                serverAction.setResultMsg("Success");
+            }
+            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                handleHardwareProfileUpdate(minionServer, jsonResult);
+            });
+        }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
             Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
@@ -420,6 +431,13 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
         // Trigger update of errata cache for this server
         ErrataManager.insertErrataCacheTask(server);
+    }
+
+    // TODO: Implement this, parse the JsonElement into HwProfileUpdateSlsResult first
+    private static void handleHardwareProfileUpdate(MinionServer server,
+            JsonElement jsonResult) {
+        LOG.info("TODO: Handle hardware profile update for " + server.getMinionId());
+        LOG.debug("JSON result: " + jsonResult);
     }
 
     /**

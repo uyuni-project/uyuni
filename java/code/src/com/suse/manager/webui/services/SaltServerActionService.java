@@ -170,6 +170,9 @@ public enum SaltServerActionService {
         else if (actionType.equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
             return packagesRefreshListAction(minions);
         }
+        else if (actionType.equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
+            return hardwareRefreshListAction(minions);
+        }
         else if (actionType.equals(ActionFactory.TYPE_REBOOT)) {
             return rebootAction(minions);
         }
@@ -361,6 +364,14 @@ public enum SaltServerActionService {
             List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE)),
+                minions);
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> hardwareRefreshListAction(
+            List<MinionServer> minions) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE)),
                 minions);
         return ret;
     }
