@@ -27,10 +27,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.NotSupportedException;
 
@@ -53,12 +55,13 @@ import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
  */
 public class FormulaFactory {
 
-    private static final String DATA_DIR = "/srv/susemanager/data/";
+    private static final String DATA_DIR = "/srv/susemanager/formula_data/";
     private static final String STATES_DIR = "/usr/share/susemanager/formulas/states/";
     private static final String METADATA_DIR = "/usr/share/susemanager/formulas/metadata/";
     private static final String PILLAR_DIR = DATA_DIR + "pillar/";
     private static final String GROUP_PILLAR_DIR = DATA_DIR + "group_pillar/";
     private static final String GROUP_DATA_FILE = DATA_DIR + "group_formulas.json";
+    private static final String SERVER_DATA_FILE = DATA_DIR + "server_formulas.json";
     private static final String PILLAR_FILE_EXTENSION = "json";
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -162,27 +165,31 @@ public class FormulaFactory {
      * @return the list of formulas
      */
     public static List<String> getFormulasByServerId(Long serverId) {
-        LinkedList<String> formulas = new LinkedList<>();
-        File serverFile = new File(GROUP_DATA_FILE);
-        if (!serverFile.exists()) {
-            return new LinkedList<String>();
-        }
-
+        Set<String> formulas = new HashSet<>();
+        File groupDataFile = new File(GROUP_DATA_FILE);
         try {
-            Map<String, List<String>> serverFormulas =
-                    GSON.fromJson(new BufferedReader(new FileReader(serverFile)),
+            Map<String, List<String>> groupFormulas =
+                    GSON.fromJson(new BufferedReader(new FileReader(groupDataFile)),
                             Map.class);
-
             for (ServerGroup group : ServerFactory.lookupById(serverId)
                     .getManagedGroups()) {
-                formulas.addAll(serverFormulas.getOrDefault(group.getId().toString(),
+                formulas.addAll(groupFormulas.getOrDefault(group.getId().toString(),
                         Collections.emptyList()));
             }
-            return orderFormulas(formulas);
         }
         catch (FileNotFoundException e) {
-            return new LinkedList<String>();
         }
+
+        File serverDataFile = new File(GROUP_DATA_FILE);
+        try {
+            Map<String, List<String>> serverFormulas =GSON.fromJson(
+                    new BufferedReader(new FileReader(serverDataFile)), Map.class);
+            formulas.addAll(serverFormulas.getOrDefault(serverId.toString(),
+                    Collections.emptyList()));
+        }
+        catch (FileNotFoundException e) {
+        }
+        return orderFormulas(new LinkedList<>(formulas));
     }
 
     /**
@@ -280,26 +287,25 @@ public class FormulaFactory {
      * @param org the org, the group belongs to
      * @throws IOException if an IOException occurs while saving the data
      */
-    public static synchronized void saveServerGroupFormulas(Long groupId,
+    public static synchronized void saveGroupFormulas(Long groupId,
             List<String> selectedFormulas, Org org) throws IOException {
-        File serverFile = new File(GROUP_DATA_FILE);
+        File dataFile = new File(GROUP_DATA_FILE);
 
-        Map<String, List<String>> serverFormulas;
-        if (!serverFile.exists()) {
-            serverFile.getParentFile().mkdirs();
-            serverFile.createNewFile();
-            serverFormulas = new HashMap<String, List<String>>();
+        Map<String, List<String>> groupFormulas;
+        if (!dataFile.exists()) {
+            dataFile.getParentFile().mkdirs();
+            dataFile.createNewFile();
+            groupFormulas = new HashMap<String, List<String>>();
         }
         else {
-            serverFormulas =
-                    GSON.fromJson(new BufferedReader(new FileReader(serverFile)),
+            groupFormulas =
+                    GSON.fromJson(new BufferedReader(new FileReader(dataFile)),
                             Map.class);
         }
 
-
         // Remove formula data for unselected formulas
         List<String> deletedFormulas =
-                new LinkedList<>(serverFormulas.getOrDefault(groupId.toString(),
+                new LinkedList<>(groupFormulas.getOrDefault(groupId.toString(),
                         new LinkedList<>()));
         deletedFormulas.removeAll(selectedFormulas);
         for (Server server : ServerGroupFactory.lookupByIdAndOrg(groupId, org)
@@ -313,10 +319,49 @@ public class FormulaFactory {
         }
 
         // Save selected Formulas
-        serverFormulas.put(groupId.toString(), orderFormulas(selectedFormulas));
+        groupFormulas.put(groupId.toString(), orderFormulas(selectedFormulas));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile));
+        writer.write(GSON.toJson(groupFormulas));
+        writer.close();
+    }
+
+    /**
+     * Save the selected formulas for a server.
+     * This also deletes all saved values of that formula.
+     * @param serverId the id of the server
+     * @param selectedFormulas the new selected formulas to save
+     * @throws IOException if an IOException occurs while saving the data
+     */
+    public static synchronized void saveServerFormulas(Long serverId,
+            List<String> selectedFormulas) throws IOException {
+        File dataFile = new File(SERVER_DATA_FILE);
+
+        Map<String, List<String>> serverFormulas;
+        if (!dataFile.exists()) {
+            dataFile.getParentFile().mkdirs();
+            dataFile.createNewFile();
+            serverFormulas = new HashMap<String, List<String>>();
+        }
+        else {
+            serverFormulas =
+                    GSON.fromJson(new BufferedReader(new FileReader(dataFile)),
+                            Map.class);
+        }
+
+        // Remove formula data for unselected formulas
+        List<String> deletedFormulas =
+                new LinkedList<>(serverFormulas.getOrDefault(serverId.toString(),
+                        new LinkedList<>()));
+        deletedFormulas.removeAll(selectedFormulas);
+        for (String deletedFormula : deletedFormulas) {
+            deleteServerFormulaData(serverId, deletedFormula);
+        }
+
+        // Save selected Formulas
+        serverFormulas.put(serverId.toString(), orderFormulas(selectedFormulas));
 
         // Write server_formulas file
-        BufferedWriter writer = new BufferedWriter(new FileWriter(serverFile));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile));
         writer.write(GSON.toJson(serverFormulas));
         writer.close();
     }

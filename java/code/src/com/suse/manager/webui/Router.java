@@ -173,36 +173,34 @@ public class Router implements SparkApplication {
                 DownloadController::downloadMetadata);
 
         // Formula catalog
-        get("/manager/formula_catalog",
+        get("/manager/formula-catalog",
                 withOrgAdmin(FormulaCatalogController::list), jade);
-        get("/manager/formula_catalog/data",
-                withOrgAdmin(FormulaCatalogController::data));
-        get("/manager/formula_catalog/formula/:name",
+        get("/manager/formula-catalog/formula/:name",
                 withCsrfToken(withOrgAdmin(FormulaCatalogController::details)), jade);
 
-        // Formula Management Groups
+        // Formula catalog API
+        get("/manager/api/formula-catalog/data",
+                withOrgAdmin(FormulaCatalogController::data));
+
+        // Formulas
         get("/manager/groups/details/formulas",
                 withCsrfToken(withUser(MinionController::serverGroupFormulas)),
                 jade);
-        get("/manager/groups/details/formulas/data/:sgid",
-                withOrgAdmin(MinionController::serverGroupFormulasData));
         get("/manager/groups/details/formula/:formula_id",
                 withCsrfToken(withUser(MinionController::serverGroupFormula)),
                 jade);
-        get("/manager/groups/details/formula/form/:sgid/:formula_id",
-                withUser(MinionController::serverGroupFormulaData));
-        post("/manager/groups/details/formulas/apply",
-                withUser(MinionController::serverGroupFormulasApply));
-        post("/manager/groups/details/formula/form/save",
-                withUser(MinionController::serverGroupSaveFormula));
-
-        // Formula management System
         get("/manager/systems/details/formula/:formula_id",
                 withCsrfToken(MinionController::minionFormula),
                 jade);
-        get("/manager/systems/details/formula/form/:sid/:formula_id",
-                withUser(MinionController::minionFormulaData));
-        post("/manager/systems/details/formula/form/save",
-                withUser(MinionController::minionSaveFormula));
+
+        // Formula API
+        get("/manager/api/formulas/list/:targetType/:id",
+                withOrgAdmin(MinionController::listSelectedFormulas));
+        get("/manager/api/formulas/form/:targetType/:id/:formula_id",
+                withUser(MinionController::formulaData));
+        post("/manager/api/formulas/select",
+                withUser(MinionController::selectFormulas));
+        post("/manager/api/formulas/save",
+                withUser(MinionController::saveFormula));
     }
 }

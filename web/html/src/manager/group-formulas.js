@@ -15,7 +15,7 @@ var toTitle = require("../components/FormulaForm").toTitle;
 var GroupFormulas = React.createClass({
     
     requestServerData() {
-        Network.get("/rhn/manager/groups/details/formulas/data/" + groupId).promise.then(data => {
+        Network.get("/rhn/manager/api/formulas/list/GROUP/" + groupId).promise.then(data => {
             data.selected = data.selected || [];
             data.added = data.added || [];
             data.removed = data.removed || [];
@@ -39,7 +39,6 @@ var GroupFormulas = React.createClass({
                 return null;
             }
         }
-    
         return Network.post(
             "/rhn/manager/api/states/apply",
             JSON.stringify({
@@ -60,13 +59,13 @@ var GroupFormulas = React.createClass({
     saveRequest: function() {
         var serverData = this.state.serverData;
         var formData = {};
-        formData.groupId = groupId;
-        formData.url = window.location.href;
+        formData.type = "GROUP";
+        formData.id = groupId;
         formData.selected = serverData.selected.filter(function(e){
             return serverData.removed.indexOf(e) < 0;
             }).concat(serverData.added);
         
-        Network.post("/rhn/manager/groups/details/formulas/apply", JSON.stringify(formData), "application/json").promise.then(
+        Network.post("/rhn/manager/api/formulas/select", JSON.stringify(formData), "application/json").promise.then(
         data => {
                 this.state.messages = [t("Formulas saved!")]
                 this.requestServerData();

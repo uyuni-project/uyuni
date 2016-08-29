@@ -11,11 +11,12 @@ var toTitle = FormulaFormModule.toTitle;
 
 function updateFormula(component) {
 	var formData = {};
-	formData.serverId = serverId;
+	formData.type = "SERVER";
+	formData.id = serverId;
 	formData.formula_name = component.state.serverData.formula_name;
 	formData.content = component.serializeValues();
 	
-    Network.post("/rhn/manager/systems/details/formula/form/save", JSON.stringify(formData), "application/json").promise.then(
+    Network.post("/rhn/manager/api/formulas/save", JSON.stringify(formData), "application/json").promise.then(
 	(data) => {
 		component.setState({
 			messages: [t("Formula saved!")]
@@ -44,7 +45,7 @@ function addFormulaNavBar(formulaList, activeId) {
 
 ReactDOM.render(
 	<FormulaForm
-	  	dataUrl={"/rhn/manager/systems/details/formula/form/" + serverId + "/" + formulaId}
+	  	dataUrl={"/rhn/manager/api/formulas/form/SERVER/" + serverId + "/" + formulaId}
 	  	noFormulaText="No formulas found for this server! Add a formula to a group this server is part of."
 	  	addFormulaNavBar={addFormulaNavBar}
 	  	formulaId={formulaId}
