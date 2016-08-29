@@ -1746,6 +1746,7 @@ public class ActionManager extends BaseManager {
 
         ActionFactory.save(action);
 
+        MessageQueue.publish(new ActionScheduledEventMessage(action));
         return action;
     }
 
