@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +62,7 @@ public class MinionController {
             .serializeNulls()
             .create();
 
-    private MinionController() {}
+    private MinionController() { }
 
     /**
      * Displays a list of minions.
@@ -260,13 +261,16 @@ public class MinionController {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView serverGroupFormula(Request request, Response response, User user) {
+    public static ModelAndView serverGroupFormula(Request request, Response response,
+            User user) {
         String serverGroupId = request.queryParams("sgid");
         Map<String, Object> data = new HashMap<>();
         data.put("groupId", serverGroupId);
-        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
+        data.put("groupName",
+                ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
                 user.getOrg()).getName());
         data.put("formula_id", request.params("formula_id"));
         return new ModelAndView(data, "groups/formula.jade");
@@ -279,37 +283,45 @@ public class MinionController {
      * @param user the current user
      * @return the JSON data
      */
-    public static String serverGroupFormulaData(Request request, Response response, User user) {
-    	Long groupId = new Long(request.params("sgid"));
+    public static String serverGroupFormulaData(Request request, Response response,
+            User user) {
+        Long groupId = new Long(request.params("sgid"));
 
-    	if (!checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg())))
-    		deniedResponse(response);
+        if (!checkUserHasPermissionsOnServerGroup(user,
+                ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()))) {
+            return deniedResponse(response);
+        }
 
-    	int formula_id = Integer.parseInt(request.params("formula_id"));
-    	List<String> formulas = FormulaFactory.getFormulasByGroupId(groupId);
+        int formulaId = Integer.parseInt(request.params("formula_id"));
+        List<String> formulas = FormulaFactory.getFormulasByGroupId(groupId);
 
-        String form_data;
-    	if (formulas.isEmpty()) {
-    		form_data = "null";
-    	}
-    	else {
-        	Map<String, Object> map = new HashMap<>();
-        	map.put("formula_list", formulas);
+        String formData;
+        if (formulas.isEmpty()) {
+            formData = "null";
+        }
+        else {
+            Map<String, Object> map = new HashMap<>();
+            map.put("formula_list", formulas);
 
-        	if (formula_id >= 0 && formula_id < formulas.size()) {
-        		String formula_name = formulas.get(formula_id);
-        		map.put("formula_name", formula_name);
+            if (formulaId >= 0 && formulaId < formulas.size()) {
+                String formulaName = formulas.get(formulaId);
+                map.put("formula_name", formulaName);
 
-        		Optional<Map<String, Object>> layout = FormulaFactory.getFormulaLayoutByName(formula_name);
-        		if (layout.isPresent())
-        			map.put("layout", layout.get());
-        		Optional<Map<String, Object>> values = FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formula_name, groupId);
-        		map.put("group_data", values.orElse(new HashMap<String, Object>()));
-        	}
-        	form_data = GSON.toJson(map);
-    	}
+                Optional<Map<String, Object>> layout =
+                        FormulaFactory.getFormulaLayoutByName(formulaName);
+                if (layout.isPresent()) {
+                    map.put("layout", layout.get());
+                }
+
+                Optional<Map<String, Object>> values =
+                        FormulaFactory.getGroupFormulaValuesByNameAndGroupId(formulaName,
+                                groupId);
+                map.put("group_data", values.orElseGet(Collections::emptyMap));
+            }
+            formData = GSON.toJson(map);
+        }
         response.type("application/json");
-		return form_data;
+        return formData;
     }
 
     /**
@@ -317,30 +329,34 @@ public class MinionController {
      * @param request the http request
      * @param response the http response
      * @param user the current user
-     * @return
+     * @return null if successful, else list of error messages
      */
-    public static String serverGroupSaveFormula(Request request, Response response, User user) {
-    	// Get data from request
-		Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
-    	Long groupId = Long.valueOf((String) map.get("groupId"));
-    	String formulaName = (String) map.get("formula_name");
-    	Map<String, Object> formData = (Map<String, Object>) map.get("content");
+    public static String serverGroupSaveFormula(Request request, Response response,
+            User user) {
+        // Get data from request
+        Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
+        Long groupId = Long.valueOf((String) map.get("groupId"));
+        String formulaName = (String) map.get("formula_name");
+        Map<String, Object> formData = (Map<String, Object>) map.get("content");
 
-    	if (!checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg())))
-    		deniedResponse(response);
+        if (!checkUserHasPermissionsOnServerGroup(user,
+                ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()))) {
+            return deniedResponse(response);
+        }
 
-    	// Save data
-    	try {
-    		FormulaFactory.saveGroupFormulaData(formData, groupId, formulaName);
-    	} catch (IOException e) {
-    		return errorResponse(response,
+        // Save data
+        try {
+            FormulaFactory.saveGroupFormulaData(formData, groupId, formulaName);
+        }
+        catch (IOException e) {
+            return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " + e.getMessage()));
-    	}
+        }
 
-    	// Return answer
+        // Return answer
         response.type("application/json");
-        return "{}";
-	}
+        return GSON.toJson("");
+    }
 
     /**
      * Handler for the server group formula selection page.
@@ -350,11 +366,13 @@ public class MinionController {
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView serverGroupFormulas(Request request, Response response, User user) {
+    public static ModelAndView serverGroupFormulas(Request request, Response response,
+            User user) {
         String serverGroupId = request.queryParams("sgid");
         Map<String, Object> data = new HashMap<>();
         data.put("groupId", serverGroupId);
-        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
+        data.put("groupName",
+                ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(serverGroupId),
                 user.getOrg()).getName());
         return new ModelAndView(data, "groups/formulas.jade");
     }
@@ -366,19 +384,22 @@ public class MinionController {
      * @param user the current user
      * @return the JSON data
      */
-    public static String serverGroupFormulasData(Request request, Response response, User user) {
-    	Long groupId = Long.valueOf(request.params("sgid"));
-    	if (!checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg())))
-    		deniedResponse(response);
+    public static String serverGroupFormulasData(Request request, Response response,
+            User user) {
+        Long groupId = Long.valueOf(request.params("sgid"));
+        if (!checkUserHasPermissionsOnServerGroup(user,
+                ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()))) {
+            return deniedResponse(response);
+        }
 
-        List<String> server_formulas = FormulaFactory.getFormulasByGroupId(groupId);
+        List<String> serverFormulas = FormulaFactory.getFormulasByGroupId(groupId);
 
-    	Map<String, Object> data = new HashMap<>();
-		data.put("selected", server_formulas);
-		data.put("formulas", FormulaFactory.listFormulas());
+        Map<String, Object> data = new HashMap<>();
+        data.put("selected", serverFormulas);
+        data.put("formulas", FormulaFactory.listFormulas());
 
-		response.type("application/json");
-		return GSON.toJson(data);
+        response.type("application/json");
+        return GSON.toJson(data);
     }
 
     /**
@@ -386,26 +407,31 @@ public class MinionController {
      * @param request the http request
      * @param response the http response
      * @param user the current user
-     * @return
+     * @return null if successful, else list of error messages
      */
-    public static String serverGroupFormulasApply(Request request, Response response, User user) {
-    	// Get data from request
-		Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
-    	Long groupId = Long.valueOf((String) map.get("groupId"));
-    	List<String> selectedFormulas = (List<String>) map.get("selected");
-    	if (!checkUserHasPermissionsOnServerGroup(user, ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg())))
-    		deniedResponse(response);
+    public static String serverGroupFormulasApply(Request request, Response response,
+            User user) {
+        // Get data from request
+        Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
+        Long groupId = Long.valueOf((String) map.get("groupId"));
+        List<String> selectedFormulas = (List<String>) map.get("selected");
+        if (!checkUserHasPermissionsOnServerGroup(user,
+                ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()))) {
+            return deniedResponse(response);
+        }
 
-    	try {
-			FormulaFactory.saveServerGroupFormulas(groupId, selectedFormulas, user.getOrg());
-    	}
-    	catch (IOException e) {
-    		return errorResponse(response,
+        try {
+            FormulaFactory.saveServerGroupFormulas(groupId,
+                    selectedFormulas, user.getOrg());
+        }
+        catch (IOException e) {
+            return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " + e.getMessage()));
-    	}
+        }
+
         response.type("application/json");
         return GSON.toJson("");
-	}
+    }
 
     /**
      * Handler for the minion formula page.
@@ -429,41 +455,48 @@ public class MinionController {
      * @return the JSON data
      */
     public static String minionFormulaData(Request request, Response response, User user) {
-    	Long serverId = new Long(request.params("sid"));
-    	if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(serverId)))
-    		deniedResponse(response);
+        Long serverId = new Long(request.params("sid"));
+        if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(serverId))) {
+            return deniedResponse(response);
+        }
 
-    	// Find formulas of server groups
-    	int formula_id = Integer.parseInt(request.params("formula_id"));
-    	List<String> formulas = FormulaFactory.getFormulasByServerId(serverId);
+        // Find formulas of server groups
+        int formulaId = Integer.parseInt(request.params("formula_id"));
+        List<String> formulas = FormulaFactory.getFormulasByServerId(serverId);
 
-        String form_data;
-    	if (formulas.isEmpty()) {
-    		form_data = "null";
-    	}
-    	else {
-        	Map<String, Object> map = new HashMap<>();
-        	map.put("formula_list", formulas);
+        String formData;
+        if (formulas.isEmpty()) {
+            formData = "null";
+        }
+        else {
+            Map<String, Object> map = new HashMap<>();
+            map.put("formula_list", formulas);
 
-        	if (formula_id >= 0 && formula_id < formulas.size()) {
-        		String formula_name = formulas.get(formula_id);
-        		map.put("formula_name", formula_name);
+            if (formulaId >= 0 && formulaId < formulas.size()) {
+                String formulaName = formulas.get(formulaId);
+                map.put("formula_name", formulaName);
 
-        		Optional<Map<String, Object>> layout = FormulaFactory.getFormulaLayoutByName(formula_name);
-        		if (layout.isPresent())
-        			map.put("layout", layout.get());
+                Optional<Map<String, Object>> layout =
+                        FormulaFactory.getFormulaLayoutByName(formulaName);
+                if (layout.isPresent()) {
+                    map.put("layout", layout.get());
+                }
 
-        		Optional<Map<String, Object>> system_data = FormulaFactory.getFormulaValuesByNameAndServerId(formula_name, serverId);
-        		map.put("system_data", system_data.orElse(new HashMap<String, Object>()));
+                Optional<Map<String, Object>> systemData =
+                        FormulaFactory.getFormulaValuesByNameAndServerId(formulaName,
+                                serverId);
+                map.put("system_data", systemData.orElse(new HashMap<String, Object>()));
 
-        		Optional<Map<String, Object>> group_data = FormulaFactory.getGroupFormulaValuesByNameAndServerId(formula_name, serverId);
-        		map.put("group_data", group_data.orElse(new HashMap<String, Object>()));
-        	}
-        	form_data = GSON.toJson(map);
-    	}
+                Optional<Map<String, Object>> groupData =
+                        FormulaFactory.getGroupFormulaValuesByNameAndServerId(formulaName,
+                                serverId);
+                map.put("group_data", groupData.orElse(new HashMap<String, Object>()));
+            }
+            formData = GSON.toJson(map);
+        }
 
         response.type("application/json");
-		return form_data;
+        return formData;
     }
 
     /**
@@ -471,31 +504,32 @@ public class MinionController {
      * @param request the http request
      * @param response the http response
      * @param user the current user
-     * @return
+     * @return null if successful, else list of error messages
      */
     public static String minionSaveFormula(Request request, Response response, User user) {
-    	// Get data from request
-		Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
-    	Long serverId = Long.valueOf((String) map.get("serverId"));
+        // Get data from request
+        Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
+        Long serverId = Long.valueOf((String) map.get("serverId"));
+        if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(serverId))) {
+            return deniedResponse(response);
+        }
 
-    	if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(serverId)))
-    		deniedResponse(response);
+        String formulaName = (String) map.get("formula_name");
+        Map<String, Object> formData = (Map<String, Object>) map.get("content");
 
-    	String formulaName = (String) map.get("formula_name");
-    	Map<String, Object> formData = (Map<String, Object>) map.get("content");
-
-    	// Save data
-    	try {
-    		FormulaFactory.saveServerFormulaData(formData, serverId, formulaName);
-    	} catch (IOException | NotSupportedException e) {
-    		return errorResponse(response,
+        // Save data
+        try {
+            FormulaFactory.saveServerFormulaData(formData, serverId, formulaName);
+        }
+        catch (IOException | NotSupportedException e) {
+            return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " + e.getMessage()));
-    	}
+        }
 
-    	// Return answer
+        // Return answer
         response.type("application/json");
         return GSON.toJson("");
-	}
+    }
 
     private static String errorResponse(Response response, List<String> errs) {
         response.type("application/json");
@@ -504,12 +538,13 @@ public class MinionController {
     }
 
     private static String deniedResponse(Response response) {
-    	response.type("application/json");
+        response.type("application/json");
         response.status(HttpStatus.SC_FORBIDDEN);
         return GSON.toJson("['Permission denied!']");
     }
 
-    private static boolean checkUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
+    private static boolean checkUserHasPermissionsOnServerGroup(User user,
+            ServerGroup group) {
         try {
             ServerGroupManager.getInstance().validateAccessCredentials(user, group,
                     group.getName());

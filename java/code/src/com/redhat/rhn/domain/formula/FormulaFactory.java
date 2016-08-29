@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -24,6 +24,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -40,10 +41,10 @@ import org.yaml.snakeyaml.error.YAMLException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 
@@ -52,233 +53,391 @@ import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
  */
 public class FormulaFactory {
 
-    private static final String FORMULA_DATA_DIRECTORY = "/srv/susemanager/formula_data/";
-    private static final String FORMULA_STATES_DIRECTORY = "/usr/share/susemanager/formulas/states/";
-    private static final String FORMULA_METADATA_DIRECTORY = "/usr/share/susemanager/formulas/metadata/";
-    private static final String FORMULA_PILLAR_DIRECTORY = FORMULA_DATA_DIRECTORY + "pillar/";
-    private static final String FORMULA_GROUP_PILLAR_DIRECTORY =FORMULA_DATA_DIRECTORY + "group_pillar/";
-    private static final String GROUP_FORMULAS_DATA_FILE = FORMULA_DATA_DIRECTORY + "group_formulas.json";
+    private static final String DATA_DIR = "/srv/susemanager/data/";
+    private static final String STATES_DIR = "/usr/share/susemanager/formulas/states/";
+    private static final String METADATA_DIR = "/usr/share/susemanager/formulas/metadata/";
+    private static final String PILLAR_DIR = DATA_DIR + "pillar/";
+    private static final String GROUP_PILLAR_DIR = DATA_DIR + "group_pillar/";
+    private static final String GROUP_DATA_FILE = DATA_DIR + "group_formulas.json";
     private static final String PILLAR_FILE_EXTENSION = "json";
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .serializeNulls()
             .create();
-    private static final Yaml yaml = new Yaml(new SafeConstructor());
+    private static final Yaml YAML = new Yaml(new SafeConstructor());
 
-    private FormulaFactory() {}
-    
+    private FormulaFactory() { }
+
+    /**
+     * Returns a list of all currently installed formulas.
+     * @return a list of all currently installed formulas.
+     */
     public static List<String> listFormulas() {
-    	File directory = new File(FORMULA_METADATA_DIRECTORY);
+        File directory = new File(METADATA_DIR);
         File[] files = directory.listFiles();
         List<String> formulasList = new LinkedList<>();
-        
-        // TODO: Check if directory is a real formula (contains form.yml/form.json and init.sls)?
-        for (File f : files)
-        	if (f.isDirectory())
-        		formulasList.add(f.getName());
+
+        // TODO: Check if directory is a real formula (contains form.yml and init.sls)?
+        for (File f : files) {
+            if (f.isDirectory()) {
+                formulasList.add(f.getName());
+            }
+        }
         return FormulaFactory.orderFormulas(formulasList);
     }
 
-    public static void saveGroupFormulaData(Map<String, Object> formData, Long groupId, String formulaName) throws IOException {
-    	File formula_file = new File(FORMULA_GROUP_PILLAR_DIRECTORY + groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
-    	try {
-    		formula_file.getParentFile().mkdirs();
-			formula_file.createNewFile();
-    	} catch (FileAlreadyExistsException e) {}
-    	
-    	BufferedWriter writer = new BufferedWriter(new FileWriter(formula_file));
-    	writer.write(GSON.toJson(formData));
-    	writer.close();
+    /**
+     * Saves the values of a formula for a group.
+     * @param formData the values to save
+     * @param groupId the id of the group
+     * @param formulaName the name of the formula
+     * @throws IOException if an IOException occurs while saving the data
+     */
+    public static void saveGroupFormulaData(Map<String, Object> formData, Long groupId,
+            String formulaName) throws IOException {
+        File file = new File(GROUP_PILLAR_DIR +
+                groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
+        try {
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        }
+        catch (FileAlreadyExistsException e) {
+        }
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.write(GSON.toJson(formData));
+        writer.close();
     }
-    
-    public static void saveServerFormulaData(Map<String, Object> formData, Long serverId, String formulaName) throws IOException, NotSupportedException {
-    	File formula_file = new File(FORMULA_PILLAR_DIRECTORY + getMinionId(serverId) + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
-    	try {
-    		formula_file.getParentFile().mkdirs();
-			formula_file.createNewFile();
-    	} catch (FileAlreadyExistsException e) {}
-    	
-    	BufferedWriter writer = new BufferedWriter(new FileWriter(formula_file));
-    	writer.write(GSON.toJson(formData));
-    	writer.close();
+
+    /**
+     * Saves the values of a formula for a server.
+     * @param formData the values to save
+     * @param serverId the id of the server
+     * @param formulaName the name of the formula
+     * @throws IOException if an IOException occurs while saving the data
+     * @throws NotSupportedException if the server is not a salt minion
+     */
+    public static void saveServerFormulaData(Map<String, Object> formData, Long serverId,
+            String formulaName) throws IOException, NotSupportedException {
+        File file = new File(PILLAR_DIR + getMinionId(serverId) +
+                "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
+        try {
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        }
+        catch (FileAlreadyExistsException e) {
+        }
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.write(GSON.toJson(formData));
+        writer.close();
     }
-    
+
+    /**
+     * Returns the formulas applied to a given group
+     * @param groupId the id of the group
+     * @return the list of formulas
+     */
     public static List<String> getFormulasByGroupId(Long groupId) {
-    	File server_formulas_file = new File(GROUP_FORMULAS_DATA_FILE);
-    	if (!server_formulas_file.exists())
-    		return new LinkedList<>();
-    	
-    	try {
-			Map<String, List<String>> server_formulas = (Map<String, List<String>>) GSON.fromJson(new BufferedReader(new FileReader(server_formulas_file)), Map.class);
-			return orderFormulas(server_formulas.getOrDefault(groupId.toString(), new LinkedList<>()));
-    	}
-    	catch (FileNotFoundException e) {
-    		return new LinkedList<String>();
-    	}
+        File serverFile = new File(GROUP_DATA_FILE);
+        if (!serverFile.exists()) {
+            return new LinkedList<>();
+        }
+
+        try {
+            Map<String, List<String>> serverFormulas =
+                    GSON.fromJson(new BufferedReader(new FileReader(serverFile)),
+                            Map.class);
+            return orderFormulas(serverFormulas.getOrDefault(groupId.toString(),
+                    Collections.emptyList()));
+        }
+        catch (FileNotFoundException e) {
+            return new LinkedList<String>();
+        }
     }
-    
+
+    /**
+     * Returns the formulas applied to a given server
+     * @param serverId the id of the server
+     * @return the list of formulas
+     */
     public static List<String> getFormulasByServerId(Long serverId) {
-    	LinkedList<String> formulas = new LinkedList<>();
-    	File server_formulas_file = new File(GROUP_FORMULAS_DATA_FILE);
-    	if (!server_formulas_file.exists())
-    		return new LinkedList<String>();
-    	
-    	try {
-			Map<String, List<String>> server_formulas = (Map<String, List<String>>) GSON.fromJson(new BufferedReader(new FileReader(server_formulas_file)), Map.class);
-			
-			for (ManagedServerGroup group : ServerFactory.lookupById(serverId).getManagedGroups())
-				formulas.addAll(server_formulas.getOrDefault(group.getId().toString(), new ArrayList<>(0)));
-	    	return orderFormulas(formulas);
-    	}
-    	catch (FileNotFoundException e) {
-    		return new LinkedList<String>();
-    	}
+        LinkedList<String> formulas = new LinkedList<>();
+        File serverFile = new File(GROUP_DATA_FILE);
+        if (!serverFile.exists()) {
+            return new LinkedList<String>();
+        }
+
+        try {
+            Map<String, List<String>> serverFormulas =
+                    GSON.fromJson(new BufferedReader(new FileReader(serverFile)),
+                            Map.class);
+
+            for (ServerGroup group : ServerFactory.lookupById(serverId)
+                    .getManagedGroups()) {
+                formulas.addAll(serverFormulas.getOrDefault(group.getId().toString(),
+                        Collections.emptyList()));
+            }
+            return orderFormulas(formulas);
+        }
+        catch (FileNotFoundException e) {
+            return new LinkedList<String>();
+        }
     }
-    
+
+    /**
+     * Returns the layout of a given formula
+     * @param name the name of the formula
+     * @return the layout
+     */
     public static Optional<Map<String, Object>> getFormulaLayoutByName(String name) {
-    	File layout_file = new File(FORMULA_METADATA_DIRECTORY + name + "/form.yml");
-    	
-    	try {
-			if (layout_file.exists())
-				return Optional.of((Map<String, Object>) yaml.load(new FileInputStream(layout_file)));
-			else
-		    	return Optional.empty();
-    	} catch (FileNotFoundException | YAMLException e) {
-    		return Optional.empty();
-    	}
-    }
-    
-    public static Optional<Map<String, Object>> getFormulaValuesByNameAndServerId(String name, Long serverId) {
-    	try {
-			File data_file = new File(FORMULA_PILLAR_DIRECTORY + getMinionId(serverId) + "_" + name + "." + PILLAR_FILE_EXTENSION);
-			if (data_file.exists())
-				return Optional.of((Map<String, Object>) GSON.fromJson(new BufferedReader(new FileReader(data_file)), Map.class));
-			else
-		    	return Optional.empty();
-    	} catch (FileNotFoundException | NotSupportedException e) {
-    		return Optional.empty();
-    	}
-    }
-    
-    public static Optional<Map<String, Object>> getGroupFormulaValuesByNameAndServerId(String name, Long serverId) {
-    	for (ManagedServerGroup group : ServerFactory.lookupById(serverId).getManagedGroups())
-    		if (getFormulasByGroupId(group.getId()).contains(name))
-    			return getGroupFormulaValuesByNameAndGroupId(name, group.getId());
-    	return Optional.empty();
-    }
-    
-    public static Optional<Map<String, Object>> getGroupFormulaValuesByNameAndGroupId(String name, Long groupId) {
-    	File data_file = new File(FORMULA_GROUP_PILLAR_DIRECTORY + groupId + "_" + name + "." + PILLAR_FILE_EXTENSION);
-    	try {
-			if (data_file.exists())
-				return Optional.of((Map<String, Object>) GSON.fromJson(new BufferedReader(new FileReader(data_file)), Map.class));
-			else
-		    	return Optional.empty();
-    	} catch (FileNotFoundException e) {
-    		return Optional.empty();
-    	}
-    }
-    
-    public static synchronized void saveServerGroupFormulas(Long groupId, List<String> selectedFormulas, Org org) throws IOException {
-    	File server_formulas_file = new File(GROUP_FORMULAS_DATA_FILE);
-    	
-    	Map<String, List<String>> server_formulas;
-    	if (!server_formulas_file.exists()) {
-    		server_formulas_file.getParentFile().mkdirs();
-    		server_formulas_file.createNewFile();
-    		server_formulas = new HashMap<String, List<String>>();
-    	}
-    	else server_formulas = (Map<String, List<String>>) GSON.fromJson(new BufferedReader(new FileReader(server_formulas_file)), Map.class);
-    	
-    	// Remove formula data for unselected formulas
-    	List<String> deletedFormulas = new LinkedList<>(server_formulas.getOrDefault(groupId.toString(), new LinkedList<>()));
-    	deletedFormulas.removeAll(selectedFormulas);
-    	for (Server server : ServerGroupFactory.lookupByIdAndOrg(groupId, org).getServers())
-    		for (String deletedFormula : deletedFormulas)
-    			deleteServerFormulaData(server.getId(), deletedFormula);
-		for (String deletedFormula : deletedFormulas)
-			deleteGroupFormulaData(groupId, deletedFormula);
-    	
-		// Save selected Formulas
-		server_formulas.put(groupId.toString(), orderFormulas(selectedFormulas));
-		
-		// Write server_formulas file
-    	BufferedWriter writer = new BufferedWriter(new FileWriter(server_formulas_file));
-    	writer.write(GSON.toJson(server_formulas));
-    	writer.close();
+        File layoutFile = new File(METADATA_DIR + name + "/form.yml");
+
+        try {
+            if (layoutFile.exists()) {
+                return Optional.of((Map<String, Object>) YAML.load(
+                        new FileInputStream(layoutFile)));
+            }
+            else {
+                return Optional.empty();
+            }
+        }
+        catch (FileNotFoundException | YAMLException e) {
+            return Optional.empty();
+        }
     }
 
-    public static void deleteServerFormulaData(Long serverId, String formulaName) throws IOException {
-    	try {
-	    	File formula_file = new File(FORMULA_PILLAR_DIRECTORY + getMinionId(serverId) + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
-	    	if (formula_file.exists())
-	    		formula_file.delete();
-    	} catch (NotSupportedException e) {
-    		//TODO: log error message?
-    	}
+    /**
+     * Returns the saved values of a given server for a given formula.
+     * @param name the name of the formula
+     * @param serverId the id of the server
+     * @return the saved values or an empty optional if no values were found
+     */
+    public static Optional<Map<String, Object>> getFormulaValuesByNameAndServerId(
+            String name, Long serverId) {
+        try {
+            File dataFile = new File(PILLAR_DIR +
+                    getMinionId(serverId) + "_" + name + "." + PILLAR_FILE_EXTENSION);
+            if (dataFile.exists()) {
+                return Optional.of((Map<String, Object>) GSON.fromJson(
+                        new BufferedReader(new FileReader(dataFile)), Map.class));
+            }
+            else {
+                return Optional.empty();
+            }
+        }
+        catch (FileNotFoundException | NotSupportedException e) {
+            return Optional.empty();
+        }
     }
 
-    public static void deleteGroupFormulaData(Long groupId, String formulaName) throws IOException {
-    	File formula_file = new File(FORMULA_GROUP_PILLAR_DIRECTORY + groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
-    	if (formula_file.exists())
-    		formula_file.delete();
+    /**
+     * Returns the saved values of a group for a given formula.
+     * The group is found by a given server, that is a member of that group.
+     * @param name the name of the formula
+     * @param serverId the id of the server
+     * @return the saved values or an empty optional if no values were found
+     */
+    public static Optional<Map<String, Object>> getGroupFormulaValuesByNameAndServerId(
+            String name, Long serverId) {
+        for (ServerGroup group : ServerFactory.lookupById(serverId).getManagedGroups()) {
+            if (getFormulasByGroupId(group.getId()).contains(name)) {
+                return getGroupFormulaValuesByNameAndGroupId(name, group.getId());
+            }
+        }
+        return Optional.empty();
     }
 
-	// TODO: not very efficient, there are much more efficient algorithms for dependency solving
+    /**
+     * Returns the saved values of a given group for a given formula.
+     * @param name the name of the formula
+     * @param groupId the id of the group
+     * @return the saved values or an empty optional if no values were found
+     */
+    public static Optional<Map<String, Object>> getGroupFormulaValuesByNameAndGroupId(
+            String name, Long groupId) {
+        File dataFile = new File(GROUP_PILLAR_DIR +
+                groupId + "_" + name + "." + PILLAR_FILE_EXTENSION);
+        try {
+            if (dataFile.exists()) {
+                return Optional.of((Map<String, Object>) GSON.fromJson(
+                        new BufferedReader(new FileReader(dataFile)), Map.class));
+            }
+            else {
+                return Optional.empty();
+            }
+        }
+        catch (FileNotFoundException e) {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Save the selected formulas for a group.
+     * This also deletes all saved values values for the formula for all group members
+     * @param groupId the id of the group
+     * @param selectedFormulas the new selected formulas to save
+     * @param org the org, the group belongs to
+     * @throws IOException if an IOException occurs while saving the data
+     */
+    public static synchronized void saveServerGroupFormulas(Long groupId,
+            List<String> selectedFormulas, Org org) throws IOException {
+        File serverFile = new File(GROUP_DATA_FILE);
+
+        Map<String, List<String>> serverFormulas;
+        if (!serverFile.exists()) {
+            serverFile.getParentFile().mkdirs();
+            serverFile.createNewFile();
+            serverFormulas = new HashMap<String, List<String>>();
+        }
+        else {
+            serverFormulas =
+                    GSON.fromJson(new BufferedReader(new FileReader(serverFile)),
+                            Map.class);
+        }
+
+
+        // Remove formula data for unselected formulas
+        List<String> deletedFormulas =
+                new LinkedList<>(serverFormulas.getOrDefault(groupId.toString(),
+                        new LinkedList<>()));
+        deletedFormulas.removeAll(selectedFormulas);
+        for (Server server : ServerGroupFactory.lookupByIdAndOrg(groupId, org)
+                .getServers()) {
+            for (String deletedFormula : deletedFormulas) {
+                deleteServerFormulaData(server.getId(), deletedFormula);
+            }
+        }
+        for (String deletedFormula : deletedFormulas) {
+            deleteGroupFormulaData(groupId, deletedFormula);
+        }
+
+        // Save selected Formulas
+        serverFormulas.put(groupId.toString(), orderFormulas(selectedFormulas));
+
+        // Write server_formulas file
+        BufferedWriter writer = new BufferedWriter(new FileWriter(serverFile));
+        writer.write(GSON.toJson(serverFormulas));
+        writer.close();
+    }
+
+    /**
+     * Deletes all saved values of a given server for a given formula
+     * @param serverId the id of the server
+     * @param formulaName the name of the formula
+     * @throws IOException if an IOException occurs while saving the data
+     */
+    public static void deleteServerFormulaData(Long serverId, String formulaName)
+            throws IOException {
+        try {
+            File file = new File(PILLAR_DIR +
+                    getMinionId(serverId) + "_" + formulaName +
+                    "." + PILLAR_FILE_EXTENSION);
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+        catch (NotSupportedException e) {
+            //TODO: log error message?
+        }
+    }
+
+    /**
+     * Deletes all saved values of a given group for a given formula
+     * @param groupId the id of the group
+     * @param formulaName the name of the formula
+     * @throws IOException if an IOException occurs while saving the data
+     */
+    public static void deleteGroupFormulaData(Long groupId, String formulaName)
+            throws IOException {
+        File file = new File(GROUP_PILLAR_DIR +
+                groupId + "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+    // TODO: there are much more efficient algorithms for dependency solving
+    /**
+     * Orders a given list of formulas by the ordering specified in their metadata
+     * @param formulasToOrder the list of formulas to order
+     * @return a list of formulas in correct order of execution
+     */
     public static List<String> orderFormulas(List<String> formulasToOrder) {
-    	LinkedList<String> formulas = new LinkedList<String>(formulasToOrder);
-    	
-    	Map<String, List<String>> dependencyMap = new HashMap<String, List<String>>();
-    	
-    	for (String formula : formulas) {
-    		List<String> dependsOnList = (List<String>) getMetadata(formula, "after").orElse(new ArrayList<>(0));
-    		dependsOnList.retainAll(formulas);
-    		dependencyMap.put(formula, dependsOnList);
-    	}
+        LinkedList<String> formulas = new LinkedList<String>(formulasToOrder);
 
-    	int index = 0;
-    	int minLength = formulas.size();
-    	LinkedList<String> orderedList = new LinkedList<String>();
-    	
-    	while (!formulas.isEmpty()) {
-    		String formula = formulas.removeFirst();
-    		if (orderedList.containsAll(dependencyMap.get(formula))) {
-    			orderedList.addLast(formula);
+        Map<String, List<String>> dependencyMap = new HashMap<String, List<String>>();
 
-				minLength = formulas.size();
-				index = 0;
-    		}
-    		else if (index == minLength) { // The algorithm run one complete cycle without any change
-    			orderedList.addAll(formulas);
-        		return orderedList;
-    		}
-    		else {
-    			formulas.addLast(formula);
-    			index++;
-    		} 
-    	}
-    	return orderedList;
+        for (String formula : formulas) {
+            List<String> dependsOnList = (List<String>) getMetadata(formula, "after")
+                    .orElse(new ArrayList<>(0));
+            dependsOnList.retainAll(formulas);
+            dependencyMap.put(formula, dependsOnList);
+        }
+
+        int index = 0;
+        int minLength = formulas.size();
+        LinkedList<String> orderedList = new LinkedList<String>();
+
+        while (!formulas.isEmpty()) {
+            String formula = formulas.removeFirst();
+            if (orderedList.containsAll(dependencyMap.get(formula))) {
+                orderedList.addLast(formula);
+
+                minLength = formulas.size();
+                index = 0;
+            }
+            else if (index == minLength) { // one complete cycle without any change
+                orderedList.addAll(formulas);
+                return orderedList;
+            }
+            else {
+                formulas.addLast(formula);
+                index++;
+            }
+        }
+        return orderedList;
     }
-    
-    public static Map<String, Object> getMetadata(String formula_name) {
-    	File metadata_file = new File(FORMULA_METADATA_DIRECTORY + formula_name + "/metadata.yml");
-    	try {
-    		return (Map<String, Object>) yaml.load(new FileInputStream(metadata_file));
-    	}
-    	catch (IOException | YAMLException e) {
-    		return new HashMap<String, Object>();
-    	}
+
+    /**
+     * Returns the metadata of a formula.
+     * @param name the name of the formula
+     * @return the metadata
+     */
+    public static Map<String, Object> getMetadata(String name) {
+        File metadataFile = new File(METADATA_DIR + name + "/metadata.yml");
+        try {
+            return (Map<String, Object>) YAML.load(new FileInputStream(metadataFile));
+        }
+        catch (IOException | YAMLException e) {
+            return new HashMap<String, Object>();
+        }
     }
-    
-    public static Optional<Object> getMetadata(String formula_name, String param) {
-    	return Optional.ofNullable(getMetadata(formula_name).getOrDefault(param, null));
+
+    /**
+     * Returns a metadata given value of a formula.
+     * @param name the name of the formula
+     * @param param the name of the metadata value
+     * @return the metadata value
+     */
+    public static Optional<Object> getMetadata(String name, String param) {
+        return Optional.ofNullable(getMetadata(name).getOrDefault(param, null));
     }
-    
+
+    /**
+     * Returns the minion id of a given server.
+     * @param serverId the id of the server
+     * @return the minion id
+     * @throws NotSupportedException if the server is not a salt minion
+     */
     private static String getMinionId(Long serverId) throws NotSupportedException {
-    	Optional<MinionServer> minionServer = ServerFactory.lookupById(serverId).asMinionServer();
-    	if (minionServer.isPresent())
-    		return minionServer.get().getMinionId();
-    	else
-    		throw new NotSupportedException("The system is not a salt minion!");
+        Optional<MinionServer> minionServer =
+                ServerFactory.lookupById(serverId).asMinionServer();
+        if (minionServer.isPresent()) {
+            return minionServer.get().getMinionId();
+        }
+        else {
+            throw new NotSupportedException("The system is not a salt minion!");
+        }
     }
 }

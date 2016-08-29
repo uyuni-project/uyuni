@@ -46,7 +46,7 @@ public class FormulaHandler extends BaseHandler {
     public List<String> listFormulas(User loggedInUser) {
         return FormulaFactory.listFormulas();
     }
-    
+
     /**
      * List the formulas of a server group.
      * @param loggedInUser The current user
@@ -65,11 +65,11 @@ public class FormulaHandler extends BaseHandler {
     public List<String> getFormulasByGroupId(User loggedInUser, Integer systemGroupId) {
         return FormulaFactory.getFormulasByGroupId(systemGroupId.longValue());
     }
-    
+
     /**
      * List the formulas of a server.
      * @param loggedInUser The current user
-     * @param systemId The Id of the server 
+     * @param systemId The Id of the server
      * @return the list of formulas the server group has.
      *
      * @xmlrpc.doc Return the list of formulas a server has.
@@ -84,14 +84,14 @@ public class FormulaHandler extends BaseHandler {
     public List<String> getFormulasByServerId(User loggedInUser, Integer systemId) {
         return FormulaFactory.getFormulasByServerId(systemId.longValue());
     }
-    
+
     /**
      * Set the formulas for a server group
      * @param loggedInUser The current user
      * @param systemGroupId The Id of the server group
      * @param formulas The formulas to apply to the server group.
      * @return 1 on sucess, expcetion thrown otherwise
-     * @throws IOException 
+     * @throws IOException if an IOException occurs during saving
      *
      * @xmlrpc.doc Set the formulas of a server group.
      *
@@ -100,8 +100,10 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.param #array_single("string", "formulaName")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int setFormulasOfGroup(User loggedInUser, Integer systemGroupId, List<String> formulas) throws IOException {
-    	FormulaFactory.saveServerGroupFormulas(systemGroupId.longValue(), formulas, loggedInUser.getOrg());
+    public int setFormulasOfGroup(User loggedInUser, Integer systemGroupId,
+            List<String> formulas) throws IOException {
+        FormulaFactory.saveServerGroupFormulas(systemGroupId.longValue(), formulas,
+                loggedInUser.getOrg());
         return 1;
     }
 }
