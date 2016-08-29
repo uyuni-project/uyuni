@@ -10,11 +10,12 @@ var toTitle = FormulaFormModule.toTitle;
 
 function updateFormula(component) {
     var formData = {};
-    formData.groupId = groupId;
+    formData.type = "GROUP";
+    formData.id = groupId;
     formData.formula_name = component.state.serverData.formula_name;
     formData.content = component.serializeValues();
     
-    Network.post("/rhn/manager/groups/details/formula/form/save", JSON.stringify(formData), "application/json").promise.then(
+    Network.post("/rhn/manager/api/formulas/save", JSON.stringify(formData), "application/json").promise.then(
     (data) => {
         component.setState({
             messages: [t("Formula saved!")]
@@ -49,7 +50,7 @@ const noFormulaText = (
 );
 ReactDOM.render(
     <FormulaForm
-          dataUrl={"/rhn/manager/groups/details/formula/form/" + groupId + "/" + formulaId}
+          dataUrl={"/rhn/manager/api/formulas/form/GROUP/" + groupId + "/" + formulaId}
           noFormulaText={noFormulaText}
           addFormulaNavBar={addFormulaNavBar}
           formulaId={formulaId}

@@ -20,7 +20,7 @@ var FormulaCatalog = React.createClass({
     },
 
     refreshServerData: function() {
-        Network.get("/rhn/manager/formula_catalog/data").promise.then(data => {
+        Network.get("/rhn/manager/api/formula-catalog/data").promise.then(data => {
           this.setState({"serverData" : data});
         });
     },
@@ -67,7 +67,7 @@ var FormulaCatalog = React.createClass({
                   comparator={this.sortByText}
                   header={t("Formula")}
                   cell={ (s) =>
-                    <a href={"/rhn/manager/formula_catalog/formula/" + s}>{s}</a> }
+                    <a href={"/rhn/manager/formula-catalog/formula/" + s}>{s}</a> }
                 />
               </Table>
             </div>
