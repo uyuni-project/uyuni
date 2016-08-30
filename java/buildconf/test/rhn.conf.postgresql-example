@@ -8,9 +8,9 @@ db_port = 5432
 server.nls_lang = english.UTF8
 
 # Hibernate configuration
-hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-hibernate.connection.driver_class=org.postgresql.Driver
-hibernate.connection.driver_proto=jdbc:postgresql
+hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+hibernate.connection.driver_class = org.postgresql.Driver
+hibernate.connection.driver_proto = jdbc:postgresql
 
 # Uncomment to log all SQL statements issued by Hibernate
 # hibernate.show_sql = true
