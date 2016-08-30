@@ -199,14 +199,14 @@ function generateFormItem(element, value, parents, currentScope) {
     if (basicInputTypes.indexOf(element.$type) >= 0) //Element is a basic html input type
         return wrapGroupWithLabel(element.$name,
             <div className="col-lg-6">
-                <input type={element.$type} name={element.$name} id={id} className="form-control" title={element.$help} disabled={isDisabled} defaultValue={value} />
+                <input type={element.$type} name={element.$name} id={id} className="form-control" placeholder={element.$placeholder || ""} title={element.$help} disabled={isDisabled} defaultValue={value} />
             </div>
         );
     else if (element.$type == "password")
         return wrapGroupWithLabel(element.$name,
             <div className="col-lg-6">
                 <div className="input-group">
-                    <input type={element.$type} name={element.$name} id={id} className="form-control" title={element.$help} disabled={isDisabled} defaultValue={value} />
+                    <input type={element.$type} name={element.$name} id={id} className="form-control" placeholder={element.$placeholder || ""} title={element.$help} disabled={isDisabled} defaultValue={value} />
                     <span className="input-group-btn">
                         <button className="btn btn-default" title="Generate new password" onClick={handleGeneratePassword}>
                             <i className="fa fa-key no-margin" />
@@ -217,17 +217,17 @@ function generateFormItem(element, value, parents, currentScope) {
                     </span>
                 </div>
             </div>
-        );
+        );// this blocks broken syntax highlighting //
     else if (element.$type == "datetime")
         return wrapGroupWithLabel(element.$name,
             <div className="col-lg-6">
-                <input type="datetime-local" name={element.$name} id={id} className="form-control" title={element.$help} disabled={isDisabled} defaultValue={value} />
+                <input type="datetime-local" name={element.$name} id={id} className="form-control" placeholder={element.$placeholder || ""} title={element.$help} disabled={isDisabled} defaultValue={value} />
             </div>
         );
     else if (element.$type == "number")
         return wrapGroupWithLabel(element.$name,
             <div className="col-lg-6">
-                <input type="number" min="0" steps="1" name={element.$name} id={id} className="form-control" title={element.$help} disabled={isDisabled} defaultValue={value} />
+                <input type="number" min="0" steps="1" name={element.$name} id={id} className="form-control" placeholder={element.$placeholder || ""} title={element.$help} disabled={isDisabled} defaultValue={value} />
             </div>
         );
     else if (element.$type == "group") {

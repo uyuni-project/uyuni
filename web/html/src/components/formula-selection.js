@@ -22,6 +22,7 @@ class FormulaSelection extends React.Component {
         this.state = {
             formulas: {},
             groups: {groupless: []},
+            showDescription: false,
             messages: []
         };
         this.init();
@@ -125,6 +126,13 @@ class FormulaSelection extends React.Component {
             return "list-group-item";
     }
 
+    getDescription(formula) {
+        if (this.state.showDescription == formula.name)
+            return <p className="list-group-item-text">{formula.description}</p>;
+        else
+            return null;
+    }
+
     generateList() {
         var list = [];
         const groups = this.state.groups;
@@ -135,6 +143,8 @@ class FormulaSelection extends React.Component {
                     <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListStyle(formula.selected)}>
                         <i className={this.getListIcon(formula.selected)} />
                         {" " + toTitle(formula.name)}
+                        { formula.description ? (<i className="fa fa-lg fa-info-circle pull-right" />) : null }
+                        {this.getDescription(formula)}
                     </a>
                 );
             }, this);
@@ -157,6 +167,8 @@ class FormulaSelection extends React.Component {
                         <i className={this.getListIcon(formula.selected)} />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {toTitle(formula.name)}
+                        { formula.description ? (<i className="fa fa-lg fa-info-circle pull-right" />) : null }
+                        {this.getDescription(formula)}
                     </a>//
                 );
             }, this);
@@ -166,9 +178,12 @@ class FormulaSelection extends React.Component {
 
     onListItemClick(e) {
         e.preventDefault();
-
         const formula = this.state.formulas[(e.target.href == undefined ? e.target.parentElement.id : e.target.id)];
-        formula.selected = !formula.selected;
+
+        if (e.target.className == "fa fa-lg fa-info-circle pull-right")
+            this.state.showDescription = (this.state.showDescription == formula.name ? false : formula.name);
+        else
+            formula.selected = !formula.selected;
         this.forceUpdate();
     }
 
