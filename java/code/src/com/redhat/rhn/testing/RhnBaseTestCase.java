@@ -90,10 +90,6 @@ public abstract class RhnBaseTestCase extends TestCase {
         HibernateFactory.closeSession();
     }
 
-    protected void clearSession() {
-        HibernateFactory.getSession().clear();
-    }
-
     protected void flushAndEvict(Object obj) throws HibernateException {
         Session session = HibernateFactory.getSession();
         session.flush();
