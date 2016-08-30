@@ -53,6 +53,7 @@ const noFormulaText = (
         Click <a href={"/rhn/manager/groups/details/formulas?sgid=" + groupId}>here</a> to manage the formulas of this server group.
     </div>
 );
+
 ReactDOM.render(
     <FormulaForm
           dataUrl={"/rhn/manager/api/formulas/form/GROUP/" + groupId + "/" + formulaId}

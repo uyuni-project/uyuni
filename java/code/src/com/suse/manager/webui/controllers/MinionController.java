@@ -499,6 +499,21 @@ public class MinionController {
         return new ModelAndView(data, "minion/formula.jade");
     }
 
+    /**
+    * Handler for the minion formula selection page.
+    *
+    * @param request the request object
+    * @param response the response object
+    * @param user the current user
+    * @return the ModelAndView object to render the page
+    */
+   public static ModelAndView minionFormulas(Request request, Response response,
+           User user) {
+       Map<String, Object> data = new HashMap<>();
+       data.put("server", ServerFactory.lookupById(new Long(request.queryParams("sid"))));
+       return new ModelAndView(data, "minion/formulas.jade");
+   }
+
     private static String errorResponse(Response response, List<String> errs) {
         response.type("application/json");
         response.status(HttpStatus.SC_BAD_REQUEST);

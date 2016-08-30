@@ -62,21 +62,36 @@ def ext_pillar(minion_id, pillar, path, formula_layout_path, formula_data_path):
 
 def formula_pillars(minion_id, group_ids, formula_layout_path, formula_data_path):
     '''
-    Find formula pillars for the minion, merge it and return the data.
+    Find formula pillars for the minion, merge them and return the data.
     '''
     ret = dict()
-    formulas = dict()
-    with open(os.path.join(formula_data_path, "group_formulas.json")) as f:
-        group_formulas = json.load(f)
-        for group in group_ids:
-            formulas[group] = group_formulas.get(unicode(group), list())
+    formulas_by_group = dict()
+    formulas = list()
 
-    formulas_list = list()
-    for key in formulas:
-        for formula in formulas[key]:
-            formulas_list.append(formula)
-            ret.update(load_formula_pillar(minion_id, key, formula, formula_layout_path, formula_data_path))
-    ret["formulas"] = formulas_list
+    # Loading minion formulas
+    try:
+        with open(os.path.join(formula_data_path, "minion_formulas.json")) as f:
+            minion_formulas = json.load(f)
+            formulas += minion_formulas.get(minion_id, list())
+            for formula in formulas:
+                ret.update(load_formula_pillar(minion_id, None, formula, formula_layout_path, formula_data_path))
+    except Exception as error:
+        log.error('Error loading minion formulas: {message}'.format(message=str(error)))
+
+    # Loading group formulas
+    try:
+        with open(os.path.join(formula_data_path, "group_formulas.json")) as f:
+            group_formulas = json.load(f)
+            for group in group_ids:
+                formulas_by_group[group] = group_formulas.get(unicode(group), list())
+    except Exception as error:
+        log.error('Error loading group formulas: {message}'.format(message=str(error)))
+
+    for group in formulas_by_group:
+        for formula in formulas_by_group[group]:
+            formulas.append(formula)
+            ret.update(load_formula_pillar(minion_id, group, formula, formula_layout_path, formula_data_path))
+    ret["formulas"] = formulas
     return ret
 
 def load_formula_pillar(minion_id, group_id, formula_name, formula_layout_path, formula_data_path):
@@ -84,11 +99,11 @@ def load_formula_pillar(minion_id, group_id, formula_name, formula_layout_path, 
     Load the data from a specific formula for a minion in a specific group, merge and return it.
     '''
     layout_filename = os.path.join(formula_layout_path, formula_name, "form.yml")
-    group_filename = os.path.join(formula_data_path, "group_pillar", "{id}_{name}.json".format(id=group_id, name=formula_name))
+    group_filename = os.path.join(formula_data_path, "group_pillar", "{id}_{name}.json".format(id=group_id, name=formula_name)) if group_id is not None else None
     system_filename = os.path.join(formula_data_path, "pillar", "{id}_{name}.json".format(id=minion_id, name=formula_name))
     try:
         layout = yaml.load(open(layout_filename).read())
-        group_data = json.load(open(group_filename)) if os.path.isfile(group_filename) else dict()
+        group_data = json.load(open(group_filename)) if group_filename is not None and os.path.isfile(group_filename) else dict()
         system_data = json.load(open(system_filename)) if os.path.isfile(system_filename) else dict()
     except Exception as error:
         log.error('Error loading data for formula "{formula}": {message}'.format(formula=formula_name, message=str(error)))
@@ -103,16 +118,17 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
     ret = dict()
 
     for element_name in layout:
+        log.error(str(element_name))
         if element_name.startswith("$"):
             continue
 
         element = layout[element_name]
         if not isinstance(element, dict):
             continue
-            
+
         element_scope = element.get("$scope", scope)
         value = None
-        
+
         if element.get("$type", "text") in ["group", "hidden-group"]:
             value = merge_formula_data(element, group_data.get(element_name, dict()), system_data.get(element_name, dict()), element_scope)
         elif element_scope == "system":
