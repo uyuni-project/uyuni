@@ -61,7 +61,7 @@ public class FormulaFactory {
     private static final String PILLAR_DIR = DATA_DIR + "pillar/";
     private static final String GROUP_PILLAR_DIR = DATA_DIR + "group_pillar/";
     private static final String GROUP_DATA_FILE = DATA_DIR + "group_formulas.json";
-    private static final String SERVER_DATA_FILE = DATA_DIR + "server_formulas.json";
+    private static final String SERVER_DATA_FILE = DATA_DIR + "minion_formulas.json";
     private static final String PILLAR_FILE_EXTENSION = "json";
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -189,7 +189,7 @@ public class FormulaFactory {
         catch (FileNotFoundException e) {
         }
 
-        File serverDataFile = new File(GROUP_DATA_FILE);
+        File serverDataFile = new File(SERVER_DATA_FILE);
         try {
             Map<String, List<String>> serverFormulas = GSON.fromJson(
                     new BufferedReader(new FileReader(serverDataFile)), Map.class);
