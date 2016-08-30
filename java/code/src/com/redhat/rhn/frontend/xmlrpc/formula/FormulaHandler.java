@@ -44,7 +44,7 @@ public class FormulaHandler extends BaseHandler {
      *      #array_end()
      */
     public List<String> listFormulas(User loggedInUser) {
-        return FormulaFactory.listFormulas();
+        return FormulaFactory.listFormulaNames();
     }
 
     /**
@@ -102,7 +102,7 @@ public class FormulaHandler extends BaseHandler {
      */
     public int setFormulasOfGroup(User loggedInUser, Integer systemGroupId,
             List<String> formulas) throws IOException {
-        FormulaFactory.saveServerGroupFormulas(systemGroupId.longValue(), formulas,
+        FormulaFactory.saveGroupFormulas(systemGroupId.longValue(), formulas,
                 loggedInUser.getOrg());
         return 1;
     }

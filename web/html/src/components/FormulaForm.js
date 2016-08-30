@@ -1,9 +1,12 @@
 "use strict";
 
 const React = require("react");
-var Messages = require("../components/messages").Messages;
-var Button = require("../components/buttons").Button;
+const Buttons = require("../components/buttons");
 const Network = require("../utils/network");
+const Messages = require("../components/messages").Messages;
+
+const Button = Buttons.Button;
+const AsyncButton = Buttons.AsyncButton;
 
 const basicInputTypes = ["text", "email", "url", "date", "time"];
 
@@ -13,22 +16,23 @@ const basicInputTypes = ["text", "email", "url", "date", "time"];
 //addFormulaNavBar = function(formula_list, activeId) to add the formula nav bar
 //formulaId = the id of the formula to be shown
 //getFormulaUrl = function(formulaId) that returns the url to a formula page
-//updateFormula = function(component) that gets called when the save button is pressed
+//saveFormula = function(component) that gets called when the save button is pressed
 //currentScope = current active scope (system or group)
 class FormulaForm extends React.Component {
     constructor(props) {
         super(props);
-        
-        ["init", "updateFormula", "generateForm", "serializeValues"]
+
+        ["init", "saveFormula", "generateForm", "serializeValues"]
         .forEach(method => this[method] = this[method].bind(this));
-        
+
         this.state = {
             serverData: null,
-            messages: []
+            messages: [],
+            errors: []
         };
         this.init();
     }
-    
+
     init() {
         Network.get(this.props.dataUrl).promise.then(data => {
             console.log(data);
@@ -38,12 +42,12 @@ class FormulaForm extends React.Component {
         });
     }
 
-    updateFormula(e) {
+    saveFormula(e) {
         e.preventDefault(); // prevent default form redirect
-        this.props.updateFormula(this);
+        this.props.saveFormula(this);
         window.scrollTo(0, 0);
     }
-    
+
     serializeValues() {
         var values = {};
         $("#editFormulaForm input, #editFormulaForm select")
@@ -56,7 +60,7 @@ class FormulaForm extends React.Component {
             });
         return values;
     }
-    
+
     generateForm() {
         var layout = this.state.serverData.layout;
         if (layout == undefined || layout == null) return;
@@ -72,7 +76,7 @@ class FormulaForm extends React.Component {
 
         return form;
     }
-    
+
     render() {
         var messages = <Messages items={[{severity: "info", text:
             <p><strong>{t('This is a feature preview')}</strong>: On this page you can configure <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt formulas</a> to automatically install and configure software. We would be glad to receive your feedback via the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
@@ -83,7 +87,7 @@ class FormulaForm extends React.Component {
             })}/>;
 
         var errors = null;
-        if (this.state.errors) {
+        if (this.state.errors.length > 0) {
             errors = <Messages items={this.state.errors.map(function(e) {
                 return {severity: "error", text: e};
             })}/>;
@@ -104,7 +108,7 @@ class FormulaForm extends React.Component {
                     </div>
                 </div>
             );
-        }    
+        }
         else if (this.state.serverData.layout == undefined || this.state.serverData.layout == null) {
             this.props.addFormulaNavBar(this.state.serverData.formula_list || ["Not found"], formulaId);
             return (
@@ -126,7 +130,7 @@ class FormulaForm extends React.Component {
             return (
                 <div>
                     {errors}{messages}
-                    <form id="editFormulaForm" className="form-horizontal" onSubmit={this.updateFormula}>
+                    <form id="editFormulaForm" className="form-horizontal" onSubmit={this.saveFormula}>
                         <div className="panel panel-default">
                             <div className="panel-heading">
                                 <h4>{toTitle(this.state.serverData.formula_name || "Formula not found")}</h4>
@@ -157,17 +161,17 @@ function generatePassword() {
         retVal += charset.charAt(Math.floor(Math.random() * n));
     return retVal;
 }
-    
+
 function generateValues(layout, group_data, system_data, scope="system") {
     var result = {};
 
     for (var key in layout) {
         if (key.startsWith("$")) continue;
-    
+
         var value = null
         var element = layout[key];
         var element_scope = element.$scope || scope;
-    
+
         if (element.$type == "group" || element.$type == "hidden-group")
             value = generateValues(element, group_data[key] || {}, system_data[key] || {}, element_scope);
         /*else if (element.$type == "edit-group")
@@ -180,7 +184,7 @@ function generateValues(layout, group_data, system_data, scope="system") {
             else value = (group_data[key] || element.$default || null);
         else if (element_scope == "readonly")
             value = (element.$default || null);
-    
+
         if (value != null)
             result[key] = value
     }
@@ -191,24 +195,24 @@ function generateFormItem(element, value, parents, currentScope) {
     if (parents == "") var id = element.$id;
     else var id = parents + "$" + element.$id;
     var isDisabled = ((currentScope == element.$scope || element.$scope == "system") ? "" : " disabled");
-    
+
     if (basicInputTypes.indexOf(element.$type) >= 0) //Element is a basic html input type
         return wrapGroupWithLabel(element.$name,
             <div className="col-lg-6">
-                <input type={element.$type} name={element.$name} id={id} className="form-control" disabled={isDisabled} defaultValue={value} />
+                <input type={element.$type} name={element.$name} id={id} className="form-control" title={element.$help} disabled={isDisabled} defaultValue={value} />
             </div>
         );
     else if (element.$type == "password")
         return wrapGroupWithLabel(element.$name,
             <div className="col-lg-6">
                 <div className="input-group">
-                    <input type={element.$type} name={element.$name} id={id} className="form-control" disabled={isDisabled} defaultValue={value} />
+                    <input type={element.$type} name={element.$name} id={id} className="form-control" title={element.$help} disabled={isDisabled} defaultValue={value} />
                     <span className="input-group-btn">
                         <button className="btn btn-default" title="Generate new password" onClick={handleGeneratePassword}>
-                            <i className="fa fa-key" />
+                            <i className="fa fa-key no-margin" />
                         </button>
                         <button className="btn btn-default" title="Show/hide password" onClick={toggle_view_password}>
-                            <i className="fa fa-eye" />
+                            <i className="fa fa-eye no-margin" />
                         </button>
                     </span>
                 </div>
@@ -217,13 +221,13 @@ function generateFormItem(element, value, parents, currentScope) {
     else if (element.$type == "datetime")
         return wrapGroupWithLabel(element.$name,
             <div className="col-lg-6">
-                <input type="datetime-local" name={element.$name} id={id} className="form-control" disabled={isDisabled} defaultValue={value} />
+                <input type="datetime-local" name={element.$name} id={id} className="form-control" title={element.$help} disabled={isDisabled} defaultValue={value} />
             </div>
         );
     else if (element.$type == "number")
         return wrapGroupWithLabel(element.$name,
             <div className="col-lg-6">
-                <input type="number" min="0" steps="1" name={element.$name} id={id} className="form-control" disabled={isDisabled} defaultValue={value} />
+                <input type="number" min="0" steps="1" name={element.$name} id={id} className="form-control" title={element.$help} disabled={isDisabled} defaultValue={value} />
             </div>
         );
     else if (element.$type == "group") {
@@ -257,7 +261,7 @@ function generateFormItem(element, value, parents, currentScope) {
     else if (element.$type == "select")
         return wrapGroupWithLabel(element.$name,
             <div className="col-lg-6">
-                <select className="form-control" disabled={isDisabled} name={element.$name} id={id} defaultValue={value}>
+                <select className="form-control" name={element.$name} id={id} title={element.$help} disabled={isDisabled} defaultValue={value}>
                     {generateSelectList(element.$values)}
                 </select>
             </div>
@@ -265,7 +269,7 @@ function generateFormItem(element, value, parents, currentScope) {
     else if (element.$type == "boolean")
         return wrapGroupWithLabel(element.$name,
             <div className="col-lg-6">
-                <input type="checkbox" style={{width: 25 + "px", height: 25 + "px"}} name={element.$name} id={id} disabled={isDisabled} defaultChecked={value} />
+                <input type="checkbox" style={{width: 25 + "px", height: 25 + "px"}} name={element.$name} id={id} title={element.$help} disabled={isDisabled} defaultChecked={value} />
             </div>
         );
     else
@@ -281,7 +285,7 @@ function generateFormItem(element, value, parents, currentScope) {
 
 function handleGeneratePassword(event) {
     event.preventDefault();
-    
+
     var target = $(event.target);
     if (target.attr("class").startsWith("fa"))
         target = target.parent();
@@ -293,7 +297,7 @@ function handleGeneratePassword(event) {
 
 function toggle_view_password(event) {
     event.preventDefault();
-    
+
     var target = $(event.target);
     if (target.attr("class").startsWith("fa"))
         target = target.parent();
@@ -309,11 +313,11 @@ function toggle_view_password(event) {
 function preprocessLayout(layout, scope="system") {
     for (var child_name in layout) {
         if (child_name.startsWith("$")) continue;
-            
+
         var child = layout[child_name];
         if (!("$scope" in child))
             child.$scope = scope;
-        
+
         if (!("$type" in child)) {
             child.$type = "text"
             child.$default = (child.$default || "");
@@ -328,9 +332,10 @@ function preprocessLayout(layout, scope="system") {
             child.$element = preprocessLayout(child.$element, child.$scope);
         else
             child.$default = (child.$default || "");
-        
-        child.$name = (child.$name || toTitle(child_name));
+
         child.$id = child_name;
+        if (!child.$name) child.$name = toTitle(child_name);
+        if (!child.$help) child.$help = child.$name;
     }
     return layout;
 }
@@ -401,7 +406,7 @@ function toTitle(str) {
 
 function assignValueWithId(dir, id, value) {
     var parents = id.split("$");
-    
+
     for (var i in parents.slice(0, -1)) {
         if (dir[parents[i]] == undefined)
             dir[parents[i]] = {};

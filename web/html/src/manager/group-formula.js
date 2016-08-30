@@ -8,33 +8,38 @@ var FormulaFormModule = require("../components/FormulaForm");
 var FormulaForm = FormulaFormModule.FormulaForm;
 var toTitle = FormulaFormModule.toTitle;
 
-function updateFormula(component) {
+function saveFormula(component) {
     var formData = {};
     formData.type = "GROUP";
     formData.id = groupId;
     formData.formula_name = component.state.serverData.formula_name;
     formData.content = component.serializeValues();
-    
-    Network.post("/rhn/manager/api/formulas/save", JSON.stringify(formData), "application/json").promise.then(
-    (data) => {
+
+    Network.post(
+        "/rhn/manager/api/formulas/save",
+        JSON.stringify(formData),
+        "application/json"
+    ).promise.then((data) => {
         component.setState({
-            messages: [t("Formula saved!")]
+            messages: data
         });
     },
     (xhr) => {
-       if (xhr.status == 400 || xhr.status == 403) {
-           // validation err or permission denied
-           var errs = JSON.parse(xhr.responseText);
-           component.setState({errors: errs});
-       } else {
-           component.setState({errors: [t("An internal server error occurred")]});
-       }
+        try {
+            component.setState({
+                errors: [JSON.parse(xhr.responseText)]
+            })
+        } catch (err) {
+            component.setState({
+                errors: [Network.errorMessageByStatus(xhr.status)]
+            })
+        }
     });
 }
 
 function addFormulaNavBar(formulaList, activeId) {
     $("#formula-nav-bar").remove();
-    
+
     var navBar = "<ul class='nav nav-tabs nav-tabs-pf' id='formula-nav-bar'>\n"
     navBar += "<li><a href='/rhn/manager/groups/details/formulas?sgid=" + groupId + "'>Formulas</a></li>\n";
     for (var i in formulaList)
@@ -55,7 +60,7 @@ ReactDOM.render(
           addFormulaNavBar={addFormulaNavBar}
           formulaId={formulaId}
           getFormulaUrl={function(id) {return "/rhn/manager/groups/details/formula/" + id + "?sgid=" + groupId;}}
-          updateFormula={updateFormula}
+          saveFormula={saveFormula}
           currentScope="group" />,
     document.getElementById('formula')
 );
