@@ -12,19 +12,6 @@ const AsyncButton = Buttons.AsyncButton;
 
 const toTitle = require("../components/FormulaForm").toTitle;
 
-const listItemIcons = {
-    removed: "fa fa-times text-danger",
-    added: "fa fa-plus text-success",
-    active: "fa fa-check text-success",
-    default: ""
-};
-const listItemClasses = {
-    removed: "list-group-item list-group-item-danger",
-    added: "list-group-item list-group-item-success",
-    active: "list-group-item list-group-item-info",
-    default: "list-group-item"
-};
-
 var GroupFormulas = React.createClass({
 
     requestServerData() {
@@ -32,7 +19,7 @@ var GroupFormulas = React.createClass({
             const groupDict = {groupless: []};
             const formulaDict = {};
             data.formulas.forEach(function(e) {
-                e.state = (data.selected.indexOf(e.name) < 0 ? "default" : "active");
+                e.selected = (data.selected.indexOf(e.name) >= 0);
                 const group = e.group || "groupless";
                 if (groupDict[group] == undefined)
                     groupDict[group] = [];
@@ -87,7 +74,7 @@ var GroupFormulas = React.createClass({
         formData.id = groupId;
         formData.selected = [];
         jQuery.each(this.state.formulas, function(name, formula) {
-            if (formula.state == "active" || formula.state == "added")
+            if (formula.selected)
                 formData.selected.push(name);
         });
 
@@ -114,39 +101,50 @@ var GroupFormulas = React.createClass({
 
     resetChanges: function() {
         jQuery.each(this.state.formulas, function(name, formula) {
-            switch (formula.state) {
-                case "removed": formula.state = "active"; break;
-                case "added": formula.state = "default"; break;
-            }
+            formula.selected = (this.state.activeFormulas.indexOf(e.name) >= 0);
         });
         this.forceUpdate();
     },
 
     getGroupItemState: function(group) {
-        const stateCount = {removed: 0, added: 0, active: 0, default: 0};
+        const selectedCount = 0;
         group.forEach(function (formula) {
-            stateCount[formula.state] += 1;
-        }, this);
-        if (stateCount.active == group.length)
-            return "active";
-        else if (stateCount.active + stateCount.added == group.length)
-            return "added";
-        else if (stateCount.removed > 0 && stateCount.default + stateCount.removed == group.length)
-            return "removed";
+            if (formula.selected)
+                selectedCount++;
+        });
+        if (selectedCount == 0)
+            return 0;
+        else if (selectedCount == group.length)
+            return 1;
         else
-            return "default";
+            return 2;
+    },
+
+    getListIcon: function(state) {
+        if (!state)
+            return "fa fa-square-o";
+        else if (state == 2)
+            return "fa fa-dot-circle-o";
+        else
+            return "fa fa-chack-square-o";
+    },
+
+    getListClass: function(state) {
+        if (state)
+            return "list-group-item list-group-item-info";
+        else
+            return "list-group-item";
     },
 
     generateList: function() {
-        console.log("Generating list");
         var list = [];
         const groups = this.state.groups;
 
         if (groups.groupless.length > 0) {
             groups.groupless.forEach(function (formula) {
                 list.push(
-                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={listItemClasses[formula.state]}>
-                        <i className={listItemIcons[formula.state]} />
+                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListClass(formula.selected)}>
+                        <i className={this.getListIcon(formula.selected)} />
                         {" " + toTitle(formula.name)}
                     </a>
                 );
@@ -157,17 +155,17 @@ var GroupFormulas = React.createClass({
             const group = groups[group_name];
             const group_state = this.getGroupItemState(group);
             list.push(
-                <a href="#" onClick={this.onGroupItemClick} id={"group_" + group_name} key={"group_" + group_name} className={listItemClasses[group_state]}>
+                <a href="#" onClick={this.onGroupItemClick} id={"group_" + group_name} key={"group_" + group_name} className={this.getListClass(group_state)}>
                     <strong>
-                        <i className={listItemIcons[group_state]} />
+                        <i className={this.getListIcon(group_state)} />
                         {" " + toTitle(group_name)}
                     </strong>
                 </a>
                 ); // this blocks broken syntax highlighting //
             group.forEach(function (formula) {
                 list.push(
-                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={listItemClasses[formula.state]}>
-                        <i className={listItemIcons[formula.state]} />
+                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListClass(formula.selected)}>
+                        <i className={this.getListIcon(formula.selected)} />
                         <i className="fa fa-circle" />
                         {" " + toTitle(formula.name)}
                     </a>//
@@ -175,19 +173,13 @@ var GroupFormulas = React.createClass({
             }, this);
         }
         return list;
-        //<img src="/img/channel_child_node.gif" />
     },
 
     onListItemClick: function(e) {
         e.preventDefault();
 
         const formula = this.state.formulas[(e.target.href == undefined ? e.target.parentElement.id : e.target.id)];
-        switch (formula.state) {
-            case "active": formula.state = "removed"; break;
-            case "removed": formula.state = "active"; break;
-            case "added": formula.state = "default"; break;
-            case "default": formula.state = "added"; break;
-        }
+        formula.selected = !formula.selected;
         this.forceUpdate();
     },
 
@@ -196,27 +188,22 @@ var GroupFormulas = React.createClass({
 
         const group = this.state.groups[(e.target.href == undefined ? e.target.parentElement.parentElement.id : e.target.id).slice(6)];
         const state = this.getGroupItemState(group);
-        if (state == "added" || state == "active") {
-            group.forEach(function(formula) {
-                if (formula.state == "added")
-                    formula.state = "default";
-                else if (formula.state == "active")
-                    formula.state = "removed";
-            });
-        } else if (state == "default") {
-            group.forEach(function(formula) {
-                if (formula.state == "default")
-                    formula.state = "added";
-                else if (formula.state == "removed")
-                    formula.state = "active";
-            });
-        } else {
-            group.forEach(function(formula) {
-                if (formula.state == "added")
-                    formula.state = "default";
-                else if (formula.state == "removed")
-                    formula.state = "active";
-            });
+        switch (state) {
+            case 0:
+                group.forEach(function(formula) {
+                    formula.selected = true;
+                });
+                break;
+            case 1:
+                group.forEach(function(formula) {
+                    formula.selected = false;
+                });
+                break;
+            case 2:
+                group.forEach(function(formula) {
+                    formula.selected = (this.state.activeFormulas.indexOf(e.name) >= 0);
+                }, this);
+                break;
         }
         this.forceUpdate();
     },
