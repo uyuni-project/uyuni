@@ -141,7 +141,6 @@ import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
-import com.suse.manager.reactor.messaging.RefreshHardwareEventMessage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.SystemRecord;
