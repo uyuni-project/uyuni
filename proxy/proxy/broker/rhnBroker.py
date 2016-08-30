@@ -150,8 +150,14 @@ class BrokerHandler(SharedHandler):
                 effectiveURI_parts.fragment]))
 
         if req.method == 'GET' or 'HEAD':
+            # The auth token is sent in either a header (RHEL) or in the query
+            if self.req.headers_in.has_key('X-Mgr-Auth'):
+                self.authToken = self.req.headers_in['X-Mgr-Auth']
+                del self.req.headers_in['X-Mgr-Auth']
+            else:
+                self.authToken =  effectiveURI_parts.query
+
             self.fullRequestURL = "%s://%s%s" % (self.req.headers_in['REQUEST_SCHEME'], self.rhnParent, effectiveURI)
-            self.authToken =  effectiveURI_parts.query
             effectiveURI_parts = urlparse(urlunparse([
                 effectiveURI_parts.scheme,
                 effectiveURI_parts.netloc,
