@@ -41,9 +41,12 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 
+import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.utils.RhelUtils;
+import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.Pkg;
@@ -272,7 +275,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 serverAction.setResultMsg("Success");
             }
             serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-                handleHardwareProfileUpdate(minionServer, jsonResult);
+                handleHardwareProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
+                        HwProfileUpdateSlsResult.class));
             });
         }
         else {
@@ -433,11 +437,16 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         ErrataManager.insertErrataCacheTask(server);
     }
 
-    // TODO: Implement this, parse the JsonElement into HwProfileUpdateSlsResult first
     private static void handleHardwareProfileUpdate(MinionServer server,
-            JsonElement jsonResult) {
-        LOG.info("TODO: Handle hardware profile update for " + server.getMinionId());
-        LOG.debug("JSON result: " + jsonResult);
+            HwProfileUpdateSlsResult result) {
+        LOG.info("Handling hardware profile update: " + server.getMinionId());
+        HardwareMapper hwMapper = new HardwareMapper(server,
+                new ValueMap(result.getGrains().getChanges().getRet()));
+        hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo().getChanges().getRet()));
+        hwMapper.mapNetworkInfo(
+                result.getNetworkInterfaces().getChanges().getRet(),
+                Optional.of(result.getNetworkIPs().getChanges().getRet()),
+                result.getNetworkModules().getChanges().getRet());
     }
 
     /**
