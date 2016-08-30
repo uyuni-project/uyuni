@@ -368,14 +368,14 @@ public class MinionController {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveServerFormulaData(formData, id, formulaName);
-                    return "";
+                    break;
                 case GROUP:
                     if (!checkUserHasPermissionsOnServerGroup(user,
                                 ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()))) {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveGroupFormulaData(formData, id, formulaName);
-                    return "";
+                    break;
                 default:
                     return errorResponse(response, Arrays.asList("Invalid target type!"));
             }
@@ -385,6 +385,7 @@ public class MinionController {
                     Arrays.asList("Error while saving formula data: " +
                             e.getMessage()));
         }
+        return GSON.toJson(Arrays.asList("Formula saved!"));
     }
 
     /**
@@ -465,14 +466,14 @@ public class MinionController {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveServerFormulas(id, selectedFormulas);
-                    return GSON.toJson("");
+                    break;
                 case GROUP:
                     if (!checkUserHasPermissionsOnServerGroup(user,
                             ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()))) {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveGroupFormulas(id, selectedFormulas, user.getOrg());
-                    return GSON.toJson("");
+                    break;
                 default:
                     return errorResponse(response, Arrays.asList("Invalid target type!"));
             }
@@ -481,6 +482,7 @@ public class MinionController {
             return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " + e.getMessage()));
         }
+        return GSON.toJson(Arrays.asList("Formulas saved!"));
     }
 
     /**
