@@ -59,31 +59,6 @@ public class RefreshHardwareEventMessageActionTest extends JMockBaseTestCaseWith
         setImposteriser(ClassImposteriser.INSTANCE);
     }
 
-    public void testDmiRuntimeException() throws Exception {
-        doTest(ARCH_X86,
-            (apiMock, minionId) -> context().checking(new Expectations() { {
-                allowing(apiMock).getDmiRecords(with(any(String.class)),
-                        with(any(RecordType.class)));
-                will(throwException(
-                        new RuntimeException("test exception")));
-                allowing(apiMock).getCpuInfo(minionId);
-                Map<String, Object> cpuinfo =
-                        parse("status.cpuinfo.longval", ARCH_X86,
-                                Status.cpuinfo().getReturnType());
-                will(returnValue(Optional.of(cpuinfo)));
-            } }),
-            (server, action) -> {
-                assertNotNull(server);
-                assertNotNull(server.getCpu());
-                assertNotNull(server.getVirtualInstance());
-                assertNull(server.getDmi()); // getDmiRecords() threw exception so it was not populated
-                assertTrue(!server.getNetworkInterfaces().isEmpty());
-                assertTrue(!server.getDevices().isEmpty());
-                verifyFailed(action, "Hardware list could not be refreshed completely\n" +
-                        "DMI: An error occurred: test exception");
-            });
-    }
-
     public void testDmiJsonSyntaxException() throws Exception {
         doTest(ARCH_X86,
             (apiMock, minionId) -> context().checking(new Expectations() { {
