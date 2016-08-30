@@ -445,6 +445,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         HardwareMapper hwMapper = new HardwareMapper(server,
                 new ValueMap(result.getGrains().getChanges().getRet()));
         hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo().getChanges().getRet()));
+        hwMapper.mapDevices(result.getUdevdb().getChanges().getRet());
         hwMapper.mapNetworkInfo(
                 result.getNetworkInterfaces().getChanges().getRet(),
                 Optional.of(result.getNetworkIPs().getChanges().getRet()),

@@ -20,6 +20,7 @@ import com.suse.salt.netapi.results.StateApplyResult;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,6 +34,9 @@ public class HwProfileUpdateSlsResult {
 
     @SerializedName("module_|-cpuinfo_|-status.cpuinfo_|-run")
     private StateApplyResult<Ret<Map<String, Object>>> cpuInfo;
+
+    @SerializedName("module_|-udevdb_|-udevdb.exportdb_|-run")
+    private StateApplyResult<Ret<List<Map<String, Object>>>> udevdb;
 
     @SerializedName("module_|-network-interfaces_|-network.interfaces_|-run")
     private StateApplyResult<Ret<Map<String, Network.Interface>>> networkInterfaces;
@@ -55,6 +59,13 @@ public class HwProfileUpdateSlsResult {
      */
     public StateApplyResult<Ret<Map<String, Object>>> getCpuInfo() {
         return cpuInfo;
+    }
+
+    /**
+     * @return exported contents of the udevdb
+     */
+    public StateApplyResult<Ret<List<Map<String, Object>>>> getUdevdb() {
+        return udevdb;
     }
 
     /**
