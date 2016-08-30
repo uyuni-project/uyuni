@@ -44,7 +44,7 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
     }
 
     @Override
-    public CPU doMap(MinionServer server, ValueMap grains) {
+    public void doMap(MinionServer server, ValueMap grains) {
 
         final CPU cpu = Optional.ofNullable(server.getCpu()).orElseGet(CPU::new);
 
@@ -55,7 +55,7 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
         if (StringUtils.isBlank(cpuarch)) {
             setError("Grain 'cpuarch' has no value");
             LOG.warn("Grain 'cpuarch' has no value for minion: " + server.getMinionId());
-            return null;
+            return;
         }
 
         ValueMap cpuinfo = saltInvoker.getCpuInfo(server.getMinionId())
@@ -126,8 +126,6 @@ public class CpuMapper extends AbstractHardwareMapper<CPU> {
             cpu.setServer(server);
             server.setCpu(cpu);
         }
-
-        return cpu;
     }
 
     private String truncateVendor(ValueMap cpuinfo, String key) {
