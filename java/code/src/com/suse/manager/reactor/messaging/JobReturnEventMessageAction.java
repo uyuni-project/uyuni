@@ -15,6 +15,8 @@
 package com.suse.manager.reactor.messaging;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
+
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
@@ -340,14 +342,21 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         if (function.equals("state.apply")) {
             TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
                     new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
-            Map<String, StateApplyResult<Map<String, Object>>> results =
-                    Json.GSON.fromJson(rawResult, typeToken.getType());
+            try {
+                Map<String, StateApplyResult<Map<String, Object>>> results =
+                        Json.GSON.fromJson(rawResult, typeToken.getType());
 
-            for (StateApplyResult<Map<String, Object>> result : results.values()) {
-                if (!result.isResult()) {
-                    stateApplySuccess = false;
-                    break;
+                for (StateApplyResult<Map<String, Object>> result : results.values()) {
+                    if (!result.isResult()) {
+                        stateApplySuccess = false;
+                        break;
+                    }
                 }
+            }
+            catch (JsonSyntaxException e) {
+                LOG.error("JSON syntax error while decoding into a StateApplyResult:");
+                LOG.error(rawResult.toString());
+                return true;
             }
         }
 
