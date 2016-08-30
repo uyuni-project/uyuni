@@ -228,7 +228,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
                 ServerPath path = ServerFactory.createServerPath(server, proxy, master);
-                ServerFactory.save(path);
+                server.setServerPath(path);
             });
 
             ServerFactory.save(server);
