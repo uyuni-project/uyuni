@@ -75,7 +75,7 @@ public class FormulaFactory {
      * Returns a list of all currently installed formulas.
      * @return a list of all currently installed formulas.
      */
-    public static List<String> listFormulas() {
+    public static List<String> listFormulaNames() {
         File directory = new File(METADATA_DIR);
         File[] files = directory.listFiles();
         List<String> formulasList = new LinkedList<>();
@@ -87,6 +87,16 @@ public class FormulaFactory {
             }
         }
         return FormulaFactory.orderFormulas(formulasList);
+    }
+
+    public static List<Formula> listFormulas() {
+        List<Formula> formulas = new LinkedList<>();
+        for (String formula_name : listFormulaNames()) {
+            Formula formula = new Formula(formula_name);
+            formula.setMetadata(getMetadata(formula_name));
+            formulas.add(formula);
+        }
+        return formulas;
     }
 
     /**
@@ -168,9 +178,8 @@ public class FormulaFactory {
         Set<String> formulas = new HashSet<>();
         File groupDataFile = new File(GROUP_DATA_FILE);
         try {
-            Map<String, List<String>> groupFormulas =
-                    GSON.fromJson(new BufferedReader(new FileReader(groupDataFile)),
-                            Map.class);
+            Map<String, List<String>> groupFormulas = GSON.fromJson(
+                    new BufferedReader(new FileReader(groupDataFile)), Map.class);
             for (ServerGroup group : ServerFactory.lookupById(serverId)
                     .getManagedGroups()) {
                 formulas.addAll(groupFormulas.getOrDefault(group.getId().toString(),
@@ -182,7 +191,7 @@ public class FormulaFactory {
 
         File serverDataFile = new File(GROUP_DATA_FILE);
         try {
-            Map<String, List<String>> serverFormulas =GSON.fromJson(
+            Map<String, List<String>> serverFormulas = GSON.fromJson(
                     new BufferedReader(new FileReader(serverDataFile)), Map.class);
             formulas.addAll(serverFormulas.getOrDefault(serverId.toString(),
                     Collections.emptyList()));

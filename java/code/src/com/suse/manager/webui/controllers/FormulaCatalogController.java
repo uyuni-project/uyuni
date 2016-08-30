@@ -65,7 +65,7 @@ public class FormulaCatalogController {
      */
     public static String data(Request request, Response response, User user) {
         response.type("application/json");
-        return GSON.toJson(FormulaFactory.listFormulas());
+        return GSON.toJson(FormulaFactory.listFormulaNames());
     }
 
     /**
@@ -78,7 +78,7 @@ public class FormulaCatalogController {
     public static ModelAndView details(Request request, Response response, User user) {
         String formulaName = request.params("name");
 
-        if (!FormulaFactory.listFormulas().contains(formulaName)) {
+        if (!FormulaFactory.listFormulaNames().contains(formulaName)) {
             Spark.halt(HttpStatus.SC_NOT_FOUND); // TODO redirect to the default 404 page
             return null;
         }
