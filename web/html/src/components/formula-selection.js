@@ -1,7 +1,6 @@
 'use strict';
 
 const React = require("react");
-const ReactDOM = require("react-dom");
 
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
@@ -12,10 +11,24 @@ const AsyncButton = Buttons.AsyncButton;
 
 const toTitle = require("../components/FormulaForm").toTitle;
 
-var GroupFormulas = React.createClass({
+class FormulaSelection extends React.Component {
+    constructor(props) {
+        super(props);
 
-    requestServerData() {
-        Network.get("/rhn/manager/api/formulas/list/GROUP/" + groupId).promise.then(data => {
+        ["init", "applyRequest", "saveRequest", "resetChanges", "removeAllFormulas", "getGroupItemState",
+        "getListIcon", "getListStyle", "generateList", "onGroupItemClick", "onListItemClick"]
+        .forEach(method => this[method] = this[method].bind(this));
+
+        this.state = {
+            formulas: {},
+            groups: {groupless: []},
+            messages: []
+        };
+        this.init();
+    }
+
+    init() {
+        Network.get(this.props.dataUrl).promise.then(data => {
             const groupDict = {groupless: []};
             const formulaDict = {};
             data.formulas.forEach(function(e) {
@@ -32,82 +45,58 @@ var GroupFormulas = React.createClass({
                 groups: groupDict
             });
         });
-    },
+    }
 
-    getInitialState: function() {
-        const st = {
-            formulas: {},
-            groups: {groupless: []},
-            messages: []
-        };
-        this.requestServerData();
-        return st;
-    },
-
-    applyRequest: function() {
-        if (this.state.serverData.added.length > 0 || this.state.serverData.removed.length > 0) {
+    applyRequest() {
+        var unsavedChanges = false;
+        for (var name in this.state.formulas) {
+            if ((this.state.activeFormulas.indexOf(name) >= 0) != this.state.formulas[name].selected) {
+                unsavedChanges = true;
+                break;
+            }
+        }
+        if (unsavedChanges) {
             const response = confirm(t("There are unsaved changes. Do you want to proceed ?"))
             if (response == false) {
                 return null;
             }
         }
-        return Network.post(
-            "/rhn/manager/api/states/apply",
-            JSON.stringify({
-                id: groupId,
-                type: "GROUP",
-                states: []
-            }),
-            "application/json"
-            )
-            .promise.then( data => {
-              console.log("apply action queued:" + data)
-              this.setState({
-                  messages: [t("Applying the highstated has been scheduled for each minion server in this group")]
-              });
+        return this.props.applyRequest(this)
+            .then(data => {
+                window.scrollTo(0, 0);
             });
-    },
+    }
 
-    saveRequest: function() {
-        const formData = {};
-        formData.type = "GROUP";
-        formData.id = groupId;
-        formData.selected = [];
+    saveRequest() {
+        var selectedFormulas = [];
         jQuery.each(this.state.formulas, function(name, formula) {
             if (formula.selected)
-                formData.selected.push(name);
+                selectedFormulas.push(name);
         });
+        this.state.activeFormulas = selectedFormulas;
+        return this.props.saveRequest(this, selectedFormulas)
+            .then(data => {
+                window.scrollTo(0, 0);
+            });
+    }
 
-        return Network.post(
-            "/rhn/manager/api/formulas/select",
-            JSON.stringify(formData),
-            "application/json"
-        ).promise.then(data => {
-            this.state.messages = data;
-            this.requestServerData();
-        },
-        (xhr) => {
-            try {
-                this.setState({
-                    errors: [JSON.parse(xhr.responseText)]
-                })
-            } catch (err) {
-                this.setState({
-                    errors: [Network.errorMessageByStatus(xhr.status)]
-                })
-            }
-        });
-    },
-
-    resetChanges: function() {
+    resetChanges() {
+        const activeFormulas = this.state.activeFormulas;
         jQuery.each(this.state.formulas, function(name, formula) {
-            formula.selected = (this.state.activeFormulas.indexOf(e.name) >= 0);
+            formula.selected = (activeFormulas.indexOf(name) >= 0);
         });
         this.forceUpdate();
-    },
+    }
 
-    getGroupItemState: function(group) {
-        const selectedCount = 0;
+    removeAllFormulas() {
+        jQuery.each(this.state.formulas, function(name, formula) {
+            formula.selected = false;
+        });
+        this.forceUpdate();
+    }
+
+    getGroupItemState(group) {
+        var selectedCount = 0;
         group.forEach(function (formula) {
             if (formula.selected)
                 selectedCount++;
@@ -118,32 +107,32 @@ var GroupFormulas = React.createClass({
             return 1;
         else
             return 2;
-    },
+    }
 
-    getListIcon: function(state) {
+    getListIcon(state) {
         if (!state)
-            return "fa fa-square-o";
+            return "fa fa-lg fa-square-o";
         else if (state == 2)
-            return "fa fa-dot-circle-o";
+            return "fa fa-lg fa-minus-square-o";
         else
-            return "fa fa-chack-square-o";
-    },
+            return "fa fa-lg fa-check-square-o";
+    }
 
-    getListClass: function(state) {
+    getListStyle(state) {
         if (state)
             return "list-group-item list-group-item-info";
         else
             return "list-group-item";
-    },
+    }
 
-    generateList: function() {
+    generateList() {
         var list = [];
         const groups = this.state.groups;
 
         if (groups.groupless.length > 0) {
             groups.groupless.forEach(function (formula) {
                 list.push(
-                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListClass(formula.selected)}>
+                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListStyle(formula.selected)}>
                         <i className={this.getListIcon(formula.selected)} />
                         {" " + toTitle(formula.name)}
                     </a>
@@ -155,7 +144,7 @@ var GroupFormulas = React.createClass({
             const group = groups[group_name];
             const group_state = this.getGroupItemState(group);
             list.push(
-                <a href="#" onClick={this.onGroupItemClick} id={"group_" + group_name} key={"group_" + group_name} className={this.getListClass(group_state)}>
+                <a href="#" onClick={this.onGroupItemClick} id={"group_" + group_name} key={"group_" + group_name} className={this.getListStyle(group_state)}>
                     <strong>
                         <i className={this.getListIcon(group_state)} />
                         {" " + toTitle(group_name)}
@@ -164,32 +153,33 @@ var GroupFormulas = React.createClass({
                 ); // this blocks broken syntax highlighting //
             group.forEach(function (formula) {
                 list.push(
-                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListClass(formula.selected)}>
+                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListStyle(formula.selected)}>
                         <i className={this.getListIcon(formula.selected)} />
-                        <i className="fa fa-circle" />
-                        {" " + toTitle(formula.name)}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {toTitle(formula.name)}
                     </a>//
                 );
             }, this);
         }
         return list;
-    },
+    }
 
-    onListItemClick: function(e) {
+    onListItemClick(e) {
         e.preventDefault();
 
         const formula = this.state.formulas[(e.target.href == undefined ? e.target.parentElement.id : e.target.id)];
         formula.selected = !formula.selected;
         this.forceUpdate();
-    },
+    }
 
-    onGroupItemClick: function(e) {
+    onGroupItemClick(e) {
         e.preventDefault();
 
         const group = this.state.groups[(e.target.href == undefined ? e.target.parentElement.parentElement.id : e.target.id).slice(6)];
         const state = this.getGroupItemState(group);
         switch (state) {
             case 0:
+            case 2:
                 group.forEach(function(formula) {
                     formula.selected = true;
                 });
@@ -199,18 +189,13 @@ var GroupFormulas = React.createClass({
                     formula.selected = false;
                 });
                 break;
-            case 2:
-                group.forEach(function(formula) {
-                    formula.selected = (this.state.activeFormulas.indexOf(e.name) >= 0);
-                }, this);
-                break;
         }
         this.forceUpdate();
-    },
+    }
 
-    render: function() {
+    render() {
         var messages = <Messages items={[{severity: "info", text:
-            <p><strong>{t('This is a feature preview')}</strong>: On this page you can select <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt formulas</a> for this group, which can then be configured on group and system level. This allows you to automatically install and configure software. We would be glad to receive your feedback via the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
+            <p><strong>{t('This is a feature preview')}</strong>: On this page you can select <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt formulas</a> for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software. We would be glad to receive your feedback via the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
         }]}/>;
         if (this.state.messages.length > 0) {
             messages = <Messages items={this.state.messages.map(function(msg) {
@@ -225,7 +210,7 @@ var GroupFormulas = React.createClass({
             })}/>;
         }
 
-        addFormulaNavBar(this.state.activeFormulas);
+        this.props.addFormulaNavBar(this.state.activeFormulas);
 
         return (
             <div>
@@ -253,7 +238,10 @@ var GroupFormulas = React.createClass({
                                         <AsyncButton id="save-btn" icon="floppy-o" action={this.saveRequest} name={t("Save")} />
                                         <AsyncButton id="apply-btn" defaultType="btn-success" action={this.applyRequest} name={t("Apply Highstate")} />
                                     </span>
-                                    <Button id="reset-btn" icon="fa-undo" text="Reset Changes" className="btn btn-default pull-right" handler={this.resetChanges} />
+                                    <span className="btn-group pull-right">
+                                        <Button id="clear-btn" icon="fa-eraser" text="Remove all" className="btn btn-default" handler={this.removeAllFormulas} />
+                                        <Button id="reset-btn" icon="fa-undo" text="Reset Changes" className="btn btn-default" handler={this.resetChanges} />
+                                    </span>
                                 </div>
                             </div>
                         </form>
@@ -262,20 +250,8 @@ var GroupFormulas = React.createClass({
             </div>
         );
     }
-});
-
-function addFormulaNavBar(formulaList) {
-    $("#formula-nav-bar").remove();
-
-    var navBar = "<ul class='nav nav-tabs nav-tabs-pf' id='formula-nav-bar'>\n"
-    navBar += "<li class='active'><a href='/rhn/manager/groups/details/formulas?sgid=" + groupId + "'>Formulas</a></li>\n";
-    for (var i in formulaList)
-        navBar += "<li><a href='/rhn/manager/groups/details/formula/" + i + "?sgid=" + groupId + "'>" + toTitle(formulaList[i]) + "</a></li>\n";
-    navBar += "</ul>"
-    $(".spacewalk-content-nav").append(navBar);
 }
 
-ReactDOM.render(
-  <GroupFormulas />,
-  document.getElementById('formulas')
-);
+module.exports = {
+    FormulaSelection: FormulaSelection
+}

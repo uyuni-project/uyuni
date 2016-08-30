@@ -186,6 +186,9 @@ public class Router implements SparkApplication {
         get("/manager/groups/details/formulas",
                 withCsrfToken(withUser(MinionController::serverGroupFormulas)),
                 jade);
+        get("/manager/systems/details/formulas",
+                withCsrfToken(withUser(MinionController::minionFormulas)),
+                jade);
         get("/manager/groups/details/formula/:formula_id",
                 withCsrfToken(withUser(MinionController::serverGroupFormula)),
                 jade);
