@@ -49,7 +49,7 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
         super(saltServiceInvoker);
     }
 
-    protected MinionServer doMap(MinionServer server, ValueMap grains) {
+    protected void doMap(MinionServer server, ValueMap grains) {
 
         String minionId = server.getMinionId();
 
@@ -70,7 +70,6 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
             setError("Salt module 'network.interfaces' returned en empty value");
             LOG.error("Salt module 'network.interfaces' returned en empty value " +
                     "for minion: " + minionId);
-            return null;
         }
 
         Optional<String> primaryIPv4 = primaryIps
@@ -166,7 +165,5 @@ public class NetworkInfoMapper extends AbstractHardwareMapper<MinionServer> {
                     .ifPresent(primaryNetIf -> primaryNetIf.setPrimary("Y"));
             });
         }
-
-        return server;
     }
 }

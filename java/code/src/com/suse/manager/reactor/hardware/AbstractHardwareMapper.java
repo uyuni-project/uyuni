@@ -14,7 +14,6 @@
  */
 package com.suse.manager.reactor.hardware;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -48,41 +47,19 @@ public abstract class AbstractHardwareMapper<T> {
      * Get the hardware information from the minion and store it in our db.
      * @param serverId the id of the {@link MinionServer}
      * @param grains the Salt grains
-     * @return the persisted bean(s)
      */
-    public T map(Long serverId, ValueMap grains) {
-        T result = null;
-        String minionId = null;
-        try {
-            HibernateFactory.getSession().beginTransaction();
-            Optional<MinionServer> optionalServer = MinionServerFactory
-                    .lookupById(serverId);
-            if (!optionalServer.isPresent()) {
-                LOG.warn("Minion server not found: " + serverId);
-                result = null;
-            }
-            else {
-                result = doMap(optionalServer.get(), grains);
-                minionId = optionalServer.get().getMinionId();
-            }
-
-            HibernateFactory.commitTransaction();
+    public void map(Long serverId, ValueMap grains) {
+        Optional<MinionServer> optionalServer = MinionServerFactory
+                .lookupById(serverId);
+        if (!optionalServer.isPresent()) {
+            LOG.warn("Minion server not found: " + serverId);
         }
-        catch (Exception e) {
-            LOG.error(String.format("Rolling back transaction. " +
-                    "Error executing mapper %s for minionId=%s, serverId=%d",
-                    getClass().getName(), minionId, serverId), e);
-            HibernateFactory.rollbackTransaction();
-            setError("An error occurred: " + e.getMessage());
+        else {
+            doMap(optionalServer.get(), grains);
         }
-        finally {
-            HibernateFactory.closeSession();
-        }
-
-        return result;
     }
 
-    protected abstract T doMap(MinionServer server, ValueMap grains);
+    protected abstract void doMap(MinionServer server, ValueMap grains);
 
     /**
      * @return error messages
