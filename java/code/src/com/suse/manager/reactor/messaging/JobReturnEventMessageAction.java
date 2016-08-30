@@ -440,6 +440,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     private static void handleHardwareProfileUpdate(MinionServer server,
             HwProfileUpdateSlsResult result) {
         LOG.info("Handling hardware profile update: " + server.getMinionId());
+        Instant start = Instant.now();
+
         HardwareMapper hwMapper = new HardwareMapper(server,
                 new ValueMap(result.getGrains().getChanges().getRet()));
         hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo().getChanges().getRet()));
@@ -447,6 +449,12 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 result.getNetworkInterfaces().getChanges().getRet(),
                 Optional.of(result.getNetworkIPs().getChanges().getRet()),
                 result.getNetworkModules().getChanges().getRet());
+
+        if (LOG.isDebugEnabled()) {
+            long duration = Duration.between(start, Instant.now()).getSeconds();
+            LOG.debug("Hardware profile updated for minion: " + server.getMinionId() +
+                    " (" + duration + " seconds)");
+        }
     }
 
     /**
