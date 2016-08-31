@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils.salt.custom;
 
 import com.suse.salt.netapi.calls.modules.Network;
+import com.suse.salt.netapi.calls.modules.Smbios;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 
@@ -46,6 +47,18 @@ public class HwProfileUpdateSlsResult {
 
     @SerializedName("module_|-network-modules_|-sumautil.get_net_modules_|-run")
     private StateApplyResult<Ret<Map<String, Optional<String>>>> networkModules;
+
+    @SerializedName("module_|-smbios-records-bios_|-smbios.records_|-run")
+    private StateApplyResult<Ret<List<Smbios.Record>>> smbiosRecordsBios;
+
+    @SerializedName("module_|-smbios-records-system_|-smbios.records_|-run")
+    private StateApplyResult<Ret<List<Smbios.Record>>> smbiosRecordsSystem;
+
+    @SerializedName("module_|-smbios-records-baseboard_|-smbios.records_|-run")
+    private StateApplyResult<Ret<List<Smbios.Record>>> smbiosRecordsBaseboard;
+
+    @SerializedName("module_|-smbios-records-chassis_|-smbios.records_|-run")
+    private StateApplyResult<Ret<List<Smbios.Record>>> smbiosRecordsChassis;
 
     /**
      * @return the grains
@@ -88,5 +101,33 @@ public class HwProfileUpdateSlsResult {
      */
     public StateApplyResult<Ret<Map<String, Optional<String>>>> getNetworkModules() {
         return networkModules;
+    }
+
+    /**
+     * @return smbios records of type: BIOS
+     */
+    public StateApplyResult<Ret<List<Smbios.Record>>> getSmbiosRecordsBios() {
+        return smbiosRecordsBios;
+    }
+
+    /**
+     * @return smbios records of type: System
+     */
+    public StateApplyResult<Ret<List<Smbios.Record>>> getSmbiosRecordsSystem() {
+        return smbiosRecordsSystem;
+    }
+
+    /**
+     * @return smbios records of type: Baseboard
+     */
+    public StateApplyResult<Ret<List<Smbios.Record>>> getSmbiosRecordsBaseboard() {
+        return smbiosRecordsBaseboard;
+    }
+
+    /**
+     * @return smbios records of type: Chassis
+     */
+    public StateApplyResult<Ret<List<Smbios.Record>>> getSmbiosRecordsChassis() {
+        return smbiosRecordsChassis;
     }
 }

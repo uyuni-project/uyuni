@@ -17,6 +17,7 @@ package com.suse.manager.reactor.hardware;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.CPUArch;
 import com.redhat.rhn.domain.server.Device;
+import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -65,6 +66,13 @@ public class HardwareMapper {
     public HardwareMapper(MinionServer serverIn, ValueMap grainsIn) {
         this.server = serverIn;
         this.grains = grainsIn;
+    }
+
+    /**
+     * @return the value of the `cpuarch` grain
+     */
+    public String getCpuArch() {
+        return grains.getValueAsString(SaltGrains.CPUARCH.getValue()).toLowerCase();
     }
 
     /**
@@ -149,6 +157,69 @@ public class HardwareMapper {
             cpu.setServer(server);
             server.setCpu(cpu);
         }
+    }
+
+    /**
+     * Store DMI info as queried from Salt.
+     *
+     * @param bios smbios records of type "BIOS"
+     * @param system smbios records of type "System"
+     * @param baseboard smbios records of type "Baseboard"
+     * @param chassis smbios records of type "Chassis"
+     */
+    public void mapDmiInfo(ValueMap bios, ValueMap system, ValueMap baseboard,
+            ValueMap chassis) {
+        String biosVendor = null, biosVersion = null, biosReleseDate = null,
+                productName = null, systemVersion = null, systemSerial = null,
+                chassisSerial = null, chassisTag = null, boardSerial = null;
+
+        try {
+            biosVendor = bios.getOptionalAsString("vendor").orElse(null);
+            biosVersion = bios.getOptionalAsString("version").orElse(null);
+            biosReleseDate = bios.getOptionalAsString("release_date").orElse(null);
+
+            productName = system.getOptionalAsString("product_name").orElse(null);
+            systemVersion = system.getOptionalAsString("version").orElse(null);
+            systemSerial = system.getOptionalAsString("serial_number").orElse(null);
+
+            boardSerial = baseboard.getOptionalAsString("serial_number").orElse(null);
+
+            chassisSerial = chassis.getOptionalAsString("serial_number").orElse(null);
+            chassisTag = chassis.getOptionalAsString("asset_tag").orElse(null);
+        }
+        catch (com.google.gson.JsonSyntaxException e) {
+            LOG.warn("Could not retrieve DMI info from minion '" + server.getMinionId() +
+                    "': " + e.getMessage());
+            // In order to behave like the "old style" registration
+            // go on and persist an empty Dmi bean.
+            errors.add("DMI: Could not retrieve DMI records: " + e.getMessage());
+        }
+
+        Dmi dmi = server.getDmi();
+        if (dmi == null) {
+            dmi = new Dmi();
+        }
+        StringBuilder dmiSystem = new StringBuilder();
+        if (StringUtils.isNotBlank(productName)) {
+            dmiSystem.append(productName);
+        }
+        if (StringUtils.isNotBlank(systemVersion)) {
+            if (dmiSystem.length() > 0) {
+                dmiSystem.append(" ");
+            }
+            dmiSystem.append(systemVersion);
+        }
+        dmi.setSystem(dmiSystem.length() > 0 ? dmiSystem.toString().trim() : null);
+        dmi.setProduct(productName);
+        dmi.setBios(biosVendor, biosVersion, biosReleseDate);
+        dmi.setVendor(biosVendor);
+
+        dmi.setAsset(String.format("(chassis: %s) (chassis: %s) (board: %s) (system: %s)",
+                Objects.toString(chassisSerial, ""), Objects.toString(chassisTag, ""),
+                Objects.toString(boardSerial, ""), Objects.toString(systemSerial, "")));
+
+        dmi.setServer(server);
+        server.setDmi(dmi);
     }
 
     /**
