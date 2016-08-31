@@ -8,12 +8,12 @@ var FormulaFormModule = require("../components/FormulaForm");
 var FormulaForm = FormulaFormModule.FormulaForm;
 var toTitle = FormulaFormModule.toTitle;
 
-function saveFormula(component) {
+function saveFormula(component, values) {
     var formData = {};
     formData.type = "GROUP";
     formData.id = groupId;
-    formData.formula_name = component.state.serverData.formula_name;
-    formData.content = component.serializeValues();
+    formData.formula_name = component.state.formulaName;
+    formData.content = component.extractValues();
 
     Network.post(
         "/rhn/manager/api/formulas/save",
@@ -25,7 +25,7 @@ function saveFormula(component) {
         });
     },
     (xhr) => {
-        try {
+    	try {
             component.setState({
                 errors: [JSON.parse(xhr.responseText)]
             })
@@ -48,16 +48,9 @@ function addFormulaNavBar(formulaList, activeId) {
     $(".spacewalk-content-nav").append(navBar);
 }
 
-const noFormulaText = (
-    <div>
-        Click <a href={"/rhn/manager/groups/details/formulas?sgid=" + groupId}>here</a> to manage the formulas of this server group.
-    </div>
-);
-
 ReactDOM.render(
     <FormulaForm
           dataUrl={"/rhn/manager/api/formulas/form/GROUP/" + groupId + "/" + formulaId}
-          noFormulaText={noFormulaText}
           addFormulaNavBar={addFormulaNavBar}
           formulaId={formulaId}
           getFormulaUrl={function(id) {return "/rhn/manager/groups/details/formula/" + id + "?sgid=" + groupId;}}

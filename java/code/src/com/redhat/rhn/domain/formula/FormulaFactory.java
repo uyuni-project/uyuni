@@ -36,6 +36,7 @@ import java.util.Set;
 
 import javax.transaction.NotSupportedException;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -57,7 +58,9 @@ public class FormulaFactory {
 
     private static final String DATA_DIR = "/srv/susemanager/formula_data/";
     private static final String STATES_DIR = "/usr/share/susemanager/formulas/states/";
-    private static final String METADATA_DIR = "/usr/share/susemanager/formulas/metadata/";
+    private static final String METADATA_DIR_OFFICIAL =
+            "/usr/share/susemanager/formulas/metadata/";
+    private static final String METADATA_DIR_CUSTOM = "/srv/formula_data/";
     private static final String PILLAR_DIR = DATA_DIR + "pillar/";
     private static final String GROUP_PILLAR_DIR = DATA_DIR + "group_pillar/";
     private static final String GROUP_DATA_FILE = DATA_DIR + "group_formulas.json";
@@ -76,8 +79,9 @@ public class FormulaFactory {
      * @return a list of all currently installed formulas.
      */
     public static List<String> listFormulaNames() {
-        File directory = new File(METADATA_DIR);
-        File[] files = directory.listFiles();
+        File officialDir = new File(METADATA_DIR_OFFICIAL);
+        File customDir = new File(METADATA_DIR_CUSTOM);
+        File[] files = ArrayUtils.addAll(officialDir.listFiles(), customDir.listFiles());
         List<String> formulasList = new LinkedList<>();
 
         // TODO: Check if directory is a real formula (contains form.yml and init.sls)?
@@ -207,12 +211,17 @@ public class FormulaFactory {
      * @return the layout
      */
     public static Optional<Map<String, Object>> getFormulaLayoutByName(String name) {
-        File layoutFile = new File(METADATA_DIR + name + "/form.yml");
+        File layoutFileOfficial = new File(METADATA_DIR_OFFICIAL + name + "/form.yml");
+        File layoutFileCustom = new File(METADATA_DIR_CUSTOM + name + "/form.yml");
 
         try {
-            if (layoutFile.exists()) {
+            if (layoutFileOfficial.exists()) {
                 return Optional.of((Map<String, Object>) YAML.load(
-                        new FileInputStream(layoutFile)));
+                        new FileInputStream(layoutFileOfficial)));
+            }
+            else if (layoutFileCustom.exists()) {
+                return Optional.of((Map<String, Object>) YAML.load(
+                        new FileInputStream(layoutFileOfficial)));
             }
             else {
                 return Optional.empty();
@@ -459,17 +468,29 @@ public class FormulaFactory {
      * @return the metadata
      */
     public static Map<String, Object> getMetadata(String name) {
-        File metadataFile = new File(METADATA_DIR + name + "/metadata.yml");
+        File metadataFileOfficial =
+                new File(METADATA_DIR_OFFICIAL + name + "/metadata.yml");
+        File metadataFileCustom = new File(METADATA_DIR_CUSTOM + name + "/metadata.yml");
         try {
-            return (Map<String, Object>) YAML.load(new FileInputStream(metadataFile));
+            if (metadataFileOfficial.isFile()) {
+                return (Map<String, Object>) YAML.load(
+                        new FileInputStream(metadataFileOfficial));
+            }
+            else if (metadataFileCustom.isFile()) {
+                    return (Map<String, Object>) YAML.load(
+                            new FileInputStream(metadataFileCustom));
+            }
+            else {
+                return Collections.emptyMap();
+            }
         }
         catch (IOException | YAMLException e) {
-            return new HashMap<String, Object>();
+            return Collections.emptyMap();
         }
     }
 
     /**
-     * Returns a metadata given value of a formula.
+     * Returns a given metadata value of a formula.
      * @param name the name of the formula
      * @param param the name of the metadata value
      * @return the metadata value
