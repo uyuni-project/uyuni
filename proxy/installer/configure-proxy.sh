@@ -603,8 +603,8 @@ if [ -e $HTTPDCONF_DIR/vhosts.d/ssl.conf ]; then
 else
     cp $HTTPDCONF_DIR/vhosts.d/vhost-ssl.template $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak
 fi
-sed -e "s|^[\t ]*SSLCertificateFile.*$|SSLCertificateFile $HTTPDCONF_DIR/ssl.crt/spacewalk.crt|g" \
-    -e "s|^[\t ]*SSLCertificateKeyFile.*$|SSLCertificateKeyFile $HTTPDCONF_DIR/ssl.key/spacewalk.key|g" \
+sed -e "s|^[\t ]*SSLCertificateFile.*$|SSLCertificateFile $HTTPDCONF_DIR/ssl.crt/server.crt|g" \
+    -e "s|^[\t ]*SSLCertificateKeyFile.*$|SSLCertificateKeyFile $HTTPDCONF_DIR/ssl.key/server.key|g" \
     -e "s|^[\t ]*SSLCipherSuite.*$|SSLCipherSuite ALL:!aNULL:!eNULL:!SSLv2:!LOW:!EXP:!MD5:@STRENGTH|g" \
     -e "s|</VirtualHost>|SSLProtocol all -SSLv2 -SSLv3\nRewriteEngine on\nRewriteOptions inherit\nSSLProxyEngine on\n</VirtualHost>|" \
     < $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak  > $HTTPDCONF_DIR/vhosts.d/ssl.conf
