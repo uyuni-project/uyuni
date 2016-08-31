@@ -17,3 +17,26 @@ network-modules:
   module.run:
     - name: sumautil.get_net_modules
 
+{% if grains['cpuarch'] == 'x86_64' %}
+smbios-records-bios:
+  module.run:
+    - name: smbios.records
+    - rec_type: 0
+    - clean: False
+smbios-records-system:
+  module.run:
+    - name: smbios.records
+    - rec_type: 1
+    - clean: False
+smbios-records-baseboard:
+  module.run:
+    - name: smbios.records
+    - rec_type: 2
+    - clean: False
+smbios-records-chassis:
+  module.run:
+    - name: smbios.records
+    - rec_type: 3
+    - clean: False
+{% endif %}
+
