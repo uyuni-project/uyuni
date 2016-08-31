@@ -113,10 +113,10 @@ class FormulaSelection extends React.Component {
     getListIcon(state) {
         if (!state)
             return "fa fa-lg fa-square-o";
-        else if (state == 2)
-            return "fa fa-lg fa-minus-square-o";
-        else
+        else if (state == 1)
             return "fa fa-lg fa-check-square-o";
+        else
+            return "fa fa-lg fa-minus-square-o";
     }
 
     getListStyle(state) {
@@ -127,23 +127,32 @@ class FormulaSelection extends React.Component {
     }
 
     getDescription(formula) {
-        if (this.state.showDescription == formula.name)
-            return <p className="list-group-item-text">{formula.description}</p>;
+        if (this.state.showDescription == formula.name) // HACK: style should be in css
+            return <p className="list-group-item-text formula-description" style={{"padding-left": 42 + "px", "padding-top": 10 + "px", "color": "#777"}}>{formula.description}</p>;
         else
             return null;
     }
-
+    
     generateList() {
         var list = [];
         const groups = this.state.groups;
 
         if (groups.groupless.length > 0) {
+            list.push(
+                <a href="#" onClick={(e) => e.preventDefault()} key={"groupless"} className="list-group-item disabled">
+                    <strong>
+                        <i className="fa fa-lg fa-square-o" />
+                        {t(" No group")}
+                    </strong>
+                </a>
+            );
             groups.groupless.forEach(function (formula) {
                 list.push(
                     <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListStyle(formula.selected)}>
                         <i className={this.getListIcon(formula.selected)} />
-                        {" " + toTitle(formula.name)}
-                        { formula.description ? (<i className="fa fa-lg fa-info-circle pull-right" />) : null }
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {toTitle(formula.name)}
+                        { formula.description ? (<i id={"info_button_" + formula.name} className="fa fa-lg fa-info-circle pull-right" />) : null }
                         {this.getDescription(formula)}
                     </a>
                 );
@@ -160,16 +169,16 @@ class FormulaSelection extends React.Component {
                         {" " + toTitle(group_name)}
                     </strong>
                 </a>
-                ); // this blocks broken syntax highlighting //
+            );
             group.forEach(function (formula) {
                 list.push(
                     <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListStyle(formula.selected)}>
                         <i className={this.getListIcon(formula.selected)} />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {toTitle(formula.name)}
-                        { formula.description ? (<i className="fa fa-lg fa-info-circle pull-right" />) : null }
+                        { formula.description ? (<i id={"info_button_" + formula.name} className="fa fa-lg fa-info-circle pull-right" />) : null }
                         {this.getDescription(formula)}
-                    </a>//
+                    </a>
                 );
             }, this);
         }
@@ -180,7 +189,7 @@ class FormulaSelection extends React.Component {
         e.preventDefault();
         const formula = this.state.formulas[(e.target.href == undefined ? e.target.parentElement.id : e.target.id)];
 
-        if (e.target.className == "fa fa-lg fa-info-circle pull-right")
+        if (e.target.id.startsWith("info_button_"))
             this.state.showDescription = (this.state.showDescription == formula.name ? false : formula.name);
         else
             formula.selected = !formula.selected;
@@ -210,7 +219,10 @@ class FormulaSelection extends React.Component {
 
     render() {
         var messages = <Messages items={[{severity: "info", text:
-            <p><strong>{t('This is a feature preview')}</strong>: On this page you can select <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt formulas</a> for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software. We would be glad to receive your feedback via the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
+            <p><strong>{t('This is a feature preview')}</strong>: On this page you can
+            select <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt formulas</a> for
+            this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software. 
+            We would be glad to receive your feedback via the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
         }]}/>;
         if (this.state.messages.length > 0) {
             messages = <Messages items={this.state.messages.map(function(msg) {
@@ -246,7 +258,6 @@ class FormulaSelection extends React.Component {
                                     </div>
                                 </div>
                             </div>
-
                             <div className="form-group">
                                 <div className="col-lg-offset-3 col-lg-6">
                                     <span className="btn-group">
