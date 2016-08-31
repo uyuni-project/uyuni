@@ -77,6 +77,7 @@ class FormulaSelection extends React.Component {
         this.state.activeFormulas = selectedFormulas;
         return this.props.saveRequest(this, selectedFormulas)
             .then(data => {
+                this.init();
                 window.scrollTo(0, 0);
             });
     }
@@ -127,8 +128,8 @@ class FormulaSelection extends React.Component {
     }
 
     getDescription(formula) {
-        if (this.state.showDescription == formula.name) // HACK: style should be in css
-            return <p className="list-group-item-text formula-description" style={{"padding-left": 42 + "px", "padding-top": 10 + "px", "color": "#777"}}>{formula.description}</p>;
+        if (this.state.showDescription == formula.name)
+            return <p className="list-group-item-text formula-description" >{formula.description}</p>;
         else
             return null;
     }

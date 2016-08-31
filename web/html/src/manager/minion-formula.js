@@ -8,26 +8,24 @@ var FormulaFormModule = require("../components/FormulaForm");
 var FormulaForm = FormulaFormModule.FormulaForm;
 var toTitle = FormulaFormModule.toTitle;
 
-
-function saveFormula(component) {
+function saveFormula(component, values) {
     var formData = {};
     formData.type = "SERVER";
     formData.id = serverId;
-    formData.formula_name = component.state.serverData.formula_name;
-    formData.content = component.serializeValues();
+    formData.formula_name = component.state.formulaName;
+    formData.content = component.extractValues();
 
     Network.post(
         "/rhn/manager/api/formulas/save",
         JSON.stringify(formData),
         "application/json"
-    ).promise.then(
-    (data) => {
+    ).promise.then((data) => {
         component.setState({
             messages: data
         });
     },
     (xhr) => {
-       try {
+       	try {
             component.setState({
                 errors: [JSON.parse(xhr.responseText)]
             })
@@ -53,7 +51,6 @@ function addFormulaNavBar(formulaList, activeId) {
 ReactDOM.render(
     <FormulaForm
           dataUrl={"/rhn/manager/api/formulas/form/SERVER/" + serverId + "/" + formulaId}
-          noFormulaText="No formulas found for this server! Add a formula to a group this server is part of."
           addFormulaNavBar={addFormulaNavBar}
           formulaId={formulaId}
           getFormulaUrl={function(id) {return "/rhn/manager/systems/details/formula/" + id + "?sid=" + serverId;}}
