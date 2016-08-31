@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 
+import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -437,6 +438,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         ErrataManager.insertErrataCacheTask(server);
     }
 
+    @SuppressWarnings("unchecked")
     private static void handleHardwareProfileUpdate(MinionServer server,
             HwProfileUpdateSlsResult result) {
         LOG.info("Handling hardware profile update: " + server.getMinionId());
@@ -445,6 +447,13 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         HardwareMapper hwMapper = new HardwareMapper(server,
                 new ValueMap(result.getGrains().getChanges().getRet()));
         hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo().getChanges().getRet()));
+        if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
+            hwMapper.mapDmiInfo(
+                    new ValueMap(result.getSmbiosRecordsBios().getChanges().getRet().isEmpty() ? Collections.EMPTY_MAP : result.getSmbiosRecordsBios().getChanges().getRet().get(0).getData()),
+                    new ValueMap(result.getSmbiosRecordsSystem().getChanges().getRet().isEmpty() ? Collections.EMPTY_MAP : result.getSmbiosRecordsSystem().getChanges().getRet().get(0).getData()),
+                    new ValueMap(result.getSmbiosRecordsBaseboard().getChanges().getRet().isEmpty() ? Collections.EMPTY_MAP : result.getSmbiosRecordsBaseboard().getChanges().getRet().get(0).getData()),
+                    new ValueMap(result.getSmbiosRecordsChassis().getChanges().getRet().isEmpty() ? Collections.EMPTY_MAP : result.getSmbiosRecordsChassis().getChanges().getRet().get(0).getData()));
+        }
         hwMapper.mapDevices(result.getUdevdb().getChanges().getRet());
         hwMapper.mapNetworkInfo(
                 result.getNetworkInterfaces().getChanges().getRet(),
