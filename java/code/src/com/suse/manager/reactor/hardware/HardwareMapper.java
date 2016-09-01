@@ -64,6 +64,8 @@ public class HardwareMapper {
     private static final String ENTRIES = "E";
 
     /**
+     * Create a hardware mapper for a given server with grains.
+     *
      * @param serverIn the minion server
      * @param grainsIn the grains
      */
