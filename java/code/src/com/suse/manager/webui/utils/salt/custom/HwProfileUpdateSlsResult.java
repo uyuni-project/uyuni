@@ -65,44 +65,43 @@ public class HwProfileUpdateSlsResult {
     /**
      * @return the grains
      */
-    public StateApplyResult<Ret<Map<String, Object>>> getGrains() {
-        return grains;
+    public Map<String, Object> getGrains() {
+        return grains.getChanges().getRet();
     }
 
     /**
      * @return information about CPUs
      */
-    public StateApplyResult<Ret<Map<String, Object>>> getCpuInfo() {
-        return cpuInfo;
+    public Map<String, Object> getCpuInfo() {
+        return cpuInfo.getChanges().getRet();
     }
 
     /**
      * @return exported contents of the udevdb
      */
-    public StateApplyResult<Ret<List<Map<String, Object>>>> getUdevdb() {
-        return udevdb;
+    public List<Map<String, Object>> getUdevdb() {
+        return udevdb.getChanges().getRet();
     }
 
     /**
      * @return network interfaces
      */
-    public StateApplyResult<Ret<Map<String, Network.Interface>>> getNetworkInterfaces() {
-        return networkInterfaces;
+    public Map<String, Network.Interface> getNetworkInterfaces() {
+        return networkInterfaces.getChanges().getRet();
     }
 
     /**
      * @return network IPs
      */
-    public StateApplyResult<Ret<Map<SumaUtil.IPVersion, SumaUtil.IPRoute>>>
-            getNetworkIPs() {
-        return networkIPs;
+    public Map<SumaUtil.IPVersion, SumaUtil.IPRoute> getNetworkIPs() {
+        return networkIPs.getChanges().getRet();
     }
 
     /**
      * @return network modules
      */
-    public StateApplyResult<Ret<Map<String, Optional<String>>>> getNetworkModules() {
-        return networkModules;
+    public Map<String, Optional<String>> getNetworkModules() {
+        return networkModules.getChanges().getRet();
     }
 
     /**
