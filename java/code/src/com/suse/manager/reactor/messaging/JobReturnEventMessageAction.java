@@ -454,6 +454,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     result.getSmbiosRecordsChassis().orElse(Collections.emptyMap()));
         }
         hwMapper.mapDevices(result.getUdevdb());
+        hwMapper.mapVirtualizationInfo(result.getSmbiosRecordsSystem());
         hwMapper.mapNetworkInfo(
                 result.getNetworkInterfaces(),
                 Optional.of(result.getNetworkIPs()),
