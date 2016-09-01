@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.redhat.rhn.domain.server.Server;
+import com.suse.utils.Opt;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -110,9 +111,8 @@ public class PendingActionsDeleteConfirmAction extends RhnAction implements List
                     .stream()
                     .filter(e -> ActionManager.CancelServerActionStatus
                             .CANCEL_FAILED_MINION_DOWN.equals(e.getValue()))
-                    .map(e -> e.getKey().asMinionServer())
-                    .filter(optMinion -> optMinion.isPresent())
-                    .map(optMinion -> optMinion.get().getMinionId())
+                    .flatMap(e -> Opt.stream(e.getKey().asMinionServer()))
+                    .map(minion -> minion.getMinionId())
                     .forEach(minionId ->
                         createErrorMessage(request,
                                 "message.actionCancelServerFailure.minion.down",
