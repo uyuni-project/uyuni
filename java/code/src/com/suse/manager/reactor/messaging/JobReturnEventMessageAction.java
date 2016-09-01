@@ -438,7 +438,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         ErrataManager.insertErrataCacheTask(server);
     }
 
-    @SuppressWarnings("unchecked")
     private static void handleHardwareProfileUpdate(MinionServer server,
             HwProfileUpdateSlsResult result) {
         LOG.info("Handling hardware profile update: " + server.getMinionId());
@@ -449,10 +448,10 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo().getChanges().getRet()));
         if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
             hwMapper.mapDmiInfo(
-                    new ValueMap(result.getSmbiosRecordsBios().getChanges().getRet().isEmpty() ? Collections.EMPTY_MAP : result.getSmbiosRecordsBios().getChanges().getRet().get(0).getData()),
-                    new ValueMap(result.getSmbiosRecordsSystem().getChanges().getRet().isEmpty() ? Collections.EMPTY_MAP : result.getSmbiosRecordsSystem().getChanges().getRet().get(0).getData()),
-                    new ValueMap(result.getSmbiosRecordsBaseboard().getChanges().getRet().isEmpty() ? Collections.EMPTY_MAP : result.getSmbiosRecordsBaseboard().getChanges().getRet().get(0).getData()),
-                    new ValueMap(result.getSmbiosRecordsChassis().getChanges().getRet().isEmpty() ? Collections.EMPTY_MAP : result.getSmbiosRecordsChassis().getChanges().getRet().get(0).getData()));
+                    new ValueMap(result.getSmbiosRecordsBios()),
+                    new ValueMap(result.getSmbiosRecordsSystem()),
+                    new ValueMap(result.getSmbiosRecordsBaseboard()),
+                    new ValueMap(result.getSmbiosRecordsChassis()));
         }
         hwMapper.mapDevices(result.getUdevdb().getChanges().getRet());
         hwMapper.mapNetworkInfo(
