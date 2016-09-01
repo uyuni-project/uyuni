@@ -57,11 +57,23 @@ Requires: jose4j
 Requires: salt-netapi-client >= 0.8.0
 Requires: spark
 Requires: spark-template-jade
-Requires: hibernate3 = 3.2.7
+Requires: hibernate5
+Requires: hibernate-commons-annotations
+Requires: hibernate-jpa-2.1-api
+Requires: ehcache >= 2.10.1
+Requires: classmate
+Requires: javassist
+Requires: jboss-logging
+Requires: statistics
 Requires: gnu-jaf
-Requires: ehcache
-BuildRequires: hibernate3 = 3.2.7
-BuildRequires: ehcache
+BuildRequires: hibernate5
+BuildRequires: hibernate-commons-annotations
+BuildRequires: hibernate-jpa-2.1-api
+BuildRequires: ehcache >= 2.10.1
+BuildRequires: classmate
+BuildRequires: javassist
+BuildRequires: jboss-logging
+BuildRequires: statistics
 BuildRequires: apache-commons-lang
 BuildRequires: google-gson >= 2.2.4
 BuildRequires: java-devel-ibm >= 1.8.0
@@ -631,10 +643,19 @@ echo "hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider" >> con
 echo "hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory" >> conf/default/rhn_hibernate.conf
 echo "hibernate.cache.provider_configuration_file_resource_path=../ehcache.xml" >> conf/default/rhn_hibernate.conf
 echo "hibernate.id.new_generator_mappings = false" >> conf/default/rhn_hibernate.conf
-echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.66=/usr/share/java/ehcache.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.49=/usr/share/java/hibernate-core-5.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.66=/usr/share/java/ehcache-core.jar" >> conf/default/rhn_taskomatic_daemon.conf
 echo "wrapper.java.classpath.67=/usr/share/java/httpcore.jar" >> conf/default/rhn_taskomatic_daemon.conf
 echo "wrapper.java.classpath.68=/usr/share/java/httpclient.jar" >> conf/default/rhn_taskomatic_daemon.conf
+
+echo "wrapper.java.classpath.69=/usr/share/java/hibernate-c3p0-5.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.70=/usr/share/java/hibernate-commons-annotations.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.71=/usr/share/java/hibernate-ehcache-5.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.72=/usr/share/java/hibernate-jpa-2.1-api.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.73=/usr/share/java/classmate.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.74=/usr/share/java/javassist.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.75=/usr/share/java/jboss-logging.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.76=/usr/share/java/statistics.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
 echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
 echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
@@ -832,7 +853,6 @@ fi
 %{jardir}/concurrent*.jar
 %{jardir}/dom4j.jar
 %{jardir}/dwr.jar
-%{jardir}/hibernate3*
 %if 0%{?fedora}
 %{jardir}/ehcache-core.jar
 %{jardir}/*_hibernate-commons-annotations.jar
@@ -854,7 +874,6 @@ fi
 %endif
 %if 0%{?suse_version}
 %{jardir}/google-gson.jar
-%{jardir}/ehcache.jar
 %{jardir}/snakeyaml.jar
 # SUSE extra runtime dependencies: spark, jade4j, salt API client + dependencies
 %{jardir}/commons-jexl.jar
@@ -869,7 +888,20 @@ fi
 %{jardir}/slf4j_log4j12*.jar
 %{jardir}/spark-core.jar
 %{jardir}/spark-template-jade.jar
+
+# Hibernate and related
+%{jardir}/hibernate-core-5.jar
+%{jardir}/hibernate-c3p0-5.jar
+%{jardir}/hibernate-ehcache-5.jar
+%{jardir}/hibernate-commons-annotations.jar
+%{jardir}/hibernate-jpa-2.1-api.jar
+%{jardir}/ehcache-core.jar
+%{jardir}/classmate.jar
+%{jardir}/javassist.jar
+%{jardir}/jboss-logging.jar
+%{jardir}/statistics.jar
 %else
+%{jardir}/hibernate3*
 %{jardir}/jpam.jar
 %{jardir}/oscache.jar
 %endif
@@ -10394,4 +10426,3 @@ Feature: Support channel-permissions on ISS
 - 576907 - making same display changes for system sync (tlestach@redhat.com)
 - Move systemlogs directory out of /var/satellite (joshua.roys@gtri.gatech.edu)
 - 580227 - displaying dates in the same format (tlestach@redhat.com)
-
