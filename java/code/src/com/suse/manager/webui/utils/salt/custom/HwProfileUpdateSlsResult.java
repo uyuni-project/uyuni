@@ -51,16 +51,20 @@ public class HwProfileUpdateSlsResult {
     private StateApplyResult<Ret<Map<String, Optional<String>>>> networkModules;
 
     @SerializedName("module_|-smbios-records-bios_|-smbios.records_|-run")
-    private StateApplyResult<Ret<List<Smbios.Record>>> smbiosRecordsBios;
+    private Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecordsBios =
+            Optional.empty();
 
     @SerializedName("module_|-smbios-records-system_|-smbios.records_|-run")
-    private StateApplyResult<Ret<List<Smbios.Record>>> smbiosRecordsSystem;
+    private Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecordsSystem =
+            Optional.empty();
 
     @SerializedName("module_|-smbios-records-baseboard_|-smbios.records_|-run")
-    private StateApplyResult<Ret<List<Smbios.Record>>> smbiosRecordsBaseboard;
+    private Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecordsBaseboard =
+            Optional.empty();
 
     @SerializedName("module_|-smbios-records-chassis_|-smbios.records_|-run")
-    private StateApplyResult<Ret<List<Smbios.Record>>> smbiosRecordsChassis;
+    private Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecordsChassis =
+            Optional.empty();
 
     /**
      * @return the grains
@@ -107,32 +111,48 @@ public class HwProfileUpdateSlsResult {
     /**
      * @return smbios records of type: BIOS
      */
-    public Map<String, Object> getSmbiosRecordsBios() {
-        List<Record> records = smbiosRecordsBios.getChanges().getRet();
-        return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
+    public Optional<Map<String, Object>> getSmbiosRecordsBios() {
+        if (smbiosRecordsBios.isPresent()) {
+            List<Record> records = smbiosRecordsBios.get().getChanges().getRet();
+            return Optional.of(records.isEmpty() ? Collections.emptyMap() :
+                    records.get(0).getData());
+        }
+        return Optional.empty();
     }
 
     /**
      * @return smbios records of type: System
      */
-    public Map<String, Object> getSmbiosRecordsSystem() {
-        List<Record> records = smbiosRecordsSystem.getChanges().getRet();
-        return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
+    public Optional<Map<String, Object>> getSmbiosRecordsSystem() {
+        if (smbiosRecordsSystem.isPresent()) {
+            List<Record> records = smbiosRecordsSystem.get().getChanges().getRet();
+            return Optional.of(records.isEmpty() ? Collections.emptyMap() :
+                    records.get(0).getData());
+        }
+        return Optional.empty();
     }
 
     /**
      * @return smbios records of type: Baseboard
      */
-    public Map<String, Object> getSmbiosRecordsBaseboard() {
-        List<Record> records = smbiosRecordsBaseboard.getChanges().getRet();
-        return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
+    public Optional<Map<String, Object>> getSmbiosRecordsBaseboard() {
+        if (smbiosRecordsBaseboard.isPresent()) {
+            List<Record> records = smbiosRecordsBaseboard.get().getChanges().getRet();
+            return Optional.of(records.isEmpty() ? Collections.emptyMap() :
+                    records.get(0).getData());
+        }
+        return Optional.empty();
     }
 
     /**
      * @return smbios records of type: Chassis
      */
-    public Map<String, Object> getSmbiosRecordsChassis() {
-        List<Record> records = smbiosRecordsChassis.getChanges().getRet();
-        return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
+    public Optional<Map<String, Object>> getSmbiosRecordsChassis() {
+        if (smbiosRecordsChassis.isPresent()) {
+            List<Record> records = smbiosRecordsChassis.get().getChanges().getRet();
+            return Optional.of(records.isEmpty() ? Collections.emptyMap() :
+                    records.get(0).getData());
+        }
+        return Optional.empty();
     }
 }

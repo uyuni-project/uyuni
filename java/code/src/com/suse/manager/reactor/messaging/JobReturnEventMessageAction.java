@@ -448,10 +448,10 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()));
         if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
             hwMapper.mapDmiInfo(
-                    new ValueMap(result.getSmbiosRecordsBios()),
-                    new ValueMap(result.getSmbiosRecordsSystem()),
-                    new ValueMap(result.getSmbiosRecordsBaseboard()),
-                    new ValueMap(result.getSmbiosRecordsChassis()));
+                    result.getSmbiosRecordsBios().orElse(Collections.emptyMap()),
+                    result.getSmbiosRecordsSystem().orElse(Collections.emptyMap()),
+                    result.getSmbiosRecordsBaseboard().orElse(Collections.emptyMap()),
+                    result.getSmbiosRecordsChassis().orElse(Collections.emptyMap()));
         }
         hwMapper.mapDevices(result.getUdevdb());
         hwMapper.mapNetworkInfo(

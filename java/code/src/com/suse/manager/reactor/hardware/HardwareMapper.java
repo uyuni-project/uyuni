@@ -162,17 +162,23 @@ public class HardwareMapper {
     /**
      * Store DMI info as queried from Salt.
      *
-     * @param bios smbios records of type "BIOS"
-     * @param system smbios records of type "System"
-     * @param baseboard smbios records of type "Baseboard"
-     * @param chassis smbios records of type "Chassis"
+     * @param smbiosRecordsBios smbios records of type "BIOS"
+     * @param smbiosRecordsSystem smbios records of type "System"
+     * @param smbiosRecordsBaseboard smbios records of type "Baseboard"
+     * @param smbiosRecordsChassis smbios records of type "Chassis"
      */
-    public void mapDmiInfo(ValueMap bios, ValueMap system, ValueMap baseboard,
-            ValueMap chassis) {
+    public void mapDmiInfo(Map<String, Object> smbiosRecordsBios,
+            Map<String, Object> smbiosRecordsSystem,
+            Map<String, Object> smbiosRecordsBaseboard,
+            Map<String, Object> smbiosRecordsChassis) {
         String biosVendor = null, biosVersion = null, biosReleseDate = null,
                 productName = null, systemVersion = null, systemSerial = null,
                 chassisSerial = null, chassisTag = null, boardSerial = null;
 
+        ValueMap bios = new ValueMap(smbiosRecordsBios);
+        ValueMap system = new ValueMap(smbiosRecordsSystem);
+        ValueMap baseboard = new ValueMap(smbiosRecordsChassis);
+        ValueMap chassis = new ValueMap(smbiosRecordsChassis);
         try {
             biosVendor = bios.getOptionalAsString("vendor").orElse(null);
             biosVersion = bios.getOptionalAsString("version").orElse(null);
