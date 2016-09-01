@@ -38,5 +38,9 @@ smbios-records-chassis:
     - name: smbios.records
     - rec_type: 3
     - clean: False
+{% elif grains['cpuarch'] in ['s390', 's390x'] %}
+mainframe-sysinfo:
+  module.run:
+    - name: mainframesysinfo.read_values
 {% endif %}
 
