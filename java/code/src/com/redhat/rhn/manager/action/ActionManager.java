@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageDelta;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
@@ -102,6 +103,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.Optional;
+import java.util.Collections;
 
 /**
  * ActionManager - the singleton class used to provide Business Operations
@@ -137,7 +139,17 @@ public class ActionManager extends BaseManager {
         CANCEL_FAILED_MINION_DOWN
     }
 
+    private static SaltService saltService = SaltService.INSTANCE;
+
     private ActionManager() {
+    }
+
+    /**
+     * Set the {@link SaltService} intance to use. Only needed for unit tests.
+     * @param saltServiceIn the {@link SaltService}
+     */
+    public static void setSaltService(SaltService saltServiceIn) {
+        saltService = saltServiceIn;
     }
 
     /**
@@ -329,15 +341,39 @@ public class ActionManager extends BaseManager {
         }
 
         KickstartFactory.failKickstartSessions(actionsToDelete, servers);
-
+        Map<MinionServer, ServerAction> minionServerActions = new HashMap<>();
         Map<Server, CancelServerActionStatus> result = new HashMap<>();
         for (Action actionToDelete : actionsToDelete) {
-            List<ServerAction> serverActions = new LinkedList<>(actionToDelete.getServerActions());
+            List<ServerAction> serverActions = new LinkedList<>(
+                    actionToDelete.getServerActions());
             for (ServerAction serverAction : serverActions) {
-                CancelServerActionStatus status =
-                        ActionManager.cancelServerAction(serverAction);
-                result.put(serverAction.getServer(), status);
+                if (serverAction.getServer().asMinionServer().isPresent()) {
+                    minionServerActions.put(serverAction.getServer().asMinionServer().get(),
+                            serverAction);
+                }
+                else {
+                    actionToDelete.getServerActions().remove(serverAction);
+                    ActionFactory.delete(serverAction);
+                    result.put(serverAction.getServer(), CancelServerActionStatus.CANCELED);
+                }
             }
+        }
+        if (!minionServerActions.isEmpty()) {
+            Map<ServerAction, CancelServerActionStatus> cancelMinionJobsResult =
+                    cancelMinionServerActions(action, minionServerActions);
+            cancelMinionJobsResult.entrySet().stream()
+                    .filter(entry -> !CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN
+                            .equals(entry.getValue()))
+                    .map(entry -> entry.getKey())
+                    .forEach(serverAction -> {
+                        serverAction.getParentAction()
+                                .getServerActions().remove(serverAction);
+                        ActionFactory.delete(serverAction);
+                    });
+            cancelMinionJobsResult.entrySet().stream()
+                    .forEach(entry -> {
+                        result.put(entry.getKey().getServer(), entry.getValue());
+                    });
         }
 
         Iterator iter = actionsToDelete.iterator();
@@ -345,6 +381,59 @@ public class ActionManager extends BaseManager {
             Action a = (Action)iter.next();
             a.onCancelAction(cancelParams);
         }
+        return result;
+    }
+
+    private static Map<ServerAction, CancelServerActionStatus> cancelMinionServerActions(
+            Action action, Map<MinionServer, ServerAction> minionServerActions) {
+        List<String> minionIds = minionServerActions.keySet()
+                .stream()
+                .map(minion -> minion.getMinionId())
+                .collect(Collectors.toList());
+
+        Map<String, Result<Schedule.Result>> stringResultMap = saltService
+                .deleteSchedule(
+                "scheduled-action-" + action.getId(),
+                new MinionList(minionIds)
+        );
+
+        // minions that are down are not returned in the result
+        List<String> minionsDownIds = new ArrayList<>(minionIds);
+        minionsDownIds.removeAll(stringResultMap.keySet());
+
+        Map<ServerAction, CancelServerActionStatus> result = new HashMap<>();
+        minionsDownIds.forEach(minionId -> {
+            Optional<ServerAction> minionServerAction = minionServerActions.entrySet()
+                    .stream()
+                    .filter(me -> me.getKey().getMinionId().equals(minionId))
+                    .map(e -> e.getValue())
+                    .findFirst();
+            minionServerAction.ifPresent(sa -> result.put(sa,
+                    CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN));
+        });
+
+        stringResultMap.entrySet().forEach(resultEntry -> {
+            String minionID = resultEntry.getKey();
+            Optional<Schedule.Result> cancelResultOpt = resultEntry.getValue().result();
+
+            Optional<ServerAction> minionServerActionOpt = minionServerActions.entrySet()
+                    .stream()
+                    .filter(me -> me.getKey().getMinionId().equals(minionID))
+                    .map(e -> e.getValue())
+                    .findFirst();
+            minionServerActionOpt.ifPresent(minionServerAction -> {
+                cancelResultOpt.ifPresent(cancelResult -> {
+                    if (cancelResult.getResult()) {
+                        result.put(minionServerAction, CancelServerActionStatus.CANCELED);
+                    }
+                    else if (!cancelResult.getResult() &&
+                            cancelResult.getComment().matches("Job .+ does not exist\\.")) {
+                        result.put(minionServerAction,
+                                CancelServerActionStatus.CANCELED_NO_MINION_JOB);
+                    }
+                });
+            });
+        });
         return result;
     }
 
@@ -361,68 +450,20 @@ public class ActionManager extends BaseManager {
             long actionId, long serverId) {
         Action action = ActionFactory.lookupById(actionId);
 
-        // get the correspoding server action
-        Optional<ServerAction> serverAction = action.getServerActions()
+        // get the server action that corresponds to the serverId
+        return action.getServerActions()
                 .stream()
                 .filter(sa -> sa.getServer().getId() == serverId)
-                .findFirst();
-        return serverAction.map(sa -> cancelServerAction(sa));
-    }
-
-    /**
-     * Cancels the server actions associated with a given action, and if
-     * required deals with associated pending kickstart actions and minion
-     * jobs.
-     *
-     * @param serverAction the server action to cancel
-     * @return the status of the server action cancelling
-     */
-    public static CancelServerActionStatus cancelServerAction(ServerAction serverAction) {
-
-        Server server = serverAction.getServer();
-        Action action = serverAction.getParentAction();
-
-        CancelServerActionStatus cancelingStatus =
-                server.asMinionServer().isPresent() ?
-                        // we got a minion
-                        server.asMinionServer().map(minionServer -> {
-                            // try to cancel the minon job
-                            Map<String, Result<Schedule.Result>> stringResultMap =
-                                    SaltService.INSTANCE.deleteSchedule(
-                                            "scheduled-action-" + action.getId(),
-                                            new MinionList(minionServer.getMinionId())
-                                    );
-                            if (!stringResultMap.isEmpty()) {
-                                // response is not empty -> minion is up
-                                Optional<Schedule.Result> result1 =
-                                        Optional.ofNullable(stringResultMap
-                                            .get(minionServer.getMinionId()))
-                                            .flatMap(r -> r.result());
-                                if (result1.isPresent() && result1.get().getResult()) {
-                                    // canceled job succesfully ->
-                                    //   ok to delete the server action
-                                    return CancelServerActionStatus.CANCELED;
-                                }
-                                else if (result1.isPresent() && result1.get()
-                                        .getComment().matches("Job .+ does not exist\\.")) {
-                                    // ok to delete the server action from db
-                                    // because it doesn't exist on the minion
-                                    return CancelServerActionStatus.CANCELED_NO_MINION_JOB;
-                                }
-                            }
-                            // if empty response -> minion is down
-                            return CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN;
-                        }).get() :
-                        // we got a traditional client -> simply delete from db
-                        CancelServerActionStatus.CANCELED;
-
-
-        // delete server action from db
-        if (!CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN.equals(cancelingStatus)) {
-            action.getServerActions().remove(serverAction);
-            ActionFactory.delete(serverAction);
-        }
-        return cancelingStatus;
+                .findFirst()
+                .flatMap(serverAction ->
+                    serverAction.getServer().asMinionServer().flatMap(minionServer ->
+                        cancelMinionServerActions(action,
+                                Collections.singletonMap(minionServer, serverAction))
+                            .values()
+                            .stream()
+                            .findFirst()
+                    )
+                );
     }
 
     /**
