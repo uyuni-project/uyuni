@@ -17,7 +17,7 @@ network-modules:
   module.run:
     - name: sumautil.get_net_modules
 
-{% if grains['cpuarch'] == 'x86_64' %}
+{% if grains['cpuarch'] in ['i386', 'i486', 'i586', 'i686', 'x86_64'] %}
 smbios-records-bios:
   module.run:
     - name: smbios.records
