@@ -200,7 +200,10 @@ class FormulaSelection extends React.Component {
     onGroupItemClick(e) {
         e.preventDefault();
 
-        const group = this.state.groups[(e.target.href == undefined ? e.target.parentElement.parentElement.id : e.target.id).slice(6)];
+        var group = e.target;
+        while (!group.id.startsWith("group_"))
+            group = group.parentElement;
+        group = this.state.groups[group.id.slice(6)];
         const state = this.getGroupItemState(group);
         switch (state) {
             case 0:
