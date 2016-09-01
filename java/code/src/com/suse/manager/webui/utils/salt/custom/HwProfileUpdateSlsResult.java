@@ -66,6 +66,9 @@ public class HwProfileUpdateSlsResult {
     private Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecordsChassis =
             Optional.empty();
 
+    @SerializedName("module_|-mainframe-sysinfo_|-mainframesysinfo.read_values_|-run")
+    private Optional<StateApplyResult<Ret<String>>> mainframeSysinfo = Optional.empty();
+
     /**
      * @return the grains
      */
@@ -154,5 +157,15 @@ public class HwProfileUpdateSlsResult {
                     records.get(0).getData());
         }
         return Optional.empty();
+    }
+
+    /**
+     * @return mainframe sysinfo or empty string if not present
+     */
+    public String getMainframeSysinfo() {
+        if (mainframeSysinfo.isPresent()) {
+            return mainframeSysinfo.get().getChanges().getRet();
+        }
+        return "";
     }
 }

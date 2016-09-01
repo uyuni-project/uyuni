@@ -460,6 +460,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     result.getSmbiosRecordsChassis().orElse(Collections.emptyMap()));
         }
         hwMapper.mapDevices(result.getUdevdb());
+        if (CpuArchUtil.isS390(hwMapper.getCpuArch())) {
+            hwMapper.mapSysinfo(result.getMainframeSysinfo());
+        }
         hwMapper.mapVirtualizationInfo(result.getSmbiosRecordsSystem());
         hwMapper.mapNetworkInfo(
                 result.getNetworkInterfaces(),
