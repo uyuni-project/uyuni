@@ -24,6 +24,9 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetAddress6;
 import com.redhat.rhn.domain.server.ServerNetworkFactory;
+import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.server.VirtualInstanceFactory;
+import com.redhat.rhn.domain.server.VirtualInstanceType;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltGrains;
@@ -33,6 +36,7 @@ import com.suse.salt.netapi.calls.modules.Network;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -366,6 +370,109 @@ public class HardwareMapper {
                 server.getDevices().add(device);
             }
         });
+    }
+
+    /**
+     * Map virtualization information to the database.
+     *
+     * @param smbiosRecordsSystem optional DMI information about the system
+     */
+    public void mapVirtualizationInfo(Optional<Map<String, Object>> smbiosRecordsSystem) {
+        String virtType = grains.getValueAsString("virtual");
+        String virtSubtype = grains.getValueAsString("virtual_subtype");
+        String virtUuid = grains.getValueAsString("uuid");
+
+        if (virtType == null) {
+            errors.add("Virtualization: Grain 'virtual' has no value");
+        }
+
+        VirtualInstanceType type = null;
+
+        if (StringUtils.isNotBlank(virtType) && !"physical".equals(virtType)) {
+            if (StringUtils.isNotBlank(virtUuid)) {
+
+                virtUuid = StringUtils.remove(virtUuid, '-');
+
+                String virtTypeLabel = null;
+                switch (virtType) {
+                    case "xen":
+                        if ("Xen PV DomU".equals(virtSubtype)) {
+                            virtTypeLabel = "para_virtualized";
+                        }
+                        else {
+                            virtTypeLabel = "fully_virtualized";
+                        }
+                        break;
+                    case "qemu":
+                    case "kvm":
+                        virtTypeLabel = "qemu";
+                        break;
+                    case "VMware":
+                        virtTypeLabel = "vmware";
+                        break;
+                    case "HyperV":
+                        virtTypeLabel = "hyperv";
+                        break;
+                    case "VirtualBox":
+                        virtTypeLabel = "virtualbox";
+                        break;
+                    default:
+                        LOG.warn(String.
+                                format("Unsupported virtual instance " +
+                                        "type '%s' for minion '%s'",
+                                virtType, server.getMinionId()));
+                        // TODO what to do with other virt types ?
+                }
+                type = VirtualInstanceFactory.getInstance()
+                        .getVirtualInstanceType(virtTypeLabel);
+
+                if (type == null) { // fallback
+                    type = VirtualInstanceFactory.getInstance().getParaVirtType();
+                    LOG.warn(String.format(
+                            "Can't find virtual instance type for string '%s'. " +
+                            "Defaulting to '%s' for minion '%s'",
+                            virtType, type.getLabel(), server.getMinionId()));
+                }
+
+            }
+        }
+        else if (smbiosRecordsSystem.isPresent()) {
+            // there's no DMI on S390 and PPC64
+            ValueMap dmiSystem = new ValueMap(smbiosRecordsSystem
+                    .orElse(Collections.emptyMap()));
+            String manufacturer = dmiSystem.getValueAsString("manufacturer");
+            String productName = dmiSystem.getValueAsString("product_name");
+            if ("HITACHI".equalsIgnoreCase(manufacturer) &&
+                    productName.endsWith(" HVM LPAR")) {
+                if (StringUtils.isEmpty(virtUuid)) {
+                    virtUuid = "flex-guest";
+                }
+                type = VirtualInstanceFactory.getInstance()
+                        .getVirtualInstanceType("virtage");
+            }
+        }
+
+        if (type != null) {
+            VirtualInstance virtualInstance = server.getVirtualInstance();
+            if (virtualInstance == null) {
+                virtualInstance = new VirtualInstance();
+                virtualInstance.setUuid(virtUuid);
+                virtualInstance.setConfirmed(1L);
+                virtualInstance.setHostSystem(null);
+                virtualInstance.setName(null);
+                virtualInstance.setType(type);
+                virtualInstance.setState(VirtualInstanceFactory
+                        .getInstance().getUnknownState());
+                // add the virtualInstance to the server.
+                // do it at the end to avoid hibernate flushing
+                // an incomplete virtualInstance
+                virtualInstance.setGuestSystem(server);
+
+            }
+            else if (virtualInstance.getConfirmed() != 1L) {
+                virtualInstance.setConfirmed(1L);
+            }
+        }
     }
 
     /**
