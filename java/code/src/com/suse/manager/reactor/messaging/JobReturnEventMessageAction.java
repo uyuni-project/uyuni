@@ -444,8 +444,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         Instant start = Instant.now();
 
         HardwareMapper hwMapper = new HardwareMapper(server,
-                new ValueMap(result.getGrains().getChanges().getRet()));
-        hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo().getChanges().getRet()));
+                new ValueMap(result.getGrains()));
+        hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()));
         if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
             hwMapper.mapDmiInfo(
                     new ValueMap(result.getSmbiosRecordsBios()),
@@ -453,11 +453,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     new ValueMap(result.getSmbiosRecordsBaseboard()),
                     new ValueMap(result.getSmbiosRecordsChassis()));
         }
-        hwMapper.mapDevices(result.getUdevdb().getChanges().getRet());
+        hwMapper.mapDevices(result.getUdevdb());
         hwMapper.mapNetworkInfo(
-                result.getNetworkInterfaces().getChanges().getRet(),
-                Optional.of(result.getNetworkIPs().getChanges().getRet()),
-                result.getNetworkModules().getChanges().getRet());
+                result.getNetworkInterfaces(),
+                Optional.of(result.getNetworkIPs()),
+                result.getNetworkModules());
 
         if (LOG.isDebugEnabled()) {
             long duration = Duration.between(start, Instant.now()).getSeconds();
