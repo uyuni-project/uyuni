@@ -44,8 +44,10 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -61,27 +63,34 @@ import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.salt.netapi.calls.modules.Schedule;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.utils.Xor;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.jmock.Expectations;
+import org.jmock.lib.legacy.ClassImposteriser;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /** JUnit test case for the User
  *  class.
  */
-public class ActionManagerTest extends RhnBaseTestCase {
+public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = Logger.getLogger(ActionManagerTest.class);
+
+    public void setUp() throws Exception {
+        super.setUp();
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }
 
     public void testGetSystemGroups() throws Exception {
         User user1 = UserTestUtils.findNewUser("testUser",
@@ -180,6 +189,26 @@ public class ActionManagerTest extends RhnBaseTestCase {
         return parent;
     }
 
+    private Action createActionWithMinionServerActions(User user, int numServerActions)
+            throws Exception {
+        Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Channel baseChannel = ChannelFactoryTest.createTestChannel(user);
+        baseChannel.setParentChannel(null);
+        for (int i = 0; i < numServerActions; i++) {
+            MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+            server.addChannel(baseChannel);
+            TestUtils.saveAndFlush(server);
+
+            ServerAction child = ServerActionTest.createServerAction(server, parent);
+            child.setStatus(ActionFactory.STATUS_QUEUED);
+            TestUtils.saveAndFlush(child);
+
+            parent.addServerAction(child);
+        }
+        ActionFactory.save(parent);
+        return parent;
+    }
+
     private List createActionList(User user, Action [] actions) {
         List returnList = new LinkedList();
 
@@ -232,6 +261,41 @@ public class ActionManagerTest extends RhnBaseTestCase {
         assertActionsForUser(user, 1);
         ActionManager.cancelActions(user, actionList);
         assertServerActionCount(parent, 0);
+        assertActionsForUser(user, 1); // shouldn't have been deleted
+    }
+
+    public void testSimpleCancelMinionActions() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        UserFactory.save(user);
+
+        Action parent = createActionWithMinionServerActions(user, 3);
+        List actionList = createActionList(user, new Action [] {parent});
+
+        SaltService saltServiceMock = mock(SaltService.class);
+        ActionManager.setSaltService(saltServiceMock);
+
+
+        ServerAction[] sa = parent.getServerActions().toArray(new ServerAction[3]);
+        Map<String, Result<Schedule.Result>> result = new HashMap<>();
+        result.put(sa[0].getServer().asMinionServer().get().getMinionId(),
+                new Result<>(Xor.right(new Schedule.Result(null, true))));
+        result.put(sa[1].getServer().asMinionServer().get().getMinionId(),
+                new Result<>(Xor.right(new Schedule.Result("Job 123 does not exist.", false))));
+        context().checking(new Expectations() { {
+            // minion 2 is down -> did not return anything
+            allowing(saltServiceMock).deleteSchedule(with(equal("scheduled-action-" + parent.getId())), with(any(MinionList.class)));
+            will(returnValue(result));
+        } });
+
+        assertServerActionCount(parent, 3);
+        assertActionsForUser(user, 1);
+        Map<Action, Map<Server, ActionManager.CancelServerActionStatus>> cancelResult = ActionManager.cancelActions(user, actionList);
+        assertEquals(cancelResult.get(sa[0].getParentAction()).get(sa[0].getServer()), ActionManager.CancelServerActionStatus.CANCELED);
+        assertEquals(cancelResult.get(sa[1].getParentAction()).get(sa[1].getServer()), ActionManager.CancelServerActionStatus.CANCELED_NO_MINION_JOB);
+        assertEquals(cancelResult.get(sa[2].getParentAction()).get(sa[2].getServer()), ActionManager.CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN);
+        assertServerActionCount(parent, 1);
         assertActionsForUser(user, 1); // shouldn't have been deleted
     }
 
@@ -336,7 +400,7 @@ public class ActionManagerTest extends RhnBaseTestCase {
         KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server,
                 ksData, user, parentAction);
         TestUtils.saveAndFlush(ksSession);
-        ksSession = (KickstartSession)reload(ksSession);
+        ksSession = (KickstartSession)RhnBaseTestCase.reload(ksSession);
 
         List actionList = createActionList(user, new Action [] {parentAction});
 
@@ -705,6 +769,12 @@ public class ActionManagerTest extends RhnBaseTestCase {
         assertEquals(2, dr.size());
     }
 
+    public static void assertNotEmpty(Collection coll) {
+        assertNotNull(coll);
+        if (coll.size() == 0) {
+            fail(null);
+        }
+    }
 
     public void aTestSchedulePackageDelta() throws Exception {
         User user = UserFactory.lookupById(new Long(3567268));
