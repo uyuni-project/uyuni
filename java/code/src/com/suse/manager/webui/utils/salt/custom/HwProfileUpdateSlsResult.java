@@ -16,11 +16,13 @@ package com.suse.manager.webui.utils.salt.custom;
 
 import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Smbios;
+import com.suse.salt.netapi.calls.modules.Smbios.Record;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -106,28 +108,32 @@ public class HwProfileUpdateSlsResult {
     /**
      * @return smbios records of type: BIOS
      */
-    public StateApplyResult<Ret<List<Smbios.Record>>> getSmbiosRecordsBios() {
-        return smbiosRecordsBios;
+    public Map<String, Object> getSmbiosRecordsBios() {
+        List<Record> records = smbiosRecordsBios.getChanges().getRet();
+        return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
     }
 
     /**
      * @return smbios records of type: System
      */
-    public StateApplyResult<Ret<List<Smbios.Record>>> getSmbiosRecordsSystem() {
-        return smbiosRecordsSystem;
+    public Map<String, Object> getSmbiosRecordsSystem() {
+        List<Record> records = smbiosRecordsSystem.getChanges().getRet();
+        return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
     }
 
     /**
      * @return smbios records of type: Baseboard
      */
-    public StateApplyResult<Ret<List<Smbios.Record>>> getSmbiosRecordsBaseboard() {
-        return smbiosRecordsBaseboard;
+    public Map<String, Object> getSmbiosRecordsBaseboard() {
+        List<Record> records = smbiosRecordsBaseboard.getChanges().getRet();
+        return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
     }
 
     /**
      * @return smbios records of type: Chassis
      */
-    public StateApplyResult<Ret<List<Smbios.Record>>> getSmbiosRecordsChassis() {
-        return smbiosRecordsChassis;
+    public Map<String, Object> getSmbiosRecordsChassis() {
+        List<Record> records = smbiosRecordsChassis.getChanges().getRet();
+        return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
     }
 }
