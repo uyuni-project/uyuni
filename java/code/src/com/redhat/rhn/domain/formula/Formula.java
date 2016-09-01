@@ -16,18 +16,49 @@ package com.redhat.rhn.domain.formula;
 
 import java.util.Map;
 
+/**
+ * A class representing a formula with its metadata.
+ */
 public class Formula {
 
-    public String name;
-    public String description;
-    public String group;
+    private String name;
+    private String description;
+    private String group;
 
-    public Formula(String name) {
-        this.name = name;
+    /**
+     * @param formulaName the name of the new formula
+     */
+    public Formula(String formulaName) {
+        name = formulaName;
     }
 
+    /**
+     * Set the metadata from a map.
+     * @param metadata a map with metadata values.
+     */
     public void setMetadata(Map<String, Object> metadata) {
         description = (String) metadata.getOrDefault("description", "");
         group = (String) metadata.getOrDefault("group", "");
+    }
+
+    /**
+     * @return the formula's name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @return the formula's description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @return the formula's group
+     */
+    public String getGroup() {
+        return group;
     }
 }
