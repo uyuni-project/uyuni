@@ -438,6 +438,12 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         ErrataManager.insertErrataCacheTask(server);
     }
 
+    /**
+     * Update the hardware profile for a minion in the database from incoming event data.
+     *
+     * @param server the minion server
+     * @param result the result of the call as parsed from event data
+     */
     private static void handleHardwareProfileUpdate(MinionServer server,
             HwProfileUpdateSlsResult result) {
         LOG.info("Handling hardware profile update: " + server.getMinionId());
