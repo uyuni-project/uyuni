@@ -340,7 +340,9 @@ public class MinionController {
                 return errorResponse(response, Arrays.asList("Invalid target type!"));
         }
         map.put("formula_name", formulaName);
-        map.put("layout", FormulaFactory.getFormulaLayoutByName(formulaName).orElseGet(Collections::emptyMap));
+        map.put("layout", FormulaFactory
+                .getFormulaLayoutByName(formulaName)
+                .orElseGet(Collections::emptyMap));
         return GSON.toJson(map);
     }
 
@@ -364,7 +366,8 @@ public class MinionController {
         try {
             switch (type) {
                 case SERVER:
-                    if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(id))) {
+                    if (!checkUserHasPermissionsOnServer(user,
+                            ServerFactory.lookupById(id))) {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveServerFormulaData(formData, id, formulaName);
@@ -462,7 +465,8 @@ public class MinionController {
         try {
             switch (type) {
                 case SERVER:
-                    if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(id))) {
+                    if (!checkUserHasPermissionsOnServer(user,
+                            ServerFactory.lookupById(id))) {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveServerFormulas(id, selectedFormulas);

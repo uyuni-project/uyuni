@@ -12,17 +12,16 @@ const basicInputTypes = ["text", "email", "url", "date", "time"];
 
 //props:
 //dataUrl = url to get the server data
-//notFoundText = text to display if no formula is found
-//addFormulaNavBar = function(formula_list, activeId) to add the formula nav bar
+//addFormulaNavBar = function(formulaList, activeFormulaId) to add the formula nav bar
 //formulaId = the id of the formula to be shown
-//getFormulaUrl = function(formulaId) that returns the url to a formula page
+//getFormulaUrl = function(formulaId) that returns the url to a formula page by id (used for prev/next buttons)
 //saveFormula = function(component) that gets called when the save button is pressed
 //currentScope = current active scope (system or group)
 class FormulaForm extends React.Component {
     constructor(props) {
         super(props);
 
-        ["init", "saveFormula", "generateForm", "generateFormItem", "generateChildrenFormItems",
+        ["init", "saveFormula", "generateForm", "generateFormItem", "generateChildrenFormItems", "checkVisibleCondition",
         "getValueById", "handleChange", "handleGeneratePassword", "handleTogglePasswordVisibility"]
         .forEach(method => this[method] = this[method].bind(this));
 
@@ -95,9 +94,9 @@ class FormulaForm extends React.Component {
     handleChange(event) {
         var values = this.state.formulaValues;
         if (event.target.type == "checkbox")
-            assignValueWithId(values, event.target.id, event.target.checked);
+            assignValueById(values, event.target.id, event.target.checked);
         else
-            assignValueWithId(values, event.target.id, event.target.value);
+            assignValueById(values, event.target.id, event.target.value);
         this.setState({
             formulaValues: values
         });
@@ -148,20 +147,26 @@ class FormulaForm extends React.Component {
         return value;
     }
 
+    checkVisibleCondition(condition) {
+        condition = condition.replace(/\s+/g, '');
+        if (condition.includes("!=")) {
+            condition = condition.split("!=");
+            if (String(this.getValueById(condition[0])) != condition[1])
+                return true;
+        }
+        else if (condition.includes("==")) {
+            condition = condition.split("==");
+            if (String(this.getValueById(condition[0])) == condition[1])
+                return true;
+        }
+        return false;
+    }
+
     generateFormItem(element, value, parents) {
         var id = (parents == "" ? "" : parents + "$") + element.$id;
         var isDisabled = (this.props.currentScope != element.$scope && element.$scope != "system");
-        if ("$visibleIf" in element) {
-            var condition = element.$visibleIf.replace(/\s+/g, '');
-            if (condition.includes("!=") {
-                condition = condition.split("!=");
-                if (String(this.getValueById(condition[0])) == condition[1])
-                    return null;
-            else if (condition.includes("==") {
-                condition = condition.split("==");
-                if (String(this.getValueById(condition[0])) != condition[1])
-                    return null;
-        }
+        if ("$visibleIf" in element && !this.checkVisibleCondition(element.$visibleIf))
+                return null;
 
         if (basicInputTypes.indexOf(element.$type) >= 0) //Element is a basic html input type
             return wrapGroupWithLabel(element.$name,
@@ -173,7 +178,7 @@ class FormulaForm extends React.Component {
             return wrapGroupWithLabel(element.$name,
                 <div className="col-lg-6">
                     <div className="input-group">
-                        <input type={element.$type} name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder || ""} title={element.$help} disabled={isDisabled} value={value} />
+                        <input type="password" name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder || ""} title={element.$help} disabled={isDisabled} value={value} />
                         <span className="input-group-btn">
                             <button className="btn btn-default" title="Generate new password" onClick={this.handleGeneratePassword}>
                                 <i className="fa fa-key no-margin" />
@@ -282,7 +287,7 @@ class FormulaForm extends React.Component {
                             <h4>Error while loading form!</h4>
                         </div>
                         <div className="panel-body">
-                            The requested form could not get loaded! The corresponding formula either doesn't exist or has no valid layout file.
+                            The requested form could not get loaded! The corresponding formula either doesn not exist or has no valid layout file.
                         </div>
                     </div>
                 </div>
@@ -396,6 +401,7 @@ function wrapLabel(text, label_for) {
     );
 }
 
+// Replace all "_" and "-" with spaces and capitalize the first letter of each word
 function toTitle(str) {
     return str.replace(new RegExp("_|-", 'g'), " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
@@ -409,7 +415,7 @@ function generatePassword() {
     return retVal;
 }
 
-function assignValueWithId(dir, id, value) {
+function assignValueById(dir, id, value) {
     var parents = id.split("$");
 
     for (var i in parents.slice(0, -1)) {

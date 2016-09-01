@@ -57,10 +57,9 @@ import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 public class FormulaFactory {
 
     private static final String DATA_DIR = "/srv/susemanager/formula_data/";
-    private static final String STATES_DIR = "/usr/share/susemanager/formulas/states/";
     private static final String METADATA_DIR_OFFICIAL =
             "/usr/share/susemanager/formulas/metadata/";
-    private static final String METADATA_DIR_CUSTOM = "/srv/formula_data/";
+    private static final String METADATA_DIR_CUSTOM = "/srv/formula_metadata/";
     private static final String PILLAR_DIR = DATA_DIR + "pillar/";
     private static final String GROUP_PILLAR_DIR = DATA_DIR + "group_pillar/";
     private static final String GROUP_DATA_FILE = DATA_DIR + "group_formulas.json";
@@ -75,8 +74,8 @@ public class FormulaFactory {
     private FormulaFactory() { }
 
     /**
-     * Returns a list of all currently installed formulas.
-     * @return a list of all currently installed formulas.
+     * Returns the list of the names of all currently installed formulas.
+     * @return the names of all currently installed formulas.
      */
     public static List<String> listFormulaNames() {
         File officialDir = new File(METADATA_DIR_OFFICIAL);
@@ -93,11 +92,15 @@ public class FormulaFactory {
         return FormulaFactory.orderFormulas(formulasList);
     }
 
+    /**
+     * Returns all currently installed formulas.
+     * @return a list of all currently installed formulas.
+     */
     public static List<Formula> listFormulas() {
         List<Formula> formulas = new LinkedList<>();
-        for (String formula_name : listFormulaNames()) {
-            Formula formula = new Formula(formula_name);
-            formula.setMetadata(getMetadata(formula_name));
+        for (String formulaName : listFormulaNames()) {
+            Formula formula = new Formula(formulaName);
+            formula.setMetadata(getMetadata(formulaName));
             formulas.add(formula);
         }
         return formulas;
