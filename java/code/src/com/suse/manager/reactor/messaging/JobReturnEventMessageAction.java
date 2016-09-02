@@ -277,7 +277,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             }
             serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
                 handleHardwareProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
-                        HwProfileUpdateSlsResult.class));
+                        HwProfileUpdateSlsResult.class), serverAction);
             });
         }
         else {
@@ -445,7 +445,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @param result the result of the call as parsed from event data
      */
     private static void handleHardwareProfileUpdate(MinionServer server,
-            HwProfileUpdateSlsResult result) {
+            HwProfileUpdateSlsResult result, ServerAction serverAction) {
         Instant start = Instant.now();
 
         HardwareMapper hwMapper = new HardwareMapper(server,
@@ -467,6 +467,14 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 result.getNetworkInterfaces(),
                 Optional.of(result.getNetworkIPs()),
                 result.getNetworkModules());
+
+        // Let the action fail in case there is error messages
+        if (!hwMapper.getErrors().isEmpty()) {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setResultMsg("Hardware list could not be refreshed completely:\n" +
+                    hwMapper.getErrors().stream().collect(Collectors.joining("\n")));
+            serverAction.setResultCode(-1L);
+        }
 
         if (LOG.isDebugEnabled()) {
             long duration = Duration.between(start, Instant.now()).getSeconds();
