@@ -26,6 +26,7 @@ public class Formula {
     private String group;
 
     /**
+     * Default constructor
      * @param formulaName the name of the new formula
      */
     public Formula(String formulaName) {

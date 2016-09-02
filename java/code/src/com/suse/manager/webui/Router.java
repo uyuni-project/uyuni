@@ -202,7 +202,7 @@ public class Router implements SparkApplication {
         get("/manager/api/formulas/form/:targetType/:id/:formula_id",
                 withUser(MinionController::formulaData));
         post("/manager/api/formulas/select",
-                withUser(MinionController::selectFormulas));
+                withUser(MinionController::saveSelectedFormulas));
         post("/manager/api/formulas/save",
                 withUser(MinionController::saveFormula));
     }
