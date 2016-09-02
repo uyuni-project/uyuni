@@ -190,27 +190,19 @@ public class HardwareMapper {
         ValueMap system = new ValueMap(smbiosRecordsSystem);
         ValueMap baseboard = new ValueMap(smbiosRecordsChassis);
         ValueMap chassis = new ValueMap(smbiosRecordsChassis);
-        try {
-            biosVendor = bios.getOptionalAsString("vendor").orElse(null);
-            biosVersion = bios.getOptionalAsString("version").orElse(null);
-            biosReleseDate = bios.getOptionalAsString("release_date").orElse(null);
 
-            productName = system.getOptionalAsString("product_name").orElse(null);
-            systemVersion = system.getOptionalAsString("version").orElse(null);
-            systemSerial = system.getOptionalAsString("serial_number").orElse(null);
+        biosVendor = bios.getOptionalAsString("vendor").orElse(null);
+        biosVersion = bios.getOptionalAsString("version").orElse(null);
+        biosReleseDate = bios.getOptionalAsString("release_date").orElse(null);
 
-            boardSerial = baseboard.getOptionalAsString("serial_number").orElse(null);
+        productName = system.getOptionalAsString("product_name").orElse(null);
+        systemVersion = system.getOptionalAsString("version").orElse(null);
+        systemSerial = system.getOptionalAsString("serial_number").orElse(null);
 
-            chassisSerial = chassis.getOptionalAsString("serial_number").orElse(null);
-            chassisTag = chassis.getOptionalAsString("asset_tag").orElse(null);
-        }
-        catch (com.google.gson.JsonSyntaxException e) {
-            LOG.warn("Could not retrieve DMI info from minion '" + server.getMinionId() +
-                    "': " + e.getMessage());
-            // In order to behave like the "old style" registration
-            // go on and persist an empty Dmi bean.
-            errors.add("DMI: Could not retrieve DMI records: " + e.getMessage());
-        }
+        boardSerial = baseboard.getOptionalAsString("serial_number").orElse(null);
+
+        chassisSerial = chassis.getOptionalAsString("serial_number").orElse(null);
+        chassisTag = chassis.getOptionalAsString("asset_tag").orElse(null);
 
         Dmi dmi = server.getDmi();
         if (dmi == null) {
