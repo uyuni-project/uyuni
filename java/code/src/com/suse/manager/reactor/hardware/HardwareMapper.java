@@ -97,8 +97,7 @@ public class HardwareMapper {
         final CPU cpu = Optional.ofNullable(server.getCpu()).orElseGet(CPU::new);
 
         // os.uname[4]
-        String cpuarch = grains.getValueAsString(SaltGrains.CPUARCH.getValue())
-                .toLowerCase();
+        String cpuarch = getCpuArch();
 
         if (StringUtils.isBlank(cpuarch)) {
             errors.add("CPU: Grain 'cpuarch' has no value");
@@ -131,7 +130,6 @@ public class HardwareMapper {
                         .collect(Collectors.joining(" ")))
                     .orElse(null)));
             cpu.setVersion(truncateVersion(cpuinfo, "model"));
-
         }
         else if (CpuArchUtil.isPPC64(cpuarch)) {
             cpu.setModel(truncateModel(cpuinfo.getValueAsString("cpu")));
