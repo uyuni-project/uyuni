@@ -9,8 +9,6 @@ const Buttons = require("../components/buttons")
 const Button = Buttons.Button;
 const AsyncButton = Buttons.AsyncButton;
 
-const toTitle = require("../components/FormulaForm").toTitle;
-
 class FormulaSelection extends React.Component {
     constructor(props) {
         super(props);
@@ -22,6 +20,8 @@ class FormulaSelection extends React.Component {
         this.state = {
             formulas: {},
             groups: {groupless: []},
+            activeFormulas: [],
+            acviteSelectedFormulas: [],
             showDescription: false,
             messages: []
         };
@@ -41,7 +41,8 @@ class FormulaSelection extends React.Component {
                 formulaDict[e.name] = e;
             });
             this.setState({
-                activeFormulas: data.selected,
+                activeFormulas: get(data.active, data.selected),
+                activeSelectedFormulas: data.selected,
                 formulas: formulaDict,
                 groups: groupDict
             });
@@ -51,7 +52,7 @@ class FormulaSelection extends React.Component {
     applyRequest() {
         var unsavedChanges = false;
         for (var name in this.state.formulas) {
-            if ((this.state.activeFormulas.indexOf(name) >= 0) != this.state.formulas[name].selected) {
+            if ((this.state.activeSelectedFormulas.indexOf(name) >= 0) != this.state.formulas[name].selected) {
                 unsavedChanges = true;
                 break;
             }
@@ -83,9 +84,9 @@ class FormulaSelection extends React.Component {
     }
 
     resetChanges() {
-        const activeFormulas = this.state.activeFormulas;
+        var selectedFormulas = this.state.activeSelectedFormulas;
         jQuery.each(this.state.formulas, function(name, formula) {
-            formula.selected = (activeFormulas.indexOf(name) >= 0);
+            formula.selected = selectedFormulas.indexOf(name) >= 0;
         });
         this.forceUpdate();
     }
@@ -140,12 +141,12 @@ class FormulaSelection extends React.Component {
 
         if (groups.groupless.length > 0) {
             list.push(
-                <a href="#" onClick={(e) => e.preventDefault()} key={"groupless"} className="list-group-item disabled">
+                <span key={"groupless"} className="list-group-item disabled">
                     <strong>
                         <i className="fa fa-lg fa-square-o" />
                         {t(" No group")}
                     </strong>
-                </a>
+                </span>
             );
             groups.groupless.forEach(function (formula) {
                 list.push(
@@ -280,6 +281,17 @@ class FormulaSelection extends React.Component {
             </div>
         );
     }
+}
+
+function get(value, def) {
+    if (value == undefined)
+        return def;
+    return value;
+}
+
+// Replace all "_" and "-" with spaces and capitalize the first letter of each word
+function toTitle(str) {
+    return str.replace(new RegExp("_|-", 'g'), " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
 module.exports = {

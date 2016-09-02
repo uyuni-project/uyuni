@@ -25,7 +25,7 @@ function saveFormula(component, values) {
         });
     },
     (xhr) => {
-    	try {
+        try {
             component.setState({
                 errors: [JSON.parse(xhr.responseText)]
             })

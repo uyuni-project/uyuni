@@ -15,10 +15,12 @@
 package com.suse.manager.webui.controllers;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,6 +31,10 @@ import org.apache.http.HttpStatus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -60,6 +66,18 @@ public class MinionController {
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
+            .registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {
+                @Override
+                public JsonElement serialize(Double src, Type type,
+                            JsonSerializationContext context) {
+                        if (src % 1 == 0) {
+                            return new JsonPrimitive(src.intValue());
+                        }
+                        else {
+                            return new JsonPrimitive(src);
+                        }
+                    }
+                })
             .serializeNulls()
             .create();
 
@@ -296,7 +314,7 @@ public class MinionController {
                 if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(id))) {
                     return deniedResponse(response);
                 }
-                formulas = FormulaFactory.getFormulasByServerId(id);
+                formulas = new LinkedList<>(FormulaFactory.getCombinedFormulasByServerId(id));
                 break;
             case GROUP:
                 if (!checkUserHasPermissionsOnServerGroup(user,
@@ -429,7 +447,8 @@ public class MinionController {
                 if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(id))) {
                     return deniedResponse(response);
                 }
-                data.put("selected", FormulaFactory.getFormulasByServerId(id));
+                data.put("selected",FormulaFactory.getFormulasByServerId(id));
+                data.put("active", FormulaFactory.getCombinedFormulasByServerId(id));
                 break;
             case GROUP:
                 if (!checkUserHasPermissionsOnServerGroup(user,
@@ -452,7 +471,7 @@ public class MinionController {
      * @param user the current user
      * @return null if successful, else list of error messages
      */
-    public static String selectFormulas(Request request, Response response,
+    public static String saveSelectedFormulas(Request request, Response response,
             User user) {
         // Get data from request
         Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
@@ -482,7 +501,7 @@ public class MinionController {
                     return errorResponse(response, Arrays.asList("Invalid target type!"));
             }
         }
-        catch (IOException e) {
+        catch (IOException | NotSupportedException e) {
             return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " + e.getMessage()));
         }

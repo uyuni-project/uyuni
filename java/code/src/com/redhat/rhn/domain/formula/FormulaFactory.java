@@ -22,18 +22,16 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-
 import javax.transaction.NotSupportedException;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -43,6 +41,10 @@ import org.yaml.snakeyaml.error.YAMLException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -67,6 +69,18 @@ public class FormulaFactory {
     private static final String PILLAR_FILE_EXTENSION = "json";
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
+            .registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {
+                @Override
+                public JsonElement serialize(Double src, Type type,
+                            JsonSerializationContext context) {
+                        if (src % 1 == 0) {
+                            return new JsonPrimitive(src.intValue());
+                        }
+                        else {
+                            return new JsonPrimitive(src);
+                        }
+                    }
+                })
             .serializeNulls()
             .create();
     private static final Yaml YAML = new Yaml(new SafeConstructor());
@@ -83,9 +97,8 @@ public class FormulaFactory {
         File[] files = ArrayUtils.addAll(officialDir.listFiles(), customDir.listFiles());
         List<String> formulasList = new LinkedList<>();
 
-        // TODO: Check if directory is a real formula (contains form.yml and init.sls)?
         for (File f : files) {
-            if (f.isDirectory()) {
+            if (f.isDirectory() && new File(f, "form.yml").isFile()) {
                 formulasList.add(f.getName());
             }
         }
@@ -182,7 +195,40 @@ public class FormulaFactory {
      * @return the list of formulas
      */
     public static List<String> getFormulasByServerId(Long serverId) {
-        Set<String> formulas = new HashSet<>();
+        List<String> formulas = new LinkedList<>();
+        File serverDataFile = new File(SERVER_DATA_FILE);
+        try {
+            Map<String, List<String>> serverFormulas = GSON.fromJson(
+                    new BufferedReader(new FileReader(serverDataFile)), Map.class);
+            formulas.addAll(serverFormulas.getOrDefault(getMinionId(serverId),
+                    Collections.emptyList()));
+        }
+        catch (FileNotFoundException | NotSupportedException e) {
+        }
+        return orderFormulas(formulas);
+    }
+
+    /**
+     * Returns a combination of all formulas applied to a server and
+     * all formulas inherited from its groups.
+     * @param serverId the id of the server
+     * @return the combined list of formulas
+     */
+    public static List<String> getCombinedFormulasByServerId(Long serverId) {
+        List<String> formulas = getFormulasByServerId(serverId);
+        List<String> groupFormulas = getGroupFormulasByServerId(serverId);
+        formulas.removeAll(groupFormulas); // Remove duplicates
+        formulas.addAll(groupFormulas);
+        return formulas;
+    }
+
+    /**
+     * Returns the formulas that a given server inherits from its groups.
+     * @param serverId the id of the server
+     * @return the list of formulas
+     */
+    public static List<String> getGroupFormulasByServerId(Long serverId) {
+        List<String> formulas = new LinkedList<>();
         File groupDataFile = new File(GROUP_DATA_FILE);
         try {
             Map<String, List<String>> groupFormulas = GSON.fromJson(
@@ -195,17 +241,7 @@ public class FormulaFactory {
         }
         catch (FileNotFoundException e) {
         }
-
-        File serverDataFile = new File(SERVER_DATA_FILE);
-        try {
-            Map<String, List<String>> serverFormulas = GSON.fromJson(
-                    new BufferedReader(new FileReader(serverDataFile)), Map.class);
-            formulas.addAll(serverFormulas.getOrDefault(serverId.toString(),
-                    Collections.emptyList()));
-        }
-        catch (FileNotFoundException e) {
-        }
-        return orderFormulas(new LinkedList<>(formulas));
+        return orderFormulas(formulas);
     }
 
     /**
@@ -224,7 +260,7 @@ public class FormulaFactory {
             }
             else if (layoutFileCustom.exists()) {
                 return Optional.of((Map<String, Object>) YAML.load(
-                        new FileInputStream(layoutFileOfficial)));
+                        new FileInputStream(layoutFileCustom)));
             }
             else {
                 return Optional.empty();
@@ -354,8 +390,9 @@ public class FormulaFactory {
      * @throws IOException if an IOException occurs while saving the data
      */
     public static synchronized void saveServerFormulas(Long serverId,
-            List<String> selectedFormulas) throws IOException {
+            List<String> selectedFormulas) throws IOException, NotSupportedException {
         File dataFile = new File(SERVER_DATA_FILE);
+        String minionId = getMinionId(serverId);
 
         Map<String, List<String>> serverFormulas;
         if (!dataFile.exists()) {
@@ -371,7 +408,7 @@ public class FormulaFactory {
 
         // Remove formula data for unselected formulas
         List<String> deletedFormulas =
-                new LinkedList<>(serverFormulas.getOrDefault(serverId.toString(),
+                new LinkedList<>(serverFormulas.getOrDefault(minionId,
                         new LinkedList<>()));
         deletedFormulas.removeAll(selectedFormulas);
         for (String deletedFormula : deletedFormulas) {
@@ -379,7 +416,7 @@ public class FormulaFactory {
         }
 
         // Save selected Formulas
-        serverFormulas.put(serverId.toString(), orderFormulas(selectedFormulas));
+        serverFormulas.put(minionId, orderFormulas(selectedFormulas));
 
         // Write server_formulas file
         BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile));
