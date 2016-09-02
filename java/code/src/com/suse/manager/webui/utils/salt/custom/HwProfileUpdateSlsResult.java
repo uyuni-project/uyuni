@@ -115,48 +115,40 @@ public class HwProfileUpdateSlsResult {
      * @return smbios records of type: BIOS
      */
     public Optional<Map<String, Object>> getSmbiosRecordsBios() {
-        if (smbiosRecordsBios.isPresent()) {
-            List<Record> records = smbiosRecordsBios.get().getChanges().getRet();
-            return Optional.of(records.isEmpty() ? Collections.emptyMap() :
-                    records.get(0).getData());
-        }
-        return Optional.empty();
+        return smbiosRecordsBios.map(result -> {
+            List<Record> records = result.getChanges().getRet();
+            return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
+        });
     }
 
     /**
      * @return smbios records of type: System
      */
     public Optional<Map<String, Object>> getSmbiosRecordsSystem() {
-        if (smbiosRecordsSystem.isPresent()) {
-            List<Record> records = smbiosRecordsSystem.get().getChanges().getRet();
-            return Optional.of(records.isEmpty() ? Collections.emptyMap() :
-                    records.get(0).getData());
-        }
-        return Optional.empty();
+        return smbiosRecordsSystem.map(result -> {
+            List<Record> records = result.getChanges().getRet();
+            return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
+        });
     }
 
     /**
      * @return smbios records of type: Baseboard
      */
     public Optional<Map<String, Object>> getSmbiosRecordsBaseboard() {
-        if (smbiosRecordsBaseboard.isPresent()) {
-            List<Record> records = smbiosRecordsBaseboard.get().getChanges().getRet();
-            return Optional.of(records.isEmpty() ? Collections.emptyMap() :
-                    records.get(0).getData());
-        }
-        return Optional.empty();
+        return smbiosRecordsBaseboard.map(result -> {
+            List<Record> records = result.getChanges().getRet();
+            return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
+        });
     }
 
     /**
      * @return smbios records of type: Chassis
      */
     public Optional<Map<String, Object>> getSmbiosRecordsChassis() {
-        if (smbiosRecordsChassis.isPresent()) {
-            List<Record> records = smbiosRecordsChassis.get().getChanges().getRet();
-            return Optional.of(records.isEmpty() ? Collections.emptyMap() :
-                    records.get(0).getData());
-        }
-        return Optional.empty();
+        return smbiosRecordsChassis.map(result -> {
+            List<Record> records = result.getChanges().getRet();
+            return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
+        });
     }
 
     /**
