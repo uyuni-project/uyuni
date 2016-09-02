@@ -9,6 +9,7 @@ const Button = Buttons.Button;
 const AsyncButton = Buttons.AsyncButton;
 
 const basicInputTypes = ["text", "email", "url", "date", "time"];
+var formulaFormInstance;
 
 //props:
 //dataUrl = url to get the server data
@@ -20,21 +21,33 @@ const basicInputTypes = ["text", "email", "url", "date", "time"];
 class FormulaForm extends React.Component {
     constructor(props) {
         super(props);
+        formulaFormInstance = this;
 
         ["init", "saveFormula", "generateForm", "generateFormItem", "generateChildrenFormItems", "checkVisibleCondition",
         "getValueById", "handleChange", "handleGeneratePassword", "handleTogglePasswordVisibility"]
         .forEach(method => this[method] = this[method].bind(this));
 
         this.state = {
-            formulaFound: false,
             formulaName: "",
             formulaList: [],
             formulaLayout: {},
             formulaValues: {},
-            values: {},
+            formulaChanged: false,
             messages: [],
             errors: []
         };
+
+        window.addEventListener("beforeunload", function (e) {
+            var confirmationMessage = 'You have unsaved changes. '
+                + 'If you leave before saving, your changes will be lost.';
+
+            if (!formulaFormInstance.state.formulaChanged)
+                return null;
+
+            get(e, window.event).returnValue = confirmationMessage; //Gecko + IE
+            return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+        });
+
         this.init();
     }
 
@@ -43,22 +56,21 @@ class FormulaForm extends React.Component {
             console.log(data);
             if (data == null)
                 this.setState({
-                    formulaFound: false,
                     formulaName: "",
                     formulaList: [],
                     formulaLayout: {},
                     formulaValues: {},
-                    values: {}
+                    formulaChanged: false
                 });
             else {
                 var layout = preprocessLayout(data.layout);
-                var values = generateValues(layout, data.group_data, data.system_data || {}, this.props.currentScope);
+                var values = generateValues(layout, data.group_data, get(data.system_data, {}), this.props.currentScope);
                 this.setState({
-                    formulaFound: true,
                     formulaName: data.formula_name,
                     formulaList: data.formula_list,
                     formulaLayout: layout,
-                    formulaValues: values
+                    formulaValues: values,
+                    formulaChanged: false
                 });
             }
         });
@@ -68,12 +80,10 @@ class FormulaForm extends React.Component {
         event.preventDefault(); // prevent default form redirect
         console.log(JSON.stringify(this.extractValues()));
         this.props.saveFormula(this);
+        this.state.formulaChanged = false;
         window.scrollTo(0, 0);
     }
     
-    // don't extract values that:
-    // - are out of scope
-    // - are on default
     extractValues(values=this.state.formulaValues, layout=this.state.formulaLayout) {
         var result = {};
         for (var key in values) {
@@ -84,7 +94,7 @@ class FormulaForm extends React.Component {
                 if (!jQuery.isEmptyObject(value))
                     result[key] = value;
             }
-            else if ((element.$scope == this.props.currentScope || element.$scope == "system") && value != element.$default) {
+            else if (element.$scope == this.props.currentScope || element.$scope == "system") {
                 result[key] = value;
             }
         }
@@ -98,8 +108,28 @@ class FormulaForm extends React.Component {
         else
             assignValueById(values, event.target.id, event.target.value);
         this.setState({
-            formulaValues: values
+            formulaValues: values,
+            formulaChanged: true
         });
+    }
+
+    clearValues() {
+        if (confirm("Are you sure you want to clear all values?")) {
+            if (formulaFormInstance.props.currentScope == "system") {
+                Network.get(formulaFormInstance.props.dataUrl).promise.then(data => {
+                    formulaFormInstance.setState({
+                        formulaValues: generateValues(formulaFormInstance.state.formulaLayout, get((data == null ? undefined : data.group_data), {}), {}, formulaFormInstance.props.currentScope),
+                        formulaChanged: true
+                    });
+                });
+            }
+            else {
+                formulaFormInstance.setState({
+                    formulaValues: generateValues(formulaFormInstance.state.formulaLayout, get(group_data, {}), {}, formulaFormInstance.props.currentScope),
+                    formulaChanged: true
+                });
+            }
+        }
     }
 
     handleGeneratePassword(event) {
@@ -171,14 +201,14 @@ class FormulaForm extends React.Component {
         if (basicInputTypes.indexOf(element.$type) >= 0) //Element is a basic html input type
             return wrapGroupWithLabel(element.$name,
                 <div className="col-lg-6">
-                    <input type={element.$type} name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder || ""} title={element.$help} disabled={isDisabled} value={value} />
+                    <input type={element.$type} name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
                 </div>
             );
         else if (element.$type == "password")
             return wrapGroupWithLabel(element.$name,
                 <div className="col-lg-6">
                     <div className="input-group">
-                        <input type="password" name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder || ""} title={element.$help} disabled={isDisabled} value={value} />
+                        <input type="password" name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
                         <span className="input-group-btn">
                             <button className="btn btn-default" title="Generate new password" onClick={this.handleGeneratePassword}>
                                 <i className="fa fa-key no-margin" />
@@ -193,13 +223,13 @@ class FormulaForm extends React.Component {
         else if (element.$type == "datetime")
             return wrapGroupWithLabel(element.$name,
                 <div className="col-lg-6">
-                    <input type="datetime-local" name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder || ""} title={element.$help} disabled={isDisabled} value={value} />
+                    <input type="datetime-local" name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
                 </div>
             );
         else if (element.$type == "number")
             return wrapGroupWithLabel(element.$name,
                 <div className="col-lg-6">
-                    <input type="number" steps="1" name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder || ""} title={element.$help} disabled={isDisabled} value={value} />
+                    <input type="number" steps="1" name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
                 </div>
             );
         else if (element.$type == "group") {
@@ -245,7 +275,7 @@ class FormulaForm extends React.Component {
                 </div>
             );
         else
-            return wrapGroupWithLabel(element.$name || "Element not found",
+            return wrapGroupWithLabel(get(element.$name, "Element not found"),
                 <div className="col-lg-6" id={id}>
                     { JSON.stringify(value) }
                 </div>
@@ -277,8 +307,8 @@ class FormulaForm extends React.Component {
             })}/>;
         }
 
-        if (!this.state.formulaFound || this.state.formulaLayout == undefined || this.state.formulaLayout == null) {
-            this.props.addFormulaNavBar(this.state.formulaList || ["Not found"], formulaId);
+        if (this.state.formulaLayout == undefined || this.state.formulaLayout == null || jQuery.isEmptyObject(this.state.formulaLayout)) {
+            this.props.addFormulaNavBar(get(this.state.formulaList, ["Not found"]), formulaId);
             return (
                 <div>
                     {errors}{messages}
@@ -301,15 +331,20 @@ class FormulaForm extends React.Component {
                     <form id="editFormulaForm" className="form-horizontal" onSubmit={this.saveFormula}>
                         <div className="panel panel-default">
                             <div className="panel-heading">
-                                <h4>{toTitle(this.state.formulaName || "Formula not found")}</h4>
+                                <h4>{toTitle(get(this.state.formulaName, "Formula not found"))}</h4>
                             </div>
                             <div className="panel-body">
                                 {this.generateForm()}
                                 <div className="row">
                                     <div className="col-lg-6 col-lg-offset-3">
-                                        <Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className="btn btn-success" handler={function(e){$('<input type="submit">').hide().appendTo($("#editFormulaForm")).click().remove();}} />
-                                        <a id="next-btn" href={this.props.getFormulaUrl(this.props.formulaId + 1)} disabled={this.state.formulaList.length - 1 <= this.props.formulaId} className="btn btn-default pull-right">Next <i className="fa fa-arrow-right" /></a>
-                                        <a id="prev-btn" href={this.props.getFormulaUrl(this.props.formulaId - 1)} disabled={this.props.formulaId == 0} className="btn btn-default pull-right"><i className="fa fa-arrow-left" /> Prev</a>
+                                        <div className="btn-group">
+                                            <Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className={"btn btn-success"} handler={function(e){$('<input type="submit">').hide().appendTo($("#editFormulaForm")).click().remove();}} />
+                                            <Button id="reset-btn" icon="fa-eraser" text="Clear values" className="btn btn-default" handler={this.clearValues} />
+                                        </div>
+                                        <div className="btn-group pull-right">
+                                            <a id="prev-btn" href={this.props.getFormulaUrl(this.props.formulaId - 1)} disabled={this.props.formulaId == 0} className="btn btn-default"><i className="fa fa-arrow-left" /> Prev</a>
+                                            <a id="next-btn" href={this.props.getFormulaUrl(this.props.formulaId + 1)} disabled={this.state.formulaList.length - 1 <= this.props.formulaId} className="btn btn-default">Next <i className="fa fa-arrow-right" /></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -338,24 +373,25 @@ function preprocessLayout(layout, scope="system") {
 
         if (!("$type" in child)) {
             child.$type = "text"
-            child.$default = (child.$default || "");
+            child.$default = get(child.$default, "");
         }
         else if (child.$type == "boolean")
-            child.$default = (child.$default || false);
+            child.$default = get(child.$default, false);
         else if (child.$type == "select")
-            child.$default = (child.$default || child.$values[0]);
+            child.$default = get(child.$default, child.$values[0]);
         else if (child.$type == "password")
-            child.$default = (child.$default || generatePassword());
+            child.$default = get(child.$default, generatePassword());
         else if (child.$type == "group" || child.$type == "hidden-group")
             child = preprocessLayout(child, child.$scope);
         else if (child.$type == "edit-group")
             child.$element = preprocessLayout(child.$element, child.$scope);
         else
-            child.$default = (child.$default || "");
+            child.$default = get(child.$default, "");
 
         child.$id = child_name;
-        if (!child.$name) child.$name = toTitle(child_name);
-        if (!child.$help) child.$help = child.$name;
+        if (child.$name == undefined) child.$name = toTitle(child_name);
+        if (child.$help == undefined) child.$help = child.$name;
+        if (child.$placeholder == undefined) child.$placeholder = "";
     }
     return layout;
 }
@@ -370,18 +406,24 @@ function generateValues(layout, group_data, system_data) {
         var element = layout[key];
 
         if (element.$type == "group" || element.$type == "hidden-group")
-            value = generateValues(element, group_data[key] || {}, system_data[key] || {}, element.$scope);
+            value = generateValues(element, get(group_data[key], {}), get(system_data[key], {}), element.$scope);
         else if (element.$scope == "system")
-            value = (system_data[key] || group_data[key] || element.$default || null);
+            value = get(system_data[key], get(group_data[key], element.$default));
         else if (element.$scope == "group")
-            value = (group_data[key] || element.$default || null);
+            value = get(group_data[key], element.$default);
         else if (element.$scope == "readonly")
-            value = (element.$default || null);
+            value = element.$default;
 
         if (value != null)
             result[key] = value
     }
     return result;
+}
+
+function get(value, def) {
+    if (value == undefined)
+        return def;
+    return value;
 }
 
 function wrapGroupWithLabel(element_name, innerHTML) {
