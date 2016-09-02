@@ -446,7 +446,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      */
     private static void handleHardwareProfileUpdate(MinionServer server,
             HwProfileUpdateSlsResult result) {
-        LOG.info("Handling hardware profile update: " + server.getMinionId());
         Instant start = Instant.now();
 
         HardwareMapper hwMapper = new HardwareMapper(server,
