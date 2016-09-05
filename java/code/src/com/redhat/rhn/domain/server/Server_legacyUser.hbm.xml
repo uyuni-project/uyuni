@@ -322,7 +322,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                       pevr.evr > spevr.evr AND
                       p.package_arch_id = sp.package_arch_id AND
                       p.name_id = pn.id
-                 GROUP BY sc.server_id, pn.name) X;]]>
+                 GROUP BY sc.server_id, pn.name) X]]>
     </sql-query>
 
 
