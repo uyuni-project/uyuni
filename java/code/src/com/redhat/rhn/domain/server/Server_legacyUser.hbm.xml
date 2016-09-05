@@ -290,4 +290,40 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                        ce.channel_id = c.id
                                 ]]>
     </sql-query>
+
+    <sql-query name="Server.listNewestPkgsForServerErrata">
+        <return-scalar column="serverId" type="long"/>
+        <return-scalar column="packageName" type="string"/>
+        <return-scalar column="packageVersion" type="string"/>
+        <![CDATA[select X.server_id as serverId, X.name as packageName,
+            case when (X.evr).epoch is null
+                then (X.evr).version || '-' || (X.evr).release
+                else (X.evr).epoch || ':' || (X.evr).version || '-' || (X.evr).release
+            end  as packageVersion
+            FROM ( select distinct sc.server_id, pn.name, max(pevr.evr) evr
+                 FROM rhnErrata e,
+                      rhnServerChannel sc,
+                      rhnChannelErrata ce,
+                      rhnErrataPackage ep,
+                      rhnServerPackage sp,
+                      rhnPackage p,
+                      rhnPackageEVR pevr,
+                      rhnPackageEVR spevr,
+                      rhnPackageName pn
+                 WHERE e.id in (:errataIds) AND
+                      sc.server_id in (:serverIds) AND
+                      e.id = ce.errata_id AND
+                      sc.channel_id = ce.channel_id AND
+                      e.id = ep.errata_id AND
+                      ep.package_id = p.id AND
+                      p.name_id = sp.name_id AND
+                      p.evr_id = pevr.id AND
+                      sp.evr_id = spevr.id AND
+                      pevr.evr > spevr.evr AND
+                      p.package_arch_id = sp.package_arch_id AND
+                      p.name_id = pn.id
+                 GROUP BY sc.server_id, pn.name) X;]]>
+    </sql-query>
+
+
 </hibernate-mapping>

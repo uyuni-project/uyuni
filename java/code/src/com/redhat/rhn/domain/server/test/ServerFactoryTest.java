@@ -28,11 +28,20 @@ import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
+import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
+import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
+import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
+import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Network;
@@ -69,9 +78,13 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.salt.netapi.calls.LocalCall;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -940,6 +953,176 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertContains(tags, tag);
     }
 
+    public void testErrataAction() throws Exception {
+        PackageName p1Name = PackageNameTest.createTestPackageName("testPackage1-" + TestUtils.randomString());
+
+        PackageArch parch1 = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
+
+        Package zypper = new Package();
+        PackageTest.populateTestPackage(zypper, user.getOrg(),  PackageFactory.lookupOrCreatePackageByName("zypper"), PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1"), parch1);
+        TestUtils.saveAndFlush(zypper);
+
+        Package p1v1 = new Package();
+        PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name, PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1"), parch1);
+        TestUtils.saveAndFlush(p1v1);
+
+        Package p1v2 = new Package();
+        PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name, PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1"), parch1);
+        TestUtils.saveAndFlush(p1v2);
+
+        InstalledPackage p1v1InNZ = new InstalledPackage();
+        p1v1InNZ.setEvr(p1v1.getPackageEvr());
+        p1v1InNZ.setArch(p1v1.getPackageArch());
+        p1v1InNZ.setName(p1v1.getPackageName());
+
+        InstalledPackage p1v1InZ = new InstalledPackage();
+        p1v1InZ.setEvr(p1v1.getPackageEvr());
+        p1v1InZ.setArch(p1v1.getPackageArch());
+        p1v1InZ.setName(p1v1.getPackageName());
+
+        InstalledPackage zypperIn = new InstalledPackage();
+        zypperIn.setEvr(zypper.getPackageEvr());
+        zypperIn.setArch(zypper.getPackageArch());
+        zypperIn.setName(zypper.getPackageName());
+
+        Channel baseChan = ChannelFactoryTest.createBaseChannel(user);
+        final String updateTag = "SLE-SERVER";
+        baseChan.setUpdateTag(updateTag);
+
+        MinionServer nonZypperSystem = MinionServerFactoryTest.createTestMinionServer(user);
+        nonZypperSystem.addChannel(baseChan);
+        p1v1InNZ.setServer(nonZypperSystem);
+        nonZypperSystem.getPackages().add(p1v1InNZ);
+
+        MinionServer zypperSystem = MinionServerFactoryTest.createTestMinionServer(user);
+        zypperSystem.addChannel(baseChan);
+        p1v1InZ.setServer(zypperSystem);
+        zypperIn.setServer(zypperSystem);
+        zypperSystem.getPackages().add(p1v1InZ);
+        zypperSystem.getPackages().add(zypperIn);
+
+        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        baseChan.addErrata(e1);
+        e1.setAdvisoryName("SUSE-2016-1234");
+        e1.getPackages().add(p1v2);
+
+        ChannelFactory.save(baseChan);
+
+        TestUtils.saveAndFlush(e1);
+
+        List<MinionServer> minions = Arrays.asList(zypperSystem, nonZypperSystem);
+        Map<LocalCall<?>, List<MinionServer>> localCallListMap = SaltServerActionService.INSTANCE.errataAction(minions, Collections.singleton(e1.getId()));
+
+        assertEquals(2, localCallListMap.size());
+        localCallListMap.entrySet().forEach(result -> {
+            assertEquals(1, result.getValue().size());
+            final LocalCall<?> call = result.getKey();
+            assertEquals("state.apply", call.getPayload().get("fun"));
+            Map<String, Object> kwarg = (Map<String, Object>)call.getPayload().get("kwarg");
+            assertEquals(Collections.singletonList("packages.patchinstall"), kwarg.get("mods"));
+            MinionServer minionServer = result.getValue().get(0);
+            Map<String, Object> pillar = (Map<String, Object>)kwarg.get("pillar");
+            Map<String, String> param_pkgs = (Map<String, String>)pillar.get("param_pkgs");
+            assertEquals(1, param_pkgs.size());
+            if (minionServer == zypperSystem) {
+                assertEquals("", param_pkgs.get("patch:SUSE-" + updateTag + "-2016-1234"));
+            } else {
+                assertEquals(p1v2.getPackageEvr().toString(), param_pkgs.get(p1v2.getPackageName().getName()));
+            }
+        });
+    }
+
+    public void testlistNewestPkgsForServerErrata() throws Exception {
+        PackageName p1Name = PackageNameTest.createTestPackageName("testPackage1-" + TestUtils.randomString());
+        PackageName p2Name = PackageNameTest.createTestPackageName("testPackage2-" + TestUtils.randomString());
+
+        PackageArch parch1 = (PackageArch) TestUtils.lookupFromCacheById(100L, "PackageArch.findById");
+        PackageArch parch2 = (PackageArch) TestUtils.lookupFromCacheById(101L, "PackageArch.findById");
+
+        Package p1v1 = new Package();
+        PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name, PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1"), parch1);
+        TestUtils.saveAndFlush(p1v1);
+
+        Package p1v2 = new Package();
+        PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name, PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1"), parch1);
+        TestUtils.saveAndFlush(p1v2);
+
+        PackageEvr v3 = PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1");
+
+        Package p1v3 = new Package();
+        PackageTest.populateTestPackage(p1v3, user.getOrg(), p1Name, v3, parch1);
+        TestUtils.saveAndFlush(p1v3);
+
+        Package p1v4 = new Package();
+        PackageTest.populateTestPackage(p1v4, user.getOrg(), p1Name, PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1"), parch1);
+        TestUtils.saveAndFlush(p1v4);
+
+        Package p1v3arch2 = new Package();
+        PackageTest.populateTestPackage(p1v3arch2, user.getOrg(), p1Name, v3, parch2);
+        TestUtils.saveAndFlush(p1v3arch2);
+
+        Package p2v4 = new Package();
+        PackageTest.populateTestPackage(p2v4, user.getOrg(), p2Name, PackageEvrFactoryTest.createTestPackageEvr("1", "4.0.0", "1"), parch1);
+        TestUtils.saveAndFlush(p2v4);
+
+
+        InstalledPackage p1v1In = new InstalledPackage();
+        p1v1In.setEvr(p1v1.getPackageEvr());
+        p1v1In.setArch(p1v1.getPackageArch());
+        p1v1In.setName(p1v1.getPackageName());
+
+        Set<Long> serverIds = new HashSet<>();
+        Set<Long> errataIds = new HashSet<>();
+
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        serverIds.add(server.getId());
+        Channel baseChan = ChannelFactoryTest.createBaseChannel(user);
+        server.addChannel(baseChan);
+        p1v1In.setServer(server);
+        server.getPackages().add(p1v1In);
+
+        Channel childChan = ChannelFactoryTest.createTestChannel(user);
+        childChan.setParentChannel(baseChan);
+
+        Errata e1 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        errataIds.add(e1.getId());
+        baseChan.addErrata(e1);
+        e1.getPackages().add(p1v2);
+        e1.getPackages().add(p2v4);
+
+        Errata e2 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        errataIds.add(e2.getId());
+        baseChan.addErrata(e2);
+        e2.getPackages().add(p1v3);
+
+        Errata e3 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        errataIds.add(e3.getId());
+        baseChan.addErrata(e3);
+        e3.getPackages().add(p1v3arch2);
+
+        Errata e4 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        errataIds.add(e4.getId());
+        childChan.addErrata(e4);
+        e4.getPackages().add(p1v2);
+
+        Errata e5 = ErrataFactoryTest.createTestPublishedErrata(user.getId());
+        childChan.addErrata(e4);
+        e4.getPackages().add(p1v4);
+
+        ChannelFactory.save(baseChan);
+        ChannelFactory.save(childChan);
+
+        TestUtils.saveAndFlush(e1);
+        TestUtils.saveAndFlush(e2);
+        TestUtils.saveAndFlush(e3);
+        TestUtils.saveAndFlush(e4);
+        TestUtils.saveAndFlush(e5);
+
+        Map<Long, Map<String, String>> out = ServerFactory.listNewestPkgsForServerErrata(serverIds, errataIds);
+        Map<String, String> packages = out.get(server.getId());
+        assertEquals(1, packages.size());
+        assertEquals(p1v3.getPackageEvr().toString(), packages.get(p1v3.getPackageName().getName()));
+    }
 
     public void testListErrataNamesForServer() throws Exception {
         Set<Long> serverIds = new HashSet<Long>();
