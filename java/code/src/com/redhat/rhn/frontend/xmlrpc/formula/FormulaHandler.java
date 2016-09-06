@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -16,6 +16,8 @@ package com.redhat.rhn.frontend.xmlrpc.formula;
 
 import java.io.IOException;
 import java.util.List;
+
+import javax.transaction.NotSupportedException;
 
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -67,12 +69,12 @@ public class FormulaHandler extends BaseHandler {
     }
 
     /**
-     * List the formulas of a server.
+     * List the formulas applied directly to a server.
      * @param loggedInUser The current user
      * @param systemId The Id of the server
-     * @return the list of formulas the server group has.
+     * @return the list of formulas the server has.
      *
-     * @xmlrpc.doc Return the list of formulas a server has.
+     * @xmlrpc.doc Return the list of formulas directly applied to a server.
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "systemId")
@@ -83,6 +85,25 @@ public class FormulaHandler extends BaseHandler {
      */
     public List<String> getFormulasByServerId(User loggedInUser, Integer systemId) {
         return FormulaFactory.getFormulasByServerId(systemId.longValue());
+    }
+
+    /**
+     * List the formulas applied to a server and all of his groups.
+     * @param loggedInUser The current user
+     * @param systemId The Id of the server
+     * @return the list of formulas the server and his groups have.
+     *
+     * @xmlrpc.doc Return the list of formulas a server and all his groups have.
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "systemId")
+     * @xmlrpc.returntype
+     *      #array()
+     *          string
+     *      #array_end()
+     */
+    public List<String> getCombinedFormulasByServerId(User loggedInUser, Integer systemId) {
+        return FormulaFactory.getCombinedFormulasByServerId(systemId.longValue());
     }
 
     /**
@@ -104,6 +125,28 @@ public class FormulaHandler extends BaseHandler {
             List<String> formulas) throws IOException {
         FormulaFactory.saveGroupFormulas(systemGroupId.longValue(), formulas,
                 loggedInUser.getOrg());
+        return 1;
+    }
+
+    /**
+     * Set the formulas for a server
+     * @param loggedInUser The current user
+     * @param systemId The Id of the server
+     * @param formulas The formulas to apply to the server group.
+     * @return 1 on sucess, expcetion thrown otherwise
+     * @throws IOException if an IOException occurs during saving
+     * @throws NotSupportedException if the server is not a salt minion
+     *
+     * @xmlrpc.doc Set the formulas of a server.
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "systemId")
+     * @xmlrpc.param #array_single("string", "formulaName")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int setFormulasOfServer(User loggedInUser, Integer systemId,
+            List<String> formulas) throws IOException, NotSupportedException {
+        FormulaFactory.saveServerFormulas(systemId.longValue(), formulas);
         return 1;
     }
 }

@@ -447,7 +447,7 @@ public class MinionController {
                 if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(id))) {
                     return deniedResponse(response);
                 }
-                data.put("selected",FormulaFactory.getFormulasByServerId(id));
+                data.put("selected", FormulaFactory.getFormulasByServerId(id));
                 data.put("active", FormulaFactory.getCombinedFormulasByServerId(id));
                 break;
             case GROUP:
