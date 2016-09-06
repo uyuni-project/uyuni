@@ -23,8 +23,8 @@ class FormulaForm extends React.Component {
         super(props);
         formulaFormInstance = this;
 
-        ["init", "saveFormula", "generateForm", "generateFormItem", "generateChildrenFormItems", "checkVisibleCondition",
-        "getValueById", "handleChange", "handleGeneratePassword", "handleTogglePasswordVisibility"]
+        ["init", "saveFormula", "generateForm", "generateFormItem", "generateChildrenFormItems", "checkVisibleCondition", "clearValues",
+        "getValueById", "resetValue", "handleChange", "handleGeneratePassword", "handleTogglePasswordVisibility"]
         .forEach(method => this[method] = this[method].bind(this));
 
         this.state = {
@@ -53,7 +53,7 @@ class FormulaForm extends React.Component {
 
     init() {
         Network.get(this.props.dataUrl).promise.then(data => {
-            console.log(data);
+            console.log(JSON.stringify(data));
             if (data == null)
                 this.setState({
                     formulaName: "",
@@ -94,7 +94,7 @@ class FormulaForm extends React.Component {
                 if (!jQuery.isEmptyObject(value))
                     result[key] = value;
             }
-            else if (element.$scope == this.props.currentScope || element.$scope == "system") {
+            else if ((element.$scope == this.props.currentScope || element.$scope == "system") && !(value && value.length == 0)) {
                 result[key] = value;
             }
         }
@@ -105,6 +105,8 @@ class FormulaForm extends React.Component {
         var values = this.state.formulaValues;
         if (event.target.type == "checkbox")
             assignValueById(values, event.target.id, event.target.checked);
+        else if (event.target.type == "number")
+            assignValueById(values, event.target.id, (isNaN(event.target.valueAsNumber) ? "" : event.target.valueAsNumber));
         else
             assignValueById(values, event.target.id, event.target.value);
         this.setState({
@@ -125,7 +127,7 @@ class FormulaForm extends React.Component {
             }
             else {
                 formulaFormInstance.setState({
-                    formulaValues: generateValues(formulaFormInstance.state.formulaLayout, get(group_data, {}), {}, formulaFormInstance.props.currentScope),
+                    formulaValues: generateValues(formulaFormInstance.state.formulaLayout, {}, {}, formulaFormInstance.props.currentScope),
                     formulaChanged: true
                 });
             }
@@ -155,6 +157,11 @@ class FormulaForm extends React.Component {
         pwd_input.type = pwd_input.type == "password" ? "text" : "password";
         target.children("i.fa").toggleClass("fa-eye");
         target.children("i.fa").toggleClass("fa-eye-slash");
+    }
+    
+    resetValue(id, reset_value) {
+        assignValueById(this.state.formulaValues, id, reset_value);
+        this.forceUpdate();
     }
 
     generateForm() {
@@ -199,13 +206,13 @@ class FormulaForm extends React.Component {
                 return null;
 
         if (basicInputTypes.indexOf(element.$type) >= 0) //Element is a basic html input type
-            return wrapGroupWithLabel(element.$name,
+            return wrapFormGroupWithLabel(element.$name,
                 <div className="col-lg-6">
                     <input type={element.$type} name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
                 </div>
             );
         else if (element.$type == "password")
-            return wrapGroupWithLabel(element.$name,
+            return wrapFormGroupWithLabel(element.$name,
                 <div className="col-lg-6">
                     <div className="input-group">
                         <input type="password" name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
@@ -220,16 +227,29 @@ class FormulaForm extends React.Component {
                     </div>
                 </div>
             );
+        else if (element.$type == "color")
+            return wrapFormGroupWithLabel(element.$name,
+                <div className="col-lg-6">
+                    <div className="input-group small-color-picker">
+                        <input type="color" name={element.$name} id={id} className="form-control" onChange={this.handleChange} title={element.$help} disabled={isDisabled} value={value} />
+                        <span className="input-group-btn">
+                            <button className="btn btn-default" title="Reset" onClick={function (event) {event.preventDefault(); formulaFormInstance.resetValue(id, element.$default)}}>
+                                <i className="fa fa-undo no-margin" />
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            );
         else if (element.$type == "datetime")
-            return wrapGroupWithLabel(element.$name,
+            return wrapFormGroupWithLabel(element.$name,
                 <div className="col-lg-6">
                     <input type="datetime-local" name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
                 </div>
             );
         else if (element.$type == "number")
-            return wrapGroupWithLabel(element.$name,
+            return wrapFormGroupWithLabel(element.$name,
                 <div className="col-lg-6">
-                    <input type="number" steps="1" name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
+                    <input type="number" steps="1" max={get(element.$max, "")} min={get(element.$min, "")} name={element.$name} id={id} className="form-control" onChange={this.handleChange} placeholder={element.$placeholder} title={element.$help} disabled={isDisabled} value={value} />
                 </div>
             );
         else if (element.$type == "group") {
@@ -261,25 +281,27 @@ class FormulaForm extends React.Component {
             </div>
             );
         else if (element.$type == "select")
-            return wrapGroupWithLabel(element.$name,
+            return wrapFormGroupWithLabel(element.$name,
                 <div className="col-lg-6">
                     <select className="form-control" name={element.$name} id={id} onChange={this.handleChange} title={element.$help} disabled={isDisabled} value={value}>
                         {generateSelectList(element.$values)}
                     </select>
                 </div>
             );
-        else if (element.$type == "boolean")// HACK: style should be in css file
-            return wrapGroupWithLabel(element.$name,
+        else if (element.$type == "boolean")
+            return wrapFormGroupWithLabel(element.$name,
                 <div className="col-lg-6">
                     <input type="checkbox" className="big-checkbox" onChange={this.handleChange} name={element.$name} id={id} title={element.$help} disabled={isDisabled} checked={value} />
                 </div>
             );
-        else
-            return wrapGroupWithLabel(get(element.$name, "Element not found"),
+        else {
+            console.error("Unknown $type: " + element.$type);
+            return wrapFormGroupWithLabel(get(element.$name, "Element not found"),
                 <div className="col-lg-6" id={id}>
                     { JSON.stringify(value) }
                 </div>
             );
+        }
     }
 
     generateChildrenFormItems(element, value, id) {
@@ -426,7 +448,7 @@ function get(value, def) {
     return value;
 }
 
-function wrapGroupWithLabel(element_name, innerHTML) {
+function wrapFormGroupWithLabel(element_name, innerHTML) {
     return (
         <div className="form-group">
             { wrapLabel(element_name) }
