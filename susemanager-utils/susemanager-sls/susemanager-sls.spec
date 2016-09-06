@@ -16,7 +16,7 @@
 #
 
 Name:           susemanager-sls
-Version:        0.1.14
+Version:        0.1.15
 Release:        1
 License:        GPL-2.0
 Summary:        Static Salt state files for SUSE Manager
@@ -43,13 +43,14 @@ mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
 mkdir -p %{buildroot}/usr/share/susemanager/modules/tops
 mkdir -p %{buildroot}/usr/share/susemanager/pillar
 mkdir -p %{buildroot}/usr/share/susemanager/formulas
-mkdir -p %{buildroot}/srv/formula_data
+mkdir -p %{buildroot}/usr/share/susemanager/formulas/metadata
+mkdir -p %{buildroot}/srv/formula_metadata
 cp -R salt/* %{buildroot}/usr/share/susemanager/salt
 cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
 cp -R modules/tops/* %{buildroot}/usr/share/susemanager/modules/tops
 cp -R pillar/* %{buildroot}/usr/share/susemanager/pillar
-cp -R formulas/metadata %{buildroot}/usr/share/susemanager/formulas/metadata
-cp -R formulas/states %{buildroot}/usr/share/susemanager/formulas/states
+cp -R formulas/* %{buildroot}/usr/share/susemanager/formulas
+cp -R formula_metadata/* %{buildroot}/srv/formula_metadata
 
 # Manually install Python part to already prepared structure
 cp src/beacons/pkgset.py %{buildroot}/usr/share/susemanager/salt/_beacons
