@@ -70,9 +70,11 @@ def exportdb():
                 dev[query].append(data.strip())
         else:
             if dev:
+                add_scsi_info(dev)
                 devices.append(normalize(dev))
                 dev = {}
     if dev:
+        add_scsi_info(dev)
         normalize(dev)
         devices.append(normalize(dev))
 
@@ -91,3 +93,18 @@ def normalize(dev):
             dev[sect] = val[0]
 
     return dev
+
+
+def add_scsi_info(dev):
+    '''
+    Add SCSI info from sysfs
+    '''
+    if dev.get('E') and dev.get('E').get('SUBSYSTEM') == 'scsi' and dev.get('E').get('DEVTYPE') == 'scsi_device':
+        sysfs_path = dev['P']
+        scsi_type = __salt__['cmd.run_all']('cat /sys/{0}/type'.format(sysfs_path), output_loglevel='quiet')
+
+        if scsi_type['retcode'] != 0:
+            raise CommandExecutionError(scsi_type['stderr'])
+
+        dev['X'] = {}
+        dev['X']['SCSI_SYS_TYPE'] = scsi_type['stdout']

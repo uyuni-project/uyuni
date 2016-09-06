@@ -1,0 +1,2259 @@
+{
+    "tag": "salt/job/20160407084101455805/ret/minionsles12-suma3pg.vagrant.local",
+    "data": {
+        "fun_args": [
+            {
+                "mods": [
+                    "packages.profileupdate"
+                ]
+            }
+        ],
+        "jid": "20160407084101455805",
+        "return": {
+            "module_|-network-interfaces_|-network.interfaces_|-run": {
+                "comment": "Module function network.interfaces executed",
+                "name": "network.interfaces",
+                "start_time": "12:58:12.398566",
+                "result": true,
+                "duration": 14.501,
+                "__run_num__": 3,
+                "changes": {
+                    "ret":{
+                        "lo": {
+                            "hwaddr": "00:00:00:00:00:00",
+                            "up": true,
+                            "inet": [
+                                {
+                                    "broadcast": "127.255.255.255",
+                                    "netmask": "255.0.0.0",
+                                    "label": "lo",
+                                    "address": "127.0.0.1"
+                                }
+                            ],
+                            "inet6": [
+                                {
+                                    "prefixlen": "128",
+                                    "scope": "host",
+                                    "address": "::1"
+                                }
+                            ]
+                        },
+                        "eth0": {
+                            "hwaddr": "02:00:00:00:42:8e",
+                            "up": true,
+                            "inet": [
+                                {
+                                    "broadcast": null,
+                                    "netmask": "255.255.240.0",
+                                    "label": "eth0",
+                                    "address": "10.161.155.142"
+                                }
+                            ],
+                            "inet6": [
+                                {
+                                    "prefixlen": "64",
+                                    "scope": "link",
+                                    "address": "fe80::ff:fe00:428e"
+                                }
+                            ]
+                        }
+                    }
+
+                }
+            },
+            "module_|-network-modules_|-sumautil.get_net_modules_|-run": {
+                "comment": "Module function sumautil.get_net_modules executed",
+                "name": "sumautil.get_net_modules",
+                "start_time": "12:58:12.422343",
+                "result": true,
+                "duration": 0.653,
+                "__run_num__": 5,
+                "changes": {
+                    "ret": {
+                        "lo": null,
+                        "eth0": "qeth"
+                    }
+                }
+            },
+            "module_|-smbios-records-baseboard_|-smbios.records_|-run": {
+                "comment": "Module function smbios.records executed",
+                "name": "smbios.records",
+                "start_time": "12:58:12.435214",
+                "result": true,
+                "duration": 4.453,
+                "__run_num__": 8,
+                "changes": {
+                }
+            },
+            "module_|-smbios-records-chassis_|-smbios.records_|-run": {
+                "comment": "Module function smbios.records executed",
+                "name": "smbios.records",
+                "start_time": "12:58:12.439927",
+                "result": true,
+                "duration": 4.585,
+                "__run_num__": 9,
+                "changes": {
+                }
+            },
+            "module_|-cpuinfo_|-status.cpuinfo_|-run": {
+                "comment": "Module function status.cpuinfo executed",
+                "name": "status.cpuinfo",
+                "start_time": "12:58:12.371860",
+                "result": true,
+                "duration": 2.123,
+                "__run_num__": 1,
+                "changes": {
+                    "ret": {
+                        "features": "esan3 zarch stfle msa ldisp eimm dfp etf3eh highgprs",
+                        "vendor_id": "IBM/S390",
+                        "processor 0": "version = FF,  identification = 0A9A27,  machine = 2827",
+                        "# processors": "1",
+                        "cache5": "level=4 type=Unified scope=Shared size=393216K line_size=256 associativity=24",
+                        "cache4": "level=3 type=Unified scope=Shared size=49152K line_size=256 associativity=12",
+                        "bogomips per cpu": "2913.00",
+                        "cache0": "level=1 type=Data scope=Private size=96K line_size=256 associativity=6",
+                        "cache1": "level=1 type=Instruction scope=Private size=64K line_size=256 associativity=4",
+                        "cache2": "level=2 type=Data scope=Private size=1024K line_size=256 associativity=8",
+                        "cache3": "level=2 type=Instruction scope=Private size=1024K line_size=256 associativity=8"
+                    }
+                }
+            },
+            "module_|-smbios-records-bios_|-smbios.records_|-run": {
+                "comment": "Module function smbios.records executed",
+                "name": "smbios.records",
+                "start_time": "12:58:12.423499",
+                "result": true,
+                "duration": 6.668,
+                "__run_num__": 6,
+                "changes": {
+                }
+            },
+            "module_|-udevdb_|-udevdb.exportdb_|-run": {
+                "comment": "Module function udevdb.exportdb executed",
+                "name": "udevdb.exportdb",
+                "start_time": "12:58:12.374296",
+                "result": true,
+                "duration": 23.922,
+                "__run_num__": 2,
+                "changes": {
+                    "ret": [
+                        {
+                            "P": "/devices/css0/0.0.0000",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.0000"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0000/0.0.0800",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 1731,
+                                "DEVPATH": "/devices/css0/0.0.0000/0.0.0800",
+                                "DEV_TYPE": 1732,
+                                "DRIVER": "qeth",
+                                "MODALIAS": "ccw:t1731m01dt1732dm01",
+                                "CU_MODEL": 1,
+                                "DEV_MODEL": 1
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0001",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.0001"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0001/0.0.0801",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 1731,
+                                "DEVPATH": "/devices/css0/0.0.0001/0.0.0801",
+                                "DEV_TYPE": 1732,
+                                "DRIVER": "qeth",
+                                "MODALIAS": "ccw:t1731m01dt1732dm01",
+                                "CU_MODEL": 1,
+                                "DEV_MODEL": 1
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0002",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.0002"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0002/0.0.0802",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 1731,
+                                "DEVPATH": "/devices/css0/0.0.0002/0.0.0802",
+                                "DEV_TYPE": 1732,
+                                "DRIVER": "qeth",
+                                "MODALIAS": "ccw:t1731m01dt1732dm01",
+                                "CU_MODEL": 1,
+                                "DEV_MODEL": 1
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0003",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.0003"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0003/0.0.0150",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 3990,
+                                "DEVPATH": "/devices/css0/0.0.0003/0.0.0150",
+                                "DEV_TYPE": 3390,
+                                "DRIVER": "dasd-eckd",
+                                "MODALIAS": "ccw:t3990mE9dt3390dm0C",
+                                "USEC_INITIALIZED": 65268,
+                                "CU_MODEL": "E9",
+                                "COLLECT_0.0.0150": 0,
+                                "DEV_MODEL": "0C"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0003/0.0.0150/block/dasdb",
+                            "S": [
+                                "disk/by-id/ccw-0X0150",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.27",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.27.00000001000027200000000000000000",
+                                "disk/by-path/ccw-0.0.0150"
+                            ],
+                            "E": {
+                                "DEVLINKS": "/dev/disk/by-id/ccw-0X0150 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.27 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.27.00000001000027200000000000000000 /dev/disk/by-path/ccw-0.0.0150",
+                                "SUBSYSTEM": "block",
+                                "MAJOR": 94,
+                                "DEVPATH": "/devices/css0/0.0.0003/0.0.0150/block/dasdb",
+                                "ID_PATH_TAG": "ccw-0_0_0150",
+                                "DEVNAME": "/dev/dasdb",
+                                "ID_UID": "IBM.750000000L2371.0008.27",
+                                "TAGS": ":systemd:",
+                                "ID_XUID": "IBM.750000000L2371.0008.27.00000001000027200000000000000000",
+                                "DEVTYPE": "disk",
+                                "ID_BUS": "ccw",
+                                "USEC_INITIALIZED": 65282,
+                                "ID_PATH": "ccw-0.0.0150",
+                                "MPATH_SBIN_PATH": "/sbin",
+                                "ID_SERIAL": "0X0150",
+                                "MINOR": 4,
+                                "ID_TYPE": "disk"
+                            },
+                            "N": "dasdb"
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0003/0.0.0150/block/dasdb/dasdb1",
+                            "S": [
+                                "disk/by-id/ccw-0X0150-part1",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.27-part1",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.27.00000001000027200000000000000000-part1",
+                                "disk/by-path/ccw-0.0.0150-part1",
+                                "disk/by-uuid/991ed539-6a2e-4ab6-83c3-95c6b8227784"
+                            ],
+                            "E": {
+                                "ID_UID": "IBM.750000000L2371.0008.27",
+                                "ID_FS_VERSION": 1.0,
+                                "ID_PATH": "ccw-0.0.0150",
+                                "ID_BUS": "ccw",
+                                "ID_SERIAL": "0X0150",
+                                "DEVTYPE": "partition",
+                                "ID_FS_UUID": "991ed539-6a2e-4ab6-83c3-95c6b8227784",
+                                "USEC_INITIALIZED": 65292,
+                                "ID_FS_UUID_ENC": "991ed539-6a2e-4ab6-83c3-95c6b8227784",
+                                "MPATH_SBIN_PATH": "/sbin",
+                                "ID_FS_TYPE": "ext2",
+                                "DEVLINKS": "/dev/disk/by-id/ccw-0X0150-part1 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.27-part1 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.27.00000001000027200000000000000000-part1 /dev/disk/by-path/ccw-0.0.0150-part1 /dev/disk/by-uuid/991ed539-6a2e-4ab6-83c3-95c6b8227784",
+                                "TAGS": ":systemd:",
+                                "ID_FS_USAGE": "filesystem",
+                                "ID_TYPE": "disk",
+                                "MINOR": 5,
+                                "SUBSYSTEM": "block",
+                                "MAJOR": 94,
+                                "DEVPATH": "/devices/css0/0.0.0003/0.0.0150/block/dasdb/dasdb1",
+                                "ID_PATH_TAG": "ccw-0_0_0150",
+                                "DEVNAME": "/dev/dasdb1",
+                                "ID_XUID": "IBM.750000000L2371.0008.27.00000001000027200000000000000000",
+                                "ID_SCSI": 1
+                            },
+                            "N": "dasdb1"
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0003/0.0.0150/block/dasdb/dasdb2",
+                            "S": [
+                                "disk/by-id/ccw-0X0150-part2",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.27-part2",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.27.00000001000027200000000000000000-part2",
+                                "disk/by-path/ccw-0.0.0150-part2",
+                                "disk/by-uuid/66b7d296-6e19-4c20-bd45-e2082eb58adc",
+                                "root"
+                            ],
+                            "E": {
+                                "ID_UID": "IBM.750000000L2371.0008.27",
+                                "ID_FS_VERSION": 1.0,
+                                "ID_PATH": "ccw-0.0.0150",
+                                "ID_BUS": "ccw",
+                                "ID_SERIAL": "0X0150",
+                                "DEVTYPE": "partition",
+                                "ID_FS_UUID": "66b7d296-6e19-4c20-bd45-e2082eb58adc",
+                                "USEC_INITIALIZED": 65300,
+                                "ID_FS_UUID_ENC": "66b7d296-6e19-4c20-bd45-e2082eb58adc",
+                                "MPATH_SBIN_PATH": "/sbin",
+                                "ID_FS_TYPE": "ext4",
+                                "DEVLINKS": "/dev/disk/by-id/ccw-0X0150-part2 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.27-part2 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.27.00000001000027200000000000000000-part2 /dev/disk/by-path/ccw-0.0.0150-part2 /dev/disk/by-uuid/66b7d296-6e19-4c20-bd45-e2082eb58adc /dev/root",
+                                "TAGS": ":systemd:",
+                                "ID_FS_USAGE": "filesystem",
+                                "ID_TYPE": "disk",
+                                "MINOR": 6,
+                                "SUBSYSTEM": "block",
+                                "MAJOR": 94,
+                                "DEVPATH": "/devices/css0/0.0.0003/0.0.0150/block/dasdb/dasdb2",
+                                "ID_PATH_TAG": "ccw-0_0_0150",
+                                "DEVNAME": "/dev/dasdb2",
+                                "ID_XUID": "IBM.750000000L2371.0008.27.00000001000027200000000000000000",
+                                "ID_SCSI": 1
+                            },
+                            "N": "dasdb2"
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0004",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.0004"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0004/0.0.0160",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 3990,
+                                "DEVPATH": "/devices/css0/0.0.0004/0.0.0160",
+                                "DEV_TYPE": 3390,
+                                "DRIVER": "dasd-eckd",
+                                "MODALIAS": "ccw:t3990mE9dt3390dm0C",
+                                "COLLECT_0.0.0160": 0,
+                                "USEC_INITIALIZED": 65556,
+                                "CU_MODEL": "E9",
+                                "DEV_MODEL": "0C"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0004/0.0.0160/block/dasdd",
+                            "S": [
+                                "disk/by-id/ccw-0X0160",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.96",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.96.0000000100007ff70000000000000000",
+                                "disk/by-path/ccw-0.0.0160"
+                            ],
+                            "E": {
+                                "DEVLINKS": "/dev/disk/by-id/ccw-0X0160 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.96 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.96.0000000100007ff70000000000000000 /dev/disk/by-path/ccw-0.0.0160",
+                                "SUBSYSTEM": "block",
+                                "MAJOR": 94,
+                                "DEVPATH": "/devices/css0/0.0.0004/0.0.0160/block/dasdd",
+                                "ID_PATH_TAG": "ccw-0_0_0160",
+                                "DEVNAME": "/dev/dasdd",
+                                "ID_UID": "IBM.750000000L2371.0008.96",
+                                "TAGS": ":systemd:",
+                                "ID_XUID": "IBM.750000000L2371.0008.96.0000000100007ff70000000000000000",
+                                "DEVTYPE": "disk",
+                                "ID_BUS": "ccw",
+                                "USEC_INITIALIZED": 65567,
+                                "ID_PATH": "ccw-0.0.0160",
+                                "MPATH_SBIN_PATH": "/sbin",
+                                "ID_SERIAL": "0X0160",
+                                "MINOR": 12,
+                                "ID_TYPE": "disk"
+                            },
+                            "N": "dasdd"
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0004/0.0.0160/block/dasdd/dasdd1",
+                            "S": [
+                                "disk/by-id/ccw-0X0160-part1",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.96-part1",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.96.0000000100007ff70000000000000000-part1",
+                                "disk/by-path/ccw-0.0.0160-part1",
+                                "disk/by-uuid/d135a94d-f039-4a6a-ac4b-1ae7452337d7"
+                            ],
+                            "E": {
+                                "ID_UID": "IBM.750000000L2371.0008.96",
+                                "ID_PATH": "ccw-0.0.0160",
+                                "ID_BUS": "ccw",
+                                "ID_SERIAL": "0X0160",
+                                "DEVTYPE": "partition",
+                                "ID_FS_UUID": "d135a94d-f039-4a6a-ac4b-1ae7452337d7",
+                                "USEC_INITIALIZED": 65575,
+                                "ID_FS_UUID_ENC": "d135a94d-f039-4a6a-ac4b-1ae7452337d7",
+                                "MPATH_SBIN_PATH": "/sbin",
+                                "ID_FS_TYPE": "xfs",
+                                "DEVLINKS": "/dev/disk/by-id/ccw-0X0160-part1 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.96-part1 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.96.0000000100007ff70000000000000000-part1 /dev/disk/by-path/ccw-0.0.0160-part1 /dev/disk/by-uuid/d135a94d-f039-4a6a-ac4b-1ae7452337d7",
+                                "TAGS": ":systemd:",
+                                "ID_FS_USAGE": "filesystem",
+                                "ID_TYPE": "disk",
+                                "MINOR": 13,
+                                "SUBSYSTEM": "block",
+                                "MAJOR": 94,
+                                "DEVPATH": "/devices/css0/0.0.0004/0.0.0160/block/dasdd/dasdd1",
+                                "ID_PATH_TAG": "ccw-0_0_0160",
+                                "DEVNAME": "/dev/dasdd1",
+                                "ID_XUID": "IBM.750000000L2371.0008.96.0000000100007ff70000000000000000",
+                                "ID_SCSI": 1
+                            },
+                            "N": "dasdd1"
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0005",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.0005"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0005/0.0.0161",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 3990,
+                                "DEVPATH": "/devices/css0/0.0.0005/0.0.0161",
+                                "DEV_TYPE": 3390,
+                                "DRIVER": "dasd-eckd",
+                                "MODALIAS": "ccw:t3990mE9dt3390dm0C",
+                                "USEC_INITIALIZED": 65708,
+                                "CU_MODEL": "E9",
+                                "DEV_MODEL": "0C",
+                                "COLLECT_0.0.0161": 0
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0005/0.0.0161/block/dasde",
+                            "S": [
+                                "disk/by-id/ccw-0X0161",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.97",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.97.0000000100007ff70000000000000000",
+                                "disk/by-path/ccw-0.0.0161"
+                            ],
+                            "E": {
+                                "DEVLINKS": "/dev/disk/by-id/ccw-0X0161 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.97 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.97.0000000100007ff70000000000000000 /dev/disk/by-path/ccw-0.0.0161",
+                                "SUBSYSTEM": "block",
+                                "MAJOR": 94,
+                                "DEVPATH": "/devices/css0/0.0.0005/0.0.0161/block/dasde",
+                                "ID_PATH_TAG": "ccw-0_0_0161",
+                                "DEVNAME": "/dev/dasde",
+                                "ID_UID": "IBM.750000000L2371.0008.97",
+                                "TAGS": ":systemd:",
+                                "ID_XUID": "IBM.750000000L2371.0008.97.0000000100007ff70000000000000000",
+                                "DEVTYPE": "disk",
+                                "ID_BUS": "ccw",
+                                "USEC_INITIALIZED": 65738,
+                                "ID_PATH": "ccw-0.0.0161",
+                                "MPATH_SBIN_PATH": "/sbin",
+                                "ID_SERIAL": "0X0161",
+                                "MINOR": 16,
+                                "ID_TYPE": "disk"
+                            },
+                            "N": "dasde"
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0005/0.0.0161/block/dasde/dasde1",
+                            "S": [
+                                "disk/by-id/ccw-0X0161-part1",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.97-part1",
+                                "disk/by-id/ccw-IBM.750000000L2371.0008.97.0000000100007ff70000000000000000-part1",
+                                "disk/by-path/ccw-0.0.0161-part1",
+                                "disk/by-uuid/99d5948d-3003-4ff2-b6b1-bfea1230ee6a"
+                            ],
+                            "E": {
+                                "ID_UID": "IBM.750000000L2371.0008.97",
+                                "ID_PATH": "ccw-0.0.0161",
+                                "ID_BUS": "ccw",
+                                "ID_SERIAL": "0X0161",
+                                "DEVTYPE": "partition",
+                                "ID_FS_UUID": "99d5948d-3003-4ff2-b6b1-bfea1230ee6a",
+                                "USEC_INITIALIZED": 65760,
+                                "ID_FS_UUID_ENC": "99d5948d-3003-4ff2-b6b1-bfea1230ee6a",
+                                "MPATH_SBIN_PATH": "/sbin",
+                                "ID_FS_TYPE": "xfs",
+                                "DEVLINKS": "/dev/disk/by-id/ccw-0X0161-part1 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.97-part1 /dev/disk/by-id/ccw-IBM.750000000L2371.0008.97.0000000100007ff70000000000000000-part1 /dev/disk/by-path/ccw-0.0.0161-part1 /dev/disk/by-uuid/99d5948d-3003-4ff2-b6b1-bfea1230ee6a",
+                                "TAGS": ":systemd:",
+                                "ID_FS_USAGE": "filesystem",
+                                "ID_TYPE": "disk",
+                                "MINOR": 17,
+                                "SUBSYSTEM": "block",
+                                "MAJOR": 94,
+                                "DEVPATH": "/devices/css0/0.0.0005/0.0.0161/block/dasde/dasde1",
+                                "ID_PATH_TAG": "ccw-0_0_0161",
+                                "DEVNAME": "/dev/dasde1",
+                                "ID_XUID": "IBM.750000000L2371.0008.97.0000000100007ff70000000000000000",
+                                "ID_SCSI": 1
+                            },
+                            "N": "dasde1"
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0006",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.0006"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0006/0.0.0009",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 3215,
+                                "DEVPATH": "/devices/css0/0.0.0006/0.0.0009",
+                                "DEV_TYPE": 0,
+                                "DRIVER": 3215,
+                                "MODALIAS": "ccw:t3215m00dtdm",
+                                "CU_MODEL": 0,
+                                "DEV_MODEL": 0
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0007",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.0007"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0007/0.0.000c",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 2540,
+                                "DEVPATH": "/devices/css0/0.0.0007/0.0.000c",
+                                "DEV_TYPE": 0,
+                                "DRIVER": "vmur",
+                                "MODALIAS": "ccw:t2540m00dtdm",
+                                "CU_MODEL": 0,
+                                "DEV_MODEL": 0
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0008",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.0008"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0008/0.0.000d",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 2540,
+                                "DEVPATH": "/devices/css0/0.0.0008/0.0.000d",
+                                "DEV_TYPE": 0,
+                                "DRIVER": "vmur",
+                                "MODALIAS": "ccw:t2540m00dtdm",
+                                "CU_MODEL": 0,
+                                "DEV_MODEL": 0
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0009",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.0009"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0009/0.0.000e",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 1403,
+                                "DEVPATH": "/devices/css0/0.0.0009/0.0.000e",
+                                "DEV_TYPE": 0,
+                                "DRIVER": "vmur",
+                                "MODALIAS": "ccw:t1403m00dtdm",
+                                "CU_MODEL": 0,
+                                "DEV_MODEL": 0
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000a",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.000a"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000a/0.0.0190",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 3990,
+                                "DEVPATH": "/devices/css0/0.0.000a/0.0.0190",
+                                "DEV_TYPE": 3390,
+                                "DRIVER": "dasd-eckd",
+                                "MODALIAS": "ccw:t3990mE9dt3390dm0A",
+                                "CU_MODEL": "E9",
+                                "DEV_MODEL": "0A"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000b",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.000b"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000b/0.0.019d",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 3990,
+                                "DEVPATH": "/devices/css0/0.0.000b/0.0.019d",
+                                "DEV_TYPE": 3390,
+                                "DRIVER": "dasd-eckd",
+                                "MODALIAS": "ccw:t3990mE9dt3390dm0A",
+                                "CU_MODEL": "E9",
+                                "DEV_MODEL": "0A"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000c",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.000c"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000c/0.0.019e",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 3990,
+                                "DEVPATH": "/devices/css0/0.0.000c/0.0.019e",
+                                "DEV_TYPE": 3390,
+                                "DRIVER": "dasd-eckd",
+                                "MODALIAS": "ccw:t3990mE9dt3390dm0A",
+                                "CU_MODEL": "E9",
+                                "DEV_MODEL": "0A"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000d",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.000d"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000d/0.0.0592",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 3990,
+                                "DEVPATH": "/devices/css0/0.0.000d/0.0.0592",
+                                "DEV_TYPE": 3390,
+                                "DRIVER": "dasd-eckd",
+                                "MODALIAS": "ccw:t3990mE9dt3390dm0A",
+                                "CU_MODEL": "E9",
+                                "DEV_MODEL": "0A"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000e",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.000e"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000e/0.0.0300",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 6310,
+                                "DEVPATH": "/devices/css0/0.0.000e/0.0.0300",
+                                "DEV_TYPE": 9336,
+                                "DRIVER": "dasd-fba",
+                                "MODALIAS": "ccw:t6310m80dt9336dm10",
+                                "COLLECT_0.0.0300": 0,
+                                "USEC_INITIALIZED": 67229,
+                                "CU_MODEL": 80,
+                                "DEV_MODEL": 10
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000e/0.0.0300/block/dasda",
+                            "S": [
+                                "disk/by-id/ccw-LXSWAP",
+                                "disk/by-path/ccw-0.0.0300"
+                            ],
+                            "E": {
+                                "DEVLINKS": "/dev/disk/by-id/ccw-LXSWAP /dev/disk/by-path/ccw-0.0.0300",
+                                "SUBSYSTEM": "block",
+                                "MAJOR": 94,
+                                "DEVPATH": "/devices/css0/0.0.000e/0.0.0300/block/dasda",
+                                "ID_PATH_TAG": "ccw-0_0_0300",
+                                "DEVNAME": "/dev/dasda",
+                                "TAGS": ":systemd:",
+                                "DEVTYPE": "disk",
+                                "ID_BUS": "ccw",
+                                "USEC_INITIALIZED": 67264,
+                                "ID_PATH": "ccw-0.0.0300",
+                                "MPATH_SBIN_PATH": "/sbin",
+                                "ID_SERIAL": "LXSWAP",
+                                "MINOR": 0,
+                                "ID_TYPE": "disk"
+                            },
+                            "N": "dasda"
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000e/0.0.0300/block/dasda/dasda1",
+                            "S": [
+                                "disk/by-id/ccw-LXSWAP-part1",
+                                "disk/by-path/ccw-0.0.0300-part1",
+                                "disk/by-uuid/d3c9d5e4-e7f1-f4f2-c6f0-c6f3c6f0c6f0"
+                            ],
+                            "E": {
+                                "DEVLINKS": "/dev/disk/by-id/ccw-LXSWAP-part1 /dev/disk/by-path/ccw-0.0.0300-part1 /dev/disk/by-uuid/d3c9d5e4-e7f1-f4f2-c6f0-c6f3c6f0c6f0",
+                                "SUBSYSTEM": "block",
+                                "MAJOR": 94,
+                                "DEVPATH": "/devices/css0/0.0.000e/0.0.0300/block/dasda/dasda1",
+                                "ID_PATH_TAG": "ccw-0_0_0300",
+                                "ID_SERIAL": "LXSWAP",
+                                "DEVNAME": "/dev/dasda1",
+                                "TAGS": ":systemd:",
+                                "MINOR": 1,
+                                "ID_PATH": "ccw-0.0.0300",
+                                "DEVTYPE": "partition",
+                                "ID_FS_USAGE": "other",
+                                "ID_TYPE": "disk",
+                                "ID_FS_VERSION": 1,
+                                "ID_FS_UUID_ENC": "d3c9d5e4-e7f1-f4f2-c6f0-c6f3c6f0c6f0",
+                                "MPATH_SBIN_PATH": "/sbin",
+                                "ID_SCSI": 1,
+                                "ID_FS_TYPE": "swap",
+                                "USEC_INITIALIZED": 67297,
+                                "ID_BUS": "ccw",
+                                "ID_FS_UUID": "d3c9d5e4-e7f1-f4f2-c6f0-c6f3c6f0c6f0"
+                            },
+                            "N": "dasda1"
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000f",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.000f"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000f/0.0.0301",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 6310,
+                                "DEVPATH": "/devices/css0/0.0.000f/0.0.0301",
+                                "DEV_TYPE": 9336,
+                                "USEC_INITIALIZED": 67431,
+                                "DRIVER": "dasd-fba",
+                                "MODALIAS": "ccw:t6310m80dt9336dm10",
+                                "COLLECT_0.0.0301": 0,
+                                "CU_MODEL": 80,
+                                "DEV_MODEL": 10
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000f/0.0.0301/block/dasdc",
+                            "S": [
+                                "disk/by-id/ccw-LXSWAP",
+                                "disk/by-path/ccw-0.0.0301"
+                            ],
+                            "E": {
+                                "DEVLINKS": "/dev/disk/by-id/ccw-LXSWAP /dev/disk/by-path/ccw-0.0.0301",
+                                "SUBSYSTEM": "block",
+                                "MAJOR": 94,
+                                "DEVPATH": "/devices/css0/0.0.000f/0.0.0301/block/dasdc",
+                                "ID_PATH_TAG": "ccw-0_0_0301",
+                                "DEVNAME": "/dev/dasdc",
+                                "TAGS": ":systemd:",
+                                "DEVTYPE": "disk",
+                                "ID_BUS": "ccw",
+                                "USEC_INITIALIZED": 67465,
+                                "ID_PATH": "ccw-0.0.0301",
+                                "MPATH_SBIN_PATH": "/sbin",
+                                "ID_SERIAL": "LXSWAP",
+                                "MINOR": 8,
+                                "ID_TYPE": "disk"
+                            },
+                            "N": "dasdc"
+                        },
+                        {
+                            "P": "/devices/css0/0.0.000f/0.0.0301/block/dasdc/dasdc1",
+                            "S": [
+                                "disk/by-id/ccw-LXSWAP-part1",
+                                "disk/by-path/ccw-0.0.0301-part1",
+                                "disk/by-uuid/d3c9d5e4-e7f1-f4f2-c6f0-c6f3c6f0c6f1"
+                            ],
+                            "E": {
+                                "DEVLINKS": "/dev/disk/by-id/ccw-LXSWAP-part1 /dev/disk/by-path/ccw-0.0.0301-part1 /dev/disk/by-uuid/d3c9d5e4-e7f1-f4f2-c6f0-c6f3c6f0c6f1",
+                                "SUBSYSTEM": "block",
+                                "MAJOR": 94,
+                                "DEVPATH": "/devices/css0/0.0.000f/0.0.0301/block/dasdc/dasdc1",
+                                "ID_PATH_TAG": "ccw-0_0_0301",
+                                "ID_SERIAL": "LXSWAP",
+                                "DEVNAME": "/dev/dasdc1",
+                                "TAGS": ":systemd:",
+                                "MINOR": 9,
+                                "ID_PATH": "ccw-0.0.0301",
+                                "DEVTYPE": "partition",
+                                "ID_FS_USAGE": "other",
+                                "ID_TYPE": "disk",
+                                "ID_FS_VERSION": 1,
+                                "ID_FS_UUID_ENC": "d3c9d5e4-e7f1-f4f2-c6f0-c6f3c6f0c6f1",
+                                "MPATH_SBIN_PATH": "/sbin",
+                                "ID_SCSI": 1,
+                                "ID_FS_TYPE": "swap",
+                                "USEC_INITIALIZED": 67485,
+                                "ID_BUS": "ccw",
+                                "ID_FS_UUID": "d3c9d5e4-e7f1-f4f2-c6f0-c6f3c6f0c6f1"
+                            },
+                            "N": "dasdc1"
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0010",
+                            "E": {
+                                "MODALIAS": "css:t0",
+                                "SUBSYSTEM": "css",
+                                "ST": 0,
+                                "DRIVER": "io_subchannel",
+                                "DEVPATH": "/devices/css0/0.0.0010"
+                            }
+                        },
+                        {
+                            "P": "/devices/css0/0.0.0010/0.0.ffff",
+                            "E": {
+                                "SUBSYSTEM": "ccw",
+                                "CU_TYPE": 6310,
+                                "DEVPATH": "/devices/css0/0.0.0010/0.0.ffff",
+                                "DEV_TYPE": 9336,
+                                "DRIVER": "dasd-fba",
+                                "MODALIAS": "ccw:t6310m80dt9336dm10",
+                                "CU_MODEL": 80,
+                                "DEV_MODEL": 10
+                            }
+                        },
+                        {
+                            "P": "/devices/iucv/hvc_iucv0",
+                            "E": {
+                                "SUBSYSTEM": "iucv",
+                                "DRIVER": "hvc_iucv",
+                                "DEVPATH": "/devices/iucv/hvc_iucv0"
+                            }
+                        },
+                        {
+                            "P": "/devices/iucv/hvc_iucv1",
+                            "E": {
+                                "SUBSYSTEM": "iucv",
+                                "DRIVER": "hvc_iucv",
+                                "DEVPATH": "/devices/iucv/hvc_iucv1"
+                            }
+                        },
+                        {
+                            "P": "/devices/iucv/hvc_iucv2",
+                            "E": {
+                                "SUBSYSTEM": "iucv",
+                                "DRIVER": "hvc_iucv",
+                                "DEVPATH": "/devices/iucv/hvc_iucv2"
+                            }
+                        },
+                        {
+                            "P": "/devices/iucv/hvc_iucv3",
+                            "E": {
+                                "SUBSYSTEM": "iucv",
+                                "DRIVER": "hvc_iucv",
+                                "DEVPATH": "/devices/iucv/hvc_iucv3"
+                            }
+                        },
+                        {
+                            "P": "/devices/iucv/hvc_iucv4",
+                            "E": {
+                                "SUBSYSTEM": "iucv",
+                                "DRIVER": "hvc_iucv",
+                                "DEVPATH": "/devices/iucv/hvc_iucv4"
+                            }
+                        },
+                        {
+                            "P": "/devices/iucv/hvc_iucv5",
+                            "E": {
+                                "SUBSYSTEM": "iucv",
+                                "DRIVER": "hvc_iucv",
+                                "DEVPATH": "/devices/iucv/hvc_iucv5"
+                            }
+                        },
+                        {
+                            "P": "/devices/iucv/hvc_iucv6",
+                            "E": {
+                                "SUBSYSTEM": "iucv",
+                                "DRIVER": "hvc_iucv",
+                                "DEVPATH": "/devices/iucv/hvc_iucv6"
+                            }
+                        },
+                        {
+                            "P": "/devices/iucv/hvc_iucv7",
+                            "E": {
+                                "SUBSYSTEM": "iucv",
+                                "DRIVER": "hvc_iucv",
+                                "DEVPATH": "/devices/iucv/hvc_iucv7"
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/alarmtimer",
+                            "E": {
+                                "MODALIAS": "platform:alarmtimer",
+                                "SUBSYSTEM": "platform",
+                                "DRIVER": "alarmtimer",
+                                "DEVPATH": "/devices/platform/alarmtimer"
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/appldata",
+                            "E": {
+                                "MODALIAS": "platform:appldata",
+                                "SUBSYSTEM": "platform",
+                                "DRIVER": "appldata",
+                                "DEVPATH": "/devices/platform/appldata"
+                            }
+                        },
+                        {
+                            "P": "/devices/platform/sclp",
+                            "E": {
+                                "MODALIAS": "platform:sclp",
+                                "SUBSYSTEM": "platform",
+                                "DRIVER": "sclp",
+                                "DEVPATH": "/devices/platform/sclp"
+                            }
+                        },
+                        {
+                            "P": "/devices/qeth/0.0.0800",
+                            "E": {
+                                "SUBSYSTEM": "ccwgroup",
+                                "DEVTYPE": "qeth_generic",
+                                "DRIVER": "qeth",
+                                "DEVPATH": "/devices/qeth/0.0.0800"
+                            }
+                        },
+                        {
+                            "P": "/devices/qeth/0.0.0800/net/eth0",
+                            "E": {
+                                "SUBSYSTEM": "net",
+                                "DEVPATH": "/devices/qeth/0.0.0800/net/eth0",
+                                "ID_NET_NAME_MAC": "enx02000000428e",
+                                "SYSTEMD_ALIAS": "/sys/subsystem/net/devices/eth0",
+                                "ID_NET_NAME_PATH": "enccw0.0.0800",
+                                "INTERFACE": "eth0",
+                                "USEC_INITIALIZED": 32594,
+                                "IFINDEX": 2,
+                                "ID_NET_DRIVER": "qeth_l2",
+                                "ID_NET_LINK_FILE": "/usr/lib/systemd/network/99-default.link",
+                                "TAGS": ":systemd:"
+                            }
+                        },
+                        {
+                            "P": "/devices/software",
+                            "E": {
+                                "SUBSYSTEM": "event_source",
+                                "DEVPATH": "/devices/software"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent0",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent0"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent1",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent1"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent10",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent10"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent11",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent11"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent12",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent12"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent13",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent13"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent14",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent14"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent15",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent15"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent16",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent16"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent17",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent17"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent18",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent18"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent19",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent19"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent2",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent2"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent20",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent20"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent21",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent21"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent22",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent22"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent23",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent23"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent24",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent24"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent25",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent25"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent26",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent26"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent27",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent27"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent28",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent28"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent29",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent29"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent3",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent3"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent30",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent30"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent31",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent31"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent32",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent32"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent33",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent33"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent34",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent34"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent35",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent35"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent36",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent36"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent37",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent37"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent38",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent38"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent39",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent39"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent4",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent4"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent40",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent40"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent41",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent41"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent42",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent42"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent43",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent43"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent44",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent44"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent45",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent45"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent46",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent46"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent47",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent47"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent48",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent48"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent49",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent49"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent5",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent5"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent50",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent50"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent51",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent51"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent52",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent52"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent53",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent53"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent54",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent54"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent55",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent55"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent56",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent56"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent57",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent57"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent58",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent58"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent59",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent59"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent6",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent6"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent60",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent60"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent61",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent61"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent62",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent62"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent63",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent63"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent7",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent7"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent8",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent8"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clockevents/clockevent9",
+                            "E": {
+                                "SUBSYSTEM": "clockevents",
+                                "DEVPATH": "/devices/system/clockevents/clockevent9"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/clocksource/clocksource0",
+                            "E": {
+                                "SUBSYSTEM": "clocksource",
+                                "DEVPATH": "/devices/system/clocksource/clocksource0"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/cpu/cpu0",
+                            "E": {
+                                "SUBSYSTEM": "cpu",
+                                "DEVPATH": "/devices/system/cpu/cpu0"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/etr/etr0",
+                            "E": {
+                                "SUBSYSTEM": "etr",
+                                "DEVPATH": "/devices/system/etr/etr0"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/etr/etr1",
+                            "E": {
+                                "SUBSYSTEM": "etr",
+                                "DEVPATH": "/devices/system/etr/etr1"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory0",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory0"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory1",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory1"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory10",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory10"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory11",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory11"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory12",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory12"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory13",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory13"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory14",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory14"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory15",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory15"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory2",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory2"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory3",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory3"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory4",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory4"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory5",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory5"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory6",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory6"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory7",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory7"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory8",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory8"
+                            }
+                        },
+                        {
+                            "P": "/devices/system/memory/memory9",
+                            "E": {
+                                "SUBSYSTEM": "memory",
+                                "DEVPATH": "/devices/system/memory/memory9"
+                            }
+                        },
+                        {
+                            "P": "/devices/tracepoint",
+                            "E": {
+                                "SUBSYSTEM": "event_source",
+                                "DEVPATH": "/devices/tracepoint"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/3270/3270!tub",
+                            "E": {
+                                "SUBSYSTEM": 3270,
+                                "MAJOR": 228,
+                                "DEVNAME": "/dev/3270/tub",
+                                "MINOR": 0,
+                                "DEVPATH": "/devices/virtual/3270/3270!tub"
+                            },
+                            "N": "3270/tub"
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/94:0",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/94:0"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/94:12",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/94:12"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/94:16",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/94:16"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/94:4",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/94:4"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/94:8",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/94:8"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/bdi/default",
+                            "E": {
+                                "SUBSYSTEM": "bdi",
+                                "DEVPATH": "/devices/virtual/bdi/default"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/input/mice",
+                            "E": {
+                                "SUBSYSTEM": "input",
+                                "MAJOR": 13,
+                                "DEVNAME": "/dev/input/mice",
+                                "MINOR": 63,
+                                "DEVPATH": "/devices/virtual/input/mice"
+                            },
+                            "N": "input/mice"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/full",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/full",
+                                "DEVNAME": "/dev/full",
+                                "DEVMODE": 666,
+                                "MINOR": 7
+                            },
+                            "N": "full"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/kmem",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVNAME": "/dev/kmem",
+                                "MINOR": 2,
+                                "DEVPATH": "/devices/virtual/mem/kmem"
+                            },
+                            "N": "kmem"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/kmsg",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/kmsg",
+                                "DEVNAME": "/dev/kmsg",
+                                "DEVMODE": 644,
+                                "MINOR": 11
+                            },
+                            "N": "kmsg"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/mem",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVNAME": "/dev/mem",
+                                "MINOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/mem"
+                            },
+                            "N": "mem"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/null",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/null",
+                                "DEVNAME": "/dev/null",
+                                "DEVMODE": 666,
+                                "MINOR": 3
+                            },
+                            "N": "null"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/port",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVNAME": "/dev/port",
+                                "MINOR": 4,
+                                "DEVPATH": "/devices/virtual/mem/port"
+                            },
+                            "N": "port"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/random",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/random",
+                                "DEVNAME": "/dev/random",
+                                "TAGS": ":systemd:",
+                                "DEVMODE": 666,
+                                "USEC_INITIALIZED": 83716,
+                                "SYSTEMD_WANTS": "haveged.service",
+                                "MINOR": 8
+                            },
+                            "N": "random"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/urandom",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/urandom",
+                                "DEVNAME": "/dev/urandom",
+                                "DEVMODE": 666,
+                                "MINOR": 9
+                            },
+                            "N": "urandom"
+                        },
+                        {
+                            "P": "/devices/virtual/mem/zero",
+                            "E": {
+                                "SUBSYSTEM": "mem",
+                                "MAJOR": 1,
+                                "DEVPATH": "/devices/virtual/mem/zero",
+                                "DEVNAME": "/dev/zero",
+                                "DEVMODE": 666,
+                                "MINOR": 5
+                            },
+                            "N": "zero"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/autofs",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/autofs",
+                                "MINOR": 235,
+                                "DEVPATH": "/devices/virtual/misc/autofs"
+                            },
+                            "N": "autofs"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/cpu_dma_latency",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/cpu_dma_latency",
+                                "MINOR": 61,
+                                "DEVPATH": "/devices/virtual/misc/cpu_dma_latency"
+                            },
+                            "N": "cpu_dma_latency"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/dasd_eer",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/dasd_eer",
+                                "MINOR": 58,
+                                "DEVPATH": "/devices/virtual/misc/dasd_eer"
+                            },
+                            "N": "dasd_eer"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/device-mapper",
+                            "S": "device-mapper",
+                            "E": {
+                                "DEVLINKS": "/dev/device-mapper",
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVPATH": "/devices/virtual/misc/device-mapper",
+                                "DEVNAME": "/dev/mapper/control",
+                                "USEC_INITIALIZED": 92162,
+                                "MINOR": 236
+                            },
+                            "N": "mapper/control"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/network_latency",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/network_latency",
+                                "MINOR": 60,
+                                "DEVPATH": "/devices/virtual/misc/network_latency"
+                            },
+                            "N": "network_latency"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/network_throughput",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/network_throughput",
+                                "MINOR": 59,
+                                "DEVPATH": "/devices/virtual/misc/network_throughput"
+                            },
+                            "N": "network_throughput"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/sclp",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/sclp",
+                                "MINOR": 63,
+                                "DEVPATH": "/devices/virtual/misc/sclp"
+                            },
+                            "N": "sclp"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/snapshot",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/snapshot",
+                                "MINOR": 231,
+                                "DEVPATH": "/devices/virtual/misc/snapshot"
+                            },
+                            "N": "snapshot"
+                        },
+                        {
+                            "P": "/devices/virtual/misc/vmcp",
+                            "E": {
+                                "SUBSYSTEM": "misc",
+                                "MAJOR": 10,
+                                "DEVNAME": "/dev/vmcp",
+                                "MINOR": 62,
+                                "DEVPATH": "/devices/virtual/misc/vmcp"
+                            },
+                            "N": "vmcp"
+                        },
+                        {
+                            "P": "/devices/virtual/net/lo",
+                            "E": {
+                                "SUBSYSTEM": "net",
+                                "DEVPATH": "/devices/virtual/net/lo",
+                                "INTERFACE": "lo",
+                                "USEC_INITIALIZED": 85983,
+                                "IFINDEX": 1,
+                                "ID_NET_LINK_FILE": "/usr/lib/systemd/network/99-default.link"
+                            }
+                        },
+                        {
+                            "P": "/devices/virtual/tty/console",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 5,
+                                "DEVNAME": "/dev/console",
+                                "MINOR": 1,
+                                "DEVPATH": "/devices/virtual/tty/console"
+                            },
+                            "N": "console"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/hvc0",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 229,
+                                "DEVPATH": "/devices/virtual/tty/hvc0",
+                                "DEVNAME": "/dev/hvc0",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 86428,
+                                "MINOR": 0
+                            },
+                            "N": "hvc0"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/hvc1",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 229,
+                                "DEVPATH": "/devices/virtual/tty/hvc1",
+                                "DEVNAME": "/dev/hvc1",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 86654,
+                                "MINOR": 1
+                            },
+                            "N": "hvc1"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/hvc2",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 229,
+                                "DEVPATH": "/devices/virtual/tty/hvc2",
+                                "DEVNAME": "/dev/hvc2",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 86883,
+                                "MINOR": 2
+                            },
+                            "N": "hvc2"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/hvc3",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 229,
+                                "DEVPATH": "/devices/virtual/tty/hvc3",
+                                "DEVNAME": "/dev/hvc3",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 87115,
+                                "MINOR": 3
+                            },
+                            "N": "hvc3"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/hvc4",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 229,
+                                "DEVPATH": "/devices/virtual/tty/hvc4",
+                                "DEVNAME": "/dev/hvc4",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 87349,
+                                "MINOR": 4
+                            },
+                            "N": "hvc4"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/hvc5",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 229,
+                                "DEVPATH": "/devices/virtual/tty/hvc5",
+                                "DEVNAME": "/dev/hvc5",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 87586,
+                                "MINOR": 5
+                            },
+                            "N": "hvc5"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/hvc6",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 229,
+                                "DEVPATH": "/devices/virtual/tty/hvc6",
+                                "DEVNAME": "/dev/hvc6",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 87826,
+                                "MINOR": 6
+                            },
+                            "N": "hvc6"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/hvc7",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 229,
+                                "DEVPATH": "/devices/virtual/tty/hvc7",
+                                "DEVNAME": "/dev/hvc7",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 88069,
+                                "MINOR": 7
+                            },
+                            "N": "hvc7"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/ptmx",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 5,
+                                "DEVPATH": "/devices/virtual/tty/ptmx",
+                                "DEVNAME": "/dev/ptmx",
+                                "DEVMODE": 666,
+                                "MINOR": 2
+                            },
+                            "N": "ptmx"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/tty",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 5,
+                                "DEVPATH": "/devices/virtual/tty/tty",
+                                "DEVNAME": "/dev/tty",
+                                "DEVMODE": 666,
+                                "MINOR": 0
+                            },
+                            "N": "tty"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/ttyS0",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/virtual/tty/ttyS0",
+                                "DEVNAME": "/dev/ttyS0",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 88816,
+                                "MINOR": 64
+                            },
+                            "N": "ttyS0"
+                        },
+                        {
+                            "P": "/devices/virtual/tty/ttysclp0",
+                            "E": {
+                                "SUBSYSTEM": "tty",
+                                "MAJOR": 4,
+                                "DEVPATH": "/devices/virtual/tty/ttysclp0",
+                                "DEVNAME": "/dev/ttysclp0",
+                                "TAGS": ":systemd:",
+                                "USEC_INITIALIZED": 89070,
+                                "MINOR": 65
+                            },
+                            "N": "ttysclp0"
+                        },
+                        {
+                            "P": "/devices/virtual/workqueue/writeback",
+                            "E": {
+                                "SUBSYSTEM": "workqueue",
+                                "DEVPATH": "/devices/virtual/workqueue/writeback"
+                            }
+                        }
+                    ]
+
+                }
+            },
+            "module_|-smbios-records-system_|-smbios.records_|-run": {
+                "comment": "Module function smbios.records executed",
+                "name": "smbios.records",
+                "start_time": "12:58:12.430383",
+                "result": true,
+                "duration": 4.587,
+                "__run_num__": 7,
+                "changes": {
+                }
+            },
+            "module_|-network-ips_|-sumautil.primary_ips_|-run": {
+                "comment": "Module function sumautil.primary_ips executed",
+                "name": "sumautil.primary_ips",
+                "start_time": "12:58:12.413295",
+                "result": true,
+                "duration": 8.849,
+                "__run_num__": 4,
+                "changes": {
+                    "ret": {
+                        "IPv4": {
+                            "interface": "eth0",
+                            "source": "10.161.155.142",
+                            "destination": "10.163.0.196",
+                            "gateway": "10.161.159.254"
+                        },
+                        "IPv6": {
+                            "interface": "eth0",
+                            "source": "fe80::ff:fe00:428e",
+                            "destination": "2620:113:80c0:8100:10:163:0:196",
+                            "gateway": "fe80::1"
+                        }
+                    }
+                }
+            },
+            "module_|-grains_|-grains.items_|-run": {
+                "comment": "Module function grains.items executed",
+                "name": "grains.items",
+                "start_time": "12:58:12.369619",
+                "result": true,
+                "duration": 1.982,
+                "__run_num__": 0,
+                "changes": {
+                    "ret":{
+                        "kernel": "Linux",
+                        "domain": "suse.de",
+                        "zmqversion": "4.0.4",
+                        "kernelrelease": "3.12.57-60.35-default",
+                        "selinux": {
+                            "enforced": "Disabled",
+                            "enabled": false
+                        },
+                        "saltversioninfo": [
+                            2015,
+                            8,
+                            7,
+                            0
+                        ],
+                        "ip_interfaces": {
+                            "lo": [
+                                "127.0.0.1",
+                                "::1"
+                            ],
+                            "eth0": [
+                                "10.161.155.142",
+                                "fe80::ff:fe00:428e"
+                            ]
+                        },
+                        "systemd": {
+                            "version": "210",
+                            "features": "+PAM +LIBWRAP +AUDIT +SELINUX -IMA +SYSVINIT +LIBCRYPTSETUP +GCRYPT +ACL +XZ +SECCOMP +APPARMOR"
+                        },
+                        "mem_total": 4012,
+                        "gpus": [],
+                        "SSDs": [],
+                        "id": "s390vsl142.suse.de",
+                        "osrelease": "12.1",
+                        "ps": "ps -efH",
+                        "server_id": 2145390000,
+                        "ip6_interfaces": {
+                            "lo": [
+                                "::1"
+                            ],
+                            "eth0": [
+                                "fe80::ff:fe00:428e"
+                            ]
+                        },
+                        "num_cpus": 0,
+                        "hwaddr_interfaces": {
+                            "lo": "00:00:00:00:00:00",
+                            "eth0": "02:00:00:00:42:8e"
+                        },
+                        "init": "systemd",
+                        "ip4_interfaces": {
+                            "lo": [
+                                "127.0.0.1"
+                            ],
+                            "eth0": [
+                                "10.161.155.142"
+                            ]
+                        },
+                        "osfullname": "SLES",
+                        "master": "malbu.openvpn.suse.de",
+                        "ipv4": [
+                            "10.161.155.142",
+                            "127.0.0.1"
+                        ],
+                        "ipv6": [
+                            "::1",
+                            "fe80::ff:fe00:428e"
+                        ],
+                        "shell": "/bin/bash",
+                        "cpu_flags": [],
+                        "localhost": "s390vsl142",
+                        "lsb_distrib_id": "SLES",
+                        "fqdn_ip4": [
+                            "10.161.155.142"
+                        ],
+                        "fqdn_ip6": [],
+                        "nodename": "s390vsl142",
+                        "saltversion": "2015.8.7",
+                        "lsb_distrib_release": "12.1",
+                        "pythonpath": [
+                            "/usr/bin",
+                            "/usr/lib/python27.zip",
+                            "/usr/lib64/python2.7",
+                            "/usr/lib64/python2.7/plat-linux2",
+                            "/usr/lib64/python2.7/lib-tk",
+                            "/usr/lib64/python2.7/lib-old",
+                            "/usr/lib64/python2.7/lib-dynload",
+                            "/usr/lib64/python2.7/site-packages",
+                            "/usr/local/lib64/python2.7/site-packages",
+                            "/usr/local/lib/python2.7/site-packages",
+                            "/usr/lib64/python2.7/site-packages/gtk-2.0",
+                            "/usr/lib/python2.7/site-packages"
+                        ],
+                        "saltpath": "/usr/lib/python2.7/site-packages/salt",
+                        "pythonversion": [
+                            2,
+                            7,
+                            9,
+                            "final",
+                            0
+                        ],
+                        "host": "s390vsl142",
+                        "os_family": "Suse",
+                        "oscodename": "SUSE Linux Enterprise Server 12 SP1",
+                        "path": "/sbin:/usr/sbin:/usr/local/sbin:/root/bin:/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games",
+                        "num_gpus": 0,
+                        "virtual": "physical",
+                        "cpu_model": "Unknown",
+                        "fqdn": "s390vsl142.suse.de",
+                        "pythonexecutable": "/usr/bin/python",
+                        "osarch": "s390x",
+                        "cpuarch": "s390x",
+                        "lsb_distrib_codename": "SUSE Linux Enterprise Server 12 SP1",
+                        "osrelease_info": [
+                            12,
+                            1
+                        ],
+                        "locale_info": {
+                            "detectedencoding": "UTF-8",
+                            "defaultlanguage": "en_US",
+                            "defaultencoding": "UTF-8"
+                        },
+                        "machine_id": "ddcefa2b62a64cc7b80e8508c5c869d3",
+                        "os": "SUSE"
+                    }
+
+
+                }
+            },
+            "module_|-mainframe-sysinfo_|-mainframesysinfo.read_values_|-run": {
+                "comment": "Module function mainframesysinfo.read_values executed",
+                "name": "mainframesysinfo.read_values",
+                "start_time": "12:58:12.369619",
+                "result": true,
+                "duration": 1.982,
+                "__run_num__": 0,
+                "changes": {
+                    "ret": "Version: 1.0.0\nType: 2827\nSequence Code: 0000000000069A27\nCPUs Total: 45\nCPUs IFL: 45\nLPAR Number: 10\nLPAR Name: LPA\nLPAR Characteristics: Shared\nLPAR CPUs Total: 6\nLPAR CPUs IFL: 6\nVM00 Name: LINUX142\nVM00 Control Program: z/VM    6.3.0   \nVM00 CPUs Total: 1\nVM00 IFLs: 1"
+                }
+            }
+        },
+        "retcode": 0,
+        "success": true,
+        "cmd": "_return",
+        "_stamp": "2016-04-07T08:41:02.846934",
+        "fun": "state.apply",
+        "out": "highstate",
+        "id": "minionsles12-suma3pg.vagrant.local",
+        "metadata": {
+            "suma-action-id": 60
+        }
+
+    }
+}

@@ -16,7 +16,6 @@ package com.suse.manager.webui.utils.salt.custom;
 
 import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Smbios;
-import com.suse.salt.netapi.calls.modules.Smbios.Record;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 
@@ -115,40 +114,28 @@ public class HwProfileUpdateSlsResult {
      * @return smbios records of type: BIOS
      */
     public Optional<Map<String, Object>> getSmbiosRecordsBios() {
-        return smbiosRecordsBios.map(result -> {
-            List<Record> records = result.getChanges().getRet();
-            return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
-        });
+        return getSmbiosRecords(smbiosRecordsBios);
     }
 
     /**
      * @return smbios records of type: System
      */
     public Optional<Map<String, Object>> getSmbiosRecordsSystem() {
-        return smbiosRecordsSystem.map(result -> {
-            List<Record> records = result.getChanges().getRet();
-            return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
-        });
+        return getSmbiosRecords(smbiosRecordsSystem);
     }
 
     /**
      * @return smbios records of type: Baseboard
      */
     public Optional<Map<String, Object>> getSmbiosRecordsBaseboard() {
-        return smbiosRecordsBaseboard.map(result -> {
-            List<Record> records = result.getChanges().getRet();
-            return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
-        });
+        return getSmbiosRecords(smbiosRecordsBaseboard);
     }
 
     /**
      * @return smbios records of type: Chassis
      */
     public Optional<Map<String, Object>> getSmbiosRecordsChassis() {
-        return smbiosRecordsChassis.map(result -> {
-            List<Record> records = result.getChanges().getRet();
-            return records.isEmpty() ? Collections.emptyMap() : records.get(0).getData();
-        });
+        return getSmbiosRecords(smbiosRecordsChassis);
     }
 
     /**
@@ -160,4 +147,14 @@ public class HwProfileUpdateSlsResult {
         }
         return "";
     }
+
+    private Optional<Map<String, Object>> getSmbiosRecords(
+            Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecords) {
+        return smbiosRecords
+                .map(result -> result.getChanges())
+                .map(changes -> changes.getRet())
+                .map(records -> records.isEmpty() ?
+                        Collections.emptyMap() : records.get(0).getData());
+    }
+
 }

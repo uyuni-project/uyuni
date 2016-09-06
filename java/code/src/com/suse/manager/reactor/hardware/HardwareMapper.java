@@ -69,6 +69,7 @@ public class HardwareMapper {
     private static final Pattern PRINTER_REGEX = Pattern.compile(".*/lp\\d+$");
     private static final String SYSFS_PATH = "P";
     private static final String ENTRIES = "E";
+    private static final String EXTRA_ENTRIES = "X";
 
     /**
      * Create a hardware mapper for a given server with grains.
@@ -220,7 +221,9 @@ public class HardwareMapper {
         }
         dmi.setSystem(dmiSystem.length() > 0 ? dmiSystem.toString().trim() : null);
         dmi.setProduct(productName);
-        dmi.setBios(biosVendor, biosVersion, biosReleseDate);
+        if (biosVendor != null || biosVersion != null || biosReleseDate != null) {
+            dmi.setBios(biosVendor, biosVersion, biosReleseDate);
+        }
         dmi.setVendor(biosVendor);
 
         dmi.setAsset(String.format("(chassis: %s) (chassis: %s) (board: %s) (system: %s)",
@@ -846,6 +849,13 @@ public class HardwareMapper {
         String sysfsPath = (String)device.get(SYSFS_PATH);
         @SuppressWarnings("unchecked")
         ValueMap attrs = new ValueMap((Map<String, Object>) device.get(ENTRIES));
+        ValueMap extraAttrs = null;
+        if (device.get(EXTRA_ENTRIES) != null) {
+            extraAttrs = new ValueMap((Map<String, Object>) device.get(EXTRA_ENTRIES));
+        }
+        else {
+            extraAttrs = new ValueMap();
+        }
 
         String subsys = attrs.getValueAsString("SUBSYSTEM");
         String pciClass = attrs.getValueAsString("PCI_CLASS");
@@ -948,8 +958,9 @@ public class HardwareMapper {
         }
 
         if (subsys.equals("scsi")) {
-            if (attrs.getValueAsString("DEVTYPE").equals("scsi_device")) {
-                int devType = getScsiDevType(minionId, sysfsPath);
+            if (attrs.getValueAsString("DEVTYPE").equals("scsi_device") &&
+                    extraAttrs != null) {
+                long devType = extraAttrs.getValueAsLong("SCSI_SYS_TYPE").orElse(-1L);
                 if (devType == 0 || devType == 14) {
                     return Device.CLASS_HD;
                 }
@@ -980,13 +991,6 @@ public class HardwareMapper {
         }
 
         return null;
-    }
-
-    // FIXME: Can we find this scsi dev type without calling Salt again?
-    private int getScsiDevType(String minionId, String sysfsPath) {
-        String path = "/sys" + sysfsPath + "/type";
-        LOG.warn("FIXME: Need to get contents of file: " + path);
-        return -1;
     }
 
     private String parsePciBaseClass(String pciClass) {
