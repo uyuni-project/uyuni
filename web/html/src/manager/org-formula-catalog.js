@@ -1,12 +1,12 @@
 'use strict';
 
-var React = require("react");
+const React = require("react");
 const ReactDOM = require("react-dom");
 const {Table, Column, SearchField} = require("../components/table");
-var PanelComponent = require("../components/panel");
-var Messages = require("../components/messages").Messages;
-var Network = require("../utils/network");
-var Panel = PanelComponent.Panel;
+const PanelComponent = require("../components/panel");
+const Messages = require("../components/messages").Messages;
+const Network = require("../utils/network");
+const Panel = PanelComponent.Panel;
 
 
 var FormulaCatalog = React.createClass({

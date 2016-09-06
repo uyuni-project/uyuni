@@ -143,11 +143,11 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
         if element.get("$type", "text") in ["group", "hidden-group"]:
             value = merge_formula_data(element, group_data.get(element_name, dict()), system_data.get(element_name, dict()), element_scope)
         elif element_scope == "system":
-            value = system_data.get(element_name, group_data.get(element_name, element.get("$default", None)))
+            value = system_data.get(element_name, group_data.get(element_name, element.get("$default", element.get("$placeholder", ""))))
         elif element_scope == "group":
-            value = group_data.get(element_name, element.get("$default", None))
+            value = group_data.get(element_name, element.get("$default", element.get("$placeholder", "")))
         elif element_scope == "readonly":
-            value = element.get("$default", None)
+            value = element.get("$default", element.get("$placeholder", ""))
 
         if value is not None:
             ret[element_name] = value
