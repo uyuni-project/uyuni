@@ -69,7 +69,7 @@ public class HardwareMapper {
     private static final Pattern PRINTER_REGEX = Pattern.compile(".*/lp\\d+$");
     private static final String SYSFS_PATH = "P";
     private static final String ENTRIES = "E";
-    private static final String EXTRA_ENTRIES = "X";
+    private static final String EXTRA_ENTRIES = "X-Mgr";
 
     /**
      * Create a hardware mapper for a given server with grains.
