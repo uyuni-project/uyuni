@@ -106,7 +106,7 @@ public class KickstartHandler extends BaseHandler {
     }
 
     /**
-     * Import a kickstart profile into RHN. This method will maintain the
+     * Import a kickstart profile into Satellite. This method will maintain the
      * url/nfs/harddrive/cdrom command in the kickstart file rather than replace
      * it with the kickstartable tree's default URL.
      *
@@ -117,7 +117,7 @@ public class KickstartHandler extends BaseHandler {
      * @param kickstartFileContents Contents of a kickstart file.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a kickstart profile into RHN.
+     * @xmlrpc.doc Import a kickstart profile into Satellite.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
@@ -139,7 +139,7 @@ public class KickstartHandler extends BaseHandler {
     }
 
     /**
-     * Import a kickstart profile into RHN, overriding the
+     * Import a kickstart profile into Satellite, overriding the
      * url/nfs/harddrive/cdrom command in the file and replacing it with the
      * default URL for the kickstartable tree and kickstart host specified.
      *
@@ -154,7 +154,7 @@ public class KickstartHandler extends BaseHandler {
      * @param kickstartFileContents Contents of a kickstart file.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a kickstart profile into RHN.
+     * @xmlrpc.doc Import a kickstart profile into Satellite.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
@@ -180,7 +180,7 @@ public class KickstartHandler extends BaseHandler {
     }
 
     /**
-     * Import a kickstart profile into RHN, overriding the
+     * Import a kickstart profile into Satellite, overriding the
      * url/nfs/harddrive/cdrom command in the file and replacing it with the
      * default URL for the kickstartable tree and kickstart host specified.
      *
@@ -197,7 +197,7 @@ public class KickstartHandler extends BaseHandler {
      * for the profile. Valid choices are "none" or "all".
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a kickstart profile into RHN.
+     * @xmlrpc.doc Import a kickstart profile into Satellite.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
@@ -262,7 +262,7 @@ public class KickstartHandler extends BaseHandler {
      * for the profile. Valid choices are "none" or "all".
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a kickstart profile into RHN.
+     * @xmlrpc.doc Import a kickstart profile into Satellite.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "profileLabel" "Label for the new
      * kickstart profile.")
@@ -323,7 +323,7 @@ public class KickstartHandler extends BaseHandler {
      * @param rootPassword Root password.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a kickstart profile into RHN.
+     * @xmlrpc.doc Import a kickstart profile into Satellite.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "profileLabel" "Label for the new
      * kickstart profile.")
@@ -357,7 +357,7 @@ public class KickstartHandler extends BaseHandler {
      * @param rootPassword Root password.
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a kickstart profile into RHN.
+     * @xmlrpc.doc Import a kickstart profile into Satellite.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
@@ -393,7 +393,7 @@ public class KickstartHandler extends BaseHandler {
      * for the profile. Valid choices are "none" or "all".
      * @return 1 if successful, exception otherwise.
      *
-     * @xmlrpc.doc Import a kickstart profile into RHN.
+     * @xmlrpc.doc Import a kickstart profile into Satellite.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "profileLabel", "Label for the new
      * kickstart profile.")
@@ -652,7 +652,7 @@ public class KickstartHandler extends BaseHandler {
     }
 
     /**
-     * Import a kickstart profile into RHN, overriding the
+     * Import a kickstart profile into Satellite, overriding the
      * url/nfs/harddrive/cdrom command in the file and replacing it with the
      * default URL for the kickstartable tree and kickstart host specified.
      *
@@ -684,7 +684,7 @@ public class KickstartHandler extends BaseHandler {
     }
 
     /**
-     * Import a kickstart profile into RHN, overriding the
+     * Import a kickstart profile into Satellite, overriding the
      * url/nfs/harddrive/cdrom command in the file and replacing it with the
      * default URL for the kickstartable tree and kickstart host specified.
      *

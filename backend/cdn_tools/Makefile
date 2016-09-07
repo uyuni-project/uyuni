@@ -5,7 +5,7 @@ SUBDIR	= cdn_tools
 SUBDIRS = 
 SPACEWALK_FILES	= __init__  constants  manifest \
             activation cdnsync
-SCRIPTS = cdn-activate cdn-sync
+SCRIPTS = cdn-sync
 
 # check if we can build man pages
 DOCBOOK = $(wildcard /usr/bin/docbook2man)
@@ -24,6 +24,14 @@ include $(TOP)/Makefile.defs
 all :: $(SCRIPTS)
 install :: $(SCRIPTS) $(PREFIX)/$(BINDIR)
 	$(INSTALL_BIN) $(SCRIPTS) $(PREFIX)/$(BINDIR)
+
+ifneq ($(DOCBOOK),)
+# install man pages
+all	:: $(MANS)
+install :: $(MANS) $(PREFIX)/$(MANDIR)
+	$(INSTALL_DATA) $(MANS) $(PREFIX)/$(MANDIR)/man8
+endif
+
 
 %.new : %
 	sed -e 's|@@ROOT@@|$(ROOT)|g' <$* >$@

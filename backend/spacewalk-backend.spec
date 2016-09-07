@@ -40,7 +40,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.37
+Version: 2.6.46
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -916,13 +916,59 @@ rm -f %{rhnconf}/rhnSecret.py*
 %if 0%{?rhel} > 5 || 0%{?fedora} || 0%{?suse_version}
 %files cdn
 %defattr(-,root,root)
-%attr(755,root,root) %{_bindir}/cdn-activate
 %attr(755,root,root) %{_bindir}/cdn-sync
 %dir %{pythonrhnroot}/cdn_tools
 %{pythonrhnroot}/cdn_tools/*.py*
+%attr(755,root,%{apache_group}) %dir %{_var}/log/rhn/cdnsync
+%{_mandir}/man8/cdn-sync.8*
 %endif
 
 %changelog
+* Wed Sep 07 2016 Gennadii Altukhov <galt@redhat.com> 2.6.46-1
+- fixup man page for cdn-sync
+
+* Tue Sep 06 2016 Gennadii Altukhov <galt@redhat.com> 2.6.45-1
+- add man page for cdn-sync
+
+* Tue Sep 06 2016 Jan Dobes 2.6.44-1
+- try to speed up RHEL kickstart syncing by not downloading release-notes
+
+* Mon Sep 05 2016 Jan Dobes 2.6.43-1
+- dropping quiet flag, it's not much useful now
+- try to recover from incorrect updateinfo.xml
+- change log level handling in reposync
+- adding some basic info into man page
+- unused variable
+- split reposync and cdnsync log directories
+- fixing TypeError when filename is None
+- kickstarts from external repositories have full path in DB
+
+* Fri Sep 02 2016 Jan Dobes 2.6.42-1
+- fixing rhnpush
+
+* Fri Sep 02 2016 Gennadii Altukhov <galt@redhat.com> 2.6.41-1
+- reposync - rewrite HTML parser for Kickstart repositories
+- Added the capability for spacewalk-debug to grab the user's preferences for
+  timezone and language locale
+- fixing path
+
+* Tue Aug 30 2016 Gennadii Altukhov <galt@redhat.com> 2.6.40-1
+- add possibility to use certificate from manifest
+
+* Fri Aug 26 2016 Jan Dobes 2.6.39-1
+- make sure images from treeinfo are included regardless on directory listing
+- do not show internal DB id
+- detect treeinfo file
+- split listing files and downloading
+- there can be missing mappings for kickstart trees currently
+- do cdn activation in rhn-satellite-activate
+- add manifest parameter for rhn-satellite-activate
+- dropping cdn-activate script
+
+* Mon Aug 22 2016 Jan Dobes 2.6.38-1
+- update kickstart syncing code
+- fixing pylint: too-many-nested-blocks, little refactoring
+
 * Thu Aug 18 2016 Jan Dobes 2.6.37-1
 - fixing import
 - apply formatting changes on file in original location and drop it from cdn

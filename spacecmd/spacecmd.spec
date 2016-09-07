@@ -8,7 +8,7 @@
 %endif
 
 Name:        spacecmd
-Version:     2.6.5
+Version:     2.6.10
 Release:     1%{?dist}
 Summary:     Command-line interface to Spacewalk and Satellite servers
 
@@ -94,6 +94,37 @@ PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 %doc %{_mandir}/man1/spacecmd.1.gz
 
 %changelog
+* Tue Sep 06 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.6.10-1
+- 1251949 - spacecmd: Repaired compiling regexps to avoid error: multiple
+  repeat
+
+* Wed Aug 31 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.6.9-1
+- 1209646 - spacecmd: Added systemID to report_inactivesystems output
+- 1367562 - spacecmd: Added output to logging.debug from softwarechannel_sync
+  func
+- 1179333 - spacecmd: Modified IF statement in due to fails according BZ
+
+* Wed Aug 31 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.6.8-1
+- Added seconds to HELP_TIME_OPTS
+
+* Tue Aug 30 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.6.7-1
+- Fix summary displayed when applying multiple errata
+
+* Mon Aug 22 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.6.6-1
+- Add start time to system_applyerrata
+- Accept -s option in errata_apply
+- Add start time to errata_apply
+- spacecmd: Add system_reboot examples to man page
+- spacecmd: Skip time prompt when running with --yes
+- spacecmd: Add start time to system_schedulepackagerefresh
+- spacecmd: Add start time to system_schedulehardwarerefresh
+- spacecmd: Add start time to system_syncpackages
+- spacecmd: Add start time to system_deployconfigfiles
+- spacecmd: Add start time to system_upgradepackage
+- spacecmd: Add start time to system_removepackage
+- spacecmd: Add start time to system_installpackage
+- spacecmd: Add start time to system_reboot
+
 * Thu Aug 18 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.6.5-1
 - Repaired package listing.
 - Added seconds to timeparse func.
