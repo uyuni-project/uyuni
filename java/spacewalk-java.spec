@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.25
+Version: 2.6.29
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -984,6 +984,22 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Sep 06 2016 Jiri Dostal <jdostal@redhat.com> 2.6.29-1
+- 1356173 - kickstart.profile.set_advanced_options does not update kickstart
+  file
+
+* Fri Sep 02 2016 Grant Gainey 2.6.28-1
+- Make heading match navigation: "Managed Systems"
+
+* Fri Sep 02 2016 Grant Gainey 2.6.27-1
+- Redirect user to a meaningful page after requesting details of non-existing
+  Action Chain
+
+* Mon Aug 29 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.6.26-1
+- removed unwanted chars and lines from previous commit
+- Changed from 'RHN' to 'Satellite' in API doc.
+- Revert "1282838 - Fix extremely slow channel.software.syncErrata API"
+
 * Wed Aug 10 2016 Jiri Dostal <jdostal@redhat.com> 2.6.25-1
 - 1357824 - Kickstart advanced options accept required options without argument
 - Kickstart AdvancedOptions ISE without URL

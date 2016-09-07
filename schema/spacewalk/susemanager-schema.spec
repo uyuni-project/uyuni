@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        SQL schema for Spacewalk server
 
-Version:        2.6.7
+Version:        2.6.9
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -87,6 +87,13 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Sep 02 2016 Grant Gainey 2.6.9-1
+- Avoid a deadlock when deleting a server
+
+* Wed Aug 24 2016 Grant Gainey 2.6.8-1
+- 1369559 - adjust pgres autovacuum settings for rhnChannelPackage to make
+  rapid, large, size-changes more performant
+
 * Fri Aug 12 2016 Jan Dobes 2.6.7-1
 - enable deb type
 

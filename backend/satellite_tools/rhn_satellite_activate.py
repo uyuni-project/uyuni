@@ -35,6 +35,13 @@ from spacewalk.common import rhnLib, fileutils
 from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server.rhnServer import satellite_cert
+# Try to import cdn activation module if available
+try:
+    from spacewalk.cdn_tools import activation as cdn_activation
+    from spacewalk.cdn_tools.manifest import Manifest
+except ImportError:
+    cdn_activation = None
+    Manifest = None
 
 
 DEFAULT_SYSTEMID_LOCATION = '/etc/sysconfig/rhn/systemid'
@@ -481,6 +488,7 @@ def processCommandline():
         Option('-v', '--verbose', action='count',      help='be verbose '
                + '(accumulable: -vvv means "be *really* verbose").'),
         Option('--dump-version', action='store', help="requested version of XML dump"),
+        Option('--manifest',     action='store',      help='the RHSM manifest path/filename to activate for CDN'),
     ]
 
     options, args = OptionParser(option_list=options).parse_args()
@@ -492,14 +500,24 @@ def processCommandline():
 
     initCFG('server.satellite')
 
-    # systemid, rhn-cert
+    # systemid
     if not options.systemid:
         options.systemid = DEFAULT_SYSTEMID_LOCATION
     options.systemid = fileutils.cleanupAbsPath(options.systemid)
 
-    if not options.rhn_cert:
+    if not options.rhn_cert and not options.manifest:
         print "NOTE: using backup cert as default: %s" % DEFAULT_RHN_CERT_LOCATION
         options.rhn_cert = DEFAULT_RHN_CERT_LOCATION
+
+    if options.manifest:
+        if not cdn_activation:
+            sys.stderr.write("ERROR: Package spacewalk-backend-cdn has to be installed for using --manifest.\n")
+            sys.exit(1)
+        cdn_manifest = Manifest(options.manifest)
+        tmp_cert_path = cdn_manifest.get_certificate_path()
+        if tmp_cert_path is not None:
+            options.rhn_cert = tmp_cert_path
+
     options.rhn_cert = fileutils.cleanupAbsPath(options.rhn_cert)
     if not os.path.exists(options.rhn_cert):
         sys.stderr.write("ERROR: RHN Cert (%s) does not exist\n" % options.rhn_cert)
@@ -568,6 +586,12 @@ def main():
     def writeError(e):
         sys.stderr.write('\nERROR: %s\n' % e)
 
+    # Handle RHSM manifest
+    if options.manifest:
+        cdn_activate = cdn_activation.Activation(options.manifest, options.rhn_cert)
+    else:
+        cdn_activate = None
+
     # general sanity/GPG check
     try:
         validateSatCert(options.rhn_cert, options.verbose)
@@ -584,7 +608,7 @@ def main():
                 'RHN Certificate appears to have expired: %s' % just_date)
             return 11
 
-    if not options.sanity_only:
+    if not options.sanity_only and not options.manifest:
         prepRhnCert(options)
 
         # remote activation
@@ -629,6 +653,9 @@ def main():
             except PopulateChannelFamiliesException, e:
                 writeError(e)
                 return 40
+
+    elif cdn_activate:
+        cdn_activate.run()
 
     return 0
 
