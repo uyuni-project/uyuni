@@ -20,9 +20,34 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <property name="release" column="release" type="string" />
     <property name="productId" column="product_id" type="long" />
     <property name="free" column="free" type="yes_no" not-null="true" />
+
+    <set name="upgrades" inverse="true" table="SUSEUpgradePath">
+      <key column="from_pdid"/>
+      <many-to-many column="to_pdid"
+                    class="com.redhat.rhn.domain.product.SUSEProduct"/>
+    </set>
+
+    <set name="downgrades" table="SUSEUpgradePath">
+      <key column="to_pdid"/>
+      <many-to-many column="from_pdid"
+                    class="com.redhat.rhn.domain.product.SUSEProduct"/>
+    </set>
+
+    <set name="extensions" inverse="true" table="SUSEProductExtension">
+      <key column="base_pdid"/>
+      <many-to-many column="ext_pdid"
+                    class="com.redhat.rhn.domain.product.SUSEProduct"/>
+    </set>
+    <set name="bases" table="SUSEProductExtension">
+      <key column="ext_pdid"/>
+      <many-to-many column="base_pdid"
+                      class="com.redhat.rhn.domain.product.SUSEProduct"/>
+    </set>
+
   </class>
 
   <query name="SUSEProduct.clear">
     <![CDATA[delete from com.redhat.rhn.domain.product.SUSEProduct]]>
   </query>
+
 </hibernate-mapping>
