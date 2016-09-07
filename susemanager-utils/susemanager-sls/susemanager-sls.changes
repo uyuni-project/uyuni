@@ -1,3 +1,11 @@
+------------------------------------------------------------------
+Wed Sep 07 13:55:06 CEST 2016 - bwerner@suse.com
+
+- version 0.1.15-1
+- Add formula directory and formulas.sls file
+- Add formula_metadata directory with README
+- Modified ext pillar to include formula data
+
 -------------------------------------------------------------------
 Wed Apr 06 08:46:20 CEST 2016 - mc@suse.de
 
