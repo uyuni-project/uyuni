@@ -39,10 +39,6 @@ class RepoSyncTest(unittest.TestCase):
         # kill logging
         self.reposync.rhnLog.initLOG = Mock()
 
-        # don't read configs
-        self.reposync.initCFG = Mock()
-        self.reposync.CFG = Mock()
-
         # catching stdout
         # this could be assertRaisesRegexp in python>=2.7. just sayin'
         self.saved_stdout = sys.stdout
@@ -82,7 +78,6 @@ class RepoSyncTest(unittest.TestCase):
 
         # these should have been set automatically
         self.assertEqual(rs.fail, False)
-        self.assertEqual(rs.quiet, False)
         self.assertEqual(rs.interactive, True)
 
     def test_init_with_custom_url(self):
@@ -95,11 +90,9 @@ class RepoSyncTest(unittest.TestCase):
                                     'channel_family_id': None}])
 
     def test_init_with_custom_flags(self):
-        rs = self._init_reposync('Label', RTYPE, fail=True, quiet=True,
-                               noninteractive=True)
+        rs = self._init_reposync('Label', RTYPE, fail=True, noninteractive=True)
 
         self.assertEqual(rs.fail, True)
-        self.assertEqual(rs.quiet, True)
         self.assertEqual(rs.interactive, False)
 
     def test_init_wrong_url(self):
@@ -145,11 +138,11 @@ class RepoSyncTest(unittest.TestCase):
         self.reposync.RepoSync.get_compatible_arches = Mock(return_value=['arch1', 'arch2'])
         self.assertRaises(SystemExit, self.reposync.RepoSync, 'Label',
                           'bad-repo-type')
-        self.assertEqual("Repository type bad-repo-type is not supported. "
-                         "Could not import "
-                         "spacewalk.satellite_tools."
-                         "repo_plugins.bad-repo-type_src.\n",
-                         self.stderr.getvalue())
+        self.assertIn("Repository type bad-repo-type is not supported. "
+                      "Could not import "
+                      "spacewalk.satellite_tools."
+                      "repo_plugins.bad-repo-type_src.\n",
+                      self.stderr.getvalue())
 
     def test_sync_success_no_regen(self):
         rs = self._init_reposync()
@@ -161,10 +154,9 @@ class RepoSyncTest(unittest.TestCase):
         rs = self._mock_sync(rs)
         rs.sync()
 
-        self.assertEqual(rs.repo_plugin.call_args,
-                         (('bogus-url', rs.channel_label, True, False, True),
-                          {}))
-        self.assertEqual(rs.print_msg.call_args, (("Total time: 0:00:00",), {}))
+        self.assertEqual(rs.repo_plugin.call_args[0],
+                         (('bogus-url', rs.channel_label, True, True)))
+        self.assertEqual(self.reposync.log.call_args[0][1], "Total time: 0:00:00")
 
         self.assertEqual(rs.import_packages.call_args,
                          ((rs.mocked_plugin, 42, "bogus-url"), {}))
@@ -191,7 +183,7 @@ class RepoSyncTest(unittest.TestCase):
 
         # don't test everything we already tested in sync_success_no_regen, just
         # see if the operation was successful
-        self.assertEqual(rs.print_msg.call_args, (("Total time: 0:00:00",), {}))
+        self.assertEqual(self.reposync.log.call_args[0][1], "Total time: 0:00:00")
 
         self.assertEqual(self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription.call_args,
                          ((["Label"], [], "server.app.yumreposync"), {}))
@@ -208,8 +200,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertRaises(SystemExit, rs.sync)
         self.assertEqual(rs.sendErrorMail.call_args,
                          (("anony-error", ), {}))
-        self.assertEqual(rs.print_msg.call_args,
-                         ((exception, ), {}))
+        self.assertEqual(self.reposync.log.call_args[0][1], exception)
 
     def test_sync_raises_unexpected_error(self):
         rs = self._create_mocked_reposync()
@@ -218,7 +209,7 @@ class RepoSyncTest(unittest.TestCase):
         rs.sendErrorMail = Mock()
         self.assertRaises(SystemExit, rs.sync)
 
-        error_string = rs.print_msg.call_args[0][0]
+        error_string = self.reposync.log.call_args[0][1]
         assert (error_string.startswith('Traceback') and
                 'TypeError' in error_string), (
             "The error string does not contain the keywords "
@@ -436,10 +427,10 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(self.reposync, [])
         self.assertEqual(rs._updates_process_packages(packages, 'patchy', []),
                          [])
-        self.assertEqual(rs.print_msg.call_args, (
-                ("The package n2-e2:v2-r2.arch2 "
-                 "which is referenced by patch patchy was not found "
-                 "in the database. This patch has been skipped.", ),{}))
+        self.assertEqual(self.reposync.log.call_args[0][1],
+                "The package n2-e2:v2-r2.arch2 "
+                "which is referenced by patch patchy was not found "
+                "in the database. This patch has been skipped.")
 
     def test_updates_process_packages_checksum_not_found_no_epoch(self):
         rs = self._create_mocked_reposync()
@@ -456,10 +447,10 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(self.reposync, [])
         self.assertEqual(rs._updates_process_packages(packages, 'patchy', []),
                          [])
-        self.assertEqual(rs.print_msg.call_args, (
-                ("The package n1-v1-r1.arch1 "
-                 "which is referenced by patch patchy was not found "
-                 "in the database. This patch has been skipped.", ),{}))
+        self.assertEqual(self.reposync.log.call_args[0][1],
+                "The package n1-v1-r1.arch1 "
+                "which is referenced by patch patchy was not found "
+                "in the database. This patch has been skipped.")
 
     def test_updates_process_packages_checksum_not_found_but_not_available(self):
         rs = self._create_mocked_reposync()
@@ -474,7 +465,7 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(self.reposync, [])
         self.assertEqual(rs._updates_process_packages(packages, 'patchy', []),
                          [])
-        self.assertEqual(rs.print_msg.call_args, None)
+        self.assertEqual(self.reposync.log.call_args, None)
 
     # RedHat has errata with empty package list
     # they removed the check - therefor this is disabled too
@@ -568,7 +559,6 @@ class RepoSyncTest(unittest.TestCase):
         rs = self._create_mocked_reposync()
 
         rs.set_repo_credentials(url)
-        self.assertFalse(self.reposync.CFG.get.called)
         self.assertEqual(url['source_url'], "http://example.com")
 
     def test_set_repo_credentials_old_default_credentials_bad(self):
@@ -590,8 +580,7 @@ class RepoSyncTest(unittest.TestCase):
         }
 
         self.assertRaises(SystemExit, rs.set_repo_credentials, url)
-        self.assertFalse(self.reposync.CFG.get.called)
-        self.assertTrue(rs.error_msg.called)
+        self.assertTrue(self.stderr.getvalue() != "")
 
     def test_set_repo_credentials_number_credentials(self):
         rs = self._create_mocked_reposync()
@@ -702,8 +691,7 @@ class RepoSyncTest(unittest.TestCase):
         rs.import_groups = Mock()
         self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription = Mock()
         self.reposync.taskomatic.add_to_erratacache_queue = Mock()
-
-        rs.print_msg = Mock()
+        self.reposync.log = Mock()
 
         rs.mocked_plugin = Mock()
         rs.mocked_plugin.num_packages = 0
@@ -874,7 +862,6 @@ class RunScriptTest(unittest.TestCase):
                         {
                             "no_errata": False,
                             "sync_kickstart": False,
-                            "quiet": False,
                             "fail": True,
                             "channel": {
                                 "chann_1": [
@@ -927,7 +914,6 @@ class RunScriptTest(unittest.TestCase):
                 {
                     "no_errata": False,
                     "sync_kickstart": False,
-                    "quiet": False,
                     "fail": True,
                     "channel": {"chann_1": "http://example.com/repo1"}
                 }
@@ -959,8 +945,8 @@ def test_channel_exceptions():
     rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N", "channel_family_id": None}]
     rs.import_packages = Mock()
     rs.import_updates = Mock()
-    rs.print_msg = Mock()
     rs.mocked_plugin = Mock()
+    rs.log = Mock()
     rs.repo_plugin = Mock(return_value=rs.mocked_plugin)
     rs.update_date = Mock()
     rs.sendErrorMail = Mock()
@@ -981,8 +967,6 @@ def check_channel_exceptions(rs, exc_class, exc_name):
 
     assert_raises(SystemExit, rs.sync)
     assert_equal(rs.sendErrorMail.call_args,
-                 (("%s: %s" % (exc_name, "error msg"), ), {}))
-    assert_equal(rs.print_msg.call_args,
                  (("%s: %s" % (exc_name, "error msg"), ), {}))
 
 

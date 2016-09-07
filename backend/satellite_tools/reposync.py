@@ -199,7 +199,7 @@ def getCustomChannels():
 class RepoSync(object):
 
     def __init__(self, channel_label, repo_type, url=None, fail=False,
-                 quiet=False, filters=None, no_errata=False, sync_kickstart=False, latest=False,
+                 filters=None, no_errata=False, sync_kickstart=False, latest=False,
                  metadata_only=False, strict=0, excluded_urls=None, no_packages=False, log_dir="reposync", log_level=None,
                  noninteractive=False, deep_verify=False):
         self.regen = False
@@ -299,7 +299,7 @@ class RepoSync(object):
                 # pylint: disable=W0703
                 try:
                     plugin = self.repo_plugin(
-                        url, self.channel_label, insecure, self.quiet, self.interactive)
+                        url, self.channel_label, insecure, self.interactive)
                     if data['id'] is not None:
                         keys = rhnSQL.fetchone_dict("""
                         select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
