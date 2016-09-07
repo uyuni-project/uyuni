@@ -55,6 +55,18 @@ public class SUSEProductSet {
     }
 
     /**
+     * Construct a {@link SUSEProductSet} using given SUSEProducts.
+     * @param baseProductIn base product
+     * @param addonProductsIn list of addon products
+     */
+    public SUSEProductSet(SUSEProduct baseProductIn, List<SUSEProduct> addonProductsIn) {
+        setBaseProduct(baseProductIn);
+        for (SUSEProduct l : addonProductsIn) {
+            addAddonProduct(l);
+        }
+    }
+
+    /**
      * Construct a {@link SUSEProductSet} using a set of InstalledProducts.
      * @param products list of installed products
      */
