@@ -1354,7 +1354,7 @@
                                 "DRIVER": "sd",
                                 "DEVPATH": "/devices/vio/2000/host0/target0:0:0/0:0:0:0"
                             },
-                            "X": {
+                            "X-Mgr": {
                                 "SCSI_SYS_TYPE": "0"
                             }
                         },

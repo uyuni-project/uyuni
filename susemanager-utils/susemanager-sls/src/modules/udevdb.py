@@ -106,5 +106,5 @@ def add_scsi_info(dev):
         if scsi_type['retcode'] != 0:
             raise CommandExecutionError(scsi_type['stderr'])
 
-        dev['X'] = {}
-        dev['X']['SCSI_SYS_TYPE'] = scsi_type['stdout']
+        dev['X-Mgr'] = {}
+        dev['X-Mgr']['SCSI_SYS_TYPE'] = scsi_type['stdout']
