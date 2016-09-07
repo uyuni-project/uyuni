@@ -823,7 +823,7 @@
                                 "DRIVER": "sr",
                                 "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata1/host1/target1:0:0/1:0:0:0"
                             },
-                            "X": {
+                            "X-Mgr": {
                                 "SCSI_SYS_TYPE": "0"
                             }
                         },
@@ -1931,7 +1931,7 @@
                                 "DRIVER": "sd",
                                 "DEVPATH": "/devices/pci0000:00/0000:00:09.0/host0/target0:0:0/0:0:0:0"
                             },
-                            "X": {
+                            "X-Mgr": {
                                 "SCSI_SYS_TYPE": "0"
                             }
                         },
