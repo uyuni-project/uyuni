@@ -1,8 +1,0 @@
-{
-    "IPv6": {
-      "interface": "eth0",
-      "source": "fe80::5054:ff:fed0:91",
-      "destination": "fe80::5054:ff:fe5a:ce80",
-      "gateway": null
-    }
-}
