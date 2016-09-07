@@ -118,7 +118,7 @@ class YumUpdateMetadata(UpdateMetadata):
                             no.add(un)
 
 class ContentSource:
-    def __init__(self, url, name, insecure=False, quiet=False, interactive=True, yumsrc_conf=YUMSRC_CONF): 
+    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=YUMSRC_CONF):
         # pylint can't see inside the SplitResult class
         # pylint: disable=E1103
         if urlparse.urlsplit(url).scheme:
@@ -127,7 +127,6 @@ class ContentSource:
           self.url = "file://%s" % url
         self.name = name
         self.insecure = insecure
-        self.quiet = quiet
         self.interactive = interactive
         self.yumbase = yum.YumBase()
         self.yumbase.preconf.fn = yumsrc_conf
@@ -603,8 +602,7 @@ class ContentSource:
 
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
-        if not self.quiet:
-            sys.stderr.write(str(message) + "\n")
+        sys.stderr.write(str(message) + "\n")
 
     def get_groups(self):
         try:

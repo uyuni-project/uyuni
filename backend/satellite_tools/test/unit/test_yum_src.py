@@ -60,7 +60,6 @@ class YumSrcTest(unittest.TestCase):
         cs = self._make_dummy_cs()
 
         self.assertFalse(cs.insecure)
-        self.assertFalse(cs.quiet)
         self.assertTrue(cs.interactive)
         assert isinstance(cs.repo, Mock)
 
