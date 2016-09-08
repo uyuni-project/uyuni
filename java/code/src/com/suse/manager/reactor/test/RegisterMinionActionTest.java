@@ -43,6 +43,7 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.manager.distupgrade.test.DistUpgradeManagerTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -88,20 +89,20 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @FunctionalInterface
     private interface ExpectationsFunction {
 
-        Expectations apply(SaltService saltServiceMock, ActivationKey key) throws Exception;
+        Expectations apply(SaltService saltServiceMock, String key) throws Exception;
 
     }
 
     @FunctionalInterface
     private interface ActivationKeySupplier {
 
-        ActivationKey get() throws Exception;
+        String get() throws Exception;
     }
 
     @FunctionalInterface
     private interface Assertions {
 
-        void accept(MinionServer minion, String machineId, ActivationKey key);
+        void accept(MinionServer minion, String machineId, String key);
 
     }
 
@@ -113,7 +114,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 will(returnValue(Optional.of(MACHINE_ID)));
                 if (key != null) {
                     allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, null, key.getKey())));
+                    will(returnValue(getGrains(MINION_ID, null, key)));
                 }
                 allowing(saltServiceMock).getCpuInfo(MINION_ID);
                 will(returnValue(getCpuInfo(MINION_ID)));
@@ -136,7 +137,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 "TestGroup", "group for tests", user.getOrg());
         key.setServerGroups(Collections.singleton(testGroup));
         ActivationKeyFactory.save(key);
-        return key;
+        return key.getKey();
     };
 
     private Assertions SLES_ASSERTIONS = (minion, machineId, key) -> {
@@ -159,6 +160,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         // Verify activation key
         if (key != null) {
+            ActivationKey keyObj = ActivationKeyFactory.lookupByKey(key);
             Optional<Set<PackageState>> packageStates = StateFactory.latestPackageStates(minion);
             assertTrue(packageStates.isPresent());
             packageStates.ifPresent(states -> {
@@ -169,12 +171,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(state.getVersionConstraint(), VersionConstraints.ANY);
                 });
             });
-            assertEquals(key.getBaseChannel(), minion.getBaseChannel());
-            ServerGroup testGroup = key.getServerGroups().stream().findFirst().get();
+            assertEquals(keyObj.getBaseChannel(), minion.getBaseChannel());
+            ServerGroup testGroup = keyObj.getServerGroups().stream().findFirst().get();
             assertTrue("Server should have the testGroup ServerGroup",
                     ServerGroupFactory.listServers(testGroup).contains(minion));
-            assertEquals(key.getOrg(), minion.getOrg());
-            Optional<Server> server = key.getToken().getActivatedServers().stream()
+            assertEquals(keyObj.getOrg(), minion.getOrg());
+            Optional<Server> server = keyObj.getToken().getActivatedServers().stream()
                     .findFirst()
                     .filter(minion::equals);
             assertTrue("Server should be a activated system on the activation key", server.isPresent());
@@ -208,7 +210,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
 
-        ActivationKey key = keySupplier != null ? keySupplier.get() : null;
+        String key = keySupplier != null ? keySupplier.get() : null;
 
         // Register a minion via RegisterMinionAction and mocked SaltService
         if (expectations != null) {
@@ -236,6 +238,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Server server = ServerTestUtils.createTestSystem(user);
         server.setMachineId(MACHINE_ID);
         ServerFactory.save(server);
+        SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
         executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (minion, machineId, key) -> {
             SLES_ASSERTIONS.accept(minion, machineId, key);
@@ -339,7 +342,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).syncModules(with(any(String.class)));
 
                     allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, "rhel", key.getKey())));
+                    will(returnValue(getGrains(MINION_ID, "rhel", key)));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release"));
                     will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server")))));
@@ -359,7 +362,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     key.setBaseChannel(resChannel);
                     key.setOrg(user.getOrg());
                     ActivationKeyFactory.save(key);
-                    return key;
+                    return key.getKey();
                 },
                 (minion, machineId, key) -> {
                     assertEquals("7Server", minion.getRelease());

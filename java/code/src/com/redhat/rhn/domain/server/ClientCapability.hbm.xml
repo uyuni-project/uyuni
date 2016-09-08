@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping
+        PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.redhat.rhn.domain.server.ClientCapability"
+           table="rhnClientCapability" mutable="false">
+
+        <composite-id name="id" class="com.redhat.rhn.domain.server.ClientCapabilityId">
+            <key-many-to-one name="server"
+                             class="com.redhat.rhn.domain.server.Server"
+                             column="server_id"/>
+            <key-many-to-one name="capability"
+                             class="com.redhat.rhn.domain.server.Capability"
+                             column="capability_name_id"/>
+        </composite-id>
+
+        <property name="version" column="version" not-null="true" type="long"/>
+        <property name="created" column="CREATED" not-null="true" type="timestamp" insert="false" update="false"/>
+        <property name="modified" column="MODIFIED" not-null="true" type="timestamp" insert="false" update="false"/>
+    </class>
+</hibernate-mapping>
