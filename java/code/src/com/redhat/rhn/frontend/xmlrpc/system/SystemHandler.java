@@ -4110,7 +4110,11 @@ public class SystemHandler extends BaseHandler {
         if (details.containsKey("contact_method")) {
             ContactMethod contactMethod = ServerFactory.findContactMethodByLabel(
                     (String) details.get("contact_method"));
-            if (contactMethod != null) {
+            if (server.asMinionServer().isPresent()) {
+                throw new FaultException(-1, "contactMethodChangeNotAllowed",
+                        "Changing the contact method is not allowed for Salt systems.");
+            }
+            else if (contactMethod != null) {
                 server.setContactMethod(contactMethod);
             }
             else {
