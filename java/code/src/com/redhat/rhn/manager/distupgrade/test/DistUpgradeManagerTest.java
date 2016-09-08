@@ -113,6 +113,24 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         assertTrue(targetProductSets.isEmpty());
     }
 
+    public void testGetTargetProductSetsEmptyWithTarget() throws Exception {
+        // Setup source products
+        ChannelFamily family = createTestChannelFamily();
+        SUSEProduct sourceProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProductSet sourceProducts = new SUSEProductSet(
+                sourceProduct, Collections.emptyList());
+
+        SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sourceProduct.setUpgrades(Collections.singleton(targetBaseProduct));
+
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
+                sourceProducts);
+        assertNotNull(targetProductSets);
+        assertEquals(1, targetProductSets.size());
+        assertEquals(targetBaseProduct, targetProductSets.get(0).getBaseProduct());
+        assertTrue(targetProductSets.get(0).getAddonProducts().isEmpty());
+    }
+
     /**
      * Test getTargetProductSets(): No target product found.
      * @throws Exception if anything goes wrong

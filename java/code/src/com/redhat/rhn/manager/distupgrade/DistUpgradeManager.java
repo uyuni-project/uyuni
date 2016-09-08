@@ -218,7 +218,7 @@ public class DistUpgradeManager extends BaseManager {
 
     private static List<SUSEProductSet> removeIncompatibleCombinations(
             List<SUSEProductSet> migrations) {
-        final List<SUSEProductSet> result = new ArrayList<>(migrations.size());
+        final List<SUSEProductSet> result = new ArrayList<>(migrations);
         // migrations.clone.each do |combination|
         for (SUSEProductSet combination : migrations) {
             // combination_base_product = combination.first
@@ -232,9 +232,9 @@ public class DistUpgradeManager extends BaseManager {
                 // the intersection or only the base product
                 HashSet<SUSEProduct> intersection = new HashSet<>(product.getBases());
                 intersection.retainAll(combination.getAddonProducts());
-                if (!intersection.isEmpty() ||
-                        product.getBases().contains(combination.getBaseProduct())) {
-                    result.add(combination);
+                if (intersection.isEmpty() &&
+                        !product.getBases().contains(combination.getBaseProduct())) {
+                    result.remove(combination);
                 }
             }
         }
