@@ -157,6 +157,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
                     // change base channel
                     minion.getChannels().clear();
+                    // remove all previous capabilities
+                    SystemManager.removeAllCapabilities(minion.getId());
 
                     // add reactivation event to server history
                     ServerHistoryEvent historyEvent = new ServerHistoryEvent();
