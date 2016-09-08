@@ -56,6 +56,7 @@ import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
@@ -67,6 +68,7 @@ import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.test.GuestBuilder;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.NetworkInterfaceTest;
 import com.redhat.rhn.domain.server.test.NetworkTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -1660,6 +1662,21 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             fail("Setting invalid contact method should throw exception!");
         }
         catch (FaultException e) {
+            // expected
+        }
+    }
+
+    public void testSetDetailsContactMethodForSalt() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
+
+        Map details = new HashMap();
+        details.put("contact_method", "ssh-push");
+        try {
+            handler.setDetails(admin, new Integer(server.getId().intValue()), details);
+            fail("Modifying contact method on salt system should throw exception!");
+        }
+        catch (FaultException e) {
+            assertEquals("contactMethodChangeNotAllowed", e.getLabel());
             // expected
         }
     }
