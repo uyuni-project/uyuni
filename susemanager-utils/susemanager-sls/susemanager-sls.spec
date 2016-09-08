@@ -73,5 +73,5 @@ ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
 /usr/share/susemanager/modules/pillar
 /usr/share/susemanager/modules/tops
 /usr/share/susemanager/formulas
-/srv/formula_data
+/srv/formula_metadata
 %ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
