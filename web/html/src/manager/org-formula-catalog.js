@@ -8,7 +8,6 @@ const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const Panel = PanelComponent.Panel;
 
-
 var FormulaCatalog = React.createClass({
 
     getInitialState: function() {
