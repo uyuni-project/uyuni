@@ -1679,9 +1679,20 @@ tree will not be usable for autoinstalling.
         <source>SP Migration</source>
       </trans-unit>
 
+      <!-- Target -->
+      <trans-unit id="spmigration.jsp.target.title">
+        <source>Service Pack Migration - Target</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.target.submit">
+        <source>Target Migration</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.targetProductSelectedEmpty">
+        <source>Please select one target product to migrate</source>
+      </trans-unit>
+
       <!-- Setup -->
       <trans-unit id="spmigration.jsp.setup.title">
-        <source>Service Pack Migration</source>
+        <source>Service Pack Migration - Channels</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.installed-products">
         <source>Installed Products:</source>
