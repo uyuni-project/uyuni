@@ -181,6 +181,8 @@ public class Router implements SparkApplication {
         // Formula catalog API
         get("/manager/api/formula-catalog/data",
                 withOrgAdmin(FormulaCatalogController::data));
+        get("/manager/api/formula-catalog/formula/:name/data",
+                withOrgAdmin(FormulaCatalogController::detailsData));
 
         // Formulas
         get("/manager/groups/details/formulas",

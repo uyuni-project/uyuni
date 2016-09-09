@@ -57,7 +57,7 @@ public class FormulaCatalogController {
     }
 
     /**
-     * Return the JSON data to render in the formula list page.
+     * Return the JSON data to render the formula list page.
      * @param request the http request
      * @param response the http response
      * @param user the current user
@@ -83,13 +83,22 @@ public class FormulaCatalogController {
             return null;
         }
 
-        // TODO: show more details about the formula/allow editing?
-        Map<String, Object> formulaData = new HashMap<>();
-        formulaData.put("name", formulaName);
-
         Map<String, Object> data = new HashMap<>();
-        data.put("formulaData", GSON.toJson(formulaData));
-
+        data.put("formulaName", formulaName);
         return new ModelAndView(data, "formula_catalog/formula.jade");
+    }
+
+    /**
+     * Return the JSON data to render the details for a formula.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the JSON data
+     */
+    public static String detailsData(Request request, Response response, User user) {
+        String formulaName = request.params("name");
+
+        response.type("application/json");
+        return GSON.toJson(FormulaFactory.getMetadata(formulaName));
     }
 }
