@@ -8372,6 +8372,8 @@
             className="com.redhat.rhn.frontend.struts.RhnActionMapping"
             parameter="dispatch">
       <set-property property="postRequiredIfSubmitted" value="true" />
+      <forward name="target"
+               path="/WEB-INF/pages/systems/spmigration/spmigration-target.jsp" />
       <forward name="setup"
                path="/WEB-INF/pages/systems/spmigration/spmigration-setup.jsp" />
       <forward name="confirm"
