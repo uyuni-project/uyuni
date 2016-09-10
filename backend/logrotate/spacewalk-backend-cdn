@@ -1,18 +1,7 @@
 # logrotation file for Spacewalk Server
 #
 
-/var/log/rhn/rhn_server_satellite.log {
-    weekly
-    rotate 5
-    copytruncate
-    compress
-    notifempty
-    missingok
-    size=10M
-    su wwwrun www
-}
-
-/var/log/rhn/reposync.log {
+/var/log/rhn/cdnsync.log {
     weekly
     rotate 5
     copytruncate
@@ -23,7 +12,7 @@
 #LOGROTATE-3.8#    su root apache
 }
 
-/var/log/rhn/reposync/*.log {
+/var/log/rhn/cdnsync/*.log {
     weekly
     rotate 5
     copytruncate
