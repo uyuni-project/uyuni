@@ -57,7 +57,9 @@ class BootstrapMinions extends React.Component {
 
     manageWithSSHChanged(event) {
         this.setState({
-            manageWithSSH: event.target.checked
+            manageWithSSH: event.target.checked,
+            user: "",
+            port: ""
         });
     }
 
@@ -148,14 +150,14 @@ class BootstrapMinions extends React.Component {
                     <label className="col-md-3 control-label">SSH Port:</label>
                     <div className="col-md-6">
                         <input name="port" className="form-control numeric set-maxlength-width" type="text" maxLength="5"
-                          placeholder="22" onChange={this.portChanged} onKeyPress={numericValidate} value={this.state.port}
+                          placeholder="22" onChange={this.portChanged} onKeyPress={numericValidate} value={this.state.port} disabled={this.state.manageWithSSH}
                           title={t('Port range: 1 - 65535')}/>
                     </div>
                 </div>
                 <div className="form-group">
                     <label className="col-md-3 control-label">User:</label>
                     <div className="col-md-6">
-                        <input name="user" className="form-control" type="text" placeholder="root" value={this.state.user} onChange={this.userChanged}/>
+                        <input name="user" className="form-control" type="text" placeholder="root" value={this.state.user} disabled={this.state.manageWithSSH} onChange={this.userChanged}/>
                     </div>
                 </div>
                 <div className="form-group">
