@@ -82,11 +82,13 @@
                         </label>
                         <div class="col-sm-10">
                             <ul class="form-control-static products-list">
+                                <c:set var="itemCounter" scope="page" value="0" />
                                 <c:forEach items="${targetProducts}" var="target">
                                     <li>
                                         <input type="radio" name="targetProductSelected"
                                             id="target${target.baseProduct.id}"
-                                            value="${target.baseProduct.id}" />
+                                            value="${target.baseProduct.id}"
+                                            ${itemCounter == 0 ? "checked" : "" } />
                                         <label for="target${target.baseProduct.id}">
                                             <strong><c:out value="${target.baseProduct.friendlyName}" /></strong>
                                             <ul>
@@ -99,6 +101,7 @@
                                             </ul>
                                         </label>
                                     </li>
+                                    <c:set var="itemCounter" scope="page" value="${itemCounter+1}"/>
                                 </c:forEach>
                             </ul>
                         </div>
