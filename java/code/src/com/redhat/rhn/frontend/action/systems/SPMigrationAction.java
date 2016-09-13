@@ -196,10 +196,13 @@ public class SPMigrationAction extends RhnAction {
             List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                     getTargetProductSets(installedProducts);
 
-            // Get and Decode the target product selected to migrate
-            SUSEProductSet targetProducts = migrationTargets.stream()
-                    .filter(target -> target.getBaseProduct().getId() == Long.valueOf(targetProductSelected))
-                    .findFirst().get();
+            // Get and decode the target product selected to migrate
+            SUSEProductSet targetProducts = new SUSEProductSet();
+            for(SUSEProductSet target : migrationTargets) {
+                if (target.getBaseProduct().getId() == Long.valueOf(targetProductSelected)) {
+                    targetProducts = target;
+                }
+            }
             request.setAttribute(TARGET_PRODUCTS, targetProducts);
 
             // Get the base channel
