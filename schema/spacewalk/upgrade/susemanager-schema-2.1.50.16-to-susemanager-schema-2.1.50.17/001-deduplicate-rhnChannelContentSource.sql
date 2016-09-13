@@ -42,6 +42,12 @@ UPDATE rhnChannelContentSource
   )
 ;
 
+DELETE FROM rhncontentsourcefilter
+  WHERE rhncontentsourcefilter.source_id NOT IN (
+    SELECT source_id
+      FROM rhnChannelContentSource
+  );
+
 DELETE FROM rhnContentSource
   WHERE rhnContentSource.id NOT IN (
     SELECT source_id
