@@ -10,6 +10,19 @@ bootstrap_repo:
     - template: jinja
     - mode: 644
 
+{%- if grains['os_family'] == 'RedHat' %}
+trust_suse_manager_tools_gpg_key:
+  cmd.run:
+{%- if grains['osmajorrelease'] == '6' %}
+    - name: rpm --import https://{{ salt['pillar.get']('master') }}/pub/sle11-gpg-pubkey-307e3d54-53287cdc.key
+    - unless: rpm -q gpg-pubkey-307e3d54-53287cdc
+{%- elif grains['osmajorrelease'] == '7' %}
+    - name: rpm --import https://{{ salt['pillar.get']('master') }}/pub/sle12-gpg-pubkey-39db7c82-510a966b.key
+    - unless: rpm -q gpg-pubkey-39db7c82-510a966b
+{%- endif %}
+    - user: root
+{%- endif %}
+
 salt-minion-package:
   pkg.installed:
     - name: salt-minion
