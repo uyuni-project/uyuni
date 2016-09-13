@@ -1,5 +1,10 @@
-/etc/zypp/repos.d/susemanager:bootstrap.repo:
+bootstrap_repo:
   file.managed:
+{%- if grains['os_family'] == 'Suse' %}
+    - name: /etc/zypp/repos.d/susemanager:bootstrap.repo
+{%- elif grains['os_family'] == 'RedHat' %}
+    - name: /etc/yum.repos.d/susemanager:bootstrap.repo
+{%- endif %}
     - source:
       - salt://bootstrap/bootstrap.repo
     - template: jinja
@@ -9,7 +14,7 @@ salt-minion-package:
   pkg.installed:
     - name: salt-minion
     - require:
-      - file: /etc/zypp/repos.d/susemanager:bootstrap.repo
+      - file: bootstrap_repo
 
 /etc/salt/minion.d/susemanager.conf:
   file.managed:
