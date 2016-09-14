@@ -41,9 +41,11 @@ mkdir -p %{buildroot}/usr/share/susemanager/salt/_beacons
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_modules
 mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
 mkdir -p %{buildroot}/usr/share/susemanager/modules/tops
+mkdir -p %{buildroot}/usr/share/susemanager/pillar
 cp -R salt/* %{buildroot}/usr/share/susemanager/salt
 cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
 cp -R modules/tops/* %{buildroot}/usr/share/susemanager/modules/tops
+cp -R pillar/* %{buildroot}/usr/share/susemanager/pillar
 
 # Manually install Python part to already prepared structure
 cp src/beacons/pkgset.py %{buildroot}/usr/share/susemanager/salt/_beacons
@@ -61,6 +63,7 @@ ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
 %defattr(-,root,root)
 %dir /usr/share/susemanager
 /usr/share/susemanager/salt
+/usr/share/susemanager/pillar
 /usr/share/susemanager/modules
 /usr/share/susemanager/modules/pillar
 /usr/share/susemanager/modules/tops

@@ -14,13 +14,14 @@ bootstrap_repo:
 trust_suse_manager_tools_gpg_key:
   cmd.run:
 {%- if grains['osmajorrelease'] == '6' %}
-    - name: rpm --import https://{{ salt['pillar.get']('master') }}/pub/sle11-gpg-pubkey-307e3d54-53287cdc.key
-    - unless: rpm -q gpg-pubkey-307e3d54-53287cdc
+    - name: rpm --import https://{{ salt['pillar.get']('master') }}/pub/{{ salt['pillar.get']('gpgkeys:res6tools:file') }}
+    - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res6tools:name') }}
 {%- elif grains['osmajorrelease'] == '7' %}
-    - name: rpm --import https://{{ salt['pillar.get']('master') }}/pub/sle12-gpg-pubkey-39db7c82-510a966b.key
-    - unless: rpm -q gpg-pubkey-39db7c82-510a966b
+    - name: rpm --import https://{{ salt['pillar.get']('master') }}/pub/{{ salt['pillar.get']('gpgkeys:res7tools:file') }}
+    - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res7tools:name') }}
 {%- endif %}
     - user: root
+
 {%- endif %}
 
 salt-minion-package:
