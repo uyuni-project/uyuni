@@ -22,6 +22,11 @@ trust_suse_manager_tools_gpg_key:
 {%- endif %}
     - user: root
 
+trust_res_gpg_key:
+  cmd.run:
+    - name: rpm --import https://{{ salt['pillar.get']('master') }}/pub/{{ salt['pillar.get']('gpgkeys:res:file') }}
+    - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res:name') }}
+    - user: root
 {%- endif %}
 
 salt-minion-package:
