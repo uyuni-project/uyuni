@@ -271,3 +271,7 @@ def idn_ascii_to_puny(hostname):
     else:
         hostname = i18n.ustr(hostname)
         return hostname.encode('idna')
+
+
+idn_pune_to_unicode = idn_puny_to_unicode
+idn_ascii_to_pune = idn_ascii_to_puny
