@@ -2,6 +2,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ page import="com.redhat.rhn.frontend.action.systems.SPMigrationAction" %>
 
 <html:html>
 
@@ -86,10 +87,10 @@
                                 <c:forEach items="${targetProducts}" var="target">
                                     <li>
                                         <input type="radio" name="targetProductSelected"
-                                            id="target${target.baseProduct.id}"
-                                            value="${target.baseProduct.id}"
+                                            id="target${itemCounter}"
+                                            value="${SPMigrationAction.serializeProductIDs(target.getProductIDs())}"
                                             ${itemCounter == 0 ? "checked" : "" } />
-                                        <label for="target${target.baseProduct.id}">
+                                        <label for="target${itemCounter}">
                                             <strong><c:out value="${target.baseProduct.friendlyName}" /></strong>
                                             <ul>
                                                 <c:forEach items="${target.addonProducts}"
