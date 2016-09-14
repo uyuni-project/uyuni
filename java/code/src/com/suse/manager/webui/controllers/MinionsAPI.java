@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -41,6 +42,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -193,8 +195,7 @@ public class MinionsAPI {
         JSONBootstrapHosts input = GSON.fromJson(request.body(), JSONBootstrapHosts.class);
         List<String> errors = InputValidator.INSTANCE.validateBootstrapInput(input);
         if (!errors.isEmpty()) {
-            return bootstrapResult(response, false,
-                    errors.toArray(new String[errors.size()]));
+            return bootstrapResult(response, false, errors);
         }
 
         // Setup pillar data to be passed when applying the bootstrap state
@@ -209,8 +210,9 @@ public class MinionsAPI {
 
         // Generate minion keys and accept the public key
         if (SALT_SERVICE.keyExists(input.getHost())) {
-            return bootstrapResult(response, false, "A key for this host (" +
-                    input.getHost() + ") seems to already exist, please check!");
+            return bootstrapResult(response, false, Collections.singletonList(
+                    "A key for this host (" +
+                    input.getHost() + ") seems to already exist, please check!"));
         }
         com.suse.manager.webui.utils.salt.Key.Pair keyPair =
                 SALT_SERVICE.generateKeysAndAccept(input.getHost(), false);
@@ -247,26 +249,31 @@ public class MinionsAPI {
                     error -> {
                         LOG.error("Error during bootstrap: " + error.toString());
                         SALT_SERVICE.deleteKey(input.getHost());
-                        return bootstrapResult(response, false, error.toString());
+                        return bootstrapResult(response, false, Collections.singletonList(error.toString()));
                     },
                     r -> {
                         // We have results, check if result = true for all the single states
-                        String message = null;
+                        List<String> message;
                         boolean stateApplyResult = r.getReturn().isPresent();
                         if (stateApplyResult) {
-                            for (State.ApplyResult apply : r.getReturn().get().values()) {
-                                if (!apply.isResult()) {
-                                    stateApplyResult = false;
-                                    message = "Bootstrap failed (retcode=" +
-                                            r.getRetcode() + "): " + apply.getComment();
-                                    break;
+                            message = r.getReturn().get().entrySet().stream().flatMap(entry -> {
+                                if (!entry.getValue().isResult()) {
+                                    return Stream.of(entry.getKey() + " (retcode=" +
+                                            r.getRetcode() + "): " + entry.getValue().getComment());
                                 }
-                            }
+                                else {
+                                    return Stream.empty();
+                                }
+                            }).collect(Collectors.toList());
+                            stateApplyResult = message != null;
+                            LOG.error(message.stream().collect(Collectors.joining("\n")));
                         }
                         else {
-                            message = r.getStdout().filter(s -> !s.isEmpty())
+                            message = Collections.singletonList(
+                                    r.getStdout().filter(s -> !s.isEmpty())
                                     .orElseGet(() -> r.getStderr().filter(s -> !s.isEmpty())
-                                    .orElseGet(() -> "No result for " + input.getHost()));
+                                    .orElseGet(() -> "No result for " + input.getHost()))
+                            );
                             LOG.info(message);
                         }
 
@@ -287,7 +294,7 @@ public class MinionsAPI {
     }
 
     private static String bootstrapResult(Response response, boolean success,
-            String... messages) {
+            List<String> messages) {
         LOG.info("Bootstrap success: " + success);
         Map<String, Object> ret = new LinkedHashMap<>();
         ret.put("success", success);
