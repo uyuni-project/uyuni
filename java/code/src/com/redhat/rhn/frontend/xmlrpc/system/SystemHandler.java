@@ -5874,6 +5874,9 @@ public class SystemHandler extends BaseHandler {
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         Server server = lookupServer(loggedInUser, serverId);
         SUSEProductSet installedProducts = server.getInstalledProductSet();
+        if(installedProducts == null) {
+            throw new FaultException(-1, "listMigrationTargetError", "Server has no Products installed.");
+        }
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts);
         for (SUSEProductSet ps : migrationTargets) {
