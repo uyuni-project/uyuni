@@ -1,15 +1,39 @@
-/etc/zypp/repos.d/susemanager:bootstrap.repo:
+bootstrap_repo:
   file.managed:
+{%- if grains['os_family'] == 'Suse' %}
+    - name: /etc/zypp/repos.d/susemanager:bootstrap.repo
+{%- elif grains['os_family'] == 'RedHat' %}
+    - name: /etc/yum.repos.d/susemanager:bootstrap.repo
+{%- endif %}
     - source:
       - salt://bootstrap/bootstrap.repo
     - template: jinja
     - mode: 644
 
+{%- if grains['os_family'] == 'RedHat' %}
+trust_suse_manager_tools_gpg_key:
+  cmd.run:
+{%- if grains['osmajorrelease'] == '6' %}
+    - name: rpm --import https://{{ salt['pillar.get']('master') }}/pub/{{ salt['pillar.get']('gpgkeys:res6tools:file') }}
+    - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res6tools:name') }}
+{%- elif grains['osmajorrelease'] == '7' %}
+    - name: rpm --import https://{{ salt['pillar.get']('master') }}/pub/{{ salt['pillar.get']('gpgkeys:res7tools:file') }}
+    - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res7tools:name') }}
+{%- endif %}
+    - user: root
+
+trust_res_gpg_key:
+  cmd.run:
+    - name: rpm --import https://{{ salt['pillar.get']('master') }}/pub/{{ salt['pillar.get']('gpgkeys:res:file') }}
+    - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res:name') }}
+    - user: root
+{%- endif %}
+
 salt-minion-package:
   pkg.installed:
     - name: salt-minion
     - require:
-      - file: /etc/zypp/repos.d/susemanager:bootstrap.repo
+      - file: bootstrap_repo
 
 /etc/salt/minion.d/susemanager.conf:
   file.managed:
