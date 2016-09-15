@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -160,21 +161,41 @@ public class SUSEProductTestUtils {
      * SLE-HA12 SP1 x86_64
      */
     public static void createVendorSUSEProducts() {
-        SUSEProduct product = new SUSEProduct();
-        product.setName("sles");
-        product.setVersion("12.1");
-        product.setFriendlyName("SUSE Linux Enterprise Server 12 SP1");
-        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        product.setProductId(1322);
-        TestUtils.saveAndFlush(product);
+        SUSEProduct productHA121 = new SUSEProduct();
+        productHA121.setName("sle-ha");
+        productHA121.setVersion("12.1");
+        productHA121.setFriendlyName("SUSE Linux Enterprise High Availability Extension 12 SP1");
+        productHA121.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        productHA121.setProductId(1324);
+        TestUtils.saveAndFlush(productHA121);
 
-        product = new SUSEProduct();
-        product.setName("sle-ha");
-        product.setVersion("12.1");
-        product.setFriendlyName("SUSE Linux Enterprise High Availability Extension 12 SP1");
-        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        product.setProductId(1324);
-        TestUtils.saveAndFlush(product);
+        SUSEProduct productSLES121 = new SUSEProduct();
+        productSLES121.setName("sles");
+        productSLES121.setVersion("12.1");
+        productSLES121.setFriendlyName("SUSE Linux Enterprise Server 12 SP1");
+        productSLES121.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        productSLES121.setProductId(1322);
+        productSLES121.setExtensions(Collections.singleton(productHA121));
+        TestUtils.saveAndFlush(productSLES121);
+
+        SUSEProduct productHA12 = new SUSEProduct();
+        productHA12.setName("sle-ha");
+        productHA12.setVersion("12");
+        productHA12.setFriendlyName("SUSE Linux Enterprise High Availability Extension 12");
+        productHA12.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        productHA12.setProductId(1245);
+        productHA12.setUpgrades(Collections.singleton(productHA121));
+        TestUtils.saveAndFlush(productHA12);
+
+        SUSEProduct productSLES12 = new SUSEProduct();
+        productSLES12.setName("sles");
+        productSLES12.setVersion("12");
+        productSLES12.setFriendlyName("SUSE Linux Enterprise Server 12");
+        productSLES12.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        productSLES12.setProductId(1117);
+        productSLES12.setUpgrades(Collections.singleton(productSLES121));
+        productSLES121.setExtensions(Collections.singleton(productHA12));
+        TestUtils.saveAndFlush(productSLES12);
     }
 
     /**
