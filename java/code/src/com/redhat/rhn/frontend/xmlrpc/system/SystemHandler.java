@@ -5869,13 +5869,14 @@ public class SystemHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
-    public List<Map<String, Object>> listMigrationTargets(User loggedInUser, Integer serverId) {
+    public List<Map<String, Object>> listMigrationTargets(User loggedInUser,
+            Integer serverId) {
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         Server server = lookupServer(loggedInUser, serverId);
         SUSEProductSet installedProducts = server.getInstalledProductSet();
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts);
-        for(SUSEProductSet ps : migrationTargets) {
+        for (SUSEProductSet ps : migrationTargets) {
             Map<String, Object> target = new HashMap<String, Object>();
 
             target.put("ident", SPMigrationAction.serializeProductIDs(ps.getProductIDs()));
@@ -5932,7 +5933,8 @@ public class SystemHandler extends BaseHandler {
      *
      * @param loggedInUser the currently logged in user
      * @param sid ID of the server
-     * @param targetIdent identifier for the selected migration target ({@link #listMigrationTargets})
+     * @param targetIdent identifier for the selected migration
+     *                    target ({@link #listMigrationTargets})
      * @param baseChannelLabel label of the target base channel
      * @param optionalChildChannels labels of optional child channels to subscribe
      * @param dryRun set to true to perform a dry run
@@ -5983,19 +5985,20 @@ public class SystemHandler extends BaseHandler {
                 installedProducts);
         if (targets.size() > 0) {
             SUSEProductSet targetProducts = null;
-            if(StringUtils.isBlank(targetIdent)) {
+            if (StringUtils.isBlank(targetIdent)) {
                 targetProducts = targets.get(targets.size() - 1);
             }
             else {
-                for(SUSEProductSet target : targets) {
-                    String ident = SPMigrationAction.serializeProductIDs(target.getProductIDs());
+                for (SUSEProductSet target : targets) {
+                    String ident = SPMigrationAction
+                            .serializeProductIDs(target.getProductIDs());
                     if (ident.equals(targetIdent)) {
                         targetProducts = target;
                         break;
                     }
                 }
             }
-            if(targetProducts == null) {
+            if (targetProducts == null) {
                 throw new FaultException(-1, "servicePackMigrationNoTarget",
                         "No target found for SP migration");
             }

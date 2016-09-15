@@ -158,7 +158,8 @@ public class SPMigrationAction extends RhnAction {
 
         // if submitting step 1 (TARGET) but no radio button
         // for target migration selected, return step 1 (TARGET)
-        if (dispatch != null && actionStep.equals(TARGET) && targetProductSelected == null) {
+        if (dispatch != null && actionStep.equals(TARGET) &&
+                targetProductSelected == null) {
             targetProductSelectedEmpty = true;
             dispatch = null;
         }
@@ -200,8 +201,9 @@ public class SPMigrationAction extends RhnAction {
 
             // Get and decode the target product selected to migrate
             SUSEProductSet targetProducts = new SUSEProductSet();
-            for(SUSEProductSet target : migrationTargets) {
-                if (serializeProductIDs(target.getProductIDs()).equals(targetProductSelected)) {
+            for (SUSEProductSet target : migrationTargets) {
+                if (serializeProductIDs(target.getProductIDs())
+                        .equals(targetProductSelected)) {
                     targetProducts = target;
                 }
             }
