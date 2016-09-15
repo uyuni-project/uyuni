@@ -52,11 +52,11 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     /** True if the product is 'free' */
     private boolean free;
 
-    /** available extensions for this product; */
-    private Set<SUSEProduct> extensions;
+    /** available extensions for this product */
+    private Set<SUSEProduct> extensionFor;
 
-    /** available extensions for this product; */
-    private Set<SUSEProduct> bases;
+    /** available extensions that this product is an extension for */
+    private Set<SUSEProduct> extensionOf;
 
     /** available upgrades for this product; */
     private Set<SUSEProduct> upgrades;
@@ -196,32 +196,32 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      * List base products for this product
      * @return list base products for this product
      */
-    public Set<SUSEProduct> getBases() {
-        return bases;
+    public Set<SUSEProduct> getExtensionOf() {
+        return extensionOf;
     }
 
     /**
      * List extension products for this product
      * @return list extension products for this product
      */
-    public Set<SUSEProduct> getExtensions() {
-        return extensions;
+    public Set<SUSEProduct> getExtensionFor() {
+        return extensionFor;
     }
 
     /**
      * Set the list extension products for this product
      * @param extensionsIn list of extension products
      */
-    public void setExtensions(Set<SUSEProduct> extensionsIn) {
-        this.extensions = extensionsIn;
+    public void setExtensionFor(Set<SUSEProduct> extensionsIn) {
+        this.extensionFor = extensionsIn;
     }
 
     /**
      * Set the list base products for this product
      * @param basesIn list of base products
      */
-    public void setBases(Set<SUSEProduct> basesIn) {
-        this.bases = basesIn;
+    public void setExtensionOf(Set<SUSEProduct> basesIn) {
+        this.extensionOf = basesIn;
     }
 
     /**
