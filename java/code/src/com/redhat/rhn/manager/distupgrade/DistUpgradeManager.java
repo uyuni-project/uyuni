@@ -226,10 +226,10 @@ public class DistUpgradeManager extends BaseManager {
                 //        migrations.delete(combination)
                 //        break
                 //end
-                HashSet<SUSEProduct> intersection = new HashSet<>(product.getBases());
+                HashSet<SUSEProduct> intersection = new HashSet<>(product.getExtensionOf());
                 intersection.retainAll(combination.getAddonProducts());
                 if (intersection.isEmpty() &&
-                        !product.getBases().contains(combination.getBaseProduct())) {
+                        !product.getExtensionOf().contains(combination.getBaseProduct())) {
                     result.remove(combination);
                 }
             }

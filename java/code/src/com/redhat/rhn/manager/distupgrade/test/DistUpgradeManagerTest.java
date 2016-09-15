@@ -155,8 +155,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         List<SUSEProduct> sourceAddons = new ArrayList<>();
         SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        sourceAddonProduct.setBases(Collections.singleton(sourceBaseProduct));
-        sourceBaseProduct.setExtensions(Collections.singleton(sourceAddonProduct));
+        sourceAddonProduct.setExtensionOf(Collections.singleton(sourceBaseProduct));
+        sourceBaseProduct.setExtensionFor(Collections.singleton(sourceAddonProduct));
 
         sourceAddons.add(sourceAddonProduct);
         SUSEProductSet sourceProducts = new SUSEProductSet(sourceBaseProduct, sourceAddons);
@@ -168,8 +168,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup target addon product + upgrade path
         SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
-        targetAddonProduct.setBases(new HashSet(Arrays.asList(targetBaseProduct, sourceBaseProduct)));
-        targetBaseProduct.setExtensions(Collections.singleton(targetAddonProduct));
+        targetAddonProduct.setExtensionOf(new HashSet(Arrays.asList(targetBaseProduct, sourceBaseProduct)));
+        targetBaseProduct.setExtensionFor(Collections.singleton(targetAddonProduct));
 
         // Verify that target products are returned correctly
 
