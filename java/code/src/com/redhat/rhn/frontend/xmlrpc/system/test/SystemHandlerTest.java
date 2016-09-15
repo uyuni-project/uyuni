@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
@@ -53,6 +54,7 @@ import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -98,6 +100,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.profile.ProfileManager;
@@ -115,6 +118,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -136,6 +140,8 @@ import java.util.regex.Pattern;
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
     private SystemHandler handler = new SystemHandler();
+    private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
+    private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
 
     public void testGetNetworkDevices() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -2254,4 +2260,53 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertTrue(m.matches());
     }
 
+    public void testListMigrationTargetNoProducts() throws Exception {
+
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        boolean thrown = false;
+        try {
+            handler.listMigrationTargets(admin, server.getId().intValue());
+        }
+        catch(FaultException e) {
+            if(e.getMessage().contains("Server has no Products installed")) {
+                thrown = true;
+            }
+        }
+        assertTrue("Expected exception not thrown", thrown);
+    }
+
+    public void testListMigrationTarget() throws Exception {
+        File upgradePathsXML = new File(
+                TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
+
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.setUpgradePathsXML(upgradePathsXML);
+
+        SUSEProductTestUtils.createVendorSUSEProducts();
+
+        InstalledProduct installedPrd = new InstalledProduct();
+        installedPrd.setName("SLES");
+        installedPrd.setVersion("12");
+        installedPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        installedPrd.setBaseproduct(true);
+        assertNull(installedPrd.getId());
+
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        assertNotNull(server);
+        assertNotNull(server.getId());
+
+        Set<InstalledProduct> products = new HashSet<>();
+        products.add(installedPrd);
+
+        server.setInstalledProducts(products);
+        TestUtils.saveAndReload(server);
+
+        assertNotNull(server.getInstalledProductSet());
+
+        server.getInstalledProductSet().getBaseProduct().getUpgrades();
+
+        List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
+
+        assertNotEmpty("no target found", result);
+    }
 }
