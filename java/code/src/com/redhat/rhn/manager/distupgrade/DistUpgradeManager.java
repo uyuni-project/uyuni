@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.distupgrade;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.suse.utils.Lists;
 import org.apache.log4j.Logger;
 
@@ -52,6 +54,8 @@ import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import static com.suse.utils.Lists.listOfListComparator;
 
 /**
  * Business logic for performing distribution upgrades.
@@ -202,6 +206,18 @@ public class DistUpgradeManager extends BaseManager {
         return ret;
     }
 
+    public static final Comparator<SUSEProduct> PRODUCT_VERSION_COMPARATOR =
+            new Comparator<SUSEProduct>() {
+        @Override
+        public int compare(SUSEProduct o1, SUSEProduct o2) {
+            return new RpmVersionComparator().compare(o1, o2);
+        }
+    };
+
+    public static final Comparator<List<SUSEProduct>> PRODUCT_LIST_VERSION_COMPARATOR =
+            listOfListComparator(PRODUCT_VERSION_COMPARATOR);
+
+
     /**
      * Calculate the valid migration targets for a given product set.
      *
@@ -211,6 +227,20 @@ public class DistUpgradeManager extends BaseManager {
     public static List<SUSEProductSet> getTargetProductSets(
             SUSEProductSet installedProducts) {
         List<SUSEProductSet> migrationTargets = migrationTargets(installedProducts);
+        Collections.sort(migrationTargets, new Comparator<SUSEProductSet>() {
+            @Override
+            public int compare(SUSEProductSet o1, SUSEProductSet o2) {
+                int i = PRODUCT_VERSION_COMPARATOR
+                        .compare(o1.getBaseProduct(), o2.getBaseProduct());
+                if (i != 0) {
+                    return i;
+                }
+                else {
+                    return PRODUCT_LIST_VERSION_COMPARATOR
+                            .compare(o1.getAddonProducts(), o2.getAddonProducts());
+                }
+            }
+        });
         return removeIncompatibleCombinations(migrationTargets);
     }
 
