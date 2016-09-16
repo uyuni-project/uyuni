@@ -33,12 +33,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                     class="com.redhat.rhn.domain.product.SUSEProduct"/>
     </set>
 
-    <set name="extensions" inverse="true" table="SUSEProductExtension">
+    <set name="extensionFor" inverse="true" table="SUSEProductExtension">
       <key column="base_pdid"/>
       <many-to-many column="ext_pdid"
                     class="com.redhat.rhn.domain.product.SUSEProduct"/>
     </set>
-    <set name="bases" table="SUSEProductExtension">
+    <set name="extensionOf" table="SUSEProductExtension">
       <key column="ext_pdid"/>
       <many-to-many column="base_pdid"
                       class="com.redhat.rhn.domain.product.SUSEProduct"/>
