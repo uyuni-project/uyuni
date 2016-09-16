@@ -102,9 +102,6 @@ import java.util.stream.Collectors;
  * ActionManager - the singleton class used to provide Business Operations
  * on Actions where those operations interact with other top tier Business
  * Objects.
- *
- * Operations that require the Action make changes to
- * @version $Rev$
  */
 public class ActionManager extends BaseManager {
     private static Logger log = Logger.getLogger(ActionManager.class);
@@ -434,7 +431,7 @@ public class ActionManager extends BaseManager {
         }
 
         //if this is a pointless action, don't do it.
-        if (a.getRhnActionConfigFileName().size() < 1) {
+        if (a.getConfigFileNameAssociations().size() < 1) {
             return null;
         }
 
