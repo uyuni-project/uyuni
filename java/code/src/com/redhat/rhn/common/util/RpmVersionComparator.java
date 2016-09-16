@@ -27,12 +27,12 @@ import java.util.Comparator;
  *
  * @version $Rev$
  */
-public class RpmVersionComparator implements Comparator {
+public class RpmVersionComparator implements Comparator<String> {
 
     /**
      * {@inheritDoc}
      */
-    public int compare(Object o1, Object o2) {
+    public int compare(String o1, String o2) {
         // This method tries to mimick rpmvercmp.c as
         // closely as possible; it is deliberately doing things
         // in a more C-like manner
