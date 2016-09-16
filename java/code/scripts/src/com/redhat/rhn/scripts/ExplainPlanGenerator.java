@@ -89,77 +89,79 @@ public class ExplainPlanGenerator {
         Connection conn = null;
         try {
             session = HibernateFactory.getSession();
-            conn = session.connection();
             PrintStream out = new PrintStream(new FileOutputStream(outfile));
 
-            Collection fileKeys = ModeFactory.getKeys();
+            session.doWork((connection) -> {
 
-            TreeSet ts = new TreeSet(fileKeys);
-            Iterator i = ts.iterator();
-            while (i.hasNext()) {
-                String file = (String)i.next();
-                Map queries = ModeFactory.getFileKeys(file);
-                if (file.equals("test_queries")) {
-                    continue;
-                }
-                out.println("\nFile:   " + file);
+                Collection fileKeys = ModeFactory.getKeys();
 
-                Iterator q = new TreeSet(queries.keySet()).iterator();
-                int count = 0;
-                while (q.hasNext()) {
-                    Mode m = (Mode)queries.get(q.next());
-
-                    /* Don't do plans for queries that use system tables or for
-                     * dummy queries.
-                     */
-                    if (shouldSkip(m)) {
-                        out.println("\nSkipping dummy query:  " + m.getName());
+                TreeSet ts = new TreeSet(fileKeys);
+                Iterator i = ts.iterator();
+                while (i.hasNext()) {
+                    String file = (String)i.next();
+                    Map queries = ModeFactory.getFileKeys(file);
+                    if (file.equals("test_queries")) {
                         continue;
                     }
-                    if (!(m instanceof SelectMode)) {
-                        out.println("\nSkipping Write or Callable mode: " + m.getName());
-                        continue;
+                    out.println("\nFile:   " + file);
+
+                    Iterator q = new TreeSet(queries.keySet()).iterator();
+                    int count = 0;
+                    while (q.hasNext()) {
+                        Mode m = (Mode)queries.get(q.next());
+
+                        /* Don't do plans for queries that use system tables or for
+                         * dummy queries.
+                         */
+                        if (shouldSkip(m)) {
+                            out.println("\nSkipping dummy query:  " + m.getName());
+                            continue;
+                        }
+                        if (!(m instanceof SelectMode)) {
+                            out.println("\nSkipping Write or Callable mode: " + m.getName());
+                            continue;
+                        }
+                        out.println("\nPlan for " + m.getName());
+
+                        String query = "EXPLAIN PLAN " +
+                            "SET STATEMENT_ID='" + QUERY_NAME + "' FOR " +
+                            m.getQuery().getOrigQuery();
+
+                        // HACK!  Some of the queries actually have %s in them.
+                        // So, replace all %s with :rbb so that the explain plan
+                        // can be generated.
+                        query = query.replaceAll("%s", ":rbb");
+
+                        PreparedStatement ps = conn.prepareStatement(query);
+
+                        ps.execute();
+                        ps.close();
+
+                        // Now that we have generated the explain plan, we just
+                        // need to get it from the DB.
+                        ps = conn.prepareStatement(EXPLAIN_QUERY);
+                        ps.setString(1, QUERY_NAME);
+                        ps.setString(2, QUERY_NAME);
+                        ResultSet rs = ps.executeQuery();
+                        while (rs.next()) {
+                            String parentId = rs.getString("explain_parent_id");
+                            String id = rs.getString("explain_id");
+                            String operation = rs.getString("explain_operation");
+
+                            out.println(parentId + " " + id + " " + operation);
+                        }
+                        count++;
+                        rs.close();
+                        ps.close();
+                        Statement st = conn.createStatement();
+                        st.execute("Delete FROM plan_table where " +
+                                        "STATEMENT_ID='" + QUERY_NAME + "'");
+                        st.close();
+
                     }
-                    out.println("\nPlan for " + m.getName());
-
-                    String query = "EXPLAIN PLAN " +
-                        "SET STATEMENT_ID='" + QUERY_NAME + "' FOR " +
-                        m.getQuery().getOrigQuery();
-
-                    // HACK!  Some of the queries actually have %s in them.
-                    // So, replace all %s with :rbb so that the explain plan
-                    // can be generated.
-                    query = query.replaceAll("%s", ":rbb");
-
-                    PreparedStatement ps = conn.prepareStatement(query);
-
-                    ps.execute();
-                    ps.close();
-
-                    // Now that we have generated the explain plan, we just
-                    // need to get it from the DB.
-                    ps = conn.prepareStatement(EXPLAIN_QUERY);
-                    ps.setString(1, QUERY_NAME);
-                    ps.setString(2, QUERY_NAME);
-                    ResultSet rs = ps.executeQuery();
-                    while (rs.next()) {
-                        String parentId = rs.getString("explain_parent_id");
-                        String id = rs.getString("explain_id");
-                        String operation = rs.getString("explain_operation");
-
-                        out.println(parentId + " " + id + " " + operation);
-                    }
-                    count++;
-                    rs.close();
-                    ps.close();
-                    Statement st = conn.createStatement();
-                    st.execute("Delete FROM plan_table where " +
-                                    "STATEMENT_ID='" + QUERY_NAME + "'");
-                    st.close();
-
                 }
-            }
-            out.close();
+                out.close();
+            });
         }
         catch (HibernateException he) {
             throw new
