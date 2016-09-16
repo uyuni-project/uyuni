@@ -264,7 +264,6 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static void clearUpgradePaths() {
         getSession().getNamedQuery("SUSEUpgradePath.clear").executeUpdate();
-        getSession().clear();
     }
 
     /**
@@ -272,7 +271,6 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static void clearProductExtensions() {
         getSession().getNamedQuery("SUSEProductExtension.clear").executeUpdate();
-        getSession().clear();
     }
 
     /**
