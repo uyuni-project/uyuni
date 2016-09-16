@@ -16,6 +16,9 @@ package com.redhat.rhn.domain.product;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -75,45 +78,25 @@ public class SUSEProductExtension extends BaseDomainHelper implements Serializab
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((baseProduct == null) ? 0 : baseProduct.hashCode());
-        result = prime * result + ((extensionProduct == null) ?
-                0 : extensionProduct.hashCode());
-        return result;
+        return new HashCodeBuilder()
+                .append(getBaseProduct())
+                .append(getExtensionProduct())
+                .toHashCode();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public boolean equals(Object other) {
+        if (!(other instanceof SUSEProductExtension)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        SUSEProductExtension other = (SUSEProductExtension) obj;
-        if (baseProduct == null) {
-            if (other.baseProduct != null) {
-                return false;
-            }
-        }
-        else if (!baseProduct.equals(other.baseProduct)) {
-            return false;
-        }
-        if (extensionProduct == null) {
-            if (other.extensionProduct != null) {
-                return false;
-            }
-        }
-        else if (!extensionProduct.equals(other.extensionProduct)) {
-            return false;
-        }
-        return true;
+        SUSEProductExtension otherSUSEProductExtension = (SUSEProductExtension) other;
+
+        return new EqualsBuilder()
+            .append(getBaseProduct(), otherSUSEProductExtension.getBaseProduct())
+            .append(getExtensionProduct(), otherSUSEProductExtension.getExtensionProduct())
+            .isEquals();
     }
 }
