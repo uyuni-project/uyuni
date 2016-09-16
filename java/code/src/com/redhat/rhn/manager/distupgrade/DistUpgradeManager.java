@@ -210,7 +210,11 @@ public class DistUpgradeManager extends BaseManager {
             new Comparator<SUSEProduct>() {
         @Override
         public int compare(SUSEProduct o1, SUSEProduct o2) {
-            return new RpmVersionComparator().compare(o1, o2);
+            int result = new RpmVersionComparator().compare(o1.getVersion(), o2.getVersion());
+            if (result != 0) {
+                return result;
+            }
+            return new RpmVersionComparator().compare(o1.getRelease(), o2.getRelease());
         }
     };
 
