@@ -77,11 +77,14 @@
     <available file="/usr/share/java/log4j-1.jar" />
   </condition>
 
+  <available file="/usr/share/java/ehcache.jar" type="file" property="ehcache" value="ehcache" />
+  <available file="/usr/share/java/ehcache-core.jar" type="file" property="ehcache" value="ehcache-core" />
+
   <property name="hibernate3.2deps" value="hibernate3"/>
 
-  <property name="hibernate3.6deps" value="hibernate3/hibernate-ehcache-3 hibernate3/hibernate-c3p0-3 hibernate3/hibernate-core-3 ${hibernate-commons-annotations} slf4j/api jboss-logging javassist slf4j/log4j12 ehcache-core hibernate-jpa-2.0-api"/>
+  <property name="hibernate3.6deps" value="hibernate3/hibernate-ehcache-3 hibernate3/hibernate-c3p0-3 hibernate3/hibernate-core-3 ${hibernate-commons-annotations} slf4j/api jboss-logging javassist slf4j/log4j12 ${ehcache} hibernate-jpa-2.0-api"/>
 
-  <property name="hibernate5.2deps" value="hibernate-ehcache-5 hibernate-c3p0-5 hibernate-core-5 ${hibernate-commons-annotations} slf4j/api jboss-logging javassist slf4j/log4j12 ehcache-core hibernate-jpa-2.1-api classmate statistics"/>
+  <property name="hibernate5.2deps" value="hibernate-ehcache-5 hibernate-c3p0-5 hibernate-core-5 ${hibernate-commons-annotations} slf4j/api jboss-logging javassist slf4j/log4j12 ${ehcache} hibernate-jpa-2.1-api classmate statistics"/>
 
   <available file="/usr/share/java/hibernate3.jar" type="file" property="hibernate" value="${hibernate3.2deps}" />
   <available file="/usr/share/java/hibernate3/hibernate-core-3.jar" type="file" property="hibernate" value="${hibernate3.6deps}" />
@@ -175,7 +178,7 @@
              oro quartz stringtree-json sitemesh ${struts-jars} taglibs-core
              taglibs-standard tanukiwrapper postgresql-jdbc snakeyaml simple-xml susestudio-java-client
              ${suse-common-jars} ${suse-runtime-jars}
-             xalan-j2 xerces-j2 xml-commons-apis simple-core ehcache" />
+	     xalan-j2 xerces-j2 xml-commons-apis simple-core ${ehcache}" />
 
   <path id="bootjars">
     <fileset dir="${boot.lib.dir}" includes="*.jar" />
