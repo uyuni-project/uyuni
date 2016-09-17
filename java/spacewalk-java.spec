@@ -66,6 +66,7 @@ Requires: javassist
 Requires: jboss-logging
 Requires: statistics
 Requires: gnu-jaf
+Requires: objectweb-asm
 BuildRequires: hibernate5
 BuildRequires: hibernate-commons-annotations
 BuildRequires: hibernate-jpa-2.1-api
@@ -74,6 +75,7 @@ BuildRequires: classmate
 BuildRequires: javassist
 BuildRequires: jboss-logging
 BuildRequires: statistics
+BuildRequires: objectweb-asm
 BuildRequires: apache-commons-lang
 BuildRequires: google-gson >= 2.2.4
 BuildRequires: java-devel-ibm >= 1.8.0
