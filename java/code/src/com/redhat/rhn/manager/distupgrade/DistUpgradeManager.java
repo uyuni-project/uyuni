@@ -235,13 +235,13 @@ public class DistUpgradeManager extends BaseManager {
             @Override
             public int compare(SUSEProductSet o1, SUSEProductSet o2) {
                 int i = PRODUCT_VERSION_COMPARATOR
-                        .compare(o1.getBaseProduct(), o2.getBaseProduct());
+                        .compare(o2.getBaseProduct(), o1.getBaseProduct());
                 if (i != 0) {
                     return i;
                 }
                 else {
                     return PRODUCT_LIST_VERSION_COMPARATOR
-                            .compare(o1.getAddonProducts(), o2.getAddonProducts());
+                            .compare(o2.getAddonProducts(), o1.getAddonProducts());
                 }
             }
         });
