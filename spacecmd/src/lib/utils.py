@@ -45,13 +45,15 @@ from difflib import unified_diff
 from tempfile import mkstemp
 from textwrap import wrap
 from subprocess import Popen, PIPE
-import rpm
-from spacecmd.optionparser import SpacecmdOptionParser
 
 try:
     import json
 except ImportError:
     import simplejson as json  # python < 2.6
+
+import rpm
+
+from spacecmd.optionparser import SpacecmdOptionParser
 
 
 __EDITORS = ['vim', 'vi', 'nano', 'emacs']
@@ -339,7 +341,7 @@ def latest_pkg(pkg1, pkg2, version_key='version',
     t1 = (pkg1[epoch_key].strip(), pkg1[version_key], pkg1[release_key])
     t2 = (pkg2[epoch_key].strip(), pkg2[version_key], pkg2[release_key])
 
-    result = rpm.labelCompare(t1, t2)
+    result = rpm.labelCompare(t1, t2) # pylint: disable=no-member
     if result == 1:
         return pkg1
     elif result == -1:

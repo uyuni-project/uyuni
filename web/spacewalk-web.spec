@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.1
+Version: 2.6.2
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -84,7 +84,7 @@ Requires: spacewalk-base-minimal-config
 
 %description -n spacewalk-base-minimal
 Independent Perl modules in the RHN:: name-space.
-This are very basic modules need to handle configuration files, database,
+These are very basic modules needed to handle configuration files, database,
 sessions and exceptions.
 
 %package -n spacewalk-base-minimal-config
@@ -186,6 +186,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Mon Sep 12 2016 Jan Dobes 2.6.2-1
+- spacewalk-base-minimal package description typo fixed
+
 * Mon Jun 27 2016 Tomas Lestach <tlestach@redhat.com> 2.6.1-1
 - bumping Spacewalk version
 - Bumping package versions for 2.6.

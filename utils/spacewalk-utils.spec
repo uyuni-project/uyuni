@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.6.6
+Version:	2.6.9
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -121,6 +121,15 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Thu Sep 15 2016 Jan Dobes 2.6.9-1
+- fixing pylint in spacewalk-utils
+
+* Tue Sep 13 2016 Jan Dobes 2.6.8-1
+- fixing pylint: unused import
+
+* Mon Sep 12 2016 Jan Dobes 2.6.7-1
+- Revert "don't add newer errata when processing dependencies"
+
 * Thu Aug 18 2016 Grant Gainey 2.6.6-1
 - 1366343 - correct typo in name of errata-clone.log file
 
