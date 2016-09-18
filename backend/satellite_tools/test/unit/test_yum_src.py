@@ -42,6 +42,7 @@ class YumSrcTest(unittest.TestCase):
         yum_src.CFG.MOUNT_POINT = ''
         yum_src.CFG.PREPENDED_DIR = ''
         yum_src.fileutils.makedirs = Mock()
+        yum_src.makedirs = Mock()
         yum_src.os.path.isdir = Mock()
 
         yum_src.get_proxy = Mock(return_value=(None, None, None))
