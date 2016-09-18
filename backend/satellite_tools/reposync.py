@@ -200,7 +200,8 @@ class RepoSync(object):
 
     def __init__(self, channel_label, repo_type, url=None, fail=False,
                  filters=None, no_errata=False, sync_kickstart=False, latest=False,
-                 metadata_only=False, strict=0, excluded_urls=None, no_packages=False, log_dir="reposync", log_level=None,
+                 metadata_only=False, strict=0, excluded_urls=None, no_packages=False,
+                 log_dir="reposync", log_level=None,
                  noninteractive=False, deep_verify=False):
         self.regen = False
         self.fail = fail
@@ -281,7 +282,7 @@ class RepoSync(object):
         self.all_packages = []
         self.arches = self.get_compatible_arches(int(self.channel['id']))
 
-    def sync(self):
+    def sync(self, update_repodata=False):
         """Trigger a reposync"""
         start_time = datetime.now()
         for data in self.urls:
@@ -298,8 +299,17 @@ class RepoSync(object):
 
                 # pylint: disable=W0703
                 try:
-                    plugin = self.repo_plugin(
-                        url, self.channel_label, insecure, self.interactive)
+                    # use modified relative_url as name of repo plugin, because
+                    # it used as name of cache directory as well
+
+                    relative_url = '_'.join(url.split('://')[1].split('/')[1:])
+                    plugin_name = relative_url.replace("?", "_").replace("&", "_").replace("=", "_")
+
+                    plugin = self.repo_plugin(url, plugin_name, insecure, self.interactive)
+
+                    if update_repodata:
+                        plugin.clear_cache()
+
                     if data['id'] is not None:
                         keys = rhnSQL.fetchone_dict("""
                         select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
@@ -653,8 +663,7 @@ class RepoSync(object):
             if not self.strict:
                 return
         else:
-            log(0, "Packages already synced:      %5d" %
-                           (num_passed - num_to_process))
+            log(0, "Packages already synced:      %5d" % (num_passed - num_to_process))
             log(0, "Packages to sync:             %5d" % num_to_process)
 
         self.regen = True

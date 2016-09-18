@@ -40,7 +40,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.48
+Version: 2.6.53
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -925,6 +925,27 @@ rm -f %{rhnconf}/rhnSecret.py*
 %endif
 
 %changelog
+* Thu Sep 15 2016 Gennadii Altukhov <galt@redhat.com> 2.6.53-1
+- cdn-sync - fix man page
+
+* Thu Sep 15 2016 Gennadii Altukhov <galt@redhat.com> 2.6.52-1
+- fix yum plugin naming, based on an url, because it can be a metalink
+- remove hardcoded METADATA_EXPIRE, use value from config file
+- cdn-sync - clear repodata before syncing repository
+
+* Thu Sep 15 2016 Gennadii Altukhov <galt@redhat.com> 2.6.51-1
+- cdn-sync  - add fixes in packages counting: - if we have the same package in
+  different repositories of channel, we count it only one time - count packages
+  for base channel
+
+* Tue Sep 13 2016 Jan Dobes 2.6.50-1
+- fixing pylint: too-many-nested-blocks
+- fixing pylint: wrong-import-order
+- fixing pylint: unsubscriptable-object
+
+* Mon Sep 12 2016 Jan Dobes 2.6.49-1
+- fixing pylint
+
 * Fri Sep 09 2016 Jan Dobes 2.6.48-1
 - adding logrotate files
 - adding logging of spacewalk-repo-sync script

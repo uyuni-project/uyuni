@@ -16,8 +16,8 @@
 
 import subprocess
 import sys
-import os
-from os import mkdir
+import os.path
+from os import makedirs
 from shutil import rmtree
 import errno
 import re
@@ -61,7 +61,6 @@ PATCHES = '{http://novell.com/package/metadata/suse/patches}'
 CACHE_DIR = '/var/cache/rhn/reposync/'
 GPG_DIR     = '/var/lib/spacewalk/gpgdir'
 YUMSRC_CONF = '/etc/rhn/spacewalk-repo-sync/yum.conf'
-METADATA_EXPIRE = 24*60*60  # Time (in seconds) after which the metadata will expire
 
 class YumWarnings:
 
@@ -156,7 +155,6 @@ class ContentSource:
     def setup_repo(self, repo):
         """Fetch repository metadata"""
         repo.cache = 0
-        repo.metadata_expire = METADATA_EXPIRE
         repo.mirrorlist = self.url
         repo.baseurl = [self.url]
         repo.basecachedir = CACHE_DIR
@@ -215,6 +213,15 @@ class ContentSource:
             except YumErrors.RepoError:
                 pass
         return len(self.sack.returnPackages())
+
+    def raw_list_packages(self):
+        for dummy_index in range(3):
+            try:
+                self.sack.populate(self.repo, 'metadata', None, 0)
+                break
+            except YumErrors.RepoError:
+                pass
+        return self.sack.returnPackages()
 
     def list_packages(self, filters, latest):
         """ list packages"""
@@ -343,9 +350,12 @@ class ContentSource:
     def verify_pkg(_fo, pkg, _fail):
         return pkg.verifyLocalPkg()
 
-    @staticmethod
-    def clear_cache(directory=CACHE_DIR):
+    def clear_cache(self, directory=None):
+        if directory is None:
+            directory = CACHE_DIR + self.name
         rmtree(directory, True)
+        # restore empty directory
+        makedirs(directory + "/packages", int('0755', 8))
 
     def get_products(self):
         products = []
@@ -409,7 +419,7 @@ class ContentSource:
 
         elif 'patches' in self.repo.repoXML.repoData:
             patches_path = self.repo.retrieveMD('patches')
-            os.mkdir(os.path.join(self.repo.cachedir, 'patches'))
+            makedirs(os.path.join(self.repo.cachedir, 'patches'))
 
             # parse the patches.xml file and download every patch-xxx.xml file
             notices = []
@@ -594,7 +604,7 @@ class ContentSource:
             # initially we trust all keys which are in the RPM DB.
             # If gpgdir does not exist, we create the keyring
             # with all keys from the RPM DB
-            os.makedirs(gpgdir)
+            makedirs(gpgdir)
             ts = initReadOnlyTransaction("/")
             for hdr in ts.dbMatch('name', 'gpg-pubkey'):
                 if hdr['description'] != "":
@@ -615,7 +625,7 @@ class ContentSource:
         repo = self.repo
         ssldir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
         try:
-            mkdir(ssldir, int('0750', 8))
+            makedirs(ssldir, int('0750', 8))
         except OSError as exc:
             if exc.errno == errno.EEXIST and os.path.isdir(ssldir):
                 pass
@@ -640,10 +650,7 @@ class ContentSource:
     def clear_ssl_cache(self):
         repo = self.repo
         ssldir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
-        try:
-            self.clear_cache(ssldir)
-        except (OSError, IOError):
-            pass
+        rmtree(ssldir, True)
 
     def get_file(self, path, local_base=None):
         try:
