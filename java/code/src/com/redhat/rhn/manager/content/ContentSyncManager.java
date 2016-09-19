@@ -334,7 +334,8 @@ public class ContentSyncManager {
                 "Open Enterprise Server 2015", "OES2"));
         products.add(new SCCProduct(43, "Open_Enterprise_Server", "2015.1", null, null,
                 "Open Enterprise Server 2015 SP1", "OES2"));
-
+        products.add(new SCCProduct(44, "Open_Enterprise_Server", "11.3", null, null,
+                "Open Enterprise Server 11 SP3", "OES2"));
     }
 
     /**
