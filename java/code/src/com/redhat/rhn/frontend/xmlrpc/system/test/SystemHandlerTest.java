@@ -116,9 +116,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang.StringUtils;
-import org.jmock.lib.AssertionErrorTranslator;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -136,8 +134,6 @@ import java.util.regex.Pattern;
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
     private SystemHandler handler = new SystemHandler();
-    private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
-    private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
 
     public void testGetNetworkDevices() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -2228,13 +2224,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertTrue("Expected exception not thrown", thrown);
     }
 
-    public void testListMigrationTarget() throws Exception {
-        File upgradePathsXML = new File(
-                TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
-        
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.setUpgradePathsXML(upgradePathsXML);
-
+    public void testListMigrationTargetBaseOnly() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProducts();
 
         InstalledProduct installedPrd = new InstalledProduct();
@@ -2247,7 +2237,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         assertNotNull(server);
         assertNotNull(server.getId());
-        
+
         Set<InstalledProduct> products = new HashSet<>();
         products.add(installedPrd);
 
@@ -2255,12 +2245,55 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         TestUtils.saveAndReload(server);
 
         assertNotNull(server.getInstalledProductSet());
-        
+
         server.getInstalledProductSet().getBaseProduct().getUpgrades();
-        
+
         List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
-        
+
         assertNotEmpty("no target found", result);
+
+        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
+        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
     }
-            
+
+    public void testListMigrationTargetExtension() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProducts();
+
+        InstalledProduct installedPrd = new InstalledProduct();
+        installedPrd.setName("SLES");
+        installedPrd.setVersion("12");
+        installedPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        installedPrd.setBaseproduct(true);
+        assertNull(installedPrd.getId());
+
+        InstalledProduct installedExt = new InstalledProduct();
+        installedExt.setName("sle-ha");
+        installedExt.setVersion("12");
+        installedExt.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        assertNull(installedExt.getId());
+
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        assertNotNull(server);
+        assertNotNull(server.getId());
+
+        Set<InstalledProduct> products = new HashSet<>();
+        products.add(installedPrd);
+        products.add(installedExt);
+
+        server.setInstalledProducts(products);
+        TestUtils.saveAndReload(server);
+
+        assertNotNull(server.getInstalledProductSet());
+
+        server.getInstalledProductSet().getBaseProduct().getUpgrades();
+
+        List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
+
+        assertNotEmpty("no target found", result);
+
+        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
+        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP2");
+        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
+        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP1");
+    }
 }
