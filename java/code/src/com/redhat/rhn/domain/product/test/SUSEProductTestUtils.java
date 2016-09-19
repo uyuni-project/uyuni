@@ -32,8 +32,10 @@ import com.redhat.rhn.testing.TestUtils;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Utility methods for creating SUSE related test data.
@@ -201,23 +203,58 @@ public class SUSEProductTestUtils {
         productHA121.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         productHA121.setProductId(1324);
 
+        SUSEProduct productSLES122 = new SUSEProduct();
+        productSLES122.setName("sles");
+        productSLES122.setVersion("12.2");
+        productSLES122.setFriendlyName("SUSE Linux Enterprise Server 12 SP2");
+        productSLES122.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        productSLES122.setProductId(1357);
+
+        SUSEProduct productHA122 = new SUSEProduct();
+        productHA122.setName("sle-ha");
+        productHA122.setVersion("12.2");
+        productHA122.setFriendlyName("SUSE Linux Enterprise High Availability Extension 12 SP2");
+        productHA122.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        productHA122.setProductId(1361);
+
+        TestUtils.saveAndFlush(productHA122);
+        TestUtils.saveAndFlush(productSLES122);
         TestUtils.saveAndFlush(productHA121);
         TestUtils.saveAndFlush(productSLES121);
         TestUtils.saveAndFlush(productHA12);
         TestUtils.saveAndFlush(productSLES12);
 
-        productSLES12.setUpgrades(Collections.singleton(productSLES121));
-        productSLES12.setExtensionFor(Collections.singleton(productHA12));
+        Set<SUSEProduct> upSLES = new HashSet<SUSEProduct>();
+        upSLES.add(productSLES121);
+        upSLES.add(productSLES122);
+        productSLES12.setUpgrades(upSLES);
+        Set<SUSEProduct> upHA = new HashSet<SUSEProduct>();
+        upHA.add(productHA121);
+        upHA.add(productHA122);
+        productHA12.setUpgrades(upHA);
 
-        productHA12.setUpgrades(Collections.singleton(productHA121));
-        productHA12.setExtensionOf(Collections.singleton(productSLES12));
-
-        productSLES121.setExtensionFor(Collections.singleton(productHA121));
         productSLES121.setDowngrades(Collections.singleton(productSLES12));
-
-        productHA121.setExtensionOf(Collections.singleton(productSLES121));
         productHA121.setDowngrades(Collections.singleton(productHA12));
 
+        Set<SUSEProduct> downSLES = new HashSet<SUSEProduct>();
+        downSLES.add(productSLES121);
+        downSLES.add(productSLES12);
+        productSLES122.setDowngrades(downSLES);
+        Set<SUSEProduct> downHA = new HashSet<SUSEProduct>();
+        downHA.add(productHA121);
+        downHA.add(productHA12);
+        productHA122.setDowngrades(downHA);
+
+        productSLES12.setExtensionFor(Collections.singleton(productHA12));
+        productSLES121.setExtensionFor(Collections.singleton(productHA121));
+        productSLES122.setExtensionFor(Collections.singleton(productHA122));
+
+        productHA12.setExtensionOf(Collections.singleton(productSLES12));
+        productHA121.setExtensionOf(Collections.singleton(productSLES121));
+        productHA122.setExtensionOf(Collections.singleton(productSLES122));
+
+        TestUtils.saveAndReload(productHA122);
+        TestUtils.saveAndReload(productSLES122);
         TestUtils.saveAndReload(productHA121);
         TestUtils.saveAndReload(productSLES121);
         TestUtils.saveAndReload(productHA12);
