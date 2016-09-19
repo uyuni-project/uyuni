@@ -100,4 +100,5 @@
 	<upgrade from_pdid="1196" from_product="sle-smt-11-None.None" to_pdid="1193" to_product="sle-smt-11.2-None.None"/>
 	<upgrade from_pdid="1232" from_product="Open_Enterprise_Server-11-None.None" to_pdid="1241" to_product="Open_Enterprise_Server-11.1-None.None"/>
 	<upgrade from_pdid="1241" from_product="Open_Enterprise_Server-11.1-None.None" to_pdid="1242" to_product="Open_Enterprise_Server-11.2-None.x86_64"/>
+	<upgrade from_pdid="1242" from_product="Open_Enterprise_Server-11.2-None.x86_64" to_pdid="44" to_product="Open_Enterprise_Server-11.3-None.x86_64"/>
 </upgradepaths>
