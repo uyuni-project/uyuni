@@ -272,6 +272,9 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="repos.jsp.message.taskomaticdown">
         <source>The scheduling service appears down. Please contact your @@PRODUCT_NAME@@ administrator.</source>
       </trans-unit>
+      <trans-unit id="receive_notifications">
+        <source>Updates/Patches Email</source>
+      </trans-unit>
 
       <!-- footer.jsp -->
       <trans-unit id="footer.jsp.copyright">
