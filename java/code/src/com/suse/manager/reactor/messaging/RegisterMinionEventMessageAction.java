@@ -195,12 +195,14 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     .ifPresent(channels -> channels.forEach(server::addChannel));
 
             String osfullname = grains.getValueAsString("osfullname");
+            String osfamily = grains.getValueAsString("os_family");
             String osrelease = getOsRelease(minionId, grains);
 
             String kernelrelease = grains.getValueAsString("kernelrelease");
             String osarch = grains.getValueAsString("osarch");
 
             server.setOs(osfullname);
+            server.setOsFamily(osfamily);
             server.setRelease(osrelease);
             server.setRunningKernel(kernelrelease);
             server.setSecret(RandomStringUtils.randomAlphanumeric(64));
