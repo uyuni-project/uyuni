@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -113,9 +114,22 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * {@inheritDoc}
      */
     public void doExecute(EventMessage msg) {
-        RegisterMinionEventMessage event = (RegisterMinionEventMessage) msg;
-        String minionId = event.getMinionId();
+        registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false);
+    }
 
+    /**
+     * Temporary HACK: Run the registration for a minion with given id.
+     * Will be extracted to a separate class, this is here only because of easier rebasing.
+     * @param minionId minion id
+     */
+    public void registerSSHMinion(String minionId) {
+        registerMinion(minionId, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    private void registerMinion(String minionId, boolean isSaltSSH) {
         // Match minions via their machine id
         Optional<String> optMachineId = SALT_SERVICE.getMachineId(minionId);
         if (!optMachineId.isPresent()) {
@@ -215,7 +229,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setLastBoot(System.currentTimeMillis() / 1000);
             server.setCreated(new Date());
             server.setModified(server.getCreated());
-            server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+            server.setContactMethod(getContactMethod(isSaltSSH));
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
@@ -277,6 +291,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             // Assign the Salt base entitlement by default
             server.setBaseEntitlement(EntitlementManager.SALT);
 
+            // HACK
+            if (isSaltSSH) {
+                LOG.info("Salt-ssh minion profile created. Stopping.");
+                return;
+            }
+
             // get hardware and network async
             triggerHardwareRefresh(server);
 
@@ -311,8 +331,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             ));
         }
         catch (Throwable t) {
-            LOG.error("Error registering minion for event: " + event, t);
+            LOG.error("Error registering minion id: " + minionId, t);
         }
+    }
+
+    private ContactMethod getContactMethod(boolean isSshPush) {
+        return isSshPush ? ServerFactory.findContactMethodByLabel("ssh-push") :
+                ServerFactory.findContactMethodByLabel("default");
     }
 
     private void lookupAndAddDefaultChannels(MinionServer server, ValueMap grains) {
