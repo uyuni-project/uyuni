@@ -173,7 +173,8 @@ public class SPMigrationAction extends RhnAction {
             // Find target products
             SUSEProductSet installedProducts = server.getInstalledProductSet();
             List<SUSEProductSet> migrationTargets = DistUpgradeManager.
-                    getTargetProductSets(installedProducts);
+                    getTargetProductSets(installedProducts,
+                            server.getServerArch().getCompatibleChannelArch(), ctx.getCurrentUser());
 
             if (migrationTargets == null) {
                 // Installed products are 'unknown'
@@ -197,7 +198,8 @@ public class SPMigrationAction extends RhnAction {
             SUSEProductSet installedProducts = server.getInstalledProductSet();
             ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
             List<SUSEProductSet> migrationTargets = DistUpgradeManager.
-                    getTargetProductSets(installedProducts);
+                    getTargetProductSets(installedProducts,
+                            server.getServerArch().getCompatibleChannelArch(), ctx.getCurrentUser());
 
             // Get and decode the target product selected to migrate
             SUSEProductSet targetProducts = new SUSEProductSet();
