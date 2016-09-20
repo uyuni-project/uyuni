@@ -540,7 +540,12 @@ public class SaltService {
                 sshResults.entrySet().stream())
                 .collect(Collectors.toMap(
                         kv -> kv.getKey(),
-                        kv -> kv.getValue()));
+                        kv -> kv.getValue(),
+                        (value1, value2) -> {
+                            LOG.warn("Duplicate value for a single target returned.");
+                            LOG.debug("Returning " + value1 + ", ignoring" + value2 + ".");
+                            return value1;
+                        }));
     }
 
     /**
