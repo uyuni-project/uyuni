@@ -5568,8 +5568,9 @@ public class SystemHandler extends BaseHandler {
         if(installedProducts == null) {
             throw new FaultException(-1, "listMigrationTargetError", "Server has no Products installed.");
         }
+        ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
-                getTargetProductSets(installedProducts);
+                getTargetProductSets(installedProducts, arch, loggedInUser);
         for (SUSEProductSet ps : migrationTargets) {
             Map<String, Object> target = new HashMap<String, Object>();
 
@@ -5676,7 +5677,7 @@ public class SystemHandler extends BaseHandler {
         SUSEProductSet installedProducts = server.getInstalledProductSet();
         ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> targets = DistUpgradeManager.getTargetProductSets(
-                installedProducts);
+                installedProducts, arch, loggedInUser);
         if (targets.size() > 0) {
             SUSEProductSet targetProducts = null;
 

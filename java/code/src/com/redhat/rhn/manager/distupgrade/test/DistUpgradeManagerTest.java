@@ -103,8 +103,9 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         SUSEProduct sourceProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         SUSEProductSet sourceProducts = new SUSEProductSet(
                 sourceProduct.getId(), new LinkedList());
+        ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
-                sourceProducts);
+                sourceProducts, arch, user);
         assertNotNull(targetProductSets);
         assertTrue(targetProductSets.isEmpty());
     }
@@ -119,8 +120,9 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         sourceProduct.setUpgrades(Collections.singleton(targetBaseProduct));
 
+        ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
-                sourceProducts);
+                sourceProducts, arch , user);
         assertNotNull(targetProductSets);
         assertEquals(1, targetProductSets.size());
         assertEquals(targetBaseProduct, targetProductSets.get(0).getBaseProduct());
@@ -138,8 +140,9 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         SUSEProductSet sourceProducts = new SUSEProductSet(
                 sourceProduct.getId(), Collections.singletonList(sourceAddonProduct.getId()));
+        ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
-                sourceProducts);
+                sourceProducts, arch, user);
         assertNotNull(targetProductSets);
         assertTrue(targetProductSets.isEmpty());
     }
@@ -173,7 +176,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         // Verify that target products are returned correctly
 
-        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(sourceProducts);
+        ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(sourceProducts, arch, user);
 
         assertNotNull(targetProductSets);
         assertEquals(2, targetProductSets.size());
