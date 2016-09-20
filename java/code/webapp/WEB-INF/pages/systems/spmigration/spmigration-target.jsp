@@ -85,11 +85,15 @@
                             <ul class="form-control-static products-list">
                                 <c:set var="itemCounter" scope="page" value="0" />
                                 <c:forEach items="${targetProducts}" var="target">
-                                    <li>
+                                    <c:set var="targetEnabled"
+                                        value="${target.getMissingChannels() == null ||
+                                            target.getMissingChannels().size() == 0 ? true : false}" />
+                                    <li title="${!targetEnabled ? "This target is not available because not all channels are synced." : ""}">
                                         <input type="radio" name="targetProductSelected"
                                             id="target${itemCounter}"
                                             value="${SPMigrationAction.serializeProductIDs(target.getProductIDs())}"
-                                            ${itemCounter == 0 ? "checked" : "" } />
+                                                ${itemCounter == 0 && targetEnabled ? "checked" : "" }
+                                                ${!targetEnabled ? "disabled" : ""} />
                                         <label for="target${itemCounter}">
                                             <strong><c:out value="${target.baseProduct.friendlyName}" /></strong>
                                             <ul>
@@ -102,7 +106,7 @@
                                             </ul>
                                         </label>
                                     </li>
-                                    <c:set var="itemCounter" scope="page" value="${itemCounter+1}"/>
+                                    <c:set var="itemCounter" scope="page" value="${targetEnabled ? itemCounter+1 : itemCounter}"/>
                                 </c:forEach>
                             </ul>
                         </div>
