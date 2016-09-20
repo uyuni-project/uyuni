@@ -229,7 +229,7 @@ public class DistUpgradeManager extends BaseManager {
      * @return valid migration targets
      */
     public static List<SUSEProductSet> getTargetProductSets(
-            SUSEProductSet installedProducts) {
+            SUSEProductSet installedProducts, ChannelArch arch, User user) {
         List<SUSEProductSet> migrationTargets = migrationTargets(installedProducts);
         Collections.sort(migrationTargets, new Comparator<SUSEProductSet>() {
             @Override
@@ -245,7 +245,7 @@ public class DistUpgradeManager extends BaseManager {
                 }
             }
         });
-        return removeIncompatibleCombinations(migrationTargets);
+        return addMissingChannels(removeIncompatibleCombinations(migrationTargets), arch, user);
     }
 
     private static List<SUSEProductSet> removeIncompatibleCombinations(
@@ -269,6 +269,49 @@ public class DistUpgradeManager extends BaseManager {
             }
         }
         return Collections.unmodifiableList(result);
+    }
+
+    private static List<SUSEProductSet> addMissingChannels(
+            List<SUSEProductSet> migrationTargets, ChannelArch arch, User user) {
+        for(SUSEProductSet target : migrationTargets) {
+            // Look for the target product's base channel
+            Channel baseChannel = getProductBaseChannel(target.getBaseProduct().getId(), arch, user);
+
+            if (baseChannel == null) {
+                // No base channel found
+                target.addMissingChannel(target.getBaseProduct().getFriendlyName());
+            }
+            else {
+                // Check for addon product channels only if base channel is synced
+                if (target.getMissingChannels() == null || target.getMissingChannels().size() == 0) {
+                    for (SUSEProduct addonProduct : target.getAddonProducts()) {
+                        Channel addonChannel = getProductBaseChannel(addonProduct.getId(), arch, user);
+                        if (addonChannel != null) {
+                            // Look for mandatory child channels
+                            List<ChildChannelDto> addonProductChannels = findProductChannels(
+                                    target.getBaseProduct().getId(), addonChannel.getLabel());
+                            target.addMissingChannels(getMissingChannels(addonProductChannels));
+                        }
+                    }
+                }
+            }
+        }
+        return migrationTargets;
+    }
+
+    /**
+    * Given a list of channels, return the labels of those where cid == null.
+    */
+    private static List<String> getMissingChannels(List<ChildChannelDto> channels) {
+        List<String> ret = new ArrayList<String>();
+        for (ChildChannelDto channel : channels) {
+            Long cid = channel.getId();
+            if (cid == null) {
+                logger.warn("Mandatory channel not synced: " + channel.getLabel());
+                ret.add(channel.getLabel());
+            }
+        }
+        return ret;
     }
 
     private static List<SUSEProductSet> migrationTargets(SUSEProductSet installedProducts) {
