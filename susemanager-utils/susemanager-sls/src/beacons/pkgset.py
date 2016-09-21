@@ -16,7 +16,10 @@ __virtualname__ = 'pkgset'
 
 
 def __virtual__():
-    return os.path.exists("/usr/lib/zypp/plugins/commit/susemanager") and __virtualname__ or False
+    return (
+        os.path.exists("/usr/lib/zypp/plugins/commit/susemanager") or
+        os.path.exists("/usr/share/yum-plugins/susemanagerplugin.py")
+    ) and __virtualname__ or False
 
 
 def validate(config):
