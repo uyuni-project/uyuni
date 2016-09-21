@@ -152,9 +152,7 @@ cleanup_hostname() {
 }
 
 setup_db_postgres() {
-    if ! chkconfig -c postgresql ; then
-        insserv postgresql
-    fi
+    systemctl enable postgresql
     systemctl start postgresql
     su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
     # su - postgres -c "createlang pltclu '$MANAGER_DB_NAME'"   SUMA3 drops upstream auditing
