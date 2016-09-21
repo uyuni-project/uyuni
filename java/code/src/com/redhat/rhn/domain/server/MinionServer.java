@@ -26,6 +26,7 @@ import java.util.Optional;
 public class MinionServer extends Server {
 
     private String minionId;
+    private String osFamily;
 
     /**
      * Constructs a MinionServer instance.
@@ -46,6 +47,24 @@ public class MinionServer extends Server {
      */
     public void setMinionId(String minionIdIn) {
         this.minionId = minionIdIn;
+    }
+
+    /**
+     * Getter for os family
+     *
+     * @return String to get
+     */
+    public String getOsFamily() {
+        return this.osFamily;
+    }
+
+    /**
+     * Setter for os family
+     *
+     * @param osFamilyIn to set
+     */
+    public void setOsFamily(String osFamilyIn) {
+        this.osFamily = osFamilyIn;
     }
 
     /**
