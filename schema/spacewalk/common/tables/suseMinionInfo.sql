@@ -20,7 +20,7 @@ CREATE TABLE suseMinionInfo
                                REFERENCES rhnServer (id)
                                ON DELETE CASCADE,
     minion_id          VARCHAR2(256) NOT NULL,
-    os_family          VARCHAR2(32) NOT NULL
+    os_family          VARCHAR2(32)
 )
 ENABLE ROW MOVEMENT
 ;
