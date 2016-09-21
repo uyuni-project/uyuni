@@ -1061,15 +1061,21 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * Change the entity type from {@link Server} to {@link MinionServer}.
-     * This will insert a new record into the suseMinionInfo to hold the minion id.
-     * @param serverId the server id
-     * @param minionId the minion Salt id
+     * Find {@link ClientCapability} by name
+     * @param name the name of the capability
+     * @return a {@link ClientCapability} with the given name
      */
-    public static void changeServerToMinionServer(Long serverId, String minionId) {
-        SystemManager.addMinionInfoToServer(serverId, minionId);
-        Server server = lookupById(serverId);
-        ServerFactory.getSession().evict(server);
+    public static Optional<Capability> findCapability(String name) {
+        Criteria criteria = getSession().createCriteria(Capability.class);
+        criteria.add(Restrictions.eq("name", name));
+        return Optional.ofNullable((Capability) criteria.uniqueResult());
     }
 
+    /**
+     * Remove a {@link ClientCapability} from the db.
+     * @param clientCapability the {@link ClientCapability} to remove
+     */
+    public static void removeClientCapability(ClientCapability clientCapability) {
+        ServerFactory.getSession().delete(clientCapability);
+    }
 }
