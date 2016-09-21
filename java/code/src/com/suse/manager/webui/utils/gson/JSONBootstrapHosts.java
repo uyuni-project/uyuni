@@ -86,4 +86,16 @@ public class JSONBootstrapHosts {
         }
         return ret;
     }
+
+    /**
+     * Helper method to return the password as an Optional<String>.
+     *
+     * @return password wrapped in Optional, or empty Optional if password is empty.
+     */
+    public Optional<String> maybeGetPassword() {
+        if (StringUtils.isEmpty(password)) {
+            return Optional.empty();
+        }
+        return Optional.of(password);
+    }
 }

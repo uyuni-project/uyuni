@@ -90,7 +90,7 @@ public class SaltSSHService {
         // these values are mostly fixed, which should change when we allow configuring
         // per-minionserver
         SaltRoster roster = SaltRoster.createSingleHostRoster(extractMinionId(target),
-                getSSHUser(), Optional.empty(), SSH_PUSH_PORT);
+                getSSHUser(), Optional.empty(), Optional.of(SSH_PUSH_PORT));
 
         Map<String, Result<SSHResult<R>>> result = callSyncSSHInternal(call,
                 target,
