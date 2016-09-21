@@ -19,7 +19,8 @@ CREATE TABLE suseMinionInfo
                            CONSTRAINT suse_minion_info_sid_fk
                                REFERENCES rhnServer (id)
                                ON DELETE CASCADE,
-    minion_id          VARCHAR2(256) NOT NULL
+    minion_id          VARCHAR2(256) NOT NULL,
+    os_family          VARCHAR2(32) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;

@@ -1,0 +1,1 @@
+ALTER TABLE suseMinionInfo ADD os_family VARCHAR2(32);
