@@ -636,6 +636,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         else if (type == TYPE_SERVER_MINION) {
             MinionServer minionServer = (MinionServer) s;
             minionServer.setMinionId(s.getName());
+            minionServer.setOsFamily("RedHat");
             minionServer.setMachineId(TestUtils.randomString());
         }
     }
