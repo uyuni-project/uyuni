@@ -424,9 +424,12 @@ public class SaltService {
      */
     public void syncBeacons(String target) {
         try {
-            com.suse.manager.webui.utils.salt.SaltUtil.syncBeacons(
-                    Optional.of(true), Optional.empty()).callSync(SALT_CLIENT,
-                    new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            LocalCall<List<String>> call =
+                    com.suse.manager.webui.utils.salt.SaltUtil.syncBeacons(
+                            Optional.of(true),
+                            Optional.empty());
+
+            callSync(call, new Glob(target));
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -439,8 +442,9 @@ public class SaltService {
      */
     public void syncGrains(String target) {
         try {
-            SaltUtil.syncGrains(Optional.empty(), Optional.empty()).callSync(SALT_CLIENT,
-                    new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            LocalCall<List<String>> call = SaltUtil.syncGrains(Optional.empty(),
+                    Optional.empty());
+            callSync(call, new Glob(target));
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -453,8 +457,9 @@ public class SaltService {
      */
     public void syncModules(String target) {
         try {
-            SaltUtil.syncModules(Optional.empty(), Optional.empty()).callSync(SALT_CLIENT,
-                    new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            LocalCall<List<String>> call = SaltUtil.syncModules(Optional.empty(),
+                    Optional.empty());
+            callSync(call, new Glob(target));
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -763,6 +768,8 @@ public class SaltService {
      * @param parameters - bootstrap parameters
      * @param bootstrapMods - state modules to be applied during the bootstrap
      * @param pillarData - pillar data used salt-ssh call
+     * @throws SaltException if something goes wrong during command execution or
+     * during manipulation the salt-ssh roster
      * @return the result of the underlying ssh call for given host
      */
     public Result<SSHResult<Map<String, State.ApplyResult>>> bootstrapMinion(
