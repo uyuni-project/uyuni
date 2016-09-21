@@ -59,7 +59,7 @@
         <dependency org="suse" name="mockobjects-core" rev="0.09" />
         <dependency org="suse" name="mockobjects-jdk1.4-j2ee1.3" rev="0.09" />
         <dependency org="suse" name="objenesis" rev="1.0" />
-        <dependency org="suse" name="ojdbc5" rev="11.2.0.3" />
+        <dependency org="suse" name="ojdbc7" rev="1.0" />
         <dependency org="suse" name="oro" rev="2.0.8" />
         <dependency org="suse" name="oscache" rev="2.2" />
         <dependency org="suse" name="postgresql-jdbc" rev="9.3" />
