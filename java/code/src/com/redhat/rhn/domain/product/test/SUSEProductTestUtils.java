@@ -161,6 +161,30 @@ public class SUSEProductTestUtils {
      * SLE-HA12 SP1 x86_64
      */
     public static void createVendorSUSEProducts() {
+        SUSEProduct product = new SUSEProduct();
+        product.setName("sles");
+        product.setVersion("12.1");
+        product.setFriendlyName("SUSE Linux Enterprise Server 12 SP1");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(1322);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("sle-ha");
+        product.setVersion("12.1");
+        product.setFriendlyName("SUSE Linux Enterprise High Availability Extension 12 SP1");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(1324);
+        TestUtils.saveAndFlush(product);
+    }
+
+    /**
+     * Create some SUSE Vendor products with channels
+     *
+     * SLES12 SP1 x86_64
+     * SLE-HA12 SP1 x86_64
+     */
+    public static void createVendorSUSEProductEnvironment() {
         SUSEProduct productSLES12 = new SUSEProduct();
         productSLES12.setName("sles");
         productSLES12.setVersion("12");
