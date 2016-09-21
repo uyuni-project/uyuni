@@ -289,7 +289,7 @@ public class DistUpgradeManager extends BaseManager {
                         if (addonChannel != null) {
                             // Look for mandatory child channels
                             List<ChildChannelDto> addonProductChannels = findProductChannels(
-                                    target.getBaseProduct().getId(), addonChannel.getLabel());
+                                    addonProduct.getId(), addonChannel.getLabel());
                             target.addMissingChannels(getMissingChannels(addonProductChannels));
                         }
                     }
