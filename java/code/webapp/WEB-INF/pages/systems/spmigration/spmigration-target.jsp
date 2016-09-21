@@ -90,11 +90,11 @@
                                                 "Target not available, the following channels are not synced: ")
                                             : ""}">
                                         <input type="radio" name="targetProductSelected"
-                                            id="target${itemCounter}"
+                                            id="target${SPMigrationAction.serializeProductIDs(target.getProductIDs())}"
                                             value="${SPMigrationAction.serializeProductIDs(target.getProductIDs())}"
                                                 ${itemCounter == 0 && target.allChannelsAreSynced() ? "checked" : "" }
                                                 ${!target.allChannelsAreSynced() ? "disabled" : ""} />
-                                        <label for="target${itemCounter}">
+                                        <label for="target${SPMigrationAction.serializeProductIDs(target.getProductIDs())}">
                                             <strong><c:out value="${target.baseProduct.friendlyName}" /></strong>
                                             <ul>
                                                 <c:forEach items="${target.addonProducts}"
