@@ -5881,6 +5881,9 @@ public class SystemHandler extends BaseHandler {
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts, arch, loggedInUser);
         for (SUSEProductSet ps : migrationTargets) {
+            if(!ps.allChannelsAreSynced()) {
+                continue;
+            }
             Map<String, Object> target = new HashMap<String, Object>();
 
             target.put("ident", SPMigrationAction.serializeProductIDs(ps.getProductIDs()));
