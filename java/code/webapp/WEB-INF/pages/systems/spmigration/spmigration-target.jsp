@@ -86,7 +86,9 @@
                                 <c:set var="itemCounter" scope="page" value="0" />
                                 <c:forEach items="${targetProducts}" var="target">
                                     <li title="${!target.allChannelsAreSynced() ?
-                                            "This target is not available because not all channels are synced." : ""}">
+                                            target.stringfyMissingChannels(
+                                                "Target not available, the following channels are not synced: ")
+                                            : ""}">
                                         <input type="radio" name="targetProductSelected"
                                             id="target${itemCounter}"
                                             value="${SPMigrationAction.serializeProductIDs(target.getProductIDs())}"
