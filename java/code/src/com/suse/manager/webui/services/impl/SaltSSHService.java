@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
 public class SaltSSHService {
 
     private static final String CONFIG_KEY_SUDO_USER = "ssh_push_sudo_user";
-    private static final String SSH_KEY_PATH = "/srv/salt/mgr_ssh_id";
+    private static final String SSH_KEY_PATH = "/srv/susemanager/salt/salt_ssh/mgr_ssh_id";
     private static final String ROOT = "root";
     public static final int SSH_PUSH_PORT = 22;
 
