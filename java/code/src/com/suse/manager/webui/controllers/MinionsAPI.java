@@ -14,23 +14,28 @@
  */
 package com.suse.manager.webui.controllers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.InputValidator;
-import com.suse.manager.webui.utils.SaltRoster;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
-import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.wheel.Key;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.results.SSHResult;
+import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 import spark.Request;
 import spark.Response;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -38,25 +43,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
-
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.user.User;
-
-import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.results.Result;
-import com.suse.salt.netapi.results.SSHResult;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 /**
  * Controller class providing backend code for the minions page.
@@ -222,30 +214,19 @@ public class MinionsAPI {
         }
 
         try {
-            // Generate (temporary) roster file based on data from the UI
-            SaltRoster saltRoster = new SaltRoster();
-            saltRoster.addHost(input.getHost(), input.getUser(), Optional.of(input.getPassword()),
-                    input.getPortInteger());
-            Path rosterFilePath = saltRoster.persistInTempFile();
-            String roster = rosterFilePath.toString();
-            LOG.debug("Roster file: " + roster);
-
             // Apply the bootstrap state
             LOG.info("Bootstrapping host: " + input.getHost());
             List<String> bootstrapMods = Arrays.asList(
                     ApplyStatesEventMessage.CERTIFICATE, "bootstrap");
-            LocalCall<Map<String, State.ApplyResult>> call = State.apply(
-                    bootstrapMods, Optional.of(pillarData), Optional.of(true));
-            Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> results =
-                    SALT_SERVICE.callSyncSSH(call, new MinionList(input.getHost()),
-                            input.getIgnoreHostKeys(), roster,
-                            !"root".equals(input.getUser()));
+            BootstrapParameters parameters = new BootstrapParameters(input.getHost(),
+                    input.getPortInteger(), input.getUser(), input.maybeGetPassword(),
+                    input.getActivationKeys(), input.getIgnoreHostKeys());
+            Result<SSHResult<Map<String, State.ApplyResult>>> result =
+                    SALT_SERVICE.bootstrapMinion(parameters, bootstrapMods, pillarData);
 
-            // Delete the roster file
-            Files.delete(rosterFilePath);
 
             // Check if bootstrap was successful
-            return results.get(input.getHost()).fold(
+            return result.fold(
                     error -> {
                         LOG.error("Error during bootstrap: " + error.toString());
                         SALT_SERVICE.deleteKey(input.getHost());
@@ -292,7 +273,7 @@ public class MinionsAPI {
                     }
             );
         }
-        catch (IOException e) {
+        catch (SaltException e) {
             LOG.error("Error operating on roster file: " + e.getMessage());
             SALT_SERVICE.deleteKey(input.getHost());
             throw new RuntimeException(e);

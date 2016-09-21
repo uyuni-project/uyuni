@@ -41,9 +41,9 @@ public class SaltRoster {
      * @return roster
      */
     public static SaltRoster createSingleHostRoster(String hostName, String user,
-            Optional<String> password, Integer port) {
+            Optional<String> password, Optional<Integer> port) {
         SaltRoster result = new SaltRoster();
-        result.addHost(hostName, user, password, Optional.of(port));
+        result.addHost(hostName, user, password, port);
         return result;
     }
 
