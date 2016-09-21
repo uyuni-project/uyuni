@@ -102,7 +102,13 @@ public abstract class RhnBaseTestCase extends TestCase {
         return reload(obj);
     }
 
-    protected static Object reload(Object obj) throws HibernateException {
+    /**
+     * Reload a Hibernate entity.
+     * @param obj the entity to reload
+     * @return the new instance
+     * @throws HibernateException in case of error
+     */
+    public static Object reload(Object obj) throws HibernateException {
         assertNotNull(obj);
         Object result = TestUtils.reload(obj);
         assertNotSame(obj, result);

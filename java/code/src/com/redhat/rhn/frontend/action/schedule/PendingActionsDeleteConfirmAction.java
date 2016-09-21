@@ -16,10 +16,13 @@ package com.redhat.rhn.frontend.action.schedule;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.redhat.rhn.domain.server.Server;
+import com.suse.utils.Opt;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -96,22 +99,58 @@ public class PendingActionsDeleteConfirmAction extends RhnAction implements List
         for (RhnSetElement element : set.getElements()) {
             actionsToCancel.add(ActionFactory.lookupById(element.getElement()));
         }
-        ActionManager.cancelActions(user, actionsToCancel);
 
         ActionMessages msgs = new ActionMessages();
-        // If there was only one action cancelled, display the "action" cancelled
-        // message, else display the "actions" archived message.
-        if (set.size() == 1) {
+
+        Map<Action, Map<Server, ActionManager.CancelServerActionStatus>> cancelStates =
+                ActionManager.cancelActions(user, actionsToCancel);
+
+        cancelStates.entrySet().stream().forEach(entry ->
+            entry.getValue()
+                    .entrySet()
+                    .stream()
+                    .filter(e -> ActionManager.CancelServerActionStatus
+                            .CANCEL_FAILED_MINION_DOWN.equals(e.getValue()))
+                    .flatMap(e -> Opt.stream(e.getKey().asMinionServer()))
+                    .map(minion -> minion.getMinionId())
+                    .forEach(minionId ->
+                        createErrorMessage(request,
+                                "message.actionCancelServerFailure.minion.down",
+                                    minionId)
+                    )
+        );
+
+        long actionsWithFailuresCount = cancelStates.entrySet().stream().filter(entry ->
+            entry.getValue().entrySet().stream()
+                .filter(e -> ActionManager.CancelServerActionStatus
+                        .CANCEL_FAILED_MINION_DOWN.equals(e.getValue()))
+                    .count() > 0
+        ).count();
+
+        if (actionsWithFailuresCount > 0) {
             msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                     new ActionMessage("message.actionCancelled",
-                             LocalizationService.getInstance()
-                                                .formatNumber(new Integer(set.size()))));
+                    new ActionMessage("message.actionsCancelledWithErrors",
+                            LocalizationService.getInstance()
+                                    .formatNumber(actionsWithFailuresCount),
+                            LocalizationService.getInstance()
+                                    .formatNumber(set.size() - actionsWithFailuresCount)
+                            ));
         }
         else {
-            msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                     new ActionMessage("message.actionsCancelled",
-                             LocalizationService.getInstance()
-                                                .formatNumber(new Integer(set.size()))));
+            // If there was only one action cancelled, display the "action" cancelled
+            // message, else display the "actions" archived message.
+            if (set.size() == 1) {
+                msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("message.actionCancelled",
+                                LocalizationService.getInstance()
+                                        .formatNumber(new Integer(set.size()))));
+            }
+            else {
+                msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("message.actionsCancelled",
+                                LocalizationService.getInstance()
+                                        .formatNumber(new Integer(set.size()))));
+            }
         }
         strutsDelegate.saveMessages(request, msgs);
 
