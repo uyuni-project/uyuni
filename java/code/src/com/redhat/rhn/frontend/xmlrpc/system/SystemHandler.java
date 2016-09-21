@@ -6022,6 +6022,11 @@ public class SystemHandler extends BaseHandler {
                 throw new FaultException(-1, "servicePackMigrationNoTarget",
                         "No target found for SP migration");
             }
+            if(!targetProducts.allChannelsAreSynced()) {
+                throw new FaultException(-1, "servicePackMigrationNoTarget",
+                    targetProducts.stringfyMissingChannels(
+                    "Target not available, the following channels are not synced: "));
+            }
 
             // See if vendor channels are matching the given base channel
             EssentialChannelDto baseChannel = DistUpgradeManager.getProductBaseChannelDto(
