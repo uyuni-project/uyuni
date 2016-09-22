@@ -283,6 +283,23 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Find a {@link SUSEUpgradePath} given by source and target {@link SUSEProduct}s.
+     * @param fromProduct the source product
+     * @param toProduct the target product
+     * @return SUSEUpgradePath if it is there
+     */
+    @SuppressWarnings("unchecked")
+    public static SUSEUpgradePath findSUSEUpgradePath(SUSEProduct fromProduct, SUSEProduct toProduct) {
+        Session session = getSession();
+
+        Criteria c = session.createCriteria(SUSEUpgradePath.class)
+                .add(Restrictions.eq("fromProduct", fromProduct))
+                .add(Restrictions.eq("toProduct", toProduct));
+
+        return (SUSEUpgradePath) c.uniqueResult();
+    }
+
+    /**
      * Find all {@link SUSEProduct}.
      * @return list of all known products
      */
