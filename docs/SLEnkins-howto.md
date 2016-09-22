@@ -62,10 +62,10 @@ At this point, you should see an empty list of virtual machines.
 
 These shared directories enable SLEnkins to share test workspace and locally built packages between your workstation and the jail. 
 
-#### Usage
+6. (Optional) Launch `hello world` tests:
 
 ```
-slenkins-vms.sh -j -i sut=openSUSE_42.1-x86_64-default tests-helloworld
+$ slenkins-vms.sh -j -i sut=openSUSE_42.1-x86_64-default tests-helloworld
 ```
 
 For explanation about this command and flags, refer to:
@@ -73,7 +73,9 @@ http://slenkins.suse.de/doc/REFERENCE-slenkinsvms.txt
 
 basically -j say to run in the jail, -i = IMAGE for the vms created by virsh.
 
-#### How to run the Spacewalk Suite on you local machine
+### Usage
+
+Run the Spacewalk Suite on you local machine:
 
 ```
 slenkins-vms.sh -j -i server=SLE_12_SP1-x86_64-default -i client=SLE_12_SP1-x86_64-default -i minion=SLE_12_SP1-x86_64-default tests-suse-manager
@@ -94,10 +96,11 @@ You can combine the run the testsuite, with a different matrix of images (FAMILY
 
 for the spacewalk suite the pwd is the GALAXY standard.
 
-FAQ:
+#### FAQ
+
+http://slenkins.suse.de/doc/FAQ.txt
 
 For any question, feel free to join the irc channel:
-IRC-CHANNEL is @SUSE on slenkins
+`#slenkins` on SUSE IRC server
 
-Already FAQ:
-http://slenkins.suse.de/doc/FAQ.txt
+
