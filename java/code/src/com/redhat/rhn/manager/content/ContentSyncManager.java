@@ -1092,7 +1092,10 @@ public class ContentSyncManager {
                 return;
             }
 
-            SUSEProductFactory.save(new SUSEUpgradePath(fromProduct, toProduct));
+            // Save only if the SUSEUpgradePath Object doesn't exist yet
+            if (SUSEProductFactory.findSUSEUpgradePath(fromProduct, toProduct) == null) {
+                SUSEProductFactory.save(new SUSEUpgradePath(fromProduct, toProduct));
+            }
         }
     }
 
