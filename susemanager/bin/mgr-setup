@@ -121,7 +121,7 @@ if [ -n "$REALHOSTNAME" ]; then
         echo "$REALHOSTNAME" > /etc/hostname
 fi
 # bsc#979664 - SUSE Manager requires a working mail system
-systemctl enable postfix
+systemctl --quiet enable postfix
 systemctl restart postfix
 }
 
@@ -152,7 +152,7 @@ cleanup_hostname() {
 }
 
 setup_db_postgres() {
-    systemctl enable postgresql
+    systemctl --quiet enable postgresql
     systemctl start postgresql
     su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
     # su - postgres -c "createlang pltclu '$MANAGER_DB_NAME'"   SUMA3 drops upstream auditing
@@ -715,7 +715,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     if [ "$ACTIVATE_SLP" = "y" ]; then
 	sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427" > /dev/null 2>&1
 	sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "427" > /dev/null 2>&1
-	systemctl enable -q slpd
+	systemctl --quiet enable slpd
 	systemctl start slpd
     fi
 fi
