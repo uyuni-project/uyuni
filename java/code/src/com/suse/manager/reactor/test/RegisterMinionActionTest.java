@@ -249,7 +249,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     public void testRegisterMinionWithoutActivationKeyNoProductChannel() throws Exception {
         ChannelFamily channelFamily = createTestChannelFamily();
-        SUSEProduct product = setupChannelAndProduct(channelFamily);
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         SaltService saltService = setupStubs(product);
 
         // Verify the resulting system entry
@@ -268,7 +268,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         throws Exception {
 
         ChannelFamily channelFamily = createTestChannelFamily();
-        SUSEProduct product = setupChannelAndProduct(channelFamily);
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
 
         SaltService saltService = setupStubs(product);
@@ -405,13 +405,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertNotNull(minion.getBaseChannel());
                     assertEquals("RES", minion.getBaseChannel().getProductName().getName());
                 });
-    }
-
-    private SUSEProduct setupChannelAndProduct(ChannelFamily channelFamily)
-        throws Exception {
-        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
-        product.setRelease(null);
-        return product;
     }
 
     private Channel setupBaseAndRequiredChannels(ChannelFamily channelFamily,
