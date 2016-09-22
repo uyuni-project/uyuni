@@ -1,38 +1,21 @@
 # SLEnkins Spacewalk Suite HOWTO:
 
-### The difference between master suite and the SLEnkins suite.
-[What has changed](changes.md)
-
-### Where are the official results for slenkins-suite-cucumber ? 
-http://slenkins.suse.de/cucumber_suse_manager_latest.html
-**Note 01** this results are from a local run. ( you can run local or on cloud). 
-It could be that cloud and local differ a little. ( i focused on the fixes integration locally)
-
-Cloud:
-**Note 02**  The suite run on cloude, so the output.hmtl is in the workspace (jenkins).
-https://slenkins.suse.de/jenkins/view/Test%20suites/job/suite-suse-manager/
-
 ### Where is the code of the slenkins-cucumber ?
 branch slenkins
 https://github.com/SUSE/spacewalk-testsuite-base/tree/slenkins
 
-#### Official and complete documentation is here:
+### The difference between master suite and the SLEnkins suite.
+[What has changed](changes.md)
+
+#### Official and full documentation about slenkins:
 http://slenkins.suse.de/doc/
 
 
 ### HOWTO Topics:
 
-*  1) Installation of SLEnkins in your machine.
-*  2) How to run the Spacewalk Suite on you local machine *DINAMIC-SETUP*
-*  3) How to run  the Spacewalk Suite on bare-machines,  *STATIC-SETUP* ( like from orthos, etc. )
-*  4) How to run it on Cloud6 with Jenkins(2.0) (slenkins.suse.de) 
-*  5) Developing a new/existing testsuite.
-*  6) Extras infos (hacking)
-
+*  1) Installation of SLEnkins in your local workstation.
 
 ### 1) Installation of SLEnkins in your local machine/server.
-
-
 
 **Install the packages**
 ```
@@ -42,17 +25,23 @@ zypper ref
 zypper in slenkins-engine-vms slenkins
 ```
 
-
 **Install the systemd-jail**
 
 ```
-/usr/lib/slenkins/init-jail/init-jail.sh --local
+/usr/lib/slenkins/init-jail/init-jail.sh --local --with-susemanager
 ```
    At the end, the script will suggest to add entries to */etc/fstab*,
    so that shared directories are mounted even after a reboot.
    These shared directories enable SLEnkins to share the test workspace
    and the locally built packages between your workstation and the jail.
    **Do as instructed.**
+
+Once the jail is done, test the virsh functionality :
+```console
+   systemd-nspawn -D $jail_path
+   su - slenkins
+   $ virsh list
+```
 
 - Edit */etc/libvirt/libvirtd.conf* on your workstation
    so that it contains the following lines:
@@ -63,6 +52,9 @@ zypper in slenkins-engine-vms slenkins
 
 systemctl restart  libvirtd.service
 ```
+
+Don't forget ** to modify the **/etc/fstab for shared dir
+
 
 **Run slenkins on your local machine!** 
 ```
@@ -91,16 +83,14 @@ The default is an image without graphic (gnome), minimal pattern.
 
 You can combine the run the testsuite, with a different matrix of images (FAMILY like SP1 or ARCH like ppc64le)
 
-```
-slenkins-vms.sh -j -i server=SLE_12_SP1-x86_64-gnome -i client=SLE_12_SP1-ppc64le-default -i 
-minion=SLE_12_SP1-x86_64-fips tests-suse-manager
-```
-
 **IF the testsuite fail, the vms created are conserved, so you can login into it. If testsuite success, the machines are automatically destroyed.**
 
 for the spacewalk suite the pwd is the GALAXY standard.
 
+FAQ:
 
-### 3) How to run  the Spacewalk Suite on bare-machines,  *STATIC-SETUP* ( like from orthos, etc. )
+For any question, feel free to join the irc channel:
+IRC-CHANNEL is @SUSE on slenkins
 
-
+Already FAQ:
+http://slenkins.suse.de/doc/FAQ.txt
