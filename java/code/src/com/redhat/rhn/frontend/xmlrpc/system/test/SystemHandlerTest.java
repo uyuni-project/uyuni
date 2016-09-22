@@ -2297,4 +2297,52 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
         assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP1");
     }
+
+    public void testListMigrationTargetExtensionNotSynced() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin);
+
+        InstalledProduct installedPrd = new InstalledProduct();
+        installedPrd.setName("SLES");
+        installedPrd.setVersion("12");
+        installedPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        installedPrd.setBaseproduct(true);
+        assertNull(installedPrd.getId());
+
+        InstalledProduct installedExt = new InstalledProduct();
+        installedExt.setName("sle-ha");
+        installedExt.setVersion("12");
+        installedExt.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        assertNull(installedExt.getId());
+
+        InstalledProduct installedExt2 = new InstalledProduct();
+        installedExt2.setName("sle-ha-geo");
+        installedExt2.setVersion("12");
+        installedExt2.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        assertNull(installedExt2.getId());
+
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        assertNotNull(server);
+        assertNotNull(server.getId());
+
+        Set<InstalledProduct> products = new HashSet<>();
+        products.add(installedPrd);
+        products.add(installedExt);
+        products.add(installedExt2);
+
+        server.setInstalledProducts(products);
+        TestUtils.saveAndReload(server);
+
+        assertNotNull(server.getInstalledProductSet());
+
+        server.getInstalledProductSet().getBaseProduct().getUpgrades();
+
+        List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
+
+        assertNotEmpty("no target found", result);
+        assertTrue(result.size() == 1);
+        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
+        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP1");
+    }
+
 }

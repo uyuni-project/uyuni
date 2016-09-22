@@ -118,6 +118,27 @@ public class SUSEProductTestUtils {
     }
 
     /**
+     * Create a SUSE product channel (that is, links a channel to a SUSE
+     * product, eg. a row in suseproductchannel) for a not synced channel
+     * @param channelLabel the channel label
+     * @param parentChannelLabel the parent channel label
+     * @param product the SUSE product
+     */
+    public static void createTestSUSEProductChannelNotSynced(String channelLabel, String parentChannelLabel, SUSEProduct product) {
+        WriteMode m = ModeFactory.getWriteMode("test_queries",
+                "insert_into_suseproductchannel");
+
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("product_id", product.getId());
+        parameters.put("channel_id", null);
+        parameters.put("channel_label", channelLabel);
+        parameters.put("parent_channel_label", parentChannelLabel);
+
+        m.executeUpdate(parameters);
+        HibernateFactory.getSession().flush();
+    }
+
+    /**
      * Marks one SUSE product as a possible upgrade of another.
      * @param from the first SUSE product
      * @param to the second SUSE product
@@ -222,6 +243,13 @@ public class SUSEProductTestUtils {
         productHA12.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         productHA12.setProductId(1245);
 
+        SUSEProduct productHAGEO12 = new SUSEProduct();
+        productHAGEO12.setName("sle-ha-geo");
+        productHAGEO12.setVersion("12");
+        productHAGEO12.setFriendlyName("SUSE Linux Enterprise High Availability GEO Extension 12");
+        productHAGEO12.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        productHAGEO12.setProductId(1157);
+
         SUSEProduct productSLES121 = new SUSEProduct();
         productSLES121.setName("sles");
         productSLES121.setVersion("12.1");
@@ -235,6 +263,13 @@ public class SUSEProductTestUtils {
         productHA121.setFriendlyName("SUSE Linux Enterprise High Availability Extension 12 SP1");
         productHA121.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         productHA121.setProductId(1324);
+
+        SUSEProduct productHAGEO121 = new SUSEProduct();
+        productHAGEO121.setName("sle-ha-geo");
+        productHAGEO121.setVersion("12.1");
+        productHAGEO121.setFriendlyName("SUSE Linux Enterprise High Availability GEO Extension 12 SP1");
+        productHAGEO121.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        productHAGEO121.setProductId(1337);
 
         SUSEProduct productSLES122 = new SUSEProduct();
         productSLES122.setName("sles");
@@ -250,6 +285,16 @@ public class SUSEProductTestUtils {
         productHA122.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         productHA122.setProductId(1361);
 
+        SUSEProduct productHAGEO122 = new SUSEProduct();
+        productHAGEO122.setName("sle-ha-geo");
+        productHAGEO122.setVersion("12.2");
+        productHAGEO122.setFriendlyName("SUSE Linux Enterprise High Availability GEO Extension 12 SP2");
+        productHAGEO122.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        productHAGEO122.setProductId(1363);
+
+        TestUtils.saveAndFlush(productHAGEO12);
+        TestUtils.saveAndFlush(productHAGEO121);
+        TestUtils.saveAndFlush(productHAGEO122);
         TestUtils.saveAndFlush(productHA122);
         TestUtils.saveAndFlush(productSLES122);
         TestUtils.saveAndFlush(productHA121);
@@ -265,9 +310,14 @@ public class SUSEProductTestUtils {
         upHA.add(productHA121);
         upHA.add(productHA122);
         productHA12.setUpgrades(upHA);
+        Set<SUSEProduct> upHAGEO = new HashSet<SUSEProduct>();
+        upHA.add(productHAGEO121);
+        upHA.add(productHAGEO122);
+        productHAGEO12.setUpgrades(upHAGEO);
 
         productSLES121.setDowngrades(Collections.singleton(productSLES12));
         productHA121.setDowngrades(Collections.singleton(productHA12));
+        productHAGEO121.setDowngrades(Collections.singleton(productHAGEO12));
 
         Set<SUSEProduct> downSLES = new HashSet<SUSEProduct>();
         downSLES.add(productSLES121);
@@ -277,15 +327,30 @@ public class SUSEProductTestUtils {
         downHA.add(productHA121);
         downHA.add(productHA12);
         productHA122.setDowngrades(downHA);
+        Set<SUSEProduct> downHAGEO = new HashSet<SUSEProduct>();
+        downHAGEO.add(productHAGEO121);
+        downHAGEO.add(productHAGEO12);
+        productHAGEO122.setDowngrades(downHAGEO);
 
         productSLES12.setExtensionFor(Collections.singleton(productHA12));
         productSLES121.setExtensionFor(Collections.singleton(productHA121));
         productSLES122.setExtensionFor(Collections.singleton(productHA122));
 
+        productHA12.setExtensionFor(Collections.singleton(productHAGEO12));
+        productHA121.setExtensionFor(Collections.singleton(productHAGEO121));
+        productHA122.setExtensionFor(Collections.singleton(productHAGEO122));
+
         productHA12.setExtensionOf(Collections.singleton(productSLES12));
         productHA121.setExtensionOf(Collections.singleton(productSLES121));
         productHA122.setExtensionOf(Collections.singleton(productSLES122));
 
+        productHAGEO12.setExtensionOf(Collections.singleton(productHA12));
+        productHAGEO121.setExtensionOf(Collections.singleton(productHA121));
+        productHAGEO122.setExtensionOf(Collections.singleton(productHA122));
+
+        TestUtils.saveAndReload(productHAGEO122);
+        TestUtils.saveAndReload(productHAGEO121);
+        TestUtils.saveAndReload(productHAGEO12);
         TestUtils.saveAndReload(productHA122);
         TestUtils.saveAndReload(productSLES122);
         TestUtils.saveAndReload(productHA121);
@@ -295,10 +360,14 @@ public class SUSEProductTestUtils {
 
         Channel bcSLES12 = createBaseChannelForBaseProduct(productSLES12, admin);
         createChildChannelsForProduct(productHA12, bcSLES12, admin);
+        createChildChannelsForProduct(productHAGEO12, bcSLES12, admin);
         Channel bcSLES121 = createBaseChannelForBaseProduct(productSLES121, admin);
         createChildChannelsForProduct(productHA121, bcSLES121, admin);
+        createChildChannelsForProduct(productHAGEO121, bcSLES121, admin);
         Channel bcSLES122 = createBaseChannelForBaseProduct(productSLES122, admin);
         createChildChannelsForProduct(productHA122, bcSLES122, admin);
+        createTestSUSEProductChannelNotSynced("channellabel" + TestUtils.randomString().toLowerCase()
+                , bcSLES122.getLabel(), productHAGEO122);
     }
 
     /**
