@@ -453,7 +453,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         product.getName(),
                         product.getArch().getLabel(), "descr", "eol", "epoch", "flavor",
                         true, true, "productline", Optional.of("registerrelease"),
-                        "release", "repo", "shortname", "summary", "vendor",
+                        "test", "repo", "shortname", "summary", "vendor",
                         product.getVersion());
             pil.add(pi);
             allowing(saltService).callSync(
