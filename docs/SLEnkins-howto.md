@@ -1,16 +1,16 @@
-# SLEnkins Spacewalk Suite HOWTO:
+# SLEnkins Spacewalk Suite HOWTO
 
-### Where is the code of the slenkins-cucumber ?
+## Where is the code of the slenkins-cucumber ?
 branch slenkins
 https://github.com/SUSE/spacewalk-testsuite-base/tree/slenkins
 
-### The difference between master suite and the SLEnkins suite.
+## The difference between master suite and the SLEnkins suite.
 [What has changed](changes.md)
 
-#### Official and full documentation about slenkins:
+## Official and full documentation about slenkins:
 http://slenkins.suse.de/doc/
 
-#### Installation of SLEnkins in your local machine/server.
+### Installation of SLEnkins in your local machine/server.
 
 1. Add the repos and install required packages:
    
