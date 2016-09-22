@@ -2235,6 +2235,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNull(installedPrd.getId());
 
         Server server = ServerFactoryTest.createTestServer(admin, true);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         assertNotNull(server);
         assertNotNull(server.getId());
 
@@ -2273,6 +2274,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNull(installedExt.getId());
 
         Server server = ServerFactoryTest.createTestServer(admin, true);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         assertNotNull(server);
         assertNotNull(server.getId());
 
