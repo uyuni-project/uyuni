@@ -10,63 +10,70 @@ https://github.com/SUSE/spacewalk-testsuite-base/tree/slenkins
 #### Official and full documentation about slenkins:
 http://slenkins.suse.de/doc/
 
+#### Installation of SLEnkins in your local machine/server.
 
-### HOWTO Topics:
-
-*  1) Installation of SLEnkins in your local workstation.
-
-### 1) Installation of SLEnkins in your local machine/server.
-
-**Install the packages**
-```
-openSUSE_Leap_42.1 modify it with your distro
-zypper ar http://download.suse.de/ibs/Devel:/SLEnkins/openSUSE_Leap_42.1/Devel:SLEnkins.repo
-zypper ref
-zypper in slenkins-engine-vms slenkins
-```
-
-**Install the systemd-jail**
+1. Add the repos and install required packages:
+   
+For openSUSE_Leap_42.1 (modify it with your distro version):
 
 ```
-/usr/lib/slenkins/init-jail/init-jail.sh --local --with-susemanager
+# zypper ar http://download.suse.de/ibs/Devel:/SLEnkins/openSUSE_Leap_42.1/Devel:SLEnkins.repo
+# zypper ref
+# zypper in slenkins-engine-vms slenkins
 ```
-   At the end, the script will suggest to add entries to */etc/fstab*,
-   so that shared directories are mounted even after a reboot.
-   These shared directories enable SLEnkins to share the test workspace
-   and the locally built packages between your workstation and the jail.
-   **Do as instructed.**
 
-Once the jail is done, test the virsh functionality :
-```console
-   systemd-nspawn -D $jail_path
-   su - slenkins
+2. Install systemd-jail (NOTE: *NOT* from root):
+
+```
+$ /usr/lib/slenkins/init-jail/init-jail.sh --local --with-susemanager
+```
+
+A `jail` directory will be created inside the current directory (let's suppose `/home/mbologna/jail` from now on).
+   
+3. Edit `libvirt` config (`/etc/libvirt/libvirtd.conf`) so that it contains the following lines:
+
+```
+listen_tcp = 1
+listen_addr = "127.0.0.1"
+auth_tcp = "none"
+```
+
+and then restart `libvirt`:
+
+```
+# systemctl restart libvirtd.service
+```
+
+4. Once the jail is done, test the `virsh` functionality:
+```
+   # systemd-nspawn -D $jail_path
+   # su - slenkins
    $ virsh list
 ```
 
-- Edit */etc/libvirt/libvirtd.conf* on your workstation
-   so that it contains the following lines:
+At this point, you should see an empty list of virtual machines.
+
+5. Modify `/etc/fstab` and add:
+
 ```
-      listen_tcp = 1
-      listen_addr = "127.0.0.1"
-      auth_tcp = "none"
-
-systemctl restart  libvirtd.service
+/home/mbologna/jail/var/tmp/slenkins   /var/tmp/slenkins   none   bind,user       0 0
+/home/mbologna/jail/var/tmp/build-root   /var/tmp/build-root   none   bind,user       0 0
 ```
 
-Don't forget **to modify** the /etc/fstab for shared dir
+These shared directories enable SLEnkins to share test workspace and locally built packages between your workstation and the jail. 
 
+#### Usage
 
-**Run slenkins on your local machine!** 
 ```
 slenkins-vms.sh -j -i sut=openSUSE_42.1-x86_64-default tests-helloworld
 ```
 
-For explanation about this command and flags , read this:
+For explanation about this command and flags, refer to:
 http://slenkins.suse.de/doc/REFERENCE-slenkinsvms.txt
 
 basically -j say to run in the jail, -i = IMAGE for the vms created by virsh.
 
-### 2 How to run the Spacewalk Suite on you local machine
+#### How to run the Spacewalk Suite on you local machine
 
 ```
 slenkins-vms.sh -j -i server=SLE_12_SP1-x86_64-default -i client=SLE_12_SP1-x86_64-default -i minion=SLE_12_SP1-x86_64-default tests-suse-manager
