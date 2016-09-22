@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -27,6 +28,8 @@ import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.io.File;
@@ -192,13 +195,33 @@ public class SUSEProductTestUtils {
         TestUtils.saveAndFlush(product);
     }
 
+    public static Channel createBaseChannelForBaseProduct(SUSEProduct product, User admin) throws Exception {
+        ChannelArch channelArch = ChannelFactory.findArchByLabel("channel-x86_64");
+        Channel channel = ChannelTestUtils.createBaseChannel(admin);
+        channel.setChannelArch(channelArch);
+        ChannelFactory.save(channel);
+        SUSEProductTestUtils.createTestSUSEProductChannel(channel, product);
+        return channel;
+    }
+
+    public static void createChildChannelsForProduct(SUSEProduct product, Channel baseChannel, User admin) throws Exception {
+        ChannelArch channelArch = ChannelFactory.findArchByLabel("channel-x86_64");
+        Channel channel = ChannelFactoryTest.createTestChannel(admin);
+        channel.setChannelArch(channelArch);
+        channel.setParentChannel(baseChannel);
+        ChannelFactory.save(channel);
+        SUSEProductTestUtils.createTestSUSEProductChannel(channel, product);
+    }
+
     /**
      * Create some SUSE Vendor products with channels
      *
      * SLES12 SP1 x86_64
      * SLE-HA12 SP1 x86_64
+     * @param admin
+     * @throws Exception
      */
-    public static void createVendorSUSEProductEnvironment() {
+    public static void createVendorSUSEProductEnvironment(User admin) throws Exception {
         SUSEProduct productSLES12 = new SUSEProduct();
         productSLES12.setName("sles");
         productSLES12.setVersion("12");
@@ -283,6 +306,13 @@ public class SUSEProductTestUtils {
         TestUtils.saveAndReload(productSLES121);
         TestUtils.saveAndReload(productHA12);
         TestUtils.saveAndReload(productSLES12);
+
+        Channel bcSLES12 = createBaseChannelForBaseProduct(productSLES12, admin);
+        createChildChannelsForProduct(productHA12, bcSLES12, admin);
+        Channel bcSLES121 = createBaseChannelForBaseProduct(productSLES121, admin);
+        createChildChannelsForProduct(productHA121, bcSLES121, admin);
+        Channel bcSLES122 = createBaseChannelForBaseProduct(productSLES122, admin);
+        createChildChannelsForProduct(productHA122, bcSLES122, admin);
     }
 
     /**
