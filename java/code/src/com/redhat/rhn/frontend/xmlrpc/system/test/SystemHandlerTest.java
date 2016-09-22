@@ -2225,7 +2225,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testListMigrationTargetBaseOnly() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment();
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin);
 
         InstalledProduct installedPrd = new InstalledProduct();
         installedPrd.setName("SLES");
@@ -2257,7 +2257,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testListMigrationTargetExtension() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment();
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin);
 
         InstalledProduct installedPrd = new InstalledProduct();
         installedPrd.setName("SLES");
