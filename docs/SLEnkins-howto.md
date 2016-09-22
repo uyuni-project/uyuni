@@ -53,7 +53,7 @@ Once the jail is done, test the virsh functionality :
 systemctl restart  libvirtd.service
 ```
 
-Don't forget ** to modify the **/etc/fstab for shared dir
+Don't forget **to modify** the /etc/fstab for shared dir
 
 
 **Run slenkins on your local machine!** 
