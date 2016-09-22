@@ -14,64 +14,65 @@ http://slenkins.suse.de/doc/
 
 1. Add the repos and install required packages:
    
-For openSUSE_Leap_42.1 (modify it with your distro version):
-
-```
-# zypper ar http://download.suse.de/ibs/Devel:/SLEnkins/openSUSE_Leap_42.1/Devel:SLEnkins.repo
-# zypper ref
-# zypper in slenkins-engine-vms slenkins
-```
+   For openSUSE_Leap_42.1 (modify it with your distro version):
+   
+   ```
+   # zypper ar http://download.suse.de/ibs/Devel:/SLEnkins/openSUSE_Leap_42.1/Devel:SLEnkins.repo
+   # zypper ref
+   # zypper in slenkins-engine-vms slenkins
+   ```
 
 2. Install systemd-jail (NOTE: *NOT* from root):
 
-```
-$ /usr/lib/slenkins/init-jail/init-jail.sh --local --with-susemanager
-```
+   ```
+   $ /usr/lib/slenkins/init-jail/init-jail.sh --local --with-susemanager
+   ```
 
-A `jail` directory will be created inside the current directory (let's suppose `/home/mbologna/jail` from now on).
+   A `jail` directory will be created inside the current directory (let's suppose `/home/mbologna/jail` from now on).
    
 3. Edit `libvirt` config (`/etc/libvirt/libvirtd.conf`) so that it contains the following lines:
 
-```
-listen_tcp = 1
-listen_addr = "127.0.0.1"
-auth_tcp = "none"
-```
-
-and then restart `libvirt`:
-
-```
-# systemctl restart libvirtd.service
-```
+   ```
+   listen_tcp = 1
+   listen_addr = "127.0.0.1"
+   auth_tcp = "none"
+   ```
+   
+   and then restart `libvirt`:
+   
+   ```
+   # systemctl restart libvirtd.service
+   ```
 
 4. Once the jail is done, test the `virsh` functionality:
-```
-   # systemd-nspawn -D $jail_path
-   # su - slenkins
-   $ virsh list
-```
-
-At this point, you should see an empty list of virtual machines.
+ 
+   ```
+      # systemd-nspawn -D $jail_path
+      # su - slenkins
+      $ virsh list
+   ```
+   
+   At this point, you should see an empty list of virtual machines.
 
 5. Modify `/etc/fstab` and add:
-
-```
-/home/mbologna/jail/var/tmp/slenkins   /var/tmp/slenkins   none   bind,user       0 0
-/home/mbologna/jail/var/tmp/build-root   /var/tmp/build-root   none   bind,user       0 0
-```
-
-These shared directories enable SLEnkins to share test workspace and locally built packages between your workstation and the jail. 
+   
+   ```
+   /home/mbologna/jail/var/tmp/slenkins   /var/tmp/slenkins   none   bind,user       0 0
+   /home/mbologna/jail/var/tmp/build-root   /var/tmp/build-root   none   bind,user       0 0
+   ```
+   
+   These shared directories enable SLEnkins to share test workspace and locally built packages between your workstation and the jail. 
 
 6. (Optional) Launch `hello world` tests:
-
-```
-$ slenkins-vms.sh -j -i sut=openSUSE_42.1-x86_64-default tests-helloworld
-```
-
-For explanation about this command and flags, refer to:
-http://slenkins.suse.de/doc/REFERENCE-slenkinsvms.txt
-
-basically -j say to run in the jail, -i = IMAGE for the vms created by virsh.
+   
+   ```
+   $ slenkins-vms.sh -j -i sut=openSUSE_42.1-x86_64-default tests-helloworld
+   ```
+   
+   For explanation about this command and flags, refer to:
+   http://slenkins.suse.de/doc/REFERENCE-slenkinsvms.txt
+   
+   basically -j say to run in the jail, -i = IMAGE for the vms created by virsh.
 
 ### Usage
 
@@ -96,7 +97,7 @@ You can combine the run the testsuite, with a different matrix of images (FAMILY
 
 for the spacewalk suite the pwd is the GALAXY standard.
 
-#### FAQ
+### FAQ
 
 http://slenkins.suse.de/doc/FAQ.txt
 
