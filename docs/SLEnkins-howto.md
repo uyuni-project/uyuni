@@ -97,6 +97,42 @@ You can combine the run the testsuite, with a different matrix of images (FAMILY
 
 for the spacewalk suite the pwd is the GALAXY standard.
 
+## Current Results after the suite is running:
+
+For getting the html file with results, have a look at ``/home/slenkins/$MY_JAIL/var/tmp/slenkins/workspace/cucumber/output.html`` 
+
+At moment, i'm working to fix this scenarios :
+
+
+cucumber features/test_config_channel.feature:99 # Scenario: Import the changed file
+cucumber features/test_config_channel.feature:115 # Scenario: Import the changed file
+cucumber features/test_config_channel.feature:131 # Scenario: Copy Sandbox file to Centrally-Managed
+cucumber features/test_config_channel.feature:161 # Scenario: Change one local file and compare multiple (bsc#910243, bsc#910247)
+cucumber features/action_chain.feature:61 # Scenario: I add a config file deployment to the action chain
+
+cucumber features/action_chain.feature:120 # Scenario: I execute the action chain from the web ui
+cucumber features/spacewalk-channel.feature:13 # Scenario: add an invalid child channel (bnc#875958)
+cucumber features/lock_packages_on_client.feature:35 # Scenario: Unlock a package on the client
+cucumber features/lock_packages_on_client.feature:78 # Scenario: Mix package locks and unlock events
+cucumber features/systemspage2.feature:31 # Scenario: Completeness of the Virtual System table
+cucumber features/nagios.feature:10 # Scenario: Check pending patches for host
+cucumber features/nagios.feature:14 # Scenario: Check pending patches for non-existing host
+cucumber features/bare-metal-test.feature:102 # Scenario: Disable Bare-metal discovery
+cucumber features/ssh_push.feature:34 # Scenario: Register this client for SSH push via tunnel
+cucumber features/ssh_push.feature:38 # Scenario: Check this client's contact method
+cucumber features/xmlrpc_api.feature:6 # Scenario: Public API test
+cucumber features/smdba.feature:41 # Scenario: Check database utilities
+cucumber features/security.feature:37 # Scenario: Do not use jsession id
+cucumber features/salt.feature:24 # Scenario: The minion appears in the master's incoming queue
+cucumber features/salt_minions_page.feature:17 # Scenario: Minion is visible in the Pending section
+cucumber features/salt_minions_page.feature:24 # Scenario: Reject and delete the pending minion key
+cucumber features/salt_minions_page.feature:33 # Scenario: Accepted minion shows up as a registered system
+cucumber features/salt_minions_page.feature:45 # Scenario: The minion communicates with the master
+
+360 scenarios (23 failed, 337 passed)
+
+
+
 ### FAQ
 
 http://slenkins.suse.de/doc/FAQ.txt
