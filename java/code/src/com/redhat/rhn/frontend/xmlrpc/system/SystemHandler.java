@@ -5565,14 +5565,15 @@ public class SystemHandler extends BaseHandler {
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         Server server = lookupServer(loggedInUser, serverId);
         SUSEProductSet installedProducts = server.getInstalledProductSet();
-        if(installedProducts == null) {
-            throw new FaultException(-1, "listMigrationTargetError", "Server has no Products installed.");
+        if (installedProducts == null) {
+            throw new FaultException(-1, "listMigrationTargetError",
+                    "Server has no Products installed.");
         }
         ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts, arch, loggedInUser);
         for (SUSEProductSet ps : migrationTargets) {
-            if(!ps.allChannelsAreSynced()) {
+            if (!ps.allChannelsAreSynced()) {
                 continue;
             }
             Map<String, Object> target = new HashMap<String, Object>();
@@ -5701,7 +5702,7 @@ public class SystemHandler extends BaseHandler {
                 throw new FaultException(-1, "servicePackMigrationNoTarget",
                         "No target found for SP migration");
             }
-            if(!targetProducts.allChannelsAreSynced()) {
+            if (!targetProducts.allChannelsAreSynced()) {
                 throw new FaultException(-1, "servicePackMigrationNoTarget",
                     targetProducts.stringfyMissingChannels(
                     "Target not available, the following channels are not synced: "));

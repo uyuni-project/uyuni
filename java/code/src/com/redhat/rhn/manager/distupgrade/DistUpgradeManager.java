@@ -210,7 +210,8 @@ public class DistUpgradeManager extends BaseManager {
             new Comparator<SUSEProduct>() {
         @Override
         public int compare(SUSEProduct o1, SUSEProduct o2) {
-            int result = new RpmVersionComparator().compare(o1.getVersion(), o2.getVersion());
+            int result = new RpmVersionComparator().compare(
+                    o1.getVersion(), o2.getVersion());
             if (result != 0) {
                 return result;
             }
@@ -226,6 +227,8 @@ public class DistUpgradeManager extends BaseManager {
      * Calculate the valid migration targets for a given product set.
      *
      * @param installedProducts current product set
+     * @param arch the channel architecture
+     * @param user the user
      * @return valid migration targets
      */
     public static List<SUSEProductSet> getTargetProductSets(
@@ -245,7 +248,8 @@ public class DistUpgradeManager extends BaseManager {
                 }
             }
         });
-        return addMissingChannels(removeIncompatibleCombinations(migrationTargets), arch, user);
+        return addMissingChannels(
+                removeIncompatibleCombinations(migrationTargets), arch, user);
     }
 
     private static List<SUSEProductSet> removeIncompatibleCombinations(
@@ -273,9 +277,10 @@ public class DistUpgradeManager extends BaseManager {
 
     private static List<SUSEProductSet> addMissingChannels(
             List<SUSEProductSet> migrationTargets, ChannelArch arch, User user) {
-        for(SUSEProductSet target : migrationTargets) {
+        for (SUSEProductSet target : migrationTargets) {
             // Look for the target product's base channel
-            Channel baseChannel = getProductBaseChannel(target.getBaseProduct().getId(), arch, user);
+            Channel baseChannel = getProductBaseChannel(target.getBaseProduct().getId(),
+                    arch, user);
 
             if (baseChannel == null) {
                 // No base channel found

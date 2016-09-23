@@ -33,10 +33,10 @@ public class RpmVersionComparator implements Comparator<String> {
      * {@inheritDoc}
      */
     public int compare(String o1, String o2) {
-        if(o1 == null) {
+        if (o1 == null) {
             o1 = "";
         }
-        if(o2 == null) {
+        if (o2 == null) {
             o2 = "";
         }
         // This method tries to mimick rpmvercmp.c as
