@@ -446,6 +446,7 @@ public class ErrataFactory extends HibernateFactory {
         copy.setAdvisoryRel(original.getAdvisoryRel());
         copy.setLocallyModified(original.getLocallyModified());
         copy.setLastModified(original.getLastModified());
+        copy.setSeverity(original.getSeverity());
 
 
         /*
