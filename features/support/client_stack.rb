@@ -9,13 +9,10 @@ end
 
 def client_refresh_metadata
   if client_is_zypp?
-    _out, _local, _remote, code = $client.test_and_store_results_together("zypper --non-interactive ref -s", "root", 600)
-    fail if code != 0
+    $client.run("zypper --non-interactive ref -s", true, 500, 'root')
   else
-    _out, _local, _remote, code = $client.test_and_store_results_together("yum clean all", "root", 600)
-    fail if code != 0
-    _out, _local, _remote, code = $client.test_and_store_results_together("yum makecache", "root", 600)
-    fail if code != 0
+    $client.run("yum clean all", true, 600, 'root')
+    $client.run("yum makecache", true, 600, 'root')
   end
 end
 
@@ -29,10 +26,10 @@ end
 
 def client_system_id
   out, _local, _remote, _code = $client.test_and_store_results_together("grep \"system_id\" /etc/sysconfig/rhn/systemid", "root", 600)
-  puts out
+   puts out
 end
 
 def client_system_id_to_i
-  out, _local, _remote, _code = $client.test_and_store_results_together("grep \"system_id\" /etc/sysconfig", "root", 600)
-  puts out
+  out, _local, _remote, _code = $client.test_and_store_results_together("grep \"ID\" /etc/sysconfig/rhn/systemid | tr -d -c 0-9", "root", 600)
+  out.gsub(/\s+/, "")
 end

@@ -19,7 +19,7 @@ Feature: Salt is configured and running
   Scenario: The minion is running
     Given the Salt Minion is configured
     And I restart salt-minion
-    Then the Salt Minion should be running
+#    Then the Salt Minion should be running
 
   Scenario: The minion appears in the master's incoming queue
     When I list unaccepted keys at Salt Master

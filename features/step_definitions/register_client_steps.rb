@@ -1,7 +1,7 @@
 # Copyright (c) 2010-2016 Novell, Inc.
 # Licensed under the terms of the MIT license.
 Given(/^I am root$/) do
-  user, _local, _remote, code = $client.test_and_store_results_together("whoami", "root", 500)
+  user, code = $client.run("whoami")
   if user.strip != "root"
     puts  "user on client was #{user}"
     raise "You are not root!"
@@ -17,32 +17,19 @@ Given(/^I am on the Systems overview page of this client$/) do
 end
 
 Given(/^I update the profile of this client$/) do
-  _local, _remote, code = $client.test_and_print_results("rhn-profile-sync", "root", 500)
-  if code != 0
-    raise "Profile sync failed"
-  end
+  $client.run("rhn-profile-sync", true, 500, 'root')
 end
 
 When(/^I register using "([^"]*)" key$/) do |arg1|
   regurl = "http://#{ENV['TESTHOST']}/XMLRPC"
   command = "rhnreg_ks --force --serverUrl=#{regurl} --activationkey=#{arg1}"
-  out, _local, _remote, code = $client.test_and_store_results_together(command, "root", 600)
-  puts out
-  if code != 0
-    out, _local, _remote, code = $client.test_and_store_results_together("cat /var/log/up2date", "root", 600)
-    puts out
-    raise "Registration failed"
-  end
-  puts "registration client ok ! #{out}"
+  $client.run(command, true, 500, 'root')
 end
 
 When(/^I register using an activation key$/) do
-  arch, _local, _remote, code = $client.test_and_store_results_together("uname -m", "root", 600)
+  arch, _code = $client.run('uname -m')
   arch.chomp!
-  if arch != "x86_64"
-    arch = "i586"
-  end
-  step %([I register using "1-SUSE-DEV-#{arch}" key])
+  step %(I register using "1-SUSE-DEV-#{arch}" key)
 end
 
 Then(/^I should see this client in spacewalk$/) do
@@ -81,13 +68,13 @@ When(/^I follow this client link$/) do
 end
 
 Then(/^config-actions are enabled$/) do
-  unless File.exist?('/etc/sysconfig/rhn/allowed-actions/configfiles/all')
-    raise "config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist"
+  unless  file_exist($client, '/etc/sysconfig/rhn/allowed-actions/configfiles/all')
+    raise "config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist on client"
   end
 end
 
 Then(/^remote-commands are enabled$/) do
-  unless File.exist?('/etc/sysconfig/rhn/allowed-actions/script/run')
+  unless file_exist($client, '/etc/sysconfig/rhn/allowed-actions/script/run')
     raise "remote-commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist"
   end
 end

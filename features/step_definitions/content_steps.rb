@@ -19,7 +19,8 @@ end
 #
 Then(/^I should see a "([^"]*)" text$/) do |arg1|
   unless page.has_content?(debrand_string(arg1))
-    sleep 30
+    sleep 45
+    print arg1
     fail unless page.has_content?(debrand_string(arg1))
   end
 end
@@ -61,7 +62,7 @@ end
 Then(/^I should see a "([^"]*)" link$/) do |arg1|
   link = first(:link, debrand_string(arg1))
   if link.nil?
-    sleep 10
+    sleep 40
     $stderr.puts "ERROR - try again"
     fail unless first(:link, debrand_string(arg1)).visible?
   else
@@ -244,10 +245,7 @@ Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^"([^"]*)" is installed$/) do |package|
-  code = run_cmd($client, "rpm -q #{package} 2>&1", 600)
-  if code != 0
-     raise "exec rpm failed (Code #{code}:"
-  end
+  $client.run("rpm -q #{package} 2>&1", true, 600, 'root')
 end
 
 Then(/^I should see a Sign Out link$/) do

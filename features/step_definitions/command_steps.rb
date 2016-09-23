@@ -27,17 +27,11 @@ When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
 end
 
 When(/^I fetch "([^"]*)" from server$/) do |arg1|
-   output, _local, _remote, code = $client.test_and_store_results_together("wget http://FIXME/#{arg1}", "root", 600)
-   if code != 0
-    raise "Execute command failed: #{$!}: #{output}"
-  end
+   $client.run("wget http://#{$server_ip}/#{arg1}", true, 500, 'root')
 end
 
 When(/^I execute "([^"]*)"$/) do |arg1|
-  output = `sh ./#{arg1} 2>&1`
-  unless $?.success?
-    raise "Execute command (#{arg1}) failed(#{$?}): #{$!}: #{output}"
-  end
+  $client.run("sh ./#{arg1}", true, 600, 'root')
 end
 
 When(/^file "([^"]*)" exists on server$/) do |arg1|
@@ -75,7 +69,7 @@ Then(/^I restart the spacewalk service$/) do
 end
 
 Then(/^I execute spacewalk-debug on the server$/) do
-  sshcmd("spacewalk-debug")
+   out, _local, _remote, _code = $server.test_and_store_results_together("spacewalk-debug", "root", 600)
 end
 
 When(/^I copy "([^"]*)"$/) do |arg1|
@@ -118,20 +112,12 @@ end
 
 When(/^I execute spacewalk\-channel and pass "([^"]*)"$/) do |arg1|
   command = "spacewalk-channel #{arg1}"
-  output, _local, _remote, code = $client.test_and_store_results_together(command, "root", 600)
-  puts output
-  if code != 0
-    raise "spacewalk-channel with #{arg1} command failed #{output}"
-  end
+  $command_output, _code = $client.run(command, true, 500, "root")
 end
 
 When(/^spacewalk\-channel fails with "([^"]*)"$/) do |arg1|
   command = "spacewalk-channel #{arg1}"
-  $command_output, _local, __remote, code = $client.test_and_store_results_together(command, "root", 600)
-  puts $command_output
-  if code == 0
-    raise "Executed command was successful: #{$status}"
-  end
+  $command_output, _code = $client.run(command, true, 500, "root")
 end
 
 Then(/^I want to get "([^"]*)"$/) do |arg1|

@@ -4,14 +4,16 @@ require 'timeout'
 Given(/^the Salt Minion is configured$/) do
   # cleanup the key in case the image was reused
   # to run the test twice
+  step %(I delete this minion key in the Salt master)
   step %(I stop salt-minion)
   step %(I stop salt-master)
   key = '/etc/salt/pki/minion/minion_master.pub'
-  if File.exist?(key)
-    File.delete(key)
-    puts "Key #{key} has been removed"
+  if file_exist($minion, key)
+    file_delete($minion, key)
+    puts "Key #{key} has been removed on minion"
   end
-  File.write('/etc/salt/minion.d/master.conf', "master: #{ENV['TESTHOST']}\n")
+  cmd = " echo  \'#{$server_ip}\' >> /etc/salt/minion.d/master.conf"
+  $minion.run(cmd, false)
   step %(I start salt-master)
   step %(I start salt-minion)
 end
@@ -24,8 +26,8 @@ Given(/^that the master can reach this client$/) do
     Timeout.timeout(DEFAULT_TIMEOUT + 300) do
       # only try 3 times
       3.times do
-        @output = sshcmd("salt #{$myhostname} test.ping", ignore_err: true)
-        if @output[:stdout].include?($myhostname) &&
+        @output = sshcmd("salt #{$minion_hostname} test.ping", ignore_err: true)
+        if @output[:stdout].include?($minion_hostname) &&
            @output[:stdout].include?('True')
           finished = Time.now
           puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
@@ -44,23 +46,23 @@ When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
 end
 
 When(/^I stop salt-master$/) do
-  sshcmd("systemctl stop salt-master")
+  $server.run("systemctl stop salt-master", false)
 end
 
 When(/^I start salt-master$/) do
-  sshcmd("systemctl start salt-master")
+  $server.run("systemctl start salt-master", false)
 end
 
 When(/^I stop salt-minion$/) do
-  system("systemctl stop salt-minion")
+  $minion.run("systemctl stop salt-minion", false)
 end
 
 When(/^I start salt-minion$/) do
-  system("systemctl start salt-minion")
+  $server.run("systemctl start salt-minion", false)
 end
 
 When(/^I restart salt-minion$/) do
-  system("systemctl restart salt-minion")
+  $minion.run("systemctl restart salt-minion", false)
 end
 
 Then(/^the Salt Minion should be running$/) do
@@ -110,7 +112,7 @@ Then(/^the list of the keys should contain this client's hostname$/) do
   rescue Timeout::Error
     puts "timeout waiting for the key to appear"
   end
-  assert_match(/#{$myhostname}/, @output[:stdout], "#{$myhostname} is not listed in the key list")
+  assert_match(/#{$minion_hostname}/, @output[:stdout], "#{$minion_hostname} is not listed in the key list")
   puts "Total time waited: #{time_waited}"
 end
 
@@ -136,7 +138,7 @@ end
 Given(/^this minion key is accepted$/) do
   step "I list accepted keys at Salt Master"
   @output = @action.call
-  unless @output[:stdout].include? $myhostname
+  unless @output[:stdout].include? $minion_hostname
     steps %(
       Then I accept this minion key in the Salt master
       And we wait till Salt master sees this minion as accepted
@@ -154,7 +156,7 @@ end
 Given(/^this minion key is rejected$/) do
   step "I list rejected keys at Salt Master"
   @output = @action.call
-  unless @output[:stdout].include? $myhostname
+  unless @output[:stdout].include? $minion_hostname
     steps %(
       Then I reject this minion key in the Salt master
       And we wait till Salt master sees this minion as rejected
@@ -170,27 +172,27 @@ When(/^we wait till Salt master sees this minion as rejected$/) do
 end
 
 When(/^I delete this minion key in the Salt master$/) do
-  sshcmd("salt-key -y -d #{$myhostname}")
+  $server.run("salt-key -y -d #{$minion_hostname}", false)
 end
 
 When(/^I accept this minion key in the Salt master$/) do
-  sshcmd("salt-key -y --accept=#{$myhostname}")
+  $server.run("salt-key -y --accept=#{$minion_hostname}")
 end
 
 When(/^I reject this minion key in the Salt master$/) do
-  sshcmd("salt-key -y --reject=#{$myhostname}")
+  $server.run("salt-key -y --reject=#{$minion_hostname}")
 end
 
 When(/^I delete all keys in the Salt master$/) do
-  sshcmd("salt-key -y -D")
+  $server.run("salt-key -y -D")
 end
 
 When(/^I accept all Salt unaccepted keys$/) do
-  sshcmd("salt-key -y -A")
+  $server.run("salt-key -y -A")
 end
 
 When(/^I get OS information of the Minion from the Master$/) do
-  @output = sshcmd("salt #{$myhostname} grains.get osfullname")
+  @output = sshcmd("salt #{$minion_hostname} grains.get osfullname")
 end
 
 Then(/^it should contain a "(.*?)" text$/) do |content|
@@ -210,15 +212,15 @@ end
 And(/^this minion is not registered in Spacewalk$/) do
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
-  sid = @rpc.listSystems.select { |s| s['name'] == $myhostname }.map { |s| s['id'] }.first
+  sid = @rpc.listSystems.select { |s| s['name'] == $minion_hostname }.map { |s| s['id'] }.first
   @rpc.deleteSystem(sid) if sid
-  refute_includes(@rpc.listSystems.map { |s| s['id'] }, $myhostname)
+  refute_includes(@rpc.listSystems.map { |s| s['id'] }, $minion_hostname)
 end
 
 Given(/^that this minion is registered in Spacewalk$/) do
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
-  assert_includes(@rpc.listSystems.map { |s| s['name'] }, $myhostname)
+  assert_includes(@rpc.listSystems.map { |s| s['name'] }, $minion_hostname)
 end
 
 Then(/^all local repositories are disabled$/) do
@@ -232,4 +234,22 @@ Then(/^all local repositories are disabled$/) do
       assert_equal('0', repo[:enabled],
                    "repo #{repo[:alias]} should be disabled")
     end
+end
+
+Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
+  found = false
+  begin
+    Timeout.timeout(30) do
+      loop do
+        if page.has_content?(debrand_string(arg1))
+          found = true
+          break
+        end
+        visit current_url
+      end
+    end
+  rescue Timeout::Error
+    raise "'#{arg1}' cannot be found after wait and reload page"
+  end
+  fail unless found
 end

@@ -9,6 +9,12 @@ Feature: Verify the minion registration
     Given I am on the Systems overview page of this client
     Then I should see a "[Salt]" text
 
+  Scenario: Check if package list has been refreshed
+    Given I am on the Systems overview page of this client
+    When I follow "Events"
+    And I follow "History"
+    Then I try to reload page until contains "Package List Refresh scheduled by (none)" text
+
   Scenario: Check installed packages are visible
     Given I am on the Systems overview page of this client
     When I follow "Software"

@@ -79,7 +79,7 @@ Then(/^I find core examination is "(.*?)", database analysis is "(.*?)" and spac
   refute_includes($output[:stdout], "failed")
 end
 
-Then(/^I find "(.*?)", "(.*?)" and "(.*?)" are in the list\.$/) do |rhn_tbl, rhn_tbl1, suse_tbl|
+Then(/^I find "(.*?)", "(.*?)" and "(.*?)" are in the list\.$/) do |rhn_tbl, rhn1_tbl, suse_tbl|
   [rhn_tbl, rhn_tbl1, suse_tbl].each do |tbl|
     assert_includes($output[:stdout], tbl)
   end
