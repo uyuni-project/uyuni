@@ -95,7 +95,7 @@ public abstract class BaseKickstartEditAction extends RhnAction {
         }
 
         KickstartData ksdata = cmd.getKickstartData();
-        if(ksdata.isRhel() || ksdata.isFedora()) {
+        if (ksdata.isRhel() || ksdata.isFedora()) {
             // If the password is encrypted the password should be MD5 (starts with "$1")
             // on rhel 5 or lower and SHA256 (starts with "$5") on rhel 6 and above. Display
             // a warning if the user needs to reset root password.
