@@ -1094,12 +1094,12 @@ public class ContentSyncManager {
 
             // Create the new Object only if the SUSEUpgradePath doesn't exist yet in the DB
             if (SUSEProductFactory.findSUSEUpgradePath(fromProduct, toProduct) == null) {
-                SUSEUpgradePath newSUSEUpgradePath = new SUSEUpgradePath(fromProduct, toProduct);
+                SUSEUpgradePath newSUSEUPath = new SUSEUpgradePath(fromProduct, toProduct);
                 // Check if the new Object is staled in the cache: if it's there, remove it
-                if (HibernateFactory.getSession().contains(newSUSEUpgradePath)) {
-                    HibernateFactory.getSession().evict(newSUSEUpgradePath);
+                if (HibernateFactory.getSession().contains(newSUSEUPath)) {
+                    HibernateFactory.getSession().evict(newSUSEUPath);
                 }
-                SUSEProductFactory.save(newSUSEUpgradePath);
+                SUSEProductFactory.save(newSUSEUPath);
             }
         }
     }
