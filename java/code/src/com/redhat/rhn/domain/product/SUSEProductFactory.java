@@ -245,7 +245,8 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return SUSEUpgradePath if it is there
      */
     @SuppressWarnings("unchecked")
-    public static SUSEUpgradePath findSUSEUpgradePath(SUSEProduct fromProduct, SUSEProduct toProduct) {
+    public static SUSEUpgradePath findSUSEUpgradePath(SUSEProduct fromProduct,
+            SUSEProduct toProduct) {
         Session session = getSession();
 
         Criteria c = session.createCriteria(SUSEUpgradePath.class)
