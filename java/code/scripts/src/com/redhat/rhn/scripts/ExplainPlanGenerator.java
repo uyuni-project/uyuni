@@ -118,7 +118,7 @@ public class ExplainPlanGenerator {
                             continue;
                         }
                         if (!(m instanceof SelectMode)) {
-                            out.println("\nSkipping Write or Callable mode: " + m.getName());
+                            out.println("\nSkipping Write or Callable mode:" + m.getName());
                             continue;
                         }
                         out.println("\nPlan for " + m.getName());
