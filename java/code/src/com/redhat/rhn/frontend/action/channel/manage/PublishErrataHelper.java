@@ -91,6 +91,7 @@ public class PublishErrataHelper {
         clone.setLastModified(original.getLastModified());
         clone.setOrg(org);
         clone.getCves().addAll(original.getCves());
+        clone.setSeverity(original.getSeverity());
 
         clone.setPackages(new HashSet(original.getPackages()));
 
