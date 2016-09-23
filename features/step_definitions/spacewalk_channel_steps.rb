@@ -1,4 +1,4 @@
-# Copyright (c) 2014 SUSE
+# Copyright (c) 2014-16 SUSE
 # Licensed under the terms of the MIT license.
 
 # All these steps are needed *only* to support testing for two different archs!

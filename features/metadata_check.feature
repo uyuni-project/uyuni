@@ -14,4 +14,4 @@ Feature: Test SUSE Manager generated metadata
   Scenario: Check for empty epoch
     Given I am root
     When I refresh the metadata
-    Then I should not have 'epoch=""' in the metadata
+    Then I should not have 'epoch="0"' in the metadata

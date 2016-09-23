@@ -5,18 +5,12 @@ Then(/^"(.*?)" is locked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
   fail unless file_exist($client, zypp_lock_file)
   command = "zypper locks  --solvables | grep #{pkg}"
-  out, _local, _remote, code = $client.test_and_store_results_together(command, "root", 600)
-  puts out
-  if code != 0
-    puts out
-    raise "Package is not locked on client #{out}"
-  end
+  $client.run(command, true, 600, 'root')
 end
 
 Then(/^Package "(.*?)" is reported as locked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
-
   fail if locked_pkgs.empty?
   fail unless locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
@@ -24,9 +18,8 @@ end
 Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
   fail unless file_exist($client, zypp_lock_file)
-
-  locks = read_zypp_lock_file(zypp_lock_file)
-  fail if locks.find { |lock| pkg =~ /^#{lock['solvable_name']}/ }
+  command = "zypper locks  --solvables | grep #{pkg}"
+  $client.run(command, true, 600, 'root')
 end
 
 Then(/^Package "(.*?)" is reported as unlocked$/) do |pkg|

@@ -3,21 +3,26 @@ sut_dir="/var/lib/slenkins/tests-suse-manager/tests-server"
 
 mv $sut_dir/*.rpm /root/
 # gmc 
-zypper ar http://dist.suse.de/install/SLP/SUSE-Manager-Server-3-GM/x86_64/DVD1/ suma3-gmc
+# zypper ar http://dist.suse.de/install/SLP/SUSE-Manager-Server-3-GM/x86_64/DVD1/ suma3-gmc
 
-# devel
-#zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/3.0/images/repo/SUSE-Manager-Server-3.0-POOL-x86_64-Media1/ suma3_devel
+# devel HEAD
+#zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/images/repo/SUSE-Manager-Server-3.0-POOL-x86_64-Media1/ suma3_devel_head
 
-
-#zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/images/repo/SLE-12-Manager-Tools-POOL-x86_64-Media1/ suma3_tools
+zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/3.0/images/repo/SUSE-Manager-Server-3.0-POOL-x86_64-Media1/ suma3_devel
 
 zypper -n --gpg-auto-import-keys ref
-#zypper -n in subscription-tools
-#zypper -n in spacewalk-check
-#zypper -n in rhncfg-actions
-
 zypper -n in --auto-agree-with-licenses -t pattern suma_server
 zypper -n in timezone
+# tools devel
+# zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/images/repo/SLE-12-Manager-Tools-POOL-x86_64-Media1/ suma3_tools
+# zypper ar http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head/images/repo/SLE-12-Manager-Tools-POOL-x86_64-Media1/ suma3_tools
+
+## updates are here :
+#zypper ar http://download.suse.de/ibs/SUSE/Updates/SUSE-Manager-Server/3.0/x86_64/update/SUSE:Updates:SUSE-Manager-Server:3.0:x86_64.repo
+#zypper -n up -r  SUSE_Updates_SUSE-Manager-Server_3.0_x86_64 -l
+#zypper -n up -r suma3_tools -l 
+
+
 echo "+++++++++++++++++++++++"
 echo "installing packages ok"
 echo "+++++++++++++++++++++++"

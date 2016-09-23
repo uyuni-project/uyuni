@@ -17,9 +17,9 @@ Feature: Explore the Minions page
   Scenario: Minion is visible in the Pending section
     Given this minion key is unaccepted
     And I go to the minion onboarding page
-    Then I should see this hostname as text
+    Then I refresh page until see this hostname as text
     And I see my fingerprint
-    Then I should see a "pending" text
+    And I should see a "pending" text
 
   Scenario: Reject and delete the pending minion key
     Given this minion key is unaccepted
@@ -47,7 +47,3 @@ Feature: Explore the Minions page
     Given that the master can reach this client
     When I get OS information of the Minion from the Master
     Then it should contain a "SLES" text
-
-  Scenario: The minion got all local repositories disabled
-    Given that this minion is registered in Spacewalk
-    Then all local repositories are disabled
