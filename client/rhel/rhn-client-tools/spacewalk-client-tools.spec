@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.6.1
+Version: 2.6.3
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -496,6 +496,13 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Fri Sep 23 2016 Jiri Dostal <jdostal@redhat.com> 2.6.3-1
+- Fix of deprecated functions urllib.splittype and urllib.splithost
+
+* Thu Sep 22 2016 Jan Dobes 2.6.2-1
+- fedora 24 client will not send it's smbios because there is a warning and it
+  fails on syntax error
+
 * Wed Aug 03 2016 Tomas Lestach <tlestach@redhat.com> 2.6.1-1
 - fix typo/missing space in rhn_check rpm description
 - Bumping package versions for 2.6.

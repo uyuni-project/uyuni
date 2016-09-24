@@ -1,5 +1,5 @@
 Name:           spacewalk-setup-postgresql
-Version:        2.6.1
+Version:        2.6.2
 Release:        1%{?dist}
 Summary:        Tools to setup embedded PostgreSQL database for Spacewalk
 Group:          Applications/System
@@ -33,7 +33,12 @@ install -d -m 755 %{buildroot}/%{_bindir}
 install -m 0755 bin/* %{buildroot}/%{_bindir}
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d
 install -m 0644 setup/defaults.d/* %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
+install -m 0644 setup/*.conf %{buildroot}/%{_datadir}/spacewalk/setup/
 
+# Comment this parameter on PSQL 9.5
+%if 0%{?fedora} >= 24
+sed -i '/^checkpoint_segments/d' %{buildroot}/%{_datadir}/spacewalk/setup/postgresql.conf
+%endif
 
 %check
 
@@ -51,6 +56,7 @@ rm -rf %{buildroot}
 %attr(755,root,root) %{_bindir}/spacewalk-setup-postgresql
 #%{_mandir}/man1/*
 %{_datadir}/spacewalk/setup/defaults.d/*
+%{_datadir}/spacewalk/setup/*.conf
 %if 0%{?suse_version}
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/setup
@@ -59,6 +65,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Sep 20 2016 Jan Dobes 2.6.2-1
+- postgresql 9.5 does not support checkpoint_segments parameter
+
 * Mon Jun 13 2016 Grant Gainey 2.6.1-1
 - spacewalk-setup-postgresql: build and setup on openSUSE
 - Bumping package versions for 2.6.
