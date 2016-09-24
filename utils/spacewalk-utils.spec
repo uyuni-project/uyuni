@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.6.9
+Version:	2.6.10
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -121,6 +121,9 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Thu Sep 22 2016 Grant Gainey 2.6.10-1
+- 1369888 - Added more summary-info to cbd, sorted various outputs
+
 * Thu Sep 15 2016 Jan Dobes 2.6.9-1
 - fixing pylint in spacewalk-utils
 
