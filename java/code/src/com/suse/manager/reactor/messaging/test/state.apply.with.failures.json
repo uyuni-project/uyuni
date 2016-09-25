@@ -1,0 +1,24 @@
+{
+  "tag": "salt/job/20160407084101455804/ret/abcdefg.vagrant.local",
+  "data": {
+    "fun_args": [
+      {
+        "mods": [
+          "packages.profileupdate"
+        ]
+      }
+    ],
+    "jid": "20160407084101455804",
+    "return": ["State 'somethingelse' in SLS 'custom.org_1' is not formed as a list"],
+    "retcode": 1,
+    "success": true,
+    "cmd": "_return",
+    "_stamp": "2016-04-07T08:41:02.846934",
+    "fun": "state.apply",
+    "out": "highstate",
+    "id": "abcdefg.vagrant.local",
+    "metadata": {
+      "suma-action-id": 59
+    }
+  }
+}
