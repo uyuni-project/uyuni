@@ -151,7 +151,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         });
 
         // Schedule a package list refresh if either requested or detected as necessary
-        if (forcePackageListRefresh(jobReturnEvent) || packagesChanged(jobReturnEvent)) {
+        if (forcePackageListRefresh(jobReturnEvent) || shouldRefreshPackageList(jobReturnEvent)) {
             MinionServerFactory
                     .findByMinionId(jobReturnEvent.getMinionId())
                     .ifPresent(minionServer -> {
@@ -321,9 +321,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * This information is used to decide if we should trigger a package list refresh.
      *
      * @param event the job return event
-     * @return true if installed packages have changed, otherwise false
+     * @return true if installed packages have changed or json syntax exception, otherwise false
      */
-    private boolean packagesChanged(JobReturnEvent event) {
+    private boolean shouldRefreshPackageList(JobReturnEvent event) {
         String function = event.getData().getFun();
         switch (function) {
             case "pkg.install": return true;
@@ -331,8 +331,16 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             case "state.apply":
                 TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
                     new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
-                Map<String, StateApplyResult<Map<String, Object>>> results =
-                        event.getData().getResult(typeToken);
+                Map<String, StateApplyResult<Map<String, Object>>> results;
+
+                try {
+                    results = event.getData().getResult(typeToken);
+                }
+                catch (JsonSyntaxException e) {
+                    LOG.error("JSON syntax error while decoding into a StateApplyResult:");
+                    return true;
+                }
+
                 for (StateApplyResult<Map<String, Object>> result : results.values()) {
                     if (packageChangingModules.contains(result.getName()) &&
                             !result.getChanges().isEmpty()) {
