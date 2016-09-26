@@ -40,18 +40,6 @@ Given(/^that the master can reach this client$/) do
   end
 end
 
-Given(/^I am on the Systems overview page of this minion$/) do
-  steps %(
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
-    And I follow this minion link
-    )
-end
-
-When(/^I follow this minion link$/) do
-  step %(I follow "#{$minion_hostname}")
-end
-
 When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
   @output = sshcmd("cat #{filename}")
 end

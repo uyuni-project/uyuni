@@ -5,7 +5,7 @@ Feature: System package list in the UI is updated if packages are manually insta
 
   Scenario: Manually removing a package in a minion
     Given this minion key is accepted
-    And I am on the Systems overview page of this minion
+    And I am on the Systems overview page of this client
     When I follow "Software"
     And I follow "List / Remove"
     And I follow "M"
@@ -15,7 +15,7 @@ Feature: System package list in the UI is updated if packages are manually insta
 
   Scenario: Manually installing a package in a minion
     Given this minion key is accepted
-    And I am on the Systems overview page of this minion
+    And I am on the Systems overview page of this client
     When I follow "Software"
     And I follow "List / Remove"
     And I follow "M"
