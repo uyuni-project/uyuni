@@ -185,9 +185,9 @@ switch_oracle2postgres() {
 }
 
 setup_postgres() {
+    systemctl --quiet enable postgresql
+    systemctl start postgresql
 
-    insserv postgresql
-    rcpostgresql start
     if [ "$?" != "0" ]; then
         echo "Failed to start postgresql database."
         exit 1
