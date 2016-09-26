@@ -40,6 +40,18 @@ Given(/^that the master can reach this client$/) do
   end
 end
 
+Given(/^I am on the Systems overview page of this minion$/) do
+  steps %(
+    Given I am on the Systems page
+    And I follow "Systems" in the left menu
+    And I follow this minion link
+    )
+end
+
+When(/^I follow this minion link$/) do
+  step %(I follow "#{$minion_hostname}")
+end
+
 When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
   @output = sshcmd("cat #{filename}")
 end
@@ -255,4 +267,22 @@ Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
     raise "'#{arg1}' cannot be found after wait and reload page"
   end
   fail unless found
+end
+
+Then(/^I try to reload page until does not contain "([^"]*)" text$/) do |arg1|
+  not_found = false
+  begin
+    Timeout.timeout(30) do
+      loop do
+        unless page.has_content?(debrand_string(arg1))
+          not_found = true
+          break
+        end
+        visit current_url
+      end
+    end
+  rescue Timeout::Error
+    raise "'#{arg1}' found after wait and reload page"
+  end
+  fail unless not_found
 end
