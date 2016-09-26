@@ -56,6 +56,7 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.results.CmdExecCodeAllResult;
 import com.suse.salt.netapi.results.StateApplyResult;
+import com.suse.utils.Opt;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -74,6 +75,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Collections;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -81,6 +83,34 @@ import java.util.stream.Stream;
  * Handler class for {@link JobReturnEventMessage}.
  */
 public class JobReturnEventMessageAction extends AbstractDatabaseAction {
+
+
+    private static Optional<JsonElement> eventToJson(JobReturnEvent jobReturnEvent) {
+        Optional<JsonElement> jsonResult = Optional.empty();
+        try {
+            jsonResult = Optional.ofNullable(jobReturnEvent.getData().getResult(JsonElement.class));
+        }
+        catch (JsonSyntaxException e) {
+            LOG.error("JSON syntax error while decoding into a StateApplyResult:");
+            LOG.error(jobReturnEvent.getData().getResult(JsonElement.class).toString());
+        }
+        return jsonResult;
+    }
+
+    private static Optional<Map<String, StateApplyResult<Map<String, Object>>>> jsonToMap(JsonElement jsonResult) {
+        TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
+            new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
+        Optional<Map<String, StateApplyResult<Map<String, Object>>>> results = Optional.empty();
+        try {
+             results = Optional.ofNullable(Json.GSON.fromJson(jsonResult, typeToken.getType()));
+        }
+        catch (JsonSyntaxException e) {
+            LOG.error("JSON syntax error while decoding into a StateApplyResult:");
+            LOG.error(jsonResult.toString());
+        }
+        return results;
+    }
+
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(JobReturnEventMessageAction.class);
@@ -135,12 +165,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                             LOG.debug("Updating action for server: " +
                                     minionServer.getId());
                         }
-                        updateServerAction(sa,
-                                jobReturnEvent.getData().getRetcode(),
-                                jobReturnEvent.getData().isSuccess(),
-                                jobReturnEvent.getJobId(),
-                                jobReturnEvent.getData().getResult(JsonElement.class),
-                                jobReturnEvent.getData().getFun());
+                        updateServerAction(sa, jobReturnEvent);
                         ActionFactory.save(sa);
                     });
                 });
@@ -170,6 +195,22 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             MessageQueue.publish(new RegisterMinionEventMessage(
                     jobReturnEvent.getMinionId()));
         }
+    }
+
+    /**
+     * Update a given server action based on the job return event.
+     *
+     * @param serverAction the server action to update
+     * @param jobReturnEvent the return event
+     */
+    public static void updateServerAction(ServerAction serverAction, JobReturnEvent jobReturnEvent) {
+        updateServerAction(
+                serverAction,
+                jobReturnEvent.getData().getRetcode(),
+                jobReturnEvent.getData().isSuccess(),
+                jobReturnEvent.getJobId(),
+                jobReturnEvent.getData().getResult(JsonElement.class),
+                jobReturnEvent.getData().getFun());
     }
 
     /**
@@ -297,8 +338,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @return the corresponding action id or empty optional
      */
     private Optional<Long> getActionId(JobReturnEvent event) {
-        return event.getData().getMetadata(ScheduleMetadata.class)
-                .map(ScheduleMetadata::getSumaActionId);
+        return event.getData().getMetadata(ScheduleMetadata.class) .map(ScheduleMetadata::getSumaActionId);
     }
 
     /**
@@ -329,25 +369,15 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             case "pkg.install": return true;
             case "pkg.remove": return true;
             case "state.apply":
-                TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
-                    new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
-                Map<String, StateApplyResult<Map<String, Object>>> results;
-
-                try {
-                    results = event.getData().getResult(typeToken);
-                }
-                catch (JsonSyntaxException e) {
-                    LOG.error("JSON syntax error while decoding into a StateApplyResult:");
-                    return true;
-                }
-
-                for (StateApplyResult<Map<String, Object>> result : results.values()) {
-                    if (packageChangingModules.contains(result.getName()) &&
-                            !result.getChanges().isEmpty()) {
-                        return true;
-                    }
-                }
-                return false;
+                Predicate<StateApplyResult<Map<String, Object>>> pred = result ->
+                    packageChangingModules.contains(result.getName())
+                        && !result.getChanges().isEmpty();
+                Optional<Map<String, StateApplyResult<Map<String, Object>>>> resultsOptional = Opt.fold(
+                    eventToJson(event), () -> Optional.empty(), rawResult -> jsonToMap(rawResult));
+                return Opt.fold(
+                    resultsOptional,
+                    () -> true,
+                    results -> results.values().stream().filter(pred).findAny().isPresent());
             default: return false;
         }
     }
@@ -364,26 +394,12 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         // For state.apply based actions verify the result of each state
         boolean stateApplySuccess = true;
         if (function.equals("state.apply")) {
-            TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
-                    new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
-            try {
-                Map<String, StateApplyResult<Map<String, Object>>> results =
-                        Json.GSON.fromJson(rawResult, typeToken.getType());
-
-                for (StateApplyResult<Map<String, Object>> result : results.values()) {
-                    if (!result.isResult()) {
-                        stateApplySuccess = false;
-                        break;
-                    }
-                }
-            }
-            catch (JsonSyntaxException e) {
-                LOG.error("JSON syntax error while decoding into a StateApplyResult:");
-                LOG.error(rawResult.toString());
-                return true;
-            }
+            Predicate<StateApplyResult<Map<String, Object>>> pred = result -> !result.isResult();
+            return Opt.fold(
+                jsonToMap(rawResult),
+                () -> true,
+                results -> results.values().stream().filter(pred).findAny().isPresent());
         }
-
         return !(success && retcode == 0 && stateApplySuccess);
     }
 
