@@ -107,8 +107,8 @@ for the spacewalk suite the pwd is the GALAXY standard.
 
 For getting the html file with results, have a look at ``/home/slenkins/$MY_JAIL/var/tmp/slenkins/workspace/cucumber/output.html`` 
 
-At moment, i'm working to fix this scenarios :
-360 scenarios (23 failed, 337 passed)
+At moment, quite all test run ok. only 8 failures (known-failures bug)
+386 scenarios (8 failed, 1 undefined, 377 passed)
 
 ### Run single features manually, for test devel : 
 #### QUESTION : i want to  manually run my new tests implementations using these machines locally. HOWTO ? 
