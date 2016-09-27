@@ -43,6 +43,12 @@ http://slenkins.suse.de/doc/
    ```
    # systemctl restart libvirtd.service
    ```
+   
+   finally, make sure `libvirt` service is enabled at boot:
+   
+   ```
+   # systemctl enable libvirtd.service
+   ```
 
 4. Once the jail is done, test the `virsh` functionality:
  
