@@ -1117,8 +1117,7 @@ public class ContentSyncManager {
      */
     public void updateUpgradePaths(Collection<SCCProduct> products)
             throws ContentSyncException {
-        // Clear all upgrade paths from the database
-        SUSEProductFactory.clearUpgradePaths();
+        Collection<SUSEUpgradePath> latestUpgradePaths = new LinkedList<SUSEUpgradePath>();
 
         // Iterate through all paths in the XML file and lookup both products first
         for (MgrSyncUpgradePath path : readUpgradePaths()) {
@@ -1126,7 +1125,9 @@ public class ContentSyncManager {
                     path.getFromProductId());
             SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
                     path.getToProductId());
-            updateUpgradePath(fromProduct, toProduct);
+            if(isValidUpgradePath(fromProduct, toProduct)) {
+                latestUpgradePaths.add(new SUSEUpgradePath(fromProduct, toProduct));
+            }
         }
 
         // Iterate through products from SCC and check predecessor IDs
@@ -1136,10 +1137,15 @@ public class ContentSyncManager {
                 for (Integer predecessorId : p.getPredecessorIds()) {
                     SUSEProduct fromProduct =
                             SUSEProductFactory.lookupByProductId(predecessorId);
-                    updateUpgradePath(fromProduct, toProduct);
+                    if(isValidUpgradePath(fromProduct, toProduct)) {
+                        latestUpgradePaths.add(new SUSEUpgradePath(fromProduct, toProduct));
+                    }
                 }
             }
         }
+
+        // Sync the database list of upgrade paths with the updated one
+        SUSEProductFactory.mergeAllUpgradePaths(latestUpgradePaths);
     }
 
     /**
@@ -1151,8 +1157,9 @@ public class ContentSyncManager {
      */
     public void updateProductExtensions(Collection<SCCProduct> products)
             throws ContentSyncException {
-        // Clear all migration targets from the database
-        SUSEProductFactory.clearProductExtensions();
+        Collection<SUSEProductExtension> latestProductExtensions =
+                new LinkedList<SUSEProductExtension>();
+
         Set<String> sourceTargetDone = new HashSet<>();
         // Iterate through products from SCC and check extensions
         for (SCCProduct baseProduct : products) {
@@ -1170,39 +1177,31 @@ public class ContentSyncManager {
                     SUSEProduct suseExtPrd =
                             SUSEProductFactory.lookupByProductId(extensionProduct.getId());
                     if (suseBasePrd != null && suseExtPrd != null) {
-                        SUSEProductFactory.save(
+                        latestProductExtensions.add(
                                 new SUSEProductExtension(suseBasePrd, suseExtPrd));
                     }
                 }
             }
         }
+
+        // Sync the database list of product extensions with the updated one
+        SUSEProductFactory.mergeAllProductExtension(latestProductExtensions);
+
     }
 
     /**
-     * Insert a product upgrade path in case both products exist in the DB.
+     * Check if both products exist in the DB and it is a valid upgrade path.
      *
      * @param fromProduct the source product
      * @param toProduct the destination product
      */
-    private void updateUpgradePath(SUSEProduct fromProduct, SUSEProduct toProduct) {
-        if (fromProduct != null && toProduct != null) {
-
-            // Dirty Hack: prevent major version update from 11.X to 12.X
-            if (fromProduct.getVersion().matches("^11(\\.\\d+)*$") &&
-                    toProduct.getVersion().matches("^12(\\.\\d+)*$")) {
-                return;
-            }
-
-            // Create the new Object only if the SUSEUpgradePath doesn't exist yet in the DB
-            if (SUSEProductFactory.findSUSEUpgradePath(fromProduct, toProduct) == null) {
-                SUSEUpgradePath newSUSEUPath = new SUSEUpgradePath(fromProduct, toProduct);
-                // Check if the new Object is staled in the cache: if it's there, remove it
-                if (HibernateFactory.getSession().contains(newSUSEUPath)) {
-                    HibernateFactory.getSession().evict(newSUSEUPath);
-                }
-                SUSEProductFactory.save(newSUSEUPath);
-            }
+    private Boolean isValidUpgradePath(SUSEProduct fromProduct, SUSEProduct toProduct) {
+        if (fromProduct == null || toProduct == null) {
+            return false;
         }
+        // Dirty Hack: prevent major version update from 11.X to 12.X
+        return !(fromProduct.getVersion().matches("^11(\\.\\d+)*$") &&
+                toProduct.getVersion().matches("^12(\\.\\d+)*$"));
     }
 
     /**

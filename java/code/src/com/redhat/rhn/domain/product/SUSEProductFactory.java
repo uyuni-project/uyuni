@@ -112,6 +112,42 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Merge all {@link SUSEUpgradePath} from existing ones and the ones passed as parameter.
+     * @param newUpgradePaths the new list of upgradePaths to keep stored
+     */
+    public static void mergeAllUpgradePaths(Collection<SUSEUpgradePath> newUpgradePaths) {
+        List<SUSEUpgradePath> existingUpgradePaths = findAllSUSEUpgradePaths();
+        for (SUSEUpgradePath upgradePath : existingUpgradePaths) {
+            if (!newUpgradePaths.contains(upgradePath)) {
+                SUSEProductFactory.remove(upgradePath);
+            }
+        }
+        for (SUSEUpgradePath upgradePath : newUpgradePaths) {
+            if (!existingUpgradePaths.contains(upgradePath)) {
+                SUSEProductFactory.save(upgradePath);
+            }
+        }
+    }
+
+    /**
+     * Merge all {@link SUSEProductExtension} from existing ones and the ones passed as parameter.
+     * @param newProductExtensions the new list of ProductExtensions to keep stored
+     */
+    public static void mergeAllProductExtension(Collection<SUSEProductExtension> newProductExtensions) {
+        List<SUSEProductExtension> existingProductExtensions = findAllSUSEProductExtensions();
+        for (SUSEProductExtension productExtension : existingProductExtensions) {
+            if (!newProductExtensions.contains(productExtension)) {
+                SUSEProductFactory.remove(productExtension);
+            }
+        }
+        for (SUSEProductExtension productExtension : newProductExtensions) {
+            if (!existingProductExtensions.contains(productExtension)) {
+                SUSEProductFactory.save(productExtension);
+            }
+        }
+    }
+
+    /**
      * Delete a {@link SUSEProductChannel} from the database.
      * @param productChannel SUSE product channel relationship to be deleted.
      */
@@ -162,6 +198,14 @@ public class SUSEProductFactory extends HibernateFactory {
         }
 
         return products;
+    }
+
+    /**
+     * Delete a {@link SUSEProductExtension} from the database.
+     * @param productExtension productExtension to be deleted.
+     */
+    public static void remove(SUSEProductExtension productExtension) {
+        singleton.removeObject(productExtension);
     }
 
     /**
@@ -288,7 +332,6 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param toProduct the target product
      * @return SUSEUpgradePath if it is there
      */
-    @SuppressWarnings("unchecked")
     public static SUSEUpgradePath findSUSEUpgradePath(SUSEProduct fromProduct,
             SUSEProduct toProduct) {
         Session session = getSession();
@@ -298,6 +341,17 @@ public class SUSEProductFactory extends HibernateFactory {
                 .add(Restrictions.eq("toProduct", toProduct));
 
         return (SUSEUpgradePath) c.uniqueResult();
+    }
+
+    /**
+     * Find all {@link SUSEProductExtension}.
+     * @return list of product extension
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProductExtension> findAllSUSEProductExtensions() {
+        Session session = getSession();
+        Criteria c = session.createCriteria(SUSEProductExtension.class);
+        return c.list();
     }
 
     /**
@@ -319,20 +373,6 @@ public class SUSEProductFactory extends HibernateFactory {
         session.getNamedQuery("SUSEProduct.clear").executeUpdate();
         session.getNamedQuery("SUSEUpgradePath.clear").executeUpdate();
         session.getNamedQuery("SUSEProductExtension.clear").executeUpdate();
-    }
-
-    /**
-     * Clear all upgrade paths from the database.
-     */
-    public static void clearUpgradePaths() {
-        getSession().getNamedQuery("SUSEUpgradePath.clear").executeUpdate();
-    }
-
-    /**
-     * Clear all upgrade paths from the database.
-     */
-    public static void clearProductExtensions() {
-        getSession().getNamedQuery("SUSEProductExtension.clear").executeUpdate();
     }
 
     /**
