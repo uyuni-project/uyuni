@@ -72,7 +72,7 @@ http://slenkins.suse.de/doc/
 6. (Optional) Launch `hello world` tests:
    
    ```
-   $ slenkins-vms.sh -j -i sut=openSUSE_42.1-x86_64-default tests-helloworld
+   $ slenkins-vms.sh -j -i sut=SLE_12_SP1-x86_64-default  tests-helloworld
    ```
    
    For explanation about this command and flags, refer to:
