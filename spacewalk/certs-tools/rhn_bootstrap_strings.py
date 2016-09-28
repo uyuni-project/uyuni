@@ -325,12 +325,11 @@ baseurl=$Y_CLIENT_REPO_URL
 enabled=1
 autorefresh=1
 keeppackages=0
-gpgcheck=0
 EOF
-            yum update --nogpgcheck
+            yum update
         fi
 
-        yum -y install --nogpgcheck salt salt-minion
+        yum -y install salt salt-minion
 
         for P in $Y_MISSING; do
             rpm -q "$P" || {{
