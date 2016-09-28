@@ -20,3 +20,21 @@ Then(/^I manually remove the "([^"]*)" package in the minion$/) do |package|
     fail "not found: zypper or yum"
   end
 end
+
+Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) do |css, arg1|
+  not_found = false
+  begin
+    Timeout.timeout(30) do
+      loop do
+        unless page.has_content?(debrand_string(arg1))
+          not_found = true
+          break
+        end
+        find(css).click
+      end
+    end
+  rescue Timeout::Error
+    raise "'#{arg1}' cannot be found after several tries"
+  end
+  fail unless not_found
+end
