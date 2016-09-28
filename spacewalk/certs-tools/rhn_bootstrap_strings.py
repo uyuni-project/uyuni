@@ -270,11 +270,80 @@ def getRegistrationStackSh(saltEnabled):
                                                            'spacewalk-client-tools', 'zypp-plugin-spacewalk']
 
     return """\
-if [ "$INSTALLER" == zypper ]; then
-  echo
-  echo "CHECKING THE REGISTRATION STACK"
-  echo "-------------------------------------------------"
+echo
+echo "CHECKING THE REGISTRATION STACK"
+echo "-------------------------------------------------"
+if [ "$INSTALLER" == yum ]; then
+    function getY_CLIENT_CODE_BASE() {{
+        local BASE=""
+        local VERSION=""
+        if [ -f /etc/redhat-release ]; then
+            grep -q '\(CentOS\|Red Hat\|Fedora\)' /etc/redhat-release && BASE="res"
+            grep -q 'release 6' /etc/redhat-release && VERSION="6"
+            grep -q 'release 7' /etc/redhat-release && VERSION="7"
+        fi
+        Y_CLIENT_CODE_BASE="${{BASE:-unknown}}"
+        Y_CLIENT_CODE_VERSION="${{VERSION:-unknown}}"
+    }}
 
+    function getY_MISSING() {{
+        local NEEDED="{PKG_NAME}"
+        Y_MISSING=""
+        for P in $NEEDED; do
+            rpm -q "$P" || Y_MISSING="$Y_MISSING $P"
+        done
+    }}
+
+    echo "* check for necessary packages being installed..."
+    getY_CLIENT_CODE_BASE
+    echo "* client codebase is ${{Y_CLIENT_CODE_BASE}}-${{Y_CLIENT_CODE_VERSION}}"
+    getY_MISSING
+
+    if [ -z "$Y_MISSING" ]; then
+        echo "  no packages missing."
+    else
+        echo "* going to install missing packages..."
+        Y_CLIENT_REPOS_ROOT="${{Y_CLIENT_REPOS_ROOT:-https://${{HOSTNAME}}/pub/repositories}}"
+        Y_CLIENT_REPO_URL="${{Y_CLIENT_REPOS_ROOT}}/${{Y_CLIENT_CODE_BASE}}/${{Y_CLIENT_CODE_VERSION}}/bootstrap"
+        Y_CLIENT_REPO_NAME="susemanager:bootstrap.repo"
+        Y_CLIENT_REPO_FILE="/etc/yum.repos.d/$Y_CLIENT_REPO_NAME.repo"
+
+        # test, if repo exists
+        $FETCH $Y_CLIENT_REPO_URL/repodata/repomd.xml
+        if [ ! -f "repomd.xml" ] ; then
+            echo "Bootstrap repo '$Y_CLIENT_REPO_URL' does not exist."
+            Y_CLIENT_REPO_URL=""
+        fi
+        rm -f repomd.xml
+
+        if [ -n "$Y_CLIENT_REPO_URL" ]; then
+            echo " adding client software repository at $Y_CLIENT_REPO_URL"
+            cat <<EOF >"$Y_CLIENT_REPO_FILE"
+[$Y_CLIENT_REPO_NAME]
+name=$Y_CLIENT_REPO_NAME
+baseurl=$Y_CLIENT_REPO_URL
+enabled=1
+autorefresh=1
+keeppackages=0
+gpgcheck=0
+EOF
+            yum update --nogpgcheck
+        fi
+
+        yum -y install --nogpgcheck salt salt-minion
+
+        for P in $Y_MISSING; do
+            rpm -q "$P" || {{
+            echo "ERROR: Failed to install all missing packages."
+            exit 1
+        }}
+        done
+
+        # remove client bootstrap repo
+        rm $Y_CLIENT_REPO_FILE
+    fi
+fi
+if [ "$INSTALLER" == zypper ]; then
   function getZ_CLIENT_CODE_BASE() {{
     local BASE=""
     local VERSION=""
