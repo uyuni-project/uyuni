@@ -3,6 +3,8 @@
 #### What has changed? (quick summary for impatients)
   
   1) Twopence -> replaced almostly the sshcmd call.
+  1b) Lavanda (ruby library) for expanding function over targets:
+  https://github.com/MalloZup/Lavanda
   
   2) packages are not in kiwi images, but are installed dinamically by run.py
   
