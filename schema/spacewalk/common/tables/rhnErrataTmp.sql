@@ -51,7 +51,8 @@ CREATE TABLE rhnErrataTmp
     modified          timestamp with local time zone
                           DEFAULT (current_timestamp) NOT NULL,
     last_modified     timestamp with local time zone
-                          DEFAULT (current_timestamp) NOT NULL
+                          DEFAULT (current_timestamp) NOT NULL,
+    severity_id       NUMBER
 )
 ENABLE ROW MOVEMENT
 ;
