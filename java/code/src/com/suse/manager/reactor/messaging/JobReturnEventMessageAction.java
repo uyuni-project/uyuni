@@ -85,6 +85,11 @@ import java.util.stream.Stream;
 public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
 
+    /**
+     * Converts an event to json
+     *
+     * @param jobReturnEvent the return event
+     */
     private static Optional<JsonElement> eventToJson(JobReturnEvent jobReturnEvent) {
         Optional<JsonElement> jsonResult = Optional.empty();
         try {
@@ -97,6 +102,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         return jsonResult;
     }
 
+    /**
+     * Converts the json representation of an event to a map
+     *
+     * @param jsonResult json representation of an event
+     */
     private static Optional<Map<String, StateApplyResult<Map<String, Object>>>> jsonToMap(JsonElement jsonResult) {
         TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
             new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
