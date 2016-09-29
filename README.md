@@ -27,6 +27,7 @@ You can run the Spacewalk Testsuite basically with two options:
 ```console
 rbenv local $version
 gem install bundler --pre
+rbenv rehash
 bundle install
 ```
 
