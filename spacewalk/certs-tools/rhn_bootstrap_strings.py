@@ -325,10 +325,9 @@ enabled=1
 autorefresh=1
 keeppackages=0
 EOF
-            yum update
         fi
 
-        yum -y install salt salt-minion
+        yum -y install $Y_MISSING
 
         for P in $Y_MISSING; do
             rpm -q "$P" || {{
