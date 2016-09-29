@@ -28,6 +28,7 @@ You can run the Spacewalk Testsuite basically with two options:
 rbenv local $version
 gem install bundler --pre
 rbenv rehash
+bundle config build.nokogiri --use-system-libraries
 bundle install
 ```
 
