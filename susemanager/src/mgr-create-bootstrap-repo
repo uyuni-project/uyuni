@@ -109,11 +109,20 @@ def check_bootstrap_packages():
             sys.exit(1)
 
 def list_labels():
-    synced_products = map(lambda x: x['id'], rhnSQL.fetchall_dict(_sql_synced_proucts) or [])
+    """
+    Create list of labels and return a structure of them for the menu.
 
+    :return:
+    """
+    label_map = {}
+    synced_products = map(lambda x: x['id'], rhnSQL.fetchall_dict(_sql_synced_proucts) or [])
+    label_index = 1
     for label in sorted(mgr_bootstrap_data.DATA.iterkeys()):
         if mgr_bootstrap_data.DATA[label]['PDID'] in synced_products:
-            print "%s" % label
+            print "{0}. {1}".format(label_index, label)
+            label_map[label_index] = label
+            label_index += 1
+    return label_map
 
 def create_repo(label, additional=[]):
     pdid = int(mgr_bootstrap_data.DATA[label]['PDID'])
@@ -201,9 +210,16 @@ if not options.list and not options.create:
     options.interactive = True
 
 if options.interactive:
-    list_labels()
+    label_map = list_labels()
 
-    elabel = raw_input("Enter product label: ")
+    elabel = None
+    while True:
+        try:
+            elabel = label_map.get(int(raw_input("Enter a number of a product label: ")), '')
+            break
+        except Exception:
+            print "Please enter a number."
+
     if elabel not in mgr_bootstrap_data.DATA:
         print "'%s' not found" % elabel
         sys.exit(1)
