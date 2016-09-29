@@ -105,7 +105,7 @@ for the spacewalk suite the pwd is the GALAXY standard.
 
 ## Current Results after the suite is running:
 
-For getting the html file with results, have a look at ``/home/slenkins/$MY_JAIL/var/tmp/slenkins/workspace/cucumber/output.html`` 
+For getting the html file with results, have a look at ``/home/slenkins/$MY_JAIL/var/tmp/slenkins/workspace/tests-suse-manager/cucumber/output.html`` 
 
 At moment, quite all test run ok. only 8 failures (known-failures bug)
 386 scenarios (8 failed, 1 undefined, 377 passed)
@@ -117,7 +117,7 @@ At moment, quite all test run ok. only 8 failures (known-failures bug)
 
 systemd-nspawn -D $MYJAIL
 su - slenkins
-cd /var/tmp/slenkins/workspace/cucumber
+cd /var/tmp/slenkins/workspace/tests-suse-manager/cucumber
 
 export MINION=192.168.15.190 export TESTHOST=192.168.15.224 export CLIENT=192.168.15.52 export BROWSER=phantomjs; cucumber features/salt.feature
 
