@@ -278,9 +278,9 @@ if [ "$INSTALLER" == yum ]; then
         local BASE=""
         local VERSION=""
         if [ -f /etc/redhat-release ]; then
-            grep -q '\(CentOS\|Red Hat\|Fedora\)' /etc/redhat-release && BASE="res"
-            grep -q 'release 6' /etc/redhat-release && VERSION="6"
-            grep -q 'release 7' /etc/redhat-release && VERSION="7"
+            grep -v '^#' /etc/redhat-release | grep -q '\(CentOS\|Red Hat\)' && BASE="res"
+            grep -v '^#' /etc/redhat-release | grep -q 'release 6' && VERSION="6"
+            grep -v '^#' /etc/redhat-release | grep -q 'release 7' && VERSION="7"
         fi
         Y_CLIENT_CODE_BASE="${{BASE:-unknown}}"
         Y_CLIENT_CODE_VERSION="${{VERSION:-unknown}}"
