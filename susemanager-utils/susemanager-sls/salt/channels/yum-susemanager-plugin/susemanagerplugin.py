@@ -49,6 +49,13 @@ def prereposetup_hook(conduit):
 
 
 def posttrans_hook(conduit):
+    """
+    Hook after the package installation transaction.
+
+    :param conduit:
+    :return:
+    """
+    # Integrate Yum with Salt
     if 'SALT_RUNNING' not in os.environ:
         with open(CK_PATH, 'w') as ck_fh:
             ck_fh.write('{chksum} {mtime}\n'.format(chksum=_get_checksum(), mtime=_get_mtime()))
