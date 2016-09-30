@@ -175,7 +175,12 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                             LOG.debug("Updating action for server: " +
                                     minionServer.getId());
                         }
-                        updateServerAction(sa, jobReturnEvent);
+                        updateServerAction(sa,
+                                jobReturnEvent.getData().getRetcode(),
+                                jobReturnEvent.getData().isSuccess(),
+                                jobReturnEvent.getJobId(),
+                                jobReturnEvent.getData().getResult(JsonElement.class),
+                                jobReturnEvent.getData().getFun());
                         ActionFactory.save(sa);
                     });
                 });
@@ -205,22 +210,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             MessageQueue.publish(new RegisterMinionEventMessage(
                     jobReturnEvent.getMinionId()));
         }
-    }
-
-    /**
-     * Update a given server action based on the job return event.
-     *
-     * @param serverAction the server action to update
-     * @param jobReturnEvent the return event
-     */
-    public static void updateServerAction(ServerAction serverAction, JobReturnEvent jobReturnEvent) {
-        updateServerAction(
-                serverAction,
-                jobReturnEvent.getData().getRetcode(),
-                jobReturnEvent.getData().isSuccess(),
-                jobReturnEvent.getJobId(),
-                jobReturnEvent.getData().getResult(JsonElement.class),
-                jobReturnEvent.getData().getFun());
     }
 
     /**
