@@ -368,15 +368,15 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             case "pkg.install": return true;
             case "pkg.remove": return true;
             case "state.apply":
-                Predicate<StateApplyResult<Map<String, Object>>> pred = result ->
+                Predicate<StateApplyResult<Map<String, Object>>> filterCondition = result ->
                     packageChangingModules.contains(result.getName())
                         && !result.getChanges().isEmpty();
                 Optional<Map<String, StateApplyResult<Map<String, Object>>>> resultsOptional = Opt.fold(
-                    eventToJson(event), () -> Optional.empty(), rawResult -> jsonEventToResults(rawResult));
+                    eventToJson(event), Optional::empty, rawResult -> jsonEventToResults(rawResult));
                 return Opt.fold(
                     resultsOptional,
                     () -> true,
-                    results -> results.values().stream().filter(pred).findAny().isPresent());
+                    results -> results.values().stream().filter(filterCondition).findAny().isPresent());
             default: return false;
         }
     }
@@ -393,11 +393,10 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         // For state.apply based actions verify the result of each state
         boolean stateApplySuccess = true;
         if (function.equals("state.apply")) {
-            Predicate<StateApplyResult<Map<String, Object>>> pred = result -> !result.isResult();
             return Opt.fold(
                 jsonEventToResults(rawResult),
                 () -> true,
-                results -> results.values().stream().filter(pred).findAny().isPresent());
+                results -> results.values().stream().filter(result -> !result.isResult()).findAny().isPresent());
         }
         return !(success && retcode == 0 && stateApplySuccess);
     }
