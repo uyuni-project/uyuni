@@ -107,7 +107,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      *
      * @param jsonResult json representation of an event
      */
-    private static Optional<Map<String, StateApplyResult<Map<String, Object>>>> jsonToMap(JsonElement jsonResult) {
+    private static Optional<Map<String, StateApplyResult<Map<String, Object>>>> jsonEventToResults(JsonElement jsonResult) {
         TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
             new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
         Optional<Map<String, StateApplyResult<Map<String, Object>>>> results = Optional.empty();
@@ -372,7 +372,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     packageChangingModules.contains(result.getName())
                         && !result.getChanges().isEmpty();
                 Optional<Map<String, StateApplyResult<Map<String, Object>>>> resultsOptional = Opt.fold(
-                    eventToJson(event), () -> Optional.empty(), rawResult -> jsonToMap(rawResult));
+                    eventToJson(event), () -> Optional.empty(), rawResult -> jsonEventToResults(rawResult));
                 return Opt.fold(
                     resultsOptional,
                     () -> true,
@@ -395,7 +395,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         if (function.equals("state.apply")) {
             Predicate<StateApplyResult<Map<String, Object>>> pred = result -> !result.isResult();
             return Opt.fold(
-                jsonToMap(rawResult),
+                jsonEventToResults(rawResult),
                 () -> true,
                 results -> results.values().stream().filter(pred).findAny().isPresent());
         }
