@@ -4192,6 +4192,12 @@ public class SystemHandler extends BaseHandler {
     public int addEntitlements(User loggedInUser, Integer serverId,
             List<String> entitlements) {
         boolean needsSnapshot = false;
+        Entitlement entitlement = null;
+        List<Entitlement> entitlementL = new ArrayList<Entitlement>();
+        for (String e : entitlements) {
+            entitlement = EntitlementManager.getByName(e);
+            entitlementL.add(entitlement);
+        }
         Server server = null;
         try {
             server = SystemManager.lookupByIdAndUser(new Long(serverId.longValue()),
@@ -4201,7 +4207,7 @@ public class SystemHandler extends BaseHandler {
             throw new NoSuchSystemException();
         }
 
-        validateEntitlements(entitlements);
+        validateEntitlements(entitlementL);
 
         List<String> addOnEnts = new LinkedList<String>(entitlements);
         // first process base entitlements
@@ -4266,6 +4272,13 @@ public class SystemHandler extends BaseHandler {
     public int removeEntitlements(User loggedInUser, Integer serverId,
             List<String> entitlements) {
         boolean needsSnapshot = false;
+        List<Entitlement> entitlementL = new ArrayList<Entitlement>();
+        Entitlement entitlement;
+        for (String e : entitlements) {
+            entitlement = EntitlementManager.getByName(e);
+            entitlementL.add(entitlement);
+        }
+
         Server server = null;
         try {
             server = SystemManager.lookupByIdAndUser(new Long(serverId.longValue()),
@@ -4275,7 +4288,7 @@ public class SystemHandler extends BaseHandler {
             throw new NoSuchSystemException();
         }
 
-        validateEntitlements(entitlements);
+        validateEntitlements(entitlementL);
 
         List<Entitlement> baseEnts = new LinkedList<Entitlement>();
 

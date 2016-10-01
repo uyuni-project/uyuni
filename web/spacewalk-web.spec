@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.2
+Version: 2.6.3
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -80,7 +80,6 @@ Obsoletes: rhn-base-minimal < 5.3.0
 Provides: rhn-base-minimal = 5.3.0
 Requires: perl(DBI)
 Requires: perl(Params::Validate)
-Requires: spacewalk-base-minimal-config
 
 %description -n spacewalk-base-minimal
 Independent Perl modules in the RHN:: name-space.
@@ -99,7 +98,7 @@ Configuration file for spacewalk-base-minimal package.
 
 
 %package -n spacewalk-dobby
-Summary: Perl modules and scripts to administer an Oracle database
+Summary: Perl modules and scripts to administer a PostgreSQL database
 Group: Applications/Internet
 Requires: perl-Filesys-Df
 Obsoletes: rhn-dobby < 5.3.0
@@ -107,7 +106,7 @@ Provides: rhn-dobby = 5.3.0
 Requires: %{sbinpath}/runuser
 
 %description -n spacewalk-dobby
-Dobby is collection of Perl modules and scripts to administer an Oracle
+Dobby is collection of Perl modules and scripts to administer a PostgreSQL
 database.
 
 
@@ -186,6 +185,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Mon Sep 26 2016 Eric Herget <eherget@redhat.com> 2.6.3-1
+- 1373900 - db-control start/stop now returns non-zero and complains on failure
+- require spacewalk-base-minimal-config from spacewalk-setup
+
 * Mon Sep 12 2016 Jan Dobes 2.6.2-1
 - spacewalk-base-minimal package description typo fixed
 
