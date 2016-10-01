@@ -35,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
 import java.security.DigestInputStream;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
@@ -508,8 +509,17 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         susedata.setLastModified(lastModified);
         repomd.setLastModified(lastModified);
 
+        File renamedupdateinfo = new File(prefix + "updateinfo.xml.gz");
         if (doUpdateinfo) {
-            updateinfo.renameTo(new File(prefix + "updateinfo.xml.gz"));
+            updateinfo.renameTo(renamedupdateinfo);
+        }
+        else {
+            try {
+                Files.deleteIfExists(renamedupdateinfo.toPath());
+            }
+            catch (IOException e) {
+                throw new RepomdRuntimeException(e);
+            }
         }
         if (hasProducts) {
             products.renameTo(new File(prefix + "products.xml"));

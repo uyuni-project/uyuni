@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.33
+Version: 2.6.37
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -1020,6 +1020,20 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Sep 30 2016 Eric Herget <eherget@redhat.com> 2.6.37-1
+- 1365410 - remove updateinfo.xml.gz if last errata associated with channel is
+  deleted
+
+* Fri Sep 30 2016 Jiri Dostal <jdostal@redhat.com> 2.6.36-1
+- 1380311 - API client.channel.software.createRepo() in 5.8.0 allows "yum" repo
+  type only
+
+* Tue Sep 27 2016 Jiri Dostal <jdostal@redhat.com> 2.6.35-1
+- 1378879 - The API system.upgradeEntitlement does not work
+
+* Mon Sep 26 2016 Jan Dobes 2.6.34-1
+- support initiating RHEL kickstart with dnf-plugin-spacewalk installed
+
 * Thu Sep 22 2016 Jan Dobes 2.6.33-1
 - partially fixing reposync progress bar
 
