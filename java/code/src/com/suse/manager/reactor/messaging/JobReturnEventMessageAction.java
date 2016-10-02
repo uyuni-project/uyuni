@@ -93,7 +93,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     private static Optional<JsonElement> eventToJson(JobReturnEvent jobReturnEvent) {
         Optional<JsonElement> jsonResult = Optional.empty();
         try {
-            jsonResult = Optional.ofNullable(jobReturnEvent.getData().getResult(JsonElement.class));
+            jsonResult = Optional.ofNullable(
+                jobReturnEvent.getData().getResult(JsonElement.class));
         }
         catch (JsonSyntaxException e) {
             LOG.error("JSON syntax error while decoding into a StateApplyResult:");
@@ -107,12 +108,15 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      *
      * @param jsonResult json representation of an event
      */
-    private static Optional<Map<String, StateApplyResult<Map<String, Object>>>> jsonEventToResults(JsonElement jsonResult) {
+    private static Optional<Map<String, StateApplyResult<Map<String, Object>>>>
+    jsonEventToResults(JsonElement jsonResult) {
         TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
             new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
-        Optional<Map<String, StateApplyResult<Map<String, Object>>>> results = Optional.empty();
+        Optional<Map<String, StateApplyResult<Map<String, Object>>>> results;
+        results = Optional.empty();
         try {
-             results = Optional.ofNullable(Json.GSON.fromJson(jsonResult, typeToken.getType()));
+             results = Optional.ofNullable(
+                Json.GSON.fromJson(jsonResult, typeToken.getType()));
         }
         catch (JsonSyntaxException e) {
             LOG.error("JSON syntax error while decoding into a StateApplyResult:");
@@ -191,7 +195,10 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         });
 
         // Schedule a package list refresh if either requested or detected as necessary
-        if (forcePackageListRefresh(jobReturnEvent) || shouldRefreshPackageList(jobReturnEvent)) {
+        if (
+            forcePackageListRefresh(jobReturnEvent) ||
+            shouldRefreshPackageList(jobReturnEvent)
+        ) {
             MinionServerFactory
                     .findByMinionId(jobReturnEvent.getMinionId())
                     .ifPresent(minionServer -> {
@@ -337,7 +344,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @return the corresponding action id or empty optional
      */
     private Optional<Long> getActionId(JobReturnEvent event) {
-        return event.getData().getMetadata(ScheduleMetadata.class) .map(ScheduleMetadata::getSumaActionId);
+        return event.getData().getMetadata(ScheduleMetadata.class).map(
+            ScheduleMetadata::getSumaActionId);
     }
 
     /**
@@ -360,7 +368,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * This information is used to decide if we should trigger a package list refresh.
      *
      * @param event the job return event
-     * @return true if installed packages have changed or json syntax exception, otherwise false
+     * @return true if installed packages have changed or unparsable json, otherwise false
      */
     private boolean shouldRefreshPackageList(JobReturnEvent event) {
         String function = event.getData().getFun();
@@ -369,14 +377,21 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             case "pkg.remove": return true;
             case "state.apply":
                 Predicate<StateApplyResult<Map<String, Object>>> filterCondition = result ->
-                    packageChangingModules.contains(result.getName())
-                        && !result.getChanges().isEmpty();
-                Optional<Map<String, StateApplyResult<Map<String, Object>>>> resultsOptional = Opt.fold(
-                    eventToJson(event), Optional::empty, rawResult -> jsonEventToResults(rawResult));
+                    packageChangingModules.contains(
+                        result.getName()) && !result.getChanges().isEmpty();
+
+                Optional<Map<String, StateApplyResult<Map<String, Object>>>>
+                resultsOptional = Opt.fold(
+                    eventToJson(event),
+                    Optional::empty,
+                    rawResult -> jsonEventToResults(rawResult));
+
                 return Opt.fold(
                     resultsOptional,
                     () -> true,
-                    results -> results.values().stream().filter(filterCondition).findAny().isPresent());
+                    results ->
+                        results.values().stream().filter(
+                            filterCondition).findAny().isPresent());
             default: return false;
         }
     }
@@ -396,7 +411,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             return Opt.fold(
                 jsonEventToResults(rawResult),
                 () -> true,
-                results -> results.values().stream().filter(result -> !result.isResult()).findAny().isPresent());
+                results -> results.values().stream().filter(
+                    result -> !result.isResult()).findAny().isPresent());
         }
         return !(success && retcode == 0 && stateApplySuccess);
     }
