@@ -323,18 +323,6 @@ public class SUSEProductFactory extends HibernateFactory {
         return getSession().createCriteria(SUSEProduct.class).list();
     }
 
-
-    /**
-     * Resets all product data.
-     */
-    public static void clearAllProducts() {
-        Session session = getSession();
-        session.getNamedQuery("SUSEProductChannel.clear").executeUpdate();
-        session.getNamedQuery("SUSEProduct.clear").executeUpdate();
-        session.getNamedQuery("SUSEUpgradePath.clear").executeUpdate();
-        session.getNamedQuery("SUSEProductExtension.clear").executeUpdate();
-    }
-
     /**
      * {@inheritDoc}
      */
