@@ -15,10 +15,11 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * ClientCapability
- * @version $Rev$
  */
 public class ClientCapability extends BaseDomainHelper {
 
@@ -69,4 +70,30 @@ public class ClientCapability extends BaseDomainHelper {
     public void setVersion(long versionIn) {
         this.version = versionIn;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof ClientCapability)) {
+            return false;
+        }
+        ClientCapability otherActionChain = (ClientCapability) other;
+        return new EqualsBuilder()
+                .append(getId(), otherActionChain.getId())
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(getId())
+                .toHashCode();
+    }
+
+
 }
