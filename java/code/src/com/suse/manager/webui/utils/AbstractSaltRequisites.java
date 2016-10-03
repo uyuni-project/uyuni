@@ -27,6 +27,9 @@ public abstract class AbstractSaltRequisites implements SaltRequisistes {
 
     private List<Map<String, String>> requireEntries = new LinkedList<>();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addRequire(String state, String id) {
         requireEntries.add(singletonMap(state, id));
