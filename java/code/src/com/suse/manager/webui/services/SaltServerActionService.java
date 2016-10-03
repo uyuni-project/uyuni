@@ -155,33 +155,33 @@ public enum SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> callsForAction(Action actionIn,
             List<MinionServer> minions) {
         ActionType actionType = actionIn.getActionType();
-        if (actionType.equals(ActionFactory.TYPE_ERRATA)) {
+        if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
             ErrataAction errataAction = (ErrataAction) actionIn;
             Set<Long> errataIds = errataAction.getErrata().stream()
                     .map(Errata::getId).collect(Collectors.toSet());
             return errataAction(minions, errataIds);
         }
-        else if (actionType.equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
+        else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
             return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
         }
-        else if (actionType.equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
+        else if (ActionFactory.TYPE_PACKAGES_REMOVE.equals(actionType)) {
             return packagesRemoveAction(minions, (PackageRemoveAction) actionIn);
         }
-        else if (actionType.equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
+        else if (ActionFactory.TYPE_PACKAGES_REFRESH_LIST.equals(actionType)) {
             return packagesRefreshListAction(minions);
         }
-        else if (actionType.equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
+        else if (ActionFactory.TYPE_HARDWARE_REFRESH_LIST.equals(actionType)) {
             return hardwareRefreshListAction(minions);
         }
-        else if (actionType.equals(ActionFactory.TYPE_REBOOT)) {
+        else if (ActionFactory.TYPE_REBOOT.equals(actionType)) {
             return rebootAction(minions);
         }
-        else if (actionType.equals(ActionFactory.TYPE_SCRIPT_RUN)) {
+        else if (ActionFactory.TYPE_SCRIPT_RUN.equals(actionType)) {
             ScriptAction scriptAction = (ScriptAction) actionIn;
             String script = scriptAction.getScriptActionDetails().getScriptContents();
             return remoteCommandAction(minions, script);
         }
-        else if (actionType.equals(ActionFactory.TYPE_APPLY_STATES)) {
+        else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) actionIn;
             Optional<String> states = Optional.ofNullable(
                     applyStatesAction.getDetails().getStates());
@@ -189,7 +189,8 @@ public enum SaltServerActionService {
         }
         else {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Action type " + actionType.getName() +
+                LOG.debug("Action type " +
+                        (actionType != null ? actionType.getName() : "") +
                         " is not supported with Salt");
             }
             return Collections.emptyMap();
