@@ -179,13 +179,13 @@ public interface Errata {
      * Getter for severity
      * @return String to get
      */
-    public Severity getSeverity();
+    Severity getSeverity();
 
     /**
      * Setter for severity
      * @param severityIn to set
      */
-    public void setSeverity(Severity severityIn);
+    void setSeverity(Severity severityIn);
 
     /**
      * Getter for refersTo
