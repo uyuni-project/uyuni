@@ -110,6 +110,8 @@ public class StatesAPI {
     private static final Logger LOG = Logger.getLogger(StatesAPI.class);
 
     private static final Gson GSON = new GsonBuilder().create();
+
+    /** Name of the subdirectory of the salt file root that contains package states. */
     public static final String SALT_PACKAGE_FILES = "packages";
     public static final String SUMA_CHANNEL_REPO_FILE
             = "/etc/zypp/repos.d/susemanager:channels.repo";
