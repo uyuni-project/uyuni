@@ -111,8 +111,12 @@ public class StatesAPI {
 
     private static final Gson GSON = new GsonBuilder().create();
     public static final String SALT_PACKAGE_FILES = "packages";
+
+    /** ID of the state that installs the SUSE Manager repo file in SUSE systems. */
     public static final String ZYPPER_SUMA_CHANNEL_REPO_FILE
             = "/etc/zypp/repos.d/susemanager:channels.repo";
+
+    /** ID of the state that installs the SUSE Manager repo file in Red Hat systems. */
     public static final String YUM_SUMA_CHANNEL_REPO_FILE
             = "/etc/yum.repos.d/susemanager:channels.repo";
 
