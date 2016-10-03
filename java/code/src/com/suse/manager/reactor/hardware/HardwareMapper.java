@@ -164,10 +164,14 @@ public class HardwareMapper {
         cpu.setNrCPU(grains.getValueAsLong("total_num_cpus").orElse(0L));
 
         if (arch != null) {
-            // should not happen but arch is not nullable so if we don't have
-            // the arch we cannot insert the cpu data
             cpu.setServer(server);
             server.setCpu(cpu);
+        }
+        else {
+            // should not happen but cpu.arch is not nullable so if we don't have
+            // the arch we cannot persist the cpu
+            LOG.warn("Did not set server CPU. Could not find CPUArch in db " +
+                    "for value '" + cpuarch + "' for minion '" + server.getMinionId());
         }
     }
 
