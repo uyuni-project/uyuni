@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
+import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
 import com.redhat.rhn.domain.errata.impl.UnpublishedErrata;
@@ -327,7 +328,10 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         }
 
         e.addFile(ef);
-
+        Severity s = new Severity();
+        s.setLabel(Severity.IMPORTANT_LABEL);
+        s.setRank(1);
+        e.setSeverity(s);
     }
 
     public void testCreateClone() throws Exception {
@@ -352,6 +356,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
        assertEquals(published.getAdvisoryType(), clone.getAdvisoryType());
        assertEquals(published.getAdvisoryRel(), clone.getAdvisoryRel());
        assertEquals(published.getLocallyModified(), clone.getLocallyModified());
+       assertEquals(published.getSeverity(), clone.getSeverity());
 
        /* Create a 2nd clone and make sure that the cloning function
         * does not create a clone whose name collides with the already

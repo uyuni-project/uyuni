@@ -176,6 +176,18 @@ public interface Errata {
     void setOrg(Org orgIn);
 
     /**
+     * Getter for severity
+     * @return String to get
+     */
+    public Severity getSeverity();
+
+    /**
+     * Setter for severity
+     * @param severityIn to set
+     */
+    public void setSeverity(Severity severityIn);
+
+    /**
      * Getter for refersTo
      * @return String to get
     */

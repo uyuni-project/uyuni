@@ -1,0 +1,7 @@
+-- oracle equivalent source sha1 fe24836b6a18a7a1a3c9703d14dbffbf82b92b02  
+--
+-- Adding the missing columnt 'severity_id' to rhnErrataTmp
+-- table to be consistent with rhnErrata table
+
+ALTER TABLE rhnerratatmp
+   ADD severity_id NUMERIC;
