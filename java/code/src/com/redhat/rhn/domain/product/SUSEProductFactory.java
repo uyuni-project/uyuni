@@ -107,7 +107,8 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Merge all {@link SUSEUpgradePath} from existing ones and the ones passed as parameter.
+     * Merge all {@link SUSEUpgradePath} from existing ones
+     * and the ones passed as parameter.
      * @param newUpgradePaths the new list of upgradePaths to keep stored
      */
     public static void mergeAllUpgradePaths(Collection<SUSEUpgradePath> newUpgradePaths) {
@@ -125,11 +126,14 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Merge all {@link SUSEProductExtension} from existing ones and the ones passed as parameter.
+     * Merge all {@link SUSEProductExtension} from existing ones
+     * and the ones passed as parameter.
      * @param newProductExtensions the new list of ProductExtensions to keep stored
      */
-    public static void mergeAllProductExtension(Collection<SUSEProductExtension> newProductExtensions) {
-        List<SUSEProductExtension> existingProductExtensions = findAllSUSEProductExtensions();
+    public static void mergeAllProductExtension(
+            Collection<SUSEProductExtension> newProductExtensions) {
+        List<SUSEProductExtension> existingProductExtensions =
+                findAllSUSEProductExtensions();
         for (SUSEProductExtension productExtension : existingProductExtensions) {
             if (!newProductExtensions.contains(productExtension)) {
                 SUSEProductFactory.remove(productExtension);
