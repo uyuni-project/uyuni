@@ -30,7 +30,6 @@ import com.redhat.rhn.frontend.dto.SoftwareCrashDto;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 
 import com.suse.utils.Opt;
