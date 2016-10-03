@@ -554,15 +554,15 @@ public class StatesAPI {
         SaltPkgLatest pkgLatest = new SaltPkgLatest();
 
         MinionServerFactory.lookupById(server.getId()).ifPresent(minion -> {
+            if (minion.getOsFamily().equals("Suse")) {
+                pkgInstalled.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
+                pkgRemoved.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
+                pkgLatest.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
+            }
             if (minion.getOsFamily().equals("RedHat")) {
                 pkgInstalled.addRequire("file", YUM_SUMA_CHANNEL_REPO_FILE);
                 pkgRemoved.addRequire("file", YUM_SUMA_CHANNEL_REPO_FILE);
                 pkgLatest.addRequire("file", YUM_SUMA_CHANNEL_REPO_FILE);
-            }
-            else {
-                pkgInstalled.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
-                pkgRemoved.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
-                pkgLatest.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
             }
         });
 
