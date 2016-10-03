@@ -3,7 +3,6 @@ package com.suse.manager.matcher.test;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.LoggingFactory;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.CPU;
@@ -47,7 +46,7 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
     private static final String AMD64_ARCH = "amd64";
 
     public void testSystemsToJson() throws Exception {
-        SUSEProductFactory.clearAllProducts();
+        SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
         SUSEProductTestUtils.createVendorEntitlementProducts();
         LoggingFactory.clearLogId();
@@ -141,7 +140,7 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
     }
 
     public void testProductsToJson() throws Exception {
-        SUSEProductFactory.clearAllProducts();
+        SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
         LoggingFactory.clearLogId();
 
@@ -170,7 +169,7 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
         Files.copy(orderJson.toPath(), ordertempFile.toPath());
         try {
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
-            SUSEProductFactory.clearAllProducts();
+            SUSEProductTestUtils.clearAllProducts();
             SUSEProductTestUtils.createVendorSUSEProducts();
 
             ContentSyncManager cm = new ContentSyncManager();
@@ -260,7 +259,7 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
         try {
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
 
-            SUSEProductFactory.clearAllProducts();
+            SUSEProductTestUtils.clearAllProducts();
             SUSEProductTestUtils.createVendorSUSEProducts();
             SUSEProductTestUtils.createVendorEntitlementProducts();
             LoggingFactory.clearLogId();

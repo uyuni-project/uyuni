@@ -31,6 +31,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.apache.log4j.Logger;
+import org.hibernate.Session;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,7 +45,9 @@ import java.util.Set;
 /**
  * Utility methods for creating SUSE related test data.
  */
-public class SUSEProductTestUtils {
+public class SUSEProductTestUtils extends HibernateFactory {
+
+    private static Logger log = Logger.getLogger(SUSEProductTestUtils.class);
 
     /**
      * Not to be instantiated.
@@ -415,5 +420,24 @@ public class SUSEProductTestUtils {
         product.setFriendlyName("SUSE Manager Prov Single 1.2");
         product.setProductId(1097);
         TestUtils.saveAndFlush(product);
+    }
+
+    /**
+     * Resets all product data.
+     */
+    public static void clearAllProducts() {
+        Session session = getSession();
+        session.getNamedQuery("SUSEProductChannel.clear").executeUpdate();
+        session.getNamedQuery("SUSEProduct.clear").executeUpdate();
+        session.getNamedQuery("SUSEUpgradePath.clear").executeUpdate();
+        session.getNamedQuery("SUSEProductExtension.clear").executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Logger getLogger() {
+        return log;
     }
 }

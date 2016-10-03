@@ -90,7 +90,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         try {
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
 
-            SUSEProductFactory.clearAllProducts();
+            SUSEProductTestUtils.clearAllProducts();
             SUSEProductTestUtils.createVendorSUSEProducts();
             ContentSyncManager cm = new ContentSyncManager();
             Collection<SCCSubscription> s = cm.getSubscriptions();
