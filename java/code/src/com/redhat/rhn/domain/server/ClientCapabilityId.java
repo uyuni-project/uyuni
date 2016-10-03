@@ -21,7 +21,6 @@ import java.io.Serializable;
 
 /**
  * ClientCapabilityId
- * @version $Rev$
  */
 public class ClientCapabilityId implements Serializable {
 
