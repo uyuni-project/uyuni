@@ -95,5 +95,4 @@ public class ClientCapability extends BaseDomainHelper {
                 .toHashCode();
     }
 
-
 }
