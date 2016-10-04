@@ -1,8 +1,0 @@
-{
-    "IPv4": {
-      "interface": "eth1",
-      "source": "172.24.108.98",
-      "destination": "172.31.131.162",
-      "gateway": null
-    }
-}

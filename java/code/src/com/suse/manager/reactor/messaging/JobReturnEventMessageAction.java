@@ -41,9 +41,13 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 
+import com.suse.manager.reactor.hardware.CpuArchUtil;
+import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.utils.RhelUtils;
+import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.Pkg;
@@ -264,6 +268,18 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         PkgProfileUpdateSlsResult.class));
             });
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST)) {
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+                serverAction.setResultMsg("Failure");
+            }
+            else {
+                serverAction.setResultMsg("Success");
+            }
+            serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                handleHardwareProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
+                        HwProfileUpdateSlsResult.class), serverAction);
+            });
+        }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
             Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
@@ -420,6 +436,51 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
         // Trigger update of errata cache for this server
         ErrataManager.insertErrataCacheTask(server);
+    }
+
+    /**
+     * Update the hardware profile for a minion in the database from incoming event data.
+     *
+     * @param server the minion server
+     * @param result the result of the call as parsed from event data
+     */
+    private static void handleHardwareProfileUpdate(MinionServer server,
+            HwProfileUpdateSlsResult result, ServerAction serverAction) {
+        Instant start = Instant.now();
+
+        HardwareMapper hwMapper = new HardwareMapper(server,
+                new ValueMap(result.getGrains()));
+        hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()));
+        if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
+            hwMapper.mapDmiInfo(
+                    result.getSmbiosRecordsBios().orElse(Collections.emptyMap()),
+                    result.getSmbiosRecordsSystem().orElse(Collections.emptyMap()),
+                    result.getSmbiosRecordsBaseboard().orElse(Collections.emptyMap()),
+                    result.getSmbiosRecordsChassis().orElse(Collections.emptyMap()));
+        }
+        hwMapper.mapDevices(result.getUdevdb());
+        if (CpuArchUtil.isS390(hwMapper.getCpuArch())) {
+            hwMapper.mapSysinfo(result.getMainframeSysinfo());
+        }
+        hwMapper.mapVirtualizationInfo(result.getSmbiosRecordsSystem());
+        hwMapper.mapNetworkInfo(
+                result.getNetworkInterfaces(),
+                Optional.of(result.getNetworkIPs()),
+                result.getNetworkModules());
+
+        // Let the action fail in case there is error messages
+        if (!hwMapper.getErrors().isEmpty()) {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setResultMsg("Hardware list could not be refreshed completely:\n" +
+                    hwMapper.getErrors().stream().collect(Collectors.joining("\n")));
+            serverAction.setResultCode(-1L);
+        }
+
+        if (LOG.isDebugEnabled()) {
+            long duration = Duration.between(start, Instant.now()).getSeconds();
+            LOG.debug("Hardware profile updated for minion: " + server.getMinionId() +
+                    " (" + duration + " seconds)");
+        }
     }
 
     /**

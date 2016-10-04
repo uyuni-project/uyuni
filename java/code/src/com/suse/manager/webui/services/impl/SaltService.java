@@ -22,8 +22,6 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.salt.Config;
-import com.suse.manager.webui.utils.salt.custom.MainframeSysinfo;
-import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
@@ -34,10 +32,8 @@ import com.suse.salt.netapi.calls.WheelResult;
 import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Match;
-import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.Schedule;
-import com.suse.salt.netapi.calls.modules.Smbios;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.modules.Timezone;
@@ -62,7 +58,6 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -420,20 +415,6 @@ public class SaltService {
     }
 
     /**
-     * Get DMI records from a minion.
-     * @param minionId the minion id
-     * @param recordType the record type to get
-     * @return the DMI data as a map. An empty
-     * imutable map is returned if there is no data.
-     */
-    public Optional<Map<String, Object>> getDmiRecords(String minionId,
-            Smbios.RecordType recordType) {
-        return callSync(Smbios.records(recordType), minionId).map(col ->
-                col.isEmpty() ? Collections.emptyMap() : col.get(0).getData()
-        );
-    }
-
-    /**
      * Call 'saltutil.sync_beacons' to sync the beacons to the target minion(s).
      * @param target a target glob
      */
@@ -483,27 +464,6 @@ public class SaltService {
      */
     public Optional<List<Map<String, Object>>> getUdevdb(String minionId) {
         return callSync(Udevdb.exportdb(), minionId);
-    }
-
-    /**
-     * Get the content of file from a minion.
-     * @param minionId the minion id
-     * @param path the path of the file
-     * @return the content of a file as a string or an empty optional if the
-     * file does not exist
-     */
-    public Optional<String> getFileContent(String minionId, String path) {
-        Optional<SumaUtil.CatResult> result = callSync(SumaUtil.cat(path), minionId);
-        return result.filter(r -> r.getRetcode() == 0).map(r -> r.getStdout());
-    }
-
-    /**
-     * Get the output of the '/usr/bin/read_values' if available.
-     * @param minionId the minion id
-     * @return the output of command as a string.
-     */
-    public Optional<String> getMainframeSysinfoReadValues(String minionId) {
-        return callSync(MainframeSysinfo.readValues(), minionId);
     }
 
     /**
@@ -650,36 +610,6 @@ public class SaltService {
           .collect(Collectors.toList());
     }
 
-    /**
-     * Get the network interfaces from a minion.
-     * @param minionId the minion id
-     * @return a map containing information about each network interface
-     */
-    public Optional<Map<String, Network.Interface>> getNetworkInterfacesInfo(
-            String minionId) {
-        return callSync(Network.interfaces(), minionId);
-    }
-
-    /**
-     * Get the IP routing that the minion uses to connect to the master.
-     * @param minionId the minion id
-     * @return a map of IPv4 and IPv6 (if available)
-     * {@link com.suse.manager.webui.utils.salt.custom.SumaUtil.IPRoute}
-     */
-    public Optional<Map<SumaUtil.IPVersion, SumaUtil.IPRoute>> getPrimaryIps(
-            String minionId) {
-        return callSync(SumaUtil.primaryIps(), minionId);
-    }
-
-    /**
-     * Get the kernel modules used for each network interface.
-     * @param minionId the minion id
-     * @return a map with the network interface name as key and
-     * the kernel module name or null as a value
-     */
-    public Optional<Map<String, Optional<String>>> getNetModules(String minionId) {
-        return callSync(SumaUtil.getNetModules(), minionId);
-    }
 
     /**
      * Find all minions matching the target expression and

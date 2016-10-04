@@ -1,0 +1,126 @@
+{
+    "tag": "salt/job/20160407084101455805/ret/minionsles12-suma3pg.vagrant.local",
+    "data": {
+        "fun_args": [
+            {
+                "mods": [
+                    "packages.profileupdate"
+                ]
+            }
+        ],
+        "jid": "20160407084101455805",
+        "return": {
+            "module_|-network-interfaces_|-network.interfaces_|-run": {
+                "comment": "Module function network.interfaces executed",
+                "name": "network.interfaces",
+                "start_time": "12:58:12.398566",
+                "result": true,
+                "duration": 14.501,
+                "__run_num__": 3,
+                "changes": {
+                    "ret":
+                }
+            },
+            "module_|-network-modules_|-sumautil.get_net_modules_|-run": {
+                "comment": "Module function sumautil.get_net_modules executed",
+                "name": "sumautil.get_net_modules",
+                "start_time": "12:58:12.422343",
+                "result": true,
+                "duration": 0.653,
+                "__run_num__": 5,
+                "changes": {
+                    "ret":
+                }
+            },
+            "module_|-smbios-records-baseboard_|-smbios.records_|-run": {
+                "comment": "Module function smbios.records executed",
+                "name": "smbios.records",
+                "start_time": "12:58:12.435214",
+                "result": true,
+                "duration": 4.453,
+                "__run_num__": 8,
+                "changes": {
+                    "ret": []
+                }
+            },
+            "module_|-smbios-records-chassis_|-smbios.records_|-run": {
+                "comment": "Module function smbios.records executed",
+                "name": "smbios.records",
+                "start_time": "12:58:12.439927",
+                "result": true,
+                "duration": 4.585,
+                "__run_num__": 9,
+                "changes": {
+                    "ret":
+                }
+            },
+            "module_|-cpuinfo_|-status.cpuinfo_|-run": {
+                "comment": "Module function status.cpuinfo executed",
+                "name": "status.cpuinfo",
+                "start_time": "12:58:12.371860",
+                "result": true,
+                "duration": 2.123,
+                "__run_num__": 1,
+                "changes": {
+                    "ret":
+                }
+            },
+            "module_|-smbios-records-bios_|-smbios.records_|-run": {
+                "comment": "Module function smbios.records executed",
+                "name": "smbios.records",
+                "start_time": "12:58:12.423499",
+                "result": true,
+                "duration": 6.668,
+                "__run_num__": 6,
+                "changes": {
+                    "ret":
+                }
+            },
+            "module_|-udevdb_|-udevdb.exportdb_|-run": {
+                "comment": "Module function udevdb.exportdb executed",
+                "name": "udevdb.exportdb",
+                "start_time": "12:58:12.374296",
+                "result": true,
+                "duration": 23.922,
+                "__run_num__": 2,
+                "changes": {
+                    "ret": [
+                    ]
+                }
+            },
+            "module_|-smbios-records-system_|-smbios.records_|-run": {
+                "comment": "Module function smbios.records executed",
+                "name": "smbios.records",
+                "start_time": "12:58:12.430383",
+                "result": true,
+                "duration": 4.587,
+                "__run_num__": 7,
+                "changes": {
+                    "ret":
+                }
+            },
+            "module_|-network-ips_|-sumautil.primary_ips_|-run": {
+                "comment": "Module function sumautil.primary_ips executed",
+                "name": "sumautil.primary_ips",
+                "start_time": "12:58:12.413295",
+                "result": true,
+                "duration": 8.849,
+                "__run_num__": 4,
+                "changes": {
+                    "ret":
+                }
+            },
+            "module_|-grains_|-grains.items_|-run": {
+                "comment": "Module function grains.items executed",
+                "name": "grains.items",
+                "start_time": "12:58:12.369619",
+                "result": true,
+                "duration": 1.982,
+                "__run_num__": 0,
+                "changes": {
+                    "ret":
+                }
+            }
+        }
+    }
+}
