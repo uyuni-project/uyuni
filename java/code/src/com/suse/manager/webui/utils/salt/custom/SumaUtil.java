@@ -15,11 +15,6 @@
 package com.suse.manager.webui.utils.salt.custom;
 
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.TypeToken;
-import com.suse.salt.netapi.calls.LocalCall;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Optional;
 
 /**
