@@ -1090,9 +1090,9 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * Find {@link ClientCapability} by name
+     * Find {@link Capability} by name
      * @param name the name of the capability
-     * @return a {@link ClientCapability} with the given name
+     * @return a {@link Capability} with the given name
      */
     public static Optional<Capability> findCapability(String name) {
         Criteria criteria = getSession().createCriteria(Capability.class);
@@ -1100,11 +1100,4 @@ public class ServerFactory extends HibernateFactory {
         return Optional.ofNullable((Capability) criteria.uniqueResult());
     }
 
-    /**
-     * Remove a {@link ClientCapability} from the db.
-     * @param clientCapability the {@link ClientCapability} to remove
-     */
-    public static void removeClientCapability(ClientCapability clientCapability) {
-        ServerFactory.getSession().delete(clientCapability);
-    }
 }
