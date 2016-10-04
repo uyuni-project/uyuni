@@ -18,7 +18,6 @@ import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -512,9 +511,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     }
 
     private void triggerHardwareRefresh(MinionServer server) {
-        Action action = ActionManager
-                .scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
-        MessageQueue.publish(new RefreshHardwareEventMessage(server.getMinionId(), action));
+        ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
     }
 
 }
