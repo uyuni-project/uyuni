@@ -140,7 +140,7 @@ import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
-import com.suse.manager.reactor.messaging.RefreshHardwareEventMessage;
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.SystemRecord;
@@ -3572,11 +3572,7 @@ public class SystemHandler extends BaseHandler {
             Action a = ActionManager.scheduleHardwareRefreshAction(loggedInUser, server,
                     earliestOccurrence);
             Action action = ActionFactory.save(a);
-            if (server.asMinionServer().isPresent() &&
-                    server.hasEntitlement(EntitlementManager.SALT)) {
-                MessageQueue.publish(new RefreshHardwareEventMessage(
-                        server.asMinionServer().get().getMinionId(), a));
-            }
+            MessageQueue.publish(new ActionScheduledEventMessage(a));
             return action.getId();
         }
         catch (MissingEntitlementException e) {

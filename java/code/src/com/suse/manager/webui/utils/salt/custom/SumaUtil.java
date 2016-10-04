@@ -83,7 +83,7 @@ public class SumaUtil {
     }
 
     /**
-     * The result of the {@link #cat(String)} method.
+     * The result of 'sumautil.cat' method.
      */
     public static class CatResult {
 
@@ -117,36 +117,4 @@ public class SumaUtil {
 
     private SumaUtil() { }
 
-    /**
-     * Call 'sumautil.cat'
-     * @param path path of the file.
-     * @return a {@link LocalCall} to pass to the SaltClient
-     */
-    public static LocalCall<CatResult> cat(String path) {
-        Map<String, Object> args = new LinkedHashMap<>();
-        args.put("path", path);
-        return new LocalCall<>("sumautil.cat", Optional.empty(),
-                Optional.of(args), new TypeToken<CatResult>() {
-        });
-    }
-
-    /**
-     * Call 'sumautil.primary_ips'
-     * @return a {@link LocalCall} to pass to the SaltClient
-     */
-    public static LocalCall<Map<IPVersion, IPRoute>> primaryIps() {
-        return new LocalCall<>("sumautil.primary_ips", Optional.empty(),
-                Optional.empty(), new TypeToken<Map<IPVersion, IPRoute>>() {
-        });
-    }
-
-    /**
-     * Call 'sumautil.get_net_modules'
-     * @return a {@link LocalCall} to pass to the SaltClient
-     */
-    public static LocalCall<Map<String, Optional<String>>> getNetModules() {
-        return new LocalCall<>("sumautil.get_net_modules", Optional.empty(),
-                Optional.empty(), new TypeToken<Map<String, Optional<String>>>() {
-        });
-    }
 }
