@@ -109,7 +109,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @param jsonResult json representation of an event
      */
     private static Optional<Map<String, StateApplyResult<Map<String, Object>>>>
-    jsonEventToResults(JsonElement jsonResult) {
+    jsonEventToStateApplyResults(JsonElement jsonResult) {
         TypeToken<Map<String, StateApplyResult<Map<String, Object>>>> typeToken =
             new TypeToken<Map<String, StateApplyResult<Map<String, Object>>>>() { };
         Optional<Map<String, StateApplyResult<Map<String, Object>>>> results;
@@ -384,7 +384,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 resultsOptional = Opt.fold(
                     eventToJson(event),
                     Optional::empty,
-                    rawResult -> jsonEventToResults(rawResult));
+                    rawResult -> jsonEventToStateApplyResults(rawResult));
 
                 return Opt.fold(
                     resultsOptional,
@@ -409,7 +409,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         boolean stateApplySuccess = true;
         if (function.equals("state.apply")) {
             return Opt.fold(
-                jsonEventToResults(rawResult),
+                jsonEventToStateApplyResults(rawResult),
                 () -> true,
                 results -> results.values().stream().filter(
                     result -> !result.isResult()).findAny().isPresent());
