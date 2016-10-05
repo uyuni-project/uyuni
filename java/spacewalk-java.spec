@@ -418,7 +418,18 @@ Requires: hibernate3-c3p0 >= 3.6.10
 Requires: hibernate3-ehcache >= 3.6.10
 Requires: javassist
 %else
+%if 0%{?suse_version}
+Requires: hibernate5
+Requires: hibernate-commons-annotations
+Requires: hibernate-jpa-2.1-api
+Requires: ehcache >= 2.10.1
+Requires: classmate
+Requires: javassist
+Requires: jboss-logging
+Requires: statistics
+%else
 Requires: hibernate3 >= 3.2.4
+%endif
 %endif
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires: apache-commons-cli
