@@ -11,6 +11,7 @@
   <template name="configchannel" classname="com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler"/>
   <template name="distchannel" classname="com.redhat.rhn.frontend.xmlrpc.distchannel.DistChannelHandler" />
   <template name="errata" classname="com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler" />
+  <template name="formula" classname="com.redhat.rhn.frontend.xmlrpc.formula.FormulaHandler" />
   <template name="kickstart" classname="com.redhat.rhn.frontend.xmlrpc.kickstart.KickstartHandler" />
   <template name="kickstart.filepreservation" classname="com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.FilePreservationListHandler" />
   <template name="kickstart.keys" classname="com.redhat.rhn.frontend.xmlrpc.kickstart.keys.CryptoKeysHandler" />

@@ -26,6 +26,8 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 
 import com.suse.manager.webui.controllers.DownloadController;
+import com.suse.manager.webui.controllers.FormulaCatalogController;
+import com.suse.manager.webui.controllers.FormulaController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -170,5 +172,41 @@ public class Router implements SparkApplication {
                 DownloadController::downloadPackage);
         head("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
+
+        // Formula catalog
+        get("/manager/formula-catalog",
+                withOrgAdmin(FormulaCatalogController::list), jade);
+        get("/manager/formula-catalog/formula/:name",
+                withCsrfToken(withOrgAdmin(FormulaCatalogController::details)), jade);
+
+        // Formula catalog API
+        get("/manager/api/formula-catalog/data",
+                withOrgAdmin(FormulaCatalogController::data));
+        get("/manager/api/formula-catalog/formula/:name/data",
+                withOrgAdmin(FormulaCatalogController::detailsData));
+
+        // Formulas
+        get("/manager/groups/details/formulas",
+                withCsrfToken(withUser(FormulaController::serverGroupFormulas)),
+                jade);
+        get("/manager/systems/details/formulas",
+                withCsrfToken(withUser(FormulaController::minionFormulas)),
+                jade);
+        get("/manager/groups/details/formula/:formula_id",
+                withCsrfToken(withUser(FormulaController::serverGroupFormula)),
+                jade);
+        get("/manager/systems/details/formula/:formula_id",
+                withCsrfToken(FormulaController::minionFormula),
+                jade);
+
+        // Formula API
+        get("/manager/api/formulas/list/:targetType/:id",
+                withOrgAdmin(FormulaController::listSelectedFormulas));
+        get("/manager/api/formulas/form/:targetType/:id/:formula_id",
+                withUser(FormulaController::formulaData));
+        post("/manager/api/formulas/select",
+                withUser(FormulaController::saveSelectedFormulas));
+        post("/manager/api/formulas/save",
+                withUser(FormulaController::saveFormula));
     }
 }
