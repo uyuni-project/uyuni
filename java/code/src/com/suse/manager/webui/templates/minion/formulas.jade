@@ -1,0 +1,10 @@
+include ./minion-header.jade
+
+#formulas
+
+script(type='text/javascript').
+    var csrfToken = "#{csrf_token}";
+    var serverId = "#{server.id}";
+
+script(src='/javascript/reactjs/react.bundle.js')
+script(src='/javascript/manager/minion-formula-selection.bundle.js', type='text/javascript')

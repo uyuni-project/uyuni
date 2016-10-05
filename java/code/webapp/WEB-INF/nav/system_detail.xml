@@ -206,6 +206,10 @@
     </rhn-tab>
   </rhn-tab>
 
+  <rhn-tab name="Formulas" acl="system_has_salt_entitlement()">
+    <rhn-tab-url>/rhn/manager/systems/details/formulas</rhn-tab-url>
+  </rhn-tab>
+
   <rhn-tab name="Events" acl="system_has_management_entitlement() or system_has_salt_entitlement()">
     <rhn-tab-url>/rhn/systems/details/history/Pending.do</rhn-tab-url>
     <rhn-tab-url>/rhn/systems/details/history/Event.do</rhn-tab-url>
