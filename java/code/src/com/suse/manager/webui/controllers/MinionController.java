@@ -314,7 +314,8 @@ public class MinionController {
                 if (!checkUserHasPermissionsOnServer(user, ServerFactory.lookupById(id))) {
                     return deniedResponse(response);
                 }
-                formulas = new LinkedList<>(FormulaFactory.getCombinedFormulasByServerId(id));
+                formulas = new LinkedList<>(
+                        FormulaFactory.getCombinedFormulasByServerId(id));
                 break;
             case GROUP:
                 if (!checkUserHasPermissionsOnServerGroup(user,
