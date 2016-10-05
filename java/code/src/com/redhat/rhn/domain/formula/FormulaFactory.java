@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,7 +35,6 @@ import java.util.Map;
 import java.util.Optional;
 import javax.transaction.NotSupportedException;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -94,7 +94,8 @@ public class FormulaFactory {
     public static List<String> listFormulaNames() {
         File officialDir = new File(METADATA_DIR_OFFICIAL);
         File customDir = new File(METADATA_DIR_CUSTOM);
-        File[] files = ArrayUtils.addAll(officialDir.listFiles(), customDir.listFiles());
+        List<File> files = Arrays.asList(officialDir.listFiles());
+        files.addAll(Arrays.asList(customDir.listFiles()));
         List<String> formulasList = new LinkedList<>();
 
         for (File f : files) {
