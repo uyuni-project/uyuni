@@ -40,10 +40,7 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.doc Return the list of formulas currently installed.
      *
      * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
-     *      #array()
-     *          string
-     *      #array_end()
+     * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
     public List<String> listFormulas(User loggedInUser) {
         return FormulaFactory.listFormulaNames();
@@ -59,10 +56,7 @@ public class FormulaHandler extends BaseHandler {
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "systemGroupId")
-     * @xmlrpc.returntype
-     *      #array()
-     *          string
-     *      #array_end()
+     * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
     public List<String> getFormulasByGroupId(User loggedInUser, Integer systemGroupId) {
         return FormulaFactory.getFormulasByGroupId(systemGroupId.longValue());
@@ -78,10 +72,7 @@ public class FormulaHandler extends BaseHandler {
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "systemId")
-     * @xmlrpc.returntype
-     *      #array()
-     *          string
-     *      #array_end()
+     * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
     public List<String> getFormulasByServerId(User loggedInUser, Integer systemId) {
         return FormulaFactory.getFormulasByServerId(systemId.longValue());
@@ -97,10 +88,7 @@ public class FormulaHandler extends BaseHandler {
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "systemId")
-     * @xmlrpc.returntype
-     *      #array()
-     *          string
-     *      #array_end()
+     * @xmlrpc.returntype #array_single("string", "(formulas)")
      */
     public List<String> getCombinedFormulasByServerId(User loggedInUser, Integer systemId) {
         return FormulaFactory.getCombinedFormulasByServerId(systemId.longValue());
