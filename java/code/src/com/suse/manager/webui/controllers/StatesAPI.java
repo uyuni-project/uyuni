@@ -559,7 +559,7 @@ public class StatesAPI {
                 pkgRemoved.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
                 pkgLatest.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
             }
-            if (minion.getOsFamily().equals("RedHat")) {
+            else if (minion.getOsFamily().equals("RedHat")) {
                 pkgInstalled.addRequire("file", YUM_SUMA_CHANNEL_REPO_FILE);
                 pkgRemoved.addRequire("file", YUM_SUMA_CHANNEL_REPO_FILE);
                 pkgLatest.addRequire("file", YUM_SUMA_CHANNEL_REPO_FILE);
