@@ -27,6 +27,7 @@ import static spark.Spark.put;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
+import com.suse.manager.webui.controllers.FormulaController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -186,26 +187,26 @@ public class Router implements SparkApplication {
 
         // Formulas
         get("/manager/groups/details/formulas",
-                withCsrfToken(withUser(MinionController::serverGroupFormulas)),
+                withCsrfToken(withUser(FormulaController::serverGroupFormulas)),
                 jade);
         get("/manager/systems/details/formulas",
-                withCsrfToken(withUser(MinionController::minionFormulas)),
+                withCsrfToken(withUser(FormulaController::minionFormulas)),
                 jade);
         get("/manager/groups/details/formula/:formula_id",
-                withCsrfToken(withUser(MinionController::serverGroupFormula)),
+                withCsrfToken(withUser(FormulaController::serverGroupFormula)),
                 jade);
         get("/manager/systems/details/formula/:formula_id",
-                withCsrfToken(MinionController::minionFormula),
+                withCsrfToken(FormulaController::minionFormula),
                 jade);
 
         // Formula API
         get("/manager/api/formulas/list/:targetType/:id",
-                withOrgAdmin(MinionController::listSelectedFormulas));
+                withOrgAdmin(FormulaController::listSelectedFormulas));
         get("/manager/api/formulas/form/:targetType/:id/:formula_id",
-                withUser(MinionController::formulaData));
+                withUser(FormulaController::formulaData));
         post("/manager/api/formulas/select",
-                withUser(MinionController::saveSelectedFormulas));
+                withUser(FormulaController::saveSelectedFormulas));
         post("/manager/api/formulas/save",
-                withUser(MinionController::saveFormula));
+                withUser(FormulaController::saveFormula));
     }
 }
