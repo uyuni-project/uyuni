@@ -16,6 +16,9 @@ package com.redhat.rhn.domain.product;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -75,44 +78,25 @@ public class SUSEUpgradePath extends BaseDomainHelper implements Serializable {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((fromProduct == null) ? 0 : fromProduct.hashCode());
-        result = prime * result + ((toProduct == null) ? 0 : toProduct.hashCode());
-        return result;
+        return new HashCodeBuilder()
+                .append(getFromProduct())
+                .append(getToProduct())
+                .toHashCode();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public boolean equals(final Object other) {
+        if (!(other instanceof SUSEUpgradePath)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        SUSEUpgradePath other = (SUSEUpgradePath) obj;
-        if (fromProduct == null) {
-            if (other.fromProduct != null) {
-                return false;
-            }
-        }
-        else if (!fromProduct.equals(other.fromProduct)) {
-            return false;
-        }
-        if (toProduct == null) {
-            if (other.toProduct != null) {
-                return false;
-            }
-        }
-        else if (!toProduct.equals(other.toProduct)) {
-            return false;
-        }
-        return true;
+        SUSEUpgradePath otherSUSEUpgradePath = (SUSEUpgradePath) other;
+
+        return new EqualsBuilder()
+            .append(getFromProduct(), otherSUSEUpgradePath.getFromProduct())
+            .append(getToProduct(), otherSUSEUpgradePath.getToProduct())
+            .isEquals();
     }
 }

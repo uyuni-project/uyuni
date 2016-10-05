@@ -65,11 +65,6 @@
       <bean:message key="spmigration.jsp.confirm.note" />
     </div>
     <div>
-      <div class="pull-left">
-        <html:button styleClass="btn btn-link" property="dispatch" onclick="javascript:history.back();">
-          <bean:message key="spmigration.jsp.confirm.back" />
-        </html:button>
-      </div>
       <div class="pull-right">
         <html:submit styleClass="btn btn-success" property="dispatch">
           <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
