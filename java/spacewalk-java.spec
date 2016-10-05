@@ -485,7 +485,7 @@ done
 
 %build
 # compile only java sources (no packing here)
-ant -Dprefix=$RPM_BUILD_ROOT init-install compile
+ant -Dprefix=$RPM_BUILD_ROOT init-install compile apidoc-docbook
 
 %if 0%{?run_checkstyle}
 echo "Running checkstyle on java main sources"
