@@ -388,6 +388,7 @@ public class FormulaFactory {
      * @param serverId the id of the server
      * @param selectedFormulas the new selected formulas to save
      * @throws IOException if an IOException occurs while saving the data
+     * @throws NotSupportedException in case serverId does not represent a minion
      */
     public static synchronized void saveServerFormulas(Long serverId,
             List<String> selectedFormulas) throws IOException, NotSupportedException {
