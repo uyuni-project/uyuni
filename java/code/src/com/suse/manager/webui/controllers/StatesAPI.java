@@ -113,8 +113,14 @@ public class StatesAPI {
 
     /** Name of the subdirectory of the salt file root that contains package states. */
     public static final String SALT_PACKAGE_FILES = "packages";
-    public static final String SUMA_CHANNEL_REPO_FILE
+
+    /** ID of the state that installs the SUSE Manager repo file in SUSE systems. */
+    public static final String ZYPPER_SUMA_CHANNEL_REPO_FILE
             = "/etc/zypp/repos.d/susemanager:channels.repo";
+
+    /** ID of the state that installs the SUSE Manager repo file in Red Hat systems. */
+    public static final String YUM_SUMA_CHANNEL_REPO_FILE
+            = "/etc/yum.repos.d/susemanager:channels.repo";
 
     private StatesAPI() { }
 
@@ -544,12 +550,23 @@ public class StatesAPI {
         Set<PackageState> packageStates = StateFactory
                 .latestPackageStates(server)
                 .orElseGet(HashSet::new);
+
         SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
-        pkgInstalled.addRequire("file", SUMA_CHANNEL_REPO_FILE);
         SaltPkgRemoved pkgRemoved = new SaltPkgRemoved();
-        pkgRemoved.addRequire("file", SUMA_CHANNEL_REPO_FILE);
         SaltPkgLatest pkgLatest = new SaltPkgLatest();
-        pkgLatest.addRequire("file", SUMA_CHANNEL_REPO_FILE);
+
+        MinionServerFactory.lookupById(server.getId()).ifPresent(minion -> {
+            if (minion.getOsFamily().equals("Suse")) {
+                pkgInstalled.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
+                pkgRemoved.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
+                pkgLatest.addRequire("file", ZYPPER_SUMA_CHANNEL_REPO_FILE);
+            }
+            else if (minion.getOsFamily().equals("RedHat")) {
+                pkgInstalled.addRequire("file", YUM_SUMA_CHANNEL_REPO_FILE);
+                pkgRemoved.addRequire("file", YUM_SUMA_CHANNEL_REPO_FILE);
+                pkgLatest.addRequire("file", YUM_SUMA_CHANNEL_REPO_FILE);
+            }
+        });
 
         for (PackageState state : packageStates) {
             if (state.getPackageState() == PackageStates.INSTALLED) {
