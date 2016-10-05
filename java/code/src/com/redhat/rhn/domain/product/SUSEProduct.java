@@ -21,6 +21,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * POJO for a suseProducts row.
@@ -50,6 +51,18 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
 
     /** True if the product is 'free' */
     private boolean free;
+
+    /** available extensions for this product */
+    private Set<SUSEProduct> extensionFor;
+
+    /** available extensions that this product is an extension for */
+    private Set<SUSEProduct> extensionOf;
+
+    /** available upgrades for this product; */
+    private Set<SUSEProduct> upgrades;
+
+    /** available products from which upgrade to this is possible */
+    private Set<SUSEProduct> downgrades;
 
     /**
      * Gets the id.
@@ -177,6 +190,70 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      */
     public void setFree(boolean freeIn) {
         free = freeIn;
+    }
+
+    /**
+     * List base products for this product
+     * @return list base products for this product
+     */
+    public Set<SUSEProduct> getExtensionOf() {
+        return extensionOf;
+    }
+
+    /**
+     * List extension products for this product
+     * @return list extension products for this product
+     */
+    public Set<SUSEProduct> getExtensionFor() {
+        return extensionFor;
+    }
+
+    /**
+     * Set the list extension products for this product
+     * @param extensionsIn list of extension products
+     */
+    public void setExtensionFor(Set<SUSEProduct> extensionsIn) {
+        this.extensionFor = extensionsIn;
+    }
+
+    /**
+     * Set the list base products for this product
+     * @param basesIn list of base products
+     */
+    public void setExtensionOf(Set<SUSEProduct> basesIn) {
+        this.extensionOf = basesIn;
+    }
+
+    /**
+     * List available upgrade path for this product
+     * @return list available upgrade path for this product
+     */
+    public Set<SUSEProduct> getUpgrades() {
+        return upgrades;
+    }
+
+    /**
+     * Set the list of available upgrade path for this product
+     * @param upgradesIn the list of available upgrade path for this product
+     */
+    public void setUpgrades(Set<SUSEProduct> upgradesIn) {
+        this.upgrades = upgradesIn;
+    }
+
+    /**
+     * List products that can upgrade to this product
+     * @return list products that can upgrade to this product
+     */
+    public Set<SUSEProduct> getDowngrades() {
+        return downgrades;
+    }
+
+    /**
+     * Sets the list of products that can upgrade to this product
+     * @param downgradesIn list of products that can upgrade to this product
+     */
+    public void setDowngrades(Set<SUSEProduct> downgradesIn) {
+        this.downgrades = downgradesIn;
     }
 
     /**

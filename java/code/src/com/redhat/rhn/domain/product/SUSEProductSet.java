@@ -16,6 +16,8 @@ package com.redhat.rhn.domain.product;
 
 import com.redhat.rhn.domain.server.InstalledProduct;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,6 +53,18 @@ public class SUSEProductSet {
         setBaseProduct(SUSEProductFactory.getProductById(baseProductIn));
         for (Long l : addonProductsIn) {
             addAddonProduct(SUSEProductFactory.getProductById(l));
+        }
+    }
+
+    /**
+     * Construct a {@link SUSEProductSet} using given SUSEProducts.
+     * @param baseProductIn base product
+     * @param addonProductsIn list of addon products
+     */
+    public SUSEProductSet(SUSEProduct baseProductIn, List<SUSEProduct> addonProductsIn) {
+        setBaseProduct(baseProductIn);
+        for (SUSEProduct l : addonProductsIn) {
+            addAddonProduct(l);
         }
     }
 
@@ -164,6 +178,25 @@ public class SUSEProductSet {
         }
         missingChannels.addAll(channelLabels);
         Collections.sort(missingChannels);
+    }
+
+    /**
+     * Return a flag to know if all channels are synced or not
+     * @return true if all channels are synced
+     */
+    public Boolean allChannelsAreSynced() {
+        return missingChannels == null || missingChannels.size() == 0;
+    }
+
+    /**
+     * Return a single String with channles that are not synced
+     * and a warning message prefix
+     * @param prefix the warning message prefix
+     * @return the missingChannels single String
+     */
+    public String stringfyMissingChannels(String prefix) {
+        String separator = System.getProperty("line.separator") + " - ";
+        return prefix + separator + StringUtils.join(missingChannels, separator);
     }
 
     /**

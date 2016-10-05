@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
@@ -52,6 +53,7 @@ import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -2205,4 +2207,142 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Matcher m = p.matcher(str);
         assertTrue(m.matches());
     }
+    
+    public void testListMigrationTargetNoProducts() throws Exception {
+
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        boolean thrown = false;
+        try {
+            handler.listMigrationTargets(admin, server.getId().intValue());
+        }
+        catch(FaultException e) {
+            if(e.getMessage().contains("Server has no Products installed")) {
+                thrown = true;
+            }
+        }
+        assertTrue("Expected exception not thrown", thrown);
+    }
+
+    public void testListMigrationTargetBaseOnly() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin);
+
+        InstalledProduct installedPrd = new InstalledProduct();
+        installedPrd.setName("SLES");
+        installedPrd.setVersion("12");
+        installedPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        installedPrd.setBaseproduct(true);
+        assertNull(installedPrd.getId());
+
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        assertNotNull(server);
+        assertNotNull(server.getId());
+
+        Set<InstalledProduct> products = new HashSet<>();
+        products.add(installedPrd);
+
+        server.setInstalledProducts(products);
+        TestUtils.saveAndReload(server);
+
+        assertNotNull(server.getInstalledProductSet());
+
+        server.getInstalledProductSet().getBaseProduct().getUpgrades();
+
+        List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
+
+        assertNotEmpty("no target found", result);
+
+        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
+        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
+    }
+
+    public void testListMigrationTargetExtension() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin);
+
+        InstalledProduct installedPrd = new InstalledProduct();
+        installedPrd.setName("SLES");
+        installedPrd.setVersion("12");
+        installedPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        installedPrd.setBaseproduct(true);
+        assertNull(installedPrd.getId());
+
+        InstalledProduct installedExt = new InstalledProduct();
+        installedExt.setName("sle-ha");
+        installedExt.setVersion("12");
+        installedExt.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        assertNull(installedExt.getId());
+
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        assertNotNull(server);
+        assertNotNull(server.getId());
+
+        Set<InstalledProduct> products = new HashSet<>();
+        products.add(installedPrd);
+        products.add(installedExt);
+
+        server.setInstalledProducts(products);
+        TestUtils.saveAndReload(server);
+
+        assertNotNull(server.getInstalledProductSet());
+
+        server.getInstalledProductSet().getBaseProduct().getUpgrades();
+
+        List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
+
+        assertNotEmpty("no target found", result);
+
+        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP2");
+        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP2");
+        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
+        assertContains(result.get(1).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP1");
+    }
+
+    public void testListMigrationTargetExtensionNotSynced() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin);
+
+        InstalledProduct installedPrd = new InstalledProduct();
+        installedPrd.setName("SLES");
+        installedPrd.setVersion("12");
+        installedPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        installedPrd.setBaseproduct(true);
+        assertNull(installedPrd.getId());
+
+        InstalledProduct installedExt = new InstalledProduct();
+        installedExt.setName("sle-ha");
+        installedExt.setVersion("12");
+        installedExt.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        assertNull(installedExt.getId());
+
+        InstalledProduct installedExt2 = new InstalledProduct();
+        installedExt2.setName("sle-ha-geo");
+        installedExt2.setVersion("12");
+        installedExt2.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        assertNull(installedExt2.getId());
+
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        assertNotNull(server);
+        assertNotNull(server.getId());
+
+        Set<InstalledProduct> products = new HashSet<>();
+        products.add(installedPrd);
+        products.add(installedExt);
+        products.add(installedExt2);
+
+        server.setInstalledProducts(products);
+        TestUtils.saveAndReload(server);
+
+        assertNotNull(server.getInstalledProductSet());
+
+        server.getInstalledProductSet().getBaseProduct().getUpgrades();
+
+        List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
+
+        assertNotEmpty("no target found", result);
+        assertTrue(result.size() == 1);
+        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
+        assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP1");
+    }
+
 }
