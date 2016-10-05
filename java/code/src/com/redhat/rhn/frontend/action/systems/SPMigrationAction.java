@@ -52,6 +52,8 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
+import com.google.gson.Gson;
+
 /**
  * Action class for scheduling distribution upgrades (Service Pack Migrations).
  */
@@ -71,18 +73,22 @@ public class SPMigrationAction extends RhnAction {
     // Form parameters
     private static final String ACTION_STEP = "step";
     private static final String SETUP = "setup";
+    private static final String TARGET = "target";
     private static final String CONFIRM = "confirm";
     private static final String SCHEDULE = "schedule";
     private static final String BASE_PRODUCT = "baseProduct";
     private static final String ADDON_PRODUCTS = "addonProducts";
     private static final String BASE_CHANNEL = "baseChannel";
     private static final String CHILD_CHANNELS = "childChannels";
+    private static final String TARGET_PRODUCT_SELECTED = "targetProductSelected";
 
     // Message keys
     private static final String DISPATCH_DRYRUN = "spmigration.jsp.confirm.submit.dry-run";
     private static final String MSG_SCHEDULED_MIGRATION = "spmigration.message.scheduled";
     private static final String MSG_SCHEDULED_DRYRUN =
             "spmigration.message.scheduled.dry-run";
+
+    public static final Gson GSON = new Gson();
 
     /**
      * {@inheritDoc}
@@ -126,11 +132,14 @@ public class SPMigrationAction extends RhnAction {
         Long targetBaseChannel = null;
         Long[] targetChildChannels = null;
         boolean dryRun = false;
+        boolean targetProductSelectedEmpty = false;
+        String targetProductSelected = request.getParameter(TARGET_PRODUCT_SELECTED);
 
         // Read form parameters if dispatching
         DynaActionForm form = (DynaActionForm) actionForm;
-        String actionStep = SETUP;
+        String actionStep = TARGET;
         String dispatch = request.getParameter(RequestContext.DISPATCH);
+
         if (dispatch != null) {
             actionStep = (String) form.get(ACTION_STEP);
 
@@ -147,18 +156,27 @@ public class SPMigrationAction extends RhnAction {
             }
         }
 
+        // if submitting step 1 (TARGET) but no radio button
+        // for target migration selected, return step 1 (TARGET)
+        if (dispatch != null && actionStep.equals(TARGET) &&
+                targetProductSelected == null) {
+            targetProductSelectedEmpty = true;
+            dispatch = null;
+        }
+        request.setAttribute("targetProductSelectedEmpty", targetProductSelectedEmpty);
+
         // Find the action forward
         ActionForward forward = findForward(actionMapping, actionStep, dispatch);
 
         // Put data to the request
-        if (forward.getName().equals(SETUP) && supported && migration == null) {
+        if (forward.getName().equals(TARGET) && supported && migration == null) {
             // Find target products
             SUSEProductSet installedProducts = server.getInstalledProductSet();
-            ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
             List<SUSEProductSet> migrationTargets = DistUpgradeManager.
-                    getTargetProductSets(installedProducts, arch, ctx.getCurrentUser());
+                    getTargetProductSets(installedProducts,
+                            server.getServerArch().getCompatibleChannelArch(),
+                            ctx.getCurrentUser());
 
-            SUSEProductSet targetProducts = null;
             if (migrationTargets == null) {
                 // Installed products are 'unknown'
                 logger.debug("Installed products are 'unknown'");
@@ -173,9 +191,27 @@ public class SPMigrationAction extends RhnAction {
             else if (migrationTargets.size() >= 1) {
                 // At least one target available
                 logger.debug("Found at least one migration target");
-                targetProducts = migrationTargets.get(0);
-                request.setAttribute(TARGET_PRODUCTS, targetProducts);
+                request.setAttribute(TARGET_PRODUCTS, migrationTargets);
             }
+        }
+        else if (forward.getName().equals(SETUP)) {
+            // Find target products
+            SUSEProductSet installedProducts = server.getInstalledProductSet();
+            ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
+            List<SUSEProductSet> migrationTargets = DistUpgradeManager.
+                    getTargetProductSets(installedProducts,
+                            server.getServerArch().getCompatibleChannelArch(),
+                            ctx.getCurrentUser());
+
+            // Get and decode the target product selected to migrate
+            SUSEProductSet targetProducts = new SUSEProductSet();
+            for (SUSEProductSet target : migrationTargets) {
+                if (serializeProductIDs(target.getProductIDs())
+                        .equals(targetProductSelected)) {
+                    targetProducts = target;
+                }
+            }
+            request.setAttribute(TARGET_PRODUCTS, targetProducts);
 
             // Get the base channel
             Channel suseBaseChannel = DistUpgradeManager.getProductBaseChannel(
@@ -257,7 +293,7 @@ public class SPMigrationAction extends RhnAction {
 
     /**
      * Find the destination given the current page and the dispatch string.
-     * The order of actions is: SETUP -> CONFIRM -> SCHEDULE.
+     * The order of actions is: TARGET -> SETUP -> CONFIRM -> SCHEDULE.
      * @param mapping
      * @param wizardStep
      * @param dispatch
@@ -266,11 +302,14 @@ public class SPMigrationAction extends RhnAction {
     private ActionForward findForward(ActionMapping mapping, String wizardStep,
             String dispatch) {
         if (dispatch == null) {
-            return mapping.findForward(SETUP);
+            return mapping.findForward(TARGET);
         }
 
         ActionForward forward;
-        if (wizardStep.equals(SETUP)) {
+        if (wizardStep.equals(TARGET)) {
+            forward = mapping.findForward(SETUP);
+        }
+        else if (wizardStep.equals(SETUP)) {
             forward = mapping.findForward(CONFIRM);
         }
         else if (wizardStep.equals(CONFIRM)) {
@@ -278,7 +317,7 @@ public class SPMigrationAction extends RhnAction {
         }
         else {
             // Unknown wizard step, go to setup
-            forward = mapping.findForward(SETUP);
+            forward = mapping.findForward(TARGET);
         }
         return forward;
     }
@@ -369,5 +408,14 @@ public class SPMigrationAction extends RhnAction {
             channelIDs.add(c.getId());
         }
         return channelIDs;
+    }
+
+    /**
+     * Serialize product ids
+     * @param ids the list of product ids
+     * @return the serialized product ids
+     */
+    public static String serializeProductIDs(List<Long> ids) {
+        return GSON.toJson(ids);
     }
 }

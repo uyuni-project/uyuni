@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.content.test;
 
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -88,7 +87,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
         try {
             // clear existing products
-            SUSEProductFactory.clearAllProducts();
+            SUSEProductTestUtils.clearAllProducts();
 
             List<XMLChannel> allChannels =
                     new Persister().read(XMLChannels.class, channelsXML).getChannels();
@@ -231,7 +230,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
         try {
             // clear existing products
-            SUSEProductFactory.clearAllProducts();
+            SUSEProductTestUtils.clearAllProducts();
 
             List<SCCProduct> sccProducts =
                     new Gson().fromJson(FileUtils.readFileToString(productsJSON),
