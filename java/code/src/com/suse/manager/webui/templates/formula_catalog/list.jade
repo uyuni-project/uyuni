@@ -1,0 +1,15 @@
+if info
+  script(type="text/javascript").
+     function flashMessage() {
+         return [{severity: "info", text:"#{info}"}];
+     }
+else
+  script(type="text/javascript").
+     function flashMessage() {
+         return [];
+     }
+     
+#formula-catalog
+
+script(src='/javascript/reactjs/react.bundle.js', type='text/javascript')
+script(src='/javascript/manager/org-formula-catalog.bundle.js')
