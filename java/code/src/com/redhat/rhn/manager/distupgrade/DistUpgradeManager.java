@@ -252,6 +252,17 @@ public class DistUpgradeManager extends BaseManager {
                 removeIncompatibleCombinations(migrationTargets), arch, user);
     }
 
+    /**
+     * Remove target combinations that are not compatible
+     *
+     * Please note that ruby syntax comments in the code are referred
+     * to the private project source at:
+     * - https://github.com/SUSE/happy-customer/blob/
+     *       761eaad2bcb0fcc506c545442ea860a041debf27/glue/app/models/migration_engine.rb
+     *
+     * @param migrations a target list of all {@link SUSEProductSet}
+     * @return the List of compatible {@link SUSEProductSet}
+     */
     private static List<SUSEProductSet> removeIncompatibleCombinations(
             List<SUSEProductSet> migrations) {
         final List<SUSEProductSet> result = new ArrayList<>(migrations);
@@ -316,6 +327,18 @@ public class DistUpgradeManager extends BaseManager {
         return ret;
     }
 
+    /**
+     * Get all available migration targets from the installed products
+     * on the system
+     *
+     * Please note that ruby syntax comments in the code are referred
+     * to the private project source at:
+     * - https://github.com/SUSE/happy-customer/blob/
+     *       761eaad2bcb0fcc506c545442ea860a041debf27/glue/app/models/migration_engine.rb
+     *
+     * @param installedProducts all the installed products on the migrating system
+     * @return list of available migration targets
+     */
     private static List<SUSEProductSet> migrationTargets(SUSEProductSet installedProducts) {
         // installed_extensions = @installed_products - [base_product]
         List<SUSEProduct> installedExtensions = installedProducts.getAddonProducts();
