@@ -461,7 +461,6 @@ public class FormulaFactory {
         }
     }
 
-    // TODO: there are much more efficient algorithms for dependency solving
     /**
      * Orders a given list of formulas by the ordering specified in their metadata
      * @param formulasToOrder the list of formulas to order
