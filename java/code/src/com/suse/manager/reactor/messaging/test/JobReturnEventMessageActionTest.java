@@ -16,6 +16,10 @@ package com.suse.manager.reactor.messaging.test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.server.*;
@@ -36,6 +40,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -489,5 +495,39 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
                 .collect(Collectors.joining("\n"))
                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
         return EVENTS.parse(eventString);
+    }
+
+    public void testUpdateServerAction() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("abcdefg.vagrant.local");
+        SUSEProductTestUtils.createVendorSUSEProducts();
+
+        ApplyStatesAction action = ActionManager.scheduleApplyStates(
+                user,
+                Arrays.asList(minion.getId()),
+                Arrays.asList(ApplyStatesEventMessage.CHANNELS),
+                new Date());
+
+        ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
+
+        action.addServerAction(sa);
+
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("state.apply.with.failures.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        assertEquals(
+            Arrays.asList(sa),
+            action.getServerActions().stream().filter(
+                serverAction -> serverAction.getServer().equals(minion)
+            ).collect(java.util.stream.Collectors.toList()));
+
+        // Verify the action status
+        assertTrue(sa.getStatus().equals(ActionFactory.STATUS_FAILED));
     }
 }
