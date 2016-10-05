@@ -249,17 +249,20 @@ public class MinionsAPI {
                     error -> {
                         LOG.error("Error during bootstrap: " + error.toString());
                         SALT_SERVICE.deleteKey(input.getHost());
-                        return bootstrapResult(response, false, Collections.singletonList(error.toString()));
+                        return bootstrapResult(response, false,
+                                Collections.singletonList(error.toString()));
                     },
                     r -> {
-                        // We have results, check if result = true for all the single states
+                        // We have results, check if result=true for all the single states
                         List<String> message;
                         boolean stateApplyResult = r.getReturn().isPresent();
                         if (stateApplyResult) {
-                            message = r.getReturn().get().entrySet().stream().flatMap(entry -> {
+                            message = r.getReturn().get().entrySet().stream().flatMap(
+                                    entry -> {
                                 if (!entry.getValue().isResult()) {
                                     return Stream.of(entry.getKey() + " (retcode=" +
-                                            r.getRetcode() + "): " + entry.getValue().getComment());
+                                            r.getRetcode() + "): " +
+                                            entry.getValue().getComment());
                                 }
                                 else {
                                     return Stream.empty();
