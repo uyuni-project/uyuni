@@ -93,7 +93,8 @@ public class FormulaFactory {
     public static List<String> listFormulaNames() {
         File officialDir = new File(METADATA_DIR_OFFICIAL);
         File customDir = new File(METADATA_DIR_CUSTOM);
-        List<File> files = Arrays.asList(officialDir.listFiles());
+        List<File> files = new LinkedList<>(
+                Arrays.asList(officialDir.listFiles()));
         files.addAll(Arrays.asList(customDir.listFiles()));
         List<String> formulasList = new LinkedList<>();
 
