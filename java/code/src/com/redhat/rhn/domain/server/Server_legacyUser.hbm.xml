@@ -90,10 +90,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         <many-to-many column="server_group_id" class="com.redhat.rhn.domain.server.ServerGroup"/>
                 </set>
 
-                <set name="capabilities" table="rhnClientCapability" inverse="true" lazy="true">
-                        <key column="server_id"/>
-                        <many-to-many column="CAPABILITY_NAME_ID" class="com.redhat.rhn.domain.server.Capability"/>
-                </set>
+        <set name="capabilities" lazy="true" inverse="true" table="rhnClientCapability" cascade="all-delete-orphan">
+            <key column="server_id"/>
+            <one-to-many class="com.redhat.rhn.domain.server.ClientCapability"/>
+        </set>
 
         <many-to-one name="org" class="com.redhat.rhn.domain.org.Org"
             column="org_id" lazy="proxy"/>
@@ -220,7 +220,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                          inner join s.groups as sg
                                          inner join sg.groupType.features as f
                                          inner join s.capabilities as c
-                                        where (sg.groupType is not null) and f.label='ftr_config' and c.name like 'configfiles%']]>
+                                        where (sg.groupType is not null) and f.label='ftr_config' and c.id.capability.name like 'configfiles%']]>
     </query>
 
      <query name="Server.listConfigDiffEnabledSystems">
@@ -229,7 +229,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                           inner join s.groups as sg
                           inner join sg.groupType.features as f
                           inner join s.capabilities as c
-                      where (sg.groupType is not null) and f.label='ftr_config' and c.name = 'configfiles.diff'
+                      where (sg.groupType is not null) and f.label='ftr_config' and c.id.capability.name = 'configfiles.diff'
                       order by s.id asc
         ]]>
     </query>

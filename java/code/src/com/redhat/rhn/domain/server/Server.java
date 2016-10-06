@@ -117,7 +117,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Set<InstalledPackage> packages = new HashSet<>();
     private ProxyInfo proxyInfo;
     private Set<ServerGroup> groups;
-    private Set<Capability> capabilities;
+    private Set<ClientCapability> capabilities = new HashSet<>();
     private CrashCount crashCount;
     private Set<Crash> crashes;
     private Set<InstalledProduct> installedProducts = new HashSet<>();
@@ -128,7 +128,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * @return Returns the capabilities.
      */
-    public Set<Capability> getCapabilities() {
+    public Set<ClientCapability> getCapabilities() {
         return capabilities;
     }
 
@@ -137,7 +137,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * @param capabilitiesIn The capabilities to set.
      */
-    public void setCapabilities(Set<Capability> capabilitiesIn) {
+    public void setCapabilities(Set<ClientCapability> capabilitiesIn) {
         capabilities = capabilitiesIn;
     }
 

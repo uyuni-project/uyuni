@@ -16,7 +16,7 @@ package com.redhat.rhn.domain.server.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.server.Capability;
+import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
-
+import java.util.Optional;
 
 /**
  * ServerTest
@@ -87,8 +87,8 @@ public class ServerTest extends BaseTestCaseWithUser {
                 SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
         assertFalse(s.getCapabilities().isEmpty());
         boolean containsDeploy = false;
-        for (Capability c : s.getCapabilities()) {
-            if (SystemManager.CAP_CONFIGFILES_DEPLOY.equals(c.getName())) {
+        for (ClientCapability c : s.getCapabilities()) {
+            if (SystemManager.CAP_CONFIGFILES_DEPLOY.equals(c.getId().getCapability().getName())) {
                 containsDeploy = true;
                 break;
             }
@@ -96,6 +96,23 @@ public class ServerTest extends BaseTestCaseWithUser {
         assertTrue(containsDeploy);
     }
 
+    public void testRemoveCapability() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true);
+        SystemManagerTest.giveCapability(s.getId(),
+                SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
+        SystemManagerTest.giveCapability(s.getId(),
+                SystemManager.CAP_SCRIPT_RUN, 2L);
+        assertEquals(2, s.getCapabilities().size());
+        Optional<ClientCapability> cap1 = s.getCapabilities()
+                .stream().filter(c -> c.getId().getCapability().getName().equals(SystemManager.CAP_SCRIPT_RUN))
+                .findFirst();
+        s.getCapabilities().clear();
+        s.getCapabilities().add(cap1.get());
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        s = ServerFactory.lookupById(s.getId());
+        assertEquals(1, s.getCapabilities().size());
+    }
 
     public void testNetworkInterfaces() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);

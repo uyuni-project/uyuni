@@ -29,6 +29,8 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
+import com.redhat.rhn.domain.server.Capability;
+import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerStateRevision;
@@ -142,9 +144,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         else {
             minionServer = ServerFactory.findByMachineId(machineId)
                 .flatMap(server -> {
-                    // migrate it to a minion server
-                    ServerFactory.changeServerToMinionServer(
-                            server.getId(), machineId);
+                    // change the type of the hibernate entity from Server to MinionServer
+                    SystemManager.addMinionInfoToServer(server.getId(), minionId);
+                    // need to clear the session to avoid NonUniqueObjectException
+                    ServerFactory.getSession().clear();
                     return MinionServerFactory
                             .lookupById(server.getId());
                 })
@@ -157,6 +160,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
                     // change base channel
                     minion.getChannels().clear();
+
+                    // clear previous capabilities
+                    minion.getCapabilities().clear();
 
                     // add reactivation event to server history
                     ServerHistoryEvent historyEvent = new ServerHistoryEvent();
@@ -263,7 +269,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             });
 
             // salt systems always have script.run capability
-            SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+            Optional<Capability> capabilityOpt = ServerFactory
+                    .findCapability(SystemManager.CAP_SCRIPT_RUN);
+            capabilityOpt.ifPresent(c ->
+                    server.getCapabilities().add(new ClientCapability(server, c, 1L)));
 
             // Assign the Salt base entitlement by default
             server.setBaseEntitlement(EntitlementManager.SALT);
