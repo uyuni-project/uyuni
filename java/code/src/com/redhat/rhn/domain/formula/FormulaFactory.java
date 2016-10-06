@@ -391,7 +391,8 @@ public class FormulaFactory {
      * @throws UnsupportedOperationException in case serverId does not represent a minion
      */
     public static synchronized void saveServerFormulas(Long serverId,
-            List<String> selectedFormulas) throws IOException, UnsupportedOperationException {
+            List<String> selectedFormulas) throws IOException,
+            UnsupportedOperationException {
         File dataFile = new File(SERVER_DATA_FILE);
         String minionId = getMinionId(serverId);
 
