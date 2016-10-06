@@ -211,9 +211,7 @@ public class DistUpgradeManager extends BaseManager {
     public static List<SUSEProductSet> getTargetProductSets(
             SUSEProductSet installedProducts) {
         List<SUSEProductSet> migrationTargets = migrationTargets(installedProducts);
-        List<SUSEProductSet> migrationTargets2 =
-        removeIncompatibleCombinations(migrationTargets);
-        return removeNotEntitledCombinations(migrationTargets2);
+        return removeIncompatibleCombinations(migrationTargets);
     }
 
     private static List<SUSEProductSet> removeIncompatibleCombinations(
@@ -228,8 +226,6 @@ public class DistUpgradeManager extends BaseManager {
                 //        migrations.delete(combination)
                 //        break
                 //end
-                //TODO: find out if this really needs to test
-                // the intersection or only the base product
                 HashSet<SUSEProduct> intersection = new HashSet<>(product.getBases());
                 intersection.retainAll(combination.getAddonProducts());
                 if (intersection.isEmpty() &&
@@ -239,23 +235,6 @@ public class DistUpgradeManager extends BaseManager {
             }
         }
         return Collections.unmodifiableList(result);
-    }
-
-    private static List<SUSEProductSet> removeNotEntitledCombinations(
-            List<SUSEProductSet> migrations) {
-        //TODO: figure out what this does and if we need it
-        /*
-            # filters out all migration targets where one of the included products
-            # is not in the system's entitled product classes
-            def remove_not_entitled_combinations(migrations)
-                filtered_migrations = migrations.select do |migration|
-                    migration.all? {|component| component.free? ||
-                    @system.product_classes.include?(component.product_class) }
-                end
-                filtered_migrations
-            end
-        */
-        return migrations;
     }
 
     private static List<SUSEProductSet> migrationTargets(SUSEProductSet installedProducts) {
@@ -306,71 +285,6 @@ public class DistUpgradeManager extends BaseManager {
             }
         }
         return result;
-    }
-
-    /**
-     * Given a list of channels, return the labels of those where cid == null.
-     */
-    private static List<String> getMissingChannels(List<ChildChannelDto> channels) {
-        List<String> ret = new ArrayList<String>();
-        for (ChildChannelDto channel : channels) {
-            Long cid = channel.getId();
-            if (cid == null) {
-                logger.warn("Mandatory channel not synced: " + channel.getLabel());
-                ret.add(channel.getLabel());
-            }
-        }
-        return ret;
-    }
-
-    /**
-     * Return null if any of the given channels is not actually available (cid == null).
-     * Otherwise find the common parent channel and return its ID.
-     *
-     * @param productChannels product channels
-     * @return ID of the parent channel or null
-     */
-    private static Long getParentChannelId(List<ChildChannelDto> productChannels) {
-        Long baseChannelID = null;
-        for (ChildChannelDto channel : productChannels) {
-            Long cid = channel.getId();
-            // Check if this channel is actually available
-            if (cid == null) {
-                return null;
-            }
-            // Channel is synced
-            if (channel.getParentId() == null) {
-                // Parent channel is null -> this is the base channel
-                baseChannelID = cid;
-            }
-        }
-        return baseChannelID;
-    }
-
-    /**
-     * For a list of channels, check if they all have the same given parent.
-     * @param parentChannelID parent channel ID
-     * @param channels channels
-     * @return true if all channels have the same given parent, else false
-     */
-    private static boolean isParentChannel(Long parentChannelID,
-            List<ChildChannelDto> channels) {
-        boolean ret = true;
-        for (ChildChannelDto channel : channels) {
-            Long cid = channel.getId();
-            if (cid == null) {
-                // Channel is not synced, abort
-                return false;
-            }
-            // Channel is synced
-            if (channel.getParentId() != parentChannelID) {
-                // Found channel not matching given parent, return
-                logger.warn("Channel has not requested parent: " + channel.getLabel());
-                ret = false;
-                break;
-            }
-        }
-        return ret;
     }
 
     /**
