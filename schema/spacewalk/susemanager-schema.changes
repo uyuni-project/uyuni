@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Oct 06 15:34:15 CEST 2016 - mc@suse.de
+
+- version 3.0.15-1
+- Add table for storing product extensions
+- Add severity_id to rhnErrataTmp for consistency with rhnErrata
+  (bsc#1000666)
+- Fixing suseMinionInfo.sql to make 'osFamily' NULLABLE
+- delete rhnContentSourceFilter before rhnContentSource (bsc#998380)
+- Avoid a deadlock when deleting a server (bsc#969790)
+
+-------------------------------------------------------------------
 Mon Jul 18 14:12:49 CEST 2016 - jrenner@suse.com
 
 - version 3.0.14-1
