@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Oct 06 15:05:12 CEST 2016 - mc@suse.de
+
+- version 2.5.1.3-1
+- Support 'X-Mgr-Auth' headers in proxy for RedHat minions
+- Fix for Proxy chains: we only use suseLib.accessible when auth
+  token is present
+- Check for the auth token in HEAD requests
+- Renaming saltproxy to salt-broker. Using /etc/salt/ and /var/log/salt/
+- make proxy aware of URLs with auth tokens
+- Salt ZeroMQ proxy service
+
+-------------------------------------------------------------------
 Mon Mar 21 16:37:00 CET 2016 - mc@suse.de
 
 - version 2.5.1.2-1
