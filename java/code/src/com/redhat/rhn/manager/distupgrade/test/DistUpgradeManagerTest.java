@@ -114,7 +114,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         ChannelFamily family = createTestChannelFamily();
         SUSEProduct sourceProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         SUSEProductSet sourceProducts = new SUSEProductSet(
-                sourceProduct, Collections.emptyList());
+                sourceProduct, new LinkedList());
 
         SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         sourceProduct.setUpgrades(Collections.singleton(targetBaseProduct));
