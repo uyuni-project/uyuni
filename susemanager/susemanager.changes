@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Thu Oct 06 15:32:02 CEST 2016 - mc@suse.de
+
+- version 3.0.17-1
+- support creating bootstrap repos for SLE12 SP2 family (bsc#969889)
+- use systemctl instead of insserv for enabling postgresql
+- quietly enable systemd services and do not pollute logfiles
+- enable postgresql via systemctl; it's already adapted to systemd
+  (bsc#995314)
+- Check the integrity of an archive before the import actually starts
+- mgr-create-bootstrap-repo: Support to append additional packages
+  names via commandline
+- mgr-create-bootstrap-repo: Collect errors and print them at the end
+  and copy all found packages
+- Add salt bootstrap repo data for RES6 and RES7
+- Added dependencies for JeOS SLE12
+- Add dependancy packages for JeOS (FATE#320809)
+- enable and start postfix on setup (bsc#979664)
+
+-------------------------------------------------------------------
 Mon Jul 18 14:19:05 CEST 2016 - jrenner@suse.com
 
 - version 3.0.16-1
