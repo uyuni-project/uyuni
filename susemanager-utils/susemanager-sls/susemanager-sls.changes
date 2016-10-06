@@ -1,4 +1,33 @@
 -------------------------------------------------------------------
+Thu Oct 06 14:51:43 CEST 2016 - mc@suse.de
+
+- version 0.1.15-1
+- Fixed bug with numbers in FormulaForm and improved ext_pillar script
+- Added formula directories and formulas.sls to setup script
+- External pillar script now also includes formula pillars
+- Rename symlinks according to changed 'os' grain for Expanded Support
+- Adding certs states for RHEL minion based on SLES-ES
+- Rename udevdb scsi info json key
+- Add support for mapping mainframe sysinfo
+- Implement isX86() in jinja more correctly
+- Initial support for querying and saving DMI info
+- Add support for mapping the devices
+- Actually handle incoming hardware details
+- Initial version of the hardware.profileupdate sls
+- Added pkgset beacon support in susemanager yum plugin
+- trust also RES GPG key on all RedHat minions
+- trust GPG keys for SUSE Manager Tools channel on RES
+- configure bootstrap repository for RES
+- Always enable salt-minion service while bootstrapping (bsc#990202)
+- CentOS cert state symlinks and fixes
+- states for installing certificate on redhat minions
+- pkg.list_products only on Suse
+- yum plugin to add jwt token as http header
+- Generate SLE 12 bootstrap repo path correctly (bsc#994578)
+- Merging top.sls files in base env (bsc#986770)
+- Watch files instead of require
+
+-------------------------------------------------------------------
 Mon Jul 18 14:23:32 CEST 2016 - jrenner@suse.com
 
 - version 0.1.14-1
