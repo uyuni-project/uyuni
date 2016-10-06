@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 06 15:09:40 CEST 2016 - mc@suse.de
+
+- version 2.5.2.4-1
+- make the Apache proxy timeout greater (5 min) than the Salt timeout
+  (bsc#993304,bsc#994623)
+
+-------------------------------------------------------------------
 Wed Feb 10 08:41:42 CET 2016 - mc@suse.de
 
 - version 2.5.2.3-1
