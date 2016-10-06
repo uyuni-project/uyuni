@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Class representation of a set of {@link SUSEProduct}s installed on a server.
@@ -64,6 +65,21 @@ public class SUSEProductSet {
         setBaseProduct(baseProductIn);
         for (SUSEProduct l : addonProductsIn) {
             addAddonProduct(l);
+        }
+    }
+
+    /**
+     * Construct a {@link SUSEProductSet} using a set of InstalledProducts.
+     * @param products list of installed products
+     */
+    public SUSEProductSet(Set<InstalledProduct> products) {
+        for (InstalledProduct prd : products) {
+            if (prd.isBaseproduct()) {
+                setBaseProduct(prd.getSUSEProduct());
+            }
+            else {
+                addAddonProduct(prd.getSUSEProduct());
+            }
         }
     }
 
