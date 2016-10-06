@@ -42,7 +42,7 @@ var FormulaCatalog = React.createClass({
 
     render: function() {
         var messages = <Messages items={[{severity: "info", text:
-            <p><strong>{t('This is a feature preview')}</strong>: On this page you can see your currently installed <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt formulas</a>. You can apply these <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt formulas</a> to server groups and configure them for whole groups or individual systems. This allows you to automatically install and configure software. We would be glad to receive your feedback via the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
+            <p><strong>{t('This is a feature preview')}</strong>: The formula catalog page enables viewing of currently installed <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank">Salt formulas</a>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages. We would be glad to receive your feedback in the <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
         }]}/>;
         if (this.state.messages.length > 0) {
             messages = <Messages items={this.state.messages.map(function(msg) {
