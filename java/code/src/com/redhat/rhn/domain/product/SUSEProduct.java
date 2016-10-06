@@ -20,6 +20,9 @@ import java.util.Set;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 /**
  * Class representation of a SUSE product.
  */
@@ -207,5 +210,35 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      */
     public void setDowngrades(Set<SUSEProduct> downgradesIn) {
         this.downgrades = downgradesIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object otherObject) {
+        if (!(otherObject instanceof SUSEProduct)) {
+            return false;
+        }
+        SUSEProduct other = (SUSEProduct) otherObject;
+        return new EqualsBuilder()
+            .append(getName(), other.getName())
+            .append(getVersion(), other.getVersion())
+            .append(getRelease(), other.getRelease())
+            .append(getArch(), other.getArch())
+            .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+            .append(getName())
+            .append(getVersion())
+            .append(getRelease())
+            .append(getArch())
+            .toHashCode();
     }
 }
