@@ -13,4 +13,6 @@ Feature: Check the SP Migration feature
     Given I am on the Systems overview page of this client
     When I follow "Software" in the content area
     And I follow "SP Migration" in the content area
-    Then I should see a "There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available." text
+    Then I should see a "Service Pack Migration - Target" text
+    And I should see a "SUSE Linux Enterprise Server 12 SP1" text
+    And the "targetProductSelected" field should be disabled
