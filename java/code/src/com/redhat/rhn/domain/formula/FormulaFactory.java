@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
@@ -56,6 +57,9 @@ import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
  * Factory class for working with formulas.
  */
 public class FormulaFactory {
+
+    // Logger for this class
+    private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
 
     private static final String DATA_DIR = "/srv/susemanager/formula_data/";
     private static final String METADATA_DIR_OFFICIAL =
@@ -444,7 +448,8 @@ public class FormulaFactory {
             }
         }
         catch (UnsupportedOperationException e) {
-            //TODO: log error message?
+            LOG.error("Error deleting formular data for " + formulaName +
+                    ": " + e.getMessage());
         }
     }
 
@@ -554,7 +559,8 @@ public class FormulaFactory {
             return minionServer.get().getMinionId();
         }
         else {
-            throw new UnsupportedOperationException("The system is not a salt minion!");
+            throw new UnsupportedOperationException(
+                    "System is not a salt minion: " + serverId);
         }
     }
 }
