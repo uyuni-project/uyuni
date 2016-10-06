@@ -1930,13 +1930,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return installed products
      */
     public SUSEProductSet getInstalledProductSet() {
-        SUSEProductSet result = SUSEProductFactory.getInstalledProducts(this);
-        if (result.isEmpty()) {
+        if (installedProducts.isEmpty()) {
             return null;
         }
-        else {
-            return result;
-        }
+        return new SUSEProductSet(installedProducts);
     }
 
     /**
