@@ -1,4 +1,45 @@
 -------------------------------------------------------------------
+Thu Oct 06 16:08:09 CEST 2016 - mc@suse.de
+
+- version 2.5.59.9-1
+- Hide all formula tabs as long as there are no formulas installed
+- Support formulas in SUSE Manager
+- SPMigration UI: list not synced channels in the tooltip
+- SPMigration: add multi-target-selection step in front of the wizard
+- Sync product extensions
+- Handle JsonException when sls with error (bsc#987835)
+- Many fixes for onboarding minions
+- Handle hardware refresh like any other action
+- clone Severity from an errata (bsc#1000666)
+- Do not check for password type on autoyast files (bsc#999304)
+- handle minion down and job not found when canceling jobs on minions
+ (bsc#993304,bsc#994623)
+- clear hibernate session after entity type change to fix
+  NonUniqueObjectException (bsc#997243)
+- Remove previous client capabilities on traditional->minion
+  reactivation (bsc#997243)
+- Enables pkgset beacon to work in RHEL systems
+- support Open Enterprise Server 11 SP3 (bsc#988303)
+- Fix broken merge (bsc#987864)
+- use raw package install for non zypper systems
+- Redirect user to a meaningful page after requesting details of non-existing Action Chain (bsc#973198)
+- Setup Salt Minion before packages are taken
+- Support Salt on RedHat like systems
+- fix race condition during auto errata update (bsc#969790)
+- API requests should not be redirected to login
+- introduce Spark router conventions
+- Add server endpoint for TaskoTop web UI page
+- Change EmptyString warning to debug log level to not spam the logs (bsc#989498)
+- BugFix: use user preferences parameters as default page size (bsc#980678)
+- Add proxy detection during registration and pillar generation
+- Adding default channel for minion (bsc#986019)
+- Fix NoClassDefFoundError (bsc#988196)
+- call cobbler sync in profile edit only if requested (bsc#991440)
+- No explicite cobbler sync needed (bsc#991440)
+- call all sync_* functions at minion start event
+- add beacon configuration for pkgset (bsc#971372)
+
+-------------------------------------------------------------------
 Mon Jul 18 14:28:06 CEST 2016 - jrenner@suse.com
 
 - version 2.5.59.8-1
