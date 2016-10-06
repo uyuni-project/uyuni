@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Oct 06 15:11:10 CEST 2016 - mc@suse.de
+
+- version 2.5.13.6-1
+- Logging message in case of malformed XML file
+- Prevent crashes if machine-id is None (bsc#994619)
+- print invalid package name and replace the invalid character
+- ignore packages with not UTF-8 characters in name, version and release
+  (bsc#990738)
+
+-------------------------------------------------------------------
 Mon Jul 18 13:54:23 CEST 2016 - jrenner@suse.com
 
 - version 2.5.13.5-1
