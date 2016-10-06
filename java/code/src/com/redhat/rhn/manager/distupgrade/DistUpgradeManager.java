@@ -17,13 +17,16 @@ package com.redhat.rhn.manager.distupgrade;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.suse.utils.Lists;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -37,7 +40,6 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -201,105 +203,109 @@ public class DistUpgradeManager extends BaseManager {
     }
 
     /**
-     * For a given list of installed products, return all available migration targets
-     * as {@link SUSEProductSet} objects.
+     * Calculate the valid migration targets for a given product set.
      *
-     * @param installedProducts set of products currently installed on the system
-     * @param arch channel arch
-     * @param user user
-     * @return list of product sets
+     * @param installedProducts current product set
+     * @return valid migration targets
      */
     public static List<SUSEProductSet> getTargetProductSets(
-            SUSEProductSet installedProducts, ChannelArch arch, User user) {
-        ArrayList<SUSEProductSet> ret = new ArrayList<SUSEProductSet>();
-        if (installedProducts == null) {
-            logger.warn("No products installed on this system");
-            return null;
+            SUSEProductSet installedProducts) {
+        List<SUSEProductSet> migrationTargets = migrationTargets(installedProducts);
+        List<SUSEProductSet> migrationTargets2 =
+        removeIncompatibleCombinations(migrationTargets);
+        return removeNotEntitledCombinations(migrationTargets2);
+    }
+
+    private static List<SUSEProductSet> removeIncompatibleCombinations(
+            List<SUSEProductSet> migrations) {
+        final List<SUSEProductSet> result = new ArrayList<>(migrations.size());
+        // migrations.clone.each do |combination|
+        for (SUSEProductSet combination : migrations) {
+            // combination_base_product = combination.first
+            // (combination - [combination_base_product]).each do |product|
+            for (SUSEProduct product : combination.getAddonProducts()) {
+                //if (product.bases & combination).empty?
+                //        migrations.delete(combination)
+                //        break
+                //end
+                //TODO: find out if this really needs to test
+                // the intersection or only the base product
+                HashSet<SUSEProduct> intersection = new HashSet<>(product.getBases());
+                intersection.retainAll(combination.getAddonProducts());
+                if (!intersection.isEmpty() ||
+                        product.getBases().contains(combination.getBaseProduct())) {
+                    result.add(combination);
+                }
+            }
+        }
+        return Collections.unmodifiableList(result);
+    }
+
+    private static List<SUSEProductSet> removeNotEntitledCombinations(
+            List<SUSEProductSet> migrations) {
+        //TODO: figure out what this does and if we need it
+        /*
+            # filters out all migration targets where one of the included products
+            # is not in the system's entitled product classes
+            def remove_not_entitled_combinations(migrations)
+                filtered_migrations = migrations.select do |migration|
+                    migration.all? {|component| component.free? ||
+                    @system.product_classes.include?(component.product_class) }
+                end
+                filtered_migrations
+            end
+        */
+        return migrations;
+    }
+
+    private static List<SUSEProductSet> migrationTargets(SUSEProductSet installedProducts) {
+        // installed_extensions = @installed_products - [base_product]
+        List<SUSEProduct> installedExtensions = installedProducts.getAddonProducts();
+
+        // base_successors = [base_product] + base_product.successors
+        final List<SUSEProduct> baseSuccessors = new ArrayList<>(
+                installedProducts.getBaseProduct().getUpgrades().size() + 1);
+        baseSuccessors.add(installedProducts.getBaseProduct());
+        baseSuccessors.addAll(installedProducts.getBaseProduct().getUpgrades());
+
+        // extension_successors = installed_extensions.map {|e| [e] + e.successors }
+        final List<List<SUSEProduct>> extensionSuccessors =
+                new ArrayList<>(installedExtensions.size());
+        for (SUSEProduct e : installedExtensions) {
+            final List<SUSEProduct> s = new ArrayList<>(e.getUpgrades().size() + 1);
+            s.add(e);
+            s.addAll(e.getUpgrades());
+            extensionSuccessors.add(s);
         }
 
-        // Find migration targets for the base product
-        List<SUSEProductDto> targetBaseProducts = findTargetProducts(
-                installedProducts.getBaseProduct().getId());
+        final List<SUSEProduct> currentCombination =
+                new ArrayList<>(installedExtensions.size() + 1);
+        currentCombination.add(installedProducts.getBaseProduct());
+        currentCombination.addAll(installedExtensions);
 
-        for (SUSEProductDto targetBaseProduct : targetBaseProducts) {
-            // Create a new product set
-            SUSEProductSet targetSet = new SUSEProductSet();
-            SUSEProduct targetProduct = SUSEProductFactory.getProductById(
-                    targetBaseProduct.getId());
-            targetSet.setBaseProduct(targetProduct);
-            logger.debug("Found Target Base Product: " + targetProduct.getFriendlyName() +
-                    "(" + targetProduct.getProductId() + ")");
+        // combinations = base_successors.product(*extension_successors)
+        // combinations.delete([base_product] + installed_extensions)
 
-            // Look for the target product's base channel
-            Channel baseChannel = getProductBaseChannel(
-                    targetBaseProduct.getId(), arch, user);
-            if (baseChannel == null) {
-                logger.debug("No base channel found for product: " +
-                        targetProduct.getFriendlyName() +
-                        "(" + targetProduct.getProductId() + ")");
-                continue;
-            }
-            logger.debug("Found Base Channel: " + baseChannel.getLabel());
+        final List<List<SUSEProduct>> comb =
+                new ArrayList<>(extensionSuccessors.size() + 1);
+        comb.add(baseSuccessors);
+        comb.addAll(extensionSuccessors);
 
-            // Look for mandatory child channels
-            List<ChildChannelDto> productChannels = findProductChannels(
-                    targetBaseProduct.getId(), baseChannel.getLabel());
-            Long parentChannelID = getParentChannelId(productChannels);
-            if (parentChannelID == null) {
-                // Found a channel that's not synced
-                targetSet.addMissingChannels(getMissingChannels(productChannels));
-            }
-
-            // Look for addon product targets
-            for (SUSEProduct addonProduct : installedProducts.getAddonProducts()) {
-                logger.debug("Looking for target of Add-On: " + addonProduct.getFriendlyName() +
-                        "(" + addonProduct.getProductId() + ")");
-                List<SUSEProductDto> targetAddonProducts = findTargetProducts(
-                        addonProduct.getId());
-
-                // Take the first target in case there is more than one
-                Long targetAddonProductID = null;
-                if (targetAddonProducts.size() > 0) {
-                    if (targetAddonProducts.size() > 1) {
-                        logger.warn("More than one migration target found for addon " +
-                                "product: " + addonProduct.getFriendlyName());
-                    }
-                    targetAddonProductID = targetAddonProducts.get(0).getId();
+        final List<SUSEProductSet> result = new LinkedList<>();
+        for (List<SUSEProduct> combination : Lists.combinations(comb)) {
+            if (!combination.equals(currentCombination)) {
+                SUSEProduct base = combination.get(0);
+                if (combination.size() == 1) {
+                    result.add(new SUSEProductSet(base, new LinkedList()));
                 }
                 else {
-                    // No target found, try to keep the source addon (bnc#802144)
-                    targetAddonProductID = addonProduct.getId();
-                }
-
-                if (targetAddonProductID != null) {
-                    logger.debug("Found target add-on : " + targetAddonProductID);
-                    targetSet.addAddonProduct(SUSEProductFactory.getProductById(
-                            targetAddonProductID));
-
-                    // Look for mandatory channels
-                    List<ChildChannelDto> drChannelsChild = findProductChannels(
-                            targetAddonProductID, baseChannel.getLabel());
-                    if (!isParentChannel(parentChannelID, drChannelsChild)) {
-                        // Some channels are missing
-                        targetSet.addMissingChannels(getMissingChannels(drChannelsChild));
-                    }
-                }
-                else {
-                    // should never happen
-                    logger.error("No target add-on product found");
+                    List<SUSEProduct> addonProducts = combination
+                            .subList(1, combination.size());
+                    result.add(new SUSEProductSet(base, addonProducts));
                 }
             }
-            // Return this product set only if all addons can be migrated
-            if (installedProducts.getAddonProducts().size() ==
-                    targetSet.getAddonProducts().size()) {
-                ret.add(targetSet);
-            }
         }
-        if (ret.size() > 1) {
-            logger.error("Found " + ret.size() + " migration targets " + "for: " +
-                    installedProducts.toString());
-        }
-        return ret;
+        return result;
     }
 
     /**

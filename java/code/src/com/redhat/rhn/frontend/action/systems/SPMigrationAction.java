@@ -157,7 +157,7 @@ public class SPMigrationAction extends RhnAction {
             SUSEProductSet installedProducts = server.getInstalledProducts();
             ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
             List<SUSEProductSet> migrationTargets = DistUpgradeManager.
-                    getTargetProductSets(installedProducts, arch, ctx.getCurrentUser());
+                    getTargetProductSets(installedProducts);
 
             SUSEProductSet targetProducts = null;
             if (migrationTargets == null) {

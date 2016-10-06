@@ -5546,7 +5546,7 @@ public class SystemHandler extends BaseHandler {
         SUSEProductSet installedProducts = server.getInstalledProducts();
         ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> targets = DistUpgradeManager.getTargetProductSets(
-                installedProducts, arch, user);
+                installedProducts);
         if (targets.size() > 0) {
             SUSEProductSet targetProducts = targets.get(0);
 
