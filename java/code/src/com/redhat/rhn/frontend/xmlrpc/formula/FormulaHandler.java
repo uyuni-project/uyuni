@@ -17,16 +17,15 @@ package com.redhat.rhn.frontend.xmlrpc.formula;
 import java.io.IOException;
 import java.util.List;
 
-import javax.transaction.NotSupportedException;
-
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 
 
 /**
  * FormulaHandler
- * @version $Rev$
  * @xmlrpc.namespace formula
  * @xmlrpc.doc Provides methods to access and modify formulas.
  */
@@ -112,7 +111,7 @@ public class FormulaHandler extends BaseHandler {
      * @param systemGroupId The Id of the server group
      * @param formulas The formulas to apply to the server group.
      * @return 1 on sucess, expcetion thrown otherwise
-     * @throws IOException if an IOException occurs during saving
+     * @throws IOFaultException if an IOException occurs during saving
      *
      * @xmlrpc.doc Set the formulas of a server group.
      *
@@ -122,9 +121,14 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int setFormulasOfGroup(User loggedInUser, Integer systemGroupId,
-            List<String> formulas) throws IOException {
-        FormulaFactory.saveGroupFormulas(systemGroupId.longValue(), formulas,
-                loggedInUser.getOrg());
+            List<String> formulas) throws IOFaultException {
+        try {
+            FormulaFactory.saveGroupFormulas(systemGroupId.longValue(), formulas,
+                    loggedInUser.getOrg());
+        }
+        catch (IOException e) {
+            throw new IOFaultException(e);
+        }
         return 1;
     }
 
@@ -134,8 +138,8 @@ public class FormulaHandler extends BaseHandler {
      * @param systemId The Id of the server
      * @param formulas The formulas to apply to the server group.
      * @return 1 on sucess, expcetion thrown otherwise
-     * @throws IOException if an IOException occurs during saving
-     * @throws NotSupportedException if the server is not a salt minion
+     * @throws IOFaultException if an IOException occurs during saving
+     * @throws InvalidParameterException if the server is not a salt minion
      *
      * @xmlrpc.doc Set the formulas of a server.
      *
@@ -145,8 +149,17 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int setFormulasOfServer(User loggedInUser, Integer systemId,
-            List<String> formulas) throws IOException, NotSupportedException {
-        FormulaFactory.saveServerFormulas(systemId.longValue(), formulas);
+            List<String> formulas) throws IOFaultException, InvalidParameterException {
+        try {
+            FormulaFactory.saveServerFormulas(systemId.longValue(), formulas);
+        }
+        catch (IOException e) {
+            throw new IOFaultException(e);
+        }
+        catch (UnsupportedOperationException e) {
+            throw new InvalidParameterException(
+                    "Provided systemId does not correspond to a minion");
+        }
         return 1;
     }
 }
