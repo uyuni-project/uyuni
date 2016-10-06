@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.product;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -33,6 +34,18 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     private PackageArch arch;
     private String friendlyName;
     private int productId;
+
+    /** available extensions for this product; */
+    private Set<SUSEProduct> extensions;
+
+    /** available extensions for this product; */
+    private Set<SUSEProduct> bases;
+
+    /** available upgrades for this product; */
+    private Set<SUSEProduct> upgrades;
+
+    /** available products from which upgrade to this is possible */
+    private Set<SUSEProduct> downgrades;
 
     /**
      * @return the id
@@ -130,5 +143,69 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      */
     public void setProductId(int productIdIn) {
         this.productId = productIdIn;
+    }
+
+    /**
+     * List base products for this product
+     * @return list base products for this product
+     */
+    public Set<SUSEProduct> getBases() {
+        return bases;
+    }
+
+    /**
+     * List extension products for this product
+     * @return list extension products for this product
+     */
+    public Set<SUSEProduct> getExtensions() {
+        return extensions;
+    }
+
+    /**
+     * Set the list extension products for this product
+     * @param extensionsIn list of extension products
+     */
+    public void setExtensions(Set<SUSEProduct> extensionsIn) {
+        this.extensions = extensionsIn;
+    }
+
+    /**
+     * Set the list base products for this product
+     * @param basesIn list of base products
+     */
+    public void setBases(Set<SUSEProduct> basesIn) {
+        this.bases = basesIn;
+    }
+
+    /**
+     * List available upgrade path for this product
+     * @return list available upgrade path for this product
+     */
+    public Set<SUSEProduct> getUpgrades() {
+        return upgrades;
+    }
+
+    /**
+     * Set the list of available upgrade path for this product
+     * @param upgradesIn the list of available upgrade path for this product
+     */
+    public void setUpgrades(Set<SUSEProduct> upgradesIn) {
+        this.upgrades = upgradesIn;
+    }
+
+    /**
+     * List products that can upgrade to this product
+     * @return list products that can upgrade to this product
+     */
+    public Set<SUSEProduct> getDowngrades() {
+        return downgrades;
+    }
+
+    /**
+     * Sets the list of products that can upgrade to this product
+     * @param downgradesIn list of products that can upgrade to this product
+     */
+    public void setDowngrades(Set<SUSEProduct> downgradesIn) {
+        this.downgrades = downgradesIn;
     }
 }
