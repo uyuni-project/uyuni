@@ -202,8 +202,9 @@ public class SPMigrationAction extends RhnAction {
 
             // Get and decode the target product selected to migrate
             SUSEProductSet targetProducts = new SUSEProductSet();
-            for(SUSEProductSet target : migrationTargets) {
-                if (serializeProductIDs(target.getProductIDs()).equals(targetProductSelected)) {
+            for (SUSEProductSet target : migrationTargets) {
+                if (serializeProductIDs(target.getProductIDs())
+                        .equals(targetProductSelected)) {
                     targetProducts = target;
                 }
             }

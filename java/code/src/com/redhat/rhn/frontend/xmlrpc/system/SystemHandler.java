@@ -5567,7 +5567,7 @@ public class SystemHandler extends BaseHandler {
         SUSEProductSet installedProducts = server.getInstalledProductSet();
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts);
-        for(SUSEProductSet ps : migrationTargets) {
+        for (SUSEProductSet ps : migrationTargets) {
             Map<String, Object> target = new HashMap<String, Object>();
 
             target.put("ident", SPMigrationAction.serializeProductIDs(ps.getProductIDs()));
@@ -5677,19 +5677,20 @@ public class SystemHandler extends BaseHandler {
         if (targets.size() > 0) {
             SUSEProductSet targetProducts = null;
 
-            if(StringUtils.isBlank(targetIdent)) {
+            if (StringUtils.isBlank(targetIdent)) {
                 targetProducts = targets.get(targets.size() - 1);
             }
             else {
-                for(SUSEProductSet target : targets) {
-                    String ident = SPMigrationAction.serializeProductIDs(target.getProductIDs());
+                for (SUSEProductSet target : targets) {
+                    String ident = SPMigrationAction
+                            .serializeProductIDs(target.getProductIDs());
                     if (ident.equals(targetIdent)) {
                         targetProducts = target;
                         break;
                     }
                 }
             }
-            if(targetProducts == null) {
+            if (targetProducts == null) {
                 throw new FaultException(-1, "servicePackMigrationNoTarget",
                         "No target found for SP migration");
             }
