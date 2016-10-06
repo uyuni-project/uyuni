@@ -16,7 +16,7 @@
 #
 
 Name:           susemanager-tftpsync-recv
-Version:        3.0.2
+Version:        3.0.3
 Release:        1%{?dist}
 Summary:        Reciever for SUSE Manager tftp sync
 Url:            http://www.suse.com
