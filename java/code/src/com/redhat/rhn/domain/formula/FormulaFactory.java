@@ -33,7 +33,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import javax.transaction.NotSupportedException;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -149,10 +148,10 @@ public class FormulaFactory {
      * @param serverId the id of the server
      * @param formulaName the name of the formula
      * @throws IOException if an IOException occurs while saving the data
-     * @throws NotSupportedException if the server is not a salt minion
+     * @throws UnsupportedOperationException if the server is not a salt minion
      */
     public static void saveServerFormulaData(Map<String, Object> formData, Long serverId,
-            String formulaName) throws IOException, NotSupportedException {
+            String formulaName) throws IOException, UnsupportedOperationException {
         File file = new File(PILLAR_DIR + getMinionId(serverId) +
                 "_" + formulaName + "." + PILLAR_FILE_EXTENSION);
         try {
@@ -204,7 +203,7 @@ public class FormulaFactory {
             formulas.addAll(serverFormulas.getOrDefault(getMinionId(serverId),
                     Collections.emptyList()));
         }
-        catch (FileNotFoundException | NotSupportedException e) {
+        catch (FileNotFoundException | UnsupportedOperationException e) {
         }
         return orderFormulas(formulas);
     }
@@ -291,7 +290,7 @@ public class FormulaFactory {
                 return Optional.empty();
             }
         }
-        catch (FileNotFoundException | NotSupportedException e) {
+        catch (FileNotFoundException | UnsupportedOperationException e) {
             return Optional.empty();
         }
     }
@@ -389,10 +388,10 @@ public class FormulaFactory {
      * @param serverId the id of the server
      * @param selectedFormulas the new selected formulas to save
      * @throws IOException if an IOException occurs while saving the data
-     * @throws NotSupportedException in case serverId does not represent a minion
+     * @throws UnsupportedOperationException in case serverId does not represent a minion
      */
     public static synchronized void saveServerFormulas(Long serverId,
-            List<String> selectedFormulas) throws IOException, NotSupportedException {
+            List<String> selectedFormulas) throws IOException, UnsupportedOperationException {
         File dataFile = new File(SERVER_DATA_FILE);
         String minionId = getMinionId(serverId);
 
@@ -442,7 +441,7 @@ public class FormulaFactory {
                 file.delete();
             }
         }
-        catch (NotSupportedException e) {
+        catch (UnsupportedOperationException e) {
             //TODO: log error message?
         }
     }
@@ -544,16 +543,16 @@ public class FormulaFactory {
      * Returns the minion id of a given server.
      * @param serverId the id of the server
      * @return the minion id
-     * @throws NotSupportedException if the server is not a salt minion
+     * @throws UnsupportedOperationException if the server is not a salt minion
      */
-    private static String getMinionId(Long serverId) throws NotSupportedException {
+    private static String getMinionId(Long serverId) throws UnsupportedOperationException {
         Optional<MinionServer> minionServer =
                 ServerFactory.lookupById(serverId).asMinionServer();
         if (minionServer.isPresent()) {
             return minionServer.get().getMinionId();
         }
         else {
-            throw new NotSupportedException("The system is not a salt minion!");
+            throw new UnsupportedOperationException("The system is not a salt minion!");
         }
     }
 }

@@ -46,8 +46,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.transaction.NotSupportedException;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -203,7 +201,7 @@ public class FormulaController {
                     return errorResponse(response, Arrays.asList("Invalid target type!"));
             }
         }
-        catch (IOException | NotSupportedException e) {
+        catch (IOException | UnsupportedOperationException e) {
             return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " +
                             e.getMessage()));
@@ -303,7 +301,7 @@ public class FormulaController {
                     return errorResponse(response, Arrays.asList("Invalid target type!"));
             }
         }
-        catch (IOException | NotSupportedException e) {
+        catch (IOException | UnsupportedOperationException e) {
             return errorResponse(response,
                     Arrays.asList("Error while saving formula data: " + e.getMessage()));
         }
