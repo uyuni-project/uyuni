@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Oct 06 14:50:45 CEST 2016 - mc@suse.de
+
+- version 2.5.3.9-1
+- Commented on file_roots/pillar_roots
+- Added formula directories and formulas.sls to setup script
+- master_tops module provides static top information
+- Merging top.sls files in base env (bsc#986770)
+
+-------------------------------------------------------------------
 Mon Jul 18 14:21:18 CEST 2016 - jrenner@suse.com
 
 - version 2.5.3.8-1
