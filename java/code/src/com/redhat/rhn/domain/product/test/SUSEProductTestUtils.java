@@ -67,7 +67,7 @@ public class SUSEProductTestUtils {
         product.setRelease("test");
         product.setProductId(new Random().nextInt(999999));
 
-        TestUtils.saveAndFlush(product);
+        TestUtils.saveAndReload(product);
 
         return product;
     }
