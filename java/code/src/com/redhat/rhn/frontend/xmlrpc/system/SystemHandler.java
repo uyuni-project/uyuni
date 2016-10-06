@@ -5543,7 +5543,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         // Find target products for the migration
-        SUSEProductSet installedProducts = server.getInstalledProducts();
+        SUSEProductSet installedProducts = server.getInstalledProductSet();
         ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> targets = DistUpgradeManager.getTargetProductSets(
                 installedProducts);
