@@ -118,9 +118,9 @@
   </rhn-tab>
   <rhn-tab name="Salt" url="/rhn/manager/minions">
       <rhn-tab name="Onboarding" url="/rhn/manager/minions"/>
+      <rhn-tab name="Bootstrapping" url="/rhn/manager/minions/bootstrap"/>
       <rhn-tab name="Remote Commands" url="/rhn/manager/minions/cmd"/>
       <rhn-tab name="State Catalog" url="/rhn/manager/state-catalog"/>
-      <rhn-tab name="Bootstrapping" url="/rhn/manager/minions/bootstrap"/>
       <rhn-tab name="Formula Catalog" url="/rhn/manager/formula-catalog"/>
   </rhn-tab>
   <rhn-tab name="Patches" url="/rhn/errata/RelevantErrata.do" active-image="tab-errata-selected.gif" inactive-image="tab-errata.gif">
