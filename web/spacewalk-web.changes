@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Oct 06 16:11:48 CEST 2016 - mc@suse.de
+
+- version 2.5.7.10-1
+- Support formulas in SUSE Manager
+- switched SUSE Manager version to 3.0.1
+- introduce Spark router conventions
+- Disable strict host key checking per default
+- Rename "States Catalog" to "State Catalog" in UI
+- add TaskoTop to UI
+- BugFix: use user preferences parameters as default page size
+  (bsc#980678)
+- unified table version
+
+-------------------------------------------------------------------
 Mon Jul 18 14:09:44 CEST 2016 - jrenner@suse.com
 
 - version 2.5.7.9-1
