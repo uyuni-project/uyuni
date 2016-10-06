@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Oct 06 16:07:25 CEST 2016 - mc@suse.de
+
+- version 2.5.2.11-1
+- Support Formulas in SUSE Manager
+- SPMigration: add multi-target-selection step in front of the wizard
+- handle minion down and job not found when canceling jobs on minions
+  (bsc#993304,bsc#994623)
+- Rename Errata to Patches/Updates in system details page (bsc#979476)
+- Change btn-primary border color to @suse-green-dark (bsc#967894)
+- Re-title page as "Managed Systems" (bsc#981278)
+- Rename "States Catalog" to "State Catalog" in UI
+
+-------------------------------------------------------------------
 Mon Jul 18 14:07:20 CEST 2016 - jrenner@suse.com
 
 - version 2.5.2.10-1
