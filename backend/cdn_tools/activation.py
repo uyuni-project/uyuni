@@ -32,17 +32,30 @@ class Activation(object):
         self.manifest = Manifest(manifest_path)
 
         # Satellite 5 certificate
-        with open(cert_path, 'r') as f:
+        c = open(cert_path, 'r')
+        try:
             self.sat5_cert = SatelliteCert()
-            content = f.read()
+            content = c.read()
             self.sat5_cert.load(content)
+        finally:
+            if c is not None:
+                c.close()
 
         # Channel families metadata
-        with open(constants.CHANNEL_FAMILY_MAPPING_PATH, 'r') as f:
+        f = open(constants.CHANNEL_FAMILY_MAPPING_PATH, 'r')
+        try:
             self.families = json.load(f)
+        finally:
+            if f is not None:
+                f.close()
 
-        with open(constants.PRODUCT_FAMILY_MAPPING_PATH, 'r') as f:
-            self.products = json.load(f)
+        # product to family mapping
+        p = open(constants.PRODUCT_FAMILY_MAPPING_PATH, 'r')
+        try:
+            self.products = json.load(p)
+        finally:
+            if p is not None:
+                p.close()
 
         self.families_to_import = []
 
@@ -50,8 +63,12 @@ class Activation(object):
         """Delete and insert certificates needed for syncing from CDN repositories."""
 
         # Read RHSM cert
-        with open(constants.CA_CERT_PATH, 'r') as f:
+        f = open(constants.CA_CERT_PATH, 'r')
+        try:
             ca_cert = f.read()
+        finally:
+            if f is not None:
+                f.close()
 
         # Insert RHSM cert and certs from manifest into DB
         satCerts.store_rhnCryptoKey(
@@ -158,9 +175,12 @@ class Activation(object):
         rhnSQL.commit()
 
     def run(self):
-        print("Updating certificates...")
-        self._update_certificates()
-        print("Updating channel families...")
-        self._update_channel_families()
-        print("Updating certificates for channel families...")
-        self._update_families_ssl()
+        if self.manifest.check_signature():
+            print("Updating certificates...")
+            self._update_certificates()
+            print("Updating channel families...")
+            self._update_channel_families()
+            print("Updating certificates for channel families...")
+            self._update_families_ssl()
+        else:
+            print("Manifest validation failed!")

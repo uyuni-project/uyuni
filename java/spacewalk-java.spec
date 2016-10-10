@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.37
+Version: 2.6.40
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -1031,6 +1031,20 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Oct 05 2016 Eric Herget <eherget@redhat.com> 2.6.40-1
+- 1377841 - return empty DataResult when querying with empty inClause and query
+  has in clause substitution
+- Revert "1380304 - API client.channel.software.createRepo() should not
+  advertise it supports "uln""
+
+* Mon Oct 03 2016 Eric Herget <eherget@redhat.com> 2.6.39-1
+- 1377841 - csv download all items, not remainder of dividing total items by
+  500
+
+* Mon Oct 03 2016 Jiri Dostal <jdostal@redhat.com> 2.6.38-1
+- 1380304 - API client.channel.software.createRepo() should not advertise it
+  supports "uln"
+
 * Fri Sep 30 2016 Eric Herget <eherget@redhat.com> 2.6.37-1
 - 1365410 - remove updateinfo.xml.gz if last errata associated with channel is
   deleted

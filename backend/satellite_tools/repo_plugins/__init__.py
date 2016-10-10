@@ -90,9 +90,11 @@ class ContentPackage:
             raise rhnFault(50, "checksums did not match %s vs %s" % (self.checksum, self.a_pkg.checksum), explain=0)
 
     def upload_package(self, channel, metadata_only=False):
-        rel_package_path = rhnPackageUpload.relative_path_from_header(
-            self.a_pkg.header, channel['org_id'],
-            self.a_pkg.checksum_type, self.a_pkg.checksum) if not metadata_only else None
+        if not metadata_only:
+            rel_package_path = rhnPackageUpload.relative_path_from_header(
+                self.a_pkg.header, channel['org_id'], self.a_pkg.checksum_type, self.a_pkg.checksum)
+        else:
+            rel_package_path = None
         _unused = rhnPackageUpload.push_package(self.a_pkg,
                                                 force=False,
                                                 relative_path=rel_package_path,

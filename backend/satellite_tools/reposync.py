@@ -100,11 +100,15 @@ class TreeInfoParser(object):
         self.parser = ConfigParser.RawConfigParser()
         # do not lowercase
         self.parser.optionxform = str
-        with open(filename) as fp:
+        fp = open(filename)
+        try:
             try:
                 self.parser.readfp(fp)
             except ConfigParser.ParsingError:
                 raise TreeInfoError("Could not parse treeinfo file!")
+        finally:
+            if fp is not None:
+                fp.close()
 
     def get_images(self):
         files = []
@@ -113,6 +117,20 @@ class TreeInfoParser(object):
                 for item in self.parser.items(section_name):
                     files.append(item[1])
         return files
+
+    def get_family(self):
+        for section_name in self.parser.sections():
+            if section_name == 'general':
+                for item in self.parser.items(section_name):
+                    if item[0] == 'family':
+                        return item[1]
+
+    def get_major_version(self):
+        for section_name in self.parser.sections():
+            if section_name == 'general':
+                for item in self.parser.items(section_name):
+                    if item[0] == 'version':
+                        return item[1].split('.')[0]
 
 
 def set_filter_opt(option, opt_str, value, parser):
@@ -212,11 +230,11 @@ class RepoSync(object):
         self.latest = latest
         self.metadata_only = metadata_only
         self.ks_tree_type = 'externally-managed'
-        self.ks_install_type = 'generic_rpm'
         self.interactive = not noninteractive
         self.deep_verify = deep_verify
         self.error_messages = []
         self.available_packages = {}
+        self.ks_install_type = None
 
         initCFG('server.susemanager')
         rhnSQL.initDB()
@@ -900,6 +918,15 @@ class RepoSync(object):
         if not treeinfo_parser:
             log(0, "Kickstartable tree not detected (no valid treeinfo file)")
             return
+
+        if self.ks_install_type is None:
+            family = treeinfo_parser.get_family()
+            if family == 'Fedora':
+                self.ks_install_type = 'fedora18'
+            elif family == 'CentOS':
+                self.ks_install_type = 'rhel_' + treeinfo_parser.get_major_version()
+            else:
+                self.ks_install_type = 'generic_rpm'
 
         # Make sure images are included
         to_download = []
