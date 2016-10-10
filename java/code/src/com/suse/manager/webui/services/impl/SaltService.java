@@ -248,7 +248,7 @@ public class SaltService {
      * @param target the targeted minions
      * @return the timezone offsets of the targeted minions
      */
-    public Map<String, Result<String>> getTimezoneOffsets(Target<?> target) {
+    public Map<String, Result<String>> getTimezoneOffsets(MinionList target) {
         try {
             Map<String, Result<String>> offsets = Timezone.getOffset().callSync(
                     SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
@@ -342,7 +342,7 @@ public class SaltService {
      * @param cmd the command
      * @return the output of the command
      */
-    public Map<String, Result<String>> runRemoteCommand(Target<?> target, String cmd) {
+    public Map<String, Result<String>> runRemoteCommand(MinionList target, String cmd) {
         try {
             Map<String, Result<String>> result = Cmd.run(cmd).callSync(
                     SALT_CLIENT, target,
@@ -360,7 +360,7 @@ public class SaltService {
      * @param target the target
      * @return list of running jobs
      */
-    public Map<String, Result<List<SaltUtil.RunningInfo>>> running(Target<?> target) {
+    public Map<String, Result<List<SaltUtil.RunningInfo>>> running(MinionList target) {
         try {
             return SaltUtil.running().callSync(
                     SALT_CLIENT, target,
@@ -487,7 +487,7 @@ public class SaltService {
      * @throws SaltException in case there is an error scheduling the job
      */
     public Map<String, Result<Schedule.Result>> schedule(String name,
-            LocalCall<?> call, Target<?> target, ZonedDateTime scheduleDate,
+            LocalCall<?> call, MinionList target, ZonedDateTime scheduleDate,
             Map<String, ?> metadata) throws SaltException {
         // We do one Salt call per timezone: group minions by their timezone offsets
         Map<String, Result<String>> minionOffsets = getTimezoneOffsets(target);
@@ -502,7 +502,7 @@ public class SaltService {
             LocalDateTime targetScheduleDate = scheduleDate.toOffsetDateTime()
                     .withOffsetSameInstant(ZoneOffset.of(entry.getKey())).toLocalDateTime();
             try {
-                Target<?> timezoneTarget = new MinionList(entry.getValue());
+                MinionList timezoneTarget = new MinionList(entry.getValue());
                 Map<String, Result<Schedule.Result>> result = Schedule
                         .add(name, call, targetScheduleDate, metadata)
                         .callSync(SALT_CLIENT, timezoneTarget,
@@ -526,7 +526,7 @@ public class SaltService {
      * @return the result of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    public <T> Map<String, Result<T>> callSync(LocalCall<T> call, Target<?> target)
+    public <T> Map<String, Result<T>> callSync(LocalCall<T> call, MinionList target)
             throws SaltException {
         Map<String, Result<T>> defaultCallResults = call.callSync(
                 SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
@@ -571,7 +571,7 @@ public class SaltService {
      * @return the result
      */
     public Map<String, Result<Schedule.Result>> deleteSchedule(
-            String name, Target<?> target) {
+            String name, MinionList target) {
         try {
             return Schedule.delete(name).callSync(
                     SALT_CLIENT, target,
@@ -730,7 +730,7 @@ public class SaltService {
      * @return a Map from minion ids which responded to the ping to Boolean.TRUE
      * @throws SaltException if we get a failure from Salt
      */
-    public Map<String, Result<Boolean>> ping(Target<?> targetIn) throws SaltException {
+    public Map<String, Result<Boolean>> ping(MinionList targetIn) throws SaltException {
         return callSync(
             Test.ping(),
             targetIn

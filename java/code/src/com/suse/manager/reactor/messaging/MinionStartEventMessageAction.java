@@ -25,7 +25,6 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 
@@ -77,7 +76,7 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
                 MinionServerFactory.findByMinionId(startEvent.getMinionId());
         minionOpt.ifPresent(minion -> {
 
-            Target<?> target = new MinionList(minion.getMinionId());
+            MinionList target = new MinionList(minion.getMinionId());
             // get uptime
             LocalCall<Float> uptimeCall = Status.uptime();
             try {
