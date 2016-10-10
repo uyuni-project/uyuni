@@ -12,7 +12,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.6.1
+Version: 2.6.2
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -96,7 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
 %attr(0640,root,%{apache_group}) %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/rhn.conf
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_audit.conf
-
+%attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn/candlepin-certs
+%config %attr(644, root, root) %{_sysconfdir}/rhn/candlepin-certs/candlepin-redhat-ca.crt
 # NOTE: If if you change these, you need to make a corresponding change in
 # spacewalk/install/Spacewalk-Setup/bin/spacewalk-setup
 %config(noreplace) %{_sysconfdir}/pki/tls/private/spacewalk.key
@@ -150,6 +151,9 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Wed Oct 05 2016 Jan Dobes 2.6.2-1
+- adding candlepin CA certificate to check manifest signature
+
 * Tue Jun 14 2016 Jan Dobes 2.6.1-1
 - create the symlink directly and point to correct destination on SUSE
 - Bumping package versions for 2.6.
@@ -446,4 +450,3 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 
 * Mon Apr 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.1.2-1
 - bumping spec files to 1.1 packages
-

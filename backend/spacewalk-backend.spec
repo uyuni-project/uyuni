@@ -40,7 +40,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.54
+Version: 2.6.59
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -74,6 +74,7 @@ BuildRequires: rpm-python
 BuildRequires: python-debian
 BuildRequires: python-gzipstream
 BuildRequires: yum
+BuildRequires: m2crypto
 %endif
 Requires(pre): %{apache_pkg}
 Requires: %{apache_pkg}
@@ -357,6 +358,11 @@ Recommends: cobbler20
 %endif
 Requires: rhnlib  >= 2.5.57
 Requires: %{name}-usix
+Requires: python-requests
+Requires: m2crypto
+%if 0%{?fedora} || 0%{?rhel} > 5
+BuildRequires: python-requests
+%endif
 Obsoletes: rhns-satellite-tools < 5.3.0
 Obsoletes: spacewalk-backend-satellite-tools <= 0.2.7
 Provides: spacewalk-backend-satellite-tools = %{version}-%{release}
@@ -376,21 +382,16 @@ Provides: rhns-xml-export-libs = 1:%{version}-%{release}
 %description xml-export-libs
 Libraries required by various exporting tools
 
-%if 0%{?rhel} > 5 || 0%{?fedora} || 0%{?suse_version}
 %package cdn
 Summary: CDN tools
 Group: Applications/Internet
 Requires: %{name}-server = %{version}-%{release}
 Requires: %{name}-usix
 Requires: subscription-manager
-Requires: libxml2-python
-Requires: python-requests
-BuildRequires: libxml2-python
-BuildRequires: python-requests
+Requires: m2crypto
 
 %description cdn
 Tools for syncing content from Red Hat CDN
-%endif
 
 %prep
 %setup -q
@@ -414,12 +415,6 @@ cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/{__init__.py,usix.py} \
 cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/{checksum.py,cli.py,rhn_deb.py,rhn_mpm.py,rhn_pkg.py,rhn_rpm.py,stringutils.py,fileutils.py,rhnLib.py} \
     $RPM_BUILD_ROOT%{python3rhnroot}/common
 %endif
-
-%if 0%{?rhel} && 0%{?rhel} < 6
-rm -rf $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools
-rm -rf $RPM_BUILD_ROOT%{_bindir}/cdn-*
-%endif
-
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
 
@@ -461,13 +456,9 @@ export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn:/usr/share/rhn
 spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_tools \
+                 $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
-
-%if 0%{?rhel} > 5 || 0%{?fedora}
-spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools
-%endif
-
 %endif
 
 if [ -x %py_libdir/py_compile.py ]; then
@@ -913,7 +904,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/exportLib.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
-%if 0%{?rhel} > 5 || 0%{?fedora} || 0%{?suse_version}
 %files cdn
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/cdn-sync
@@ -922,9 +912,33 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,%{apache_group}) %dir %{_var}/log/rhn/cdnsync
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-cdn
 %{_mandir}/man8/cdn-sync.8*
-%endif
 
 %changelog
+* Fri Oct 07 2016 Gennadii Altukhov <galt@redhat.com> 2.6.59-1
+- fix setting of default kickstart installation type
+- fix list of urls in yum_src repo plugin.
+- require m2crypto in -tools package
+- get uuid of system if registered in RHSM
+
+* Wed Oct 05 2016 Jan Dobes 2.6.58-1
+- adding m2crypto dependency
+
+* Wed Oct 05 2016 Jan Dobes 2.6.57-1
+- check signature in code
+
+* Tue Oct 04 2016 Gennadii Altukhov <galt@redhat.com> 2.6.56-1
+- fix spacewalk-backend build * we still need to build spacewalk-backend on
+  RHEL5 to use two subpackages spacewalk-backend-libs and spacewalk-backend-
+  usix on cliend side. spacewalk-backend-tools uses python-requests module wich
+  is absent in RHEL5 repos, so I removed it from BuildDependencies, but leave
+  in Dependencies, maybe it can be installed manually.
+
+* Tue Oct 04 2016 Gennadii Altukhov <galt@redhat.com> 2.6.55-1
+- fix dependencies for CDN-Sync
+- fix spec file to build CDN-Sync on RHEL5 reverted
+  (7e629f0f5ead8aa4c8c6f2e5c0ee4a3cb85e0474)
+- fix python backend code to be compatible with Python 2.4
+
 * Thu Sep 29 2016 Grant Gainey 2.6.54-1
 - 1372721 - Handle the case where a user has no timezone/locale setting
 
@@ -4649,4 +4663,3 @@ rm -f %{rhnconf}/rhnSecret.py*
 * Mon Apr 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.1.1-1
 - merge 2 duplicate byterange module to common.byterange
 - bumping spec files to 1.1 packages
-

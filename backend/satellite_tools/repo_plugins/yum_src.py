@@ -149,6 +149,16 @@ class ContentSource:
         self.num_excluded = 0
         self.gpgkey_autotrust = None
 
+        # if self.url is metalink it will be expanded into
+        # real urls in self.repo.urls and also save this metalink
+        # in begin of the url list ("for repolist -v ... or anything else wants to know the baseurl")
+        # Remove it from the list, we don't need it to download content of repo
+        real_urls = []
+        for url in self.repo.urls:
+            if '?' not in url:
+                real_urls.append(url)
+        self.repo.urls = real_urls
+
     def _authenticate(self, url):
         pass
 
@@ -626,7 +636,8 @@ class ContentSource:
         ssldir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
         try:
             makedirs(ssldir, int('0750', 8))
-        except OSError as exc:
+        except OSError:
+            exc = sys.exc_info()[1]
             if exc.errno == errno.EEXIST and os.path.isdir(ssldir):
                 pass
             else:
@@ -654,22 +665,23 @@ class ContentSource:
 
     def get_file(self, path, local_base=None):
         try:
-            temp_file = ""
-            if local_base is not None:
-                target_file = os.path.join(local_base, path)
-                target_dir = os.path.dirname(target_file)
-                if not os.path.exists(target_dir):
-                    os.makedirs(target_dir, int('0755', 8))
-                temp_file = target_file + '..download'
-                if os.path.exists(temp_file):
-                    os.unlink(temp_file)
-                downloaded = self.repo.grab.urlgrab(path, temp_file)
-                os.rename(downloaded, target_file)
-                return target_file
-            else:
-                return self.repo.grab.urlread(path)
-        except URLGrabError:
-            return
+            try:
+                temp_file = ""
+                if local_base is not None:
+                    target_file = os.path.join(local_base, path)
+                    target_dir = os.path.dirname(target_file)
+                    if not os.path.exists(target_dir):
+                        os.makedirs(target_dir, int('0755', 8))
+                    temp_file = target_file + '..download'
+                    if os.path.exists(temp_file):
+                        os.unlink(temp_file)
+                    downloaded = self.repo.grab.urlgrab(path, temp_file)
+                    os.rename(downloaded, target_file)
+                    return target_file
+                else:
+                    return self.repo.grab.urlread(path)
+            except URLGrabError:
+                return
         finally:
             if os.path.exists(temp_file):
                 os.unlink(temp_file)
