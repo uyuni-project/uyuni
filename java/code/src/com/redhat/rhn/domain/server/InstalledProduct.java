@@ -124,9 +124,9 @@ public class InstalledProduct extends BaseDomainHelper {
      * @return a SUSE Product if one could be found or null otherwise
      */
     public SUSEProduct getSUSEProduct() {
-        PackageArch arch = getArch();
+        PackageArch archType = getArch();
         return SUSEProductFactory.findSUSEProduct(getName(), getVersion(), getRelease(),
-                arch == null ? null : arch.getLabel(), true);
+                archType == null ? null : archType.getLabel(), true);
     }
 
     /**
