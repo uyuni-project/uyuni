@@ -21,9 +21,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.client.SaltClient;
-import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
@@ -85,7 +83,7 @@ public class SaltSSHService {
      * @throws SaltException if something goes wrong during command execution or
      * during manipulation the salt-ssh roster
      */
-    public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, Target<?> target)
+    public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target)
             throws SaltException {
         // these values are mostly fixed, which should change when we allow configuring
         // per-minionserver
@@ -158,24 +156,13 @@ public class SaltSSHService {
     // Currently we need it for the roster generation (we generate a single-host roster
     // based on the target). It future, we'll have a full blown roster.
     // This hack should more-or-less work now since we mostly target single minions.
-    private String extractMinionId(Target<?> target) {
-        LOG.info("HACK: Extracting minion id from target: " + target);
-        if (target instanceof MinionList) {
-            String result = ((MinionList) target).getTarget().stream()
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException("salt-ssh: no minion passed"));
-            LOG.info("HACK: extracted minion id: " + result);
-            return result;
-        }
-
-        if (target instanceof Glob) {
-            String result = ((Glob) target).getTarget();
-            LOG.info("HACK: extracted minion id: " + result);
-            return result;
-        }
-
-        throw new RuntimeException("salt-ssh: Only MinionList and Glob targets are" +
-                " supported at this moment.");
+    // todo support multiple ids
+    private String extractMinionId(MinionList target) {
+        String result = target.getTarget().stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("salt-ssh: no minion passed"));
+        LOG.info("HACK: extracted minion id: " + result);
+        return result;
     }
 
     /**
@@ -202,7 +189,7 @@ public class SaltSSHService {
      * @return result of the call
      */
     private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
-            Target<?> target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo)
+            MinionList target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo)
             throws SaltException {
         Path rosterPath = null;
         try {
