@@ -109,6 +109,13 @@ public class GathererRunner {
                 logger.error("URI syntax exception when setting Proxy: " + e.getMessage());
             }
         }
+        int debuglevel = Config.get().getInt("debug", 0);
+        if (debuglevel >= 2) {
+            args.add("-v");
+        }
+        if (debuglevel >= 3) {
+            args.add("-v");
+        }
         String noProxy = Config.get().getString(HttpClientAdapter.NO_PROXY);
         if (!StringUtils.isEmpty(noProxy)) {
             env.put("no_proxy", noProxy);
