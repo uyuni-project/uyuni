@@ -15,9 +15,13 @@
 package com.redhat.rhn.domain.product;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * Class representation of a SUSE product.
@@ -33,6 +37,18 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     private PackageArch arch;
     private String friendlyName;
     private int productId;
+
+    /** available extensions for this product */
+    private Set<SUSEProduct> extensionFor;
+
+    /** available extensions that this product is an extension for */
+    private Set<SUSEProduct> extensionOf;
+
+    /** available upgrades for this product; */
+    private Set<SUSEProduct> upgrades;
+
+    /** available products from which upgrade to this is possible */
+    private Set<SUSEProduct> downgrades;
 
     /**
      * @return the id
@@ -130,5 +146,99 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      */
     public void setProductId(int productIdIn) {
         this.productId = productIdIn;
+    }
+
+    /**
+     * List base products for this product
+     * @return list base products for this product
+     */
+    public Set<SUSEProduct> getExtensionOf() {
+        return extensionOf;
+    }
+
+    /**
+     * List extension products for this product
+     * @return list extension products for this product
+     */
+    public Set<SUSEProduct> getExtensionFor() {
+        return extensionFor;
+    }
+
+    /**
+     * Set the list extension products for this product
+     * @param extensionsIn list of extension products
+     */
+    public void setExtensionFor(Set<SUSEProduct> extensionsIn) {
+        this.extensionFor = extensionsIn;
+    }
+
+    /**
+     * Set the list base products for this product
+     * @param basesIn list of base products
+     */
+    public void setExtensionOf(Set<SUSEProduct> basesIn) {
+        this.extensionOf = basesIn;
+    }
+
+    /**
+     * List available upgrade path for this product
+     * @return list available upgrade path for this product
+     */
+    public Set<SUSEProduct> getUpgrades() {
+        return upgrades;
+    }
+
+    /**
+     * Set the list of available upgrade path for this product
+     * @param upgradesIn the list of available upgrade path for this product
+     */
+    public void setUpgrades(Set<SUSEProduct> upgradesIn) {
+        this.upgrades = upgradesIn;
+    }
+
+    /**
+     * List products that can upgrade to this product
+     * @return list products that can upgrade to this product
+     */
+    public Set<SUSEProduct> getDowngrades() {
+        return downgrades;
+    }
+
+    /**
+     * Sets the list of products that can upgrade to this product
+     * @param downgradesIn list of products that can upgrade to this product
+     */
+    public void setDowngrades(Set<SUSEProduct> downgradesIn) {
+        this.downgrades = downgradesIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object otherObject) {
+        if (!(otherObject instanceof SUSEProduct)) {
+            return false;
+        }
+        SUSEProduct other = (SUSEProduct) otherObject;
+        return new EqualsBuilder()
+            .append(getName(), other.getName())
+            .append(getVersion(), other.getVersion())
+            .append(getRelease(), other.getRelease())
+            .append(getArch(), other.getArch())
+            .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+            .append(getName())
+            .append(getVersion())
+            .append(getRelease())
+            .append(getArch())
+            .toHashCode();
     }
 }

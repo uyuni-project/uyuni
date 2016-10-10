@@ -15,3 +15,8 @@ div.channel-details {
 .none-item {
   margin-top: 5px;
 }
+
+.products-list li label {
+    vertical-align: middle;
+    margin-left: 10px;
+}

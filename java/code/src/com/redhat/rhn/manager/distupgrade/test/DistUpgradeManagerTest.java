@@ -48,11 +48,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Tests for {@link DistUpgradeManager} methods.
@@ -106,7 +102,44 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         ChannelFamily family = createTestChannelFamily();
         SUSEProduct sourceProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
         SUSEProductSet sourceProducts = new SUSEProductSet(
-                sourceProduct.getId(), new ArrayList<Long>());
+                sourceProduct.getId(), new LinkedList());
+        ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
+                sourceProducts, arch, user);
+        assertNotNull(targetProductSets);
+        assertTrue(targetProductSets.isEmpty());
+    }
+
+    public void testGetTargetProductSetsEmptyWithTarget() throws Exception {
+        // Setup source products
+        ChannelFamily family = createTestChannelFamily();
+        SUSEProduct sourceProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProductSet sourceProducts = new SUSEProductSet(
+                sourceProduct, new LinkedList());
+
+        SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sourceProduct.setUpgrades(Collections.singleton(targetBaseProduct));
+
+        ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
+                sourceProducts, arch , user);
+        assertNotNull(targetProductSets);
+        assertEquals(1, targetProductSets.size());
+        assertEquals(targetBaseProduct, targetProductSets.get(0).getBaseProduct());
+        assertTrue(targetProductSets.get(0).getAddonProducts().isEmpty());
+    }
+
+    /**
+    * Test getTargetProductSets(): No target product found.
+    * @throws Exception if anything goes wrong
+    */
+    public void testGetTargetProductSetsEmptyWithAddon() throws Exception {
+        // Setup source products
+        ChannelFamily family = createTestChannelFamily();
+        SUSEProduct sourceProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProductSet sourceProducts = new SUSEProductSet(
+                sourceProduct.getId(), Collections.singletonList(sourceAddonProduct.getId()));
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
                 sourceProducts, arch, user);
@@ -122,36 +155,48 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
         SUSEProduct sourceBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        List<Long> sourceAddons = new ArrayList<Long>();
+
+        List<SUSEProduct> sourceAddons = new ArrayList<>();
         SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        sourceAddons.add(sourceAddonProduct.getId());
-        SUSEProductSet sourceProducts = new SUSEProductSet(
-                sourceBaseProduct.getId(), sourceAddons);
+        sourceAddonProduct.setExtensionOf(Collections.singleton(sourceBaseProduct));
+        sourceBaseProduct.setExtensionFor(Collections.singleton(sourceAddonProduct));
+
+        sourceAddons.add(sourceAddonProduct);
+        SUSEProductSet sourceProducts = new SUSEProductSet(sourceBaseProduct, sourceAddons);
 
         // Setup migration target product + upgrade path
         SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        Channel baseChannel = ErrataTestUtils.createTestChannel(user);
-        SUSEProductTestUtils.createTestSUSEProductChannel(baseChannel, targetBaseProduct);
-        SUSEProductTestUtils.createTestSUSEUpgradePath(
-                sourceBaseProduct, targetBaseProduct);
+        sourceBaseProduct.setUpgrades(Collections.singleton(targetBaseProduct));
 
         // Setup target addon product + upgrade path
         SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        Channel childChannel = ErrataTestUtils.createTestChannel(user, baseChannel);
-        SUSEProductTestUtils.createTestSUSEProductChannel(childChannel, targetAddonProduct);
-        SUSEProductTestUtils.createTestSUSEUpgradePath(
-                sourceAddonProduct, targetAddonProduct);
+        sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
+        targetAddonProduct.setExtensionOf(new HashSet(Arrays.asList(targetBaseProduct, sourceBaseProduct)));
+        targetBaseProduct.setExtensionFor(Collections.singleton(targetAddonProduct));
 
         // Verify that target products are returned correctly
+
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
-        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
-                sourceProducts, arch, user);
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(sourceProducts, arch, user);
+
         assertNotNull(targetProductSets);
-        assertEquals(1, targetProductSets.size());
-        SUSEProductSet targetProducts = targetProductSets.get(0);
-        assertEquals(targetBaseProduct, targetProducts.getBaseProduct());
-        assertEquals(1, targetProducts.getAddonProducts().size());
-        assertEquals(targetAddonProduct, targetProducts.getAddonProducts().get(0));
+        assertEquals(2, targetProductSets.size());
+
+        for (SUSEProductSet target : targetProductSets) {
+            if (target.getBaseProduct().getId() == sourceBaseProduct.getId()) {
+                List<SUSEProduct> addonProducts = target.getAddonProducts();
+                assertEquals(1, addonProducts.size());
+                assertEquals(targetAddonProduct, addonProducts.get(0));
+            }
+            else if (target.getBaseProduct().getId() == targetBaseProduct.getId()) {
+                List<SUSEProduct> addonProducts = target.getAddonProducts();
+                assertEquals(1, addonProducts.size());
+                assertEquals(targetAddonProduct, addonProducts.get(0));
+            }
+            else {
+                fail("unexpected product " + target.getBaseProduct());
+            }
+        }
     }
 
     /**
@@ -401,4 +446,5 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(channel);
         return channel;
     }
+
 }

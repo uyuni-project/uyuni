@@ -78,6 +78,7 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.systems.SPMigrationAction;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.ChannelFamilySystemGroup;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
@@ -5491,96 +5492,6 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Schedule a Service Pack migration for a system. This call is the recommended and
-     * supported way of migrating a system to the next Service Pack. It will automatically
-     * find all mandatory product channels below a given target base channel and subscribe
-     * the system accordingly. Any additional optional channels can be subscribed by
-     * providing their labels.
-     *
-     * @param sessionKey User's session key
-     * @param sid ID of the server
-     * @param baseChannelLabel label of the target base channel
-     * @param optionalChildChannels labels of optional child channels to subscribe
-     * @param dryRun set to true to perform a dry run
-     * @param earliest earliest occurrence of the migration
-     * @return action id, exception thrown otherwise
-     *
-     * @xmlrpc.doc Schedule a Service Pack migration for a system. This call is the
-     * recommended and supported way of migrating a system to the next Service Pack. It will
-     * automatically find all mandatory product channels below a given target base channel
-     * and subscribe the system accordingly. Any additional optional channels can be
-     * subscribed by providing their labels.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "baseChannelLabel")
-     * @xmlrpc.param #array_single("string", "optionalChildChannels")
-     * @xmlrpc.param #param("boolean", "dryRun")
-     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
-     */
-    public Long scheduleSPMigration(String sessionKey, Integer sid, String baseChannelLabel,
-            List<String> optionalChildChannels, boolean dryRun, Date earliest) {
-        User user = getLoggedInUser(sessionKey);
-
-        // Perform checks on the server
-        Server server = null;
-        try {
-            server = DistUpgradeManager.performServerChecks(sid.longValue(), user);
-        }
-        catch (DistUpgradeException e) {
-            throw new FaultException(-1, "distUpgradeServerError", e.getMessage());
-        }
-
-        // Check validity of optional child channels and initialize list of channel IDs
-        Set<Long> channelIDs = null;
-        optionalChildChannels.add(baseChannelLabel);
-        try {
-            channelIDs =
-                    DistUpgradeManager.performChannelChecks(optionalChildChannels, user);
-        }
-        catch (DistUpgradeException e) {
-            throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
-        }
-
-        // Find target products for the migration
-        SUSEProductSet installedProducts = server.getInstalledProducts();
-        ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
-        List<SUSEProductSet> targets = DistUpgradeManager.getTargetProductSets(
-                installedProducts, arch, user);
-        if (targets.size() > 0) {
-            SUSEProductSet targetProducts = targets.get(0);
-
-            // See if vendor channels are matching the given base channel
-            EssentialChannelDto baseChannel = DistUpgradeManager.getProductBaseChannelDto(
-                    targetProducts.getBaseProduct().getId(), arch);
-            if (baseChannel != null && baseChannel.getLabel().equals(baseChannelLabel)) {
-                List<EssentialChannelDto> channels = DistUpgradeManager.
-                        getRequiredChannels(targetProducts, baseChannel.getId());
-                for (EssentialChannelDto channel : channels) {
-                    channelIDs.add(channel.getId());
-                }
-                return DistUpgradeManager.scheduleDistUpgrade(user, server,
-                        targetProducts, channelIDs, dryRun, earliest);
-            }
-
-            // Consider alternatives (cloned channel trees)
-            Map<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
-                    getAlternatives(targetProducts, arch, user);
-            for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
-                if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
-                    channelIDs.addAll(alternatives.get(clonedBaseChannel));
-                    return DistUpgradeManager.scheduleDistUpgrade(user, server,
-                            targetProducts, channelIDs, dryRun, earliest);
-                }
-            }
-        }
-
-        // We didn't find target products if we are still here
-        throw new FaultException(-1, "servicePackMigrationNoTarget",
-                "No target found for SP migration");
-    }
-
-    /**
      * Schedule a dist upgrade for a system. This call takes a list of channel labels that
      * the system will be subscribed to before performing the dist upgrade.
      *
@@ -5631,5 +5542,199 @@ public class SystemHandler extends BaseHandler {
 
         return DistUpgradeManager.scheduleDistUpgrade(user, server, null,
                 channelIDs, dryRun, earliest);
+    }
+
+    /**
+     * List possible migration targets for given system
+     * @param loggedInUser The current user
+     * @param serverId Server ID
+     * @return Array of migration targets for given system
+     *
+     * @xmlrpc.doc List possible migration targets for a system
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.returntype
+     *      #array()
+     *          #struct("migrationtarget")
+     *                 #prop("string", "ident")
+     *                 #prop("string", "friendly")
+     *          #struct_end()
+     *      #array_end()
+     */
+    public List<Map<String, Object>> listMigrationTargets(User loggedInUser, Integer serverId) {
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        Server server = lookupServer(loggedInUser, serverId);
+        SUSEProductSet installedProducts = server.getInstalledProductSet();
+        if (installedProducts == null) {
+            throw new FaultException(-1, "listMigrationTargetError",
+                    "Server has no Products installed.");
+        }
+        ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
+        List<SUSEProductSet> migrationTargets = DistUpgradeManager.
+                getTargetProductSets(installedProducts, arch, loggedInUser);
+        for (SUSEProductSet ps : migrationTargets) {
+            if (!ps.allChannelsAreSynced()) {
+                continue;
+            }
+            Map<String, Object> target = new HashMap<String, Object>();
+
+            target.put("ident", SPMigrationAction.serializeProductIDs(ps.getProductIDs()));
+            target.put("friendly", ps.toString());
+            returnList.add(target);
+        }
+
+        return returnList;
+    }
+
+    /**
+     * Schedule a Service Pack migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack.
+     *
+     * This call automatically select the nearest possible migration target.
+     *
+     * It will automatically find all mandatory product channels below a given
+     * target base channel and subscribe the system accordingly. Any additional
+     * optional channels can be subscribed by providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Service Pack migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     */
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
+            List<String> optionalChildChannels, boolean dryRun, Date earliest) {
+        return scheduleSPMigration(loggedInUser, sid, null, baseChannelLabel,
+                optionalChildChannels, dryRun, earliest);
+    }
+
+    /**
+     * Schedule a Service Pack migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack. It will automatically
+     * find all mandatory product channels below a given target base channel and subscribe
+     * the system accordingly. Any additional optional channels can be subscribed by
+     * providing their labels.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param sid ID of the server
+     * @param targetIdent identifier for the selected migration target ({@link #listMigrationTargets})
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Service Pack migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "targetIdent")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     */
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
+            String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
+            Date earliest) {
+
+        // Perform checks on the server
+        Server server = null;
+        try {
+            server = DistUpgradeManager.performServerChecks(sid.longValue(), loggedInUser);
+        }
+        catch (DistUpgradeException e) {
+            throw new FaultException(-1, "distUpgradeServerError", e.getMessage());
+        }
+
+        // Check validity of optional child channels and initialize list of channel IDs
+        Set<Long> channelIDs = null;
+        optionalChildChannels.add(baseChannelLabel);
+        try {
+            channelIDs =
+                    DistUpgradeManager.performChannelChecks(optionalChildChannels, loggedInUser);
+        }
+        catch (DistUpgradeException e) {
+            throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
+        }
+
+        // Find target products for the migration
+        SUSEProductSet installedProducts = server.getInstalledProductSet();
+        ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
+        List<SUSEProductSet> targets = DistUpgradeManager.getTargetProductSets(
+                installedProducts, arch, loggedInUser);
+        if (targets.size() > 0) {
+            SUSEProductSet targetProducts = null;
+
+            if (StringUtils.isBlank(targetIdent)) {
+                targetProducts = targets.get(targets.size() - 1);
+            }
+            else {
+                for (SUSEProductSet target : targets) {
+                    String ident = SPMigrationAction
+                            .serializeProductIDs(target.getProductIDs());
+                    if (ident.equals(targetIdent)) {
+                        targetProducts = target;
+                        break;
+                    }
+                }
+            }
+            if (targetProducts == null) {
+                throw new FaultException(-1, "servicePackMigrationNoTarget",
+                        "No target found for SP migration");
+            }
+            if (!targetProducts.allChannelsAreSynced()) {
+                throw new FaultException(-1, "servicePackMigrationNoTarget",
+                    targetProducts.stringfyMissingChannels(
+                    "Target not available, the following channels are not synced: "));
+            }
+
+            // See if vendor channels are matching the given base channel
+            EssentialChannelDto baseChannel = DistUpgradeManager.getProductBaseChannelDto(
+                    targetProducts.getBaseProduct().getId(), arch);
+            if (baseChannel != null && baseChannel.getLabel().equals(baseChannelLabel)) {
+                List<EssentialChannelDto> channels = DistUpgradeManager.
+                        getRequiredChannels(targetProducts, baseChannel.getId());
+                for (EssentialChannelDto channel : channels) {
+                    channelIDs.add(channel.getId());
+                }
+                return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
+                        targetProducts, channelIDs, dryRun, earliest);
+            }
+
+            // Consider alternatives (cloned channel trees)
+            Map<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
+                    getAlternatives(targetProducts, arch, loggedInUser);
+            for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
+                if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
+                    channelIDs.addAll(alternatives.get(clonedBaseChannel));
+                    return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
+                            targetProducts, channelIDs, dryRun, earliest);
+                }
+            }
+        }
+
+        // We didn't find target products if we are still here
+        throw new FaultException(-1, "servicePackMigrationNoTarget",
+                "No target found for SP migration");
     }
 }

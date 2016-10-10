@@ -269,6 +269,7 @@ susePackageEula                :: rhnPackage suseEula
 susePackageProductFile         :: suseProductFile rhnPackage
 suseProducts                   :: rhnPackageArch
 suseProductChannel             :: suseProducts rhnChannel
+suseProductExtension           :: suseProducts
 suseServerInstalledProduct     :: rhnServer suseInstalledProduct
 suseUpgradePath                :: suseProducts
 time_series_data               :: time_series_purge

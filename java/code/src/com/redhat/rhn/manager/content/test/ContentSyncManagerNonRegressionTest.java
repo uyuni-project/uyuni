@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.content.test;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -100,7 +99,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
         try {
             // clear existing products
-            SUSEProductFactory.clearAllProducts();
+            SUSEProductTestUtils.clearAllProducts();
 
             // ensure all needed channel families have enough entitlements, so
             // that channels are available later
@@ -201,7 +200,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
         try {
             // clear existing products
-            SUSEProductFactory.clearAllProducts();
+            SUSEProductTestUtils.clearAllProducts();
 
             List<SCCProduct> sccProducts =
                     new Gson().fromJson(FileUtils.readFileToString(productsJSON),
