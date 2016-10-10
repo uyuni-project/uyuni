@@ -237,8 +237,9 @@ public class CachedStatement implements Serializable {
         try {
             List<Integer> result = new ArrayList<Integer>(parameterList.size());
 
+            sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
             for (Map<String, Object> parameters : parameterList) {
-                result.add((Integer) execute(getQuery(), qMap, parameters, null, null));
+                result.add((Integer) execute(sqlStatement, qMap, parameters, null, null));
             }
             return result;
         }
