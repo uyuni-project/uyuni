@@ -47,7 +47,7 @@ Mon Jul 18 14:28:06 CEST 2016 - jrenner@suse.com
 - Integrate bootstrapping with System Overview
 - support SP Migration for OES 2015 to 2015 SP1
 - Fix for minion w/ multiple interfaces (bsc#985707)
-- Fix HW Refresh duplicate insert (bsc#971622)
+- Fix HW Refresh duplicate insert (bsc#971622, bsc#983347)
 - no addon entitlements allowed for Foreign and Bootstrap systems (bsc#983826)
 - disable checkboxes for foreign and bootstrap systems in system types page
   (bsc#983826)
@@ -71,7 +71,7 @@ Fri Jun 17 18:10:20 CEST 2016 - mc@suse.de
 - enable oracle support again (FATE#320213)
 - Enable minions to be worked with SSM only on available features
 - Use the IP address when doing ssh push via proxy (bsc#940927)
-- Don't allow URLs that only differ on the authorization token (bsc#976184)
+- Don't allow URLs that only differ on the authorization token (bsc#976184, bsc#982347)
 - Fix typo in Systems column (bsc#983916)
 - Salt hw reg: ignore virtual scsi devices (bsc#962588)
 
