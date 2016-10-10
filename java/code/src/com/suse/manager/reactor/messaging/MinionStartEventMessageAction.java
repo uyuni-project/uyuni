@@ -68,9 +68,10 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
         MinionStartEventMessage startEvent = (MinionStartEventMessage) msg;
 
         // Update custom grains, modules and beacons on every minion restart
-        SALT_SERVICE.syncGrains(startEvent.getMinionId());
-        SALT_SERVICE.syncModules(startEvent.getMinionId());
-        SALT_SERVICE.syncBeacons(startEvent.getMinionId());
+        MinionList minionTarget = new MinionList(startEvent.getMinionId());
+        SALT_SERVICE.syncGrains(minionTarget);
+        SALT_SERVICE.syncModules(minionTarget);
+        SALT_SERVICE.syncBeacons(minionTarget);
 
         Optional<MinionServer> minionOpt =
                 MinionServerFactory.findByMinionId(startEvent.getMinionId());

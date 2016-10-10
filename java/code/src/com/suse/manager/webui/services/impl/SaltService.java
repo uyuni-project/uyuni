@@ -400,7 +400,7 @@ public class SaltService {
     public Map<String, Result<Boolean>> match(String target) {
         try {
             Map<String, Result<Boolean>> result = Match.glob(target).callSync(
-                    SALT_CLIENT, new Glob(target),
+                    SALT_CLIENT, new Glob(target), // todo this is the only glob usage - salt-ssh won't work
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result;
         }
@@ -420,16 +420,16 @@ public class SaltService {
 
     /**
      * Call 'saltutil.sync_beacons' to sync the beacons to the target minion(s).
-     * @param target a target glob
+     * @param minionList minionList
      */
-    public void syncBeacons(String target) {
+    public void syncBeacons(MinionList minionList) {
         try {
             LocalCall<List<String>> call =
                     com.suse.manager.webui.utils.salt.SaltUtil.syncBeacons(
                             Optional.of(true),
                             Optional.empty());
 
-            callSync(call, new Glob(target));
+            callSync(call, minionList);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -438,13 +438,13 @@ public class SaltService {
 
     /**
      * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
-     * @param target a target glob
+     * @param minionList minion list
      */
-    public void syncGrains(String target) {
+    public void syncGrains(MinionList minionList) {
         try {
             LocalCall<List<String>> call = SaltUtil.syncGrains(Optional.empty(),
                     Optional.empty());
-            callSync(call, new Glob(target));
+            callSync(call, minionList);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -453,13 +453,13 @@ public class SaltService {
 
     /**
      * Call 'saltutil.sync_modules' to sync the grains to the target minion(s).
-     * @param target a target glob
+     * @param minionList minion list
      */
-    public void syncModules(String target) {
+    public void syncModules(MinionList minionList) {
         try {
             LocalCall<List<String>> call = SaltUtil.syncModules(Optional.empty(),
                     Optional.empty());
-            callSync(call, new Glob(target));
+            callSync(call, minionList);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
