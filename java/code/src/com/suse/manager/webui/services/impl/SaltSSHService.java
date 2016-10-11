@@ -72,9 +72,8 @@ public class SaltSSHService {
     /**
      * Synchronously executes a salt function on given target using salt-ssh.
      *
-     * WARNING: Because of the lack of salt roster handling in suma, this
-     * function works correctly when targeting single minions using a
-     * particular type of targets (@see extractMinionId)
+     * Before the execution, this method creates an one-time roster corresponding to targets
+     * in given minion list.
      *
      * @param call the salt call
      * @param target the minion list target
@@ -85,10 +84,11 @@ public class SaltSSHService {
      */
     public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target)
             throws SaltException {
+        SaltRoster roster = new SaltRoster();
         // these values are mostly fixed, which should change when we allow configuring
         // per-minionserver
-        SaltRoster roster = SaltRoster.createSingleHostRoster(extractMinionId(target),
-                getSSHUser(), Optional.empty(), Optional.of(SSH_PUSH_PORT));
+        target.getTarget().stream().forEach(mid ->
+                roster.addHost(mid, getSSHUser(), Optional.empty(), SSH_PUSH_PORT));
 
         Map<String, Result<SSHResult<R>>> result = callSyncSSHInternal(call,
                 target,
@@ -125,8 +125,9 @@ public class SaltSSHService {
                 Optional.of(pillarData),
                 Optional.of(true));
 
-        SaltRoster roster = SaltRoster.createSingleHostRoster(parameters.getHost(),
-                parameters.getUser(), parameters.getPassword(), parameters.getPort());
+        SaltRoster roster = new SaltRoster();
+        roster.addHost(parameters.getHost(), parameters.getUser(), parameters.getPassword(),
+                parameters.getPort());
 
         Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> result =
                 callSyncSSHInternal(call,
@@ -150,19 +151,6 @@ public class SaltSSHService {
                 err -> new Result<T>(Xor.left(sshResult.error().get())),
                 succ -> new Result<T>(Xor.right(sshResult.result().get().getReturn().get()))
         );
-    }
-
-    // HACK here:
-    // Currently we need it for the roster generation (we generate a single-host roster
-    // based on the target). It future, we'll have a full blown roster.
-    // This hack should more-or-less work now since we mostly target single minions.
-    // todo support multiple ids
-    private String extractMinionId(MinionList target) {
-        String result = target.getTarget().stream()
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("salt-ssh: no minion passed"));
-        LOG.info("HACK: extracted minion id: " + result);
-        return result;
     }
 
     /**
