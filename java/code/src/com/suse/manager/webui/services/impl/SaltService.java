@@ -528,24 +528,17 @@ public class SaltService {
      */
     public <T> Map<String, Result<T>> callSync(LocalCall<T> call, MinionList target)
             throws SaltException {
-        Map<String, Result<T>> defaultCallResults = call.callSync(
-                SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-
-        // todo check if the minions targeted are managed using salt-ssh, otherwise expect
-        // performance penalty
-        Map<String, Result<T>> sshResults = saltSSHService.callSyncSSH(call, target);
-
-        return Stream.concat(
-                defaultCallResults.entrySet().stream(),
-                sshResults.entrySet().stream())
-                .collect(Collectors.toMap(
-                        kv -> kv.getKey(),
-                        kv -> kv.getValue(),
-                        (value1, value2) -> {
-                            LOG.warn("Duplicate value for a single target returned.");
-                            LOG.debug("Returning " + value1 + ", ignoring" + value2 + ".");
-                            return value1;
-                        }));
+        // todo generalize, currently works for one minion only
+        String minionId = target.getTarget().get(0);
+        Optional<MinionServer> minion = MinionServerFactory.findByMinionId(minionId);
+        if (minion.isPresent() && "ssh-push".equals(minion.get().getContactMethod().getLabel())
+                || SSHMinionsPendingRegistrationService.containsMinion(minionId)) {
+            return saltSSHService.callSyncSSH(call, new MinionList(minionId));
+        }
+        else {
+            return call.callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD,
+                    AuthModule.AUTO);
+        }
     }
 
     /**

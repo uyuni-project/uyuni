@@ -18,6 +18,7 @@ package com.suse.manager.webui.controllers.utils;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.webui.services.impl.SSHMinionsPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -76,9 +77,12 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
         BootstrapResult result = super.bootstrapInternal(params, user);
         LOG.info("Salt-ssh system bootstrap success: " + result.isSuccess() +
                 ", proceeding with registration.");
+        String minionId = params.getHost();
+        SSHMinionsPendingRegistrationService.addMinion(minionId);
         if (result.isSuccess()) {
-            getRegisterAction().registerSSHMinion(params.getHost());
+            getRegisterAction().registerSSHMinion(minionId);
         }
+        SSHMinionsPendingRegistrationService.removeMinion(minionId);
         return result;
     }
 
