@@ -21,6 +21,8 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
+import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.script.ScriptResult;
@@ -326,6 +328,13 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 handleHardwareProfileUpdate(minionServer, Json.GSON.fromJson(jsonResult,
                         HwProfileUpdateSlsResult.class), serverAction);
             });
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
+            DistUpgradeAction dupAction = (DistUpgradeAction) action;
+            DistUpgradeActionDetails actionDetails = dupAction.getDetails();
+            if (actionDetails.getDryRun()  == 'Y') {
+                // TODO: Dry run, roll back channel assignments
+            }
         }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
