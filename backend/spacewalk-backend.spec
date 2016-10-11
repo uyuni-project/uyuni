@@ -1,6 +1,7 @@
 %global rhnroot %{_prefix}/share/rhn
 %global rhnconfigdefaults %{rhnroot}/config-defaults
 %global rhnconf %{_sysconfdir}/rhn
+%global m2crypto m2crypto
 
 %if 0%{?rhel}
 %global apacheconfd %{_sysconfdir}/httpd/conf.d
@@ -32,6 +33,7 @@
 %global apache_user wwwrun
 %global apache_group www
 %global apache_pkg apache2
+%global m2crypto python-m2crypto
 %endif
 
 %global pythonrhnroot %{python_sitelib}/spacewalk
@@ -74,7 +76,7 @@ BuildRequires: rpm-python
 BuildRequires: python-debian
 BuildRequires: python-gzipstream
 BuildRequires: yum
-BuildRequires: m2crypto
+BuildRequires: %{m2crypto}
 %endif
 Requires(pre): %{apache_pkg}
 Requires: %{apache_pkg}
@@ -359,7 +361,7 @@ Recommends: cobbler20
 Requires: rhnlib  >= 2.5.57
 Requires: %{name}-usix
 Requires: python-requests
-Requires: m2crypto
+Requires: %{m2crypto}
 %if 0%{?fedora} || 0%{?rhel} > 5
 BuildRequires: python-requests
 %endif
@@ -388,7 +390,7 @@ Group: Applications/Internet
 Requires: %{name}-server = %{version}-%{release}
 Requires: %{name}-usix
 Requires: subscription-manager
-Requires: m2crypto
+Requires: %{m2crypto}
 
 %description cdn
 Tools for syncing content from Red Hat CDN
