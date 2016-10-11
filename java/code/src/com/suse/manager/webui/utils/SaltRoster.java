@@ -33,21 +33,6 @@ public class SaltRoster {
     private static final String FILE_PREFIX = "susemanager-roster-";
 
     /**
-     * Creates a roster that contains a single host based on the input data.
-     * @param hostName host name
-     * @param user user
-     * @param password optional password
-     * @param port port
-     * @return roster
-     */
-    public static SaltRoster createSingleHostRoster(String hostName, String user,
-            Optional<String> password, Optional<Integer> port) {
-        SaltRoster result = new SaltRoster();
-        result.addHost(hostName, user, password, port);
-        return result;
-    }
-
-    /**
      * Add host data to this roster.
      *
      * @param host The IP address or DNS name of the remote host

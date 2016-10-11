@@ -59,6 +59,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -528,17 +530,37 @@ public class SaltService {
      */
     public <T> Map<String, Result<T>> callSync(LocalCall<T> call, MinionList target)
             throws SaltException {
-        // todo generalize, currently works for one minion only
-        String minionId = target.getTarget().get(0);
-        Optional<MinionServer> minion = MinionServerFactory.findByMinionId(minionId);
-        if (minion.isPresent() && "ssh-push".equals(minion.get().getContactMethod().getLabel())
-                || SSHMinionsPendingRegistrationService.containsMinion(minionId)) {
-            return saltSSHService.callSyncSSH(call, new MinionList(minionId));
+        // todo test it
+        List<String> minionIds = target.getTarget();
+
+        // todo: consider creating a bulk query for determining whether minion in list
+        // are ssh or not
+        Set<String> sshMinionIds = minionIds.stream()
+                .filter(mid -> {
+                    Optional<MinionServer> minion = MinionServerFactory.findByMinionId(mid);
+                    return minion.isPresent() &&
+                            "ssh-push".equals(minion.get().getContactMethod().getLabel()) ||
+                            SSHMinionsPendingRegistrationService.containsMinion(mid);
+                }).collect(Collectors.toSet());
+
+        Set<String> trdMinionIds = minionIds.stream()
+                .filter(mid ->
+                        !sshMinionIds.contains(mid)).collect(Collectors.toSet());
+
+        Map<String, Result<T>> results = new HashMap<>();
+
+        if (!sshMinionIds.isEmpty()) {
+            results.putAll(saltSSHService.callSyncSSH(
+                    call,
+                    new MinionList(new ArrayList<>(sshMinionIds))));
         }
-        else {
-            return call.callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD,
-                    AuthModule.AUTO);
+
+        if (!trdMinionIds.isEmpty()) {
+            results.putAll(call.callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD,
+                    AuthModule.AUTO));
         }
+
+        return results;
     }
 
     /**
