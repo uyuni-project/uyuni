@@ -1,7 +1,14 @@
--- oracle equivalent source sha1 fe24836b6a18a7a1a3c9703d14dbffbf82b92b02
+-- oracle equivalent source sha1 1bc8d86b51641e0d6fd79422d30c5aca9640b3d4
 --
 -- Adding the missing columnt 'severity_id' to rhnErrataTmp
 -- table to be consistent with rhnErrata table
 
-ALTER TABLE rhnerratatmp
-   ADD severity_id NUMERIC;
+DO $$
+    BEGIN
+        BEGIN
+            ALTER TABLE rhnerratatmp ADD COLUMN severity_id NUMERIC;
+        EXCEPTION
+            WHEN duplicate_column THEN RAISE NOTICE 'column severity_id already exists in rhnerratatmp.';
+        END;
+    END;
+$$;
