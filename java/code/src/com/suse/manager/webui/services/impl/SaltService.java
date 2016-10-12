@@ -401,10 +401,7 @@ public class SaltService {
      */
     public Map<String, Result<Boolean>> match(String target) {
         try {
-            Map<String, Result<Boolean>> result = Match.glob(target).callSync(
-                    SALT_CLIENT, new Glob(target), // todo this is the only glob usage - salt-ssh won't work
-                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-            return result;
+            return callSync(Match.glob(target), new Glob(target));
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -560,6 +557,25 @@ public class SaltService {
                     AuthModule.AUTO));
         }
 
+        return results;
+    }
+
+    /**
+     * Execute a LocalCall synchronously on glob target using the default Salt client.
+     * Note that salt-ssh systems are also called by this method.
+     *
+     * @param <T> the return type of the call
+     * @param call the glob call to execute
+     * @param target minions targeted by the call
+     * @return the result of the call
+     * @throws SaltException in case of an error executing the job with Salt
+     */
+    public <T> Map<String, Result<T>> callSync(LocalCall<T> call, Glob target)
+            throws SaltException {
+        Map<String, Result<T>> results = new HashMap<>();
+        results.putAll(saltSSHService.callSyncSSH(call, target));
+        results.putAll(call.callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD,
+                AuthModule.AUTO));
         return results;
     }
 
