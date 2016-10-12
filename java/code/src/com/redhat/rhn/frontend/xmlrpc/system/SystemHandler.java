@@ -73,7 +73,6 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.systems.SPMigrationAction;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
@@ -5895,12 +5894,12 @@ public class SystemHandler extends BaseHandler {
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts, arch, loggedInUser);
         for (SUSEProductSet ps : migrationTargets) {
-            if (!ps.allChannelsAreSynced()) {
+            if (!ps.getIsEveryChannelSynced()) {
                 continue;
             }
             Map<String, Object> target = new HashMap<String, Object>();
 
-            target.put("ident", SPMigrationAction.serializeProductIDs(ps.getProductIDs()));
+            target.put("ident", ps.getSerializedProductIDs());
             target.put("friendly", ps.toString());
             returnList.add(target);
         }
@@ -6011,8 +6010,7 @@ public class SystemHandler extends BaseHandler {
             }
             else {
                 for (SUSEProductSet target : targets) {
-                    String ident = SPMigrationAction
-                            .serializeProductIDs(target.getProductIDs());
+                    String ident = target.getSerializedProductIDs();
                     if (ident.equals(targetIdent)) {
                         targetProducts = target;
                         break;
@@ -6023,10 +6021,10 @@ public class SystemHandler extends BaseHandler {
                 throw new FaultException(-1, "servicePackMigrationNoTarget",
                         "No target found for SP migration");
             }
-            if (!targetProducts.allChannelsAreSynced()) {
+            if (!targetProducts.getIsEveryChannelSynced()) {
                 throw new FaultException(-1, "servicePackMigrationNoTarget",
                         "Target not available, the following channels are not synced: " +
-                        targetProducts.stringfyMissingChannels());
+                        targetProducts.getMissingChannelsMessage());
             }
 
             // See if vendor channels are matching the given base channel

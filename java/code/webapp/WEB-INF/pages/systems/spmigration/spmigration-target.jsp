@@ -2,7 +2,6 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
-<%@ page import="com.redhat.rhn.frontend.action.systems.SPMigrationAction" %>
 
 <html:html>
 
@@ -91,11 +90,11 @@
                                             <c:out value="${target.missingChannelsMessage}" />
                                         </c:if>">
                                         <input type="radio" name="targetProductSelected"
-                                            id="target${SPMigrationAction.serializeProductIDs(target.getProductIDs())}"
-                                            value="${SPMigrationAction.serializeProductIDs(target.getProductIDs())}"
-                                                ${itemCounter == 0 && target.allChannelsAreSynced() ? "checked" : "" }
-                                                ${!target.allChannelsAreSynced() ? "disabled" : ""} />
-                                        <label for="target${SPMigrationAction.serializeProductIDs(target.getProductIDs())}">
+                                            id="target${target.serializedProductIDs}"
+                                            value="${target.serializedProductIDs}"
+                                                ${itemCounter == 0 && target.isEveryChannelSynced ? "checked" : "" }
+                                                ${!target.isEveryChannelSynced ? "disabled" : ""} />
+                                        <label for="target${target.serializedProductIDs}">
                                             <strong><c:out value="${target.baseProduct.friendlyName}" /></strong>
                                             <ul>
                                                 <c:forEach items="${target.addonProducts}"
