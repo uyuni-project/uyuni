@@ -9,9 +9,14 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 --
+declare
+  already_exists exception;
+  pragma exception_init( already_exists, -955 );
+  v_sql LONG;
+begin
 
-
-create table
+  begin
+    v_sql:='create table
 suseProductExtension
 (
     base_pdid   number not null
@@ -26,12 +31,28 @@ suseProductExtension
                   DEFAULT (current_timestamp) NOT NULL,
     modified  timestamp with local time zone
                   DEFAULT (current_timestamp) NOT NULL
-);
+)';
+    execute immediate v_sql;
 
-CREATE INDEX prdext_bpid_idx
-ON suseProductExtension (base_pdid)
-TABLESPACE [[64k_tbs]];
+  EXCEPTION
+     WHEN already_exists THEN
+       NULL; -- suppresses ORA-00955 exception
+  END;
 
-CREATE INDEX prdext_epid_idx
-ON suseProductExtension (ext_pdid)
-TABLESPACE [[64k_tbs]];
+  begin
+    execute immediate 'CREATE INDEX prdext_bpid_idx ON suseProductExtension (base_pdid)';
+  EXCEPTION
+     WHEN already_exists THEN
+       NULL; -- suppresses ORA-00955 exception
+  END;
+
+  begin
+    execute immediate 'CREATE INDEX prdext_epid_idx ON suseProductExtension (ext_pdid)';
+  EXCEPTION
+     WHEN already_exists THEN
+       NULL; -- suppresses ORA-00955 exception
+  END;
+
+END;
+/
+show errors

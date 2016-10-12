@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 694afb5ff6c5b012a2c5e90207dff3a7b53e0cb1
+-- oracle equivalent source sha1 105cb719c888239297c868aab8650a27214fae92
 --
 -- Copyright (c) 2016 SUSE LLC
 --
@@ -12,7 +12,7 @@
 --
 
 
-create table
+create table if not exists
 suseProductExtension
 (
     base_pdid   NUMERIC not null
@@ -29,10 +29,17 @@ suseProductExtension
                   DEFAULT (current_timestamp) NOT NULL
 );
 
-CREATE INDEX prdext_bpid_idx
-ON suseProductExtension (base_pdid)
-;
+DO $$
+  BEGIN
+    BEGIN
+      CREATE INDEX prdext_bpid_idx
+      ON suseProductExtension (base_pdid);
 
-CREATE INDEX prdext_epid_idx
-ON suseProductExtension (ext_pdid)
-;
+      CREATE INDEX prdext_epid_idx
+      ON suseProductExtension (ext_pdid);
+    EXCEPTION
+      WHEN duplicate_table
+      THEN RAISE NOTICE 'indexes already exists, skipping';
+    END;
+  END;
+$$;

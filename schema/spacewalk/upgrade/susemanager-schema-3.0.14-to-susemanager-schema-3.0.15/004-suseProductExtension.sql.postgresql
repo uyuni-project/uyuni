@@ -21,6 +21,7 @@ end;
 $$
 language plpgsql;
 
+drop trigger if exists prdext_mod_trig on suseProductExtension;
 
 create trigger
 prdext_mod_trig
