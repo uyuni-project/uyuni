@@ -527,22 +527,11 @@ public class SaltService {
      */
     public <T> Map<String, Result<T>> callSync(LocalCall<T> call, MinionList target)
             throws SaltException {
-        // todo test it
         List<String> minionIds = target.getTarget();
 
-        // todo: consider creating a bulk query for determining whether minion in list
-        // are ssh or not
-        Set<String> sshMinionIds = minionIds.stream()
-                .filter(mid -> {
-                    Optional<MinionServer> minion = MinionServerFactory.findByMinionId(mid);
-                    return minion.isPresent() &&
-                            "ssh-push".equals(minion.get().getContactMethod().getLabel()) ||
-                            SSHMinionsPendingRegistrationService.containsMinion(mid);
-                }).collect(Collectors.toSet());
-
+        Set<String> sshMinionIds = filterSSHMinionIds(minionIds);
         Set<String> trdMinionIds = minionIds.stream()
-                .filter(mid ->
-                        !sshMinionIds.contains(mid)).collect(Collectors.toSet());
+                .filter(mid -> !sshMinionIds.contains(mid)).collect(Collectors.toSet());
 
         Map<String, Result<T>> results = new HashMap<>();
 
@@ -558,6 +547,24 @@ public class SaltService {
         }
 
         return results;
+    }
+
+    /**
+     * Takes a list of minion ids, filters ids of minions which are either minions with
+     * ssh push contact method or minions currently being onboarded and returns set of
+     * corresponding ids.
+     * @param minionIds minion ids
+     * @return ids of ssh minions
+     */
+    public static Set<String> filterSSHMinionIds(List<String> minionIds) {
+        // todo: create a bulk query for determining whether minion in list are ssh or not
+        return minionIds.stream()
+                .filter(mid -> {
+                    Optional<MinionServer> minion = MinionServerFactory.findByMinionId(mid);
+                    return minion.isPresent() &&
+                            "ssh-push".equals(minion.get().getContactMethod().getLabel()) ||
+                            SSHMinionsPendingRegistrationService.containsMinion(mid);
+                }).collect(Collectors.toSet());
     }
 
     /**
