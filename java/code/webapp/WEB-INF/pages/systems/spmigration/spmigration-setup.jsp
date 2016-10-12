@@ -60,15 +60,15 @@
                         <div class="col-sm-10">
                             <ul class="form-control-static products-list">
                                 <li>
-                                    <strong><c:out value="${system.installedProducts.baseProduct.friendlyName}" /></strong>
+                                    <strong><c:out value="${system.installedProductSet.baseProduct.friendlyName}" /></strong>
                                     <ul>
                                         <c:forEach
-                                            items="${system.installedProducts.addonProducts}"
-                                            var="addonProduct">
+                                             items="${system.installedProductSet.addonProducts}"
+                                             var="addonProduct">
                                             <li class="addon-product">
-                                                <c:out value="${addonProduct.friendlyName}" />
-                                            </li>
-                                        </c:forEach>
+                                                 <c:out value="${addonProduct.friendlyName}" />
+                                             </li>
+                                         </c:forEach>
                                     </ul>
                                 </li>
                             </ul>
