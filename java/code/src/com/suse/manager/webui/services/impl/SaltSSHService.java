@@ -15,13 +15,16 @@
 package com.suse.manager.webui.services.impl;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.client.SaltClient;
+import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
@@ -36,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Code for calling salt-ssh functions.
@@ -70,7 +74,7 @@ public class SaltSSHService {
     }
 
     /**
-     * Synchronously executes a salt function on given target using salt-ssh.
+     * Synchronously executes a salt function on given minion list using salt-ssh.
      *
      * Before the execution, this method creates an one-time roster corresponding to targets
      * in given minion list.
@@ -88,17 +92,50 @@ public class SaltSSHService {
         // these values are mostly fixed, which should change when we allow configuring
         // per-minionserver
         target.getTarget().stream().forEach(mid ->
-                roster.addHost(mid, getSSHUser(), Optional.empty(), SSH_PUSH_PORT));
+                roster.addHost(mid, getSSHUser(), Optional.empty(),
+                        Optional.of(SSH_PUSH_PORT)));
 
-        Map<String, Result<SSHResult<R>>> result = callSyncSSHInternal(call,
-                target,
-                roster,
-                false,
-                isSudoUser(getSSHUser()));
-        return result.entrySet().stream()
-                .collect(Collectors.toMap(
-                    kv -> kv.getKey(),
-                    kv -> unwrapSSHReturn(kv.getValue())));
+        return unwrapSSHReturn(
+                callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser())));
+    }
+
+    /**
+     * Synchronously executes a salt function on given glob using salt-ssh.
+     *
+     * Before the execution, this method creates an one-time roster corresponding all
+     * minions with the ssh contact method and minions being currently bootstrapped.
+     *
+     * @param call the salt call
+     * @param target the minion list target
+     * @param <R> result type of the salt function
+     * @return the result of the call
+     * @throws SaltException if something goes wrong during command execution or
+     * during manipulation the salt-ssh roster
+     */
+    public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, Glob target)
+            throws SaltException {
+        SaltRoster roster = createAllServersRoster();
+        return unwrapSSHReturn(
+                callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser())));
+    }
+
+    /**
+     * Helper method for creating a salt roster containing all minions with ssh contact
+     * method and all minions being currently bootstrapped.
+     * @return roster
+     */
+    private SaltRoster createAllServersRoster() {
+        SaltRoster roster = new SaltRoster();
+        Stream.concat(
+                MinionServerFactory.listMinions().stream()
+                        .filter(minion ->
+                                "ssh-push".equals(minion.getContactMethod().getLabel()))
+                        .map(minion -> minion.getMinionId()),
+                SSHMinionsPendingRegistrationService.getMinions().stream())
+                .distinct()
+                .forEach(mid -> roster.addHost(mid, getSSHUser(), Optional.empty(),
+                        Optional.of(SSH_PUSH_PORT)));
+        return roster;
     }
 
     /**
@@ -143,14 +180,19 @@ public class SaltSSHService {
     }
 
     /**
-     * Return the Result object that contains either the error from SSHResult or the
+     * Return the Map of Result objects that contain either the error from SSHResult or the
      * unwrapped return value from SSHResult.
      */
-    private <T> Result<T> unwrapSSHReturn(Result<SSHResult<T>> sshResult) {
-        return sshResult.fold(
-                err -> new Result<T>(Xor.left(sshResult.error().get())),
-                succ -> new Result<T>(Xor.right(sshResult.result().get().getReturn().get()))
-        );
+    private <T> Map<String, Result<T>> unwrapSSHReturn(Map<String,
+            Result<SSHResult<T>>> sshResults) {
+         return sshResults.entrySet().stream()
+                .collect(Collectors.toMap(
+                        kv -> kv.getKey(),
+                        kv -> kv.getValue().fold(
+                                err -> new Result<T>(Xor.left(kv.getValue().error().get())),
+                                succ -> new Result<T>(
+                                        Xor.right(kv.getValue().result().get().getReturn()
+                                                .get())))));
     }
 
     /**
@@ -166,7 +208,7 @@ public class SaltSSHService {
      *
      * @param <T> the return type of the call
      * @param call the call to execute
-     * @param target minions targeted by the call
+     * @param target minions targeted by the call, only Glob and MinionList is supported
      * @param roster salt-ssh roster
      * @param ignoreHostKeys use this option to disable 'StrictHostKeyChecking'
      * @param sudo run command via sudo (default: false)
@@ -177,8 +219,12 @@ public class SaltSSHService {
      * @return result of the call
      */
     private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
-            MinionList target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo)
+            Target target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo)
             throws SaltException {
+        if (!(target instanceof MinionList || target instanceof Glob)) {
+            throw new UnsupportedOperationException("Only MinionList and Glob supported.");
+        }
+
         Path rosterPath = null;
         try {
             rosterPath = roster.persistInTempFile();
@@ -191,9 +237,7 @@ public class SaltSSHService {
                     .refreshCache(true)
                     .build();
 
-            Map<String, Result<SSHResult<T>>> result =
-                    call.callSyncSSH(saltClient, target, sshConfig);
-            return result;
+            return call.callSyncSSH(saltClient, target, sshConfig);
         }
         catch (IOException e) {
             LOG.error("Error operating on roster file: " + e.getMessage());
