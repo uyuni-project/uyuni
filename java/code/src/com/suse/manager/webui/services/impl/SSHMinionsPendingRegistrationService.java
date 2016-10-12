@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.services.impl;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,5 +57,13 @@ public class SSHMinionsPendingRegistrationService {
      */
     public static boolean containsMinion(String minionId) {
         return minionIds.contains(minionId);
+    }
+
+    /**
+     * Get all minion ids in the database.
+     * @return all minion ids
+     */
+    public static Set<String> getMinions() {
+        return Collections.unmodifiableSet(minionIds);
     }
 }
