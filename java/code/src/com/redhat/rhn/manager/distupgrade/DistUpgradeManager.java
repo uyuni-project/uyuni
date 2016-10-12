@@ -299,7 +299,7 @@ public class DistUpgradeManager extends BaseManager {
             }
             else {
                 // Check for addon product channels only if base channel is synced
-                if (target.allChannelsAreSynced()) {
+                if (target.getIsEveryChannelSynced()) {
                     for (SUSEProduct addonProduct : target.getAddonProducts()) {
                         // Look for mandatory child channels
                         List<ChildChannelDto> addonProductChannels = findProductChannels(
