@@ -53,8 +53,6 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
-import com.google.gson.Gson;
-
 /**
  * Action class for scheduling distribution upgrades (Service Pack Migrations).
  */
@@ -88,8 +86,6 @@ public class SPMigrationAction extends RhnAction {
     private static final String MSG_SCHEDULED_MIGRATION = "spmigration.message.scheduled";
     private static final String MSG_SCHEDULED_DRYRUN =
             "spmigration.message.scheduled.dry-run";
-
-    public static final Gson GSON = new Gson();
 
     /**
      * {@inheritDoc}
@@ -207,7 +203,7 @@ public class SPMigrationAction extends RhnAction {
             // Get and decode the target product selected to migrate
             SUSEProductSet targetProducts = new SUSEProductSet();
             for (SUSEProductSet target : migrationTargets) {
-                if (serializeProductIDs(target.getProductIDs())
+                if (target.getSerializedProductIDs()
                         .equals(targetProductSelected)) {
                     targetProducts = target;
                 }
@@ -418,14 +414,5 @@ public class SPMigrationAction extends RhnAction {
             channelIDs.add(c.getId());
         }
         return channelIDs;
-    }
-
-    /**
-     * Serialize product ids
-     * @param ids the list of product ids
-     * @return the serialized product ids
-     */
-    public static String serializeProductIDs(List<Long> ids) {
-        return GSON.toJson(ids);
     }
 }
