@@ -72,7 +72,7 @@ class BootstrapMinions extends React.Component {
     onBootstrap() {
         var formData = {};
         formData['host'] = this.state.host.trim();
-        formData['port'] = this.state.port.trim();
+        formData['port'] = this.state.port.trim() === "" ? undefined : this.state.port.trim();
         formData['user'] = this.state.user.trim() === "" ? undefined : this.state.user.trim();
         formData['password'] = this.state.password.trim();
         formData['activationKeys'] = this.state.activationKey === "" ? [] : [this.state.activationKey] ;
