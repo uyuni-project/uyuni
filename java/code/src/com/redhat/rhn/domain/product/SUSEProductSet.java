@@ -16,6 +16,8 @@ package com.redhat.rhn.domain.product;
 
 import com.redhat.rhn.domain.server.InstalledProduct;
 
+import com.google.gson.Gson;
+
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -36,6 +38,12 @@ public class SUSEProductSet {
 
     // A list of labels of missing channels
     private List<String> missingChannels = null;
+
+    private Boolean isEveryChannelSynced = true;
+
+    private String missingChannelsMessage = "";
+
+    private String serializedProductIDs = "";
 
     /**
      * Default constructor.
@@ -184,8 +192,15 @@ public class SUSEProductSet {
      * Return a flag to know if all channels are synced or not
      * @return true if all channels are synced
      */
-    public Boolean allChannelsAreSynced() {
+    public Boolean getIsEveryChannelSynced() {
         return missingChannels == null || missingChannels.size() == 0;
+    }
+
+    /**
+     * @param isEveryChannelSynced The isEveryChannelSynced to set.
+     */
+    public void setIsEveryChannelSynced(Boolean isEveryChannelSynced) {
+        this.isEveryChannelSynced = isEveryChannelSynced;
     }
 
     /**
@@ -194,10 +209,30 @@ public class SUSEProductSet {
      * @param prefix the warning message prefix
      * @return the missingChannels single String
      */
-    public String stringfyMissingChannels() {
-        String prefix = "Target not available, the following channels are not synced: ";
+    public String getMissingChannelsMessage() {
         String separator = System.getProperty("line.separator") + " - ";
-        return prefix + separator + StringUtils.join(missingChannels, separator);
+        return separator + StringUtils.join(missingChannels, separator);
+    }
+
+    /**
+     * @param missingChannelsMessage The missingChannelsMessage to set.
+     */
+    public void setMissingChannelsMessage(String missingChannelsMessage) {
+        this.missingChannelsMessage = missingChannelsMessage;
+    }
+
+    /**
+     * @return Returns the serializedProductIds.
+     */
+    public String getSerializedProductIDs() {
+        return serializeProductIDs(getProductIDs());
+    }
+
+    /**
+     * @param serializedProductIDs The serializedProductIDs to set.
+     */
+    public void setSerializedProductIDs(String serializedProductIDs) {
+        this.serializedProductIDs = serializedProductIDs;
     }
 
     /**
@@ -221,5 +256,14 @@ public class SUSEProductSet {
         }
         builder.append("]");
         return builder.toString();
+    }
+
+    /**
+     * Serialize product ids
+     * @param ids the list of product ids
+     * @return the serialized product ids
+     */
+    public static String serializeProductIDs(List<Long> ids) {
+        return new Gson().toJson(ids);
     }
 }
