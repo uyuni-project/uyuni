@@ -194,7 +194,8 @@ public class SUSEProductSet {
      * @param prefix the warning message prefix
      * @return the missingChannels single String
      */
-    public String stringfyMissingChannels(String prefix) {
+    public String stringfyMissingChannels() {
+        String prefix = "Target not available, the following channels are not synced: ";
         String separator = System.getProperty("line.separator") + " - ";
         return prefix + separator + StringUtils.join(missingChannels, separator);
     }
