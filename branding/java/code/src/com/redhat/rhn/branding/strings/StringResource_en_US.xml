@@ -1689,6 +1689,10 @@ tree will not be usable for autoinstalling.
       <trans-unit id="spmigration.jsp.error.targetProductSelectedEmpty">
         <source>Please select one target product to migrate</source>
       </trans-unit>
+      <trans-unit id="spmigration.jsp.target.notSyncedChannels">
+        <source>Target not available, the following channels are not synced: </source>
+      </trans-unit>
+
 
       <!-- Setup -->
       <trans-unit id="spmigration.jsp.setup.title">

@@ -5704,8 +5704,8 @@ public class SystemHandler extends BaseHandler {
             }
             if (!targetProducts.allChannelsAreSynced()) {
                 throw new FaultException(-1, "servicePackMigrationNoTarget",
-                    targetProducts.stringfyMissingChannels(
-                    "Target not available, the following channels are not synced: "));
+                        "Target not available, the following channels are not synced: " +
+                        targetProducts.stringfyMissingChannels());
             }
 
             // See if vendor channels are matching the given base channel
