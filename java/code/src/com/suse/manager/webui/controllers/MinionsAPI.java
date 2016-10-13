@@ -269,7 +269,7 @@ public class MinionsAPI {
                                 }
                             }).collect(Collectors.toList());
                             stateApplyResult = message.isEmpty();
-                            if (stateApplyResult) {
+                            if (!stateApplyResult) {
                                 LOG.error(message.stream().collect(Collectors.joining("\n")));
                             }
                         }
