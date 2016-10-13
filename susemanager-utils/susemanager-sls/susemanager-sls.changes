@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 13 12:50:28 CEST 2016 - mc@suse.de
+
+- version 0.1.16-1
+- Only normalize lists (bsc#1004456)
+- Call normalize() before add_scsi_info() (bsc#1004456)
+
+-------------------------------------------------------------------
 Thu Oct 06 14:51:43 CEST 2016 - mc@suse.de
 
 - version 0.1.15-1
