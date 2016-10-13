@@ -542,7 +542,10 @@ public class SaltService {
         }
 
         if (!trdMinionIds.isEmpty()) {
-            results.putAll(call.callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD,
+            results.putAll(call.callSync(SALT_CLIENT,
+                    new MinionList(new ArrayList<>(trdMinionIds)),
+                    SALT_USER,
+                    SALT_PASSWORD,
                     AuthModule.AUTO));
         }
 
