@@ -90,7 +90,7 @@ def normalize(dev):
     :return:
     '''
     for sect, val in dev.items():
-        if len(val) == 1:
+        if isinstance(val, list) and len(val) == 1:
             dev[sect] = val[0]
 
     return dev
