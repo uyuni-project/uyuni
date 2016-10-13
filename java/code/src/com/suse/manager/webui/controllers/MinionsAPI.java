@@ -268,8 +268,10 @@ public class MinionsAPI {
                                     return Stream.empty();
                                 }
                             }).collect(Collectors.toList());
-                            stateApplyResult = message != null;
-                            LOG.error(message.stream().collect(Collectors.joining("\n")));
+                            stateApplyResult = message.isEmpty();
+                            if (stateApplyResult) {
+                                LOG.error(message.stream().collect(Collectors.joining("\n")));
+                            }
                         }
                         else {
                             message = Collections.singletonList(
