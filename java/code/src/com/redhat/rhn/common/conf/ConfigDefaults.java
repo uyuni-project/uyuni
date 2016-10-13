@@ -205,6 +205,12 @@ public class ConfigDefaults {
     public static final String MESSAGE_QUEUE_THREAD_POOL_SIZE =
             "java.message_queue_thread_pool_size";
 
+    /**
+     * Token lifetime in seconds
+     */
+    public static final String TEMP_TOKEN_LIFETIME = "susemanager.temp_token_lifetime";
+    public static final int DEFAULT_TEMP_TOKEN_LIFETIME = 60 * 60; // 1 hour
+
     private ConfigDefaults() {
     }
 

@@ -15,6 +15,8 @@
 package com.redhat.rhn.frontend.xmlrpc.activationkey;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -27,6 +29,8 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -39,6 +43,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.XmlRpcConfigChannelHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -47,9 +52,13 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.token.ActivationKeyCloneCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
+import com.suse.manager.utils.MachinePasswordUtils;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.utils.TokenBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.NonUniqueObjectException;
+import org.jose4j.lang.JoseException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,7 +68,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ActivationKeyHandler
@@ -187,6 +198,87 @@ public class ActivationKeyHandler extends BaseHandler {
         }
         catch (NonUniqueObjectException e) {
             throw new ActivationKeyAlreadyExistsException();
+        }
+    }
+
+    /**
+     *
+     * @param minionId The id of the minion to authenticate with.
+     * @param machinePassword password specific to a machine.
+     * @param activationKey activation key to use channels from.
+     *
+     * @return list of channel infos
+     *
+     * @xmlrpc.param #param_desc("string", "minionId",
+     * "The id of the minion to authenticate with.")
+     * @xmlrpc.param #param_desc("string", "machinePassword",
+     * "password specific to a machine.")
+     * @xmlrpc.param #param_desc("string", "activationKey",
+     * "activation key to use channels from.")
+     *
+     * @xmlrpc.returntype
+     *   #struct("channelInfo")
+     *        #prop_desc("string", "label", "Channel label")
+     *        #prop_desc("string", "name", "Channel name")
+     *        #prop_desc("string", "url", "Channel url")
+     *        #prop_desc("string", "token", "Channel access token")
+     *   #struct_end()
+     *
+     * @throws AuthenticationException if authentication goes wrong
+     * @throws NoSuchActivationKeyException if the given activation key does not exist
+     * @throws NoSuchSystemException if the given minion does not exist
+     * @throws TokenCreationException if the token could not be created
+     */
+    public List<ChannelInfo> listChannels(String minionId,
+        String machinePassword,
+        String activationKey)
+            throws AuthenticationException,
+            NoSuchActivationKeyException,
+            NoSuchSystemException,
+            TokenCreationException {
+        Optional<MinionServer> optMS = MinionServerFactory.findByMinionId(minionId);
+        Optional<ActivationKey> optAK = Optional.ofNullable(
+                ActivationKeyFactory.lookupByKey(activationKey));
+
+        if (!optMS.isPresent()) {
+            throw new NoSuchSystemException(
+                    "Minion with id '" + minionId + "' does not exist.");
+        }
+
+        if (!optAK.isPresent()) {
+            throw new NoSuchActivationKeyException(
+                    "ActivationKey '" + activationKey + "' does not exist.");
+        }
+
+        ActivationKey key = optAK.get();
+        MinionServer minion = optMS.get();
+
+        if (!MachinePasswordUtils.match(minion, machinePassword)) {
+            throw new AuthenticationException("wrong machine password.");
+        }
+
+        TokenBuilder tokenBuilder = new TokenBuilder(minion.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        tokenBuilder.setExpirationTimeMinutesInTheFuture(
+                Config.get().getInt(
+                        ConfigDefaults.TEMP_TOKEN_LIFETIME,
+                        ConfigDefaults.DEFAULT_TEMP_TOKEN_LIFETIME
+                )
+        );
+        tokenBuilder.onlyChannels(key.getChannels()
+                .stream().map(Channel::getLabel)
+                .collect(Collectors.toSet()));
+
+        try {
+            String url = "https://" + SaltStateGeneratorService.getChannelHost(minion) +
+                    "/rhn/manager/download/";
+            String token = tokenBuilder.getToken();
+            return key.getChannels().stream().map(
+                c -> new ChannelInfo(c.getLabel(), c.getName(), url + c.getLabel(), token)
+            ).collect(Collectors.toList());
+        }
+        catch (JoseException e) {
+            throw new TokenCreationException(e);
         }
     }
 
