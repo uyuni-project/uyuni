@@ -158,7 +158,13 @@ public enum SaltStateGeneratorService {
         }
     }
 
-    private String getChannelHost(Server server) {
+    /**
+     * Return the channel hostname for a given server.
+     *
+     * @param server server to get the channel host for.
+     * @return channel hostname.
+     */
+    public static String getChannelHost(Server server) {
         ServerPath path = server.getServerPath();
         if (path == null) {
             // client is not proxied, return this server's hostname
