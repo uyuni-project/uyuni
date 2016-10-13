@@ -268,6 +268,7 @@ def getRegistrationStackSh(saltEnabled):
     """
     PKG_NAME = saltEnabled and ['salt', 'salt-minion'] or ['spacewalk-check', 'spacewalk-client-setup',
                                                            'spacewalk-client-tools']
+    PKG_NAME_YUM = saltEnabled and ['salt', 'salt-minion'] or []
 
     return """\
 echo
@@ -286,7 +287,7 @@ if [ "$INSTALLER" == yum ]; then
     }}
 
     function getY_MISSING() {{
-        local NEEDED="{PKG_NAME}"
+        local NEEDED="{PKG_NAME_YUM}"
         Y_MISSING=""
         for P in $NEEDED; do
             rpm -q "$P" || Y_MISSING="$Y_MISSING $P"
@@ -504,7 +505,7 @@ EOF
   fi
 fi
 
-""".format(PKG_NAME=' '.join(PKG_NAME))
+""".format(PKG_NAME=' '.join(PKG_NAME), PKG_NAME_YUM=' '.join(PKG_NAME_YUM))
 
 def getConfigFilesSh():
     return """\
