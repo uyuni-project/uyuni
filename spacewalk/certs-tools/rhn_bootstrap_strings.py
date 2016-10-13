@@ -267,7 +267,7 @@ def getRegistrationStackSh(saltEnabled):
     installed in order to register this system against SUMa server.
     """
     PKG_NAME = saltEnabled and ['salt', 'salt-minion'] or ['spacewalk-check', 'spacewalk-client-setup',
-                                                           'spacewalk-client-tools']
+                                                           'spacewalk-client-tools', 'zypp-plugin-spacewalk']
     PKG_NAME_YUM = saltEnabled and ['salt', 'salt-minion'] or []
 
     return """\
@@ -357,7 +357,6 @@ if [ "$INSTALLER" == zypper ]; then
 
   function getZ_MISSING() {{
     local NEEDED="{PKG_NAME}"
-    NEEDED="$NEEDED zypp-plugin-spacewalk"
     if [ "$Z_CLIENT_CODE_BASE" == "sle" -a "$Z_CLIENT_CODE_VERSION" == "10" ]; then
       # (bnc#789373) Code 10 product migration requires 'xsltproc' being installed
       which 'xsltproc' || NEEDED="$NEEDED libxslt"
