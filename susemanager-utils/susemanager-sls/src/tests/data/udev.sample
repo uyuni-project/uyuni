@@ -38,3 +38,10 @@ E: TAGS=:power-switch:
 E: USEC_INITIALIZED=2076101
 E: XKBLAYOUT=us
 E: XKBMODEL=pc105
+
+P: /devices/pci0000:00/0000:00:01.1/ata1/host0/target0:0:0/0:0:0:0
+E: DEVPATH=/devices/pci0000:00/0000:00:01.1/ata1/host0/target0:0:0/0:0:0:0
+E: DEVTYPE=scsi_device
+E: DRIVER=sd
+E: MODALIAS=scsi:t-0x00
+E: SUBSYSTEM=scsi
