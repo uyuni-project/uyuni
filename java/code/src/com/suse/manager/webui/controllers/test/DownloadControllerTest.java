@@ -58,7 +58,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     private static String originalMountPoint;
 
     /**
-     * One-time setup.
+     * One-time setup. Does not seem to run if single test method is run.
      * @return Test
      */
     public static Test suite() {
@@ -354,6 +354,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                     DownloadController.class.getSimpleName()));
         } catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
+            assertTrue(e.getBody().contains("The JWT is no longer valid"));
             assertNull(response.raw().getHeader("X-Sendfile"));
         }
     }
