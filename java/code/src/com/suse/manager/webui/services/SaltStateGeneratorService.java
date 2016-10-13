@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SaltCustomState;
@@ -103,6 +104,8 @@ public enum SaltStateGeneratorService {
         SaltPillar pillar = new SaltPillar();
         pillar.add("org_id", minion.getOrg().getId());
         pillar.add("group_ids", groupIds.toArray(new Long[groupIds.size()]));
+
+        pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
 
         Map<String, Object> chanPillar = new HashMap<>();
         try {
