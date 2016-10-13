@@ -254,10 +254,10 @@ public class MinionsAPI {
                     },
                     r -> {
                         // We have results, check if result=true for all the single states
-                        List<String> message;
+                        List<String> messages;
                         boolean stateApplyResult = r.getReturn().isPresent();
                         if (stateApplyResult) {
-                            message = r.getReturn().get().entrySet().stream().flatMap(
+                            messages = r.getReturn().get().entrySet().stream().flatMap(
                                     entry -> {
                                 if (!entry.getValue().isResult()) {
                                     return Stream.of(entry.getKey() + " (retcode=" +
@@ -268,16 +268,18 @@ public class MinionsAPI {
                                     return Stream.empty();
                                 }
                             }).collect(Collectors.toList());
-                            stateApplyResult = message != null;
-                            LOG.error(message.stream().collect(Collectors.joining("\n")));
+                            stateApplyResult = messages.isEmpty();
+                            if (!stateApplyResult) {
+                                LOG.error(messages.stream().collect(Collectors.joining("\n")));
+                            }
                         }
                         else {
-                            message = Collections.singletonList(
+                            messages = Collections.singletonList(
                                     r.getStdout().filter(s -> !s.isEmpty())
                                     .orElseGet(() -> r.getStderr().filter(s -> !s.isEmpty())
                                     .orElseGet(() -> "No result for " + input.getHost()))
                             );
-                            LOG.info(message);
+                            LOG.info(messages);
                         }
 
                         // Clean up the generated key pair in case of failure
@@ -285,7 +287,7 @@ public class MinionsAPI {
                         if (!success) {
                             SALT_SERVICE.deleteKey(input.getHost());
                         }
-                        return bootstrapResult(response, success, message);
+                        return bootstrapResult(response, success, messages);
                     }
             );
         }
