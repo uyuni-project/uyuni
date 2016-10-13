@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 13 12:49:42 CEST 2016 - mc@suse.de
+
+- version 2.5.1.5-1
+- install zypp-plugin-spacewalk only with traditional stack
+- Fix traditional bootstrap on RES (bsc#1004454)
+
+-------------------------------------------------------------------
 Thu Oct 06 15:16:28 CEST 2016 - mc@suse.de
 
 - version 2.5.1.4-1
