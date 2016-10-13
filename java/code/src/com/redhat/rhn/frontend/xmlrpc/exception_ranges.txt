@@ -25,3 +25,5 @@ Org Exceptions              2850-2900
 SearchServer Exceptions     2901-2949
 Authentication Exceptions   2950-2999
 ISS Exceptions              3000-3049
+
+SUSE Exceptions             10000-20000
