@@ -76,14 +76,25 @@ def test_exportdb():
                   'ID_PATH': 'acpi-LNXPWRBN:00',
                   'XKBMODEL': 'pc105',
                   'ID_INPUT_KEY': 1},
-            'N': 'input/event2'}]
+            'N': 'input/event2'},
+           {'P': '/devices/pci0000:00/0000:00:01.1/ata1/host0/target0:0:0/0:0:0:0',
+            'E': {'MODALIAS': 'scsi:t-0x00',
+                  'SUBSYSTEM': 'scsi',
+                  'DEVTYPE': 'scsi_device',
+                  'DRIVER': 'sd',
+                  'DEVPATH': '/devices/pci0000:00/0000:00:01.1/ata1/host0/target0:0:0/0:0:0:0'
+                  },
+            'X-Mgr': {'SCSI_SYS_TYPE': '0'}},
+           ]
 
-    with patch.dict(udevdb.__salt__, {'cmd.run_all': MagicMock(return_value={'retcode': 0, 'stdout': udev_data})}):
+    with patch.dict(udevdb.__salt__, {'cmd.run_all': MagicMock(side_effect=[{'retcode': 0, 'stdout': udev_data},
+                                                                            {'retcode': 0, 'stdout': '0'}])}):
         data = udevdb.exportdb()
         assert data == filter(None, data)
 
         for d_idx, d_section in enumerate(data):
             assert out[d_idx]['P'] == d_section['P']
             assert out[d_idx].get('N') == d_section.get('N')
+            assert out[d_idx].get('X-Mgr') == d_section.get('X-Mgr')
             for key, value in d_section['E'].items():
                 assert out[d_idx]['E'][key] == value
