@@ -70,13 +70,14 @@ def exportdb():
                 dev[query].append(data.strip())
         else:
             if dev:
+                normalize(dev)
                 add_scsi_info(dev)
-                devices.append(normalize(dev))
+                devices.append(dev)
                 dev = {}
     if dev:
-        add_scsi_info(dev)
         normalize(dev)
-        devices.append(normalize(dev))
+        add_scsi_info(dev)
+        devices.append(dev)
 
     return devices
 
