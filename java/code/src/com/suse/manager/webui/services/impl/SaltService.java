@@ -252,9 +252,7 @@ public class SaltService {
      */
     public Map<String, Result<String>> getTimezoneOffsets(MinionList target) {
         try {
-            Map<String, Result<String>> offsets = Timezone.getOffset().callSync(
-                    SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            return offsets;
+            return callSync(Timezone.getOffset(), target);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -346,10 +344,7 @@ public class SaltService {
      */
     public Map<String, Result<String>> runRemoteCommand(MinionList target, String cmd) {
         try {
-            Map<String, Result<String>> result = Cmd.run(cmd).callSync(
-                    SALT_CLIENT, target,
-                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-            return result;
+            return callSync(Cmd.run(cmd), target);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -364,9 +359,7 @@ public class SaltService {
      */
     public Map<String, Result<List<SaltUtil.RunningInfo>>> running(MinionList target) {
         try {
-            return SaltUtil.running().callSync(
-                    SALT_CLIENT, target,
-                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return callSync(SaltUtil.running(), target);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -502,10 +495,9 @@ public class SaltService {
                     .withOffsetSameInstant(ZoneOffset.of(entry.getKey())).toLocalDateTime();
             try {
                 MinionList timezoneTarget = new MinionList(entry.getValue());
-                Map<String, Result<Schedule.Result>> result = Schedule
-                        .add(name, call, targetScheduleDate, metadata)
-                        .callSync(SALT_CLIENT, timezoneTarget,
-                                SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+                Map<String, Result<Schedule.Result>> result = callSync(
+                        Schedule.add(name, call, targetScheduleDate, metadata),
+                        timezoneTarget);
                 return result.entrySet().stream();
             }
             catch (SaltException e) {
@@ -614,9 +606,7 @@ public class SaltService {
     public Map<String, Result<Schedule.Result>> deleteSchedule(
             String name, MinionList target) {
         try {
-            return Schedule.delete(name).callSync(
-                    SALT_CLIENT, target,
-                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return callSync(Schedule.delete(name), target);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
