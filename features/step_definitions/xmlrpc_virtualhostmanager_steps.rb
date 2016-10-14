@@ -23,7 +23,9 @@ When(/^I call virtualhostmanager.getModuleParameters\(\) for "([^"]*)"$/) do |mo
 end
 
 When(/^I call virtualhostmanager.create\("([^"]*)", "([^"]*)"\) and params from "([^"]*)"$/) do |label, moduleName, paramFile|
-  p = JSON.load(File.new(paramFile))
+  fd = File.read(File.new(paramFile))
+  p = JSON.parse(fd) # untested ->
+  # but in slenkins branch the feature in disabled for moment.
   r = virtualhostmanager.create(label, moduleName, p)
   fail if r != 1
 end

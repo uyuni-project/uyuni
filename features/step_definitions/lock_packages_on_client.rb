@@ -19,7 +19,7 @@ Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
   fail unless file_exist($client, zypp_lock_file)
   command = "zypper locks  --solvables | grep #{pkg}"
-  $client.run(command, true, 600, 'root')
+  $client.run(command, false, 600, 'root')
 end
 
 Then(/^Package "(.*?)" is reported as unlocked$/) do |pkg|

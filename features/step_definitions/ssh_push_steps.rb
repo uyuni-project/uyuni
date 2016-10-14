@@ -4,7 +4,7 @@
 When(/^I register this client for SSH push via tunnel$/) do
   # Create backups of /etc/hosts and up2date config
   $server.run("cp /etc/hosts /etc/hosts.BACKUP")
-  $server.run("/etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP")
+  $server.run("cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP")
 
   # Generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'

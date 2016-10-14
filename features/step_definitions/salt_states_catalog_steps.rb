@@ -22,8 +22,8 @@ end
 When(/^I wait for the file "(.*)"$/) do |file|
   # Wait 60 seconds for file to appear
   60.times do
-    break if File.exist?(file)
+    break if file_exist($minion, file)
     sleep 1
   end
-  fail unless File.exist?(file)
+  fail unless file_exist($minion, file)
 end

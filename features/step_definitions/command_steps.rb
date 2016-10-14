@@ -35,11 +35,11 @@ When(/^I execute "([^"]*)"$/) do |arg1|
 end
 
 When(/^file "([^"]*)" exists on server$/) do |arg1|
-  sshcmd("test -f #{arg1}")
+  $server.run("test -f #{arg1}")
 end
 
 When(/^file "([^"]*)" not exists on server$/) do |arg1|
-  sshcmd("test -f #{arg1}")
+  $server.run("test -f #{arg1}")
 end
 
 When(/^file "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
@@ -117,7 +117,9 @@ end
 
 When(/^spacewalk\-channel fails with "([^"]*)"$/) do |arg1|
   command = "spacewalk-channel #{arg1}"
-  $command_output, _code = $client.run(command, true, 500, "root")
+  # we are checking that the cmd should fail here
+  $command_output, code = $client.run(command, false, 500, "root")
+  raise "#{command} should fail, but hasn't" if code.zero?
 end
 
 Then(/^I want to get "([^"]*)"$/) do |arg1|

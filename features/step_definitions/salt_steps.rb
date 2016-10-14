@@ -12,7 +12,7 @@ Given(/^the Salt Minion is configured$/) do
     file_delete($minion, key)
     puts "Key #{key} has been removed on minion"
   end
-  cmd = " echo  \'#{$server_ip}\' >> /etc/salt/minion.d/master.conf"
+  cmd = " echo  \'master : #{$server_ip}\' > /etc/salt/minion.d/master.conf"
   $minion.run(cmd, false)
   step %(I start salt-master)
   step %(I start salt-minion)
@@ -54,7 +54,7 @@ When(/^I follow this minion link$/) do
 end
 
 When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
-  @output = sshcmd("cat #{filename}")
+  $output, _code = $server.run("cat #{filename}")
 end
 
 When(/^I stop salt-master$/) do
@@ -70,7 +70,7 @@ When(/^I stop salt-minion$/) do
 end
 
 When(/^I start salt-minion$/) do
-  $server.run("systemctl start salt-minion", false)
+  $minion.run("systemctl restart salt-minion", false)
 end
 
 When(/^I restart salt-minion$/) do
@@ -78,66 +78,49 @@ When(/^I restart salt-minion$/) do
 end
 
 Then(/^the Salt Minion should be running$/) do
-  out = ""
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        out = `systemctl status salt-minion`
-        break if $?.success?
-        sleep(1)
-      end
-    end
-  rescue Timeout::Error
-    fail "salt-minion status: #{out}"
+  i = 0
+  MAX_ITER = 40
+  loop do
+    _out, code = $minion.run("systemctl status salt-minion", false)
+    break if code.zero?
+    sleep 5
+    puts "sleeping 5 secs, minion not active."
+    i += 1
+    raise "TIMEOUT; something wrong with minion status" if i == MAX_ITER
   end
 end
 
 When(/^I list unaccepted keys at Salt Master$/) do
-  @action = lambda do
-    return sshcmd("salt-key --list unaccepted")
-  end
+  $output, _code = $server.run("salt-key --list unaccepted", false)
+  $output.strip
 end
 
 When(/^I list accepted keys at Salt Master$/) do
-  @action = lambda do
-    return sshcmd("salt-key --list accepted")
-  end
+  $output, _code = $server.run("salt-key --list accepted", false)
+  $output.strip
 end
 
 When(/^I list rejected keys at Salt Master$/) do
-  @action = lambda do
-    return sshcmd("salt-key --list rejected")
-  end
+  $output, _code = $server.run("salt-key --list rejected", false)
+  $output.strip
 end
 
 Then(/^the list of the keys should contain this client's hostname$/) do
-  time_waited = 0
-  begin
-    Timeout.timeout(120) do
-      loop do
-        @output = @action.call
-        break if @output[:stdout].include?($myhostname)
-        sleep(1)
-        time_waited += 1
-      end
-    end
-  rescue Timeout::Error
-    puts "timeout waiting for the key to appear"
-  end
-  assert_match(/#{$minion_hostname}/, @output[:stdout], "#{$minion_hostname} is not listed in the key list")
-  puts "Total time waited: #{time_waited}"
+  sleep 30
+  # FIXME: find better way then to wait 30 seconds
+  $output, _code = $server.run("salt-key --list all", false)
+  assert_match($minion_hostname, $output, "minion #{$minion_hostname} is not listed on salt-master #{$output}")
 end
 
 Given(/^this minion key is unaccepted$/) do
   step "I list unaccepted keys at Salt Master"
-  @output = @action.call
-  unless @output[:stdout].include? $myhostname
+  unless $output.include? $minion_hostname
     steps %(
       Then I delete this minion key in the Salt master
       And I restart salt-minion
       And we wait till Salt master sees this minion as unaccepted
         )
-  end
+     end
 end
 
 When(/^we wait till Salt master sees this minion as unaccepted$/) do
@@ -149,8 +132,7 @@ end
 
 Given(/^this minion key is accepted$/) do
   step "I list accepted keys at Salt Master"
-  @output = @action.call
-  unless @output[:stdout].include? $minion_hostname
+  unless $output.include? $minion_hostname
     steps %(
       Then I accept this minion key in the Salt master
       And we wait till Salt master sees this minion as accepted
@@ -167,8 +149,7 @@ end
 
 Given(/^this minion key is rejected$/) do
   step "I list rejected keys at Salt Master"
-  @output = @action.call
-  unless @output[:stdout].include? $minion_hostname
+  unless $output.include? $minion_hostname
     steps %(
       Then I reject this minion key in the Salt master
       And we wait till Salt master sees this minion as rejected
@@ -184,7 +165,7 @@ When(/^we wait till Salt master sees this minion as rejected$/) do
 end
 
 When(/^I delete this minion key in the Salt master$/) do
-  $server.run("salt-key -y -d #{$minion_hostname}", false)
+  $output, _code = $server.run("salt-key -y -d #{$minion_hostname}", false)
 end
 
 When(/^I accept this minion key in the Salt master$/) do
@@ -204,21 +185,21 @@ When(/^I accept all Salt unaccepted keys$/) do
 end
 
 When(/^I get OS information of the Minion from the Master$/) do
-  @output = sshcmd("salt #{$minion_hostname} grains.get osfullname")
+  $output, _code = $server.run("salt #{$minion_hostname} grains.get osfullname")
 end
 
 Then(/^it should contain a "(.*?)" text$/) do |content|
-  assert_match(/#{content}/, @output[:stdout])
+  assert_match(/#{content}/, $output)
 end
 
 Then(/^salt\-api should be listening on local port (\d+)$/) do |port|
-  output = sshcmd("ss -nta | grep #{port}")
-  assert_match(/127.0.0.1:#{port}/, output[:stdout])
+  $output, _code = $server.run("ss -nta | grep #{port}")
+  assert_match(/127.0.0.1:#{port}/, $output)
 end
 
 Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
-  output = sshcmd("ss -nta | grep #{port}")
-  assert_match(/\*:#{port}/, output[:stdout])
+  $output, _code = $server.run("ss -nta | grep #{port}")
+  assert_match(/\*:#{port}/, $output)
 end
 
 And(/^this minion is not registered in Spacewalk$/) do
