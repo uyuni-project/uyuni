@@ -59,6 +59,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.HashMap;
@@ -809,7 +810,8 @@ public class SaltService {
      */
     public Optional<Map<String, State.ApplyResult>> applyState(
             String minionId, String state) {
-        return callSync(State.apply(state), minionId);
+        return callSync(State.apply(Arrays.asList(state), Optional.empty(),
+                Optional.of(true)), minionId);
     }
 
     /**
