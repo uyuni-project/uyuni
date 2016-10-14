@@ -44,15 +44,15 @@
 - features/install_errata-npn.feature
 - features/clone_channel-npn.feature
 - features/openscap_audit.feature
-#- features/spacewalk_repo_sync.feature
+###- features/spacewalk_repo_sync.feature
 - features/scc-sync-channels.feature
 - features/systemspage2.feature
 - features/xmlrpc_system.feature
 - features/nagios.feature
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
-# features/walk_hrefs.feature
-#- features/powermanagement-test.feature
+### features/walk_hrefs.feature
+#- features/powermanagement-test.feature THIS NEED TO BE ADAPTED TO SLEnkins
 - features/CVE-ID-new-syntax.feature
 - features/datepicker.feature
 - features/delete_system_profile.feature
@@ -64,11 +64,24 @@
 - features/xmlrpc_api.feature
 - features/xmlrpc_activationkey.feature
 - features/xmlrpc_channel.feature
-- features/xmlrpc_VHM.feature
-- features/check_VHM.feature
+#- features/xmlrpc_VHM.feature THIS NEED REWORK FOR SLEnkins
+#- features/check_VHM.feature  THIS NEED REWOEK For SLEnkins
 - features/setup_wizard.feature
 - features/change_password.feature
 - features/spacewalk-debug.feature
-- features/tomcat_errors.feature
+- features/spacewalk-errors.feature
 - features/smdba.feature
-#- features/mgr_create_bootstrap_repo.feature
+###- features/mgr_create_bootstrap_repo.feature
+- features/security.feature
+
+#### Salt related features   ###
+- features/salt.feature
+- features/salt_minions_page.feature
+- features/salt_minion_details.feature
+- features/salt_download_endpoint.feature
+- features/salt_software_states.feature
+- features/salt_pkgset_beacon.feature
+- features/salt_remote_cmds.feature
+- features/salt_install_package.feature
+- features/salt_states_catalog.feature
+

@@ -5,7 +5,6 @@ repository    ${CHANNEL_UPDATES_SERVER}
 install       tests-suse-manager-tests-server
 model 	      m1.medium 
 
-
 node          client
 repository    ${CHANNEL_GALAXY_CLIENT}
 repository    ${CHANNEL_SLENKINS_CLIENT}
@@ -19,6 +18,8 @@ node          minion
 repository    ${CHANNEL_GALAXY_MINION}
 repository    ${CHANNEL_SLENKINS_MINION}
 repository    ${CHANNEL_UPDATES_MINION}
+
 # salt-minion package 
 repository 
 install       tests-suse-manager-tests-minion
+repository    http://download.suse.de/ibs/Devel:/Galaxy:/BuildRepo/SLE_12_SP1/Devel:Galaxy:BuildRepo.repo

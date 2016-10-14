@@ -13,4 +13,4 @@ Feature: Install a package to the client
     And I click on "Confirm"
     And I run rhn_check on this client
     Then I should see a "1 package install has been scheduled for" text
-    And "hoag-dummy-1.1-2.1" is installed
+    And "hoag-dummy-1.1-2.1" is installed on "client"

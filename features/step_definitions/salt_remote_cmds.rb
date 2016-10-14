@@ -11,15 +11,15 @@ When(/^I click on run$/) do
 end
 
 When(/^I should see my hostname$/) do
-  fail unless page.has_content?($myhostname)
+  fail unless page.has_content?($minion_hostname)
 end
 
 When(/^I should not see my hostname$/) do
-  fail if page.has_content?($myhostname)
+  fail if page.has_content?($minion_hostname)
 end
 
 When(/^I expand the results$/) do
-   find("div[id='#{$myhostname}']").click
+   find("div[id='#{$minion_hostname}']").click
 end
 
 When(/^I expand the results for "(.*)"$/) do |host|
@@ -31,7 +31,7 @@ Then(/^I enter command "([^"]*)"$/) do |arg1|
 end
 
 Then(/^I should see "([^"]*)" in the command output$/) do |arg1|
-  within("pre[id='#{$myhostname}-results']") do
+  within("pre[id='#{$minion_hostname}-results']") do
     fail unless page.has_content?('SuSE-release')
   end
 end
@@ -40,12 +40,12 @@ When(/^"(.*)" exists on the filesystem$/) do |file|
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        break if File.exist?(file)
+        break if file_exist($minion, file)
         sleep(1)
       end
     end
   rescue Timeout::Error
     puts "timeout waiting for the file to appear"
   end
-  fail unless File.exist?(file)
+  fail unless file_exist($minion, file)
 end
