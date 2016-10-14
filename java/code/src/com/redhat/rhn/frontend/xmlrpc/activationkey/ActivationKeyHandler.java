@@ -203,11 +203,19 @@ public class ActivationKeyHandler extends BaseHandler {
 
     /**
      *
+     * List the channels for the given activation key
+     * with temporary authentication tokens to access them.
+     * Authentication is done via a machine specific password.
+     *
      * @param minionId The id of the minion to authenticate with.
      * @param machinePassword password specific to a machine.
      * @param activationKey activation key to use channels from.
      *
      * @return list of channel infos
+     *
+     * @xmlrpc.doc List the channels for the given activation key
+     * with temporary authentication tokens to access them.
+     * Authentication is done via a machine specific password.
      *
      * @xmlrpc.param #param_desc("string", "minionId",
      * "The id of the minion to authenticate with.")
@@ -217,12 +225,9 @@ public class ActivationKeyHandler extends BaseHandler {
      * "activation key to use channels from.")
      *
      * @xmlrpc.returntype
-     *   #struct("channelInfo")
-     *        #prop_desc("string", "label", "Channel label")
-     *        #prop_desc("string", "name", "Channel name")
-     *        #prop_desc("string", "url", "Channel url")
-     *        #prop_desc("string", "token", "Channel access token")
-     *   #struct_end()
+     *     #array()
+     *         $ChannelInfoSerializer
+     *     #array_end()
      *
      * @throws AuthenticationException if authentication goes wrong
      * @throws NoSuchActivationKeyException if the given activation key does not exist
