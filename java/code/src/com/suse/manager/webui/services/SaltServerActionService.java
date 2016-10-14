@@ -45,6 +45,7 @@ import org.apache.log4j.Logger;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -365,16 +366,16 @@ public enum SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> packagesRefreshListAction(
             List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE)),
-                minions);
+        ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.PACKAGES_PROFILE_UPDATE),
+                Optional.empty(), Optional.of(true)), minions);
         return ret;
     }
 
     private Map<LocalCall<?>, List<MinionServer>> hardwareRefreshListAction(
             List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE)),
-                minions);
+        ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                Optional.empty(), Optional.of(true)), minions);
         return ret;
     }
 
@@ -399,12 +400,11 @@ public enum SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> applyStatesAction(
             List<MinionServer> minions, Optional<String> states) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        List<String> mods = new ArrayList<>();
         if (states.isPresent()) {
-            ret.put(State.apply(Arrays.asList(states.get().split("\\s*,\\s*"))), minions);
+            mods = Arrays.asList(states.get().split("\\s*,\\s*"));
         }
-        else {
-            ret.put(State.apply(), minions);
-        }
+        ret.put(State.apply(mods, Optional.empty(), Optional.of(true)), minions);
         return ret;
     }
 }
