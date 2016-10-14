@@ -575,7 +575,18 @@ public class SaltService {
     public <T> Map<String, Result<T>> callSync(LocalCall<T> call, Glob target)
             throws SaltException {
         Map<String, Result<T>> results = new HashMap<>();
-        results.putAll(saltSSHService.callSyncSSH(call, target));
+
+        /*
+         todo: we can't safely target ssh minions because if there's no match, we get
+         into trouble due to this salt bug: https://github.com/saltstack/salt/issues/36966
+
+         After the bug is resolved, uncomment the, use the following call to include
+         salt-ssh results and delete the log
+        */
+//        results.putAll(saltSSHService.callSyncSSH(call, target));
+        LOG.warn("Ignoring ssh minions on targeting by glob. " +
+                "The call result won't contain ssh minions results.");
+
         results.putAll(call.callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD,
                 AuthModule.AUTO));
         return results;
