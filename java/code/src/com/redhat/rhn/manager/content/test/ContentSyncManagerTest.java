@@ -77,7 +77,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
     private static final String UPGRADE_PATHS_EMPTY_XML = JARPATH + "upgrade_paths_empty.xml";
 
-
     /** Maximum members for SUSE Manager. */
     public static final long MANY_MEMBERS = 200000L;
 

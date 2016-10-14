@@ -34,7 +34,6 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEUpgradePath;
-import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
@@ -1781,7 +1780,7 @@ public class ContentSyncManager {
      */
     public void performMigration(User user) throws ContentSyncException {
         // Clear relevant database tables
-        SUSEProductTestUtils.clearAllProducts();
+        SUSEProductFactory.clearAllProducts();
 
         // Migrate mirror credentials into the DB
         MirrorCredentialsManager credsManager = new NCCMirrorCredentialsManager();
