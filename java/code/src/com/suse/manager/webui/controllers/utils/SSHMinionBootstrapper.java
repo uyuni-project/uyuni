@@ -79,10 +79,14 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
                 ", proceeding with registration.");
         String minionId = params.getHost();
         SSHMinionsPendingRegistrationService.addMinion(minionId);
-        if (result.isSuccess()) {
-            getRegisterAction().registerSSHMinion(minionId);
+        try {
+            if (result.isSuccess()) {
+                getRegisterAction().registerSSHMinion(minionId);
+            }
         }
-        SSHMinionsPendingRegistrationService.removeMinion(minionId);
+        finally {
+            SSHMinionsPendingRegistrationService.removeMinion(minionId);
+        }
         return result;
     }
 
