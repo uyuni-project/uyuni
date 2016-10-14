@@ -28,11 +28,11 @@ import java.io.Writer;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *  #struct("channelinfo")
- *      #prop("string", "label")
- *      #prop("string", "name")
- *      #prop("string", "url")
- *      #prop("string", "token")
+ *  #struct("channelInfo")
+ *       #prop_desc("string", "label", "Channel label")
+ *       #prop_desc("string", "name", "Channel name")
+ *       #prop_desc("string", "url", "Channel url")
+ *       #prop_desc("string", "token", "Channel access token")
  *  #struct_end()
  *
  */
