@@ -10,9 +10,9 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.6.1
+Version:        2.6.2
 Release:        1%{?dist}
-Summary:        Initial setup tools for Red Hat Spacewalk
+Summary:        Initial setup tools for Spacewalk
 
 Group:          Applications/System
 License:        GPLv2
@@ -213,6 +213,9 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Fri Oct 14 2016 Grant Gainey 2.6.2-1
+- Updated specfile to remove extraneous 'Red Hat'
+
 * Fri Sep 30 2016 Jan Dobes 2.6.1-1
 - require spacewalk-base-minimal-config from spacewalk-setup
 - Bumping package versions for 2.6.

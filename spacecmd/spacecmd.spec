@@ -8,9 +8,9 @@
 %endif
 
 Name:        spacecmd
-Version:     2.6.15
+Version:     2.6.16
 Release:     1%{?dist}
-Summary:     Command-line interface to Spacewalk and Satellite servers
+Summary:     Command-line interface to Spacewalk and Red Hat Satellite servers
 
 Group:       Applications/System
 License:     GPLv3+
@@ -45,7 +45,7 @@ Requires:      python-simplejson
 %endif
 
 %description
-spacecmd is a command-line interface to Spacewalk and Satellite servers
+spacecmd is a command-line interface to Spacewalk and Red Hat Satellite servers
 
 %prep
 %setup -q
@@ -94,6 +94,9 @@ PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 %doc %{_mandir}/man1/spacecmd.1.gz
 
 %changelog
+* Wed Oct 12 2016 Grant Gainey 2.6.16-1
+- Update Satellite to Red Hat Satellite (trademark)
+
 * Wed Sep 28 2016 Eric Herget <eherget@redhat.com> 2.6.15-1
 - 1368397 - spacecmd should generate caches for the server+user combination
 

@@ -20,9 +20,9 @@ import time
 import gzip
 import tempfile
 from optparse import Option, OptionParser
-from rhn import rpclib
-from rhn.connections import idn_ascii_to_puny
+from xml.dom.minidom import parseString
 from M2Crypto import X509
+
 
 # Check if python-rhsm is installed
 try:
@@ -36,6 +36,8 @@ try:
 except ImportError:
     class TimeoutException(Exception):
         pass
+from rhn import rpclib
+from rhn.connections import idn_ascii_to_puny
 
 # common, server imports
 from spacewalk.common import rhnLib, fileutils
@@ -317,26 +319,63 @@ def activateSatellite_remote(options):
                         options.http_proxy_password,
                         options.ca_cert,
                         not options.no_ssl)
-    if not os.path.exists(options.systemid):
-        msg = ("ERROR: Server not registered? No systemid: %s"
-               % options.systemid)
-        sys.stderr.write(msg+"\n")
+
+    systemid = None
+    if os.path.exists(options.systemid):
+        systemid_file = open(options.systemid, 'rb')
+        systemid = systemid_file.read()
+        systemid_file.close()
+
+    rhsm_uuid = getRHSMUuid()
+
+    if options.old_api:
+        if not systemid:
+            msg = ("ERROR: Server not registered to RHN? No systemid: %s"
+                   % options.systemid)
+            sys.stderr.write(msg+"\n")
+            raise RHNCertRemoteSatelliteAlreadyActivatedException(msg)
+    elif not rhsm_uuid:
+        msg = "ERROR: Server not registered to RHSM? No identity found."
+        sys.stderr.write(msg + "\n")
         raise RHNCertRemoteSatelliteAlreadyActivatedException(msg)
-    systemid = open(options.systemid, 'rb').read()
+
     rhn_cert = openGzippedFile(options.rhn_cert).read()
-    ret = None
-    oldApiYN = DEFAULT_WEB_HANDLER == '/WEBRPC/satellite.pxt'
-    if not oldApiYN:
+    if systemid:
+        # Find description in systemid XML
+        systemid_description = ""
+        systemid_members = parseString(systemid).getElementsByTagName("member")
+        for member in systemid_members:
+            name = member.getElementsByTagName('name')[0].firstChild.nodeValue
+            if name == 'description':
+                systemid_description = (member.getElementsByTagName('value')[0]
+                                        .getElementsByTagName('string')[0]
+                                        .firstChild.nodeValue)
+                break
+
+        # Systems having RHSM in description received this file from activation API => are activated
+        if 'RHSM' in systemid_description and not options.force:
+            msg = ("ERROR: This system is probably already activated Satellite. If you want "
+                   "to activate it again, please run with --force parameter.")
+            sys.stderr.write(msg + "\n")
+            raise RHNCertRemoteSatelliteAlreadyActivatedException(msg)
+
         try:
             if options.verbose:
                 print "Executing: remote XMLRPC deactivation (if necessary)."
-            ret = s.satellite.deactivate_satellite(systemid, rhn_cert)
+            s.satellite.deactivate_satellite(systemid, rhn_cert)
         except rpclib.xmlrpclib.Fault, f:
             # 1025 results in "satellite_not_activated"
             if abs(f.faultCode) != 1025:
                 sys.stderr.write('ERROR: unhandled XMLRPC fault upon '
                                  'remote deactivation (reraising): %s\n' % f)
                 raise RHNCertRemoteActivationException('%s' % f), None, sys.exc_info()[2]
+
+        # Delete systemid file because new will be received
+        if not options.old_api:
+            if options.verbose:
+                print("NOTE: Existing systemid file will be overwritten.")
+            os.unlink(options.systemid)
+            systemid = None
 
     no_sat_chan_for_version = 'no_sat_for_version'
     no_sat_chan_for_version1 = "Unhandled exception 'no_sat_chan_for_version' (unhandled_named_exception)"
@@ -346,22 +385,19 @@ def activateSatellite_remote(options):
     try:
         if options.verbose:
             print "Executing: remote XMLRPC activation call."
-        ret = s.satellite.activate_satellite(systemid, rhn_cert)
+        if systemid:
+            ret = s.satellite.activate_satellite(systemid, rhn_cert)
+        # System registered to RHSM
+        else:
+            ret = s.satellite.activate_satellite_registered_to_RHSM(rhsm_uuid, rhn_cert)
+            # Write returned systemid file
+            systemid_file = open(options.systemid, 'wb')
+            systemid_file.write(ret)
+            systemid_file.close()
     except rpclib.xmlrpclib.Fault, f:
         sys.stderr.write("Error reported from RHN: %s\n" % f)
-        # NOTE: we support the old (pre-cactus) web-handler API and the new.
-        # The old web handler used faultCodes of 1|-1 and the new API uses
-        # faultCodes in the range [1020, ..., 1039]
-        if oldApiYN and abs(f.faultCode) == 1:
-            sys.stderr.write(
-                'ERROR: error upon attempt to activate this %s\n'
-                'against the RHN hosted service.\n\n%s\n' % (PRODUCT_NAME, f))
-            raise RHNCertRemoteActivationException('%s' % f), None, sys.exc_info()[2]
-
-        if not oldApiYN \
-          and (abs(f.faultCode) in range(1020, 1039+1)
-               or f.faultString in (no_sat_chan_for_version,
-                                    no_sat_chan_for_version1)):
+        if (abs(f.faultCode) in range(1020, 1039+1) or f.faultString in (no_sat_chan_for_version,
+                                                                         no_sat_chan_for_version1)):
             if abs(f.faultCode) == 1020:
                 # 1020 results in "no_management_slots"
                 print "NOTE: no management slots found on the hosted account."
@@ -515,6 +551,9 @@ def processCommandline():
                + '(accumulable: -vvv means "be *really* verbose").'),
         Option('--dump-version', action='store', help="requested version of XML dump"),
         Option('--manifest',     action='store',      help='the RHSM manifest path/filename to activate for CDN'),
+        Option('--old-api', action='store_true', help='activate Satellite using old API, system '
+               + 'has to be registered to RHN Classic'),
+        Option('-f', '--force', action='store_true', help='force activate Satellite if it is already activated'),
     ]
 
     options, args = OptionParser(option_list=options).parse_args()
