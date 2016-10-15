@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.4
+Version: 2.6.5
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -51,7 +51,7 @@ This package contains the HTML files for the Spacewalk web site.
 
 %package -n spacewalk-base
 Group: Applications/Internet
-Summary: Programs needed to be installed on the RHN Web base classes
+Summary: Programs which need to be installed for the Spacewalk Web base classes
 Provides: spacewalk(spacewalk-base) = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: susemanager-frontend-libs
@@ -68,7 +68,7 @@ Provides: rhn-base = 5.3.0
 
 
 %description -n spacewalk-base
-This package includes the core RHN:: packages necessary to manipulate
+This package includes the core RHN:: packages necessary to manipulate the
 database.  This includes RHN::* and RHN::DB::*.
 
 
@@ -185,6 +185,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Oct 14 2016 Grant Gainey 2.6.5-1
+- Update specfile for RHN reference and minor wordsmithing
+
 * Mon Oct 03 2016 Jiri Dostal <jdostal@redhat.com> 2.6.4-1
 - 'shrink-segments' works on embedded PostgreSQL as well
 
@@ -1948,8 +1951,8 @@ rm -rf $RPM_BUILD_ROOT
 
 * Thu Nov 18 2010 Lukas Zapletal 1.3.1-1
 - Replacing DECODE function with CASE-SWITCH (4x)
-- Marking the master as nightly. 
-- Bumping package versions for 1.3. 
+- Marking the master as nightly.
+- Bumping package versions for 1.3.
 
 * Mon Nov 15 2010 Jan Pazdziora 1.2.27-1
 - bumping api version (jsherril@redhat.com)
