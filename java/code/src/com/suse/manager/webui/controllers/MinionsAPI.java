@@ -270,7 +270,8 @@ public class MinionsAPI {
                             }).collect(Collectors.toList());
                             stateApplyResult = messages.isEmpty();
                             if (!stateApplyResult) {
-                                LOG.error(messages.stream().collect(Collectors.joining("\n")));
+                                LOG.error(messages.stream().collect(
+                                        Collectors.joining("\n")));
                             }
                         }
                         else {
