@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.Config;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
@@ -557,7 +558,7 @@ public class SaltService {
                 .filter(mid -> {
                     Optional<MinionServer> minion = MinionServerFactory.findByMinionId(mid);
                     return minion.isPresent() &&
-                            "ssh-push".equals(minion.get().getContactMethod().getLabel()) ||
+                            MinionServerUtils.isSshPushMinion(minion.get()) ||
                             SSHMinionsPendingRegistrationService.containsMinion(mid);
                 }).collect(Collectors.toSet());
     }
