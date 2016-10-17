@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Tests for bootstrapping salt ssh minions.
+ * Tests for bootstrapping salt-ssh minions.
  */
 public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBase {
 

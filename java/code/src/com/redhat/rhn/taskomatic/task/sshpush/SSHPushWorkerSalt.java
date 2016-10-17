@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 import java.util.Optional;
 
 /**
- * SSH push worker executing actions via Salt SSH.
+ * SSH push worker executing actions via salt-ssh.
  */
 public class SSHPushWorkerSalt implements QueueWorker {
 
