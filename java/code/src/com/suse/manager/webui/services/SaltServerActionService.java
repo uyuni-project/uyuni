@@ -35,6 +35,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Cmd;
+import com.suse.salt.netapi.calls.modules.Event;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -184,6 +185,9 @@ public enum SaltServerActionService {
         else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) actionIn;
             return applyStatesAction(minions, applyStatesAction.getDetails().getMods());
+        }
+        else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
+            return distUpgradeAction(actionIn.getId(), minions);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -399,6 +403,15 @@ public enum SaltServerActionService {
             List<MinionServer> minions, List<String> mods) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         ret.put(State.apply(mods, Optional.empty(), Optional.of(true)), minions);
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> distUpgradeAction(long actionId,
+            List<MinionServer> minions) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        Map<String, Object> eventData = new HashMap<>();
+        eventData.put("action_id", actionId);
+        ret.put(Event.fireMaster(eventData, "manager/trigger/sp-migration"), minions);
         return ret;
     }
 }
