@@ -19,7 +19,7 @@ import com.google.gson.GsonBuilder;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
-import com.suse.manager.webui.controllers.utils.TraditionalMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 import com.suse.salt.netapi.calls.wheel.Key;
@@ -174,7 +174,7 @@ public class MinionsAPI {
     public static String bootstrap(Request request, Response response, User user) {
         return json(
                 response,
-                TraditionalMinionBootstrapper.getInstance().bootstrap(
+                RegularMinionBootstrapper.getInstance().bootstrap(
                         GSON.fromJson(request.body(), JSONBootstrapHosts.class),
                         user));
     }

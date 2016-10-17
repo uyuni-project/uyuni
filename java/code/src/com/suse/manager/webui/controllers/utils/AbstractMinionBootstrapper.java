@@ -54,7 +54,7 @@ public abstract class AbstractMinionBootstrapper {
     }
 
     /**
-     * Bootstrap a traditional salt minion system (as in master-minion).
+     * Bootstrap a regular salt minion system (as in master-minion).
      * @param input data about the bootstrapped system
      * @param user user performing the procedure
      * @return map containing success flag and error messages.
