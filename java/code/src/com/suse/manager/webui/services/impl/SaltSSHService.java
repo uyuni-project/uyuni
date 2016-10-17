@@ -16,6 +16,7 @@ package com.suse.manager.webui.services.impl;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -128,8 +129,7 @@ public class SaltSSHService {
         SaltRoster roster = new SaltRoster();
         Stream.concat(
                 MinionServerFactory.listMinions().stream()
-                        .filter(minion ->
-                                "ssh-push".equals(minion.getContactMethod().getLabel()))
+                        .filter(minion -> MinionServerUtils.isSshPushMinion(minion))
                         .map(minion -> minion.getMinionId()),
                 SSHMinionsPendingRegistrationService.getMinions().stream())
                 .distinct()
