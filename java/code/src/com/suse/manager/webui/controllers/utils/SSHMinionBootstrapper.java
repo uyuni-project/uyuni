@@ -75,7 +75,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     @Override
     protected BootstrapResult bootstrapInternal(BootstrapParameters params, User user) {
         BootstrapResult result = super.bootstrapInternal(params, user);
-        LOG.info("Salt-ssh system bootstrap success: " + result.isSuccess() +
+        LOG.info("salt-ssh system bootstrap success: " + result.isSuccess() +
                 ", proceeding with registration.");
         String minionId = params.getHost();
         SSHMinionsPendingRegistrationService.addMinion(minionId);

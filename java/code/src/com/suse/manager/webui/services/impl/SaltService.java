@@ -90,7 +90,7 @@ public class SaltService {
     // Shared salt client instance
     private final SaltClient SALT_CLIENT = new SaltClient(SALT_MASTER_URI);
 
-    // executing salt ssh calls
+    // executing salt-ssh calls
     private final SaltSSHService saltSSHService;
 
     private SaltCustomStateStorageManager customSaltStorageManager =
