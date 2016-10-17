@@ -65,7 +65,7 @@ public class SaltSSHService {
     }
 
     /**
-     * Returns the user that should be used for the ssh calls done by salt ssh.
+     * Returns the user that should be used for the ssh calls done by salt-ssh.
      * @return the user
      */
     public static String getSSHUser() {
@@ -197,7 +197,7 @@ public class SaltSSHService {
 
     /**
      * Boilerplate for executing a synchronous salt-ssh code. This involves:
-     * - generating the salt SSH config,
+     * - generating the salt config,
      * - generating the roster, storing it on the disk,
      * - calling the salt-ssh via salt-api,
      * - cleaning up the roster file after the job is done.

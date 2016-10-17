@@ -293,7 +293,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             // HACK
             if (isSaltSSH) {
-                LOG.info("Salt-ssh minion profile created. Stopping.");
+                LOG.info("salt-ssh minion profile created. Stopping.");
                 return;
             }
 
