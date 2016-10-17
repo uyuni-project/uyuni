@@ -516,7 +516,7 @@ select sa.server_id
                      (select NULL as uuid from dual) ra_6_,
                      (select NULL as uuid, NULL as memory from dual) ra_7_,
                      (select NULL as uuid, NULL as vcpu from dual) ra_8_
-                     where ra.id = (select ac.id
+                     where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id
                                       inner join suseMinionInfo mi on sa.server_id = mi.server_id
