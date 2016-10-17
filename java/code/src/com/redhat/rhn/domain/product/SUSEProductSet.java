@@ -131,7 +131,9 @@ public class SUSEProductSet {
         if (addonProducts == null) {
             addonProducts = new ArrayList<SUSEProduct>();
         }
-        addonProducts.add(addonProduct);
+        if (addonProduct != null) {
+            addonProducts.add(addonProduct);
+        }
     }
 
     /**
