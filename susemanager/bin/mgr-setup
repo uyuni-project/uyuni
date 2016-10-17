@@ -315,8 +315,8 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
 
 dump_remote_db() {
     echo "`date +"%H:%M:%S"`   Dumping remote database to $TMPDIR/$DBDUMPFILE on target system. Please wait..."
-    scp -i $KEYFILE /usr/lib/susemanager/bin/tclfilter root@$SATELLITE_IP:/tmp
-    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"pg_dump $MANAGER_DB_NAME | /tmp/tclfilter | gzip\"" > $TMPDIR/$DBDUMPFILE
+    scp -i $KEYFILE /usr/lib/susemanager/bin/tclfilter root@$SATELLITE_IP:/usr/lib/susemanager/bin
+    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"pg_dump $MANAGER_DB_NAME | /usr/lib/susemanager/bin/tclfilter | gzip\"" > $TMPDIR/$DBDUMPFILE
     if [ $? -eq 0 ]; then
         echo -n "`date +"%H:%M:%S"`   Database successfully dumped. Size is: "
         du -h $TMPDIR/$DBDUMPFILE | cut -f 1
