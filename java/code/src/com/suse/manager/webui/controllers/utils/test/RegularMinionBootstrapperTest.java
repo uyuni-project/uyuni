@@ -2,7 +2,7 @@ package com.suse.manager.webui.controllers.utils.test;
 
 import com.google.gson.JsonPrimitive;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.suse.manager.webui.controllers.utils.TraditionalMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 import com.suse.manager.webui.utils.salt.Key;
@@ -18,14 +18,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Tests for bootstrapping traditional minions.
+ * Tests for bootstrapping regular minions.
  */
-public class TraditionalMinionBootstrapperTest extends AbstractMinionBootstrapperTestBase {
+public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTestBase {
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        bootstrapper = new TraditionalMinionBootstrapper(saltServiceMock);
+        bootstrapper = new RegularMinionBootstrapper(saltServiceMock);
     }
 
     /**

@@ -522,7 +522,7 @@ public class SaltService {
         List<String> minionIds = target.getTarget();
 
         Set<String> sshMinionIds = filterSSHMinionIds(minionIds);
-        Set<String> trdMinionIds = minionIds.stream()
+        Set<String> regularMinionIds = minionIds.stream()
                 .filter(mid -> !sshMinionIds.contains(mid)).collect(Collectors.toSet());
 
         Map<String, Result<T>> results = new HashMap<>();
@@ -533,9 +533,9 @@ public class SaltService {
                     new MinionList(new ArrayList<>(sshMinionIds))));
         }
 
-        if (!trdMinionIds.isEmpty()) {
+        if (!regularMinionIds.isEmpty()) {
             results.putAll(call.callSync(SALT_CLIENT,
-                    new MinionList(new ArrayList<>(trdMinionIds)),
+                    new MinionList(new ArrayList<>(regularMinionIds)),
                     SALT_USER,
                     SALT_PASSWORD,
                     AuthModule.AUTO));

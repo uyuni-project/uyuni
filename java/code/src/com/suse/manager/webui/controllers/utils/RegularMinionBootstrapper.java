@@ -30,27 +30,27 @@ import java.util.Map;
 /**
  * Code for bootstrapping salt minions using salt-ssh.
  */
-public class TraditionalMinionBootstrapper extends AbstractMinionBootstrapper {
+public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
 
-    private static TraditionalMinionBootstrapper instance;
-    private static final Logger LOG = Logger.getLogger(TraditionalMinionBootstrapper.class);
+    private static RegularMinionBootstrapper instance;
+    private static final Logger LOG = Logger.getLogger(RegularMinionBootstrapper.class);
 
     /**
      * Standard constructor. For testing only - to obtain instance of this class, use
      * getInstance.
      * @param saltService salt service to use
      */
-    public TraditionalMinionBootstrapper(SaltService saltService) {
+    public RegularMinionBootstrapper(SaltService saltService) {
         super(saltService);
     }
 
     /**
-     * Get instance of the TraditionalMinionBootstrapper
-     * @return instance of the TraditionalMinionBootstrapper
+     * Get instance of the RegularMinionBootstrapper
+     * @return instance of the RegularMinionBootstrapper
      */
-    public static synchronized TraditionalMinionBootstrapper getInstance() {
+    public static synchronized RegularMinionBootstrapper getInstance() {
         if (instance == null) {
-            instance = new TraditionalMinionBootstrapper(SaltService.INSTANCE);
+            instance = new RegularMinionBootstrapper(SaltService.INSTANCE);
         }
         return instance;
     }
