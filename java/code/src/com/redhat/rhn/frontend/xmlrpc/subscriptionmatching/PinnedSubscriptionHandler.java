@@ -96,7 +96,7 @@ public class PinnedSubscriptionHandler extends BaseHandler {
      * @param pinnedSubscriptionId - id of Pinned Subscription to delete
      * @return 1 if successful, exception otherwise
      *
-     * @xmlrpc.doc Deletes Pinned Subsription with given id
+     * @xmlrpc.doc Deletes Pinned Subscription with given id
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("int", "pinnedSubscriptionId" "Pinned Subscription id")
      * @xmlrpc.returntype #return_int_success()
