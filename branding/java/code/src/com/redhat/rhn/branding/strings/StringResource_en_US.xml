@@ -426,6 +426,12 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="paramnotes">Combined Patch Update: RHSA-2004:577 - Security Advisory (and 4 more patches)</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="errata.overview.jsp.summary">
+          <source>The following patches apply to at least one system to which you have administrative access.</source>
+      </trans-unit>
+      <trans-unit id="errata.all.jsp.summary">
+          <source>The following patches list represents all errata accessible by your organization.</source>
+      </trans-unit>
       <trans-unit id="affectedsystems.jsp.summary">
         <source>Below is a list of systems affected by this patch.</source>
       </trans-unit>
