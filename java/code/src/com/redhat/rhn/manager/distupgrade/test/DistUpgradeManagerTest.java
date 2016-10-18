@@ -381,7 +381,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         Set<ServerAction> serverActions = action.getServerActions();
         assertEquals(server, serverActions.iterator().next().getServer());
         DistUpgradeActionDetails details = action.getDetails();
-        assertEquals('Y', details.getDryRun());
+        assertTrue(details.isDryRun());
 
         // Check product upgrade
         Set<SUSEProductUpgrade> upgrades = details.getProductUpgrades();
