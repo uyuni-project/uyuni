@@ -19,7 +19,8 @@ TEST_MANAGER_STATIC_TOP = {
         "packages",
         "custom",
         "custom_groups",
-        "custom_org"
+        "custom_org",
+        "formulas"
     ]
 }
 
