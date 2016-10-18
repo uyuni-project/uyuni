@@ -332,7 +332,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         else if (action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
             DistUpgradeAction dupAction = (DistUpgradeAction) action;
             DistUpgradeActionDetails actionDetails = dupAction.getDetails();
-            if (actionDetails.getDryRun()  == 'Y') {
+            if (actionDetails.isDryRun()) {
                 // TODO: Dry run, roll back channel assignments
             }
         }
