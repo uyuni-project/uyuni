@@ -27,7 +27,9 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         List<String> minionIds = new ArrayList<>();
         minionIds.add("m1");
         minionIds.add("m2");
-        assertEquals(Collections.emptySet(), SaltService.filterSSHMinionIds(minionIds));
+        assertEquals(
+                Collections.emptyList(),
+                SaltService.partitionMinionsByContactMethod(minionIds).get(true));
     }
 
     public void testfilterSSHMinionIdsBootstrap() {
@@ -35,8 +37,9 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         List<String> minionIds = new ArrayList<>();
         minionIds.add("m1");
         minionIds.add("m2");
-        assertEquals(Collections.singleton("m1"),
-                SaltService.filterSSHMinionIds(minionIds));
+        assertEquals(
+                Collections.singletonList("m1"),
+                SaltService.partitionMinionsByContactMethod(minionIds).get(true));
         SSHMinionsPendingRegistrationService.removeMinion("m1");
     }
 
@@ -47,8 +50,9 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         List<String> minionIds = new ArrayList<>();
         minionIds.add(sshMinion.getMinionId());
         minionIds.add("m2");
-        assertEquals(Collections.singleton(sshMinion.getMinionId()),
-                SaltService.filterSSHMinionIds(minionIds));
+        assertEquals(
+                Collections.singletonList(sshMinion.getMinionId()),
+                SaltService.partitionMinionsByContactMethod(minionIds).get(true));
     }
 
     public void testfilterSSHMinionIdsMixedMinions() throws Exception {
@@ -60,7 +64,8 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         List<String> minionIds = new ArrayList<>();
         minionIds.add(sshMinion.getMinionId());
         minionIds.add(minion.getMinionId());
-        assertEquals(Collections.singleton(sshMinion.getMinionId()),
-                SaltService.filterSSHMinionIds(minionIds));
+        assertEquals(
+                Collections.singletonList(sshMinion.getMinionId()),
+                SaltService.partitionMinionsByContactMethod(minionIds).get(true));
     }
 }

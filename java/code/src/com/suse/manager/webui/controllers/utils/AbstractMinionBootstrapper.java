@@ -15,7 +15,6 @@
 package com.suse.manager.webui.controllers.utils;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
@@ -185,14 +184,13 @@ public abstract class AbstractMinionBootstrapper {
                     ") seems to already exist, please check!");
         }
 
-        Optional<MinionServer> minion = MinionServerFactory.findByMinionId(input.getHost());
-        if (minion.isPresent()) {
-            return new BootstrapResult(false, "A system '" +
-                    minion.get().getName() + "' with minion id " + input.getHost() +
-                    " seems to already exist,  please check!");
-        }
-
-        return new BootstrapResult(true);
+        return MinionServerFactory.findByMinionId(input.getHost())
+                .map(m -> new BootstrapResult(false, "A system '" +
+                        m.getName() + "' with minion id " + input.getHost() +
+                        " seems to already exist,  please check!"))
+                .orElseGet(
+                        () -> new BootstrapResult(true)
+                );
     }
 
     /**
