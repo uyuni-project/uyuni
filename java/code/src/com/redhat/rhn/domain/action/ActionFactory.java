@@ -54,14 +54,10 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
-import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.rhnset.RhnSetManager;
-
-import com.suse.manager.webui.services.impl.SaltService;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -69,7 +65,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -141,31 +136,6 @@ public class ActionFactory extends HibernateFactory {
         for (long id : ids) {
             try {
                 removeActionForSystem(actionId, id);
-            }
-            catch (Exception e) {
-                failed++;
-            }
-        }
-        return failed;
-    }
-
-    /**
-     * Remove an action for an rhnset of system ids with the given label
-     * @param actionId the action to remove
-     * @param setLabel the set label to pull the ids from
-     * @param user the user witht he set
-     * @return the number of failed systems to remove an action for.
-     */
-    public static int removeActionForSystemSet(long actionId,
-            String setLabel, User user) {
-
-        RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
-        List<Long> ids = SaltService.INSTANCE.deleteSchedulesForActionId(
-                new ArrayList<>(set.getElementValues()), actionId);
-        int failed = 0;
-        for (Long sid : ids) {
-            try {
-                removeActionForSystem(actionId, sid);
             }
             catch (Exception e) {
                 failed++;
