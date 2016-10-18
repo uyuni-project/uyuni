@@ -562,7 +562,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             String arch = saltProduct.getArch();
             boolean isbase = saltProduct.getIsbase();
 
-            // Find the corresponding SUSEProduct in the database
+            // Find the corresponding SUSEProduct in the database, if any
             Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
                     .findSUSEProduct(name, version, release, arch, true));
             if (!suseProduct.isPresent()) {
@@ -570,15 +570,14 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         name, version, release, arch));
             }
 
-            return suseProduct.map(product -> {
-                InstalledProduct installedProduct = new InstalledProduct();
-                installedProduct.setName(product.getName());
-                installedProduct.setVersion(product.getVersion());
-                installedProduct.setRelease(product.getRelease());
-                installedProduct.setArch(product.getArch());
-                installedProduct.setBaseproduct(isbase);
-                return Stream.of(installedProduct);
-            }).orElseGet(Stream::empty);
+            // Use installed product information from the client
+            InstalledProduct installedProduct = new InstalledProduct();
+            installedProduct.setName(name);
+            installedProduct.setVersion(version);
+            installedProduct.setRelease(release);
+            installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
+            installedProduct.setBaseproduct(isbase);
+            return Stream.of(installedProduct);
         }).collect(Collectors.toSet());
     }
 
