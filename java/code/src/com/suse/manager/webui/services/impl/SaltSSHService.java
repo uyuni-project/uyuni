@@ -189,10 +189,8 @@ public class SaltSSHService {
                 .collect(Collectors.toMap(
                         kv -> kv.getKey(),
                         kv -> kv.getValue().fold(
-                                err -> new Result<T>(Xor.left(kv.getValue().error().get())),
-                                succ -> new Result<T>(
-                                        Xor.right(kv.getValue().result().get().getReturn()
-                                                .get())))));
+                                err -> new Result<T>(Xor.left(err)),
+                                succ -> new Result<T>(Xor.right(succ.getReturn().get())))));
     }
 
     /**
