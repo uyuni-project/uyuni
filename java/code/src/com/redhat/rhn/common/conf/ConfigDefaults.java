@@ -169,6 +169,8 @@ public class ConfigDefaults {
     public static final String AUDIT_ENABLED = "audit.enabled";
     public static final String AUDIT_SERVER = "audit.server";
 
+    public static final String CONFIG_KEY_SUDO_USER = "ssh_push_sudo_user";
+
     /**
      * System Currency defaults
      */

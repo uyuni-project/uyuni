@@ -14,7 +14,9 @@
  */
 package com.suse.manager.webui.services.impl;
 
+import com.redhat.rhn.common.CommonConstants;
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.SaltRoster;
@@ -47,9 +49,7 @@ import java.util.stream.Stream;
  */
 public class SaltSSHService {
 
-    private static final String CONFIG_KEY_SUDO_USER = "ssh_push_sudo_user";
     private static final String SSH_KEY_PATH = "/srv/susemanager/salt/salt_ssh/mgr_ssh_id";
-    private static final String ROOT = "root";
     public static final int SSH_PUSH_PORT = 22;
 
     private static final Logger LOG = Logger.getLogger(SaltSSHService.class);
@@ -70,8 +70,8 @@ public class SaltSSHService {
      * @return the user
      */
     public static String getSSHUser() {
-        String sudoUser = Config.get().getString(CONFIG_KEY_SUDO_USER);
-        return StringUtils.isBlank(sudoUser) ? ROOT : sudoUser;
+        String sudoUser = Config.get().getString(ConfigDefaults.CONFIG_KEY_SUDO_USER);
+        return StringUtils.isBlank(sudoUser) ? CommonConstants.ROOT : sudoUser;
     }
 
     /**
@@ -176,7 +176,7 @@ public class SaltSSHService {
     }
 
     private boolean isSudoUser(String user) {
-        return !ROOT.equals(user);
+        return !CommonConstants.ROOT.equals(user);
     }
 
     /**
