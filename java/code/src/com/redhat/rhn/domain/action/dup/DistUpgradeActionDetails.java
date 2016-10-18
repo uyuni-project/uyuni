@@ -61,10 +61,24 @@ public class DistUpgradeActionDetails extends ActionChild {
     }
 
     /**
+     * @return the dryRun as boolean
+     */
+    public boolean isDryRun() {
+        return getDryRun() == 'Y';
+    }
+
+    /**
      * @param dryRunIn the dryRun to set
      */
     public void setDryRun(char dryRunIn) {
         this.dryRun = dryRunIn;
+    }
+
+    /**
+     * @param dryRunIn the dryRun to set
+     */
+    public void setDryRun(boolean dryRunIn) {
+        setDryRun(dryRunIn ? 'Y' : 'N');
     }
 
     /**
@@ -75,10 +89,24 @@ public class DistUpgradeActionDetails extends ActionChild {
     }
 
     /**
+     * @return the fullUpdate as boolean
+     */
+    public boolean isFullUpdate() {
+        return getFullUpdate() == 'Y';
+    }
+
+    /**
      * @param fullUpdateIn the fullUpdate to set
      */
     public void setFullUpdate(char fullUpdateIn) {
         this.fullUpdate = fullUpdateIn;
+    }
+
+    /**
+     * @param fullUpdateIn the fullUpdate to set
+     */
+    public void setFullUpdate(boolean fullUpdateIn) {
+        setFullUpdate(fullUpdateIn ? 'Y' : 'N');
     }
 
     /**
