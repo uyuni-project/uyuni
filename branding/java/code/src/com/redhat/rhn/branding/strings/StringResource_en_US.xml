@@ -442,7 +442,7 @@ Thank you for using @@PRODUCT_NAME@@.
           <source>The following patches apply to at least one system to which you have administrative access.</source>
       </trans-unit>
       <trans-unit id="errata.all.jsp.summary">
-          <source>The following patches list represents all patches accessible by your organization.</source>
+          <source>The following patch list represents all patches accessible by your organization.</source>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summary">
         <source>Below is a list of systems affected by this patch.</source>
