@@ -59,13 +59,14 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -96,6 +97,13 @@ public class SaltService {
 
     private SaltCustomStateStorageManager customSaltStorageManager =
             SaltCustomStateStorageManager.INSTANCE;
+
+    private static final Predicate<? super String> SALT_MINION_PREDICATE = (mid) ->
+            SSHMinionsPendingRegistrationService.containsMinion(mid) ||
+                        MinionServerFactory
+                                .findByMinionId(mid)
+                                .filter(m -> MinionServerUtils.isSshPushMinion(m))
+                                .isPresent();
 
     // Prevent instantiation
     SaltService() {
@@ -520,23 +528,24 @@ public class SaltService {
      */
     public <T> Map<String, Result<T>> callSync(LocalCall<T> call, MinionList target)
             throws SaltException {
-        List<String> minionIds = target.getTarget();
+        HashSet<String> uniqueMinionIds = new HashSet<>(target.getTarget());
+        Map<Boolean, List<String>> minionPartitions =
+                partitionMinionsByContactMethod(uniqueMinionIds);
 
-        Set<String> sshMinionIds = filterSSHMinionIds(minionIds);
-        Set<String> regularMinionIds = minionIds.stream()
-                .filter(mid -> !sshMinionIds.contains(mid)).collect(Collectors.toSet());
+        List<String> sshMinionIds = minionPartitions.get(true);
+        List<String> regularMinionIds = minionPartitions.get(false);
 
         Map<String, Result<T>> results = new HashMap<>();
 
         if (!sshMinionIds.isEmpty()) {
             results.putAll(saltSSHService.callSyncSSH(
                     call,
-                    new MinionList(new ArrayList<>(sshMinionIds))));
+                    new MinionList(sshMinionIds)));
         }
 
         if (!regularMinionIds.isEmpty()) {
             results.putAll(call.callSync(SALT_CLIENT,
-                    new MinionList(new ArrayList<>(regularMinionIds)),
+                    new MinionList(regularMinionIds),
                     SALT_USER,
                     SALT_PASSWORD,
                     AuthModule.AUTO));
@@ -546,21 +555,16 @@ public class SaltService {
     }
 
     /**
-     * Takes a list of minion ids, filters ids of minions which are either minions with
-     * ssh push contact method or minions currently being onboarded and returns set of
-     * corresponding ids.
+     * Partitions minion ids according to the contact method of corresponding minions
+     * (salt-ssh minions in one partition, regular minions in the other).
+     *
      * @param minionIds minion ids
-     * @return ids of ssh minions
+     * @return map with partitioning
      */
-    public static Set<String> filterSSHMinionIds(List<String> minionIds) {
-        // todo: create a bulk query for determining whether minion in list are ssh or not
+    public static Map<Boolean, List<String>> partitionMinionsByContactMethod(
+            Collection<String> minionIds) {
         return minionIds.stream()
-                .filter(mid -> {
-                    Optional<MinionServer> minion = MinionServerFactory.findByMinionId(mid);
-                    return minion.isPresent() &&
-                            MinionServerUtils.isSshPushMinion(minion.get()) ||
-                            SSHMinionsPendingRegistrationService.containsMinion(mid);
-                }).collect(Collectors.toSet());
+                .collect(Collectors.partitioningBy(SALT_MINION_PREDICATE));
     }
 
     /**
