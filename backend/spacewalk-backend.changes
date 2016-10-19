@@ -4,7 +4,7 @@ Thu Oct 06 16:09:07 CEST 2016 - mc@suse.de
 - version 2.5.24.6-1
 - Fix for non-integer IDs for bugzilla bug
 - silently ignore non-existing errata severity label on errata import,
-  remove non-used exception (bsc#986447)
+  remove non-used exception (bsc#986447, bsc#996609)
 - make suseLib usable on a proxy
 
 -------------------------------------------------------------------
