@@ -25,7 +25,6 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 
@@ -68,15 +67,16 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
         MinionStartEventMessage startEvent = (MinionStartEventMessage) msg;
 
         // Update custom grains, modules and beacons on every minion restart
-        SALT_SERVICE.syncGrains(startEvent.getMinionId());
-        SALT_SERVICE.syncModules(startEvent.getMinionId());
-        SALT_SERVICE.syncBeacons(startEvent.getMinionId());
+        MinionList minionTarget = new MinionList(startEvent.getMinionId());
+        SALT_SERVICE.syncGrains(minionTarget);
+        SALT_SERVICE.syncModules(minionTarget);
+        SALT_SERVICE.syncBeacons(minionTarget);
 
         Optional<MinionServer> minionOpt =
                 MinionServerFactory.findByMinionId(startEvent.getMinionId());
         minionOpt.ifPresent(minion -> {
 
-            Target<?> target = new MinionList(minion.getMinionId());
+            MinionList target = new MinionList(minion.getMinionId());
             // get uptime
             LocalCall<Float> uptimeCall = Status.uptime();
             try {

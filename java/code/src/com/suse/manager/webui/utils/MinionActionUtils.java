@@ -151,7 +151,10 @@ public class MinionActionUtils {
                             .isBefore(now.minus(5, ChronoUnit.MINUTES))) {
                         return a.getServerActions()
                                 .stream()
-                                .filter(sa -> sa.getServer().asMinionServer().isPresent());
+                                .filter(sa -> sa.getServer().asMinionServer().isPresent() &&
+                                        // Do not clean up SSH push tasks
+                                        sa.getServer().getContactMethod().getLabel()
+                                        .equals("default"));
                     }
                     else {
                         return Stream.empty();

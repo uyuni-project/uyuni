@@ -631,6 +631,7 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -d $RPM_BUILD_ROOT/srv/susemanager/salt
+install -d $RPM_BUILD_ROOT/srv/susemanager/salt/salt_ssh
 install -d $RPM_BUILD_ROOT/srv/susemanager/pillar
 install -d $RPM_BUILD_ROOT/srv/susemanager/pillar_data
 
@@ -824,6 +825,8 @@ fi
 %dir %{_localstatedir}/lib/spacewalk
 %endif
 %defattr(644,tomcat,tomcat,775)
+%dir /srv/susemanager/salt/salt_ssh
+%attr(775, salt, salt) /srv/susemanager/salt/salt_ssh
 %attr(775, root, tomcat) %dir %{appdir}
 %dir /srv/susemanager
 %dir /srv/susemanager/salt
