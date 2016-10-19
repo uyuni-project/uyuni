@@ -349,8 +349,7 @@ public class SUSEProductFactory extends HibernateFactory {
         c.addOrder(Order.asc("name")).addOrder(Order.asc("version"))
                 .addOrder(Order.asc("release")).addOrder(Order.asc("arch"));
 
-        List<InstalledProduct> result = c.list();
-        return Optional.ofNullable(result.isEmpty() ? null : result.get(0));
+        return c.list().stream().findFirst();
     }
 
     /**
