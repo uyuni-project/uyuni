@@ -197,16 +197,14 @@ public class SUSEProductSet {
     }
 
     /**
-     * @param isEveryChannelSynced The isEveryChannelSynced to set.
+     * @param isEveryChannelSyncedIn The isEveryChannelSynced to set.
      */
-    public void setIsEveryChannelSynced(Boolean isEveryChannelSynced) {
-        this.isEveryChannelSynced = isEveryChannelSynced;
+    public void setIsEveryChannelSynced(Boolean isEveryChannelSyncedIn) {
+        this.isEveryChannelSynced = isEveryChannelSyncedIn;
     }
 
     /**
      * Return a single String with channles that are not synced
-     * and a warning message prefix
-     * @param prefix the warning message prefix
      * @return the missingChannels single String
      */
     public String getMissingChannelsMessage() {
@@ -215,10 +213,10 @@ public class SUSEProductSet {
     }
 
     /**
-     * @param missingChannelsMessage The missingChannelsMessage to set.
+     * @param missingChannelsMessageIn The missingChannelsMessage to set.
      */
-    public void setMissingChannelsMessage(String missingChannelsMessage) {
-        this.missingChannelsMessage = missingChannelsMessage;
+    public void setMissingChannelsMessage(String missingChannelsMessageIn) {
+        this.missingChannelsMessage = missingChannelsMessageIn;
     }
 
     /**
@@ -229,10 +227,10 @@ public class SUSEProductSet {
     }
 
     /**
-     * @param serializedProductIDs The serializedProductIDs to set.
+     * @param serializedProductIDsIn The serializedProductIDs to set.
      */
-    public void setSerializedProductIDs(String serializedProductIDs) {
-        this.serializedProductIDs = serializedProductIDs;
+    public void setSerializedProductIDs(String serializedProductIDsIn) {
+        this.serializedProductIDs = serializedProductIDsIn;
     }
 
     /**
