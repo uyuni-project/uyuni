@@ -17,6 +17,7 @@ package com.suse.manager.webui.utils;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,17 @@ public class MinionServerUtils {
      */
     public static boolean isMinionServer(Server server) {
         return server.asMinionServer().isPresent();
+    }
+
+    /**
+     * Helper method for finding out whether minion has a ssh-push-like contact method
+     * (ssh-push or ssh-push-tunnel).
+     * @param minion the minion
+     * @return true if minion is ssh-push or ssh-push-tunnel
+     */
+    public static boolean isSshPushMinion(MinionServer minion) {
+        List<String> contactMethods = Arrays.asList("ssh-push", "ssh-push-tunnel");
+        return contactMethods.contains(minion.getContactMethod().getLabel());
     }
 
 }

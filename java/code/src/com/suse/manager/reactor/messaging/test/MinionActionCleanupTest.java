@@ -33,7 +33,7 @@ import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs;
-import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
@@ -88,7 +88,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         SaltService saltServiceMock = mock(SaltService.class);
 
         context().checking(new Expectations() { {
-            allowing(saltServiceMock).running(with(any(Target.class)));
+            allowing(saltServiceMock).running(with(any(MinionList.class)));
             will(returnValue(running));
             allowing(saltServiceMock).jobsByMetadata(with(any(Object.class)));
             will(returnValue(jobsByMetadata("jobs.list_jobs.with_metadata.json", action.getId())));

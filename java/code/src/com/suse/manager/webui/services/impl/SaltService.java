@@ -21,23 +21,24 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.utils.MinionServerUtils;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.Config;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.RunnerCall;
-import com.suse.salt.netapi.calls.SaltSSHConfig;
 import com.suse.salt.netapi.calls.WheelResult;
 import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Match;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.Schedule;
+import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.modules.Timezone;
-import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
@@ -58,11 +59,14 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -88,28 +92,39 @@ public class SaltService {
     // Shared salt client instance
     private final SaltClient SALT_CLIENT = new SaltClient(SALT_MASTER_URI);
 
+    // executing salt-ssh calls
+    private final SaltSSHService saltSSHService;
+
     private SaltCustomStateStorageManager customSaltStorageManager =
             SaltCustomStateStorageManager.INSTANCE;
+
+    private static final Predicate<? super String> SALT_MINION_PREDICATE = (mid) ->
+            SSHMinionsPendingRegistrationService.containsMinion(mid) ||
+                        MinionServerFactory
+                                .findByMinionId(mid)
+                                .filter(m -> MinionServerUtils.isSshPushMinion(m))
+                                .isPresent();
 
     // Prevent instantiation
     SaltService() {
         // Set unlimited timeout
         SALT_CLIENT.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
+        saltSSHService = new SaltSSHService(SALT_CLIENT);
     }
 
     /**
-     * Executes a salt function on a single minion.
+     * Synchronously executes a salt function on a single minion.
+     * If a SaltException is thrown, re-throw a RuntimeException.
      *
      * @param call salt function to call
      * @param minionId minion id to target
      * @param <R> result type of the salt function
      * @return Optional holding the result of the function
-     * or none if the minion did not respond.
+     * or empty if the minion did not respond.
      */
     public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
         try {
-            Map<String, Result<R>> stringRMap = call.callSync(SALT_CLIENT,
-                    new MinionList(minionId), SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            Map<String, Result<R>> stringRMap = callSync(call, new MinionList(minionId));
 
             return Opt.fold(Optional.ofNullable(stringRMap.get(minionId)), () -> {
                 LOG.warn("Got no result for " + call.getPayload().get("fun") +
@@ -244,11 +259,9 @@ public class SaltService {
      * @param target the targeted minions
      * @return the timezone offsets of the targeted minions
      */
-    public Map<String, Result<String>> getTimezoneOffsets(Target<?> target) {
+    public Map<String, Result<String>> getTimezoneOffsets(MinionList target) {
         try {
-            Map<String, Result<String>> offsets = Timezone.getOffset().callSync(
-                    SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            return offsets;
+            return callSync(Timezone.getOffset(), target);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -338,12 +351,9 @@ public class SaltService {
      * @param cmd the command
      * @return the output of the command
      */
-    public Map<String, Result<String>> runRemoteCommand(Target<?> target, String cmd) {
+    public Map<String, Result<String>> runRemoteCommand(MinionList target, String cmd) {
         try {
-            Map<String, Result<String>> result = Cmd.run(cmd).callSync(
-                    SALT_CLIENT, target,
-                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-            return result;
+            return callSync(Cmd.run(cmd), target);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -356,11 +366,9 @@ public class SaltService {
      * @param target the target
      * @return list of running jobs
      */
-    public Map<String, Result<List<SaltUtil.RunningInfo>>> running(Target<?> target) {
+    public Map<String, Result<List<SaltUtil.RunningInfo>>> running(MinionList target) {
         try {
-            return SaltUtil.running().callSync(
-                    SALT_CLIENT, target,
-                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return callSync(SaltUtil.running(), target);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -395,10 +403,7 @@ public class SaltService {
      */
     public Map<String, Result<Boolean>> match(String target) {
         try {
-            Map<String, Result<Boolean>> result = Match.glob(target).callSync(
-                    SALT_CLIENT, new Glob(target),
-                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-            return result;
+            return callSync(Match.glob(target), new Glob(target));
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -416,13 +421,16 @@ public class SaltService {
 
     /**
      * Call 'saltutil.sync_beacons' to sync the beacons to the target minion(s).
-     * @param target a target glob
+     * @param minionList minionList
      */
-    public void syncBeacons(String target) {
+    public void syncBeacons(MinionList minionList) {
         try {
-            com.suse.manager.webui.utils.salt.SaltUtil.syncBeacons(
-                    Optional.of(true), Optional.empty()).callSync(SALT_CLIENT,
-                    new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            LocalCall<List<String>> call =
+                    com.suse.manager.webui.utils.salt.SaltUtil.syncBeacons(
+                            Optional.of(true),
+                            Optional.empty());
+
+            callSync(call, minionList);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -431,12 +439,13 @@ public class SaltService {
 
     /**
      * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
-     * @param target a target glob
+     * @param minionList minion list
      */
-    public void syncGrains(String target) {
+    public void syncGrains(MinionList minionList) {
         try {
-            SaltUtil.syncGrains(Optional.empty(), Optional.empty()).callSync(SALT_CLIENT,
-                    new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            LocalCall<List<String>> call = SaltUtil.syncGrains(Optional.empty(),
+                    Optional.empty());
+            callSync(call, minionList);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -445,12 +454,13 @@ public class SaltService {
 
     /**
      * Call 'saltutil.sync_modules' to sync the grains to the target minion(s).
-     * @param target a target glob
+     * @param minionList minion list
      */
-    public void syncModules(String target) {
+    public void syncModules(MinionList minionList) {
         try {
-            SaltUtil.syncModules(Optional.empty(), Optional.empty()).callSync(SALT_CLIENT,
-                    new Glob(target), SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            LocalCall<List<String>> call = SaltUtil.syncModules(Optional.empty(),
+                    Optional.empty());
+            callSync(call, minionList);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -478,7 +488,7 @@ public class SaltService {
      * @throws SaltException in case there is an error scheduling the job
      */
     public Map<String, Result<Schedule.Result>> schedule(String name,
-            LocalCall<?> call, Target<?> target, ZonedDateTime scheduleDate,
+            LocalCall<?> call, MinionList target, ZonedDateTime scheduleDate,
             Map<String, ?> metadata) throws SaltException {
         // We do one Salt call per timezone: group minions by their timezone offsets
         Map<String, Result<String>> minionOffsets = getTimezoneOffsets(target);
@@ -493,11 +503,10 @@ public class SaltService {
             LocalDateTime targetScheduleDate = scheduleDate.toOffsetDateTime()
                     .withOffsetSameInstant(ZoneOffset.of(entry.getKey())).toLocalDateTime();
             try {
-                Target<?> timezoneTarget = new MinionList(entry.getValue());
-                Map<String, Result<Schedule.Result>> result = Schedule
-                        .add(name, call, targetScheduleDate, metadata)
-                        .callSync(SALT_CLIENT, timezoneTarget,
-                                SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+                MinionList timezoneTarget = new MinionList(entry.getValue());
+                Map<String, Result<Schedule.Result>> result = callSync(
+                        Schedule.add(name, call, targetScheduleDate, metadata),
+                        timezoneTarget);
                 return result.entrySet().stream();
             }
             catch (SaltException e) {
@@ -509,6 +518,7 @@ public class SaltService {
 
     /**
      * Execute a LocalCall synchronously on the default Salt client.
+     * Note that salt-ssh systems are also called by this method.
      *
      * @param <T> the return type of the call
      * @param call the call to execute
@@ -516,37 +526,75 @@ public class SaltService {
      * @return the result of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    public <T> Map<String, Result<T>> callSync(LocalCall<T> call, Target<?> target)
+    public <T> Map<String, Result<T>> callSync(LocalCall<T> call, MinionList target)
             throws SaltException {
-        return call.callSync(
-                SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+        HashSet<String> uniqueMinionIds = new HashSet<>(target.getTarget());
+        Map<Boolean, List<String>> minionPartitions =
+                partitionMinionsByContactMethod(uniqueMinionIds);
+
+        List<String> sshMinionIds = minionPartitions.get(true);
+        List<String> regularMinionIds = minionPartitions.get(false);
+
+        Map<String, Result<T>> results = new HashMap<>();
+
+        if (!sshMinionIds.isEmpty()) {
+            results.putAll(saltSSHService.callSyncSSH(
+                    call,
+                    new MinionList(sshMinionIds)));
+        }
+
+        if (!regularMinionIds.isEmpty()) {
+            results.putAll(call.callSync(SALT_CLIENT,
+                    new MinionList(regularMinionIds),
+                    SALT_USER,
+                    SALT_PASSWORD,
+                    AuthModule.AUTO));
+        }
+
+        return results;
     }
 
     /**
-     * Execute a LocalCall synchronously using salt-ssh.
+     * Partitions minion ids according to the contact method of corresponding minions
+     * (salt-ssh minions in one partition, regular minions in the other).
+     *
+     * @param minionIds minion ids
+     * @return map with partitioning
+     */
+    public static Map<Boolean, List<String>> partitionMinionsByContactMethod(
+            Collection<String> minionIds) {
+        return minionIds.stream()
+                .collect(Collectors.partitioningBy(SALT_MINION_PREDICATE));
+    }
+
+    /**
+     * Execute a LocalCall synchronously on glob target using the default Salt client.
+     * Note that salt-ssh systems are also called by this method.
      *
      * @param <T> the return type of the call
-     * @param call the call to execute
+     * @param call the glob call to execute
      * @param target minions targeted by the call
-     * @param rosterFile alternative roster file to use (default: /etc/salt/roster)
-     * @param ignoreHostKeys use this option to disable 'StrictHostKeyChecking'
-     * @param sudo run command via sudo (default: false)
-     * @return result of the call
+     * @return the result of the call
+     * @throws SaltException in case of an error executing the job with Salt
      */
-    public <T> Map<String, Result<SSHResult<T>>> callSyncSSH(LocalCall<T> call,
-            Target<?> target, boolean ignoreHostKeys, String rosterFile, boolean sudo) {
-        try {
-            SaltSSHConfig sshConfig = new SaltSSHConfig.Builder()
-                    .ignoreHostKeys(ignoreHostKeys)
-                    .rosterFile(rosterFile)
-                    .sudo(sudo)
-                    .build();
+    public <T> Map<String, Result<T>> callSync(LocalCall<T> call, Glob target)
+            throws SaltException {
+        Map<String, Result<T>> results = new HashMap<>();
 
-            return call.callSyncSSH(SALT_CLIENT, target, sshConfig);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
+        /*
+         todo: we can't safely target ssh minions because if there's no match, we get
+         into trouble due to this salt bug: https://github.com/saltstack/salt/issues/36966
+
+         After the bug is resolved, uncomment the, use the following call to include
+         salt-ssh results and delete the log
+        */
+//        results.putAll(saltSSHService.callSyncSSH(call, target));
+        LOG.warn("Ignoring ssh minions on targeting by glob. " +
+                "The call result won't contain ssh minions results.");
+
+        results.putAll(call.callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD,
+                AuthModule.AUTO));
+        return results;
     }
 
     /**
@@ -572,11 +620,9 @@ public class SaltService {
      * @return the result
      */
     public Map<String, Result<Schedule.Result>> deleteSchedule(
-            String name, Target<?> target) {
+            String name, MinionList target) {
         try {
-            return Schedule.delete(name).callSync(
-                    SALT_CLIENT, target,
-                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return callSync(Schedule.delete(name), target);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -731,7 +777,7 @@ public class SaltService {
      * @return a Map from minion ids which responded to the ping to Boolean.TRUE
      * @throws SaltException if we get a failure from Salt
      */
-    public Map<String, Result<Boolean>> ping(Target<?> targetIn) throws SaltException {
+    public Map<String, Result<Boolean>> ping(MinionList targetIn) throws SaltException {
         return callSync(
             Test.ping(),
             targetIn
@@ -766,5 +812,21 @@ public class SaltService {
     public Optional<Map<String, State.ApplyResult>> applyState(
             String minionId, String state) {
         return callSync(State.apply(state), minionId);
+    }
+
+    /**
+     * Bootstrap a system using salt-ssh.
+     *
+     * @param parameters - bootstrap parameters
+     * @param bootstrapMods - state modules to be applied during the bootstrap
+     * @param pillarData - pillar data used salt-ssh call
+     * @throws SaltException if something goes wrong during command execution or
+     * during manipulation the salt-ssh roster
+     * @return the result of the underlying ssh call for given host
+     */
+    public Result<SSHResult<Map<String, State.ApplyResult>>> bootstrapMinion(
+            BootstrapParameters parameters, List<String> bootstrapMods,
+            Map<String, Object> pillarData) throws SaltException {
+        return saltSSHService.bootstrapMinion(parameters, bootstrapMods, pillarData);
     }
 }

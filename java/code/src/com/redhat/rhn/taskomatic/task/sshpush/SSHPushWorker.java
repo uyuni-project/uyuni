@@ -24,6 +24,8 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import com.redhat.rhn.common.CommonConstants;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -52,7 +54,6 @@ public class SSHPushWorker implements QueueWorker {
     private static final String SSH_PUSH_TUNNEL = "ssh-push-tunnel";
     private static final String KNOWN_HOSTS = "/root/.ssh/known_hosts";
     private static final String PRIVATE_KEY = "/root/.ssh/id_susemanager";
-    private static final String REMOTE_USER = "root";
     private static final String RHN_CHECK = "/usr/sbin/rhn_check";
     private static final int SSL_PORT = 443;
 
@@ -61,7 +62,6 @@ public class SSHPushWorker implements QueueWorker {
 
     // Config keys
     private static final String CONFIG_KEY_USE_HOSTNAME = "ssh_push_use_hostname";
-    private static final String CONFIG_KEY_SUDO_USER = "ssh_push_sudo_user";
     private static final String CONFIG_KEY_TASK_TIMEOUT = "ssh_push_task_timeout";
 
     // Client and proxy hostnames
@@ -181,8 +181,9 @@ public class SSHPushWorker implements QueueWorker {
                 client = server.getIpAddress();
             }
 
-            if (!StringUtils.isEmpty(Config.get().getString(CONFIG_KEY_SUDO_USER))) {
-                sudoUser = Config.get().getString(CONFIG_KEY_SUDO_USER);
+            if (!StringUtils.isEmpty(Config.get()
+                    .getString(ConfigDefaults.CONFIG_KEY_SUDO_USER))) {
+                sudoUser = Config.get().getString(ConfigDefaults.CONFIG_KEY_SUDO_USER);
             }
 
             // Get the server's primary proxy (if any)
@@ -220,7 +221,7 @@ public class SSHPushWorker implements QueueWorker {
         ChannelExec channel = null;
         try {
             // Setup session
-            session = ssh.getSession(sudoUser != null ? sudoUser : REMOTE_USER,
+            session = ssh.getSession(sudoUser != null ? sudoUser : CommonConstants.ROOT,
                     proxy != null ? proxy : client);
             Optional<String> hostKeyType = hostKeyType(session.getHost());
             if (hostKeyType.isPresent()) {

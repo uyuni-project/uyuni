@@ -187,7 +187,8 @@ public class SystemDetailsEditAction extends RhnAction {
 
             // Set the contact method
             Long contactId = (Long) daForm.get(CONTACT_METHOD);
-            if (contactId != null && (contactId != s.getContactMethod().getId())) {
+            if (contactId != null && (contactId != s.getContactMethod().getId()) &&
+                    !s.asMinionServer().isPresent()) {
                 s.setContactMethod(ServerFactory.findContactMethodById(contactId));
             }
 
