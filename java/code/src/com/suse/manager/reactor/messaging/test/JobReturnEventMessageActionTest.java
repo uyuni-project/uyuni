@@ -103,10 +103,15 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
         assertEquals(3, minion.getPackages().size());
 
         minion.getInstalledProducts().stream().forEach(product -> {
-            assertEquals("sles", product.getName());
+            assertEquals("sles", product.getName().toLowerCase());
+            assertEquals("sles",  product.getSUSEProduct().getName());
             assertEquals("12.1", product.getVersion());
-            assertEquals(null, product.getRelease());
+            assertEquals("12.1",  product.getSUSEProduct().getVersion());
+            assertEquals("0", product.getRelease());
+            assertEquals(null, product.getSUSEProduct().getRelease());
             assertEquals("x86_64", product.getArch().getName());
+            assertEquals("x86_64", product.getSUSEProduct().getArch().getName());
+            assertEquals(true, product.isBaseproduct());
         });
         assertEquals(1, minion.getInstalledProducts().size());
 
