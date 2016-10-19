@@ -91,8 +91,8 @@ public class GathererRunner {
         if (!StringUtils.isBlank(proxyHostname)) {
             URIBuilder builder = new URIBuilder();
             builder.setScheme("http");
-            String proxyUsername = ConfigDefaults.get().getProxyUsername();
-            String proxyPassword = ConfigDefaults.get().getProxyPassword();
+            String proxyUsername = config.getProxyUsername();
+            String proxyPassword = config.getProxyPassword();
             if (!StringUtils.isBlank(proxyUsername) &&
                     !StringUtils.isBlank(proxyPassword)) {
                 builder.setUserInfo(proxyUsername, proxyPassword);
@@ -108,6 +108,13 @@ public class GathererRunner {
             catch (URISyntaxException e) {
                 logger.error("URI syntax exception when setting Proxy: " + e.getMessage());
             }
+        }
+        int debuglevel = Config.get().getInt("debug", 0);
+        if (debuglevel >= 2) {
+            args.add("-v");
+        }
+        if (debuglevel >= 3) {
+            args.add("-v");
         }
         String noProxy = Config.get().getString(HttpClientAdapter.NO_PROXY);
         if (!StringUtils.isEmpty(noProxy)) {
