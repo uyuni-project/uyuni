@@ -337,8 +337,8 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return installedProduct or null if it is not found
      */
     @SuppressWarnings("unchecked")
-    public static Optional<InstalledProduct> findInstalledProduct(String name, String version,
-            String release, PackageArch arch, boolean isBaseProduct) {
+    public static Optional<InstalledProduct> findInstalledProduct(String name,
+            String version, String release, PackageArch arch, boolean isBaseProduct) {
 
         Criteria c = getSession().createCriteria(InstalledProduct.class);
         c.add(Restrictions.eq("name", name));
