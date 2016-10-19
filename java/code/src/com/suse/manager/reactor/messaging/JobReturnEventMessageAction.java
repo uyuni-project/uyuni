@@ -570,14 +570,14 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         name, version, release, arch));
             }
 
-            // Use installed product information from the client
-            InstalledProduct installedProduct = new InstalledProduct();
-            installedProduct.setName(name);
-            installedProduct.setVersion(version);
-            installedProduct.setRelease(release);
-            installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
-            installedProduct.setBaseproduct(isbase);
-            return Stream.of(installedProduct);
+            return Stream.of(
+                    SUSEProductFactory.findInstalledProduct(name, version, release,
+                            PackageFactory.lookupPackageArchByLabel(arch), isbase)
+                    .orElse(
+                            // Use installed product information from the client
+                            new InstalledProduct(name, version,
+                                    PackageFactory.lookupPackageArchByLabel(arch),
+                                    release, isbase)));
         }).collect(Collectors.toSet());
     }
 

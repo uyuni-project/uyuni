@@ -44,6 +44,24 @@ public class InstalledProduct extends BaseDomainHelper {
     }
 
     /**
+     * Instantiates a new installed product.
+     *
+     * @param nameIn the name in
+     * @param versionIn the version in
+     * @param archIn the arch in
+     * @param releaseIn the release in
+     * @param isBaseProductIn the is base product in
+     */
+    public InstalledProduct(String nameIn, String versionIn,
+            PackageArch archIn, String releaseIn, Boolean isBaseProductIn) {
+        name = nameIn;
+        version = versionIn;
+        arch = archIn;
+        release = releaseIn;
+        baseproduct = isBaseProductIn;
+    }
+
+    /**
      * @return the id
      */
     public Long getId() {

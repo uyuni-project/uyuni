@@ -16,7 +16,9 @@
 package com.redhat.rhn.domain.product;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.InstalledProduct;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
@@ -30,6 +32,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * SUSEProductFactory - the class used to fetch and store
@@ -321,6 +324,32 @@ public class SUSEProductFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllSUSEProducts() {
         return getSession().createCriteria(SUSEProduct.class).list();
+    }
+
+    /**
+     * Find an {@link InstalledProduct} given by name, version,
+     * release, arch and isBaseProduct flag.
+     * @param name name
+     * @param version version
+     * @param release release
+     * @param arch arch
+     * @param isBaseProduct is base product flag
+     * @return installedProduct or null if it is not found
+     */
+    @SuppressWarnings("unchecked")
+    public static Optional<InstalledProduct> findInstalledProduct(String name, String version,
+            String release, PackageArch arch, boolean isBaseProduct) {
+
+        Criteria c = getSession().createCriteria(InstalledProduct.class);
+        c.add(Restrictions.eq("name", name));
+        c.add(Restrictions.eq("version", version));
+        c.add(Restrictions.eq("release", release));
+        c.add(Restrictions.eq("arch", arch));
+        c.add(Restrictions.eq("baseproduct", isBaseProduct));
+        c.addOrder(Order.asc("name")).addOrder(Order.asc("version"))
+                .addOrder(Order.asc("release")).addOrder(Order.asc("arch"));
+
+        return c.list().stream().findFirst();
     }
 
     /**
