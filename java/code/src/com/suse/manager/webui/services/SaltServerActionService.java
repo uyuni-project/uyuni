@@ -371,7 +371,8 @@ public enum SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> hardwareRefreshListAction(
             List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+        ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.SYNC_CUSTOM_ALL,
+                ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
                 Optional.empty(), Optional.of(true)), minions);
         return ret;
     }
