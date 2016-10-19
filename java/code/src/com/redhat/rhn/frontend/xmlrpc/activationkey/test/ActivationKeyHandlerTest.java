@@ -16,13 +16,20 @@ package com.redhat.rhn.frontend.xmlrpc.activationkey.test;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.server.*;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
+import com.redhat.rhn.frontend.xmlrpc.activationkey.AuthenticationException;
+import com.redhat.rhn.frontend.xmlrpc.activationkey.ChannelInfo;
+import com.redhat.rhn.frontend.xmlrpc.activationkey.NoSuchActivationKeyException;
+import com.redhat.rhn.testing.*;
+import com.suse.manager.utils.MachinePasswordUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 import com.redhat.rhn.FaultException;
@@ -33,11 +40,6 @@ import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.server.ManagedServerGroup;
-import com.redhat.rhn.domain.server.ServerConstants;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.TokenPackage;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
@@ -47,10 +49,6 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.ActivationKeySerializer;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
-import com.redhat.rhn.testing.ChannelTestUtils;
-import com.redhat.rhn.testing.ConfigTestUtils;
-import com.redhat.rhn.testing.ServerGroupTestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
 
 public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
@@ -749,6 +747,63 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         Object[] servers = keyHandler.listActivatedSystems(admin, key.getKey());
 
         assertEquals(numServersActivated, servers.length);
+    }
+
+    public void testListChannelsNoMinion() throws Exception {
+        try {
+            keyHandler.listChannels("", "", "");
+            fail("Expected NoSuchSystemException");
+        } catch (NoSuchSystemException e) {
+        } catch (Throwable t) {
+            fail("Expected NoSuchSystemException but got " + t);
+        }
+    }
+
+    public void testListChannelsNoKey() throws Exception {
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(regular);
+        try {
+            keyHandler.listChannels(testMinionServer.getMinionId(), "", "");
+            fail("Expected NoSuchActivationKeyException");
+        } catch (NoSuchActivationKeyException e) {
+        } catch (Throwable t) {
+            fail("Expected NoSuchActivationKeyException but got " + t);
+        }
+    }
+
+    public void testListChannelsWrongPassword() throws Exception {
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(regular);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(regular);
+        try {
+            keyHandler.listChannels(testMinionServer.getMinionId(), "", key.getKey());
+            fail("Expected AuthenticationException");
+        } catch (AuthenticationException e) {
+            assertEquals("wrong machine password.", e.getMessage());
+        } catch (Throwable t) {
+            fail("Expected AuthenticationException but got " + t);
+        }
+    }
+
+    public void testListChannels() throws Exception {
+        Config.get().setString("server.secret_key",
+                DigestUtils.sha256Hex(TestUtils.randomString()));
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(regular);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(regular);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(regular);
+        Channel channel2 = ChannelFactoryTest.createTestChannel(regular);
+        HashSet<Channel> channels = new HashSet<>();
+        channels.add(channel1);
+        channels.add(channel2);
+        key.setChannels(channels);
+        String machinePassword = MachinePasswordUtils.machinePassword(testMinionServer);
+        List<ChannelInfo> channelInfo = keyHandler.listChannels(testMinionServer.getMinionId(), machinePassword, key.getKey());
+        assertEquals(2, channelInfo.size());
+        List<String> labels = channelInfo.stream().map(ChannelInfo::getLabel).collect(Collectors.toList());
+        List<String> names = channelInfo.stream().map(ChannelInfo::getName).collect(Collectors.toList());
+
+        channels.stream().forEach(channel -> {
+            assertTrue(labels.contains(channel.getLabel()));
+            assertTrue(names.contains(channel.getName()));
+        });
     }
 
     public void testConfigChannels() throws Exception {

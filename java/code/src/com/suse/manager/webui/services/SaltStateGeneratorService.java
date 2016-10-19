@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SaltCustomState;
@@ -104,6 +105,8 @@ public enum SaltStateGeneratorService {
         pillar.add("org_id", minion.getOrg().getId());
         pillar.add("group_ids", groupIds.toArray(new Long[groupIds.size()]));
 
+        pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
+
         Map<String, Object> chanPillar = new HashMap<>();
         try {
             TokenBuilder tokenBuilder = new TokenBuilder(minion.getOrg().getId());
@@ -155,7 +158,13 @@ public enum SaltStateGeneratorService {
         }
     }
 
-    private String getChannelHost(Server server) {
+    /**
+     * Return the channel hostname for a given server.
+     *
+     * @param server server to get the channel host for.
+     * @return channel hostname.
+     */
+    public static String getChannelHost(Server server) {
         ServerPath path = server.getServerPath();
         if (path == null) {
             // client is not proxied, return this server's hostname

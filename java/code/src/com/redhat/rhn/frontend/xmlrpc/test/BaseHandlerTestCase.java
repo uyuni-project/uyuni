@@ -22,6 +22,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.webui.services.SaltCustomStateStorageManager;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class BaseHandlerTestCase extends RhnBaseTestCase {
     /*
@@ -36,6 +41,8 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
     protected String adminKey;
     protected String regularKey;
     protected String satAdminKey;
+    protected Path tmpPillarRoot;
+    protected Path tmpSaltRoot;
 
     public void setUp() throws Exception {
         super.setUp();
@@ -64,6 +71,15 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
 
         // Setup configuration for kickstart tests (mock cobbler etc.)
         KickstartDataTest.setupTestConfiguration(admin);
+
+        tmpPillarRoot = Files.createTempDirectory("pillar");
+        tmpSaltRoot = Files.createTempDirectory("salt");
+        SaltStateGeneratorService.INSTANCE.setPillarDataPath(tmpPillarRoot
+                .toAbsolutePath());
+        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
+                .toAbsolutePath());
+        SaltCustomStateStorageManager.INSTANCE.setBaseDirPath(tmpSaltRoot
+                .toAbsolutePath().toString());
     }
 
     protected void addRole(User user, Role role) {
