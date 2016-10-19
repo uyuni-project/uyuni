@@ -14,49 +14,29 @@
  */
 package com.suse.manager.webui.controllers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-
-import com.redhat.rhn.manager.token.ActivationKeyManager;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.user.User;
+import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.InputValidator;
-import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
-import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.wheel.Key;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 import spark.Request;
 import spark.Response;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
-
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.user.User;
-
-import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.results.Result;
-import com.suse.salt.netapi.results.SSHResult;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 /**
  * Controller class providing backend code for the minions page.
@@ -192,119 +172,33 @@ public class MinionsAPI {
      * @return json result of the API call
      */
     public static String bootstrap(Request request, Response response, User user) {
-        JSONBootstrapHosts input = GSON.fromJson(request.body(), JSONBootstrapHosts.class);
-        List<String> errors = InputValidator.INSTANCE.validateBootstrapInput(input);
-        if (!errors.isEmpty()) {
-            return bootstrapResult(response, false, errors);
-        }
-
-        // Setup pillar data to be passed when applying the bootstrap state
-        Map<String, Object> pillarData = new HashMap<>();
-        pillarData.put("master", ConfigDefaults.get().getCobblerHost());
-        pillarData.put("minion_id", input.getHost());
-        ActivationKeyManager.getInstance().findAll(user)
-                .stream()
-                .filter(ak -> input.getActivationKeys().contains(ak.getKey()))
-                .findFirst()
-                .ifPresent(ak -> pillarData.put("activation_key", ak.getKey()));
-
-        // Generate minion keys and accept the public key
-        if (SALT_SERVICE.keyExists(input.getHost())) {
-            return bootstrapResult(response, false, Collections.singletonList(
-                    "A key for this host (" +
-                    input.getHost() + ") seems to already exist, please check!"));
-        }
-        com.suse.manager.webui.utils.salt.Key.Pair keyPair =
-                SALT_SERVICE.generateKeysAndAccept(input.getHost(), false);
-        if (keyPair.getPub().isPresent() && keyPair.getPriv().isPresent()) {
-            pillarData.put("minion_pub", keyPair.getPub().get());
-            pillarData.put("minion_pem", keyPair.getPriv().get());
-        }
-
-        try {
-            // Generate (temporary) roster file based on data from the UI
-            SaltRoster saltRoster = new SaltRoster();
-            saltRoster.addHost(input.getHost(), input.getUser(), input.getPassword(),
-                    input.getPortInteger());
-            Path rosterFilePath = saltRoster.persistInTempFile();
-            String roster = rosterFilePath.toString();
-            LOG.debug("Roster file: " + roster);
-
-            // Apply the bootstrap state
-            LOG.info("Bootstrapping host: " + input.getHost());
-            List<String> bootstrapMods = Arrays.asList(
-                    ApplyStatesEventMessage.CERTIFICATE, "bootstrap");
-            LocalCall<Map<String, State.ApplyResult>> call = State.apply(
-                    bootstrapMods, Optional.of(pillarData), Optional.of(true));
-            Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> results =
-                    SALT_SERVICE.callSyncSSH(call, new MinionList(input.getHost()),
-                            input.getIgnoreHostKeys(), roster,
-                            !"root".equals(input.getUser()));
-
-            // Delete the roster file
-            Files.delete(rosterFilePath);
-
-            // Check if bootstrap was successful
-            return results.get(input.getHost()).fold(
-                    error -> {
-                        LOG.error("Error during bootstrap: " + error.toString());
-                        SALT_SERVICE.deleteKey(input.getHost());
-                        return bootstrapResult(response, false,
-                                Collections.singletonList(error.toString()));
-                    },
-                    r -> {
-                        // We have results, check if result=true for all the single states
-                        List<String> messages;
-                        boolean stateApplyResult = r.getReturn().isPresent();
-                        if (stateApplyResult) {
-                            messages = r.getReturn().get().entrySet().stream().flatMap(
-                                    entry -> {
-                                if (!entry.getValue().isResult()) {
-                                    return Stream.of(entry.getKey() + " (retcode=" +
-                                            r.getRetcode() + "): " +
-                                            entry.getValue().getComment());
-                                }
-                                else {
-                                    return Stream.empty();
-                                }
-                            }).collect(Collectors.toList());
-                            stateApplyResult = messages.isEmpty();
-                            if (!stateApplyResult) {
-                                LOG.error(messages.stream().collect(
-                                        Collectors.joining("\n")));
-                            }
-                        }
-                        else {
-                            messages = Collections.singletonList(
-                                    r.getStdout().filter(s -> !s.isEmpty())
-                                    .orElseGet(() -> r.getStderr().filter(s -> !s.isEmpty())
-                                    .orElseGet(() -> "No result for " + input.getHost()))
-                            );
-                            LOG.info(messages);
-                        }
-
-                        // Clean up the generated key pair in case of failure
-                        boolean success = stateApplyResult && r.getRetcode() == 0;
-                        if (!success) {
-                            SALT_SERVICE.deleteKey(input.getHost());
-                        }
-                        return bootstrapResult(response, success, messages);
-                    }
-            );
-        }
-        catch (IOException e) {
-            LOG.error("Error operating on roster file: " + e.getMessage());
-            SALT_SERVICE.deleteKey(input.getHost());
-            throw new RuntimeException(e);
-        }
+        return json(
+                response,
+                RegularMinionBootstrapper.getInstance().bootstrap(
+                        GSON.fromJson(request.body(), JSONBootstrapHosts.class),
+                        user));
     }
 
-    private static String bootstrapResult(Response response, boolean success,
-            List<String> messages) {
-        LOG.info("Bootstrap success: " + success);
-        Map<String, Object> ret = new LinkedHashMap<>();
-        ret.put("success", success);
-        ret.put("messages", messages);
-        return json(response, ret);
+
+    /**
+     * Bootstrap a system for being managed via SSH.
+     *
+     * This also uses the mgr_ssh_identity state module to copy the ssh
+     * certificate of the manager to the ssh authorized_keys of the target
+     * system (so that for the following salt-ssh calls, no password is
+     * needed).
+     *
+     * @param request  the request object
+     * @param response the response object
+     * @param user     the current user
+     * @return json result of the API call
+     */
+    public static String bootstrapSSH(Request request, Response response, User user) {
+        return json(
+                response,
+                SSHMinionBootstrapper.getInstance().bootstrap(
+                        GSON.fromJson(request.body(), JSONBootstrapHosts.class),
+                        user));
     }
+
 }

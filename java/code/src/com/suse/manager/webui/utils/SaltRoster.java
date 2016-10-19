@@ -40,11 +40,12 @@ public class SaltRoster {
      * @param passwd The password to login with
      * @param port The target system's ssh port number
      */
-    public void addHost(String host, String user, String passwd, Optional<Integer> port) {
+    public void addHost(String host, String user, Optional<String> passwd,
+            Optional<Integer> port) {
         Map<String, Object> hostData = new LinkedHashMap<>();
         hostData.put("host", host);
         hostData.put("user", user);
-        hostData.put("passwd", passwd);
+        passwd.ifPresent(value -> hostData.put("passwd", value));
         port.ifPresent(value -> hostData.put("port", value));
         data.put(host, hostData);
     }

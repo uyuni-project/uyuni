@@ -26,7 +26,7 @@ public class JSONBootstrapHosts {
 
     /** Host IP address or DNS name */
     private String host;
-    private String port;
+    private String port = "22";
     private String user = "root";
     private String password;
     private List<String> activationKeys;
@@ -85,5 +85,17 @@ public class JSONBootstrapHosts {
             ret = Optional.of(Integer.valueOf(port));
         }
         return ret;
+    }
+
+    /**
+     * Helper method to return the password as an Optional<String>.
+     *
+     * @return password wrapped in Optional, or empty Optional if password is empty.
+     */
+    public Optional<String> maybeGetPassword() {
+        if (StringUtils.isEmpty(password)) {
+            return Optional.empty();
+        }
+        return Optional.of(password);
     }
 }

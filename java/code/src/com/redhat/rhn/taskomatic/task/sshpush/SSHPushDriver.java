@@ -182,7 +182,14 @@ public class SSHPushDriver implements QueueDriver {
     @Override
     public QueueWorker makeWorker(Object item) {
         SSHPushSystem system = (SSHPushSystem) item;
-        return new SSHPushWorker(getLogger(), remotePort, system);
+
+        // Create a Salt worker if the system has a minion id
+        if (system.getMinionId() != null) {
+            return new SSHPushWorkerSalt(getLogger(), system);
+        }
+        else {
+            return new SSHPushWorker(getLogger(), remotePort, system);
+        }
     }
 
     /**
