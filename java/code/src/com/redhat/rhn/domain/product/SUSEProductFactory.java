@@ -32,6 +32,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * SUSEProductFactory - the class used to fetch and store
@@ -336,7 +337,7 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return installedProduct or null if it is not found
      */
     @SuppressWarnings("unchecked")
-    public static InstalledProduct findInstalledProduct(String name, String version,
+    public static Optional<InstalledProduct> findInstalledProduct(String name, String version,
             String release, PackageArch arch, boolean isBaseProduct) {
 
         Criteria c = getSession().createCriteria(InstalledProduct.class);
@@ -349,7 +350,7 @@ public class SUSEProductFactory extends HibernateFactory {
                 .addOrder(Order.asc("release")).addOrder(Order.asc("arch"));
 
         List<InstalledProduct> result = c.list();
-        return result.isEmpty() ? null : result.get(0);
+        return Optional.ofNullable(result.isEmpty() ? null : result.get(0));
     }
 
     /**
