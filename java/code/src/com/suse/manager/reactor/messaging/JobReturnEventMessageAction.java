@@ -571,9 +571,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             }
 
             return Stream.of(
-                    Optional.ofNullable(
-                            SUSEProductFactory.findInstalledProduct(name, version, release,
-                                    PackageFactory.lookupPackageArchByLabel(arch), isbase))
+                    SUSEProductFactory.findInstalledProduct(name, version, release,
+                            PackageFactory.lookupPackageArchByLabel(arch), isbase)
                     .orElse(
                             // Use installed product information from the client
                             new InstalledProduct(name, version,
