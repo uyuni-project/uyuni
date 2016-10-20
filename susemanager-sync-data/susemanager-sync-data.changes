@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Oct 20 10:27:28 CEST 2016 - mc@suse.de
+
+- version 2.1.18-1
+- support Open Enterprise Server 11 SP3 (bsc#988303)
+- Add Support for SLE12 SP2 family (bsc#969889)
+- AMD repos removed because of security reasons
+- add SLES12-GA-LTSS-X86 and SLES12-GA-LTSS-Z channel families
+  (bsc#994305)
+
+-------------------------------------------------------------------
 Wed Aug 10 09:28:48 CEST 2016 - mc@suse.de
 
 - version 2.1.17-1
