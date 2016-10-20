@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Oct 20 10:22:46 CEST 2016 - mc@suse.de
+
+- version 2.1.50.18-1
+- Add table for storing product extensions
+- Add severity_id to rhnErrataTmp for consistency with rhnErrata
+- Avoid a deadlock when deleting a server (bsc#969790)
+
+-------------------------------------------------------------------
 Wed Aug 10 09:27:16 CEST 2016 - mc@suse.de
 
 - version 2.1.50.17-1
