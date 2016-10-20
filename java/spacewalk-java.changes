@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Oct 20 10:30:19 CEST 2016 - mc@suse.de
+
+- version 2.1.165.26-1
+- arch_type of a SUSEProduct can be null
+  (bsc#1001738 bsc#1001784 bsc#1001923 bsc#1002678)
+- XMLRPC API for new SP Migration
+- SPMigration: add multi-target-selection step in front of the wizard
+- fix cloning errata severity from an errata (bsc#1000666)
+- support Open Enterprise Server 11 SP3 (bsc#988303)
+- Redirect user to a meaningful page after requesting details of non-existing
+  Action Chain (bsc#973198)
+- fix race condition during auto errata update (bsc#969790)
+
+-------------------------------------------------------------------
 Wed Aug 10 09:13:55 CEST 2016 - mc@suse.de
 
 - version 2.1.165.25-1
