@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Oct 20 10:42:51 CEST 2016 - mc@suse.de
+
+- version 2.1.25.12-1
+- Alert if a non-unique package ID is detected
+- Prevent crashes when running old-style spacecmd cache
+- avoid errors if multiple packages with same long name enter the
+  cache (bsc#990264)
+
+-------------------------------------------------------------------
 Mon Dec 07 12:47:45 CET 2015 - mc@suse.de
 
 - version 2.1.25.11-1
