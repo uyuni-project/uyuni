@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 20 10:40:32 CEST 2016 - mc@suse.de
+
+- version 2.1.33.18-1
+- More 'errata' > 'patches' string fixes (bsc#981635)
+- SPMigration: add multi-target-selection step in front of the wizard
+
+-------------------------------------------------------------------
 Wed Aug 10 09:15:35 CEST 2016 - mc@suse.de
 
 - version 2.1.33.17-1
