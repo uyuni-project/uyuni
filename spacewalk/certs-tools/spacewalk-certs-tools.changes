@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 20 10:38:00 CEST 2016 - mc@suse.de
+
+- version 2.1.6.12-1
+- check only if all required packages are installed (bsc#992987)
+- fix paths to trust dir and update-ca-certificates tool
+
+-------------------------------------------------------------------
 Wed Aug 10 09:26:38 CEST 2016 - mc@suse.de
 
 - version 2.1.6.11-1
