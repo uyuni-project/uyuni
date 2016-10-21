@@ -23,7 +23,7 @@ When(/^I call virtualhostmanager.getModuleParameters\(\) for "([^"]*)"$/) do |mo
 end
 
 When(/^I call virtualhostmanager.create\("([^"]*)", "([^"]*)"\) and params from "([^"]*)"$/) do |label, moduleName, paramFile|
-  p = JSON.load(File.new(paramFile))
+  p = JSON.parse(File.new(paramFile))
   r = virtualhostmanager.create(label, moduleName, p)
   fail if r != 1
 end
