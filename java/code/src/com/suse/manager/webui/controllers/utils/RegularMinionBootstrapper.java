@@ -21,6 +21,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+import com.suse.salt.netapi.calls.wheel.Key;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -71,8 +72,7 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
     protected Map<String, Object> createPillarData(User user, BootstrapParameters input) {
         Map<String, Object> pillarData = super.createPillarData(user, input);
 
-        com.suse.manager.webui.utils.salt.Key.Pair keyPair =
-                saltService.generateKeysAndAccept(input.getHost(), false);
+        Key.Pair keyPair = saltService.generateKeysAndAccept(input.getHost(), false);
         if (keyPair.getPub().isPresent() && keyPair.getPriv().isPresent()) {
             pillarData.put("minion_pub",  keyPair.getPub().get());
             pillarData.put("minion_pem", keyPair.getPriv().get());
