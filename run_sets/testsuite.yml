@@ -71,5 +71,6 @@
 - features/change_password.feature
 - features/spacewalk-debug.feature
 - features/tomcat_errors.feature
+- features/smdba.feature
 #- features/mgr_create_bootstrap_repo.feature
 - features/security.feature
