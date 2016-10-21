@@ -123,6 +123,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(MirrorCredentialsDtoSerializer.class);
         SERIALIZER_CLASSES.add(VirtualHostManagerSerializer.class);
         SERIALIZER_CLASSES.add(PinnedSubscriptionSerializer.class);
+        SERIALIZER_CLASSES.add(SUSEInstalledProductSerializer.class);
     }
 
     /**
