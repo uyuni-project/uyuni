@@ -317,18 +317,14 @@ public class SaltService {
      * Return the stream of events happening in salt.
      *
      * @return the event stream
+     * @throws SaltException exception occured during connection (if any)
      */
     // Do not use the shared client object here, so we can disable the timeout (set to 0).
-    public EventStream getEventStream() {
-        try {
-            SaltClient client = new SaltClient(SALT_MASTER_URI);
-            client.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            return new EventStream(client.getConfig());
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
+    public EventStream getEventStream() throws SaltException {
+        SaltClient client = new SaltClient(SALT_MASTER_URI);
+        client.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+        client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
+        return new EventStream(client.getConfig());
     }
 
     /**

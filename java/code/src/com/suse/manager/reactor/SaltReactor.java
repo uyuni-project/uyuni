@@ -42,6 +42,7 @@ import com.suse.salt.netapi.event.EventListener;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.event.MinionStartEvent;
+import com.suse.salt.netapi.exception.SaltException;
 
 import org.apache.log4j.Logger;
 
@@ -98,8 +99,7 @@ public class SaltReactor implements EventListener {
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
         // Initialize the event stream
-        eventStream = SALT_SERVICE.getEventStream();
-        eventStream.addEventListener(this);
+        connectToEventStream();
     }
 
     /**
@@ -125,11 +125,45 @@ public class SaltReactor implements EventListener {
         LOG.warn("Event stream closed: " + closeReason.getReasonPhrase() +
                 " [" + closeReason.getCloseCode() + "]");
 
-        // Try to reconnect
         if (!isStopped) {
             LOG.warn("Reconnecting to event stream...");
-            eventStream = SALT_SERVICE.getEventStream();
-            eventStream.addEventListener(this);
+            connectToEventStream();
+        }
+    }
+
+    /**
+     * Connect to Salt Event stream; if not connected,
+     * retry connections with exponential backoff timeout.
+     */
+
+    public void connectToEventStream() {
+        boolean connected = false;
+        int initialDelayTime = 5, delayTime = 5; // seconds
+        int maxDelay = 320; // 5m20s. After this, delay = initialDelayTime
+
+        while (!connected) {
+            LOG.warn("Trying to reconnect to event stream...");
+            try {
+                eventStream = SALT_SERVICE.getEventStream();
+                eventStream.addEventListener(this);
+                connected = true;
+                LOG.warn("Successfully connected to event stream.");
+            }
+            catch (SaltException e) {
+                try {
+                    LOG.error("Unable to connect: " + e + ", retrying in " + delayTime
+                            + " seconds.");
+                    Thread.sleep(1000 * delayTime);
+                    delayTime *= 2; // exponential backoff
+                    delayTime %= maxDelay;
+                    if (delayTime == 0) {
+                        delayTime = initialDelayTime;
+                    }
+                }
+                catch (InterruptedException e1) {
+                    Thread.currentThread().interrupt();
+                }
+            }
         }
     }
 
