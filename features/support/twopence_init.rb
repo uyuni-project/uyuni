@@ -30,7 +30,7 @@ node_hostnames = []
 
 # get the hostnames of various vms
 for node in nodes
-  hostname, _local, _remote, code = node.test_and_store_results_together("hostname -f", "root", 500)
+  hostname, _local, _remote, code = node.test_and_store_results_together("hostname", "root", 500)
   raise "no full qualified hostname for node" if code.nonzero?
   node_hostnames.push(hostname.strip)
 end
