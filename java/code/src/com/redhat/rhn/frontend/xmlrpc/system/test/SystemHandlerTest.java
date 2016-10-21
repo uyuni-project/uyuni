@@ -43,6 +43,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
@@ -97,6 +98,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchPackageException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.UndefinedCustomFieldsException;
+import com.redhat.rhn.frontend.xmlrpc.system.SUSEInstalledProduct;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -2360,6 +2362,33 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertTrue(result.size() == 1);
         assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise Server 12 SP1");
         assertContains(result.get(0).get("friendly").toString(), "SUSE Linux Enterprise High Availability Extension 12 SP1");
+    }
+
+    public void testGetInstalledProducts() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        assertNotNull(server);
+        assertNotNull(server.getId());
+
+        List<SUSEInstalledProduct> results = handler.getInstalledProducts(admin,
+                server.getId().intValue());
+        assertEquals(0, results.size());
+
+        PackageArch arch = PackageFactory.lookupPackageArchByLabel("x86_64");
+
+        Set<InstalledProduct> products = new HashSet<>();
+        products.add(new InstalledProduct("SLES", "12", arch, null, true));
+        products.add(new InstalledProduct("sle-ha", "12", arch, null, false));
+        products.add(new InstalledProduct("sle-ha-geo", "12", arch, null, false));
+        //This one should be ignored (only SUSE products):
+        products.add(new InstalledProduct("unknown-product", "1", arch, null, false));
+
+        server.setInstalledProducts(products);
+        TestUtils.saveAndReload(server);
+
+        results = handler.getInstalledProducts(admin, server.getId().intValue());
+
+        assertEquals("invalid number of results", 3, results.size());
+
     }
 
 }
