@@ -424,8 +424,7 @@ public class SaltService {
      */
     public void syncBeacons(MinionList minionList) {
         try {
-            LocalCall<List<String>> call =
-                    com.suse.manager.webui.utils.salt.SaltUtil.syncBeacons(
+            LocalCall<List<String>> call = SaltUtil.syncBeacons(
                             Optional.of(true),
                             Optional.empty());
 
