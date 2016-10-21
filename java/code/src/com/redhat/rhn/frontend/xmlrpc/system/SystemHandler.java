@@ -168,6 +168,7 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * SystemHandler
@@ -5734,5 +5735,34 @@ public class SystemHandler extends BaseHandler {
         // We didn't find target products if we are still here
         throw new FaultException(-1, "servicePackMigrationNoTarget",
                 "No target found for SP migration");
+    }
+
+    /**
+     * Get a list of installed products for given system
+     * @param loggedInUser The current user
+     * @param serverId Server ID
+     * @return List of installed products for given system
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * the sid cannot be found
+     *
+     * @xmlrpc.doc Get a list of installed products for given system
+     * @xmlrpc.param #param("User", "loggedInUser")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.returntype
+     *      #array()
+     *          $SUSEInstalledProductSerializer
+     *      #array_end()
+     */
+    public List<SUSEInstalledProduct> getInstalledProducts(User loggedInUser,
+            Integer serverId) throws FaultException {
+        Server server = lookupServer(loggedInUser, serverId);
+
+        //Ignore non-SUSE products
+        return server.getInstalledProducts().stream()
+                .filter(p -> p.getSUSEProduct() != null)
+                .map(p -> new SUSEInstalledProduct(p.getName(), p.getVersion(),
+                        p.getArch().getLabel(), p.getRelease(), p.isBaseproduct(),
+                        p.getSUSEProduct().getFriendlyName()))
+                .collect(Collectors.toList());
     }
 }
