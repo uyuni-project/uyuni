@@ -211,11 +211,10 @@ public class SaltService {
      * @param force set true to overwrite an already existing key
      * @return the generated key pair
      */
-    public com.suse.manager.webui.utils.salt.Key.Pair generateKeysAndAccept(String id,
+    public Key.Pair generateKeysAndAccept(String id,
             boolean force) {
         try {
-            WheelResult<com.suse.manager.webui.utils.salt.Key.Pair> result =
-                    com.suse.manager.webui.utils.salt.Key.genAccept(id, Optional.of(force))
+            WheelResult<Key.Pair> result = Key.genAccept(id, Optional.of(force))
                     .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return result.getData().getResult();
         }

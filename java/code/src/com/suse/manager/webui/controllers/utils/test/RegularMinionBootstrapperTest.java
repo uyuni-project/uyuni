@@ -5,7 +5,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
-import com.suse.manager.webui.utils.salt.Key;
+import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.errors.GenericSaltError;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Result;
