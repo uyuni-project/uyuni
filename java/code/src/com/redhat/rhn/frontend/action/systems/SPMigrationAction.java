@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +44,8 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ChildChannelDto;
@@ -51,6 +54,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 /**
  * Action class for scheduling distribution upgrades (Service Pack Migrations).
@@ -67,6 +71,9 @@ public class SPMigrationAction extends RhnAction {
     private static final String TARGET_PRODUCTS = "targetProducts";
     private static final String CHANNEL_MAP = "channelMap";
     private static final String UPDATESTACK_UPDATE_NEEDED = "updateStackUpdateNeeded";
+    private static final String IS_MINION = "isMinion";
+    private static final String IS_SUSE_MINION = "isSUSEMinion";
+    private static final String IS_SALT_UP_TO_DATE= "isSaltUpToDate";
 
     // Form parameters
     private static final String ACTION_STEP = "step";
@@ -98,27 +105,46 @@ public class SPMigrationAction extends RhnAction {
         RequestContext ctx = new RequestContext(request);
         Server server = ctx.lookupAndBindServer();
 
+        Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
+        // Check if this server is a minion
+        boolean isMinion = minion.isPresent();
+        logger.debug("is a minion system? "+ isMinion);
+        request.setAttribute(IS_MINION, isMinion);
+
+        // Check if this is a SUSE system (for minions only)
+        boolean isSUSEMinion = isMinion && minion.get().getOsFamily().equals("Suse");
+        logger.debug("is a SUSE minion? " + isSUSEMinion);
+        request.setAttribute(IS_SUSE_MINION, isSUSEMinion);
+
+        // Check if the salt package on the minion is up to date (for minions only)
+        boolean isSaltUpToDate = PackageManager.
+                getServerNeededUpdatePackageByName(server.getId(), "salt") == null;
+        logger.debug("salt package is up-to-date? " + isSaltUpToDate);
+        request.setAttribute(IS_SALT_UP_TO_DATE, isSaltUpToDate);
+
         // Check if this server supports distribution upgrades
+        // (for traditional clients only)
         boolean supported = DistUpgradeManager.isUpgradeSupported(
                 server, ctx.getCurrentUser());
         logger.debug("Upgrade supported for '" + server.getName() + "'? " + supported);
         request.setAttribute(UPGRADE_SUPPORTED, supported);
 
-        // Check if zypp-plugin-spacewalk is installed
+        // Check if zypp-plugin-spacewalk is installed (for traditional clients only)
         boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
                 "zypp-plugin-spacewalk", server) != null;
         logger.debug("zypp plugin installed? " + zyppPluginInstalled);
         request.setAttribute(ZYPP_INSTALLED, zyppPluginInstalled);
 
-        // Check if the newest update stack is installed
+        // Check if the newest update stack is installed (for traditional clients only)
         boolean updateStackUpdateNeeded = ErrataManager.updateStackUpdateNeeded(
                 ctx.getCurrentUser(), server);
         logger.debug("update stack update needed? " + updateStackUpdateNeeded);
         request.setAttribute(UPDATESTACK_UPDATE_NEEDED, updateStackUpdateNeeded);
 
+
         // Check if there is already a migration in the schedule
         Action migration = null;
-        if (supported) {
+        if (supported || isSUSEMinion) {
             migration = ActionFactory.isMigrationScheduledForServer(server.getId());
         }
         request.setAttribute(MIGRATION_SCHEDULED, migration);
@@ -171,7 +197,9 @@ public class SPMigrationAction extends RhnAction {
         ActionForward forward = findForward(actionMapping, actionStep, dispatch, goBack);
 
         // Put data to the request
-        if (forward.getName().equals(TARGET) && supported && migration == null) {
+        if (forward.getName().equals(TARGET) &&
+                (supported || isSUSEMinion) &&
+                migration == null) {
             // Find target products
             SUSEProductSet installedProducts = server.getInstalledProductSet();
             List<SUSEProductSet> migrationTargets = DistUpgradeManager.
