@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.action.kickstart;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartRawData;
@@ -42,6 +43,7 @@ import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.upload.FormFile;
 import org.cobbler.Distro;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,9 +186,12 @@ public class AdvancedModeDetailsAction extends RhnAction {
             }
             else {
                 ks = getKsData(context);
+                // upload content of new kickstart file
                 ks.setData(fileData);
-                ks.removeCommand("rootpw", Boolean.TRUE);
+                // build new commands in KickstartData
+                ks.removeCommands();
                 builder.buildCommands(ks, parser.getOptionLines(), tree);
+
                 builder.update(ks, label, tree, virtType);
                 ks.setActive(Boolean.TRUE.equals(form.get(ACTIVE)));
                 ks.setOrgDefault(Boolean.TRUE.equals(form.get(ORG_DEFAULT)));
@@ -223,10 +228,19 @@ public class AdvancedModeDetailsAction extends RhnAction {
         loadVirtualizationTypes(cmd, form, context);
         if (!isCreateMode(context.getRequest())) {
             KickstartRawData data = getKsData(context);
+            Collection<KickstartCommand> commands = data.getCommands();
             if (!data.isValid()) {
                 context.getRequest().setAttribute(KickstartDetailsEditAction.INVALID,
                         Boolean.TRUE);
                 return;
+            }
+            // set commands if they haven't been set yet
+            if (commands == null || commands.size() == 0) {
+                KickstartBuilder builder = new KickstartBuilder(user);
+                KickstartParser parser = new KickstartParser(data.getData());
+                KickstartableTree tree =
+                        cmd.getKickstartableTree((Long) form.get(KSTREE_ID_PARAM));
+                builder.buildCommands(data, parser.getOptionLines(), tree);
             }
             form.set(KICKSTART_LABEL_PARAM, data.getLabel());
             form.set(CONTENTS, data.getData());
