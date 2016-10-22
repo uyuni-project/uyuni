@@ -300,6 +300,15 @@ class RepoSync(object):
         self.all_packages = []
         self.arches = self.get_compatible_arches(int(self.channel['id']))
 
+    def set_urls_prefix(self, prefix):
+        """If there are relative urls in DB, set their real location in runtime"""
+        for index, url in enumerate(self.urls):
+            # Make list, add prefix, make tuple and save
+            url = list(url)
+            url[1] = "%s%s" % (prefix, url[1])
+            url = tuple(url)
+            self.urls[index] = url
+
     def sync(self, update_repodata=False):
         """Trigger a reposync"""
         start_time = datetime.now()
@@ -331,18 +340,17 @@ class RepoSync(object):
                     if data['id'] is not None:
                         keys = rhnSQL.fetchone_dict("""
                         select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
-                        from rhncontentssl
+                        from rhncontentsource cs
                                 join rhncryptokey k1
-                                on rhncontentssl.ssl_ca_cert_id = k1.id
+                                on cs.ssl_ca_cert_id = k1.id
                                 left outer join rhncryptokey k2
-                                on rhncontentssl.ssl_client_cert_id = k2.id
+                                on cs.ssl_client_cert_id = k2.id
                                 left outer join rhncryptokey k3
-                                on rhncontentssl.ssl_client_key_id = k3.id
-                        where rhncontentssl.content_source_id = :repo_id
-                        or rhncontentssl.channel_family_id = :channel_family_id
-                        """, repo_id=int(data['id']), channel_family_id=data['channel_family_id'])
-                        if keys and ('ca_cert' in keys):
-                            plugin.set_ssl_options(keys['ca_cert'], keys['client_cert'], keys['client_key'])
+                                on cs.ssl_client_key_id = k3.id
+                        where cs.id = :repo_id
+                        """, repo_id=int(data['id']))
+                    if keys and ('ca_cert' in keys):
+                        plugin.set_ssl_options(keys['ca_cert'], keys['client_cert'], keys['client_key'])
 
                     # update the checksum type of channels with org_id NULL
                     self.updateChannelChecksumType(plugin.get_md_checksum_type())

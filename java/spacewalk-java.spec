@@ -29,7 +29,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.6.41
+Version: 2.6.43
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -1036,6 +1036,15 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Oct 20 2016 Jan Dobes 2.6.43-1
+- fixing hibernate mapping
+- fixing occurences in code
+- Ensure no stray config channels are listed for ranking (bsc#979630)
+
+* Mon Oct 17 2016 Gennadii Altukhov <galt@redhat.com> 2.6.42-1
+- fill KickstartData when select kickstart profile.
+- add small fix for Kickstart profile update.
+
 * Fri Oct 14 2016 Grant Gainey 2.6.41-1
 - Updated specfile - RHN -> Spacewalk
 - Checkstyle: remove redundant modifiers

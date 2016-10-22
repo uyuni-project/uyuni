@@ -369,6 +369,7 @@ class ContentSource:
         rmtree(directory, True)
         # restore empty directory
         makedirs(directory + "/packages", int('0755', 8))
+        makedirs(directory + "/gen", int('0755', 8))
 
     def get_products(self):
         products = []

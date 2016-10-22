@@ -19,6 +19,7 @@ import sys
 import time
 import gzip
 import tempfile
+import re
 from optparse import Option, OptionParser
 from xml.dom.minidom import parseString
 from M2Crypto import X509
@@ -59,6 +60,7 @@ DEFAULT_WEB_HANDLER = '/rpc/api'
 DEFAULT_WEBAPP_GPG_KEY_RING = "/etc/webapp-keyring.gpg"
 DEFAULT_CONFIG_FILE = "/etc/rhn/rhn.conf"
 DEFAULT_RHSM_CONFIG_FILE = "/etc/rhsm/rhsm.conf"
+SUPPORTED_RHEL_VERSIONS = ['5', '6']
 
 
 class CaCertInsertionError(Exception):
@@ -259,6 +261,39 @@ def prepRhnCert(options):
             raise
 
 
+def enableSatelliteRepo(rhn_cert):
+    args = ['rpm', '-q', '--qf', '\'%{version}\'', '-f', '/etc/redhat-release']
+    ret, out, err = fileutils.rhn_popen(args)
+    # Read from stdout, strip quotes if any and extract first number
+    version = re.search(r'\d+', out.read().strip("'")).group()
+
+    if version not in SUPPORTED_RHEL_VERSIONS:
+        msg = "WARNING: No Satellite repository available for RHEL version: %s.\n" % version
+        sys.stderr.write(msg)
+        return
+
+    sat_cert = satellite_cert.SatelliteCert()
+    sat_cert.load(rhn_cert)
+    sat_version = getattr(sat_cert, 'satellite-version')
+
+    repo = "rhel-%s-server-satellite-%s-rpms" % (version, sat_version)
+    args = ['/usr/bin/subscription-manager', 'repos', '--enable', repo]
+    ret, out, err = fileutils.rhn_popen(args)
+    if ret:
+        msg_ = "Enabling of Satellite repository failed."
+        msg = ("%s\nReturn value: %s\nStandard-out: %s\n\n"
+               "Standard-error: %s\n\n"
+               % (msg_, ret, out.read(), err.read()))
+        sys.stderr.write(msg)
+        raise EnableSatelliteRepositoryException("Enabling of Satellite repository failed. Is there Satellite "
+                                                 "subscription attached to this system? Is the version of "
+                                                 "RHEL and Satellite certificate correct?")
+
+
+class EnableSatelliteRepositoryException(Exception):
+    "when there is no attached satellite subscription in rhsm or incorrect combination of rhel and sat version"
+
+
 class RHNCertLocalActivationException(Exception):
     "general local activate failure exception"
 
@@ -312,6 +347,7 @@ def activateSatellite_remote(options):
     # may raise InvalidRhnCertError, UnhandledXmlrpcError, socket.error,
     # or cgiwrap.ProtocolError
 
+    print 'RHN_PARENT: %s' % options.server
     s = getXmlrpcServer(options.server,
                         DEFAULT_WEB_HANDLER,
                         options.http_proxy,
@@ -340,6 +376,11 @@ def activateSatellite_remote(options):
         raise RHNCertRemoteSatelliteAlreadyActivatedException(msg)
 
     rhn_cert = openGzippedFile(options.rhn_cert).read()
+
+    # Check if satellite repository is enabled
+    if rhsm_uuid:
+        enableSatelliteRepo(rhn_cert)
+
     if systemid:
         # Find description in systemid XML
         systemid_description = ""
@@ -554,6 +595,7 @@ def processCommandline():
         Option('--old-api', action='store_true', help='activate Satellite using old API, system '
                + 'has to be registered to RHN Classic'),
         Option('-f', '--force', action='store_true', help='force activate Satellite if it is already activated'),
+        Option('--cdn-deactivate', action='store_true', help='deactivate CDN-activated Satellite'),
     ]
 
     options, args = OptionParser(option_list=options).parse_args()
@@ -565,6 +607,16 @@ def processCommandline():
 
     initCFG('server.satellite')
 
+    if options.manifest or options.cdn_deactivate:
+        if not cdn_activation:
+            sys.stderr.write("ERROR: Package spacewalk-backend-cdn has to be installed for using --manifest "
+                             "and --cdn-deactivate.\n")
+            sys.exit(1)
+
+    # No need to check further if deactivating
+    if options.cdn_deactivate:
+        return options
+
     # systemid
     if not options.systemid:
         options.systemid = DEFAULT_SYSTEMID_LOCATION
@@ -575,9 +627,6 @@ def processCommandline():
         options.rhn_cert = DEFAULT_RHN_CERT_LOCATION
 
     if options.manifest:
-        if not cdn_activation:
-            sys.stderr.write("ERROR: Package spacewalk-backend-cdn has to be installed for using --manifest.\n")
-            sys.exit(1)
         cdn_manifest = Manifest(options.manifest)
         tmp_cert_path = cdn_manifest.get_certificate_path()
         if tmp_cert_path is not None:
@@ -600,7 +649,6 @@ def processCommandline():
             sys.stderr.write("ERROR: rhn_parent is not set in /etc/rhn/rhn.conf\n")
             sys.exit(1)
         options.server = idn_ascii_to_puny(rhnLib.parseUrl(CFG.RHN_PARENT)[1].split(':')[0])
-        print 'RHN_PARENT: %s' % options.server
 
     options.http_proxy = idn_ascii_to_puny(CFG.HTTP_PROXY)
     options.http_proxy_username = CFG.HTTP_PROXY_USERNAME
@@ -650,6 +698,11 @@ def main():
 
     def writeError(e):
         sys.stderr.write('\nERROR: %s\n' % e)
+
+    # CDN Deactivation
+    if options.cdn_deactivate:
+        cdn_activation.Activation.deactivate()
+        return 0
 
     # Handle RHSM manifest
     if options.manifest:
@@ -710,6 +763,9 @@ def main():
         except TimeoutException, e:
             writeError(e)
             return 89
+        except EnableSatelliteRepositoryException, e:
+            writeError(e)
+            return 90
 
         # channel family stuff
         if CFG.RHN_PARENT and not CFG.ISS_PARENT:
@@ -720,7 +776,7 @@ def main():
                 return 40
 
     elif cdn_activate:
-        cdn_activate.run()
+        cdn_activate.activate()
 
     return 0
 
