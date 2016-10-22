@@ -337,18 +337,18 @@ class RepoSync(object):
 
                     if data['id'] is not None:
                         keys = rhnSQL.fetchone_dict("""
-                        select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
-                        from rhncontentsource cs
-                                join rhncryptokey k1
+                            select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
+                              from rhncontentsource cs
+                              join rhncryptokey k1
                                 on cs.ssl_ca_cert_id = k1.id
-                                left outer join rhncryptokey k2
+                              left outer join rhncryptokey k2
                                 on cs.ssl_client_cert_id = k2.id
-                                left outer join rhncryptokey k3
+                              left outer join rhncryptokey k3
                                 on cs.ssl_client_key_id = k3.id
-                        where cs.id = :repo_id
+                             where cs.id = :repo_id
                         """, repo_id=int(data['id']))
-                    if keys and ('ca_cert' in keys):
-                        plugin.set_ssl_options(keys['ca_cert'], keys['client_cert'], keys['client_key'])
+                        if keys and ('ca_cert' in keys):
+                            plugin.set_ssl_options(keys['ca_cert'], keys['client_cert'], keys['client_key'])
 
                     # update the checksum type of channels with org_id NULL
                     self.updateChannelChecksumType(plugin.get_md_checksum_type())
