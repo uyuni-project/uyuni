@@ -265,12 +265,10 @@ class RepoSync(object):
             # TODO:need to look at user security across orgs
             h = rhnSQL.prepare(
                 """
-                select s.id, s.source_url, s.metadata_signed, s.label, fm.channel_family_id
+                select s.id, s.source_url, s.metadata_signed, s.label
                 from rhnContentSource s,
-                     rhnChannelContentSource cs,
-                     rhnChannelFamilyMembers fm
+                     rhnChannelContentSource cs
                 where s.id = cs.source_id
-                  and cs.channel_id = fm.channel_id
                   and cs.channel_id = :channel_id""")
             h.execute(channel_id=int(self.channel['id']))
             sources = h.fetchall_dict()
@@ -290,7 +288,7 @@ class RepoSync(object):
                     sys.exit(0)
                 sys.exit(1)
         else:
-            self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N', 'label': None, 'channel_family_id': None}]
+            self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N', 'label': None}]
 
         if not self.urls:
             log2stderr(0, "Channel %s has no URL associated" % channel_label)
@@ -1036,8 +1034,7 @@ class RepoSync(object):
                         id=item['id'],
                         source_url=[item['source_url']],
                         metadata_signed=item['metadata_signed'],
-                        label=item['label'],
-                        channel_family_id=item['channel_family_id']
+                        label=item['label']
                     )
                 )
         return ret
