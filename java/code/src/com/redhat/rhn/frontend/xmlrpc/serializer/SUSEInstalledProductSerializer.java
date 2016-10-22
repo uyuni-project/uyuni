@@ -25,7 +25,7 @@ import java.io.Writer;
 /**
  * Converts an InstalledProduct object for representation as an XMLRPC struct.
  *
- * @xmlrpcdoc
+ * @xmlrpc.doc
  * #struct("installed product")
  *     #prop("int", "id")
  *     #prop("string", "name")
