@@ -57,8 +57,8 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(
             self.reposync,
             [
-                [{'id': 'id1', 'label': 'label1', 'source_url': 'http://url.one', 'metadata_signed': 'Y', 'channel_family_id': None}],
-                [{'id': 'id2', 'label': 'label2', 'source_url': 'http://url.two', 'metadata_signed': 'N', 'channel_family_id': None}],
+                [{'id': 'id1', 'label': 'label1', 'source_url': 'http://url.one', 'metadata_signed': 'Y'}],
+                [{'id': 'id2', 'label': 'label2', 'source_url': 'http://url.two', 'metadata_signed': 'N'}],
             ]
         )
 
@@ -86,8 +86,8 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs.urls, [{'source_url': 'http://example.com',
                                     'label': None,
                                     'id': None,
-                                    'metadata_signed': 'N',
-                                    'channel_family_id': None}])
+                                    'metadata_signed': 'N'
+                                  }])
 
     def test_init_with_custom_flags(self):
         rs = self._init_reposync('Label', RTYPE, fail=True, noninteractive=True)
@@ -148,7 +148,7 @@ class RepoSyncTest(unittest.TestCase):
         rs = self._init_reposync()
 
         rs.urls = [
-                {"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "channel_family_id": None}]
+                {"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N"}]
 
         _mock_rhnsql(self.reposync, {})
         rs = self._mock_sync(rs)
@@ -174,7 +174,7 @@ class RepoSyncTest(unittest.TestCase):
     def test_sync_success_regen(self):
         rs = self._init_reposync()
 
-        rs.urls = [{"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "channel_family_id": None}]
+        rs.urls = [{"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N"}]
 
         _mock_rhnsql(self.reposync, {})
         rs = self._mock_sync(rs)
@@ -804,14 +804,12 @@ class SyncTest(unittest.TestCase):
                 'return_value.fetchall_dict.return_value': [
                     {
                         'metadata_signed': 'N',
-                        'channel_family_id': None,
                         'label': 'channel-label-1',
                         'id': 508,
                         'source_url': url1
                     },
                     {
                         'metadata_signed': 'Y',
-                        'channel_family_id': None,
                         'label': 'channel-label-2',
                         'id': 509,
                         'source_url': url2
@@ -829,14 +827,12 @@ class SyncTest(unittest.TestCase):
                 [
                     {
                         'metadata_signed': 'N',
-                        'channel_family_id': None,
                         'label': 'channel-label-1',
                         'id': 508,
                         'source_url': [url1]
                     },
                     {
                         'metadata_signed': 'Y',
-                        'channel_family_id': None,
                         'label': 'channel-label-2',
                         'id': 509,
                         'source_url': [url2]
@@ -942,7 +938,7 @@ def test_channel_exceptions():
     repoSync.RepoSync._format_sources = Mock()
     repoSync.RepoSync.get_compatible_arches = Mock(return_value=['arch1', 'arch2'])
     rs = repoSync.RepoSync("Label", RTYPE)
-    rs.urls = [{"source_url": ["http://none.host/bogus-url"], "metadata_signed": "N", "channel_family_id": None}]
+    rs.urls = [{"source_url": ["http://none.host/bogus-url"], "metadata_signed": "N"}]
     rs.import_packages = Mock()
     rs.import_updates = Mock()
     rs.mocked_plugin = Mock()
