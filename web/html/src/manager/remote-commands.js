@@ -25,19 +25,18 @@ class MinionResultView extends React.Component {
   }
 
   onClick() {
-    this.setState({open: !this.state.open});
+    this.props.started && this.props.result ?
+      this.setState({open: !this.state.open})
+      : undefined
   }
 
   render() {
     const id = this.props.id;
     const result = this.props.result;
     const props = this.props;
-    const style = {
-      margin: "0px"
-    };
     return (
-      <div className="panel panel-default" style={style}>
-        <div id={id} className="panel-heading" onClick={this.onClick}>
+      <div className="panel panel-default">
+        <div id={id} className="panel-heading" onClick={this.onClick} style={props.result ? {cursor: "pointer"} : {cursor: "default"}}>
            <span>{id}</span>
            {(() => {
               if(props.started){
@@ -48,11 +47,25 @@ class MinionResultView extends React.Component {
                       </div>
                     );
                 } else {
-                    return(
-                      <div className="badge pull-right">
-                         {t("done")}
-                      </div>
-                    );
+                    if(this.state.open) {
+                      return(
+                        <div className="pull-right">
+                          <div className="badge">
+                             {t("- hide response -")}
+                          </div>
+                          <i className="fa fa-right fa-check-circle fa-1-5x"></i>
+                        </div>
+                      )
+                    } else {
+                      return(
+                        <div className="pull-right">
+                          <div className="badge">
+                             {t("- show response -")}
+                          </div>
+                          <i className="fa fa-right fa-check-circle fa-1-5x"></i>
+                        </div>
+                      )
+                    }
                 }
               }
            })()}
@@ -89,6 +102,9 @@ class RemoteCommand extends React.Component {
 
   render() {
     var errs = null;
+    const style = {
+        paddingBottom: "0px"
+    }
     if (this.state.errors) {
         this.state.errors.map( msg => {
             errs = <div className="alert alert-danger">{msg}</div>
@@ -120,8 +136,25 @@ class RemoteCommand extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="panel-body">
-              {this.commandResult(this.state.result)}
+          </div>
+          <div className="panel panel-default">
+            <div className="panel-heading">
+              <h4>Target systems</h4>
+            </div>
+            <div className="panel-body" style={this.state.result.minions.size ? style : undefined}>
+              {(() => {
+                if (!this.state.previewed && !this.state.result.minions.size) {
+                   return(
+                     <span>{t("No target systems previewed")}</span>
+                   )
+                } else if (this.state.previewed && !this.state.result.minions.size) {
+                   return(
+                     <span>{t("No target systems has been found")}</span>
+                   )
+                } else {
+                  return(this.commandResult(this.state.result))
+                }
+              })()}
             </div>
           </div>
       </div>
