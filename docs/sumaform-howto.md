@@ -1,24 +1,11 @@
 # How to run the spacewalk-testsuite with sumaform.
 
-## WIP: for moment, the only working version of sumaform + testing(cucumber) is there:
-
- - https://github.com/MalloZup/sumaform
- 
-Once the PR will merged upstream  https://github.com/moio/sumaform), you can use the upstream.
-
-the libvirt-testing example, is in my repo https://github.com/MalloZup/sumaform/blob/master/main.tf.libvirt-testing.example
-
- (The file is for moment here, because the upstream was refractored, and my version is not compatible already with the newest version of sumaform, due to refractoring-variables issues).
- 
-
-
 #### Run it
 
 1) Get sumaform ( https://github.com/moio/sumaform)
 
 
-
-2) Use the libvirt-testing.-example and run it with terraform. 
+2) Use the libvirt-testing.-example and run it with terraform. ( see https://github.com/MalloZup/sumaform/blob/master/main.tf.libvirt-testing.example)
 
 
 3) Once you have all the machines, and terraform setup is finish ( 1 client, 1 minion(sle), 1 suma-server, 1 control-node)
