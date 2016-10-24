@@ -25,19 +25,18 @@ class MinionResultView extends React.Component {
   }
 
   onClick() {
-    this.setState({open: !this.state.open});
+    if (this.props.started && this.props.result) {
+      this.setState({open: !this.state.open})
+    }
   }
 
   render() {
     const id = this.props.id;
     const result = this.props.result;
     const props = this.props;
-    const style = {
-      margin: "0px"
-    };
     return (
-      <div className="panel panel-default" style={style}>
-        <div id={id} className="panel-heading" onClick={this.onClick}>
+      <div className="panel panel-default">
+        <div id={id} className="panel-heading" onClick={this.onClick} style={props.result ? {cursor: "pointer"} : {cursor: "default"}}>
            <span>{id}</span>
            {(() => {
               if(props.started){
@@ -49,10 +48,13 @@ class MinionResultView extends React.Component {
                     );
                 } else {
                     return(
-                      <div className="badge pull-right">
-                         {t("done")}
-                      </div>
-                    );
+                        <div className="pull-right">
+                          <div className="badge">
+                            {this.state.open ? t("- hide response -") : t("- show response -")}
+                          </div>
+                          <i className="fa fa-right fa-check-circle fa-1-5x"></i>
+                        </div>
+                    )
                 }
               }
            })()}
@@ -89,6 +91,9 @@ class RemoteCommand extends React.Component {
 
   render() {
     var errs = null;
+    const style = {
+        paddingBottom: "0px"
+    }
     if (this.state.errors) {
         this.state.errors.map( msg => {
             errs = <div className="alert alert-danger">{msg}</div>
@@ -120,8 +125,22 @@ class RemoteCommand extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="panel-body">
-              {this.commandResult(this.state.result)}
+          </div>
+          <div className="panel panel-default">
+            <div className="panel-heading">
+              <h4>
+                <span>{t("Target systems")}</span>
+                <span>{this.state.result.minions.size ? " (" + this.state.result.minions.size + ")" : undefined}</span>
+              </h4>
+            </div>
+            <div className="panel-body" style={this.state.result.minions.size ? style : undefined}>
+              {(() => {
+                if (!this.state.result.minions.size) {
+                   return(<span>{!this.state.previewed ? t("No target systems previewed") : t("No target systems have been found")}</span>)
+                } else {
+                  return(this.commandResult(this.state.result))
+                }
+              })()}
             </div>
           </div>
       </div>
