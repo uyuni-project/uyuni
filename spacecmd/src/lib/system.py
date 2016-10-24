@@ -2631,12 +2631,18 @@ def do_system_details(self, args, short=False):
 
         ranked_config_channels = []
 
-        config_channels = \
-            self.client.system.config.listChannels(self.session,
-                                                   system_id)
-
-        for channel in config_channels:
-            ranked_config_channels.append(channel.get('label'))
+        try:
+            config_channels = \
+                self.client.system.config.listChannels(self.session, system_id)
+        except xmlrpclib.Fault as exc:
+            # 10003 - unsupported operation
+            if exc.faultCode == 10003:
+                logging.debug(exc.faultString)
+            else:
+                logging.warning(exc.faultString)
+        else:
+            for channel in config_channels:
+                ranked_config_channels.append(channel.get('label'))
 
         print
         print 'Hostname:      %s' % network.get('hostname')
