@@ -35,6 +35,7 @@ import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.reactor.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BeaconEvent;
@@ -132,32 +133,42 @@ public class SaltReactor implements EventListener {
     }
 
     /**
-     * Connect to Salt Event stream; if not connected,
-     * retry connections with exponential backoff timeout.
+     * Connect to Salt Event stream; if not connected, retry connections with
+     * exponential backoff timeout.
      */
 
     public void connectToEventStream() {
         boolean connected = false;
         int initialDelayTime = 5, delayTime = 5; // seconds
         int maxDelay = 320; // 5m20s. After this, delay = initialDelayTime
+        int retries = 0;
 
         while (!connected) {
             LOG.warn("Trying to reconnect to event stream...");
+            retries++;
             try {
                 eventStream = SALT_SERVICE.getEventStream();
                 eventStream.addEventListener(this);
                 connected = true;
-                LOG.warn("Successfully connected to event stream.");
+                LOG.warn("Successfully connected to event stream after " + (retries - 1) +
+                         " retries.");
             }
             catch (SaltException e) {
                 try {
-                    LOG.error("Unable to connect: " + e + ", retrying in " + delayTime
-                            + " seconds.");
+                    LOG.error("Unable to connect: " + e + ", retrying in " + delayTime +
+                              " seconds.");
                     Thread.sleep(1000 * delayTime);
                     delayTime *= 2; // exponential backoff
                     delayTime %= maxDelay;
                     if (delayTime == 0) {
                         delayTime = initialDelayTime;
+                    }
+                    if (retries == 1) {
+                        MailHelper.sendAdminEmail("Cannot connect to salt event bus",
+                                "salt-api daemon is not reachable by SUSE Manager." +
+                                        "Please check the status of such daemon and " +
+                                        "(re)-start it if needed.\n\n" +
+                                        "This is the only notification you will receive.");
                     }
                 }
                 catch (InterruptedException e1) {
