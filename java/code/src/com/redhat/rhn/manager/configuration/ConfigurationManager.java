@@ -50,7 +50,7 @@ import com.redhat.rhn.frontend.dto.ConfigRevisionDto;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.events.SsmConfigFilesEvent;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.frontend.xmlrpc.UnsupportedOnSaltException;
+import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -2272,8 +2272,8 @@ public class ConfigurationManager extends BaseManager {
         }
 
         if (server.asMinionServer().isPresent()) {
-            String msg = "This is not supported with salt systems";
-            throw new UnsupportedOnSaltException(String.format(msg, server));
+            throw new UnsupportedOperationException("The traditional config " +
+                    "management features are not supported with Salt minions.");
         }
 
         if (!SystemManager.serverHasFeature(server.getId(),

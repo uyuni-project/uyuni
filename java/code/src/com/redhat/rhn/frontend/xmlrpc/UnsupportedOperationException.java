@@ -17,17 +17,15 @@ package com.redhat.rhn.frontend.xmlrpc;
 import com.redhat.rhn.FaultException;
 
 /**
- * Operation not supported on Salt.
- *
- * @version $Rev$
+ * Operation not supported.
  */
-public class UnsupportedOnSaltException extends FaultException {
+public class UnsupportedOperationException extends FaultException {
 
     /**
      * Constructor
      */
-    public UnsupportedOnSaltException() {
-        super(10003 , "unsupportedOnSalt" , "unsupported_on_salt");
+    public UnsupportedOperationException() {
+        super(10003, "unsupportedOperation", "unsupported_operation");
     }
 
     /**
@@ -35,19 +33,16 @@ public class UnsupportedOnSaltException extends FaultException {
      *
      * @param message exception message
      */
-    public UnsupportedOnSaltException(String message) {
-        super(10003 , "unsupportedOnSalt" , message);
+    public UnsupportedOperationException(String message) {
+        super(10003, "unsupportedOperation", message);
     }
 
     /**
      * Constructor
-     * @param cause the cause (which is saved for later retrieval
-     * by the Throwable.getCause() method). (A null value is
-     * permitted, and indicates that the cause is nonexistent or
-     * unknown.)
+     *
+     * @param cause the cause
      */
-    public UnsupportedOnSaltException(Throwable cause) {
-        super(10003 , "unsupportedOnSalt" , "unsupported_on_salt", cause);
+    public UnsupportedOperationException(Throwable cause) {
+        super(10003, "unsupportedOperation", "unsupported_operation", cause);
     }
-
 }
