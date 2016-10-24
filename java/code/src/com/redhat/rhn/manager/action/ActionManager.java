@@ -397,11 +397,9 @@ public class ActionManager extends BaseManager {
                                     .getServerActions().remove(serverAction);
                             ActionFactory.delete(serverAction);
                         });
-                // TODO
-                cancelMinionJobsResult.entrySet().stream()
-                        .forEach(entry -> {
-                            result.put(entry.getKey().getServer(), entry.getValue());
-                        });
+                result.putAll(cancelMinionJobsResult.entrySet().stream()
+                    .collect(Collectors.toMap(e -> e.getKey().getServer(), e -> e.getValue()))
+                );
         }
 
         return result;
