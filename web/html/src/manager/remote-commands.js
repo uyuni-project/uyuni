@@ -47,25 +47,14 @@ class MinionResultView extends React.Component {
                       </div>
                     );
                 } else {
-                    if(this.state.open) {
-                      return(
+                    return(
                         <div className="pull-right">
                           <div className="badge">
-                             {t("- hide response -")}
+                            {this.state.open ? t("- hide response -") : t("- show response -")}
                           </div>
                           <i className="fa fa-right fa-check-circle fa-1-5x"></i>
                         </div>
-                      )
-                    } else {
-                      return(
-                        <div className="pull-right">
-                          <div className="badge">
-                             {t("- show response -")}
-                          </div>
-                          <i className="fa fa-right fa-check-circle fa-1-5x"></i>
-                        </div>
-                      )
-                    }
+                    )
                 }
               }
            })()}
@@ -141,15 +130,8 @@ class RemoteCommand extends React.Component {
             <div className="panel-heading">
               <h4>
                 <span>{t("Target systems")}</span>
-                <span className="pull-right">
-                {
-                  this.state.result.minions.size ?
-                    t("Total: " + this.state.result.minions.size + " system(s)")
-                    : undefined
-                }
-                </span>
+                <span>{this.state.result.minions.size ? " (" + this.state.result.minions.size + ")" : undefined}</span>
               </h4>
-
             </div>
             <div className="panel-body" style={this.state.result.minions.size ? style : undefined}>
               {(() => {
