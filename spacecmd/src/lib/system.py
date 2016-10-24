@@ -2526,9 +2526,9 @@ def do_system_details(self, args, short=False):
             config_channels = \
                 self.client.system.config.listChannels(self.session, system_id)
         except xmlrpclib.Fault as exc:
-            # 10003 - raised when something is not supported on salt
+            # 10003 - unsupported operation
             if exc.faultCode == 10003:
-                logging.debug(exc.faultString)  # is salt, log and move on
+                logging.debug(exc.faultString)
             else:
                 logging.warning(exc.faultString)
         else:
