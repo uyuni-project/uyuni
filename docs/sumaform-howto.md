@@ -1,14 +1,14 @@
 # How to run the spacewalk-testsuite with sumaform.
 
-## WIP: for moment, the working version of sumaform+cucumber is there:
+## WIP: for moment, the only working version of sumaform + testing(cucumber) is there:
 
  - https://github.com/MalloZup/sumaform
  
 Once the PR will merged upstream  https://github.com/moio/sumaform), you can use the upstream.
 
-the libvirt-testing example, is in my repo
- (The file is for moment here, this not compatible already with the newest version of sumaform, due to refractoring
-https://github.com/MalloZup/sumaform
+the libvirt-testing example, is in my repo https://github.com/MalloZup/sumaform/blob/master/main.tf.libvirt-testing.example
+
+ (The file is for moment here, this not compatible already with the newest version of sumaform, due to refractoring.
 
 
 #### Run it
@@ -46,3 +46,25 @@ https://github.com/MalloZup/sumaform
  #### Analyze log:
  
  the log you get, are in output.html
+ 
+ 
+ #### Consideration about sumaform and cucumber testing.
+ 
+ Sumaform is a great tool for deploying suse-manager server.
+ 
+ We have to differenciate between deploy and testing environments :
+ 
+ - if you want to deploy, 4 client against a server, and this client should be registered to the client, then you want to make something else, that's fine.
+ 
+ - in the testing environments, we don't register clients/minion against a server( this is done by the testsuite cucumber as part of a test)
+ - addionaly , testing machines, has some extra packages that we use in the cucumber suite.
+ 
+ 
+ So if you want to do deployment, and check/reproduce something, than use the deployment file.
+ 
+ If you want to improve the tests-suite, or have the machines after a regression founded, then you the testing.tf
+ 
+ 
+ 
+ 
+ 
