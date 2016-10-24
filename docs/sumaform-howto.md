@@ -8,7 +8,8 @@ Once the PR will merged upstream  https://github.com/moio/sumaform), you can use
 
 the libvirt-testing example, is in my repo https://github.com/MalloZup/sumaform/blob/master/main.tf.libvirt-testing.example
 
- (The file is for moment here, this not compatible already with the newest version of sumaform, due to refractoring.
+ (The file is for moment here, because the upstream was refractored, and my version is not compatible already with the newest version of sumaform, due to refractoring-variables issues).
+ 
 
 
 #### Run it
