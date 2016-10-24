@@ -65,10 +65,10 @@ the libvirt-testing example, is in my repo https://github.com/MalloZup/sumaform/
  - in the testing environments, we don't register clients/minion against a server( this is done by the testsuite cucumber as part of a test)
  - addionaly , testing machines, has some extra packages that we use in the cucumber suite.
  
- 
+ **Resuming**
  So if you want to do deployment, and check/reproduce something, than use the deployment file.
  
- If you want to improve the tests-suite, or have the machines after a regression founded, then you the testing.tf
+ If you want to improve the tests-suite, or have the machines after a regression founded, then you have to use the testing.tf
  
  
 ### Where live the source code that sumaform is using for cucumber : 
