@@ -32,8 +32,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 
-import com.suse.utils.Opt;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -50,6 +48,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -200,27 +199,36 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * Creates a new ServerPath object.
+     * Creates a set of new {@link ServerPath} objects using the <code>proxyServer</code>'s
+     * server path (if any).
      *
      * @param server the server
-     * @param proxyServer the proxy server
+     * @param proxyServer the proxy server to which <code>server</code> connects directly
      * @param proxyHostname the proxy hostname
-     * @return the server path
+     * @return a set of {@link ServerPath} objects where the proxy to which
+     * <code>server</code> connects dirrectly has position 0, the second proxy
+     * has position 1, etc
      */
-    public static ServerPath createServerPath(Server server, Server proxyServer,
-            String proxyHostname) {
+    public static Set<ServerPath> createServerPaths(Server server, Server proxyServer,
+                                              String proxyHostname) {
+        Set<ServerPath> paths = new HashSet<>();
+        for (ServerPath parentPath : proxyServer.getServerPaths()) {
+            ServerPath path = new ServerPath();
+            path.setId(new ServerPathId(server, parentPath.getId().getProxyServer()));
+            path.setPosition(parentPath.getPosition() + 1);
+            path.setHostname(parentPath.getHostname());
+            paths.add(path);
+        }
         ServerPath path = new ServerPath();
-        path.setServer(server);
-        path.setProxyServer(proxyServer);
-        long position = Opt.fold(
-            Optional.ofNullable(proxyServer.getServerPath()), // see if proxy is proxied
-            () -> 0L,                                         // it is not, position is 0
-            p -> p.getPosition() + 1                          // proxied proxy: position++
-        );
-        path.setPosition(position);
+        path.setId(new ServerPathId(server, proxyServer));
+        // the first proxy is the one to which
+        // the server connects directly
+        path.setPosition(0L);
         path.setHostname(proxyHostname);
-        return path;
+        paths.add(path);
+        return paths;
     }
+
 
     /**
      * Adds a Server to a group.
