@@ -13,8 +13,12 @@ Testsuite to automatically test a Spacewalk installation
 
 You can run the Spacewalk Testsuite basically with two options:
 
-* with SLEnkins framework 
+* with sumaform
 * static setup 
+* with SLEnkins framework 
+
+### Run Spacewalk Testsuite with Sumaform 
+[Sumaform Cucumber testing howto](docs/sumaform-howto.md)
 
 ### Run Spacewalk Testsuite within SLEnkins Testing Framework
 
