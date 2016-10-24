@@ -23,11 +23,13 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -78,6 +80,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.Collections;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -333,8 +336,27 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             DistUpgradeAction dupAction = (DistUpgradeAction) action;
             DistUpgradeActionDetails actionDetails = dupAction.getDetails();
             if (actionDetails.isDryRun()) {
-                // TODO: Dry run, roll back channel assignments
+                Map<Boolean, List<Channel>> collect = actionDetails.getChannelTasks()
+                        .stream().collect(Collectors.partitioningBy(
+                                ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
+                                Collectors.mapping(DistUpgradeChannelTask::getChannel,
+                                        Collectors.toList())
+                        ));
+                List<Channel> subbed = collect.get(true);
+                List<Channel> unsubbed = collect.get(false);
+                Set<Channel> currentChannels = serverAction.getServer().getChannels();
+                currentChannels.removeAll(subbed);
+                currentChannels.addAll(unsubbed);
+                ServerFactory.save(serverAction.getServer());
+                MessageQueue.publish(new ChannelsChangedEventMessage(serverAction.getServerId()));
             }
+            //TODO: add better result message once we know how dup state apply looks
+            // Pretty-print the whole return map (or whatever fits into 1024 characters)
+            Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String json = gson.toJson(returnObject);
+            serverAction.setResultMsg(json.length() > 1024 ?
+                    json.substring(0, 1024) : json);
         }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
@@ -342,7 +364,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String json = gson.toJson(returnObject);
             serverAction.setResultMsg(json.length() > 1024 ?
-                    json.substring(0, 1023) : json);
+                    json.substring(0, 1024) : json);
         }
     }
 
