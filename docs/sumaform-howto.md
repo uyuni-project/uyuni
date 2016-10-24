@@ -22,7 +22,7 @@ the libvirt-testing example, is in my repo https://github.com/MalloZup/sumaform/
 
 3) Once you have all the machines, and terraform setup is finish ( 1 client, 1 minion(sle), 1 suma-server3.0, 1controlnode)
    
-   log into control-node : ``` ssh root@control-node.tf.local```
+   log into control-node : ``` ssh root@control-node.tf.local ```
    
  
 4) before executing the rake comand(also running the cucumber-suite) export the ip-adress of machines.
@@ -46,8 +46,7 @@ the libvirt-testing example, is in my repo https://github.com/MalloZup/sumaform/
    
 ### Analyze log:
  
- ```
- scp root@control-node.tf.local:spacewalk-testsuite-base/output.html . ```
+ ``` scp root@control-node.tf.local:spacewalk-testsuite-base/output.html . ```
  the log you get, are in output.html
  
  
