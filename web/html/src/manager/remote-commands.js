@@ -139,7 +139,17 @@ class RemoteCommand extends React.Component {
           </div>
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h4>Target systems</h4>
+              <h4>
+                <span>{t("Target systems")}</span>
+                <span className="pull-right">
+                {
+                  this.state.result.minions.size ?
+                    "Total: " + this.state.result.minions.size + " system(s)"
+                    : undefined
+                }
+                </span>
+              </h4>
+
             </div>
             <div className="panel-body" style={this.state.result.minions.size ? style : undefined}>
               {(() => {
