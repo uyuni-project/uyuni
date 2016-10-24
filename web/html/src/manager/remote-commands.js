@@ -25,9 +25,9 @@ class MinionResultView extends React.Component {
   }
 
   onClick() {
-    this.props.started && this.props.result ?
+    if (this.props.started && this.props.result) {
       this.setState({open: !this.state.open})
-      : undefined
+    }
   }
 
   render() {
@@ -144,7 +144,7 @@ class RemoteCommand extends React.Component {
                 <span className="pull-right">
                 {
                   this.state.result.minions.size ?
-                    "Total: " + this.state.result.minions.size + " system(s)"
+                    t("Total: " + this.state.result.minions.size + " system(s)")
                     : undefined
                 }
                 </span>
@@ -153,14 +153,8 @@ class RemoteCommand extends React.Component {
             </div>
             <div className="panel-body" style={this.state.result.minions.size ? style : undefined}>
               {(() => {
-                if (!this.state.previewed && !this.state.result.minions.size) {
-                   return(
-                     <span>{t("No target systems previewed")}</span>
-                   )
-                } else if (this.state.previewed && !this.state.result.minions.size) {
-                   return(
-                     <span>{t("No target systems has been found")}</span>
-                   )
+                if (!this.state.result.minions.size) {
+                   return(<span>{!this.state.previewed ? t("No target systems previewed") : t("No target systems have been found")}</span>)
                 } else {
                   return(this.commandResult(this.state.result))
                 }
