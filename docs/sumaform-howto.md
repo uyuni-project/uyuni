@@ -21,7 +21,7 @@ the libvirt-testing example, is in my repo https://github.com/MalloZup/sumaform/
 2) Use the libvirt-testing.-example and run it with terraform. 
 
 
-3) Once you have all the machines, and terraform setup is finish ( 1 client, 1 minion(sle), 1 suma-server3.0, 1controlnode)
+3) Once you have all the machines, and terraform setup is finish ( 1 client, 1 minion(sle), 1 suma-server, 1 control-node)
    
    log into control-node : ``` ssh root@control-node.tf.local ```
    
