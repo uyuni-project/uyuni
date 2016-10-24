@@ -43,18 +43,24 @@ the libvirt-testing example, is in my repo https://github.com/MalloZup/sumaform/
    rake
    ```
    
- #### Analyze log:
+   
+### Analyze log:
  
  the log you get, are in output.html
  
  
- #### Consideration about sumaform and cucumber testing.
+### Considerations:
+
  
  Sumaform is a great tool for deploying suse-manager server.
  
  We have to differenciate between deploy and testing environments :
  
+**Deploy**
+ 
  - if you want to deploy, 4 client against a server, and this client should be registered to the client, then you want to make something else, that's fine.
+ 
+**Testing env.**
  
  - in the testing environments, we don't register clients/minion against a server( this is done by the testsuite cucumber as part of a test)
  - addionaly , testing machines, has some extra packages that we use in the cucumber suite.
@@ -65,6 +71,9 @@ the libvirt-testing example, is in my repo https://github.com/MalloZup/sumaform/
  If you want to improve the tests-suite, or have the machines after a regression founded, then you the testing.tf
  
  
+### Where live the source code that sumaform is using for cucumber : 
+ 
+ https://github.com/SUSE/spacewalk-testsuite-base/tree/slenkins
  
  
  
