@@ -27,7 +27,6 @@ import java.io.Writer;
  *
  * @xmlrpc.doc
  * #struct("installed product")
- *     #prop("int", "id")
  *     #prop("string", "name")
  *     #prop("boolean", "baseProduct")
  *     #prop_desc("string", "version", "returned only if applies")
