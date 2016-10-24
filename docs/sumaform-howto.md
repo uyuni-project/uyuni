@@ -46,7 +46,11 @@ the libvirt-testing example, is in my repo https://github.com/MalloZup/sumaform/
    
 ### Analyze log:
  
+ ```
+ scp root@control-node.tf.local:spacewalk-testsuite-base/output.html . ```
  the log you get, are in output.html
+ 
+ 
  
  
 ### Considerations:
