@@ -628,7 +628,7 @@ if [ $USING_SSL -eq 1 ] ; then
 
     test -d ${CERT_DIR} || mkdir -p ${CERT_DIR}
     rm -f ${ORG_CA_CERT}
-    $FETCH ${HTTP_PUB_DIRECTORY}/${ORG_CA_CERT}
+    $FETCH ${HTTPS_PUB_DIRECTORY}/${ORG_CA_CERT}
 
     if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
         rpm -Uvh --force --replacefiles --replacepkgs ${ORG_CA_CERT}
