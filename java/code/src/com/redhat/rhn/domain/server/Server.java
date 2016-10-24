@@ -93,7 +93,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private String cobblerId;
     private Set<Device> devices;
     private ServerInfo serverInfo;
-    private ServerPath serverPath;
+    private Set<ServerPath> serverPaths = new HashSet<>();
     private CPU cpu;
     private ServerLock lock;
     private ServerUuid serverUuid;
@@ -393,21 +393,31 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * Gets the server path.
+     * Gets the server paths.
      *
-     * @return the server path
+     * @return the server paths
      */
-    public ServerPath getServerPath() {
-        return serverPath;
+    public Set<ServerPath> getServerPaths() {
+        return serverPaths;
     }
 
     /**
-     * Sets the server path.
+     * Sets the server paths.
      *
-     * @param serverPathIn the new server path
+     * @param serverPathsIn the new server paths
      */
-    public void setServerPath(ServerPath serverPathIn) {
-        serverPath = serverPathIn;
+    public void setServerPaths(Set<ServerPath> serverPathsIn) {
+        serverPaths = serverPathsIn;
+    }
+
+    /**
+     * Get the {@link ServerPath} on position 0.
+     * @return {@link ServerPath} on position 0
+     */
+    public Optional<ServerPath> getFirstServerPath() {
+        return serverPaths.stream()
+                .filter(path -> path.getPosition() == 0)
+                .findFirst();
     }
 
     /**
