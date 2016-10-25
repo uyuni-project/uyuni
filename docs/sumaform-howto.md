@@ -2,7 +2,7 @@
 
 #### Run it
 
-1) Get sumaform ( https://github.com/moio/sumaform)
+1) Get sumaform ( https://github.com/moio/sumaform) **WARNING** Until my PR isn't merged upstream, take my branch , otherwise you can't use cucumber with sumaform
 
 
 2) Use the libvirt-testing.-example and run it with terraform. ( see https://github.com/MalloZup/sumaform/blob/master/main.tf.libvirt-testing.example)
