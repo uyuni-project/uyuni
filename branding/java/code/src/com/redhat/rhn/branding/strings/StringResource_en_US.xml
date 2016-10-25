@@ -528,6 +528,9 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="ssm.overview.errata">
         <source>Patches</source>
       </trans-unit>
+      <trans-unit id="channels.overview.erratas">
+        <source>Patches</source>
+      </trans-unit>
       <trans-unit id="ssm.overview.errata.schedule">
         <source>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source>
       </trans-unit>
