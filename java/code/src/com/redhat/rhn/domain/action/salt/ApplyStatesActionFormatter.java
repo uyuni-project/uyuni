@@ -16,7 +16,7 @@ package com.redhat.rhn.domain.action.salt;
 
 import com.redhat.rhn.domain.action.ActionFormatter;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.stream.Collectors;
 
 /**
  * ApplyStatesActionFormatter - Class that extends from ActionFormatter to display
@@ -37,8 +37,8 @@ public class ApplyStatesActionFormatter extends ActionFormatter {
 
     @Override
     public String getActionType() {
-        String states = actionDetails.getMods().isEmpty() ?
-                "highstate" : StringUtils.join(actionDetails.getMods(), ", ");
+        String states = actionDetails.getMods().isEmpty() ? "highstate" :
+                actionDetails.getMods().stream().collect(Collectors.joining(", "));
         return "Apply states (" + states + ")";
     }
 }
