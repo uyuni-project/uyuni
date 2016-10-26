@@ -24,8 +24,10 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Unit tests for the code that is used to schedule {@link ApplyStatesAction}.
@@ -40,10 +42,13 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
     public void testScheduleApplyStates() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
+        List<String> mods = Arrays.asList(
+                ApplyStatesEventMessage.CHANNELS,
+                ApplyStatesEventMessage.PACKAGES);
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
                 user,
                 Arrays.asList(server.getId()),
-                Arrays.asList(ApplyStatesEventMessage.CHANNELS),
+                mods,
                 earliestAction);
 
         // Look it up and verify
@@ -56,9 +61,40 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
         // Verify the details
         ApplyStatesActionDetails details = savedAction.getDetails();
         assertNotNull(details);
-        assertEquals(ApplyStatesEventMessage.CHANNELS, details.getStates());
+        assertEquals("channels,packages", details.getStates());
+        assertEquals(2, details.getMods().size());
+        assertEquals(ApplyStatesEventMessage.CHANNELS, details.getMods().get(0));
+        assertEquals(ApplyStatesEventMessage.PACKAGES, details.getMods().get(1));
 
         // FIXME: Verifying server actions is a problem because plain SQL is used
         // assertEquals(1, savedAction.getServerActions().size());
+    }
+
+    /**
+     * Schedule a state application with an empty list of modules.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testScheduleApplyHighstate() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user);
+        Date earliestAction = new Date();
+        ApplyStatesAction action = ActionManager.scheduleApplyStates(
+                user,
+                Arrays.asList(server.getId()),
+                new ArrayList<String>(),
+                earliestAction);
+
+        // Look it up and verify
+        ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory
+                .lookupByUserAndId(user, action.getId());
+        assertNotNull(savedAction);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, savedAction.getActionType());
+        assertEquals(earliestAction, savedAction.getEarliestAction());
+
+        // Verify the details
+        ApplyStatesActionDetails details = savedAction.getDetails();
+        assertNotNull(details);
+        assertNull(details.getStates());
+        assertEquals(0, details.getMods().size());
     }
 }
