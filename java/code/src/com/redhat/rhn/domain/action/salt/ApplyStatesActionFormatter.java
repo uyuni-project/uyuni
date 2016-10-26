@@ -16,6 +16,8 @@ package com.redhat.rhn.domain.action.salt;
 
 import com.redhat.rhn.domain.action.ActionFormatter;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * ApplyStatesActionFormatter - Class that extends from ActionFormatter to display
  * information specific to ApplyStatesAction objects.
@@ -35,8 +37,8 @@ public class ApplyStatesActionFormatter extends ActionFormatter {
 
     @Override
     public String getActionType() {
-        String states = actionDetails.getStates() != null ?
-                actionDetails.getStates() : "highstate";
+        String states = actionDetails.getMods().isEmpty() ?
+                "highstate" : StringUtils.join(actionDetails.getMods(), ", ");
         return "Apply states (" + states + ")";
     }
 }
