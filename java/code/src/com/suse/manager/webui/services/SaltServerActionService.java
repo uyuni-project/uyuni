@@ -45,7 +45,6 @@ import org.apache.log4j.Logger;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -184,9 +183,7 @@ public enum SaltServerActionService {
         }
         else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) actionIn;
-            Optional<String> states = Optional.ofNullable(
-                    applyStatesAction.getDetails().getStates());
-            return applyStatesAction(minions, states);
+            return applyStatesAction(minions, applyStatesAction.getDetails().getMods());
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -398,12 +395,8 @@ public enum SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionServer>> applyStatesAction(
-            List<MinionServer> minions, Optional<String> states) {
+            List<MinionServer> minions, List<String> mods) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        List<String> mods = new ArrayList<>();
-        if (states.isPresent()) {
-            mods = Arrays.asList(states.get().split("\\s*,\\s*"));
-        }
         ret.put(State.apply(mods, Optional.empty(), Optional.of(true)), minions);
         return ret;
     }
