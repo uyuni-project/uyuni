@@ -139,8 +139,8 @@ public class SaltReactor implements EventListener {
 
     public void connectToEventStream() {
         boolean connected = false;
-        int initialDelayTime = 5, delayTime = 5; // seconds
-        int maxDelay = 320; // 5m20s. After this, delay = initialDelayTime
+        int initialDelayTimeSeconds = 5, delayTimeSeconds = 5;
+        int maxDelay = 320; // 5m20s. After this, delay = initialDelayTimeSeconds
         int retries = 0;
 
         while (!connected) {
@@ -155,13 +155,12 @@ public class SaltReactor implements EventListener {
             }
             catch (SaltException e) {
                 try {
-                    LOG.error("Unable to connect: " + e + ", retrying in " + delayTime +
+                    LOG.error("Unable to connect: " + e + ", retrying in " + delayTimeSeconds +
                               " seconds.");
-                    Thread.sleep(1000 * delayTime);
-                    delayTime *= 2; // exponential backoff
-                    delayTime %= maxDelay;
-                    if (delayTime == 0) {
-                        delayTime = initialDelayTime;
+                    Thread.sleep(1000 * delayTimeSeconds);
+                    delayTimeSeconds *= 2; // exponential backoff
+                    if (delayTimeSeconds > maxDelay) {
+                        delayTimeSeconds = initialDelayTimeSeconds;
                     }
                     if (retries == 1) {
                         MailHelper.sendAdminEmail("Cannot connect to salt event bus",
