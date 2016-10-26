@@ -185,7 +185,7 @@ When(/^I accept all Salt unaccepted keys$/) do
 end
 
 When(/^I get OS information of the Minion from the Master$/) do
-  $output, _code = $server.run("salt #{$minion_hostname} grains.get osfullname")
+  $output, _code = $server.run("salt #{$minion_fullhostname} grains.get osfullname")
 end
 
 Then(/^it should contain a "(.*?)" text$/) do |content|
