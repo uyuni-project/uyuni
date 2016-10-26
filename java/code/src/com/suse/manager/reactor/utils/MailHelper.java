@@ -42,14 +42,12 @@ public class MailHelper {
     public static void sendAdminEmail(String subject, String messageBody) {
         Config c = Config.get();
         String[] recipients = null;
-        if (recipients == null) {
-            if (c.getString("web.traceback_mail").equals("")) {
-                recipients = new String[1];
-                recipients[0] = "root@localhost";
-            }
-            else {
-                recipients = c.getStringArray("web.traceback_mail");
-            }
+        if (c.getString("web.traceback_mail").isEmpty()) {
+            recipients = new String[1];
+            recipients[0] = "root@localhost";
+        }
+        else {
+            recipients = c.getStringArray("web.traceback_mail");
         }
         SmtpMail mail = new SmtpMail();
         mail.setRecipients(recipients);
