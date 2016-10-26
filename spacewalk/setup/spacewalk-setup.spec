@@ -41,6 +41,8 @@ Requires:       perl-Net-LibIDN
 Requires:       patch
 # to have /etc/salt/master.d
 Requires(pre):  salt-master
+# for salt to be generated into the thin
+Requires:       python-certifi
 BuildRequires:       perl-libwww-perl
 %else
 Requires:       %{sbinpath}/restorecon
@@ -181,6 +183,10 @@ for name in /etc/sysconfig/tomcat{5,6,} /etc/tomcat*/tomcat*.conf; do
   test -f $name \
   && sed -i 's/\(-Dorg.xml.sax.driver\)=org.apache.xerces.parsers.SAXParser\>/\1=com.redhat.rhn.frontend.xmlrpc.util.RhnSAXParser/g' $name
 done
+if [ -d /var/cache/salt/master/thin ]; then
+  # clean the thin cache
+  rm -rf /var/cache/salt/master/thin
+fi
 exit 0
 
 %check
