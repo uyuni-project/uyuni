@@ -19,7 +19,7 @@ When(/^I should not see my hostname$/) do
 end
 
 When(/^I expand the results$/) do
-   find("div[id='#{$minion_hostname}']").click
+   find("div[id='#{$minion_fullhostname}']").click
 end
 
 When(/^I expand the results for "(.*)"$/) do |host|
@@ -31,7 +31,7 @@ Then(/^I enter command "([^"]*)"$/) do |arg1|
 end
 
 Then(/^I should see "([^"]*)" in the command output$/) do |arg1|
-  within("pre[id='#{$minion_hostname}-results']") do
+  within("pre[id='#{$minion_fullhostname}-results']") do
     fail unless page.has_content?('SuSE-release')
   end
 end
