@@ -30,7 +30,7 @@ import java.net.InetAddress;
 public class MailHelper {
 
     // Logger for this class
-    private static final Logger LOG = Logger.getLogger(SaltReactor.class);
+    private static final Logger LOG = Logger.getLogger(MailHelper.class);
 
     private MailHelper() { }
 
