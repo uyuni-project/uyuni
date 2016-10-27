@@ -411,6 +411,32 @@ create_ssh_key() {
     echo "Please enter the root password of the remote machine."
     ssh-keygen -q -N "" -C "spacewalk-migration-key" -f $KEYFILE
     ssh-copy-id -i $KEYFILE root@$SATELLITE_IP > /dev/null 2>&1
+
+    TMPFILE=`mktemp`
+    echo -n "Testing for silent remote command execution... "
+    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"true\"" > $TMPFILE
+    if [ -s $TMPFILE ]; then
+        echo "FAILED!"
+        echo
+        echo "************************************************************************************"
+        echo
+        echo "Disturbing output from remote shell detected!"
+        echo "Please make sure remote commands can be executed silently and try again."
+        echo
+        echo "Check /etc/profile.d/* and .bashrc files of users root and postgres."
+        echo
+        echo "For testing make sure the following command does *NOT* produce any output:"
+        echo
+        echo "ssh -i $KEYFILE root@$SATELLITE_IP \"su -s /bin/bash - postgres -c true\""
+        echo
+        echo "************************************************************************************"
+        echo
+        rm -f $TMPFILE
+        exit 1
+    else
+        echo "Ok"
+        rm -f $TMPFILE
+    fi
 }
 
 remove_ssh_key() {
