@@ -18,8 +18,6 @@ package com.suse.manager.reactor.utils;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.messaging.SmtpMail;
 
-import com.suse.manager.reactor.SaltReactor;
-
 import org.apache.log4j.Logger;
 
 import java.net.InetAddress;
