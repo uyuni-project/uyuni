@@ -134,13 +134,12 @@ public class SaltReactor implements EventListener {
 
     /**
      * Connect to Salt Event stream; if not connected, retry connections with
-     * exponential backoff timeout.
+     * timeout.
      */
 
     public void connectToEventStream() {
         boolean connected = false;
-        int initialDelayTimeSeconds = 5, delayTimeSeconds = 5;
-        int maxDelay = 320; // 5m20s. After this, delay = initialDelayTimeSeconds
+        int delayTimeSeconds = 5;
         int retries = 0;
 
         while (!connected) {
@@ -155,13 +154,9 @@ public class SaltReactor implements EventListener {
             }
             catch (SaltException e) {
                 try {
-                    LOG.error("Unable to connect: " + e + ", retrying in " + delayTimeSeconds +
-                              " seconds.");
+                    LOG.error("Unable to connect: " + e + ", retrying in " +
+                              delayTimeSeconds + " seconds.");
                     Thread.sleep(1000 * delayTimeSeconds);
-                    delayTimeSeconds *= 2; // exponential backoff
-                    if (delayTimeSeconds > maxDelay) {
-                        delayTimeSeconds = initialDelayTimeSeconds;
-                    }
                     if (retries == 1) {
                         MailHelper.sendAdminEmail("Cannot connect to salt event bus",
                                 "salt-api daemon is not reachable by SUSE Manager." +
