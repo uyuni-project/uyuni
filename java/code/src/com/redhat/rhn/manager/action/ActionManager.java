@@ -2083,6 +2083,7 @@ public class ActionManager extends BaseManager {
         // Add the details and save
         action.setDetails(details);
         ActionFactory.save(action);
+        MessageQueue.publish(new ActionScheduledEventMessage(action));
         return action;
     }
 
