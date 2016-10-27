@@ -21,7 +21,8 @@ Given(/^I update the profile of this client$/) do
 end
 
 When(/^I register using "([^"]*)" key$/) do |arg1|
-  regurl = "http://#{ENV['TESTHOST']}/XMLRPC"
+  $client.run("wget -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT http://#{$server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT")
+  regurl = "https://#{$server_ip}/XMLRPC"
   command = "rhnreg_ks --force --serverUrl=#{regurl} --activationkey=#{arg1}"
   $client.run(command, true, 500, 'root')
 end
