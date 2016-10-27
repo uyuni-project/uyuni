@@ -17,6 +17,7 @@ package com.suse.manager.reactor.utils;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.messaging.SmtpMail;
+import java.net.UnknownHostException;
 
 import org.apache.log4j.Logger;
 
@@ -53,8 +54,8 @@ public class MailHelper {
         try {
             subjectEnriched.append(" from " + InetAddress.getLocalHost().getHostName());
         }
-        catch (Throwable t) {
-            // nothing
+        catch (UnknownHostException ue) {
+            LOG.error("Could not retrieve hostname: " + ue);
         }
         mail.setSubject(subjectEnriched.toString());
         mail.setBody(messageBody);
