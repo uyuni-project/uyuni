@@ -166,7 +166,7 @@ public class SaltReactor implements EventListener {
                     }
                 }
                 catch (InterruptedException e1) {
-                    Thread.currentThread().interrupt();
+                    LOG.error("Interrupted during sleep: " + e1);
                 }
             }
         }
