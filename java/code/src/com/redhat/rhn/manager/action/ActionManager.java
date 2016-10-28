@@ -2090,28 +2090,27 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Schedule state application given a list of state names. Salt will apply the highstate
-     * if no state names are given.
+     * Schedule state application given a list of state modules. Salt will apply the
+     * highstate if an empty list of state modules is given.
      *
      * @param scheduler the user who is scheduling
      * @param sids list of server ids
-     * @param stateNames list of state names to apply
+     * @param mods list of state modules to be applied
      * @param earliest action will not be executed before this date
      * @return the action object
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids,
-            List<String> stateNames, Date earliest) {
+            List<String> mods, Date earliest) {
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory
                 .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
-        String states = stateNames.isEmpty() ? "[highstate]" : stateNames.toString();
+        String states = mods.isEmpty() ? "[highstate]" : mods.toString();
         action.setName("Apply states " + states);
         action.setOrg(scheduler != null ?
                 scheduler.getOrg() : OrgFactory.getSatelliteOrg());
         action.setSchedulerUser(scheduler);
 
         ApplyStatesActionDetails actionDetails = new ApplyStatesActionDetails();
-        actionDetails.setStates(stateNames.isEmpty() ? null :
-            stateNames.stream().collect(Collectors.joining(",")));
+        actionDetails.setMods(mods);
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
