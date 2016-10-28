@@ -73,6 +73,7 @@ import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
+import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -80,6 +81,8 @@ import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /** JUnit test case for the User
  *  class.
@@ -191,11 +194,26 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     private Action createActionWithMinionServerActions(User user, int numServerActions)
             throws Exception {
+        return createActionWithMinionServerActions(user,
+                                    numServerActions,
+                i -> {
+                    try {
+                        return MinionServerFactoryTest.createTestMinionServer(user);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+    }
+
+    private Action createActionWithMinionServerActions(User user, int numServerActions,
+                                                       Function<Integer, ? extends Server> serverFactory
+                                                       )
+            throws Exception {
         Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         Channel baseChannel = ChannelFactoryTest.createTestChannel(user);
         baseChannel.setParentChannel(null);
         for (int i = 0; i < numServerActions; i++) {
-            MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+            Server server = serverFactory.apply(i);
             server.addChannel(baseChannel);
             TestUtils.saveAndFlush(server);
 
@@ -276,7 +294,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         SaltService saltServiceMock = mock(SaltService.class);
         ActionManager.setSaltService(saltServiceMock);
 
-
         ServerAction[] sa = parent.getServerActions().toArray(new ServerAction[3]);
         Map<String, Result<Schedule.Result>> result = new HashMap<>();
         result.put(sa[0].getServer().asMinionServer().get().getMinionId(),
@@ -291,12 +308,74 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         assertServerActionCount(parent, 3);
         assertActionsForUser(user, 1);
+
         Map<Action, Map<Server, ActionManager.CancelServerActionStatus>> cancelResult = ActionManager.cancelActions(user, actionList);
-        assertEquals(cancelResult.get(sa[0].getParentAction()).get(sa[0].getServer()), ActionManager.CancelServerActionStatus.CANCELED);
-        assertEquals(cancelResult.get(sa[1].getParentAction()).get(sa[1].getServer()), ActionManager.CancelServerActionStatus.CANCELED_NO_MINION_JOB);
-        assertEquals(cancelResult.get(sa[2].getParentAction()).get(sa[2].getServer()), ActionManager.CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN);
+
+        assertEquals(1, cancelResult.size());
+        assertEquals(3, cancelResult.get(parent).size());
+        assertEquals(cancelResult.get(parent).get(sa[0].getServer()), ActionManager.CancelServerActionStatus.CANCELED);
+        assertEquals(cancelResult.get(parent).get(sa[1].getServer()), ActionManager.CancelServerActionStatus.CANCELED_NO_MINION_JOB);
+        assertEquals(cancelResult.get(parent).get(sa[2].getServer()), ActionManager.CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN);
         assertServerActionCount(parent, 1);
         assertActionsForUser(user, 1); // shouldn't have been deleted
+        context().assertIsSatisfied();
+    }
+
+    public void testSimpleCancelMixedActions() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        UserFactory.save(user);
+
+        Action parent = createActionWithMinionServerActions(user, 4,
+                i -> {
+                    try {
+                        if (i < 3) {
+                            return MinionServerFactoryTest.createTestMinionServer(user);
+                        } else {
+                            return ServerFactoryTest.createTestServer(user, true);
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+        List actionList = createActionList(user, new Action [] {parent});
+
+        SaltService saltServiceMock = mock(SaltService.class);
+        ActionManager.setSaltService(saltServiceMock);
+
+        List<ServerAction> sa = parent.getServerActions().stream()
+                .filter(s -> s.getServer().asMinionServer().isPresent())
+                .collect(Collectors.toList());
+        Map<String, Result<Schedule.Result>> result = new HashMap<>();
+        result.put(sa.get(0).getServer().asMinionServer().get().getMinionId(),
+                new Result<>(Xor.right(new Schedule.Result(null, true))));
+        result.put(sa.get(1).getServer().asMinionServer().get().getMinionId(),
+                new Result<>(Xor.right(new Schedule.Result("Job 123 does not exist.", false))));
+        // minion 2 is down -> did not return anything
+        context().checking(new Expectations() { {
+            allowing(saltServiceMock).deleteSchedule(with(equal("scheduled-action-" + parent.getId())), with(any(MinionList.class)));
+            will(returnValue(result));
+        } });
+        Optional<ServerAction> traditionalServerAction = parent.getServerActions().stream()
+                .filter(s -> !s.getServer().asMinionServer().isPresent())
+                .findFirst();
+
+        assertServerActionCount(parent, 4);
+        assertActionsForUser(user, 1);
+
+        Map<Action, Map<Server, ActionManager.CancelServerActionStatus>> cancelResult = ActionManager.cancelActions(user, actionList);
+
+        assertEquals(1, cancelResult.size());
+        assertEquals(4, cancelResult.get(parent).size());
+        assertEquals(cancelResult.get(parent).get(sa.get(0).getServer()), ActionManager.CancelServerActionStatus.CANCELED);
+        assertEquals(cancelResult.get(parent).get(sa.get(1).getServer()), ActionManager.CancelServerActionStatus.CANCELED_NO_MINION_JOB);
+        assertEquals(cancelResult.get(parent).get(sa.get(2).getServer()), ActionManager.CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN);
+        assertEquals(cancelResult.get(parent).get(traditionalServerAction.get().getServer()),
+                ActionManager.CancelServerActionStatus.CANCELED);
+        assertServerActionCount(parent, 1);
+        assertActionsForUser(user, 1); // shouldn't have been deleted
+        context().assertIsSatisfied();
     }
 
     public void testCancelActionWithChildren() throws Exception {
@@ -324,7 +403,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         UserFactory.save(user);
 
         Action parent = createActionWithServerActions(user, 2);
-        List actionList = createActionList(user, new Action [] {parent});
+        List<Action> actionList = Collections.singletonList(parent);
 
         assertServerActionCount(parent, 2);
         assertActionsForUser(user, 1);
