@@ -357,7 +357,7 @@ public class ActionManager extends BaseManager {
     private static Map<Server, CancelServerActionStatus> cancelServerActions(
             long actionId, Set<ServerAction> serverActions) {
         Map<Server, CancelServerActionStatus> result = new HashMap<>();
-        List<ServerAction> minionServerActions = new LinkedList<>();
+        Set<ServerAction> minionServerActions = new HashSet<>();
 
         // fail any Kickstart sessions for this action and servers
         Action action = ActionFactory.lookupById(actionId);
@@ -365,25 +365,24 @@ public class ActionManager extends BaseManager {
                 serverActions.stream().map(sa -> sa.getServer())
                         .collect(Collectors.toSet()));
 
-        // delete actions for traditional servers
-        for (ServerAction serverAction : serverActions) {
+        // first delete actions for traditional servers
+        for (ServerAction serverAction : new ArrayList<>(serverActions)) {
             if (serverAction.getServer().asMinionServer().isPresent()) {
                 // minion actions have to be canceled first from the minions
                 minionServerActions.add(serverAction);
             }
             else {
-                // no a minion action. delete it from the db
+                // not a minion action. delete it from the db
                 serverAction.getParentAction().getServerActions().remove(serverAction);
                 ActionFactory.delete(serverAction);
                 result.put(serverAction.getServer(), CancelServerActionStatus.CANCELED);
             }
         }
-
         // cancel minion jobs and delete corresponding actions from db
         if (!minionServerActions.isEmpty()) {
                 // call the minions to cancel the job
                 Map<ServerAction, CancelServerActionStatus> cancelMinionJobsResult =
-                        cancelMinionServerActions(actionId, serverActions);
+                        cancelMinionServerActions(actionId, minionServerActions);
 
                 // delete successfully canceled minion actions from the db
                 cancelMinionJobsResult.entrySet().stream()
