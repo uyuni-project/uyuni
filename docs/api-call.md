@@ -35,3 +35,10 @@ Arguments taken by method *run*
    When I follow "Salt"
 ```
 
+
+* Check that a specif word exist on the webpage:
+
+```
+ Then I should see a "System Overview" text
+ Then I should see a "INSERT YOUR TEXT HERE" text
+```
