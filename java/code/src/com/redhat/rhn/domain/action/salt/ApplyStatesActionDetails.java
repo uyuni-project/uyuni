@@ -100,6 +100,9 @@ public class ApplyStatesActionDetails extends ActionChild {
         if (!mods.isEmpty()) {
             states = mods.stream().collect(Collectors.joining(","));
         }
+        else {
+            states = null;
+        }
     }
 
     /**
