@@ -16,8 +16,13 @@ package com.redhat.rhn.domain.action.salt;
 
 import com.redhat.rhn.domain.action.ActionChild;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ApplyStatesActionDetails - Class representation of the table rhnActionApplyStates.
@@ -58,6 +63,8 @@ public class ApplyStatesActionDetails extends ActionChild {
     }
 
     /**
+     * Only for hibernate, please use getMods() instead.
+     *
      * @return the states
      */
     public String getStates() {
@@ -65,10 +72,38 @@ public class ApplyStatesActionDetails extends ActionChild {
     }
 
     /**
+     * Only for hibernate, please use setMods() instead.
+     *
      * @param statesIn the states to set
      */
     public void setStates(String statesIn) {
         this.states = statesIn;
+    }
+
+    /**
+     * Return the state modules as a list.
+     *
+     * @return state modules as list of strings
+     */
+    public List<String> getMods() {
+        if (states != null) {
+            return Arrays.asList(states.split(","));
+        }
+        return Collections.unmodifiableList(new ArrayList<>());
+    }
+
+    /**
+     * Set the state modules given as a list.
+     *
+     * @param mods list of state modules
+     */
+    public void setMods(List<String> mods) {
+        if (!mods.isEmpty()) {
+            states = mods.stream().collect(Collectors.joining(","));
+        }
+        else {
+            states = null;
+        }
     }
 
     /**
