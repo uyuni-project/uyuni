@@ -21,7 +21,7 @@ Arguments taken by method *run*
 2: true/false, by **default** is true. If the returncode of the command is !=0 then we raise an error and make failing the test. 
    Sometimes we expect that a command fail, or is not relevant that is succedded, so we use *false* in this cae
 
-3: timeout : **default** is 200 . you can increase the timeout.
+3: timeout : **default** is 200 . you can increase/decrease the timeout.
 
 4: user : **default** root. user that execute cmd
 
