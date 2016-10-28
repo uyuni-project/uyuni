@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.action.ActionChild;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -88,7 +89,7 @@ public class ApplyStatesActionDetails extends ActionChild {
         if (states != null) {
             return Arrays.asList(states.split(","));
         }
-        return new ArrayList<>();
+        return Collections.unmodifiableList(new ArrayList<>());
     }
 
     /**
