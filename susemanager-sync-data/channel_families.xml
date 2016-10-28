@@ -3,6 +3,7 @@
 	<family default_nodecount="0" label="SLE-HAE-PPC" name="SUSE Linux Enterprise High Availability Extension (PPC)"/>
 	<family default_nodecount="0" label="RES" name="SUSE Linux Enterprise RedHat Expanded Support"/>
 	<family default_nodecount="0" label="SMP" name="SUSE Manager Proxy"/>
+	<family default_nodecount="0" label="SES-ARM" name="SUSE Enterprise Storage (ARM64)"/>
 	<family default_nodecount="0" label="SUSE_CLOUD" name="SUSE Cloud"/>
 	<family default_nodecount="0" label="SLES12-GA-LTSS-Z" name="SUSE Linux Enterprise Server 12 LTSS (Z-Series)"/>
 	<family default_nodecount="0" label="SMS-Z" name="SUSE Manager Server System Z"/>
@@ -26,6 +27,7 @@
 	<family default_nodecount="0" label="SLES-X86-VMWARE" name="SUSE Linux Enterprise Server for VMware"/>
 	<family default_nodecount="0" label="13319" name="SUSE Linux Enterprise Real Time"/>
 	<family default_nodecount="0" label="SLE-HAE-GEO" name="GEO Clustering for SLE HA Extension"/>
+	<family default_nodecount="0" label="SLES-ARM64" name="SUSE Linux Enterprise Server (ARM64)"/>
 	<family default_nodecount="0" label="18962" name="Novell ZENworks Configuration Management"/>
 	<family default_nodecount="0" label="AiO" name="SUSE Linux Enterprise Server for SAP"/>
 	<family default_nodecount="0" label="SLES-PPC" name="SUSE Linux Enterprise Server (PPC)"/>
