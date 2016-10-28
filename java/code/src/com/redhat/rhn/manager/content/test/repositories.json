@@ -11021,6 +11021,196 @@
   },
   {
     "autorefresh": true,
+    "description": "SLES12-SP2-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2081,
+    "installer_updates": false,
+    "name": "SLES12-SP2-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2/aarch64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLES12-SP2-Debuginfo-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2082,
+    "installer_updates": false,
+    "name": "SLES12-SP2-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2/aarch64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLES12-SP2-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2083,
+    "installer_updates": false,
+    "name": "SLES12-SP2-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP2/aarch64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLES12-SP2-Debuginfo-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2084,
+    "installer_updates": false,
+    "name": "SLES12-SP2-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP2/aarch64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLES12-SP2-Source-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2085,
+    "installer_updates": false,
+    "name": "SLES12-SP2-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP2/aarch64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-Toolchain12-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2086,
+    "installer_updates": false,
+    "name": "SLE-Module-Toolchain12-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/aarch64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-Toolchain12-Debuginfo-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2087,
+    "installer_updates": false,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/aarch64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Toolchain12-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2088,
+    "installer_updates": false,
+    "name": "SLE-Module-Toolchain12-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/aarch64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Toolchain12-Debuginfo-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2089,
+    "installer_updates": false,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/aarch64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-Web-Scripting12-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2090,
+    "installer_updates": false,
+    "name": "SLE-Module-Web-Scripting12-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/aarch64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-Web-Scripting12-Debuginfo-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2091,
+    "installer_updates": false,
+    "name": "SLE-Module-Web-Scripting12-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/aarch64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Web-Scripting12-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2092,
+    "installer_updates": false,
+    "name": "SLE-Module-Web-Scripting12-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/aarch64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Web-Scripting12-Debuginfo-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2093,
+    "installer_updates": false,
+    "name": "SLE-Module-Web-Scripting12-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/aarch64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Web-Scripting12-Source-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2094,
+    "installer_updates": false,
+    "name": "SLE-Module-Web-Scripting12-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/aarch64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-SDK12-SP2-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2095,
+    "installer_updates": false,
+    "name": "SLE-SDK12-SP2-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP2/aarch64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-SDK12-SP2-Debuginfo-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2096,
+    "installer_updates": false,
+    "name": "SLE-SDK12-SP2-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP2/aarch64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-SDK12-SP2-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2097,
+    "installer_updates": false,
+    "name": "SLE-SDK12-SP2-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP2/aarch64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-SDK12-SP2-Debuginfo-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2098,
+    "installer_updates": false,
+    "name": "SLE-SDK12-SP2-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP2/aarch64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-SDK12-SP2-Source-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2099,
+    "installer_updates": false,
+    "name": "SLE-SDK12-SP2-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP2/aarch64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
     "description": "IBM-DLPAR-utils for ",
     "distro_target": null,
     "enabled": true,
@@ -11061,6 +11251,16 @@
   },
   {
     "autorefresh": true,
+    "description": "SLES12-SP2-Installer-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2104,
+    "installer_updates": true,
+    "name": "SLES12-SP2-Installer-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER-INSTALLER/12-SP2/aarch64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
     "description": "SLES12-LTSS-Updates for sle-12-x86_64",
     "distro_target": "sle-12-x86_64",
     "enabled": true,
@@ -11078,6 +11278,46 @@
     "installer_updates": false,
     "name": "SLES12-LTSS-Debuginfo-Updates",
     "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-LTSS/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-OpenStack-Cloud-7-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2109,
+    "installer_updates": false,
+    "name": "SUSE-OpenStack-Cloud-7-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/7/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-OpenStack-Cloud-7-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2110,
+    "installer_updates": false,
+    "name": "SUSE-OpenStack-Cloud-7-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/7/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-OpenStack-Cloud-7-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2111,
+    "installer_updates": false,
+    "name": "SUSE-OpenStack-Cloud-7-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/OpenStack-Cloud/7/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-OpenStack-Cloud-7-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2112,
+    "installer_updates": false,
+    "name": "SUSE-OpenStack-Cloud-7-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/OpenStack-Cloud/7/x86_64/product_debug/?my-fake-token"
   },
   {
     "autorefresh": true,
@@ -11171,12 +11411,152 @@
   },
   {
     "autorefresh": true,
-    "description": "ATI-Driver-SLE11-SP4 for ",
-    "distro_target": null,
+    "description": "SLE-Module-Public-Cloud12-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
     "enabled": true,
-    "id": 2155,
+    "id": 2157,
     "installer_updates": false,
-    "name": "ATI-Driver-SLE11-SP4",
-    "url": "http://www2.ati.com/suse/sle11sp4/"
+    "name": "SLE-Module-Public-Cloud12-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/12/aarch64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-Public-Cloud12-Debuginfo-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2158,
+    "installer_updates": false,
+    "name": "SLE-Module-Public-Cloud12-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/12/aarch64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Public-Cloud12-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2159,
+    "installer_updates": false,
+    "name": "SLE-Module-Public-Cloud12-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/aarch64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Public-Cloud12-Debuginfo-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2160,
+    "installer_updates": false,
+    "name": "SLE-Module-Public-Cloud12-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/aarch64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Public-Cloud12-Source-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2161,
+    "installer_updates": false,
+    "name": "SLE-Module-Public-Cloud12-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/aarch64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE12-SP2-SAP-Installer-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2162,
+    "installer_updates": true,
+    "name": "SLE12-SP2-SAP-Installer-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SAP-INSTALLER/12-SP2/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Enterprise-Storage-4-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2163,
+    "installer_updates": false,
+    "name": "SUSE-Enterprise-Storage-4-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/Storage/4/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Enterprise-Storage-4-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2164,
+    "installer_updates": false,
+    "name": "SUSE-Enterprise-Storage-4-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/Storage/4/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Enterprise-Storage-4-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2165,
+    "installer_updates": false,
+    "name": "SUSE-Enterprise-Storage-4-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/4/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Enterprise-Storage-4-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2166,
+    "installer_updates": false,
+    "name": "SUSE-Enterprise-Storage-4-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/4/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Enterprise-Storage-4-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2167,
+    "installer_updates": false,
+    "name": "SUSE-Enterprise-Storage-4-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/4/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Manager-Tools12-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2179,
+    "installer_updates": false,
+    "name": "SLE-Manager-Tools12-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/aarch64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Manager-Tools12-Debuginfo-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2180,
+    "installer_updates": false,
+    "name": "SLE-Manager-Tools12-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/aarch64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Manager-Tools12-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2181,
+    "installer_updates": false,
+    "name": "SLE-Manager-Tools12-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/aarch64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Manager-Tools12-Debuginfo-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2182,
+    "installer_updates": false,
+    "name": "SLE-Manager-Tools12-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/aarch64/product_debug/?my-fake-token"
   }
 ]
