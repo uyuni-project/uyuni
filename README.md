@@ -9,6 +9,9 @@
 
 Testsuite to automatically test a Spacewalk installation
 
+## Howto write a new-test for spacewalk-suite, api-call quick-tutorial.
+[Testing-api tutorial](docs/api-call.md)
+
 ## Running
 
 You can run the Spacewalk Testsuite basically with two options:
@@ -17,10 +20,10 @@ You can run the Spacewalk Testsuite basically with two options:
 * static setup 
 * with SLEnkins framework 
 
-### Run Spacewalk Testsuite with Sumaform 
+### Run Spacewalk Testsuite with Sumaform  [Official one]
 [Sumaform Cucumber testing howto](docs/sumaform-howto.md)
 
-### Run Spacewalk Testsuite within SLEnkins Testing Framework
+### Run Spacewalk Testsuite within SLEnkins Testing Framework [Backup-solution]
 
 [SLEnkins documentation](docs/SLEnkins-howto.md)
 
