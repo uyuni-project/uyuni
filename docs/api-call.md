@@ -47,3 +47,9 @@ Arguments taken by method *run*
 ```
  And I click on "Finish"
 ```
+
+* Type text in specif field 
+
+```
+ When I enter "SUSE Test Key x86_64" as "description"
+```
