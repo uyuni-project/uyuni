@@ -485,19 +485,19 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
         Optional<String> rhelReleaseFile =
                 Optional.ofNullable(result.getRhelReleaseFile())
-                .map(content -> content.getChanges())
+                .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(ret -> ret.getStdout());
+                .map(CmdExecCodeAllResult::getStdout);
         Optional<String> centosReleaseFile =
                 Optional.ofNullable(result.getCentosReleaseFile())
-                .map(content -> content.getChanges())
+                .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(ret -> ret.getStdout());
+                .map(CmdExecCodeAllResult::getStdout);
         Optional<String> resReleasePkg =
                 Optional.ofNullable(result.getWhatProvidesResReleasePkg())
-                .map(content -> content.getChanges())
+                .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(ret -> ret.getStdout());
+                .map(CmdExecCodeAllResult::getStdout);
         if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                 resReleasePkg.isPresent()) {
             Set<InstalledProduct> products = JobReturnEventMessageAction
