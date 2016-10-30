@@ -179,15 +179,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                 .stream()
                                 .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
 
-                        // Delete schedule on the minion if we created it
-                        jobReturnEvent.getData().getSchedule().ifPresent(scheduleName -> {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("Deleting schedule '" + scheduleName +
-                                        "' from minion: " + minionServer.getMinionId());
-                            }
-                            SaltService.INSTANCE.deleteSchedule(scheduleName,
-                                    new MinionList(jobReturnEvent.getMinionId()));
-                        });
 
                         serverAction.ifPresent(sa -> {
                             if (LOG.isDebugEnabled()) {
@@ -204,6 +195,16 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         });
                     });
                 }
+
+                // Delete schedule on the minion if we created it
+                jobReturnEvent.getData().getSchedule().ifPresent(scheduleName -> {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Deleting schedule '" + scheduleName +
+                                "' from minion: " + jobReturnEvent.getMinionId());
+                    }
+                    SaltService.INSTANCE.deleteSchedule(scheduleName,
+                            new MinionList(jobReturnEvent.getMinionId()));
+                });
             }
             else {
                 LOG.warn("Action referenced from Salt job was not found: " + id);
