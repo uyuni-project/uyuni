@@ -45,6 +45,7 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 
+import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
 import java.time.ZoneId;
@@ -468,11 +469,16 @@ public enum SaltServerActionService {
             List<Channel> subbed = collect.get(true);
             List<Channel> unsubbed = collect.get(false);
 
-            action.getServerActions().forEach(sa -> {
-                Set<Channel> currentChannels = sa.getServer().getChannels();
+            action.getServerActions()
+                    .stream()
+                    .flatMap(s -> Opt.stream(s.getServer().asMinionServer()))
+                    .forEach(minion -> {
+                Set<Channel> currentChannels = minion.getChannels();
                 currentChannels.removeAll(unsubbed);
                 currentChannels.addAll(subbed);
-                ServerFactory.save(sa.getServer());
+                ServerFactory.save(minion);
+                //TODO: see how we can reuse as much between channel changed event action and here
+                SaltStateGeneratorService.INSTANCE.generatePillar(minion);
             });
 
             Map<String, Object> pillar = new HashMap<>();
