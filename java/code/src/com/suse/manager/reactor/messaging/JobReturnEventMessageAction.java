@@ -398,12 +398,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @return true if a package list refresh was requested, otherwise false
      */
     private boolean forcePackageListRefresh(JobReturnEvent event) {
-        Optional<Boolean> value = event.getData().getMetadata(ScheduleMetadata.class)
-                .map(ScheduleMetadata::isForcePackageListRefresh);
-        if (value.isPresent()) {
-            return value.get();
-        }
-        return false;
+        return event.getData().getMetadata(ScheduleMetadata.class)
+                .map(ScheduleMetadata::isForcePackageListRefresh)
+                .orElse(false);
     }
 
     /**
