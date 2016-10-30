@@ -482,9 +482,14 @@ public enum SaltServerActionService {
             });
 
             Map<String, Object> pillar = new HashMap<>();
-            pillar.put("susemanager:distupgrade:dryrun", action.getDetails().isDryRun());
-            pillar.put("susemanager:distupgrade:channels", subbed.stream()
+            Map<String, Object> susemanager = new HashMap<>();
+            pillar.put("susemanager", susemanager);
+            Map<String, Object> distupgrade = new HashMap<>();
+            susemanager.put("distupgrade", distupgrade);
+            distupgrade.put("dryrun", action.getDetails().isDryRun());
+            distupgrade.put("channels", subbed.stream()
                     .map(Channel::getLabel).collect(Collectors.toList()));
+
             LocalCall<Map<String, State.ApplyResult>> distUpgrade = State.apply(
                     Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
                     Optional.of(pillar),
