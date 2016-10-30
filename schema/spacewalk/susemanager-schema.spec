@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        SQL schema for Spacewalk server
 
-Version:        2.6.12
+Version:        2.6.13
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -87,6 +87,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Oct 24 2016 Jan Dobes 2.6.13-1
+- fixing ORA-00904: : invalid identifier
+
 * Fri Oct 21 2016 Jan Dobes 2.6.12-1
 - adding missing dependency
 
