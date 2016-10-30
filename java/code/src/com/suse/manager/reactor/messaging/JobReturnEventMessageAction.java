@@ -415,6 +415,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     private boolean shouldRefreshPackageList(JobReturnEvent event) {
         String function = event.getData().getFun();
         switch (function) {
+            case "pkg.upgrade": return true;
             case "pkg.install": return true;
             case "pkg.remove": return true;
             case "state.apply":
