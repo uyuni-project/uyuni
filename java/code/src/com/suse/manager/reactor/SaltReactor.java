@@ -73,6 +73,9 @@ public class SaltReactor implements EventListener {
     // Executor service for handling incoming events
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
+    // Reconnecting time (in seconds) to Salt event bus
+    private static final int DELAY_TIME_SECONDS = 5;
+
     /**
      * Start the salt reactor.
      */
@@ -139,7 +142,7 @@ public class SaltReactor implements EventListener {
 
     public void connectToEventStream() {
         boolean connected = false;
-        int delayTimeSeconds = 5;
+
         int retries = 0;
 
         while (!connected) {
@@ -155,8 +158,8 @@ public class SaltReactor implements EventListener {
             catch (SaltException e) {
                 try {
                     LOG.error("Unable to connect: " + e + ", retrying in " +
-                              delayTimeSeconds + " seconds.");
-                    Thread.sleep(1000 * delayTimeSeconds);
+                              DELAY_TIME_SECONDS + " seconds.");
+                    Thread.sleep(1000 * DELAY_TIME_SECONDS);
                     if (retries == 1) {
                         MailHelper.sendAdminEmail("Cannot connect to salt event bus",
                                 "salt-api daemon is not reachable by SUSE Manager." +
