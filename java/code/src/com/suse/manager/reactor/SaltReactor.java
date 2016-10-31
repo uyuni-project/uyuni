@@ -138,7 +138,6 @@ public class SaltReactor implements EventListener {
      * Connect to Salt Event stream; if not connected, retry connections with
      * timeout.
      */
-
     public void connectToEventStream() {
         boolean connected = false;
 
