@@ -477,7 +477,6 @@ public enum SaltServerActionService {
                 currentChannels.removeAll(unsubbed);
                 currentChannels.addAll(subbed);
                 ServerFactory.save(minion);
-                //TODO: see how we can reuse as much between channel changed event action and here
                 SaltStateGeneratorService.INSTANCE.generatePillar(minion);
             });
 
