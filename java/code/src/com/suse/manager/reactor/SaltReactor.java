@@ -102,7 +102,6 @@ public class SaltReactor implements EventListener {
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
-        // Initialize the event stream
         connectToEventStream();
     }
 
