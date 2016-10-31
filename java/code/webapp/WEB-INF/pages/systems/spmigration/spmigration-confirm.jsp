@@ -65,6 +65,11 @@
       <bean:message key="spmigration.jsp.confirm.note" />
     </div>
     <div>
+      <div class="pull-left">
+        <html:submit styleClass="btn btn-default" property="dispatch">
+          <bean:message key="spmigration.jsp.confirm.back" />
+        </html:submit>
+      </div>
       <div class="pull-right">
         <html:submit styleClass="btn btn-success" property="dispatch">
           <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
@@ -82,6 +87,8 @@
     <c:forEach items="${childChannels}" var="current">
       <html:hidden property="childChannels[]" value="${current.id}" />
     </c:forEach>
+    <html:hidden property="targetProductSelected"
+        value="${targetProducts.serializedProductIDs}" />
     <html:hidden property="step" value="confirm" />
     <html:hidden property="submitted" value="true" />
     <rhn:csrf />

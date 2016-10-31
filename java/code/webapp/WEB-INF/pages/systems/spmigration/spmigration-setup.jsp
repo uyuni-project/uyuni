@@ -121,6 +121,9 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
+                            <html:submit styleClass="btn btn-default" property="dispatch">
+                                <bean:message key="spmigration.jsp.confirm.back" />
+                            </html:submit>
                             <button type="submit" name="dispatch"
                                 class="btn btn-success" id="submitButton"
                                 <c:if test="${not empty targetProducts.missingChannels}"> disabled</c:if>
@@ -134,6 +137,8 @@
                     <c:forEach items="${targetProducts.addonProducts}" var="current">
                         <html:hidden property="addonProducts[]" value="${current.id}" />
                     </c:forEach>
+                    <html:hidden property="targetProductSelected"
+                        value="${targetProducts.serializedProductIDs}" />
                     <html:hidden property="step" value="setup" />
                     <html:hidden property="submitted" value="true" />
                     <rhn:csrf />
