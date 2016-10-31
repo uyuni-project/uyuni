@@ -35,6 +35,7 @@ import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.reactor.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BeaconEvent;
@@ -42,6 +43,7 @@ import com.suse.salt.netapi.event.EventListener;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.event.MinionStartEvent;
+import com.suse.salt.netapi.exception.SaltException;
 
 import org.apache.log4j.Logger;
 
@@ -71,6 +73,9 @@ public class SaltReactor implements EventListener {
     // Executor service for handling incoming events
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
+    // Reconnecting time (in seconds) to Salt event bus
+    private static final int DELAY_TIME_SECONDS = 5;
+
     /**
      * Start the salt reactor.
      */
@@ -97,9 +102,7 @@ public class SaltReactor implements EventListener {
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
-        // Initialize the event stream
-        eventStream = SALT_SERVICE.getEventStream();
-        eventStream.addEventListener(this);
+        connectToEventStream();
     }
 
     /**
@@ -125,11 +128,48 @@ public class SaltReactor implements EventListener {
         LOG.warn("Event stream closed: " + closeReason.getReasonPhrase() +
                 " [" + closeReason.getCloseCode() + "]");
 
-        // Try to reconnect
         if (!isStopped) {
             LOG.warn("Reconnecting to event stream...");
-            eventStream = SALT_SERVICE.getEventStream();
-            eventStream.addEventListener(this);
+            connectToEventStream();
+        }
+    }
+
+    /**
+     * Connect to Salt Event stream; if not connected, retry connections with
+     * timeout.
+     */
+    public void connectToEventStream() {
+        boolean connected = false;
+
+        int retries = 0;
+
+        while (!connected) {
+            LOG.warn("Trying to reconnect to event stream...");
+            retries++;
+            try {
+                eventStream = SALT_SERVICE.getEventStream();
+                eventStream.addEventListener(this);
+                connected = true;
+                LOG.warn("Successfully connected to event stream after " + (retries - 1) +
+                         " retries.");
+            }
+            catch (SaltException e) {
+                try {
+                    LOG.error("Unable to connect: " + e + ", retrying in " +
+                              DELAY_TIME_SECONDS + " seconds.");
+                    Thread.sleep(1000 * DELAY_TIME_SECONDS);
+                    if (retries == 1) {
+                        MailHelper.sendAdminEmail("Cannot connect to salt event bus",
+                                "salt-api daemon is not reachable by SUSE Manager." +
+                                        "Please check the status of such daemon and " +
+                                        "(re)-start it if needed.\n\n" +
+                                        "This is the only notification you will receive.");
+                    }
+                }
+                catch (InterruptedException e1) {
+                    LOG.error("Interrupted during sleep: " + e1);
+                }
+            }
         }
     }
 
