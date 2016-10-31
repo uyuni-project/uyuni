@@ -73,7 +73,7 @@ public class SPMigrationAction extends RhnAction {
     private static final String UPDATESTACK_UPDATE_NEEDED = "updateStackUpdateNeeded";
     private static final String IS_MINION = "isMinion";
     private static final String IS_SUSE_MINION = "isSUSEMinion";
-    private static final String IS_SALT_UP_TO_DATE= "isSaltUpToDate";
+    private static final String IS_SALT_UP_TO_DATE = "isSaltUpToDate";
 
     // Form parameters
     private static final String ACTION_STEP = "step";
@@ -108,7 +108,7 @@ public class SPMigrationAction extends RhnAction {
         Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
         // Check if this server is a minion
         boolean isMinion = minion.isPresent();
-        logger.debug("is a minion system? "+ isMinion);
+        logger.debug("is a minion system? " + isMinion);
         request.setAttribute(IS_MINION, isMinion);
 
         // Check if this is a SUSE system (for minions only)

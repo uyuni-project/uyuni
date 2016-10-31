@@ -52,6 +52,7 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -81,7 +82,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.Collections;
 import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -175,9 +175,10 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     Optional<MinionServer> minionServerOpt = MinionServerFactory
                             .findByMinionId(jobReturnEvent.getMinionId());
                     minionServerOpt.ifPresent(minionServer -> {
-                        Optional<ServerAction> serverAction = action.get().getServerActions()
-                                .stream()
-                                .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
+                        Optional<ServerAction> serverAction = action.get()
+                            .getServerActions()
+                            .stream()
+                            .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
 
 
                         serverAction.ifPresent(sa -> {
@@ -360,15 +361,41 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 currentChannels.removeAll(subbed);
                 currentChannels.addAll(unsubbed);
                 ServerFactory.save(serverAction.getServer());
-                MessageQueue.publish(new ChannelsChangedEventMessage(serverAction.getServerId()));
+                MessageQueue.publish(
+                        new ChannelsChangedEventMessage(serverAction.getServerId()));
+
+                DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
+                        jsonResult, DistUpgradeSlsResult.class);
+                 String message = distUpgradeSlsResult.getSpmigration()
+                         .getChanges().getRet().getComment();
+                 serverAction.setResultMsg(message.length() > 1024 ?
+                         message.substring(0, 1024) : message);
             }
-            //TODO: add better result message once we know how dup state apply looks
-            // Pretty-print the whole return map (or whatever fits into 1024 characters)
-            Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            String json = gson.toJson(returnObject);
-            serverAction.setResultMsg(json.length() > 1024 ?
-                    json.substring(0, 1024) : json);
+            else {
+                DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
+                        jsonResult, DistUpgradeSlsResult.class);
+                if (distUpgradeSlsResult.getSpmigration().getChanges().getRet().isResult()) {
+                    String packagesMessage = distUpgradeSlsResult.getSpmigration().getChanges()
+                            .getRet().getChanges().entrySet().stream().map(entry -> {
+                                StringBuilder sb = new StringBuilder();
+                                sb.append(entry.getKey());
+                                sb.append(":");
+                                sb.append(entry.getValue().getOldVersion());
+                                sb.append("->");
+                                sb.append(entry.getValue().getNewVersion());
+                                return sb.toString();
+                            }).collect(Collectors.joining(","));
+                    serverAction.setResultMsg(packagesMessage.length() > 1024 ?
+                            packagesMessage.substring(0, 1024) : packagesMessage);
+                }
+                else {
+                    String message = distUpgradeSlsResult.getSpmigration()
+                            .getChanges().getRet().getComment();
+                    serverAction.setResultMsg(message.length() > 1024 ?
+                            message.substring(0, 1024) : message);
+                }
+            }
+
         }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
