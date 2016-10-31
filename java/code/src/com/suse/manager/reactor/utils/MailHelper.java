@@ -50,14 +50,14 @@ public class MailHelper {
         }
         SmtpMail mail = new SmtpMail();
         mail.setRecipients(recipients);
-        StringBuilder subjectEnriched = new StringBuilder(subject);
+        StringBuilder enrichedSubject = new StringBuilder(subject);
         try {
-            subjectEnriched.append(" from " + InetAddress.getLocalHost().getHostName());
+            enrichedSubject.append(" from " + InetAddress.getLocalHost().getHostName());
         }
         catch (UnknownHostException ue) {
             LOG.error("Could not retrieve hostname: " + ue);
         }
-        mail.setSubject(subjectEnriched.toString());
+        mail.setSubject(enrichedSubject.toString());
         mail.setBody(messageBody);
 
         LOG.info("Sending mail message:\n" + mail.toString());
