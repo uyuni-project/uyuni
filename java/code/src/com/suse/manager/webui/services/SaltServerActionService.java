@@ -189,11 +189,11 @@ public enum SaltServerActionService {
         }
 
         ZonedDateTime now = ZonedDateTime.now();
-        if (earliestAction.isBefore(now) || earliestAction.equals(now)) {
-            return scheduleNow(minions, metadata, call);
+        if (earliestAction.isAfter(now)) {
+            return scheduleLater(minions, metadata, earliestAction, actionIn.getId(), call);
         }
         else {
-            return scheduleLater(minions, metadata, earliestAction, actionIn.getId(), call);
+            return scheduleNow(minions, metadata, call);
         }
     }
 
@@ -457,8 +457,13 @@ public enum SaltServerActionService {
         ZonedDateTime earliestAction = action.getEarliestAction().toInstant()
                 .atZone(ZoneId.systemDefault());
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        if (earliestAction.isBefore(now) || earliestAction.equals(now)) {
-
+        if (earliestAction.isAfter(now)) {
+            // The function we call itself is irrelevant since its just the
+            // JobReturnEvent that with the action_id we are looking for.
+            // Test.ping was only chosen because its simple and fast
+            ret.put(Test.ping(), minions);
+        }
+        else {
             Map<Boolean, List<Channel>> collect = action.getDetails().getChannelTasks()
                     .stream().collect(Collectors.partitioningBy(
                             ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
@@ -473,12 +478,12 @@ public enum SaltServerActionService {
                     .stream()
                     .flatMap(s -> Opt.stream(s.getServer().asMinionServer()))
                     .forEach(minion -> {
-                Set<Channel> currentChannels = minion.getChannels();
-                currentChannels.removeAll(unsubbed);
-                currentChannels.addAll(subbed);
-                ServerFactory.save(minion);
-                SaltStateGeneratorService.INSTANCE.generatePillar(minion);
-            });
+                        Set<Channel> currentChannels = minion.getChannels();
+                        currentChannels.removeAll(unsubbed);
+                        currentChannels.addAll(subbed);
+                        ServerFactory.save(minion);
+                        SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+                    });
 
             Map<String, Object> pillar = new HashMap<>();
             Map<String, Object> susemanager = new HashMap<>();
@@ -495,12 +500,6 @@ public enum SaltServerActionService {
                     Optional.of(true)
             );
             ret.put(distUpgrade, minions);
-        }
-        else {
-            // The function we can itself is irrelevant since its just the
-            // JobReturnEvent that with the action_id we are looking for.
-            // Test.ping was only chosen because its simple and fast
-            ret.put(Test.ping(), minions);
         }
         return ret;
     }
