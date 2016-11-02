@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.action.schedule;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -26,6 +26,8 @@ import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
+import com.suse.utils.Opt;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -37,6 +39,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.redhat.rhn.manager.action.ActionManager.CancelServerActionStatus;
+import static com.redhat.rhn.manager.action.ActionManager.CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN;
 /**
  * InProgressSystemsAction
  * @version $Rev$
@@ -67,8 +71,9 @@ public class InProgressSystemsAction extends RhnSetAction {
          * the set made on the current page to work correctly without having
          * the user press the update list button.
          */
-        int numSystems = updateSet(request).size();
+        long numSystems = updateSet(request).size();
         ActionMessages msgs = new ActionMessages();
+        ActionErrors errs = new ActionErrors();
         Map params = makeParamMap(formIn, request);
 
         if (numSystems == 0) {
@@ -79,29 +84,58 @@ public class InProgressSystemsAction extends RhnSetAction {
                     mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
         }
 
+        Map<Server, CancelServerActionStatus> cancelStates =
+                ActionManager.cancelActionForSystemSet(aid, "unscheduleaction", user);
+        long failed = cancelStates.entrySet().stream()
+                .filter(e -> e.getValue().isFailed())
+                .count();
+        numSystems = numSystems - failed;
 
-        ActionFactory.removeActionForSystemSet(aid, "unscheduleaction", user);
+        if (failed > 0) {
+            cancelStates.entrySet().stream()
+                .filter(e -> CANCEL_FAILED_MINION_DOWN.equals(e.getValue()))
+                .flatMap(e -> Opt.stream(e.getKey().asMinionServer()))
+                .map(minion -> minion.getMinionId())
+                .forEach(minionId ->
+                        errs.add(ActionMessages.GLOBAL_MESSAGE,
+                                new ActionMessage(
+                                        "message.actionCancelServerFailure.minion.down",
+                                        minionId))
 
-        /**
-         * If we've unscheduled the action for more than one system, send the pluralized
-         * version of the message.
-         */
-        if (numSystems == 1) {
+                );
+
             msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                     new ActionMessage("message.unscheduled.system",
-                             action.getFormatter().getName(),
-                             LocalizationService.getInstance()
-                                                .formatNumber(new Integer(numSystems))));
+                    new ActionMessage("message.actionsCancelledWithErrors",
+                            LocalizationService.getInstance()
+                                    .formatNumber(failed),
+                            LocalizationService.getInstance()
+                                    .formatNumber(numSystems)));
+
         }
         else {
-            msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                     new ActionMessage("message.unscheduled.systems",
-                             action.getFormatter().getName(),
-                             LocalizationService.getInstance()
-                                                .formatNumber(new Integer(numSystems))));
+            /**
+             * If we've unscheduled the action for more than one system, send the pluralized
+             * version of the message.
+             */
+            if (numSystems == 1) {
+                msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("message.unscheduled.system",
+                                action.getFormatter().getName(),
+                                LocalizationService.getInstance()
+                                        .formatNumber(numSystems)));
+            }
+            else {
+                msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("message.unscheduled.systems",
+                                action.getFormatter().getName(),
+                                LocalizationService.getInstance()
+                                        .formatNumber(numSystems)));
+            }
         }
         strutsDelegate.saveMessages(request, msgs);
-
+        if (!errs.isEmpty()) {
+            strutsDelegate.saveMessages(request, errs);
+        }
         //clear set
         RhnSetDecl.ACTIONS_UNSCHEDULE.clear(user);
 

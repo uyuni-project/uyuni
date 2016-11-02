@@ -122,8 +122,7 @@ public class PendingActionsDeleteConfirmAction extends RhnAction implements List
 
         long actionsWithFailuresCount = cancelStates.entrySet().stream().filter(entry ->
             entry.getValue().entrySet().stream()
-                .filter(e -> ActionManager.CancelServerActionStatus
-                        .CANCEL_FAILED_MINION_DOWN.equals(e.getValue()))
+                .filter(e -> e.getValue().isFailed())
                     .count() > 0
         ).count();
 

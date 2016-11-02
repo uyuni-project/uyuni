@@ -61,7 +61,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageDelta;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
@@ -76,6 +75,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
@@ -86,6 +86,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
+import com.suse.utils.Opt;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.cobbler.Profile;
@@ -136,7 +137,16 @@ public class ActionManager extends BaseManager {
     public enum CancelServerActionStatus {
         CANCELED,
         CANCELED_NO_MINION_JOB,
-        CANCEL_FAILED_MINION_DOWN
+        CANCEL_FAILED_MINION_DOWN,
+        CANCEL_FAILED;
+
+        /**
+         * @return <code>true</code> if the status is failed.
+         */
+        public boolean isFailed() {
+            return this.equals(CANCEL_FAILED_MINION_DOWN) ||
+                    this.equals(CANCEL_FAILED);
+        }
     }
 
     private static SaltService saltService = SaltService.INSTANCE;
@@ -324,7 +334,7 @@ public class ActionManager extends BaseManager {
             User user, Action action, Map cancelParams) {
         log.debug("Cancelling action: " + action.getId() + " for user: " + user.getLogin());
 
-        // Can only top level actions:
+        // Can only cancel top level actions:
         if (action.getPrerequisite() != null) {
             throw new ActionIsChildException();
         }
@@ -333,47 +343,10 @@ public class ActionManager extends BaseManager {
         actionsToDelete.add(action);
         actionsToDelete.addAll(ActionFactory.lookupDependentActions(action));
 
-        Set<Server> servers = new HashSet<>();
-        Iterator serverActionsIter = action.getServerActions().iterator();
-        while (serverActionsIter.hasNext()) {
-            ServerAction sa = (ServerAction)serverActionsIter.next();
-            servers.add(sa.getServer());
-        }
-
-        KickstartFactory.failKickstartSessions(actionsToDelete, servers);
-        Map<MinionServer, ServerAction> minionServerActions = new HashMap<>();
         Map<Server, CancelServerActionStatus> result = new HashMap<>();
         for (Action actionToDelete : actionsToDelete) {
-            List<ServerAction> serverActions = new LinkedList<>(
-                    actionToDelete.getServerActions());
-            for (ServerAction serverAction : serverActions) {
-                if (serverAction.getServer().asMinionServer().isPresent()) {
-                    minionServerActions.put(serverAction.getServer().asMinionServer().get(),
-                            serverAction);
-                }
-                else {
-                    actionToDelete.getServerActions().remove(serverAction);
-                    ActionFactory.delete(serverAction);
-                    result.put(serverAction.getServer(), CancelServerActionStatus.CANCELED);
-                }
-            }
-        }
-        if (!minionServerActions.isEmpty()) {
-            Map<ServerAction, CancelServerActionStatus> cancelMinionJobsResult =
-                    cancelMinionServerActions(action, minionServerActions);
-            cancelMinionJobsResult.entrySet().stream()
-                    .filter(entry -> !CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN
-                            .equals(entry.getValue()))
-                    .map(entry -> entry.getKey())
-                    .forEach(serverAction -> {
-                        serverAction.getParentAction()
-                                .getServerActions().remove(serverAction);
-                        ActionFactory.delete(serverAction);
-                    });
-            cancelMinionJobsResult.entrySet().stream()
-                    .forEach(entry -> {
-                        result.put(entry.getKey().getServer(), entry.getValue());
-                    });
+            result.putAll(cancelServerActions(actionToDelete.getId(),
+                    actionToDelete.getServerActions()));
         }
 
         Iterator iter = actionsToDelete.iterator();
@@ -384,16 +357,92 @@ public class ActionManager extends BaseManager {
         return result;
     }
 
+    private static Map<Server, CancelServerActionStatus> cancelServerActions(
+            long actionId, Set<ServerAction> serverActions) {
+        Map<Server, CancelServerActionStatus> result = new HashMap<>();
+        Set<ServerAction> minionServerActions = new HashSet<>();
+
+        // fail any Kickstart sessions for this action and servers
+        Action action = ActionFactory.lookupById(actionId);
+        KickstartFactory.failKickstartSessions(Collections.singleton(action),
+                serverActions.stream().map(sa -> sa.getServer())
+                        .collect(Collectors.toSet()));
+
+        // first delete actions for traditional servers
+        for (ServerAction serverAction : new ArrayList<>(serverActions)) {
+            if (serverAction.getServer().asMinionServer().isPresent()) {
+                // minion actions have to be canceled first from the minions
+                minionServerActions.add(serverAction);
+            }
+            else {
+                // not a minion action. delete it from the db
+                serverAction.getParentAction().getServerActions().remove(serverAction);
+                ActionFactory.delete(serverAction);
+                result.put(serverAction.getServer(), CancelServerActionStatus.CANCELED);
+            }
+        }
+        // cancel minion jobs and delete corresponding actions from db
+        if (!minionServerActions.isEmpty()) {
+                // call the minions to cancel the job
+                Map<ServerAction, CancelServerActionStatus> cancelMinionJobsResult =
+                        cancelMinionServerActions(actionId, minionServerActions);
+
+                // delete successfully canceled minion actions from the db
+                cancelMinionJobsResult.entrySet().stream()
+                        .filter(entry -> !entry.getValue().isFailed())
+                        .map(entry -> entry.getKey())
+                        .forEach(serverAction -> {
+                            serverAction.getParentAction()
+                                    .getServerActions().remove(serverAction);
+                            ActionFactory.delete(serverAction);
+                        });
+                result.putAll(cancelMinionJobsResult.entrySet().stream()
+                    .collect(Collectors.toMap(e -> e.getKey().getServer(),
+                            e -> e.getValue()))
+                );
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Remove an action for an rhnset of system ids with the given label
+     * @param actionId the action to remove
+     * @param setLabel the set label to pull the ids from
+     * @param user the user witht he set
+     * @return the number of failed systems to remove an action for.
+     */
+    public static Map<Server, CancelServerActionStatus>
+                cancelActionForSystemSet(long actionId,
+                                         String setLabel, User user) {
+
+        RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
+        return cancelActionForSystems(actionId, set.getElementValues());
+    }
+
+    private static Map<Server, CancelServerActionStatus>
+        cancelActionForSystems(long actionId, Collection<Long> serverIds) {
+
+        Action action = ActionFactory.lookupById(actionId);
+        Set<ServerAction> setServerActions = action.getServerActions().stream()
+                .filter(sa -> serverIds.contains(sa.getServer().getId()))
+                .collect(Collectors.toSet());
+
+        return cancelServerActions(actionId, setServerActions);
+    }
+
     private static Map<ServerAction, CancelServerActionStatus> cancelMinionServerActions(
-            Action action, Map<MinionServer, ServerAction> minionServerActions) {
-        List<String> minionIds = minionServerActions.keySet()
-                .stream()
+            long actionId, Set<ServerAction> minionServerActions) {
+
+        List<String> minionIds = minionServerActions.stream()
+                .flatMap(sa -> Opt.stream(sa.getServer().asMinionServer()))
                 .map(minion -> minion.getMinionId())
                 .collect(Collectors.toList());
 
         Map<String, Result<Schedule.Result>> stringResultMap = saltService
                 .deleteSchedule(
-                "scheduled-action-" + action.getId(),
+                "scheduled-action-" + actionId,
                 new MinionList(minionIds)
         );
 
@@ -403,23 +452,26 @@ public class ActionManager extends BaseManager {
 
         Map<ServerAction, CancelServerActionStatus> result = new HashMap<>();
         minionsDownIds.forEach(minionId -> {
-            Optional<ServerAction> minionServerAction = minionServerActions.entrySet()
+            Optional<ServerAction> minionServerAction = minionServerActions
                     .stream()
-                    .filter(me -> me.getKey().getMinionId().equals(minionId))
-                    .map(e -> e.getValue())
+                    .filter(sa -> sa.getServer().asMinionServer()
+                            .map(m -> m.getMinionId())
+                            .filter(id -> id.equals(minionId))
+                            .isPresent())
                     .findFirst();
             minionServerAction.ifPresent(sa -> result.put(sa,
                     CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN));
         });
 
-        stringResultMap.entrySet().forEach(resultEntry -> {
-            String minionID = resultEntry.getKey();
-            Optional<Schedule.Result> cancelResultOpt = resultEntry.getValue().result();
+        stringResultMap.forEach((minionId, saltResult) -> {
+            Optional<Schedule.Result> cancelResultOpt = saltResult.result();
 
-            Optional<ServerAction> minionServerActionOpt = minionServerActions.entrySet()
+            Optional<ServerAction> minionServerActionOpt = minionServerActions
                     .stream()
-                    .filter(me -> me.getKey().getMinionId().equals(minionID))
-                    .map(e -> e.getValue())
+                    .filter(sa -> sa.getServer().asMinionServer()
+                            .map(m -> m.getMinionId())
+                            .filter(id -> id.equals(minionId))
+                            .isPresent())
                     .findFirst();
             minionServerActionOpt.ifPresent(minionServerAction -> {
                 cancelResultOpt.ifPresent(cancelResult -> {
@@ -434,6 +486,7 @@ public class ActionManager extends BaseManager {
                 });
             });
         });
+
         return result;
     }
 
@@ -448,22 +501,12 @@ public class ActionManager extends BaseManager {
      */
     public static Optional<CancelServerActionStatus> cancelServerAction(
             long actionId, long serverId) {
-        Action action = ActionFactory.lookupById(actionId);
-
-        // get the server action that corresponds to the serverId
-        return action.getServerActions()
-                .stream()
-                .filter(sa -> sa.getServer().getId() == serverId)
-                .findFirst()
-                .flatMap(serverAction ->
-                    serverAction.getServer().asMinionServer().flatMap(minionServer ->
-                        cancelMinionServerActions(action,
-                                Collections.singletonMap(minionServer, serverAction))
-                            .values()
-                            .stream()
-                            .findFirst()
-                    )
-                );
+        Map<Server, CancelServerActionStatus> status =
+                cancelActionForSystems(actionId, Collections.singleton(serverId));
+        return status.entrySet().stream()
+                .filter(e -> e.getKey().getId().equals(serverId))
+                .map(Map.Entry::getValue)
+                .findFirst();
     }
 
     /**
