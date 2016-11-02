@@ -643,8 +643,8 @@ public class DistUpgradeManager extends BaseManager {
         }
 
         // Set additional attributes
-        details.setDryRun(dryRun ? 'Y' : 'N');
-        details.setFullUpdate('Y');
+        details.setDryRun(dryRun);
+        details.setFullUpdate(true);
 
         // Return the ID of the scheduled action
         return ActionManager.scheduleDistUpgrade(user, server, details, earliest).getId();

@@ -1857,6 +1857,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="spmigration.jsp.error.updatestack-update-needed">
         <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Service Pack migration.</source>
       </trans-unit>
+      <trans-unit id="spmigration.jsp.error.update-salt-package-needed">
+        <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Service Pack migration.</source>
+      </trans-unit>
 
       <!-- Confirm -->
       <trans-unit id="spmigration.jsp.confirm.title">
