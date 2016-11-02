@@ -164,7 +164,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
         // create a serverPath linking the minion to the proxy
         Set<ServerPath> proxyPaths = ServerFactory.createServerPaths(minion, proxy, proxyHostname);
-        minion.setServerPaths(proxyPaths);
+        minion.getServerPaths().addAll(proxyPaths);
 
         // flush session & refresh the minion object
         HibernateFactory.getSession().flush();
