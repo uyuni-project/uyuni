@@ -42,7 +42,6 @@ import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Date;
@@ -96,7 +95,6 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
             will(returnValue(listJobResult));
         } });
 
-
         MinionActionUtils.cleanupMinionActions(saltServiceMock);
 
         ServerAction sa = action.getServerActions().stream().findFirst().get();
@@ -109,7 +107,6 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         ApplyStatesActionResult applyStatesActionResult = action.getDetails().getResults().stream().findFirst().get();
         assertEquals(0L, applyStatesActionResult.getReturnCode().longValue());
         assertEquals(dump, new String(applyStatesActionResult.getOutput()));
-
     }
 
     private Jobs.Info listJob(String filename, long actionId) throws Exception {
@@ -118,7 +115,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         String eventString = Files.lines(path)
                 .collect(Collectors.joining("\n"))
                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
-        JsonParser<Jobs.Info> jsonParser = new JsonParser(new TypeToken<Jobs.Info>() {});
+        JsonParser<Jobs.Info> jsonParser = new JsonParser<>(new TypeToken<Jobs.Info>() {});
         return jsonParser.parse(eventString);
     }
 
@@ -128,13 +125,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         String eventString = Files.lines(path)
                 .collect(Collectors.joining("\n"))
                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
-        JsonParser<Map<String, Jobs.ListJobsEntry>> jsonParser = new JsonParser(new TypeToken<Map<String, Jobs.ListJobsEntry>>() {});
+        JsonParser<Map<String, Jobs.ListJobsEntry>> jsonParser = new JsonParser<>(new TypeToken<Map<String, Jobs.ListJobsEntry>>() {});
         return jsonParser.parse(eventString);
-    }
-
-    private String readFile(String file) throws IOException, ClassNotFoundException {
-        return Files.lines(new File(TestUtils.findTestData(
-                "/com/suse/manager/reactor/messaging/test/" + file).getPath()
-        ).toPath()).collect(Collectors.joining("\n"));
     }
 }
