@@ -82,6 +82,7 @@ public class SPMigrationAction extends RhnAction {
 
     // Message keys
     private static final String DISPATCH_DRYRUN = "spmigration.jsp.confirm.submit.dry-run";
+    private static final String GO_BACK = "spmigration.jsp.confirm.back";
     private static final String MSG_SCHEDULED_MIGRATION = "spmigration.message.scheduled";
     private static final String MSG_SCHEDULED_DRYRUN =
             "spmigration.message.scheduled.dry-run";
@@ -128,6 +129,7 @@ public class SPMigrationAction extends RhnAction {
         Long targetBaseChannel = null;
         Long[] targetChildChannels = null;
         boolean dryRun = false;
+        boolean goBack = false;
         boolean targetProductSelectedEmpty = false;
         String targetProductSelected = request.getParameter(TARGET_PRODUCT_SELECTED);
 
@@ -150,6 +152,10 @@ public class SPMigrationAction extends RhnAction {
                     DISPATCH_DRYRUN))) {
                 dryRun = true;
             }
+
+            // flag to know if we are going back or forward in the setup wizard
+            goBack = dispatch.equals(LocalizationService.
+                    getInstance().getMessage(GO_BACK));
         }
 
         // if submitting step 1 (TARGET) but no radio button
@@ -162,7 +168,7 @@ public class SPMigrationAction extends RhnAction {
         request.setAttribute("targetProductSelectedEmpty", targetProductSelectedEmpty);
 
         // Find the action forward
-        ActionForward forward = findForward(actionMapping, actionStep, dispatch);
+        ActionForward forward = findForward(actionMapping, actionStep, dispatch, goBack);
 
         // Put data to the request
         if (forward.getName().equals(TARGET) && supported && migration == null) {
@@ -241,6 +247,8 @@ public class SPMigrationAction extends RhnAction {
             // Put product data
             SUSEProductSet targetProductSet = createProductSet(
                     targetBaseProduct, targetAddonProducts);
+
+            request.setAttribute(TARGET_PRODUCTS, targetProductSet);
             request.setAttribute(BASE_PRODUCT, targetProductSet.getBaseProduct());
             request.setAttribute(ADDON_PRODUCTS, targetProductSet.getAddonProducts());
             // Put channel data
@@ -296,7 +304,7 @@ public class SPMigrationAction extends RhnAction {
      * @return
      */
     private ActionForward findForward(ActionMapping mapping, String wizardStep,
-            String dispatch) {
+            String dispatch, boolean goBack) {
         if (dispatch == null) {
             return mapping.findForward(TARGET);
         }
@@ -306,10 +314,12 @@ public class SPMigrationAction extends RhnAction {
             forward = mapping.findForward(SETUP);
         }
         else if (wizardStep.equals(SETUP)) {
-            forward = mapping.findForward(CONFIRM);
+            forward = goBack ?
+                    mapping.findForward(TARGET) : mapping.findForward(CONFIRM);
         }
         else if (wizardStep.equals(CONFIRM)) {
-            forward = mapping.findForward(SCHEDULE);
+            forward = goBack ?
+                    mapping.findForward(SETUP) : mapping.findForward(SCHEDULE);
         }
         else {
             // Unknown wizard step, go to setup
