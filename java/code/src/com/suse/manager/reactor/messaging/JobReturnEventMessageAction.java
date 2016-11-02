@@ -21,11 +21,15 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
+import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -45,8 +49,10 @@ import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -150,43 +156,55 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         // Adjust action status if the job was scheduled by us
         Optional<Long> actionId = getActionId(jobReturnEvent);
         actionId.ifPresent(id -> {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Matched salt job with action (id=" + id + ")");
-            }
 
             // Lookup the corresponding action
             Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(id));
             if (action.isPresent()) {
-                Optional<MinionServer> minionServerOpt = MinionServerFactory
-                        .findByMinionId(jobReturnEvent.getMinionId());
-                minionServerOpt.ifPresent(minionServer -> {
-                    Optional<ServerAction> serverAction = action.get().getServerActions()
+
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Matched salt job with action (id=" + id + ")");
+                }
+
+
+                // FIXME: This is a hack and should not be considered the final solution
+                if (action.get().getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
+                        function.equals("test.ping")) {
+                    SaltServerActionService.INSTANCE.execute(action.get(), false);
+                }
+                else {
+                    Optional<MinionServer> minionServerOpt = MinionServerFactory
+                            .findByMinionId(jobReturnEvent.getMinionId());
+                    minionServerOpt.ifPresent(minionServer -> {
+                        Optional<ServerAction> serverAction = action.get()
+                            .getServerActions()
                             .stream()
                             .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
 
-                    // Delete schedule on the minion if we created it
-                    jobReturnEvent.getData().getSchedule().ifPresent(scheduleName -> {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("Deleting schedule '" + scheduleName +
-                                    "' from minion: " + minionServer.getMinionId());
-                        }
-                        SaltService.INSTANCE.deleteSchedule(scheduleName,
-                                new MinionList(jobReturnEvent.getMinionId()));
-                    });
 
-                    serverAction.ifPresent(sa -> {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("Updating action for server: " +
-                                    minionServer.getId());
-                        }
-                        updateServerAction(sa,
-                                jobReturnEvent.getData().getRetcode(),
-                                jobReturnEvent.getData().isSuccess(),
-                                jobReturnEvent.getJobId(),
-                                jobReturnEvent.getData().getResult(JsonElement.class),
-                                jobReturnEvent.getData().getFun());
-                        ActionFactory.save(sa);
+                        serverAction.ifPresent(sa -> {
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("Updating action for server: " +
+                                        minionServer.getId());
+                            }
+                            updateServerAction(sa,
+                                    jobReturnEvent.getData().getRetcode(),
+                                    jobReturnEvent.getData().isSuccess(),
+                                    jobReturnEvent.getJobId(),
+                                    jobReturnEvent.getData().getResult(JsonElement.class),
+                                    jobReturnEvent.getData().getFun());
+                            ActionFactory.save(sa);
+                        });
                     });
+                }
+
+                // Delete schedule on the minion if we created it
+                jobReturnEvent.getData().getSchedule().ifPresent(scheduleName -> {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Deleting schedule '" + scheduleName +
+                                "' from minion: " + jobReturnEvent.getMinionId());
+                    }
+                    SaltService.INSTANCE.deleteSchedule(scheduleName,
+                            new MinionList(jobReturnEvent.getMinionId()));
                 });
             }
             else {
@@ -327,13 +345,67 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         HwProfileUpdateSlsResult.class), serverAction);
             });
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
+            DistUpgradeAction dupAction = (DistUpgradeAction) action;
+            DistUpgradeActionDetails actionDetails = dupAction.getDetails();
+            if (actionDetails.isDryRun()) {
+                Map<Boolean, List<Channel>> collect = actionDetails.getChannelTasks()
+                        .stream().collect(Collectors.partitioningBy(
+                                ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
+                                Collectors.mapping(DistUpgradeChannelTask::getChannel,
+                                        Collectors.toList())
+                        ));
+                List<Channel> subbed = collect.get(true);
+                List<Channel> unsubbed = collect.get(false);
+                Set<Channel> currentChannels = serverAction.getServer().getChannels();
+                currentChannels.removeAll(subbed);
+                currentChannels.addAll(unsubbed);
+                ServerFactory.save(serverAction.getServer());
+                MessageQueue.publish(
+                        new ChannelsChangedEventMessage(serverAction.getServerId()));
+
+                DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
+                        jsonResult, DistUpgradeSlsResult.class);
+                 String message = distUpgradeSlsResult.getSpmigration()
+                         .getChanges().getRet().getComment();
+                 serverAction.setResultMsg(message.length() > 1024 ?
+                         message.substring(0, 1024) : message);
+            }
+            else {
+                DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
+                        jsonResult, DistUpgradeSlsResult.class);
+                if (distUpgradeSlsResult.getSpmigration()
+                        .getChanges().getRet().isResult()) {
+                    String packagesMessage = distUpgradeSlsResult.getSpmigration()
+                            .getChanges().getRet().getChanges().entrySet().stream()
+                            .map(entry -> {
+                                StringBuilder sb = new StringBuilder();
+                                sb.append(entry.getKey());
+                                sb.append(":");
+                                sb.append(entry.getValue().getOldVersion());
+                                sb.append("->");
+                                sb.append(entry.getValue().getNewVersion());
+                                return sb.toString();
+                            }).collect(Collectors.joining(","));
+                    serverAction.setResultMsg(packagesMessage.length() > 1024 ?
+                            packagesMessage.substring(0, 1024) : packagesMessage);
+                }
+                else {
+                    String message = distUpgradeSlsResult.getSpmigration()
+                            .getChanges().getRet().getComment();
+                    serverAction.setResultMsg(message.length() > 1024 ?
+                            message.substring(0, 1024) : message);
+                }
+            }
+
+        }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
             Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String json = gson.toJson(returnObject);
             serverAction.setResultMsg(json.length() > 1024 ?
-                    json.substring(0, 1023) : json);
+                    json.substring(0, 1024) : json);
         }
     }
 
@@ -355,12 +427,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
      * @return true if a package list refresh was requested, otherwise false
      */
     private boolean forcePackageListRefresh(JobReturnEvent event) {
-        Optional<Boolean> value = event.getData().getMetadata(ScheduleMetadata.class)
-                .map(ScheduleMetadata::isForcePackageListRefresh);
-        if (value.isPresent()) {
-            return value.get();
-        }
-        return false;
+        return event.getData().getMetadata(ScheduleMetadata.class)
+                .map(ScheduleMetadata::isForcePackageListRefresh)
+                .orElse(false);
     }
 
     /**
@@ -373,6 +442,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     private boolean shouldRefreshPackageList(JobReturnEvent event) {
         String function = event.getData().getFun();
         switch (function) {
+            case "pkg.upgrade": return true;
             case "pkg.install": return true;
             case "pkg.remove": return true;
             case "state.apply":
@@ -444,19 +514,19 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
         Optional<String> rhelReleaseFile =
                 Optional.ofNullable(result.getRhelReleaseFile())
-                .map(content -> content.getChanges())
+                .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(ret -> ret.getStdout());
+                .map(CmdExecCodeAllResult::getStdout);
         Optional<String> centosReleaseFile =
                 Optional.ofNullable(result.getCentosReleaseFile())
-                .map(content -> content.getChanges())
+                .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(ret -> ret.getStdout());
+                .map(CmdExecCodeAllResult::getStdout);
         Optional<String> resReleasePkg =
                 Optional.ofNullable(result.getWhatProvidesResReleasePkg())
-                .map(content -> content.getChanges())
+                .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(ret -> ret.getStdout());
+                .map(CmdExecCodeAllResult::getStdout);
         if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                 resReleasePkg.isPresent()) {
             Set<InstalledProduct> products = JobReturnEventMessageAction

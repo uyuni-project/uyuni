@@ -2075,7 +2075,7 @@ public class ActionManager extends BaseManager {
             DistUpgradeActionDetails details, Date earliestAction) {
         // Construct the action name
         String name = ActionFactory.TYPE_DIST_UPGRADE.getName();
-        if (details.getDryRun() == 'Y') {
+        if (details.isDryRun()) {
             name += " (Dry Run)";
         }
 
@@ -2086,6 +2086,7 @@ public class ActionManager extends BaseManager {
         // Add the details and save
         action.setDetails(details);
         ActionFactory.save(action);
+        MessageQueue.publish(new ActionScheduledEventMessage(action));
         return action;
     }
 
