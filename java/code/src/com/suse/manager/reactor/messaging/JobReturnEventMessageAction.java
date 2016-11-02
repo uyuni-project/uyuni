@@ -374,9 +374,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             else {
                 DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
                         jsonResult, DistUpgradeSlsResult.class);
-                if (distUpgradeSlsResult.getSpmigration().getChanges().getRet().isResult()) {
-                    String packagesMessage = distUpgradeSlsResult.getSpmigration().getChanges()
-                            .getRet().getChanges().entrySet().stream().map(entry -> {
+                if (distUpgradeSlsResult.getSpmigration()
+                        .getChanges().getRet().isResult()) {
+                    String packagesMessage = distUpgradeSlsResult.getSpmigration()
+                            .getChanges().getRet().getChanges().entrySet().stream()
+                            .map(entry -> {
                                 StringBuilder sb = new StringBuilder();
                                 sb.append(entry.getKey());
                                 sb.append(":");
