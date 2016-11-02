@@ -1195,17 +1195,26 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * Tests assignment of a server path to a minion.
      * @throws Exception - if anything goes wrong.
      */
-    public void testCreateServerPath() throws Exception {
+    public void testAddRemoveServerPath() throws Exception {
         Server minion = ServerTestUtils.createTestSystem();
         Server proxy = ServerTestUtils.createTestSystem();
         String proxyHostname = "proxyHostname";
-        ServerPath serverPath = ServerFactory.createServerPath(minion, proxy, proxyHostname);
-        ServerFactory.save(serverPath);
+        Set<ServerPath> serverPaths = ServerFactory.createServerPaths(minion, proxy, proxyHostname);
+        minion.getServerPaths().addAll(serverPaths);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        assertEquals(serverPath, ServerFactory.lookupById(minion.getId()).getServerPath());
+        Server s = ServerFactory.lookupById(minion.getId());
+        assertEquals(serverPaths.stream().findFirst().get(),
+                s.getServerPaths().stream().findFirst().get());
+
+        s.getServerPaths().remove(s.getServerPaths().stream().findFirst().get());
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        s = ServerFactory.lookupById(minion.getId());
+        assertTrue(s.getServerPaths().isEmpty());
     }
 
     /**
@@ -1216,22 +1225,41 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testNestedProxyPosition() throws Exception {
         Server proxiedProxy = ServerTestUtils.createTestSystem();
         Server proxy = ServerTestUtils.createTestSystem();
-        ServerPath serverPath = ServerFactory.createServerPath(proxiedProxy, proxy, "host1");
-        ServerFactory.save(serverPath);
+        Set<ServerPath> proxyPaths = ServerFactory.createServerPaths(proxiedProxy, proxy, "proxy1");
+        proxiedProxy.getServerPaths().addAll(proxyPaths);
+
+        assertEquals(1, proxyPaths.size());
+        assertEquals(new Long(0L), proxyPaths.iterator().next().getPosition());
+        assertEquals(proxiedProxy, proxyPaths.iterator().next().getId().getServer());
+        assertEquals(proxy, proxyPaths.iterator().next().getId().getProxyServer());
+        assertEquals("proxy1", proxyPaths.iterator().next().getHostname());
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
         HibernateFactory.getSession().refresh(proxiedProxy);
 
         Server minion = ServerTestUtils.createTestSystem();
-        ServerPath serverPath2 = ServerFactory.createServerPath(minion, proxiedProxy, "host2");
-        ServerFactory.save(serverPath2);
+        Set<ServerPath> serverPath1 = ServerFactory.createServerPaths(minion, proxiedProxy, "proxy2");
+        minion.getServerPaths().addAll(serverPath1);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
         HibernateFactory.getSession().refresh(minion);
 
-        assertEquals(Long.valueOf(1L), minion.getServerPath().getPosition());
+        proxyPaths = minion.getServerPaths();
+        assertEquals(2, proxyPaths.size());
+
+        ServerPath first = minion.getFirstServerPath().get();
+        assertEquals(new Long(0L), first.getPosition());
+        assertEquals(minion, first.getId().getServer());
+        assertEquals(proxiedProxy, first.getId().getProxyServer());
+        assertEquals("proxy2", first.getHostname());
+
+        ServerPath second = serverPath1.stream().filter(p -> p.getPosition() == 1L).findFirst().get();
+        assertEquals(new Long(1L), second.getPosition());
+        assertEquals(minion, second.getId().getServer());
+        assertEquals(proxy, second.getId().getProxyServer());
+        assertEquals("proxy1", second.getHostname());
     }
 
     /**

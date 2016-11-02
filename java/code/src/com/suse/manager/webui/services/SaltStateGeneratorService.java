@@ -58,6 +58,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -165,14 +166,14 @@ public enum SaltStateGeneratorService {
      * @return channel hostname.
      */
     public static String getChannelHost(Server server) {
-        ServerPath path = server.getServerPath();
-        if (path == null) {
+        Optional<ServerPath> path = server.getFirstServerPath();
+        if (!path.isPresent()) {
             // client is not proxied, return this server's hostname
             // HACK: we currently have no better way
             return ConfigDefaults.get().getCobblerHost();
         }
         else {
-            return path.getHostname();
+            return path.get().getHostname();
         }
     }
 

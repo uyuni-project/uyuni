@@ -40,6 +40,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
@@ -162,8 +163,8 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         String proxyHostname = "proxyHostname";
 
         // create a serverPath linking the minion to the proxy
-        ServerPath serverPath = ServerFactory.createServerPath(minion, proxy, proxyHostname);
-        ServerFactory.save(serverPath);
+        Set<ServerPath> proxyPaths = ServerFactory.createServerPaths(minion, proxy, proxyHostname);
+        minion.setServerPaths(proxyPaths);
 
         // flush session & refresh the minion object
         HibernateFactory.getSession().flush();
