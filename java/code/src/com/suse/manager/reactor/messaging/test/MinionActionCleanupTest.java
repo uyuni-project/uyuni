@@ -101,7 +101,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
         ServerAction sa = action.getServerActions().stream().findFirst().get();
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
-        assertEquals("Successfully applied state(s): packages", sa.getResultMsg());
+        assertEquals("Successfully applied state(s): [packages]", sa.getResultMsg());
         assertEquals(0L, sa.getResultCode().longValue());
 
         String dump = YamlHelper.INSTANCE.dump(listJobResult.getResult(minion.getMinionId(), Object.class).get());
