@@ -26,8 +26,8 @@ import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 public class DistUpgradeActionDetails extends ActionChild {
 
     private Long id;
-    private char dryRun;
-    private char fullUpdate;
+    private boolean dryRun;
+    private boolean fullUpdate;
 
     // Set of tasks to perform on single channels
     private Set<DistUpgradeChannelTask> channelTasks =
@@ -54,59 +54,31 @@ public class DistUpgradeActionDetails extends ActionChild {
     }
 
     /**
-     * @return the dryRun
-     */
-    public char getDryRun() {
-        return dryRun;
-    }
-
-    /**
      * @return the dryRun as boolean
      */
     public boolean isDryRun() {
-        return getDryRun() == 'Y';
-    }
-
-    /**
-     * @param dryRunIn the dryRun to set
-     */
-    public void setDryRun(char dryRunIn) {
-        this.dryRun = dryRunIn;
+        return dryRun;
     }
 
     /**
      * @param dryRunIn the dryRun to set
      */
     public void setDryRun(boolean dryRunIn) {
-        setDryRun(dryRunIn ? 'Y' : 'N');
+        this.dryRun = dryRunIn;
     }
 
     /**
      * @return the fullUpdate
      */
-    public char getFullUpdate() {
-        return fullUpdate;
-    }
-
-    /**
-     * @return the fullUpdate as boolean
-     */
     public boolean isFullUpdate() {
-        return getFullUpdate() == 'Y';
-    }
-
-    /**
-     * @param fullUpdateIn the fullUpdate to set
-     */
-    public void setFullUpdate(char fullUpdateIn) {
-        this.fullUpdate = fullUpdateIn;
+        return fullUpdate;
     }
 
     /**
      * @param fullUpdateIn the fullUpdate to set
      */
     public void setFullUpdate(boolean fullUpdateIn) {
-        setFullUpdate(fullUpdateIn ? 'Y' : 'N');
+        this.fullUpdate = fullUpdateIn;
     }
 
     /**
