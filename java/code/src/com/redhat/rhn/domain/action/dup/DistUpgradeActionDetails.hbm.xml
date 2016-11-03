@@ -25,7 +25,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
       <key column="action_dup_id" />
       <one-to-many class="com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask" />
     </set>
-    <property name="dryRun" column="dry_run" type="char" />
-    <property name="fullUpdate" column="full_update" type="char" />
+    <property name="dryRun" column="dry_run" type="yes_no" />
+    <property name="fullUpdate" column="full_update" type="yes_no" />
   </class>
 </hibernate-mapping>
