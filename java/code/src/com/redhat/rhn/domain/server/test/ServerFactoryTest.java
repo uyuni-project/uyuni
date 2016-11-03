@@ -1263,7 +1263,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests looking up of a proxy server by its hostname.
+     * Tests looking up of a proxy server, assuming the proxy's FQDN is
+     * in rhnServerNetwork.
      * @throws Exception - if anything goes wrong.
      */
     public void testLookupProxyServer() throws Exception {
@@ -1278,6 +1279,36 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
+        // FQDN: precise lookup
         assertEquals(s, ServerFactory.lookupProxyServer(net.getHostname()).get());
+        // plain hostname: imprecise lookup
+        String simpleHostname = net.getHostname().split("\\.")[0];
+        assertEquals(s, ServerFactory.lookupProxyServer(simpleHostname).get());
+    }
+
+    /**
+     * Tests looking up of a proxy server, assuming the proxy's simple name is
+     * in rhnServerNetwork.
+     * @throws Exception - if anything goes wrong.
+     */
+    public void testLookupProxyServerWithSimpleName() throws Exception {
+        Server s = createTestServer(user,
+                false,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled(),
+                TYPE_SERVER_PROXY);
+        Network net = NetworkTest.createNetworkInstance();
+        String fullyQualifiedDomainName = net.getHostname();
+        String simpleHostname = net.getHostname().split("\\.")[0];
+        net.setHostname(simpleHostname);
+        net.setServer(s);
+        TestUtils.saveAndFlush(net);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // FQDN: imprecise lookup
+        assertEquals(s, ServerFactory.lookupProxyServer(fullyQualifiedDomainName).get());
+        // plain hostname: precise lookup
+        assertEquals(s, ServerFactory.lookupProxyServer(simpleHostname).get());
     }
 }

@@ -38,6 +38,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
@@ -160,25 +161,66 @@ public class ServerFactory extends HibernateFactory {
 
     /**
      * Looks up a proxy server by hostname.
-     * @param hostname the hostname
+     * @param name the hostname
      * @return the server, if it is found
      */
     @SuppressWarnings("unchecked")
-    public static Optional<Server> lookupProxyServer(String hostname) {
+    public static Optional<Server> lookupProxyServer(String name) {
+        boolean nameIsFullyQualified = name.contains(".");
+        if (!nameIsFullyQualified) {
+            log.warn("Specified master name \"" + name + "\" is not fully-qualified," +
+                    "proxy attachment might not be correct");
+            log.warn("Please use a FQDN in /etc/salt/minion.d/master.conf");
+        }
+
         DetachedCriteria matchingNameServerIds = DetachedCriteria.forClass(Network.class)
-                .add(Restrictions.eq("hostname", hostname))
+                .add(Restrictions.eq("hostname", name))
                 .setProjection(Projections.property("server.id"));
 
         DetachedCriteria proxyIds = DetachedCriteria.forClass(ProxyInfo.class)
                 .setProjection(Projections.property("server.id"));
 
-        List<Server> result = (List<Server>) HibernateFactory.getSession()
+        Optional<Server> result = HibernateFactory.getSession()
             .createCriteria(Server.class)
             .add(Subqueries.propertyIn("id", matchingNameServerIds))
             .add(Subqueries.propertyIn("id", proxyIds))
-            .list();
+            .list()
+            .stream()
+            .findFirst();
 
-        return result.stream().findFirst();
+        if (result.isPresent()) {
+            return result;
+        }
+
+        // precise search did not work, try imprecise
+        if (nameIsFullyQualified) {
+            String srippedHostname = name.split("\\.")[0];
+
+            DetachedCriteria impreciseServerIds = DetachedCriteria.forClass(Network.class)
+                    .add(Restrictions.eq("hostname", srippedHostname))
+                    .setProjection(Projections.property("server.id"));
+
+            return HibernateFactory.getSession()
+                    .createCriteria(Server.class)
+                    .add(Subqueries.propertyIn("id", impreciseServerIds))
+                    .add(Subqueries.propertyIn("id", proxyIds))
+                    .list()
+                    .stream()
+                    .findFirst();
+        }
+        else {
+            DetachedCriteria impreciseServerIds = DetachedCriteria.forClass(Network.class)
+                    .add(Restrictions.like("hostname", name + ".", MatchMode.START))
+                    .setProjection(Projections.property("server.id"));
+
+            return HibernateFactory.getSession()
+                    .createCriteria(Server.class)
+                    .add(Subqueries.propertyIn("id", impreciseServerIds))
+                    .add(Subqueries.propertyIn("id", proxyIds))
+                    .list()
+                    .stream()
+                    .findFirst();
+        }
     }
 
     /**
