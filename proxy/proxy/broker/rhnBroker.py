@@ -154,7 +154,7 @@ class BrokerHandler(SharedHandler):
             if self.req.headers_in.has_key('X-Mgr-Auth'):
                 self.authToken = self.req.headers_in['X-Mgr-Auth']
                 del self.req.headers_in['X-Mgr-Auth']
-            else:
+            elif not self.req.headers_in.has_key('X-RHN-Auth'):
                 self.authToken =  effectiveURI_parts.query
 
             self.fullRequestURL = "%s://%s%s" % (self.req.headers_in['REQUEST_SCHEME'], self.rhnParent, effectiveURI)
