@@ -52,6 +52,7 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.ModuleRun;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
@@ -367,35 +368,32 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
                         jsonResult, DistUpgradeSlsResult.class);
                  String message = distUpgradeSlsResult.getSpmigration()
-                         .getChanges().getRet().getComment();
+                         .getChanges().getRetOpt().map(ModuleRun::getComment).orElse("") + " " +
+                 distUpgradeSlsResult.getSpmigration().getComment();
                  serverAction.setResultMsg(message.length() > 1024 ?
                          message.substring(0, 1024) : message);
             }
             else {
                 DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
                         jsonResult, DistUpgradeSlsResult.class);
-                if (distUpgradeSlsResult.getSpmigration()
-                        .getChanges().getRet().isResult()) {
-                    String packagesMessage = distUpgradeSlsResult.getSpmigration()
-                            .getChanges().getRet().getChanges().entrySet().stream()
-                            .map(entry -> {
-                                StringBuilder sb = new StringBuilder();
-                                sb.append(entry.getKey());
-                                sb.append(":");
-                                sb.append(entry.getValue().getOldVersion());
-                                sb.append("->");
-                                sb.append(entry.getValue().getNewVersion());
-                                return sb.toString();
-                            }).collect(Collectors.joining(","));
-                    serverAction.setResultMsg(packagesMessage.length() > 1024 ?
-                            packagesMessage.substring(0, 1024) : packagesMessage);
-                }
-                else {
-                    String message = distUpgradeSlsResult.getSpmigration()
-                            .getChanges().getRet().getComment();
-                    serverAction.setResultMsg(message.length() > 1024 ?
-                            message.substring(0, 1024) : message);
-                }
+                String message = distUpgradeSlsResult.getSpmigration().getChanges().getRetOpt().map(ret -> {
+                    if (ret.isResult()) {
+                        return ret.getChanges().entrySet().stream()
+                                .map(entry -> {
+                                    StringBuilder sb = new StringBuilder();
+                                    sb.append(entry.getKey());
+                                    sb.append(":");
+                                    sb.append(entry.getValue().getOldVersion());
+                                    sb.append("->");
+                                    sb.append(entry.getValue().getNewVersion());
+                                    return sb.toString();
+                                }).collect(Collectors.joining(","));
+                    } else {
+                        return ret.getComment();
+                    }
+                }).orElse("");
+                serverAction.setResultMsg(message.length() > 1024 ?
+                        message.substring(0, 1024) : message);
             }
 
         }
