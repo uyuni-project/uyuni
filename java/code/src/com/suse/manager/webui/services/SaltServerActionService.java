@@ -197,7 +197,7 @@ public enum SaltServerActionService {
         }
     }
 
-    private Map<LocalCall<?>, List<MinionServer>> callsForAction(Action actionIn,
+    public Map<LocalCall<?>, List<MinionServer>> callsForAction(Action actionIn,
             List<MinionServer> minions) {
         ActionType actionType = actionIn.getActionType();
         if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
