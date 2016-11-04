@@ -624,8 +624,8 @@ def generateBootstrapScript(options):
         newScript.append(getAllowConfigManagement())
         newScript.append(getAllowRemoteCommands())
 
-    #5/16/05 wregglej 159437 - moved the stuff that up2dates the entire box to after allowed-actions permissions are set.
-    newScript.append(getUp2dateTheBoxSh(MY_PRODUCT_NAME, options.salt))
+        #5/16/05 wregglej 159437 - moved the stuff that up2dates the entire box to after allowed-actions permissions are set.
+        newScript.append(getUp2dateTheBoxSh(MY_PRODUCT_NAME, options.salt))
 
     _bootstrapDir = cleanupAbsPath(os.path.join(options.pub_tree, 'bootstrap'))
     _script = cleanupAbsPath(os.path.join(_bootstrapDir, options.script))
