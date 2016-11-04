@@ -816,7 +816,7 @@ else
     /etc/init.d/salt-minion start
     /sbin/chkconfig --add salt-minion
 fi
-
+echo "-bootstrap complete-"
 """.format(productName=productName)
 
 
