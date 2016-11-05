@@ -23,13 +23,13 @@ import java.util.Optional;
  */
 public class RetOpt<T> {
 
-    private Optional<T> retOpt = Optional.empty();
+    private Optional<T> ret = Optional.empty();
 
     /**
      * Getter
      * @return retOpt
      */
     public Optional<T> getRetOpt() {
-        return retOpt;
+        return ret;
     }
 }
