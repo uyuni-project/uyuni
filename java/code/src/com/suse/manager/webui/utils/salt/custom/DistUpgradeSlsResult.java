@@ -32,10 +32,10 @@ public class DistUpgradeSlsResult {
    /**
     * constructor
     *
-    * @param spm spmigration state apply result
+    * @param s spmigration state apply result
     */
-   public DistUpgradeSlsResult(StateApplyResult<RetOpt<ModuleRun<Map<String, OldNew>>>> spm) {
-      this.spmigration = spm;
+   public DistUpgradeSlsResult(StateApplyResult<RetOpt<ModuleRun<Map<String, OldNew>>>> s) {
+      this.spmigration = s;
    }
 
    /**

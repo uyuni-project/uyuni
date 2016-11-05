@@ -368,15 +368,17 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
                         jsonResult, DistUpgradeSlsResult.class);
                  String message = distUpgradeSlsResult.getSpmigration()
-                         .getChanges().getRetOpt().map(ModuleRun::getComment).orElse("") + " " +
-                 distUpgradeSlsResult.getSpmigration().getComment();
+                         .getChanges().getRetOpt().map(ModuleRun::getComment)
+                         .orElse("") + " " + distUpgradeSlsResult
+                            .getSpmigration().getComment();
                  serverAction.setResultMsg(message.length() > 1024 ?
                          message.substring(0, 1024) : message);
             }
             else {
                 DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
                         jsonResult, DistUpgradeSlsResult.class);
-                String message = distUpgradeSlsResult.getSpmigration().getChanges().getRetOpt().map(ret -> {
+                String message = distUpgradeSlsResult.getSpmigration().getChanges()
+                        .getRetOpt().map(ret -> {
                     if (ret.isResult()) {
                         return ret.getChanges().entrySet().stream()
                                 .map(entry -> {
@@ -388,7 +390,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                     sb.append(entry.getValue().getNewVersion());
                                     return sb.toString();
                                 }).collect(Collectors.joining(","));
-                    } else {
+                    }
+                    else {
                         return ret.getComment();
                     }
                 }).orElse("");
