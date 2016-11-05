@@ -492,7 +492,8 @@ public enum SaltServerActionService {
             susemanager.put("distupgrade", distupgrade);
             distupgrade.put("dryrun", action.getDetails().isDryRun());
             distupgrade.put("channels", subbed.stream()
-                    .map(Channel::getLabel).collect(Collectors.toList()));
+                    .map(c -> "susemanager:" + c.getLabel())
+                    .collect(Collectors.toList()));
 
             LocalCall<Map<String, State.ApplyResult>> distUpgrade = State.apply(
                     Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
