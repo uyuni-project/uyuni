@@ -101,7 +101,7 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(self.reposync, False)
         self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription = Mock()
 
-        channel = {'org_id':'org', 'id':1, 'arch': 'arch1'}
+        channel = {'org_id':1, 'id':1, 'arch': 'arch1'}
         self.reposync.RepoSync.load_channel = Mock(return_value=channel)
 
         self.assertRaises(SystemExit, self.reposync.RepoSync, 'WrongLabel', RTYPE)
@@ -381,7 +381,7 @@ class RepoSyncTest(unittest.TestCase):
                      'name': 'n1',
                      'checksum_list': None,
                      'md5sum': None,
-                     'org_id': 'org',
+                     'org_id': 1,
                      'epoch': 'cs_epoch',
                      'channels': None,
                      'package_id': 'cs_package_id',
@@ -397,7 +397,7 @@ class RepoSyncTest(unittest.TestCase):
                      'name': 'n2',
                      'checksum_list': None,
                      'md5sum': None,
-                     'org_id': 'org',
+                     'org_id': 1,
                      'epoch': 'cs_epoch',
                      'channels': None,
                      'package_id': 'cs_package_id',
@@ -519,7 +519,7 @@ class RepoSyncTest(unittest.TestCase):
         rs = self._create_mocked_reposync()
         rs._importer_run = Mock()
         rs.channel_label = 'Label1'
-        rs.channel = {'id': 'channel1', 'org_id': 'org1'}
+        rs.channel = {'id': 'channel1', 'org_id': 1}
 
         package = {'name': 'name1',
                    'version': 'version1',
@@ -528,7 +528,7 @@ class RepoSyncTest(unittest.TestCase):
                    'arch': 'arch1',
                    'checksum': 'checksum1',
                    'checksum_type': 'c_type1',
-                   'org_id': 'org1',
+                   'org_id': 1,
                    'channels': [{'label': 'Label1', 'id': 'channel1'}]}
         refpack = IncompletePackage().populate(package)
         ipack = rs.associate_package(pack)
@@ -639,7 +639,7 @@ class RepoSyncTest(unittest.TestCase):
         """Initialize the RepoSync object with some mocked attrs"""
         self.reposync.RepoSync.get_compatible_arches = Mock(
             return_value=['arch1', 'arch2'])
-        channel = {'org_id':'org', 'id':1, 'arch': 'arch1'}
+        channel = {'org_id':1, 'id':1, 'arch': 'arch1'}
         self.reposync.RepoSync.load_channel = Mock(return_value=channel)
         rs = self.reposync.RepoSync(label, repo_type, **kwargs)
         return rs
@@ -672,7 +672,7 @@ class RepoSyncTest(unittest.TestCase):
                           'advisory_type': 'Security Advisory',
                           'issue_date': timestamp1,
                           'notes': '',
-                          'org_id': 'org',
+                          'org_id': 1,
                           'bugs': [],
                           'advisory_rel': 'version1',
                           'synopsis': 'title1',
@@ -714,7 +714,7 @@ class SyncTest(unittest.TestCase):
         class_patcher = patch.multiple(
             'spacewalk.satellite_tools.reposync.RepoSync',
             load_channel=Mock(
-                return_value=dict(id="1", org_id="1", label="label#1")
+                return_value=dict(id="1", org_id=1, label="label#1")
             ),
             get_compatible_arches=Mock(),
             load_plugin=Mock(),
