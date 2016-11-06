@@ -12,12 +12,14 @@
 # in this software or its documentation.
 #
 
+import os
 import sys
 import json
 
 from spacewalk.server import rhnSQL
-from spacewalk.satellite_tools.syncLib import log2stderr, log
+from spacewalk.satellite_tools.syncLib import log
 from spacewalk.server.importlib.importLib import ContentSource
+
 import constants
 from common import CdnMappingsLoadError
 
@@ -25,8 +27,9 @@ from common import CdnMappingsLoadError
 class CdnRepositoryManager(object):
     """Class managing CDN repositories, connected channels etc."""
 
-    def __init__(self):
+    def __init__(self, local_mount_point=None):
         rhnSQL.initDB()
+        self.local_mount_point = local_mount_point
         self.repository_tree = CdnRepositoryTree()
         self._populate_repository_tree()
 
@@ -49,8 +52,7 @@ class CdnRepositoryManager(object):
                 f.close()
             except IOError:
                 e = sys.exc_info()[1]
-                log2stderr(0, "ERROR: Problem with loading file: %s" % e)
-                raise CdnMappingsLoadError()
+                raise CdnMappingsLoadError("Problem with loading file: %s" % e)
         finally:
             if f is not None:
                 f.close()
@@ -104,6 +106,12 @@ class CdnRepositoryManager(object):
                 self.repository_tree.find_repository(source['relative_url'])
             except CdnRepositoryNotFoundError:
                 return False
+
+            # Try to look for repomd file
+            if self.local_mount_point and not os.path.isfile(os.path.join(
+                    self.local_mount_point, source['relative_url'][1:], "repodata/repomd.xml")):
+                return False
+
         return True
 
     def get_content_sources_import_batch(self, channel_label, backend):

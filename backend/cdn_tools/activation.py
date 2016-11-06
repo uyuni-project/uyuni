@@ -21,26 +21,21 @@ from spacewalk.server.importlib.channelImport import ChannelFamilyImport
 from spacewalk.server.importlib.importLib import ChannelFamily, ContentSource
 from spacewalk.server.importlib.contentSourcesImport import ContentSourcesImport
 from spacewalk.server.rhnServer.satellite_cert import SatelliteCert
+from common import verify_mappings
 import constants
-from manifest import Manifest
+from manifest import Manifest, ManifestValidationError
 
 
 class Activation(object):
     """Class inserting channel families and SSL metadata into DB."""
 
-    def __init__(self, manifest_path, cert_path):
+    def __init__(self, manifest_path):
         rhnSQL.initDB()
         self.manifest = Manifest(manifest_path)
+        self.sat5_cert = SatelliteCert()
+        self.sat5_cert.load(self.manifest.get_satellite_certificate())
 
-        # Satellite 5 certificate
-        c = open(cert_path, 'r')
-        try:
-            self.sat5_cert = SatelliteCert()
-            content = c.read()
-            self.sat5_cert.load(content)
-        finally:
-            if c is not None:
-                c.close()
+        verify_mappings()
 
         # Channel families metadata
         f = open(constants.CHANNEL_FAMILY_MAPPING_PATH, 'r')
@@ -165,12 +160,14 @@ class Activation(object):
 
     def activate(self):
         if self.manifest.check_signature():
+            print("Populating channel families...")
+            self.import_channel_families()
             print("Updating certificates...")
             self._update_certificates()
             print("Updating manifest repositories...")
             self._update_repositories()
         else:
-            print("Manifest validation failed!")
+            raise ManifestValidationError("Manifest validation failed! Make sure the specified manifest is correct.")
 
     @staticmethod
     def deactivate():

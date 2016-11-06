@@ -17,11 +17,9 @@
 import os
 import sys
 import time
-import gzip
 import tempfile
 import re
 from optparse import Option, OptionParser
-from xml.dom.minidom import parseString
 from M2Crypto import X509
 
 
@@ -31,32 +29,24 @@ try:
 except ImportError:
     RhsmConfigParser = None
 
-# Recent rhnlib has support for timing out, rather than hanging.
-try:
-    from rhn.SSL import TimeoutException
-except ImportError:
-    class TimeoutException(Exception):
-        pass
-from rhn import rpclib
-from rhn.connections import idn_ascii_to_puny
-
 # common, server imports
-from spacewalk.common import rhnLib, fileutils
+from spacewalk.common import fileutils
 from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server.rhnServer import satellite_cert
 # Try to import cdn activation module if available
 try:
     from spacewalk.cdn_tools import activation as cdn_activation
-    from spacewalk.cdn_tools.manifest import Manifest
+    from spacewalk.cdn_tools.manifest import MissingSatelliteCertificateError, ManifestValidationError
+    from spacewalk.cdn_tools.common import CdnMappingsLoadError
 except ImportError:
     cdn_activation = None
-    Manifest = None
+    MissingSatelliteCertificateError = None
+    ManifestValidationError = None
+    CdnMappingsLoadError = None
 
 
-DEFAULT_SYSTEMID_LOCATION = '/etc/sysconfig/rhn/systemid'
-DEFAULT_RHN_CERT_LOCATION = '/etc/sysconfig/rhn/rhn-entitlement-cert.xml'
-DEFAULT_WEB_HANDLER = '/rpc/api'
+DEFAULT_RHSM_MANIFEST_LOCATION = '/etc/sysconfig/rhn/rhsm-manifest.zip'
 DEFAULT_WEBAPP_GPG_KEY_RING = "/etc/webapp-keyring.gpg"
 DEFAULT_CONFIG_FILE = "/etc/rhn/rhn.conf"
 DEFAULT_RHSM_CONFIG_FILE = "/etc/rhsm/rhsm.conf"
@@ -81,52 +71,6 @@ def getRHSMUuid():
             subject = cert.get_subject()
             return subject.CN
     return None
-
-
-def openGzippedFile(filename):
-    """ Open a file for reading. File may or may not be a gzipped file.
-        Returns a file object.
-    """
-
-    if filename[-2:] == 'gz':
-        fo = gzip.open(filename, 'rb')
-        try:
-            fo.read(1)
-        except IOError:
-            # probably not a gzipped file
-            pass
-        else:
-            # is a gzipped file; return a file object
-            fo.close()
-            fo = gzip.open(filename, 'rb')
-            return fo
-    # not a gzipped file; return a file object
-    fo = open(filename, 'rb')
-    return fo
-
-
-def getXmlrpcServer(server, handler, proxy, proxyUser, proxyPass,
-                    sslCertPath, sslYN=1):
-    """ Return an XML-RPC Server connection object; no ssl if sslCertPath==None.
-        May return rpclib.xmlrpclib.Fault, rpclib.xmlrpclib.ProtocolError,
-        or socket.error.
-    """
-
-    _uri = server + handler
-    uri = 'https://' + _uri
-    if not sslYN or not sslCertPath:
-        uri = 'http://' + _uri
-
-    s = rpclib.Server(uri, refreshCallback=None,
-                      proxy=proxy, username=proxyUser, password=proxyPass,
-                      timeout=CFG.timeout)
-    if sslYN and sslCertPath:
-        if not os.access(sslCertPath, os.R_OK):
-            sys.stderr.write("SSL CA Cert inaccessible: '%s'\n" % sslCertPath)
-            sys.exit(1)
-        s.add_trusted_cert(sslCertPath)
-
-    return s
 
 
 class RHNCertGeneralSanityException(Exception):
@@ -167,13 +111,10 @@ def getCertChecksumString(sat_cert):
     return result
 
 
-def validateSatCert(certFilename, verbosity=0):
-    """ validating (i.e., verifing sanity of) this product. Calls
-        validate-sat-cert.pl
+def validateSatCert(cert, verbosity=0):
+    """ validating (i.e., verifing sanity of) this product.
         I.e., makes sure the product Certificate is a sane certificate
     """
-
-    cert = openGzippedFile(certFilename).read().strip()
 
     sat_cert = satellite_cert.SatelliteCert()
     sat_cert.load(cert)
@@ -188,13 +129,13 @@ def validateSatCert(certFilename, verbosity=0):
     signature = sat_cert.signature
 
     # copy cert to temp location (it may be gzipped).
-    fd, certTmpFile = tempfile.mkstemp(prefix = DEFAULT_RHN_CERT_LOCATION + '-')
+    fd, certTmpFile = tempfile.mkstemp(prefix="/tmp/cert-")
     fo = os.fdopen(fd, 'wb')
     fo.write(getCertChecksumString(sat_cert))
     fo.flush()
     fo.close()
 
-    fd, signatureTmpFile = tempfile.mkstemp(prefix = DEFAULT_RHN_CERT_LOCATION + '-signature-')
+    fd, signatureTmpFile = tempfile.mkstemp(prefix="/tmp/cert-signature-")
     fo = os.fdopen(fd, 'wb')
     fo.write(signature)
     fo.flush()
@@ -226,17 +167,17 @@ def validateSatCert(certFilename, verbosity=0):
     return 0
 
 
-def writeRhnCert(options, cert):
-    if os.path.exists(DEFAULT_RHN_CERT_LOCATION):
-        fileutils.rotateFile(DEFAULT_RHN_CERT_LOCATION, depth=5)
-    fo = open(DEFAULT_RHN_CERT_LOCATION, 'w+b')
-    fo.write(cert)
+def writeRhsmManifest(options, manifest):
+    if os.path.exists(DEFAULT_RHSM_MANIFEST_LOCATION):
+        fileutils.rotateFile(DEFAULT_RHSM_MANIFEST_LOCATION, depth=5)
+    fo = open(DEFAULT_RHSM_MANIFEST_LOCATION, 'w+b')
+    fo.write(manifest)
     fo.close()
-    options.rhn_cert = DEFAULT_RHN_CERT_LOCATION
+    options.manifest = DEFAULT_RHSM_MANIFEST_LOCATION
 
 
-def prepRhnCert(options):
-    """ minor prepping of the RHN cerficate
+def prepRhsmManifest(options):
+    """ minor prepping of the RHSM manifest
         writing to default storage location
     """
 
@@ -244,19 +185,19 @@ def prepRhnCert(options):
     #       function is run.
     #       validateSatCert() must have been run prior to this as well (it
     #       populates "/var/log/entitlementCert"
-    if options.rhn_cert and options.rhn_cert != DEFAULT_RHN_CERT_LOCATION:
+    if options.manifest and options.manifest != DEFAULT_RHSM_MANIFEST_LOCATION:
         try:
-            cert = openGzippedFile(options.rhn_cert).read()
+            manifest = open(options.manifest, 'rb').read()
         except (IOError, OSError), e:
             msg = _('ERROR: "%s" (specified in commandline)\n'
-                    'could not be opened and read:\n%s') % (options.rhn_cert, str(e))
+                    'could not be opened and read:\n%s') % (options.manifest, str(e))
             sys.stderr.write(msg+'\n')
             raise
-        cert = cert.strip()
         try:
-            writeRhnCert(options, cert)
+            writeRhsmManifest(options, manifest)
         except (IOError, OSError), e:
-            msg = _('ERROR: "%s" could not be opened\nand/or written to:\n%s') % (DEFAULT_RHN_CERT_LOCATION, str(e))
+            msg = _('ERROR: "%s" could not be opened\nand/or written to:\n%s') % (
+                DEFAULT_RHSM_MANIFEST_LOCATION, str(e))
             sys.stderr.write(msg+'\n')
             raise
 
@@ -294,265 +235,10 @@ class EnableSatelliteRepositoryException(Exception):
     "when there is no attached satellite subscription in rhsm or incorrect combination of rhel and sat version"
 
 
-class RHNCertLocalActivationException(Exception):
-    "general local activate failure exception"
-
-
-class RHNCertRemoteActivationException(Exception):
-    "general remote activate failure exception"
-
-
-class RHNCertRemoteNoManagementSlotsException(Exception):
-    "no_management_slots fault 1020"
-
-
-class RHNCertRemoteSatelliteAlreadyActivatedException(Exception):
-    "satellite_already_activated fault 1021 - we exit with code 0 if this happens"
-
-
-class RHNCertRemoteNoAccessToSatChannelException(Exception):
-    "no_access_to_sat_channel fault 1022"
-
-
-class RHNCertRemoteInsufficientChannelEntitlementsException(Exception):
-    "insufficient_channel_entitlements fault 1023"
-
-
-class RHNCertRemoteInvalidSatCertificateException(Exception):
-    "invalid_sat_certificate fault 1024"
-
-
-class RHNCertRemoteSatelliteNotActivatedException(Exception):
-    """ satellite_not_activated fault 1025 - if we get this as a final result,
-        something bad happened """
-
-
-class RHNCertRemoteSatelliteNoBaseChannelException(Exception):
-    "satellite_no_base_channel fault 1026"
-
-
-class RHNCertNoSatChanForVersion(Exception):
-    "no_sat_chan_for_version fault 2"
-
-
-def activateSatellite_remote(options):
-    """ activate/entitle this product on the remote RHN servers
-
-        NOTE: validateSatCert calls validate-sat-cert.pl which will activate
-              the satellite as well. But we don't use it's version cuz
-              (a) it doesn't handle http proxies/systemid's/ca-certs,
-              and (b) I can't do error handling as easily.
-    """
-
-    # may raise InvalidRhnCertError, UnhandledXmlrpcError, socket.error,
-    # or cgiwrap.ProtocolError
-
-    print 'RHN_PARENT: %s' % options.server
-    s = getXmlrpcServer(options.server,
-                        DEFAULT_WEB_HANDLER,
-                        options.http_proxy,
-                        options.http_proxy_username,
-                        options.http_proxy_password,
-                        options.ca_cert,
-                        not options.no_ssl)
-
-    systemid = None
-    if os.path.exists(options.systemid):
-        systemid_file = open(options.systemid, 'rb')
-        systemid = systemid_file.read()
-        systemid_file.close()
-
-    rhsm_uuid = getRHSMUuid()
-
-    if options.old_api:
-        if not systemid:
-            msg = ("ERROR: Server not registered to RHN? No systemid: %s"
-                   % options.systemid)
-            sys.stderr.write(msg+"\n")
-            raise RHNCertRemoteSatelliteAlreadyActivatedException(msg)
-    elif not rhsm_uuid:
-        msg = "ERROR: Server not registered to RHSM? No identity found."
-        sys.stderr.write(msg + "\n")
-        raise RHNCertRemoteSatelliteAlreadyActivatedException(msg)
-
-    rhn_cert = openGzippedFile(options.rhn_cert).read()
-
-    # Check if satellite repository is enabled
-    if rhsm_uuid:
-        enableSatelliteRepo(rhn_cert)
-
-    if systemid:
-        # Find description in systemid XML
-        systemid_description = ""
-        systemid_members = parseString(systemid).getElementsByTagName("member")
-        for member in systemid_members:
-            name = member.getElementsByTagName('name')[0].firstChild.nodeValue
-            if name == 'description':
-                systemid_description = (member.getElementsByTagName('value')[0]
-                                        .getElementsByTagName('string')[0]
-                                        .firstChild.nodeValue)
-                break
-
-        # Systems having RHSM in description received this file from activation API => are activated
-        if 'RHSM' in systemid_description and not options.force:
-            msg = ("ERROR: This system is probably already activated Satellite. If you want "
-                   "to activate it again, please run with --force parameter.")
-            sys.stderr.write(msg + "\n")
-            raise RHNCertRemoteSatelliteAlreadyActivatedException(msg)
-
-        try:
-            if options.verbose:
-                print "Executing: remote XMLRPC deactivation (if necessary)."
-            s.satellite.deactivate_satellite(systemid, rhn_cert)
-        except rpclib.xmlrpclib.Fault, f:
-            # 1025 results in "satellite_not_activated"
-            if abs(f.faultCode) != 1025:
-                sys.stderr.write('ERROR: unhandled XMLRPC fault upon '
-                                 'remote deactivation (reraising): %s\n' % f)
-                raise RHNCertRemoteActivationException('%s' % f), None, sys.exc_info()[2]
-
-        # Delete systemid file because new will be received
-        if not options.old_api:
-            if options.verbose:
-                print("NOTE: Existing systemid file will be overwritten.")
-            os.unlink(options.systemid)
-            systemid = None
-
-    no_sat_chan_for_version = 'no_sat_for_version'
-    no_sat_chan_for_version1 = "Unhandled exception 'no_sat_chan_for_version' (unhandled_named_exception)"
-    # FIXME: that second version is a work-around to a bug ( 137656 ). It
-    #        should go away eventually.
-
-    try:
-        if options.verbose:
-            print "Executing: remote XMLRPC activation call."
-        if systemid:
-            ret = s.satellite.activate_satellite(systemid, rhn_cert)
-        # System registered to RHSM
-        else:
-            ret = s.satellite.activate_satellite_registered_to_RHSM(rhsm_uuid, rhn_cert)
-            # Write returned systemid file
-            systemid_file = open(options.systemid, 'wb')
-            systemid_file.write(ret)
-            systemid_file.close()
-    except rpclib.xmlrpclib.Fault, f:
-        sys.stderr.write("Error reported from RHN: %s\n" % f)
-        if (abs(f.faultCode) in range(1020, 1039+1) or f.faultString in (no_sat_chan_for_version,
-                                                                         no_sat_chan_for_version1)):
-            if abs(f.faultCode) == 1020:
-                # 1020 results in "no_management_slots"
-                print "NOTE: no management slots found on the hosted account."
-                raise RHNCertRemoteNoManagementSlotsException('%s' % f), None, sys.exc_info()[2]
-            elif abs(f.faultCode) == 1021:
-                # 1021 results in "satellite_already_activated"
-                # This shouldn't happen anymore (we deactivate prior to this step).
-                print "NOTE: this %s is already activated - deactivate on the website and try again." % PRODUCT_NAME
-                raise RHNCertRemoteSatelliteAlreadyActivatedException('%s' % f), None, sys.exc_info()[2]
-            elif abs(f.faultCode) == 1022:
-                # 1022 results in "no_access_to_sat_channel"
-                print "NOTE: hosted RHN reports 'no_access_to_sat_channel'."
-                raise RHNCertRemoteNoAccessToSatChannelException('%s' % f), None, sys.exc_info()[2]
-            elif abs(f.faultCode) == 1023:
-                # 1023 results in "insufficient_channel_entitlements"
-                print "NOTE: hosted RHN reports 'insufficient_channel_entitlements'."
-                raise RHNCertRemoteInsufficientChannelEntitlementsException('%s' % f), None, sys.exc_info()[2]
-            elif abs(f.faultCode) == 1024:
-                # 1024 results in "invalid_sat_certificate"
-                print "NOTE: hosted RHN reports 'invalid_sat_certificate'."
-                raise RHNCertRemoteInvalidSatCertificateException('%s' % f), None, sys.exc_info()[2]
-            elif abs(f.faultCode) == 1025:
-                # 1025 results in "satellite_not_activated"
-                print """\
-NOTE: hosted RHN reports 'satellite_not_activated'. This is an odd fault that
-indicates an odd state - deactivate on the website and try again."""
-                raise RHNCertRemoteSatelliteNotActivatedException('%s' % f), None, sys.exc_info()[2]
-            elif abs(f.faultCode) == 1026:
-                # 1026 results in "satellite_no_base_channel"
-                print """\
-NOTE: hosted RHN reports 'satellite_no_base_channel'. This system is not
-entitled to a base channel in your RHN account."""
-                raise RHNCertRemoteSatelliteNoBaseChannelException('%s' % f), None, sys.exc_info()[2]
-            elif f.faultString in (no_sat_chan_for_version,
-                                   no_sat_chan_for_version1):
-                print """\
-NOTE: hosted RHN reports 'no_sat_chan_for_version'. This system does not have
-access to a channel that corresponds to the version of RHN certificate used to
-attempted activation."""
-                raise RHNCertNoSatChanForVersion('%s' % f), None, sys.exc_info()[2]
-
-            # other errors [1027, ..., 1039]:
-            sys.stderr.write(
-                'ERROR: error upon attempt to activate this %s\n'
-                'against the RHN hosted service.\n\n%s\n' % (PRODUCT_NAME, f))
-            raise RHNCertRemoteActivationException('%s' % f), None, sys.exc_info()[2]
-
-        # still in except: section. Need to raise unhandled.
-        sys.stderr.write('ERROR: unhandled XMLRPC fault upon '
-                         'remote activation: %s\n' % f)
-        raise RHNCertRemoteActivationException('%s' % f), None, sys.exc_info()[2]
-
-    return ret
-
-
-class PopulateChannelFamiliesException(Exception):
-    "general failure when populating channel families"
-
-
-def populateChannelFamilies(options):
-    """ Populate channel family permissions via satellite-sync """
-
-    # TODO: Can't we do this programatically?
-    args = ["/usr/bin/satellite-sync", "--list-channels"]
-
-    # The next three if-blocks remove dependence on /etc/rhn/rhn.conf being
-    # written (not a large gain, but there it is).
-    # use a http proxy with satellite-sync
-    if options.http_proxy:
-        args.extend(['--http-proxy', options.http_proxy])
-        if options.http_proxy_username:
-            args.extend(['--http-proxy-username', options.http_proxy_username])
-            if options.http_proxy_password:
-                args.extend(['--http-proxy-password',
-                             options.http_proxy_password])
-
-    # use a ca cert with satellite-sync
-    if options.ca_cert:
-        args.extend(['--ca-cert', options.ca_cert])
-
-    # use a ca cert with satellite-sync
-    if options.no_ssl:
-        args.extend(['--no-ssl'])
-
-    if options.dump_version:
-        args.extend(['--dump-version', options.dump_version])
-
-    if options.verbose:
-        print "Executing: %s\n" % repr(' '.join(args))
-    ret, out_stream, err_stream = fileutils.rhn_popen(args)
-    if ret:
-        msg_ = "Population of the Channel Family permissions failed."
-        msg = ("%s\nReturn value: %s\nStandard-out: %s\n\n"
-               "Standard-error: %s\n\n"
-               % (msg_, ret, out_stream.read(), err_stream.read()))
-        sys.stderr.write(msg)
-        raise PopulateChannelFamiliesException("Population of the Channel "
-                                               "Family permissions failed.")
-
-
-def expiredYN(certPath):
+def expiredYN(cert):
     """ dead simple check to see if our RHN cert is not expired
         returns either "" or the date of expiration.
     """
-
-    ## open cert
-    try:
-        fo = open(certPath, 'rb')
-    except IOError:
-        sys.stderr.write("ERROR: unable to open the cert: %s\n" % certPath)
-        sys.exit(1)
-
-    cert = fo.read().strip()
-    fo.close()
 
     # parse it and snag "expires"
     sc = satellite_cert.SatelliteCert()
@@ -577,11 +263,6 @@ ERROR: can't seem to parse the expires field in the RHN Certificate.
 
 def processCommandline():
     options = [
-        Option('--systemid',     action='store',      help='(FOR TESTING ONLY) alternative systemid path/filename. '
-               + 'The system default is used if not specified.'),
-        Option('--rhn-cert',     action='store',      help='new RHN certificate path/filename (default is'
-               + ' %s - the saved RHN cert).' % DEFAULT_RHN_CERT_LOCATION),
-        Option('--no-ssl',       action='store_true', help='(FOR TESTING ONLY) disables SSL'),
         Option('--sanity-only',  action='store_true', help="confirm certificate sanity. Does not activate"
                + "the Red Hat Satellite locally or remotely."),
         Option('--ignore-expiration', action='store_true', help='execute regardless of the expiration'
@@ -592,10 +273,8 @@ def processCommandline():
                + '(accumulable: -vvv means "be *really* verbose").'),
         Option('--dump-version', action='store', help="requested version of XML dump"),
         Option('--manifest',     action='store',      help='the RHSM manifest path/filename to activate for CDN'),
-        Option('--old-api', action='store_true', help='activate Satellite using old API, system '
-               + 'has to be registered to RHN Classic'),
-        Option('-f', '--force', action='store_true', help='force activate Satellite if it is already activated'),
         Option('--cdn-deactivate', action='store_true', help='deactivate CDN-activated Satellite'),
+        Option('--disconnected', action='store_true', help="activate locally, not subscribe to remote repository")
     ]
 
     options, args = OptionParser(option_list=options).parse_args()
@@ -607,59 +286,19 @@ def processCommandline():
 
     initCFG('server.satellite')
 
-    if options.manifest or options.cdn_deactivate:
-        if not cdn_activation:
-            sys.stderr.write("ERROR: Package spacewalk-backend-cdn has to be installed for using --manifest "
-                             "and --cdn-deactivate.\n")
-            sys.exit(1)
-
     # No need to check further if deactivating
     if options.cdn_deactivate:
         return options
 
-    # systemid
-    if not options.systemid:
-        options.systemid = DEFAULT_SYSTEMID_LOCATION
-    options.systemid = fileutils.cleanupAbsPath(options.systemid)
+    if options.sanity_only:
+        options.disconnected = 1
 
-    if not options.rhn_cert and not options.manifest:
-        print "NOTE: using backup cert as default: %s" % DEFAULT_RHN_CERT_LOCATION
-        options.rhn_cert = DEFAULT_RHN_CERT_LOCATION
-
-    if options.manifest:
-        cdn_manifest = Manifest(options.manifest)
-        tmp_cert_path = cdn_manifest.get_certificate_path()
-        if tmp_cert_path is not None:
-            options.rhn_cert = tmp_cert_path
-
-    options.rhn_cert = fileutils.cleanupAbsPath(options.rhn_cert)
-    if not os.path.exists(options.rhn_cert):
-        sys.stderr.write("ERROR: RHN Cert (%s) does not exist\n" % options.rhn_cert)
-        sys.exit(1)
-
-    if not options.sanity_only and CFG.DISCONNECTED:
+    if CFG.DISCONNECTED and not options.disconnected:
         sys.stderr.write("""ERROR: Satellite server has been setup to run in disconnected mode.
-       Correct server configuration in /etc/rhn/rhn.conf.
+       Either correct server configuration in /etc/rhn/rhn.conf
+       or use --disconnected to activate it locally.
 """)
         sys.exit(1)
-
-    options.server = ''
-    if not options.sanity_only:
-        if not CFG.RHN_PARENT:
-            sys.stderr.write("ERROR: rhn_parent is not set in /etc/rhn/rhn.conf\n")
-            sys.exit(1)
-        options.server = idn_ascii_to_puny(rhnLib.parseUrl(CFG.RHN_PARENT)[1].split(':')[0])
-
-    options.http_proxy = idn_ascii_to_puny(CFG.HTTP_PROXY)
-    options.http_proxy_username = CFG.HTTP_PROXY_USERNAME
-    options.http_proxy_password = CFG.HTTP_PROXY_PASSWORD
-    options.ca_cert = CFG.CA_CHAIN
-    if options.verbose:
-        print 'HTTP_PROXY: %s' % options.http_proxy
-        print 'HTTP_PROXY_USERNAME: %s' % options.http_proxy_username
-        print 'HTTP_PROXY_PASSWORD: <password>'
-        if not options.no_ssl:
-            print 'CA_CERT: %s' % options.ca_cert
 
     return options
 
@@ -673,6 +312,9 @@ def main():
              version check)
         11   expired!
         12   certificate version fails remedially
+        13   certificate missing in manifest
+        14   manifest signature incorrect
+        15   cannot load mapping files
         20   remote activation failure (general, and really unknown why)
         30   local activation failure
         40   channel population failure
@@ -688,6 +330,9 @@ def main():
         86   1026 satellite_no_base_channel exception
         87   2(?) no_sat_chan_for_version exception
 
+        90   not registered to rhsm
+        91   enabling sat repo failed
+
         127  general unknown failure (not really mapped yet)
 
         FIXME - need to redo how we process error codes - very manual
@@ -699,89 +344,64 @@ def main():
     def writeError(e):
         sys.stderr.write('\nERROR: %s\n' % e)
 
+    if not cdn_activation:
+        writeError("Package spacewalk-backend-cdn has to be installed for using this tool.")
+        sys.exit(1)
+
     # CDN Deactivation
     if options.cdn_deactivate:
         cdn_activation.Activation.deactivate()
         return 0
 
     # Handle RHSM manifest
-    if options.manifest:
-        cdn_activate = cdn_activation.Activation(options.manifest, options.rhn_cert)
-    else:
-        cdn_activate = None
+    try:
+        cdn_activate = cdn_activation.Activation(options.manifest)
+    except CdnMappingsLoadError, e:
+        writeError(e)
+        return 15
+    except MissingSatelliteCertificateError, e:
+        writeError(e)
+        return 13
 
     # general sanity/GPG check
     try:
-        validateSatCert(options.rhn_cert, options.verbose)
+        validateSatCert(cdn_activate.manifest.get_satellite_certificate(), options.verbose)
     except RHNCertGeneralSanityException, e:
         writeError(e)
         return 10
 
     # expiration check
     if not options.ignore_expiration:
-        date = expiredYN(options.rhn_cert)
+        date = expiredYN(cdn_activate.manifest.get_satellite_certificate())
         if date:
             just_date = date.split(' ')[0]
             writeError(
-                'RHN Certificate appears to have expired: %s' % just_date)
+                'Satellite Certificate appears to have expired: %s' % just_date)
             return 11
 
     if options.sanity_only:
         return 0
 
-    prepRhnCert(options)
-
-    if not options.manifest:
-
-        # remote activation
-        try:
-            activateSatellite_remote(options)
-        except RHNCertRemoteActivationException, e:
-            writeError(e)
-            return 20
-        except RHNCertRemoteNoManagementSlotsException, e:
-            writeError(e)
-            return 80
-        except RHNCertRemoteSatelliteAlreadyActivatedException, e:
-            # note, this is normally a 1021 fault, but it's what we want
-            # so let's return 0
-            return 0
-        except RHNCertRemoteNoAccessToSatChannelException, e:
-            writeError(e)
-            return 82
-        except RHNCertRemoteInsufficientChannelEntitlementsException, e:
-            writeError(e)
-            return 83
-        except RHNCertRemoteInvalidSatCertificateException, e:
-            writeError(e)
-            return 84
-        except RHNCertRemoteSatelliteNotActivatedException, e:
-            writeError(e)
-            return 85
-        except RHNCertRemoteSatelliteNoBaseChannelException, e:
-            writeError(e)
-            return 86
-        except RHNCertNoSatChanForVersion, e:
-            writeError(e)
-            return 87
-        except TimeoutException, e:
-            writeError(e)
-            return 89
-        except EnableSatelliteRepositoryException, e:
-            writeError(e)
+    if not options.disconnected:
+        rhsm_uuid = getRHSMUuid()
+        if not rhsm_uuid:
+            writeError("Server not registered to RHSM? No identity found.")
             return 90
+        try:
+            enableSatelliteRepo(cdn_activate.manifest.get_satellite_certificate())
+        except EnableSatelliteRepositoryException:
+            e = sys.exc_info()[1]
+            writeError(e)
+            return 91
 
-        # channel family stuff
-        if CFG.RHN_PARENT and not CFG.ISS_PARENT:
-            try:
-                populateChannelFamilies(options)
-            except PopulateChannelFamiliesException, e:
-                writeError(e)
-                return 40
+    prepRhsmManifest(options)
 
-    elif cdn_activate:
-        cdn_activate.import_channel_families()
+    try:
         cdn_activate.activate()
+    except ManifestValidationError:
+        e = sys.exc_info()[1]
+        writeError(e)
+        return 14
 
     return 0
 

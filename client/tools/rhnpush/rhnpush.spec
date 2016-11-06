@@ -10,7 +10,7 @@ Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
 URL:           http://fedorahosted.org/spacewalk
-Version:       5.5.100
+Version:       5.5.101
 Release:       1%{?dist}
 Source0:       https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
@@ -107,6 +107,10 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING
 
 %changelog
+* Thu Nov 03 2016 Gennadii Altukhov <galt@redhat.com> 5.5.101-1
+- 1390170 - rhnpush is used on a client side as well, so make it compatible
+  with RHEL 5 and Python 2.4
+
 * Wed Sep 14 2016 Jan Dobes 5.5.100-1
 - fixing pylint in rhnpush
 
