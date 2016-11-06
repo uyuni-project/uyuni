@@ -119,12 +119,13 @@ class RepoSyncTest(unittest.TestCase):
     def test_init_channel(self):
         self.reposync.rhnChannel.channel_info = Mock(return_value=
                                                 {'name': 'mocked Channel',
-                                                 'id': 1})
+                                                 'id': 1,
+                                                 'org_id': 1})
         self.reposync.RepoSync.get_compatible_arches = Mock(return_value=['arch1', 'arch2'])
 
         rs = self.reposync.RepoSync('Label', RTYPE)
 
-        self.assertEqual(rs.channel, {'name': 'mocked Channel', 'id': 1})
+        self.assertEqual(rs.channel, {'name': 'mocked Channel', 'id': 1, 'org_id': 1})
 
     def test_init_bad_channel(self):
         self.reposync.rhnChannel.channel_info = Mock(return_value=None)
@@ -134,7 +135,8 @@ class RepoSyncTest(unittest.TestCase):
     def test_init_bad_repo_type(self):
         self.reposync.rhnChannel.channel_info = Mock(return_value=
                                                 {'name': 'mocked Channel',
-                                                 'id': 1})
+                                                 'id': 1,
+                                                 'org_id': 1})
         self.reposync.RepoSync.get_compatible_arches = Mock(return_value=['arch1', 'arch2'])
         self.assertRaises(SystemExit, self.reposync.RepoSync, 'Label',
                           'bad-repo-type')
