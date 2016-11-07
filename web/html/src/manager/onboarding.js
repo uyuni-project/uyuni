@@ -14,22 +14,6 @@ function listKeys() {
   return Network.get("/rhn/manager/api/minions/keys").promise;
 }
 
-function minionToList(idFingerprintMap, state) {
-  return Object.keys(idFingerprintMap).map(key => {
-    return {
-      "id": key,
-      "fingerprint": idFingerprintMap[key],
-      "state": state
-    };
-  });
-}
-
-function processData(keys) {
-  return ["minions", "minions_rejected", "minions_pre", "minions_denied"].reduce((acc, key) => {
-    return acc.concat(minionToList(keys[key], key));
-  }, []);
-}
-
 function acceptKey(key) {
   return Network.post("/rhn/manager/api/minions/keys/" + key + "/accept").promise;
 }
@@ -47,10 +31,10 @@ function actionsFor(id, state, update, enabled) {
   const rej = () => <AsyncButton disabled={enabled?"":"disabled"} key="reject" title="reject" icon="times" action={() => rejectKey(id).then(update)} />;
   const del = () => <AsyncButton disabled={enabled?"":"disabled"} key="delete" title="delete" icon="trash" action={() => deleteKey(id).then(update)} />;
   const mapping = {
-    "minions": [del],
-    "minions_pre": [acc, rej],
-    "minions_rejected": [del],
-    "minions_denied": [del]
+    "accepted": [del],
+    "pending": [acc, rej],
+    "rejected": [del],
+    "denied": [del]
   };
   return (
     <div className="pull-right btn-group">
@@ -60,19 +44,19 @@ function actionsFor(id, state, update, enabled) {
 }
 
 const stateMapping = {
-  "minions": {
+  "accepted": {
     uiName: t("accepted"),
     label: "success"
   },
-  "minions_pre": {
+  "pending": {
     uiName: t("pending"),
     label: "info"
   },
-  "minions_rejected": {
+  "rejected": {
     uiName: t("rejected"),
     label: "warning"
   },
-  "minions_denied": {
+  "denied": {
     uiName: t("denied"),
     label: "danger"
   }
@@ -100,7 +84,7 @@ class Onboarding extends React.Component {
   reloadKeys() {
     return listKeys().then(data => {
       this.setState({
-        keys: processData(data["fingerprints"]),
+        keys: data["minions"],
         isOrgAdmin: data["isOrgAdmin"]
       });
     });
@@ -143,14 +127,21 @@ class Onboarding extends React.Component {
               comparator={Utils.sortByText}
               header={t('Name')}
               cell={ (row, criteria) => {
+                if(typeof row.sid !== 'undefined') {
                   return (
                     <a href={ "/rhn/manager/minions/" + row.id }>
                       <Highlight enabled={this.isFiltered(criteria)}
                         text={row.id} highlight={criteria} />
                     </a>
                   );
+                } else {
+                  return (
+                    <Highlight enabled={this.isFiltered(criteria)}
+                      text={row.id} highlight={criteria} />
+                  );
                 }
               }
+            }
             />
             <Column
               columnKey="fingerprint"
