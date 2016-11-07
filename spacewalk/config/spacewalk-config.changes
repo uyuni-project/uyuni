@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Nov 07 11:07:44 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.2.5-1
+- Mention maxmemory option in rhn.conf (bsc#957653)
+
+-------------------------------------------------------------------
 Thu Oct 06 15:09:40 CEST 2016 - mc@suse.de
 
 - version 2.5.2.4-1
