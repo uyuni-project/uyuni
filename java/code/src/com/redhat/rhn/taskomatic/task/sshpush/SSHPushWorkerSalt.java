@@ -30,6 +30,7 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.modules.Test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
@@ -87,6 +88,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 DataResult<SystemPendingEventDto> pendingEvents = SystemManager
                         .systemPendingEvents(m.getId(), null);
                 log.debug("Number of pending actions: " + pendingEvents.size());
+                int actionsExecuted = 0;
 
                 for (SystemPendingEventDto event : pendingEvents) {
                     log.debug("Looking at pending action: " + event.getActionName());
@@ -104,8 +106,15 @@ public class SSHPushWorkerSalt implements QueueWorker {
                                 event.getActionName());
                         Action action = ActionFactory.lookupById(event.getId());
                         executeAction(action, m);
+                        actionsExecuted++;
                     }
                 }
+
+                // Perform a check-in if there is no pending actions
+                if (actionsExecuted == 0) {
+                    performCheckin(m);
+                }
+
                 log.debug("Nothing left to do for " + m.getMinionId() + ", exiting worker");
             });
         }
@@ -119,6 +128,16 @@ public class SSHPushWorkerSalt implements QueueWorker {
 
             // Finished talking to this system
             SSHPushDriver.getCurrentSystems().remove(system);
+        }
+    }
+
+    private void performCheckin(MinionServer minion) {
+        // Ping minion and perform check-in on success
+        log.info("Performing a check-in for: " + minion.getMinionId());
+        Optional<Boolean> result = SaltService.INSTANCE
+                .callSync(Test.ping(), minion.getMinionId());
+        if (result.isPresent()) {
+            minion.updateServerInfo();
         }
     }
 
