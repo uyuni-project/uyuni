@@ -301,6 +301,8 @@ public class ContentSyncManager {
      */
     @SuppressWarnings("unchecked")
     public void addDirtyFixes(Collection<SCCProduct> products) {
+        LinkedList<SCCProduct> missingProducts = new LinkedList<>();
+
         for (SCCProduct product : products) {
             // make naming consistent: strip arch or VMWARE suffix
             String friendlyName = product.getFriendlyName();
@@ -322,21 +324,51 @@ public class ContentSyncManager {
                 friendlyName += " VMWare";
             }
             product.setFriendlyName(friendlyName);
+
+            // add missing extension products if their base exists
+            switch (product.getId()) {
+                case  769: // sles11 sp1
+                    SCCProduct oes = new SCCProduct(1232, "Open_Enterprise_Server", "11",
+                            null, null, "Novell Open Enterprise Server 2 11", "OES2");
+                    product.getExtensions().add(oes);
+                    missingProducts.add(oes);
+                    break;
+                case 690:  // sles11 sp2
+                    SCCProduct oes1 = new SCCProduct(1241, "Open_Enterprise_Server", "11.1",
+                            null, null, "Novell Open Enterprise Server 2 11.1", "OES2");
+                    product.getExtensions().add(oes1);
+                    missingProducts.add(oes1);
+                    break;
+                case 814:  // sles11 sp3
+                    SCCProduct oes2 = new SCCProduct(1242, "Open_Enterprise_Server", "11.2",
+                            null, null, "Novell Open Enterprise Server 2 11.2", "OES2");
+                    product.getExtensions().add(oes2);
+                    missingProducts.add(oes2);
+
+                    SCCProduct oes2015 = new SCCProduct(42, "Open_Enterprise_Server",
+                            "2015", null, null, "Open Enterprise Server 2015", "OES2");
+                    product.getExtensions().add(oes2015);
+                    missingProducts.add(oes2015);
+                    break;
+                case 1300: // sles11 sp4
+                    SCCProduct oes3 = new SCCProduct(44, "Open_Enterprise_Server", "11.3",
+                            null, null, "Open Enterprise Server 11 SP3", "OES2");
+                    product.getExtensions().add(oes3);
+                    missingProducts.add(oes3);
+
+                    SCCProduct oes20151 = new SCCProduct(43, "Open_Enterprise_Server",
+                            "2015.1", null, null,
+                            "Open Enterprise Server 2015 SP1", "OES2");
+                    product.getExtensions().add(oes20151);
+                    missingProducts.add(oes20151);
+                    break;
+                default:
+            }
+
         }
 
-        // add OES
-        products.add(new SCCProduct(1232, "Open_Enterprise_Server", "11", null, null,
-                "Novell Open Enterprise Server 2 11", "OES2"));
-        products.add(new SCCProduct(1241, "Open_Enterprise_Server", "11.1", null, null,
-                "Novell Open Enterprise Server 2 11.1", "OES2"));
-        products.add(new SCCProduct(1242, "Open_Enterprise_Server", "11.2", null, null,
-                "Novell Open Enterprise Server 2 11.2", "OES2"));
-        products.add(new SCCProduct(42, "Open_Enterprise_Server", "2015", null, null,
-                "Open Enterprise Server 2015", "OES2"));
-        products.add(new SCCProduct(43, "Open_Enterprise_Server", "2015.1", null, null,
-                "Open Enterprise Server 2015 SP1", "OES2"));
-        products.add(new SCCProduct(44, "Open_Enterprise_Server", "11.3", null, null,
-                "Open Enterprise Server 11 SP3", "OES2"));
+        products.addAll(missingProducts);
+
     }
 
     /**
