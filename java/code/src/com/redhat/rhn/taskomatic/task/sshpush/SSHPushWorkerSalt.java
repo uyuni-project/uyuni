@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * SSH push worker executing actions via salt-ssh.
+ * SSH push worker executing scheduled actions via Salt SSH.
  */
 public class SSHPushWorkerSalt implements QueueWorker {
 
@@ -71,19 +71,19 @@ public class SSHPushWorkerSalt implements QueueWorker {
     }
 
     /**
-     * {@inheritDoc}
+     * Get pending actions for the given minion server and execute those where the schedule
+     * date and time has come.
      */
     @Override
     public void run() {
         try {
             parentQueue.workerStarting();
 
-            // Lookup the minion server
             MinionServerFactory.lookupById(system.getId()).ifPresent(m -> {
                 log.info("Executing actions for minion: " + m.getMinionId());
 
-                // Get the current list of pending actions and execute those in the right
-                // order (TODO: consider prerequisites!)
+                // Get pending actions and execute in the right order
+                // TODO: consider prerequisites
                 DataResult<SystemPendingEventDto> pendingEvents = SystemManager
                         .systemPendingEvents(m.getId(), null);
                 log.debug("Number of pending actions: " + pendingEvents.size());
@@ -91,7 +91,6 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 for (SystemPendingEventDto event : pendingEvents) {
                     log.debug("Looking at pending action: " + event.getActionName());
 
-                    // Compare dates to figure out if the time has come yet
                     ZonedDateTime now = ZonedDateTime.now();
                     ZonedDateTime scheduleDate = event.getScheduledFor().toInstant()
                             .atZone(ZoneId.systemDefault());
@@ -101,12 +100,13 @@ public class SSHPushWorkerSalt implements QueueWorker {
                         break;
                     }
                     else {
-                        log.info("Executing action: " + event.getActionName());
+                        log.info("Executing action (id=" + event.getId() + "): " +
+                                event.getActionName());
                         Action action = ActionFactory.lookupById(event.getId());
                         executeAction(action, m);
                     }
                 }
-                log.debug("Nothing left to do, exiting worker");
+                log.debug("Nothing left to do for " + m.getMinionId() + ", exiting worker");
             });
         }
         catch (Exception e) {
@@ -127,14 +127,13 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 .filter(sa -> sa.getServer().equals(minion))
                 .findFirst();
         serverAction.ifPresent(sa -> {
-            Map<LocalCall<?>, List<MinionServer>> calls =
-                    SaltServerActionService.INSTANCE.callsForAction(
-                            action, Arrays.asList(minion));
+            Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE
+                    .callsForAction(action, Arrays.asList(minion));
 
             calls.keySet().forEach(call -> {
-                Optional<JsonElement> result = SaltService.INSTANCE.callSync(
-                        new JsonElementCall(call), minion.getMinionId());
-                log.trace("Result of call: " + result);
+                Optional<JsonElement> result = SaltService.INSTANCE
+                        .callSync(new JsonElementCall(call), minion.getMinionId());
+                log.trace("Salt call results: " + result);
                 result.ifPresent(r -> {
                     JobReturnEventMessageAction.updateServerAction(sa, 0L, true, "foo", r,
                             (String) call.getPayload().get("fun"));
@@ -143,13 +142,18 @@ public class SSHPushWorkerSalt implements QueueWorker {
         });
     }
 
+    /**
+     * Manipulate a given {@link LocalCall} object to return a {@link JsonElement} instead
+     * of the specified return type.
+     */
     private class JsonElementCall extends LocalCall<JsonElement> {
+
         @SuppressWarnings("unchecked")
-        public JsonElementCall(LocalCall<?> call) {
+        JsonElementCall(LocalCall<?> call) {
             super((String) call.getPayload().get("fun"),
                     Optional.ofNullable((List<?>) call.getPayload().get("arg")),
                     Optional.ofNullable((Map<String, ?>) call.getPayload().get("kwarg")),
-                    new TypeToken<JsonElement>(){});
+                    new TypeToken<JsonElement>() { });
         }
     }
 }
