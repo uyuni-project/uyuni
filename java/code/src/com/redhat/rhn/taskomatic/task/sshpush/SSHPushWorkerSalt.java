@@ -137,6 +137,9 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 result.ifPresent(r -> {
                     JobReturnEventMessageAction.updateServerAction(sa, 0L, true, "foo", r,
                             (String) call.getPayload().get("fun"));
+
+                    // Perform a "check-in" after every executed action
+                    minion.updateServerInfo();
                 });
             });
         });
