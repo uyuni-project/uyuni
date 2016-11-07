@@ -50,14 +50,16 @@ public class MinionServerUtils {
     }
 
     /**
-     * Helper method for finding out whether minion has a ssh-push-like contact method
+     * TODO: Move this elsewhere and rename as it is not specific for minion servers only.
+     *
+     * Helper method for finding out whether a server has a ssh-push-like contact method
      * (ssh-push or ssh-push-tunnel).
-     * @param minion the minion
+     * @param server the server
      * @return true if minion is ssh-push or ssh-push-tunnel
      */
-    public static boolean isSshPushMinion(MinionServer minion) {
+    public static boolean isSshPushMinion(Server server) {
         List<String> contactMethods = Arrays.asList("ssh-push", "ssh-push-tunnel");
-        return contactMethods.contains(minion.getContactMethod().getLabel());
+        return contactMethods.contains(server.getContactMethod().getLabel());
     }
 
 }
