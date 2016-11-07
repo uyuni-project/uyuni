@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Nov 07 11:32:56 CET 2016 - michele.bologna@suse.com
+
+- version 3.0.12-1
+- Support SUSE Manager Server on aarch64 (bsc#1002776)
+- Add SLE-HA 12 SP2 for ppc64le
+
+-------------------------------------------------------------------
 Thu Oct 06 15:07:36 CEST 2016 - mc@suse.de
 
 - version 3.0.11-1
