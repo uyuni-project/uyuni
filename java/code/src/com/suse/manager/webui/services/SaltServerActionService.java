@@ -197,6 +197,14 @@ public enum SaltServerActionService {
         }
     }
 
+    /**
+     * For a given action and list of minion servers return the salt call(s) that need to be
+     * executed grouped by the list of targeted minions.
+     *
+     * @param actionIn the action to be executed
+     * @param minions the list of minions to target
+     * @return map of Salt local call to list of targeted minion servers
+     */
     public Map<LocalCall<?>, List<MinionServer>> callsForAction(Action actionIn,
             List<MinionServer> minions) {
         ActionType actionType = actionIn.getActionType();
