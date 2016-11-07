@@ -154,7 +154,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                         .callSync(new JsonElementCall(call), minion.getMinionId());
                 log.trace("Salt call results: " + result);
                 result.ifPresent(r -> {
-                    JobReturnEventMessageAction.updateServerAction(sa, 0L, true, "foo", r,
+                    JobReturnEventMessageAction.updateServerAction(sa, 0L, true, "n/a", r,
                             (String) call.getPayload().get("fun"));
 
                     // Perform a "check-in" after every executed action
