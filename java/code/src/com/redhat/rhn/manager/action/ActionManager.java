@@ -83,6 +83,7 @@ import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.redhat.rhn.domain.rhnpackage.Package;
 
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
@@ -367,7 +368,8 @@ public class ActionManager extends BaseManager {
 
         // first delete actions for traditional servers
         for (ServerAction serverAction : new ArrayList<>(serverActions)) {
-            if (serverAction.getServer().asMinionServer().isPresent()) {
+            if (serverAction.getServer().asMinionServer().isPresent() &&
+                    !(MinionServerUtils.isSshPushMinion(serverAction.getServer()))) {
                 // minion actions have to be canceled first from the minions
                 minionServerActions.add(serverAction);
             }
