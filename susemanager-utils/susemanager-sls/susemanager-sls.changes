@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Nov 07 11:37:52 CET 2016 - michele.bologna@suse.com
+
+- version 0.1.17-1
+- Sync custom modules,grains,beacons always before pkg and hw profileupdate
+  (bsc#1004725)
+- Write distupgrade state for SP migration via salt
+- New location of the salt-ssh key/cert pair. The previous location wasn't
+  writable by the salt user
+
+-------------------------------------------------------------------
 Thu Oct 13 12:50:28 CEST 2016 - mc@suse.de
 
 - version 0.1.16-1
