@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Nov 07 11:09:26 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.1.6-1
+- No final system update when salt management is used (bsc#1006188)
+- Use https connection for fetching corporate CA if using-ssl is configured
+  (bsc#1005677)
+
+-------------------------------------------------------------------
 Thu Oct 13 12:49:42 CEST 2016 - mc@suse.de
 
 - version 2.5.1.5-1
