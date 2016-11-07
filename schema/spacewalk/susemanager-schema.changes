@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Nov 07 10:49:32 CET 2016 - michele.bologna@suse.com
+
+- version 3.0.16-1
+- Create path for schema upgrade to 3.0
+- Add table for storing product extensions
+
+-------------------------------------------------------------------
 Thu Oct 06 15:34:15 CEST 2016 - mc@suse.de
 
 - version 3.0.15-1
