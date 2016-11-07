@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Nov 07 10:50:53 CET 2016 - michele.bologna@suse.com
+
+- version 3.0.18-1
+- Check for silent remote execution during migration and abort if there is
+  output (bsc#1006718)
+- Run migration helper script from /tmp via bash; /usr filesystem might be
+  mounted readonly (bsc#1004521)
+
+-------------------------------------------------------------------
 Thu Oct 06 15:32:02 CEST 2016 - mc@suse.de
 
 - version 3.0.17-1
