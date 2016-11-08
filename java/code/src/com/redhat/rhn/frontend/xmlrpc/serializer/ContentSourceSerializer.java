@@ -36,6 +36,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *      #prop("string", "label")
  *      #prop("string", "sourceUrl")
  *      #prop("string", "type")
+ *      #prop("boolean", "hasSignedMetadata")
  *      #prop("string", "sslCaDesc")
  *      #prop("string", "sslCertDesc")
  *      #prop("string", "sslKeyDesc")
@@ -73,6 +74,7 @@ public class ContentSourceSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("label", repo.getLabel());
         helper.add("sourceUrl", repo.getSourceUrl());
         helper.add("type", repo.getType().getLabel());
+        helper.add("hasSignedMetadata", repo.getMetadataSigned());
 
         helper.add("sslCaDesc", (ca != null) ? ca.getDescription() : "");
         helper.add("sslCertDesc", (cert != null) ? cert.getDescription() : "");
