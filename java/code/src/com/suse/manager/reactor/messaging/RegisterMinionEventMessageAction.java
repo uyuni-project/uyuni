@@ -30,8 +30,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
-import com.redhat.rhn.domain.server.Capability;
-import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerStateRevision;
@@ -284,11 +282,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 StateFactory.save(serverStateRevision);
             });
 
-            // salt systems always have script.run capability
-            Optional<Capability> capabilityOpt = ServerFactory
-                    .findCapability(SystemManager.CAP_SCRIPT_RUN);
-            capabilityOpt.ifPresent(c ->
-                    server.getCapabilities().add(new ClientCapability(server, c, 1L)));
+            // Salt systems always have the script.run capability
+            SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
             // Assign the Salt base entitlement by default
             server.setBaseEntitlement(EntitlementManager.SALT);
