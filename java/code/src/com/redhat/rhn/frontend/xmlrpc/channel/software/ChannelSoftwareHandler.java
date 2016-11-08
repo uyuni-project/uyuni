@@ -2807,9 +2807,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param id ID of repo whose details are sought.
      * @return the repo requested.
      *
-     * @xmlrpc.doc Returns details of the given repo
+     * @xmlrpc.doc Returns details of the given repository
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "repoLabel", "repo to query")
+     * @xmlrpc.param #param_desc("int", "id", "repository id")
      * @xmlrpc.returntype
      *     $ContentSourceSerializer
      */
