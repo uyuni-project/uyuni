@@ -97,20 +97,6 @@ public class SystemTimeMessageTag extends TagSupport {
         retval.append("</td><td>");
         retval.append(translate.formatDate(now));
         retval.append("</td></tr>\n");
-
-        //Expected check-in time: 2005-04-06 11:19:37 EDT
-        //(14 days, 5 hours, and 31 minutes ago)
-        if (!awol) {
-            retval.append("  <tr><td>");
-            retval.append(translate.getMessage("timetag.expected"));
-            retval.append("</td><td>");
-            retval.append(translate.formatDate(expectedCheckIn));
-            retval.append(" (");
-            retval.append(StringUtil.categorizeTime(expectedCheckIn.getTime(),
-                    StringUtil.DAYS_UNITS, StringUtil.MINUTES_UNITS));
-            retval.append(")</td></tr>\n");
-        }
-
         retval.append("</table><br/>");
         if (awol) {
             retval.append(translate.getMessage("timetag.awol"));
