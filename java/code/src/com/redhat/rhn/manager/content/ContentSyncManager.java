@@ -756,21 +756,21 @@ public class ContentSyncManager {
 
         // Get all vendor channels from the database
         List<Channel> channelsDB = ChannelFactory.listVendorChannels();
-        for (Channel c : channelsDB) {
-            if (channelsXMLData.containsKey(c.getLabel())) {
-                XMLChannel channel = channelsXMLData.get(c.getLabel());
-                if (!channel.getDescription().equals(c.getDescription()) ||
-                        !channel.getName().equals(c.getName()) ||
-                        !channel.getSummary().equals(c.getSummary()) ||
-                        !channel.getUpdateTag().equals(c.getUpdateTag())) {
+        for (Channel dbChannel : channelsDB) {
+            if (channelsXMLData.containsKey(dbChannel.getLabel())) {
+                XMLChannel xmlChannel = channelsXMLData.get(dbChannel.getLabel());
+                if (!xmlChannel.getDescription().equals(dbChannel.getDescription()) ||
+                        !xmlChannel.getName().equals(dbChannel.getName()) ||
+                        !xmlChannel.getSummary().equals(dbChannel.getSummary()) ||
+                        !xmlChannel.getUpdateTag().equals(dbChannel.getUpdateTag())) {
                     // There is a difference, copy channel attributes and save
-                    c.setDescription(channel.getDescription());
-                    c.setName(channel.getName());
-                    c.setSummary(channel.getSummary());
-                    c.setUpdateTag(channel.getUpdateTag());
-                    c.setChannelFamily(ChannelFamilyFactory.lookupByLabel(
-                            channel.getFamily(), null));
-                    ChannelFactory.save(c);
+                    dbChannel.setDescription(xmlChannel.getDescription());
+                    dbChannel.setName(xmlChannel.getName());
+                    dbChannel.setSummary(xmlChannel.getSummary());
+                    dbChannel.setUpdateTag(xmlChannel.getUpdateTag());
+                    dbChannel.setChannelFamily(ChannelFamilyFactory.lookupByLabel(
+                            xmlChannel.getFamily(), null));
+                    ChannelFactory.save(dbChannel);
                 }
             }
             else {
