@@ -64,7 +64,6 @@ public class SystemTimeMessageTagTest extends RhnBaseTestCase {
         assertTrue(result.startsWith("<table border=\"0\" cellspacing=\"0\" " +
                 "cellpadding=\"6\">\n  <tr><td>" + ls.getMessage("timetag.lastcheckin") +
                 "</td><td>" + ls.formatDate(server.getServerInfo().getCheckin())));
-        assertTrue(result.indexOf(ls.getMessage("timetag.expected")) != -1);
         assertFalse(result.indexOf(ls.getMessage("timetag.awol")) != -1);
     }
 
