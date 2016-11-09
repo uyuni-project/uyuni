@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor;
 
+import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -166,6 +167,9 @@ public class SaltReactor implements EventListener {
                                         "(re)-start it if needed.\n\n" +
                                         "This is the only notification you will receive.");
                     }
+                }
+                catch (JavaMailException javaMailException) {
+                    LOG.error("Error sending email: " + javaMailException.getMessage());
                 }
                 catch (InterruptedException e1) {
                     LOG.error("Interrupted during sleep: " + e1);
