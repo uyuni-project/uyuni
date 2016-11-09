@@ -702,47 +702,56 @@ public class ContentSyncManager {
             channelsXMLData.put(c.getLabel(), c);
         }
 
+        // Read repos from SCC
+        List<SCCRepository> sccRepos = SCCCachingFactory.lookupRepositories();
+
         // Get all vendor channels from the database
         List<Channel> channelsDB = ChannelFactory.listVendorChannels();
-        for (Channel c : channelsDB) {
-            if (channelsXMLData.containsKey(c.getLabel())) {
-                MgrSyncChannel channel = channelsXMLData.get(c.getLabel());
-                if (!channel.getDescription().equals(c.getDescription()) ||
-                        !channel.getName().equals(c.getName()) ||
-                        !channel.getSummary().equals(c.getSummary()) ||
-                        !channel.getUpdateTag().equals(c.getUpdateTag())) {
+        for (Channel dbChannel : channelsDB) {
+            if (channelsXMLData.containsKey(dbChannel.getLabel())) {
+                MgrSyncChannel xmlChannel = channelsXMLData.get(dbChannel.getLabel());
+                if (!xmlChannel.getDescription().equals(dbChannel.getDescription()) ||
+                        !xmlChannel.getName().equals(dbChannel.getName()) ||
+                        !xmlChannel.getSummary().equals(dbChannel.getSummary()) ||
+                        !xmlChannel.getUpdateTag().equals(dbChannel.getUpdateTag())) {
                     // There is a difference, copy channel attributes and save
-                    c.setDescription(channel.getDescription());
-                    c.setName(channel.getName());
-                    c.setSummary(channel.getSummary());
-                    c.setUpdateTag(channel.getUpdateTag());
-                    c.setChannelFamily(ChannelFamilyFactory.lookupByLabel(
-                            channel.getFamily(), null));
-                    ChannelFactory.save(c);
+                    dbChannel.setDescription(xmlChannel.getDescription());
+                    dbChannel.setName(xmlChannel.getName());
+                    dbChannel.setSummary(xmlChannel.getSummary());
+                    dbChannel.setUpdateTag(xmlChannel.getUpdateTag());
+                    dbChannel.setChannelFamily(ChannelFamilyFactory.lookupByLabel(
+                            xmlChannel.getFamily(), null));
+                    ChannelFactory.save(dbChannel);
+                }
+                SCCRepository repo = isMirrorable(xmlChannel, sccRepos);
+                // Create or link the content source
+                if (repo != null && !StringUtils.isBlank(repo.getUrl())) {
+                    String url = setupSourceURL(repo, mirrorUrl);
+                    ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
+                    if (source == null) {
+                        source = ChannelFactory.createRepo();
+                        source.setLabel(xmlChannel.getLabel());
+                        source.setMetadataSigned(xmlChannel.isSigned());
+                        source.setOrg(null);
+                        source.setSourceUrl(url);
+                        source.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
+                    }
+                    else {
+                        // update the URL as the token might have changed
+                        source.setSourceUrl(url);
+                    }
+                    ChannelFactory.save(source);
+                    // Check if Channel => Repository relation is correct and
+                    // update it if this is not the case
+                    if(!dbChannel.getSources().contains(source)) {
+                        dbChannel.getSources().clear();
+                        dbChannel.getSources().add(source);
+                        ChannelFactory.save(dbChannel);
+                    }
                 }
             }
             else {
                 // Channel is no longer mirrorable, we can return those and warn about it
-            }
-        }
-
-        // Update content source URLs
-        List<SCCRepository> repos = SCCCachingFactory.lookupRepositories();
-        List<ContentSource> contentSources = ChannelFactory.listVendorContentSources();
-        for (ContentSource cs : contentSources) {
-            if (channelsXMLData.containsKey(cs.getLabel())) {
-                MgrSyncChannel channel = channelsXMLData.get(cs.getLabel());
-                SCCRepository repo = isMirrorable(channel, repos);
-                if (repo != null) {
-                    String sourceURL = setupSourceURL(repo, mirrorUrl);
-                    if (!cs.getSourceUrl().equals(sourceURL)) {
-                        cs.setSourceUrl(sourceURL);
-                        ChannelFactory.save(cs);
-                    }
-                }
-                else {
-                    // Channel is no longer mirrorable
-                }
             }
         }
     }
