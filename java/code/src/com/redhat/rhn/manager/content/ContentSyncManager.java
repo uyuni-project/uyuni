@@ -787,7 +787,7 @@ public class ContentSyncManager {
                         source.setMetadataSigned(xmlChannel.isSigned());
                         source.setOrg(null);
                         source.setSourceUrl(url);
-                        source.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
+                        source.setType(ChannelFactory.lookupContentSourceType("yum"));
                     }
                     else {
                         // update the URL as the token might have changed

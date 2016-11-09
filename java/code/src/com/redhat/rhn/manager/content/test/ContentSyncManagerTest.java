@@ -223,7 +223,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             ContentSource cs = new ContentSource();
             cs.setLabel(c.getLabel());
             cs.setSourceUrl("https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product_debug?update-me");
-            cs.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
+            cs.setType(ChannelFactory.lookupContentSourceType("yum"));
             cs.setOrg(null);
             ChannelFactory.save(cs);
             cs = (ContentSource) TestUtils.saveAndReload(cs);
@@ -242,7 +242,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             ContentSource cs2 = new ContentSource();
             cs2.setLabel(c2.getLabel());
             cs2.setSourceUrl("https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product?update-me-too");
-            cs2.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
+            cs2.setType(ChannelFactory.lookupContentSourceType("yum"));
             cs2.setOrg(null);
             ChannelFactory.save(cs2);
             cs2 = (ContentSource) TestUtils.saveAndReload(cs2);
