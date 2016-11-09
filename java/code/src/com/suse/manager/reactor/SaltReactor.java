@@ -131,7 +131,7 @@ public class SaltReactor implements EventListener {
                 " [" + closeReason.getCloseCode() + "]");
 
         if (!isStopped) {
-            LOG.warn("Reconnecting to event stream...");
+            LOG.warn("Reconnecting to the Salt event bus...");
             connectToEventStream();
         }
     }
@@ -146,14 +146,18 @@ public class SaltReactor implements EventListener {
         int retries = 0;
 
         while (!connected) {
-            LOG.warn("Trying to reconnect to event stream...");
             retries++;
             try {
                 eventStream = SALT_SERVICE.getEventStream();
                 eventStream.addEventListener(this);
                 connected = true;
-                LOG.warn("Successfully connected to event stream after " + (retries - 1) +
-                         " retries.");
+                if (retries > 1) {
+                    LOG.warn("Successfully connected to the Salt event bus after " +
+                            (retries - 1) + " retries.");
+                }
+                else {
+                    LOG.info("Successfully connected to the Salt event bus");
+                }
             }
             catch (SaltException e) {
                 try {
