@@ -123,17 +123,6 @@ if [ -f /etc/tnsnames.ora ] ; then
     cp -fa /etc/tnsnames.ora $DIR/conf
 fi
 
-# Copy all Salt Master configuration
-if [ -e /etc/salt/master ]; then
-    mkdir -p $DIR/conf/salt
-    cp -fa /etc/salt/master $DIR/conf/salt
-fi
-
-if [ "$(ls -A /etc/salt/master.d)" ]; then
-    mkdir -p $DIR/conf/salt/master.d
-    cp -fa /etc/salt/master.d/* $DIR/conf/salt/master.d
-fi
-
 # Copy generated and existing SLS files
 echo "    * copying Salt state files"
 D_IFS=$IFS
@@ -150,22 +139,6 @@ for sls_dir in "/usr/share/susemanager/salt/","static-sls","static SLS" \
     fi
 done
 IFS=$D_IFS
-
-# Get only an information about user-defined custom pillars.
-# Note: currently only base environment supported.
-STATIC_PILLARS=("/srv/susemanager/pillar" "/usr/share/susemanager/pillar")
-CUSTOM_PILLARS_NFO=$DIR/salt-states/custom-pillars.txt
-for cfg_file in $(ls /etc/salt/master /etc/salt/master.d/*conf); do
-    for pillar_dir in $(python -c \
-	"import yaml;print ' '.join(yaml.load(open('$cfg_file')).get('pillar_roots', {}).get('base', []))"); do 
-	if [[ ! ${STATIC_PILLARS[*]} =~ $pillar_dir ]]; then
-	    if [ -d $pillar_dir ] && [ "$(ls -A $pillar_dir)" ]; then
-		echo "    * Gathering information about custom pillar $pillar_dir"
-		ls -laR $pillar_dir >> $CUSTOM_PILLARS_NFO
-	    fi
-	fi
-    done
-done
 
 MATCHER_DATA_DIR=/var/lib/spacewalk/subscription-matcher
 if [ -d $MATCHER_DATA_DIR ]; then
