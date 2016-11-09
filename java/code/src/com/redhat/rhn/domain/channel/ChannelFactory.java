@@ -1256,7 +1256,8 @@ public class ChannelFactory extends HibernateFactory {
         criteria.add(Restrictions.isNull("org"));
         criteria.add(Restrictions.eq("type", ChannelFactory.CONTENT_SOURCE_TYPE_YUM));
         if (parts.length > 1) {
-            criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix + '?', MatchMode.START));
+            criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix + '?',
+                MatchMode.START));
         }
         else {
             criteria.add(Restrictions.eq("sourceUrl", repoUrlPrefix));

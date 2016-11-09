@@ -811,7 +811,8 @@ public class ContentSyncManager {
                 // Create or link the content source
                 if (repo != null && !StringUtils.isBlank(repo.getUrl())) {
                     String url = setupSourceURL(repo, mirrorUrl);
-                    ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
+                    ContentSource source =
+                        ChannelFactory.findVendorContentSourceByRepo(url);
                     if (source == null) {
                         source = ChannelFactory.createRepo();
                         source.setLabel(xmlChannel.getLabel());
@@ -827,7 +828,7 @@ public class ContentSyncManager {
                     ChannelFactory.save(source);
                     // Check if Channel => Repository relation is correct and
                     // update it if this is not the case
-                    if(!dbChannel.getSources().contains(source)) {
+                    if (!dbChannel.getSources().contains(source)) {
                         dbChannel.getSources().clear();
                         dbChannel.getSources().add(source);
                         ChannelFactory.save(dbChannel);
