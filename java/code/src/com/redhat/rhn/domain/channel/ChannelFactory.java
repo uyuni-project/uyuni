@@ -1264,7 +1264,8 @@ public class ChannelFactory extends HibernateFactory {
         Criteria criteria = getSession().createCriteria(ContentSource.class);
         criteria.add(Restrictions.isNull("org"));
         if (parts.length > 1) {
-            criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix + '?', MatchMode.START));
+            criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix + '?',
+                MatchMode.START));
         }
         else {
             criteria.add(Restrictions.eq("sourceUrl", repoUrlPrefix));
