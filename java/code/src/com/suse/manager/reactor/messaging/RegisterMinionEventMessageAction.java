@@ -296,12 +296,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             // Assign the Salt base entitlement by default
             server.setBaseEntitlement(EntitlementManager.SALT);
 
-            // HACK
-            if (isSaltSSH) {
-                LOG.info("salt-ssh minion profile created. Stopping.");
-                return;
-            }
-
             // get hardware and network async
             triggerHardwareRefresh(server);
 
@@ -325,15 +319,27 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             }
 
             // Apply initial states asynchronously
-            MessageQueue.publish(new ApplyStatesEventMessage(
-                    server.getId(),
-                    true,
-                    ApplyStatesEventMessage.CERTIFICATE,
-                    ApplyStatesEventMessage.CHANNELS,
-                    ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS,
-                    ApplyStatesEventMessage.PACKAGES,
-                    ApplyStatesEventMessage.SALT_MINION_SERVICE
-            ));
+            if (isSaltSSH) {
+                MessageQueue.publish(new ApplyStatesEventMessage(
+                        server.getId(),
+                        true,
+                        ApplyStatesEventMessage.CERTIFICATE,
+                        ApplyStatesEventMessage.CHANNELS,
+                        ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS,
+                        ApplyStatesEventMessage.PACKAGES
+                ));
+            }
+            else {
+                MessageQueue.publish(new ApplyStatesEventMessage(
+                        server.getId(),
+                        true,
+                        ApplyStatesEventMessage.CERTIFICATE,
+                        ApplyStatesEventMessage.CHANNELS,
+                        ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS,
+                        ApplyStatesEventMessage.PACKAGES,
+                        ApplyStatesEventMessage.SALT_MINION_SERVICE
+                ));
+            }
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
