@@ -105,7 +105,12 @@ public class SSHPushWorkerSalt implements QueueWorker {
                         log.info("Executing action (id=" + event.getId() + "): " +
                                 event.getActionName());
                         Action action = ActionFactory.lookupById(event.getId());
-                        executeAction(action, m);
+                        try {
+                            executeAction(action, m);
+                        }
+                        catch (Exception e) {
+                            log.error("Error executing action: " + e.getMessage(), e);
+                        }
                         actionsExecuted++;
                     }
                 }
