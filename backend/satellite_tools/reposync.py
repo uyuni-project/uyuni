@@ -1062,6 +1062,24 @@ class RepoSync(object):
                 continue
             pack.clear_header()
 
+        self._normalize_orphan_vendor_packages()
+
+    def _normalize_orphan_vendor_packages(self):
+        h = rhnSQL.prepare("""
+            UPDATE rhnPackage
+            SET org_id = 1
+            WHERE id IN (SELECT p.id
+                         FROM rhnPackage p LEFT JOIN rhnChannelPackage cp
+                         ON p.id = cp.package_id
+                         WHERE p.org_id IS NULL and cp.channel_id IS NULL)
+        """)
+        affected_row_count = h.execute()
+        if (affected_row_count > 0):
+            self.print_msg(
+                "Transferred {} orphaned vendor packages to the default organization"
+                .format(affected_row_count)
+            )
+
     def match_package_checksum(self, md_pack, db_pack):
         """compare package checksum"""
 
