@@ -157,8 +157,16 @@ public class SSHPushWorkerSalt implements QueueWorker {
             calls.keySet().forEach(call -> {
                 Optional<JsonElement> result = SaltService.INSTANCE
                         .callSync(new JsonElementCall(call), minion.getMinionId());
-                log.trace("Salt call results: " + result);
+
+                if (!result.isPresent()) {
+                    log.error("No Salt call result for: " + action.getName());
+                    // TODO: Implement retry mechanism based on number of failures?
+                }
+
                 result.ifPresent(r -> {
+                    if (log.isTraceEnabled()) {
+                        log.trace("Salt call result: " + r);
+                    }
                     JobReturnEventMessageAction.updateServerAction(sa, 0L, true, "n/a", r,
                             (String) call.getPayload().get("fun"));
 
