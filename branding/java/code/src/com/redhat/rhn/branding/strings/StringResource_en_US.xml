@@ -1671,10 +1671,10 @@ available for this kickstart profile to function properly.
         <source>No profiles found that are compatible with this System.  Either you haven't created any Autoinstallation Profiles or this system does not have a Base Channel.</source>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nobasechannel">
-        <source>System &lt;strong&gt; {0} &lt;/strong&gt; cannot be autoinstalled because it does not have a base channel.</source>
+        <source>System {0} cannot be autoinstalled because it does not have a base channel.</source>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nosuchdevice">
-        <source>System &lt;strong&gt; {0} &lt;/strong&gt; cannot be autoinstalled because it does not have a &lt;strong&gt; {1} &lt;/strong&gt; network device.</source>
+        <source>System {0} cannot be autoinstalled because it does not have a &lt;strong&gt; {1} &lt;/strong&gt; network device.</source>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
