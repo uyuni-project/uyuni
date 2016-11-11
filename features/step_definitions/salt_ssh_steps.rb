@@ -19,3 +19,11 @@ end
 Then(/^I enter remote minion hostname as "(.*?)"$/) do |arg1|
   step %(I enter "#{ENV['MINION']}" as "hostname")
 end
+
+Then(/^I should see remote minion hostname as link$/) do
+  step %(I should see a "#{ENV['MINION']}" link)
+end
+
+Then(/^I follow remote minion hostname$/) do
+  step %(I follow "#{ENV['MINION']}")
+end
