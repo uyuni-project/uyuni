@@ -25,7 +25,7 @@ class MinionResultView extends React.Component {
   }
 
   onClick() {
-    if (this.props.started && this.props.result) {
+    if (this.props.result != "pending" && this.props.result != "timedOut" && this.props.result != "matched") {
       this.setState({open: !this.state.open})
     }
   }
@@ -34,33 +34,41 @@ class MinionResultView extends React.Component {
     const id = this.props.id;
     const result = this.props.result;
     const props = this.props;
+    var isRunResult = false;
     return (
       <div className="panel panel-default">
         <div id={id} className="panel-heading" onClick={this.onClick} style={props.result ? {cursor: "pointer"} : {cursor: "default"}}>
            <span>{id}</span>
            {(() => {
-              if(props.started){
-                if(result == null) {
-                    return(
-                      <div className="badge pull-right">
-                         {t("pending")}
-                      </div>
-                    );
-                } else {
-                    return(
-                        <div className="pull-right">
-                          <div className="badge">
-                            {this.state.open ? t("- hide response -") : t("- show response -")}
+              if(result == "pending") {
+                  return (
+                    <div className="badge pull-right">
+                       {t("pending")}
+                    </div>
+                  );
+              } else if(result == "timedOut") {
+                  return (
+                    <div className="badge pull-right">
+                       {t("timed out")}
+                    </div>
+                  );
+              } else if(result == "matched") {
+                  // nothing
+              } else {
+                  isRunResult = true;
+                  return(
+                          <div className="pull-right">
+                            <div className="badge">
+                              {this.state.open ? t("- hide response -") : t("- show response -")}
+                            </div>
+                            <i className="fa fa-right fa-check-circle fa-1-5x"></i>
                           </div>
-                          <i className="fa fa-right fa-check-circle fa-1-5x"></i>
-                        </div>
-                    )
-                }
+                     );
               }
            })()}
         </div>
         {
-          this.state.open && result != null ?
+          this.state.open && isRunResult != null ?
             <div className="panel-body">
                <pre id={id + '-results'}>{result}</pre>
             </div>
@@ -71,12 +79,23 @@ class MinionResultView extends React.Component {
   }
 }
 
+function isPreviewDone(previewed, minionsMap) {
+  const r = !previewed && Array.from(minionsMap, (e) => e[1]).every((v) => v == "matched" || v == "timedOut");
+  console.log("p=" + previewed + " m=" + Array.from(minionsMap, (e) => e[1]) + " r=" + r);
+  return r;
+}
+
+function isTimedOutDone(minionsMap) {
+ const results = Array.from(minionsMap, (e) => e[1]);
+ return results.every((v) => v != "pending") && results.some((v) => v == "timedOut");
+}
+
 
 class RemoteCommand extends React.Component {
 
   constructor() {
     super();
-    ["onPreview", "onRun", "commandChanged", "targetChanged", "commandResult"]
+    ["onPreview", "onRun", "commandChanged", "targetChanged", "commandResult", "previewAsync", "runAsync"]
     .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       command: "ls -lha",
@@ -100,6 +119,8 @@ class RemoteCommand extends React.Component {
         })
     }
 
+    //<AsyncButton id="preview" name={t("Preview")} action={this.onPreview} />
+    //<AsyncButton id="run" disabled={this.state.previewed ? "" : "disabled"} name={t("Run")} action={this.onRun} />
     return (
       <div>
           {errs}
@@ -118,8 +139,8 @@ class RemoteCommand extends React.Component {
                       <span className="input-group-addon">@</span>
                       <input id="target" className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged} />
                       <div className="input-group-btn">
-                        <AsyncButton id="preview" name={t("Preview")} action={this.onPreview} />
-                        <AsyncButton id="run" disabled={this.state.previewed ? "" : "disabled"} name={t("Run")} action={this.onRun} />
+                        <button id="wspreview" className="btn btn-default" onClick={this.previewAsync}>Preview</button>
+                        <button id="wsrun" className="btn btn-default" disabled={this.state.previewed ? "" : "disabled"} onClick={this.runAsync}>Run</button>
                       </div>
                   </div>
                 </div>
@@ -147,62 +168,90 @@ class RemoteCommand extends React.Component {
     );
   }
 
-  onPreview() {
-    const cmd = this.state.command;
-    const target = this.state.target;
-    return Network.get("/rhn/manager/api/minions/match?target=" + target, "application/json")
-        .promise.then(data => {
-            this.setState({
-              previewed: true,
-              started: false,
-              result: {
-                minions: data.reduce((acc, id) => {
-                  acc.set(id, null);
-                  return acc;
-                }, new Map())
-              },
-              errors: []
-            });
-        })
-        .catch(jqXHR => {
-          this.setState({
-            errors: errorMessageByStatus(jqXHR.status)
-          });
-        });
+  previewAsync() {
+    this.state.websocket.send(JSON.stringify({
+                              preview: true,
+                              target: this.state.target
+                            }));
+    this.setState({
+        errors: [],
+        previewed: false,
+    });
   }
 
-  onRun() {
-    const cmd = this.state.command;
-    const target = this.state.target;
-    const m = new Map();
-    for(var key of this.state.result.minions.keys()) {
-      m.set(key, null);
-    }
+  runAsync() {
+    this.state.websocket.send(JSON.stringify({
+                              preview: false,
+                              target: this.state.target,
+                              command: this.state.command
+                            }));
     this.setState({
-      result: {
-        minions: m
-      },
-      started: true
+        errors: []
     });
-    return Network.post("/rhn/manager/api/minions/cmd?cmd=" + cmd + "&target=" + target,
-      null, "application/json"
-    ).promise.then(data => {
+  }
+
+  componentDidMount() {
+    var ws = new WebSocket("wss://" + window.location.hostname + "/rhn/websocket/minion/remote-commands", "protocolOne");
+    ws.onopen = () => {
+      // Web Socket is connected, send data using send()
+      console.log("Websocket opened");
+    };
+    ws.onerror = (e) => {
         this.setState({
-          result: {
-            minions: object2map(data)
-          },
-          errors: []
+            errors: [t("Error connecting to server.")]
+            console.log(e);
         });
-    },(jqXHR) => {
-        try {
+    };
+    ws.onclose = (e) => {
+        this.setState({
+            errors: [t("Connection to server closed")]
+            console.log(e);
+        });
+    };
+    ws.onmessage = (e) => {
+      console.log("Got websocket message: " + e.data);
+      var event = JSON.parse(e.data);
+      switch(event.type) {
+        case "asyncJobStart":
             this.setState({
-              errors: JSON.parse(jqXHR.responseText)
-            })
-        } catch (err) {
-          this.setState({
-            errors: errorMessageByStatus(jqXHR.status)
-          })
-        }
+                result: {
+                    minions: event.minions.reduce((map, minionId) => map.set(minionId, "pending") , new Map())
+                }
+            });
+        case "match":
+            var minionsMap = this.state.result.minions;
+            minionsMap.set(event.minion, "matched");
+            const previewDone = isPreviewDone(this.state.previewed, minionsMap);
+            this.setState({
+                previewed: previewDone,
+                result: {
+                    minions: minionsMap
+                }
+            });
+        case "runResult":
+            var minionsMap = this.state.result.minions;
+            minionsMap.set(event.minion, event.out);
+            this.setState({
+                result: {
+                    minions: minionsMap
+                }
+            });
+        case "timedOut":
+            var minionsMap = this.state.result.minions;
+            minionsMap.set(event.minion, "timedOut");
+            const timedOutDone = isTimedOutDone(minionsMap);
+            const previewDone = isPreviewDone(this.state.previewed, minionsMap);
+            this.setState({
+                errors: timedOutDone ? [t("Not all minions responded.")] : [],
+                previewed: previewDone,
+                result: {
+                    minions: minionsMap
+                }
+            });
+      }
+    };
+    this.setState({
+        websocket: ws
     });
   }
 
@@ -225,7 +274,7 @@ class RemoteCommand extends React.Component {
       const id = kv[0];
       const value = kv[1];
       elements.push(
-        <MinionResultView key={id} id={id} result={value} started={this.state.started} />
+        <MinionResultView key={id} id={id} result={value}/>
       );
     }
     return <div>{elements}</div>;
