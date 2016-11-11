@@ -35,6 +35,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Cmd;
@@ -427,9 +428,26 @@ public enum SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> hardwareRefreshListAction(
             List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.SYNC_CUSTOM_ALL,
-                ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                Optional.empty(), Optional.of(true)), minions);
+
+        // Separate SSH push minions from regular minions to apply different states
+        List<MinionServer> sshPushMinions = minions.stream()
+                .filter(m -> MinionServerUtils.isSshPushMinion(m))
+                .collect(Collectors.toList());
+        List<MinionServer> regularMinions = minions.stream()
+                .filter(m -> !MinionServerUtils.isSshPushMinion(m))
+                .collect(Collectors.toList());
+
+        if (!sshPushMinions.isEmpty()) {
+            ret.put(State.apply(Arrays.asList(
+                    ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                    Optional.empty(), Optional.of(true)), sshPushMinions);
+        }
+        if (!regularMinions.isEmpty()) {
+            ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.SYNC_CUSTOM_ALL,
+                    ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                    Optional.empty(), Optional.of(true)), regularMinions);
+        }
+
         return ret;
     }
 
