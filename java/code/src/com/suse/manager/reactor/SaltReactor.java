@@ -119,6 +119,8 @@ public class SaltReactor implements EventListener {
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
         connectToEventStream();
+
+        SaltService.INSTANCE.setReactor(this);
     }
 
     /**
@@ -291,4 +293,9 @@ public class SaltReactor implements EventListener {
         }
         MessageQueue.publish(new MinionStartEventMessage(minionId));
     }
+
+    public EventStream getEventStream() {
+        return eventStream;
+    }
+
 }
