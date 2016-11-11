@@ -22,6 +22,7 @@ import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_DATA_PAT
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
@@ -69,15 +70,23 @@ public enum SaltStateGeneratorService {
     // Singleton instance of this class
     INSTANCE;
 
+    private static final Map<String, Object> PKGSET_BEACON_PROPS = new HashMap<>();
+    private static final Map<String, Object> VIRTPOLLER_BEACON_PROPS = new HashMap<>();
+
     private static final String PKGSET_COOKIE_PATH = "/var/cache/salt/minion/rpmdb.cookie";
     private static final int PKGSET_INTERVAL = 5;
-    private static final  Map<String, Object> PKGSET_BEACON_CONFIG;
     static {
-        PKGSET_BEACON_CONFIG = new HashMap<>();
-        Map<String, Object> pkgSetBeaconProps = new HashMap<>();
-        pkgSetBeaconProps.put("cookie", PKGSET_COOKIE_PATH);
-        pkgSetBeaconProps.put("interval",  PKGSET_INTERVAL);
-        PKGSET_BEACON_CONFIG.put("pkgset", pkgSetBeaconProps);
+        PKGSET_BEACON_PROPS.put("cookie", PKGSET_COOKIE_PATH);
+        PKGSET_BEACON_PROPS.put("interval",  PKGSET_INTERVAL);
+    }
+
+    static {
+        VIRTPOLLER_BEACON_PROPS.put("cache_file", Config.get().getString(
+                ConfigDefaults.VIRTPOLLER_CACHE_FILE));
+        VIRTPOLLER_BEACON_PROPS.put("expire_time", Config.get().getInt(
+                ConfigDefaults.VIRTPOLLER_CACHE_EXPIRATION));
+        VIRTPOLLER_BEACON_PROPS.put("interval", Config.get().getInt(
+                ConfigDefaults.VIRTPOLLER_INTERVAL));
     }
 
     /** Logger */
@@ -132,11 +141,21 @@ public enum SaltStateGeneratorService {
             }
             pillar.add("channels", chanPillar);
 
+            Map<String, Object> beaconConfig = new HashMap<>();
             // this add the configuration for the beacon that tell us when the
             // minion packages are modified locally
             if (minion.getOs().toLowerCase().equals("sles") ||
                     minion.getOsFamily().toLowerCase().equals("redhat")) {
-                pillar.add("beacons", PKGSET_BEACON_CONFIG);
+                beaconConfig.put("pkgset", PKGSET_BEACON_PROPS);
+            }
+            // this add the configuration for the beacon that tell us about
+            // virtual guests running on that minion
+            // TODO: find a better way to detect when the beacon should be configured
+            if (minion.isVirtualHost()) {
+                beaconConfig.put("virtpoller", VIRTPOLLER_BEACON_PROPS);
+            }
+            if (!beaconConfig.isEmpty()) {
+                pillar.add("beacons", beaconConfig);
             }
         }
         catch (JoseException e) {
