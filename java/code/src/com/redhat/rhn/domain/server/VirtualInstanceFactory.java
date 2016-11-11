@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -332,6 +333,18 @@ public class VirtualInstanceFactory extends HibernateFactory {
         return (VirtualInstanceState)getSession().getNamedQuery(
                 "VirtualInstanceState.findByLabel").setString("label", "unknown")
                 .uniqueResult();
+    }
+
+    /**
+     * Returns state of the given label
+     *
+     * @param label state label
+     * @return virtualInstanceState found by label or null
+     */
+    public Optional<VirtualInstanceState> getState(String label) {
+        return Optional.ofNullable((VirtualInstanceState)getSession().getNamedQuery(
+                "VirtualInstanceState.findByLabel").setString("label", label)
+                .uniqueResult());
     }
 
     /**
