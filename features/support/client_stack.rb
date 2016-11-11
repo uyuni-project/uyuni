@@ -18,9 +18,9 @@ end
 
 def client_raw_repodata_dir(channel)
   if client_is_zypp?
-    return "/var/cache/zypp/raw/spacewalk:#{channel}/repodata"
+    "/var/cache/zypp/raw/spacewalk:#{channel}/repodata"
   else
-    return "/var/cache/yum/#{channel}"
+    "/var/cache/yum/#{channel}"
   end
 end
 

@@ -52,7 +52,7 @@
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
 ### features/walk_hrefs.feature
-#- features/powermanagement-test.feature THIS NEED TO BE ADAPTED TO SLEnkins
+#- features/powermanagement-test.feature THIS NEED TO BE ADAPTED  
 - features/CVE-ID-new-syntax.feature
 - features/datepicker.feature
 - features/delete_system_profile.feature
@@ -64,8 +64,8 @@
 - features/xmlrpc_api.feature
 - features/xmlrpc_activationkey.feature
 - features/xmlrpc_channel.feature
-#- features/xmlrpc_VHM.feature THIS NEED REWORK FOR SLEnkins
-#- features/check_VHM.feature  THIS NEED REWOEK For SLEnkins
+#- features/xmlrpc_VHM.feature THIS NEED REWORK 
+#- features/check_VHM.feature  THIS NEED REWORK 
 - features/setup_wizard.feature
 - features/change_password.feature
 - features/spacewalk-debug.feature
@@ -75,6 +75,7 @@
 - features/security.feature
 
 #### Salt related features   ###
+- features/minion_bootstrap.feature
 - features/salt.feature
 - features/salt_minions_page.feature
 - features/salt_minion_details.feature
