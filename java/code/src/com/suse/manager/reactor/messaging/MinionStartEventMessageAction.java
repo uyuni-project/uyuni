@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -69,14 +70,16 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
         // Update custom grains, modules and beacons on every minion restart
         MinionList minionTarget = new MinionList(minionId);
         SALT_SERVICE.syncGrains(minionTarget);
-        SALT_SERVICE.syncModules(minionTarget);
         SALT_SERVICE.syncBeacons(minionTarget);
 
-        Optional<MinionServer> minionOpt =
-                MinionServerFactory.findByMinionId(minionId);
+        Optional<MinionServer> minionOpt = MinionServerFactory.findByMinionId(minionId);
         minionOpt.ifPresent(minion -> {
-
             MinionList target = new MinionList(minion.getMinionId());
+
+            if (!MinionServerUtils.isSshPushMinion(minion)) {
+                SALT_SERVICE.syncModules(target);
+            }
+
             // get uptime
             LocalCall<Float> uptimeCall = Status.uptime();
             try {
