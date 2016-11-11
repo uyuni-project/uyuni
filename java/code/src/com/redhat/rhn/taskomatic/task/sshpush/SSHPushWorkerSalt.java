@@ -40,6 +40,7 @@ import org.apache.log4j.Logger;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -83,10 +84,11 @@ public class SSHPushWorkerSalt implements QueueWorker {
             MinionServerFactory.lookupById(system.getId()).ifPresent(m -> {
                 log.info("Executing actions for minion: " + m.getMinionId());
 
-                // Get pending actions and execute in the right order
+                // Get pending actions and reverse to put them in ascending order
                 // TODO: consider prerequisites
                 DataResult<SystemPendingEventDto> pendingEvents = SystemManager
                         .systemPendingEvents(m.getId(), null);
+                Collections.reverse(pendingEvents);
                 log.debug("Number of pending actions: " + pendingEvents.size());
                 int actionsExecuted = 0;
 
