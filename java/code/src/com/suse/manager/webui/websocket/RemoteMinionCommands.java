@@ -35,33 +35,26 @@ import java.util.stream.Collectors;
 @ServerEndpoint(value = "/websocket/minion/remote-commands", configurator = ServletAwareConfig.class)
 public class RemoteMinionCommands {
 
-    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
-
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(RemoteMinionCommands.class);
 
-    private Session session;
-    private HttpSession httpSession;
-    private long userId;
+    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
 
+    private long userId;
 
     @OnOpen
     public void onStart(Session session, EndpointConfig config) {
-        this.session = session;
-        this.httpSession = (HttpSession) config.getUserProperties().get("httpSession");
         this.userId = LocalizedEnvironmentFilter.USERID.get();
-
     }
 
     @OnClose
     public void onClose() {
-        LOG.info("closed");
+        LOG.debug("Websocket closed");
         // TODO cancel the JobReturnStream (if any)
     }
 
     @OnMessage
     public void onMessage(Session session, String messageBody) {
-
         User user = UserFactory.lookupById(this.userId);
 
         List<String> allVisibleMinions = MinionServerFactory
@@ -76,101 +69,61 @@ public class RemoteMinionCommands {
 
             List<String> allMinions = new ArrayList<>(res.keySet().stream().collect(Collectors.toList()));
             allMinions.retainAll(allVisibleMinions);
-            sendMessage(session, new AsyncJobStartEventDto("preview", "234", allVisibleMinions));
+            sendMessage(session, new AsyncJobStartEventDto("preview", allMinions));
 
-            List<CompletableFuture> timedFutures = new LinkedList<>();
             CompletableFuture failAfter = SALT_SERVICE.failAfter(timeout);
-            res.forEach((minionId, future) -> {
-                CompletableFuture<Void> timedFuture = future.acceptEitherAsync(failAfter, (cmdResult) -> {
+             res.forEach((minionId, future) -> {
+                future.acceptEitherAsync(failAfter, (cmdResult) -> {
                     sendMessage(session, new MinionMatchEventDto(minionId));
                 }).exceptionally((err) -> {
-                    // TODO check if really timeout
-                    sendMessage(session, new ActionTimedOutEventDto(minionId, "preview"));
-                    LOG.info("timed out for minion " + minionId + " e=" + err);
+                    if (err.getCause() instanceof TimeoutException) {
+                        sendMessage(session, new ActionTimedOutEventDto(minionId, "preview"));
+                        LOG.debug("Timed out waiting response from minion " + minionId);
+                    } else {
+                        LOG.error("Error waiting for minion " + minionId, err);
+                    }
                     return null;
                 }).whenComplete((r, e) -> {
-                    LOG.info("done for minion " + minionId + " e=" + e);
                     future.cancel(true);
                 });
-                timedFutures.add(timedFuture);
             });
-
-//                    .setTimeout(timeout)
-//                    .onInit((jid, minions) -> {
-//                        try {
-//                            List<String> allMinions = new ArrayList<>(minions);
-//                            allMinions.retainAll(allVisibleMinions);
-//                            session.getBasicRemote().sendText(Json.GSON.toJson(new AsyncJobStartEventDto("preview", jid, allMinions)));
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    })
-//                    .onEvent((e) -> {
-//                        if (!allVisibleMinions.contains(e.getMinionId())) {
-//                            return;
-//                        }
-//                        try {
-//                            session.getBasicRemote().sendText(Json.GSON.toJson(new MinionMatchEventDto(e.getMinionId())));
-//                        } catch (IOException e1) {
-//                            e1.printStackTrace();
-//                        }
-//                    })
-//                    .onComplete((e) -> {
-//                        try {
-//                            session.getBasicRemote().sendText(Json.GSON.toJson(new ActionDoneEventDto("preview")));
-//                        } catch (IOException ex) {
-//                            ex.printStackTrace();
-//                        }
-//                    })
-//                    .onTimeout(() -> {
-//                        try {
-//                            session.getBasicRemote().sendText(Json.GSON.toJson(new ActionTimedOutEventDto("preview")));
-//                        } catch (IOException ex) {
-//                            ex.printStackTrace();
-//                        }
-//                    });
         } else {
-
-
             try {
-                Map<String, CompletableFuture<String>> res = SALT_SERVICE.completableRemoteCommandAsync(new Glob(msg.getTarget()), msg.getCommand()/*, 20*/);
+                Map<String, CompletableFuture<String>> res = SALT_SERVICE
+                        .completableRemoteCommandAsync(new Glob(msg.getTarget()), msg.getCommand());
 
-                sendMessage(session, new AsyncJobStartEventDto("run", "234",
+                sendMessage(session, new AsyncJobStartEventDto("run",
                         res.keySet().stream().collect(Collectors.toList())));
 
-                List<CompletableFuture> timedFutures = new LinkedList<>();
                 CompletableFuture failAfter = SALT_SERVICE.failAfter(timeout);
                 res.forEach((minionId, future) -> {
-                    CompletableFuture<Void> timedFuture = future.acceptEitherAsync(failAfter, (cmdResult) -> {
+                    future.acceptEitherAsync(failAfter, (cmdResult) -> {
                         sendMessage(session, new MinionCmdRunResult(minionId, cmdResult));
                     }).exceptionally((err) -> {
-                        // TODO check if really timeout
-                        sendMessage(session, new ActionTimedOutEventDto(minionId, "run"));
-                        LOG.info("timed out for minion " + minionId + " e=" + err);
+                        if (err.getCause() instanceof TimeoutException) {
+                            sendMessage(session, new ActionTimedOutEventDto(minionId, "run"));
+                            LOG.debug("Timed out waiting response from minion '" + minionId + "'");
+                        } else {
+                            LOG.error("Error waiting for minion " + minionId, err);
+                        }
                         return null;
                     }).whenComplete((r, e) -> {
-                        LOG.info("done for minion " + minionId + " e=" + e);
+                        // completed normally or timed out
                         future.cancel(true);
                     });
-                    timedFutures.add(timedFuture);
                 });
 
-                // TODO is this really needed ?
-                CompletableFuture.allOf(timedFutures.toArray(new CompletableFuture[timedFutures.size()]))
-                        .handleAsync((r, err) -> {
-                            LOG.info("all done " + r + " " + err);
-                            sendMessage(session, new ActionDoneEventDto("run"));
-                            return r;
-                        });
-
             } catch (SaltException e) {
-                LOG.error("", e);
+                LOG.error("Error executing Salt async remote command", e);
             }
         }
     }
 
-    private void sendMessage(Session session, RemoteSaltCommandEventDto dto) {
-        LOG.info("send to websocket " + dto.getMinion());
+    /**
+     * Must be synchronized. Sending messages concurrently from separate threads
+     * will result in IllegalStateException.
+     */
+    private synchronized void sendMessage(Session session, RemoteSaltCommandEventDto dto) {
         try {
             session.getBasicRemote().sendText(Json.GSON.toJson(dto));
         } catch (IOException e) {

@@ -68,7 +68,7 @@ class MinionResultView extends React.Component {
            })()}
         </div>
         {
-          this.state.open && isRunResult != null ?
+          this.state.open && isRunResult ?
             <div className="panel-body">
                <pre id={id + '-results'}>{result}</pre>
             </div>
@@ -79,15 +79,17 @@ class MinionResultView extends React.Component {
   }
 }
 
-function isPreviewDone(previewed, minionsMap) {
-  const r = !previewed && Array.from(minionsMap, (e) => e[1]).every((v) => v == "matched" || v == "timedOut");
-  console.log("p=" + previewed + " m=" + Array.from(minionsMap, (e) => e[1]) + " r=" + r);
-  return r;
+function isPreviewDone(minionsMap) {
+  return Array.from(minionsMap, (e) => e[1]).every((v) => v == "matched" || v == "timedOut");
+}
+
+function isRunDone(minionsMap) {
+  return Array.from(minionsMap, (e) => e[1]).every((v) => (v != "matched" && v !="pending") || v == "timedOut");
 }
 
 function isTimedOutDone(minionsMap) {
- const results = Array.from(minionsMap, (e) => e[1]);
- return results.every((v) => v != "pending") && results.some((v) => v == "timedOut");
+  const results = Array.from(minionsMap, (e) => e[1]);
+  return results.every((v) => v != "pending") && results.some((v) => v == "timedOut");
 }
 
 
@@ -95,15 +97,17 @@ class RemoteCommand extends React.Component {
 
   constructor() {
     super();
-    ["onPreview", "onRun", "commandChanged", "targetChanged", "commandResult", "previewAsync", "runAsync"]
+    ["onPreview", "onRun", "commandChanged", "targetChanged", "commandResult"]
     .forEach(method => this[method] = this[method].bind(this));
+
     this.state = {
       command: "ls -lha",
       target: "*",
       result: {
         minions: new Map()
       },
-      previewed: false,
+      previewed: $.Deferred(),
+      ran: $.Deferred().resolve(),
       errors: []
     };
   }
@@ -119,8 +123,6 @@ class RemoteCommand extends React.Component {
         })
     }
 
-    //<AsyncButton id="preview" name={t("Preview")} action={this.onPreview} />
-    //<AsyncButton id="run" disabled={this.state.previewed ? "" : "disabled"} name={t("Run")} action={this.onRun} />
     return (
       <div>
           {errs}
@@ -139,8 +141,8 @@ class RemoteCommand extends React.Component {
                       <span className="input-group-addon">@</span>
                       <input id="target" className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged} />
                       <div className="input-group-btn">
-                        <button id="wspreview" className="btn btn-default" onClick={this.previewAsync}>Preview</button>
-                        <button id="wsrun" className="btn btn-default" disabled={this.state.previewed ? "" : "disabled"} onClick={this.runAsync}>Run</button>
+                        <AsyncButton id="preview" disabled={this.state.ran.state() == "resolved" ? "" : "disabled"} name={t("Preview")} action={this.onPreview} />
+                        <AsyncButton id="run" disabled={this.state.previewed.state() == "resolved" ? "" : "disabled"} name={t("Run")} action={this.onRun} />
                       </div>
                   </div>
                 </div>
@@ -157,7 +159,7 @@ class RemoteCommand extends React.Component {
             <div className="panel-body" style={this.state.result.minions.size ? style : undefined}>
               {(() => {
                 if (!this.state.result.minions.size) {
-                   return(<span>{!this.state.previewed ? t("No target systems previewed") : t("No target systems have been found")}</span>)
+                   return(<span>{this.state.previewed.state() != "pending" ? t("No target systems previewed") : t("No target systems have been found")}</span>)
                 } else {
                   return(this.commandResult(this.state.result))
                 }
@@ -168,26 +170,34 @@ class RemoteCommand extends React.Component {
     );
   }
 
-  previewAsync() {
+  onPreview() {
+    const deferred = $.Deferred();
     this.state.websocket.send(JSON.stringify({
                               preview: true,
                               target: this.state.target
                             }));
     this.setState({
         errors: [],
-        previewed: false,
+        previewed: deferred,
+        result: {
+          minions: new Map()
+        },
     });
+    return deferred;
   }
 
-  runAsync() {
-    this.state.websocket.send(JSON.stringify({
-                              preview: false,
-                              target: this.state.target,
-                              command: this.state.command
-                            }));
-    this.setState({
-        errors: []
-    });
+  onRun() {
+      const deferred = $.Deferred();
+      this.state.websocket.send(JSON.stringify({
+                                preview: false,
+                                target: this.state.target,
+                                command: this.state.command
+                              }));
+      this.setState({
+          errors: [],
+          ran: deferred
+      });
+      return deferred;
   }
 
   componentDidMount() {
@@ -199,13 +209,11 @@ class RemoteCommand extends React.Component {
     ws.onerror = (e) => {
         this.setState({
             errors: [t("Error connecting to server.")]
-            console.log(e);
         });
     };
     ws.onclose = (e) => {
         this.setState({
             errors: [t("Connection to server closed")]
-            console.log(e);
         });
     };
     ws.onmessage = (e) => {
@@ -218,47 +226,55 @@ class RemoteCommand extends React.Component {
                     minions: event.minions.reduce((map, minionId) => map.set(minionId, "pending") , new Map())
                 }
             });
+            break;
         case "match":
             var minionsMap = this.state.result.minions;
             minionsMap.set(event.minion, "matched");
-            const previewDone = isPreviewDone(this.state.previewed, minionsMap);
+            if (isPreviewDone(minionsMap)) {
+                this.state.previewed.resolve();
+            }
             this.setState({
-                previewed: previewDone,
                 result: {
                     minions: minionsMap
                 }
             });
+            break;
         case "runResult":
             var minionsMap = this.state.result.minions;
             minionsMap.set(event.minion, event.out);
+            if (isRunDone(minionsMap)) {
+                this.state.ran.resolve();
+            }
             this.setState({
                 result: {
                     minions: minionsMap
                 }
             });
+            break;
         case "timedOut":
             var minionsMap = this.state.result.minions;
             minionsMap.set(event.minion, "timedOut");
             const timedOutDone = isTimedOutDone(minionsMap);
-            const previewDone = isPreviewDone(this.state.previewed, minionsMap);
             this.setState({
                 errors: timedOutDone ? [t("Not all minions responded.")] : [],
-                previewed: previewDone,
+                previewed: this.state.previewed.state() == "pending" ? this.state.previewed.resolve() : this.state.previewed,
+                ran: this.state.ran.state() == "pending" ? this.state.ran.resolve() : this.state.ran,
                 result: {
                     minions: minionsMap
                 }
             });
+            break;
       }
     };
     this.setState({
-        websocket: ws
+        websocket: ws,
     });
   }
 
   targetChanged(event) {
     this.setState({
       target: event.target.value,
-      previewed: false
+      previewed: $.Deferred()
     });
   }
 
