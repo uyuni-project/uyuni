@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.MinionServerUtils;
@@ -29,6 +30,7 @@ import com.suse.manager.webui.utils.salt.custom.Udevdb;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.RunnerAsyncResult;
 import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.WheelResult;
 import com.suse.salt.netapi.calls.modules.Cmd;
@@ -44,19 +46,25 @@ import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.config.ClientConfig;
+import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.event.EventListener;
 import com.suse.salt.netapi.event.EventStream;
+import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 
+import javax.websocket.CloseReason;
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -69,6 +77,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -108,11 +121,24 @@ public class SaltService {
                                 .filter(m -> MinionServerUtils.isSshPushMinion(m))
                                 .isPresent();
 
+    public SaltReactor reactor = null;
+
+    private final ScheduledExecutorService scheduledExecutorService =
+            Executors.newScheduledThreadPool(5);
+
     // Prevent instantiation
     SaltService() {
         // Set unlimited timeout
         SALT_CLIENT.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
         saltSSHService = new SaltSSHService(SALT_CLIENT);
+    }
+
+    public SaltReactor getReactor() {
+        return reactor;
+    }
+
+    public void setReactor(SaltReactor reactor) {
+        this.reactor = reactor;
     }
 
     /**
@@ -358,6 +384,80 @@ public class SaltService {
         }
     }
 
+
+    public static class JobReturnEventListener<R> implements EventListener {
+
+        private String jobId;
+        private TypeToken<R> resultType;
+        private Map<String, CompletableFuture<R>> minionFutures = new HashedMap();
+
+        public JobReturnEventListener(String jobId, TypeToken<R> resultType) {
+            this.jobId = jobId;
+            this.resultType = resultType;
+        }
+
+        @Override
+        public void notify(Event event) {
+            JobReturnEvent.parse(event)
+                    .filter(jre -> jre.getJobId().equals(jobId))
+                    .ifPresent(jre ->  {
+                        CompletableFuture<R> future = minionFutures.get(jre.getMinionId());
+                        if (future != null) {
+                            future.complete(jre.getData().getResult(resultType));
+                        } else if (jre.getData().getFun().equals("jobs.lookup_jid")) {
+                            future.complete(jre.getData().getResult(resultType));
+                        }
+                    });
+        }
+
+        @Override
+        public void eventStreamClosed(CloseReason closeReason) {
+            LOG.info("Closing event stream for jid=" + jobId);
+        }
+
+        public void addFutures(Map<String, CompletableFuture<R>> futures) {
+            minionFutures.putAll(futures);
+        }
+    }
+
+    private <R> Map<String, CompletableFuture<R>> completableAsyncCall(
+            LocalCall<R> call, Target<?> target, EventStream events) throws SaltException {
+        LocalAsyncResult<R> lar = call.callAsync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+
+        JobReturnEventListener jobEventListener = new JobReturnEventListener(lar.getJid(), lar.getType());
+        Map<String, CompletableFuture<R>> futures = lar.getMinions().stream().collect(Collectors.toMap(
+                mid -> mid,
+                mid -> new CompletableFuture<>()
+        ));
+        jobEventListener.addFutures(futures);
+
+        CompletableFuture.allOf(futures.values().toArray(new CompletableFuture[futures.size()])).handleAsync((r, err) -> {
+            LOG.info("remove jobEventListener");
+            events.removeEventListener(jobEventListener);
+            return r;
+        });
+
+        events.addEventListener(jobEventListener);
+
+        RunnerAsyncResult<Map<String, R>> mapRunnerAsyncResult =
+                Jobs.lookupJid(lar).callAsync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+        return futures;
+    }
+
+    public Map<String, CompletableFuture<String>> completableRemoteCommandAsync(Target<?> target, String cmd) throws SaltException {
+        return completableAsyncCall(Cmd.run(cmd), target, reactor.getEventStream());
+    }
+
+    public <T> CompletableFuture<T> failAfter(int seconds) {
+        final CompletableFuture<T> promise = new CompletableFuture<>();
+        scheduledExecutorService.schedule(() -> {
+            final TimeoutException ex = new TimeoutException("Timeout after " + seconds);
+            return promise.completeExceptionally(ex);
+        }, seconds, TimeUnit.SECONDS);
+
+        return promise;
+    }
+
     /**
      * Returns the currently running jobs on the target
      *
@@ -404,6 +504,14 @@ public class SaltService {
             return callSync(Match.glob(target), new Glob(target));
         }
         catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Map<String, CompletableFuture<Boolean>> matchAsync(String target) {
+        try {
+            return completableAsyncCall(Match.glob(target), new Glob(target), reactor.getEventStream());
+        } catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }

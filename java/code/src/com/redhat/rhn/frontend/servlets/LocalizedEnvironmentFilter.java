@@ -49,6 +49,8 @@ public class LocalizedEnvironmentFilter implements Filter {
     private static final Logger LOG = Logger
             .getLogger(LocalizedEnvironmentFilter.class);
 
+
+    public static ThreadLocal<Long> USERID = new ThreadLocal<>();
     /**
      * {@inheritDoc}
      */
@@ -79,6 +81,9 @@ public class LocalizedEnvironmentFilter implements Filter {
                 .getCurrentUser();
         setTimeZone(current, user, request);
         resolveLocale(current, user, request);
+        if (user != null) {
+            USERID.set(user.getId());
+        }
     }
 
     private void setTimeZone(Context ctx, User user, HttpServletRequest request) {
