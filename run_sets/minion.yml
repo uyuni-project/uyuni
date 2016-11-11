@@ -9,4 +9,5 @@
 - features/salt_action_pickedup.feature
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
+- features/salt_ssh.feature
 - features/spacewalk-debug.feature
