@@ -432,15 +432,14 @@ public class SaltService {
         jobEventListener.addFutures(futures);
 
         CompletableFuture.allOf(futures.values().toArray(new CompletableFuture[futures.size()])).handleAsync((r, err) -> {
-            LOG.info("remove jobEventListener");
             events.removeEventListener(jobEventListener);
             return r;
         });
 
         events.addEventListener(jobEventListener);
 
-        RunnerAsyncResult<Map<String, R>> mapRunnerAsyncResult =
-                Jobs.lookupJid(lar).callAsync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+//        RunnerAsyncResult<Map<String, R>> mapRunnerAsyncResult =
+        Jobs.lookupJid(lar).callAsync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
         return futures;
     }
 
