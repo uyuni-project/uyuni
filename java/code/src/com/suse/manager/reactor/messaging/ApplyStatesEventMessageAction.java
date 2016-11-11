@@ -25,6 +25,8 @@ import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
+import com.suse.manager.webui.utils.MinionServerUtils;
+
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -65,6 +67,12 @@ public class ApplyStatesEventMessageAction extends AbstractDatabaseAction {
                     new Date());
             MessageQueue.publish(new ActionScheduledEventMessage(action,
                     applyStatesEvent.isForcePackageListRefresh()));
+
+            // For Salt SSH: simply schedule package profile update (no job metadata)
+            if (MinionServerUtils.isSshPushMinion(server) &&
+                    applyStatesEvent.isForcePackageListRefresh()) {
+                ActionManager.schedulePackageRefresh(server.getOrg(), server);
+            }
         }
     }
 }
