@@ -137,8 +137,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     private static final Logger LOG = Logger.getLogger(JobReturnEventMessageAction.class);
 
     /* List of Salt modules that could possibly change installed packages */
-    private final List<String> packageChangingModules = Arrays.asList("pkg.install",
-            "pkg.remove", "pkg_installed", "pkg_latest", "pkg_removed");
+    private static final List<String> PACKAGE_CHANGING_MODULES = Arrays.asList(
+            "pkg.install", "pkg.remove", "pkg_installed", "pkg_latest", "pkg_removed");
 
     @Override
     public void doExecute(EventMessage msg) {
@@ -153,6 +153,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     jobReturnEvent.getMinionId() + "/" + jobReturnEvent.getJobId() +
                     " (" + function + ")");
         }
+
+        // Prepare the job result as a json element
+        Optional<JsonElement> jobResult = eventToJson(jobReturnEvent);
 
         // Adjust action status if the job was scheduled by us
         Optional<Long> actionId = getActionId(jobReturnEvent);
@@ -191,7 +194,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                     jobReturnEvent.getData().getRetcode(),
                                     jobReturnEvent.getData().isSuccess(),
                                     jobReturnEvent.getJobId(),
-                                    jobReturnEvent.getData().getResult(JsonElement.class),
+                                    jobResult.get(),
                                     jobReturnEvent.getData().getFun());
                             ActionFactory.save(sa);
                         });
@@ -216,7 +219,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         // Schedule a package list refresh if either requested or detected as necessary
         if (
             forcePackageListRefresh(jobReturnEvent) ||
-            shouldRefreshPackageList(jobReturnEvent)
+            shouldRefreshPackageList(jobReturnEvent.getData().getFun(), jobResult)
         ) {
             MinionServerFactory
                     .findByMinionId(jobReturnEvent.getMinionId())
@@ -434,26 +437,28 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     }
 
     /**
-     * Figure out if the list of packages has changed based on a {@link JobReturnEvent}.
-     * This information is used to decide if we should trigger a package list refresh.
+     * Figure out if the list of packages has changed based on the result of a Salt call
+     * given as JsonElement. This information is used to decide if we should trigger a
+     * package list refresh.
      *
-     * @param event the job return event
+     * @param function the Salt function that was used
+     * @param callResult the result of the call
      * @return true if installed packages have changed or unparsable json, otherwise false
      */
-    private boolean shouldRefreshPackageList(JobReturnEvent event) {
-        String function = event.getData().getFun();
+    public static boolean shouldRefreshPackageList(String function,
+            Optional<JsonElement> callResult) {
         switch (function) {
             case "pkg.upgrade": return true;
             case "pkg.install": return true;
             case "pkg.remove": return true;
             case "state.apply":
                 Predicate<StateApplyResult<Map<String, Object>>> filterCondition = result ->
-                    packageChangingModules.contains(
+                    PACKAGE_CHANGING_MODULES.contains(
                         result.getName()) && !result.getChanges().isEmpty();
 
                 Optional<Map<String, StateApplyResult<Map<String, Object>>>>
                 resultsOptional = Opt.fold(
-                    eventToJson(event),
+                    callResult,
                     Optional::empty,
                     rawResult -> jsonEventToStateApplyResults(rawResult));
 

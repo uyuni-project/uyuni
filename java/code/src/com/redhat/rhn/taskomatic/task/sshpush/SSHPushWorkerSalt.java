@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.dto.SystemPendingEventDto;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
@@ -53,6 +54,8 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private Logger log;
     private SSHPushSystem system;
     private TaskQueue parentQueue;
+
+    private boolean packageListRefreshNeeded = false;
 
     /**
      * Constructor.
@@ -117,6 +120,12 @@ public class SSHPushWorkerSalt implements QueueWorker {
                     }
                 }
 
+                // Perform a package profile update in the end if needed
+                if (packageListRefreshNeeded) {
+                    Action pkgList = ActionManager.schedulePackageRefresh(m.getOrg(), m);
+                    executeAction(pkgList, m);
+                }
+
                 // Perform a check-in if there is no pending actions
                 if (actionsExecuted == 0) {
                     performCheckin(m);
@@ -169,8 +178,16 @@ public class SSHPushWorkerSalt implements QueueWorker {
                     if (log.isTraceEnabled()) {
                         log.trace("Salt call result: " + r);
                     }
+                    String function = (String) call.getPayload().get("fun");
                     JobReturnEventMessageAction.updateServerAction(sa, 0L, true, "n/a", r,
-                            (String) call.getPayload().get("fun"));
+                            function);
+
+                    // Perform a package profile update in the end if necessary
+                    if (JobReturnEventMessageAction
+                            .shouldRefreshPackageList(function, result)) {
+                        log.info("Scheduling a package profile update");
+                        this.packageListRefreshNeeded = true;
+                    }
 
                     // Perform a "check-in" after every executed action
                     minion.updateServerInfo();
