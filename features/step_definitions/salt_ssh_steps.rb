@@ -1,11 +1,11 @@
 # Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-SALT_PACKAGES="salt salt-minion"
+SALT_PACKAGES = "salt salt-minion".freeze
 
 Given(/^no Salt packages are installed on remote minion host$/) do
-  sshcmd("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", host: "#{ENV['MINION']}", user: "root", ignore_err: true)
-  sshcmd("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", host: "#{ENV['MINION']}", user: "root", ignore_err: true)
+  sshcmd("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", host: ENV['MINION'].to_s, user: "root", ignore_err: true)
+  sshcmd("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", host: ENV['MINION'].to_s, user: "root", ignore_err: true)
 end
 
 Given(/^remote minion host is not registered in Spacewalk$/) do
@@ -16,8 +16,8 @@ Given(/^remote minion host is not registered in Spacewalk$/) do
   refute_includes(@rpc.listSystems.map { |s| s['id'] }, ENV['MINION'])
 end
 
-Then(/^I enter remote minion hostname as "(.*?)"$/) do |arg1|
-  step %(I enter "#{ENV['MINION']}" as "hostname")
+Then(/^I enter remote minion hostname as "(.*?)"$/) do |hostname|
+  step %(I enter "#{ENV['MINION']}" as "#{hostname}")
 end
 
 Then(/^I should see remote minion hostname as link$/) do
