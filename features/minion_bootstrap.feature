@@ -75,7 +75,6 @@ Feature: register a salt-minion via bootstrap
      And I wait for "150" seconds
      Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
 
-  # testing command line
   Scenario: verify minion bootstrapped with activation key, packages
      Given I am authorized
      When I follow "Salt"
