@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        SQL schema for Spacewalk server
 
-Version:        2.6.13
+Version:        2.6.15
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -87,6 +87,12 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Nov 10 2016 Gennadii Altukhov <galt@redhat.com> 2.6.15-1
+- add Fedora 24 key into schema upgrade
+
+* Tue Nov 08 2016 Gennadii Altukhov <galt@redhat.com> 2.6.14-1
+- Added repo urls and gpg keys for Fedora 24
+
 * Mon Oct 24 2016 Jan Dobes 2.6.13-1
 - fixing ORA-00904: : invalid identifier
 

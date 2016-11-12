@@ -20,7 +20,7 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.11.73
+Version: 5.11.74
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -460,6 +460,9 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Fri Nov 11 2016 Jiri Dostal <jdostal@redhat.com> 5.11.74-1
+- [1260527] RHEL7 reboot loop
+
 * Thu Sep 29 2016 Jiri Dostal <jdostal@redhat.com> 5.11.73-1
 - Fix of verification of /etc/sysconfig/rhn/osad-auth.conf file
 
