@@ -2,34 +2,19 @@
 
 #### Run it
 
-1) Get sumaform ( https://github.com/moio/sumaform) **WARNING** Until my PR isn't merged upstream, take my branch , otherwise you can't use cucumber with sumaform
+1) Get sumaform ( https://github.com/moio/sumaform) and follow the installation doc.
 
+2) Use the libvirt-testing.-example and run it with terraform. https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example
 
-2) Use the libvirt-testing.-example and run it with terraform. ( see https://github.com/MalloZup/sumaform/blob/master/main.tf.libvirt-testing.example)
-
+2a) use a prefix for your machine, edit this in the main.tf
 
 3) Once you have all the machines, and terraform setup is finish ( 1 client, 1 minion(sle), 1 suma-server, 1 control-node)
    
    log into control-node : ``` ssh root@control-node.tf.local ```
    
- 
-4) before executing the rake comand(also running the cucumber-suite) export the ip-adress of machines.
+4) use the command run-testsuite for running the whole testsuite.
 
-   If you use the libvirt-testing.example, take this script then :
-   https://github.com/SUSE/spacewalk-testsuite-base/blob/slenkins/run.sh
-   
-   ```console
-   cd root/spacewalk-testsuite-base
-   bash run.sh
-   ```
-   run.sh is equivalent too:
-   ```
-   export MINION=minion12sp1.tf.local
-   export TESTHOST=suma3pg.tf.local
-   export CLIENT=clisles12sp1.tf.local
-   export BROWSER=phantomjs
-   rake
-   ```
+ If you want to run specific feature, just use the run.sh script, and use cucumber features/myfeature at the end.
    
    
 ### Analyze log:
@@ -37,33 +22,10 @@
  ``` scp root@control-node.tf.local:spacewalk-testsuite-base/output.html . ```
  
  ``` firefox output.html```
+  to use the testing.tf
  
  
- 
- 
-### Considerations:
-
- 
- Sumaform is a great tool for deploying suse-manager server.
- 
- We have to differenciate between deploy and testing environments :
- 
-**Deploy**
- 
- - if you want to deploy, 4 client against a server, and this client should be registered to the client, then you want to make something else, that's fine.
- 
-**Testing env.**
- 
- - in the testing environments, we don't register clients/minion against a server( this is done by the testsuite cucumber as part of a test)
- - addionaly , testing machines, has some extra packages that we use in the cucumber suite.
- 
- **Resuming**
- So if you want to do deployment, and check/reproduce something, than use the deployment file.
- 
- If you want to improve the tests-suite, or have the machines after a regression founded, then you have to use the testing.tf
- 
- 
-### Where live the source code that sumaform is using for cucumber : 
+### Where live the source code that sumaform is using for cucumber (this will be merged on master soon)
  
  https://github.com/SUSE/spacewalk-testsuite-base/tree/slenkins
  
