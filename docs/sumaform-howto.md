@@ -4,17 +4,9 @@
 
 1) Get sumaform ( https://github.com/moio/sumaform) and follow the installation doc.
 
-2) Use the libvirt-testing.-example and run it with terraform. https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example
+Follow the documentation here : 
 
-2a) use a prefix for your machine, edit this in the main.tf
-
-3) Once you have all the machines, and terraform setup is finish ( 1 client, 1 minion(sle), 1 suma-server, 1 control-node)
-   
-   log into control-node : ``` ssh root@control-node.tf.local ```
-   
-4) use the command run-testsuite for running the whole testsuite.
-
- If you want to run specific feature, just use the run.sh script, and use cucumber features/myfeature at the end.
+https://github.com/moio/sumaform/blob/master/README_ADVANCED.md#cucumber-testsuite
    
    
 ### Analyze log:
