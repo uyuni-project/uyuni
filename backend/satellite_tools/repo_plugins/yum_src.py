@@ -179,13 +179,14 @@ class ContentSource:
         # base_persistdir have to be set before pkgdir
         if hasattr(repo, 'base_persistdir'):
             repo.base_persistdir = CACHE_DIR
-        if (self.url.find("file://") < 0):
-            pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, '1', 'stage')
-            if not os.path.isdir(pkgdir):
-                fileutils.makedirs(pkgdir, user='wwwrun', group='www')
-        else:
-            pkgdir = self.url[7:]
+
+        pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, '1', 'stage')
+        if not os.path.isdir(pkgdir):
+            fileutils.makedirs(pkgdir, user='wwwrun', group='www')
         repo.pkgdir = pkgdir
+
+        if "file://" in self.url:
+            repo.copy_local = 1
 
         if self.proxy_url is not None:
             repo.proxy = self.proxy_url

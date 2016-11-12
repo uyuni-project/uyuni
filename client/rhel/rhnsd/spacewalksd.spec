@@ -5,7 +5,7 @@
 %define rhnsd		 spacewalksd
 #
 Name: spacewalksd
-Version: 5.0.22
+Version: 5.0.25
 Release: 1%{?dist}
 Summary: Spacewalk query daemon
 License: GPL-2.0
@@ -197,6 +197,16 @@ rm -fr $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Nov 11 2016 Jiri Dostal <jdostal@redhat.com> 5.0.25-1
+- [1260527] RHEL7 reboot loop
+
+* Wed Nov 09 2016 Gennadii Altukhov <galt@redhat.com> 5.0.24-1
+- Revert Project-Id-Version for translations
+
+* Tue Nov 08 2016 Gennadii Altukhov <galt@redhat.com> 5.0.23-1
+- Regenerating .po and .pot files for rhnsd.
+- Updating .po translations from Zanata
+
 * Thu Oct 27 2016 Jan Dobes 5.0.22-1
 - 1306994 - better check if file is opened
 

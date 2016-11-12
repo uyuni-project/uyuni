@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.6.4
+Version: 2.6.7
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -496,6 +496,16 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Fri Nov 11 2016 Jiri Dostal <jdostal@redhat.com> 2.6.7-1
+- [1260527] RHEL7 reboot loop
+
+* Wed Nov 09 2016 Gennadii Altukhov <galt@redhat.com> 2.6.6-1
+- Revert Project-Id-Version for translations
+
+* Tue Nov 08 2016 Gennadii Altukhov <galt@redhat.com> 2.6.5-1
+- Regenerating .po and .pot files for rhn-client-tools.
+- Updating .po translations from Zanata
+
 * Tue Oct 25 2016 Gennadii Altukhov <galt@redhat.com> 2.6.4-1
 - 1320468 - add newline before hostname in LoginPage label
 

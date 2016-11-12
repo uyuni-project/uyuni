@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.6.15
+Version:	2.6.16
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -121,6 +121,9 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Tue Nov 08 2016 Gennadii Altukhov <galt@redhat.com> 2.6.16-1
+- Added repo urls and gpg keys for Fedora 24
+
 * Fri Oct 21 2016 Gennadii Altukhov <galt@redhat.com> 2.6.15-1
 - pylint fix: Too many nested blocks (6/5) (too-many-nested-blocks)
 
