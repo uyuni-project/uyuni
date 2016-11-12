@@ -20,13 +20,9 @@ You can run the Spacewalk Testsuite basically with two options:
 * static setup 
 * with SLEnkins framework 
 
-### Run Spacewalk Testsuite with Sumaform  [Official one]
+### Run Spacewalk Testsuite with Sumaform 
+
 [Sumaform Cucumber testing howto](docs/sumaform-howto.md)
-
-### Run Spacewalk Testsuite within SLEnkins Testing Framework [Backup-solution]
-
-[SLEnkins documentation](docs/SLEnkins-howto.md)
-
 
 ### Static setup
 * The SUSE Manager official testsuite applicance has all the gems pre-installed as rpms. Alternatively you can use [rbenv](http://rbenv.org/) (packages available [here](https://software.opensuse.org/download/package?project=devel:languages:ruby:extensions&package=rbenv))
