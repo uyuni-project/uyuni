@@ -19,18 +19,18 @@ import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.VirtualManager;
+
 import com.suse.manager.gatherer.JSONHost;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -107,29 +107,8 @@ public class VirtualHostManagerProcessor {
         }
 
         VirtualInstanceType virtType = extractVirtualInstanceType(jsonHost.getType());
-        updateHostVirtualInstance(server, virtType);
-        updateGuestsVirtualInstances(server, virtType, jsonHost.getVms());
-    }
-
-    private void updateHostVirtualInstance(Server server, VirtualInstanceType type) {
-        VirtualInstance serverVirtInstance = VirtualInstanceFactory.getInstance()
-                .lookupHostVirtInstanceByHostId(server.getId());
-
-        if (serverVirtInstance == null) {
-            serverVirtInstance = new VirtualInstance();
-            serverVirtInstance.setHostSystem(server);
-            serverVirtInstance.setConfirmed(1L);
-
-            serverVirtInstance.setState(
-                    VirtualInstanceFactory.getInstance().getUnknownState());
-            serverVirtInstance.setType(type);
-
-            VirtualInstanceFactory.getInstance().saveVirtualInstance(serverVirtInstance);
-        }
-        else if (serverVirtInstance.getConfirmed() != 1L) {
-            serverVirtInstance.setConfirmed(1L);
-            VirtualInstanceFactory.getInstance().saveVirtualInstance(serverVirtInstance);
-        }
+        VirtualManager.updateHostVirtualInstance(server, virtType);
+        VirtualManager.updateGuestsVirtualInstances(server, virtType, jsonHost.getVms());
     }
 
     /**
@@ -148,78 +127,6 @@ public class VirtualHostManagerProcessor {
                     "Defaulting to '%s'", candidate, type));
         }
         return type;
-    }
-
-    /**
-     * Goes through all the vms(guests), creates/updates VirtualInstance entries
-     * (Server - guests mapping)
-     * @param server to be processed
-     * @param type - virtualization type to be set to the guests
-     * @param vms - guests to be mapped to this server
-     */
-    private void updateGuestsVirtualInstances(Server server, VirtualInstanceType type,
-            Map<String, String> vms) {
-        vms.entrySet().stream().forEach(
-                vmEntry -> {
-                    String name = vmEntry.getKey();
-                    String guid = vmEntry.getValue().replaceAll("-", "");
-                    List<VirtualInstance> virtualInstances = VirtualInstanceFactory
-                        .getInstance().lookupVirtualInstanceByUuid(guid);
-
-                    if (virtualInstances.isEmpty()) {
-                        addGuestVirtualInstance(guid, name, type, server, null);
-                    }
-                    else {
-                        virtualInstances.stream().forEach(virtualInstance ->
-                            updateGuestVirtualInstance(virtualInstance, name, server));
-                    }
-                });
-    }
-
-    /**
-     * Creates a new (guest) VirtualInstance for given VM GUID.
-     * Sets given host as a host for this VirtualInstance.
-     *
-     * @param vmGuid - guid of the new VirtualInstance
-     * @param name - name of the guest
-     * @param type - virtualization type of the guest
-     * @param host - host to be set as host system for the new VirtualInstance
-     * @param guest - guest to be set as the guest system for the new VirtualInstance
-     */
-    private void addGuestVirtualInstance(String vmGuid, String name,
-            VirtualInstanceType type, Server host, Server guest) {
-        VirtualInstance virtualInstance = new VirtualInstance();
-        virtualInstance.setUuid(vmGuid);
-        virtualInstance.setConfirmed(1L);
-        virtualInstance.setGuestSystem(guest);
-        virtualInstance.setState(VirtualInstanceFactory.getInstance().getUnknownState());
-        virtualInstance.setName(name);
-        virtualInstance.setType(type);
-
-        host.addGuest(virtualInstance); // will also set the hostSystem for virtualInstance
-    }
-
-    /**
-     * Update mapping of given guest VirtualInstance to given (host) Server.
-     * This method removes the old VirtualInstance and creates a new one.
-     *
-     * @param virtualInstance
-     * @param name
-     * @param server
-     */
-    private void updateGuestVirtualInstance(VirtualInstance virtualInstance,
-            String name, Server server) {
-        Server oldHost = virtualInstance.getHostSystem();
-        if (oldHost == null ||
-                !oldHost.getId().equals(server.getId()) ||
-                !name.equals(virtualInstance.getName()) ||
-                // we want all virtual guests in the 'unknown' state
-                !virtualInstance.getState().equals(
-                        VirtualInstanceFactory.getInstance().getUnknownState())) {
-            VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(virtualInstance);
-            addGuestVirtualInstance(virtualInstance.getUuid(), name,
-                    virtualInstance.getType(), server, virtualInstance.getGuestSystem());
-        }
     }
 
     /**
