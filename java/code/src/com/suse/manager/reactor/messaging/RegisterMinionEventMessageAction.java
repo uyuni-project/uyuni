@@ -147,10 +147,18 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 LOG.debug("Minion already registered, updating profile: " +
                         minionId + " [" + machineId + "]");
             }
-            if (!minionId.equals(registeredMinion.getName())) {
+
+            String oldMinionId = registeredMinion.getMinionId();
+            String oldName = registeredMinion.getName();
+
+            if (!minionId.equals(oldMinionId) || !minionId.equals(oldName)) {
                 registeredMinion.setName(minionId);
                 registeredMinion.setMinionId(minionId);
                 ServerFactory.save(registeredMinion);
+
+                if (!minionId.equals(oldMinionId)) {
+                    SALT_SERVICE.deleteKey(oldMinionId);
+                }
             }
             return;
         }
