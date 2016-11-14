@@ -60,7 +60,9 @@ public class MailHelper {
         mail.setSubject(enrichedSubject.toString());
         mail.setBody(messageBody);
 
-        LOG.info("Sending mail message:\n" + mail.toString());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Sending mail message:\n" + mail.toString());
+        }
 
         mail.send();
     }
