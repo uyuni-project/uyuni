@@ -166,9 +166,8 @@ public class SaltReactor implements EventListener {
                     Thread.sleep(1000 * DELAY_TIME_SECONDS);
                     if (retries == 1) {
                         MailHelper.sendAdminEmail("Cannot connect to salt event bus",
-                                "salt-api daemon is not reachable by SUSE Manager." +
-                                        "Please check the status of such daemon and " +
-                                        "(re)-start it if needed.\n\n" +
+                                "salt-api daemon is not responding. Check the status of " +
+                                        "salt-api daemon and (re)-start it if needed\n\n" +
                                         "This is the only notification you will receive.");
                     }
                 }
