@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor;
 
+import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -130,7 +131,7 @@ public class SaltReactor implements EventListener {
                 " [" + closeReason.getCloseCode() + "]");
 
         if (!isStopped) {
-            LOG.warn("Reconnecting to event stream...");
+            LOG.warn("Reconnecting to the Salt event bus...");
             connectToEventStream();
         }
     }
@@ -145,14 +146,18 @@ public class SaltReactor implements EventListener {
         int retries = 0;
 
         while (!connected) {
-            LOG.warn("Trying to reconnect to event stream...");
             retries++;
             try {
                 eventStream = SALT_SERVICE.getEventStream();
                 eventStream.addEventListener(this);
                 connected = true;
-                LOG.warn("Successfully connected to event stream after " + (retries - 1) +
-                         " retries.");
+                if (retries > 1) {
+                    LOG.warn("Successfully connected to the Salt event bus after " +
+                            (retries - 1) + " retries.");
+                }
+                else {
+                    LOG.info("Successfully connected to the Salt event bus");
+                }
             }
             catch (SaltException e) {
                 try {
@@ -161,11 +166,13 @@ public class SaltReactor implements EventListener {
                     Thread.sleep(1000 * DELAY_TIME_SECONDS);
                     if (retries == 1) {
                         MailHelper.sendAdminEmail("Cannot connect to salt event bus",
-                                "salt-api daemon is not reachable by SUSE Manager." +
-                                        "Please check the status of such daemon and " +
-                                        "(re)-start it if needed.\n\n" +
+                                "salt-api daemon is not responding. Check the status of " +
+                                        "salt-api daemon and (re)-start it if needed\n\n" +
                                         "This is the only notification you will receive.");
                     }
+                }
+                catch (JavaMailException javaMailException) {
+                    LOG.error("Error sending email: " + javaMailException.getMessage());
                 }
                 catch (InterruptedException e1) {
                     LOG.error("Interrupted during sleep: " + e1);
