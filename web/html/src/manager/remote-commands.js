@@ -203,7 +203,6 @@ class RemoteCommand extends React.Component {
   componentDidMount() {
     var ws = new WebSocket("wss://" + window.location.hostname + "/rhn/websocket/minion/remote-commands", "protocolOne");
     ws.onopen = () => {
-      // Web Socket is connected, send data using send()
       console.log("Websocket opened");
     };
     ws.onerror = (e) => {
@@ -212,9 +211,7 @@ class RemoteCommand extends React.Component {
         });
     };
     ws.onclose = (e) => {
-        this.setState({
-            errors: [t("Connection to server closed")]
-        });
+       console.log("Websocket closed");
     };
     ws.onmessage = (e) => {
       console.log("Got websocket message: " + e.data);
