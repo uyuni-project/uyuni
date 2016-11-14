@@ -689,9 +689,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canRunConcurrently() {
         return true;
     }
-
 }
