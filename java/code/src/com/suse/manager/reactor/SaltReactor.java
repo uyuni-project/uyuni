@@ -71,7 +71,8 @@ public class SaltReactor implements EventListener {
     private volatile boolean isStopped = false;
 
     // Executor service for handling incoming events
-    private final ExecutorService executorService = Executors.newCachedThreadPool();
+    private final ExecutorService executorService =
+            Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     // Reconnecting time (in seconds) to Salt event bus
     private static final int DELAY_TIME_SECONDS = 5;
