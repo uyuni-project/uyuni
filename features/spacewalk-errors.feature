@@ -10,3 +10,5 @@ Feature: Check suse-managager logs for errors
     Then I check the tomcat logs for errors
     And I check the tomcat logs for NullPointerExceptions
 
+  Scenario: Check the rhn log on manager-server
+    Then I check the rhn logs for ERROR entries
