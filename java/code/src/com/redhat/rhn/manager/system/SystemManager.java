@@ -1777,18 +1777,20 @@ public class SystemManager extends BaseManager {
             }
         }
 
-        // Before we start looking to subscribe to a 'tools' channel for
-        // rhn-virtualization-host, check if the server already has a package by this
-        // name installed and leave it be if so.
-        InstalledPackage rhnVirtHost = PackageFactory.lookupByNameAndServer(
-                ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME, server);
-        if (rhnVirtHost != null) {
-            // System already has the package, we can stop here.
-            log.debug("System already has " +
-                    ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME + " installed.");
-            return result;
+        if (server.hasEntitlement(EntitlementManager.MANAGEMENT)) {
+            // Before we start looking to subscribe to a 'tools' channel for
+            // rhn-virtualization-host, check if the server already has a package by this
+            // name installed and leave it be if so.
+            InstalledPackage rhnVirtHost = PackageFactory.lookupByNameAndServer(
+                    ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME, server);
+            if (rhnVirtHost != null) {
+                // System already has the package, we can stop here.
+                log.debug("System already has " +
+                        ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME + " installed.");
+                return result;
+            }
+            scheduleVirtualizationHostPackageInstall(server, user, result);
         }
-        scheduleVirtualizationHostPackageInstall(server, user, result);
 
         return result;
     }
