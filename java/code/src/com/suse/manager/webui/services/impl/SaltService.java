@@ -26,6 +26,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.modules.Config;
+import com.suse.manager.webui.utils.salt.custom.RunnerJobReturnEvent;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
@@ -404,9 +405,22 @@ public class SaltService {
                         CompletableFuture<R> future = minionFutures.get(jre.getMinionId());
                         if (future != null) {
                             future.complete(jre.getData().getResult(resultType));
-                        } else if (jre.getData().getFun().equals("jobs.lookup_jid")) {
-                            future.complete(jre.getData().getResult(resultType));
                         }
+                    });
+            RunnerJobReturnEvent.parse(event)
+                    .filter(jre -> {
+                        Jobs.Info data = jre.getData().getResult(Jobs.Info.class);
+                        return data.getJid().equals(jobId);
+                    }).ifPresent(jre -> {
+                        Jobs.Info data = jre.getData().getResult(Jobs.Info.class);
+                        data.getMinions().forEach((minionId) -> {
+                            data.getResult(minionId, resultType).ifPresent(result -> {
+                                CompletableFuture<R> future = minionFutures.get(minionId);
+                                if (future != null) {
+                                    future.complete(result);
+                                }
+                            });
+                        });
                     });
         }
 
@@ -438,8 +452,10 @@ public class SaltService {
 
         events.addEventListener(jobEventListener);
 
-//        RunnerAsyncResult<Map<String, R>> mapRunnerAsyncResult =
-        Jobs.lookupJid(lar).callAsync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+        // in case the job return event came in before registering the listener
+        // query the salt master for the job result
+        Jobs.listJob(lar.getJid()).callAsync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+
         return futures;
     }
 
