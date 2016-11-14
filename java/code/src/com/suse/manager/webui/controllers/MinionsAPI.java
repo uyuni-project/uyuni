@@ -17,11 +17,14 @@ package com.suse.manager.webui.controllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+import com.suse.manager.webui.utils.gson.JSONSaltMinion;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.http.HttpStatus;
@@ -118,12 +121,14 @@ public class MinionsAPI {
      */
     public static String listKeys(Request request, Response response, User user) {
         Key.Fingerprints fingerprints = SALT_SERVICE.getFingerprints();
+        Map<String, Long> minionServers = MinionServerFactory.lookupVisibleToUser(user)
+                .collect(Collectors.toMap(MinionServer::getMinionId, MinionServer::getId));
+
         Map<String, Object> data = new TreeMap<>();
         data.put("isOrgAdmin", user.hasRole(RoleFactory.ORG_ADMIN));
-        data.put("fingerprints", fingerprints);
+        data.put("minions", JSONSaltMinion.fromFingerprints(fingerprints, minionServers));
         return json(response, data);
     }
-
 
     /**
      * API endpoint to accept minion keys
