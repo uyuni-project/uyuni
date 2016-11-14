@@ -1250,11 +1250,18 @@ public class ChannelFactory extends HibernateFactory {
      * @return vendor content source if it exists
      */
     public static ContentSource findVendorContentSourceByRepo(String repoUrl) {
-        String repoUrlPrefix = repoUrl.split("\\?")[0];
+        String [] parts = repoUrl.split("\\?");
+        String repoUrlPrefix = parts[0];
         Criteria criteria = getSession().createCriteria(ContentSource.class);
         criteria.add(Restrictions.isNull("org"));
         criteria.add(Restrictions.eq("type", ChannelFactory.CONTENT_SOURCE_TYPE_YUM));
-        criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix, MatchMode.START));
+        if (parts.length > 1) {
+            criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix + '?',
+                MatchMode.START));
+        }
+        else {
+            criteria.add(Restrictions.eq("sourceUrl", repoUrlPrefix));
+        }
         return (ContentSource) criteria.uniqueResult();
     }
 
