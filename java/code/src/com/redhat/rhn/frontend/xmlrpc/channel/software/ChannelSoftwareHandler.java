@@ -2458,9 +2458,45 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sslCliCert", "SSL Client cert description")
      * @xmlrpc.param #param_desc("string", "sslCliKey", "SSL Client key description")
      * @xmlrpc.returntype $ContentSourceSerializer
+     **/
+    public ContentSource createRepo(User loggedInUser, String label, String type,
+            String url, String sslCaCert, String sslCliCert, String sslCliKey) {
+
+        return createRepo(loggedInUser, label, type, url, sslCaCert, sslCliCert, sslCliKey,
+                false);
+    }
+
+    /**
+     * Creates a repository
+     * @param loggedInUser The current user
+     * @param label of the repo to be created
+     * @param type of the repo (YUM only for now)
+     * @param url of the repo
+     * @param sslCaCert CA certificate description
+     * @param sslCliCert Client certificate description
+     * @param sslCliKey Client key description
+     * @param isMetadataSigned Whether the repository has signed metadata
+     * @return new ContentSource
+     *
+     * @xmlrpc.doc Creates a repository
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "label", "repository label")
+     * @xmlrpc.param #param_desc("string", "type",
+     * "repository type (only YUM is supported)")
+     * @xmlrpc.param #param_desc("string", "url", "repository url")
+     * @xmlrpc.param #param_desc("string", "sslCaCert", "SSL CA cert description, or an
+     *     empty string")
+     * @xmlrpc.param #param_desc("string", "sslCliCert", "SSL Client cert description, or
+     *     an empty string")
+     * @xmlrpc.param #param_desc("string", "sslCliKey", "SSL Client key description, or an
+     *     empty string")
+     * @xmlrpc.param #param_desc("boolean", "hasSignedMetadata", "true if the repository
+     *     has signed metadata, false otherwise")
+     * @xmlrpc.returntype $ContentSourceSerializer
     **/
      public ContentSource createRepo(User loggedInUser, String label, String type,
-             String url, String sslCaCert, String sslCliCert, String sslCliKey) {
+             String url, String sslCaCert, String sslCliCert, String sslCliKey,
+             boolean isMetadataSigned) {
 
          if (StringUtils.isEmpty(label)) {
              throw new InvalidParameterException("label might not be empty");
@@ -2475,6 +2511,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
          repoCmd.setLabel(label);
          repoCmd.setUrl(url);
+         repoCmd.setMetadataSigned(isMetadataSigned);
 
          // check SSL-certificates parameters
          if (!StringUtils.isEmpty(sslCaCert)) {
@@ -2807,9 +2844,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @param id ID of repo whose details are sought.
      * @return the repo requested.
      *
-     * @xmlrpc.doc Returns details of the given repo
+     * @xmlrpc.doc Returns details of the given repository
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "repoLabel", "repo to query")
+     * @xmlrpc.param #param_desc("int", "id", "repository id")
      * @xmlrpc.returntype
      *     $ContentSourceSerializer
      */
