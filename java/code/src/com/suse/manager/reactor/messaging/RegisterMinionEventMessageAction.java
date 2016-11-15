@@ -65,6 +65,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -319,27 +320,19 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             }
 
             // Apply initial states asynchronously
-            if (isSaltSSH) {
-                MessageQueue.publish(new ApplyStatesEventMessage(
-                        server.getId(),
-                        true,
-                        ApplyStatesEventMessage.CERTIFICATE,
-                        ApplyStatesEventMessage.CHANNELS,
-                        ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS,
-                        ApplyStatesEventMessage.PACKAGES
-                ));
+            List<String> statesToApply = new ArrayList<>();
+            statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
+            statesToApply.add(ApplyStatesEventMessage.CHANNELS);
+            statesToApply.add(ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS);
+            statesToApply.add(ApplyStatesEventMessage.PACKAGES);
+            if (!isSaltSSH) {
+                statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
             }
-            else {
-                MessageQueue.publish(new ApplyStatesEventMessage(
-                        server.getId(),
-                        true,
-                        ApplyStatesEventMessage.CERTIFICATE,
-                        ApplyStatesEventMessage.CHANNELS,
-                        ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS,
-                        ApplyStatesEventMessage.PACKAGES,
-                        ApplyStatesEventMessage.SALT_MINION_SERVICE
-                ));
-            }
+            MessageQueue.publish(new ApplyStatesEventMessage(
+                    server.getId(),
+                    true,
+                    statesToApply
+            ));
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
