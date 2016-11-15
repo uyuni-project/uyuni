@@ -299,6 +299,24 @@ DATA = {
                           'PDID' : {'NCC' : 0 , 'SCC' : 1346}, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
                         },
-
+    'SLE-12-SP2-aarch64' : {
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1375}, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+                        },
+    'SLE-12-SP2-ppc64le' : {
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1355}, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+                        },
+    'SLE-12-SP2-s390x' : {
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1356}, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+                        },
+    'SLE-12-SP2-x86_64' : {
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1357}, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+                        },
+    'SLES4SAP-12-SP2-x86_64' : {
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1414}, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+                        },
 }
-
