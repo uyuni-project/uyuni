@@ -32,3 +32,7 @@ Given(/^the salt-master can reach "([^"]*)"$/) do |minion|
     fail "Master can not communicate with the minion: #{out}"
   end
 end
+
+And(/^I remove pkg "([^"]*)" on minion$/) do |pkg|
+  $minion.run("zypper -n rm #{pkg}")
+end
