@@ -429,13 +429,14 @@ public enum SaltServerActionService {
             List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
 
+        // salt-ssh minions in the 'true' partition
+        // regular minions in the 'false' partition
+        Map<Boolean, List<MinionServer>> partitionBySSHPush = minions.stream()
+                .collect(Collectors.partitioningBy(MinionServerUtils::isSshPushMinion));
+
         // Separate SSH push minions from regular minions to apply different states
-        List<MinionServer> sshPushMinions = minions.stream()
-                .filter(m -> MinionServerUtils.isSshPushMinion(m))
-                .collect(Collectors.toList());
-        List<MinionServer> regularMinions = minions.stream()
-                .filter(m -> !MinionServerUtils.isSshPushMinion(m))
-                .collect(Collectors.toList());
+        List<MinionServer> sshPushMinions = partitionBySSHPush.get(true);
+        List<MinionServer> regularMinions = partitionBySSHPush.get(false);
 
         if (!sshPushMinions.isEmpty()) {
             ret.put(State.apply(Arrays.asList(
