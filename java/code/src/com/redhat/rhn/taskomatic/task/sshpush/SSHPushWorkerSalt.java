@@ -93,7 +93,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                         .systemPendingEvents(m.getId(), null);
                 Collections.reverse(pendingEvents);
                 log.debug("Number of pending actions: " + pendingEvents.size());
-                int actionsExecuted = 0;
+                boolean checkinNeeded = true;
 
                 for (SystemPendingEventDto event : pendingEvents) {
                     log.debug("Looking at pending action: " + event.getActionName());
@@ -116,7 +116,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                         catch (Exception e) {
                             log.error("Error executing action: " + e.getMessage(), e);
                         }
-                        actionsExecuted++;
+                        checkinNeeded = false;
                     }
                 }
 
@@ -127,7 +127,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 }
 
                 // Perform a check-in if there is no pending actions
-                if (actionsExecuted == 0) {
+                if (checkinNeeded) {
                     performCheckin(m);
                 }
 
