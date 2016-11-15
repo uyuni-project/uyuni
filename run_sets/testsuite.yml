@@ -68,7 +68,6 @@
 - features/setup_wizard.feature
 - features/change_password.feature
 - features/spacewalk-debug.feature
-- features/spacewalk-errors.feature
 - features/smdba.feature
 ###- features/mgr_create_bootstrap_repo.feature
 - features/security.feature
@@ -84,4 +83,4 @@
 - features/salt_remote_cmds.feature
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
-
+- features/spacewalk-errors.feature
