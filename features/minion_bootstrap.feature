@@ -52,10 +52,10 @@ Feature: register a salt-minion via bootstrap
     When I enter "Minion testing" as "description"
     And I enter "MINION-TEST" as "key"
     And I enter "20" as "usageLimit"
-    And I select "SLES12-SP1-Pool for x86_64" from "selectedChannel"
+    And I select "SLES11-SP3-Updates x86_64 Channel" from "selectedChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
-    And I enter "man emacs" as "packages"
+    And I enter "andromeda-dummy virgo-dummy" as "packages"
     And I click on "Update Key"
     Then I should see a "Activation key Minion testing has been modified" text
 
@@ -82,16 +82,18 @@ Feature: register a salt-minion via bootstrap
      # sle-minion = sles, rh_minion = redhat
      And the salt-master can reach "sle-minion"
      # the "man" package is part of the channel, and the minion doesn't have this installed
-     And "man" is installed on "minion"
-     And "emacs" is installed on "minion"
-   
+     And "andromeda-dummy" is installed on "minion"
+     And "virgo-dummy" is installed on "minion"
+     And I remove pkg "andromeda-dummy" on minion
+     And I remove pkg "virgo-dummy" on minion
+
   Scenario: verify minion bootstrapped with activation key: activation key test
      Given I am on the Systems overview page of this minion
      Then I should see a "Activation Key: 	1-MINION-TEST" text
 
   Scenario: verify minion bootstrapped with activation key: base channel test
      Given I am on the Systems page
-     Then I should see a "SLES12-SP1-Pool for x86_64" text
+     Then I should see a "SLES11-SP3-Updates x86_64 Channel" text
 
   Scenario: Delete minion system profile
     Given I am on the Systems overview page of this minion
