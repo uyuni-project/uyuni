@@ -99,7 +99,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group hidden">
                         <label class="col-lg-3 control-label" for="disconnected">
                             <bean:message key="general.jsp.disconnected"/>
                         </label>
