@@ -65,6 +65,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -296,12 +297,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             // Assign the Salt base entitlement by default
             server.setBaseEntitlement(EntitlementManager.SALT);
 
-            // HACK
-            if (isSaltSSH) {
-                LOG.info("salt-ssh minion profile created. Stopping.");
-                return;
-            }
-
             // get hardware and network async
             triggerHardwareRefresh(server);
 
@@ -325,14 +320,18 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             }
 
             // Apply initial states asynchronously
+            List<String> statesToApply = new ArrayList<>();
+            statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
+            statesToApply.add(ApplyStatesEventMessage.CHANNELS);
+            statesToApply.add(ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS);
+            statesToApply.add(ApplyStatesEventMessage.PACKAGES);
+            if (!isSaltSSH) {
+                statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
+            }
             MessageQueue.publish(new ApplyStatesEventMessage(
                     server.getId(),
                     true,
-                    ApplyStatesEventMessage.CERTIFICATE,
-                    ApplyStatesEventMessage.CHANNELS,
-                    ApplyStatesEventMessage.CHANNELS_DISABLE_LOCAL_REPOS,
-                    ApplyStatesEventMessage.PACKAGES,
-                    ApplyStatesEventMessage.SALT_MINION_SERVICE
+                    statesToApply
             ));
         }
         catch (Throwable t) {
