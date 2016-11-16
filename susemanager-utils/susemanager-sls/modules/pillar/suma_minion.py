@@ -5,17 +5,18 @@ Adds formula pillar data.
 
 Parameters:
     path - Path where SUSE Manager stores pillar data
-    formula_layout_path - Path were SUSE Manager stores formula layouts
+    official_form_path - Path were SUSE Manager stores formula layouts
+    custom_form_path - Path were Customer stores formula layouts
     formula_data_path - Path were SUSE Manager stores formula data
 
 .. code-block:: yaml
 
     ext_pillar:
       - suma_minion:
-        - /another/path/with/the/pillar/files
-        - /path/to/official/formula/layout/files
-        - /path/to/custom/formula/layout/files
-        - /path/to/formula/data/files
+        - /srv/susemanager/pillar_data
+        - /usr/share/susemanager/formulas/metadata
+        - /srv/formula_metadata
+        - /srv/susemanager/formula_data
 
 '''
 
@@ -70,31 +71,35 @@ def formula_pillars(minion_id, group_ids, official_form_path, custom_form_path, 
     formulas = []
 
     # Loading group formulas
-    try:
-        with open(os.path.join(formula_data_path, "group_formulas.json")) as f:
-            group_formulas = json.load(f)
-            for group in group_ids:
-                formulas_by_group[group] = group_formulas.get(unicode(group), [])
-    except Exception as error:
-        log.error('Error loading group formulas: {message}'.format(message=str(error)))
+    group_formulas_filename = os.path.join(formula_data_path, "group_formulas.json")
+    if os.path.exists(group_formulas_filename):
+        try:
+            with open(group_formulas_filename) as f:
+                group_formulas = json.load(f)
+                for group in group_ids:
+                    formulas_by_group[group] = group_formulas.get(unicode(group), [])
+        except Exception as error:
+            log.error('Error loading group formulas: {message}'.format(message=str(error)))
 
-    for group in formulas_by_group:
-        for formula in formulas_by_group[group]:
-            formulas.append(formula)
-            ret.update(load_formula_pillar(minion_id, group, formula, official_form_path, custom_form_path, formula_data_path))
+        for group in formulas_by_group:
+            for formula in formulas_by_group[group]:
+                formulas.append(formula)
+                ret.update(load_formula_pillar(minion_id, group, formula, official_form_path, custom_form_path, formula_data_path))
 
     # Loading minion formulas
-    try:
-        with open(os.path.join(formula_data_path, "minion_formulas.json")) as f:
-            minion_formulas_data = json.load(f)
-            minion_formulas = minion_formulas_data.get(minion_id, [])
-            for formula in minion_formulas:
-                if formula in formulas:
-                    continue
-                formulas.append(formula)
-                ret.update(load_formula_pillar(minion_id, None, formula, official_form_path, custom_form_path, formula_data_path))
-    except Exception as error:
-        log.error('Error loading minion formulas: {message}'.format(message=str(error)))
+    minion_formulas_filename = os.path.join(formula_data_path, "minion_formulas.json")
+    if os.path.exists(minion_formulas_filename):
+        try:
+            with open(minion_formulas_filename) as f:
+                minion_formulas_data = json.load(f)
+                minion_formulas = minion_formulas_data.get(minion_id, [])
+                for formula in minion_formulas:
+                   if formula in formulas:
+                        continue
+                   formulas.append(formula)
+                   ret.update(load_formula_pillar(minion_id, None, formula, official_form_path, custom_form_path, formula_data_path))
+        except Exception as error:
+            log.error('Error loading minion formulas: {message}'.format(message=str(error)))
 
     ret["formulas"] = formulas
     return ret
