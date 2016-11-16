@@ -35,6 +35,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Cmd;
@@ -197,7 +198,15 @@ public enum SaltServerActionService {
         }
     }
 
-    private Map<LocalCall<?>, List<MinionServer>> callsForAction(Action actionIn,
+    /**
+     * For a given action and list of minion servers return the salt call(s) that need to be
+     * executed grouped by the list of targeted minions.
+     *
+     * @param actionIn the action to be executed
+     * @param minions the list of minions to target
+     * @return map of Salt local call to list of targeted minion servers
+     */
+    public Map<LocalCall<?>, List<MinionServer>> callsForAction(Action actionIn,
             List<MinionServer> minions) {
         ActionType actionType = actionIn.getActionType();
         if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
@@ -419,9 +428,27 @@ public enum SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> hardwareRefreshListAction(
             List<MinionServer> minions) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.SYNC_CUSTOM_ALL,
-                ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
-                Optional.empty(), Optional.of(true)), minions);
+
+        // salt-ssh minions in the 'true' partition
+        // regular minions in the 'false' partition
+        Map<Boolean, List<MinionServer>> partitionBySSHPush = minions.stream()
+                .collect(Collectors.partitioningBy(MinionServerUtils::isSshPushMinion));
+
+        // Separate SSH push minions from regular minions to apply different states
+        List<MinionServer> sshPushMinions = partitionBySSHPush.get(true);
+        List<MinionServer> regularMinions = partitionBySSHPush.get(false);
+
+        if (!sshPushMinions.isEmpty()) {
+            ret.put(State.apply(Arrays.asList(
+                    ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                    Optional.empty(), Optional.of(true)), sshPushMinions);
+        }
+        if (!regularMinions.isEmpty()) {
+            ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.SYNC_CUSTOM_ALL,
+                    ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
+                    Optional.empty(), Optional.of(true)), regularMinions);
+        }
+
         return ret;
     }
 
