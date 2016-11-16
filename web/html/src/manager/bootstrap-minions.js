@@ -19,7 +19,8 @@ class BootstrapMinions extends React.Component {
             activationKey: "",
             ignoreHostKeys: true,
             manageWithSSH: false,
-            messages: []
+            messages: [],
+            loading: false
         };
         ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "manageWithSSHChanged", "activationKeyChanged", "clearFields"]
             .forEach(method => this[method] = this[method].bind(this));
@@ -70,6 +71,7 @@ class BootstrapMinions extends React.Component {
     }
 
     onBootstrap() {
+        this.setState({messages: [], loading: true});
         var formData = {};
         formData['host'] = this.state.host.trim();
         formData['port'] = this.state.port.trim() === "" ? undefined : this.state.port.trim();
@@ -85,18 +87,21 @@ class BootstrapMinions extends React.Component {
         ).promise.then(data => {
             this.setState({
                 success: data.success,
-                messages: data.messages
+                messages: data.messages,
+                loading: false
             });
         }, (xhr) => {
             try {
                 this.setState({
                     success: false,
-                    messages: [JSON.parse(xhr.responseText)]
+                    messages: [JSON.parse(xhr.responseText)],
+                    loading: false
                 })
             } catch (err) {
                 this.setState({
                     success: false,
-                    messages: [Network.errorMessageByStatus(xhr.status)]
+                    messages: [Network.errorMessageByStatus(xhr.status)],
+                    loading: false
                 })
             }
         });
@@ -112,7 +117,8 @@ class BootstrapMinions extends React.Component {
           activationKey: "",
           ignoreHostKeys: true,
           manageWithSSH: false,
-          messages: []
+          messages: [],
+          loading: false
       });
       return;
     }
@@ -129,6 +135,10 @@ class BootstrapMinions extends React.Component {
             messages = <Messages items={this.state.messages.map(function(msg) {
                 return {severity: "error", text: msg};
             })}/>;
+        } else if (this.state.loading) {
+          messages = <Messages items={[{severity: "info", text:
+              <p>{t('Your system is bootstrapping: waiting for a response..')}</p>
+          }]}/>;
         }
 
         var buttons = [
