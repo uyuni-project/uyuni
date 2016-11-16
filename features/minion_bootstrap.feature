@@ -55,7 +55,7 @@ Feature: register a salt-minion via bootstrap
     And I select "SLES11-SP3-Updates x86_64 Channel" from "selectedChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
-    And I enter "andromeda-dummy virgo-dummy" as "packages"
+    And I enter "orion-dummy perseus-dummy" as "packages"
     And I click on "Update Key"
     Then I should see a "Activation key Minion testing has been modified" text
 
@@ -82,10 +82,10 @@ Feature: register a salt-minion via bootstrap
      # sle-minion = sles, rh_minion = redhat
      And the salt-master can reach "sle-minion"
      # the "man" package is part of the channel, and the minion doesn't have this installed
-     And "andromeda-dummy" is installed on "minion"
-     And "virgo-dummy" is installed on "minion"
-     And I remove pkg "andromeda-dummy" on minion
-     And I remove pkg "virgo-dummy" on minion
+     And "orion-dummy" is installed on "minion"
+     And "perseus-dummy" is installed on "minion"
+     And I remove pkg "orion-dummy" on minion
+     And I remove pkg "perseus-dummy" on minion
 
   Scenario: verify minion bootstrapped with activation key: activation key test
      Given I am on the Systems overview page of this minion
