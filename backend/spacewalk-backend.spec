@@ -375,6 +375,7 @@ for d in usr/share/locale/*; do
 done
 cd -
 ln -s satellite-sync $RPM_BUILD_ROOT/usr/bin/mgr-inter-sync
+ln -s satellite-sync.8.gz $RPM_BUILD_ROOT/usr/share/man/man8/mgr-inter-sync.8.gz
 ln -s rhn-satellite-exporter $RPM_BUILD_ROOT/usr/bin/mgr-exporter
 
 
@@ -781,6 +782,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/rhn-db-stats.8*
 %{_mandir}/man8/rhn-schema-stats.8*
 %{_mandir}/man8/satellite-sync.8*
+%{_mandir}/man8/mgr-inter-sync.8*
 %{_mandir}/man8/spacewalk-debug.8*
 %{_mandir}/man8/satpasswd.8*
 %{_mandir}/man8/satwho.8*
