@@ -219,7 +219,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         // Schedule a package list refresh if either requested or detected as necessary
         if (
             forcePackageListRefresh(jobReturnEvent) ||
-            shouldRefreshPackageList(jobReturnEvent.getData().getFun(), jobResult)
+            shouldRefreshPackageList(function, jobResult)
         ) {
             MinionServerFactory
                     .findByMinionId(jobReturnEvent.getMinionId())
