@@ -93,20 +93,20 @@
   </rhn:listdisplay>
 
   </rhn:list>
-
-  <div class="text-right">
-
-    <hr />
-    <html:select property="guestAction">
-        <html:optionsCollection name="actionOptions"/>
-    </html:select>
-
-    <html:submit styleClass="btn btn-default" property="dispatch">
-        <bean:message key="virtualguestslist.jsp.applyaction"/>
-    </html:submit>
-
-  </div>
+  <rhn:require acl="system_has_management_entitlement()">
     <div class="text-right">
+
+      <hr />
+      <html:select property="guestAction">
+        <html:optionsCollection name="actionOptions"/>
+      </html:select>
+
+      <html:submit styleClass="btn btn-default" property="dispatch">
+        <bean:message key="virtualguestslist.jsp.applyaction"/>
+      </html:submit>
+
+    </div>
+      <div class="text-right">
         <bean:message key="virtualguestslist.jsp.set"/>
         <html:select property="guestSettingToModify">
             <html:optionsCollection name="guestSettingOptions"/>
@@ -116,10 +116,11 @@
         <html:submit styleClass="btn btn-default" property="dispatch">
             <bean:message key="virtualguestslist.jsp.applychanges"/>
         </html:submit>
-    </div>
+      </div>
 
-  <rhn:hidden name="sid" value="${param.sid}" />
-  <rhn:submitted/>
+    <rhn:hidden name="sid" value="${param.sid}" />
+    <rhn:submitted/>
+  </rhn:require>
 
 </html:form>
 
