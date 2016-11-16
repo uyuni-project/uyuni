@@ -81,13 +81,15 @@ public class VirtualGuestsListSetupAction extends BaseSystemListSetupAction {
         Long sid = rctx.getRequiredParam(RequestContext.SID);
         Server server = SystemManager.lookupByIdAndUser(sid, user);
 
-        // Check if the server already has rhnVirtHost package installed.
-        InstalledPackage rhnVirtHost = PackageFactory.lookupByNameAndServer(
-                ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME, server);
+        if (!server.asMinionServer().isPresent()) {
+            // Check if the server already has rhnVirtHost package installed.
+            InstalledPackage rhnVirtHost = PackageFactory.lookupByNameAndServer(
+                    ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME, server);
 
-        if (rhnVirtHost == null) {
-            // system does not have the package installed, tell them to get it.
-            addMessage(rctx.getRequest(), "system.virtualization.help");
+            if (rhnVirtHost == null) {
+                // system does not have the package installed, tell them to get it.
+                addMessage(rctx.getRequest(), "system.virtualization.help");
+            }
         }
 
         SdcHelper.ssmCheck(request, sid, user);
