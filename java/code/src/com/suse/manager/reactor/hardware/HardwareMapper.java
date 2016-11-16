@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.VirtualManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltGrains;
@@ -599,24 +600,21 @@ public class HardwareMapper {
         }
 
         if (type != null) {
-            VirtualInstance virtualInstance = server.getVirtualInstance();
-            if (virtualInstance == null) {
-                virtualInstance = new VirtualInstance();
-                virtualInstance.setUuid(virtUuid);
-                virtualInstance.setConfirmed(1L);
-                virtualInstance.setHostSystem(null);
-                virtualInstance.setName(null);
-                virtualInstance.setType(type);
-                virtualInstance.setState(VirtualInstanceFactory
-                        .getInstance().getUnknownState());
-                // add the virtualInstance to the server.
-                // do it at the end to avoid hibernate flushing
-                // an incomplete virtualInstance
-                virtualInstance.setGuestSystem(server);
+            List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
+                    .lookupVirtualInstanceByUuid(virtUuid);
 
+            if (virtualInstances.isEmpty()) {
+                VirtualManager.addGuestVirtualInstance(virtUuid, server.getName(), type,
+                        VirtualInstanceFactory.getInstance().getRunningState(), null,
+                        server);
             }
-            else if (virtualInstance.getConfirmed() != 1L) {
-                virtualInstance.setConfirmed(1L);
+            else {
+                virtualInstances.forEach(virtualInstance -> {
+                    VirtualManager.updateGuestVirtualInstance(virtualInstance,
+                            server.getName(),
+                            VirtualInstanceFactory.getInstance().getRunningState(),
+                            virtualInstance.getHostSystem(), server);
+                });
             }
         }
     }
