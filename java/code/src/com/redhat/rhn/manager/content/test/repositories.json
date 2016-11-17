@@ -8921,26 +8921,6 @@
   },
   {
     "autorefresh": true,
-    "description": "SLE11-SP4-SAP-Updates for sle-11-ppc64",
-    "distro_target": "sle-11-ppc64",
-    "enabled": true,
-    "id": 1862,
-    "installer_updates": false,
-    "name": "SLE11-SP4-SAP-Updates",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP4-SAP-Updates/sle-11-ppc64/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE11-SP4-SAP-Pool for sle-11-ppc64",
-    "distro_target": "sle-11-ppc64",
-    "enabled": true,
-    "id": 1863,
-    "installer_updates": false,
-    "name": "SLE11-SP4-SAP-Pool",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP4-SAP-Pool/sle-11-ppc64/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
     "description": "SLE-Module-Containers12-Updates for sle-12-x86_64",
     "distro_target": "sle-12-x86_64",
     "enabled": true,
@@ -11111,56 +11091,6 @@
   },
   {
     "autorefresh": true,
-    "description": "SLE-Module-Web-Scripting12-Updates for sle-12-aarch64",
-    "distro_target": "sle-12-aarch64",
-    "enabled": true,
-    "id": 2090,
-    "installer_updates": false,
-    "name": "SLE-Module-Web-Scripting12-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/aarch64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Web-Scripting12-Debuginfo-Updates for sle-12-aarch64",
-    "distro_target": "sle-12-aarch64",
-    "enabled": false,
-    "id": 2091,
-    "installer_updates": false,
-    "name": "SLE-Module-Web-Scripting12-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/aarch64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Web-Scripting12-Pool for sle-12-aarch64",
-    "distro_target": "sle-12-aarch64",
-    "enabled": true,
-    "id": 2092,
-    "installer_updates": false,
-    "name": "SLE-Module-Web-Scripting12-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/aarch64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Web-Scripting12-Debuginfo-Pool for sle-12-aarch64",
-    "distro_target": "sle-12-aarch64",
-    "enabled": false,
-    "id": 2093,
-    "installer_updates": false,
-    "name": "SLE-Module-Web-Scripting12-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/aarch64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Web-Scripting12-Source-Pool for sle-12-aarch64",
-    "distro_target": "sle-12-aarch64",
-    "enabled": false,
-    "id": 2094,
-    "installer_updates": false,
-    "name": "SLE-Module-Web-Scripting12-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/aarch64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
     "description": "SLE-SDK12-SP2-Updates for sle-12-aarch64",
     "distro_target": "sle-12-aarch64",
     "enabled": true,
@@ -11208,16 +11138,6 @@
     "installer_updates": false,
     "name": "SLE-SDK12-SP2-Source-Pool",
     "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP2/aarch64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "IBM-DLPAR-utils for ",
-    "distro_target": null,
-    "enabled": true,
-    "id": 2100,
-    "installer_updates": false,
-    "name": "IBM-DLPAR-utils",
-    "url": "http://public.dhe.ibm.com/software/server/POWER/Linux/yum/IBM/SLES/12/ppc64le/"
   },
   {
     "autorefresh": true,
@@ -11411,56 +11331,6 @@
   },
   {
     "autorefresh": true,
-    "description": "SLE-Module-Public-Cloud12-Updates for sle-12-aarch64",
-    "distro_target": "sle-12-aarch64",
-    "enabled": true,
-    "id": 2157,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud12-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/12/aarch64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Public-Cloud12-Debuginfo-Updates for sle-12-aarch64",
-    "distro_target": "sle-12-aarch64",
-    "enabled": false,
-    "id": 2158,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud12-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/12/aarch64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Public-Cloud12-Pool for sle-12-aarch64",
-    "distro_target": "sle-12-aarch64",
-    "enabled": true,
-    "id": 2159,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud12-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/aarch64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Public-Cloud12-Debuginfo-Pool for sle-12-aarch64",
-    "distro_target": "sle-12-aarch64",
-    "enabled": false,
-    "id": 2160,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud12-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/aarch64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Public-Cloud12-Source-Pool for sle-12-aarch64",
-    "distro_target": "sle-12-aarch64",
-    "enabled": false,
-    "id": 2161,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud12-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/aarch64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
     "description": "SLE12-SP2-SAP-Installer-Updates for sle-12-x86_64",
     "distro_target": "sle-12-x86_64",
     "enabled": false,
@@ -11508,5 +11378,65 @@
     "installer_updates": false,
     "name": "SLE-Manager-Tools12-Debuginfo-Pool",
     "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/aarch64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-HA12-SP2-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2183,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP2-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-HA/12-SP2/ppc64le/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-HA12-SP2-Debuginfo-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2184,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP2-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-HA/12-SP2/ppc64le/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-HA12-SP2-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2185,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP2-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP2/ppc64le/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-HA12-SP2-Debuginfo-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2186,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP2-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP2/ppc64le/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-HA12-SP2-Source-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2187,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP2-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP2/ppc64le/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "IBM-DLPAR-utils for ",
+    "distro_target": null,
+    "enabled": true,
+    "id": 2188,
+    "installer_updates": false,
+    "name": "IBM-DLPAR-utils",
+    "url": "http://public.dhe.ibm.com/software/server/POWER/Linux/yum/OSS/SLES/12/ppc64le/"
   }
 ]

@@ -67,17 +67,17 @@
 			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64le" description="IBM DLPAR Utils for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-utils" name="IBM-DLPAR-utils" optional="N" parent="sles12-pool-ppc64le" product_name="ibm-dlpar-utils" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/IBM/SLES/12/ppc64le/" summary="IBM DLPAR Utils for SLE 12 ppc64le" update_tag="">
+	<channel arch="ppc64le" description="IBM DLPAR Utils for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-utils" name="IBM-DLPAR-utils" optional="N" parent="sles12-pool-ppc64le" product_name="ibm-dlpar-utils" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/OSS/SLES/12/ppc64le/" summary="IBM DLPAR Utils for SLE 12 ppc64le" update_tag="">
 		<products>
 			<product_id name="ibm-dlpar-utils" version="12">1250</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64le" description="IBM DLPAR Utils for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-utils-sp1" name="IBM-DLPAR-utils SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="ibm-dlpar-utils" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/IBM/SLES/12/ppc64le/" summary="IBM DLPAR Utils for SLE 12 ppc64le" update_tag="">
+	<channel arch="ppc64le" description="IBM DLPAR Utils for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-utils-sp1" name="IBM-DLPAR-utils SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="ibm-dlpar-utils" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/OSS/SLES/12/ppc64le/" summary="IBM DLPAR Utils for SLE 12 ppc64le" update_tag="">
 		<products>
 			<product_id name="ibm-dlpar-utils" version="12">1250</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64le" description="IBM DLPAR Utils for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-utils-sp2" name="IBM-DLPAR-utils SP2" optional="N" parent="sles12-sp2-pool-ppc64le" product_name="ibm-dlpar-utils" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/IBM/SLES/12/ppc64le/" summary="IBM DLPAR Utils for SLE 12 ppc64le" update_tag="">
+	<channel arch="ppc64le" description="IBM DLPAR Utils for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-utils-sp2" name="IBM-DLPAR-utils SP2" optional="N" parent="sles12-sp2-pool-ppc64le" product_name="ibm-dlpar-utils" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/OSS/SLES/12/ppc64le/" summary="IBM DLPAR Utils for SLE 12 ppc64le" update_tag="">
 		<products>
 			<product_id name="ibm-dlpar-utils" version="12">1250</product_id>
 		</products>
@@ -2849,6 +2849,46 @@
 			<product_id name="SUSE-Linux-Enterprise-RT" version="12.1">1350</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Real Time Extension 12 SP2." family="13319" is_signed="Y" label="sle-rt12-sp2-debuginfo-pool-x86_64" name="SLE-RT12-SP2-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-sp2-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="12.2" source_url="https://updates.suse.com/SUSE/Products/SLE-RT/12-SP2/x86_64/product_debug/" summary="SUSE Linux Enterprise Real Time Extension 12 SP2 x86_64" update_tag="SLE-RT">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-RT" version="12.2">1438</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Real Time Extension 12 SP2." family="13319" is_signed="Y" label="sle-rt12-sp2-debuginfo-pool-x86_64-sap-sp2" name="SLE-RT12-SP2-Debuginfo-Pool for x86_64 SAP-SP2" optional="Y" parent="sle12-sp2-sap-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="12.2" source_url="https://updates.suse.com/SUSE/Products/SLE-RT/12-SP2/x86_64/product_debug/" summary="SUSE Linux Enterprise Real Time Extension 12 SP2 x86_64" update_tag="SLE-RT">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-RT" version="12.2">1438</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Real Time Extension 12 SP2." family="13319" is_signed="Y" label="sle-rt12-sp2-debuginfo-updates-x86_64" name="SLE-RT12-SP2-Debuginfo-Updates for x86_64" optional="Y" parent="sles12-sp2-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-RT/12-SP2/x86_64/update_debug/" summary="SUSE Linux Enterprise Real Time Extension 12 SP2 x86_64" update_tag="SLE-RT">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-RT" version="12.2">1438</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Real Time Extension 12 SP2." family="13319" is_signed="Y" label="sle-rt12-sp2-debuginfo-updates-x86_64-sap-sp2" name="SLE-RT12-SP2-Debuginfo-Updates for x86_64 SAP-SP2" optional="Y" parent="sle12-sp2-sap-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-RT/12-SP2/x86_64/update_debug/" summary="SUSE Linux Enterprise Real Time Extension 12 SP2 x86_64" update_tag="SLE-RT">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-RT" version="12.2">1438</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Real Time Extension 12 SP2." family="13319" is_signed="Y" label="sle-rt12-sp2-pool-x86_64" name="SLE-RT12-SP2-Pool for x86_64" optional="N" parent="sles12-sp2-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="12.2" source_url="https://updates.suse.com/SUSE/Products/SLE-RT/12-SP2/x86_64/product/" summary="SUSE Linux Enterprise Real Time Extension 12 SP2 x86_64" update_tag="SLE-RT">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-RT" version="12.2">1438</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Real Time Extension 12 SP2." family="13319" is_signed="Y" label="sle-rt12-sp2-pool-x86_64-sap-sp2" name="SLE-RT12-SP2-Pool for x86_64 SAP-SP2" optional="N" parent="sle12-sp2-sap-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="12.2" source_url="https://updates.suse.com/SUSE/Products/SLE-RT/12-SP2/x86_64/product/" summary="SUSE Linux Enterprise Real Time Extension 12 SP2 x86_64" update_tag="SLE-RT">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-RT" version="12.2">1438</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Real Time Extension 12 SP2." family="13319" is_signed="Y" label="sle-rt12-sp2-updates-x86_64" name="SLE-RT12-SP2-Updates for x86_64" optional="N" parent="sles12-sp2-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-RT/12-SP2/x86_64/update/" summary="SUSE Linux Enterprise Real Time Extension 12 SP2 x86_64" update_tag="SLE-RT">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-RT" version="12.2">1438</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Real Time Extension 12 SP2." family="13319" is_signed="Y" label="sle-rt12-sp2-updates-x86_64-sap-sp2" name="SLE-RT12-SP2-Updates for x86_64 SAP-SP2" optional="N" parent="sle12-sp2-sap-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-RT/12-SP2/x86_64/update/" summary="SUSE Linux Enterprise Real Time Extension 12 SP2 x86_64" update_tag="SLE-RT">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-RT" version="12.2">1438</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" family="SLE-SDK" is_signed="Y" label="sle-sdk12-debuginfo-pool-ppc64le" name="SLE-SDK12-Debuginfo-Pool for ppc64le" optional="Y" parent="sles12-pool-ppc64le" product_name="sle-sdk" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-SDK/12/ppc64le/product_debug/" summary="SUSE Linux Enterprise Software Development Kit 12 ppc64le" update_tag="SLE-SDK">
 		<products>
 			<product_id name="sle-sdk" version="12">1145</product_id>
@@ -3798,7 +3838,7 @@
 			<product_id name="sle-hae" version="11.4">1258</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise High Availability Extension 11 SP4 ppc64" family="AiO" is_signed="Y" label="sle11-hae-sp4-pool-ppc64-sap-sp4" name="SLE11-HAE-SP4-Pool for ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-HAE-SP4-Pool/sle-11-ppc64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP4 ppc64" update_tag="sleshasp4">
+	<channel arch="ppc64" description="SUSE Linux Enterprise High Availability Extension 11 SP4 ppc64" family="AiO-PPC" is_signed="Y" label="sle11-hae-sp4-pool-ppc64-sap-sp4" name="SLE11-HAE-SP4-Pool for ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-HAE-SP4-Pool/sle-11-ppc64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP4 ppc64" update_tag="sleshasp4">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -3834,7 +3874,7 @@
 			<product_id name="sle-hae" version="11.4">1258</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise High Availability Extension 11 SP4 ppc64" family="AiO" is_signed="Y" label="sle11-hae-sp4-updates-ppc64-sap-sp4" name="SLE11-HAE-SP4-Updates for ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-HAE-SP4-Updates/sle-11-ppc64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP4 ppc64" update_tag="sleshasp4">
+	<channel arch="ppc64" description="SUSE Linux Enterprise High Availability Extension 11 SP4 ppc64" family="AiO-PPC" is_signed="Y" label="sle11-hae-sp4-updates-ppc64-sap-sp4" name="SLE11-HAE-SP4-Updates for ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-HAE-SP4-Updates/sle-11-ppc64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP4 ppc64" update_tag="sleshasp4">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -4671,7 +4711,7 @@
 			<product_id name="SUSE_SLES" version="11.3">949</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP3 ppc64" family="AiO" is_signed="Y" label="sle11-security-module-ppc64-sap-sp4" name="SLE11-Security-Module for ppc64 SAP-SP4" optional="Y" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP3 ppc64" update_tag="secsp3">
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP3 ppc64" family="AiO-PPC" is_signed="Y" label="sle11-security-module-ppc64-sap-sp4" name="SLE11-Security-Module for ppc64 SAP-SP4" optional="Y" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP3 ppc64" update_tag="secsp3">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -5499,7 +5539,7 @@
 			<product_id name="sle-11-WebYaST" version="1.3">1206</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE WebYaST 1.3" family="AiO" is_signed="Y" label="sle11-sp2-webyast-1.3-pool-ppc64-sap-sp4" name="SLE11-SP2-WebYaST-1.3-Pool for ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-ppc64/" summary="SUSE WebYaST 1.3" update_tag="slewyst13">
+	<channel arch="ppc64" description="SUSE WebYaST 1.3" family="AiO-PPC" is_signed="Y" label="sle11-sp2-webyast-1.3-pool-ppc64-sap-sp4" name="SLE11-SP2-WebYaST-1.3-Pool for ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-ppc64/" summary="SUSE WebYaST 1.3" update_tag="slewyst13">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -5574,7 +5614,7 @@
 			<product_id name="sle-11-WebYaST" version="1.3">1206</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE WebYaST 1.3" family="AiO" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-ppc64-sap-sp4" name="SLE11-SP2-WebYaST-1.3-Updates for ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-ppc64/" summary="SUSE WebYaST 1.3" update_tag="slewyst13">
+	<channel arch="ppc64" description="SUSE WebYaST 1.3" family="AiO-PPC" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-ppc64-sap-sp4" name="SLE11-SP2-WebYaST-1.3-Updates for ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-ppc64/" summary="SUSE WebYaST 1.3" update_tag="slewyst13">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -5777,7 +5817,7 @@
 			<product_id name="SUSE_SLES" version="11.4">1301</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP4 ppc64" family="AiO" is_signed="Y" label="sle11-sp4-debuginfo-pool-ppc64-sap-sp4" name="SLE11-SP4-Debuginfo-Pool for ppc64 SAP-SP4" optional="Y" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP4-Debuginfo-Pool/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP4 ppc64" update_tag="dbgsp4">
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP4 ppc64" family="AiO-PPC" is_signed="Y" label="sle11-sp4-debuginfo-pool-ppc64-sap-sp4" name="SLE11-SP4-Debuginfo-Pool for ppc64 SAP-SP4" optional="Y" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP4-Debuginfo-Pool/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP4 ppc64" update_tag="dbgsp4">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -5824,7 +5864,7 @@
 			<product_id name="SUSE_SLES" version="11.4">1301</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP4 ppc64" family="AiO" is_signed="Y" label="sle11-sp4-debuginfo-updates-ppc64-sap-sp4" name="SLE11-SP4-Debuginfo-Updates for ppc64 SAP-SP4" optional="Y" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP4-Debuginfo-Updates/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP4 ppc64" update_tag="dbgsp4">
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP4 ppc64" family="AiO-PPC" is_signed="Y" label="sle11-sp4-debuginfo-updates-ppc64-sap-sp4" name="SLE11-SP4-Debuginfo-Updates for ppc64 SAP-SP4" optional="Y" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP4-Debuginfo-Updates/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP4 ppc64" update_tag="dbgsp4">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -5849,7 +5889,7 @@
 			<product_id name="SUSE_SLED" version="11.4">1313</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 ppc64" family="AiO" is_signed="Y" label="sle11-sp4-sap-pool-ppc64" name="SLE11-SP4-SAP-Pool for ppc64" optional="N" parent="BASE" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP4-SAP-Pool/sle-11-ppc64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 ppc64" update_tag="slesappsp4">
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 ppc64" family="AiO-PPC" is_signed="Y" label="sle11-sp4-sap-pool-ppc64" name="SLE11-SP4-SAP-Pool for ppc64" optional="N" parent="BASE" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP4-SAP-Pool/sle-11-ppc64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 ppc64" update_tag="slesappsp4">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -5859,7 +5899,7 @@
 			<product_id name="SUSE_SLES_SAP" version="11.4">1329</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 ppc64" family="AiO" is_signed="Y" label="sle11-sp4-sap-updates-ppc64" name="SLE11-SP4-SAP-Updates for ppc64" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP4-SAP-Updates/sle-11-ppc64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 ppc64" update_tag="slesappsp4">
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 ppc64" family="AiO-PPC" is_signed="Y" label="sle11-sp4-sap-updates-ppc64" name="SLE11-SP4-SAP-Updates for ppc64" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP4-SAP-Updates/sle-11-ppc64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 ppc64" update_tag="slesappsp4">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -6618,7 +6658,7 @@
 			<product_id name="SUSE_SLES" version="11.2">952</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP1 ppc64" family="AiO" is_signed="Y" label="sles11-extras-ppc64-sap-sp4" name="SLES11-Extras for ppc64 SAP-SP4" optional="Y" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLES11-Extras/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP1 ppc64" update_tag="">
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP1 ppc64" family="AiO-PPC" is_signed="Y" label="sles11-extras-ppc64-sap-sp4" name="SLES11-Extras for ppc64 SAP-SP4" optional="Y" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLES11-Extras/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP1 ppc64" update_tag="">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -7680,7 +7720,7 @@
 			<product_id name="SUSE_SLES" version="11.4">1301</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP4 ppc64" family="AiO" is_signed="Y" label="sles11-sp4-pool-ppc64-sap-sp4" name="SLES11-SP4-Pool for ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP4-Pool/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP4 ppc64" update_tag="slessp4">
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP4 ppc64" family="AiO-PPC" is_signed="Y" label="sles11-sp4-pool-ppc64-sap-sp4" name="SLES11-SP4-Pool for ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP4-Pool/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP4 ppc64" update_tag="slessp4">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -7722,7 +7762,7 @@
 			<product_id name="SUSE_SLES" version="11.4">1301</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Manager Tools" family="AiO" is_signed="Y" label="sles11-sp4-suse-manager-tools-ppc64-sap-sp4" name="SLES11-SP4-SUSE-Manager-Tools ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP4-SUSE-Manager-Tools/sle-11-ppc64/" summary="SUSE Manager Tools" update_tag="slesctsp4">
+	<channel arch="ppc64" description="SUSE Manager Tools" family="AiO-PPC" is_signed="Y" label="sles11-sp4-suse-manager-tools-ppc64-sap-sp4" name="SLES11-SP4-SUSE-Manager-Tools ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP4-SUSE-Manager-Tools/sle-11-ppc64/" summary="SUSE Manager Tools" update_tag="slesctsp4">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -7763,7 +7803,7 @@
 			<product_id name="SUSE_SLES" version="11.4">1301</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP4 ppc64" family="AiO" is_signed="Y" label="sles11-sp4-updates-ppc64-sap-sp4" name="SLES11-SP4-Updates for ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP4-Updates/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP4 ppc64" update_tag="slessp4">
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP4 ppc64" family="AiO-PPC" is_signed="Y" label="sles11-sp4-updates-ppc64-sap-sp4" name="SLES11-SP4-Updates for ppc64 SAP-SP4" optional="N" parent="sle11-sp4-sap-pool-ppc64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP4-Updates/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP4 ppc64" update_tag="slessp4">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
@@ -8273,6 +8313,46 @@
 			<product_id name="ses" version="3">1369</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Enterprise Storage 4 for SUSE Linux Enterprise Server 12-SP2, powered by Ceph." family="SES" is_signed="Y" label="suse-enterprise-storage-4-debuginfo-pool-x86_64" name="SUSE-Enterprise-Storage-4-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-sp2-pool-x86_64" product_name="ses" product_version="4" source_url="https://updates.suse.com/SUSE/Products/Storage/4/x86_64/product_debug/" summary="SUSE Enterprise Storage 4 x86_64" update_tag="Storage-4">
+		<products>
+			<product_id name="ses" version="4">1416</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Enterprise Storage 4 for SUSE Linux Enterprise Server 12-SP2, powered by Ceph." family="SES" is_signed="Y" label="suse-enterprise-storage-4-debuginfo-pool-x86_64-sap-sp2" name="SUSE-Enterprise-Storage-4-Debuginfo-Pool for x86_64 SAP-SP2" optional="Y" parent="sle12-sp2-sap-pool-x86_64" product_name="ses" product_version="4" source_url="https://updates.suse.com/SUSE/Products/Storage/4/x86_64/product_debug/" summary="SUSE Enterprise Storage 4 x86_64" update_tag="Storage-4">
+		<products>
+			<product_id name="ses" version="4">1416</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Enterprise Storage 4 for SUSE Linux Enterprise Server 12-SP2, powered by Ceph." family="SES" is_signed="Y" label="suse-enterprise-storage-4-debuginfo-updates-x86_64" name="SUSE-Enterprise-Storage-4-Debuginfo-Updates for x86_64" optional="Y" parent="sles12-sp2-pool-x86_64" product_name="ses" product_version="4" source_url="https://updates.suse.com/SUSE/Updates/Storage/4/x86_64/update_debug/" summary="SUSE Enterprise Storage 4 x86_64" update_tag="Storage-4">
+		<products>
+			<product_id name="ses" version="4">1416</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Enterprise Storage 4 for SUSE Linux Enterprise Server 12-SP2, powered by Ceph." family="SES" is_signed="Y" label="suse-enterprise-storage-4-debuginfo-updates-x86_64-sap-sp2" name="SUSE-Enterprise-Storage-4-Debuginfo-Updates for x86_64 SAP-SP2" optional="Y" parent="sle12-sp2-sap-pool-x86_64" product_name="ses" product_version="4" source_url="https://updates.suse.com/SUSE/Updates/Storage/4/x86_64/update_debug/" summary="SUSE Enterprise Storage 4 x86_64" update_tag="Storage-4">
+		<products>
+			<product_id name="ses" version="4">1416</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Enterprise Storage 4 for SUSE Linux Enterprise Server 12-SP2, powered by Ceph." family="SES" is_signed="Y" label="suse-enterprise-storage-4-pool-x86_64" name="SUSE-Enterprise-Storage-4-Pool for x86_64" optional="N" parent="sles12-sp2-pool-x86_64" product_name="ses" product_version="4" source_url="https://updates.suse.com/SUSE/Products/Storage/4/x86_64/product/" summary="SUSE Enterprise Storage 4 x86_64" update_tag="Storage-4">
+		<products>
+			<product_id name="ses" version="4">1416</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Enterprise Storage 4 for SUSE Linux Enterprise Server 12-SP2, powered by Ceph." family="SES" is_signed="Y" label="suse-enterprise-storage-4-pool-x86_64-sap-sp2" name="SUSE-Enterprise-Storage-4-Pool for x86_64 SAP-SP2" optional="N" parent="sle12-sp2-sap-pool-x86_64" product_name="ses" product_version="4" source_url="https://updates.suse.com/SUSE/Products/Storage/4/x86_64/product/" summary="SUSE Enterprise Storage 4 x86_64" update_tag="Storage-4">
+		<products>
+			<product_id name="ses" version="4">1416</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Enterprise Storage 4 for SUSE Linux Enterprise Server 12-SP2, powered by Ceph." family="SES" is_signed="Y" label="suse-enterprise-storage-4-updates-x86_64" name="SUSE-Enterprise-Storage-4-Updates for x86_64" optional="N" parent="sles12-sp2-pool-x86_64" product_name="ses" product_version="4" source_url="https://updates.suse.com/SUSE/Updates/Storage/4/x86_64/update/" summary="SUSE Enterprise Storage 4 x86_64" update_tag="Storage-4">
+		<products>
+			<product_id name="ses" version="4">1416</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Enterprise Storage 4 for SUSE Linux Enterprise Server 12-SP2, powered by Ceph." family="SES" is_signed="Y" label="suse-enterprise-storage-4-updates-x86_64-sap-sp2" name="SUSE-Enterprise-Storage-4-Updates for x86_64 SAP-SP2" optional="N" parent="sle12-sp2-sap-pool-x86_64" product_name="ses" product_version="4" source_url="https://updates.suse.com/SUSE/Updates/Storage/4/x86_64/update/" summary="SUSE Enterprise Storage 4 x86_64" update_tag="Storage-4">
+		<products>
+			<product_id name="ses" version="4">1416</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Manager Proxy 1.2" family="SMP" is_signed="Y" label="suse-manager-proxy-1.2-pool-x86_64" name="SUSE-Manager-Proxy-1.2-Pool for x86_64" optional="N" parent="BASE" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://updates.suse.com/repo/$RCE/SUSE-Manager-Proxy-1.2-Pool/sle-11-x86_64/" summary="SUSE Manager Proxy 1.2" update_tag="slemap12sp1">
 		<products>
 			<product_id name="SUSE-Manager-Proxy" version="1.2">1000</product_id>
@@ -8381,6 +8461,46 @@
 	<channel arch="x86_64" description="SUSE OpenStack Cloud 6" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-6-updates-x86_64-sap-sp1" name="SUSE-OpenStack-Cloud-6-Updates for x86_64 SAP-SP1" optional="N" parent="sle12-sp1-sap-pool-x86_64" product_name="suse-openstack-cloud" product_version="6" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/6/x86_64/update/" summary="SUSE OpenStack Cloud 6 x86_64" update_tag="OpenStack-Cloud-6">
 		<products>
 			<product_id name="suse-openstack-cloud" version="6">1347</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE OpenStack Cloud 7" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-7-debuginfo-pool-x86_64" name="SUSE-OpenStack-Cloud-7-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-sp2-pool-x86_64" product_name="suse-openstack-cloud" product_version="7" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud/7/x86_64/product_debug/" summary="SUSE OpenStack Cloud 7 x86_64" update_tag="OpenStack-Cloud-7">
+		<products>
+			<product_id name="suse-openstack-cloud" version="7">1381</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE OpenStack Cloud 7" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-7-debuginfo-pool-x86_64-sap-sp2" name="SUSE-OpenStack-Cloud-7-Debuginfo-Pool for x86_64 SAP-SP2" optional="Y" parent="sle12-sp2-sap-pool-x86_64" product_name="suse-openstack-cloud" product_version="7" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud/7/x86_64/product_debug/" summary="SUSE OpenStack Cloud 7 x86_64" update_tag="OpenStack-Cloud-7">
+		<products>
+			<product_id name="suse-openstack-cloud" version="7">1381</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE OpenStack Cloud 7" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-7-debuginfo-updates-x86_64" name="SUSE-OpenStack-Cloud-7-Debuginfo-Updates for x86_64" optional="Y" parent="sles12-sp2-pool-x86_64" product_name="suse-openstack-cloud" product_version="7" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/7/x86_64/update_debug/" summary="SUSE OpenStack Cloud 7 x86_64" update_tag="OpenStack-Cloud-7">
+		<products>
+			<product_id name="suse-openstack-cloud" version="7">1381</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE OpenStack Cloud 7" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-7-debuginfo-updates-x86_64-sap-sp2" name="SUSE-OpenStack-Cloud-7-Debuginfo-Updates for x86_64 SAP-SP2" optional="Y" parent="sle12-sp2-sap-pool-x86_64" product_name="suse-openstack-cloud" product_version="7" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/7/x86_64/update_debug/" summary="SUSE OpenStack Cloud 7 x86_64" update_tag="OpenStack-Cloud-7">
+		<products>
+			<product_id name="suse-openstack-cloud" version="7">1381</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE OpenStack Cloud 7" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-7-pool-x86_64" name="SUSE-OpenStack-Cloud-7-Pool for x86_64" optional="N" parent="sles12-sp2-pool-x86_64" product_name="suse-openstack-cloud" product_version="7" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud/7/x86_64/product/" summary="SUSE OpenStack Cloud 7 x86_64" update_tag="OpenStack-Cloud-7">
+		<products>
+			<product_id name="suse-openstack-cloud" version="7">1381</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE OpenStack Cloud 7" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-7-pool-x86_64-sap-sp2" name="SUSE-OpenStack-Cloud-7-Pool for x86_64 SAP-SP2" optional="N" parent="sle12-sp2-sap-pool-x86_64" product_name="suse-openstack-cloud" product_version="7" source_url="https://updates.suse.com/SUSE/Products/OpenStack-Cloud/7/x86_64/product/" summary="SUSE OpenStack Cloud 7 x86_64" update_tag="OpenStack-Cloud-7">
+		<products>
+			<product_id name="suse-openstack-cloud" version="7">1381</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE OpenStack Cloud 7" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-7-updates-x86_64" name="SUSE-OpenStack-Cloud-7-Updates for x86_64" optional="N" parent="sles12-sp2-pool-x86_64" product_name="suse-openstack-cloud" product_version="7" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/7/x86_64/update/" summary="SUSE OpenStack Cloud 7 x86_64" update_tag="OpenStack-Cloud-7">
+		<products>
+			<product_id name="suse-openstack-cloud" version="7">1381</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE OpenStack Cloud 7" family="SUSE_CLOUD" is_signed="Y" label="suse-openstack-cloud-7-updates-x86_64-sap-sp2" name="SUSE-OpenStack-Cloud-7-Updates for x86_64 SAP-SP2" optional="N" parent="sle12-sp2-sap-pool-x86_64" product_name="suse-openstack-cloud" product_version="7" source_url="https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/7/x86_64/update/" summary="SUSE OpenStack Cloud 7 x86_64" update_tag="OpenStack-Cloud-7">
+		<products>
+			<product_id name="suse-openstack-cloud" version="7">1381</product_id>
 		</products>
 	</channel>
 </channels>
