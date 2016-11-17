@@ -610,8 +610,12 @@ public class HardwareMapper {
             }
             else {
                 virtualInstances.forEach(virtualInstance -> {
-                    VirtualManager.updateGuestVirtualInstance(virtualInstance,
-                            server.getName(),
+                    String name = virtualInstance.getName();
+                    if (StringUtils.isBlank(name)) {
+                        // use minion name only when the hypervisor name is unknown
+                        name = server.getName();
+                    }
+                    VirtualManager.updateGuestVirtualInstance(virtualInstance, name,
                             VirtualInstanceFactory.getInstance().getRunningState(),
                             virtualInstance.getHostSystem(), server);
                 });
