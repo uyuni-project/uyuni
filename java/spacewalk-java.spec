@@ -634,6 +634,7 @@ install -d $RPM_BUILD_ROOT/srv/susemanager/salt
 install -d $RPM_BUILD_ROOT/srv/susemanager/salt/salt_ssh
 install -d $RPM_BUILD_ROOT/srv/susemanager/pillar
 install -d $RPM_BUILD_ROOT/srv/susemanager/pillar_data
+install -d $RPM_BUILD_ROOT/srv/susemanager/formula_data
 
 %if 0%{?fedora}
 echo "hibernate.cache.region.factory_class=net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory" >> conf/default/rhn_hibernate.conf
@@ -832,6 +833,7 @@ fi
 %dir /srv/susemanager/salt
 %dir /srv/susemanager/pillar
 %dir /srv/susemanager/pillar_data
+%dir /srv/susemanager/formula_data
 %dir %{appdir}/rhn/
 %{appdir}/rhn/apidoc/
 %{appdir}/rhn/css/
