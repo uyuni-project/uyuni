@@ -305,7 +305,7 @@ class redirectException(Exception):
 
 Explain = _("""
      An error has occurred while processing your request. If this problem
-     persists please enter a bug report at bugzilla.novell.com.
+     persists please enter a bug report at scc.suse.com.
      If you choose to submit the bug report, please be sure to include
      details of what you were trying to do when this error occurred and
      details on how to reproduce this problem.
