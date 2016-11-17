@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.BaseManager;
 
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
 
-import org.apache.commons.lang.StringUtils;
 import java.util.List;
 import java.util.Map;
 
@@ -177,10 +176,6 @@ public class VirtualManager extends BaseManager {
                 !oldHost.equals(host) || !oldGuest.equals(guest) ||
                 !name.equals(virtualInstance.getName()) ||
                 !virtualInstance.getState().equals(state)) {
-            if (host == null && !StringUtils.isBlank(virtualInstance.getName())) {
-                // keep the name reported by the hypervisor
-                name = virtualInstance.getName();
-            }
             VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(virtualInstance);
             addGuestVirtualInstance(virtualInstance.getUuid(), name,
                     virtualInstance.getType(), state, host, guest);
