@@ -90,13 +90,15 @@ public class VirtualManager extends BaseManager {
             if (type == null) { // fallback
                 type = vinst.getParaVirtType();
             }
-            VirtualInstanceState state = vinst.getState(info.getGuestProperties().getState())
+            VirtualInstanceState state = vinst.getState(
+                    info.getGuestProperties().getState())
                     .orElseGet(vinst::getUnknownState);
 
             List<VirtualInstance> virtualInstances =
                     vinst.lookupVirtualInstanceByUuid(uuid);
 
-            if (virtualInstances.isEmpty() && info.getEventType().equals(EVENT_TYPE_EXISTS)) {
+            if (virtualInstances.isEmpty() && info.getEventType()
+                    .equals(EVENT_TYPE_EXISTS)) {
                 addGuestVirtualInstance(uuid, name, type, state, server, null);
             }
             else if (info.getEventType().equals(EVENT_TYPE_EXISTS)) {
@@ -106,9 +108,9 @@ public class VirtualManager extends BaseManager {
             }
             else if (info.getEventType().equals(EVENT_TYPE_REMOVED)) {
                 virtualInstances.stream().forEach(virtualInstance ->
-                    vinst.deleteVirtualInstanceOnly(virtualInstance));
+                vinst.deleteVirtualInstanceOnly(virtualInstance));
             }
-        };
+        }
 
         for (String uuid : uuidsToRemove) {
             List<VirtualInstance> virtualInstances =
