@@ -1,22 +1,13 @@
 # -*- coding: utf-8 -*-
 '''
-Retrieve SUSE Manager pillar data by the ID. File format is: <prefix>_<minion_id>.sls
-Adds formula pillar data.
-
-Parameters:
-    path - Path where SUSE Manager stores pillar data
-    official_form_path - Path were SUSE Manager stores formula layouts
-    custom_form_path - Path were Customer stores formula layouts
-    formula_data_path - Path were SUSE Manager stores formula data
+Retrieve SUSE Manager pillar data for a minion_id.
+- Adds generated and static SUSE Manager pillar data.
+- Adds formula pillar data.
 
 .. code-block:: yaml
 
     ext_pillar:
-      - suma_minion:
-        - /srv/susemanager/pillar_data
-        - /usr/share/susemanager/formulas/metadata
-        - /srv/formula_metadata
-        - /srv/susemanager/formula_data
+      - suma_minion: True
 
 '''
 
@@ -26,6 +17,20 @@ import os
 import logging
 import yaml
 import json
+
+# SUSE Manager static pillar paths:
+MANAGER_STATIC_PILLAR_DATA_PATH = '/usr/share/susemanager/pillar_data'
+MANAGER_PILLAR_DATA_PATH = '/srv/susemanager/pillar_data'
+
+# SUSE Manager formulas paths:
+MANAGER_FORMULAS_METADATA_PATH = '/usr/share/susemanager/formulas/metadata'
+CUSTOM_FORMULAS_METADATA_PATH = '/srv/formula_metadata'
+FORMULAS_DATA_PATH = '/srv/susemanager/formula_data'
+
+# SUSE Manager static pillar data.
+MANAGER_STATIC_PILLAR = [
+    'gpgkeys',
+]
 
 # Set up logging
 log = logging.getLogger(__name__)
@@ -38,7 +43,7 @@ def __virtual__():
     return True
 
 
-def ext_pillar(minion_id, pillar, path, official_form_path, custom_form_path, formula_data_path):
+def ext_pillar(minion_id, *args):
     '''
     Find SUMA-related pillars for the registered minions and return the data.
     '''
@@ -46,23 +51,35 @@ def ext_pillar(minion_id, pillar, path, official_form_path, custom_form_path, fo
     log.debug('Getting pillar data for the minion "{0}"'.format(minion_id))
 
     ret = {}
-    data_filename = os.path.join(path, 'pillar_{minion_id}.yml'.format(minion_id=minion_id))
+
+    data_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, 'pillar_{minion_id}.yml'.format(minion_id=minion_id))
     if not os.path.exists(data_filename):
         # during onboarding the file do not exist which is ok
         return ret
+
+    # Including SUSE Manager static pillar data
+    for static_pillar in MANAGER_STATIC_PILLAR:
+        static_pillar_filename = os.path.join(MANAGER_STATIC_PILLAR_DATA_PATH, static_pillar)
+        try:
+            ret.update(yaml.load(open('{0}.yml'.format(static_pillar_filename)).read()))
+        except Exception as exc:
+            log.error('Error accessing "{0}": {1}'.format(static_pillar_filename, exc))
+
+    # Including generated pillar data for this minion
     try:
-        ret = yaml.load(open(data_filename).read())
+        ret.update(yaml.load(open(data_filename).read()))
     except Exception as error:
         log.error('Error accessing "{pillar_file}": {message}'.format(pillar_file=data_filename, message=str(error)))
 
+    # Including formulas into pillar data
     try:
-        ret.update(formula_pillars(minion_id, ret.get("group_ids", []), official_form_path, custom_form_path, formula_data_path))
+        ret.update(formula_pillars(minion_id, ret.get("group_ids", [])))
     except Exception as error:
         log.error('Error accessing formula pillar data: {message}'.format(message=str(error)))
 
     return ret
 
-def formula_pillars(minion_id, group_ids, official_form_path, custom_form_path, formula_data_path):
+def formula_pillars(minion_id, group_ids):
     '''
     Find formula pillars for the minion, merge them and return the data.
     '''
@@ -71,7 +88,7 @@ def formula_pillars(minion_id, group_ids, official_form_path, custom_form_path, 
     formulas = []
 
     # Loading group formulas
-    group_formulas_filename = os.path.join(formula_data_path, "group_formulas.json")
+    group_formulas_filename = os.path.join(FORMULAS_DATA_PATH, "group_formulas.json")
     if os.path.exists(group_formulas_filename):
         try:
             with open(group_formulas_filename) as f:
@@ -84,10 +101,10 @@ def formula_pillars(minion_id, group_ids, official_form_path, custom_form_path, 
         for group in formulas_by_group:
             for formula in formulas_by_group[group]:
                 formulas.append(formula)
-                ret.update(load_formula_pillar(minion_id, group, formula, official_form_path, custom_form_path, formula_data_path))
+                ret.update(load_formula_pillar(minion_id, group, formula))
 
     # Loading minion formulas
-    minion_formulas_filename = os.path.join(formula_data_path, "minion_formulas.json")
+    minion_formulas_filename = os.path.join(FORMULAS_DATA_PATH, "minion_formulas.json")
     if os.path.exists(minion_formulas_filename):
         try:
             with open(minion_formulas_filename) as f:
@@ -97,26 +114,26 @@ def formula_pillars(minion_id, group_ids, official_form_path, custom_form_path, 
                    if formula in formulas:
                         continue
                    formulas.append(formula)
-                   ret.update(load_formula_pillar(minion_id, None, formula, official_form_path, custom_form_path, formula_data_path))
+                   ret.update(load_formula_pillar(minion_id, None, formula))
         except Exception as error:
             log.error('Error loading minion formulas: {message}'.format(message=str(error)))
 
     ret["formulas"] = formulas
     return ret
 
-def load_formula_pillar(minion_id, group_id, formula_name, official_form_path, custom_form_path, formula_data_path):
+def load_formula_pillar(minion_id, group_id, formula_name):
     '''
     Load the data from a specific formula for a minion in a specific group, merge and return it.
     '''
-    layout_filename = os.path.join(official_form_path, formula_name, "form.yml")
+    layout_filename = os.path.join(MANAGER_FORMULAS_METADATA_PATH, formula_name, "form.yml")
     if not os.path.isfile(layout_filename):
-        layout_filename = os.path.join(custom_form_path, formula_name, "form.yml")
+        layout_filename = os.path.join(CUSTOM_FORMULAS_METADATA_PATH, formula_name, "form.yml")
         if not os.path.isfile(layout_filename):
             log.error('Error loading data for formula "{formula}": No form.yml found'.format(formula=formula_name))
             return {}
 
-    group_filename = os.path.join(formula_data_path, "group_pillar", "{id}_{name}.json".format(id=group_id, name=formula_name)) if group_id is not None else None
-    system_filename = os.path.join(formula_data_path, "pillar", "{id}_{name}.json".format(id=minion_id, name=formula_name))
+    group_filename = os.path.join(FORMULAS_DATA_PATH, "group_pillar", "{id}_{name}.json".format(id=group_id, name=formula_name)) if group_id is not None else None
+    system_filename = os.path.join(FORMULAS_DATA_PATH, "pillar", "{id}_{name}.json".format(id=minion_id, name=formula_name))
 
     try:
         layout = yaml.load(open(layout_filename).read())
