@@ -41,7 +41,6 @@ mkdir -p %{buildroot}/usr/share/susemanager/salt/_beacons
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_modules
 mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
 mkdir -p %{buildroot}/usr/share/susemanager/modules/tops
-mkdir -p %{buildroot}/usr/share/susemanager/pillar
 mkdir -p %{buildroot}/usr/share/susemanager/pillar_data
 mkdir -p %{buildroot}/usr/share/susemanager/formulas
 mkdir -p %{buildroot}/usr/share/susemanager/formulas/metadata
@@ -69,7 +68,6 @@ ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
 %defattr(-,root,root)
 %dir /usr/share/susemanager
 /usr/share/susemanager/salt
-/usr/share/susemanager/pillar
 /usr/share/susemanager/pillar_data
 /usr/share/susemanager/modules
 /usr/share/susemanager/modules/pillar
