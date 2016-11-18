@@ -19,7 +19,7 @@ import yaml
 import json
 
 # SUSE Manager static pillar paths:
-MANAGER_STATIC_PILLAR_DATA_PATH = '/usr/share/susemanager/pillar'
+MANAGER_STATIC_PILLAR_DATA_PATH = '/usr/share/susemanager/pillar_data'
 MANAGER_PILLAR_DATA_PATH = '/srv/susemanager/pillar_data'
 
 # SUSE Manager formulas paths:
