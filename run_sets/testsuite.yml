@@ -63,8 +63,8 @@
 - features/xmlrpc_api.feature
 - features/xmlrpc_activationkey.feature
 - features/xmlrpc_channel.feature
-#- features/xmlrpc_VHM.feature THIS NEED REWORK 
-#- features/check_VHM.feature  THIS NEED REWORK 
+- features/xmlrpc_VHM.feature
+- features/check_VHM.feature
 - features/setup_wizard.feature
 - features/change_password.feature
 ###- features/mgr_create_bootstrap_repo.feature
