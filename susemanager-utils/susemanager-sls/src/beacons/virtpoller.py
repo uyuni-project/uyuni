@@ -63,6 +63,7 @@ VIRT_STATE_NAME_MAP = ( 'running',  # VIR_DOMAIN_NOSTATE
 class EventType:
     EXISTS      = 'exists'
     REMOVED     = 'removed'
+    FULLREPORT  = 'fullreport'
 
 class TargetType:
     SYSTEM      = 'system'
@@ -359,6 +360,12 @@ def beacon(config):
         added    = poller_state.get_added()
         removed  = poller_state.get_removed()
         modified = poller_state.get_modified()
+
+        if poller_state.is_expired():
+            item = {'time': int(time.time()),
+                    'event_type': EventType.FULLREPORT,
+                    'target_type': TargetType.DOMAIN }
+            plan.append(item)
 
         for (uuid, data) in added.items():
             item = {'time': int(time.time()),
