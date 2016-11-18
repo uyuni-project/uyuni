@@ -68,43 +68,43 @@ public class VirtualManager extends BaseManager {
     }
 
     /**
-     * Goes through all the vms(guests), creates/updates VirtualInstance entries
+     * Goes through the plan, creates/updates/removes VirtualInstance entries
      * (Server - guests mapping)
      * @param server to be processed
-     * @param vms - guests to be mapped to this server
+     * @param plan - list of actions for guests mapped to this server
      */
-    public static void updateGuestsVirtualInstances(Server server, List<VmInfo> vms) {
+    public static void updateGuestsVirtualInstances(Server server, List<VmInfo> plan) {
         VirtualInstanceFactory vinst = VirtualInstanceFactory.getInstance();
         List<String> uuidsToRemove = new LinkedList<>();
-        for (VmInfo vm : vms) {
-            if (vm.getEventType().equals(EVENT_TYPE_FULLREPORT)) {
+        for (VmInfo info : plan) {
+            if (info.getEventType().equals(EVENT_TYPE_FULLREPORT)) {
                 uuidsToRemove = server.getGuests().stream().map(g -> g.getUuid())
                         .collect(Collectors.toList());
                 continue;
             }
-            String name = vm.getGuestProperties().getName();
-            String uuid = vm.getGuestProperties().getUuid().replace("-", "");
+            String name = info.getGuestProperties().getName();
+            String uuid = info.getGuestProperties().getUuid().replace("-", "");
             uuidsToRemove.remove(uuid);
             VirtualInstanceType type = vinst.getVirtualInstanceType(
-                    vm.getGuestProperties().getVirtType());
+                    info.getGuestProperties().getVirtType());
             if (type == null) { // fallback
                 type = vinst.getParaVirtType();
             }
-            VirtualInstanceState state = vinst.getState(vm.getGuestProperties().getState())
+            VirtualInstanceState state = vinst.getState(info.getGuestProperties().getState())
                     .orElseGet(vinst::getUnknownState);
 
             List<VirtualInstance> virtualInstances =
                     vinst.lookupVirtualInstanceByUuid(uuid);
 
-            if (virtualInstances.isEmpty() && vm.getEventType().equals(EVENT_TYPE_EXISTS)) {
+            if (virtualInstances.isEmpty() && info.getEventType().equals(EVENT_TYPE_EXISTS)) {
                 addGuestVirtualInstance(uuid, name, type, state, server, null);
             }
-            else if (vm.getEventType().equals(EVENT_TYPE_EXISTS)) {
+            else if (info.getEventType().equals(EVENT_TYPE_EXISTS)) {
                 virtualInstances.stream().forEach(virtualInstance ->
                 updateGuestVirtualInstance(virtualInstance, name, state, server,
                         virtualInstance.getGuestSystem()));
             }
-            else if (vm.getEventType().equals(EVENT_TYPE_REMOVED)) {
+            else if (info.getEventType().equals(EVENT_TYPE_REMOVED)) {
                 virtualInstances.stream().forEach(virtualInstance ->
                     vinst.deleteVirtualInstanceOnly(virtualInstance));
             }
