@@ -23,14 +23,17 @@ import com.redhat.rhn.manager.BaseManager;
 
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * VirtualManager
  */
 public class VirtualManager extends BaseManager {
 
+    private static final String EVENT_TYPE_FULLREPORT = "fullreport";
     private static final String EVENT_TYPE_EXISTS = "exists";
     private static final String EVENT_TYPE_REMOVED = "removed";
 
@@ -72,9 +75,16 @@ public class VirtualManager extends BaseManager {
      */
     public static void updateGuestsVirtualInstances(Server server, List<VmInfo> vms) {
         VirtualInstanceFactory vinst = VirtualInstanceFactory.getInstance();
-        vms.forEach(vm -> {
+        List<String> uuidsToRemove = new LinkedList<>();
+        for (VmInfo vm : vms) {
+            if (vm.getEventType().equals(EVENT_TYPE_FULLREPORT)) {
+                uuidsToRemove = server.getGuests().stream().map(g -> g.getUuid())
+                        .collect(Collectors.toList());
+                continue;
+            }
             String name = vm.getGuestProperties().getName();
             String uuid = vm.getGuestProperties().getUuid().replace("-", "");
+            uuidsToRemove.remove(uuid);
             VirtualInstanceType type = vinst.getVirtualInstanceType(
                     vm.getGuestProperties().getVirtType());
             if (type == null) { // fallback
@@ -98,25 +108,38 @@ public class VirtualManager extends BaseManager {
                 virtualInstances.stream().forEach(virtualInstance ->
                     vinst.deleteVirtualInstanceOnly(virtualInstance));
             }
-        });
+        };
+
+        for (String uuid : uuidsToRemove) {
+            List<VirtualInstance> virtualInstances =
+                    vinst.lookupVirtualInstanceByUuid(uuid);
+            virtualInstances.stream().forEach(virtualInstance ->
+                vinst.deleteVirtualInstanceOnly(virtualInstance));
+        }
     }
 
     /**
      * Goes through all the vms(guests), creates/updates VirtualInstance entries
      * (Server - guests mapping)
+     * This function expect to always get a full list of guests running on the host
+     *
      * @param server to be processed
      * @param type - virtualization type to be set to the guests
      * @param vms - guests to be mapped to this server
      */
     public static void updateGuestsVirtualInstances(Server server, VirtualInstanceType type,
             Map<String, String> vms) {
-        VirtualInstanceState st = VirtualInstanceFactory.getInstance().getUnknownState();
+        VirtualInstanceFactory vinst = VirtualInstanceFactory.getInstance();
+        VirtualInstanceState st = vinst.getUnknownState();
+        List<String> uuidsToRemove = server.getGuests().stream().map(g -> g.getUuid())
+                .collect(Collectors.toList());
         vms.entrySet().stream().forEach(
                 vmEntry -> {
                     String name = vmEntry.getKey();
                     String guid = vmEntry.getValue().replaceAll("-", "");
-                    List<VirtualInstance> virtualInstances = VirtualInstanceFactory
-                        .getInstance().lookupVirtualInstanceByUuid(guid);
+                    uuidsToRemove.remove(guid);
+                    List<VirtualInstance> virtualInstances =
+                            vinst.lookupVirtualInstanceByUuid(guid);
 
                     if (virtualInstances.isEmpty()) {
                         addGuestVirtualInstance(guid, name, type, st, server, null);
@@ -127,6 +150,13 @@ public class VirtualManager extends BaseManager {
                                     virtualInstance.getGuestSystem()));
                     }
                 });
+
+        for (String uuid : uuidsToRemove) {
+            List<VirtualInstance> virtualInstances =
+                    vinst.lookupVirtualInstanceByUuid(uuid);
+            virtualInstances.stream().forEach(virtualInstance ->
+                vinst.deleteVirtualInstanceOnly(virtualInstance));
+        }
     }
 
     /**
