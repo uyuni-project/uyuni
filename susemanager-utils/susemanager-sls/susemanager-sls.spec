@@ -41,14 +41,14 @@ mkdir -p %{buildroot}/usr/share/susemanager/salt/_beacons
 mkdir -p %{buildroot}/usr/share/susemanager/salt/_modules
 mkdir -p %{buildroot}/usr/share/susemanager/modules/pillar
 mkdir -p %{buildroot}/usr/share/susemanager/modules/tops
-mkdir -p %{buildroot}/usr/share/susemanager/pillar
+mkdir -p %{buildroot}/usr/share/susemanager/pillar_data
 mkdir -p %{buildroot}/usr/share/susemanager/formulas
 mkdir -p %{buildroot}/usr/share/susemanager/formulas/metadata
 mkdir -p %{buildroot}/srv/formula_metadata
 cp -R salt/* %{buildroot}/usr/share/susemanager/salt
 cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
 cp -R modules/tops/* %{buildroot}/usr/share/susemanager/modules/tops
-cp -R pillar/* %{buildroot}/usr/share/susemanager/pillar
+cp -R pillar_data/* %{buildroot}/usr/share/susemanager/pillar_data
 cp -R formulas/* %{buildroot}/usr/share/susemanager/formulas
 cp -R formula_metadata/* %{buildroot}/srv/formula_metadata
 
@@ -68,7 +68,7 @@ ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
 %defattr(-,root,root)
 %dir /usr/share/susemanager
 /usr/share/susemanager/salt
-/usr/share/susemanager/pillar
+/usr/share/susemanager/pillar_data
 /usr/share/susemanager/modules
 /usr/share/susemanager/modules/pillar
 /usr/share/susemanager/modules/tops
