@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers.utils;
 
+import com.google.gson.JsonElement;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -22,6 +23,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.errors.GenericSaltError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
@@ -91,8 +93,13 @@ public abstract class AbstractMinionBootstrapper {
         try {
             return saltService.bootstrapMinion(params, bootstrapMods, pillarData)
                     .fold(error -> {
-                        LOG.error("Error during bootstrap: " + error.toString());
-                        return new BootstrapResult(false, error.toString());
+                        String errorMessage = decodeStdMessage(error, "stderr");
+                        String outMessage = errorMessage.isEmpty() ?
+                                decodeStdMessage(error, "stdout") : errorMessage;
+                        String responseMessage = outMessage.isEmpty() ?
+                                error.toString() : outMessage;
+                        LOG.error("Error during bootstrap: " + responseMessage);
+                        return new BootstrapResult(false, responseMessage);
                     },
                     result -> {
                         // We have results, check if result = true
@@ -191,6 +198,27 @@ public abstract class AbstractMinionBootstrapper {
                 .orElseGet(
                         () -> new BootstrapResult(true)
                 );
+    }
+
+    /**
+     * Decode the std message from the whole message
+     *
+     * @param error the error Object
+     * @param key the json key of the message to decode (e.g.: sdterr, stdout)
+     * @return the String decoded if it exists
+     */
+    private String decodeStdMessage(Object message, String key) {
+        if (message instanceof GenericSaltError) {
+            JsonElement json = ((GenericSaltError)message).getJson();
+            if (json.isJsonObject() && json.getAsJsonObject().has(key) &&
+                    json.getAsJsonObject().get(key).isJsonPrimitive() &&
+                    json.getAsJsonObject().get(key).getAsJsonPrimitive().isString()) {
+                return json.getAsJsonObject()
+                        .get(key).getAsJsonPrimitive().getAsString();
+            }
+        }
+
+        return message.toString();
     }
 
     /**
