@@ -24,7 +24,6 @@ Then(/^I should see a "([^"]*)" text$/) do |arg1|
     fail unless page.has_content?(debrand_string(arg1))
   end
 end
-
 #
 # Test for text in a snippet textarea
 #
@@ -53,7 +52,10 @@ end
 # Test for a text not allowed in the whole page
 #
 Then(/^I should not see a "([^"]*)" text$/) do |arg1|
-  fail unless page.has_no_content?(arg1)
+  unless page.has_no_content?(arg1)
+    print page.body
+    raise "#{arg1} found on the page! FAIL"
+  end
 end
 
 #
