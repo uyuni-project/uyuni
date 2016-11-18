@@ -101,3 +101,33 @@ Feature: register a salt-minion via bootstrap
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
+ # https://github.com/SUSE/spacewalk/pull/831
+  Scenario: bootstrap a sles minion with wrong hostname
+     Given I am authorized
+     When I follow "Salt"
+     Then I should see a "Bootstrapping" text
+     And I follow "Bootstrapping"
+     Then I should see a "Bootstrap Minions" text
+     And  I enter "not-existing-name" as "hostname"
+     And I enter "22" as "port"
+     And I enter "root" as "user"
+     And I enter "linux" as "password"
+     And I click on "Bootstrap it"
+     And I wait for "15" seconds
+     And I should not see a "GenericSaltError({" text
+     Then I should see a "ssh: Could not resolve hostname not-existing-name: NO adress associated with hostname" text
+
+  Scenario: bootstrap a sles minion with wrong ssh-credentials
+     Given I am authorized
+     When I follow "Salt"
+     Then I should see a "Bootstrapping" text
+     And I follow "Bootstrapping"
+     Then I should see a "Bootstrap Minions" text
+     And I enter the hostname of "sle-minion" as hostname
+     And I enter "22" as "port"
+     And I enter "FRANZ" as "user"
+     And I enter "KAFKA" as "password"
+     And I click on "Bootstrap it"
+     And I wait for "15" seconds
+     And I should not see a "GenericSaltError({" text
+     Then I should see a "ssh: Could not resolve hostname not-existing-name: NO adress associated with hostname" text
