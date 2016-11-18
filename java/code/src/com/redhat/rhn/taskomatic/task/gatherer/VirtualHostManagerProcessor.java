@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.VirtualManager;
+import com.redhat.rhn.manager.system.VirtualInstanceManager;
 
 import com.suse.manager.gatherer.JSONHost;
 import org.apache.commons.lang.RandomStringUtils;
@@ -107,8 +107,9 @@ public class VirtualHostManagerProcessor {
         }
 
         VirtualInstanceType virtType = extractVirtualInstanceType(jsonHost.getType());
-        VirtualManager.updateHostVirtualInstance(server, virtType);
-        VirtualManager.updateGuestsVirtualInstances(server, virtType, jsonHost.getVms());
+        VirtualInstanceManager.updateHostVirtualInstance(server, virtType);
+        VirtualInstanceManager.updateGuestsVirtualInstances(server, virtType,
+                jsonHost.getVms());
     }
 
     /**

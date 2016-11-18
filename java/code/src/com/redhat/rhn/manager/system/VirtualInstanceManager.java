@@ -29,15 +29,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * VirtualManager
+ * VirtualInstanceManager
  */
-public class VirtualManager extends BaseManager {
+public class VirtualInstanceManager extends BaseManager {
 
     private static final String EVENT_TYPE_FULLREPORT = "fullreport";
     private static final String EVENT_TYPE_EXISTS = "exists";
     private static final String EVENT_TYPE_REMOVED = "removed";
 
-    private VirtualManager() {
+    private VirtualInstanceManager() {
     }
 
     /**
@@ -84,6 +84,9 @@ public class VirtualManager extends BaseManager {
             }
             String name = info.getGuestProperties().getName();
             String uuid = info.getGuestProperties().getUuid().replace("-", "");
+            int vCpus = info.getGuestProperties().getVcpus();
+            long memory = info.getGuestProperties().getMemorySize();
+
             uuidsToRemove.remove(uuid);
             VirtualInstanceType type = vinst.getVirtualInstanceType(
                     info.getGuestProperties().getVirtType());
@@ -99,12 +102,13 @@ public class VirtualManager extends BaseManager {
 
             if (virtualInstances.isEmpty() && info.getEventType()
                     .equals(EVENT_TYPE_EXISTS)) {
-                addGuestVirtualInstance(uuid, name, type, state, server, null);
+                addGuestVirtualInstance(uuid, name, type, state, server, null,
+                        vCpus, memory);
             }
             else if (info.getEventType().equals(EVENT_TYPE_EXISTS)) {
                 virtualInstances.stream().forEach(virtualInstance ->
                 updateGuestVirtualInstance(virtualInstance, name, state, server,
-                        virtualInstance.getGuestSystem()));
+                        virtualInstance.getGuestSystem(), vCpus, memory));
             }
             else if (info.getEventType().equals(EVENT_TYPE_REMOVED)) {
                 virtualInstances.stream().forEach(virtualInstance ->
@@ -175,6 +179,25 @@ public class VirtualManager extends BaseManager {
     public static void addGuestVirtualInstance(String vmGuid, String name,
             VirtualInstanceType type, VirtualInstanceState state,
             Server host, Server guest) {
+        addGuestVirtualInstance(vmGuid, name, type, state, host, guest, 0, 0);
+    }
+
+    /**
+     * Creates a new (guest) VirtualInstance for given VM GUID.
+     * Sets given host as a host for this VirtualInstance.
+     *
+     * @param vmGuid - guid of the new VirtualInstance
+     * @param name - name of the guest
+     * @param type - virtualization type of the guest
+     * @param state - guest state
+     * @param host - host to be set as host system for the new VirtualInstance
+     * @param guest - guest to be set as the guest system for the new VirtualInstance
+     * @param vCpus - number of CPUs
+     * @param memory - total Memory
+     */
+    public static void addGuestVirtualInstance(String vmGuid, String name,
+            VirtualInstanceType type, VirtualInstanceState state,
+            Server host, Server guest, int vCpus, long memory) {
         VirtualInstance virtualInstance = new VirtualInstance();
         virtualInstance.setUuid(vmGuid);
         virtualInstance.setConfirmed(1L);
@@ -182,6 +205,8 @@ public class VirtualManager extends BaseManager {
         virtualInstance.setState(state);
         virtualInstance.setName(name);
         virtualInstance.setType(type);
+        virtualInstance.setNumberOfCPUs(vCpus);
+        virtualInstance.setTotalMemory(memory);
 
         if (host != null) {
             // will also set the hostSystem for virtualInstance when present
@@ -202,15 +227,36 @@ public class VirtualManager extends BaseManager {
      */
     public static void updateGuestVirtualInstance(VirtualInstance virtualInstance,
             String name, VirtualInstanceState state, Server host, Server guest) {
+        updateGuestVirtualInstance(virtualInstance, name, state, host, guest, 0, 0);
+    }
+
+    /**
+     * Update mapping of given guest VirtualInstance to given (host) Server.
+     * This method removes the old VirtualInstance and creates a new one.
+     * Either host or guest must not be null.
+     *
+     * @param virtualInstance - the virtual instance
+     * @param name - guest name
+     * @param state - instance state
+     * @param host - the host or null
+     * @param guest - the guest or null
+     * @param vCpus - number of CPUs
+     * @param memory - total memory
+     */
+    public static void updateGuestVirtualInstance(VirtualInstance virtualInstance,
+            String name, VirtualInstanceState state, Server host, Server guest,
+            int vCpus, long memory) {
         Server oldHost = virtualInstance.getHostSystem();
         Server oldGuest = virtualInstance.getGuestSystem();
         if (oldHost == null || oldGuest == null ||
                 !oldHost.equals(host) || !oldGuest.equals(guest) ||
                 !name.equals(virtualInstance.getName()) ||
-                !virtualInstance.getState().equals(state)) {
+                !virtualInstance.getState().equals(state) ||
+                !virtualInstance.getNumberOfCPUs().equals(vCpus) ||
+                !virtualInstance.getTotalMemory().equals(memory)) {
             VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(virtualInstance);
             addGuestVirtualInstance(virtualInstance.getUuid(), name,
-                    virtualInstance.getType(), state, host, guest);
+                    virtualInstance.getType(), state, host, guest, vCpus, memory);
         }
     }
 }
