@@ -30,7 +30,7 @@ public class GuestProperties {
 
     private final String uuid;
 
-    private final long vcpus;
+    private final int vcpus;
 
     @SerializedName("virt_type")
     private final String virtType;
@@ -46,7 +46,7 @@ public class GuestProperties {
      * @param virtTypeIn virt type of the guest
      */
     public GuestProperties(long memorySizeIn, String nameIn, String stateIn, String uuidIn,
-            long vcpusIn, String virtTypeIn) {
+            int vcpusIn, String virtTypeIn) {
         this.memorySize = memorySizeIn;
         this.name = nameIn;
         this.state = stateIn;
@@ -86,7 +86,7 @@ public class GuestProperties {
     /**
      * @return the vcpus
      */
-    public long getVcpus() {
+    public int getVcpus() {
         return vcpus;
     }
 

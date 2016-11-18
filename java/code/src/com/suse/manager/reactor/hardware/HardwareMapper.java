@@ -31,7 +31,7 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.VirtualManager;
+import com.redhat.rhn.manager.system.VirtualInstanceManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltGrains;
@@ -604,9 +604,9 @@ public class HardwareMapper {
                     .lookupVirtualInstanceByUuid(virtUuid);
 
             if (virtualInstances.isEmpty()) {
-                VirtualManager.addGuestVirtualInstance(virtUuid, server.getName(), type,
-                        VirtualInstanceFactory.getInstance().getRunningState(), null,
-                        server);
+                VirtualInstanceManager.addGuestVirtualInstance(virtUuid, server.getName(),
+                        type, VirtualInstanceFactory.getInstance().getRunningState(),
+                        null, server);
             }
             else {
                 virtualInstances.forEach(virtualInstance -> {
@@ -615,7 +615,7 @@ public class HardwareMapper {
                         // use minion name only when the hypervisor name is unknown
                         name = server.getName();
                     }
-                    VirtualManager.updateGuestVirtualInstance(virtualInstance, name,
+                    VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
                             VirtualInstanceFactory.getInstance().getRunningState(),
                             virtualInstance.getHostSystem(), server);
                 });
