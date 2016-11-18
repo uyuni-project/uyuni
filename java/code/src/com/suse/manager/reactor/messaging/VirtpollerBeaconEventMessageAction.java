@@ -18,7 +18,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
-import com.redhat.rhn.manager.system.VirtualManager;
+import com.redhat.rhn.manager.system.VirtualInstanceManager;
 
 /**
  * Virtpoller Beacon Event Action Handler
@@ -33,9 +33,9 @@ public class VirtpollerBeaconEventMessageAction extends AbstractDatabaseAction {
         VirtpollerBeaconEventMessage vMsg = (VirtpollerBeaconEventMessage) msg;
 
         MinionServerFactory.findByMinionId(vMsg.getMinionId()).ifPresent(minion -> {
-            VirtualManager.updateHostVirtualInstance(minion,
+            VirtualInstanceManager.updateHostVirtualInstance(minion,
                     VirtualInstanceFactory.getInstance().getFullyVirtType());
-            VirtualManager.updateGuestsVirtualInstances(minion,
+            VirtualInstanceManager.updateGuestsVirtualInstances(minion,
                     vMsg.getVirtpollerData().getPlan());
         });
     }
