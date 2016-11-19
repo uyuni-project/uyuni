@@ -188,9 +188,11 @@ public class BaseRepoCommand {
      * in the org
      * @throws InvalidCertificateException in case client key is set,
      * but client certificate is missing
+     * @throws InvalidRepoTypeException in case repo wih given type already exists
+     * in the org
      */
     public void store() throws InvalidRepoUrlException, InvalidRepoLabelException,
-            InvalidCertificateException {
+            InvalidCertificateException, InvalidRepoTypeException {
 
         SslCryptoKey caCert = lookupSslCryptoKey(sslCaCertId, org);
         SslCryptoKey clientCert = lookupSslCryptoKey(sslClientCertId, org);
@@ -237,11 +239,6 @@ public class BaseRepoCommand {
         }
 
         repo.setOrg(org);
-        ContentSourceType cst = ChannelFactory.lookupContentSourceType(this.type);
-        if (cst == null) {
-            throw new InvalidRepoTypeException(this.type);
-        }
-        repo.setType(cst);
 
         if (this.label != null && !this.label.equals(repo.getLabel())) {
             if (ChannelFactory.lookupContentSourceByOrgAndLabel(org, label) != null) {
@@ -250,12 +247,22 @@ public class BaseRepoCommand {
             repo.setLabel(this.label);
         }
 
-        if (this.url != null && !this.url.equals(repo.getSourceUrl())) {
-            if (!ChannelFactory.lookupContentSourceByOrgAndRepo(org,
-                    ChannelFactory.lookupContentSourceType(this.type), url).isEmpty()) {
-                throw new InvalidRepoUrlException(url);
+        if (this.url != null && this.type != null) {
+            ContentSourceType cst = ChannelFactory.lookupContentSourceType(this.type);
+            boolean alreadyExists = !ChannelFactory.lookupContentSourceByOrgAndRepo(
+                    org, cst, url).isEmpty();
+            if (!this.url.equals(repo.getSourceUrl())) {
+                if (alreadyExists) {
+                    throw new InvalidRepoUrlException(url);
+                }
+                repo.setSourceUrl(this.url);
             }
-            repo.setSourceUrl(this.url);
+            if (!cst.equals(repo.getType())) {
+                if (alreadyExists) {
+                    throw new InvalidRepoTypeException(this.type);
+                }
+                repo.setType(cst);
+            }
         }
         repo.setMetadataSigned(this.metadata_signed);
 

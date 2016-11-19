@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.redhat.rhn.domain.channel.ContentSourceType;
+import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoTypeException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -116,7 +117,9 @@ public class RepoDetailsAction extends RhnAction {
                     ContentSource repo = submit(request, errors, form);
                     if (!errors.isEmpty()) {
                         addErrors(request, errors);
+                        setupContentTypes(ctx);
                         setupCryptoKeys(ctx);
+                        bindRepo(request, repo);
                         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
                     }
                     if (isCreateMode(request)) {
@@ -359,6 +362,10 @@ public class RepoDetailsAction extends RhnAction {
         catch (InvalidCertificateException e) {
             errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                     "edit.channel.repo.clientcertmissing"));
+        }
+        catch (InvalidRepoTypeException e) {
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                    "edit.channel.repo.invalidrepotype", repoCmd.getType()));
         }
         catch (InvalidParameterException e) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,

@@ -1,6 +1,6 @@
 Summary: DNF plugin for Spacewalk
 Name: dnf-plugin-spacewalk
-Version: 2.6.1
+Version: 2.7.2
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -70,6 +70,14 @@ install -m 644 man/dnf.plugin.spacewalk.8 %{buildroot}%{_mandir}/man8/
 %endif
 
 %changelog
+* Wed Nov 16 2016 Gennadii Altukhov <galt@redhat.com> 2.7.2-1
+- reverted 2030f2f6b1efb82bda06676fbf22ab3716e890e5. A new API call is not
+  available yet in Fedora 23/24.
+
+* Tue Nov 15 2016 Gennadii Altukhov <galt@redhat.com> 2.7.1-1
+- remove workaround  for BZ 1218071
+- Bumping package versions for 2.7.
+
 * Fri Sep 23 2016 Michael Mraka <michael.mraka@redhat.com> 2.6.1-1
 - fixed rpmlint warnings
 - 1342491 - remove dependency on python2 on F23+
