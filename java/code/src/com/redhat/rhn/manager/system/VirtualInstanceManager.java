@@ -227,7 +227,16 @@ public class VirtualInstanceManager extends BaseManager {
      */
     public static void updateGuestVirtualInstance(VirtualInstance virtualInstance,
             String name, VirtualInstanceState state, Server host, Server guest) {
-        updateGuestVirtualInstance(virtualInstance, name, state, host, guest, 0, 0);
+        int vCpu = 0;
+        long memory = 0;
+        if (virtualInstance.getNumberOfCPUs() != null) {
+            vCpu = virtualInstance.getNumberOfCPUs().intValue();
+        }
+        if (virtualInstance.getTotalMemory() != null) {
+            memory = virtualInstance.getTotalMemory().longValue();
+        }
+        updateGuestVirtualInstance(virtualInstance, name, state, host, guest, vCpu,
+                memory);
     }
 
     /**
