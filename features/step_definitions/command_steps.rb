@@ -72,6 +72,11 @@ end
 
 Then(/^I restart the spacewalk service$/) do
   sshcmd("spacewalk-service restart")
+  sleep(2)
+end
+
+Then(/^I shutdown the spacewalk service$/) do
+  sshcmd("spacewalk-service stop")
 end
 
 Then(/^I execute spacewalk-debug on the server$/) do
