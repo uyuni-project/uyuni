@@ -44,6 +44,7 @@
 - features/install_errata-npn.feature
 - features/clone_channel-npn.feature
 - features/openscap_audit.feature
+- features/smdba.feature
 #- features/spacewalk_repo_sync.feature
 - features/scc-sync-channels.feature
 - features/systemspage2.feature
@@ -71,6 +72,5 @@
 - features/change_password.feature
 - features/spacewalk-debug.feature
 - features/tomcat_errors.feature
-- features/smdba.feature
 #- features/mgr_create_bootstrap_repo.feature
 - features/security.feature
