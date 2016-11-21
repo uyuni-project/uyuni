@@ -44,4 +44,5 @@ def changepass(scenario, password)
     sleep(5)
     fill_in "desiredpasswordConfirm", :with => "admin"
   end
-  click
+  click_button "Update"
+end
