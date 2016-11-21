@@ -17,7 +17,10 @@
                 <rhn:icon type="errata-enhance" title="erratalist.jsp.productenhancementadvisory" />
             </c:if>
         </rl:column>
-        <rl:column headerkey="erratalist.jsp.advisory">
+        <rl:column headerkey="erratalist.jsp.advisory"
+                   sortable="true"
+                   sortattr="advisoryName"
+                   defaultsort="asc">
             <a href="/rhn/errata/details/Details.do?eid=${current.id}">${current.advisoryName}</a>
         </rl:column>
         <rl:column headerkey="erratalist.jsp.synopsis"
@@ -30,26 +33,12 @@
                    styleclass="text-align: center;">
             <a href="/rhn/errata/details/SystemsAffected.do?eid=${current.id}">${current.affectedSystemCount}</a>
         </rl:column>
-
-                <c:if test="${displayCves}">
-                         <rl:column headerkey="erratalist.jsp.updated"
-                                sortable="true"
-                                sortattr="updateDateObj"
-                                styleclass="text-align: center;">
-                                    ${current.updateDate}
-                                </rl:column>
-                </c:if>
-                <c:if test="${not displayCves}">
-                          <rl:column headerkey="erratalist.jsp.updated"
-                                sortable="true"
-                                sortattr="updateDateObj"
-                                styleclass="text-align: center;">
-                                    ${current.updateDate}
-                                </rl:column>
-                </c:if>
-
-
-
+        <rl:column headerkey="erratalist.jsp.updated"
+                   sortable="true"
+                   sortattr="updateDateObj"
+                   styleclass="text-align: center;">
+            ${current.updateDate}
+        </rl:column>
 
         <c:if test="${displayCves}">
 
