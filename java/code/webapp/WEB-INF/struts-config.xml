@@ -4336,7 +4336,7 @@
         name="virtualGuestsForm"
         type="com.redhat.rhn.frontend.action.systems.virtualization.VirtualGuestsListSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="not system_is_virtual(); system_has_management_entitlement()"/>
+        <set-property property="acls" value="not system_is_virtual(); system_has_management_entitlement() or system_has_salt_entitlement()"/>
         <forward name="default"
                  path="/WEB-INF/pages/systems/details/virtualization/virtualguestslist.jsp"/>
     </action>
