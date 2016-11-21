@@ -36,6 +36,10 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -280,6 +284,14 @@ public class SystemDetailsEditAction extends RhnAction {
                 SystemManager.removeServerEntitlement(s.getId(), e);
 
                 needsSnapshot = true;
+            }
+            if (e instanceof VirtualizationEntitlement) {
+                // regenerate pillar data when VirtualizationEntitlement changed
+                s.asMinionServer().ifPresent(minion -> {
+                    SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+                    SaltService.INSTANCE.refreshPillar(
+                            new MinionList(minion.getMinionId()));
+                });
             }
         }
 
