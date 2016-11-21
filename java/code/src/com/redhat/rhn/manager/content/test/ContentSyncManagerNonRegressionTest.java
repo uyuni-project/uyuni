@@ -68,7 +68,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         add("Moblin-2.1-MSI"); add("SLES-EC2"); add("JBEAP");
         add("SUSE"); add("20082"); add("MEEGO-1"); add("ZLM7");
         add("SLE-HAS"); add("SLES-X86-VMWARE"); add("13319");
-        add("18962"); add("AiO"); add("SLES-PPC");
+        add("18962"); add("AiO"); add("AiO-PPC"); add("SLES-PPC");
         add("10040"); add("SLESMT"); add("NAM-AGA");
         add("STUDIOONSITE"); add("SLMS"); add("SLES-Z");
         add("RES-HA"); add("SLE-HAE-IA"); add("WEBYAST");
@@ -146,12 +146,23 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 }
 
                 if (baseExpected) {
+                    if (!failures.isEmpty()) {
+                        // stop here to not show too many errros in the console
+                        break;
+                    }
                     while (actualExtensions.hasNext()) {
                         failures.add("Base product " + actualBase.toString() + " found to have extension " + actualExtensions.next().toString()
                                 + " which was not expected");
                     }
 
-                    actualBase = actualProducts.next();
+                    if (actualProducts.hasNext()) {
+                        actualBase = actualProducts.next();
+                    }
+                    else {
+                        failures.add("Expected base product " + friendlyName + " but there is no more product available.");
+                        break;
+                    }
+
 
                     checkProductMatches(friendlyName, version, arch, channelLabels, actualBase, null);
 
