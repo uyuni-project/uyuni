@@ -449,6 +449,48 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests that VirtualHostManagerProcessor removes VirtualInstance
+     * entity for VM(s) when not anymore reported from gatherer.
+     */
+    public void testGuestRemoved() {
+
+        JSONHost myHost = createMinimalHost("esx_host_1",
+                pairsToMap("vm1", "uuid1", "vm2", "uuid2"));
+        Map<String, JSONHost> data = new HashMap<>();
+        data.put(TestUtils.randomString(), myHost);
+
+        new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
+
+        Server newHost = ServerFactory
+                .lookupForeignSystemByDigitalServerId("101-esx_host_1");
+        List<VirtualInstance> guestVM1 = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid("uuid1");
+        assertEquals(1, guestVM1.size());
+        assertEquals(guestVM1.get(0).getHostSystem(), newHost);
+
+        List<VirtualInstance> guestVM2 = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid("uuid2");
+        assertEquals(1, guestVM2.size());
+        assertEquals(guestVM2.get(0).getHostSystem(), newHost);
+
+        // vm2 was removed from this host
+        myHost.setVms(pairsToMap("vm1", "uuid1"));
+
+        new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
+
+        newHost = ServerFactory
+                .lookupForeignSystemByDigitalServerId("101-esx_host_1");
+        guestVM1 = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid("uuid1");
+        assertEquals(1, guestVM1.size());
+        assertEquals(guestVM1.get(0).getHostSystem(), newHost);
+
+        guestVM2 = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid("uuid2");
+        assertTrue(guestVM2.isEmpty());
+    }
+
+    /**
      * Creates a map representing the parsed result from gatherer run on one virtual host
      * manager with one virtual host.
      *

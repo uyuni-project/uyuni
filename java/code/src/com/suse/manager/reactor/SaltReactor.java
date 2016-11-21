@@ -19,6 +19,9 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
+
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.reactor.messaging.ActionScheduledEventMessageAction;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -27,6 +30,8 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
+import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
+import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
@@ -38,6 +43,7 @@ import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BeaconEvent;
 import com.suse.salt.netapi.event.EventListener;
@@ -45,10 +51,12 @@ import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.event.MinionStartEvent;
 import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.parser.JsonParser;
 
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -101,6 +109,8 @@ public class SaltReactor implements EventListener {
                 RefreshGeneratedSaltFilesEventMessage.class);
         MessageQueue.registerAction(new RunnableEventMessageAction(),
                 RunnableEventMessage.class);
+        MessageQueue.registerAction(new VirtpollerBeaconEventMessageAction(),
+                VirtpollerBeaconEventMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
@@ -242,6 +252,14 @@ public class SaltReactor implements EventListener {
                                         minionServer)
                             );
                 }));
+            }
+            else if (beaconEvent.getBeacon().equals("virtpoller")) {
+                TypeToken<Map<String, JsonElement>> tt =
+                        new TypeToken<Map<String, JsonElement>>() { };
+                Map<String, JsonElement> data = beaconEvent.getData(tt);
+                MessageQueue.publish(new VirtpollerBeaconEventMessage(
+                        beaconEvent.getMinionId(),
+                        JsonParser.GSON.fromJson(data.get("data"), VirtpollerData.class)));
             }
         };
     }
