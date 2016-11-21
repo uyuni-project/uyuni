@@ -6,6 +6,9 @@ Feature: smdba database helper tool
   As a Database administrator
   I want to easily take backups and snapshots
 
+  Scenario: shutdown spacewalk services
+    Then I shutdown the spacewalk service
+
   Scenario: Check embedded database running
     Given a postgresql database is running
     When I start database with the command "smdba db-start"
@@ -83,3 +86,6 @@ Feature: smdba database helper tool
     And database "susemanager" has no table "dummy"
     Then I disable backup in the directory "/smdba-backup-test" 
     And I remove backup directory "/smdba-backup-test"
+
+  Scenario: start spacewalk services
+    Then I restart the spacewalk service
