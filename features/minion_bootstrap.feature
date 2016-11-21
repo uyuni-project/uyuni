@@ -101,7 +101,8 @@ Feature: register a salt-minion via bootstrap
      Then I should see a "Bootstrapping" text
      And I follow "Bootstrapping"
      Then I should see a "Bootstrap Minions" text
-     And  I enter "not-existing-name" as "hostname"
+     And  I enter the hostname of "sle-minion" as hostname
+     And I enter "22" as "port"
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
@@ -154,7 +155,7 @@ Feature: register a salt-minion via bootstrap
      Then I should see a "Bootstrapping" text
      And I follow "Bootstrapping"
      Then I should see a "Bootstrap Minions" text
-     And  I enter "\`dmesg\`" as "hostname"
+     And  I enter "`dmesg`" as "hostname"
      And I enter "22" as "port"
      And I enter "FRANZ" as "user"
      And I enter "KAFKA" as "password"
@@ -175,4 +176,5 @@ Feature: register a salt-minion via bootstrap
      And I click on "Bootstrap it"
      And I wait for "30" seconds
      And I should not see a "GenericSaltError({" text
-     Then I should see a "ssh: connect to host minsles12sp1-1.tf.local port 11: Connection refused" text
+     And I should see a "ssh: connect to host" text
+     Then I should see a "port 11: Connection refused" text
