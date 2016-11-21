@@ -19,7 +19,7 @@ def changepass(scenario, password)
 
   signout = find(:xpath, "//a[@href='/rhn/Logout.do']")
   signout.click if signout
-  # sometimes race condition, 
+  # sometimes race condition,
   # Unable to find field "username" (Capybara::ElementNotFound)
   begin
     fill_in "username", :with => "admin"

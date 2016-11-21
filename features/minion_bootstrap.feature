@@ -95,12 +95,30 @@ Feature: register a salt-minion via bootstrap
      Given I am on the Systems page
      Then I should see a "SLES11-SP3-Updates x86_64 Channel" text
 
+  Scenario: bootstrap should fail: minion_id already existing
+     Given I am authorized
+     When I follow "Salt"
+     Then I should see a "Bootstrapping" text
+     And I follow "Bootstrapping"
+     Then I should see a "Bootstrap Minions" text
+     And  I enter "not-existing-name" as "hostname"
+     And I enter "22" as "port"
+     And I enter "root" as "user"
+     And I enter "linux" as "password"
+     And I click on "Bootstrap it"
+     And I wait for "5" seconds
+     And I should not see a "GenericSaltError({" text
+     And I should see a "A salt key for this host" text
+     And I should see a "seems to already exist, please check!" text
+
   Scenario: Delete minion system profile
     Given I am on the Systems overview page of this minion
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
+
+
  # https://github.com/SUSE/spacewalk/pull/831
   Scenario: bootstrap a sles minion with wrong hostname
      Given I am authorized
@@ -115,7 +133,7 @@ Feature: register a salt-minion via bootstrap
      And I click on "Bootstrap it"
      And I wait for "15" seconds
      And I should not see a "GenericSaltError({" text
-     Then I should see a "ssh: Could not resolve hostname not-existing-name: NO adress associated with hostname" text
+     Then I should see a " Could not resolve hostname not-existing-name: Name or service not known" text
 
   Scenario: bootstrap a sles minion with wrong ssh-credentials
      Given I am authorized
@@ -130,4 +148,33 @@ Feature: register a salt-minion via bootstrap
      And I click on "Bootstrap it"
      And I wait for "15" seconds
      And I should not see a "GenericSaltError({" text
-     Then I should see a "ssh: Could not resolve hostname not-existing-name: NO adress associated with hostname" text
+     Then I should see a "Permission denied (publickey,keyboard-interactive)." text
+
+  Scenario: running command as user salt is forbidden.
+   Given I am authorized
+     When I follow "Salt"
+     Then I should see a "Bootstrapping" text
+     And I follow "Bootstrapping"
+     Then I should see a "Bootstrap Minions" text
+     And  I enter "\`dmesg\`" as "hostname"
+     And I enter "22" as "port"
+     And I enter "FRANZ" as "user"
+     And I enter "KAFKA" as "password"
+     And I click on "Bootstrap it"
+     And I wait for "15" seconds
+     And I should not see a "dmesg: read kernel buffer failed:" text
+
+  Scenario: bootstrap a sles minion with wrong ssh-credentials
+     Given I am authorized
+     When I follow "Salt"
+     Then I should see a "Bootstrapping" text
+     And I follow "Bootstrapping"
+     Then I should see a "Bootstrap Minions" text
+     And I enter the hostname of "sle-minion" as hostname
+     And I enter "11" as "port"
+     And I enter "root" as "user"
+     And I enter "linux" as "password"
+     And I click on "Bootstrap it"
+     And I wait for "30" seconds
+     And I should not see a "GenericSaltError({" text
+     Then I should see a "ssh: connect to host minsles12sp1-1.tf.local port 11: Connection refused" text
