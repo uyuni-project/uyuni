@@ -12,6 +12,7 @@ After('@revertgoodpass') do |scenario|
   changepass(scenario, 'GoodPass')
 end
 
+
 def changepass(scenario, password)
   # only change the password if the wrong worked.
   # (Guard clause)
@@ -19,22 +20,28 @@ def changepass(scenario, password)
 
   signout = find(:xpath, "//a[@href='/rhn/Logout.do']")
   signout.click if signout
-  fill_in "username", :with => "admin"
+  # sometimes race condition, 
+  # Unable to find field "username" (Capybara::ElementNotFound)
+  begin
+    fill_in "username", :with => "admin"
+  rescue
+    sleep(5)
+    fill_in "username", :with => "admin"
+  end
   fill_in "password", :with => password
   click_button "Sign In"
   find_link("Your Account").click
-  sleep(2)
+  sleep(5)
   begin
     fill_in "desiredpassword", :with => "admin"
   rescue
-    sleep(2)
+    sleep(5)
     fill_in "desiredpassword", :with => "admin"
   end
   begin
     fill_in "desiredpasswordConfirm", :with => "admin"
   rescue
-    sleep(2)
+    sleep(5)
     fill_in "desiredpasswordConfirm", :with => "admin"
   end
-  click_button "Update"
-end
+  click
