@@ -134,14 +134,14 @@ Feature: Create a configuration channel
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
-    And I click on "Copy Latest to Central Channel"
+    And I click on "Copy to Centrally-Managed Files"
     And I check "New Test Channel" in the list
     And I click on "Copy To Central Channels"
     Then I should see a "1 file copied into 1 central configuration channel" text
     And I should see a table line with "/etc/mgr-test-file.cnf", "Revision 2"
     And I follow "Local Sandbox" in the content area
     And I check "/etc/sysconfig/bootsplash" in the list
-    And I click on "Copy Latest to Central Channel"
+    And I click on "Copy to Centrally-Managed Files"
     And I check "New Test Channel" in the list
     And I click on "Copy To Central Channels"
     Then I should see a "1 file copied into 1 central configuration channel" text
