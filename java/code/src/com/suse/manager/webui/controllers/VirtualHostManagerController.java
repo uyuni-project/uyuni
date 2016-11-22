@@ -166,8 +166,8 @@ public class VirtualHostManagerController {
             message = "Virtual Host Manager with id '" + id + "' couldn't be found.";
         }
         else {
+            message = "Virtual Host Manager '" + virtualHostManager.getLabel() + "' has been deleted.";
             getFactory().delete(virtualHostManager);
-            message = "Virtual Host Manager with id '" + id + "' has been deleted.";
         }
         FlashScopeHelper.flash(request, message);
         response.redirect("/rhn/manager/vhms");
