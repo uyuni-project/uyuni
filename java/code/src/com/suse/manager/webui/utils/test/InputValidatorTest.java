@@ -27,6 +27,12 @@ import junit.framework.TestCase;
  */
 public class InputValidatorTest extends TestCase {
 
+    private static final String HOST_ERROR_MESSAGE = "Invalid host name.";
+    private static final String USER_ERROR_MESSAGE = "Non-valid user. Allowed characters" +
+            " are: letters, numbers, '.', '\\' and '/'";
+    private static final String PORT_ERROR_MESSAGE = "Port must be a number within range" +
+            " 1-65535.";
+
     /**
      * Test the check for required fields.
      */
@@ -35,8 +41,8 @@ public class InputValidatorTest extends TestCase {
         JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 2);
-        assertTrue(validationErrors.contains("Host is required."));
-        assertTrue(validationErrors.contains("User is required."));
+        assertTrue(validationErrors.contains(HOST_ERROR_MESSAGE));
+        assertTrue(validationErrors.contains(USER_ERROR_MESSAGE));
     }
 
     /**
@@ -47,7 +53,7 @@ public class InputValidatorTest extends TestCase {
         JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 1);
-        assertTrue(validationErrors.contains("Host is required."));
+        assertTrue(validationErrors.contains(HOST_ERROR_MESSAGE));
     }
 
     /**
@@ -68,7 +74,7 @@ public class InputValidatorTest extends TestCase {
         JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 1);
-        assertTrue(validationErrors.contains("Given port is not a valid number."));
+        assertTrue(validationErrors.contains(PORT_ERROR_MESSAGE));
     }
 
     /**
@@ -79,13 +85,13 @@ public class InputValidatorTest extends TestCase {
         JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 1);
-        assertTrue(validationErrors.contains("Given port is outside of the valid range (1-65535)."));
+        assertTrue(validationErrors.contains(PORT_ERROR_MESSAGE));
 
         json = "{host: 'host.domain.com', user: 'root', port: '-1'}";
         input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
         validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.size() == 1);
-        assertTrue(validationErrors.contains("Given port is outside of the valid range (1-65535)."));
+        assertTrue(validationErrors.contains(PORT_ERROR_MESSAGE));
     }
 
     /**
