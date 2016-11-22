@@ -13,17 +13,10 @@ After('@revertgoodpass') do |scenario|
 end
 
 def ckUsernameField(timeout)
-  begin
-    fill_in "username", :with => "admin"
-  rescue
+  fill_in "username", :with => "admin"
+rescue
     sleep(timeout)
-    begin
-      fill_in "username", :with => "admin"
-    rescue
-      sleep(timeout)
-      fill_in "username", :with => "admin"
-    end
-  end
+    fill_in "username", :with => "admin"
 end
 
 def changepass(scenario, password)
