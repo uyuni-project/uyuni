@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.taglibs.list;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.html.HtmlTag;
-import com.redhat.rhn.frontend.struts.RequestContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -47,15 +46,9 @@ public class ColumnTag extends BodyTagSupport {
     protected String headerStyle;
     protected String headerClass;
     protected boolean sortable;
-    private String defaultSortDir;
-    private String currentSortDir;
     private String filterAttr;
     private String filterMessage;
     private String width;
-
-
-
-
 
     /**
      * @param widthIn The width to set.
@@ -150,7 +143,6 @@ public class ColumnTag extends BodyTagSupport {
         ListTag parent = (ListTag) BodyTagSupport.findAncestorWithClass(this,
                 ListTag.class);
         int retval = BodyTagSupport.SKIP_BODY;
-        currentSortDir = fetchSortDir();
 
         if (command.equals(ListCommand.ENUMERATE)) {
             parent.addColumn();
@@ -233,7 +225,7 @@ public class ColumnTag extends BodyTagSupport {
                 ListTagUtil.write(pageContext, " ");
             }
 
-            ListTagUtil.write(pageContext, currentSortDir + "Sort");
+            ListTagUtil.write(pageContext, getCurrentSortDir() + "Sort");
 
             ListTagUtil.write(pageContext, "\"");
         }
@@ -260,14 +252,15 @@ public class ColumnTag extends BodyTagSupport {
     }
 
     private boolean isCurrColumnSorted() {
-        return !StringUtils.isEmpty(currentSortDir);
+        return !StringUtils.isEmpty(getCurrentSortDir());
     }
 
     private void writeSortLink() throws JspException {
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
         String sortBy = getSortName();
+        String sortDir = getCurrentSortDir();
         String jsurl = ListTagUtil.makeColumnSortLink(request, getListName(),
-                sortBy, currentSortDir);
+                sortBy, sortDir);
         String href = "<a href=\"javascript:%s\">";
         ListTagUtil.write(pageContext, String.format(href, jsurl));
         writeColumnName();
@@ -286,39 +279,6 @@ public class ColumnTag extends BodyTagSupport {
         else {
             ListTagUtil.write(pageContext, headerText);
         }
-    }
-
-    /**
-     * Gets the active sort direction for the column, or empty string if the list is not
-     * sorted on this column.
-     *
-     * @return Active sort direction for the column
-     */
-    private String fetchSortDir() {
-        String sortName = getSortName();
-
-        ListTag parent = (ListTag) BodyTagSupport.findAncestorWithClass(this,
-                ListTag.class);
-
-        if (isAlphaBarSelected() && parent.getAlphaBarColumn().equals(sortName)) {
-            return RequestContext.SORT_ASC;
-        }
-
-        String requestLabel = pageContext.getRequest().
-                getParameter(ListTagUtil.makeSortByLabel(getListName()));
-
-        if (requestLabel != null && !requestLabel.equals(sortName)) {
-            return "";
-        }
-
-        String sortDirectionKey = ListTagUtil.makeSortDirLabel(getListName());
-        String sortDir = pageContext.getRequest().getParameter(sortDirectionKey);
-
-        if (StringUtils.isBlank(sortDir)) {
-            sortDir = defaultSortDir;
-        }
-
-        return StringUtils.isEmpty(sortDir) ? "" : sortDir;
     }
 
     protected void renderUnbound() throws JspException {
@@ -391,10 +351,6 @@ public class ColumnTag extends BodyTagSupport {
         return sortable && parent.getPageRowCount() > 0;
     }
 
-    private boolean isAlphaBarSelected() {
-        return AlphaBarHelper.getInstance().isSelected(getListName(),
-                        pageContext.getRequest());
-    }
     /**
      * Sets up this column as the defualt for sorting...
      * @param sortDir the sort direction... asc/desc
@@ -402,21 +358,20 @@ public class ColumnTag extends BodyTagSupport {
     public void setDefaultsort(String sortDir) {
         String sortName = getSortName();
         if (!StringUtils.isBlank(sortName)) {
-            ListTag parent = (ListTag)
-                        BodyTagSupport.findAncestorWithClass(this, ListTag.class);
-            DataSetManipulator manip = parent.getManip();
-            if (StringUtils.isBlank(manip.getDefaultSortAttribute())) {
-                defaultSortDir = sortDir;
-                manip.setDefaultSortAttribute(sortAttribute);
-                manip.setDefaultAscending(RequestContext.SORT_ASC.equals(defaultSortDir));
+            ListTag parent = (ListTag) BodyTagSupport.findAncestorWithClass(this,
+                    ListTag.class);
+
+            if (StringUtils.isBlank(parent.getDefaultSortAttr())) {
+                parent.setDefaultsortattr(sortName);
+                parent.setDefaultsortdir(sortDir);
             }
-            else if (!manip.getDefaultSortAttribute().equals(sortName)) {
+            else if (!parent.getDefaultSortAttr().equals(sortName)) {
                 String msg = "Trying to set  column [%s] as the default sort." +
                 "The default sort column has already been set for [%s]." +
                         " Can't reset it to [%s].";
 
                 LOG.warn(String.format(msg, sortName,
-                                        manip.getDefaultSortAttribute(), sortName));
+                                        parent.getDefaultSortAttr(), sortName));
             }
         }
         else {
@@ -424,6 +379,22 @@ public class ColumnTag extends BodyTagSupport {
                         "column that does not have a sortattr or attr tags set. ";
             LOG.warn(msg);
         }
+    }
+
+    /**
+     * Gets current sort direction for this column, or empty string if the list is not
+     * currently sorted on this column
+     *
+     * @return Current sort direction for the column
+     */
+    private String getCurrentSortDir() {
+        ListTag parent = (ListTag) BodyTagSupport.findAncestorWithClass(this,
+                ListTag.class);
+
+        String currSortAttr = parent.getCurrentSortAttr();
+        String currSortDir = parent.getCurrentSortDir();
+
+        return currSortAttr.equals(getSortName()) ? currSortDir : "";
     }
 
     /**
@@ -436,14 +407,12 @@ public class ColumnTag extends BodyTagSupport {
         return attributeName;
     }
 
-
     /**
      * @return Returns the headerClass.
      */
     public String getHeaderClass() {
         return headerClass;
     }
-
 
     /**
      * @param headerClassIn The headerClass to set.
