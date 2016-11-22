@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-16 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Install a patch the client via salt through the UI

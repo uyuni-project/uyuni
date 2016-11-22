@@ -180,3 +180,15 @@ Then(/^Service "([^"]*)" is running on the Server$/) do |service|
     output.chomp!
     fail if output != "active"
 end
+
+When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, target|
+  # add more tearget to this, if needed.
+  if target != "server"
+    raise "ONLY SERVER target supported, implement others!"
+  end 
+  _out, $fail_code = $server.run(cmd, false)
+end
+
+Then(/^the command should fail$/)do
+   raise "Previous command must fail, but has NOT fail!!" if $fail_code.zero?
+end
