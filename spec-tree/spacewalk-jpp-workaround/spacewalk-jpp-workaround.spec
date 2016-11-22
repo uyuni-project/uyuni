@@ -1,5 +1,5 @@
 Name:		spacewalk-jpp-workaround
-Version:	2.3.5
+Version:	2.6.0
 Release:	1%{?dist}
 Summary:	Workaround package to fulfill jpackage broken dependencies
 
