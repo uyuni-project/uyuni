@@ -188,7 +188,7 @@ function humanizeDates() {
         $(this).attr('datetime', datetime);
       }
       // add a tooltip
-      $(this).wrap('<a href="#" data-toggle="tooltip" title="' + originalContent + '"></a>');
+      $(this).attr('title', originalContent);
     }
   });
 }
