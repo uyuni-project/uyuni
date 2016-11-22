@@ -1,7 +1,8 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Register a system to be managed via SSH push
+  Traditional:
   In order to register a system to Spacewalk for being managed via SSH push
   As the testing user
   I want to register a client using spacewalk-ssh-push-init

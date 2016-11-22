@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2014 Novell, Inc.
+# Copyright (c) 2010-2016 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
 #

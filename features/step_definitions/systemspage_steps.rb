@@ -21,7 +21,7 @@ Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |ar
   if ct.distro_exists(arg1)
     raise "distro " + arg1 + " already exists"
   end
-  ct.distro_create(arg1, "/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux", "/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd")
+  ct.distro_create(arg1, "/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux", "install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd")
 end
 
 Given(/distro "([^"]*)" exists/) do |arg1|

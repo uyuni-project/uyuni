@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-16 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Test the remote commands via salt
@@ -31,7 +31,7 @@ Feature: Test the remote commands via salt
   Scenario: Run a remote command from the systems overview page
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
-    Then I follow this client link
+    Then I follow this minion link
     When I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
