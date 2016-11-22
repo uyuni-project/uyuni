@@ -46,26 +46,6 @@ Or look at `rake -T` for available tasks.
 
 Add a file into `run_sets/$name.yml` and then execute `rake cucumber:$name`.
 
-## OWASP ZAP Support
-
-If you set the `ZAP_PROXY` variable to localhost or `127.0.0.1`, the testsuite
-will assume that the proxy runs on the same machine and it will take care
-of starting/stopping it. It will assume ZAP is available at `/usr/share/owasp-zap/zap.sh`
-
-If `ZAP_ACTIVE_ATTACK` is set, additionally an active attack will be performed on the
-server and added to the results.
-
-If a file `zap_ignored.txt` exists, those vulnerabilities will produce no failures.
-A `zap_all.txt` file is generated after each run so that the initial zap_ignored.txt
-can be fed in and maintained.
-
-To run the tests with the security feature use the rake command below in addition 
-to setting the appropriate environment variables:
-
-```console
-rake cucumber:security_test
-```
-
 ## Conventions when adding more tests
 
 * Add required gems to `Gemfile`.
