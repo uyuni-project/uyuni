@@ -21,7 +21,7 @@ And(/^an active attack was performed$/) do
 end
 
 Then(/^there are not security issues$/) do
-  json = $zap.alerts.view
+  $zap.alerts.view
   xml = $zap.alerts.view("XML")
   html_res = $zap.alerts.view("HTML")
   File.open("/root/sec_results.html", "w") { |file| file.write(html_res) }
@@ -78,7 +78,7 @@ Then(/^there are not security issues$/) do
 
   html = StringIO.new
 
-  DISPLAY_ATTRS = [:url, :param, :evidence, :description, :solution, :reference]
+  DISPLAY_ATTRS = [:url, :param, :evidence, :description, :solution, :reference].freeze
 
   grouped = alerts.group_by { |alert| alert[:group] }
   grouped.each do |group, alert_group|
@@ -98,7 +98,6 @@ Then(/^there are not security issues$/) do
 
   grouped.each do |group, alert_group|
     html << "<h3>#{group}</h3>"
-    new_alerts = (unique_alerts - ignored_alerts)
     alert_group.each do |alert|
       next unless ignored_alerts.include?(alert[:unique_key])
       html << "<div style='opacity: 0.5; font-size: 0.8em'>"
