@@ -1,4 +1,4 @@
-# Copyright 2011-2014 SUSE
+# Copyright 2011-2016 SUSE
 
 Given(/^a postgresql database is running$/) do
   $output = sshcmd("file /var/lib/pgsql/data/postgresql.conf", ignore_err: true)

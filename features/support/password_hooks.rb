@@ -12,7 +12,6 @@ After('@revertgoodpass') do |scenario|
   changepass(scenario, 'GoodPass')
 end
 
-
 def changepass(scenario, password)
   # only change the password if the wrong worked.
   # (Guard clause)
