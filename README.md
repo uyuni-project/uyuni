@@ -16,9 +16,8 @@ Testsuite to automatically test a Spacewalk installation
 
 You can run the Spacewalk Testsuite basically with two options:
 
-* with sumaform
-* static setup 
-* with SLEnkins framework 
+* with sumaform (Official way)
+* static setup (means you have the machine already properly configured/provisioned)
 
 ### Run Spacewalk Testsuite with Sumaform 
 
