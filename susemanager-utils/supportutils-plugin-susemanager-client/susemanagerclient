@@ -83,6 +83,7 @@ pconf_files \
     /etc/sysconfig/rhn/image.cfg \
     /etc/sysconfig/rhn/rhnpushrc \
     /etc/sysconfig/rhn/rhnsd \
+    /etc/sysconfig/rhn/systemid \
     /etc/salt/minion \
     /etc/salt/minion.d/master.conf \
     /etc/salt/minion.d/_schedule.conf
