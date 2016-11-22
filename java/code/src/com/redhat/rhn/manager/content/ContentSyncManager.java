@@ -434,7 +434,7 @@ public class ContentSyncManager {
                             SUSEProductFactory.lookupByProductId(product.getId());
                     PackageArch arch = dbProduct.getArch();
                     // and if the base channel arch matches the product arch
-                    if (arch == null || arch.getName().equals(base.getArch())) {
+                    if (arch == null || arch.getLabel().equals(base.getArch())) {
                         // add it to the product map
                         listedProduct =
                                 new ListedProduct(product.getName(), product.getId(),
