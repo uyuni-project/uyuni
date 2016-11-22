@@ -18,7 +18,6 @@ package com.redhat.rhn.frontend.nav;
 import com.redhat.rhn.frontend.html.HtmlTag;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
