@@ -23,7 +23,7 @@
         <rl:listset name="pendingList">
   <rhn:csrf />
 
-        <rl:list emptykey="pendingactions.jsp.nogroups" styleclass="list">
+        <rl:list emptykey="pendingactions.jsp.nogroups" styleclass="list" defaultsortattr="earliestDate" defaultsortdir="asc">
                 <%@ include file="/WEB-INF/pages/common/fragments/scheduledactions/listdisplay-new.jspf" %>
         </rl:list>
                 <rhn:submitted/>
