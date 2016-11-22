@@ -12,6 +12,7 @@ After('@revertgoodpass') do |scenario|
   changepass(scenario, 'GoodPass')
 end
 
+
 def changepass(scenario, password)
   # only change the password if the wrong worked.
   # (Guard clause)
@@ -25,7 +26,12 @@ def changepass(scenario, password)
     fill_in "username", :with => "admin"
   rescue
     sleep(5)
-    fill_in "username", :with => "admin"
+    begin
+      fill_in "username", :with => "admin"
+    rescue
+      sleep(10)
+      fill_in "username", :with => "admin"
+    end
   end
   fill_in "password", :with => password
   click_button "Sign In"
