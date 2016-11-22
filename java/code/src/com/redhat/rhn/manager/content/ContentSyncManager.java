@@ -72,6 +72,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -106,6 +107,8 @@ public class ContentSyncManager {
 
     // Source URL handling
     private static final String OFFICIAL_NOVELL_UPDATE_HOST = "nu.novell.com";
+    private static final List<String> OFFICIAL_UPDATE_HOSTS =
+            Arrays.asList("updates.suse.com", OFFICIAL_NOVELL_UPDATE_HOST);
     private static final String MIRRCRED_QUERY = "credentials=mirrcred";
 
     // Static XML files we parse
@@ -1431,7 +1434,7 @@ public class ContentSyncManager {
         // Look for local file in case of from-dir
         if (Config.get().getString(RESOURCE_PATH) != null) {
             try {
-                if (new File(urlToFSPath(OES_URL)).canRead()) {
+                if (new File(urlToFSPath(OES_URL, null)).canRead()) {
                     return new Credentials();
                 }
             }
@@ -1532,7 +1535,7 @@ public class ContentSyncManager {
      * @throws MalformedURLException
      * @throws ContentSyncException
      */
-    private URI urlToFSPath(String urlString)
+    private URI urlToFSPath(String urlString, String name)
             throws MalformedURLException, ContentSyncException {
         URL url = new URL(urlString);
         String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
@@ -1542,6 +1545,11 @@ public class ContentSyncManager {
             throw new ContentSyncException(
                     String.format("Path \"%s\" does not exists or cannot be read",
                                   sccDataPath));
+        }
+        if (!OFFICIAL_UPDATE_HOSTS.contains(url.getHost()) && name != null) {
+            // everything after the first space are suffixes added to make things unique
+            String[] parts  = name.split("\\s");
+            return new File(dataPath.getAbsolutePath() + "/repo/RPMMD/" + parts[0]).toURI();
         }
 
         return new File(dataPath.getAbsolutePath() + url.getPath()).toURI();
@@ -1560,7 +1568,7 @@ public class ContentSyncManager {
 
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
             try {
-                return this.urlToFSPath(url).toASCIIString();
+                return this.urlToFSPath(url, repo.getName()).toASCIIString();
             }
             catch (MalformedURLException e) {
                 log.error(e.getMessage());
