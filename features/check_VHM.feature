@@ -54,5 +54,5 @@ Feature: Test "virtualhostmanager" Web UI.
     When I follow "Virtual Host Managers"
     And I follow "file-vmware"
     And I click on "Delete Virtual Host Manager"
-    Then I should see a "Virtual Host Manager with id '2' has been deleted." text
+    Then I should see a "Virtual Host Manager 'file-vmware' has been deleted." text
      And I should see a "No Virtual Host Managers." text
