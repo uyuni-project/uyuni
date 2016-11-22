@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Input validation helper methods.
@@ -31,6 +32,9 @@ public enum InputValidator {
      * Singleton instance
      */
     INSTANCE;
+
+    // Allow letters (of all languages), numbers, '.', '/', '\' and '-'
+    private static final Pattern USERNAME = Pattern.compile("^[\\p{L}\\p{N}.-/\\\\]*$");
 
     /**
      * Validate input as sent from the minion bootstrapping UI.
@@ -43,8 +47,10 @@ public enum InputValidator {
 
         errors.addAll(validateBootstrapSSHManagedInput(input));
 
-        if (StringUtils.isEmpty(input.getUser())) {
-            errors.add("User is required.");
+        String user = input.getUser();
+        if (StringUtils.isEmpty(user) || !USERNAME.matcher(user).matches()) {
+            errors.add("Non-valid user. Allowed characters are: letters, numbers, '.'," +
+                    " '\\' and '/'");
         }
 
         String port = input.getPort();
