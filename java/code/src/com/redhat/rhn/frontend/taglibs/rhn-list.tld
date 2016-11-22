@@ -106,6 +106,22 @@
         <required>false</required>
         <rtexprvalue>true</rtexprvalue>
     </attribute>
+    <attribute>
+      <name>defaultsortattr</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>
+        Sets the default sort attribute for the list. Overrides values set in Column tags
+      </description>
+    </attribute>
+    <attribute>
+      <name>defaultsortdir</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>
+        Sets the default sort direction for the list. Overrides values set in Column tags
+      </description>
+    </attribute>
   </tag>
   <tag>
     <name>decorator</name>
