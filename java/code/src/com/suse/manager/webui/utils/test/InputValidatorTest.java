@@ -46,6 +46,58 @@ public class InputValidatorTest extends TestCase {
     }
 
     /**
+     * Test the check for user with backslash.
+     */
+    public void testValidateBootstrapInputUserBackslash() {
+        String json = "{user: 'domain\\admin', host: 'host.domain.com'}";
+        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        assertTrue(validationErrors.isEmpty());
+    }
+
+    /**
+     * Test the check for user with invalid character.
+     */
+    public void testValidateBootstrapInputUserInvalid() {
+        String json = "{user: '$(execme)', host: 'host.domain.com'}";
+        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        assertTrue(validationErrors.size() == 1);
+        assertTrue(validationErrors.contains(USER_ERROR_MESSAGE));
+    }
+
+    /**
+     * Test the check for host with invalid character.
+     */
+    public void testValidateBootstrapInputHostInvalid() {
+        String json = "{user: 'toor', host: '`execme`'}";
+        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        assertTrue(validationErrors.size() == 1);
+        assertTrue(validationErrors.contains(HOST_ERROR_MESSAGE));
+    }
+
+    /**
+     * Test the check for host as an IPv4.
+     */
+    public void testValidateBootstrapInputHostIPv4() {
+        String json = "{user: 'toor', host: '192.168.1.1'}";
+        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        assertTrue(validationErrors.isEmpty());
+    }
+
+    /**
+     * Test the check for host as an IPv6.
+     */
+    public void testValidateBootstrapInputHostIPv6() {
+        String json = "{user: 'toor', host: '[2001:0db8:0000:0000:0000:0000:1428:57ab]'}";
+        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        assertTrue(validationErrors.isEmpty());
+    }
+
+    /**
      * Test the check for required fields, user is "root" per default.
      */
     public void testValidateBootstrapInputDefaultUser() {
@@ -61,6 +113,16 @@ public class InputValidatorTest extends TestCase {
      */
     public void testValidateBootstrapInputMinimal() {
         String json = "{host: 'host.domain.com', user: 'root'}";
+        JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
+        List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
+        assertTrue(validationErrors.isEmpty());
+    }
+
+    /**
+     * Test the check for empty port numbers.
+     */
+    public void testValidateBootstrapInputPortEmpty() {
+        String json = "{host: 'host.domain.com', user: 'root', port: ''}";
         JSONBootstrapHosts input = MinionsAPI.GSON.fromJson(json, JSONBootstrapHosts.class);
         List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(input);
         assertTrue(validationErrors.isEmpty());
