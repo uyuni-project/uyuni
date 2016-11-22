@@ -1184,7 +1184,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests {@link ContentSyncManager#setupSourceURL} with a local filesystem link.
+     * Tests {@link ContentSyncManager#setupSourceURL} with a local filesystem link
+     * using an URL pointing to an official SUSE server.
      * @throws Exception if anything goes wrong
      */
     public void testSetupSourceURLLocalFS() throws Exception {
@@ -1194,11 +1195,37 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         // Make some data
         String repoUrlSCC =
+                "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product/";
+        SCCRepository repo = new SCCRepository();
+        repo.setUrl(repoUrlSCC);
+        repo.setName("SLES12-Pool");
+        assertEquals(String.format("file:%s/SUSE/Products/SLE-SERVER/12/x86_64/product",
+                                   System.getProperty("java.io.tmpdir")),
+                     new ContentSyncManager().setupSourceURL(repo, null));
+
+        // Switch to online mode
+        Config.get().remove(ContentSyncManager.RESOURCE_PATH);
+    }
+
+    /**
+     * Tests {@link ContentSyncManager#setupSourceURL} with a local filesystem link
+     * using an URL pointing to a 3rd party server.
+     * @throws Exception if anything goes wrong
+     */
+    public void testSetupSourceURLLocalFSExtUrl() throws Exception {
+        // Set offline mode
+        Config.get().setString(ContentSyncManager.RESOURCE_PATH,
+                System.getProperty("java.io.tmpdir"));
+
+        // Make some data
+        String repoUrlSCC =
                 "https://www.somehost.com/path/to/resource?query=like&this=here";
         SCCRepository repo = new SCCRepository();
         repo.setUrl(repoUrlSCC);
-        assertEquals(String.format("file:%s/path/to/resource",
-                                   System.getProperty("java.io.tmpdir")),
+        repo.setName("MyResource GA");
+        assertEquals(String.format("file:%s/repo/RPMMD/%s",
+                                   System.getProperty("java.io.tmpdir"),
+                                   "MyResource"),
                      new ContentSyncManager().setupSourceURL(repo, null));
 
         // Switch to online mode
