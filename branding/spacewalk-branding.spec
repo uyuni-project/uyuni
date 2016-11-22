@@ -17,7 +17,7 @@
 %endif
 
 Name:       spacewalk-branding
-Version:    2.6.0
+Version:    2.6.1
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -124,6 +124,9 @@ rm -rf %{buildroot}
 %{wwwdocroot}/css/*.less
 
 %changelog
+* Tue Nov 22 2016 Gennadii Altukhov <galt@redhat.com> 2.6.1-1
+- Bumping package versions for 2.6.
+
 * Tue May 10 2016 Grant Gainey 2.5.3-1
 - spacewalk-branding: build on openSUSE
 
