@@ -99,7 +99,10 @@ class Runner(jabber_lib.Runner):
         if debug_level is None:
             debug_level = CFG.debug
         self.debug_level = debug_level
-        initLOG(level=debug_level, log_file=CFG.log_file)
+        logfile = self.options.logfile
+        if logfile is None or logfile == '':
+            logfile = CFG.log_file
+        initLOG(level=debug_level, log_file=logfile)
 
         # Get the ssl cert
         ssl_cert = CFG.osa_ssl_cert
