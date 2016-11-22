@@ -133,10 +133,10 @@ public class HostPortValidator {
 
     /**
      * Parse a port number from a given string and validate it.
-     * @param portString
+     * @param portString string candidate for the port
      * @return true if the given string is a valid port, else false.
      */
-    private boolean isValidPort(String portString) {
+    public boolean isValidPort(String portString) {
         boolean ret = false;
         if (portString != null && !portString.isEmpty()) {
             try {
