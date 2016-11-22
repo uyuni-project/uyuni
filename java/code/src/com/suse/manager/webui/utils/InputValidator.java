@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.utils;
 
+import com.redhat.rhn.common.validator.HostPortValidator;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 
 import org.apache.commons.lang.StringUtils;
@@ -72,8 +73,10 @@ public enum InputValidator {
     public List<String> validateBootstrapSSHManagedInput(JSONBootstrapHosts input) {
         List<String> errors = new LinkedList<>();
 
-        if (StringUtils.isEmpty(input.getHost())) {
-            errors.add("Host is required.");
+        String host = input.getHost();
+        if (StringUtils.isEmpty(host) ||
+                !HostPortValidator.getInstance().isValidHost(host)) {
+            errors.add("Invalid host name.");
         }
 
         return errors;
