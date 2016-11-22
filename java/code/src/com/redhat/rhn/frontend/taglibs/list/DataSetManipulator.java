@@ -347,36 +347,47 @@ public class DataSetManipulator {
         return getCurrentPageNumber() == maxPage;
     }
 
-    /**
-     * Sorts the dataset in place
-     */
-    public void sort() {
+    public String getActiveSortAttribute() {
+        if (AlphaBarHelper.getInstance().isSelected(uniqueName, request)) {
+            return alphaCol;
+        }
 
         String sortKey = ListTagUtil.makeSortByLabel(uniqueName);
-        String sortDirectionKey = ListTagUtil.makeSortDirLabel(uniqueName);
         String sortAttribute = StringUtils.defaultString(request.getParameter(sortKey));
+        return StringUtils.defaultIfEmpty(sortAttribute, defaultSortAttribute);
+    }
+
+    public String getActiveSortDirection() {
+        if (AlphaBarHelper.getInstance().isSelected(uniqueName, request)) {
+            return RequestContext.SORT_ASC;
+        }
+
+        String sortDirectionKey = ListTagUtil.makeSortDirLabel(uniqueName);
         String sortDir = StringUtils.defaultString(request.getParameter(sortDirectionKey));
+
         if (!sortDir.equals(RequestContext.SORT_ASC) &&
                 !sortDir.equals(RequestContext.SORT_DESC)) {
             sortDir = ascending ? RequestContext.SORT_ASC : RequestContext.SORT_DESC;
         }
-        if (AlphaBarHelper.getInstance().isSelected(uniqueName, request)) {
-            Collections.sort(dataset, new DynamicComparator(alphaCol,
-                    RequestContext.SORT_ASC));
+        return sortDir;
+    }
+
+    /**
+     * Sorts the dataset in place
+     */
+    public void sort() {
+        String sortAttr = getActiveSortAttribute();
+        if (StringUtils.isEmpty(sortAttr)) {
+            return;
         }
-        else if (!StringUtils.isBlank(sortAttribute)) {
-            try {
-                Collections.sort(dataset, new DynamicComparator(sortAttribute, sortDir));
-            }
-            catch (IllegalArgumentException iae) {
-                log.warn("Unable to sort dataset according to: " + sortAttribute);
-                Collections.sort(dataset, new DynamicComparator(defaultSortAttribute,
-                        sortDir));
-            }
+
+        String sortDir = getActiveSortDirection();
+        try {
+            Collections.sort(dataset, new DynamicComparator(sortAttr, sortDir));
         }
-        else if (!StringUtils.isBlank(defaultSortAttribute)) {
-            Collections.sort(dataset, new DynamicComparator(defaultSortAttribute,
-                    ascending ? RequestContext.SORT_ASC : RequestContext.SORT_DESC));
+        catch (IllegalArgumentException iae) {
+            log.warn("Unable to sort dataset according to: " + sortAttr);
+            Collections.sort(dataset, new DynamicComparator(defaultSortAttribute, sortDir));
         }
     }
 
@@ -571,7 +582,7 @@ public class DataSetManipulator {
      * @param sortAttr the default sort attribute
      */
     public void setDefaultSortAttribute(String sortAttr) {
-        defaultSortAttribute = sortAttr;
+        defaultSortAttribute = StringUtils.defaultString(sortAttr);
     }
 
     /**
@@ -580,6 +591,15 @@ public class DataSetManipulator {
      */
     public void setDefaultAscending(boolean asc) {
         ascending = asc;
+    }
+
+    /**
+     * Gets default ascending.
+     *
+     * @return the default ascending
+     */
+    public boolean getDefaultAscending() {
+        return ascending;
     }
 
 
