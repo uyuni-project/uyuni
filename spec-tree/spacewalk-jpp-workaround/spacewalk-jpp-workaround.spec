@@ -1,5 +1,5 @@
 Name:		spacewalk-jpp-workaround
-Version:	2.6.0
+Version:	2.6.1
 Release:	1%{?dist}
 Summary:	Workaround package to fulfill jpackage broken dependencies
 
@@ -101,6 +101,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Nov 22 2016 Gennadii Altukhov <galt@redhat.com> 2.6.1-1
+- Bumping package versions for 2.6.
+
 * Fri Dec 04 2015 Tomas Kasparek <tkasparek@redhat.com> 2.3.5-1
 - provide mvn(org.apache.taglibs:taglibs-standard-jstlel) on F23
 
