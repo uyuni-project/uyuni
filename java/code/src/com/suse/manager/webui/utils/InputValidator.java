@@ -21,7 +21,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Input validation helper methods.
@@ -48,17 +47,10 @@ public enum InputValidator {
             errors.add("User is required.");
         }
 
-        Optional<Integer> port = Optional.empty();
-        if (StringUtils.isNotEmpty(input.getPort())) {
-            try {
-                port = Optional.of(Integer.valueOf(input.getPort()));
-            }
-            catch (NumberFormatException nfe) {
-                errors.add("Given port is not a valid number.");
-            }
-        }
-        if (port.filter(p -> p < 1 || p > 65535).isPresent()) {
-            errors.add("Given port is outside of the valid range (1-65535).");
+        String port = input.getPort();
+        if (StringUtils.isNotEmpty(port) &&
+                !HostPortValidator.getInstance().isValidPort(port)) {
+            errors.add("Port must be a number within range 1-65535.");
         }
 
         return errors;
