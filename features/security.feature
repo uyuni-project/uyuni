@@ -22,7 +22,6 @@ Feature: Basic web security measures and recommendations
   Scenario: Caching should be enabled for static content
     Given I retrieve any static resource
     Then the response header "ETag" should not be present
-    And the response header "Cache-Control" should be "max-age=86400, public"
     And the response header "Pragma" should not be present
     And the response header "Expires" should not be "0"
     And the response header "Set-Cookie" should not be present
@@ -34,3 +33,8 @@ Feature: Basic web security measures and recommendations
   Scenario: Obsolete and problematic headers for static content
     Given I retrieve any static resource
     Then the response header "X-WebKit-CSP" should not be present
+
+# this scenario should run only for HEAD. 3.0 will fail. 
+#  Scenario: Do not use jsession id
+#    Given I am not authorized
+#    Then the login form does not contain a jsessionid

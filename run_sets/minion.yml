@@ -10,4 +10,3 @@
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
 - features/spacewalk-debug.feature
-

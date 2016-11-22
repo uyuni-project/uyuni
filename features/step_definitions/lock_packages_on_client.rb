@@ -3,26 +3,23 @@
 
 Then(/^"(.*?)" is locked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
-  fail unless File.exist?(zypp_lock_file)
-
-  locks = read_zypp_lock_file(zypp_lock_file)
-  fail unless locks.find { |lock| pkg =~ /^#{lock['solvable_name']}/ }
+  fail unless file_exist($client, zypp_lock_file)
+  command = "zypper locks  --solvables | grep #{pkg}"
+  $client.run(command, true, 600, 'root')
 end
 
 Then(/^Package "(.*?)" is reported as locked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
-
   fail if locked_pkgs.empty?
   fail unless locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
 Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
-  fail unless File.exist?(zypp_lock_file)
-
-  locks = read_zypp_lock_file(zypp_lock_file)
-  fail if locks.find { |lock| pkg =~ /^#{lock['solvable_name']}/ }
+  fail unless file_exist($client, zypp_lock_file)
+  command = "zypper locks  --solvables | grep #{pkg}"
+  $client.run(command, false, 600, 'root')
 end
 
 Then(/^Package "(.*?)" is reported as unlocked$/) do |pkg|

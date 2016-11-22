@@ -1,14 +1,14 @@
 # Verify content
 Then(/^I should see this client in the Pending section$/) do
-  fail unless find('#pending-list').find("b", :text => $myhostname).visible?
+  fail unless find('#pending-list').find("b", :text => $minion_hostname).visible?
 end
 
 Then(/^I should see this client in the Rejected section$/) do
-  fail unless find('#rejected-list').find("b", :text => $myhostname).visible?
+  fail unless find('#rejected-list').find("b", :text => $minion_hostname).visible?
 end
 
 Then(/^I should not see this client as a Minion anywhere$/) do
-  step %(I should not see a "#{$myhostname}" text)
+  step %(I should not see a "#{$minion_hostname}" text)
 end
 
 # Perform actions
@@ -21,7 +21,7 @@ When(/^I delete this client from the Rejected section$/) do
 end
 
 When(/^I see my fingerprint$/) do
-  output = `salt-call --local key.finger`
+  output, _code = $minion.run("salt-call --local key.finger")
   fing = output.split("\n")[1].strip!
 
   fail unless page.has_content?(fing)
@@ -39,14 +39,14 @@ end
 
 When(/^I should see this hostname as text$/) do
   within('#spacewalk-content') do
-    fail unless page.has_content?($myhostname)
+    fail unless page.has_content?($minion_hostname)
   end
 end
 
 When(/^I refresh page until see this hostname as text$/) do
   within('#spacewalk-content') do
     steps %(
-     And I try to reload page until contains "#{$myhostname}" text
+     And I try to reload page until contains "#{$minion_hostname}" text
       )
   end
 end

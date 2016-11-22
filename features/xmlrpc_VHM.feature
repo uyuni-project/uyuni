@@ -26,7 +26,7 @@ Feature: Test XML-RPC "virtualhostmanager" namespace.
 
   Scenario: Check create
     Given I am logged in via XML-RPC/virtualhostmanager as user "admin" and password "admin"
-    When I call virtualhostmanager.create("vCenter", "VMware") and params from "/root/virtualhostmanager.create.json"
+    When I call virtualhostmanager.create("vCenter", "VMware") and params from "/tmp/virtualhostmanager.create.json"
      And I call virtualhostmanager.listVirtualHostManagers()
     Then I should get 1 returned
     And I logout from XML-RPC/virtualhostmanager
