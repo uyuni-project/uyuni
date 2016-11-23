@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 
-<rhn:require acl="not system_has_salt_entitlement()">
+<rhn:require acl="not any_system_with_salt_entitlement()">
    <script type="text/javascript" src="/javascript/schedule-options.js"></script>
 </rhn:require>
 <div class="form-horizontal">
@@ -17,7 +17,7 @@
             </jsp:include>
         </div>
     </div>
-    <rhn:require acl="not system_has_salt_entitlement()">
+    <rhn:require acl="not any_system_with_salt_entitlement()">
         <div class="form-group">
             <div class="col-sm-3 control-label">
                 <input type="radio" name="use_date" value="false" id="schedule-by-action-chain"/>
