@@ -636,6 +636,7 @@ public class ActionManager extends BaseManager {
         }
 
         ActionFactory.save(a);
+        MessageQueue.publish(new ActionScheduledEventMessage(a));
         return a;
     }
 
@@ -682,6 +683,7 @@ public class ActionManager extends BaseManager {
             return null;
         }
         ActionFactory.save(a);
+        MessageQueue.publish(new ActionScheduledEventMessage(a));
         return a;
     }
 
@@ -1260,10 +1262,12 @@ public class ActionManager extends BaseManager {
             Action hwrefresh =
                     scheduleHardwareRefreshAction(scheduler, server, earliest);
             ActionFactory.save(hwrefresh);
+            MessageQueue.publish(new ActionScheduledEventMessage(hwrefresh));
             action.setPrerequisite(hwrefresh);
         }
 
         ActionFactory.save(action);
+        MessageQueue.publish(new ActionScheduledEventMessage(action));
 
         PackageDelta pd = new PackageDelta();
         pd.setLabel("delta-" + System.currentTimeMillis());
@@ -1481,6 +1485,7 @@ public class ActionManager extends BaseManager {
                 ActionFactory.TYPE_SCRIPT_RUN, name, earliest, sidSet);
         sra.setScriptActionDetails(script);
         ActionFactory.save(sra);
+        MessageQueue.publish(new ActionScheduledEventMessage(sra));
         return sra;
     }
 
@@ -1892,7 +1897,7 @@ public class ActionManager extends BaseManager {
         ActionFactory.save(action);
 
         addPackageActionDetails(action, pkgs);
-
+        MessageQueue.publish(new ActionScheduledEventMessage(action));
         return action;
     }
 
@@ -2056,6 +2061,7 @@ public class ActionManager extends BaseManager {
                 earliestAction, serverIds);
         action.setScapActionDetails(scapDetails);
         ActionFactory.save(action);
+        MessageQueue.publish(new ActionScheduledEventMessage(action));
         return action;
     }
 
@@ -2078,6 +2084,7 @@ public class ActionManager extends BaseManager {
                                                       new Date() :
                                                       earliestAction));
         ActionFactory.save(action);
+        MessageQueue.publish(new ActionScheduledEventMessage(action));
         return action;
     }
 
@@ -2101,6 +2108,7 @@ public class ActionManager extends BaseManager {
                         ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT.getName(),
                         (earliestAction == null ? new Date() : earliestAction));
         ActionFactory.save(action);
+        MessageQueue.publish(new ActionScheduledEventMessage(action));
         return action;
     }
 
