@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.system;
 
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -23,6 +24,8 @@ import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.common.UninitializedCommandException;
+
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 
 import org.apache.log4j.Logger;
 
@@ -105,6 +108,7 @@ public class VirtualizationActionCommand {
 
         log.debug("saving virtAction.");
         ActionFactory.save(virtAction);
+        MessageQueue.publish(new ActionScheduledEventMessage(virtAction));
         action = virtAction;
         return null;
     }
