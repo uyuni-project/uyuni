@@ -24,7 +24,7 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.concat;
 import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.of;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 /**
  * SidenavRenderer renders an unordered list which is decorated
