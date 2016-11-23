@@ -236,13 +236,9 @@ fi
 
 
 def getHeader(productName, options, orgCACert, isRpmYN, pubname, apachePubDirectory):
-    #2/14/06 wregglej 181407 If the org_gpg_key option has the path to the file
-    #in it, remove it. It will cause the $FETCH to fail.
-    org_gpg_key = options.gpg_key
-    path_list = os.path.split(org_gpg_key)
-    if path_list[0] and path_list[0] != '':
-        org_gpg_key = path_list[1]
-
+    # 11/22/16 options.gpg_key is now a comma-separated list of path.
+    # Removing paths from options.gpg_key
+    org_gpg_key = ",".join([os.path.basename(gpg_key) for gpg_key in options.gpg_key.split(",")])
     exit_call = " " if options.activation_keys or options.salt else "exit 1"
 
     return _header.format(productName=productName,
