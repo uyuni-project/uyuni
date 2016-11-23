@@ -16,7 +16,12 @@ def ckUsernameField(timeout)
   fill_in "username", :with => "admin"
 rescue
     sleep(timeout)
-    fill_in "username", :with => "admin"
+    begin
+      fill_in "username", :with => "admin"
+    rescue
+      sleep(timeout)
+      fill_in "username", :with => "admin"
+    end
 end
 
 def changepass(scenario, password)
