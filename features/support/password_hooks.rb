@@ -33,7 +33,7 @@ def changepass(scenario, password)
   signout.click if signout
   # sometimes race condition,
   # Unable to find field "username" (Capybara::ElementNotFound)
-  ckUsernameField(10)
+  ckUsernameField(15)
   fill_in "password", :with => password
   click_button "Sign In"
   find_link("Your Account").click
