@@ -4765,7 +4765,7 @@ organization. You may grant or remove the organization administrator role in the
           <source>Reboot of the Systems</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.summary">
-          <source>Choose the systems you need to reboot and run action immediately or schedule it for later.</source>
+          <source>Choose the systems you need to reboot and schedule an action for it.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.operationname">
           <source>Schedule Systems Reboot</source>
