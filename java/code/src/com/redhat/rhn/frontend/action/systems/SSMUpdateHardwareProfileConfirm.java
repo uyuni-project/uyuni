@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems;
 
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -26,6 +27,8 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
+
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -76,6 +79,7 @@ public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listab
 
             Action a = ActionManager.scheduleHardwareRefreshAction(user, now, serverIds);
             ActionFactory.save(a);
+            MessageQueue.publish(new ActionScheduledEventMessage(a));
             ActionMessages msg = new ActionMessages();
             String profileStr = "profiles";
             if (set.size() == 1) {

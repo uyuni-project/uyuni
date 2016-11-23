@@ -3931,6 +3931,7 @@ public class SystemHandler extends BaseHandler {
         Action a = ActionManager.scheduleRebootAction(loggedInUser, server,
                 earliestOccurrence);
         a = ActionFactory.save(a);
+        MessageQueue.publish(new ActionScheduledEventMessage(a));
         return a.getId();
     }
 
