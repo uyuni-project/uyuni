@@ -16,7 +16,12 @@ def ckUsernameField(timeout)
   fill_in "username", :with => "admin"
 rescue
     sleep(timeout)
-    fill_in "username", :with => "admin"
+    begin
+      fill_in "username", :with => "admin"
+    rescue
+      sleep(timeout)
+      fill_in "username", :with => "admin"
+    end
 end
 
 def changepass(scenario, password)
@@ -28,7 +33,7 @@ def changepass(scenario, password)
   signout.click if signout
   # sometimes race condition,
   # Unable to find field "username" (Capybara::ElementNotFound)
-  ckUsernameField(10)
+  ckUsernameField(15)
   fill_in "password", :with => password
   click_button "Sign In"
   find_link("Your Account").click
