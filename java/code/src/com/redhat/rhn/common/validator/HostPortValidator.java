@@ -84,6 +84,21 @@ public class HostPortValidator {
         }
 
         // Validate host and port separately
+        boolean isValidHost = isValidHost(host);
+        boolean isValidPort = true;
+        if (port != null) {
+            isValidPort = isValidPort(port);
+        }
+
+        return isValidHost && isValidPort;
+    }
+
+    /**
+     * Return true if the given string is a valid host representation.
+     * @param host the string with host
+     * @return true if host represents a valid host, else false.
+     */
+    public boolean isValidHost(String host) {
         boolean isValidHost = true;
         // Validate IP addresses externally (v4 and v6)
         if (host.replaceAll("[\\d\\.]", "").isEmpty() || host.contains(":")) {
@@ -94,12 +109,7 @@ public class HostPortValidator {
             Matcher matcher = HOSTNAME.matcher(host);
             isValidHost = matcher.matches() ? isValidHost : false;
         }
-        boolean isValidPort = true;
-        if (port != null) {
-            isValidPort = isValidPort(port);
-        }
-
-        return isValidHost && isValidPort;
+        return isValidHost;
     }
 
     /**
@@ -123,10 +133,10 @@ public class HostPortValidator {
 
     /**
      * Parse a port number from a given string and validate it.
-     * @param portString
+     * @param portString string candidate for the port
      * @return true if the given string is a valid port, else false.
      */
-    private boolean isValidPort(String portString) {
+    public boolean isValidPort(String portString) {
         boolean ret = false;
         if (portString != null && !portString.isEmpty()) {
             try {
