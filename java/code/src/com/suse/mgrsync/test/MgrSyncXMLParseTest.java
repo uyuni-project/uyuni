@@ -132,7 +132,7 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      */
     public void testReadFamilies() throws Exception {
         List<MgrSyncChannelFamily> families = readFamilies();
-        assertEquals(57, families.size());
+        assertEquals(58, families.size());
     }
 
     /**
