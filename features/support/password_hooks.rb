@@ -37,17 +37,17 @@ def changepass(scenario, password)
   fill_in "password", :with => password
   click_button "Sign In"
   find_link("Your Account").click
-  sleep(5)
+  sleep(10)
   begin
     fill_in "desiredpassword", :with => "admin"
   rescue
-    sleep(5)
+    sleep(15)
     fill_in "desiredpassword", :with => "admin"
   end
   begin
     fill_in "desiredpasswordConfirm", :with => "admin"
   rescue
-    sleep(5)
+    sleep(15)
     fill_in "desiredpasswordConfirm", :with => "admin"
   end
   click_button "Update"
