@@ -63,13 +63,12 @@ public class DataSetManipulator {
     private boolean ascending = true;
     private final int unfilteredDataSize;
     private final boolean parentIsAnElement;
-
     private String defaultSortAttribute;
+
     public static final String ICON_FIRST = "fa fa-angle-double-left";
     public static final String ICON_PREV = "fa fa-angle-left";
     public static final String ICON_NEXT = "fa fa-angle-right";
     public static final String ICON_LAST = "fa fa-angle-double-right";
-
 
     /**
      * Constructor
@@ -77,13 +76,11 @@ public class DataSetManipulator {
      * @param datasetIn dataset to be displayed
      * @param requestIn HttpServletRequest of the caller
      * @param listNameIn name of the list
-     * @param parentIsElement true of the parent value
-     *          in the list should be considered as an element
-     *          this is useful for tree like data
+     * @param parentIsElement true of the parent value in the list should be
+     * considered as an element this is useful for tree like data
      */
-    public DataSetManipulator(int pageSizeIn, List datasetIn,
-            HttpServletRequest requestIn, String listNameIn,
-            boolean parentIsElement) {
+    public DataSetManipulator(int pageSizeIn, List datasetIn, HttpServletRequest requestIn,
+            String listNameIn, boolean parentIsElement) {
         pageSize = pageSizeIn;
         dataset = datasetIn;
         request = requestIn;
@@ -93,10 +90,52 @@ public class DataSetManipulator {
         parentIsAnElement = parentIsElement;
     }
 
-    private List expand(List data) {
-        return ListFilterHelper.filter(data,
-                filter, filterBy, filterValue);
+    /**
+     * Filters the dataset based on filter criteria
+     * @param f ListFilter instance
+     * @param context the page context to write to
+     * @throws JspException if failure to write to pageContext
+     */
+    public void filter(ListFilter f, PageContext context) throws JspException {
+
+        String filterByKey = ListTagUtil.makeFilterByLabel(uniqueName);
+        filterBy = request.getParameter(filterByKey);
+        filterValue = ListTagHelper.getFilterValue(request, uniqueName);
+
+        if (f == null || filterBy == null || filterBy.length() == 0 ||
+                filterValue == null || filterValue.length() == 0) {
+            return;
+        }
+        filter = f;
+        HtmlTag filterClass = new HtmlTag("input");
+        filterClass.setAttribute("type", "hidden");
+        filterClass.setAttribute("name", ListTagUtil.makeFilterClassLabel(uniqueName));
+        filterClass.setAttribute("value", f.getClass().getCanonicalName());
+        ListTagUtil.write(context, filterClass.render());
+
+        dataset = ListFilterHelper.filter(dataset, f, filterBy, filterValue);
+        totalDataSetSize = dataset.size();
     }
+
+    /**
+     * Sorts the dataset in place
+     */
+    public void sort() {
+        String sortAttr = getActiveSortAttribute();
+        if (StringUtils.isEmpty(sortAttr)) {
+            return;
+        }
+
+        String sortDir = getActiveSortDirection();
+        try {
+            Collections.sort(dataset, new DynamicComparator(sortAttr, sortDir));
+        }
+        catch (IllegalArgumentException iae) {
+            log.warn("Unable to sort dataset according to: " + sortAttr);
+            Collections.sort(dataset, new DynamicComparator(defaultSortAttribute, sortDir));
+        }
+    }
+
     /**
      * Get the total (non-filtered, non-paginated) dataset size
      * @return total size
@@ -142,117 +181,14 @@ public class DataSetManipulator {
     }
 
     /**
-     * Returns the starting element index for a page (1 based)
-     * @return int
-     */
-    private int getPageStartIndex() {
-        //no data ==> no start index...
-        if (getTotalDataSetSize() == 0) {
-            return 0;
-        }
-
-        int startOffset = getCurrentPageNumber() * pageSize;
-
-        if (startOffset < 0) {
-            startOffset = 0;
-        }
-        List parentList = dataset.subList(0, startOffset);
-        List data = expand(parentList);
-        int ret = data.size() + 1;
-
-        if (!parentIsAnElement) {
-            ret = ret - parentList.size();
-        }
-        return ret;
-    }
-
-    /**
-     * Returns the ending element index for a page (1 based)
-     * @return int
-     */
-    private int getPageEndIndex() {
-        int startOffset = getCurrentPageNumber() * pageSize;
-        if (startOffset < 0) {
-            startOffset = 0;
-        }
-
-        int endOffset = startOffset + pageSize;
-        if (endOffset > dataset.size()) {
-            endOffset = dataset.size();
-        }
-        List parentList = dataset.subList(0, endOffset);
-        List data = expand(parentList);
-
-        if (!parentIsAnElement) {
-            return data.size() - parentList.size();
-        }
-
-        return data.size();
-    }
-
-    private int getExpandedDataSize() {
-        if (!parentIsAnElement) {
-            return expand(dataset).size() - dataset.size();
-        }
-        return expand(dataset).size();
-    }
-
-    /**
      * Returns the pagination message (1 - 2 of 3 for example)
      * @return the pagination message
      */
     public String getPaginationMessage() {
         LocalizationService ls = LocalizationService.getInstance();
-        return ls.getMessage("message.range", getPageStartIndex(),
-                    getPageEndIndex(), getExpandedDataSize());
+        return ls.getMessage("message.range", getPageStartIndex(), getPageEndIndex(),
+                getExpandedDataSize());
 
-    }
-
-
-    /**
-     * Determines the current page number based on URL params
-     * @return current page number
-     */
-    private  int getCurrentPageNumber() {
-
-        if (AlphaBarHelper.getInstance().isSelected(uniqueName, request)) {
-            int pos = findAlphaPosition();
-            pageNumber = pos / pageSize;
-            return pageNumber;
-        }
-
-
-
-        if (pageNumber == -1) {
-            String param = null;
-            param = getPaginationParam(request, uniqueName);
-            String value = null;
-            if (param != null && request.getParameter(param) != null) {
-                value = request.getParameter(param);
-            }
-            if (value == null) {
-                value = "0";
-            }
-            else if (value.equalsIgnoreCase("first")) {
-                value = "0";
-            }
-            else if (value.equalsIgnoreCase("last")) {
-                if (totalDataSetSize == 0) {
-                    value = "0";
-                }
-                else {
-                    value = String.valueOf((totalDataSetSize - 1) / pageSize);
-                }
-            }
-            try {
-                pageNumber = Integer.parseInt(value);
-            }
-            catch (NumberFormatException e) {
-                pageNumber = 0;
-            }
-        }
-
-        return pageNumber;
     }
 
     /**
@@ -260,26 +196,6 @@ public class DataSetManipulator {
      */
     public void bindPaginationInfo() {
         request.setAttribute("pageNum", String.valueOf(getCurrentPageNumber()));
-    }
-    /**
-     * Returns the pagination param (|<, <, >, >|) that was selected
-     * returns null if no pagination action was selected.
-     * @param request the http servlet request
-     * @param uniqueName the unique name of list to check
-     * @return the selected pagination param or null if none was selected.
-     */
-     static  String getPaginationParam(ServletRequest request, String uniqueName) {
-
-        for (int x = 0; x < LINK_PREFIXES.length; x++) {
-            String imgLink = "list_" + uniqueName + "_page" +
-            LINK_PREFIXES[x];
-
-            if (request.getParameter(imgLink) != null) {
-                return  "list_" + uniqueName + "_page" + LINK_PREFIXES[x];
-
-            }
-        }
-        return null;
     }
 
     /**
@@ -337,6 +253,11 @@ public class DataSetManipulator {
         return getCurrentPageNumber() == maxPage;
     }
 
+    /**
+     * Gets the sort attribute name as specified in the request, or empty string otherwise.
+     *
+     * @return The sort attribute name, or empty string
+     */
     public String getActiveSortAttribute() {
         if (AlphaBarHelper.getInstance().isSelected(uniqueName, request)) {
             return alphaCol;
@@ -347,6 +268,13 @@ public class DataSetManipulator {
         return StringUtils.defaultIfEmpty(sortAttribute, defaultSortAttribute);
     }
 
+    /**
+     * Gets the sort direction as specified in the request, or the default sort direction
+     * otherwise
+     *
+     * @see DataSetManipulator#getDefaultAscending
+     * @return Active sort direction, or default direction
+     */
     public String getActiveSortDirection() {
         if (AlphaBarHelper.getInstance().isSelected(uniqueName, request)) {
             return RequestContext.SORT_ASC;
@@ -360,54 +288,6 @@ public class DataSetManipulator {
             sortDir = ascending ? RequestContext.SORT_ASC : RequestContext.SORT_DESC;
         }
         return sortDir;
-    }
-
-    /**
-     * Sorts the dataset in place
-     */
-    public void sort() {
-        String sortAttr = getActiveSortAttribute();
-        if (StringUtils.isEmpty(sortAttr)) {
-            return;
-        }
-
-        String sortDir = getActiveSortDirection();
-        try {
-            Collections.sort(dataset, new DynamicComparator(sortAttr, sortDir));
-        }
-        catch (IllegalArgumentException iae) {
-            log.warn("Unable to sort dataset according to: " + sortAttr);
-            Collections.sort(dataset, new DynamicComparator(defaultSortAttribute, sortDir));
-        }
-    }
-
-    /**
-     * Filters the dataset based on filter criteria
-     * @param f ListFilter instance
-     * @param context the page context to write to
-     * @throws JspException if failure to write to pageContext
-     */
-    public void filter(ListFilter f, PageContext context) throws JspException {
-
-
-        String filterByKey = ListTagUtil.makeFilterByLabel(uniqueName);
-        filterBy = request.getParameter(filterByKey);
-        filterValue = ListTagHelper.getFilterValue(request, uniqueName);
-
-
-        if (f == null || filterBy == null || filterBy.length() == 0 ||
-                filterValue == null || filterValue.length() == 0) {
-            return;
-        }
-        filter = f;
-        HtmlTag filterClass = new HtmlTag("input");
-        filterClass.setAttribute("type", "hidden");
-        filterClass.setAttribute("name", ListTagUtil.makeFilterClassLabel(uniqueName));
-        filterClass.setAttribute("value", f.getClass().getCanonicalName());
-        ListTagUtil.write(context, filterClass.render());
-
-        dataset = ListFilterHelper.filter(dataset, f, filterBy, filterValue);
-        totalDataSetSize = dataset.size();
     }
 
     /**
@@ -485,7 +365,7 @@ public class DataSetManipulator {
     }
 
     /**
-     *  Gets the set of characters that will be active on the alpha bar
+     * Gets the set of characters that will be active on the alpha bar
      * @return the set of characters that are active
      */
     public Set<Character> getAlphaBarIndex() {
@@ -508,19 +388,6 @@ public class DataSetManipulator {
         return chars;
     }
 
-    private String getAlphaValue(Object inputRow) {
-        String value;
-        if (inputRow instanceof Map) {
-            value = (String) ((Map) inputRow).get(alphaCol);
-        }
-        else {
-            value = (String)MethodUtil.callMethod(inputRow,
-                                            StringUtil.beanify("get " + alphaCol),
-                                            new Object[0]);
-        }
-        return value;
-    }
-
     /**
      * setter for the column that will be sorted when the alpha bar is used
      * @param col the column to set
@@ -530,8 +397,8 @@ public class DataSetManipulator {
     }
 
     /**
-     * Finds the first instance of an entry in DataSet that starts with the letter
-     *          "alphaPosition"
+     * Finds the first instance of an entry in DataSet that starts with the
+     * letter "alphaPosition"
      * @return int the position within the DataSet of that entry
      */
     public int findAlphaPosition() {
@@ -540,8 +407,8 @@ public class DataSetManipulator {
             if (alphaPosition > -1) {
                 return alphaPosition;
             }
-            char alpha = Character.toUpperCase(helper.
-                                getAlphaValue(uniqueName, request).charAt(0));
+            char alpha = Character
+                    .toUpperCase(helper.getAlphaValue(uniqueName, request).charAt(0));
             int i = 0;
             for (Object inputRow : dataset) {
                 String value = getAlphaValue(inputRow);
@@ -559,44 +426,184 @@ public class DataSetManipulator {
         return -1;
     }
 
-
     /**
+     * Gets the default sort attribute name.
      *
-     * @return the defualt sort attribute
+     * @return The defualt sort attribute
      */
     public String getDefaultSortAttribute() {
         return defaultSortAttribute;
     }
+
     /**
+     * Sets the default sort attribute name.
      *
-     * @param sortAttr the default sort attribute
+     * @param sortAttr The default sort attribute
      */
     public void setDefaultSortAttribute(String sortAttr) {
         defaultSortAttribute = StringUtils.defaultString(sortAttr);
     }
 
     /**
+     * Sets if the set should be sorted in ascending order by default.
      *
-     * @param asc the sort order
+     * @param asc The sort order
      */
     public void setDefaultAscending(boolean asc) {
         ascending = asc;
     }
 
     /**
-     * Gets default ascending.
+     * Gets if the set should be sorted in ascending order by default.
      *
-     * @return the default ascending
+     * @return The sort order
      */
     public boolean getDefaultAscending() {
         return ascending;
     }
 
-
     /**
+     * Gets the unfiltered data size.
+     *
      * @return Returns the unfilteredDataSize.
      */
     public int getUnfilteredDataSize() {
         return unfilteredDataSize;
+    }
+
+    /**
+     * Returns the pagination param (|<, <, >, >|) that was selected returns
+     * null if no pagination action was selected.
+     * @param request the http servlet request
+     * @param uniqueName the unique name of list to check
+     * @return the selected pagination param or null if none was selected.
+     */
+    static String getPaginationParam(ServletRequest request, String uniqueName) {
+
+        for (int x = 0; x < LINK_PREFIXES.length; x++) {
+            String imgLink = "list_" + uniqueName + "_page" + LINK_PREFIXES[x];
+
+            if (request.getParameter(imgLink) != null) {
+                return "list_" + uniqueName + "_page" + LINK_PREFIXES[x];
+
+            }
+        }
+        return null;
+    }
+
+    private String getAlphaValue(Object inputRow) {
+        String value;
+        if (inputRow instanceof Map) {
+            value = (String) ((Map) inputRow).get(alphaCol);
+        }
+        else {
+            value = (String) MethodUtil.callMethod(inputRow,
+                    StringUtil.beanify("get " + alphaCol), new Object[0]);
+        }
+        return value;
+    }
+
+    private List expand(List data) {
+        return ListFilterHelper.filter(data, filter, filterBy, filterValue);
+    }
+
+    /**
+     * Returns the starting element index for a page (1 based)
+     * @return int
+     */
+    private int getPageStartIndex() {
+        // no data ==> no start index...
+        if (getTotalDataSetSize() == 0) {
+            return 0;
+        }
+
+        int startOffset = getCurrentPageNumber() * pageSize;
+
+        if (startOffset < 0) {
+            startOffset = 0;
+        }
+        List parentList = dataset.subList(0, startOffset);
+        List data = expand(parentList);
+        int ret = data.size() + 1;
+
+        if (!parentIsAnElement) {
+            ret = ret - parentList.size();
+        }
+        return ret;
+    }
+
+    /**
+     * Returns the ending element index for a page (1 based)
+     * @return int
+     */
+    private int getPageEndIndex() {
+        int startOffset = getCurrentPageNumber() * pageSize;
+        if (startOffset < 0) {
+            startOffset = 0;
+        }
+
+        int endOffset = startOffset + pageSize;
+        if (endOffset > dataset.size()) {
+            endOffset = dataset.size();
+        }
+        List parentList = dataset.subList(0, endOffset);
+        List data = expand(parentList);
+
+        if (!parentIsAnElement) {
+            return data.size() - parentList.size();
+        }
+
+        return data.size();
+    }
+
+    private int getExpandedDataSize() {
+        if (!parentIsAnElement) {
+            return expand(dataset).size() - dataset.size();
+        }
+        return expand(dataset).size();
+    }
+
+    /**
+     * Determines the current page number based on URL params
+     * @return current page number
+     */
+    private int getCurrentPageNumber() {
+
+        if (AlphaBarHelper.getInstance().isSelected(uniqueName, request)) {
+            int pos = findAlphaPosition();
+            pageNumber = pos / pageSize;
+            return pageNumber;
+        }
+
+        if (pageNumber == -1) {
+            String param = null;
+            param = getPaginationParam(request, uniqueName);
+            String value = null;
+            if (param != null && request.getParameter(param) != null) {
+                value = request.getParameter(param);
+            }
+            if (value == null) {
+                value = "0";
+            }
+            else if (value.equalsIgnoreCase("first")) {
+                value = "0";
+            }
+            else if (value.equalsIgnoreCase("last")) {
+                if (totalDataSetSize == 0) {
+                    value = "0";
+                }
+                else {
+                    value = String.valueOf((totalDataSetSize - 1) / pageSize);
+                }
+            }
+            try {
+                pageNumber = Integer.parseInt(value);
+            }
+            catch (NumberFormatException e) {
+                pageNumber = 0;
+            }
+        }
+
+        return pageNumber;
     }
 }
