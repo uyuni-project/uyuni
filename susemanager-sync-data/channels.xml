@@ -958,6 +958,11 @@
 			<product_id name="SLES" version="12.2">1375</product_id>
 		</products>
 	</channel>
+	<channel arch="aarch64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-RPI-ARM64" is_signed="Y" label="sle-manager-tools12-debuginfo-pool-aarch64-rpi" name="SLE-Manager-Tools12-Debuginfo-Pool aarch64 RPI" optional="Y" parent="sles12-sp2-rpi-pool-aarch64" product_name="SLES_RPI" product_version="12.2" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/aarch64/product_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES_RPI" version="12.2">1418</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-PPC" is_signed="Y" label="sle-manager-tools12-debuginfo-pool-ppc64le" name="SLE-Manager-Tools12-Debuginfo-Pool ppc64le" optional="Y" parent="sles12-pool-ppc64le" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
 		<products>
 			<product_id name="SLES" version="12">1116</product_id>
@@ -1036,6 +1041,11 @@
 	<channel arch="aarch64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-ARM64" is_signed="Y" label="sle-manager-tools12-debuginfo-updates-aarch64" name="SLE-Manager-Tools12-Debuginfo-Updates aarch64" optional="Y" parent="sles12-sp2-pool-aarch64" product_name="SLES" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/aarch64/update_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
 		<products>
 			<product_id name="SLES" version="12.2">1375</product_id>
+		</products>
+	</channel>
+	<channel arch="aarch64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-RPI-ARM64" is_signed="Y" label="sle-manager-tools12-debuginfo-updates-aarch64-rpi" name="SLE-Manager-Tools12-Debuginfo-Updates aarch64 RPI" optional="Y" parent="sles12-sp2-rpi-pool-aarch64" product_name="SLES_RPI" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/aarch64/update_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES_RPI" version="12.2">1418</product_id>
 		</products>
 	</channel>
 	<channel arch="ppc64le" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-PPC" is_signed="Y" label="sle-manager-tools12-debuginfo-updates-ppc64le" name="SLE-Manager-Tools12-Debuginfo-Updates ppc64le" optional="Y" parent="sles12-pool-ppc64le" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
@@ -1118,6 +1128,11 @@
 			<product_id name="SLES" version="12.2">1375</product_id>
 		</products>
 	</channel>
+	<channel arch="aarch64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-RPI-ARM64" is_signed="Y" label="sle-manager-tools12-pool-aarch64-rpi" name="SLE-Manager-Tools12-Pool aarch64 RPI" optional="N" parent="sles12-sp2-rpi-pool-aarch64" product_name="SLES_RPI" product_version="12.2" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/aarch64/product/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES_RPI" version="12.2">1418</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-PPC" is_signed="Y" label="sle-manager-tools12-pool-ppc64le" name="SLE-Manager-Tools12-Pool ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
 		<products>
 			<product_id name="SLES" version="12">1116</product_id>
@@ -1196,6 +1211,11 @@
 	<channel arch="aarch64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-ARM64" is_signed="Y" label="sle-manager-tools12-updates-aarch64" name="SLE-Manager-Tools12-Updates aarch64" optional="N" parent="sles12-sp2-pool-aarch64" product_name="SLES" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/aarch64/update/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
 		<products>
 			<product_id name="SLES" version="12.2">1375</product_id>
+		</products>
+	</channel>
+	<channel arch="aarch64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-RPI-ARM64" is_signed="Y" label="sle-manager-tools12-updates-aarch64-rpi" name="SLE-Manager-Tools12-Updates aarch64 RPI" optional="N" parent="sles12-sp2-rpi-pool-aarch64" product_name="SLES_RPI" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/aarch64/update/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES_RPI" version="12.2">1418</product_id>
 		</products>
 	</channel>
 	<channel arch="ppc64le" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-PPC" is_signed="Y" label="sle-manager-tools12-updates-ppc64le" name="SLE-Manager-Tools12-Updates ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
@@ -8140,6 +8160,26 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="AiO" is_signed="Y" label="sles12-sp2-pool-x86_64-sap-sp2" name="SLES12-SP2-Pool for x86_64 SAP-SP2" optional="N" parent="sle12-sp2-sap-pool-x86_64" product_name="SLES_SAP" product_version="12.2" source_url="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP2/x86_64/product/" summary="SUSE Linux Enterprise Server 12 SP2 x86_64" update_tag="SLE-SERVER">
 		<products>
 			<product_id name="SLES_SAP" version="12.2">1414</product_id>
+		</products>
+	</channel>
+	<channel arch="aarch64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-RPI-ARM64" is_signed="Y" label="sles12-sp2-rpi-debuginfo-pool-aarch64" name="SLES12-SP2-RPI-Debuginfo-Pool for aarch64" optional="Y" parent="sles12-sp2-rpi-pool-aarch64" product_name="SLES_RPI" product_version="12.2" source_url="https://updates.suse.com/SUSE/Products/SLE-RPI/12-SP2/aarch64/product_debug/" summary="SUSE Linux Enterprise Server for the Raspberry Pi 12 SP2 aarch64" update_tag="SLE-RPI">
+		<products>
+			<product_id name="SLES_RPI" version="12.2">1418</product_id>
+		</products>
+	</channel>
+	<channel arch="aarch64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-RPI-ARM64" is_signed="Y" label="sles12-sp2-rpi-debuginfo-updates-aarch64" name="SLES12-SP2-RPI-Debuginfo-Updates for aarch64" optional="Y" parent="sles12-sp2-rpi-pool-aarch64" product_name="SLES_RPI" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-RPI/12-SP2/aarch64/update_debug/" summary="SUSE Linux Enterprise Server for the Raspberry Pi 12 SP2 aarch64" update_tag="SLE-RPI">
+		<products>
+			<product_id name="SLES_RPI" version="12.2">1418</product_id>
+		</products>
+	</channel>
+	<channel arch="aarch64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-RPI-ARM64" is_signed="Y" label="sles12-sp2-rpi-pool-aarch64" name="SLES12-SP2-RPI-Pool for aarch64" optional="N" parent="BASE" product_name="SLES_RPI" product_version="12.2" source_url="https://updates.suse.com/SUSE/Products/SLE-RPI/12-SP2/aarch64/product/" summary="SUSE Linux Enterprise Server for the Raspberry Pi 12 SP2 aarch64" update_tag="SLE-RPI">
+		<products>
+			<product_id name="SLES_RPI" version="12.2">1418</product_id>
+		</products>
+	</channel>
+	<channel arch="aarch64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-RPI-ARM64" is_signed="Y" label="sles12-sp2-rpi-updates-aarch64" name="SLES12-SP2-RPI-Updates for aarch64" optional="N" parent="sles12-sp2-rpi-pool-aarch64" product_name="SLES_RPI" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-RPI/12-SP2/aarch64/update/" summary="SUSE Linux Enterprise Server for the Raspberry Pi 12 SP2 aarch64" update_tag="SLE-RPI">
+		<products>
+			<product_id name="SLES_RPI" version="12.2">1418</product_id>
 		</products>
 	</channel>
 	<channel arch="aarch64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-ARM64" is_signed="Y" label="sles12-sp2-updates-aarch64" name="SLES12-SP2-Updates for aarch64" optional="N" parent="sles12-sp2-pool-aarch64" product_name="SLES" product_version="12.2" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP2/aarch64/update/" summary="SUSE Linux Enterprise Server 12 SP2 aarch64" update_tag="SLE-SERVER">
