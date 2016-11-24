@@ -263,6 +263,34 @@ public class Access extends BaseHandler {
     }
 
     /**
+     * Check if any system has a Salt entitlement.
+     * Check single system if used in an action for a single system or
+     * SSM in case of an SSM action.
+     * @param ctx Context map to pass in.
+     * @param params Parameters to use to fetch from context.
+     * @return True if any system has salt entitlement, false otherwise.
+     */
+    public boolean aclAnySystemWithSaltEntitlement(Object ctx, String[] params) {
+        @SuppressWarnings("unchecked")
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
+        boolean ret = false;
+        if (sid != null) {
+            Server server = SystemManager.lookupByIdAndUser(sid, user);
+            if (server != null) {
+                ret = server.hasEntitlement(EntitlementManager.SALT);
+            }
+        }
+        else {
+            // SSM
+            ret = SystemManager.countSystemsInSetWithoutEntitlement(user,
+                    RhnSetDecl.SYSTEMS.getLabel(), Arrays.asList("enterprise_entitled")) > 0;
+        }
+        return ret;
+    }
+
+    /**
      * Check if there is any Salt formulas installed.
      * @param ctx Context map to pass in.
      * @param params Parameters to use to fetch from context.

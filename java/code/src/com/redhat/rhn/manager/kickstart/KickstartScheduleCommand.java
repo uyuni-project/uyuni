@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
@@ -60,6 +61,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.BaseSystemOperation;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -618,6 +621,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         ActionFactory.save(kickstartAction);
+        MessageQueue.publish(new ActionScheduledEventMessage(kickstartAction));
         log.debug("** Created ksaction: " + kickstartAction.getId());
 
         this.scheduledAction = kickstartAction;
@@ -786,6 +790,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         rebootAction.setName(rebootAction.getActionType().getName());
         log.debug("** saving reboot action: " + rebootAction.getName());
         ActionFactory.save(rebootAction);
+        MessageQueue.publish(new ActionScheduledEventMessage(rebootAction));
         log.debug("** Saved rebootAction: " + rebootAction.getId());
 
         return rebootAction;
