@@ -285,7 +285,8 @@ public class Access extends BaseHandler {
         else {
             // SSM
             ret = SystemManager.countSystemsInSetWithoutEntitlement(user,
-                    RhnSetDecl.SYSTEMS.getLabel(), Arrays.asList("enterprise_entitled")) > 0;
+                    RhnSetDecl.SYSTEMS.getLabel(),
+                    Arrays.asList("enterprise_entitled")) > 0;
         }
         return ret;
     }
