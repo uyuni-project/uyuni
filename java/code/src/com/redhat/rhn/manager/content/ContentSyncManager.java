@@ -812,7 +812,12 @@ public class ContentSyncManager {
                 if (repo != null && !StringUtils.isBlank(repo.getUrl())) {
                     String url = setupSourceURL(repo, mirrorUrl);
                     ContentSource source =
-                        ChannelFactory.findVendorContentSourceByRepo(url);
+                            ChannelFactory.findVendorContentSourceByRepo(url);
+                    if (source == null) {
+                        // if not found search by label to prevent unique constrain error
+                        source = ChannelFactory.lookupVendorContentSourceByLabel(
+                                xmlChannel.getLabel());
+                    }
                     if (source == null) {
                         source = ChannelFactory.createRepo();
                         source.setLabel(xmlChannel.getLabel());
