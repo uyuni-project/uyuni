@@ -20,10 +20,13 @@ package com.redhat.rhn.frontend.xmlrpc.chain.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.config.ConfigFile;
+import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.Network;
@@ -51,7 +54,9 @@ import com.redhat.rhn.testing.TestUtils;
 import java.net.InetAddress;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -566,29 +571,45 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Deploy configuration.
      */
     public void testAcDeployConfiguration() {
-        List<Integer> revisions = new ArrayList<Integer>();
-        revisions.add(ConfigTestUtils.createConfigRevision(
-                this.admin.getOrg()).getId().intValue());
+        ConfigRevision configRevision = ConfigTestUtils.createConfigRevision(
+                this.admin.getOrg());
+        Map<String, Object> revisionSpecifier = new HashMap();
+        ConfigFile configFile = configRevision.getConfigFile();
+        revisionSpecifier.put("channelLabel", configFile.getConfigChannel().getLabel());
+        revisionSpecifier.put("filePath", configFile.getConfigFileName().getPath());
+        revisionSpecifier.put("revision", configRevision.getRevision().intValue());
 
         assertEquals(new Integer(BaseHandler.VALID),
                      this.ach.addConfigurationDeployment(this.admin,
-                                                         CHAIN_LABEL,
-                                                         this.server.getId().intValue(),
-                                                         revisions));
+                             CHAIN_LABEL,
+                             this.server.getId().intValue(),
+                             Collections.singletonList(revisionSpecifier)));
+
+        Set<ActionChainEntry> entries =
+                ActionChainFactory.getActionChain(this.admin, CHAIN_LABEL).getEntries();
+        assertEquals(1, entries.size());
+        assertEquals(ActionFactory.TYPE_CONFIGFILES_DEPLOY,
+                entries.iterator().next().getAction().getActionType());
+
     }
 
     /**
      * Deploy configuration should fail if no chain label has been passed.
      */
     public void testAcDeployConfigurationFailureNoChain() {
-        List<Integer> revisions = new ArrayList<Integer>();
-        revisions.add(ConfigTestUtils.createConfigRevision(
-                this.admin.getOrg()).getId().intValue());
+        ConfigRevision configRevision = ConfigTestUtils.createConfigRevision(
+                this.admin.getOrg());
+        Map<String, Object> revisionSpecifier = new HashMap();
+        ConfigFile configFile = configRevision.getConfigFile();
+        revisionSpecifier.put("channelLabel", configFile.getConfigChannel().getLabel());
+        revisionSpecifier.put("filePath", configFile.getConfigFileName().getPath());
+        revisionSpecifier.put("revision", configRevision.getRevision().intValue());
 
         try {
             this.ach.addConfigurationDeployment(this.admin, "",
                                                 this.server.getId().intValue(),
-                                                revisions);
+                                                Collections.singletonList(revisionSpecifier)
+            );
             fail("Expected exception: " +
                  NoSuchActionChainException.class.getCanonicalName());
         }
