@@ -49,9 +49,9 @@ rhnContentSource
 create sequence rhn_chan_content_src_id_seq start with 500;
 
 CREATE UNIQUE INDEX rhn_cs_label_uq
-    ON rhnContentSource(org_id, label)
+    ON rhnContentSource(COALESCE(org_id, 0), label)
     tablespace [[64k_tbs]];
 CREATE UNIQUE INDEX rhn_cs_repo_uq
-    ON rhnContentSource(org_id, type_id, source_url)
+    ON rhnContentSource(COALESCE(org_id, 0), type_id, source_url)
     tablespace [[64k_tbs]];
 
