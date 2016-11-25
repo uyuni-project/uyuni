@@ -87,6 +87,13 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Nov 25 2016 Tomas Kasparek <tkasparek@redhat.com> 2.7.2-1
+- delete records from rhnArchTypeActions before deleting architecture types
+
+* Wed Nov 23 2016 Tomas Kasparek <tkasparek@redhat.com> 2.7.1-1
+- delete from solaris from rhnArchType table
+- Bumping package versions for 2.7.
+
 * Mon Nov 14 2016 Tomas Kasparek <tkasparek@redhat.com> 2.6.16-1
 - delete solaris architecture during upgrade
 - remove solaris compatibility mappings
