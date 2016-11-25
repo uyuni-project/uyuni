@@ -29,16 +29,18 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchActionException;
+import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.xml.bind.DatatypeConverter;
-
-import org.apache.commons.collections.CollectionUtils;
 
 /**
  * @xmlrpc.namespace actionchain
@@ -476,35 +478,58 @@ public class ActionChainHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param chainLabel Label of the action chain
      * @param serverId System ID
-     * @param revisions List of configuration revisions.
+     * @param revisionSpecifiers List of maps specifying a revision
      * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Adds an action to deploy a configuration file to an Action Chain.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.param #param_desc("int", "System ID", "System ID")
-     * @xmlrpc.param #array_single("int", "Revision ID")
+     * @xmlrpc.param #array()
+     *                   #struct("config revision specifier")
+     *                       #prop_desc("string", "channelLabel", "Channel label")
+     *                       #prop_desc("string", "filePath",
+     *                                  "Path of the configuration file")
+     *                       #prop_desc("int", "revision", "Revision number")
+     *                   #struct_end()
+     *               #array_end()
      * @xmlrpc.returntype #return_int_success()
      */
     @SuppressWarnings("unchecked")
     public Integer addConfigurationDeployment(User loggedInUser,
-                                              String chainLabel,
-                                              Integer serverId,
-                                              List<Integer> revisions) {
-        if (revisions.isEmpty()) {
+            String chainLabel,
+            Integer serverId,
+            List<Map<String, Object>> revisionSpecifiers) {
+        if (revisionSpecifiers.isEmpty()) {
             throw new InvalidParameterException("At least one revision should be given.");
         }
 
+        Set<String> validKeys = new HashSet<>();
+        validKeys.add("channelLabel");
+        validKeys.add("filePath");
+        validKeys.add("revision");
+        revisionSpecifiers.stream().forEach(specifier -> validateMap(validKeys, specifier));
+
         this.acUtil.ensureNotSalt(this.acUtil.getServerById(serverId, loggedInUser));
 
-        List<Long> server = new ArrayList<Long>();
+        List<Long> server = new ArrayList<>();
         server.add(serverId.longValue());
 
-        ActionChainManager.createConfigActions(loggedInUser,
-                CollectionUtils.collect(revisions,
-                        new ActionChainRPCCommon.IntegerToLongTransformer()), server,
+        ConfigChannelHandler configChannelHandler = new ConfigChannelHandler();
+        List<Long> revisionIds = revisionSpecifiers.stream().map(specifier ->
+                    configChannelHandler.lookupFileInfo(loggedInUser,
+                            (String) specifier.get("channelLabel"),
+                            (String) specifier.get("filePath"),
+                            (Integer) specifier.get("revision")).getId()
+        ).collect(Collectors.toList());
+
+        ActionChainManager.createConfigActions(
+                loggedInUser,
+                revisionIds,
+                server,
                 ActionFactory.TYPE_CONFIGFILES_DEPLOY,
-                new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel));
+                new Date(),
+                this.acUtil.getActionChainByLabel(loggedInUser, chainLabel));
 
         return BaseHandler.VALID;
     }
