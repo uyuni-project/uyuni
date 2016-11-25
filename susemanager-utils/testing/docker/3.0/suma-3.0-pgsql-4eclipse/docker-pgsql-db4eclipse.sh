@@ -51,6 +51,13 @@ if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
     rcpostgresql stop
     exit 1
 fi
+
+echo "select create_new_org('Test Default Organization', '$RANDOM') from dual;" | spacewalk-sql --select-mode -
+echo "INSERT INTO  rhnChannelFamily (id, name, label, org_id, product_url)
+      VALUES (sequence_nextval('rhn_channel_family_id_seq'), 'Private Channel Family 1',
+            'private-channel-family-1', 1, 'First Org Created');" | spacewalk-sql --select-mode -
+echo "INSERT INTO  rhnPrivateChannelFamily (channel_family_id, org_id) VALUES  (1000, 1);" | spacewalk-sql --select-mode -
+
 rcpostgresql stop
 su - postgres -c '/usr/lib/postgresql94/bin/postgres -D /var/lib/pgsql/data'
 
