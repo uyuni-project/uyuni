@@ -16,11 +16,6 @@
 </rhn:toolbar>
 <h3><bean:message key="ssm.config.subscribe.jsp.step"/></h3>
 <p><bean:message key="sdc.config.subscriptions.jsp.para1" /></p>
-<noscript>
-    <div class="alert alert-danger">
-        <bean:message key="common.config.rank.jsp.warning.noscript"/>
-    </div>
-</noscript>
 <c:choose>
 <c:when test="${not empty pageList}">
 <html:form  method="POST" action="/systems/details/configuration/SubscriptionsSubmit.do?sid=${param.sid}">
