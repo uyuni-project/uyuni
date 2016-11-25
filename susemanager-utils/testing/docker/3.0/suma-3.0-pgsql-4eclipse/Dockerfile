@@ -1,6 +1,6 @@
 # Container used to test java and python code of SUSE Manager against postgresql
 #
-# VERSION               1.0.0
+# VERSION               1.0.1
 
 FROM registry.mgr.suse.de/suma-3.0-pgsql:latest
 MAINTAINER Michael Calmer "mc@suse.com"
