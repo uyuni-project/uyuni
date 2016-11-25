@@ -160,6 +160,18 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup a Vendor content source (org is NULL) by label
+     * @param label repo label
+     * @return the ContentSource(s)
+     */
+    public static ContentSource lookupVendorContentSourceByLabel(String label) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("label", label);
+        return (ContentSource) singleton.lookupObjectByNamedQuery(
+                "ContentSource.findVendorContentSourceByLabel", params);
+    }
+
+    /**
      * Lookup a content source by org and repo
      * @param org the org to lookup
      * @param repoType repo type

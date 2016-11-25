@@ -56,6 +56,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                     WHERE c.org = :org
                     AND c.label = :label]]>
     </query>
+    <query name="ContentSource.findVendorContentSourceByLabel">
+        <![CDATA[FROM com.redhat.rhn.domain.channel.ContentSource AS c
+                    WHERE c.org is NULL
+                    AND c.label = :label]]>
+    </query>
     <query name="ContentSource.findByOrgAndRepo">
         <![CDATA[FROM com.redhat.rhn.domain.channel.ContentSource AS c
                     WHERE c.org = :org
