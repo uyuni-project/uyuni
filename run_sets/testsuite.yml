@@ -66,7 +66,6 @@
 - features/xmlrpc_VHM.feature
 - features/check_VHM.feature
 - features/setup_wizard.feature
-- features/change_password.feature
 ###- features/mgr_create_bootstrap_repo.feature
 - features/security.feature
 
@@ -79,8 +78,13 @@
 - features/salt_software_states.feature
 - features/salt_pkgset_beacon.feature
 - features/salt_remote_cmds.feature
+- features/salt_action_pickedup.feature
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
 - features/spacewalk-errors.feature
 - features/spacewalk-debug.feature
+
+## smdba and change password feature always put them at the end of the testsuite.
+## if they fails, they break the whole testsuite.
 - features/smdba.feature
+- features/change_password.feature
