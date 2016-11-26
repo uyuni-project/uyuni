@@ -1,4 +1,3 @@
----
 # Salt related features
 - features/salt.feature
 - features/salt_minions_page.feature
