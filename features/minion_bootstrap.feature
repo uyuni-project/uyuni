@@ -103,7 +103,6 @@ Feature: register a salt-minion via bootstrap
      Then I should see a "Bootstrap Minions" text
      And  I enter the hostname of "sle-minion" as hostname
      And I enter "22" as "port"
-     And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap it"
