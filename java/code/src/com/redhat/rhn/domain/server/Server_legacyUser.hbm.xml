@@ -195,6 +195,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <key column="server_id"/>
             <property name="minionId" column="minion_id" />
             <property name="osFamily" column="os_family"  type="string" length="32" />
+            <property name="kernelLiveVersion" column="kernel_live_version"  type="string" length="255" />
         </joined-subclass>
     </class>
 
