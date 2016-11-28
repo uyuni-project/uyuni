@@ -27,6 +27,7 @@ public class MinionServer extends Server {
 
     private String minionId;
     private String osFamily;
+    private String kernelLiveVersion;
 
     /**
      * Constructs a MinionServer instance.
@@ -65,6 +66,24 @@ public class MinionServer extends Server {
      */
     public void setOsFamily(String osFamilyIn) {
         this.osFamily = osFamilyIn;
+    }
+
+    /**
+     * Gets kernel live version.
+     *
+     * @return the kernel live version
+     */
+    public String getKernelLiveVersion() {
+        return kernelLiveVersion;
+    }
+
+    /**
+     * Sets kernel live version.
+     *
+     * @param kernelLiveVersionIn the kernel live version
+     */
+    public void setKernelLiveVersion(String kernelLiveVersionIn) {
+        this.kernelLiveVersion = kernelLiveVersionIn;
     }
 
     /**
