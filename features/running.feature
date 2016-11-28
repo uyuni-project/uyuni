@@ -21,7 +21,8 @@ Feature: The host is running
     Given I am not authorized
     When I go to the home page
     And I follow "Copyright Notice"
-    Then I should see a "Copyright (c) 2011 - 2015 SUSE LLC." text
+    #FIXME : this date are hardcoded. Find dinamically the actual year.
+    Then I should see a "Copyright (c) 2011 - 2016 SUSE LLC." text
 
   Scenario: Accessing the EULA
     Given I am not authorized
