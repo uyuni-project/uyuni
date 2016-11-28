@@ -200,7 +200,7 @@ class BootstrapMinions extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="form-group" style={{display: 'none'}}>
+                <div className="form-group">
                     <div className="col-md-3"></div>
                     <div className="col-md-6">
                         <div className="checkbox">
