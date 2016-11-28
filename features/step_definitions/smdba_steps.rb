@@ -1,4 +1,4 @@
-# Copyright 2011-2014 SUSE
+# Copyright 2011-2016 SUSE
 
 Given(/^a postgresql database is running$/) do
   $output = sshcmd("file /var/lib/pgsql/data/postgresql.conf", ignore_err: true)
@@ -79,8 +79,8 @@ Then(/^I find core examination is "(.*?)", database analysis is "(.*?)" and spac
   refute_includes($output[:stdout], "failed")
 end
 
-Then(/^I find "(.*?)", "(.*?)" and "(.*?)" are in the list\.$/) do |rhn_tbl, rhn_tbl1, suse_tbl|
-  [rhn_tbl, rhn_tbl1, suse_tbl].each do |tbl|
+Then(/^I find "(.*?)", "(.*?)" and "(.*?)" are in the list\.$/) do |rhn_tbl, rhn1_tbl, suse_tbl|
+  [rhn_tbl, rhn1_tbl, suse_tbl].each do |tbl|
     assert_includes($output[:stdout], tbl)
   end
 end
