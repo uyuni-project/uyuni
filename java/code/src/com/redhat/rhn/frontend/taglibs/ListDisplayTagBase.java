@@ -251,6 +251,10 @@ public class ListDisplayTagBase extends BodyTagSupport {
         iterator = pageList.iterator();
     }
 
+    protected void resetIterator() {
+        iterator = pageList.iterator();
+    }
+
     protected void renderHeadExtraAddons(Writer out) throws IOException {
         // noop
     }

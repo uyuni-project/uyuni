@@ -430,6 +430,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
         HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
         Collections.sort(getPageList(), new DynamicComparator(sortedColumn,
                 request.getParameter(RequestContext.SORT_ORDER)));
+        resetIterator();
     }
 
     private String getSortedColumn() {
