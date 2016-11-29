@@ -75,6 +75,15 @@ public class JSONBootstrapHosts {
     }
 
     /**
+     * Convenience method for getting first selected activation key or empty.
+     * @return first selected activation key label or empty if none selected
+     */
+    public Optional<String> getFirstActivationKey() {
+        return Optional.ofNullable(getActivationKeys())
+                .flatMap(list -> list.stream().findFirst());
+    }
+
+    /**
      * Helper method to return the port as an Optional<Integer>.
      *
      * @return port as an Optional<Integer>
