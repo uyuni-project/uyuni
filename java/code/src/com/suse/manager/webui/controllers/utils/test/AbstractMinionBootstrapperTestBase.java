@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 /**
@@ -46,6 +47,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      */
     public void testBootstrapFailsWhenKeysExist() throws Exception {
         JSONBootstrapHosts input = mockStandardInput();
+        setEmptyActivationKeys(input);
 
         context().checking(new Expectations() {{
             allowing(saltServiceMock).keyExists("myhost");
@@ -71,12 +73,19 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue("mypassword"));
             allowing(input).maybeGetPassword();
             will(returnValue(Optional.of("mypassword")));
-            allowing(input).getActivationKeys();
-            will(returnValue(Collections.emptyList()));
             allowing(input).getIgnoreHostKeys();
             will(returnValue(true));
         }});
         return input;
+    }
+
+    protected void setEmptyActivationKeys(JSONBootstrapHosts mock) {
+        context().checking(new Expectations() {{
+            allowing(mock).getActivationKeys();
+            will(returnValue(Collections.emptyList()));
+            allowing(mock).getFirstActivationKey();
+            will(returnValue(empty()));
+        }});
     }
 
     /**
@@ -89,6 +98,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         server.setMinionId("myhost");
 
         JSONBootstrapHosts input = mockStandardInput();
+        setEmptyActivationKeys(input);
 
         context().checking(new Expectations() {{
             allowing(saltServiceMock).keyExists("myhost");
@@ -117,22 +127,10 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
 
             List<String> bootstrapMods = bootstrapMods();
             Map<String, Object> pillarData = createPillarData();
-
-            Map<String,State.ApplyResult> innerResult = new HashMap<>();
-            State.ApplyResult result = mock(State.ApplyResult.class);
-            allowing(result).isResult();
-            will(returnValue(true));
-
-            innerResult.put("myhost", result);
-            SSHResult<Map<String,State.ApplyResult>> sshResult = mock(SSHResult.class);
-            allowing(sshResult).getReturn();
-            will(returnValue(of(innerResult)));
-            allowing(sshResult).getRetcode();
-            will(returnValue(0));
-
             // return success when calling low-level bootstrap
             allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
                     with(bootstrapMods), with(pillarData));
+            SSHResult<Map<String, State.ApplyResult>> sshResult = createSuccessResult();
             will(returnValue(new Result<>(Xor.right(sshResult))));
 
             // we expect the key NOT to be deleted
@@ -140,6 +138,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         }});
 
         JSONBootstrapHosts input = mockStandardInput();
+        setEmptyActivationKeys(input);
         Map<String, Object> bootstrap = bootstrapper.bootstrap(input, user);
         assertTrue((Boolean) bootstrap.get("success"));
     }
@@ -147,6 +146,23 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
     protected abstract Map<String, Object> createPillarData();
 
     protected abstract List<String> bootstrapMods();
+
+    protected SSHResult<Map<String, State.ApplyResult>> createSuccessResult() {
+        SSHResult<Map<String, State.ApplyResult>> sshResult = mock(SSHResult.class);
+        context().checking(new Expectations() {{
+            State.ApplyResult result = mock(State.ApplyResult.class);
+            allowing(result).isResult();
+            will(returnValue(true));
+
+            Map<String,State.ApplyResult> innerResult = new HashMap<>();
+            innerResult.put("myhost", result);
+            allowing(sshResult).getReturn();
+            will(returnValue(of(innerResult)));
+            allowing(sshResult).getRetcode();
+            will(returnValue(0));
+        }});
+        return sshResult;
+    }
 
     protected Key.Pair mockKeyPair() {
         final Key.Pair keyPair = mock(Key.Pair.class);
