@@ -15,12 +15,13 @@
 
 CREATE TABLE suseMinionInfo
 (
-    server_id          NUMBER NOT NULL
-                           CONSTRAINT suse_minion_info_sid_fk
-                               REFERENCES rhnServer (id)
-                               ON DELETE CASCADE,
-    minion_id          VARCHAR2(256) NOT NULL,
-    os_family          VARCHAR2(32)
+    server_id           NUMBER NOT NULL
+                            CONSTRAINT suse_minion_info_sid_fk
+                                REFERENCES rhnServer (id)
+                                ON DELETE CASCADE,
+    minion_id           VARCHAR2(256) NOT NULL,
+    os_family           VARCHAR2(32),
+    kernel_live_version VARCHAR2(255)
 )
 ENABLE ROW MOVEMENT
 ;
