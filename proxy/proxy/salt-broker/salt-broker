@@ -87,6 +87,12 @@ class AbstractChannelProxy(multiprocessing.Process):
             )
         super(AbstractChannelProxy, self).__init__()
 
+    def configure_keepalive(self, socket):
+        socket.setsockopt(zmq.TCP_KEEPALIVE, self.opts['tcp_keepalive'])
+        socket.setsockopt(zmq.TCP_KEEPALIVE_IDLE, self.opts['tcp_keepalive_idle'])
+        socket.setsockopt(zmq.TCP_KEEPALIVE_CNT, self.opts['tcp_keepalive_cnt'])
+        socket.setsockopt(zmq.TCP_KEEPALIVE_INTVL, self.opts['tcp_keepalive_intvl'])
+
     def debug_log(self, msg):
         '''
         debug logging tagged with classname
@@ -131,6 +137,7 @@ class PubChannelProxy(AbstractChannelProxy):
 
             self.debug_log('setting up a XSUB sock on {0}'.format(master_pub))
             backend = context.socket(zmq.XSUB)
+            self.configure_keepalive(backend)
             backend.connect(master_pub)
 
             # Set up a XPUB sock
@@ -182,6 +189,7 @@ class RetChannelProxy(AbstractChannelProxy):
                 self.opts['master_uri']))
 
             backend = context.socket(zmq.DEALER)
+            self.configure_keepalive(backend)
             backend.connect(self.opts['master_uri'])
 
             # Forward all responses
@@ -317,6 +325,10 @@ if __name__ == "__main__":
         "publish_port": "4505",
         "ret_port": "4506",
         "interface": "0.0.0.0",
+        "tcp_keepalive": True,
+        "tcp_keepalive_idle": 300,
+        "tcp_keepalive_cnt": -1,
+        "tcp_keepalive_intvl": -1,
     }
 
     try:
