@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Tests for bootstrapping salt-ssh minions.
@@ -30,7 +31,7 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
                 RegisterMinionEventMessageAction action =
                         mock(RegisterMinionEventMessageAction.class);
                 context().checking(new Expectations() {{
-                    allowing(action).registerSSHMinion("myhost");
+                    allowing(action).registerSSHMinion("myhost", Optional.empty());
                 }});
                 return action;
             }

@@ -81,7 +81,11 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
         SSHMinionsPendingRegistrationService.addMinion(minionId);
         try {
             if (result.isSuccess()) {
-                getRegisterAction().registerSSHMinion(minionId);
+                Optional<String> activationKey =
+                        Optional.ofNullable(params.getActivationKeys())
+                                .map(list -> list.stream())
+                                .flatMap(s -> s.findFirst());
+                getRegisterAction().registerSSHMinion(minionId, activationKey);
             }
         }
         finally {
