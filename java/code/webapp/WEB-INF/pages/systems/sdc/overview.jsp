@@ -142,6 +142,9 @@
                   <c:out value="${system.runningKernel}" />
                 </c:otherwise>
               </c:choose>
+              <c:if test="${not empty kernelLiveVersion}">
+                  <br/><bean:message key="sdc.details.overview.kernel_live" arg0="${kernelLiveVersion}"/>
+              </c:if>
             </td>
           </tr>
           <tr>
