@@ -203,7 +203,7 @@ public abstract class AbstractMinionBootstrapper {
     /**
      * Decode the std message from the whole message
      *
-     * @param error the error Object
+     * @param message the message Object
      * @param key the json key of the message to decode (e.g.: sdterr, stdout)
      * @return the String decoded if it exists
      */
