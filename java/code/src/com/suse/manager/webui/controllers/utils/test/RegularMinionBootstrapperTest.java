@@ -36,6 +36,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
      */
     public void testKeysDeletedAfterFailure() throws Exception {
         JSONBootstrapHosts input = mockStandardInput();
+        setEmptyActivationKeys(input);
 
         Key.Pair keyPair = mockKeyPair();
 
