@@ -1465,6 +1465,12 @@ As a Channel Administrator, you may change the base channels your systems are su
       <trans-unit id="sdc.details.overview.errataupdate">
         <source>Auto Patch Update:</source>
       </trans-unit>
+      <trans-unit id="sdc.details.overview.kernel_live">
+        <source>&lt;strong&gt;Live patch:&lt;/strong&gt; {0}</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="sdc.details.edit.autoerrataupdate">
         <source>Auto Patch Update:</source>
       </trans-unit>
