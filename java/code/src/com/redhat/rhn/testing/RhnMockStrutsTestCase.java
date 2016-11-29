@@ -14,12 +14,16 @@
  */
 package com.redhat.rhn.testing;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.servlet.http.Cookie;
 
+import com.suse.manager.webui.services.SaltCustomStateStorageManager;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.HibernateException;
 
@@ -89,6 +93,16 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
 
         pxtDelegate.updateWebUserId(request, response, user.getId());
         KickstartDataTest.setupTestConfiguration(user);
+
+        //Set temporary Salt directories for local runs
+        Path tmpPillarRoot = Files.createTempDirectory("pillar");
+        Path tmpSaltRoot = Files.createTempDirectory("salt");
+        SaltStateGeneratorService.INSTANCE.setPillarDataPath(tmpPillarRoot
+                .toAbsolutePath());
+        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
+                .toAbsolutePath());
+        SaltCustomStateStorageManager.INSTANCE.setBaseDirPath(tmpSaltRoot
+                .toAbsolutePath().toString());
     }
 
     /**
