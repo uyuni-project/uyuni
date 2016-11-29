@@ -12,3 +12,19 @@ products:
 {% elif grains['os_family'] == 'RedHat' %}
 {% include 'packages/redhatproductinfo.sls' %}
 {% endif %}
+
+include:
+  - util.syncgrains
+  - util.syncmodules
+
+grains_update:
+  module.run:
+    - name: grains.items
+    - require:
+      - module: sync_grains
+
+kernel_live_version:
+  module.run:
+    - name: sumautil.get_kernel_live_version
+    - require:
+      - module: sync_modules
