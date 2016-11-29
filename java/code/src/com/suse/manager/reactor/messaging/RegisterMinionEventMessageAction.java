@@ -251,7 +251,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setLastBoot(System.currentTimeMillis() / 1000);
             server.setCreated(new Date());
             server.setModified(server.getCreated());
-            server.setContactMethod(getContactMethod(isSaltSSH));
+            server.setContactMethod(getContactMethod(activationKey, isSaltSSH));
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
@@ -353,9 +353,15 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
     }
 
-    private ContactMethod getContactMethod(boolean isSshPush) {
-        return isSshPush ? ServerFactory.findContactMethodByLabel("ssh-push") :
-                ServerFactory.findContactMethodByLabel("default");
+    private ContactMethod getContactMethod(Optional<ActivationKey> activationKey,
+            boolean isSshPush) {
+        return Opt.fold(
+                activationKey,
+                () -> isSshPush ?
+                        ServerFactory.findContactMethodByLabel("ssh-push") :
+                        ServerFactory.findContactMethodByLabel("default"),
+                ak -> ak.getContactMethod()
+        );
     }
 
     private void lookupAndAddDefaultChannels(MinionServer server, ValueMap grains) {
