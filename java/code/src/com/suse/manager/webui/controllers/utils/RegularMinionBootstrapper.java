@@ -15,6 +15,8 @@
 
 package com.suse.manager.webui.controllers.utils;
 
+import com.redhat.rhn.domain.server.ContactMethod;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -27,6 +29,7 @@ import org.apache.log4j.Logger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Code for bootstrapping salt minions using salt-ssh.
@@ -79,6 +82,16 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
         }
 
         return pillarData;
+    }
+
+    @Override
+    protected Optional<String> validateContactMethod(ContactMethod desiredContactMethod) {
+        if (ServerFactory.findContactMethodByLabel("default").getId()
+                .equals(desiredContactMethod.getId())) {
+            return Optional.empty();
+        }
+        return Optional.of("Selected activation key cannot be used as its contact" +
+                " method is not compatible with the regular salt minions.");
     }
 
     @Override
