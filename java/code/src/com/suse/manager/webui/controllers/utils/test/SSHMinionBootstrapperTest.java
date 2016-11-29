@@ -1,6 +1,9 @@
 package com.suse.manager.webui.controllers.utils.test;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import org.jmock.Expectations;
@@ -42,6 +45,26 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
                 return action;
             }
         };
+    }
+
+    public void testIncompatibleActivatioKeys() throws Exception {
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        key.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+        super.testIncompatibleActivatioKeysBase(key);
+    }
+
+    public void testCompatibleActivatioKeys() throws Exception {
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
+        bootstrapper = mockRegistrationBootstrapper(Optional.of(key.getKey()));
+        super.testCompatibleActivatioKeysBase(key);
+    }
+
+    public void testCompatibleActivatioKeysTunnel() throws Exception {
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
+        bootstrapper = mockRegistrationBootstrapper(Optional.of(key.getKey()));
+        super.testCompatibleActivatioKeysBase(key);
     }
 
     @Override
