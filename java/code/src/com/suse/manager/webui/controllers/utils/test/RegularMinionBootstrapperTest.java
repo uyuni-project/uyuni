@@ -2,6 +2,9 @@ package com.suse.manager.webui.controllers.utils.test;
 
 import com.google.gson.JsonPrimitive;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
@@ -61,6 +64,24 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
 
         Map<String, Object> bootstrap = bootstrapper.bootstrap(input, user);
         assertFalse((Boolean) bootstrap.get("success"));
+    }
+
+    public void testIncompatibleActivatioKeys() throws Exception {
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
+        super.testIncompatibleActivatioKeysBase(key);
+    }
+
+    public void testIncompatibleActivatioKeysTunnel() throws Exception {
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
+        super.testIncompatibleActivatioKeysBase(key);
+    }
+
+    public void testCompatibleActivatioKeys() throws Exception {
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        key.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+        super.testCompatibleActivatioKeysBase(key);
     }
 
     @Override

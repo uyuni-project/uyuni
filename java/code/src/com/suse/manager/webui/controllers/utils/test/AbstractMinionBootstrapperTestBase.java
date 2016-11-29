@@ -2,6 +2,7 @@ package com.suse.manager.webui.controllers.utils.test;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -141,6 +142,54 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         setEmptyActivationKeys(input);
         Map<String, Object> bootstrap = bootstrapper.bootstrap(input, user);
         assertTrue((Boolean) bootstrap.get("success"));
+    }
+
+    /**
+     * Base for tests that check that bootstrap FAILS with on current bootstrapper (set in
+     * implementations of this base class) and given activation key.
+     * @param key activation key
+     * @throws Exception if anything goes wrong
+     */
+    protected void testIncompatibleActivatioKeysBase(ActivationKey key) throws Exception {
+        JSONBootstrapHosts input = mockStandardInput();
+        context().checking(new Expectations() {{
+            allowing(input).getFirstActivationKey();
+            will(returnValue(of(key.getKey())));
+        }});
+
+        assertFalse((Boolean) bootstrapper.bootstrap(input, user).get("success"));
+    }
+
+    /**
+     * Base for tests that check that bootstrap SUCCEEDS with on current bootstrapper (set
+     * in implementations of this base class) and given activation key.
+     * @param key activation key
+     * @throws Exception if anything goes wrong
+     */
+    protected void testCompatibleActivatioKeysBase(ActivationKey key) throws Exception {
+        JSONBootstrapHosts input = mockStandardInput();
+        context().checking(new Expectations() {{
+            allowing(input).getActivationKeys();
+            will(returnValue(Collections.singletonList(key.getKey())));
+            allowing(input).getFirstActivationKey();
+            will(returnValue(of(key.getKey())));
+
+            allowing(saltServiceMock).keyExists("myhost");
+            will(returnValue(false));
+
+            Key.Pair keyPair = mockKeyPair();
+            allowing(saltServiceMock).generateKeysAndAccept("myhost", false);
+            will(returnValue(keyPair));
+
+            List<String> bootstrapMods = bootstrapMods();
+            Map<String, Object> pillarData = createPillarData();
+            allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
+                    with(bootstrapMods), with(pillarData));
+            Object sshResult = createSuccessResult();
+            will(returnValue(new Result<>(Xor.right(sshResult))));
+        }});
+
+        assertTrue((Boolean) bootstrapper.bootstrap(input, user).get("success"));
     }
 
     protected abstract Map<String, Object> createPillarData();
