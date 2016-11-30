@@ -57,3 +57,5 @@
     <script src="/rhn/dwr/interface/DWRItemSelector.js"></script>
     <script src="/javascript/jquery.timepicker.js"></script>
     <script src="/javascript/bootstrap-datepicker.js"></script>
+
+    <script src='/javascript/reactjs/react.bundle.js'></script>
