@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
-gem "cucumber", "~> 1.3.0"
 gem "capybara", "~> 2.4.0"
-gem "selenium-webdriver"
+gem "cucumber", "~> 1.3.0"
+gem 'jwt'
+gem 'lavanda'
+gem 'net-ssh'
+gem 'owasp_zap'
 gem 'poltergeist', :require => false
 gem "rubyzip"
-gem 'owasp_zap'
-gem 'net-ssh'
-gem 'jwt'
+gem "selenium-webdriver"
 gem 'twopence'
-gem 'lavanda'
