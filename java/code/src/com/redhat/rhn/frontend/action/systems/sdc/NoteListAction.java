@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
+import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -60,6 +61,8 @@ public class NoteListAction extends RhnListAction {
         DataResult<Map<String, Object>> dr = SystemManager.systemNotes(s);
 
         request.setAttribute(RequestContext.PAGE_LIST, dr);
+        request.setAttribute(ListTagHelper.PARENT_URL,
+                request.getRequestURI() + "?sid=" + s.getId());
         request.setAttribute("sid", sid);
         request.setAttribute("system", s);
 

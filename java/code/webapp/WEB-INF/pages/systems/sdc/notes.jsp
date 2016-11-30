@@ -2,6 +2,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
 <html:html >
   <body>
@@ -14,27 +15,37 @@
     </rhn:toolbar>
 
     <p><bean:message key="sdc.details.notes.message"/></p>
-    <rhn:list pageList="${requestScope.pageList}"
-            noDataText="sdc.details.notes.nonotes">
 
-      <rhn:listdisplay>
+    <rl:listset name="groupSet">
+        <rhn:csrf />
+        <rhn:submitted />
 
-        <rhn:column header="sdc.details.notes.subject" width="35%" sortProperty="subject"
-            url="/rhn/systems/details/EditNote.do?sid=${system.id}&nid=${current.id}">
-          <c:out value="${current.subject}" escapeXml="true" />
-        </rhn:column>
+        <rl:list dataset="pageList"
+                width="100%"
+                name="notesList"
+                emptykey="sdc.details.notes.nonotes">
 
-        <rhn:column header="sdc.details.notes.details" width="50%">
-          <pre><c:out value="${current.note}" escapeXml="true" /></pre>
-        </rhn:column>
+            <rl:column headerkey="sdc.details.notes.subject"
+                sortable="true"
+                width="35%"
+                sortattr="subject">
+                <a href="/rhn/systems/details/EditNote.do?sid=${system.id}&nid=${current.id}">
+                    <c:out value="${current.subject}" escapeXml="true" />
+                </a>
+            </rl:column>
 
-        <rhn:column header="sdc.details.notes.updated" sortProperty="modified">
-          <rhn:formatDate humanStyle="calendar" value="${current.modified}" type="both" dateStyle="short" timeStyle="long"/>
-        </rhn:column>
+            <rl:column headerkey="sdc.details.notes.details" width="50%">
+              <pre><c:out value="${current.note}" escapeXml="true" /></pre>
+            </rl:column>
 
-      </rhn:listdisplay>
+            <rl:column headerkey="sdc.details.notes.updated"
+                sortable="true"
+                sortattr="modified">
+              <rhn:formatDate humanStyle="calendar" value="${current.modified}" type="both" dateStyle="short" timeStyle="long"/>
+            </rl:column>
 
-    </rhn:list>
+        </rl:list>
+    </rl:listset>
 
   </body>
 </html:html>
