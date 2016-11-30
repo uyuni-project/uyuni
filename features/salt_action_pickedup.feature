@@ -20,6 +20,7 @@ Feature: Test the remote commands via salt
     Then I should see a "Remote Command has been scheduled successfully" text
     And I follow "Events" in the content area
     And I follow "History" in the content area
+    And I wait for "1" seconds
     Then I follow first "Run an arbitrary script scheduled by testing" in the content area
     And I should see a "This action's status is: Picked Up" text
     And I wait for "6" seconds
