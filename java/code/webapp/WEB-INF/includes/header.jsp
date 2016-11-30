@@ -86,17 +86,6 @@
         </a>
       </div>
     </ul>
-    <rhn:menu mindepth="0" maxdepth="0"
-              definition="/WEB-INF/nav/sitenav-authenticated.xml"
-              renderer="com.redhat.rhn.frontend.nav.TopnavRenderer" />
   </rhn:require>
-
-<rhn:require acl="not user_authenticated()">
-  <nav class="option">
-    <rhn:menu mindepth="0" maxdepth="0"
-            definition="/WEB-INF/nav/sitenav.xml"
-            renderer="com.redhat.rhn.frontend.nav.TopnavRenderer" />
-  </nav>
-</rhn:require>
 </div>
 <!-- end header.jsp -->
