@@ -1,0 +1,8 @@
+kgraft_patch_1_2_2
+    active: 1
+    RPM: kgraft-patch-3_12_62-60_64_8-default-1-2.2.x86_64
+    CVE: (none - this is an initial kGraft patch)
+    bug fixes and enhancements: (none)
+
+kgraft_patch_2_2_1
+    active: 0
