@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rhn-navi-tree xmlns:xi="http://www.w3.org/2001/XInclude" label="sitenav_unauth" title-depth="0">
-  <rhn-tab name="Create First User" url="/rhn/newlogin/CreateFirstUser.do" acl="need_first_user()">
-  </rhn-tab>
-
+  <rhn-tab name="Create First User" url="/rhn/newlogin/CreateFirstUser.do" acl="need_first_user()" />
   <rhn-tab name="About Spacewalk" url="/rhn/help/about.do" active-image="tab-about_rhn-selected.gif" inactive-image="tab-about_rhn.gif" >
     <rhn-tab name="About Spacewalk" url="/rhn/help/about.do" />
     <rhn-tab name="Sign In" url="/rhn/Login.do" acl="not user_authenticated()" />
@@ -24,13 +22,12 @@
       <rhn-tab-directory>/rhn/help/release-notes/manager</rhn-tab-directory>
     </rhn-tab>
     <rhn-tab name="API" url="/rhn/apidoc/index.jsp">
-        <rhn-tab name="Overview" url="/rhn/apidoc/index.jsp">
-                        <rhn-tab-directory>/rhn/apidoc</rhn-tab-directory>
-                </rhn-tab>
-        <rhn-tab name="FAQs" url="/rhn/apidoc/faqs.jsp" />
-        <rhn-tab name="Sample Scripts" url="/rhn/apidoc/scripts.jsp" />
+      <rhn-tab name="Overview" url="/rhn/apidoc/index.jsp">
+        <rhn-tab-directory>/rhn/apidoc</rhn-tab-directory>
+      </rhn-tab>
+      <rhn-tab name="FAQs" url="/rhn/apidoc/faqs.jsp" />
+      <rhn-tab name="Sample Scripts" url="/rhn/apidoc/scripts.jsp" />
     </rhn-tab>
     <rhn-tab name="Search" url="/rhn/help/Search.do" />
-</rhn-tab>
-
+  </rhn-tab>
 </rhn-navi-tree>
