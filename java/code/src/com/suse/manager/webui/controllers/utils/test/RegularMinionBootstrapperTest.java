@@ -66,22 +66,22 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         assertFalse((Boolean) bootstrap.get("success"));
     }
 
-    public void testIncompatibleActivatioKeys() throws Exception {
+    public void testIncompatibleActivationKeys() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
-        super.testIncompatibleActivatioKeysBase(key);
+        super.testIncompatibleActivationKeysBase(key);
     }
 
-    public void testIncompatibleActivatioKeysTunnel() throws Exception {
+    public void testIncompatibleActivationKeysTunnel() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
-        super.testIncompatibleActivatioKeysBase(key);
+        super.testIncompatibleActivationKeysBase(key);
     }
 
-    public void testCompatibleActivatioKeys() throws Exception {
+    public void testCompatibleActivationKeys() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
-        super.testCompatibleActivatioKeysBase(key);
+        super.testCompatibleActivationKeysBase(key);
     }
 
     @Override
