@@ -47,24 +47,24 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
         };
     }
 
-    public void testIncompatibleActivatioKeys() throws Exception {
+    public void testIncompatibleActivationKeys() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
-        super.testIncompatibleActivatioKeysBase(key);
+        super.testIncompatibleActivationKeysBase(key);
     }
 
-    public void testCompatibleActivatioKeys() throws Exception {
+    public void testCompatibleActivationKeys() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
         bootstrapper = mockRegistrationBootstrapper(Optional.of(key.getKey()));
-        super.testCompatibleActivatioKeysBase(key);
+        super.testCompatibleActivationKeysBase(key);
     }
 
-    public void testCompatibleActivatioKeysTunnel() throws Exception {
+    public void testCompatibleActivationKeysTunnel() throws Exception {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
         bootstrapper = mockRegistrationBootstrapper(Optional.of(key.getKey()));
-        super.testCompatibleActivatioKeysBase(key);
+        super.testCompatibleActivationKeysBase(key);
     }
 
     @Override

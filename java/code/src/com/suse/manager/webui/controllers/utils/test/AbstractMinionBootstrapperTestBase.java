@@ -150,7 +150,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      * @param key activation key
      * @throws Exception if anything goes wrong
      */
-    protected void testIncompatibleActivatioKeysBase(ActivationKey key) throws Exception {
+    protected void testIncompatibleActivationKeysBase(ActivationKey key) throws Exception {
         JSONBootstrapHosts input = mockStandardInput();
         context().checking(new Expectations() {{
             allowing(input).getFirstActivationKey();
@@ -166,7 +166,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      * @param key activation key
      * @throws Exception if anything goes wrong
      */
-    protected void testCompatibleActivatioKeysBase(ActivationKey key) throws Exception {
+    protected void testCompatibleActivationKeysBase(ActivationKey key) throws Exception {
         JSONBootstrapHosts input = mockStandardInput();
         context().checking(new Expectations() {{
             allowing(input).getActivationKeys();
