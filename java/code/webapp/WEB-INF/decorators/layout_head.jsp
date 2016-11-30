@@ -59,3 +59,4 @@
     <script src="/javascript/bootstrap-datepicker.js"></script>
 
     <script src='/javascript/reactjs/react.bundle.js'></script>
+    <script src='/javascript/manager/menu.bundle.js'></script>
