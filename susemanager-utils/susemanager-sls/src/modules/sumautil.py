@@ -8,7 +8,14 @@ from __future__ import absolute_import
 import logging
 import socket
 import os
+import re
+import time
+import salt.utils
 from salt.exceptions import CommandExecutionError
+
+__salt__ = {
+    'cmd.run_all': salt.modules.cmdmod.run_all,
+}
 
 log = logging.getLogger(__name__)
 
@@ -108,3 +115,51 @@ def get_net_modules():
             log.warn("An error occurred getting net driver for {0}".format(devdir), exc_info=True)
 
     return drivers or None
+
+def get_kernel_live_version():
+    '''
+    Returns the patch version of live patching if it is active,
+    otherwise None
+
+    CLI Example:
+
+    .. code-block:: bash
+
+        salt '*' sumautil.get_kernel_live_version
+    '''
+    kernel_live_version = _kgr()
+    if not kernel_live_version:
+        log.debug("No kernel live patch is active")
+
+    return kernel_live_version
+
+def _kgr():
+    '''
+    kgr to identify the current kgraft patch
+
+    :return:
+    '''
+    kgr = salt.utils.which_bin(['kgr'])
+    patchname = None
+    if kgr is not None:
+        try:
+            # loop until patching is finished
+            for i in range(10):
+                stat = __salt__['cmd.run_all']('{0} status'.format(kgr), output_loglevel='quiet')
+                log.debug("kgr status: {0}".format(stat['stdout']))
+                if stat['stdout'].strip().splitlines()[0] == 'ready':
+                    break
+                time.sleep(1)
+            re_active = re.compile(r"^\s+active:\s*1$")
+            ret = __salt__['cmd.run_all']('{0} -v patches'.format(kgr), output_loglevel='quiet')
+            log.debug("kgr patches: {0}".format(ret['stdout']))
+            if ret['retcode'] == 0:
+                for line in ret['stdout'].strip().splitlines():
+                    if line.startswith('#'):
+                        continue
+                    if re_active.match(line):
+                        return {'mgr_kernel_live_version': patchname }
+                    if line.startswith('kgraft'):
+                        patchname = line.strip()
+        except Exception as error:
+            log.error("kgr: {0}".format(str(error)))
