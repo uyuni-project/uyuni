@@ -21,7 +21,7 @@ Feature: Test the remote commands via salt
     And I follow "Events" in the content area
     And I follow "History" in the content area
     Then I follow first "Run an arbitrary script scheduled by testing" in the content area
-    And I should see a "This action's status is: Picked-Up" text
+    And I should see a "This action's status is: Picked Up" text
     And I wait for "6" seconds
     And I follow "History" in the content area
     Then I follow first "Run an arbitrary script scheduled by testing" in the content area
