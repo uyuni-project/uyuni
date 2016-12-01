@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task.sshpush.test;
 import com.google.gson.JsonElement;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -32,6 +33,10 @@ import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.Collections;
 import java.util.Optional;
+
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 
 /**
  * SSHPushWorkerSaltTest
@@ -62,14 +67,11 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     public void testDontExecuteCompletedAction() throws Exception {
         expectNoSaltCalls();
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
-        serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
-        serverAction.setRemainingTries(5L);
-        action.setServerActions(Collections.singleton(serverAction));
+        ServerAction serverAction = createChildServerAction(action, STATUS_COMPLETED, 5L);
 
         worker.executeAction(action, minion);
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
+        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
     }
 
@@ -82,14 +84,11 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     public void testDontExecuteFailedAction() throws Exception {
         expectNoSaltCalls();
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
-        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-        serverAction.setRemainingTries(5L);
-        action.setServerActions(Collections.singleton(serverAction));
+        ServerAction serverAction = createChildServerAction(action, STATUS_FAILED, 5L);
 
         worker.executeAction(action, minion);
 
-        assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
+        assertEquals(STATUS_FAILED, serverAction.getStatus());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
     }
 
@@ -102,13 +101,11 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     public void testExecuteActionNoRemainingTries() throws Exception {
         expectNoSaltCalls();
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
-        serverAction.setRemainingTries(0L);
-        action.setServerActions(Collections.singleton(serverAction));
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 0L);
+
         worker.executeAction(action, minion);
 
-        assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
+        assertEquals(STATUS_FAILED, serverAction.getStatus());
         assertEquals(
                 "Action has been picked up multiple times" +
                         " without a successful transaction;" +
@@ -129,20 +126,15 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
         // prerequisite failed
         Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        ServerAction prereqServerAction =
-                ActionFactoryTest.createServerAction(minion, prereq);
-        prereqServerAction.setStatus(ActionFactory.STATUS_FAILED);
-        prereq.setServerActions(Collections.singleton(prereqServerAction));
+        createChildServerAction(prereq, STATUS_FAILED, 0L);
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         action.setPrerequisite(prereq);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
-        serverAction.setRemainingTries(5L);
-        action.setServerActions(Collections.singleton(serverAction));
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
+
         worker.executeAction(action, minion);
 
-        assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
+        assertEquals(STATUS_FAILED, serverAction.getStatus());
         assertEquals("Prerequisite failed.", serverAction.getResultMsg());
         // this comes from the xmlrpc/queue.py
         assertEquals(Long.valueOf(-100L), serverAction.getResultCode());
@@ -169,14 +161,12 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
         // create action without servers
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
-        serverAction.setRemainingTries(5L);
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
-        action.setServerActions(Collections.singleton(serverAction));
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
+
         worker.executeAction(action, minion);
 
         assertEquals(Long.valueOf(4L), serverAction.getRemainingTries());
-        assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
+        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
     }
 
     /**
@@ -221,14 +211,12 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
     private void assertActionWillBeRetried() throws Exception {
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
-        serverAction.setRemainingTries(5L);
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
-        action.setServerActions(Collections.singleton(serverAction));
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
+
         worker.executeAction(action, minion);
 
         assertEquals(Long.valueOf(4L), serverAction.getRemainingTries());
-        assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
+        assertEquals(STATUS_QUEUED, serverAction.getStatus());
     }
 
     /**
@@ -283,26 +271,21 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
         // prerequisite is still queued
         Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        ServerAction prereqServerAction =
-                ActionFactoryTest.createServerAction(minion, prereq);
-        prereqServerAction.setRemainingTries(5L);
-        prereqServerAction.setStatus(ActionFactory.STATUS_QUEUED);
+        ServerAction prereqServerAction = createChildServerAction(prereq, STATUS_QUEUED, 5L);
         prereq.setServerActions(Collections.singleton(prereqServerAction));
 
         // action is queued as well
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         action.setPrerequisite(prereq);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
-        serverAction.setRemainingTries(5L);
-        action.setServerActions(Collections.singleton(serverAction));
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
 
         worker.executeAction(action, minion);
 
         // both status and remaining tries should remain unchanged
-        assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
+        assertEquals(STATUS_QUEUED, serverAction.getStatus());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
     }
+
     /**
      * Tests that execution skips server actions which still have queued prerequisite
      * server actions but after the prerequisite is executed (= it's in either completed or
@@ -316,24 +299,17 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
         // prerequisite is still queued
         Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        ServerAction prereqServerAction =
-                ActionFactoryTest.createServerAction(minion, prereq);
-        prereqServerAction.setRemainingTries(5L);
-        prereqServerAction.setStatus(ActionFactory.STATUS_QUEUED);
-        prereq.setServerActions(Collections.singleton(prereqServerAction));
+        ServerAction prereqServerAction = createChildServerAction(prereq, STATUS_QUEUED, 5L);
 
         // action is queued as well
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         action.setPrerequisite(prereq);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
-        serverAction.setRemainingTries(5L);
-        action.setServerActions(Collections.singleton(serverAction));
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
 
         worker.executeAction(action, minion);
 
         // both status and remaining tries should remain unchanged
-        assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
+        assertEquals(STATUS_QUEUED, serverAction.getStatus());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
 
         context().checking(new Expectations() {{
@@ -345,19 +321,16 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         }});
 
         worker.executeAction(prereq, minion);
-        assertEquals(ActionFactory.STATUS_COMPLETED, prereqServerAction.getStatus());
+        assertEquals(STATUS_COMPLETED, prereqServerAction.getStatus());
 
         // 2nd try
         worker.executeAction(action, minion);
-        assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
+        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
     }
 
     private void successAfterRetryHelper() throws Exception {
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
-        serverAction.setRemainingTries(5L);
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
-        action.setServerActions(Collections.singleton(serverAction));
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
 
         try {
             worker.executeAction(action, minion);
@@ -367,7 +340,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
         // should be still STATUS_QUEUED, number of tries is decreased
         assertEquals(Long.valueOf(4L), serverAction.getRemainingTries());
-        assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
+        assertEquals(STATUS_QUEUED, serverAction.getStatus());
 
         // we create a salt service that succeeds
         context().checking(new Expectations() {{
@@ -384,7 +357,16 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
         // should be still STATUS_COMPLETED, number of tries is decreased
         assertEquals(Long.valueOf(3L), serverAction.getRemainingTries());
-        assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
+        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
+    }
+
+    private ServerAction createChildServerAction(Action action, ActionStatus status,
+            long remainingTries) throws Exception {
+        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
+        serverAction.setStatus(status);
+        serverAction.setRemainingTries(remainingTries);
+        action.setServerActions(Collections.singleton(serverAction));
+        return serverAction;
     }
 
     private void expectNoSaltCalls() {
@@ -407,7 +389,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             @Override
             public void updateServerAction(ServerAction sa, JsonElement r,
                     String function) {
-                sa.setStatus(ActionFactory.STATUS_COMPLETED);
+                sa.setStatus(STATUS_COMPLETED);
             }
         };
     }
