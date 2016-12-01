@@ -16,7 +16,10 @@ package com.suse.manager.webui.controllers.utils;
 
 import com.google.gson.JsonElement;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -185,6 +188,12 @@ public abstract class AbstractMinionBootstrapper {
             return new BootstrapResult(false, errors.toArray(new String[errors.size()]));
         }
 
+        Optional<String> activationKeyErrorMessage = input.getFirstActivationKey()
+                .flatMap(this::validateActivationKey);
+        if (activationKeyErrorMessage.isPresent()) {
+            return new BootstrapResult(false, activationKeyErrorMessage.get());
+        }
+
         if (saltService.keyExists(input.getHost())) {
             return new BootstrapResult(false, "A salt key for this" +
                     " host (" + input.getHost() +
@@ -201,9 +210,30 @@ public abstract class AbstractMinionBootstrapper {
     }
 
     /**
+     * Checks whether the contact method of the desired activation key is compatible with
+     * the selected method of managing the system (either a regular minion or
+     * a salt-ssh system).
+     *
+     * @param activationKeyLabel desired activation key label
+     * @return Optional with error message or empty if validation succeeds
+     */
+    private Optional<String> validateActivationKey(String activationKeyLabel) {
+        ActivationKey activationKey = ActivationKeyFactory.lookupByKey(activationKeyLabel);
+
+        if (activationKey == null) {
+            return Optional.of("Selected activation key not found.");
+        }
+
+        return validateContactMethod(activationKey.getContactMethod());
+    }
+
+    protected abstract Optional<String> validateContactMethod(
+            ContactMethod desiredContactMethod);
+
+    /**
      * Decode the std message from the whole message
      *
-     * @param error the error Object
+     * @param message the message Object
      * @param key the json key of the message to decode (e.g.: sdterr, stdout)
      * @return the String decoded if it exists
      */

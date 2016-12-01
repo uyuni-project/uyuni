@@ -144,6 +144,15 @@ public class BootstrapParameters {
     }
 
     /**
+     * Convenience method for getting first selected activation key or empty.
+     * @return first selected activation key label or empty if none selected
+     */
+    public Optional<String> getFirstActivationKey() {
+        return Optional.ofNullable(getActivationKeys())
+                .flatMap(list -> list.stream().findFirst());
+    }
+
+    /**
      * Sets the activationKeys.
      *
      * @param activationKeysIn - the activationKeys

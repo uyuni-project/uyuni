@@ -114,22 +114,31 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * {@inheritDoc}
      */
     public void doExecute(EventMessage msg) {
-        registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false);
+        registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false,
+                Optional.empty());
     }
 
     /**
      * Temporary HACK: Run the registration for a minion with given id.
      * Will be extracted to a separate class, this is here only because of easier rebasing.
      * @param minionId minion id
+     * @param activationKeyOverride label of activation key to be applied to the system.
+     *                              If left empty, activation key from grains will be used.
      */
-    public void registerSSHMinion(String minionId) {
-        registerMinion(minionId, true);
+    public void registerSSHMinion(String minionId, Optional<String> activationKeyOverride) {
+        registerMinion(minionId, true, activationKeyOverride);
     }
 
     /**
-     * {@inheritDoc}
+     * Performs minion registration.
+     *
+     * @param minionId minion id
+     * @param isSaltSSH true if a salt-ssh system is bootstrapped
+     * @param activationKeyOverride label of activation key to be applied to the system.
+     *                              If left empty, activation key from grains will be used.
      */
-    private void registerMinion(String minionId, boolean isSaltSSH) {
+    private void registerMinion(String minionId, boolean isSaltSSH,
+            Optional<String> activationKeyOverride) {
         // Match minions via their machine id
         Optional<String> optMachineId = SALT_SERVICE.getMachineId(minionId);
         if (!optMachineId.isPresent()) {
@@ -211,9 +220,14 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     SALT_SERVICE.getGrains(minionId).orElseGet(HashMap::new));
 
             //apply activation key properties that can be set before saving the server
-            Optional<ActivationKey> activationKey = grains
+            Optional<String> activationKeyFromGrains = grains
                     .getMap("susemanager")
-                    .flatMap(suma -> suma.getOptionalAsString("activation_key"))
+                    .flatMap(suma -> suma.getOptionalAsString("activation_key"));
+
+            Optional<String> activationKeyLabel = activationKeyOverride.isPresent() ?
+                    activationKeyOverride : activationKeyFromGrains;
+
+            Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
             server.setOrg(activationKey
                     .map(ActivationKey::getOrg)
@@ -237,7 +251,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setLastBoot(System.currentTimeMillis() / 1000);
             server.setCreated(new Date());
             server.setModified(server.getCreated());
-            server.setContactMethod(getContactMethod(isSaltSSH));
+            server.setContactMethod(getContactMethod(activationKey, isSaltSSH));
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
@@ -339,9 +353,15 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
     }
 
-    private ContactMethod getContactMethod(boolean isSshPush) {
-        return isSshPush ? ServerFactory.findContactMethodByLabel("ssh-push") :
-                ServerFactory.findContactMethodByLabel("default");
+    private ContactMethod getContactMethod(Optional<ActivationKey> activationKey,
+            boolean isSshPush) {
+        return Opt.fold(
+                activationKey,
+                () -> isSshPush ?
+                        ServerFactory.findContactMethodByLabel("ssh-push") :
+                        ServerFactory.findContactMethodByLabel("default"),
+                ak -> ak.getContactMethod()
+        );
     }
 
     private void lookupAndAddDefaultChannels(MinionServer server, ValueMap grains) {
