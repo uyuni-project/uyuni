@@ -1152,7 +1152,13 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
-     * Test the SDK scenario: one errata with two packages in different channels.
+     * Test the Live Patching scenario:
+     * - kernel and kernel-new in base channel
+     * - kgraft-patch and kgraft-patch-new in live-patching child channel
+     * - cloned channels
+     * - kernel-new not available in the cloned channel
+     * - kernel and kgraft-patch-new installed on the server
+     * Test that this server is seen as "patched"
      *
      * @throws Exception if anything goes wrong
      */
@@ -1175,8 +1181,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         baseChannelSLES12.addErrata(kernelErratum);
         childChannelLP12.addErrata(kgraftErratum);
 
-        // Create two unpatched packages where both have patched packages in their
-        // respective channels, all in the same erratum!
+        // Create two unpatched packages
         Package kernelDefault = createTestPackage(user, baseChannelSLES12, "i586");
         kernelDefault.setPackageName(PackageNameTest.createTestPackageName("kernel-default"));
         TestUtils.saveAndFlush(kernelDefault);
@@ -1201,8 +1206,8 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel channelClone =
                 createTestClonedChannel(user, errataKgraftClone, childChannelLP12, packagesLP);
 
-        // server1: SDK channel not assigned, patched package not installed
-        // -> AFFECTED_PATCH_APPLICABLE
+        // server: old kernel but new kgraft-patch installed from cloned channels
+        // -> PATCHED
         Set<Channel> serverChannels = new HashSet<Channel>();
         serverChannels.add(baseChannelClone);
         serverChannels.add(channelClone);
