@@ -538,7 +538,8 @@ public class CVEAuditManager {
         for (Map<String, Object> result : results) {
             // Get the server id first
             Long systemID = (Long) result.get("system_id");
-            usesLivePatching |= result.get("package_name").toString().startsWith("kgraft-patch");
+            String packageName = (String) result.get("package_name");
+            usesLivePatching |= packageName != null && packageName.startsWith("kgraft-patch");
 
             // Is this a new system?
             if (currentSystem == null || !systemID.equals(currentSystem.getSystemID())) {
@@ -620,7 +621,6 @@ public class CVEAuditManager {
                     // is patched once false otherwise (but should still appear
                     // in the map)
                     Boolean patched = false;
-                    String packageName = (String) result.get("package_name");
                     if (patchedPackageNames.containsKey(packageName)) {
                         patched = patchedPackageNames.get(packageName);
                     }
@@ -644,7 +644,6 @@ public class CVEAuditManager {
                     // At the end the entry should be true if the package name is
                     // patched once false otherwise (but should still appear in the map)
                     Boolean patched = false;
-                    String packageName = (String) result.get("package_name");
                     if (patchedPackageNames.containsKey(packageName)) {
                         patched = patchedPackageNames.get(packageName);
                     }
