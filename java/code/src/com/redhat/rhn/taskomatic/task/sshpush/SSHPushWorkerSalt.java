@@ -62,6 +62,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private TaskQueue parentQueue;
 
     private boolean packageListRefreshNeeded = false;
+    private SaltService saltService;
 
     /**
      * Constructor.
@@ -71,6 +72,20 @@ public class SSHPushWorkerSalt implements QueueWorker {
     public SSHPushWorkerSalt(Logger logger, SSHPushSystem systemIn) {
         log = logger;
         system = systemIn;
+        saltService = SaltService.INSTANCE;
+    }
+
+    /**
+     * Constructor.
+     * @param logger Logger for this instance
+     * @param systemIn the system to work with
+     * @param saltServiceIn the salt service to work with
+     */
+    public SSHPushWorkerSalt(Logger logger, SSHPushSystem systemIn,
+            SaltService saltServiceIn) {
+        log = logger;
+        system = systemIn;
+        saltService = saltServiceIn;
     }
 
     /**
@@ -163,7 +178,13 @@ public class SSHPushWorkerSalt implements QueueWorker {
         }
     }
 
-    private void executeAction(Action action, MinionServer minion) {
+    /**
+     * Execute action on minion.
+     *
+     * @param action the action to be executed
+     * @param minion minion on which the action will be executed
+     */
+    public void executeAction(Action action, MinionServer minion) {
         Optional<ServerAction> serverAction = action.getServerActions().stream()
                 .filter(sa -> sa.getServer().equals(minion))
                 .findFirst();
@@ -205,7 +226,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 Optional<JsonElement> result;
                 // try-catch as we'd like to log the warning in case of exception
                 try {
-                    result = SaltService.INSTANCE
+                    result = saltService
                             .callSync(new JsonElementCall(call), minion.getMinionId());
                 }
                 catch (RuntimeException e) {
@@ -224,12 +245,10 @@ public class SSHPushWorkerSalt implements QueueWorker {
                         log.trace("Salt call result: " + r);
                     }
                     String function = (String) call.getPayload().get("fun");
-                    JobReturnEventMessageAction.updateServerAction(sa, 0L, true, "n/a", r,
-                            function);
+                    updateServerAction(sa, r, function);
 
                     // Perform a package profile update in the end if necessary
-                    if (JobReturnEventMessageAction
-                            .shouldRefreshPackageList(function, result)) {
+                    if (shouldRefreshPackageList(function, result)) {
                         log.info("Scheduling a package profile update");
                         this.packageListRefreshNeeded = true;
                     }
@@ -239,6 +258,32 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 });
             });
         });
+    }
+
+    /**
+     * Checks whether the package list should be refreshed based on the function called
+     * and the result (in case of state.apply call).
+     *
+     * @param function the function called
+     * @param result the call result
+     * @return true if the package list should be refreshed
+     */
+    public boolean shouldRefreshPackageList(String function, Optional<JsonElement> result) {
+        return JobReturnEventMessageAction
+                .shouldRefreshPackageList(function, result);
+    }
+
+    /**
+     * Update server action based on the result of the call.
+     *
+     * @param serverAction server action to be updated
+     * @param result the call result
+     * @param function the function called
+     */
+    public void updateServerAction(ServerAction serverAction, JsonElement result,
+            String function) {
+        JobReturnEventMessageAction.updateServerAction(serverAction, 0L, true, "n/a",
+                result, function);
     }
 
     /**
