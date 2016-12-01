@@ -46,6 +46,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+
 /**
  * SSH push worker executing scheduled actions via Salt SSH.
  */
@@ -162,6 +165,12 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 .filter(sa -> sa.getServer().equals(minion))
                 .findFirst();
         serverAction.ifPresent(sa -> {
+            if (sa.getStatus().equals(STATUS_FAILED) ||
+                    sa.getStatus().equals(STATUS_COMPLETED)) {
+                log.info("Action '" + action.getName() + "' is completed or failed." +
+                        " Skipping.");
+                return;
+            }
             Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE
                     .callsForAction(action, Arrays.asList(minion));
 
