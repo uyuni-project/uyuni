@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -196,7 +197,13 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 return;
             }
 
-            if (prerequisiteFailed(sa)) {
+            if (prerequisityInState(sa, ActionFactory.STATUS_QUEUED)) {
+                log.info("Prerequisity of action '" + action.getName() + "' is still" +
+                        " queued. Skipping executing of the action.");
+                return;
+            }
+
+            if (prerequisityInState(sa, ActionFactory.STATUS_FAILED)) {
                 log.info("Failing action '" + action.getName() + "' as its prerequisity '" +
                                 action.getPrerequisite().getName() + "' failed.");
                 sa.setStatus(STATUS_FAILED);
@@ -287,13 +294,14 @@ public class SSHPushWorkerSalt implements QueueWorker {
     }
 
     /**
-     * Checks whether the parent action of given server action contains a failed server
-     * action that is associated with the server of given server action.
+     * Checks whether the parent action of given server action contains a server action
+     * that is in given state and is associated with the server of given server action.
      * @param serverAction server action
-     * @return true if there exists a failed server action associated with the same server
-     * as serverAction and parent action of serverAction
+     * @param state state
+     * @return true if there exists a server action in given state associated with the same
+     * server as serverAction and parent action of serverAction
      */
-    private boolean prerequisiteFailed(ServerAction serverAction) {
+    private boolean prerequisityInState(ServerAction serverAction, ActionStatus state) {
         Optional<Stream<ServerAction>> prerequisites =
                 ofNullable(serverAction.getParentAction())
                         .map(Action::getPrerequisite)
@@ -305,7 +313,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                         serverActions
                                 .filter(s ->
                                         serverAction.getServer().equals(s.getServer()) &&
-                                                STATUS_FAILED.equals(s.getStatus()))
+                                                state.equals(s.getStatus()))
                                 .findAny())
                 .isPresent();
     }

@@ -271,6 +271,39 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         successAfterRetryHelper();
     }
 
+    /**
+     * Tests that execution skips server actions which still have queued prerequisite
+     * server actions.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testSkipActionWhenPrerequisiteQueued() throws Exception {
+        expectNoSaltCalls();
+        worker = successWorker();
+
+        // prerequisite is still queued
+        Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        ServerAction prereqServerAction =
+                ActionFactoryTest.createServerAction(minion, prereq);
+        prereqServerAction.setRemainingTries(5L);
+        prereqServerAction.setStatus(ActionFactory.STATUS_QUEUED);
+        prereq.setServerActions(Collections.singleton(prereqServerAction));
+
+        // action is queued as well
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        action.setPrerequisite(prereq);
+        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
+        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
+        serverAction.setRemainingTries(5L);
+        action.setServerActions(Collections.singleton(serverAction));
+
+        worker.executeAction(action, minion);
+
+        // both status and remaining tries should remain unchanged
+        assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
+        assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
+    }
+
     private void successAfterRetryHelper() throws Exception {
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
