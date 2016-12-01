@@ -533,10 +533,12 @@ public class CVEAuditManager {
         // Flags
         boolean hasErrata = false;
         boolean ignoreOldProducts = true;
+        boolean usesLivePatching = false;
 
         for (Map<String, Object> result : results) {
             // Get the server id first
             Long systemID = (Long) result.get("system_id");
+            usesLivePatching |= result.get("package_name").toString().startsWith("kgraft-patch");
 
             // Is this a new system?
             if (currentSystem == null || !systemID.equals(currentSystem.getSystemID())) {
@@ -677,6 +679,13 @@ public class CVEAuditManager {
 
         // Finish up the *very* last system record
         if (currentSystem != null) {
+            if (usesLivePatching && (patchedPackageNames.containsKey("kernel-default") ||
+                    patchedPackageNames.containsKey("kernel-xen"))) {
+                patchedPackageNames.remove("kernel-default");
+                patchedPackageNames.remove("kernel-xen");
+                channelAssignedPackageNames.remove("kernel-default");
+                channelAssignedPackageNames.remove("kernel-xen");
+            }
             boolean allPackagesForAllErrataInstalled = true;
             for (Boolean isPatched : patchedPackageNames.values()) {
                 allPackagesForAllErrataInstalled &= isPatched;
