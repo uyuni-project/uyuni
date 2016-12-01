@@ -180,7 +180,7 @@ Feature: Explore the main landing page
     Given I am on the Systems page
     And I follow "System Set Manager" in the left menu
     Then I should see a "System Set Manager" text
-    And I should see a "Status" link in the left menu
+    And I should see a "Task Log" link in the left menu
     And I should see a "Overview" link in the content area
     And I should see a "Systems" link in the content area
     And I should see a "Errata" link in the content area
