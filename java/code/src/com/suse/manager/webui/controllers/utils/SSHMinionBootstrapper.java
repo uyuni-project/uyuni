@@ -15,6 +15,8 @@
 
 package com.suse.manager.webui.controllers.utils;
 
+import com.redhat.rhn.domain.server.ContactMethod;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
@@ -28,6 +30,7 @@ import org.apache.log4j.Logger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static com.suse.manager.webui.services.impl.SaltSSHService.SSH_PUSH_PORT;
 import static com.suse.manager.webui.services.impl.SaltSSHService.getSSHUser;
@@ -73,6 +76,21 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     }
 
     @Override
+    protected Optional<String> validateContactMethod(ContactMethod desiredContactMethod) {
+        boolean isIncompatible = Stream.of(
+                ServerFactory.findContactMethodByLabel("ssh-push"),
+                ServerFactory.findContactMethodByLabel("ssh-push-tunnel")
+        ).noneMatch(cm -> cm.getId().equals(desiredContactMethod.getId()));
+
+        if (isIncompatible) {
+            return Optional.of("Selected activation key cannot be used as its contact" +
+                    " method is not compatible with the salt-ssh systems.");
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
     protected BootstrapResult bootstrapInternal(BootstrapParameters params, User user) {
         BootstrapResult result = super.bootstrapInternal(params, user);
         LOG.info("salt-ssh system bootstrap success: " + result.isSuccess() +
@@ -81,7 +99,9 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
         SSHMinionsPendingRegistrationService.addMinion(minionId);
         try {
             if (result.isSuccess()) {
-                getRegisterAction().registerSSHMinion(minionId);
+                getRegisterAction().registerSSHMinion(
+                        minionId,
+                        params.getFirstActivationKey());
             }
         }
         finally {
