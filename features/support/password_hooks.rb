@@ -12,15 +12,15 @@ After('@revertgoodpass') do |scenario|
   changepass(scenario, 'GoodPass')
 end
 
-def ckUsernameField(timeout)
-  fill_in "username", :with => "admin"
+def fill_Field(field, pwd, timeout)
+  fill_in field, :with => pwd
 rescue
     sleep(timeout)
     begin
-      fill_in "username", :with => "admin"
+      fill_in field, :with => pwd
     rescue
       sleep(timeout)
-      fill_in "username", :with => "admin"
+      fill_in field, :with => pwd
     end
 end
 
@@ -33,22 +33,12 @@ def changepass(scenario, password)
   signout.click if signout
   # sometimes race condition,
   # Unable to find field "username" (Capybara::ElementNotFound)
-  ckUsernameField(15)
+  fill_Field("username", "admin", 15)
   fill_in "password", :with => password
   click_button "Sign In"
   find_link("Your Account").click
   sleep(10)
-  begin
-    fill_in "desiredpassword", :with => "admin"
-  rescue
-    sleep(15)
-    fill_in "desiredpassword", :with => "admin"
-  end
-  begin
-    fill_in "desiredpasswordConfirm", :with => "admin"
-  rescue
-    sleep(15)
-    fill_in "desiredpasswordConfirm", :with => "admin"
-  end
+  fill_Field("desiredpassword", "admin", 5)
+  fill_Field("desiredpasswordConfirm", "admin", 5)
   click_button "Update"
 end
