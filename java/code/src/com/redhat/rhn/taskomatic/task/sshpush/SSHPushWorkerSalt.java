@@ -45,9 +45,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static java.util.Optional.ofNullable;
 
 /**
  * SSH push worker executing scheduled actions via Salt SSH.
@@ -171,6 +173,17 @@ public class SSHPushWorkerSalt implements QueueWorker {
                         " Skipping.");
                 return;
             }
+
+            if (prerequisiteFailed(sa)) {
+                log.info("Failing action '" + action.getName() + "' as its prerequisity '" +
+                                action.getPrerequisite().getName() + "' failed.");
+                sa.setStatus(STATUS_FAILED);
+                sa.setResultMsg("Prerequisite failed.");
+                sa.setResultCode(-100L);
+                sa.setCompletionTime(new Date());
+                return;
+            }
+
             Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE
                     .callsForAction(action, Arrays.asList(minion));
 
@@ -206,6 +219,30 @@ public class SSHPushWorkerSalt implements QueueWorker {
     }
 
     /**
+     * Checks whether the parent action of given server action contains a failed server
+     * action that is associated with the server of given server action.
+     * @param serverAction server action
+     * @return true if there exists a failed server action associated with the same server
+     * as serverAction and parent action of serverAction
+     */
+    private boolean prerequisiteFailed(ServerAction serverAction) {
+        Optional<Stream<ServerAction>> prerequisites =
+                ofNullable(serverAction.getParentAction())
+                        .map(Action::getPrerequisite)
+                        .map(Action::getServerActions)
+                        .map(a -> a.stream());
+
+        return prerequisites
+                .flatMap(serverActions ->
+                        serverActions
+                                .filter(s ->
+                                        serverAction.getServer().equals(s.getServer()) &&
+                                                STATUS_FAILED.equals(s.getStatus()))
+                                .findAny())
+                .isPresent();
+    }
+
+    /**
      * Manipulate a given {@link LocalCall} object to return a {@link JsonElement} instead
      * of the specified return type.
      */
@@ -214,8 +251,8 @@ public class SSHPushWorkerSalt implements QueueWorker {
         @SuppressWarnings("unchecked")
         JsonElementCall(LocalCall<?> call) {
             super((String) call.getPayload().get("fun"),
-                    Optional.ofNullable((List<?>) call.getPayload().get("arg")),
-                    Optional.ofNullable((Map<String, ?>) call.getPayload().get("kwarg")),
+                    ofNullable((List<?>) call.getPayload().get("arg")),
+                    ofNullable((Map<String, ?>) call.getPayload().get("kwarg")),
                     new TypeToken<JsonElement>() { });
         }
     }
