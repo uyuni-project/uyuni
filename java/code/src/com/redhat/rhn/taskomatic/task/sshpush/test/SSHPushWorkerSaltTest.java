@@ -303,6 +303,54 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
     }
+    /**
+     * Tests that execution skips server actions which still have queued prerequisite
+     * server actions but after the prerequisite is executed (= it's in either completed or
+     * failed state), the dependant server action is not skipped anymore.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testSkipActionComplex() throws Exception {
+        expectNoSaltCalls();
+        worker = successWorker();
+
+        // prerequisite is still queued
+        Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        ServerAction prereqServerAction =
+                ActionFactoryTest.createServerAction(minion, prereq);
+        prereqServerAction.setRemainingTries(5L);
+        prereqServerAction.setStatus(ActionFactory.STATUS_QUEUED);
+        prereq.setServerActions(Collections.singleton(prereqServerAction));
+
+        // action is queued as well
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        action.setPrerequisite(prereq);
+        ServerAction serverAction = ActionFactoryTest.createServerAction(minion, action);
+        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
+        serverAction.setRemainingTries(5L);
+        action.setServerActions(Collections.singleton(serverAction));
+
+        worker.executeAction(action, minion);
+
+        // both status and remaining tries should remain unchanged
+        assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
+        assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
+
+        context().checking(new Expectations() {{
+            exactly(2).of(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(any(String.class)));
+            Optional<JsonElement> result = Optional.of(mock(JsonElement.class));
+            will(returnValue(result));
+        }});
+
+        worker.executeAction(prereq, minion);
+        assertEquals(ActionFactory.STATUS_COMPLETED, prereqServerAction.getStatus());
+
+        // 2nd try
+        worker.executeAction(action, minion);
+        assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
+    }
 
     private void successAfterRetryHelper() throws Exception {
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
