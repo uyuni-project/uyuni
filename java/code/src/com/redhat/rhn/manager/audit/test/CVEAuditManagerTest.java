@@ -67,10 +67,12 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -1147,6 +1149,72 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server1, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
         assertSystemPatchStatus(server2, PatchStatus.PATCHED, results);
+    }
+
+    /**
+     * Test the SDK scenario: one errata with two packages in different channels.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testLivePatchingAffectedPatched() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create two errata that patches the same bug. 1 for kgraft and one for kernel
+        User user = createTestUser();
+        Errata kernelErratum = createTestErrata(user, cves);
+        Errata kgraftErratum = createTestErrata(user, cves);
+        ChannelFamily channelFamilySLES = createTestChannelFamily();
+        ChannelProduct channelProductSLES12 = createTestChannelProduct();
+        ChannelProduct channelProductLP12 = createTestChannelProduct();
+        Channel baseChannelSLES12 = createTestVendorBaseChannel(channelFamilySLES, channelProductSLES12);
+        Channel childChannelLP12 = createTestVendorChildChannel(baseChannelSLES12, channelProductLP12);
+        baseChannelSLES12.addErrata(kernelErratum);
+        childChannelLP12.addErrata(kgraftErratum);
+
+        // Create two unpatched packages where both have patched packages in their
+        // respective channels, all in the same erratum!
+        Package kernelDefault = createTestPackage(user, baseChannelSLES12, "i586");
+        kernelDefault.setPackageName(PackageNameTest.createTestPackageName("kernel-default"));
+        TestUtils.saveAndFlush(kernelDefault);
+
+        Package kgraftDefault = createTestPackage(user, childChannelLP12, "i586");
+        kgraftDefault.setPackageName(PackageNameTest.createTestPackageName("kgraft-patch-3_12_62-60_64_8-default"));
+        TestUtils.saveAndFlush(kgraftDefault);
+
+        createLaterTestPackage(user, kernelErratum, baseChannelSLES12, kernelDefault);
+        Package kgraftDefaultNew = createLaterTestPackage(user, kgraftErratum, childChannelLP12, kgraftDefault);
+
+        List<Package> packagesLP = new ArrayList<>();
+        packagesLP.add(kgraftDefault);
+        packagesLP.add(kgraftDefaultNew);
+
+        // Create clones of channel and errata
+        Channel baseChannelClone = ChannelFactoryTest.createTestClonedChannel(baseChannelSLES12, user);
+        baseChannelClone.addPackage(kernelDefault);
+        TestUtils.saveAndFlush(baseChannelClone);
+
+        Errata errataKgraftClone = createTestClonedErrata(user, kgraftErratum, cves, kgraftDefaultNew);
+        Channel channelClone =
+                createTestClonedChannel(user, errataKgraftClone, childChannelLP12, packagesLP);
+
+        // server1: SDK channel not assigned, patched package not installed
+        // -> AFFECTED_PATCH_APPLICABLE
+        Set<Channel> serverChannels = new HashSet<Channel>();
+        serverChannels.add(baseChannelClone);
+        serverChannels.add(channelClone);
+        Server server = createTestServer(user, serverChannels);
+        createTestInstalledPackage(kernelDefault, server);
+        createTestInstalledPackage(kgraftDefaultNew, server);
+
+        CVEAuditManager.populateCVEServerChannels();
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditSystem> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
     }
 
     /**
