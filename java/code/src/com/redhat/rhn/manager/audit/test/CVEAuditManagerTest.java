@@ -1223,6 +1223,148 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Test the Live Patching scenario:
+     * - kernel and kernel-new in base channel
+     * - kgraft-patch and kgraft-patch-new in live-patching child channel
+     * - cloned channels
+     * - kernel-new not available in the cloned channel
+     * - kernel and kgraft-patch installed on the server
+     * Test that this server is seen as "applicable"
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testLivePatchingAffectedPatchApplicable() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create two errata that patches the same bug. 1 for kgraft and one for kernel
+        User user = createTestUser();
+        Errata kernelErratum = createTestErrata(user, cves);
+        Errata kgraftErratum = createTestErrata(user, cves);
+        ChannelFamily channelFamilySLES = createTestChannelFamily();
+        ChannelProduct channelProductSLES12 = createTestChannelProduct();
+        ChannelProduct channelProductLP12 = createTestChannelProduct();
+        Channel baseChannelSLES12 = createTestVendorBaseChannel(channelFamilySLES, channelProductSLES12);
+        Channel childChannelLP12 = createTestVendorChildChannel(baseChannelSLES12, channelProductLP12);
+        baseChannelSLES12.addErrata(kernelErratum);
+        childChannelLP12.addErrata(kgraftErratum);
+
+        // Create two unpatched packages
+        Package kernelDefault = createTestPackage(user, baseChannelSLES12, "i586");
+        kernelDefault.setPackageName(PackageNameTest.createTestPackageName("kernel-default"));
+        TestUtils.saveAndFlush(kernelDefault);
+
+        Package kgraftDefault = createTestPackage(user, childChannelLP12, "i586");
+        kgraftDefault.setPackageName(PackageNameTest.createTestPackageName("kgraft-patch-3_12_62-60_64_8-default"));
+        TestUtils.saveAndFlush(kgraftDefault);
+
+        createLaterTestPackage(user, kernelErratum, baseChannelSLES12, kernelDefault);
+        Package kgraftDefaultNew = createLaterTestPackage(user, kgraftErratum, childChannelLP12, kgraftDefault);
+
+        List<Package> packagesLP = new ArrayList<>();
+        packagesLP.add(kgraftDefault);
+        packagesLP.add(kgraftDefaultNew);
+
+        // Create clones of channel and errata
+        Channel baseChannelClone = ChannelFactoryTest.createTestClonedChannel(baseChannelSLES12, user);
+        baseChannelClone.addPackage(kernelDefault);
+        TestUtils.saveAndFlush(baseChannelClone);
+
+        Errata errataKgraftClone = createTestClonedErrata(user, kgraftErratum, cves, kgraftDefaultNew);
+        Channel channelClone =
+                createTestClonedChannel(user, errataKgraftClone, childChannelLP12, packagesLP);
+
+        // server: old kernel but new kgraft-patch installed from cloned channels
+        // -> PATCHED
+        Set<Channel> serverChannels = new HashSet<Channel>();
+        serverChannels.add(baseChannelClone);
+        serverChannels.add(channelClone);
+        Server server = createTestServer(user, serverChannels);
+        createTestInstalledPackage(kernelDefault, server);
+        createTestInstalledPackage(kgraftDefault, server);
+
+        CVEAuditManager.populateCVEServerChannels();
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditSystem> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
+    }
+
+    /**
+     * Test the Live Patching scenario:
+     * - kernel and kernel-new in base channel
+     * - kgraft-patch and kgraft-patch-new in live-patching child channel
+     * - cloned channels
+     * - kernel-new and kgraft-patch-new not available in the cloned channel
+     * - kernel and kgraft-patch installed on the server
+     * Test that this server is seen as "inapplicable"
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testLivePatchingAffectedPatchInapplicable() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create two errata that patches the same bug. 1 for kgraft and one for kernel
+        User user = createTestUser();
+        Errata kernelErratum = createTestErrata(user, cves);
+        Errata kgraftErratum = createTestErrata(user, cves);
+        ChannelFamily channelFamilySLES = createTestChannelFamily();
+        ChannelProduct channelProductSLES12 = createTestChannelProduct();
+        ChannelProduct channelProductLP12 = createTestChannelProduct();
+        Channel baseChannelSLES12 = createTestVendorBaseChannel(channelFamilySLES, channelProductSLES12);
+        Channel childChannelLP12 = createTestVendorChildChannel(baseChannelSLES12, channelProductLP12);
+        baseChannelSLES12.addErrata(kernelErratum);
+        childChannelLP12.addErrata(kgraftErratum);
+
+        // Create two unpatched packages
+        Package kernelDefault = createTestPackage(user, baseChannelSLES12, "i586");
+        kernelDefault.setPackageName(PackageNameTest.createTestPackageName("kernel-default"));
+        TestUtils.saveAndFlush(kernelDefault);
+
+        Package kgraftDefault = createTestPackage(user, childChannelLP12, "i586");
+        kgraftDefault.setPackageName(PackageNameTest.createTestPackageName("kgraft-patch-3_12_62-60_64_8-default"));
+        TestUtils.saveAndFlush(kgraftDefault);
+
+        createLaterTestPackage(user, kernelErratum, baseChannelSLES12, kernelDefault);
+        Package kgraftDefaultNew = createLaterTestPackage(user, kgraftErratum, childChannelLP12, kgraftDefault);
+
+        List<Package> packagesLP = new ArrayList<>();
+        packagesLP.add(kgraftDefault);
+        packagesLP.add(kgraftDefaultNew);
+
+        // Create clones of channel and errata
+        Channel baseChannelClone = ChannelFactoryTest.createTestClonedChannel(baseChannelSLES12, user);
+        baseChannelClone.addPackage(kernelDefault);
+        TestUtils.saveAndFlush(baseChannelClone);
+
+        Channel channelClone = ChannelFactoryTest.createTestClonedChannel(childChannelLP12, user);
+        channelClone.addPackage(kgraftDefault);
+        TestUtils.saveAndFlush(channelClone);
+
+        // server: old kernel but new kgraft-patch installed from cloned channels
+        // -> PATCHED
+        Set<Channel> serverChannels = new HashSet<Channel>();
+        serverChannels.add(baseChannelClone);
+        serverChannels.add(channelClone);
+        Server server = createTestServer(user, serverChannels);
+        createTestInstalledPackage(kernelDefault, server);
+        createTestInstalledPackage(kgraftDefault, server);
+
+        CVEAuditManager.populateCVEServerChannels();
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditSystem> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_INAPPLICABLE, results);
+    }
+
+    /**
      * Find record for a given server in a list as returned by
      * listSystemsByPatchStatus().
      * @param server
