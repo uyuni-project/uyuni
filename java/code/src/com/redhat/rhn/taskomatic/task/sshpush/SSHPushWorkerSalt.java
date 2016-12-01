@@ -42,6 +42,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -184,16 +185,38 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 return;
             }
 
+            if (sa.getRemainingTries() < 1) {
+                log.info("NOT executing and failing action '" + action.getName() + "' as" +
+                        " the maximum number of re-trials has been reached.");
+                sa.setStatus(STATUS_FAILED);
+                sa.setResultMsg("Action has been picked up multiple times" +
+                        " without a successful transaction;" +
+                        " This action is now failed for this system.");
+                sa.setCompletionTime(new Date());
+                return;
+            }
+
+            sa.setRemainingTries(sa.getRemainingTries() - 1);
+
             Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE
                     .callsForAction(action, Arrays.asList(minion));
 
             calls.keySet().forEach(call -> {
-                Optional<JsonElement> result = SaltService.INSTANCE
-                        .callSync(new JsonElementCall(call), minion.getMinionId());
+                Optional<JsonElement> result;
+                // try-catch as we'd like to log the warning in case of exception
+                try {
+                    result = SaltService.INSTANCE
+                            .callSync(new JsonElementCall(call), minion.getMinionId());
+                }
+                catch (RuntimeException e) {
+                    log.warn("Exception for salt call for action: '" + action.getName() +
+                            "'. Will be re-tried " +  sa.getRemainingTries() + " times");
+                    throw e;
+                }
 
                 if (!result.isPresent()) {
-                    log.error("No Salt call result for: " + action.getName());
-                    // TODO: Implement retry mechanism based on number of failures?
+                    log.error("No result for salt call for action: '" + action.getName() +
+                            "'. Will be re-tried " +  sa.getRemainingTries() + " times");
                 }
 
                 result.ifPresent(r -> {
