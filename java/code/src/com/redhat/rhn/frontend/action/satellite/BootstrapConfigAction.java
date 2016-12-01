@@ -40,7 +40,7 @@ import java.net.IDN;
 public class BootstrapConfigAction extends BaseConfigAction {
     /* in document root */
     public static final String DEFAULT_CERT_PATH =
-        "/pub/RHN-ORG-TRUSTED-SSL-CERT";
+        "/pub/rhn-org-trusted-ssl-cert-1.0-1.noarch.rpm";
 
     public static final String HOSTNAME = "hostname";
     public static final String SSL_CERT = "ssl-cert";
@@ -107,8 +107,8 @@ public class BootstrapConfigAction extends BaseConfigAction {
             form.set(SSL_CERT, docroot + DEFAULT_CERT_PATH);
             form.set(ENABLE_SSL, Boolean.TRUE);
             form.set(ENABLE_GPG, Boolean.TRUE);
-            form.set(ALLOW_CONFIG_ACTIONS, Boolean.TRUE);
-            form.set(ALLOW_REMOTE_COMMANDS, Boolean.TRUE);
+            form.set(ALLOW_CONFIG_ACTIONS, Boolean.FALSE);
+            form.set(ALLOW_REMOTE_COMMANDS, Boolean.FALSE);
         }
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
