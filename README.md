@@ -7,7 +7,13 @@
 
 ## Introduction
 
-Testsuite to automatically test a Spacewalk installation
+Testsuite to automatically test Spacewalk/Suse-Manager.
+
+## Branches in use:
+
+[BRANCHES](docs/branches.md)
+
+
 
 ## Howto write a new-test for spacewalk-suite, api-call quick-tutorial.
 [Testing-api tutorial](docs/api-call.md)
