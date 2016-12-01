@@ -11,7 +11,7 @@ Testsuite to automatically test Spacewalk/Suse-Manager.
 
 ## Branches in use:
 
-[BRANCHES](docs/branches.md)
+[Branches that we use](docs/branches.md)
 
 
 
