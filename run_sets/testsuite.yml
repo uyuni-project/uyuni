@@ -51,7 +51,7 @@
 - features/nagios.feature
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
-#- features/powermanagement-test.feature THIS NEED TO BE ADAPTED  
+- features/powermanagement-test.feature
 - features/CVE-ID-new-syntax.feature
 - features/datepicker.feature
 - features/delete_system_profile.feature
