@@ -1026,9 +1026,13 @@ SELECT  P.id AS ID,
         E.advisory_type,
         E.advisory,
         E.id AS ADVISORY_ID,
+        CASE WHEN RB.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_reboot,
+        CASE WHEN RS.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_restart,
         COUNT(DISTINCT SNC.server_id) NUM_SYSTEMS
-  FROM  rhnServerNeededCache SNC LEFT OUTER JOIN rhnErrata E
-        ON SNC.errata_id = E.id,
+  FROM  rhnServerNeededCache SNC
+            LEFT JOIN rhnErrata E ON SNC.errata_id = E.id
+            LEFT JOIN rhnErrataKeyword RB ON E.id = RB.errata_id AND RB.keyword = 'reboot_suggested'
+            LEFT JOIN rhnErrataKeyword RS ON E.id = RS.errata_id AND RS.keyword = 'restart_suggested',
         rhnPackageEVR PE,
         rhnPackageName PN,
         rhnPackage P,
@@ -1052,7 +1056,9 @@ GROUP BY P.id,
          PE.id,
          E.advisory_type,
          E.advisory,
-         E.id
+         E.id,
+         errata_reboot,
+         errata_restart
 ORDER BY UPPER(PN.name), UPPER(PE.version), UPPER(PE.release), UPPER(PE.epoch)
   </query>
 </mode>
@@ -2259,18 +2265,19 @@ ORDER BY 8
 <mode name="obsoleting_packages">
   <query params="pid, org_id">
 SELECT P2.id AS ID, PN.name || '-' || evr_t_as_vre_simple(PE.evr) || '-' ||
-  PA.label AS NVREA, AC.channel_id, AC.channel_name, EP.errata_id, E.
-  advisory, E.advisory_type
+      PA.label AS NVREA, AC.channel_id, AC.channel_name, EP.errata_id, E.advisory, E.advisory_type,
+      CASE WHEN RB.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_reboot,
+      CASE WHEN RS.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_restart
   FROM
        rhnPackageArch PA,
        rhnPackageName PN,
        rhnPackageEVR PE,
        rhnPackageEVR PE2,
        rhnPackage P2
-  LEFT JOIN rhnErrataPackage EP
-    ON P2.id = EP.package_id
-  LEFT JOIN rhnErrata E
-    ON E.id = EP.errata_id,
+  LEFT JOIN rhnErrataPackage EP ON P2.id = EP.package_id
+  LEFT JOIN rhnErrata E ON E.id = EP.errata_id
+  LEFT JOIN rhnErrataKeyword RB ON E.id = RB.errata_id AND RB.keyword = 'reboot_suggested'
+  LEFT JOIN rhnErrataKeyword RS ON E.id = RS.errata_id AND RS.keyword = 'restart_suggested',
        rhnAvailableChannels AC,
        rhnChannelPackage CP2,
        rhnChannelPackage CP1,
