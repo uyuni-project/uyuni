@@ -41,7 +41,7 @@ public class PkgProfileUpdateSlsResult {
 
     @SerializedName("module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|"
             + "-run")
-    private StateApplyResult<Ret<LivePatchingInfo>> livePatchingInfo;
+    private StateApplyResult<Ret<KernelLiveVersionInfo>> kernelLiveVersionInfo;
 
     @SerializedName("module_|-grains_update_|-grains.items_|-run")
     private StateApplyResult<Ret<Map<String, Object>>> grains;
@@ -66,8 +66,8 @@ public class PkgProfileUpdateSlsResult {
      *
      * @return the live patching info
      */
-    public StateApplyResult<Ret<LivePatchingInfo>> getLivePatchingInfo() {
-        return livePatchingInfo;
+    public StateApplyResult<Ret<KernelLiveVersionInfo>> getKernelLiveVersionInfo() {
+        return kernelLiveVersionInfo;
     }
 
     /**

@@ -20,7 +20,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Live Patching data for sumautil.get_kernel_live_version Salt module
  */
-public class LivePatchingInfo {
+public class KernelLiveVersionInfo {
 
     @SerializedName("mgr_kernel_live_version")
     private String kernelLiveVersion;
