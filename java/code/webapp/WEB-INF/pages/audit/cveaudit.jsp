@@ -210,7 +210,10 @@
                 </c:when>
               </c:choose>
               <c:forEach var="errata" items="${current.erratas}" varStatus="loopStatus">
-                ${errata.advisory}<c:if test="${not loopStatus.last}">,</c:if>
+                <a
+                  href="/rhn/errata/details/SystemsAffected.do?eid=${errata.id}">
+                  ${errata.advisory}
+                </a><c:if test="${not loopStatus.last}">,</c:if>
               </c:forEach>
             </c:when>
 
