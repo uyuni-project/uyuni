@@ -1128,10 +1128,14 @@ SELECT  n.id AS id,
   SELECT  PN.id AS id,
           SOP.errata_id AS errata_id,
           SOP.errata_advisory AS errata_advisory,
-          E.advisory_type AS errata_advisory_type
+          E.advisory_type AS errata_advisory_type,
+          CASE WHEN RB.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_reboot,
+          CASE WHEN RS.keyword IS NOT NULL THEN 1 ELSE 0 END AS errata_restart
     FROM  rhnServerOutdatedPackages SOP
           INNER JOIN rhnPackageName PN on SOP.package_name_id = PN.id
           INNER JOIN rhnErrata E on SOP.errata_id = E.id
+          LEFT JOIN rhnErrataKeyword RB ON E.id = RB.errata_id AND RB.keyword = 'reboot_suggested'
+          LEFT JOIN rhnErrataKeyword RS ON E.id = RS.errata_id AND RS.keyword = 'restart_suggested'
    WHERE  PN.id IN (%s)
      AND  SOP.server_id = :sid
   </elaborator>
