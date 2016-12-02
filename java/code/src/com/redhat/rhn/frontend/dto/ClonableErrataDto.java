@@ -34,6 +34,8 @@ public class ClonableErrataDto extends BaseDto {
     protected Boolean alreadyCloned;
     protected List channelId = new ArrayList();
     protected List channelName =  new ArrayList();
+    protected boolean rebootSuggested;
+    protected boolean restartSuggested;
 
     /**
      * @return Returns the channelId.
@@ -190,4 +192,63 @@ public class ClonableErrataDto extends BaseDto {
         }
     }
 
+    /**
+     * Returns true if the advisory is a Product Enhancement.
+     * @return true if the advisory is a Product Enhancement.
+     */
+    public boolean isProductEnhancement() {
+        return "Product Enhancement Advisory".equals(getAdvisoryType());
+    }
+
+    /**
+     * Returns true if the advisory is a Security Advisory.
+     * @return true if the advisory is a Security Advisory.
+     */
+    public boolean isSecurityAdvisory() {
+        return "Security Advisory".equals(getAdvisoryType());
+    }
+
+    /**
+     * Returns true if the advisory is a Bug Fix.
+     * @return true if the advisory is a Bug Fix.
+     */
+    public boolean isBugFix() {
+        return "Bug Fix Advisory".equals(getAdvisoryType());
+    }
+
+    /**
+     * Gets if {@code reboot_suggested} flag is set.
+     *
+     * @return True if {@code reboot_suggested} flag is set.
+     */
+    public boolean isRebootSuggested() {
+        return rebootSuggested;
+    }
+
+    /**
+     * Sets {@code reboot_suggested} flag.
+     *
+     * @param rebootSuggestedIn {@code reboot_suggested} flag
+     */
+    public void setRebootSuggested(boolean rebootSuggestedIn) {
+        rebootSuggested = rebootSuggestedIn;
+    }
+
+    /**
+     * Gets if {@code restart_suggested} flag is set.
+     *
+     * @return True if {@code restart_suggested} flag is set.
+     */
+    public boolean isRestartSuggested() {
+        return restartSuggested;
+    }
+
+    /**
+     * Sets {@code restart_suggested} flag.
+     *
+     * @param restartSuggestedIn {@code restart_suggested} flag
+     */
+    public void setRestartSuggested(boolean restartSuggestedIn) {
+        this.restartSuggested = restartSuggestedIn;
+    }
 }
