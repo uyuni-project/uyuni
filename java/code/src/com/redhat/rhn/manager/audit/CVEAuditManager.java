@@ -66,6 +66,10 @@ public class CVEAuditManager {
     private static Map<Long, List<SUSEProductDto>> sourceProductCache =
             new HashMap<Long, List<SUSEProductDto>>();
 
+    private static final String KERNEL_DEFAULT_NAME = "kernel-default";
+
+    private static final String KERNEL_XEN_NAME = "kernel-xen";
+
     /**
      * Not to be instantiated.
      */
@@ -533,26 +537,40 @@ public class CVEAuditManager {
         // Flags
         boolean hasErrata = false;
         boolean ignoreOldProducts = true;
-        boolean usesLivePatching = false;
+        boolean usesLivePatchingDefault = false;
+        boolean usesLivePatchingXen = false;
 
         for (Map<String, Object> result : results) {
             // Get the server id first
             Long systemID = (Long) result.get("system_id");
             String packageName = (String) result.get("package_name");
-            usesLivePatching |= packageName != null && packageName.startsWith("kgraft-patch");
+            if (packageName != null && packageName.startsWith("kgraft-patch")) {
+                usesLivePatchingDefault |= packageName.endsWith("-default");
+                usesLivePatchingXen |= packageName.endsWith("-xen");
+            }
 
             // Is this a new system?
             if (currentSystem == null || !systemID.equals(currentSystem.getSystemID())) {
                 // Finish up work on the last one
                 if (currentSystem != null) {
-                    boolean oneChannelForPackageAssigned = true;
-                    for (Boolean isAssigned : channelAssignedPackageNames.values()) {
-                        oneChannelForPackageAssigned &= isAssigned;
+                    if (usesLivePatchingDefault &&
+                            patchedPackageNames.containsKey(KERNEL_DEFAULT_NAME)) {
+                        patchedPackageNames.remove(KERNEL_DEFAULT_NAME);
+                        channelAssignedPackageNames.remove(KERNEL_DEFAULT_NAME);
                     }
-
+                    if (usesLivePatchingDefault &&
+                            patchedPackageNames.containsKey(KERNEL_XEN_NAME)) {
+                        patchedPackageNames.remove(KERNEL_XEN_NAME);
+                        channelAssignedPackageNames.remove(KERNEL_XEN_NAME);
+                    }
                     boolean allPackagesForAllErrataInstalled = true;
                     for (Boolean isPatched : patchedPackageNames.values()) {
                         allPackagesForAllErrataInstalled &= isPatched;
+                    }
+
+                    boolean oneChannelForPackageAssigned = true;
+                    for (Boolean isAssigned : channelAssignedPackageNames.values()) {
+                        oneChannelForPackageAssigned &= isAssigned;
                     }
 
                     setPatchStatus(currentSystem, allPackagesForAllErrataInstalled,
@@ -678,12 +696,15 @@ public class CVEAuditManager {
 
         // Finish up the *very* last system record
         if (currentSystem != null) {
-            if (usesLivePatching && (patchedPackageNames.containsKey("kernel-default") ||
-                    patchedPackageNames.containsKey("kernel-xen"))) {
-                patchedPackageNames.remove("kernel-default");
-                patchedPackageNames.remove("kernel-xen");
-                channelAssignedPackageNames.remove("kernel-default");
-                channelAssignedPackageNames.remove("kernel-xen");
+            if (usesLivePatchingDefault &&
+                    patchedPackageNames.containsKey(KERNEL_DEFAULT_NAME)) {
+                patchedPackageNames.remove(KERNEL_DEFAULT_NAME);
+                channelAssignedPackageNames.remove(KERNEL_DEFAULT_NAME);
+            }
+            if (usesLivePatchingDefault &&
+                    patchedPackageNames.containsKey(KERNEL_XEN_NAME)) {
+                patchedPackageNames.remove(KERNEL_XEN_NAME);
+                channelAssignedPackageNames.remove(KERNEL_XEN_NAME);
             }
             boolean allPackagesForAllErrataInstalled = true;
             for (Boolean isPatched : patchedPackageNames.values()) {
