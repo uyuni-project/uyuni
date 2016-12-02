@@ -17,6 +17,7 @@
 # items - load, reload, instanciate and save
 #
 
+import socket
 import string
 import sys
 import time
@@ -25,8 +26,10 @@ import uuid
 from rhn.UserDictCase import UserDictCase
 from spacewalk.common.usix import raise_with_tb
 from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTB import Traceback
+from spacewalk.common import rhnMail
 from spacewalk.common import rhnFlags
 from spacewalk.server import rhnSQL, rhnVirtualization, rhnUser
 
@@ -1021,12 +1024,42 @@ class MachineInformation:
     def __init__(self, sysid, data=None):
         machine_id = data.get("machine_id") if data and "machine_id" in data else None
         log_debug(4, "updating machine_id", sysid, machine_id)
-        s_update = rhnSQL.prepare("""
-                    UPDATE rhnServer
-                       SET machine_id = :machine_id
-                     WHERE id = :server_id
-                """)
-        s_update.execute(machine_id=machine_id, server_id=sysid)
+        if not self.__check_if_machine_id_exists(machine_id):
+            s_update = rhnSQL.prepare("""
+                        UPDATE rhnServer
+                           SET machine_id = :machine_id
+                        WHERE id = :server_id
+                        """)
+            s_update.execute(machine_id=machine_id, server_id=sysid)
+        else:
+            # Send an alert email in case of machine_id collition.
+            log_error("Unable to update machine id: machine id is not unique")
+            self.__send_machine_id_alert_email(machine_id, sysid)
+
+    def __check_if_machine_id_exists(self, machine_id):
+        if machine_id:
+            h = rhnSQL.prepare('SELECT id FROM rhnServer WHERE machine_id = :machine_id')
+            h.execute(machine_id=machine_id)
+            return bool(h.fetchall_dict())
+        return False
+
+    def __send_machine_id_alert_email(self, machine_id, sysid):
+        log_debug(1, "Sending alert email about multiple machine_id")
+        hostname = socket.getfqdn()
+
+        to = CFG.TRACEBACK_MAIL
+        fr = to
+        if isinstance(to, type([])):
+            fr = to[0].strip()
+            to = ', '.join([s.strip() for s in to])
+
+        headers = {
+            "Subject" : "SUSE Manager multiple 'machine_id' detected",
+            "From"    : "{0} <{1}>".format(hostname, fr),
+            "To"      : to,
+        }
+        body = MACHINE_ID_EMAIL_TEMPLATE.format(machine_id, sysid)
+        rhnMail.send(headers, body)
 
 
 class Hardware:
@@ -1183,3 +1216,25 @@ class Hardware:
         self.__changed = 0
         self.__loaded = 1
         return 0
+
+
+MACHINE_ID_EMAIL_TEMPLATE = """A non-unique machine_id has been detected: "{0}"
+
+This is expected behavior when using cloned images of systems.
+Solution: Generate a new machine_id for system "{1}"
+
+For SLES12+ and RHEL7:
+  # rm /etc/machine-id
+  # systemd-machine-id-setup
+  # rhn-profile-sync
+  
+
+For SLES11 and RHEL5/RHEL6:
+  # rm /var/lib/dbus/machine-id
+  # dbus-uuidgen --ensure
+  # rhn-profile-sync
+
+
+For more information on generating a new machine_id for traditional systems refer to:
+https://www.suse.com/documentation/suse-manager-3/book_suma_best_practices/data/bp_chapt_suma3_troubleshooting_registering_cloned_traditional_systems.html
+"""
