@@ -371,7 +371,9 @@ public class CachedStatement implements Serializable {
         this.sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
 
         int len = resultList.size();
-        Map<String, Object> parameters = new HashMap<String, Object>(parametersIn);
+
+        Map<String, Object> parameters =
+                parametersIn != null ? new HashMap<>(parametersIn) : new HashMap<>();
 
         if (len == 0) {
             // Nothing to elaborate, just return;
