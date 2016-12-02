@@ -1220,18 +1220,21 @@ class Hardware:
 
 MACHINE_ID_EMAIL_TEMPLATE = """A non-unique machine_id has been detected: "{0}"
 
-This is common when using clones images for systems.
-Please, ensure that you recreate the machine_id for the system id: "{1}"
+This is expected behavior when using cloned images of systems.
+Solution: Generate a new machine_id for system "{1}"
 
 For SLES12+ and RHEL7:
-# rm /etc/machine-id
-# systemd-machine-id-setup
-# rhn-profile-sync
+  # rm /etc/machine-id
+  # systemd-machine-id-setup
+  # rhn-profile-sync
+  
 
 For SLES11 and RHEL5/RHEL6:
-# rm /var/lib/dbus/machine-id
-# dbus-uuidgen --ensure
-# rhn-profile-sync
+  # rm /var/lib/dbus/machine-id
+  # dbus-uuidgen --ensure
+  # rhn-profile-sync
 
-Please also refer to: https://wiki.microfocus.com/index.php?title=SUSE_Manager/Register_Clones for more information.
+
+For more information on generating a new machine_id for traditional systems refer to:
+https://www.suse.com/documentation/suse-manager-3/book_suma_best_practices/data/bp_chapt_suma3_troubleshooting_registering_cloned_traditional_systems.html
 """
