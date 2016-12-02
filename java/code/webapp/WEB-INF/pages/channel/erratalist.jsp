@@ -23,20 +23,27 @@
                 emptykey="channel.jsp.errata.emptylist"
                 filter="com.redhat.rhn.frontend.action.channel.manage.ErrataFilter">
 
+            <rl:decorator name="ElaborationDecorator"/>
 
                  <rl:column sortable="false"
                                    bound="false"
                            headerkey="erratalist.jsp.type">
 
-                                                        <c:if test="${current.securityAdvisory}">
-                                                    <rhn:icon type="errata-security" title="erratalist.jsp.securityadvisory" />
-                                                </c:if>
-                                                <c:if test="${current.bugFix}">
-                                                    <rhn:icon type="errata-bugfix" title="erratalist.jsp.bugadvisory" />
-                                                </c:if>
-                                                <c:if test="${current.productEnhancement}">
-                                                    <rhn:icon type="errata-enhance" title="erratalist.jsp.productenhancementadvisory" />
-                                                </c:if>
+                    <c:if test="${current.securityAdvisory}">
+                        <rhn:icon type="errata-security" title="erratalist.jsp.securityadvisory" />
+                    </c:if>
+                    <c:if test="${current.bugFix}">
+                        <rhn:icon type="errata-bugfix" title="erratalist.jsp.bugadvisory" />
+                    </c:if>
+                    <c:if test="${current.productEnhancement}">
+                        <rhn:icon type="errata-enhance" title="erratalist.jsp.productenhancementadvisory" />
+                    </c:if>
+                    <c:if test="${current.rebootSuggested}">
+                        <rhn:icon type="errata-reboot" title="errata-legend.jsp.reboot" />
+                    </c:if>
+                    <c:if test="${current.restartSuggested}">
+                        <rhn:icon type="errata-restart" title="errata.jsp.restart-tooltip" />
+                    </c:if>
 
                 </rl:column>
 

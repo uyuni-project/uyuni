@@ -49,6 +49,8 @@ public class IconTag extends TagSupport {
         icons.put("errata-bugfix", "fa fa-bug fa-1-5x");
         icons.put("errata-enhance", "fa fa-1-5x spacewalk-icon-enhancement");
         icons.put("errata-security", "fa fa-shield fa-1-5x");
+        icons.put("errata-reboot", "fa fa-1-5x fa-refresh");
+        icons.put("errata-restart", "fa fa-1-5x fa-archive");
         icons.put("event-type-errata", "fa spacewalk-icon-patches");
         icons.put("event-type-package", "fa spacewalk-icon-packages");
         icons.put("event-type-preferences", "fa fa-cog");
