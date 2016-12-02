@@ -1027,6 +1027,8 @@ public class ErrataFactory extends HibernateFactory {
             eo.setAdvisorySynopsis((String)values[4]);
             eo.setUpdateDate((Date)values[5]);
             eo.setIssueDate((Date)values[6]);
+            eo.setRebootSuggested((Boolean)values[7]);
+            eo.setRestartSuggested((Boolean)values[8]);
             errata.add(eo);
         }
 
@@ -1127,6 +1129,8 @@ public class ErrataFactory extends HibernateFactory {
             eo.setUpdateDate((Date)values[5]);
             eo.setIssueDate((Date)values[6]);
             eo.addPackageName((String)values[7]);
+            eo.setRebootSuggested((Boolean)values[8]);
+            eo.setRestartSuggested((Boolean)values[9]);
             if (!curId.equals(lastId)) {
                 errata.add(eo);
                 lastId = curId;
