@@ -16,5 +16,7 @@
     <li><rhn:icon type="errata-security" /><bean:message key="errata-legend.jsp.security" /></li>
     <li><rhn:icon type="errata-bugfix" /><bean:message key="errata-legend.jsp.bugfix" /></li>
     <li><rhn:icon type="errata-enhance" /><bean:message key="errata-legend.jsp.enhancement" /></li>
+    <li><rhn:icon type="errata-reboot" /><bean:message key="errata-legend.jsp.reboot" /></li>
+    <li><rhn:icon type="errata-restart" /><bean:message key="errata-legend.jsp.restart" /></li>
   </ul>
 </div>
