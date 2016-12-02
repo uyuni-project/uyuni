@@ -132,14 +132,14 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     }
 
     public void testLivePatchVersion() throws Exception {
-        String livePatchVersion = "kgraft_patch_2_1_1";
+        String kernelLiveVersion = "kgraft_patch_2_1_1";
         MinionServer m = MinionServerFactoryTest.createTestMinionServer(user);
-        m.setKernelLiveVersion(livePatchVersion);
+        m.setKernelLiveVersion(kernelLiveVersion);
         TestUtils.saveAndFlush(m);
 
         request.addParameter("sid", m.getId().toString());
         actionPerform();
 
-        assertEquals(livePatchVersion, request.getAttribute("kernelLiveVersion"));
+        assertEquals(kernelLiveVersion, request.getAttribute("kernelLiveVersion"));
     }
 }

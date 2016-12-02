@@ -55,7 +55,7 @@ import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.ModuleRun;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
-import com.suse.manager.webui.utils.salt.custom.LivePatchingInfo;
+import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.Pkg;
@@ -544,10 +544,10 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         }
 
         // Update live patching version
-        Optional.ofNullable(result.getLivePatchingInfo())
+        Optional.ofNullable(result.getKernelLiveVersionInfo())
                 .map(klv -> klv.getChanges().getRet())
                 .filter(Objects::nonNull)
-                .map(LivePatchingInfo::getKernelLiveVersion)
+                .map(KernelLiveVersionInfo::getKernelLiveVersion)
                 .ifPresent(server::setKernelLiveVersion);
 
         // Update grains
