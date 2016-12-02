@@ -25,6 +25,8 @@ public class SsmUpgradablePackageListItem extends PackageListItem {
     private String advisoryType;
     private Long advisoryId;
     private Long numSystems;
+    private boolean errataReboot;
+    private boolean errataRestart;
 
     /** {@inheritDoc} */
     public String getSelectionKey() {
@@ -85,5 +87,41 @@ public class SsmUpgradablePackageListItem extends PackageListItem {
      */
     public void setNumSystems(Long numSystemsIn) {
         this.numSystems = numSystemsIn;
+    }
+
+    /**
+     * Gets if {@code reboot_suggested} flag is set for the advisory.
+     *
+     * @return True if {@code reboot_suggested} flag is set.
+     */
+    public boolean isErrataReboot() {
+        return errataReboot;
+    }
+
+    /**
+     * Sets {@code reboot_suggested} flag for the advisory.
+     *
+     * @param errataRebootIn {@code reboot_suggested} flag
+     */
+    public void setErrataReboot(boolean errataRebootIn) {
+        this.errataReboot = errataRebootIn;
+    }
+
+    /**
+     * Gets if {@code restart_suggested} flag is set for the advisory.
+     *
+     * @return True if {@code restart_suggested} flag is set.
+     */
+    public boolean isErrataRestart() {
+        return errataRestart;
+    }
+
+    /**
+     * Sets {@code restart_suggested} flag for the advisory.
+     *
+     * @param errataRestartIn {@code restart_suggested} flag
+     */
+    public void setErrataRestart(boolean errataRestartIn) {
+        this.errataRestart = errataRestartIn;
     }
 }
