@@ -47,6 +47,8 @@ public class ErrataOverview extends BaseDto {
     private Date lastModified;
     private Long fromErrataId;
     private String relationship;
+    private boolean rebootSuggested;
+    private boolean restartSuggested;
 
     /**
      * This method is only used for csv export..
@@ -453,5 +455,41 @@ public class ErrataOverview extends BaseDto {
      */
     public void setRelationship(String relationshipIn) {
         relationship = relationshipIn;
+    }
+
+    /**
+     * Gets if {@code reboot_suggested} flag is set.
+     *
+     * @return True if {@code reboot_suggested} flag is set.
+     */
+    public boolean isRebootSuggested() {
+        return rebootSuggested;
+    }
+
+    /**
+     * Sets {@code reboot_suggested} flag.
+     *
+     * @param rebootSuggestedIn {@code reboot_suggested} flag
+     */
+    public void setRebootSuggested(boolean rebootSuggestedIn) {
+        rebootSuggested = rebootSuggestedIn;
+    }
+
+    /**
+     * Gets if {@code restart_suggested} flag is set.
+     *
+     * @return True if {@code restart_suggested} flag is set.
+     */
+    public boolean isRestartSuggested() {
+        return restartSuggested;
+    }
+
+    /**
+     * Sets {@code restart_suggested} flag.
+     *
+     * @param restartSuggestedIn {@code restart_suggested} flag
+     */
+    public void setRestartSuggested(boolean restartSuggestedIn) {
+        this.restartSuggested = restartSuggestedIn;
     }
 }
