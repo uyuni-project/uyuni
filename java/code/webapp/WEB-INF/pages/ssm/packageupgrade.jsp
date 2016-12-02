@@ -61,6 +61,12 @@
               <c:if test="${current.advisoryType == 'Product Enhancement Advisory'}">
                 <rhn:icon type="errata-enhance" title="erratalist.jsp.productenhancementadvisory" />
               </c:if>
+              <c:if test="${current.errataReboot}">
+                <rhn:icon type="errata-reboot" title="errata-legend.jsp.reboot" />
+              </c:if>
+              <c:if test="${current.errataRestart}">
+                <rhn:icon type="errata-restart" title="errata.jsp.restart-tooltip" />
+              </c:if>
               <a href="/rhn/errata/details/Details.do?eid=${current.advisoryId}">${current.advisory}</a><br/>
             </c:if>
         </rl:column>
