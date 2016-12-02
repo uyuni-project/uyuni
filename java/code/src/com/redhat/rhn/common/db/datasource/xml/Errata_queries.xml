@@ -34,6 +34,7 @@ SELECT E.id, E.update_date, E.advisory_name, E.synopsis AS ADVISORY_SYNOPSIS
 ORDER BY  E.update_date DESC, E.id
   </query>
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="relevant_errata_by_type" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -50,6 +51,7 @@ SELECT E.id, E.update_date, E.advisory_name, E.synopsis as advisory_synopsis
 ORDER BY  E.update_date DESC, E.id
   </query>
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="relevant_errata_by_type_with_cves" class="com.redhat.rhn.frontend.dto.SecurityErrataOverview">
@@ -67,6 +69,7 @@ ORDER BY  E.update_date DESC, E.id
   </query>
   <elaborator name="errata_cves_elab" />
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="all_errata" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -83,6 +86,7 @@ SELECT DISTINCT E.id, E.update_date, E.advisory_name, E.synopsis AS ADVISORY_SYN
  ORDER BY  E.update_date DESC, E.id
   </query>
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="all_errata_by_type" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -100,6 +104,7 @@ SELECT DISTINCT E.id, E.update_date, E.advisory_name, E.synopsis AS ADVISORY_SYN
  ORDER BY  E.update_date DESC, E.id
   </query>
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="all_errata_by_type_with_cves" class="com.redhat.rhn.frontend.dto.SecurityErrataOverview">
@@ -118,6 +123,7 @@ SELECT DISTINCT E.id, E.update_date, E.advisory_name, E.synopsis as advisory_syn
   </query>
   <elaborator name="errata_cves_elab" />
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="relevant_to_server_group" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -141,6 +147,7 @@ SELECT DISTINCT E.id, E.advisory, E.advisory_name, E.advisory_type, E.synopsis A
    AND SGM.server_group_id = :sgid
 ORDER BY E.update_date DESC, E.id
   </query>
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="relevant_to_system" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -182,6 +189,7 @@ ORDER BY E.update_date DESC, E.id
   </query>
   <elaborator name="relevant_elab" />
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags" />
 </mode>
 
 
@@ -244,6 +252,7 @@ SELECT DISTINCT E.id, E.update_date,
    AND ES.label = :severity_label
 ORDER BY E.update_date DESC, E.id
   </query>
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="count_critical_errata_for_system">
@@ -347,7 +356,8 @@ SELECT DISTINCT E.id
    AND E.issue_date &gt;= :start_date
    AND E.issue_date &lt;= :end_date
   </query>
-    <elaborator name="errata_overview" />
+  <elaborator name="errata_overview" />
+  <elaborator name="errata_flags"/>
 </mode>
 
 <mode name="in_channel_after" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -359,7 +369,8 @@ SELECT DISTINCT E.id
    AND CE.errata_id = E.id
    AND E.issue_date &gt;= :start_date
   </query>
-      <elaborator name="errata_overview" />
+  <elaborator name="errata_overview" />
+  <elaborator name="errata_flags"/>
 </mode>
 
 <mode name="in_channel" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -376,6 +387,7 @@ SELECT DISTINCT E.id,
    AND CE.errata_id = E.id
   </query>
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags"/>
 </mode>
 
 <mode name="in_channel_between_last_modified" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -388,7 +400,8 @@ SELECT DISTINCT E.id
    AND E.last_modified &gt;= :start_date
    AND E.last_modified &lt;= :end_date
   </query>
-    <elaborator name="errata_overview" />
+  <elaborator name="errata_overview" />
+  <elaborator name="errata_flags"/>
 </mode>
 
 <mode name="in_channel_after_last_modified" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -400,7 +413,8 @@ SELECT DISTINCT E.id
    AND CE.errata_id = E.id
    AND E.last_modified &gt;= :start_date
   </query>
-      <elaborator name="errata_overview" />
+  <elaborator name="errata_overview" />
+  <elaborator name="errata_flags"/>
 </mode>
 
 <query name="simple_errata_overview" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -556,6 +570,7 @@ SELECT DISTINCT E.id , E.advisory AS advisory,
          and errata_exists.errata_id is null
          and S.user_id = :user_id
   </query>
+  <elaborator name="errata_flags"/>
 </mode>
 
 <mode name="in_sources_for_target_package_assoc" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -578,6 +593,7 @@ SELECT DISTINCT E.id, E.advisory_name AS advisory_name,
     and E.id not in (select errata_id from rhnChannelErrata where channel_id = :custom_cid)
     and E.id not in (select original_id from rhnChannelErrata CE, rhnErrataCloned EC where CE.errata_id = EC.id and CE.channel_id = :custom_cid)
   </query>
+  <elaborator name="errata_flags"/>
 </mode>
 
 
@@ -599,6 +615,7 @@ SELECT DISTINCT E.id , E.advisory_name AS advisory_name,
    and E.org_id is null
    and temp.clonedId is null
   </query>
+  <elaborator name="errata_flags"/>
 </mode>
 
 
@@ -634,6 +651,7 @@ SELECT DISTINCT E.id , E.advisory_name AS advisory_name,
        and temp.ClonedId is null
        and Errata1.org_id is null
   </query>
+  <elaborator name="errata_flags"/>
 </mode>
 
 <mode name="custom_for_target" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -653,6 +671,7 @@ SELECT DISTINCT E.id , E.advisory_name AS advisory_name,
    and E.id in (SELECT CE.errata_id from rhnChannelErrata CE where CE.channel_id != :custom_cid)
    and temp2.id is null
   </query>
+  <elaborator name="errata_flags"/>
 </mode>
 
 
@@ -681,6 +700,7 @@ SELECT DISTINCT E.id , E.advisory_name AS advisory_name,
    where
            temp2.id is null
   </query>
+  <elaborator name="errata_flags"/>
 </mode>
 
 <mode name="find_packages_for_errata_set_with_assoc" class="com.redhat.rhn.frontend.dto.PackageOverview">
@@ -834,11 +854,13 @@ ORDER BY E.update_date, E.id
 <mode name="in_set" class="com.redhat.rhn.frontend.dto.ErrataOverview">
   <query name="in_set" />
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="in_set_relevant_to_system_set" class="com.redhat.rhn.frontend.dto.ErrataOverview">
   <query name="in_set" />
   <elaborator name="relevant_to_system_set_elab" />
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="in_set_details" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -856,6 +878,7 @@ ORDER BY E.update_date, E.id
         ORDER BY E.update_date, E.id
         </query>
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags"/>
 </mode>
 
 
@@ -879,6 +902,7 @@ SELECT DISTINCT E.id,
 ORDER BY E.update_date, E.id
   </query>
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags_tmp"/>
 </mode>
 
 <mode name="published_in_set" class="com.redhat.rhn.frontend.dto.OwnedErrata">
@@ -901,6 +925,7 @@ SELECT DISTINCT E.id,
 ORDER BY E.update_date, E.id
   </query>
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="published_owned_unmodified_cloned_errata" class="com.redhat.rhn.frontend.dto.OwnedErrata">
@@ -927,6 +952,7 @@ order by e.created
    WHERE E.org_id = :org_id
 ORDER BY  E.update_date DESC, E.id
   </query>
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="unpublished_owned_errata" class="com.redhat.rhn.frontend.dto.OwnedErrata">
@@ -940,6 +966,7 @@ ORDER BY  E.update_date DESC, E.id
    WHERE E.org_id = :org_id
 ORDER BY  E.update_date DESC, E.id
   </query>
+  <elaborator name="errata_flags_tmp"/>
 </mode>
 
 <mode name="relevant_to_one_channel_but_not_another" class="com.redhat.rhn.frontend.dto.ErrataOverview">
@@ -960,6 +987,7 @@ SELECT E.id, E.advisory_type, E.advisory_name, E.synopsis as advisory_synopsis, 
                  where CE3.channel_id = :to_cid
                        AND CE3.errata_id = E.id)
   </query>
+  <elaborator name="errata_flags"/>
 </mode>
 
 <mode name="clonable_errata_list_all" class="com.redhat.rhn.frontend.dto.ClonableErrataDto">
@@ -987,6 +1015,7 @@ SELECT E.id, E.advisory_type, E.advisory_name, E.synopsis as advisory_synopsis, 
 ORDER BY update_date DESC, E.id
   </query>
   <elaborator name="related_channels_owned_by_org"/>
+  <elaborator name="errata_flags"/>
 </mode>
 
 <mode name="clonable_errata_list_uncloned" class="com.redhat.rhn.frontend.dto.ClonableErrataDto">
@@ -1024,6 +1053,7 @@ ORDER BY update_date DESC, E.id
 ORDER BY update_date DESC, E.id
   </query>
   <elaborator name="related_channels_owned_by_org"/>
+  <elaborator name="errata_flags"/>
 </mode>
 
 <mode name="clonable_errata_for_channel_all" class="com.redhat.rhn.frontend.dto.ClonableErrataDto">
@@ -1052,6 +1082,7 @@ ORDER BY update_date DESC, E.id
 ORDER BY update_date DESC, E.id
   </query>
   <elaborator name="related_channels_owned_by_org"/>
+  <elaborator name="errata_flags"/>
 </mode>
 
 <mode name="clonable_errata_for_channel_uncloned" class="com.redhat.rhn.frontend.dto.ClonableErrataDto">
@@ -1090,6 +1121,7 @@ ORDER BY update_date DESC, E.id
 ORDER BY update_date DESC, E.id
   </query>
   <elaborator name="related_channels_owned_by_org"/>
+  <elaborator name="errata_flags"/>
 </mode>
 
 <query name="related_channels_owned_by_org" multiple="t" params="org_id">
@@ -1119,6 +1151,28 @@ SELECT  E.id, E.advisory, E.advisory_name, E.advisory_type, E.update_date, E.syn
   FROM  rhnErrata E
  WHERE  E.id IN (%s)
 ORDER BY  E.update_date DESC
+</query>
+
+<query name="errata_flags" params="">
+SELECT E.id,
+    CASE WHEN RB.keyword IS NOT NULL THEN 1 ELSE 0 END AS reboot_suggested,
+    CASE WHEN RS.keyword IS NOT NULL THEN 1 ELSE 0 END AS restart_suggested
+FROM rhnErrata E
+    LEFT JOIN rhnErrataKeyword RB ON E.id = RB.errata_id AND RB.keyword = 'reboot_suggested'
+    LEFT JOIN rhnErrataKeyword RS ON E.id = RS.errata_id AND RS.keyword = 'restart_suggested'
+WHERE E.id IN (%s)
+ORDER BY E.update_date DESC
+</query>
+
+<query name="errata_flags_tmp" params="">
+SELECT E.id,
+    CASE WHEN RB.keyword IS NOT NULL THEN 1 ELSE 0 END AS reboot_suggested,
+    CASE WHEN RS.keyword IS NOT NULL THEN 1 ELSE 0 END AS restart_suggested
+FROM rhnErrataTmp E
+    LEFT JOIN rhnErrataKeywordTmp RB ON E.id = RB.errata_id AND RB.keyword = 'reboot_suggested'
+    LEFT JOIN rhnErrataKeywordTmp RS ON E.id = RS.errata_id AND RS.keyword = 'restart_suggested'
+WHERE E.id IN (%s)
+ORDER BY E.update_date DESC
 </query>
 
 <mode name="in_group_and_affected_by_errata" class="com.redhat.rhn.frontend.dto.SystemOverview">
@@ -1199,6 +1253,7 @@ SELECT E.id, E.advisory, E.advisory_name, E.advisory_type, E.update_date, E.syno
 ORDER BY  E.update_date DESC, E.id
   </query>
   <elaborator name="relevant_to_system_set_elab" />
+  <elaborator name="errata_flags" />
 </mode>
 
 <query name="relevant_to_system_set_elab" params="user_id">
@@ -1398,6 +1453,7 @@ SELECT  1
  WHERE CE.channel_id = :cid
    AND CE.errata_id = E.id
   </query>
+  <elaborator name="errata_flags" />
 </mode>
 
 <write-mode name="insert_errata_notification">
@@ -1465,6 +1521,7 @@ JOIN rhnErrata e ON e.id = O.clone_errata_id
 JOIN rhnChannelErrata ce ON ce.errata_id = e.id AND ce.channel_id = :cid
 WHERE C.package_id IS NULL
   </query>
+  <elaborator name="errata_flags"/>
 </mode>
 
 <mode name="list_packages_needing_sync" class="com.redhat.rhn.frontend.dto.PackageOverview">
