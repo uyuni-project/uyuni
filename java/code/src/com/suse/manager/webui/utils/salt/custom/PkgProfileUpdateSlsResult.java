@@ -22,68 +22,95 @@ import com.suse.salt.netapi.results.StateApplyResult;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Object representation of the results of a call to state.apply packages.profileupdate.
+ * Object representation of the results of a call to state.apply
+ * packages.profileupdate.
  */
 public class PkgProfileUpdateSlsResult {
 
-   public static final String PKG_PROFILE_REDHAT_RELEASE =
-           "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run";
-   public static final String PKG_PROFILE_CENTOS_RELEASE =
-           "cmd_|-centosrelease_|-cat /etc/centos-release_|-run";
-   public static final String PKG_PROFILE_WHATPROVIDES_SLES_RELEASE =
-           "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run";
+    public static final String PKG_PROFILE_REDHAT_RELEASE =
+            "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run";
+    public static final String PKG_PROFILE_CENTOS_RELEASE =
+            "cmd_|-centosrelease_|-cat /etc/centos-release_|-run";
+    public static final String PKG_PROFILE_WHATPROVIDES_SLES_RELEASE =
+            "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run";
 
-   @SerializedName("module_|-products_|-pkg.list_products_|-run")
-   private StateApplyResult<Ret<List<Zypper.ProductInfo>>> listProducts;
+    @SerializedName("module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|"
+            + "-run")
+    private StateApplyResult<Ret<KernelLiveVersionInfo>> kernelLiveVersionInfo;
 
-   @SerializedName("module_|-packages_|-pkg.info_installed_|-run")
-   private StateApplyResult<Ret<Map<String, Pkg.Info>>> infoInstalled;
+    @SerializedName("module_|-grains_update_|-grains.items_|-run")
+    private StateApplyResult<Ret<Map<String, Object>>> grains;
 
-   @SerializedName(PKG_PROFILE_REDHAT_RELEASE)
-   private StateApplyResult<CmdExecCodeAllResult> rhelReleaseFile;
+    @SerializedName("module_|-products_|-pkg.list_products_|-run")
+    private StateApplyResult<Ret<List<Zypper.ProductInfo>>> listProducts;
 
-   @SerializedName(PKG_PROFILE_CENTOS_RELEASE)
-   private StateApplyResult<CmdExecCodeAllResult> centosReleaseFile;
+    @SerializedName("module_|-packages_|-pkg.info_installed_|-run")
+    private StateApplyResult<Ret<Map<String, Pkg.Info>>> infoInstalled;
 
-   @SerializedName(PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
-   private StateApplyResult<CmdExecCodeAllResult> whatProvidesResReleasePkg;
+    @SerializedName(PKG_PROFILE_REDHAT_RELEASE)
+    private StateApplyResult<CmdExecCodeAllResult> rhelReleaseFile;
 
-   /**
-    * @return the list of installed products
-    */
-   public StateApplyResult<Ret<List<Zypper.ProductInfo>>> getListProducts() {
-      return listProducts;
-   }
+    @SerializedName(PKG_PROFILE_CENTOS_RELEASE)
+    private StateApplyResult<CmdExecCodeAllResult> centosReleaseFile;
 
-   /**
-    * @return information about installed packages
-    */
-   public StateApplyResult<Ret<Map<String, Pkg.Info>>> getInfoInstalled() {
-      return infoInstalled;
-   }
+    @SerializedName(PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
+    private StateApplyResult<CmdExecCodeAllResult> whatProvidesResReleasePkg;
 
-   /**
-    * @return the content of the file /etc/redhat-release
-    */
-   public StateApplyResult<CmdExecCodeAllResult> getRhelReleaseFile() {
-      return rhelReleaseFile;
-   }
+    /**
+     * Gets live patching info.
+     *
+     * @return the live patching info
+     */
+    public StateApplyResult<Ret<KernelLiveVersionInfo>> getKernelLiveVersionInfo() {
+        return kernelLiveVersionInfo;
+    }
 
-   /**
-    * @return the content of the file /etc/centos-release
-    */
-   public StateApplyResult<CmdExecCodeAllResult> getCentosReleaseFile() {
-      return centosReleaseFile;
-   }
+    /**
+     * Gets grains.
+     *
+     * @return the grains
+     */
+    public Map<String, Object> getGrains() {
+        return grains != null ? grains.getChanges().getRet() : new HashMap<>();
+    }
 
-   /**
-    * @return the package that provides 'sles_es-release-server'
-    */
-   public StateApplyResult<CmdExecCodeAllResult> getWhatProvidesResReleasePkg() {
-      return whatProvidesResReleasePkg;
-   }
+    /**
+     * @return the list of installed products
+     */
+    public StateApplyResult<Ret<List<Zypper.ProductInfo>>> getListProducts() {
+        return listProducts;
+    }
+
+    /**
+     * @return information about installed packages
+     */
+    public StateApplyResult<Ret<Map<String, Pkg.Info>>> getInfoInstalled() {
+        return infoInstalled;
+    }
+
+    /**
+     * @return the content of the file /etc/redhat-release
+     */
+    public StateApplyResult<CmdExecCodeAllResult> getRhelReleaseFile() {
+        return rhelReleaseFile;
+    }
+
+    /**
+     * @return the content of the file /etc/centos-release
+     */
+    public StateApplyResult<CmdExecCodeAllResult> getCentosReleaseFile() {
+        return centosReleaseFile;
+    }
+
+    /**
+     * @return the package that provides 'sles_es-release-server'
+     */
+    public StateApplyResult<CmdExecCodeAllResult> getWhatProvidesResReleasePkg() {
+        return whatProvidesResReleasePkg;
+    }
 }

@@ -55,6 +55,7 @@ import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.ModuleRun;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
+import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.Pkg;
@@ -79,6 +80,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Collections;
@@ -540,6 +542,16 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                             rhelReleaseFile, centosReleaseFile);
             server.setInstalledProducts(products);
         }
+
+        // Update live patching version
+        Optional.ofNullable(result.getKernelLiveVersionInfo())
+                .map(klv -> klv.getChanges().getRet())
+                .filter(Objects::nonNull)
+                .map(KernelLiveVersionInfo::getKernelLiveVersion)
+                .ifPresent(server::setKernelLiveVersion);
+
+        // Update grains
+        server.setOsFamily((String) result.getGrains().get("os_family"));
 
         ServerFactory.save(server);
         if (LOG.isDebugEnabled()) {

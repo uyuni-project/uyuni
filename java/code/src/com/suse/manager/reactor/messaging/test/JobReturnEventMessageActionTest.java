@@ -115,6 +115,12 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
         });
         assertEquals(1, minion.getInstalledProducts().size());
 
+        // Verify OS family
+        assertEquals("Suse", minion.getOsFamily());
+
+        // Verify live patching version
+        assertEquals("kgraft_patch_2_2_1", minion.getKernelLiveVersion());
+
         // Verify the action status
         assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
@@ -178,6 +184,12 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
             // in the case of RES the product arch is taken from the server arch
             assertEquals("x86_64", product.getArch().getName());
         });
+
+        // Verify OS family
+        assertEquals("RedHat", minion.getOsFamily());
+
+        // Verify no live patching
+        assertNull(minion.getKernelLiveVersion());
 
         // Verify the action status
         assertTrue(action.getServerActions().stream()

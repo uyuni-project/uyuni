@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -132,6 +133,9 @@ public class SystemOverviewAction extends RhnAction {
         request.setAttribute("hasLocation",
                 !(s.getLocation() == null || s.getLocation().isEmpty()));
         request.setAttribute("activationKey", SystemManager.getActivationKeys(s));
+        request.setAttribute("kernelLiveVersion",
+                s.asMinionServer().map(MinionServer::getKernelLiveVersion).orElse(null));
+
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 

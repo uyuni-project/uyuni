@@ -21,8 +21,10 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
@@ -51,6 +53,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
 
         s = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
+
         request.addParameter("sid", s.getId().toString());
     }
 
@@ -126,5 +129,17 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         request.addParameter("applet", "1");
         actionPerform();
         verifyActionMessage("sdc.details.overview.applet.scheduled");
+    }
+
+    public void testLivePatchVersion() throws Exception {
+        String kernelLiveVersion = "kgraft_patch_2_1_1";
+        MinionServer m = MinionServerFactoryTest.createTestMinionServer(user);
+        m.setKernelLiveVersion(kernelLiveVersion);
+        TestUtils.saveAndFlush(m);
+
+        request.addParameter("sid", m.getId().toString());
+        actionPerform();
+
+        assertEquals(kernelLiveVersion, request.getAttribute("kernelLiveVersion"));
     }
 }
