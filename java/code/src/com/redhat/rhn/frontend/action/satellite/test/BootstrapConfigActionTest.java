@@ -54,7 +54,7 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
         assertEquals(expectedHostname,
                 form.getString(BootstrapConfigAction.HOSTNAME));
         assertTrue(form.getString(BootstrapConfigAction.SSL_CERT).endsWith(
-                BootstrapConfigAction.DEFAULT_CERT_PATH));
+                BootstrapConfigAction.DEFAULT_CERT_PACKAGE));
         assertEquals(Boolean.TRUE,
                 form.get(BootstrapConfigAction.ENABLE_SSL));
         assertEquals(Boolean.TRUE,
