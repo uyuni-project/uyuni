@@ -39,8 +39,8 @@ public class PkgProfileUpdateSlsResult {
     public static final String PKG_PROFILE_WHATPROVIDES_SLES_RELEASE =
             "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run";
 
-    @SerializedName("module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|"
-            + "-run")
+    @SerializedName("module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|" +
+            "-run")
     private StateApplyResult<Ret<KernelLiveVersionInfo>> kernelLiveVersionInfo;
 
     @SerializedName("module_|-grains_update_|-grains.items_|-run")
