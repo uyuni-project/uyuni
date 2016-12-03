@@ -47,7 +47,7 @@ class YumSrcTest(unittest.TestCase):
 
         yum_src.get_proxy = Mock(return_value=(None, None, None))
 
-        cs = yum_src.ContentSource("http://example.com", "test_repo")
+        cs = yum_src.ContentSource("http://example.com", "test_repo", org='')
         cs.sack = Mock()
         cs.repo.includepkgs = []
         cs.repo.exclude = []

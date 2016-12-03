@@ -150,7 +150,7 @@ class RepoSyncTest(unittest.TestCase):
         rs = self._init_reposync()
 
         rs.urls = [
-                {"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N"}]
+            {"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "label": None}]
 
         _mock_rhnsql(self.reposync, {})
         rs = self._mock_sync(rs)
@@ -176,7 +176,7 @@ class RepoSyncTest(unittest.TestCase):
     def test_sync_success_regen(self):
         rs = self._init_reposync()
 
-        rs.urls = [{"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N"}]
+        rs.urls = [{"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "label": None}]
 
         _mock_rhnsql(self.reposync, {})
         rs = self._mock_sync(rs)
@@ -649,7 +649,7 @@ class RepoSyncTest(unittest.TestCase):
     def _create_mocked_reposync(self):
         """Create a fully mocked RepoSync"""
         rs = self._init_reposync()
-        rs.urls = [{"source_url": ["http://none.host/bogus-url"], "metadata_signed": "N"}]
+        rs.urls = [{"source_url": ["http://none.host/bogus-url"], "metadata_signed": "N", "label": None}]
         rs = self._mock_sync(rs)
 
         return rs
@@ -940,7 +940,7 @@ def test_channel_exceptions():
     repoSync.RepoSync._format_sources = Mock()
     repoSync.RepoSync.get_compatible_arches = Mock(return_value=['arch1', 'arch2'])
     rs = repoSync.RepoSync("Label", RTYPE)
-    rs.urls = [{"source_url": ["http://none.host/bogus-url"], "metadata_signed": "N"}]
+    rs.urls = [{"source_url": ["http://none.host/bogus-url"], "metadata_signed": "N", "label": None}]
     rs.import_packages = Mock()
     rs.import_updates = Mock()
     rs.mocked_plugin = Mock()
