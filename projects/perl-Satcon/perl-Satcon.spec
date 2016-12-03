@@ -16,7 +16,20 @@ BuildRequires:  perl(ExtUtils::MakeMaker)
 Requires:       policycoreutils
 %else
 %if 0%{?fedora} && 0%{?fedora} >= 24
-BuildRequires: perl-Test
+BuildRequires:  coreutils
+BuildRequires:  findutils
+BuildRequires:  make
+BuildRequires:  perl
+BuildRequires:  perl-generators
+# Run-time:
+# bytes not used at tests
+# Data::Dumper not used at tests
+# File::Find not used at tests
+# File::Path not used at tests
+# Getopt::Long not used at tests
+BuildRequires:  perl(strict)
+# Tests:
+BuildRequires:  perl(Test)
 %endif
 Requires:       %{sbinpath}/restorecon
 %endif

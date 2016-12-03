@@ -5,7 +5,7 @@
 %define rhnsd		 spacewalksd
 #
 Name: spacewalksd
-Version: 5.0.25
+Version: 5.0.26
 Release: 1%{?dist}
 Summary: Spacewalk query daemon
 License: GPL-2.0
@@ -197,6 +197,9 @@ rm -fr $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Thu Dec 01 2016 Jiri Dostal <jdostal@redhat.com> 5.0.26-1
+- 1260527 RHEL7 rhnsd reload doesn't work
+
 * Fri Nov 11 2016 Jiri Dostal <jdostal@redhat.com> 5.0.25-1
 - [1260527] RHEL7 reboot loop
 
