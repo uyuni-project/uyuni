@@ -329,8 +329,8 @@ class RepoSync(object):
 
                 # pylint: disable=W0703
                 try:
-                    if repo_label:
-                        repo_name = repo_label
+                    if data['label']:
+                        repo_name = data['label']
                     else:
                         # use modified relative_url as name of repo plugin, because
                         # it used as name of cache directory as well
