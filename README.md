@@ -44,8 +44,9 @@ bundle install
 Setup the following environment variables.
 
 * TESTHOST environment variable can be passed to change the default server you are testing against.
+* CLIENT env variable test client
+* MINION env variable test client/salt
 * BROWSER (default `phantomjs` environment variable can be passed to change the default browser: `chrome`, `htmlunit`, `chrome`, `firefox`.
-* Optionally, `ZAP_PROXY` to use [OWASP ZAP](https://code.google.com/p/zaproxy) to test for security vulnerabilities.
 
 To run all standard tests call:
 
