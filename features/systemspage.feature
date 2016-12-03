@@ -70,7 +70,7 @@ Feature: Explore the main landing page
     And I follow "Virtual Systems" in the left menu
     Then I should see a "Virtual Systems" text
     And I should see a "No Virtual Systems." text
-    And the current path is "/rhn/systems/VirtualSystemsList.do"
+    And the current path is "/rhn/systems/VirtualList.do"
 
   Scenario: Check sidebar link destination for Systems => Out of Date
     Given I am on the Systems page
@@ -180,7 +180,7 @@ Feature: Explore the main landing page
     Given I am on the Systems page
     And I follow "System Set Manager" in the left menu
     Then I should see a "System Set Manager" text
-    And I should see a "Status" link in the left menu
+    And I should see a "Task Log" link in the left menu
     And I should see a "Overview" link in the content area
     And I should see a "Systems" link in the content area
     And I should see a "Errata" link in the content area
