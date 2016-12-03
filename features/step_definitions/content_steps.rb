@@ -19,11 +19,11 @@ end
 #
 Then(/^I should see a "([^"]*)" text$/) do |arg1|
   unless page.has_content?(debrand_string(arg1))
-    sleep 1
+    sleep 45
+    print arg1
     fail unless page.has_content?(debrand_string(arg1))
   end
 end
-
 #
 # Test for text in a snippet textarea
 #
@@ -43,7 +43,7 @@ end
 #
 Then(/^I should see a text like "([^"]*)"$/) do |arg1|
   unless page.has_content?(Regexp.new("#{debrand_string(arg1)}"))
-    sleep 1
+    sleep 10
     fail unless page.has_content?(Regexp.new("#{debrand_string(arg1)}"))
   end
 end
@@ -52,7 +52,10 @@ end
 # Test for a text not allowed in the whole page
 #
 Then(/^I should not see a "([^"]*)" text$/) do |arg1|
-  fail unless page.has_no_content?(arg1)
+  unless page.has_no_content?(arg1)
+    print page.body
+    raise "#{arg1} found on the page! FAIL"
+  end
 end
 
 #
@@ -61,7 +64,7 @@ end
 Then(/^I should see a "([^"]*)" link$/) do |arg1|
   link = first(:link, debrand_string(arg1))
   if link.nil?
-    sleep 1
+    sleep 40
     $stderr.puts "ERROR - try again"
     fail unless first(:link, debrand_string(arg1)).visible?
   else
@@ -243,10 +246,16 @@ Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
   end
 end
 
-Then(/^"([^"]*)" is installed$/) do |package|
-  output = `rpm -q #{package} 2>&1`
-  unless $?.success?
-    raise "exec rpm failed (Code #{$?}): #{$!}: #{output}"
+Then(/^"([^"]*)" is installed on "([^"]*)"$/) do |package, target|
+  # use target variable
+  case target
+  when "client"
+    $client.run("rpm -q #{package}", true, 600, 'root')
+  when "minion"
+    # this is a sles minion
+    $minion.run("rpm -q #{package}", true, 600, 'root')
+  else
+    raise "invalid target given"
   end
 end
 
@@ -259,7 +268,7 @@ When(/^I check "([^"]*)" in the list$/) do |arg1|
       # use div/div/div for cve audit which has two tables
       row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
       if row.nil?
-          sleep 1
+          sleep 10
           $stderr.puts "ERROR - try again"
           row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
       end
@@ -273,7 +282,7 @@ When(/^I uncheck "([^"]*)" in the list$/) do |arg1|
     top_level_xpath_query = "//div[@class='table-responsive']/table/tbody/tr[.//td[contains(.,'#{arg1}')] and .//input[@type='checkbox' and @checked]]"
     row = first(:xpath, top_level_xpath_query)
     if row.nil?
-      sleep 1
+      sleep 10
       $stderr.puts "ERROR - try again"
       row = first(:xpath, top_level_xpath_query)
     end

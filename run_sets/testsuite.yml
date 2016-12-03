@@ -44,15 +44,13 @@
 - features/install_errata-npn.feature
 - features/clone_channel-npn.feature
 - features/openscap_audit.feature
-- features/smdba.feature
-#- features/spacewalk_repo_sync.feature
+- features/spacewalk_repo_sync.feature
 - features/scc-sync-channels.feature
 - features/systemspage2.feature
 - features/xmlrpc_system.feature
 - features/nagios.feature
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
-#- features/walk_hrefs.feature
 - features/powermanagement-test.feature
 - features/CVE-ID-new-syntax.feature
 - features/datepicker.feature
@@ -68,8 +66,28 @@
 - features/xmlrpc_VHM.feature
 - features/check_VHM.feature
 - features/setup_wizard.feature
-- features/change_password.feature
-- features/spacewalk-debug.feature
-- features/tomcat_errors.feature
-#- features/mgr_create_bootstrap_repo.feature
+###- features/mgr_create_bootstrap_repo.feature
 - features/security.feature
+
+#### Salt related features   ###
+- features/minion_bootstrap.feature
+- features/salt.feature
+- features/salt_minions_page.feature
+- features/salt_minion_details.feature
+- features/salt_download_endpoint.feature
+- features/salt_software_states.feature
+- features/salt_pkgset_beacon.feature
+- features/salt_remote_cmds.feature
+- features/salt_action_pickedup.feature
+- features/salt_install_package.feature
+- features/salt_states_catalog.feature
+- features/salt_regression.feature
+
+# end-tests
+- features/spacewalk-errors.feature
+- features/spacewalk-debug.feature
+
+## smdba and change password feature always put them at the end of the testsuite.
+## if they fails, they break the whole testsuite.
+- features/smdba.feature
+- features/change_password.feature
