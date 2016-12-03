@@ -116,8 +116,9 @@ class YumUpdateMetadata(UpdateMetadata):
                             no = self._no_cache.setdefault(pkgfile['name'], set())
                             no.add(un)
 
-class ContentSource:
-    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=YUMSRC_CONF):
+
+class ContentSource(object):
+    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=YUMSRC_CONF, org="1", channel_label=""):
         # pylint can't see inside the SplitResult class
         # pylint: disable=E1103
         if urlparse.urlsplit(url).scheme:
@@ -132,13 +133,28 @@ class ContentSource:
         if not os.path.exists(yumsrc_conf):
             self.yumbase.preconf.fn = '/dev/null'
         self.configparser = ConfigParser()
+        if org:
+            self.org = org
+        else:
+            self.org = "NULL"
 
         initCFG('server.satellite')
         self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
         self._authenticate(url)
-        if type(self.yumbase.repos.repos) == type({}) and name in self.yumbase.repos.repos:
-            repo = self.yumbase.repos.repos[name]
+        # Check for settings in yum configuration files (for custom repos/channels only)
+        if org:
+            repos = self.yumbase.repos.repos
         else:
+            repos = None
+        if repos and name in repos:
+            repo = repos[name]
+        elif repos and channel_label in repos:
+            repo = repos[channel_label]
+            # In case we are using Repo object based on channel config, override it's id to name of the repo
+            # To not create channel directories in cache directory
+            repo.id = name
+        else:
+            # Not using values from config files
             repo = yum.yumRepo.YumRepository(name)
             repo.populate(self.configparser, name, self.yumbase.conf)
         self.repo = repo
@@ -170,7 +186,7 @@ class ContentSource:
         repo.cache = 0
         repo.mirrorlist = self.url
         repo.baseurl = [self.url]
-        repo.basecachedir = CACHE_DIR
+        repo.basecachedir = os.path.join(CACHE_DIR, self.org)
         repo.setAttribute('_override_sigchecks', False)
         if self.insecure:
             repo.repo_gpgcheck = False
@@ -178,9 +194,9 @@ class ContentSource:
             repo.repo_gpgcheck = True
         # base_persistdir have to be set before pkgdir
         if hasattr(repo, 'base_persistdir'):
-            repo.base_persistdir = CACHE_DIR
+            repo.base_persistdir = repo.basecachedir
 
-        pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, '1', 'stage')
+        pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage')
         if not os.path.isdir(pkgdir):
             fileutils.makedirs(pkgdir, user='wwwrun', group='www')
         repo.pkgdir = pkgdir
@@ -366,7 +382,7 @@ class ContentSource:
 
     def clear_cache(self, directory=None):
         if directory is None:
-            directory = CACHE_DIR + self.name
+            directory = os.path.join(CACHE_DIR, self.org, self.name)
         rmtree(directory, True)
         # restore empty directory
         makedirs(directory + "/packages", int('0755', 8))

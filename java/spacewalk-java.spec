@@ -29,7 +29,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.5
+Version: 2.7.7
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -1036,6 +1036,12 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Dec 02 2016 Jiri Dostal <jdostal@redhat.com> 2.7.7-1
+- 1250572 - Text description missing for remote command by API and spacecmd
+
+* Wed Nov 30 2016 Grant Gainey 2.7.6-1
+- 1385099 - delete activation-keys using mode-query instead of hibernate
+
 * Tue Nov 22 2016 Eric Herget <eherget@redhat.com> 2.7.5-1
 - 1394299 - clean up system id inclusion in virt systems csv download
 

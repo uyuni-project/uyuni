@@ -42,7 +42,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.2
+Version: 2.7.4
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -919,6 +919,16 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Wed Nov 30 2016 Jan Dobes 2.7.4-1
+- 1387173 - only user repositories should be allowed to configure, accessing
+  self.yumbase.repos.repos can take long, do it once
+
+* Mon Nov 28 2016 Jan Dobes 2.7.3-1
+- 1387173 - make possible to configure by channel
+- 1387173 - make sure org_id is string
+- 1387173 - make possible to setup repository configuration with guessable name
+  and keep org_id information
+
 * Mon Nov 21 2016 Jan Dobes 2.7.2-1
 - 1395207 - recognize downloaded headers by yum
 
