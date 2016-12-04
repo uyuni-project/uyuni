@@ -375,7 +375,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     String osArch = pi.getArch();
                     String osRelease = pi.getRelease();
                     Optional<SUSEProduct> suseProduct = ofNullable(SUSEProductFactory
-                            .findSUSEProduct(osName, osVersion, osRelease, osArch, false));
+                            .findSUSEProduct(osName, osVersion, osRelease, osArch, true));
                     if (!suseProduct.isPresent()) {
                         LOG.warn("No product match found for: " + osName + " " + osVersion +
                                 " " + osRelease + " " + osArch);
