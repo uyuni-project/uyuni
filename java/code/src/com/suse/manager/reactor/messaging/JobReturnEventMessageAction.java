@@ -551,7 +551,13 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 .ifPresent(server::setKernelLiveVersion);
 
         // Update grains
-        server.setOsFamily((String) result.getGrains().get("os_family"));
+        ValueMap grains = new ValueMap(result.getGrains());
+        server.setOsFamily(grains.getValueAsString("os_family"));
+        server.setRunningKernel(grains.getValueAsString("kernelrelease"));
+        server.setOs(grains.getValueAsString("osfullname"));
+        // TODO: set the release as well, but this needs
+        // RegisterMinionEventMessageAction.getOsRelease()
+        // server.setRelease();
 
         ServerFactory.save(server);
         if (LOG.isDebugEnabled()) {
