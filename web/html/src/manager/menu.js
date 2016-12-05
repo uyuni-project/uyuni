@@ -1,3 +1,141 @@
 $(document).ready(function() {
-  alert('REACT-MENU!!');
+  /* prevent jumping to the top of the page because
+  of an <a href> tag that is actually not a link */
+  $(document).on('click', 'a', function(e) {
+    const href = $(this).attr('href');
+    if (href.length == 1 && href == '#') {
+      e.preventDefault();
+    }
+  });
+
+  "use strict";
+
+  const React = require("react");
+  const ReactDOM = require("react-dom");
+
+  const Link = (props) => <a href={props.url}>{props.image}{props.label}</a>;
+
+  const Element = React.createClass({
+    render: function() {
+      const isLeaf = this.props.element.submenu == null;
+      const image =
+        this.props.withImg && this.props.level == 1 ?
+          <img src={"images/" + this.props.imgFolder + '/' + this.props.element.label.toLowerCase() + ".png"} /> :
+          null;
+      return (
+        <li className={
+          (this.props.element.active ? " active " : "") +
+          (isLeaf ? " leaf " : " node ")
+          }
+        >
+          <Link url={this.props.element.submenu ? "#" : this.props.element.url}
+            image={image} label={this.props.element.label} />
+          {
+            isLeaf ? null :
+            <MenuLevel level={this.props.level+1} elements={this.props.element.submenu} />
+          }
+        </li>
+      );
+    }
+  });
+
+  const MenuLevel = React.createClass({
+    render: function() {
+      var length = this.props.elements.length;
+      var contentMenu = this.props.elements.map((el) =>
+        <Element element={el}
+          key={el.label + '_' + this.props.level}
+          level={this.props.level}
+          imgFolder={this.props.imgFolder}
+          withImg={this.props.withImg}
+        />
+      );
+      return (
+        <ul className={"level" + this.props.level}>
+          {contentMenu}
+        </ul>
+      );
+    }
+  });
+
+  const Nav = React.createClass({
+    getInitialState: function () {
+      return {search: ''}
+    },
+
+    componentDidMount: function() {
+    },
+
+    onSearch: function(e) {
+      this.setState({search: e.target.value});
+    },
+
+    filterTree: function(fullTree) {
+      if (fullTree == null) {
+        return [];
+      }
+      if (this.state.search == null || this.state.search.length == 0) {
+        return fullTree;
+      }
+
+      var filteredTree = fullTree.map(level =>
+          level.label.toLowerCase().includes(this.state.search.toLowerCase()) ||
+          this.filterTree(level.submenu).length > 0 ?
+          level : null
+        );
+      return filteredTree.filter(m => m != null);
+    },
+
+    render: function() {
+      return (
+        <nav>
+          <div className="nav-search-box">
+            <input type="text" name="nav-search" id="nav-search" value={this.state.search}
+              onChange={this.onSearch} placeholder="menu filter" />
+          </div>
+          <MenuLevel level={1} elements={this.filterTree(JSONMenu)} imgFolder='black' withImg={this.props.withImg} />
+        </nav>
+      );
+    }
+  });
+
+  ReactDOM.render(
+    <Nav withImg={false} />,
+    document.getElementById('nav')
+  );
+
+
+  const Breadcrumb = React.createClass({
+    componentDidMount: function() {
+      console.log('breadcrumb mounted');
+    },
+
+    render: function() {
+      var breadcrumbArray = Array();
+      var level = JSONMenu.find(l => l.active);
+      while (level != null) {
+        breadcrumbArray.push(level);
+        level = level.submenu ? level.submenu.find(l => l.active) : null;
+      }
+      return (
+        <div>
+          {
+            breadcrumbArray.map((a, i) => {
+              return (
+                <span>
+                  <Link label={a.label} key={a.label} />
+                  { i == breadcrumbArray.length -1 ? null : <span>></span>}
+                </span>
+              );
+            })
+          }
+        </div>
+      );
+    }
+  });
+
+  ReactDOM.render(
+    <Breadcrumb withImg={false} />,
+    document.getElementById('breadcrumb')
+  );
 });
