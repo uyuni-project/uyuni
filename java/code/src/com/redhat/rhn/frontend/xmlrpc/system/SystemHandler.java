@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.PushClient;
@@ -6128,5 +6129,31 @@ public class SystemHandler extends BaseHandler {
                         p.getArch().getLabel(), p.getRelease(), p.isBaseproduct(),
                         p.getSUSEProduct().getFriendlyName()))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns current live patching version for the kernel, or empty string if live
+     * patching feature is not in use for the system.
+     *
+     * @param loggedInUser The current user.
+     * @param sid Server ID to lookup.
+     * @return Current kernel live patching version.
+     *
+     * @xmlrpc.doc Returns the currently active kernel live patching version relative to
+     * the running kernel version of the system, or empty string if live patching feature
+     * is not in use for the given system.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.returntype string
+     */
+    public String getKernelLivePatch(User loggedInUser, Integer sid) {
+        try {
+            Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+            return server.asMinionServer().map(MinionServer::getKernelLiveVersion)
+                    .orElse("");
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException(e);
+        }
     }
 }
