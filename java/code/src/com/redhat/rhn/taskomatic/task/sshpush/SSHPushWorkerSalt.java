@@ -28,7 +28,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
-import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -276,8 +276,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
      * @return true if the package list should be refreshed
      */
     public boolean shouldRefreshPackageList(String function, Optional<JsonElement> result) {
-        return JobReturnEventMessageAction
-                .shouldRefreshPackageList(function, result);
+        return SaltUtils.INSTANCE.shouldRefreshPackageList(function, result);
     }
 
     /**
@@ -289,7 +288,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
      */
     public void updateServerAction(ServerAction serverAction, JsonElement result,
             String function) {
-        JobReturnEventMessageAction.updateServerAction(serverAction, 0L, true, "n/a",
+        SaltUtils.INSTANCE.updateServerAction(serverAction, 0L, true, "n/a",
                 result, function);
     }
 
