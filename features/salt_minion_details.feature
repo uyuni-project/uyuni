@@ -22,7 +22,6 @@ Feature: Verify the minion registration
     Then I should see a "aaa_base" text
     And I should see a "aaa_base-extras" text
 
-
   Scenario: Accepted minion has a base channel
     Given I am authorized as "testing" with password "testing"
     And that this minion is registered in Spacewalk
