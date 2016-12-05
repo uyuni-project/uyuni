@@ -64,6 +64,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
 
     private boolean packageListRefreshNeeded = false;
     private SaltService saltService;
+    private SaltUtils saltUtils;
 
     /**
      * Constructor.
@@ -74,6 +75,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
         log = logger;
         system = systemIn;
         saltService = SaltService.INSTANCE;
+        saltUtils = SaltUtils.INSTANCE;
     }
 
     /**
@@ -81,12 +83,14 @@ public class SSHPushWorkerSalt implements QueueWorker {
      * @param logger Logger for this instance
      * @param systemIn the system to work with
      * @param saltServiceIn the salt service to work with
+     * @param saltUtilsIn the salt utils instance to work with
      */
     public SSHPushWorkerSalt(Logger logger, SSHPushSystem systemIn,
-            SaltService saltServiceIn) {
+            SaltService saltServiceIn, SaltUtils saltUtilsIn) {
         log = logger;
         system = systemIn;
         saltService = saltServiceIn;
+        saltUtils = saltUtilsIn;
     }
 
     /**
@@ -252,10 +256,11 @@ public class SSHPushWorkerSalt implements QueueWorker {
                         log.trace("Salt call result: " + r);
                     }
                     String function = (String) call.getPayload().get("fun");
-                    updateServerAction(sa, r, function);
+                    saltUtils.updateServerAction(sa, 0L, true, "n/a",
+                            r, function);
 
                     // Perform a package profile update in the end if necessary
-                    if (shouldRefreshPackageList(function, result)) {
+                    if (saltUtils.shouldRefreshPackageList(function, result)) {
                         log.info("Scheduling a package profile update");
                         this.packageListRefreshNeeded = true;
                     }
@@ -265,31 +270,6 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 });
             });
         });
-    }
-
-    /**
-     * Checks whether the package list should be refreshed based on the function called
-     * and the result (in case of state.apply call).
-     *
-     * @param function the function called
-     * @param result the call result
-     * @return true if the package list should be refreshed
-     */
-    public boolean shouldRefreshPackageList(String function, Optional<JsonElement> result) {
-        return SaltUtils.INSTANCE.shouldRefreshPackageList(function, result);
-    }
-
-    /**
-     * Update server action based on the result of the call.
-     *
-     * @param serverAction server action to be updated
-     * @param result the call result
-     * @param function the function called
-     */
-    public void updateServerAction(ServerAction serverAction, JsonElement result,
-            String function) {
-        SaltUtils.INSTANCE.updateServerAction(serverAction, 0L, true, "n/a",
-                result, function);
     }
 
     /**

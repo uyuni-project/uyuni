@@ -91,6 +91,11 @@ public class SaltUtils {
     public static final SaltUtils INSTANCE = new SaltUtils();
 
     /**
+     * Constructor for testing purposes.
+     */
+    public SaltUtils() { }
+
+    /**
      * Figure out if the list of packages has changed based on the result of a Salt call
      * given as JsonElement. This information is used to decide if we should trigger a
      * package list refresh.
