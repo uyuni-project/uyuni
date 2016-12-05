@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem;
 import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.utils.SaltUtils;
@@ -49,15 +50,14 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     private SSHPushWorkerSalt worker;
     private MinionServer minion;
     private SaltService saltServiceMock;
-    private SaltUtils saltUtilsMock;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
-        saltUtilsMock = mock(SaltUtils.class);
-        worker = new SSHPushWorkerSalt(logger, null, saltServiceMock, saltUtilsMock);
+        worker = new SSHPushWorkerSalt(logger, mock(SSHPushSystem.class), saltServiceMock,
+                mock(SaltUtils.class));
         minion = MinionServerFactoryTest.createTestMinionServer(user);
     }
 
