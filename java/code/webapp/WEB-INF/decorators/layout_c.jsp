@@ -15,10 +15,12 @@
   <body onload="<decorator:getProperty property="body.onload" />">
     <div class="spacewalk-top-wrap">
       <header class="navbar-pf">
+        <div id="breadcrumb"></div>
         <jsp:include page="/WEB-INF/includes/header.jsp" />
       </header>
       <div class="spacewalk-main-column-layout">
         <aside id="spacewalk-aside" class="navbar-collapse collapse">
+          <div id="nav"></div>
           <jsp:include page="/WEB-INF/includes/leftnav.jsp" />
           <jsp:include page="/WEB-INF/includes/legends.jsp" />
         </aside>
