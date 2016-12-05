@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -27,7 +28,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
-import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -42,9 +43,15 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
+
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static java.util.Optional.ofNullable;
 
 /**
  * SSH push worker executing scheduled actions via Salt SSH.
@@ -56,6 +63,8 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private TaskQueue parentQueue;
 
     private boolean packageListRefreshNeeded = false;
+    private SaltService saltService;
+    private SaltUtils saltUtils;
 
     /**
      * Constructor.
@@ -65,6 +74,23 @@ public class SSHPushWorkerSalt implements QueueWorker {
     public SSHPushWorkerSalt(Logger logger, SSHPushSystem systemIn) {
         log = logger;
         system = systemIn;
+        saltService = SaltService.INSTANCE;
+        saltUtils = SaltUtils.INSTANCE;
+    }
+
+    /**
+     * Constructor.
+     * @param logger Logger for this instance
+     * @param systemIn the system to work with
+     * @param saltServiceIn the salt service to work with
+     * @param saltUtilsIn the salt utils instance to work with
+     */
+    public SSHPushWorkerSalt(Logger logger, SSHPushSystem systemIn,
+            SaltService saltServiceIn, SaltUtils saltUtilsIn) {
+        log = logger;
+        system = systemIn;
+        saltService = saltServiceIn;
+        saltUtils = saltUtilsIn;
     }
 
     /**
@@ -157,21 +183,72 @@ public class SSHPushWorkerSalt implements QueueWorker {
         }
     }
 
-    private void executeAction(Action action, MinionServer minion) {
+    /**
+     * Execute action on minion.
+     *
+     * @param action the action to be executed
+     * @param minion minion on which the action will be executed
+     */
+    public void executeAction(Action action, MinionServer minion) {
         Optional<ServerAction> serverAction = action.getServerActions().stream()
                 .filter(sa -> sa.getServer().equals(minion))
                 .findFirst();
         serverAction.ifPresent(sa -> {
+            if (sa.getStatus().equals(STATUS_FAILED) ||
+                    sa.getStatus().equals(STATUS_COMPLETED)) {
+                log.info("Action '" + action.getName() + "' is completed or failed." +
+                        " Skipping.");
+                return;
+            }
+
+            if (prerequisiteInStatus(sa, ActionFactory.STATUS_QUEUED)) {
+                log.info("Prerequisite of action '" + action.getName() + "' is still" +
+                        " queued. Skipping executing of the action.");
+                return;
+            }
+
+            if (prerequisiteInStatus(sa, ActionFactory.STATUS_FAILED)) {
+                log.info("Failing action '" + action.getName() + "' as its prerequisite '" +
+                                action.getPrerequisite().getName() + "' failed.");
+                sa.setStatus(STATUS_FAILED);
+                sa.setResultMsg("Prerequisite failed.");
+                sa.setResultCode(-100L);
+                sa.setCompletionTime(new Date());
+                return;
+            }
+
+            if (sa.getRemainingTries() < 1) {
+                log.info("NOT executing and failing action '" + action.getName() + "' as" +
+                        " the maximum number of re-trials has been reached.");
+                sa.setStatus(STATUS_FAILED);
+                sa.setResultMsg("Action has been picked up multiple times" +
+                        " without a successful transaction;" +
+                        " This action is now failed for this system.");
+                sa.setCompletionTime(new Date());
+                return;
+            }
+
+            sa.setRemainingTries(sa.getRemainingTries() - 1);
+
             Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE
                     .callsForAction(action, Arrays.asList(minion));
 
             calls.keySet().forEach(call -> {
-                Optional<JsonElement> result = SaltService.INSTANCE
-                        .callSync(new JsonElementCall(call), minion.getMinionId());
+                Optional<JsonElement> result;
+                // try-catch as we'd like to log the warning in case of exception
+                try {
+                    result = saltService
+                            .callSync(new JsonElementCall(call), minion.getMinionId());
+                }
+                catch (RuntimeException e) {
+                    log.warn("Exception for salt call for action: '" + action.getName() +
+                            "'. Will be re-tried " +  sa.getRemainingTries() + " times");
+                    throw e;
+                }
 
                 if (!result.isPresent()) {
-                    log.error("No Salt call result for: " + action.getName());
-                    // TODO: Implement retry mechanism based on number of failures?
+                    log.error("No result for salt call for action: '" + action.getName() +
+                            "'. Will be re-tried " +  sa.getRemainingTries() + " times");
                 }
 
                 result.ifPresent(r -> {
@@ -179,12 +256,11 @@ public class SSHPushWorkerSalt implements QueueWorker {
                         log.trace("Salt call result: " + r);
                     }
                     String function = (String) call.getPayload().get("fun");
-                    JobReturnEventMessageAction.updateServerAction(sa, 0L, true, "n/a", r,
-                            function);
+                    saltUtils.updateServerAction(sa, 0L, true, "n/a",
+                            r, function);
 
                     // Perform a package profile update in the end if necessary
-                    if (JobReturnEventMessageAction
-                            .shouldRefreshPackageList(function, result)) {
+                    if (saltUtils.shouldRefreshPackageList(function, result)) {
                         log.info("Scheduling a package profile update");
                         this.packageListRefreshNeeded = true;
                     }
@@ -197,6 +273,31 @@ public class SSHPushWorkerSalt implements QueueWorker {
     }
 
     /**
+     * Checks whether the parent action of given server action contains a server action
+     * that is in given state and is associated with the server of given server action.
+     * @param serverAction server action
+     * @param state state
+     * @return true if there exists a server action in given state associated with the same
+     * server as serverAction and parent action of serverAction
+     */
+    private boolean prerequisiteInStatus(ServerAction serverAction, ActionStatus state) {
+        Optional<Stream<ServerAction>> prerequisites =
+                ofNullable(serverAction.getParentAction())
+                        .map(Action::getPrerequisite)
+                        .map(Action::getServerActions)
+                        .map(a -> a.stream());
+
+        return prerequisites
+                .flatMap(serverActions ->
+                        serverActions
+                                .filter(s ->
+                                        serverAction.getServer().equals(s.getServer()) &&
+                                                state.equals(s.getStatus()))
+                                .findAny())
+                .isPresent();
+    }
+
+    /**
      * Manipulate a given {@link LocalCall} object to return a {@link JsonElement} instead
      * of the specified return type.
      */
@@ -205,8 +306,8 @@ public class SSHPushWorkerSalt implements QueueWorker {
         @SuppressWarnings("unchecked")
         JsonElementCall(LocalCall<?> call) {
             super((String) call.getPayload().get("fun"),
-                    Optional.ofNullable((List<?>) call.getPayload().get("arg")),
-                    Optional.ofNullable((Map<String, ?>) call.getPayload().get("kwarg")),
+                    ofNullable((List<?>) call.getPayload().get("arg")),
+                    ofNullable((Map<String, ?>) call.getPayload().get("kwarg")),
                     new TypeToken<JsonElement>() { });
         }
     }
