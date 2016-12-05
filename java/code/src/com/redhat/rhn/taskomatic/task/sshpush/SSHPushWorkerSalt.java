@@ -197,14 +197,14 @@ public class SSHPushWorkerSalt implements QueueWorker {
                 return;
             }
 
-            if (prerequisityInState(sa, ActionFactory.STATUS_QUEUED)) {
-                log.info("Prerequisity of action '" + action.getName() + "' is still" +
+            if (prerequisiteInStatus(sa, ActionFactory.STATUS_QUEUED)) {
+                log.info("Prerequisite of action '" + action.getName() + "' is still" +
                         " queued. Skipping executing of the action.");
                 return;
             }
 
-            if (prerequisityInState(sa, ActionFactory.STATUS_FAILED)) {
-                log.info("Failing action '" + action.getName() + "' as its prerequisity '" +
+            if (prerequisiteInStatus(sa, ActionFactory.STATUS_FAILED)) {
+                log.info("Failing action '" + action.getName() + "' as its prerequisite '" +
                                 action.getPrerequisite().getName() + "' failed.");
                 sa.setStatus(STATUS_FAILED);
                 sa.setResultMsg("Prerequisite failed.");
@@ -301,7 +301,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
      * @return true if there exists a server action in given state associated with the same
      * server as serverAction and parent action of serverAction
      */
-    private boolean prerequisityInState(ServerAction serverAction, ActionStatus state) {
+    private boolean prerequisiteInStatus(ServerAction serverAction, ActionStatus state) {
         Optional<Stream<ServerAction>> prerequisites =
                 ofNullable(serverAction.getParentAction())
                         .map(Action::getPrerequisite)
