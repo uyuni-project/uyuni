@@ -209,15 +209,15 @@ end
 And(/^this minion is not registered in Spacewalk$/) do
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
-  sid = @rpc.listSystems.select { |s| s['name'] == $minion_hostname }.map { |s| s['id'] }.first
+  sid = @rpc.listSystems.select { |s| s['name'] == $minion_fullhostname }.map { |s| s['id'] }.first
   @rpc.deleteSystem(sid) if sid
-  refute_includes(@rpc.listSystems.map { |s| s['id'] }, $minion_hostname)
+  refute_includes(@rpc.listSystems.map { |s| s['id'] }, $minion_fullhostname)
 end
 
 Given(/^that this minion is registered in Spacewalk$/) do
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
-  assert_includes(@rpc.listSystems.map { |s| s['name'] }, $minion_hostname)
+  assert_includes(@rpc.listSystems.map { |s| s['name'] }, $minion_fullhostname)
 end
 
 Then(/^all local repositories are disabled$/) do
@@ -249,4 +249,12 @@ Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
     raise "'#{arg1}' cannot be found after wait and reload page"
   end
   fail unless found
+end
+
+And(/^I follow the sle minion$/) do
+ step %(I follow "#{$minion_fullhostname}")
+end
+
+Then(/^this minion should have a Base channel set$/) do
+  step %(I should not see a "This system has no Base Software Channel. You can select a Base Channel from the list below." text)
 end
