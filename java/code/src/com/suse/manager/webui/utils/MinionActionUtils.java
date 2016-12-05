@@ -19,7 +19,7 @@ import com.google.gson.JsonElement;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
@@ -110,7 +110,7 @@ public class MinionActionUtils {
                                 return sa;
                             }
                             else {
-                                JobReturnEventMessageAction.updateServerAction(sa, 0L,
+                                SaltUtils.INSTANCE.updateServerAction(sa, 0L,
                                         true, jid, o, job.getFunction());
                                 return sa;
                             }
