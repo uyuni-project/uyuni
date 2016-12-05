@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.test.SSHMinionBootstrapperTest;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -48,13 +49,15 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     private SSHPushWorkerSalt worker;
     private MinionServer minion;
     private SaltService saltServiceMock;
+    private SaltUtils saltUtilsMock;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
-        worker = new SSHPushWorkerSalt(logger, null, saltServiceMock); //yuck
+        saltUtilsMock = mock(SaltUtils.class);
+        worker = new SSHPushWorkerSalt(logger, null, saltServiceMock, saltUtilsMock);
         minion = MinionServerFactoryTest.createTestMinionServer(user);
     }
 
@@ -379,18 +382,19 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     }
 
     private SSHPushWorkerSalt successWorker() {
-        return new SSHPushWorkerSalt(logger, null, saltServiceMock) {
+        SaltUtils saltUtils = new SaltUtils() {
             @Override
             public boolean shouldRefreshPackageList(String function,
-                    Optional<JsonElement> result) {
+                    Optional<JsonElement> callResult) {
                 return false;
             }
 
             @Override
-            public void updateServerAction(ServerAction sa, JsonElement r,
-                    String function) {
-                sa.setStatus(STATUS_COMPLETED);
+            public void updateServerAction(ServerAction serverAction, long retcode,
+                    boolean success, String jid, JsonElement jsonResult, String function) {
+                serverAction.setStatus(STATUS_COMPLETED);
             }
         };
+        return new SSHPushWorkerSalt(logger, null, saltServiceMock, saltUtils);
     }
 }
