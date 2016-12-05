@@ -2393,4 +2393,28 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     }
 
+    public void testGetKernelLivePatch() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
+        assertNotNull(server);
+        assertNotNull(server.getId());
+
+        String testVersion = "kgraft_patch_2_2_1";
+
+        String result = handler.getKernelLivePatch(admin, server.getId().intValue());
+        assertEquals("", result);
+
+        server.setKernelLiveVersion(testVersion);
+        TestUtils.saveAndReload(server);
+
+        result = handler.getKernelLivePatch(admin, server.getId().intValue());
+        assertEquals(testVersion, result);
+
+        Server nonMinionServer = ServerFactoryTest.createTestServer(admin, true);
+        assertNotNull(nonMinionServer);
+        assertNotNull(nonMinionServer.getId());
+
+        result = handler.getKernelLivePatch(admin, nonMinionServer.getId().intValue());
+        assertEquals("", result);
+    }
+
 }
