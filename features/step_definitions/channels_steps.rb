@@ -40,11 +40,9 @@ end
 
 When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   srvurl = "http://#{ENV['TESTHOST']}/APP"
-  command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1}"
-  output = `#{command} 2>&1`
-  unless $?.success?
-    raise "rhnpush failed '#{command}' #{$!}: #{output}"
-  end
+  command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
+  $server.run(command, true, 500, 'root')
+  $server.run("ls -lR /var/spacewalk/packages", true, 500, 'root')
 end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |arg1, arg2|

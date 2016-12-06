@@ -2,48 +2,33 @@
 # Licensed under the terms of the MIT license.
 
 When(/^I refresh the metadata$/) do
-  output = `rhn_check -vvv 2>&1`
-    unless $?.success?
-      raise "rhn_check failed: #{$!}: #{output}"
-    end
+  $client.run("rhn_check -vvv", true, 500, 'root')
   client_refresh_metadata
 end
 
 Then(/^I should have '([^']*)' in the metadata$/) do |text|
-  arch = `uname -m`
+  arch, _code = $client.run("uname -m")
   arch.chomp!
-  if arch != "x86_64"
-    arch = "i586"
-  end
-  `zgrep '#{text}' #{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/primary.xml.gz`
-  fail unless $?.success?
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/primary.xml.gz"
+  $client.run(cmd, true, 500, 'root')
 end
 
 Then(/^I should not have '([^']*)' in the metadata$/) do |text|
-  arch = `uname -m`
+  arch, _code = $client.run("uname -m")
   arch.chomp!
-  if arch != "x86_64"
-    arch = "i586"
-  end
-  `zgrep '#{text}' #{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/primary.xml.gz`
-  fail if $?.success?
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/primary.xml.gz"
+  $client.run(cmd, true, 500, 'root')
 end
 
 Then(/^"([^"]*)" should exists in the metadata$/) do |file|
-  arch = `uname -m`
+  arch, _code = $client.run("uname -m")
   arch.chomp!
-  if arch != "x86_64"
-    arch = "i586"
-  end
-  fail unless File.exist?("#{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/#{file}")
+  fail unless file_exist($client, "#{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/#{file}")
 end
 
 Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
-  arch = `uname -m`
+  arch, _code = $client.run("uname -m")
   arch.chomp!
-  if arch != "x86_64"
-    arch = "i586"
-  end
-  `zgrep '#{text}' #{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/updateinfo.xml.gz`
-  fail unless $?.success?
+  cmd = "zgrep '#{text}' #{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/updateinfo.xml.gz"
+  $client.run(cmd, true, 500, 'root')
 end

@@ -48,16 +48,24 @@ end
 # Click on a button
 #
 When(/^I click on "([^"]*)"$/) do |arg1|
-  click_button debrand_string(arg1), :match => :first
+  begin
+    click_button debrand_string(arg1), :match => :first
+  rescue
+    sleep 10
+    click_button debrand_string(arg1), :match => :first
+  end
 end
-
 #
 # Click on a link
 #
 When(/^I follow "([^"]*)"$/) do |text|
-  click_link(debrand_string(text))
+  begin
+    click_link(debrand_string(text))
+  rescue
+    sleep 10
+    click_link(debrand_string(text))
+  end
 end
-
 #
 # Click on the first link
 #

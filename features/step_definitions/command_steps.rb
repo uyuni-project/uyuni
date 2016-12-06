@@ -27,25 +27,19 @@ When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
 end
 
 When(/^I fetch "([^"]*)" from server$/) do |arg1|
-  output = `curl -SkO http://$TESTHOST/#{arg1}`
-  unless $?.success?
-    raise "Execute command failed: #{$!}: #{output}"
-  end
+   $client.run("wget http://#{$server_ip}/#{arg1}", true, 500, 'root')
 end
 
 When(/^I execute "([^"]*)"$/) do |arg1|
-  output = `sh ./#{arg1} 2>&1`
-  unless $?.success?
-    raise "Execute command (#{arg1}) failed(#{$?}): #{$!}: #{output}"
-  end
+  $client.run("sh ./#{arg1}", true, 600, 'root')
 end
 
 When(/^file "([^"]*)" exists on server$/) do |arg1|
-  sshcmd("test -f #{arg1}")
+  $server.run("test -f #{arg1}")
 end
 
 When(/^file "([^"]*)" not exists on server$/) do |arg1|
-  sshcmd("test -f #{arg1}")
+  $server.run("test -f #{arg1}")
 end
 
 When(/^file "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
@@ -72,15 +66,15 @@ end
 
 Then(/^I restart the spacewalk service$/) do
   sshcmd("spacewalk-service restart")
-  sleep(2)
+  sleep(5)
 end
 
 Then(/^I shutdown the spacewalk service$/) do
-  sshcmd("spacewalk-service stop")
+ $server.run("spacewalk-service stop")
 end
 
 Then(/^I execute spacewalk-debug on the server$/) do
-  sshcmd("spacewalk-debug")
+   out, _local, _remote, _code = $server.test_and_store_results_together("spacewalk-debug", "root", 600)
 end
 
 When(/^I copy "([^"]*)"$/) do |arg1|
@@ -110,7 +104,7 @@ Then(/^the pxe-default-profile should be disabled$/) do
 end
 
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
-  output = sshcmd("cobbler system report --name #{$myhostname}:1", ignore_err: true)[:stdout]
+  output = sshcmd("cobbler system report --name #{$client_hostname}:1", ignore_err: true)[:stdout]
   unless output.include?(arg1)
     raise "Not found: #{output}"
   end
@@ -122,17 +116,15 @@ Then(/^I clean the search index on the server$/) do
 end
 
 When(/^I execute spacewalk\-channel and pass "([^"]*)"$/) do |arg1|
-  $command_output = `spacewalk-channel #{arg1} 2>&1`
-  unless $?.success?
-    raise "spacewalk-channel with #{arg1} command failed #{$command_output}"
-  end
+  command = "spacewalk-channel #{arg1}"
+  $command_output, _code = $client.run(command, true, 500, "root")
 end
 
 When(/^spacewalk\-channel fails with "([^"]*)"$/) do |arg1|
-  $command_output = `spacewalk-channel #{arg1} 2>&1`
-  if $?.success? # || $command_status.exitstatus != arg1.to_i
-    raise "Executed command was successful: #{$status}"
-  end
+  command = "spacewalk-channel #{arg1}"
+  # we are checking that the cmd should fail here
+  $command_output, code = $client.run(command, false, 500, "root")
+  raise "#{command} should fail, but hasn't" if code.zero?
 end
 
 Then(/^I want to get "([^"]*)"$/) do |arg1|
@@ -187,4 +179,16 @@ Then(/^Service "([^"]*)" is running on the Server$/) do |service|
     output = sshcmd("systemctl is-active '#{service}'", ignore_err: true)[:stdout]
     output.chomp!
     fail if output != "active"
+end
+
+When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, target|
+  # add more tearget to this, if needed.
+  if target != "server"
+    raise "ONLY SERVER target supported, implement others!"
+  end
+  _out, $fail_code = $server.run(cmd, false)
+end
+
+Then(/^the command should fail$/) do
+   raise "Previous command must fail, but has NOT fail!!" if $fail_code.zero?
 end

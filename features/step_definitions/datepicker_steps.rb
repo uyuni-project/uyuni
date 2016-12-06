@@ -2,43 +2,44 @@ require 'date'
 
 # Based on https://github.com/akarzim/capybara-bootstrap-datepicker
 # (MIT license)
+
+def gap(th)
+  gap = decade_start / 10 - value.year / 10
+  gap.times { picker_years.find(th).click }
+end
+
+def days_find(picker_days, day)
+  day_xpath = <<-eos
+   //*[contains(concat(" ", normalize-space(@class), " "), " day ")
+    and not (contains(concat(" ", normalize-space(@class), " "), " new "))
+    and not(contains(concat(" ", normalize-space(@class), " "), " old "))
+    and normalize-space(text())="#{day}"]
+   eos
+  picker_days.find(:xpath, day_xpath).click
+end
+
 Given(/^I pick "([^"]*)" as date$/) do |arg1|
   value = Date.parse(arg1)
   date_input = find('input[data-provide="date-picker"]')
   date_input.click
   picker = find(:xpath, '//body').find('.datepicker')
-
   picker_years = picker.find('.datepicker-years', visible: false)
   picker_months = picker.find('.datepicker-months', visible: false)
   picker_days = picker.find('.datepicker-days', visible: false)
-
   picker_current_decade = picker_years.find('th.datepicker-switch', visible: false)
   picker_current_year = picker_months.find('th.datepicker-switch', visible: false)
   picker_current_month = picker_days.find('th.datepicker-switch', visible: false)
-
   picker_current_month.click if picker_days.visible?
   picker_current_year.click if picker_months.visible?
-
   decade_start, decade_end = picker_current_decade.text.split('-').map(&:to_i)
-
   if value.year < decade_start.to_i
-    gap = decade_start / 10 - value.year / 10
-    gap.times { picker_years.find('th.prev').click }
+    gap('th.prev')
   elsif value.year > decade_end
-    gap = value.year / 10 - decade_end / 10
-    gap.times { picker_years.find('th.next').click }
+    gap('th.next')
   end
-
   picker_years.find('.year', text: value.year).click
   picker_months.find('.month', text: value.strftime('%b')).click
-  day_xpath = <<-eos
-  //*[contains(concat(" ", normalize-space(@class), " "), " day ")
-   and not (contains(concat(" ", normalize-space(@class), " "), " new "))
-   and not(contains(concat(" ", normalize-space(@class), " "), " old "))
-   and normalize-space(text())="#{value.day}"]
-  eos
-
-  picker_days.find(:xpath, day_xpath).click
+  days_find(picker_days, value.day)
 end
 
 Then(/^the date field is set to "([^"]*)"$/) do |arg1|
