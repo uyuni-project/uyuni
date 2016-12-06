@@ -16,10 +16,6 @@ https://github.com/moio/sumaform/blob/master/README_ADVANCED.md#cucumber-testsui
  ``` firefox output.html```
   to use the testing.tf
  
- 
-### Where live the source code that sumaform is using for cucumber (this will be merged on master soon)
- 
- https://github.com/SUSE/spacewalk-testsuite-base/tree/slenkins
- 
+
  
  
