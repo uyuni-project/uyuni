@@ -194,4 +194,49 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
     </sql-query>
 
+    <sql-query name="Package.findMissingProductPackagesOnServer">
+        <![CDATA[
+        select {rp.*}
+          from
+            (
+              select pn.name,
+                     latest.name_id,
+                     lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release) AS evr_id,
+                     latest.arch_label AS ARCH,
+                     latest.arch_id
+                from
+                   (
+                    SELECT p.name_id AS name_id,
+                           max(pe.evr) AS evr,
+                           pa.label AS arch_label,
+                           pa.id AS arch_id
+                      FROM
+                           rhnPackageEVR pe
+                      JOIN rhnPackage p ON p.evr_id = pe.id
+                      JOIN rhnChannelPackage cp ON cp.package_id = p.id
+                      JOIN rhnPackageArch pa ON pa.id = p.package_arch_id
+                      JOIN rhnPackageProvides pv on p.id = pv.package_id
+                      JOIN rhnPackageCapability c on pv.capability_id = c.id
+                      JOIN rhnServerChannel sc on cp.channel_id = sc.channel_id
+                     WHERE
+                           sc.server_id = :sid
+                       and c.name = 'product()'
+                  GROUP BY p.name_id, pa.label, pa.id
+             ) latest
+             JOIN rhnPackageName pn ON pn.id = latest.name_id
+            where pn.name not like '%-migration'
+              and NOT EXISTS (
+                     SELECT 1
+                       FROM rhnServerPackage SP
+                      WHERE SP.server_id = :sid
+                        AND SP.name_id = latest.name_id
+                        AND (SP.package_arch_id = latest.arch_id OR SP.package_arch_id IS NULL)
+              )
+            ) X
+            JOIN rhnPackage rp ON rp.name_id = X.name_id
+                 AND rp.evr_id = X.evr_id
+                 AND rp.package_arch_id = X.arch_id
+        ]]>
+        <return alias="rp" class="com.redhat.rhn.domain.rhnpackage.Package" />
+    </sql-query>
 </hibernate-mapping>
