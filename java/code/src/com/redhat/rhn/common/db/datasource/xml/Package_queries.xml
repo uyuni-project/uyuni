@@ -1070,8 +1070,8 @@ GROUP BY P.id,
          E.advisory_type,
          E.advisory,
          E.id,
-         errata_reboot,
-         errata_restart
+         RB.keyword,
+         RS.keyword
 ORDER BY UPPER(PN.name), UPPER(PE.version), UPPER(PE.release), UPPER(PE.epoch)
   </query>
 </mode>
