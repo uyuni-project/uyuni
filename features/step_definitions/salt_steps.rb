@@ -254,3 +254,7 @@ end
 Then(/^this minion should have a Base channel set$/) do
   step %(I should not see a "This system has no Base Software Channel. You can select a Base Channel from the list below." text)
 end
+
+And(/^I create picked-up test file on sle minion$/) do
+  $minion.run("touch /tmp/PICKED-UP.test")
+end
