@@ -27,7 +27,6 @@ Feature: Bootstrap a new salt host via salt-ssh
     Then I should see remote minion hostname as link
        And I follow remote minion hostname
     Then I should see a "Push via SSH" text
-
   # testing command line of the new bootstrapped minion.
   Scenario: check new bootstrapped minion in System Overview page
      Given I am authorized
