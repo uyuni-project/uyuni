@@ -33,7 +33,8 @@ public class UpgradablePackageListItem extends PackageListItem {
     private List errataAdvisoryType = new ArrayList();
     private Set installed;
     private String installedPackage = new String();
-
+    private boolean errataReboot;
+    private boolean errataRestart;
     /**
      * @return Returns the installed.
      */
@@ -127,5 +128,41 @@ public class UpgradablePackageListItem extends PackageListItem {
             retval.add(current);
         }
         return retval;
+    }
+
+    /**
+     * Gets if {@code reboot_suggested} flag is set for the advisory.
+     *
+     * @return True if {@code reboot_suggested} flag is set.
+     */
+    public boolean isErrataReboot() {
+        return errataReboot;
+    }
+
+    /**
+     * Sets {@code reboot_suggested} flag for the advisory.
+     *
+     * @param errataRebootIn {@code reboot_suggested} flag
+     */
+    public void setErrataReboot(boolean errataRebootIn) {
+        this.errataReboot = errataRebootIn;
+    }
+
+    /**
+     * Gets if {@code restart_suggested} flag is set for the advisory.
+     *
+     * @return True if {@code restart_suggested} flag is set.
+     */
+    public boolean isErrataRestart() {
+        return errataRestart;
+    }
+
+    /**
+     * Sets {@code restart_suggested} flag for the advisory.
+     *
+     * @param errataRestartIn {@code restart_suggested} flag
+     */
+    public void setErrataRestart(boolean errataRestartIn) {
+        this.errataRestart = errataRestartIn;
     }
 }

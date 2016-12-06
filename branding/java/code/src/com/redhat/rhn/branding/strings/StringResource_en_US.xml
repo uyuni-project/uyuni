@@ -288,6 +288,12 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="errata-legend.jsp.title">
         <source>Patches Legend</source>
       </trans-unit>
+      <trans-unit id="errata-legend.jsp.reboot">
+        <source>Reboot Required</source>
+      </trans-unit>
+      <trans-unit id="errata-legend.jsp.restart">
+        <source>Affects Package Management</source>
+      </trans-unit>
       <trans-unit id="system-legend.jsp.kickstarting">
         <source>Autoinstalling</source>
       </trans-unit>
@@ -328,6 +334,9 @@ Thank you for using @@PRODUCT_NAME@@.
       </trans-unit>
       <trans-unit id="errata.jsp.apply">
         <source>Apply Patches</source>
+      </trans-unit>
+      <trans-unit id="errata.jsp.restart-tooltip">
+        <source>Affects package management stack</source>
       </trans-unit>
       <trans-unit id="errataconfirm.jsp.header">
         <source>Confirm Patch Updates</source>

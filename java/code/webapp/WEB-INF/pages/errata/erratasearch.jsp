@@ -175,6 +175,12 @@
                 <c:if test="${current.productEnhancement}">
                   <rhn:icon type="errata-enhance" />
                 </c:if>
+                <c:if test="${current.rebootSuggested}">
+                    <rhn:icon type="errata-reboot" title="errata-legend.jsp.reboot" />
+                </c:if>
+                <c:if test="${current.restartSuggested}">
+                    <rhn:icon type="errata-restart" title="errata.jsp.restart-tooltip" />
+                </c:if>
       </rl:column>
 
       <rl:column bound="false" sortable="true" sortattr="advisoryName" headerkey="erratalist.jsp.advisory">

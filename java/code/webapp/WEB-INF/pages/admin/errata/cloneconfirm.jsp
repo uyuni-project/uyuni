@@ -25,6 +25,12 @@
         <c:if test="${current.productEnhancement}">
             <rhn:icon type="errata-enhance" />
         </c:if>
+        <c:if test="${current.rebootSuggested}">
+            <rhn:icon type="errata-reboot" title="errata-legend.jsp.reboot" />
+        </c:if>
+        <c:if test="${current.restartSuggested}">
+            <rhn:icon type="errata-restart" title="errata.jsp.restart-tooltip" />
+        </c:if>
     </rhn:column>
     <rhn:column header="erratalist.jsp.advisory">
       <a href="/rhn/errata/details/Details.do?eid=${current.id}">${current.advisoryName}</a>
