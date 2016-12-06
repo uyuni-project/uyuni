@@ -27,3 +27,25 @@ Feature: Bootstrap a new salt host via salt-ssh
     Then I should see remote minion hostname as link
        And I follow remote minion hostname
     Then I should see a "Push via SSH" text
+
+  # testing command line of the new bootstrapped minion.
+  Scenario: check new bootstrapped minion in System Overview page
+     Given I am authorized
+     When I follow "Salt"
+     Then I should see a "accepted" text
+     # sle-minion = sles, rh_minion = redhat
+     And the salt-master can reach "sle-minion"
+  # testing GUI
+  Scenario: Run a remote command
+    And I am authorized as "testing" with password "testing"
+    Given I follow "Salt"
+    And I follow "Remote Commands"
+    And I should see a "Remote Commands" text
+    Then I enter command "ls -lha /etc"
+    And I click on preview
+    Then I should see my hostname
+    And I click on run
+    Then I wait for "3" seconds
+    And I expand the results
+    Then I should see "SuSE-release" in the command output
+
