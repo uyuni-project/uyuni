@@ -163,7 +163,7 @@ def do_get_certificateexpiration(self, args):
 
 
 def help_list_proxies(self):
-    print 'list_proxies: List the proxies wihtin the user\'s organization '
+    print 'list_proxies: List the proxies within the user\'s organization '
     print 'usage: list_proxies'
 
 
