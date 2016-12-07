@@ -64,8 +64,6 @@ Add a file into `run_sets/$name.yml` and then execute `rake cucumber:$name`.
 ## Conventions when adding more tests
 
 * Add required gems to `Gemfile`.
-* Unit tests in `test/testsuite_name`.
-* Helpers for unit tests in `test/helper.rb`.
 * Cucumber features under features.
 * Helpers shared scross tests/features should go into the `lib/spacewalk_testsuite_base library`.
 
