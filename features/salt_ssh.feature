@@ -27,10 +27,6 @@ Feature: Bootstrap a new salt host via salt-ssh
     Then I should see remote minion hostname as link
        And I follow remote minion hostname
     Then I should see a "Push via SSH" text
-  # testing command line of the new bootstrapped minion.
-  Scenario: check that master reach minion
-     Given I am authorized
-     Then the salt-master can reach "sle-minion"
   # testing GUI
   Scenario: Run a remote command
     And I am authorized as "testing" with password "testing"
