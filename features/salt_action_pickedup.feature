@@ -14,7 +14,11 @@ Feature: Test the remote commands via salt
     And I enter as remote command this script in
       """
       #!/bin/bash
-      sleep 5
+      while [ ! -f /tmp/PICKED-UP.test ]
+      do
+        sleep 1
+      done
+      rm /tmp/PICKED-UP.test
       """
     And I click on "Schedule"
     Then I should see a "Remote Command has been scheduled successfully" text
@@ -23,7 +27,8 @@ Feature: Test the remote commands via salt
     And I wait for "1" seconds
     Then I follow first "Run an arbitrary script scheduled by testing" in the content area
     And I should see a "This action's status is: Picked Up" text
-    And I wait for "6" seconds
+    And I create picked-up test file on sle minion
+    And I wait for "6" seconds  
     And I follow "History" in the content area
     Then I follow first "Run an arbitrary script scheduled by testing" in the content area
     And I should see a "This action's status is: Completed" text
