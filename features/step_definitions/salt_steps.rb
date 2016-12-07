@@ -254,3 +254,7 @@ end
 And(/^I follow the sle minion$/) do
  step %(I follow "#{$minion_fullhostname}")
 end
+
+And(/^I create picked-up test file on sle minion$/) do
+  $minion.run("touch /tmp/PICKED-UP.test")
+end
