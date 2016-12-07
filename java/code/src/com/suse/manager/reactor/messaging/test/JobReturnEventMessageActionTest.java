@@ -118,13 +118,51 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
         // Verify OS family
         assertEquals("Suse", minion.getOsFamily());
 
-        // Verify live patching version
-        assertEquals("kgraft_patch_2_2_1", minion.getKernelLiveVersion());
-
         // Verify the action status
         assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
+    }
+
+    public void testPackagesProfileUpdateLivePatching() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("minionsles12-suma3pg.vagrant.local");
+
+        Action action = ActionFactoryTest.createAction(
+                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
+
+        // Setup an event message from file contents
+        JobReturnEventMessage message = new JobReturnEventMessage(JobReturnEvent
+                .parse(getJobReturnEvent("packages.profileupdate.json", action.getId()))
+                .get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        // Verify no live patching version is returned
+        assertNull(minion.getKernelLiveVersion());
+
+        //Switch to live patching
+        message = new JobReturnEventMessage(JobReturnEvent
+                .parse(getJobReturnEvent("packages.profileupdate.livepatching.json",
+                        action.getId()))
+                .get());
+        messageAction.doExecute(message);
+
+        // Verify live patching version
+        assertEquals("kgraft_patch_2_2_1", minion.getKernelLiveVersion());
+
+        //Switch back from live patching
+        message = new JobReturnEventMessage(JobReturnEvent
+                .parse(getJobReturnEvent("packages.profileupdate.json",
+                        action.getId()))
+                .get());
+        messageAction.doExecute(message);
+
+        // Verify no live patching version is returned again
+        assertNull(minion.getKernelLiveVersion());
     }
 
     /**
@@ -187,9 +225,6 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
 
         // Verify OS family
         assertEquals("RedHat", minion.getOsFamily());
-
-        // Verify no live patching
-        assertNull(minion.getKernelLiveVersion());
 
         // Verify the action status
         assertTrue(action.getServerActions().stream()
