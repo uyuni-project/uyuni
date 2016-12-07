@@ -395,11 +395,9 @@ public class SaltUtils {
         }
 
         // Update live patching version
-        Optional.ofNullable(result.getKernelLiveVersionInfo())
-                .map(klv -> klv.getChanges().getRet())
-                .filter(Objects::nonNull)
-                .map(KernelLiveVersionInfo::getKernelLiveVersion)
-                .ifPresent(server::setKernelLiveVersion);
+        server.setKernelLiveVersion(Optional.ofNullable(result.getKernelLiveVersionInfo())
+                .map(klv -> klv.getChanges().getRet()).filter(Objects::nonNull)
+                .map(KernelLiveVersionInfo::getKernelLiveVersion).orElse(null));
 
         // Update grains
         ValueMap grains = new ValueMap(result.getGrains());
