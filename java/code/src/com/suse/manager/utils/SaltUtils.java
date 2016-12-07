@@ -159,7 +159,14 @@ public class SaltUtils {
         Action action = serverAction.getParentAction();
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
-            ApplyStatesActionResult statesResult = new ApplyStatesActionResult();
+            ApplyStatesActionResult statesResult = Optional.ofNullable(
+                    applyStatesAction.getDetails().getResults())
+                    .orElse(Collections.emptySet())
+                    .stream()
+                    .filter(result ->
+                            serverAction.getServerId().equals(result.getServerId()))
+                    .findFirst()
+                    .orElse(new ApplyStatesActionResult());
             applyStatesAction.getDetails().addResult(statesResult);
             statesResult.setActionApplyStatesId(applyStatesAction.getDetails().getId());
             statesResult.setServerId(serverAction.getServerId());
@@ -182,7 +189,14 @@ public class SaltUtils {
             CmdExecCodeAllResult result = Json.GSON.fromJson(jsonResult,
                     CmdExecCodeAllResult.class);
             ScriptRunAction scriptAction = (ScriptRunAction) action;
-            ScriptResult scriptResult = new ScriptResult();
+            ScriptResult scriptResult = Optional.ofNullable(
+                    scriptAction.getScriptActionDetails().getResults())
+                    .orElse(Collections.emptySet())
+                    .stream()
+                    .filter(res -> serverAction.getServerId().equals(res.getServerId()))
+                    .findFirst()
+                    .orElse(new ScriptResult());
+
             scriptAction.getScriptActionDetails().addResult(scriptResult);
             scriptResult.setActionScriptId(scriptAction.getScriptActionDetails().getId());
             scriptResult.setServerId(serverAction.getServerId());
