@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.channel;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.user.User;
@@ -21,6 +22,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
+import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.struts.action.ActionForm;
@@ -36,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ChannelErrataAction extends RhnAction {
 
-
+    private final String LIST_NAME = "errataList";
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -52,17 +54,15 @@ public class ChannelErrataAction extends RhnAction {
 
         Channel chan = ChannelFactory.lookupByIdAndUser(cid, user);
 
+        DataResult result = ErrataManager.errataInChannel(cid);
+        TagHelper.bindElaboratorTo(LIST_NAME, result.getElaborator(), request);
+
         request.setAttribute("channel_name", chan.getName());
         request.setAttribute("cid", chan.getId());
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
-        request.setAttribute(RequestContext.PAGE_LIST, ErrataManager.errataInChannel(cid));
+        request.setAttribute(RequestContext.PAGE_LIST, result);
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
 
     }
-
-
-
-
-
 }
