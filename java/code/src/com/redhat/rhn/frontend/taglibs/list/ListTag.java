@@ -93,6 +93,8 @@ public class ListTag extends BodyTagSupport {
     private String title;
     private boolean sortable;
     private boolean parentIsElement = true;
+    private String defaultSortAttr;
+    private String defaultSortDir;
 
     /**
      * method to let the list tag know
@@ -858,6 +860,9 @@ public class ListTag extends BodyTagSupport {
     private void setupManipulator() throws JspException {
         manip.setAlphaColumn(alphaBarColumn);
         manip.filter(filter, pageContext);
+        manip.setDefaultSortAttribute(defaultSortAttr);
+        manip.setDefaultAscending(!RequestContext.SORT_DESC.equals(defaultSortDir));
+
         if (!StringUtils.isBlank(ListTagHelper.
                 getFilterValue(pageContext.getRequest(), getUniqueName()))) {
             LocalizationService ls = LocalizationService.getInstance();
@@ -937,6 +942,8 @@ public class ListTag extends BodyTagSupport {
         title = null;
         sortable = false;
         parentIsElement = true;
+        defaultSortAttr = null;
+        defaultSortDir = null;
         super.release();
     }
 
@@ -1099,14 +1106,6 @@ public class ListTag extends BodyTagSupport {
     }
 
     /**
-     * @return Returns the manip.
-     */
-    public DataSetManipulator getManip() {
-        return manip;
-    }
-
-
-    /**
      * @param alphaBarColumnIn The alphaBarColumn to set.
      */
     public void setAlphabarcolumn(String alphaBarColumnIn) {
@@ -1238,4 +1237,57 @@ public class ListTag extends BodyTagSupport {
         return false;
     }
 
+    /**
+     * Sets default sort direction.
+     *
+     * @param defaultSortDirIn the default sort direction
+     */
+    public void setDefaultsortdir(String defaultSortDirIn) {
+        this.defaultSortDir = defaultSortDirIn;
+    }
+
+    /**
+     * Sets default sort attribute.
+     *
+     * @param defaultSortAttrIn the default sort attribute
+     */
+    public void setDefaultsortattr(String defaultSortAttrIn) {
+        this.defaultSortAttr = defaultSortAttrIn;
+    }
+
+    /**
+     * Gets default sort direction.
+     *
+     * @return the default sort direction
+     */
+    public String getDefaultSortDir() {
+        return defaultSortDir;
+    }
+
+    /**
+     * Gets default sort attribute.
+     *
+     * @return the default sort attribute
+     */
+    public String getDefaultSortAttr() {
+        return defaultSortAttr;
+    }
+
+    /**
+     * Gets effective sort attribute.
+     *
+     * @return the current sort attribute
+     */
+    public String getCurrentSortAttr() {
+        return manip != null ? manip.getActiveSortAttribute() : "";
+    }
+
+    /**
+     * Gets effective sort direction.
+     *
+     * @return the current sort direction
+     */
+    public String getCurrentSortDir() {
+        return manip != null ? manip.getActiveSortDirection() : "";
+    }
 }
