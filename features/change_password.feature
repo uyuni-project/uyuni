@@ -1,14 +1,12 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-16 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-# hooks in support/password_hooks.rb
 Feature: Change the user's password
   In Order to change my password
   As an authorized user
-  I want to input a new password
+  I want enter a new password and test some wrong cases
 
-  @revertgoodpass
-  Scenario: Change the password to a valid password
+  Scenario: Change the password to a New password
     Given I am authorized as "admin" with password "admin"
     And I follow "Your Account"
     And I enter "GoodPass" as "desiredpassword"
@@ -21,8 +19,20 @@ Feature: Change the user's password
     And I click on "Sign In"
     Then I should be logged in
 
-  @revertshortpass
-  Scenario: Change the password to an invalid password
+  Scenario: Revert the new password to a valid standard password
+    Given I am authorized as "admin" with password "GoodPass"
+    And I follow "Your Account"
+    And I enter "admin" as "desiredpassword"
+    And I enter "admin" as "desiredpasswordConfirm"
+    And I click on "Update"
+    Then I should see a "User information updated" text
+    Given I sign out
+    And I enter "admin" as "username"
+    And I enter "admin" as "password"
+    And I click on "Sign In"
+    Then I should be logged in
+
+  Scenario: Test invalid password
     Given I am authorized as "admin" with password "admin"
     And I follow "Your Account"
     And I enter "A" as "desiredpassword"
