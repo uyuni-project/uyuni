@@ -5,9 +5,11 @@ Feature: Bootstrap a new salt host via salt-ssh
   In order to operate SUSE Manager based on salt-ssh
   I want to verify general salt functionality and system registration
 
-  Background:
+  Scenario: No Salt Package and service are running on Minion
+
     Given no Salt packages are installed on remote minion host
     And remote minion host is not registered in Spacewalk
+
 
   Scenario: Bootstrap a system via salt-ssh
 
