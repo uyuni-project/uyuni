@@ -16,11 +16,20 @@ package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Handle changes of channel assignments on minions: trigger a refresh of the errata cache,
@@ -32,8 +41,9 @@ public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
     protected void doExecute(EventMessage event) {
         long serverId = ((ChannelsChangedEventMessage) event).getServerId();
 
-        // This message action acts only on salt minions
-        MinionServerFactory.lookupById(serverId).ifPresent(minion -> {
+        Server s = ServerFactory.lookupById(serverId);
+        s.asMinionServer().ifPresent(minion -> {
+            // This code acts only on salt minions
 
             // Trigger update of the errata cache
             ErrataManager.insertErrataCacheTask(minion);
@@ -53,5 +63,19 @@ public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
                 );
             }
         });
+        if (!s.asMinionServer().isPresent()) {
+            // This code acts only on traditional systems
+            List<Package> prodPkgs =
+                    PackageFactory.findMissingProductPackagesOnServer(serverId);
+
+            if (event.getUserId() != null) {
+                User user = UserFactory.lookupById(event.getUserId());
+                ActionManager.schedulePackageInstall(user, prodPkgs, s, new Date());
+            }
+            else if (s.getCreator() != null) {
+                ActionManager.schedulePackageInstall(s.getCreator(), prodPkgs, s,
+                        new Date());
+            }
+        }
     }
 }

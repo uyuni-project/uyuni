@@ -1875,6 +1875,34 @@ public class ActionManager extends BaseManager {
     }
 
     /**
+     * Schedules install of a packages on multiple servers
+     * @param scheduler The user scheduling the action.
+     * @param pkgs Set of packages to install
+     * @param server The server that this action is for.
+     * @param earliestAction The earliest time that this action could happen.
+     * @return The action that has been scheduled.
+     */
+    public static Action schedulePackageInstall(User scheduler, List<Package> pkgs,
+            Server server, Date earliestAction) {
+        if (pkgs.isEmpty()) {
+            return null;
+        }
+        List packages = new LinkedList();
+        for (Package pkg : pkgs) {
+            Map row = new HashMap();
+            row.put("name_id", pkg.getPackageName().getId());
+            row.put("evr_id", pkg.getPackageEvr().getId());
+            row.put("arch_id", pkg.getPackageArch().getId());
+            packages.add(row);
+        }
+        Set<Long> serverIds = new HashSet<Long>();
+        serverIds.add(server.getId());
+
+        return schedulePackageAction(scheduler, packages,
+                ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction, serverIds);
+    }
+
+    /**
      * Schedules a package action of the given type for the given server with the
      * packages given as a list.
      * @param scheduler The user scheduling the action.
