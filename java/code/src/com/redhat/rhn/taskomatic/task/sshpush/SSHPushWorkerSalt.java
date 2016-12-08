@@ -157,6 +157,9 @@ public class SSHPushWorkerSalt implements QueueWorker {
                     performCheckin(m);
                 }
 
+                saltService.getUptimeForMinion(m).ifPresent(uptime ->
+                        SaltUtils.INSTANCE.handleUptimeUpdate(m, uptime));
+
                 log.debug("Nothing left to do for " + m.getMinionId() + ", exiting worker");
             });
         }
