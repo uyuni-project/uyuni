@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.ssm;
 
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
@@ -24,12 +25,16 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The current plan for this class is to manage all SSM operations. However, as more is
@@ -64,14 +69,20 @@ public class SsmManager {
      */
     public static void performChannelActions(User user,
             Collection<ChannelActionDAO> sysMapping) {
+        Set<Long> serverChannelsChanged = new HashSet<>();
 
         for (ChannelActionDAO system : sysMapping) {
             for (Long cid : system.getSubscribeChannelIds()) {
                 subscribeChannel(system.getId(), cid, user.getId());
+                serverChannelsChanged.add(system.getId());
             }
             for (Long cid : system.getUnsubscribeChannelIds()) {
                 SystemManager.unsubscribeServerFromChannel(system.getId(), cid);
+                serverChannelsChanged.add(system.getId());
             }
+        }
+        for (Long sid : serverChannelsChanged) {
+            MessageQueue.publish(new ChannelsChangedEventMessage(sid, user.getId()));
         }
     }
 
