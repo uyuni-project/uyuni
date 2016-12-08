@@ -384,6 +384,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             }
             MessageQueue.publish(new ApplyStatesEventMessage(
                     server.getId(),
+                    server.getCreator() != null ? server.getCreator().getId() : null,
                     activationKey.isPresent() ? false : true,
                     statesToApply
             ));
