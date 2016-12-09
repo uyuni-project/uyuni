@@ -1,8 +1,9 @@
 
 # Spacewalk Testsuite
 
+Master
 [![Build Status Master branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=master)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
-
+Manager 30
 [![Build Status Master branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=manager30)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
 
 
@@ -10,14 +11,12 @@
 
 Testsuite to automatically test Spacewalk/Suse-Manager.
 
-## Branches in use:
+### Usefull tutorial infos:
 
-[Branches that we use](docs/branches.md)
-
-
-
-## Howto write a new-test for spacewalk-suite, api-call quick-tutorial.
 [Testing-api tutorial](docs/api-call.md)
+[Branches that we use](docs/branches.md)
+[Debug](Debug.md)
+[Pitfalls-test.md](Pitfalls)
 
 ## Running
 
@@ -44,8 +43,9 @@ bundle install
 Setup the following environment variables.
 
 * TESTHOST environment variable can be passed to change the default server you are testing against.
+* CLIENT env variable test client
+* MINION env variable test client/salt
 * BROWSER (default `phantomjs` environment variable can be passed to change the default browser: `chrome`, `htmlunit`, `chrome`, `firefox`.
-* Optionally, `ZAP_PROXY` to use [OWASP ZAP](https://code.google.com/p/zaproxy) to test for security vulnerabilities.
 
 To run all standard tests call:
 
@@ -62,8 +62,6 @@ Add a file into `run_sets/$name.yml` and then execute `rake cucumber:$name`.
 ## Conventions when adding more tests
 
 * Add required gems to `Gemfile`.
-* Unit tests in `test/testsuite_name`.
-* Helpers for unit tests in `test/helper.rb`.
 * Cucumber features under features.
 * Helpers shared scross tests/features should go into the `lib/spacewalk_testsuite_base library`.
 
