@@ -15,7 +15,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap it"
-     And I wait for "150" seconds
+     And I wait for "100" seconds
      Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
   # testing command line
   Scenario: check new bootstrapped minion in System Overview page
@@ -76,7 +76,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "linux" as "password"
      And I select "1-MINION-TEST" from "activationKeys"
      And I click on "Bootstrap it"
-     And I wait for "150" seconds
+     And I wait for "100" seconds
      Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
 
   Scenario: verify minion bootstrapped with activation key, packages
