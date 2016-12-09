@@ -26,8 +26,8 @@ Feature: register a salt-minion via bootstrap
      And the salt-master can reach "sle-minion"
   # testing GUI
   Scenario: Run a remote command
-    And I am authorized as "testing" with password "testing"
-    Given I follow "Salt"
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Salt"
     And I follow "Remote Commands"
     And I should see a "Remote Commands" text
     Then I enter command "ls -lha /etc"
@@ -37,7 +37,11 @@ Feature: register a salt-minion via bootstrap
     Then I wait for "3" seconds
     And I expand the results
     Then I should see "SuSE-release" in the command output
-  # delete for retest with activation key
+ 
+  Scenario: Check spacecmd system ID of bootstrapped minion.
+    Given I am on the Systems overview page of this minion
+    Then I run spacecmd listevents for sle-minion
+ 
   Scenario: Delete minion system profile
     Given I am on the Systems overview page of this minion
     When I follow "Delete System"
@@ -87,6 +91,10 @@ Feature: register a salt-minion via bootstrap
      And I remove pkg "orion-dummy" on minion
      And I remove pkg "perseus-dummy" on minion
 
+   Scenario: Check spacecmd system ID of second bootstrapped minion(after deletion of first)
+    Given I am on the Systems overview page of this minion
+    Then I run spacecmd listevents for sle-minion
+ 
   Scenario: verify minion bootstrapped with activation key: activation key test
      Given I am on the Systems overview page of this minion
      Then I should see a "Activation Key: 	1-MINION-TEST" text
