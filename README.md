@@ -11,14 +11,12 @@ Manager 30
 
 Testsuite to automatically test Spacewalk/Suse-Manager.
 
-## Branches in use:
+### Usefull tutorial infos:
 
-[Branches that we use](docs/branches.md)
-
-
-
-## Howto write a new-test for spacewalk-suite, api-call quick-tutorial.
 [Testing-api tutorial](docs/api-call.md)
+[Branches that we use](docs/branches.md)
+[Debug](Debug.md)
+[Pitfalls-test.md](Pitfalls)
 
 ## Running
 
