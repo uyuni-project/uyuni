@@ -124,9 +124,7 @@ class BootstrapMinions extends React.Component {
     }
 
     render() {
-        var messages = <Messages items={[{severity: "info", text:
-            <p><strong>{t('This is a feature preview')}</strong>{t(': You can add systems to be managed by providing SSH credentials only. SUSE Manager will take care of installing the required software agent (salt-minion) remotely and perform the registration. We would be glad to receive your feedback via the ')} <a href="https://forums.suse.com/forumdisplay.php?22-SUSE-Manager" target="_blank">{t('forum')}</a>.</p>
-        }]}/>;
+        var messages = undefined;
         if (this.state.success) {
             messages = <Messages items={[{severity: "success", text:
                 <p>{t('Successfully bootstrapped host! Your system should appear in ')}<a href="/rhn/systems/Overview.do">{t('System Overview')}</a>{t(' shortly')}.</p>
@@ -148,6 +146,7 @@ class BootstrapMinions extends React.Component {
 
         return (
         <Panel title={t("Bootstrap Minions")} icon="fa fa-rocket">
+            <p>{t('You can add systems to be managed by providing SSH credentials only. SUSE Manager will prepare the system remotely and will perform the registration.')}</p>
             {messages}
             <div className="form-horizontal">
                 <div className="form-group">
@@ -206,7 +205,7 @@ class BootstrapMinions extends React.Component {
                         <div className="checkbox">
                             <label>
                                 <input name="manageWithSSH" type="checkbox" checked={this.state.manageWithSSH} onChange={this.manageWithSSHChanged}/>
-                                <span>Manage system completely via SSH (will not install an agent)</span>
+                                <span><strong>Feature preview:</strong> manage system completely via SSH (will not install an agent)</span>
                             </label>
                         </div>
                     </div>
