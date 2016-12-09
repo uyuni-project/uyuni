@@ -1,5 +1,5 @@
 
-# Spacewalk Testsuite
+# Spacewalk Testsuite Master
 
 [![Build Status Master branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=master)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
 
@@ -14,10 +14,10 @@ Testsuite to automatically test Spacewalk/Suse-Manager.
 
 [Branches that we use](docs/branches.md)
 
-
-
-## Howto write a new-test for spacewalk-suite, api-call quick-tutorial.
+## Other usefull info
 [Testing-api tutorial](docs/api-call.md)
+[Debugging suite](docs/Debug.md)
+[Pitfalls](docs/Pitfalls-test.md)
 
 ## Running
 
@@ -63,14 +63,10 @@ Add a file into `run_sets/$name.yml` and then execute `rake cucumber:$name`.
 
 * Add required gems to `Gemfile`.
 * Unit tests in `test/testsuite_name`.
-* Helpers for unit tests in `test/helper.rb`.
 * Cucumber features under features.
 * Helpers shared scross tests/features should go into the `lib/spacewalk_testsuite_base library`.
 
 ## License
 
 * The testsuite is licensed under the MIT license. See the `MIT-LICENSE.txt` file included in the distribution.
-
-
-
 
