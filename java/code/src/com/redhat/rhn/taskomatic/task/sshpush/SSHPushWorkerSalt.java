@@ -157,6 +157,9 @@ public class SSHPushWorkerSalt implements QueueWorker {
                     performCheckin(m);
                 }
 
+                saltService.getUptimeForMinion(m).ifPresent(uptime ->
+                        SaltUtils.INSTANCE.handleUptimeUpdate(m, uptime));
+
                 log.debug("Nothing left to do for " + m.getMinionId() + ", exiting worker");
             });
         }
@@ -176,7 +179,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private void performCheckin(MinionServer minion) {
         // Ping minion and perform check-in on success
         log.info("Performing a check-in for: " + minion.getMinionId());
-        Optional<Boolean> result = SaltService.INSTANCE
+        Optional<Boolean> result = saltService
                 .callSync(Test.ping(), minion.getMinionId());
         if (result.isPresent()) {
             minion.updateServerInfo();
@@ -256,8 +259,15 @@ public class SSHPushWorkerSalt implements QueueWorker {
                         log.trace("Salt call result: " + r);
                     }
                     String function = (String) call.getPayload().get("fun");
-                    saltUtils.updateServerAction(sa, 0L, true, "n/a",
-                            r, function);
+
+                    // reboot needs special handling in case of ssh push
+                    if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                        sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                    }
+                    else {
+                        saltUtils.updateServerAction(sa, 0L, true, "n/a",
+                                r, function);
+                    }
 
                     // Perform a package profile update in the end if necessary
                     if (saltUtils.shouldRefreshPackageList(function, result)) {

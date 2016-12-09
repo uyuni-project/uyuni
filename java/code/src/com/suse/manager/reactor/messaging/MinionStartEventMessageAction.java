@@ -15,25 +15,16 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionServerUtils;
-import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.exception.SaltException;
-import com.suse.salt.netapi.results.Result;
 
 import org.apache.log4j.Logger;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -80,48 +71,8 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
                 SALT_SERVICE.syncModules(target);
             }
 
-            // get uptime
-            LocalCall<Float> uptimeCall = Status.uptime();
-            try {
-                Map<String, Result<Float>> uptimes = SaltService.INSTANCE
-                        .callSync(uptimeCall, target);
-                if (uptimes.containsKey(minion.getMinionId())) {
-                    Long uptime = uptimes.get(minion.getMinionId())
-                            .result().get().longValue();
-
-                    Date bootTime = new Date(System.currentTimeMillis() - (uptime * 1000));
-                    LOG.debug("set last boot for " +
-                                    minion.getMinionId() + " to " + bootTime);
-                    minion.setLastBoot(bootTime.getTime() / 1000);
-
-                    // cleanup old reboot actions
-                    @SuppressWarnings("unchecked")
-                    List<ServerAction> serverActions = ActionFactory
-                            .listServerActionsForServer(minion);
-                    int actionsChanged = 0;
-                    for (ServerAction sa : serverActions) {
-                        ActionType actionType = sa.getParentAction().getActionType();
-                        if (actionType.equals(ActionFactory.TYPE_REBOOT) &&
-                                sa.getStatus().equals(ActionFactory.STATUS_QUEUED) &&
-                                bootTime.after(sa.getParentAction().getEarliestAction())) {
-                            sa.setStatus(ActionFactory.STATUS_COMPLETED);
-                            sa.setResultMsg("Reboot completed.");
-                            sa.setResultCode(0L);
-                            ActionFactory.save(sa);
-                            actionsChanged += 1;
-                        }
-                    }
-                    if (actionsChanged > 0) {
-                        LOG.debug(actionsChanged + " reboot actions set to completed");
-                    }
-                }
-                else {
-                    LOG.error("Can't get uptime for " + minion.getMinionId());
-                }
-            }
-            catch (SaltException e) {
-                LOG.error(e);
-            }
+            SALT_SERVICE.getUptimeForMinion(minion).ifPresent(uptime ->
+                    SaltUtils.INSTANCE.handleUptimeUpdate(minion, uptime));
         });
 
     }

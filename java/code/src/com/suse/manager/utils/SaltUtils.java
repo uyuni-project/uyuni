@@ -559,4 +559,45 @@ public class SaltUtils {
             return Collections.singleton(installedProduct);
         }).orElse(Collections.emptySet());
     }
+
+    /**
+     * Handle the minion uptime update, that means:
+     * - Set the time of the last boot according to the uptimeSeconds value and
+     *   current time,
+     * - cleanup old reboot actions.
+     *
+     * @param minion the minion
+     * @param uptimeSeconds uptime time in seconds
+     */
+    public void handleUptimeUpdate(MinionServer minion, Long uptimeSeconds) {
+        Date bootTime = new Date(
+                System.currentTimeMillis() - (uptimeSeconds * 1000));
+        LOG.debug("Set last boot for " + minion.getMinionId() + " to " + bootTime);
+        minion.setLastBoot(bootTime.getTime() / 1000);
+
+        // cleanup old reboot actions
+        @SuppressWarnings("unchecked")
+        List<ServerAction> serverActions = ActionFactory
+                .listServerActionsForServer(minion);
+        int actionsChanged = 0;
+        for (ServerAction sa : serverActions) {
+            if (shouldCleanupAction(bootTime, sa)) {
+                sa.setStatus(ActionFactory.STATUS_COMPLETED);
+                sa.setResultMsg("Reboot completed.");
+                sa.setResultCode(0L);
+                ActionFactory.save(sa);
+                actionsChanged += 1;
+            }
+        }
+        if (actionsChanged > 0) {
+            LOG.debug(actionsChanged + " reboot actions set to completed");
+        }
+    }
+
+    private boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
+        return sa.getParentAction().getActionType().equals(ActionFactory.TYPE_REBOOT) &&
+                (sa.getStatus().equals(ActionFactory.STATUS_QUEUED) ||
+                        sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP)) &&
+                bootTime.after(sa.getParentAction().getEarliestAction());
+    }
 }
