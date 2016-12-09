@@ -762,24 +762,19 @@ public class SaltService {
      * no value.
      */
     public Optional<Long> getUptimeForMinion(MinionServer minion) {
-        Optional<Long> uptimeSeconds = Optional.empty();
-        LocalCall<Float> uptimeCall = Status.uptime();
+        Optional<Long> uptime = Optional.empty();
         try {
-            Map<String, Result<Float>> uptimes = callSync(
-                    uptimeCall,
-                    new MinionList(minion.getMinionId()));
-            if (uptimes.containsKey(minion.getMinionId())) {
-                uptimeSeconds = Optional.of(uptimes.get(minion.getMinionId()).result().get()
-                        .longValue());
-            }
-            else {
+            uptime = callSync(Status.uptime(), minion.getMinionId())
+                    .map(Float::longValue);
+
+            if (!uptime.isPresent()) {
                 LOG.error("Can't get uptime for " + minion.getMinionId());
             }
         }
-        catch (SaltException e) {
+        catch (RuntimeException e) {
             LOG.error(e);
         }
-        return uptimeSeconds;
+        return uptime;
     }
 
     /**
