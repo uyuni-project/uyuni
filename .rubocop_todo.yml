@@ -42,7 +42,7 @@ Lint/UselessAssignment:
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/nagios_steps.rb'
     - 'features/step_definitions/register_client_steps.rb'
-    - 'features/step_definitions/security_steps.rb'
+    - 'features/step_definitions/owasp_zap_steps.rb'
     - 'features/step_definitions/xmlrpc_actionchain_steps.rb'
     - 'features/support/ssh.rb'
 
@@ -244,7 +244,7 @@ Style/MultilineOperationIndentation:
 # Cop supports --auto-correct.
 Style/MutableConstant:
   Exclude:
-    - 'features/step_definitions/security_steps.rb'
+    - 'features/step_definitions/owasp_zap_steps.rb'
     - 'features/step_definitions/xmlrpc_user_steps.rb'
     - 'lib/spacewalk_testsuite_base/version.rb'
 
