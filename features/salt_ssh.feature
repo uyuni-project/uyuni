@@ -9,7 +9,7 @@ Feature: Bootstrap a new salt host via salt-ssh
 
     Given no Salt packages are installed on remote minion host
     And remote minion host is not registered in Spacewalk
-  
+    
   Scenario: Bootstrap a system via salt-ssh
 
     Given I am authorized

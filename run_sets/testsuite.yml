@@ -51,7 +51,7 @@
 - features/nagios.feature
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
-##  - features/powermanagement-test.feature disable until machine works
+##  - features/powermanagement-test.feature NOT-READy
 - features/CVE-ID-new-syntax.feature
 - features/datepicker.feature
 - features/delete_system_profile.feature
@@ -78,7 +78,7 @@
 - features/salt_software_states.feature
 - features/salt_pkgset_beacon.feature
 - features/salt_remote_cmds.feature
-# - features/salt_action_pickedup.feature NEED FIX, for moment Unstable
+# - features/salt_action_pickedup.feature NEED FIX. Unstable test
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
 - features/salt_ssh.feature
