@@ -28,7 +28,7 @@ $minion.extend(LavandaBasic)
 $rh_minion.extend(LavandaBasic)
 
 # add here new vms ( fedora, redhat) etc.
-nodes = [$server, $client, $minion]
+nodes = [$server, $client, $minion, $rh_minion]
 node_hostnames = []
 node_fqn = []
 # get the hostnames of various vms
@@ -49,6 +49,8 @@ $client_hostname = node_hostnames[1]
 $client_fullhostname = node_fqn[1]
 $minion_hostname = node_hostnames[2]
 $minion_fullhostname = node_fqn[2]
+$rh_minion_hostname = node_hostnames[3]
+$rh_minion_fullhostname = node_fqn[3]
 
 # helper functions for moment this are used in salt.steps but maybe move this to lavanda.rb
 def file_exist(node, file)
