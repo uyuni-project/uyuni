@@ -755,6 +755,29 @@ public class SaltService {
     }
 
     /**
+     * Retrieves the uptime of the minion (in seconds).
+     *
+     * @param minion the minion
+     * @return Optional with the uptime in seconds or empty on error or if salt returned
+     * no value.
+     */
+    public Optional<Long> getUptimeForMinion(MinionServer minion) {
+        Optional<Long> uptime = Optional.empty();
+        try {
+            uptime = callSync(Status.uptime(), minion.getMinionId())
+                    .map(Float::longValue);
+
+            if (!uptime.isPresent()) {
+                LOG.error("Can't get uptime for " + minion.getMinionId());
+            }
+        }
+        catch (RuntimeException e) {
+            LOG.error(e);
+        }
+        return uptime;
+    }
+
+    /**
      * Get the directory where custom state files are stored on disk.
      * @param orgId the organization id
      * @return the path where .sls files are stored

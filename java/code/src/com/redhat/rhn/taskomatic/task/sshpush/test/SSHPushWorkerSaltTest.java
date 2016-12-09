@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem;
 import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
+import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.test.SSHMinionBootstrapperTest;
@@ -33,11 +34,15 @@ import org.apache.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Optional;
 
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_PICKED_UP;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 
 /**
@@ -50,13 +55,15 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     private SSHPushWorkerSalt worker;
     private MinionServer minion;
     private SaltService saltServiceMock;
+    private SSHPushSystem sshPushSystemMock;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
-        worker = new SSHPushWorkerSalt(logger, mock(SSHPushSystem.class), saltServiceMock,
+        sshPushSystemMock = mock(SSHPushSystem.class);
+        worker = new SSHPushWorkerSalt(logger, sshPushSystemMock, saltServiceMock,
                 mock(SaltUtils.class));
         minion = MinionServerFactoryTest.createTestMinionServer(user);
     }
@@ -331,6 +338,134 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         assertEquals(STATUS_COMPLETED, serverAction.getStatus());
     }
 
+
+    /**
+     * Tests that a successful execution of a reboot action will move this action to the
+     * 'picked-up' state and the remaining tries counter decreases.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testRebootActionIsPickedUp() throws Exception {
+        worker = successWorker();
+        mockSyncCallResult();
+
+        Action action = createRebootAction(new Date(1L));
+        ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
+
+        worker.executeAction(action, minion);
+
+        assertEquals(STATUS_PICKED_UP, serverAction.getStatus());
+        assertEquals(Long.valueOf(4L), serverAction.getRemainingTries());
+    }
+
+    /**
+     * Tests that the worker updates uptime of the minion and cleans its pending
+     * reboot action after a successful uptime value retrieval.
+     * Future reboot actions, on the other hand, should remain untouched.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testUptimeUpdatedAfterReboot() throws Exception {
+        minion.setLastBoot(1L); // last boot is long time in the past
+        Action action = createRebootAction(
+                Date.from(Instant.now().minus(5, ChronoUnit.MINUTES)));
+        ServerAction serverAction = createChildServerAction(action,
+                ActionFactory.STATUS_PICKED_UP, 5L);
+        ActionFactory.save(action);
+
+        worker = successWorker();
+        mockSyncCallResult();
+
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).getUptimeForMinion(minion);
+            will(returnValue(Optional.of(100L)));
+
+            oneOf(sshPushSystemMock).getId();
+            will(returnValue(minion.getId()));
+        }});
+
+        worker.setParentQueue(mockQueue());
+        worker.run();
+
+        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
+        assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
+        assertEquals(Long.valueOf(0L), serverAction.getResultCode());
+        assertEquals("Reboot completed.", serverAction.getResultMsg());
+        assertTrue(minion.getLastBoot() > 1L);
+    }
+
+    /**
+     * Tests that the worker will update uptime of the minion and will clean its pending
+     * reboot action and a 'picked up' reboot action from past after a successful uptime
+     * value retrieval.
+     *
+     * Moreover it verifies that
+     *
+     *  Tests that the worker will clean
+     * Tests that an attempt to execute action that has been already completed will not
+     * invoke any salt calls and that the state of the action doesn't change.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testOldRebootActionsAreCleanedUp() throws Exception {
+        minion.setLastBoot(1L); // last boot is long time in the past
+        // very old reboot action
+        Action oldAction = createRebootAction(new Date(1L));
+        ServerAction oldServerAction = createChildServerAction(oldAction,
+                ActionFactory.STATUS_PICKED_UP, 5L);
+        ActionFactory.save(oldAction);
+
+        // very new reboot action, shouldn't be cleaned
+        Action futureAction = createRebootAction(
+                Date.from(Instant.now().plus(5, ChronoUnit.DAYS)));
+        ServerAction futureServerAction = createChildServerAction(futureAction,
+                ActionFactory.STATUS_QUEUED, 5L);
+        ActionFactory.save(futureAction);
+
+        // action to be picked up
+        Action upcomingAction = createRebootAction(
+                Date.from(Instant.now().minus(5, ChronoUnit.MINUTES)));
+        ServerAction upcomingServerAction = createChildServerAction(upcomingAction,
+                ActionFactory.STATUS_PICKED_UP, 5L);
+        ActionFactory.save(upcomingAction);
+
+        worker = successWorker();
+        mockSyncCallResult();
+
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).getUptimeForMinion(minion);
+            will(returnValue(Optional.of(100L)));
+
+            oneOf(sshPushSystemMock).getId();
+            will(returnValue(minion.getId()));
+        }});
+
+        worker.setParentQueue(mockQueue());
+        worker.run();
+
+        // assertions
+        assertRebootCompleted(upcomingServerAction);
+        assertRebootCompleted(oldServerAction);
+        assertEquals(STATUS_QUEUED, futureServerAction.getStatus());
+        assertEquals(Long.valueOf(5L), futureServerAction.getRemainingTries());
+        assertNull(futureServerAction.getResultCode());
+        assertTrue(minion.getLastBoot() > 1L);
+    }
+
+    private void assertRebootCompleted(ServerAction serverAction) {
+        assertEquals(STATUS_COMPLETED, serverAction.getStatus());
+        assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
+        assertEquals(Long.valueOf(0L), serverAction.getResultCode());
+        assertEquals("Reboot completed.", serverAction.getResultMsg());
+    }
+
+    private Action createRebootAction(Date earliestAction) {
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_REBOOT);
+        action.setOrg(user.getOrg());
+        action.setEarliestAction(earliestAction);
+        return action;
+    }
+
     private void successAfterRetryHelper() throws Exception {
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
@@ -346,13 +481,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         assertEquals(STATUS_QUEUED, serverAction.getStatus());
 
         // we create a salt service that succeeds
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(any(String.class)));
-            Optional<JsonElement> result = Optional.of(mock(JsonElement.class));
-            will(returnValue(result));
-        }});
+        mockSyncCallResult();
 
         // repeat the execution with successful result
         worker = successWorker();
@@ -381,6 +510,25 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         }});
     }
 
+    private void mockSyncCallResult() {
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(any(LocalCall.class)),
+                    with(any(String.class)));
+            Optional<JsonElement> result = Optional.of(mock(JsonElement.class));
+            will(returnValue(result));
+        }});
+    }
+
+    private TaskQueue mockQueue() {
+        TaskQueue mockQueue = mock(TaskQueue.class);
+        context().checking(new Expectations() {{
+            oneOf(mockQueue).workerStarting();
+            oneOf(mockQueue).workerDone();
+        }});
+        return mockQueue;
+    }
+
     private SSHPushWorkerSalt successWorker() {
         SaltUtils saltUtils = new SaltUtils() {
             @Override
@@ -395,6 +543,6 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
                 serverAction.setStatus(STATUS_COMPLETED);
             }
         };
-        return new SSHPushWorkerSalt(logger, null, saltServiceMock, saltUtils);
+        return new SSHPushWorkerSalt(logger, sshPushSystemMock, saltServiceMock, saltUtils);
     }
 }
