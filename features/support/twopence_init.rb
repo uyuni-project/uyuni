@@ -12,17 +12,21 @@ raise "minion ip var empty" if  ENV['MINION'].nil?
 $server_ip = ENV['TESTHOST']
 $client_ip = ENV['CLIENT']
 $minion_ip = ENV['MINION']
+$rh_minion_ip = ENV['RH_MINION']
 
 # define twopence object.
 $client = Twopence.init("ssh:#{$client_ip}")
 $server = Twopence.init("ssh:#{$server_ip}")
 $minion = Twopence.init("ssh:#{$minion_ip}")
+$rh_minion = Twopence.init("ssh:#{$rh_minion_ip}")
 
 # lavanda library module extension.
 # we have here for moment the command : $target.run call, $server.run("uptime")
 $server.extend(LavandaBasic)
 $client.extend(LavandaBasic)
 $minion.extend(LavandaBasic)
+$rh_minion.extend(LavandaBasic)
+
 
 # add here new vms ( fedora, redhat) etc.
 nodes = [$server, $client, $minion]
