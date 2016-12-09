@@ -3,7 +3,7 @@
 
 Feature: register a salt-minion via bootstrap
 
-  Scenario: bootstrap a sles minion
+  Scenario: bootstrap a redhat minion
      Given I am authorized
      When I follow "Salt"
      Then I should see a "Bootstrapping" text
