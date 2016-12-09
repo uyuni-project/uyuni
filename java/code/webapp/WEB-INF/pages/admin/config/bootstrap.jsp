@@ -41,7 +41,7 @@
                         </label>
                         <div class="col-lg-6">
                             <div class="checkbox">
-                                    <html:checkbox property="salt" styleId="salt" />
+                                <html:checkbox property="salt" styleId="salt" />
                             </div>
                         </div>
                     </div>
