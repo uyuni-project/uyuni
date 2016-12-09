@@ -36,3 +36,7 @@ end
 And(/^I remove pkg "([^"]*)" on minion$/) do |pkg|
   $minion.run("zypper -n rm #{pkg}")
 end
+
+Then(/^I run spacecmd listevents for sle-minion$/) do
+  $server.run("spacecmd -u admin -p admin system_listevents #{$minion_fullhostname}")
+end
