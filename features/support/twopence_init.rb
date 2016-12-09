@@ -27,7 +27,6 @@ $client.extend(LavandaBasic)
 $minion.extend(LavandaBasic)
 $rh_minion.extend(LavandaBasic)
 
-
 # add here new vms ( fedora, redhat) etc.
 nodes = [$server, $client, $minion]
 node_hostnames = []
