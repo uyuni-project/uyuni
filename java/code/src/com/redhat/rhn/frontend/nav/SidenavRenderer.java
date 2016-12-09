@@ -15,27 +15,18 @@
 
 package com.redhat.rhn.frontend.nav;
 
-import com.redhat.rhn.frontend.html.HtmlTag;
+import com.google.gson.GsonBuilder;
+import com.suse.manager.webui.utils.gson.JSONMenuElement;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Stream.concat;
-import static java.util.stream.Stream.empty;
-import static java.util.stream.Stream.of;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 /**
- * SidenavRenderer renders an unordered list which is decorated
- * using CSS. Each active list item has a predefined class named
- * sidenav-selected.
- * <pre>
- * &lt;ul&gt;
- *     &lt;li class=\"sidenav-selected\"&gt;
- *     &lt;a href=\"url\"&gt;name&lt;/a&gt;&lt;/lt&gt;
- * &lt;/ul&gt;
- * </pre>
+ * SidenavRenderer: create a JSON object with the full menu tree
+ * visible to the current user
+ *
  * @version $Rev$
  */
 
@@ -49,17 +40,6 @@ public class SidenavRenderer extends Renderable {
 
     /** {@inheritDoc} */
     public void preNavLevel(StringBuffer sb, int depth) {
-        if (!canRender(null, depth)) {
-            return;
-        }
-        if (depth > 1) {
-            HtmlTag li = new HtmlTag("li");
-            sb.append(li.renderOpenTag() + '\n');
-        }
-
-        HtmlTag ul = new HtmlTag("ul");
-        ul.setAttribute("class", "nav nav-pills nav-stacked");
-        sb.append(ul.renderOpenTag());
     }
 
     /** {@inheritDoc} */
@@ -67,45 +47,13 @@ public class SidenavRenderer extends Renderable {
     }
 
     /** {@inheritDoc} */
-    public void navNodeActive(StringBuffer sb,
-                              NavNode node,
-                              NavTreeIndex treeIndex,
-                              Map parameters,
-                              int depth) {
-        if (!canRender(node, depth)) {
-            return;
-        }
-
-        renderNode(sb, node, Stream.of("active"));
+    public void navNodeActive(StringBuffer sb, NavNode node,
+            NavTreeIndex treeIndex, Map parameters, int depth) {
     }
 
     /** {@inheritDoc} */
-    public void navNodeInactive(StringBuffer sb,
-                                NavNode node,
-                                NavTreeIndex treeIndex,
-                                Map parameters,
-                                int depth) {
-        if (!canRender(node, depth)) {
-            return;
-        }
-
-        this.renderNode(sb, node, Stream.empty());
-    }
-
-    private void renderNode(StringBuffer sb, NavNode node, Stream<String> baseClasses) {
-        HtmlTag li = new HtmlTag("li");
-
-        Stream<String> additionalClasses =
-                node.getNodes().isEmpty() ? empty() : of("parent");
-        String classString = concat(baseClasses, additionalClasses).collect(joining(" "));
-
-        if (isNotEmpty(classString)) {
-            li.setAttribute("class", classString);
-        }
-
-        li.addBody(aHref(node.getPrimaryURL(), node.getName(), node.getTarget()));
-        sb.append(li.render());
-        sb.append("\n");
+    public void navNodeInactive(StringBuffer sb, NavNode node,
+            NavTreeIndex treeIndex, Map parameters, int depth) {
     }
 
     /** {@inheritDoc} */
@@ -114,32 +62,11 @@ public class SidenavRenderer extends Renderable {
 
     /** {@inheritDoc} */
     public void postNavLevel(StringBuffer sb, int depth) {
-        if (!canRender(null, depth)) {
-            return;
-        }
-
-        HtmlTag ul = new HtmlTag("ul");
-        sb.append(ul.renderCloseTag() + "\n");
-
-        if (depth > 1) {
-            HtmlTag li = new HtmlTag("li");
-            sb.append(li.renderCloseTag() + '\n');
-        }
     }
 
     /** {@inheritDoc} */
     public boolean nodeRenderInline(int depth) {
         return true;
-    }
-
-    private static String aHref(String url, String text, String target) {
-        HtmlTag a = new HtmlTag("a");
-        a.setAttribute("href", url);
-        if (target != null && !target.equals("")) {
-            a.setAttribute("target", target);
-        }
-        a.addBody(text);
-        return a.render();
     }
 
     /** {@inheritDoc} */
@@ -148,5 +75,36 @@ public class SidenavRenderer extends Renderable {
 
     /** {@inheritDoc} */
     public void postNav(StringBuffer sb) {
+    }
+
+    public String jsonRender(NavTreeIndex treeIndex) {
+        return new GsonBuilder().create().toJson(
+                buildJSONTree(treeIndex, treeIndex.getTree().getNodes(), 0));
+    }
+
+    /**
+     * Generate a List of {@link JSONMenuElement} as a tree slice
+     * of the whole treeIndex. Build it on the nodes bunch at the depth level.
+     *
+     * This method is designed to be recursively self-called
+     * to build any n-level depth tree.
+     *
+     * @param treeIndex the full tree overview
+     * @param nodes the subtree to build
+     * @param depth the depth of the subtree
+     * @return the subtree as a List of JSONMenuElement
+     */
+    public List<JSONMenuElement> buildJSONTree(NavTreeIndex treeIndex,
+            List<NavNode> nodes, int depth) {
+        if (nodes.size() == 0) {
+            return null;
+        }
+        return nodes.stream()
+                .filter(node -> canRender(node, depth))
+                .map(node -> new JSONMenuElement(
+                        node.getName(), node.getPrimaryURL(),
+                        treeIndex.isNodeActive(node),
+                        buildJSONTree(treeIndex, node.getNodes(), depth + 1)))
+                .collect(toList());
     }
 }
