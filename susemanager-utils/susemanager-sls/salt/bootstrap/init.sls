@@ -47,7 +47,13 @@ salt-minion-package:
     - contents_pillar: minion_id
     - require:
       - pkg: salt-minion-package
-
+# Make sure no master aliasing left over from ssh-push via tunnel
+master_localhost_alias_absent:
+  host.absent:
+    - ip:
+      - 127.0.0.1
+    - names:
+      - {{ salt['pillar.get']('master') }}
 # Manage minion key files in case they are provided in the pillar
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
 /etc/salt/pki/minion/minion.pub:
@@ -65,6 +71,7 @@ salt-minion:
     - enable: True
     - require:
       - pkg: salt-minion-package
+      - host: master_localhost_alias_absent
     - watch:
       - file: /etc/salt/minion_id
       - file: /etc/salt/pki/minion/minion.pem
@@ -76,6 +83,7 @@ salt-minion:
     - enable: True
     - require:
       - pkg: salt-minion-package
+      - host: master_localhost_alias_absent
     - watch:
       - file: /etc/salt/minion_id
       - file: /etc/salt/minion.d/susemanager.conf
