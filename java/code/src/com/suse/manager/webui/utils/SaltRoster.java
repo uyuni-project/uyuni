@@ -39,14 +39,17 @@ public class SaltRoster {
      * @param user The user to login as
      * @param passwd The password to login with
      * @param port The target system's ssh port number
+     * @param remotePortForwarding ssh tunneling options
      */
     public void addHost(String host, String user, Optional<String> passwd,
-            Optional<Integer> port) {
+            Optional<Integer> port, Optional<String> remotePortForwarding) {
         Map<String, Object> hostData = new LinkedHashMap<>();
         hostData.put("host", host);
         hostData.put("user", user);
         passwd.ifPresent(value -> hostData.put("passwd", value));
         port.ifPresent(value -> hostData.put("port", value));
+        remotePortForwarding.ifPresent(forwarding -> hostData.put("remote_port_forwards",
+                forwarding));
         data.put(host, hostData);
     }
 

@@ -33,7 +33,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testfilterSSHMinionIdsBootstrap() {
-        SSHMinionsPendingRegistrationService.addMinion("m1");
+        SSHMinionsPendingRegistrationService.addMinion("m1", "salt-ssh");
         List<String> minionIds = new ArrayList<>();
         minionIds.add("m1");
         minionIds.add("m2");
