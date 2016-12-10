@@ -10,7 +10,7 @@ autorefresh={{ args['autorefresh'] }}
 baseurl=https://{{ args['host'] }}/rhn/manager/download/{{ chan }}
 susemanager_token={{ args['token'] }}
 {%- else %}
-baseurl=https://{{ args['host'] }}/rhn/manager/download/{{ chan }}?{{ args['token'] }}
+baseurl=https://{{ args['host'] }}:{{ args.get('port', 443)}}/rhn/manager/download/{{ chan }}?{{ args['token'] }}
 {%- endif %}
 type={{ args['type'] }}
 gpgcheck={{ args['gpgcheck'] }}
