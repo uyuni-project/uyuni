@@ -29,7 +29,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.7
+Version: 2.7.9
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -1036,6 +1036,13 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Dec 07 2016 Eric Herget <eherget@redhat.com> 2.7.9-1
+- 1402522 - Cancelling schedule action on Oracle fails when number of systems
+  greater than 1000
+
+* Wed Dec 07 2016 Jiri Dostal <jdostal@redhat.com> 2.7.8-1
+- 1399841 - Remote command execution allows integers outside 32 bit range
+
 * Fri Dec 02 2016 Jiri Dostal <jdostal@redhat.com> 2.7.7-1
 - 1250572 - Text description missing for remote command by API and spacecmd
 
