@@ -13,7 +13,6 @@ $server_ip = ENV['TESTHOST']
 $client_ip = ENV['CLIENT']
 $minion_ip = ENV['MINION']
 
-
 # define twopence object.
 $client = Twopence.init("ssh:#{$client_ip}")
 $server = Twopence.init("ssh:#{$server_ip}")
