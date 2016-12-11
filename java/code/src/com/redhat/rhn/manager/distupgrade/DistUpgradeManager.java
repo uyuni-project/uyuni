@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import com.redhat.rhn.common.util.RpmVersionComparator;
@@ -45,6 +46,8 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ChildChannelDto;
@@ -53,6 +56,7 @@ import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import static com.suse.utils.Lists.listOfListComparator;
@@ -520,19 +524,34 @@ public class DistUpgradeManager extends BaseManager {
             throws DistUpgradeException {
         Server server = SystemManager.lookupByIdAndUser(sid, user);
 
-        // Check if server supports distribution upgrades
-        boolean supported = DistUpgradeManager.isUpgradeSupported(server, user);
-        if (!supported) {
-            throw new DistUpgradeException(
-                    "Dist upgrade not supported for server: " + sid);
+        if (!server.asMinionServer().isPresent()) {
+            // Check if server supports distribution upgrades
+            boolean supported = DistUpgradeManager.isUpgradeSupported(server, user);
+            if (!supported) {
+                throw new DistUpgradeException(
+                        "Dist upgrade not supported for server: " + sid);
+            }
+
+            // Check if zypp-plugin-spacewalk is installed
+            boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
+                    "zypp-plugin-spacewalk", server) != null;
+            if (!zyppPluginInstalled) {
+                throw new DistUpgradeException(
+                        "Package zypp-plugin-spacewalk is not installed: " + sid);
+            }
+        }
+        else {
+            Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
+            if (!minion.get().getOsFamily().equals("Suse")) {
+                throw new DistUpgradeException(
+                        "Dist upgrade only supported for SUSE systems");
+            }
         }
 
-        // Check if zypp-plugin-spacewalk is installed
-        boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
-                "zypp-plugin-spacewalk", server) != null;
-        if (!zyppPluginInstalled) {
-            throw new DistUpgradeException(
-                    "Package zypp-plugin-spacewalk is not installed: " + sid);
+        // Check if the newest update stack is installed (for traditional clients only)
+        if (ErrataManager.updateStackUpdateNeeded(user, server)) {
+            throw new DistUpgradeException("There are outstanding Package Management " +
+                    "updates available for this system.");
         }
 
         // Check if there is already a migration in the schedule
