@@ -140,7 +140,7 @@ class BootstrapMinions extends React.Component {
         }
 
         var buttons = [
-            <AsyncButton id="bootstrap-btn" defaultType="btn-success" icon="plus" name={t("Bootstrap it")} action={this.onBootstrap}/>,
+            <AsyncButton id="bootstrap-btn" defaultType="btn-success" icon="plus" name={t("Bootstrap")} action={this.onBootstrap}/>,
             <AsyncButton id="clear-btn" defaultType="btn-default pull-right" icon="eraser" name={t("Clear fields")} action={this.clearFields}/>
         ];
 
@@ -194,7 +194,7 @@ class BootstrapMinions extends React.Component {
                         <div className="checkbox">
                             <label>
                                 <input name="ignoreHostKeys" type="checkbox" checked={this.state.ignoreHostKeys} onChange={this.ignoreHostKeysChanged}/>
-                                <span>Disable strict host key checking</span>
+                                <span>Disable SSH strict host key checking during bootstrap process</span>
                             </label>
                         </div>
                     </div>
@@ -205,7 +205,7 @@ class BootstrapMinions extends React.Component {
                         <div className="checkbox">
                             <label>
                                 <input name="manageWithSSH" type="checkbox" checked={this.state.manageWithSSH} onChange={this.manageWithSSHChanged}/>
-                                <span><strong>Feature preview:</strong> manage system completely via SSH (will not install an agent)</span>
+                                <span><strong>Technology preview:</strong> manage system completely via SSH (will not install an agent)</span>
                             </label>
                         </div>
                     </div>
