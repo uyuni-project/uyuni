@@ -11708,5 +11708,105 @@
     "installer_updates": false,
     "name": "SLE-RT12-SP2-Debuginfo-Pool",
     "url": "https://updates.suse.com/SUSE/Products/SLE-RT/12-SP2/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-POS12-SP2-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2289,
+    "installer_updates": false,
+    "name": "SLE-POS12-SP2-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-POS/12-SP2/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-POS12-SP2-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2290,
+    "installer_updates": false,
+    "name": "SLE-POS12-SP2-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-POS/12-SP2/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-POS12-SP2-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2291,
+    "installer_updates": false,
+    "name": "SLE-POS12-SP2-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-POS/12-SP2/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-POS12-SP2-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2292,
+    "installer_updates": false,
+    "name": "SLE-POS12-SP2-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-POS/12-SP2/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-POS12-SP2-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2293,
+    "installer_updates": false,
+    "name": "SLE-POS12-SP2-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-POS/12-SP2/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-HPC12-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2294,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC12-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-HPC/12/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-HPC12-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2295,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC12-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-HPC/12/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-HPC12-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2296,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC12-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/12/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-HPC12-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2297,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC12-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/12/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-HPC12-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2298,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC12-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/12/x86_64/product_source/?my-fake-token"
   }
 ]
