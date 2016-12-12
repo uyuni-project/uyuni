@@ -8,6 +8,43 @@ $(document).ready(function() {
     }
   });
 
+  $.openNav = function(li) {
+    li.addClass('open');
+    li.children('ul').addClass('open').slideDown(300);
+  }
+  $.closeNav = function(li) {
+    li.removeClass('open');
+    li.children('ul').removeClass('open').slideUp(300);
+  }
+  // nav --> open one level at a time
+  $(document).on('click', 'nav li.node > a', function() {
+    const li = $(this).parent('li');
+    // toggle open/close this
+    if (li.hasClass('open')) {
+      $.closeNav(li);
+    }
+    else {
+      $.closeNav(li.siblings());
+      $.openNav(li);
+    }
+  });
+
+  // open the active menu after page loaded
+  $.setMenu = function() {
+    $('nav li.active').each(function() {
+      $.openNav($(this));
+    });
+  }
+
+  // focus go away from the nav menu --> close all submenus
+  $(document).click(function (e) {
+    var target = $(e.target);
+    if (!target.closest("#nav").length) {
+      $('nav ul ul, nav ul li').removeClass('open');
+      $('nav ul ul').slideUp(250);
+    }
+  });
+
   "use strict";
 
   const React = require("react");
@@ -64,6 +101,7 @@ $(document).ready(function() {
     },
 
     componentDidMount: function() {
+      $.setMenu();
     },
 
     onSearch: function(e) {
@@ -107,7 +145,6 @@ $(document).ready(function() {
 
   const Breadcrumb = React.createClass({
     componentDidMount: function() {
-      console.log('breadcrumb mounted');
     },
 
     render: function() {
