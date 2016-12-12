@@ -77,7 +77,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         add("SLE-HAE-X86"); add("SLES-IA"); add("SLE-HAE-GEO");
         add("SLE-WE"); add("SES"); add("SLE-LP");
         add("SLES12-GA-LTSS-X86"); add("SLES12-GA-LTSS-Z");
-        add("SLES-ARM64");
+        add("SLES-ARM64"); add("SLES-RPI-ARM64");
     } };
 
     /** Logger instance. */
