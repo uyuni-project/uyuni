@@ -14,7 +14,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
-     And I click on "Bootstrap it"
+     And I click on "Bootstrap"
      And I wait for "100" seconds
      Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
   # testing command line
@@ -75,7 +75,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I select "1-MINION-TEST" from "activationKeys"
-     And I click on "Bootstrap it"
+     And I click on "Bootstrap"
      And I wait for "100" seconds
      Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
 
@@ -113,7 +113,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
-     And I click on "Bootstrap it"
+     And I click on "Bootstrap"
      And I wait for "5" seconds
      And I should not see a "GenericSaltError({" text
      And I should see a "A salt key for this host" text
@@ -136,7 +136,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
-     And I click on "Bootstrap it"
+     And I click on "Bootstrap"
      And I wait for "15" seconds
      And I should not see a "GenericSaltError({" text
      Then I should see a " Could not resolve hostname not-existing-name: Name or service not known" text
@@ -151,7 +151,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "22" as "port"
      And I enter "FRANZ" as "user"
      And I enter "KAFKA" as "password"
-     And I click on "Bootstrap it"
+     And I click on "Bootstrap"
      And I wait for "15" seconds
      And I should not see a "GenericSaltError({" text
      Then I should see a "Permission denied (publickey,keyboard-interactive)." text
@@ -166,7 +166,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "22" as "port"
      And I enter "FRANZ" as "user"
      And I enter "KAFKA" as "password"
-     And I click on "Bootstrap it"
+     And I click on "Bootstrap"
      And I wait for "15" seconds
      And I should not see a "dmesg: read kernel buffer failed:" text
 
@@ -180,7 +180,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "11" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
-     And I click on "Bootstrap it"
+     And I click on "Bootstrap"
      And I wait for "30" seconds
      And I should not see a "GenericSaltError({" text
      And I should see a "ssh: connect to host" text
