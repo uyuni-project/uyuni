@@ -14,6 +14,6 @@ Feature: register a salt-minion via bootstrap
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
-     And I click on "Bootstrap it"
+     And I click on "Bootstrap"
      And I wait for "100" seconds
      Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
