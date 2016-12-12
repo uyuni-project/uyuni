@@ -43,6 +43,7 @@
 	<family default_nodecount="0" label="RES-HA" name="SUSE Linux Enterprise RedHat Expanded Support HA"/>
 	<family default_nodecount="0" label="WebYast-SLMS" name="WebYaST for SUSE Appliance Toolkit"/>
 	<family default_nodecount="0" label="SLE-WE" name="SUSE Linux Enterprise Workstation Extension"/>
+	<family default_nodecount="0" label="SLES-RPI-ARM64" name="SUSE Linux Enterprise Server (RPI ARM64)"/>
 	<family default_nodecount="0" label="SLE-HAE-IA" name="SUSE Linux Enterprise High Availability Extension (Itanium)"/>
 	<family default_nodecount="-1" label="WEBYAST" name="WebYaST for SUSE Linux Enterprise"/>
 	<family default_nodecount="0" label="jeos" name="Just enough OS"/>
