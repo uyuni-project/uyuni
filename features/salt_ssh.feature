@@ -20,7 +20,7 @@ Feature: Bootstrap a new salt host via salt-ssh
        And I check "manageWithSSH"
        And I enter remote minion hostname as "hostname"
        And I enter "linux" as "password"
-       And I click on "Bootstrap it"
+       And I click on "Bootstrap"
        And I wait for "5" seconds
     Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
        And I wait for "10" seconds

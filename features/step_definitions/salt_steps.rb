@@ -1,4 +1,4 @@
-# Copyright 2015 SUSE LLC
+# Copyright 2015-16 SUSE LLC
 require 'timeout'
 
 Given(/^the Salt Minion is configured$/) do
@@ -257,4 +257,14 @@ end
 
 And(/^I create picked-up test file on sle minion$/) do
   $minion.run("touch /tmp/PICKED-UP.test")
+end
+
+Then(/^I should see "(.*?)" hostname$/) do |minion|
+ if minion == "sle-minion"
+    step %(I should see a "#{$minion_fullhostname}" text)
+ elsif minion == "rh-minion"
+    step %(I should see a "#{$rh_minion_fullhostname}" text)
+ else
+    raise "no valid name of minion given! "
+  end
 end

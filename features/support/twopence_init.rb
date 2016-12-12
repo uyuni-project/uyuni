@@ -3,27 +3,31 @@ require "lavanda"
 
 # initialize ssh targets from environment variables.
 
-raise "Server ip var empty" if  ENV['TESTHOST'].nil?
-raise "client ip var empty" if  ENV['CLIENT'].nil?
-raise "minion ip var empty" if  ENV['MINION'].nil?
+raise "Server ip var empty" if ENV['TESTHOST'].nil?
+raise "client ip var empty" if ENV['CLIENT'].nil?
+raise "minion ip var empty" if ENV['MINION'].nil?
+raise "rh-minion ip var empty" if ENV['RHMINION'].nil?
 
 $server_ip = ENV['TESTHOST']
 $client_ip = ENV['CLIENT']
 $minion_ip = ENV['MINION']
+$rh_minion_ip = ENV['RHMINION']
 
 # define twopence object.
 $client = Twopence.init("ssh:#{$client_ip}")
 $server = Twopence.init("ssh:#{$server_ip}")
 $minion = Twopence.init("ssh:#{$minion_ip}")
+$rh_minion = Twopence.init("ssh:#{$rh_minion_ip}")
 
 # lavanda library module extension.
 # we have here for moment the command : $target.run call, $server.run("uptime")
 $server.extend(LavandaBasic)
 $client.extend(LavandaBasic)
 $minion.extend(LavandaBasic)
+$rh_minion.extend(LavandaBasic)
 
 # add here new vms ( fedora, redhat) etc.
-nodes = [$server, $client, $minion]
+nodes = [$server, $client, $minion, $rh_minion]
 node_hostnames = []
 node_fqn = []
 # get the hostnames of various vms
@@ -44,6 +48,8 @@ $client_hostname = node_hostnames[1]
 $client_fullhostname = node_fqn[1]
 $minion_hostname = node_hostnames[2]
 $minion_fullhostname = node_fqn[2]
+$rh_minion_hostname = node_hostnames[3]
+$rh_minion_fullhostname = node_fqn[3]
 
 # helper functions for moment this are used in salt.steps but maybe move this to lavanda.rb
 def file_exist(node, file)
