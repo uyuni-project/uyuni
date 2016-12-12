@@ -19,8 +19,10 @@ end
 #
 Then(/^I should see a "([^"]*)" text$/) do |arg1|
   unless page.has_content?(debrand_string(arg1))
-    sleep 45
-    print arg1
+    sleep 25
+    puts "expected #{arg1}"
+    puts "got"
+    print page.body
     fail unless page.has_content?(debrand_string(arg1))
   end
 end
