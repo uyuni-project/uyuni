@@ -71,11 +71,6 @@ footer {
   bottom: 0
 }
 
-section {
-  /* for the body div to make both columns the same size*/
-  height: auto;
-  min-height: 100%;
-}
 /* titles */
 h1, h2, h3, h4 {
   .Roboto-thin
@@ -119,43 +114,40 @@ p {
   }
 }
 
-.spacewalk-main-column-layout {
-  .make-row(0);
-  overflow: hidden;
-  min-height: 100%;
-  aside {
-    .make-md-column(2);
-  }
-  section {
-    .make-md-column(10);
-    margin-bottom: 3em;
-  }
+/* override spacewalk rules */
+section {
+  transition: none!important;
+  -webkit-transition: none!important;
 }
 
-
 .spacewalk-main-column-layout {
+  .make-row(0);
   /* override the grid row margin */
   margin-right: 0;
   margin-left: 0;
    aside {
+    .make-md-column(2);
+    height: 100%;
+    overflow-y: auto;
     background: @spacewalk-aside;
     border-right: 1px solid @spacewalk-aside-border;
-    height: auto;
-    min-height: 100%;
     /* erasing the predefined paddings in the columns */
-    padding-right: 0;
-    padding-left: 0;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    padding-top: 1em;
+    padding-bottom: 2em;
   }
 
   /* fixing margins in the 1st and last columns */
   section {
+    .make-md-column(10);
+    height: 100%;
+    overflow-y: auto;
     padding-left:2em;
     padding-right: 2em;
-    padding-bottom: 3em;
-    /* some animation */
-    transition: width 2s, height 2s, transform 2s;
-      -webkit-transition: width 2s, height 2s, -webkit-transform 2s;
-    }
+    padding-top: 1em;
+    padding-bottom: 2em;
+  }
 }
 
 /* fixing the footer to the bottom */

@@ -47,22 +47,19 @@ $(window).resize(function () {
 // A container function for what should be fired
 // to set HTML tag dimensions
 function alignContentDimensions() {
-  $(".spacewalk-main-column-layout aside").css("padding-bottom", "");
   columnHeight();
 }
 
 // Make columns 100% in height
 function columnHeight() {
-  // Detect if side menu is really side and not whole screen wide. Detecting indirectly with section width because aside can be hidden.
-  if ($(".spacewalk-main-column-layout section").outerWidth() < $(".spacewalk-main-column-layout").outerWidth()) {
-    var asideHeight = $(".spacewalk-main-column-layout aside").height();
-    var navbarHeight = $("header").outerHeight();
-    var footerHeight = $("footer").outerHeight();
-    var heightDoc = $(document).height();
-    // Column heights should equal the document height minus the header height and footer height
-    var newHeight = heightDoc - asideHeight - navbarHeight - footerHeight + "px";
-    $(".spacewalk-main-column-layout aside").css("padding-bottom", newHeight);
-  };
+  var headerHeight = $("header").outerHeight();
+  var footerHeight = $("footer").outerHeight();
+  var docHeight = $(window).height();
+  // Column heights should equal the document height minus the header height and footer height
+  $(".spacewalk-main-column-layout").height(docHeight - headerHeight - footerHeight);
+  var contentHeight = $(".spacewalk-main-column-layout").height();
+  $(".spacewalk-main-column-layout aside").outerHeight('100%');
+  $(".spacewalk-main-column-layout section").outerHeight('100%');
 };
 
 
