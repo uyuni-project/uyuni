@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services.impl;
 
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -764,8 +765,13 @@ public class SaltService {
     public Optional<Long> getUptimeForMinion(MinionServer minion) {
         Optional<Long> uptime = Optional.empty();
         try {
-            uptime = callSync(Status.uptime(), minion.getMinionId())
-                    .map(Float::longValue);
+            uptime = callSync(
+                    new LocalCall<>("status.uptime",
+                            Optional.empty(),
+                            Optional.empty(),
+                            new TypeToken<Map<String, Object>>() { }),
+                    minion.getMinionId())
+                    .map(uptimeDict -> ((Double) uptimeDict.get("seconds")).longValue());
 
             if (!uptime.isPresent()) {
                 LOG.error("Can't get uptime for " + minion.getMinionId());
