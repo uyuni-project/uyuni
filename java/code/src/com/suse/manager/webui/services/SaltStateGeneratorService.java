@@ -115,7 +115,7 @@ public enum SaltStateGeneratorService {
         pillar.add("org_id", minion.getOrg().getId());
         pillar.add("group_ids", groupIds.toArray(new Long[groupIds.size()]));
         pillar.add("contact_method", minion.getContactMethod().getLabel());
-        pillar.add("master", getChannelHost(minion));
+        pillar.add("mgr_server", getChannelHost(minion));
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
 
         Map<String, Object> chanPillar = new HashMap<>();
