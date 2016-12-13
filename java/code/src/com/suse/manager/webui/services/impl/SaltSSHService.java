@@ -19,7 +19,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
-import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -147,14 +146,13 @@ public class SaltSSHService {
                 );
 
         // Add systems from the database, possible duplicates in roster will be overwritten
-        MinionServerFactory.listMinions().stream()
-                .filter(m -> MinionServerUtils.isSshPushMinion(m))
-                .forEach(m ->
-                        roster.addHost(m.getMinionId(),
+        MinionServerFactory.listSSHMinionIdsAndContactMethods()
+                .forEach((minionId, contactMethod) ->
+                        roster.addHost(minionId,
                                 getSSHUser(),
                                 Optional.empty(),
                                 Optional.of(SSH_PUSH_PORT),
-                                remotePortForwarding(m.getContactMethod().getLabel())));
+                                remotePortForwarding(contactMethod)));
 
         return roster;
     }

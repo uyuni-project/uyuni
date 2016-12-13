@@ -237,6 +237,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </query>
 
+    <query name="MinionServer.listSSHMinionsIdsAndContactMethods">
+        <![CDATA[ select s.minionId, m.label
+           from com.redhat.rhn.domain.server.MinionServer as s
+           inner join s.contactMethod as m
+           where m.label in ('ssh-push', 'ssh-push-tunnel')
+        ]]>
+    </query>
+
     <sql-query name="Server.lookupAdministrators">
         <![CDATA[select {wc.*}
                                                 from WEB_CONTACT wc
