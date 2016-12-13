@@ -38,5 +38,6 @@ And(/^I remove pkg "([^"]*)" on minion$/) do |pkg|
 end
 
 Then(/^I run spacecmd listevents for sle-minion$/) do
+  $server.run("spacecmd -u admin -p admin clear_caches")
   $server.run("spacecmd -u admin -p admin system_listevents #{$minion_fullhostname}")
 end
