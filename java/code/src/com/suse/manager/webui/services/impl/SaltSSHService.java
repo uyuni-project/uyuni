@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Code for calling salt-ssh functions.
@@ -135,21 +134,28 @@ public class SaltSSHService {
      */
     private SaltRoster createAllServersRoster() {
         SaltRoster roster = new SaltRoster();
-        Stream.concat(
-                MinionServerFactory.listMinions().stream()
-                        .filter(minion -> MinionServerUtils.isSshPushMinion(minion))
-                        .map(minion -> minion.getMinionId()),
-                SSHMinionsPendingRegistrationService.getMinions().keySet().stream())
-                .distinct()
-                .forEach(mid -> {
-                    String contactMethod = MinionServerFactory.findByMinionId(mid)
-                            .map(minion -> minion.getContactMethod().getLabel())
-                            .orElseGet(() -> SSHMinionsPendingRegistrationService
-                                    .getMinions().get(mid));
-                    roster.addHost(mid, getSSHUser(), Optional.empty(),
-                        Optional.of(SSH_PUSH_PORT),
-                            remotePortForwarding(contactMethod));
-                });
+
+        // Add temporary systems
+        SSHMinionsPendingRegistrationService.getMinions().keySet().stream()
+                .forEach(mid ->
+                        roster.addHost(mid,
+                                getSSHUser(),
+                                Optional.empty(),
+                                Optional.of(SSH_PUSH_PORT),
+                                remotePortForwarding(SSHMinionsPendingRegistrationService
+                                        .getMinions().get(mid)))
+                );
+
+        // Add systems from the database, possible duplicates in roster will be overwritten
+        MinionServerFactory.listMinions().stream()
+                .filter(m -> MinionServerUtils.isSshPushMinion(m))
+                .forEach(m ->
+                        roster.addHost(m.getMinionId(),
+                                getSSHUser(),
+                                Optional.empty(),
+                                Optional.of(SSH_PUSH_PORT),
+                                remotePortForwarding(m.getContactMethod().getLabel())));
+
         return roster;
     }
 
