@@ -17,10 +17,12 @@ package com.redhat.rhn.domain.server.test;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -68,6 +70,17 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
                 .lookupById(minionServer.getId());
         assertTrue(minion.isPresent());
         assertEquals(minionServer, minion.get());
+    }
+
+    public void testListMinionIdsAndContactMethods() throws Exception  {
+        MinionServer minionServer1 = createTestMinionServer(user);
+        minionServer1.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
+        MinionServer minionServer2 = createTestMinionServer(user);
+        minionServer2.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
+
+        Map<String, String> minions = MinionServerFactory.listSSHMinionIdsAndContactMethods();
+        assertEquals("ssh-push", minions.get(minionServer1.getMinionId()));
+        assertEquals("ssh-push-tunnel", minions.get(minionServer2.getMinionId()));
     }
 
     /**
