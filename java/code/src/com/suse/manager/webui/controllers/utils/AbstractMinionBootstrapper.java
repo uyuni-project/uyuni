@@ -144,7 +144,7 @@ public abstract class AbstractMinionBootstrapper {
      */
     protected Map<String, Object> createPillarData(User user, BootstrapParameters input) {
         Map<String, Object> pillarData = new HashMap<>();
-        pillarData.put("master", ConfigDefaults.get().getCobblerHost());
+        pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("minion_id", input.getHost());
         ActivationKeyManager.getInstance().findAll(user)
                 .stream()
