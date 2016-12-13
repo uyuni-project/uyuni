@@ -2,9 +2,6 @@ require "twopence"
 require "lavanda"
 
 # initialize ssh targets from environment variables.
-# this ip adress comes from slenkins-engine,
-# but run.py can read the ip and pass the ip to env. variable, so we take the ip from there.
-
 raise "Server ip var empty" if  ENV['TESTHOST'].nil?
 raise "client ip var empty" if  ENV['CLIENT'].nil?
 raise "minion ip var empty" if  ENV['MINION'].nil?
