@@ -262,8 +262,8 @@ end
 Then(/^I should see "(.*?)" hostname$/) do |minion|
  if minion == "sle-minion"
     step %(I should see a "#{$minion_fullhostname}" text)
- elsif minion == "rh-minion"
-    step %(I should see a "#{$rh_minion_fullhostname}" text)
+ elsif minion == "ceos-minion"
+    step %(I should see a "#{$ceos_minion_fullhostname}" text)
  else
     raise "no valid name of minion given! "
   end
