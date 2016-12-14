@@ -5,6 +5,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import org.jmock.Expectations;
 
@@ -69,14 +70,20 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
 
     @Override
     protected List<String> bootstrapMods() {
-        return Arrays.asList("certs", "mgr_ssh_identity");
+        return Arrays.asList("certs", "ssh_bootstrap");
+    }
+
+    @Override
+    protected String getDefaultContactMethod() {
+        return ContactMethodUtil.getSSHMinionDefault();
     }
 
     @Override
     protected Map<String, Object> createPillarData() {
         Map<String, Object> pillarData = new HashMap<>();
-        pillarData.put("master", ConfigDefaults.get().getCobblerHost());
+        pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("minion_id", "myhost");
+        pillarData.put("contact_method", ContactMethodUtil.getSSHMinionDefault());
         return pillarData;
     }
 }

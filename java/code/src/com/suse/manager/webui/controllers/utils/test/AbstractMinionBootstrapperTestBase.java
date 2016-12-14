@@ -5,6 +5,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
@@ -55,7 +56,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(true));
         }});
 
-        Map<String, Object> bootstrap = bootstrapper.bootstrap(input, user);
+        Map<String, Object> bootstrap = bootstrapper.bootstrap(input, user, "default");
         assertFalse((Boolean) bootstrap.get("success"));
     }
 
@@ -106,7 +107,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(false));
         }});
 
-        Map<String, Object> bootstrap = bootstrapper.bootstrap(input, user);
+        Map<String, Object> bootstrap = bootstrapper.bootstrap(input, user,
+                getDefaultContactMethod());
         assertFalse((Boolean) bootstrap.get("success"));
     }
 
@@ -140,7 +142,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
 
         JSONBootstrapHosts input = mockStandardInput();
         setEmptyActivationKeys(input);
-        Map<String, Object> bootstrap = bootstrapper.bootstrap(input, user);
+        Map<String, Object> bootstrap = bootstrapper.bootstrap(input, user, getDefaultContactMethod());
         assertTrue((Boolean) bootstrap.get("success"));
     }
 
@@ -157,7 +159,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(of(key.getKey())));
         }});
 
-        assertFalse((Boolean) bootstrapper.bootstrap(input, user).get("success"));
+        assertFalse((Boolean) bootstrapper.bootstrap(input, user, getDefaultContactMethod()).get("success"));
     }
 
     /**
@@ -189,7 +191,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(new Result<>(Xor.right(sshResult))));
         }});
 
-        assertTrue((Boolean) bootstrapper.bootstrap(input, user).get("success"));
+        assertTrue((Boolean) bootstrapper.bootstrap(input, user, getDefaultContactMethod()).get("success"));
     }
 
     protected abstract Map<String, Object> createPillarData();
@@ -223,4 +225,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         }});
         return keyPair;
     }
+
+    protected abstract String getDefaultContactMethod();
+
 }

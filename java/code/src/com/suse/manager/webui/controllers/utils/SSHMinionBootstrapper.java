@@ -17,9 +17,7 @@ package com.suse.manager.webui.controllers.utils;
 
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.impl.SSHMinionsPendingRegistrationService;
@@ -31,7 +29,6 @@ import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -79,24 +76,10 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     }
 
     @Override
-    protected Map<String, Object> createPillarData(User user, BootstrapParameters input) {
-        Map<String, Object> pillar = super.createPillarData(user, input);
-        pillar.put("contact_method",
-            ActivationKeyManager.getInstance().findAll(user)
-                    .stream()
-                    .filter(ak -> input.getActivationKeys().contains(ak.getKey()))
-                    .findFirst()
-                    .map(ak -> ak.getContactMethod())
-                    .map(method -> method.getLabel())
-                    .orElse("ssh-push"));
-        return pillar;
-    }
-
-    @Override
     protected Optional<String> validateContactMethod(ContactMethod desiredContactMethod) {
         boolean isIncompatible = Stream.of(
-                ServerFactory.findContactMethodByLabel("ssh-push"),
-                ServerFactory.findContactMethodByLabel("ssh-push-tunnel")
+                ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH),
+                ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH_TUNNEL)
         ).noneMatch(cm -> cm.getId().equals(desiredContactMethod.getId()));
 
         if (isIncompatible) {
@@ -108,17 +91,14 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     }
 
     @Override
-    protected BootstrapResult bootstrapInternal(BootstrapParameters params, User user) {
-        BootstrapResult result = super.bootstrapInternal(params, user);
+    protected BootstrapResult bootstrapInternal(BootstrapParameters params, User user,
+                                                String defaultContactMethod) {
+        BootstrapResult result = super.bootstrapInternal(params, user,
+                defaultContactMethod);
         LOG.info("salt-ssh system bootstrap success: " + result.isSuccess() +
                 ", proceeding with registration.");
         String minionId = params.getHost();
-        String contactMethod = params.getFirstActivationKey()
-                .map(ActivationKeyFactory::lookupByKey)
-                .map(key -> key.getContactMethod())
-                .map(method -> method.getLabel())
-                .orElse("ssh-push");
-        SSHMinionsPendingRegistrationService.addMinion(minionId, contactMethod);
+        SSHMinionsPendingRegistrationService.addMinion(minionId, result.getContactMethod());
         try {
             if (result.isSuccess()) {
                 getRegisterAction().registerSSHMinion(
