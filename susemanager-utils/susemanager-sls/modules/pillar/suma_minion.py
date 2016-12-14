@@ -49,13 +49,7 @@ def ext_pillar(minion_id, *args):
     '''
 
     log.debug('Getting pillar data for the minion "{0}"'.format(minion_id))
-
     ret = {}
-
-    data_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, 'pillar_{minion_id}.yml'.format(minion_id=minion_id))
-    if not os.path.exists(data_filename):
-        # during onboarding the file do not exist which is ok
-        return ret
 
     # Including SUSE Manager static pillar data
     for static_pillar in MANAGER_STATIC_PILLAR:
@@ -66,10 +60,12 @@ def ext_pillar(minion_id, *args):
             log.error('Error accessing "{0}": {1}'.format(static_pillar_filename, exc))
 
     # Including generated pillar data for this minion
-    try:
-        ret.update(yaml.load(open(data_filename).read()))
-    except Exception as error:
-        log.error('Error accessing "{pillar_file}": {message}'.format(pillar_file=data_filename, message=str(error)))
+    data_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, 'pillar_{minion_id}.yml'.format(minion_id=minion_id))
+    if os.path.exists(data_filename):
+        try:
+            ret.update(yaml.load(open(data_filename).read()))
+        except Exception as error:
+            log.error('Error accessing "{pillar_file}": {message}'.format(pillar_file=data_filename, message=str(error)))
 
     # Including formulas into pillar data
     try:
