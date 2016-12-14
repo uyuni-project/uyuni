@@ -400,13 +400,15 @@ public class SaltUtils {
                 .map(KernelLiveVersionInfo::getKernelLiveVersion).orElse(null));
 
         // Update grains
-        ValueMap grains = new ValueMap(result.getGrains());
-        server.setOsFamily(grains.getValueAsString("os_family"));
-        server.setRunningKernel(grains.getValueAsString("kernelrelease"));
-        server.setOs(grains.getValueAsString("osfullname"));
-        // TODO: set the release as well, but this needs
-        // RegisterMinionEventMessageAction.getOsRelease()
-        // server.setRelease();
+        if (!result.getGrains().isEmpty()) {
+            ValueMap grains = new ValueMap(result.getGrains());
+            server.setOsFamily(grains.getValueAsString("os_family"));
+            server.setRunningKernel(grains.getValueAsString("kernelrelease"));
+            server.setOs(grains.getValueAsString("osfullname"));
+            // TODO: set the release as well, but this needs
+            // RegisterMinionEventMessageAction.getOsRelease()
+            // server.setRelease();
+        }
 
         ServerFactory.save(server);
         if (LOG.isDebugEnabled()) {
