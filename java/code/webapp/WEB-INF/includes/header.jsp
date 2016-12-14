@@ -79,7 +79,7 @@
             <c:set var="rurl" value="${pageContext.request.requestURI}" />
           </c:otherwise>
         </c:choose>
-        <a id="clear-btn" href="/rhn/systems/Overview.do?empty_set=true&amp;return_url=${rhn:urlEncode(rurl)}">
+        <a id="clear-ssm-btn" href="/rhn/systems/Overview.do?empty_set=true&amp;return_url=${rhn:urlEncode(rurl)}">
           <button class="btn btn-danger" type="button">
             <bean:message key="clear"/>
           </button>
