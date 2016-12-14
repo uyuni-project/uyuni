@@ -18,3 +18,5 @@ Feature: Salt is configured and running
 
   Scenario: Add redhat minion via salt-command-line.
     Then i add redhat-minion
+    # give the time to minion to go on onboard page.
+    And I wait for "20" seconds 
