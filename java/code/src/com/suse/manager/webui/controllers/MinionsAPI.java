@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -181,7 +182,7 @@ public class MinionsAPI {
                 response,
                 RegularMinionBootstrapper.getInstance().bootstrap(
                         GSON.fromJson(request.body(), JSONBootstrapHosts.class),
-                        user));
+                        user, ContactMethodUtil.getRegularMinionDefault()));
     }
 
 
@@ -203,7 +204,7 @@ public class MinionsAPI {
                 response,
                 SSHMinionBootstrapper.getInstance().bootstrap(
                         GSON.fromJson(request.body(), JSONBootstrapHosts.class),
-                        user));
+                        user, ContactMethodUtil.getSSHMinionDefault()));
     }
 
 }
