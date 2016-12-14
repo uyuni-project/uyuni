@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
@@ -156,6 +157,7 @@ public abstract class AbstractMinionBootstrapper {
         pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("minion_id", input.getHost());
         pillarData.put("contact_method", contactMethod);
+        pillarData.put("mgr_sudo_user", SaltSSHService.getSSHUser());
         ActivationKeyManager.getInstance().findAll(user)
                 .stream()
                 .filter(ak -> input.getActivationKeys().contains(ak.getKey()))
