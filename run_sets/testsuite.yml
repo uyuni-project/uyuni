@@ -87,11 +87,7 @@
 ## Redhat client related feat. ###
 ## ** salt ***
 
-## BLOCKED : because of bug. this a most elegant way to have a minion.
-# - features/minion_redhat_bootstrap.feature
-
-# HACK remove this
-- features/redhat_addMinion_cmdline.feature
+- features/minion_redhat_bootstrap.feature
 - features/redhat_salt_remote_cmds.feature
 
 # end-tests
