@@ -15,5 +15,5 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait for "100" seconds
+     And I wait for "150" seconds
      Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
