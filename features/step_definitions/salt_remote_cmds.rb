@@ -23,8 +23,8 @@ When(/^I expand the results$/) do
 end
 
 When(/^I expand the results for "(.*)"$/) do |host|
-   if host == "rh-minion"
-     find("div[id='#{$rh_minion_fullhostname}']").click
+   if host == "ceos-minion"
+     find("div[id='#{$ceos_minion_fullhostname}']").click
    else
      find("div[id='#{host}']").click
    end

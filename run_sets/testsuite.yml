@@ -84,11 +84,11 @@
 - features/salt_ssh.feature
 - features/salt_regression.feature
 
-## Redhat client related feat. ###
+## Centos client related feat. ###
 ## ** salt ***
 
-- features/minion_redhat_bootstrap.feature
-- features/redhat_salt_remote_cmds.feature
+- features/minion_centos_bootstrap.feature
+- features/centos_salt_remote_cmds.feature
 
 # end-tests
 - features/spacewalk-errors.feature
