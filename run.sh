@@ -3,7 +3,7 @@
 # PUT YOUR PREFIX here
 PREFIX="dma-"
 
-export RH-MINION="${PREFIX}minredhat.tf.local"
+export CENTOSMINION="${PREFIX}mincentos7.tf.local"
 export MINION="${PREFIX}minsles12sp1.tf.local"
 export TESTHOST=${PREFIX}suma3pg.tf.local
 export CLIENT=${PREFIX}clisles12sp1.tf.local
