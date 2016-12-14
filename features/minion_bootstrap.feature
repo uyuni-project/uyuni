@@ -38,71 +38,6 @@ Feature: register a salt-minion via bootstrap
     And I expand the results
     Then I should see "SuSE-release" in the command output
  
-  Scenario: Check spacecmd system ID of bootstrapped minion.
-    Given I am on the Systems overview page of this minion
-    Then I run spacecmd listevents for sle-minion
- 
-  Scenario: Delete minion system profile
-    Given I am on the Systems overview page of this minion
-    When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I should see a "has been deleted" text
-
-  Scenario: create minion activation key with Channel and package list
-    Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
-    And I follow "Create Key"
-    When I enter "Minion testing" as "description"
-    And I enter "MINION-TEST" as "key"
-    And I enter "20" as "usageLimit"
-    And I select "SLES11-SP3-Updates x86_64 Channel" from "selectedChannel"
-    And I click on "Create Activation Key"
-    And I follow "Packages"
-    And I enter "orion-dummy perseus-dummy" as "packages"
-    And I click on "Update Key"
-    Then I should see a "Activation key Minion testing has been modified" text
-
-  Scenario: bootstrap a sles minion with an activation-key
-     Given I am authorized
-     When I follow "Salt"
-     Then I should see a "Bootstrapping" text
-     And I follow "Bootstrapping"
-     Then I should see a "Bootstrap Minions" text
-     # sle-minion = sles, rh_minion = redhat
-     And  I enter the hostname of "sle-minion" as hostname
-     And I enter "22" as "port"
-     And I enter "root" as "user"
-     And I enter "linux" as "password"
-     And I select "1-MINION-TEST" from "activationKeys"
-     And I click on "Bootstrap"
-     And I wait for "100" seconds
-     Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
-
-  Scenario: verify minion bootstrapped with activation key, packages
-     Given I am authorized
-     When I follow "Salt"
-     Then I should see a "accepted" text
-     # sle-minion = sles, rh_minion = redhat
-     And the salt-master can reach "sle-minion"
-     # the "man" package is part of the channel, and the minion doesn't have this installed
-     And "orion-dummy" is installed on "minion"
-     And "perseus-dummy" is installed on "minion"
-     And I remove pkg "orion-dummy" on minion
-     And I remove pkg "perseus-dummy" on minion
-
-   Scenario: Check spacecmd system ID of second bootstrapped minion(after deletion of first)
-    Given I am on the Systems overview page of this minion
-    Then I run spacecmd listevents for sle-minion
- 
-  Scenario: verify minion bootstrapped with activation key: activation key test
-     Given I am on the Systems overview page of this minion
-     Then I should see a "Activation Key: 	1-MINION-TEST" text
-
-  Scenario: verify minion bootstrapped with activation key: base channel test
-     Given I am on the Systems page
-     Then I should see a "SLES11-SP3-Updates x86_64 Channel" text
-
   Scenario: bootstrap should fail: minion_id already existing
      Given I am authorized
      When I follow "Salt"
@@ -118,7 +53,18 @@ Feature: register a salt-minion via bootstrap
      And I should not see a "GenericSaltError({" text
      And I should see a "A salt key for this host" text
      And I should see a "seems to already exist, please check!" text
-
+  
+  Scenario: Check spacecmd system ID of bootstrapped minion.
+    Given I am on the Systems overview page of this minion
+    Then I run spacecmd listevents for sle-minion
+ 
+  Scenario: Delete minion system profile
+    Given I am on the Systems overview page of this minion
+    When I follow "Delete System"
+    And I should see a "Confirm System Profile Deletion" text
+    And I click on "Delete Profile"
+    Then I should see a "has been deleted" text
+    
   Scenario: Delete minion system profile
     Given I am on the Systems overview page of this minion
     When I follow "Delete System"
@@ -169,19 +115,57 @@ Feature: register a salt-minion via bootstrap
      And I click on "Bootstrap"
      And I wait for "15" seconds
      And I should not see a "dmesg: read kernel buffer failed:" text
-
-  Scenario: bootstrap a sles minion with wrong ssh-credentials
+     
+  Scenario: create minion activation key with Channel and package list
+    Given I am on the Systems page
+    And I follow "Activation Keys" in the left menu
+    And I follow "Create Key"
+    When I enter "Minion testing" as "description"
+    And I enter "MINION-TEST" as "key"
+    And I enter "20" as "usageLimit"
+    And I select "SLES11-SP3-Updates x86_64 Channel" from "selectedChannel"
+    And I click on "Create Activation Key"
+    And I follow "Packages"
+    And I enter "orion-dummy perseus-dummy" as "packages"
+    And I click on "Update Key"
+    Then I should see a "Activation key Minion testing has been modified" text
+     
+  Scenario: bootstrap a sles minion with an activation-key
      Given I am authorized
      When I follow "Salt"
      Then I should see a "Bootstrapping" text
      And I follow "Bootstrapping"
      Then I should see a "Bootstrap Minions" text
-     And I enter the hostname of "sle-minion" as hostname
-     And I enter "11" as "port"
+     # sle-minion = sles, rh_minion = redhat
+     And  I enter the hostname of "sle-minion" as hostname
+     And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
+     And I select "1-MINION-TEST" from "activationKeys"
      And I click on "Bootstrap"
-     And I wait for "30" seconds
-     And I should not see a "GenericSaltError({" text
-     And I should see a "ssh: connect to host" text
-     Then I should see a "port 11: Connection refused" text
+     And I wait for "100" seconds
+     Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
+
+  Scenario: verify minion bootstrapped with activation key, packages
+     Given I am authorized
+     When I follow "Salt"
+     Then I should see a "accepted" text
+     # sle-minion = sles, rh_minion = redhat
+     And the salt-master can reach "sle-minion"
+     # the "man" package is part of the channel, and the minion doesn't have this installed
+     And "orion-dummy" is installed on "minion"
+     And "perseus-dummy" is installed on "minion"
+     And I remove pkg "orion-dummy" on minion
+     And I remove pkg "perseus-dummy" on minion
+
+   Scenario: Check spacecmd system ID of second bootstrapped minion(after deletion of first)
+    Given I am on the Systems overview page of this minion
+    Then I run spacecmd listevents for sle-minion
+ 
+  Scenario: verify minion bootstrapped with activation key: activation key test
+     Given I am on the Systems overview page of this minion
+     Then I should see a "Activation Key: 	1-MINION-TEST" text
+
+  Scenario: verify minion bootstrapped with activation key: base channel test
+     Given I am on the Systems page
+     Then I should see a "SLES11-SP3-Updates x86_64 Channel" text
