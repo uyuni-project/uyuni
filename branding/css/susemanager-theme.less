@@ -7,13 +7,11 @@ body {
 html, body {
   height: auto;
 }
-header, nav.navbar.navbar-default.navbar-pf {
-  width: 100%;
+header {
+  width: auto;
   border: none;
   border-radius: 0;
   margin-bottom: 0;
-}
-header {
   background: @susemanager-green;
   background: -moz-linear-gradient(-45deg,  @susemanager-green 0%, @suse-green-dark 100%);
   background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,@susemanager-green), color-stop(100%,@suse-green-dark));
@@ -35,14 +33,16 @@ header {
 }
 
 footer {
-  padding: 1.2em 0;
   background: @spacewalk-footer;
+  padding: 0;
   color: @spacewalk-footer-text;
   font-weight: normal;
   font-size: 0.9em;
-  height: 80px;
+  height: auto;
+  min-height: auto;
   clear: both;
   position: relative;
+  text-align: center;
 
   .make-row(0);
 
@@ -53,13 +53,33 @@ footer {
   a:hover {
     color: @spacewalk-footer-hover;
   }
+  /* override spacewalk rules */
+  div:nth-child(1),
+  div:nth-child(2) {
+    float: none;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    min-height: auto;
+    .text-center;
+  }
 
+  div.wrapper {
+    background: url('/img/susemanager/logo-footer-small.png') no-repeat right center;
+    min-height: 28px;
+    margin: 0 15px;
+    div:first-of-type {
+      padding-top: 3px;
+    }
+    div:last-of-type {
+      padding-bottom: 3px;
+    }
+  }
 }
 
 .bottom-line {
-  height: 16px;
+  height: 8px;
   width: 100%;
-  position: absolute;
   background: @susemanager-green;
   background: -moz-linear-gradient(-45deg,  @susemanager-green 0%, @suse-green-dark 100%);
   background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,@susemanager-green), color-stop(100%,@suse-green-dark));
@@ -68,7 +88,6 @@ footer {
   background: -ms-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
   background: linear-gradient(135deg,  @susemanager-green 0%,@suse-green-dark 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#268a90', endColorstr='#3f9988',GradientType=1 );
-  bottom: 0
 }
 
 /* titles */
@@ -148,15 +167,6 @@ section {
     padding-top: 1em;
     padding-bottom: 2em;
   }
-}
-
-/* fixing the footer to the bottom */
-.spacewalk-top-wrap {
-  overflow: hidden;
-  margin-bottom: -80px;
-  padding-bottom: 80px;
-  height: auto !important;
-  min-height: 100%;
 }
 
 header, nav.navbar-pf {
