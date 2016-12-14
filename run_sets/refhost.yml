@@ -20,3 +20,17 @@
 - features/check_VHM.feature
 - features/setup_wizard.feature
 - features/add_proxy_channels.feature
+
+#### Salt related features   ###
+- features/minion_bootstrap.feature
+- features/salt.feature
+- features/salt_minions_page.feature
+- features/salt_minion_details.feature
+- features/salt_ssh.feature
+- features/salt_regression.feature
+
+## Centos client related feat. ###
+## ** salt ***
+
+- features/minion_centos_bootstrap.feature
+- features/centos_salt_remote_cmds.feature
