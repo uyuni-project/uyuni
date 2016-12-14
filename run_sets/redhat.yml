@@ -2,22 +2,30 @@
 # it could be that this test are integrated in testsuite.yml
 
 #### Redhat Salt related features   ###
-# - features/minion_bootstrap.feature
 
 # this is equivalent to minion_bootstrap
-- features/minion_redhat_bootstrap.feature
+# BLOCKED because of bug
+# - features/minion_redhat_bootstrap.feature
 
 
-#- features/salt.feature
+- features/redhat_addMinion_cmdline.feature
+# Quite equiv to - features/salt.feature ^^
+
+- features/redhat_salt_remote_cmds.feature
+#-equiv. to  features/salt_remote_cmds.feature ^^
+
+
 #- features/salt_minions_page.feature
 #- features/salt_minion_details.feature
 #- features/salt_download_endpoint.feature
 #- features/salt_software_states.feature
 #- features/salt_pkgset_beacon.feature
-#- features/salt_remote_cmds.feature
 #- features/salt_install_package.feature
 #- features/salt_states_catalog.feature
 #- features/salt_ssh.feature
+
+# COVERED: 
+# this is a generic server-side feature
 #- features/salt_regression.feature
 
 
