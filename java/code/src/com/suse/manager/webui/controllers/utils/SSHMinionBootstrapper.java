@@ -72,14 +72,14 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     protected List<String> getBootstrapMods() {
         return Arrays.asList(
                 ApplyStatesEventMessage.CERTIFICATE,
-                "mgr_ssh_identity");
+                "ssh_bootstrap");
     }
 
     @Override
     protected Optional<String> validateContactMethod(ContactMethod desiredContactMethod) {
         boolean isIncompatible = Stream.of(
-                ServerFactory.findContactMethodByLabel("ssh-push"),
-                ServerFactory.findContactMethodByLabel("ssh-push-tunnel")
+                ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH),
+                ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH_TUNNEL)
         ).noneMatch(cm -> cm.getId().equals(desiredContactMethod.getId()));
 
         if (isIncompatible) {
@@ -91,12 +91,14 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     }
 
     @Override
-    protected BootstrapResult bootstrapInternal(BootstrapParameters params, User user) {
-        BootstrapResult result = super.bootstrapInternal(params, user);
+    protected BootstrapResult bootstrapInternal(BootstrapParameters params, User user,
+                                                String defaultContactMethod) {
+        BootstrapResult result = super.bootstrapInternal(params, user,
+                defaultContactMethod);
         LOG.info("salt-ssh system bootstrap success: " + result.isSuccess() +
                 ", proceeding with registration.");
         String minionId = params.getHost();
-        SSHMinionsPendingRegistrationService.addMinion(minionId);
+        SSHMinionsPendingRegistrationService.addMinion(minionId, result.getContactMethod());
         try {
             if (result.isSuccess()) {
                 getRegisterAction().registerSSHMinion(

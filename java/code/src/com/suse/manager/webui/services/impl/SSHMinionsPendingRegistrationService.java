@@ -16,8 +16,9 @@
 package com.suse.manager.webui.services.impl;
 
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * POC
@@ -26,7 +27,7 @@ import java.util.Set;
  */
 public class SSHMinionsPendingRegistrationService {
 
-    private static Set<String> minionIds = new HashSet<>();
+    private static Map<String, String> minionIds = new ConcurrentHashMap<>();
 
     /**
      * Prevent instantiation.
@@ -37,9 +38,10 @@ public class SSHMinionsPendingRegistrationService {
     /**
      * Adds minion id to the database.
      * @param minionId minion id to be added
+     * @param contactMethod the contact method of the minion
      */
-    public static void addMinion(String minionId) {
-        minionIds.add(minionId);
+    public static void addMinion(String minionId, String contactMethod) {
+        minionIds.put(minionId, contactMethod);
     }
 
     /**
@@ -56,14 +58,23 @@ public class SSHMinionsPendingRegistrationService {
      * @return true if the minion is in the database, false otherwise.
      */
     public static boolean containsMinion(String minionId) {
-        return minionIds.contains(minionId);
+        return minionIds.containsKey(minionId);
     }
 
     /**
      * Get all minion ids in the database.
      * @return all minion ids
      */
-    public static Set<String> getMinions() {
-        return Collections.unmodifiableSet(minionIds);
+    public static Map<String, String> getMinions() {
+        return Collections.unmodifiableMap(minionIds);
     }
+
+    /**
+     * @param minionId the minion id
+     * @return contact method of the given minion
+     */
+    public static Optional<String> getContactMethod(String minionId) {
+        return Optional.ofNullable(minionIds.get(minionId));
+    }
+
 }

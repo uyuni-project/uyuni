@@ -114,7 +114,8 @@ public enum SaltStateGeneratorService {
         SaltPillar pillar = new SaltPillar();
         pillar.add("org_id", minion.getOrg().getId());
         pillar.add("group_ids", groupIds.toArray(new Long[groupIds.size()]));
-
+        pillar.add("contact_method", minion.getContactMethod().getLabel());
+        pillar.add("mgr_server", getChannelHost(minion));
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
 
         Map<String, Object> chanPillar = new HashMap<>();
@@ -130,6 +131,9 @@ public enum SaltStateGeneratorService {
                 chanProps.put("enabled", "1");
                 chanProps.put("autorefresh", "1");
                 chanProps.put("host", getChannelHost(minion));
+                if ("ssh-push-tunnel".equals(minion.getContactMethod().getLabel())) {
+                    chanProps.put("port", Config.get().getInt("ssh_push_port_https"));
+                }
                 chanProps.put("token", token);
                 chanProps.put("type", "rpm-md");
                 chanProps.put("gpgcheck", "0");

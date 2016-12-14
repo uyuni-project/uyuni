@@ -72,8 +72,9 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
     }
 
     @Override
-    protected Map<String, Object> createPillarData(User user, BootstrapParameters input) {
-        Map<String, Object> pillarData = super.createPillarData(user, input);
+    protected Map<String, Object> createPillarData(User user, BootstrapParameters input,
+                                                   String contactMethod) {
+        Map<String, Object> pillarData = super.createPillarData(user, input, contactMethod);
 
         Key.Pair keyPair = saltService.generateKeysAndAccept(input.getHost(), false);
         if (keyPair.getPub().isPresent() && keyPair.getPriv().isPresent()) {
@@ -95,8 +96,9 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
     }
 
     @Override
-    protected BootstrapResult bootstrapInternal(BootstrapParameters input, User user) {
-        BootstrapResult result = super.bootstrapInternal(input, user);
+    protected BootstrapResult bootstrapInternal(BootstrapParameters input, User user,
+                                                String defaultContactMethod) {
+        BootstrapResult result = super.bootstrapInternal(input, user, defaultContactMethod);
         if (!result.isSuccess()) {
             saltService.deleteKey(input.getHost());
         }

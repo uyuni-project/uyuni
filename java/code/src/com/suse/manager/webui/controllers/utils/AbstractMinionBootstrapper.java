@@ -61,15 +61,19 @@ public abstract class AbstractMinionBootstrapper {
      * Bootstrap a regular salt minion system (as in master-minion).
      * @param input data about the bootstrapped system
      * @param user user performing the procedure
+     * @param defaultContactMethod contact method to use in case the activation
+     *                             key does not specify any other
      * @return map containing success flag and error messages.
      */
-    public Map<String, Object> bootstrap(JSONBootstrapHosts input, User user) {
+    public Map<String, Object> bootstrap(JSONBootstrapHosts input, User user,
+                                         String defaultContactMethod) {
         BootstrapResult validation = validateBootstrap(input);
         if (!validation.isSuccess()) {
             return validation.asMap();
         }
 
-        return bootstrapInternal(createBootstrapParams(input), user).asMap();
+        return bootstrapInternal(createBootstrapParams(input), user, defaultContactMethod)
+                .asMap();
     }
 
     /**
@@ -90,9 +94,12 @@ public abstract class AbstractMinionBootstrapper {
      * @return object that indicates success/failure of the bootstrap and bears with
      * messages from the bootstrap procedure.
      */
-    protected BootstrapResult bootstrapInternal(BootstrapParameters params, User user) {
+    protected BootstrapResult bootstrapInternal(BootstrapParameters params, User user,
+                                                String defaultContactMethod) {
         List<String> bootstrapMods = getBootstrapMods();
-        Map<String, Object> pillarData = createPillarData(user, params);
+        String contactMethod = ContactMethodUtil.getContactMethod(
+                params.getFirstActivationKey(), defaultContactMethod);
+        Map<String, Object> pillarData = createPillarData(user, params, contactMethod);
         try {
             return saltService.bootstrapMinion(params, bootstrapMods, pillarData)
                     .fold(error -> {
@@ -102,7 +109,7 @@ public abstract class AbstractMinionBootstrapper {
                         String responseMessage = outMessage.isEmpty() ?
                                 error.toString() : outMessage;
                         LOG.error("Error during bootstrap: " + responseMessage);
-                        return new BootstrapResult(false, responseMessage);
+                        return new BootstrapResult(false, contactMethod, responseMessage);
                     },
                     result -> {
                         // We have results, check if result = true
@@ -112,7 +119,8 @@ public abstract class AbstractMinionBootstrapper {
                         // Clean up the generated key pair in case of failure
                         boolean success = !errMessage.isPresent() &&
                                 result.getRetcode() == 0;
-                        return new BootstrapResult(success, errMessage.orElse(null));
+                        return new BootstrapResult(success, contactMethod,
+                                errMessage.orElse(null));
                     }
             );
         }
@@ -142,10 +150,12 @@ public abstract class AbstractMinionBootstrapper {
      * @param input the bootstrap parameters
      * @return pillar data
      */
-    protected Map<String, Object> createPillarData(User user, BootstrapParameters input) {
+    protected Map<String, Object> createPillarData(User user, BootstrapParameters input,
+                                                   String contactMethod) {
         Map<String, Object> pillarData = new HashMap<>();
-        pillarData.put("master", ConfigDefaults.get().getCobblerHost());
+        pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("minion_id", input.getHost());
+        pillarData.put("contact_method", contactMethod);
         ActivationKeyManager.getInstance().findAll(user)
                 .stream()
                 .filter(ak -> input.getActivationKeys().contains(ak.getKey()))
@@ -185,13 +195,14 @@ public abstract class AbstractMinionBootstrapper {
     private BootstrapResult validateBootstrap(JSONBootstrapHosts input) {
         List<String> errors = validateJsonInput(input);
         if (!errors.isEmpty()) {
-            return new BootstrapResult(false, errors.toArray(new String[errors.size()]));
+            return new BootstrapResult(false, null,
+                    errors.toArray(new String[errors.size()]));
         }
 
         Optional<String> activationKeyErrorMessage = input.getFirstActivationKey()
                 .flatMap(this::validateActivationKey);
         if (activationKeyErrorMessage.isPresent()) {
-            return new BootstrapResult(false, activationKeyErrorMessage.get());
+            return new BootstrapResult(false, null, activationKeyErrorMessage.get());
         }
 
         if (saltService.keyExists(input.getHost())) {
@@ -205,7 +216,7 @@ public abstract class AbstractMinionBootstrapper {
                         m.getName() + "' with minion id " + input.getHost() +
                         " seems to already exist,  please check!"))
                 .orElseGet(
-                        () -> new BootstrapResult(true)
+                        () -> new BootstrapResult(true, null)
                 );
     }
 
@@ -258,14 +269,21 @@ public abstract class AbstractMinionBootstrapper {
 
         private final boolean success;
         private final String[] messages;
+        private final String contactMethod;
 
-        public BootstrapResult(boolean successIn, String ... messagesIn) {
+        public BootstrapResult(boolean successIn, String contactMethodIn,
+                               String ... messagesIn) {
             this.success = successIn;
             this.messages = messagesIn;
+            this.contactMethod = contactMethodIn;
         }
 
         public boolean isSuccess() {
             return success;
+        }
+
+        public String getContactMethod() {
+            return contactMethod;
         }
 
         public Map<String, Object> asMap() {

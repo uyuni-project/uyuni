@@ -18,7 +18,7 @@ import com.redhat.rhn.common.CommonConstants;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.suse.manager.webui.utils.MinionServerUtils;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Code for calling salt-ssh functions.
@@ -92,9 +91,16 @@ public class SaltSSHService {
         SaltRoster roster = new SaltRoster();
         // these values are mostly fixed, which should change when we allow configuring
         // per-minionserver
-        target.getTarget().stream().forEach(mid ->
+        target.getTarget().stream()
+                .forEach(mid ->
                 roster.addHost(mid, getSSHUser(), Optional.empty(),
-                        Optional.of(SSH_PUSH_PORT)));
+                        Optional.of(SSH_PUSH_PORT),
+                        SSHMinionsPendingRegistrationService.getContactMethod(mid)
+                                .map(method -> remotePortForwarding(method))
+                                .orElseGet(() -> MinionServerFactory.findByMinionId(mid).
+                                    flatMap(minion -> remotePortForwarding(
+                                            minion.getContactMethod().getLabel())))
+                ));
 
         return unwrapSSHReturn(
                 callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser())));
@@ -127,14 +133,27 @@ public class SaltSSHService {
      */
     private SaltRoster createAllServersRoster() {
         SaltRoster roster = new SaltRoster();
-        Stream.concat(
-                MinionServerFactory.listMinions().stream()
-                        .filter(minion -> MinionServerUtils.isSshPushMinion(minion))
-                        .map(minion -> minion.getMinionId()),
-                SSHMinionsPendingRegistrationService.getMinions().stream())
-                .distinct()
-                .forEach(mid -> roster.addHost(mid, getSSHUser(), Optional.empty(),
-                        Optional.of(SSH_PUSH_PORT)));
+
+        // Add temporary systems
+        SSHMinionsPendingRegistrationService.getMinions().keySet().stream()
+                .forEach(mid ->
+                        roster.addHost(mid,
+                                getSSHUser(),
+                                Optional.empty(),
+                                Optional.of(SSH_PUSH_PORT),
+                                remotePortForwarding(SSHMinionsPendingRegistrationService
+                                        .getMinions().get(mid)))
+                );
+
+        // Add systems from the database, possible duplicates in roster will be overwritten
+        MinionServerFactory.listSSHMinionIdsAndContactMethods()
+                .forEach((minionId, contactMethod) ->
+                        roster.addHost(minionId,
+                                getSSHUser(),
+                                Optional.empty(),
+                                Optional.of(SSH_PUSH_PORT),
+                                remotePortForwarding(contactMethod)));
+
         return roster;
     }
 
@@ -162,9 +181,15 @@ public class SaltSSHService {
                 Optional.of(pillarData),
                 Optional.of(true));
 
+        Optional<String> portForwarding = parameters.getFirstActivationKey()
+                .map(ActivationKeyFactory::lookupByKey)
+                .map(key -> key.getContactMethod().getLabel())
+                .flatMap(this::remotePortForwarding);
+
         SaltRoster roster = new SaltRoster();
         roster.addHost(parameters.getHost(), parameters.getUser(), parameters.getPassword(),
-                parameters.getPort());
+                parameters.getPort(),
+                portForwarding);
 
         Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> result =
                 callSyncSSHInternal(call,
@@ -173,6 +198,16 @@ public class SaltSSHService {
                         parameters.isIgnoreHostKeys(),
                         isSudoUser(parameters.getUser()));
         return result.get(parameters.getHost());
+    }
+
+    private Optional<String> remotePortForwarding(String sshContactMethod) {
+        if ("ssh-push-tunnel".equals(sshContactMethod)) {
+            return Optional.of(Config.get().getInt("ssh_push_port_https") + ":" +
+                    // TODO for proxy support use SaltStateGeneratorService.getChannelHost()
+                    // to get the the host
+                    ConfigDefaults.get().getCobblerHost() + ":443");
+        }
+        return Optional.empty();
     }
 
     private boolean isSudoUser(String user) {

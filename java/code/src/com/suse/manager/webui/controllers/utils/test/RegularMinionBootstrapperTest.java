@@ -5,6 +5,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
@@ -62,7 +63,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
             exactly(1).of(saltServiceMock).deleteKey("myhost");
         }});
 
-        Map<String, Object> bootstrap = bootstrapper.bootstrap(input, user);
+        Map<String, Object> bootstrap = bootstrapper.bootstrap(input, user, getDefaultContactMethod());
         assertFalse((Boolean) bootstrap.get("success"));
     }
 
@@ -90,9 +91,15 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
     }
 
     @Override
+    protected String getDefaultContactMethod() {
+        return ContactMethodUtil.getRegularMinionDefault();
+    }
+
+    @Override
     protected Map<String, Object> createPillarData() {
         Map<String, Object> pillarData = new HashMap<>();
-        pillarData.put("master", ConfigDefaults.get().getCobblerHost());
+        pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
+        pillarData.put("contact_method", ContactMethodUtil.DEFAULT);
         pillarData.put("minion_id", "myhost");
         pillarData.put("minion_pub", "pubKey");
         pillarData.put("minion_pem", "privKey");
