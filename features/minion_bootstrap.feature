@@ -65,13 +65,6 @@ Feature: register a salt-minion via bootstrap
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
     
-  Scenario: Delete minion system profile
-    Given I am on the Systems overview page of this minion
-    When I follow "Delete System"
-    And I should see a "Confirm System Profile Deletion" text
-    And I click on "Delete Profile"
-    Then I should see a "has been deleted" text
- # https://github.com/SUSE/spacewalk/pull/831
   Scenario: bootstrap a sles minion with wrong hostname
      Given I am authorized
      When I follow "Salt"
