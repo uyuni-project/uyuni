@@ -15,7 +15,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait for "100" seconds
+     And I wait for "180" seconds
      Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
   # testing command line
   Scenario: check new bootstrapped minion in System Overview page
@@ -49,7 +49,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait for "5" seconds
+     And I wait for "15" seconds
      And I should not see a "GenericSaltError({" text
      And I should see a "A salt key for this host" text
      And I should see a "seems to already exist, please check!" text
