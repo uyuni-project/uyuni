@@ -41,12 +41,15 @@ salt-minion-package:
       - salt://bootstrap/susemanager.conf
     - template: jinja
     - mode: 644
+    - require:
+      - pkg: salt-minion-package
 
 /etc/salt/minion_id:
   file.managed:
     - contents_pillar: minion_id
     - require:
       - pkg: salt-minion-package
+
 # Make sure no SUSE Manager server aliasing left over from ssh-push via tunnel
 mgr_server_localhost_alias_absent:
   host.absent:
@@ -54,17 +57,22 @@ mgr_server_localhost_alias_absent:
       - 127.0.0.1
     - names:
       - {{ salt['pillar.get']('mgr_server') }}
+
 # Manage minion key files in case they are provided in the pillar
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
 /etc/salt/pki/minion/minion.pub:
   file.managed:
     - contents_pillar: minion_pub
     - mode: 644
+    - require:
+      - pkg: salt-minion-package
 
 /etc/salt/pki/minion/minion.pem:
   file.managed:
     - contents_pillar: minion_pem
     - mode: 400
+    - require:
+      - pkg: salt-minion-package
 
 salt-minion:
   service.running:
