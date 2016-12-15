@@ -31,8 +31,13 @@ $(document).ready(function() {
 
   // open the active menu after page loaded
   $.setMenu = function() {
-    $('nav li.active').each(function() {
-      $.openNav($(this));
+    $('nav li').each(function() {
+      if ($(this).hasClass('active')) {
+        $.openNav($(this));
+      }
+      else {
+        $.closeNav($(this));
+      }
     });
   }
 
