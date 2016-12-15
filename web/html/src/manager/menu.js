@@ -41,15 +41,6 @@ $(document).ready(function() {
     });
   }
 
-  // focus go away from the nav menu --> close all submenus
-  $(document).click(function (e) {
-    var target = $(e.target);
-    if (!target.closest("#nav").length) {
-      $('nav ul ul, nav ul li').removeClass('open');
-      $('nav ul ul').slideUp(250);
-    }
-  });
-
   "use strict";
 
   const React = require("react");
