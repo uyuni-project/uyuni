@@ -42,3 +42,10 @@ Feature: Bootstrap a new salt host via salt-ssh
     And I expand the results
     Then I should see "SuSE-release" in the command output
 
+  Scenario: Delete the salt-ssh minion system profile
+    Given I am on the Systems overview page of this minion
+    When I follow "Delete System"
+    And I should see a "Confirm System Profile Deletion" text
+    And I click on "Delete Profile"
+    Then I should see a "has been deleted" text
+    
