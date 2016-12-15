@@ -79,11 +79,14 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
     }
 
     @Override
-    protected Map<String, Object> createPillarData() {
+    protected Map<String, Object> createPillarData(Optional<ActivationKey> key) {
         Map<String, Object> pillarData = new HashMap<>();
         pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
         pillarData.put("minion_id", "myhost");
-        pillarData.put("contact_method", ContactMethodUtil.getSSHMinionDefault());
+        pillarData.put("contact_method", key
+                .map(k -> k.getContactMethod().getLabel())
+                .orElse(getDefaultContactMethod()));
+        pillarData.put("mgr_sudo_user", "root");
         return pillarData;
     }
 }
