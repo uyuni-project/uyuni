@@ -170,7 +170,7 @@ public class ServerFactory extends HibernateFactory {
         if (!nameIsFullyQualified) {
             log.warn("Specified master name \"" + name + "\" is not fully-qualified," +
                     "proxy attachment might not be correct");
-            log.warn("Please use a FQDN in /etc/salt/minion.d/master.conf");
+            log.warn("Please use a FQDN in /etc/salt/minion.d/susemanager.conf");
         }
 
         DetachedCriteria matchingNameServerIds = DetachedCriteria.forClass(Network.class)
