@@ -80,7 +80,7 @@
 # - features/salt_action_pickedup.feature NEED FIX, for moment Unstable
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
-- features/salt_ssh.feature
+ # - features/salt_ssh.feature  Disabled for better debugging. 
 - features/salt_regression.feature
 - features/minion_bootstrap.feature
 
