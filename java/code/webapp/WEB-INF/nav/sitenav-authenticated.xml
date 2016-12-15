@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rhn-navi-tree xmlns:xi="http://www.w3.org/2001/XInclude" label="sitenav" title-depth="0">
-  <rhn-tab name="Overview" url="/rhn/YourRhn.do" active-image="tab-your_rhn-selected.gif"
-      inactive-image="tab-your_rhn.gif">
+  <rhn-tab name="Overview" url="#" active-image="tab-your_rhn-selected.gif" inactive-image="tab-your_rhn.gif">
     <rhn-tab name="Overview" url="/rhn/YourRhn.do" />
-    <rhn-tab name="Your Account" url="/rhn/account/UserDetails.do" >
+    <rhn-tab name="User Account" url="#">
+      <rhn-tab name="Your Account" url="/rhn/account/UserDetails.do" />
       <rhn-tab name="Addresses">
         <rhn-tab-url>/rhn/account/Addresses.do</rhn-tab-url>
         <rhn-tab-url>/rhn/account/EditAddress.do</rhn-tab-url>
@@ -17,7 +17,7 @@
     </rhn-tab>
     <rhn-tab name="Your Preferences" url="/rhn/account/UserPreferences.do" />
     <rhn-tab name="Locale Preferences" url="/rhn/account/LocalePreferences.do" />
-    <rhn-tab name="Your Organization" url="/rhn/multiorg/OrgConfigDetails.do" acl="user_role(org_admin)">
+    <rhn-tab name="Your Organization" url="#" acl="user_role(org_admin)">
       <rhn-tab name="Configuration" url="/rhn/multiorg/OrgConfigDetails.do" acl="user_role(org_admin)" />
       <rhn-tab name="Organization Trusts" url="/rhn/multiorg/Organizations.do" acl="user_role(org_admin)">
         <rhn-tab-url>/rhn/multiorg/OrgTrustDetails.do</rhn-tab-url>
@@ -27,9 +27,9 @@
       <rhn-tab name="Custom States" url="/rhn/manager/yourorg/custom" acl="user_role(org_admin)" />
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Systems" url="/rhn/systems/Overview.do">
+  <rhn-tab name="Systems" url="#">
     <rhn-tab name="Overview" url="/rhn/systems/Overview.do" />
-    <rhn-tab name="Systems" url="/rhn/systems/SystemList.do">
+    <rhn-tab name="Systems" url="#">
       <rhn-tab-directory>/rhn/systems/details</rhn-tab-directory>
       <rhn-tab name="All" url="/rhn/systems/SystemList.do" />
       <rhn-tab name="Physical Systems" url="/rhn/systems/PhysicalList.do" />
@@ -58,7 +58,8 @@
       <rhn-tab-directory>/rhn/systems/groups</rhn-tab-directory>
       <rhn-tab-url>/rhn/systems/SystemGroupList.do</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="System Set Manager" url="/rhn/ssm/index.do">
+    <rhn-tab name="System Set Manager" url="#">
+      <rhn-tab name="Overview" url="/rhn/ssm/index.do" />
       <rhn-tab-directory>/rhn/systems/ssm</rhn-tab-directory>
       <rhn-tab-directory>/rhn/ssm</rhn-tab-directory>
       <rhn-tab name="ssm.nav.status" url="/rhn/ssm/ViewAllLog.do">
@@ -82,7 +83,8 @@
       <rhn-tab-url>/rhn/systems/customdata/CustomDataList.do</rhn-tab-url>
       <rhn-tab-directory>/rhn/systems/customdata</rhn-tab-directory>
     </rhn-tab>
-    <rhn-tab name="Kickstart" url="/rhn/kickstart/KickstartOverview.do" acl="user_role(config_admin)">
+    <rhn-tab name="Kickstart" url="#" acl="user_role(config_admin)">
+      <rhn-tab name="Overview" url="/rhn/kickstart/KickstartOverview.do" acl="user_role(config_admin)" />
       <rhn-tab name="Profiles" acl="user_role(config_admin)" url="/rhn/kickstart/Kickstarts.do">
         <rhn-tab-url>/rhn/kickstart/Kickstarts.do</rhn-tab-url>
         <rhn-tab-directory>/rhn/kickstart</rhn-tab-directory>
@@ -124,7 +126,7 @@
     <rhn-tab name="State Catalog" url="/rhn/manager/state-catalog" acl="user_role(org_admin)" />
     <rhn-tab name="Formula Catalog" url="/rhn/manager/formula-catalog" acl="user_role(org_admin); salt_formulas_installed()" />
   </rhn-tab>
-  <rhn-tab name="Patches" url="/rhn/errata/RelevantErrata.do" active-image="tab-errata-selected.gif" inactive-image="tab-errata.gif">
+  <rhn-tab name="Patches" url="#" active-image="tab-errata-selected.gif" inactive-image="tab-errata.gif">
     <rhn-tab name="Patches" url="/rhn/errata/RelevantErrata.do">
       <rhn-tab-directory>/rhn/errata</rhn-tab-directory>
       <rhn-tab name="Relevant">
@@ -141,7 +143,7 @@
       </rhn-tab>
     </rhn-tab>
     <rhn-tab name="Advanced Search" url="/rhn/errata/Search.do" />
-    <rhn-tab name="Manage Errata" url="/rhn/errata/manage/PublishedErrata.do" acl="user_role(channel_admin)">
+    <rhn-tab name="Manage Errata" url="#" acl="user_role(channel_admin)">
       <rhn-tab-directory>/rhn/errata/manage</rhn-tab-directory>
       <rhn-tab name="Published" url="/rhn/errata/manage/PublishedErrata.do" acl="user_role(channel_admin)" />
       <rhn-tab name="Unpublished" url="/rhn/errata/manage/UnpublishedErrata.do" acl="user_role(channel_admin)" />
@@ -150,7 +152,7 @@
       <rhn-tab-directory>/rhn/errata/manage/clone</rhn-tab-directory>
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Channels" url="/rhn/software/channels/All.do" active-image="tab-channels-selected.gif" inactive-image="tab-channels.gif">
+  <rhn-tab name="Channels" url="#" active-image="tab-channels-selected.gif" inactive-image="tab-channels.gif">
     <rhn-tab name="Software Channels" url="/rhn/software/channels/All.do">
       <rhn-tab-directory>/rhn/channels</rhn-tab-directory>
       <rhn-tab name="channel.nav.all" url="/rhn/software/channels/All.do" />
@@ -170,6 +172,7 @@
       <rhn-tab-url>/rhn/channels/manage/errata/AddRedHatErrata.do</rhn-tab-url>
       <rhn-tab-url>/rhn/channels/manage/errata/AddCustomErrata.do</rhn-tab-url>
       <rhn-tab-url>/rhn/channels/manage/errata/ConfirmErrataAdd.do</rhn-tab-url>
+      <rhn-tab name="Overview" url="/rhn/channels/manage/Manage.do" />
       <rhn-tab name="Manage Software Packages" acl="user_role(channel_admin)">
         <rhn-tab-directory>/rhn/software/manage/packages</rhn-tab-directory>
         <rhn-tab-url>/rhn/software/manage/packages/PackageList.do</rhn-tab-url>
@@ -190,14 +193,14 @@
     <rhn-tab-directory>/rhn/audit</rhn-tab-directory>
     <rhn-tab name="cveaudit.nav.title" url="/rhn/audit/CVEAudit.do" />
     <rhn-tab name="subscriptionmatching.nav.title" url="/rhn/manager/subscription-matching" acl="user_role(satellite_admin)" />
-    <rhn-tab name="OpenSCAP" url="/rhn/audit/ListXccdf.do">
+    <rhn-tab name="OpenSCAP" url="#">
       <rhn-tab name="All Scans" url="/rhn/audit/ListXccdf.do" />
       <rhn-tab name="XCCDF Diff" url="/rhn/audit/scap/Diff.do">
         <rhn-tab-url>/rhn/audit/scap/DiffSubmit.do</rhn-tab-url>
       </rhn-tab>
       <rhn-tab name="Advanced Search" url="/rhn/audit/scap/Search.do" />
     </rhn-tab>
-    <rhn-tab name="audit.nav.logreview" url="/rhn/audit/Overview.do" acl="not is_satellite()">
+    <rhn-tab name="audit.nav.logreview" url="#" acl="not is_satellite()">
       <rhn-tab name="Overview" url="/rhn/audit/Overview.do" />
       <rhn-tab name="Reviews" url="/rhn/audit/Machine.do" />
       <rhn-tab name="Search" url="/rhn/audit/Search.do" />
@@ -207,12 +210,12 @@
     <rhn-tab-directory>/rhn/configuration</rhn-tab-directory>
     <rhn-tab name="common.nav.overview" url="/rhn/configuration/Overview.do" acl="user_role(config_admin)" />
     <rhn-tab name="config.nav.channels" url="/rhn/configuration/GlobalConfigChannelList.do" acl="user_role(config_admin)" />
-    <rhn-tab name="config.nav.files" url="/rhn/configuration/file/GlobalConfigFileList.do" acl="user_role(config_admin)" >
+    <rhn-tab name="config.nav.files" url="#" acl="user_role(config_admin)" >
       <rhn-tab-directory>/rhn/configuration/file</rhn-tab-directory>
       <rhn-tab name="config.nav.globalfiles" url="/rhn/configuration/file/GlobalConfigFileList.do" acl="user_role(config_admin)" />
       <rhn-tab name="config.nav.localfiles" url="/rhn/configuration/file/LocalConfigFileList.do" acl="user_role(config_admin)" />
     </rhn-tab>
-    <rhn-tab name="common.nav.systems" url="/rhn/configuration/system/ManagedSystems.do">
+    <rhn-tab name="common.nav.systems" url="#">
       <rhn-tab-directory>/rhn/configuration/system</rhn-tab-directory>
       <rhn-tab name="config.nav.managed" url="/rhn/configuration/system/ManagedSystems.do" />
       <rhn-tab name="config.nav.target" url="/rhn/configuration/system/TargetSystems.do">
@@ -233,13 +236,14 @@
       <rhn-tab-url>/rhn/schedule/ActionChain.do</rhn-tab-url>
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Users" url="/rhn/users/ActiveList.do" acl="user_role(org_admin)" active-image="tab-users-selected.gif" inactive-image="tab-users.gif">
+  <rhn-tab name="Users" url="#" acl="user_role(org_admin)" active-image="tab-users-selected.gif" inactive-image="tab-users.gif">
     <rhn-tab name="User List" acl="user_role(org_admin)" url="/rhn/users/ActiveList.do">
       <rhn-tab name="users.nav.active" acl="user_role(org_admin)" url="/rhn/users/ActiveList.do" />
       <rhn-tab name="users.nav.disabled" acl="user_role(org_admin)" url="/rhn/users/DisabledList.do" />
       <rhn-tab name="users.nav.all" acl="user_role(org_admin)" url="/rhn/users/UserList.do" />
     </rhn-tab>
-    <rhn-tab name="System Group Configuration" url="/rhn/users/SystemGroupConfig.do" acl="user_role(org_admin)">
+    <rhn-tab name="System Group Configuration" url="#" acl="user_role(org_admin)">
+      <rhn-tab name="Configuration" url="/rhn/users/SystemGroupConfig.do" acl="user_role(org_admin)" />
       <rhn-tab name="External Authentication" acl="user_role(org_admin)">
         <rhn-tab-url>/rhn/users/ExtAuthSgMapping.do</rhn-tab-url>
         <rhn-tab-url>/rhn/users/ExtAuthSgDetails.do</rhn-tab-url>
@@ -274,8 +278,7 @@
       </rhn-tab>
       -->
     </rhn-tab>
-    <rhn-tab name="Spacewalk Configuration" acl="user_role(satellite_admin)" url="/rhn/admin/config/GeneralConfig.do">
-      <rhn-tab-url>/rhn/admin/config/GeneralConfig.do</rhn-tab-url>
+    <rhn-tab name="Spacewalk Configuration" acl="user_role(satellite_admin)" url="#">
       <rhn-tab name="General" acl="user_role(satellite_admin)">
         <rhn-tab-url>/rhn/admin/config/GeneralConfig.do</rhn-tab-url>
       </rhn-tab>
@@ -295,7 +298,7 @@
         <rhn-tab-url>/rhn/admin/config/BootstrapSystems.do</rhn-tab-url>
       </rhn-tab>
     </rhn-tab>
-    <rhn-tab name="ISS Configuration" acl="user_role(satellite_admin)" url="/rhn/admin/iss/Master.do">
+    <rhn-tab name="ISS Configuration" acl="user_role(satellite_admin)" url="#">
       <rhn-tab name="Master Setup" acl="user_role(satellite_admin)">
         <rhn-tab-url>/rhn/admin/iss/Master.do</rhn-tab-url>
       </rhn-tab>
@@ -312,7 +315,8 @@
     <rhn-tab name="Task Engine Status" acl="user_role(satellite_admin)" url="/rhn/admin/TaskStatus.do" />
     <rhn-tab name="Show Tomcat Logs" acl="user_role(satellite_admin)" url="/rhn/admin/Catalina.do" />
   </rhn-tab>
-  <rhn-tab name="Help" url="/rhn/help/index.do" active-image="tab-help-selected.gif" inactive-image="tab-help.gif">
+  <rhn-tab name="Help" url="#" active-image="tab-help-selected.gif" inactive-image="tab-help.gif">
+    <rhn-tab name="Overview" url="/rhn/help/index.do" />
     <rhn-tab-directory>/rhn/help</rhn-tab-directory>
     <rhn-tab name="Getting Started Guide" url="/rhn/help/dispatcher/getting_started_guide">
       <rhn-tab-directory>/rhn/help/getting-started</rhn-tab-directory>
@@ -329,7 +333,7 @@
     <rhn-tab name="Release Notes" url="/rhn/help/dispatcher/release_notes">
       <rhn-tab-directory>/rhn/help/release-notes/manager</rhn-tab-directory>
     </rhn-tab>
-    <rhn-tab name="API" url="/rhn/apidoc/index.jsp">
+    <rhn-tab name="API" url="#">
     <rhn-tab name="Overview" url="/rhn/apidoc/index.jsp">
       <rhn-tab-directory>/rhn/apidoc</rhn-tab-directory>
     </rhn-tab>
