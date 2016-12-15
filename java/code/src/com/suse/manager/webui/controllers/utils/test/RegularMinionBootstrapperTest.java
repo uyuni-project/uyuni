@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Tests for bootstrapping regular minions.
@@ -52,7 +53,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
             will(returnValue(keyPair));
 
             List<String> bootstrapMods = bootstrapMods();
-            Map<String, Object> pillarData = createPillarData();
+            Map<String, Object> pillarData = createPillarData(Optional.empty());
 
             // return failure when calling low-level bootstrap
             allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
@@ -96,13 +97,16 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
     }
 
     @Override
-    protected Map<String, Object> createPillarData() {
+    protected Map<String, Object> createPillarData(Optional<ActivationKey> key) {
         Map<String, Object> pillarData = new HashMap<>();
         pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
-        pillarData.put("contact_method", ContactMethodUtil.DEFAULT);
+        pillarData.put("contact_method", key
+                .map(k -> k.getContactMethod().getLabel())
+                .orElse(getDefaultContactMethod()));
         pillarData.put("minion_id", "myhost");
         pillarData.put("minion_pub", "pubKey");
         pillarData.put("minion_pem", "privKey");
+        pillarData.put("mgr_sudo_user", "root");
         return pillarData;
     }
 
