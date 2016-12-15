@@ -7,7 +7,7 @@ name={{ args['name'] }}
 enabled={{ args['enabled'] }}
 autorefresh={{ args['autorefresh'] }}
 {%- if grains['os_family'] == 'RedHat' %}
-baseurl=https://{{ args['host'] }}/rhn/manager/download/{{ chan }}
+baseurl=https://{{ args['host'] }}:{{ args.get('port', 443)}}/rhn/manager/download/{{ chan }}
 susemanager_token={{ args['token'] }}
 {%- else %}
 baseurl=https://{{ args['host'] }}:{{ args.get('port', 443)}}/rhn/manager/download/{{ chan }}?{{ args['token'] }}
