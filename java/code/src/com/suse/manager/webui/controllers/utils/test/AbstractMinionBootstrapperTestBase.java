@@ -129,7 +129,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(keyPair));
 
             List<String> bootstrapMods = bootstrapMods();
-            Map<String, Object> pillarData = createPillarData();
+            Map<String, Object> pillarData = createPillarData(Optional.empty());
             // return success when calling low-level bootstrap
             allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
                     with(bootstrapMods), with(pillarData));
@@ -184,7 +184,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(keyPair));
 
             List<String> bootstrapMods = bootstrapMods();
-            Map<String, Object> pillarData = createPillarData();
+            Map<String, Object> pillarData = createPillarData(Optional.of(key));
             allowing(saltServiceMock).bootstrapMinion(with(any(BootstrapParameters.class)),
                     with(bootstrapMods), with(pillarData));
             Object sshResult = createSuccessResult();
@@ -194,7 +194,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         assertTrue((Boolean) bootstrapper.bootstrap(input, user, getDefaultContactMethod()).get("success"));
     }
 
-    protected abstract Map<String, Object> createPillarData();
+    protected abstract Map<String, Object> createPillarData(Optional<ActivationKey> key);
 
     protected abstract List<String> bootstrapMods();
 

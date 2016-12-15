@@ -33,6 +33,7 @@ import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -68,9 +69,11 @@ public abstract class AbstractMinionBootstrapper {
      */
     public Map<String, Object> bootstrap(JSONBootstrapHosts input, User user,
                                          String defaultContactMethod) {
-        BootstrapResult validation = validateBootstrap(input);
-        if (!validation.isSuccess()) {
-            return validation.asMap();
+        List<String> errMessages = validateBootstrap(input);
+        if (!errMessages.isEmpty()) {
+            return new BootstrapResult(false, Optional.empty(),
+                    errMessages.toArray(new String[errMessages.size()]))
+                    .asMap();
         }
 
         return bootstrapInternal(createBootstrapParams(input), user, defaultContactMethod)
@@ -110,7 +113,8 @@ public abstract class AbstractMinionBootstrapper {
                         String responseMessage = outMessage.isEmpty() ?
                                 error.toString() : outMessage;
                         LOG.error("Error during bootstrap: " + responseMessage);
-                        return new BootstrapResult(false, contactMethod, responseMessage);
+                        return new BootstrapResult(false, Optional.of(contactMethod),
+                                responseMessage);
                     },
                     result -> {
                         // We have results, check if result = true
@@ -120,13 +124,14 @@ public abstract class AbstractMinionBootstrapper {
                         // Clean up the generated key pair in case of failure
                         boolean success = !errMessage.isPresent() &&
                                 result.getRetcode() == 0;
-                        return new BootstrapResult(success, contactMethod,
+                        return new BootstrapResult(success, Optional.of(contactMethod),
                                 errMessage.orElse(null));
                     }
             );
         }
         catch (SaltException e) {
-            return new BootstrapResult(false, "Error during applying the bootstrap" +
+            return new BootstrapResult(false, Optional.empty(),
+                    "Error during applying the bootstrap" +
                     " state, message: " + e.getMessage());
         }
     }
@@ -194,32 +199,29 @@ public abstract class AbstractMinionBootstrapper {
                         .orElseGet(() -> "No result for " + host));
     }
 
-    private BootstrapResult validateBootstrap(JSONBootstrapHosts input) {
+    private List<String> validateBootstrap(JSONBootstrapHosts input) {
         List<String> errors = validateJsonInput(input);
         if (!errors.isEmpty()) {
-            return new BootstrapResult(false, null,
-                    errors.toArray(new String[errors.size()]));
+            return errors;
         }
 
         Optional<String> activationKeyErrorMessage = input.getFirstActivationKey()
                 .flatMap(this::validateActivationKey);
         if (activationKeyErrorMessage.isPresent()) {
-            return new BootstrapResult(false, null, activationKeyErrorMessage.get());
+            return Collections.singletonList(activationKeyErrorMessage.get());
         }
 
         if (saltService.keyExists(input.getHost())) {
-            return new BootstrapResult(false, "A salt key for this" +
+            return Collections.singletonList("A salt key for this" +
                     " host (" + input.getHost() +
                     ") seems to already exist, please check!");
         }
 
         return MinionServerFactory.findByMinionId(input.getHost())
-                .map(m -> new BootstrapResult(false, "A system '" +
+                .map(m -> Collections.singletonList("A system '" +
                         m.getName() + "' with minion id " + input.getHost() +
                         " seems to already exist,  please check!"))
-                .orElseGet(
-                        () -> new BootstrapResult(true, null)
-                );
+                .orElseGet(Collections::emptyList);
     }
 
     /**
@@ -271,9 +273,9 @@ public abstract class AbstractMinionBootstrapper {
 
         private final boolean success;
         private final String[] messages;
-        private final String contactMethod;
+        private final Optional<String> contactMethod;
 
-        public BootstrapResult(boolean successIn, String contactMethodIn,
+        public BootstrapResult(boolean successIn, Optional<String> contactMethodIn,
                                String ... messagesIn) {
             this.success = successIn;
             this.messages = messagesIn;
@@ -284,7 +286,7 @@ public abstract class AbstractMinionBootstrapper {
             return success;
         }
 
-        public String getContactMethod() {
+        public Optional<String> getContactMethod() {
             return contactMethod;
         }
 
