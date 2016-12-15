@@ -98,9 +98,10 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
         LOG.info("salt-ssh system bootstrap success: " + result.isSuccess() +
                 ", proceeding with registration.");
         String minionId = params.getHost();
-        SSHMinionsPendingRegistrationService.addMinion(minionId, result.getContactMethod());
         try {
             if (result.isSuccess()) {
+                SSHMinionsPendingRegistrationService.addMinion(minionId,
+                        result.getContactMethod().orElse(defaultContactMethod));
                 getRegisterAction().registerSSHMinion(
                         minionId,
                         params.getFirstActivationKey());
