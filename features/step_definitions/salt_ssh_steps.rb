@@ -16,10 +16,6 @@ Given(/^remote minion host is not registered in Spacewalk$/) do
   refute_includes(@rpc.listSystems.map { |s| s['id'] }, ENV['MINION'])
 end
 
-Then(/^I enter remote minion hostname as "(.*?)"$/) do |hostname|
-  step %(I enter "#{ENV['MINION']}" as "#{hostname}")
-end
-
 Then(/^I should see remote minion hostname as link$/) do
   step %(I should see a "#{ENV['MINION']}" link)
 end

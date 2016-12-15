@@ -51,7 +51,7 @@
 - features/nagios.feature
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
-##  - features/powermanagement-test.feature NOT-READy
+##  - features/powermanagement-test.feature NOT-READY
 - features/CVE-ID-new-syntax.feature
 - features/datepicker.feature
 - features/delete_system_profile.feature
@@ -70,7 +70,6 @@
 - features/security.feature
 
 #### Salt related features   ###
-- features/minion_bootstrap.feature
 - features/salt.feature
 - features/salt_minions_page.feature
 - features/salt_minion_details.feature
@@ -79,10 +78,11 @@
 - features/salt_pkgset_beacon.feature
 - features/salt_remote_cmds.feature
 # - features/salt_action_pickedup.feature NEED FIX. Unstable test
+# this feature need another vm/client - features/salt_ssh.feature
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
-- features/salt_ssh.feature
 - features/salt_regression.feature
+- features/minion_bootstrap.feature
 
 ## Centos client related feat. ###
 ## ** salt ***

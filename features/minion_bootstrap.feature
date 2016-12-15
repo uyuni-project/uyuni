@@ -64,7 +64,8 @@ Feature: register a salt-minion via bootstrap
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
-    
+    And I cleanup minion: "sle-minion"
+
   Scenario: bootstrap a sles minion with wrong hostname
      Given I am authorized
      When I follow "Salt"

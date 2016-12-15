@@ -19,13 +19,10 @@ end
 #
 Then(/^I should see a "([^"]*)" text$/) do |arg1|
   unless page.has_content?(debrand_string(arg1))
-    sleep 25
-    print page.body
+    sleep 35
     fail unless page.has_content?(debrand_string(arg1))
   end
 end
-
-
 
 #
 # Test for text in a snippet textarea
