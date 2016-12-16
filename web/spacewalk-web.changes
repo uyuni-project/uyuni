@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Dec 16 12:13:16 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.7.12-1
+- Version 3.0.3
+- Small adjustments on bootstrap page (bsc#1012761)
+- Bootstrapping: ssh push for salt system feature preview
+- Fix plus/minus buttons in action chain list (bsc#1011344)
+- BugFix: message consistency attempting bootstrapping a minion (bsc#1005924)
+- Only show minions with sids available as links (bsc#1007261, bsc#970460)
+
+-------------------------------------------------------------------
 Mon Nov 07 10:53:57 CET 2016 - michele.bologna@suse.com
 
 - version 2.5.7.11-1
