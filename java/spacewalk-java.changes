@@ -1,4 +1,57 @@
 -------------------------------------------------------------------
+Fri Dec 16 16:35:50 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.59.11-1
+- Add support for live patching
+- Initial support for executing actions in taskomatic
+- Hide kernel patches in CVE Audit results when live patching is used
+	(FATE#319519)
+- Show kernel live patching info in 'system details overview' (FATE#319519)
+- Escape act key names in bootstrap UI (bsc#1015967)
+- Add tunneling to salt-ssh support
+- Fix server checks to allow minions to perform a distupgrade (bsc#1013945)
+- Change default sort to ascending for pending actions list
+- Add reboot/restart type icon to relevant patch column in upgradable package
+  lists
+- Add system.getKernelLivePatch API method
+- Update kernel version and other system info during package refresh
+  (bsc#1013551)
+- Fix ISE when sorting system notes list (bsc#979053)
+- Fix checkbox icon align (bsc#966888)
+- fix fromdir for 3rd party server (bsc#998696)
+- Display warning when JavaScript is disabled on all pages (bsc#987579)
+- Rename SSM page titles for consistency (bsc#979623)
+- hide action chain schedule for salt systems also in SSM (bsc#1005008)
+- send ActionScheduled message for all saved actions (bsc#1005008)
+- Fix plus/minus buttons in action chain list (bsc#1011344)
+- Fix misleading message on system reboot schedule in SSM (bsc#1011817)
+- Utilize HostPortValidator to validate bootstrap host (bsc#1011317)
+- Increment 'earliest' date by a millisecond between chain actions (bsc#973226)
+- Use human-parseable dates for server notes (bsc#969564) (#863)
+- Respect order of validation constraints in XSD files (bsc#959573)
+- Remove useless self-link on login page (bsc#963545) (#872)
+- Use different symbols for collapsible sidebar items (bsc#967880) (#870)
+- Fix SSM reboot action success messages (bsc#968935)
+- Allow sorting on avisory name in errata lists (bsc#989703)
+- Update 'view/modify file' action buttons text (bsc#1009102)
+- Handle salt ssh sdterr message (bsc#1005927)
+- scheduleDetail.jsp: clarify button label (bsc#1010664)
+- Bugfix: Prevent salt-master ERROR messages if formulas files are missing
+  (bsc#1009004)
+- Hide RHN disconnection option (bsc#1010049) (#850)
+- Reword general config page text (bsc#1009982)
+- check and fix also the assigned repository while updating the channels
+  (bsc#1007490)
+- match url including query param seperator to have a definitive end of the
+  path component (bsc#1007490)
+- Only show minions with sids available as links (bsc#1007261, bsc#970460)
+- Delete previous Salt key on register event (bsc#1006119)
+- Repository progress: decode another possible log info (bsc#972492)
+- add oes extensions to base products bsc#1008480
+- Create "script.run" capability if it is not found (bsc#1008759)
+- Avoid misleading expected check-in message (bsc#1009006)
+
+-------------------------------------------------------------------
 Mon Nov 07 11:43:42 CET 2016 - michele.bologna@suse.com
 
 - version 2.5.59.10-1
