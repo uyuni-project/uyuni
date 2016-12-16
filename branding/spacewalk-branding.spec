@@ -21,7 +21,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.5.2.12
+Version:    2.5.2.13
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 

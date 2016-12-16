@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Dec 16 12:06:00 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.2.13-1
+- Show kernel live patching info in 'system details overview' (FATE#319519)
+- Bugfix: differentiate writable/non-writable fields (bsc#868132)
+- Fix checkbox icon align (bsc#966888)
+- Use different symbols for collapsible sidebar items (bsc#967880) (#870)
+- Use a brighter background color for legends in asides (bsc#967881)
+- Update copyright year to 2016 (bsc#1010543)
+
+-------------------------------------------------------------------
 Mon Nov 07 11:16:06 CET 2016 - michele.bologna@suse.com
 
 - version 2.5.2.12-1
