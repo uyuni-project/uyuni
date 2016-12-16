@@ -124,7 +124,7 @@ $(document).ready(function() {
       return (
         <nav>
           <div className="nav-search-box">
-            <input type="text" name="nav-search" id="nav-search" value={this.state.search}
+            <input type="text" className="form-control" name="nav-search" id="nav-search" value={this.state.search}
               onChange={this.onSearch} placeholder="menu filter" />
           </div>
           <MenuLevel level={1} elements={this.filterTree(JSONMenu)} imgFolder='black' withImg={this.props.withImg} />
