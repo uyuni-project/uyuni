@@ -87,6 +87,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Dec 13 2016 Tomas Kasparek <tkasparek@redhat.com> 2.7.3-1
+- 1402437 - delete all solaris related records in database
+
 * Fri Nov 25 2016 Tomas Kasparek <tkasparek@redhat.com> 2.7.2-1
 - delete records from rhnArchTypeActions before deleting architecture types
 

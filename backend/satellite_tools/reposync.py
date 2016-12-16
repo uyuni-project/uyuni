@@ -297,6 +297,7 @@ class RepoSync(object):
 
         if not self.urls:
             log2stderr(0, "Channel %s has no URL associated" % channel_label)
+            log2disk(0, "Channel %s has no URL associated" % channel_label)
 
         self.repo_plugin = self.load_plugin(repo_type)
         self.strict = strict
@@ -314,6 +315,10 @@ class RepoSync(object):
 
     def sync(self, update_repodata=False):
         """Trigger a reposync"""
+        if self.urls:
+            ret_code = 0
+        else:
+            ret_code = 1
         start_time = datetime.now()
         for data in self.urls:
             data['source_url'] = self.set_repo_credentials(data)
@@ -426,7 +431,7 @@ class RepoSync(object):
             if self.error_messages:
                 self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
                 sys.exit(1)
-            return elapsed_time
+            return elapsed_time, ret_code
 
     def set_ks_tree_type(self, tree_type='externally-managed'):
         self.ks_tree_type = tree_type
@@ -604,6 +609,7 @@ class RepoSync(object):
         self.regen = True
 
     def import_packages(self, plug, source_id, url):
+        ret_code = 0
         if (not self.filters) and source_id:
             h = rhnSQL.prepare("""
                     select flag, filter
@@ -709,11 +715,20 @@ class RepoSync(object):
                     pack.path = localpath = plug.get_package(pack, metadata_only=self.metadata_only)
                     pack.load_checksum_from_header()
                     pack.upload_package(self.channel, metadata_only=self.metadata_only)
+
+                    # we do not want to keep a whole 'a_pkg' object for every package in memory,
+                    # because we need only checksum. see BZ 1397417
+                    pack.checksum = pack.a_pkg.checksum
+                    pack.checksum_type = pack.a_pkg.checksum_type
+                    pack.epoch = pack.a_pkg.header['epoch']
+                    pack.a_pkg = None
             except KeyboardInterrupt:
                 raise
             except Exception:
+                ret_code = 1
                 e = sys.exc_info()[1]
                 log2stderr(0, e)
+                log2disk(0, e)
                 if self.fail:
                     raise
                 to_process[index] = (pack, False, False)

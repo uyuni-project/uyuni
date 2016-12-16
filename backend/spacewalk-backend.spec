@@ -42,7 +42,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.4
+Version: 2.7.9
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -919,6 +919,26 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Fri Dec 16 2016 Gennadii Altukhov <galt@redhat.com> 2.7.9-1
+- 1405039 - continue syncing if we cannot download some packages
+- close log file handler for yum plugin to avoid file descriptors leak
+
+* Thu Dec 15 2016 Gennadii Altukhov <galt@redhat.com> 2.7.8-1
+- 1404033 - return non-zero return code if channel has no URL associated
+
+* Thu Dec 15 2016 Gennadii Altukhov <galt@redhat.com> 2.7.7-1
+- 1397417 - fix memory leaks in cdn-sync and spacewalk-repo-sync. * remove a
+  circular dependency between YumRepository and ContentSource * optimize memory
+  consumption
+
+* Mon Dec 12 2016 Gennadii Altukhov <galt@redhat.com> 2.7.6-1
+- 1403898 - spacewalk-repo-sync returns non-zero return code if some problems
+  occured
+
+* Mon Dec 12 2016 Gennadii Altukhov <galt@redhat.com> 2.7.5-1
+- 1397427 - add non-zero return code and error message if some problems
+  occurred during syncing
+
 * Wed Nov 30 2016 Jan Dobes 2.7.4-1
 - 1387173 - only user repositories should be allowed to configure, accessing
   self.yumbase.repos.repos can take long, do it once
