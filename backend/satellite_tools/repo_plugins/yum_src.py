@@ -16,6 +16,7 @@
 
 import subprocess
 import sys
+import logging
 import os.path
 from os import makedirs
 from shutil import rmtree
@@ -158,7 +159,6 @@ class ContentSource(object):
             repo = yum.yumRepo.YumRepository(name)
             repo.populate(self.configparser, name, self.yumbase.conf)
         self.repo = repo
-        self.sack = None
 
         self.setup_repo(repo)
         self.num_packages = 0
@@ -177,6 +177,12 @@ class ContentSource(object):
         #    if '?' not in url:
         #        real_urls.append(url)
         #self.repo.urls = real_urls
+
+    def __del__(self):
+        # close log files for yum plugin
+        for handler in logging.getLogger("yum.filelogging").handlers:
+            handler.close()
+        self.repo.close()
 
     def _authenticate(self, url):
         pass
@@ -225,7 +231,6 @@ class ContentSource(object):
         # use a fix dir for repo metadata sig checks
         repo.gpgdir = GPG_DIR
         self.initgpgdir( repo.gpgdir )
-        self.sack = self.repo.getPackageSack()
 
     def get_md_checksum_type(self):
         """Return the checksum_type of primary.xml"""
@@ -238,25 +243,25 @@ class ContentSource(object):
     def number_of_packages(self):
         for dummy_index in range(3):
             try:
-                self.sack.populate(self.repo, 'metadata', None, 0)
+                self.repo.getPackageSack().populate(self.repo, 'metadata', None, 0)
                 break
             except YumErrors.RepoError:
                 pass
-        return len(self.sack.returnPackages())
+        return len(self.repo.getPackageSack().returnPackages())
 
     def raw_list_packages(self):
         for dummy_index in range(3):
             try:
-                self.sack.populate(self.repo, 'metadata', None, 0)
+                self.repo.getPackageSack().populate(self.repo, 'metadata', None, 0)
                 break
             except YumErrors.RepoError:
                 pass
-        return self.sack.returnPackages()
+        return self.repo.getPackageSack().returnPackages()
 
     def list_packages(self, filters, latest):
         """ list packages"""
         try:
-            self.sack.populate(self.repo, 'metadata', None, 0)
+            self.repo.getPackageSack().populate(self.repo, 'metadata', None, 0)
         except yum.Errors.RepoError,e :
             if "No more mirrors" in str(e):
                 reqFile = re.search('failure:\s+(.+)\s+from',
@@ -265,7 +270,7 @@ class ContentSource(object):
             else:
                 raise
 
-        pkglist = ListPackageSack(self.sack.returnPackages())
+        pkglist = ListPackageSack(self.repo.getPackageSack().returnPackages())
         self.num_packages = len(pkglist)
         if latest:
             pkglist = pkglist.returnNewestByNameArch()
@@ -281,7 +286,7 @@ class ContentSource(object):
 
         if filters:
             pkglist = self._filter_packages(pkglist, filters)
-            pkglist = self._get_package_dependencies(self.sack, pkglist)
+            pkglist = self._get_package_dependencies(self.repo.getPackageSack(), pkglist)
 
             # do not pull in dependencies if they're explicitly excluded
             pkglist = self._filter_packages(pkglist, filters, True)
