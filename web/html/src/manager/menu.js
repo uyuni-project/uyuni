@@ -156,7 +156,7 @@ $(document).ready(function() {
             breadcrumbArray.map((a, i) => {
               return (
                 <span>
-                  <Link label={a.label} key={a.label} />
+                  <span className="level">{a.label}</span>
                   { i == breadcrumbArray.length -1 ? null : <span>></span>}
                 </span>
               );
