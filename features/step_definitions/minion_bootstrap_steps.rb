@@ -41,3 +41,13 @@ Then(/^I run spacecmd listevents for sle-minion$/) do
   $server.run("spacecmd -u admin -p admin clear_caches")
   $server.run("spacecmd -u admin -p admin system_listevents #{$minion_fullhostname}")
 end
+
+And(/^I cleanup minion: "([^"]*)"$/) do |target|
+  if target == "sle-minion"
+    $minion.run("systemctl stop salt-minion")
+    $minion.run("rm -Rf /var/cache/salt/minion")
+  elsif target == "ceos-minion"
+    $ceos_minion.run("systemctl stop salt-minion")
+    $ceos_minion.run("rm -Rf /var/cache/salt/minion")
+   end
+end

@@ -48,6 +48,7 @@ Feature: register a salt-minion via bootstrap
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
+    And I cleanup minion: "sle-minion"
 
   Scenario: create minion activation key with Channel and package list
     Given I am on the Systems page
