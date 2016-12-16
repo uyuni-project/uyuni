@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Fri Dec 16 12:14:52 CET 2016 - michele.bologna@suse.com
+
+- version 0.1.18-1
+- Rename 'master' pillar to 'mgr_server'
+- Add tunneling to salt-ssh support
+- Provide SUMA static pillar data for unregistered minions (bsc#1015122)
+- implement fetching kernel live version as module (FATE#319519)
+- Removing '/usr/share/susemanager/pillar' path
+- Retreiving SUMA static pillar data from ext_pillar (bsc1010674)
+- Bugfix: Prevent salt-master ERROR messages if formulas files are missing
+  (bsc#1009004)
+- fallback to major os release version for cert names (bsc#1009749)
+
+-------------------------------------------------------------------
 Mon Nov 07 11:37:52 CET 2016 - michele.bologna@suse.com
 
 - version 0.1.17-1
