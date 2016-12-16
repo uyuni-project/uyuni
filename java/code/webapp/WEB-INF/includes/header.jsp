@@ -13,11 +13,9 @@
     <span class="icon-bar"></span>
     <span class="icon-bar"></span>
   </button>
-  <a class="navbar-brand" href="<bean:message key='layout.jsp.vendor.website'/>" title="<bean:message key='layout.jsp.vendor.title'/>">
-    <img src="/img/logo_vendor.png" alt="<bean:message key='layout.jsp.vendor.name'/>" id="rhLogo" />
-  </a>
   <a class="navbar-brand" href="/" title="<bean:message key="layout.jsp.productname"/> homepage">
-    <img src="/img/logo_product.png" alt="<bean:message key='layout.jsp.productname'/>" id="rhnLogo" accesskey="2"/>
+    <img src="/img/susemanager/logo-header.png" id="rhLogo" />
+    <span>SUSE Manager</span>
   </a>
   <c:if test="${! empty custom_header}">
     <div class="custom-text">
