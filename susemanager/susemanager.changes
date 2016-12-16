@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Dec 16 12:17:02 CET 2016 - michele.bologna@suse.com
+
+- version 3.0.19-1
+- Preventing stderr output from systemctl calls (bsc#1015055)
+
+-------------------------------------------------------------------
 Mon Nov 07 10:50:53 CET 2016 - michele.bologna@suse.com
 
 - version 3.0.18-1
