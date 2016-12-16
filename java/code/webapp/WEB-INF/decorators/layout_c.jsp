@@ -14,7 +14,6 @@
   </head>
   <body onload="<decorator:getProperty property="body.onload" />">
     <header class="navbar-pf">
-      <div id="breadcrumb"></div>
       <jsp:include page="/WEB-INF/includes/header.jsp" />
     </header>
     <div class="spacewalk-main-column-layout">
