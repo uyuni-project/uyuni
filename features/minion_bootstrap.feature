@@ -3,6 +3,13 @@
 
 Feature: register a salt-minion via bootstrap
 
+  Scenario: Delete minion system profile
+    Given I am on the Systems overview page of this minion
+    When I follow "Delete System"
+    And I should see a "Confirm System Profile Deletion" text
+    And I click on "Delete Profile"
+    Then I should see a "has been deleted" text
+    
   Scenario: bootstrap a sles minion
      Given I am authorized
      When I follow "Salt"
@@ -15,7 +22,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait for "100" seconds
+     And I wait for "180" seconds
      Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
   # testing command line
   Scenario: check new bootstrapped minion in System Overview page
@@ -49,7 +56,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait for "5" seconds
+     And I wait for "15" seconds
      And I should not see a "GenericSaltError({" text
      And I should see a "A salt key for this host" text
      And I should see a "seems to already exist, please check!" text
