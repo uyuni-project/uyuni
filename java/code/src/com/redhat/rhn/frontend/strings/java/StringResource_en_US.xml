@@ -8073,6 +8073,12 @@ tree will not be usable for kickstarting.
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Online Support">
+        <source>Online Support</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>
