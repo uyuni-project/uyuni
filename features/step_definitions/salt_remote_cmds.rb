@@ -23,11 +23,15 @@ When(/^I expand the results$/) do
 end
 
 When(/^I expand the results for "(.*)"$/) do |host|
-   find("div[id=#{host}]").click
+   if host == "ceos-minion"
+     find("div[id='#{$ceos_minion_fullhostname}']").click
+   else
+     find("div[id='#{host}']").click
+   end
 end
 
 Then(/^I enter command "([^"]*)"$/) do |arg1|
-  fill_in "command", with: "ls -la /etc"
+  fill_in "command", with: arg1
 end
 
 Then(/^I should see "([^"]*)" in the command output$/) do |arg1|

@@ -18,7 +18,7 @@ Feature: Bootstrap a new salt host via salt-ssh
        And I follow "Bootstrapping"
     Then I should see a "Bootstrap Minions" text
        And I check "manageWithSSH"
-       And I enter remote minion hostname as "hostname"
+       And I enter the hostname of "sle-minion" as hostname
        And I enter "linux" as "password"
        And I click on "Bootstrap"
        And I wait for "5" seconds
@@ -36,6 +36,7 @@ Feature: Bootstrap a new salt host via salt-ssh
     And I should see a "Remote Commands" text
     Then I enter command "ls -lha /etc"
     And I click on preview
+    # FIXME. 
     Then I should see my hostname
     And I click on run
     Then I wait for "3" seconds
@@ -48,4 +49,3 @@ Feature: Bootstrap a new salt host via salt-ssh
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
-    

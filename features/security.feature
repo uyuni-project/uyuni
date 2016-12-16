@@ -34,7 +34,3 @@ Feature: Basic web security measures and recommendations
     Given I retrieve any static resource
     Then the response header "X-WebKit-CSP" should not be present
 
-# this scenario should run only for HEAD. 3.0 will fail. 
-#  Scenario: Do not use jsession id
-#    Given I am not authorized
-#    Then the login form does not contain a jsessionid
