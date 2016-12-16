@@ -47,14 +47,12 @@ function alignContentDimensions() {
 
 // Make columns 100% in height
 function columnHeight() {
-  var headerHeight = $("header").outerHeight();
-  var footerHeight = $("footer").outerHeight();
-  var docHeight = $(window).height();
+  $('.spacewalk-main-column-layout aside').css('min-height', 0);
+  var headerHeight = $('header').outerHeight();
+  var footerHeight = $('footer').outerHeight();
+  var docHeight = $(document).height();
   // Column heights should equal the document height minus the header height and footer height
-  $(".spacewalk-main-column-layout").height(docHeight - headerHeight - footerHeight);
-  var contentHeight = $(".spacewalk-main-column-layout").height();
-  $(".spacewalk-main-column-layout aside").outerHeight('100%');
-  $(".spacewalk-main-column-layout section").outerHeight('100%');
+  $('.spacewalk-main-column-layout aside').css('min-height', docHeight - headerHeight - footerHeight);
 };
 
 

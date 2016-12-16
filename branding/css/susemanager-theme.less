@@ -7,6 +7,12 @@ body {
 html, body {
   height: auto;
 }
+.outline {
+  outline: none;
+}
+a, a:hover {
+  .outline;
+}
 header {
   width: auto;
   border: none;
@@ -144,8 +150,6 @@ section {
   margin-left: 0;
    aside {
     .make-md-column(2);
-    height: 100%;
-    overflow-y: auto;
     background: @spacewalk-aside;
     border-right: 1px solid @spacewalk-aside-border;
     /* erasing the predefined paddings in the columns */
@@ -155,8 +159,6 @@ section {
   /* fixing margins in the 1st and last columns */
   section {
     .make-md-column(10);
-    height: 100%;
-    overflow-y: auto;
     padding-left:2em;
     padding-right: 2em;
     padding-top: 1em;
