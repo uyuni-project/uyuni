@@ -343,7 +343,7 @@
       <rhn-tab name="Search" url="/rhn/help/Search.do" />
   </rhn-tab>
   <rhn-tab name="Online Support" url="#">
-    <rhn-tab name="header.jsp.knowledgebase" url="https://www.suse.com/support/kb/product.php?id=SUSE_Manager" />
-    <rhn-tab name="header.jsp.documentation" url="https://www.suse.com/documentation/suse_manager/" />
+    <rhn-tab name="header.jsp.knowledgebase" url="https://www.suse.com/support/kb/product.php?id=SUSE_Manager" target="blank" />
+    <rhn-tab name="header.jsp.documentation" url="https://www.suse.com/documentation/suse_manager/" target="blank" />
   </rhn-tab>
 </rhn-navi-tree>
