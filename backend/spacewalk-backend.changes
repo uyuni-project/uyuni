@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Dec 16 12:10:26 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.24.7-1
+- Handle non-unique machine_id after migrate from 2.1 (bsc#1013002)
+- Refer to scc.suse.com instead of bugzilla.novell.com in case of problem
+  (bsc#967818)
+- Fix: selection of primary interface bsc#1009677
+- spacewalk-backend.spec: add link to SUSE name of program (bsc#1009435)
+- Reposync - assign orphaned vendor packages to the default org (bsc#995764)
+
+-------------------------------------------------------------------
 Thu Oct 06 16:09:07 CEST 2016 - mc@suse.de
 
 - version 2.5.24.6-1
