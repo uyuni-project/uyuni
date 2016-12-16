@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 
 import com.redhat.rhn.manager.token.ActivationKeyManager;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.suse.utils.Json;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -230,9 +232,9 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         ActivationKeyManager akm = ActivationKeyManager.getInstance();
         List<String> visibleBootstrapKeys = akm.findAll(user)
-                .stream().map(ak -> "'" + ak.getKey() + "'")
+                .stream().map(ActivationKey::getKey)
                 .collect(Collectors.toList());
-        data.put("availableActivationKeys", visibleBootstrapKeys);
+        data.put("availableActivationKeys", Json.GSON.toJson(visibleBootstrapKeys));
         return new ModelAndView(data, "minion/bootstrap.jade");
     }
 }
