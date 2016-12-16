@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Dec 16 16:34:11 CET 2016 - michele.bologna@suse.com
+
+- version 3.0.17-1
+- Schema upgrade for live patching (FATE#319519)
+
+-------------------------------------------------------------------
 Mon Nov 07 10:49:32 CET 2016 - michele.bologna@suse.com
 
 - version 3.0.16-1
