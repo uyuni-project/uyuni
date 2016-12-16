@@ -110,6 +110,7 @@ public class SidenavRenderer extends Renderable {
                 .map(node -> new JSONMenuElement(
                         node.getName(), node.getPrimaryURL(),
                         treeIndex.isNodeActive(node),
+                        node.getTarget(),
                         buildJSONTree(treeIndex, node.getNodes(), depth + 1)))
                 .collect(toList());
     }

@@ -24,6 +24,7 @@ public class JSONMenuElement {
     private String label;
     private String url;
     private boolean active;
+    private String target;
     private List<JSONMenuElement> submenu;
 
     /**
@@ -38,6 +39,7 @@ public class JSONMenuElement {
      * @param labelIn the label of the link
      * @param urlIn the href value of the link
      * @param activeIn if it is the current page
+     * @param targetIn the target of the link
      * @param submenuIn the submenu level list
      */
     public JSONMenuElement(String labelIn, String urlIn, boolean activeIn,
@@ -45,6 +47,7 @@ public class JSONMenuElement {
         this.label = labelIn;
         this.url = urlIn;
         this.active = activeIn;
+        this.target = targetIn;
         this.submenu = submenuIn;
     }
 
@@ -97,8 +100,6 @@ public class JSONMenuElement {
     }
 
     /**
-<<<<<<< HEAD
-=======
      * Gets target.
      *
      * @return the target
@@ -115,7 +116,6 @@ public class JSONMenuElement {
     }
 
     /**
->>>>>>> a5817cc... Checkstyle and Javadoc
      * Gets submenu.
      *
      * @return the submenu

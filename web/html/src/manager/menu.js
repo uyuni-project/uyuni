@@ -46,7 +46,7 @@ $(document).ready(function() {
   const React = require("react");
   const ReactDOM = require("react-dom");
 
-  const Link = (props) => <a href={props.url}>{props.image}{props.label}</a>;
+  const Link = (props) => <a href={props.url} target={props.target}>{props.image}{props.label}</a>;
 
   const Element = React.createClass({
     render: function() {
@@ -62,7 +62,7 @@ $(document).ready(function() {
           }
         >
           <Link url={this.props.element.submenu ? "#" : this.props.element.url}
-            image={image} label={this.props.element.label} />
+            image={image} label={this.props.element.label} target={this.props.element.target} />
           {
             isLeaf ? null :
             <MenuLevel level={this.props.level+1} elements={this.props.element.submenu} />
