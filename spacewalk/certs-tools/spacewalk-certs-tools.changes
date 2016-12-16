@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Dec 16 12:07:43 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.1.7-1
+- Allow passing multiple GPG keys to mgr-bootstrap (bsc#989905)
+
+-------------------------------------------------------------------
 Mon Nov 07 11:09:26 CET 2016 - michele.bologna@suse.com
 
 - version 2.5.1.6-1
