@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Dec 16 16:35:03 CET 2016 - michele.bologna@suse.com
+
+- version 3.0.5-1
+- Include correct config file in the supportconfig
+
+-------------------------------------------------------------------
 Wed Apr 06 08:47:35 CEST 2016 - mc@suse.de
 
 - version 3.0.4-1
