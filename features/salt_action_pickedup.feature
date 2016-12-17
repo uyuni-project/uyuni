@@ -22,8 +22,6 @@ Feature: Test the remote commands via salt
       """
     And I click on "Schedule"
     Then I should see a "Remote Command has been scheduled successfully" text
-    And I check status "Picked Up" with spacecmd 
-    #And I should see a "This action's status is: Picked Up" text
+    And I check status "Picked Up" with spacecmd on "sle-minion"
     And I create picked-up test file on sle minion
-    And I check status "Completed" with spacecmd 
-    #And I should see a "This action's status is: Completed" text
+    And I check status "Completed" with spacecmd on "sle-minion"
