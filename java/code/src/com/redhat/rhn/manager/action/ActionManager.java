@@ -1223,7 +1223,6 @@ public class ActionManager extends BaseManager {
         PackageAction pa = (PackageAction) schedulePackageAction(scheduler,
                 (List) null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, earliest, server);
         storeAction(pa);
-        MessageQueue.publish(new ActionScheduledEventMessage(pa));
         return pa;
     }
 
