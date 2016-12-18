@@ -368,7 +368,11 @@ class RepoSync(object):
                     self.updateChannelChecksumType(plugin.get_md_checksum_type())
 
                     if not self.no_packages:
-                        self.import_packages(plugin, data['id'], url)
+                        ret = self.import_packages(plugin, data['id'], url)
+                        # we check previous ret_code value because we don't want
+                        # to override it with new successful one
+                        if ret_code == 0:
+                            ret_code = ret
                         self.import_groups(plugin, url)
 
                     if not self.no_errata:
@@ -387,35 +391,35 @@ class RepoSync(object):
                 except ChannelTimeoutException, e:
                     log(0, e)
                     self.sendErrorMail(str(e))
-                    sys.exit(1)
+                    ret_code = 1
                 except ChannelException, e:
                     log(0, "ChannelException: %s" % e)
                     self.sendErrorMail("ChannelException: %s" % str(e))
-                    sys.exit(1)
+                    ret_code = 1
                 except Errors.YumGPGCheckError, e:
                     log(0, "YumGPGCheckError: %s" % e)
                     self.sendErrorMail("YumGPGCheckError: %s" % e)
-                    sys.exit(1)
+                    ret_code = 1
                 except Errors.RepoError, e:
                     log(0, "RepoError: %s" % e)
                     self.sendErrorMail("RepoError: %s" % e)
-                    sys.exit(1)
+                    ret_code = 1
                 except Errors.RepoMDError, e:
                     if "primary not available" in str(e):
                         taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                             [self.channel_label], [], "server.app.yumreposync")
                         rhnSQL.commit()
                         log(0, "Repository has no packages. (%s)" % e)
-                        sys.exit(0)
+                        ret_code = 0
                     else:
                         log(0, "RepoMDError: %s" % e)
                         self.sendErrorMail("RepoMDError: %s" % e)
-                    sys.exit(1)
+                        ret_code = 1
                 except:
                     log(0, "Unexpected error: %s" % sys.exc_info()[0])
                     log(0, "%s" % traceback.format_exc())
                     self.sendErrorMail(fetchTraceback())
-                    sys.exit(1)
+                    ret_code = 1
 
                 if plugin is not None:
                     plugin.clear_ssl_cache()
@@ -426,11 +430,9 @@ class RepoSync(object):
         self.update_date()
         rhnSQL.commit()
         elapsed_time = datetime.now() - start_time
-        log(0, "Sync completed.")
-        log(0, "Total time: %s" % str(elapsed_time).split('.')[0])
         if self.error_messages:
             self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
-            sys.exit(1)
+            ret_code = 1
         return elapsed_time, ret_code
 
     def set_ks_tree_type(self, tree_type='externally-managed'):
@@ -754,6 +756,7 @@ class RepoSync(object):
         importer.run()
         backend.commit()
         self._normalize_orphan_vendor_packages()
+        return ret_code
 
     def _normalize_orphan_vendor_packages(self):
         # Sometimes reposync disassociates vendor packages (org_id = 0) from
