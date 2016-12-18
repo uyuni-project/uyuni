@@ -158,7 +158,6 @@ class RepoSyncTest(unittest.TestCase):
 
         self.assertEqual(rs.repo_plugin.call_args[0],
                 (('http://none.host/bogus-url', 'bogus-url', True, True)))
-        self.assertEqual(self.reposync.log.call_args[0][1], "Total time: 0:00:00")
 
         self.assertEqual(rs.import_packages.call_args,
                 ((rs.mocked_plugin, 42, "http://none.host/bogus-url"), {}))
@@ -183,10 +182,6 @@ class RepoSyncTest(unittest.TestCase):
         rs.regen = True
         rs.sync()
 
-        # don't test everything we already tested in sync_success_no_regen, just
-        # see if the operation was successful
-        self.assertEqual(self.reposync.log.call_args[0][1], "Total time: 0:00:00")
-
         self.assertEqual(self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription.call_args,
                          ((["Label"], [], "server.app.yumreposync"), {}))
         self.assertEqual(self.reposync.taskomatic.add_to_erratacache_queue.call_args,
@@ -199,7 +194,8 @@ class RepoSyncTest(unittest.TestCase):
         rs.repo_plugin = Mock(side_effect=exception)
         rs.sendErrorMail = Mock()
 
-        self.assertRaises(SystemExit, rs.sync)
+        etime, ret = rs.sync()
+        self.assertEqual(1, ret)
         self.assertEqual(rs.sendErrorMail.call_args,
                          (("anony-error", ), {}))
         self.assertEqual(self.reposync.log.call_args[0][1], exception)
@@ -209,7 +205,8 @@ class RepoSyncTest(unittest.TestCase):
 
         rs.repo_plugin = Mock(side_effect=TypeError)
         rs.sendErrorMail = Mock()
-        self.assertRaises(SystemExit, rs.sync)
+        etime, ret = rs.sync()
+        self.assertEqual(1, ret)
 
         error_string = self.reposync.log.call_args[0][1]
         assert (error_string.startswith('Traceback') and
@@ -963,7 +960,8 @@ def check_channel_exceptions(rs, exc_class, exc_name):
     from nose.tools import assert_raises, assert_equal
     rs.repo_plugin = Mock(side_effect=exc_class("error msg"))
 
-    assert_raises(SystemExit, rs.sync)
+    etime, ret = rs.sync()
+    assert_equal(1, ret)
     assert_equal(rs.sendErrorMail.call_args,
                  (("%s: %s" % (exc_name, "error msg"), ), {}))
 
