@@ -61,7 +61,6 @@ import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
-
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 import org.jose4j.lang.JoseException;
@@ -99,6 +98,7 @@ public enum SaltServerActionService {
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
     private static final String PARAM_PKGS = "param_pkgs";
 
+    @SuppressWarnings("unused")
     private Map<Boolean, List<MinionServer>> scheduleLater(
             List<MinionServer> minions,
             Map<String, ?> metadata,
@@ -211,9 +211,6 @@ public enum SaltServerActionService {
      */
     private Map<Boolean, List<MinionServer>> schedule(Action actionIn, LocalCall<?> call,
             List<MinionServer> minions, boolean forcePackageListRefresh) {
-        ZonedDateTime earliestAction = actionIn.getEarliestAction().toInstant()
-                .atZone(ZoneId.systemDefault());
-
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
         metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
@@ -231,13 +228,7 @@ public enum SaltServerActionService {
                     minionIds.stream().collect(Collectors.joining(", ")));
         }
 
-        ZonedDateTime now = ZonedDateTime.now();
-        if (earliestAction.isAfter(now)) {
-            return scheduleLater(minions, metadata, earliestAction, actionIn.getId(), call);
-        }
-        else {
-            return scheduleNow(minions, metadata, call, actionIn);
-        }
+        return scheduleNow(minions, metadata, call, actionIn);
     }
 
     /**
@@ -349,7 +340,7 @@ public enum SaltServerActionService {
             final List<MinionServer> targetMinions = entry.getValue();
 
             Map<Boolean, List<MinionServer>> results =
-                    schedule(actionIn, call, targetMinions, forcePackageListRefresh);
+                    execute(actionIn, call, targetMinions, forcePackageListRefresh);
 
             results.get(false).forEach(minionServer -> {
                 serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
@@ -707,4 +698,59 @@ public enum SaltServerActionService {
         return ret;
     }
 
+    /**
+     * @param actionIn the action
+     * @param call the call
+     * @param minions minions to target
+     * @param forcePackageListRefresh add metadata to force a package list refresh
+     * @return a map containing all minions partitioned by success
+     */
+    private Map<Boolean, List<MinionServer>> execute(Action actionIn, LocalCall<?> call,
+            List<MinionServer> minions, boolean forcePackageListRefresh) {
+        // Prepare the metadata
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
+        if (forcePackageListRefresh) {
+            metadata.put(ScheduleMetadata.SUMA_FORCE_PGK_LIST_REFRESH, true);
+        }
+
+        List<String> minionIds = minions.stream().map(MinionServer::getMinionId)
+                .collect(Collectors.toList());
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Executing action for: " +
+                    minionIds.stream().collect(Collectors.joining(", ")));
+        }
+
+        try {
+            Map<Boolean, List<MinionServer>> result = new HashMap<>();
+
+            List<String> results = SaltService.INSTANCE
+                    .callAsync(call.withMetadata(metadata), new MinionList(minionIds))
+                    .getMinions();
+
+            result = minions.stream()
+                    .collect(Collectors.partitioningBy(
+                            minion -> results.contains(minion.getMinionId())));
+
+            result.get(true).forEach(minionServer -> {
+                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Asynchronous call on minion: " +
+                                minionServer.getMinionId());
+                    }
+                    serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
+                    ActionFactory.save(serverAction);
+                });
+            });
+            return result;
+        }
+        catch (SaltException ex) {
+            LOG.debug("Failed to execute action: " + ex.getMessage());
+            Map<Boolean, List<MinionServer>> result = new HashMap<>();
+            result.put(true, Collections.emptyList());
+            result.put(false, minions);
+            return result;
+        }
+    }
 }

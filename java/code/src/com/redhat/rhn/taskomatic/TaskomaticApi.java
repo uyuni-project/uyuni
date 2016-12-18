@@ -15,8 +15,10 @@
 package com.redhat.rhn.taskomatic;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -26,8 +28,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 
+import org.apache.log4j.Logger;
+
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,6 +52,9 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class TaskomaticApi {
 
+    public static final String MINION_ACTION_BUNCH_LABEL = "minion-action-executor-bunch";
+    public static final String MINION_ACTION_JOB_PREFIX = "minion-action-executor-";
+    private static final Logger LOG = Logger.getLogger(TaskomaticApi.class);
 
 
     private XmlRpcClient getClient() throws TaskomaticApiException {
@@ -437,5 +445,46 @@ public class TaskomaticApi {
             }
         }
         return unscheduledLabels.size();
+    }
+
+    /**
+     * Schedule an Action execution for Salt minions.
+     *
+     * @param action the action to be executed
+     * @param forcePackageListRefresh is a package list is requested
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleActionExecution(Action action, boolean forcePackageListRefresh)
+        throws TaskomaticApiException {
+
+        HibernateFactory.getSession().flush();
+        boolean minionsInvolved = HibernateFactory.getSession()
+            .getNamedQuery("Action.findMinionIds")
+            .setParameter("id", action.getId())
+            .setMaxResults(1)
+            .stream()
+            .findAny()
+            .isPresent();
+        if (!minionsInvolved) {
+            return;
+        }
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("action_id", Long.toString(action.getId()));
+        params.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
+        invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
+                MINION_ACTION_JOB_PREFIX + action.getId(), params,
+                action.getEarliestAction());
+    }
+
+    /**
+     * Schedule action cleanup e.g. when new job results are available.
+     *
+     * @return schedule date
+     * @throws TaskomaticApiException if there was an error
+     */
+    public Date scheduleActionCleanup() throws TaskomaticApiException {
+        return (Date) invoke("tasko.scheduleSingleSatBunchRun",
+                "minion-action-cleanup-bunch", Collections.emptyMap());
     }
 }
