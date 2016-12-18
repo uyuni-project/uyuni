@@ -18,8 +18,8 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
-
-import com.suse.manager.webui.services.SaltServerActionService;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
 
@@ -42,15 +42,22 @@ public class ActionScheduledEventMessageAction extends AbstractDatabaseAction {
      */
     @Override
     protected void doExecute(EventMessage eventMessage) {
-        ActionScheduledEventMessage event = (ActionScheduledEventMessage) eventMessage;
-        Action action = ActionFactory.lookupById(event.getActionId());
-        if (action != null) {
-            LOG.debug("Action scheduled: " + action.getName());
-            SaltServerActionService.INSTANCE.execute(action,
-                    event.forcePackageListRefresh());
+        try {
+            ActionScheduledEventMessage event = (ActionScheduledEventMessage) eventMessage;
+            Action action = ActionFactory.lookupById(event.getActionId());
+            if (action != null) {
+                // Schedule action with the backend
+                new TaskomaticApi().scheduleActionExecution(action,
+                        event.forcePackageListRefresh());
+                LOG.info("Action scheduled for " + action.getEarliestAction() + ": " +
+                        action.getName());
+            }
+            else {
+                LOG.error("Action not found: " + event.getActionId());
+            }
         }
-        else {
-            LOG.error("Action not found: " + event.getActionId());
+        catch (TaskomaticApiException e) {
+            LOG.error("Taskomatic API error: " + e.getMessage(), e);
         }
     }
 }
