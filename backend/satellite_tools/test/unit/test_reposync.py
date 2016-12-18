@@ -896,7 +896,7 @@ class RunScriptTest(unittest.TestCase):
                         'chann_1': 'abc',
                         'chann_2': 'def'
                     },
-                    'RepoSync.return_value.sync.return_value': timedelta()
+                    'RepoSync.return_value.sync.return_value': (timedelta(), 0)
                 }
             ),
             clear_interrupted_downloads=Mock(),

@@ -20,7 +20,7 @@ from StringIO import StringIO
 from collections import namedtuple
 
 import mock
-from mock import Mock
+from mock import Mock, MagicMock
 
 from spacewalk.satellite_tools.repo_plugins import yum_src, ContentPackage
 
@@ -48,7 +48,10 @@ class YumSrcTest(unittest.TestCase):
         yum_src.get_proxy = Mock(return_value=(None, None, None))
 
         cs = yum_src.ContentSource("http://example.com", "test_repo", org='')
-        cs.sack = Mock()
+        mockReturnPackages = MagicMock()
+        mockReturnPackages.returnPackages = MagicMock(name="returnPackages")
+        mockReturnPackages.returnPackages.return_value = []
+        cs.repo.getPackageSack = MagicMock(return_value=mockReturnPackages)
         cs.repo.includepkgs = []
         cs.repo.exclude = []
 
@@ -67,9 +70,6 @@ class YumSrcTest(unittest.TestCase):
     def test_list_packages_empty(self):
         cs = self._make_dummy_cs()
 
-        mocked_sack = Mock(return_value=[])
-        cs.sack.returnPackages = mocked_sack
-
         self.assertEqual(cs.list_packages(filters=None, latest=False), [])
 
     def test_list_packages_with_pack(self):
@@ -80,7 +80,10 @@ class YumSrcTest(unittest.TestCase):
         Package = namedtuple('Package', package_attrs)
         mocked_packs = [Package('n1', 'v1', 'r1', 'e1', 'a1', [('c1', 'cs')], 'rid1', ('n1', 'a1', 'e1', 'v1', 'r1')),
                         Package('n2', 'v2', 'r2', 'e2', 'a2', [('c2', 'cs')], 'rid2', ('n2', 'a2', 'e2', 'v2', 'r2'))]
-        cs.sack.returnPackages = Mock(return_value=mocked_packs)
+        mockReturnPackages = MagicMock()
+        mockReturnPackages.returnPackages = MagicMock(name="returnPackages")
+        mockReturnPackages.returnPackages.return_value = mocked_packs
+        cs.repo.getPackageSack = MagicMock(return_value=mockReturnPackages)
 
         listed_packages = cs.list_packages(filters=None, latest=False)
 
