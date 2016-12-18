@@ -419,19 +419,19 @@ class RepoSync(object):
 
                 if plugin is not None:
                     plugin.clear_ssl_cache()
-            if self.regen:
-                taskomatic.add_to_repodata_queue_for_channel_package_subscription(
-                    [self.channel_label], [], "server.app.yumreposync")
-                taskomatic.add_to_erratacache_queue(self.channel_label)
-            self.update_date()
-            rhnSQL.commit()
-            elapsed_time = datetime.now() - start_time
-            log(0, "Sync completed.")
-            log(0, "Total time: %s" % str(elapsed_time).split('.')[0])
-            if self.error_messages:
-                self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
-                sys.exit(1)
-            return elapsed_time, ret_code
+        if self.regen:
+            taskomatic.add_to_repodata_queue_for_channel_package_subscription(
+                [self.channel_label], [], "server.app.yumreposync")
+            taskomatic.add_to_erratacache_queue(self.channel_label)
+        self.update_date()
+        rhnSQL.commit()
+        elapsed_time = datetime.now() - start_time
+        log(0, "Sync completed.")
+        log(0, "Total time: %s" % str(elapsed_time).split('.')[0])
+        if self.error_messages:
+            self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
+            sys.exit(1)
+        return elapsed_time, ret_code
 
     def set_ks_tree_type(self, tree_type='externally-managed'):
         self.ks_tree_type = tree_type
