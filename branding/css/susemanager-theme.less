@@ -18,7 +18,7 @@ header {
   border: none;
   border-radius: 0;
   margin-bottom: 0;
-  padding: 5px;
+  padding: 10px 5px;
   background: @spacewalk-header;
   a {
     color: #ccc;
@@ -166,6 +166,10 @@ section {
   }
 }
 
+.navbar-right {
+  float: right;
+}
+
 header, nav.navbar-pf {
   .navbar-toggle {
     float: none;
@@ -188,53 +192,121 @@ header, nav.navbar-pf {
     display: inline-block;
   }
   .navbar-utility {
-    border-bottom: 0;
-    font-size: 12px;
-    position: absolute;
-    right: 10px;
-    top: 0;
+    .navbar-right;
+    font-size: 13px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    a, .spacewalk-header-non-link {
+      display: inline-block;
+      padding: 4px 8px 4px 12px;
+      border-radius: 2px;
+    }
   }
+
+  .toggle-box:after {
+    content: '\25BE';
+  }
+  .toggle-box:hover {
+    color: @spacewalk-orange;
+  }
+  .toggle-box.open {
+    color: @spacewalk-orange;
+    background-color: @spacewalk-gray-light;
+  }
+  .box-wrapper {
+    position: absolute;
+    top: 100%;
+    background-color: @spacewalk-gray-light;
+    border-radius: 0px 2px 2px 2px;
+    z-index: 1000;
+    border: 1px solid @spacewalk-gray;
+    box-shadow: 0px 4px 4px 0px @spacewalk-gray;
+    margin-top: 11px;
+    .triangle-top {
+      margin-top: -12px;
+      margin-left: 8px;
+      width: 12px;
+      border-top: none;
+      border-bottom: 12px solid @spacewalk-gray-light;
+      border-right: 10px solid transparent;
+      border-left: 10px solid transparent;
+    }
+  }
+
   /* overwrite the padding the grid columns give */
   &#spacewalk-header {
     padding-right: 0;
     padding-left: 0;
   }
-  form input[type="search"] {
-    padding: 0px 10px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-  }
-  form input.input-sm, form button.input-sm, form select.input-sm {
-    .box-shadow(-1px -1px 1px #838383);
-    height: 28px;
-    margin-left: 4px;
-  }
-  form {
+  /* Search header box */
+  form#search-form {
+    .form-group {
+      padding: 10px;
+      width: 200px;
+    }
+    input[type="search"] {
+      padding: 0px 5px;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+    }
     //style for the select to make it plain colour
     select.form-control {
       -webkit-appearance: button;
-        -webkit-padding-end: 20px;
+      -webkit-padding-end: 20px;
       background: url('../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
       cursor: pointer;
       display: inline-block;
-        -moz-appearance: none;
-        text-indent: 0.01px;
-        text-overflow: '';
-        line-height: normal;
-        padding: 2px 22px 2px 5px;
+      -moz-appearance: none;
+      text-indent: 0.01px;
+      text-overflow: '';
+      line-height: normal;
+      padding: 2px 28px 2px 2px;
+      display: block;
+      width: 100%;
+      margin: 5px 0;
     }
   }
-  .btn.btn-info.input-sm {
-    padding: 0px 8px 0 12px;
-    background: #000;
-    color: #838383;
-    border: 0;
-  }
-  button:hover.btn.btn-info.input-sm {
-    background: #222;
+
+  /* System Set Manager header box */
+  .ssm-box {
+    border: 1px solid @spacewalk-gray-dark;
+    #header_selcount {
+      .badge {
+        border-radius: 8px;
+        background: @spacewalk-orange-light;
+        min-width: 16px;
+        display: inline-block;
+        padding: 2px 0;
+        text-align: center;
+        color: #333;
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+    }
+    a {
+      display: inline-block;
+      border-radius: 0;
+      padding: 3px 5px;
+    }
+    a#clear-ssm {
+      margin-left: -4px;
+      border-left: 1px solid @spacewalk-gray-dark;
+      color: @spacewalk-gray-light;
+      i {
+        margin: 0;
+      }
+    }
+    a#clear-ssm:hover {
+      background-color: @spacewalk-red;
+      color: @spacewalk-gray-light;
+    }
   }
 
+  /* Header Logo bar */
   .navbar-brand {
     float: none;
     padding: 0;
@@ -291,7 +363,7 @@ header, nav.navbar-pf {
     > li {
       border-top: 1px solid darken(@spacewalk-blue-light, 5%);
       > a {
-        padding: 6px 2px 6px 10px;
+        padding: 7px 2px 7px 10px;
         color: @spacewalk-aside-menu-hyperlink;
         > span {
           display: inline-block;
@@ -809,53 +881,40 @@ i.spacewalk-help-link {
     }
   }
   ul.navbar-utility {
-    a, .spacewalk-header-non-link {
-      color: #d7d7d7;
-      text-shadow: 1px 1px 1px #333;
-      padding-top: 5px;
-      padding-bottom: 8px;
-    }
-    a:hover {
-      color: #fff;
-      text-decoration: underline;
-      background-color: transparent;
+    font-size: 13px;
+    li {
+      display: inline-block;
+      float: none;
+      margin: 0;
+      clear: none;
+      color: @spacewalk-gray-light;
+      vertical-align: top;
+      border-radius: 2px;
+      a:hover {
+        background-color: lighten(@spacewalk-blue-light, 10%);
+      }
     }
     .search {
       .form-group {
         .btn-primary {
-          padding: 0px 8px 0 12px;
-          background: #000;
-          color: #838383;
+          display: block;
+          width: 100%;
+          background: @spacewalk-gray-dark;
+          color: @spacewalk-gray-light;
           border: 0;
+          border-radius: 2px;
+          height: 1.8em;
+          padding: 0;
+        }
+        .btn-primary:hover {
+          color: @spacewalk-orange;
         }
       }
-    }
-    span.spacewalk-header-non-link {
-      display: block;
-      padding-right: 15px;
-      padding-left: 15px;
     }
   }
   .wrap nav.option li.active {
     border-bottom: 4px solid transparent;
   }
-}
-#header_selcount {
-  &.btn-default {
-    background: transparent;
-    border: 0px;
-    color: #fff;
-    text-shadow: none
-  }
-
-}
-.spacewalk-bar .btn-group a#clear-ssm-btn .btn-danger {
-  .btn-default;
-  .btn-xs;
-}
-
-.spacewalk-bar .btn-group a .btn-primary {
-  .btn-xs;
 }
 
 /* Override rules from spacewalk-theme.less that uses
