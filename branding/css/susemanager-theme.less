@@ -167,9 +167,25 @@ section {
 }
 
 header, nav.navbar-pf {
+  .navbar-toggle {
+    float: none;
+    display: none;
+    padding: 3px 6px;
+    background-color: @spacewalk-blue-light;
+    border: 1px solid @spacewalk-gray-dark;
+    margin: 0 15px 0 5px;
+    vertical-align: middle;
+    color: @spacewalk-gray-dark;
+    i {
+      margin: 0;
+    }
+  }
+  .navbar-toggle:hover {
+    color: @susemanager-green;
+  }
   .navbar-header {
     float: none;
-    margin-bottom: 30px;
+    display: inline-block;
   }
   .navbar-utility {
     border-bottom: 0;

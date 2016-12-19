@@ -6,13 +6,11 @@
 
 <c:set var="custom_header" scope="page" value="${rhn:getConfig('java.custom_header')}" />
 
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#spacewalk-aside">
+  <i class="fa fa-bars" aria-hidden="true"></i>
+</button>
+
 <div class="navbar-header">
-  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-    <span class="sr-only">Toggle navigation</span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-  </button>
   <a class="navbar-brand" href="/" title="<bean:message key="layout.jsp.productname"/> homepage">
     <img src="/img/susemanager/logo-header.png" id="rhLogo" />
     <span>SUSE Manager</span>
