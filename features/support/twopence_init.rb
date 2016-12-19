@@ -7,7 +7,7 @@ raise "Server ip var empty" if ENV['TESTHOST'].nil?
 raise "client ip var empty" if ENV['CLIENT'].nil?
 raise "minion ip var empty" if ENV['MINION'].nil?
 raise "ceos-minion ip var empty" if ENV['CENTOSMINION'].nil?
-raise "ceos-minion ip var empty" if ENV['SSHMINION'].nil?
+raise "SSH-minion ip var empty" if ENV['SSHMINION'].nil?
 
 $server_ip = ENV['TESTHOST']
 $client_ip = ENV['CLIENT']
