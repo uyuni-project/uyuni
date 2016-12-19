@@ -23,64 +23,82 @@
   </c:if>
 </div>
 
-<div class="navbar-collapse collapse">
-  <rhn:require acl="user_authenticated()">
-    <ul class="nav navbar-nav navbar-utility">
-      <li><a href="/rhn/account/UserDetails.do"><rhn:icon type="header-user" /> <c:out escapeXml="true" value="${requestScope.session.user.login}" /></a></li>
-      <li class="hidden-sm hidden-xs hidden-md"><span class="spacewalk-header-non-link"><rhn:icon type="header-sitemap" /> <c:out escapeXml="true" value="${requestScope.session.user.org.name}" /></span></li>
-      <li><a href="/rhn/account/UserPreferences.do"><rhn:icon type="header-preferences" title="header.jsp.preferences" /></a></li>
-      <li><a href="/rhn/Logout.do"><rhn:icon type="header-signout" title="header.jsp.signout" /></a></li>
-      <li class="search hidden-xs">
-        <form name="form1" class="form-inline" role="form" action="/rhn/Search.do">
-          <rhn:csrf />
-          <rhn:submitted />
-          <div class="form-group">
-            <select name="search_type" class="form-control input-sm">
-              <option value="systems"><bean:message key="header.jsp.systems" /></option>
-              <option value="packages"><bean:message key="header.jsp.packages" /></option>
-              <option value="errata"><bean:message key="header.jsp.errata" /></option>
-              <option value="docs"><bean:message key="header.jsp.documentation" /></option>
-            </select>
-            <input type="search" class="form-control input-sm" name="search_string" size="20" accesskey="4" autofocus="autofocus" placeholder="<bean:message key='button.search'/>" />
-            <button type="submit" class="btn btn-primary input-sm" id="search-btn">
-              <rhn:icon type="header-search" />
-            </button>
-          </div>
-        </form>
-      </li>
-    </ul>
-  </rhn:require>
-
-  <rhn:require acl="user_authenticated()">
-    <ul class="nav navbar-nav navbar-primary navbar-right spacewalk-bar">
-      <div class="btn-group">
-        <button id="header_selcount" class="btn btn-default btn-link disabled">
-          <rhn:setdisplay user="${requestScope.session.user}" />
-        </button>
-        <a href="/rhn/ssm/index.do" class="no-underline-hover">
-          <button class="btn btn-primary" type="button">
-            <bean:message key="manage"/>
+<rhn:require acl="user_authenticated()">
+  <ul class="nav navbar-nav navbar-utility">
+    <li class="search">
+      <a href="#" class="toggle-box" data-toggle="collapse" data-target="form#search-form">
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </a>
+      <form id="search-form" name="form1" class="box-wrapper form-inline collapse" role="form" action="/rhn/Search.do">
+        <div class="triangle-top"></div>
+        <rhn:csrf />
+        <rhn:submitted />
+        <div class="form-group">
+          <input type="search" class="form-control input-sm" name="search_string" size="20" accesskey="4"
+              autofocus="autofocus" placeholder="<bean:message key='button.search'/>" />
+          <select name="search_type" class="form-control input-sm">
+            <option value="systems"><bean:message key="header.jsp.systems" /></option>
+            <option value="packages"><bean:message key="header.jsp.packages" /></option>
+            <option value="errata"><bean:message key="header.jsp.errata" /></option>
+            <option value="docs"><bean:message key="header.jsp.documentation" /></option>
+          </select>
+          <button type="submit" class="btn btn-primary input-sm" id="search-btn">
+            <rhn:icon type="header-search" /><bean:message key='button.search'/>
           </button>
+        </div>
+      </form>
+    </li>
+    <li class="ssm-box">
+      <a href="/rhn/ssm/index.do" id="manage-ssm" title="<bean:message key="manage"/>">
+        <div id="header_selcount"><rhn:setdisplay user="${requestScope.session.user}" /></div>
+      </a>
+      <%--
+        -- Make sure we set the return_url variable correctly here. This will make is to
+        -- the user is returned here after clearing the ssm.
+        --%>
+      <c:choose>
+        <c:when test="${not empty pageContext.request.queryString}">
+          <c:set var="rurl" value="${pageContext.request.requestURI}?${pageContext.request.queryString}"/>
+        </c:when>
+        <c:otherwise>
+          <c:set var="rurl" value="${pageContext.request.requestURI}" />
+        </c:otherwise>
+      </c:choose>
+      <a id="clear-ssm" href="/rhn/systems/Overview.do?empty_set=true&amp;return_url=${rhn:urlEncode(rurl)}"
+          title="<bean:message key="clear"/>">
+        <i class="fa fa-eraser"></i>
+      </a>
+    </li>
+    <li>
+      <a href="/rhn/account/UserDetails.do"
+        title="${requestScope.session.user.login}">
+          <rhn:icon type="header-user" /><span>${requestScope.session.user.login}</span>
+      </a>
+    </li>
+    <li>
+      <rhn:require acl="user_role(org_admin)">
+        <a href="/rhn/multiorg/OrgConfigDetails.do" title="${requestScope.session.user.org.name}">
+          <rhn:icon type="header-sitemap" /><span>${requestScope.session.user.org.name}</span>
         </a>
-        <%--
-          -- Make sure we set the return_url variable correctly here. This will make is to
-          -- the user is returned here after clearing the ssm.
-          --%>
-        <c:choose>
-          <c:when test="${not empty pageContext.request.queryString}">
-            <c:set var="rurl" value="${pageContext.request.requestURI}?${pageContext.request.queryString}"/>
-          </c:when>
-          <c:otherwise>
-            <c:set var="rurl" value="${pageContext.request.requestURI}" />
-          </c:otherwise>
-        </c:choose>
-        <a id="clear-ssm-btn" href="/rhn/systems/Overview.do?empty_set=true&amp;return_url=${rhn:urlEncode(rurl)}">
-          <button class="btn btn-danger" type="button">
-            <bean:message key="clear"/>
-          </button>
-        </a>
-      </div>
-    </ul>
-  </rhn:require>
-</div>
+      </rhn:require>
+      <rhn:require acl="not user_role(org_admin)">
+        <span class="spacewalk-header-non-link" title="${requestScope.session.user.org.name}">
+          <rhn:icon type="header-sitemap" /><span>${requestScope.session.user.org.name}</span>
+        </span>
+      </rhn:require>
+    </li>
+    <li>
+      <a href="/rhn/account/UserPreferences.do" title="<bean:message key="header.jsp.preferences" />"
+          alt="<bean:message key="header.jsp.preferences" />">
+        <rhn:icon type="header-preferences"/>
+      </a>
+    </li>
+    <li>
+      <a href="/rhn/Logout.do" title="<bean:message key="header.jsp.signout" />"
+          alt="<bean:message key="header.jsp.signout" />">
+        <rhn:icon type="header-signout" />
+      </a>
+    </li>
+  </ul>
+</rhn:require>
 <!-- end header.jsp -->

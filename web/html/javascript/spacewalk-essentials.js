@@ -300,3 +300,8 @@ $(document).ready(function() {
   // pass in the target node, as well as the observer options
   observer.observe(target, config);
 });
+
+$(document).on('click', '.toggle-box', function() {
+  $(this).toggleClass('open');
+  $(this).blur(); // remove the focus
+})
