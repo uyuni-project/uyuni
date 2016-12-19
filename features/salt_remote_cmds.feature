@@ -7,8 +7,8 @@ Feature: Test the remote commands via salt
   I want to verify that the remote commands function works
 
   Scenario: Run a remote command
-    And I am authorized as "testing" with password "testing"
-    Given I follow "Salt"
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Salt"
     And I follow "Remote Commands"
     And I should see a "Remote Commands" text
     Then I enter command "ls -lha /etc"
