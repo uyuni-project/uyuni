@@ -258,3 +258,8 @@ end
 And(/^I create picked-up test file on sle minion$/) do
   $minion.run("touch /tmp/PICKED-UP.test")
 end
+
+Then(/^I should see "(.*?)" hostname$/) do |target|
+ step %(I should see a "#{$minion_fullhostname}" text) if target == "sle-minion"
+ step %(I should see a "#{$ceos_minion_fullhostname}" text) if target == "ceos-minion"
+end
