@@ -182,13 +182,12 @@ Then(/^Service "([^"]*)" is running on the Server$/) do |service|
 end
 
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, target|
-  # add more tearget to this, if needed.
-  if target != "server"
-    raise "ONLY SERVER target supported, implement others!"
+  if target == "server"
+    _out, $fail_code = $server.run(cmd, false)
+  elsif target == "ceos-minion"
+    _out, _code = $ceos_minion.run(cmd, false)
   end
-  _out, $fail_code = $server.run(cmd, false)
 end
-
 Then(/^the command should fail$/) do
    raise "Previous command must fail, but has NOT fail!!" if $fail_code.zero?
 end
