@@ -40,7 +40,8 @@ public class JSONMenuElement {
      * @param activeIn if it is the current page
      * @param submenuIn the submenu level list
      */
-    public JSONMenuElement (String labelIn, String urlIn, boolean activeIn, List<JSONMenuElement> submenuIn) {
+    public JSONMenuElement(String labelIn, String urlIn, boolean activeIn,
+            String targetIn, List<JSONMenuElement> submenuIn) {
         this.label = labelIn;
         this.url = urlIn;
         this.active = activeIn;
@@ -57,10 +58,10 @@ public class JSONMenuElement {
     }
 
     /**
-     * @param label The label to set.
+     * @param labelIn The label to set.
      */
-    public void setLabel(String label) {
-        this.label = label;
+    public void setLabel(String labelIn) {
+        this.label = labelIn;
     }
 
     /**
@@ -73,10 +74,10 @@ public class JSONMenuElement {
     }
 
     /**
-     * @param url The url to set.
+     * @param urlIn The url to set.
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrl(String urlIn) {
+        this.url = urlIn;
     }
 
     /**
@@ -89,13 +90,32 @@ public class JSONMenuElement {
     }
 
     /**
-     * @param active The active to set.
+     * @param activeIn The active to set.
      */
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setActive(boolean activeIn) {
+        this.active = activeIn;
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Gets target.
+     *
+     * @return the target
+     */
+    public String getTarget() {
+        return target;
+    }
+
+    /**
+     * @param targetIn The target to set.
+     */
+    public void setTarget(String targetIn) {
+        this.target = targetIn;
+    }
+
+    /**
+>>>>>>> a5817cc... Checkstyle and Javadoc
      * Gets submenu.
      *
      * @return the submenu
@@ -105,9 +125,9 @@ public class JSONMenuElement {
     }
 
     /**
-     * @param submenu The submenu to set.
+     * @param submenuIn The submenu to set.
      */
-    public void setSubmenu(List<JSONMenuElement> submenu) {
-        this.submenu = submenu;
+    public void setSubmenu(List<JSONMenuElement> submenuIn) {
+        this.submenu = submenuIn;
     }
 }
