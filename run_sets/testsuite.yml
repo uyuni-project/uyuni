@@ -81,9 +81,12 @@
 # - features/salt_action_pickedup.feature NEED FIX. Unstable test
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
-- features/salt_ssh.feature
-- features/salt_regression.feature
+# salt regression
+- features/salt_regression_topsls.feature
+# wait for fix, test ok, but need producht upstream fix
+# - features/salt_regression_multiminion.feature
 
+- 
 ## Centos client related feat. ###
 ## ** salt ***
 
