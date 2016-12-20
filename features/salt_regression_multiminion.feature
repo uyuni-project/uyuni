@@ -1,23 +1,9 @@
-# Copyright (c) 2015-16 SUSE LLC
+# Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Test Salt for regression
-
-   Scenario: There are no top.sls file in certain folders
-   When  I run "ls /srv/susemanager/salt/top.sls" on "server"
-   Then the command should fail
-   
-   When  I run "ls /srv/susemanager/salt/top.sls" on "server"
-   Then the command should fail
-
-   When  I run "ls /srv/susemanager/pillar/top.sls" on "server"
-   Then the command should fail
-
-   When  I run "ls /usr/share/susemanager/salt/top.sls" on "server"
-   Then the command should fail
-
-   When  I run "ls /usr/share/susemanager/pillar/top.sls" on "server"
-   Then the command should fail
+Feature: Test Suse-manager Server Web-UI.
+   We have 2 minions, we stop one of them, and then we execute a command.
+   Suse-manager server shouldn't hang, this was a bug.
 
    Scenario:  Manager Hangs if a registered salt-minion is down
     Given I am authorized as "testing" with password "testing"
@@ -46,3 +32,4 @@ Feature: Test Salt for regression
     And I expand the results for "ceos-minion"
     And I should see a "rhel fedora" text
     Then I should see a "REDHAT_SUPPORT_PRODUCT" text
+

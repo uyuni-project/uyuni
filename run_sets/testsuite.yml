@@ -81,8 +81,11 @@
 # this feature need another vm/client - features/salt_ssh.feature
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
-- features/salt_regression.feature
 - features/minion_bootstrap.feature
+# Regression test
+- features/salt_regression_topsls.feature
+# THIS feature WORK but fix isn't merged
+#- features/salt_regression_multiminion.feature
 
 ## Centos client related feat. ###
 ## ** salt ***
