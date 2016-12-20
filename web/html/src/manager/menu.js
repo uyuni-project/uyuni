@@ -5,6 +5,7 @@ $(document).ready(function() {
     const href = $(this).attr('href');
     if (href.length == 1 && href == '#') {
       e.preventDefault();
+      $(this).blur(); // remove the focus
     }
   });
 
