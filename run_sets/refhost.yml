@@ -77,7 +77,6 @@
 - features/salt_remote_cmds.feature
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
-- features/salt_regression.feature
 - features/minion_bootstrap.feature
 
 ## Centos client related feat. ###

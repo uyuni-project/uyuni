@@ -4,8 +4,9 @@
 $space = "spacecmd -u admin -p admin "
 
 And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
-  if target == "sle-minion"
-    cmd = "#{$space} system_listevents #{$minion_fullhostname} | head -n5"
+  if target == "ssh-minion"
+    cmd = "#{$space} system_listevents #{$ssh_minion_fullhostname} | head -n5"
+    $server.run("#{$space} clear_caches")
     out, _code = $server.run(cmd)
     unless out.include? status
       raise "#{out} should contain #{status}"
