@@ -77,6 +77,12 @@ public class SidenavRenderer extends Renderable {
     public void postNav(StringBuffer sb) {
     }
 
+    /**
+     * Convert a {@link NavTreeIndex} to a JSON String
+     *
+     * @param treeIndex the NavTreeIndex to convert as for input
+     * @return the JSON String as for output
+     */
     public String jsonRender(NavTreeIndex treeIndex) {
         return new GsonBuilder().create().toJson(
                 buildJSONTree(treeIndex, treeIndex.getTree().getNodes(), 0));
