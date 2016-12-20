@@ -18,23 +18,24 @@ Feature: Bootstrap a new salt host via salt-ssh
        And I follow "Bootstrapping"
     Then I should see a "Bootstrap Minions" text
        And I check "manageWithSSH"
-       And I enter remote minion hostname as "hostname"
+       And I enter remote ssh-minion hostname as "hostname"
        And I enter "linux" as "password"
        And I click on "Bootstrap"
-       And I wait for "5" seconds
+       And I wait for "15" seconds
     Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
        And I wait for "10" seconds
        And I follow "System Overview"
-    Then I should see remote minion hostname as link
-       And I follow remote minion hostname
+    Then I should see remote ssh-minion hostname as link
+       And I follow remote ssh-minion hostname
     Then I should see a "Push via SSH" text
+
   # testing GUI
   Scenario: Run a remote command
     And I am authorized as "testing" with password "testing"
     Given I follow "Salt"
     And I follow "Remote Commands"
     And I should see a "Remote Commands" text
-    Then I enter command "ls -lha /etc"
+    Then I enter command "hostname -f"
     And I click on preview
     Then I should see my hostname
     And I click on run
