@@ -86,7 +86,7 @@
 # wait for fix, test ok, but need producht upstream fix
 # - features/salt_regression_multiminion.feature
 
-- 
+- features/salt_ssh.feature 
 ## Centos client related feat. ###
 ## ** salt ***
 
