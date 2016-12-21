@@ -145,11 +145,16 @@ $(document).ready(function() {
         <div>
           {
             breadcrumbArray.map((a, i) => {
+              const htmlElement =
+              (
+                a.submenu ?
+                <Link key={a.label + '_' + i} url={a.submenu[0].url}
+                  image={null} label={a.label} target={a.target} />
+                :
+                <span className="level">{a.label}</span>
+              );
               return (
-                <span>
-                  <span className="level">{a.label}</span>
-                  { i == breadcrumbArray.length -1 ? null : <span>></span>}
-                </span>
+                <span>{htmlElement}{ i == breadcrumbArray.length -1 ? null : <span>></span>}</span>
               );
             })
           }
