@@ -87,6 +87,9 @@
 # THIS feature WORK but fix isn't merged
 #- features/salt_regression_multiminion.feature
 
+### Salt-ssh managed feature ##
+- features/salt_ssh.feature
+
 ## Centos client related feat. ###
 ## ** salt ***
 
