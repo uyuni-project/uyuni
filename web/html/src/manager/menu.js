@@ -1,14 +1,4 @@
 $(document).ready(function() {
-  /* prevent jumping to the top of the page because
-  of an <a href> tag that is actually not a link */
-  $(document).on('click', 'a', function(e) {
-    const href = $(this).attr('href');
-    if (href.length == 1 && href == '#') {
-      e.preventDefault();
-      $(this).blur(); // remove the focus
-    }
-  });
-
   $.openNav = function(li) {
     li.addClass('open');
     li.children('ul').addClass('open').slideDown(300);
