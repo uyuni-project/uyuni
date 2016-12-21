@@ -137,7 +137,7 @@ section {
   margin-right: 0;
   margin-left: 0;
    aside {
-    .make-md-column(2);
+    .make-xs-column(2);
     background: @spacewalk-aside;
     border-right: 1px solid @spacewalk-aside-border;
     /* erasing the predefined paddings in the columns */
@@ -146,7 +146,7 @@ section {
 
   /* fixing margins in the 1st and last columns */
   section {
-    .make-md-column(10);
+    .make-xs-column(10);
     padding-left:2em;
     padding-right: 2em;
     padding-top: 0;
@@ -172,13 +172,11 @@ section {
 header, nav.navbar-pf {
   .navbar-toggle {
     float: none;
-    display: none;
-    padding: 3px 6px;
-    background-color: @spacewalk-blue-light;
     border: 1px solid @spacewalk-gray-dark;
     margin: 0 15px 0 5px;
     vertical-align: middle;
-    color: @spacewalk-gray-dark;
+    padding: 4px 8px;
+    display: none;
     i {
       margin: 0;
     }
@@ -190,9 +188,9 @@ header, nav.navbar-pf {
     float: none;
     display: inline-block;
   }
-  .navbar-utility {
+  .navbar-utility, .navbar-primary {
     .navbar-right;
-    font-size: 13px;
+    font-size: 1em;
     display: inline-block;
     position: relative;
     vertical-align: middle;
@@ -316,7 +314,7 @@ header, nav.navbar-pf {
     vertical-align: middle;
     color: @spacewalk-gray-light;
     img {
-      height: 1.2em;
+      height: 1.3em;
       display: inline-block;
     }
     span {
@@ -331,110 +329,116 @@ header, nav.navbar-pf {
 }
 
 //Nav menu in left column
-#nav nav {
-  border-bottom: 3px double darken(@spacewalk-blue-light, 10%);
-  padding: 0px;
-  .nav-search-box {
-    text-align: center;
-    padding: 0 10px;
-  }
-  a {
-    display: block;
-    padding: 4px 2px;
-    color: @spacewalk-aside-menu-hyperlink;
-  }
-  a:hover, a:focus {
-    text-decoration: none;
-  }
-  ul, li {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    font-size: 1em;
-    display: block;
-  }
-  li {
-    position: relative;
-  }
-  /* First Level */
-  > ul {
-    margin-top: 10px;
-    > li {
-      border-top: 1px solid darken(@spacewalk-blue-light, 5%);
-      > a {
-        padding: 7px 2px 7px 10px;
-        color: @spacewalk-aside-menu-hyperlink;
-        > span {
-          display: inline-block;
-          vertical-align: middle;
-          // margin-left: 12px;
-        }
-      }
+#nav {
+  nav {
+    border-bottom: 3px double darken(@spacewalk-blue-light, 10%);
+    padding: 0px;
+    .nav-search-box {
+      text-align: center;
+      padding: 0 10px;
     }
-  }
-  li.node {
-    > a {
-      > span:after {
-        content: '\25B8';
-        position: absolute;
-        right: 10px;
-        font-size: inherit;
-      }
+    a {
+      display: block;
+      padding: 4px 2px;
+      color: @spacewalk-aside-menu-hyperlink;
     }
-  }
-  li.active > a {
-    color: @spacewalk-aside-menu-active;
-  }
-  ul {
+    a:hover, a:focus {
+      text-decoration: none;
+    }
+    ul, li {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      font-size: 1em;
+      display: block;
+    }
     li {
-      a {
-        border-right: 4px solid transparent;
-        span {
-          padding-right: 10px;
+      position: relative;
+    }
+    /* First Level */
+    > ul {
+      margin-top: 10px;
+      > li {
+        border-top: 1px solid darken(@spacewalk-blue-light, 5%);
+        > a {
+          padding: 7px 2px 7px 10px;
+          color: @spacewalk-aside-menu-hyperlink;
+          > span {
+            display: inline-block;
+            vertical-align: middle;
+            // margin-left: 12px;
+          }
         }
       }
     }
-    > li:hover {
-      > a {
-        color: @spacewalk-aside-menu-hyperlink-hover;
-        border-right-color: @spacewalk-aside-menu-hyperlink-hover;
-        background-color: @spacewalk-blue-light;
-      }
-    }
-    li.node.open {
+    li.node {
       > a {
         > span:after {
-          content: '\25BE';
+          content: '\25B8';
+          position: absolute;
+          right: 10px;
+          font-size: inherit;
         }
       }
     }
-    /* Second Level */
+    li.active > a {
+      color: @spacewalk-aside-menu-active;
+    }
     ul {
-      display: none;
-      padding-left: 10px;
-      padding-bottom: 10px;
-      background-color: @spacewalk-blue;
-      padding-top: 1px;
       li {
-        > a {
-          padding-left: 10px;
-          background-image: url('/img/susemanager/sub-list.png');
-          background-repeat: no-repeat;
-          background-position: left center;
+        a {
+          border-right: 4px solid transparent;
+          span {
+            padding-right: 10px;
+          }
         }
       }
-      > li:last-of-type > a  {
-        background-image: url('/img/susemanager/sub-list-last.png');
+      > li:hover {
+        > a {
+          color: @spacewalk-aside-menu-hyperlink-hover;
+          border-right-color: @spacewalk-aside-menu-hyperlink-hover;
+          background-color: @spacewalk-blue-light;
+        }
       }
-      > li:last-of-type ul {
-        background-image: none;
+      li.node.open {
+        > a {
+          > span:after {
+            content: '\25BE';
+          }
+        }
       }
-      /* Third Level */
+      /* Second Level */
       ul {
-        padding-left: 15px;
-        background-image: url('/img/susemanager/sub-list-line.png');
-        background-repeat: repeat-y;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        background-color: @spacewalk-blue;
+        padding-top: 1px;
+        li {
+          > a {
+            padding-left: 10px;
+            background-image: url('/img/susemanager/sub-list.png');
+            background-repeat: no-repeat;
+            background-position: left center;
+          }
+        }
+        > li:last-of-type > a  {
+          background-image: url('/img/susemanager/sub-list-last.png');
+        }
+        > li:last-of-type ul {
+          background-image: none;
+        }
+        /* Third Level */
+        ul {
+          padding-left: 15px;
+          background-image: url('/img/susemanager/sub-list-line.png');
+          background-repeat: repeat-y;
+        }
       }
+    }
+  }
+  .collapsed {
+    ul ul {
+      display: none;
     }
   }
 }
@@ -851,35 +855,7 @@ i.spacewalk-help-link {
 
 /* after pattern fly - fixes (more like workarounds) */
 .navbar-pf {
-  ul.navbar-primary {
-    li.active a, li.active a:hover, a, a:hover {
-      margin-left: .35em;
-      margin-right: .35em;
-      color: #fff;
-      text-shadow: 1px 1px 1px #333;
-      background-color: transparent;
-    }
-    li {
-      border-bottom: 4px solid transparent;
-    }
-    li:hover, li.active {
-      border-bottom: 3px solid #F7F7F7;
-    }
-    .btn-group {
-      margin: 0;
-      a {
-        padding: .5em .3em;
-      }
-    }
-  }
-  ul.navbar-primary:last-of-type {
-    padding-top: 10px;
-    a {
-      padding-top: 6px;
-      padding-bottom: 6px;
-    }
-  }
-  ul.navbar-utility {
+  ul.navbar-utility, ul.navbar-primary {
     font-size: 13px;
     li {
       display: inline-block;

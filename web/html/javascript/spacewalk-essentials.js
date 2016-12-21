@@ -48,13 +48,14 @@ function alignContentDimensions() {
 // Make columns 100% in height
 function columnHeight() {
   $('.spacewalk-main-column-layout aside').css('min-height', 0);
+  $('.spacewalk-main-column-layout section').css('min-height', 0);
   var headerHeight = $('header').outerHeight();
   var footerHeight = $('footer').outerHeight();
   var docHeight = $(document).height();
   // Column heights should equal the document height minus the header height and footer height
   $('.spacewalk-main-column-layout aside').css('min-height', docHeight - headerHeight - footerHeight);
+  $('.spacewalk-main-column-layout section').css('min-height', docHeight - headerHeight - footerHeight);
 };
-
 
 // returns an object that can be passed to DWR renderer as a callback
 // puts rendered HTML in #divId, opens an alert with the same text if

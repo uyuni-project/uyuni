@@ -1,84 +1,92 @@
 /* Rules to make it responsive */
-.aside-horizontal {
-  .spacewalk-main-column-layout aside {
-    margin-bottom: 1em;
-    padding-bottom: 0;
-    border-bottom: 1px solid #ccc
-  }
-}
-.sidenav-horizontal {
-  #sidenav {
-    a:before {
-      content: "";
-      margin: 0;
-    }
-    li {
-      display: inline-block;
-      border-bottom:0;
-    }
-    ul li:last-child, ul>ul li:last-child, ul>ul>ul li:last-child {
+/* override spacewalk rules */
+.override-spacwewalk-responsive-rules {
+  .spacewalk-main-column-layout {
+    aside {
+      margin-bottom: 0;
       border-bottom: 0;
-      -moz-box-shadow: 0px 0px 0px;
-      -webkit-box-shadow: 0px 0px 0px;
-      box-shadow: 0px 0px 0px;
+      padding-left: 0;
+      padding-right: 0;
     }
-    li.active > a, li.active > a:hover, ul li:hover, ul li a:hover {
-      color: @spacewalk-blue;
-      background: transparent;
-    }
-    /* first submenu */
-    ul>ul li {
-        padding: 0 !important;
-        background: transparent;
-        border: 0px;
-    }
-    ul>ul {
-      border-top: 1px solid #ccc;
-      border-bottom: 1px solid #ccc;
-      background: @spacewalk-list-first-submenu;
-      padding: .2em 0;
-    }
-    ul>ul li.active,
-    ul>ul li.active:hover,
-    ul>ul li.active a,
-    ul>ul li.active a:hover {
-      background: transparent;
-    }
-    ul>ul li:hover, ul>ul li a:hover {
-      background: transparent;
-      color: @spacewalk-blue;
-    }
-    ul>ul li:last-child {
-      border-bottom: 0px;
+    aside.collapse {
+      display: block;
     }
   }
 }
+.header-navbar-responsive {
+  header {
+    height: 80px;
+    .navbar-brand {
+      img {
+        width: auto!important;
+      }
+    }
+    .nav {
+      margin-top: 10px;
+    }
+    .navbar-utility {
+      float: none;
+    }
+    .navbar-primary {
+      position: absolute;
+      right: 10px;
+      top: 0px;
+    }
+  }
+}
+.responsive-main-column {
+  .spacewalk-main-column-layout {
+    aside {
+      .make-xs-column(3);
+    }
+    section {
+      .make-xs-column(9);
+    }
+  }
+}
+/* menu hidden */
+.menu-toggle-button {
+  header {
+    a.navbar-toggle {
+      display: inline-block;
+    }
+  }
+}
+.aside-toggled {
+  .menu-toggle-button;
+  .override-spacwewalk-responsive-rules;
+  .increase-menu-elements;
+  .spacewalk-main-column-layout {
+    aside {
+      .make-xs-column(12);
+      border-right: 0px;
+      min-height: auto!important;
+    }
+    aside.collapse {
+      display: none;
+    }
+    section {
+      .make-xs-column(12);
+      display: block;
+      min-height: auto!important;
+    }
+  }
+}
+// increase height of menu elements
+.increase-menu-elements {
+  #nav nav {
+    ul li a {
+      padding-top: 9px;
+      padding-bottom: 9px;
+    }
+  }
+}
+
+
 //second logo of SPACEWALK
 .logoLetter {
   .spacewalk-header-container a:nth-child(2) {
     display: none;
-  }
-}
-// columns in the header
-.header-responsive {
-  .spacewalk-header-container {
-    .make-row(0);
-    .spacewalk-logo {
-      .make-xs-column(6);
-      padding-left: 0;
-    }
-    .spacewalk-header-links {
-      .make-xs-column(6);
-      padding-right: 0;
-    }
-  }
-  header {
-    .spacewalk-logo {
-      padding: .7em 0;
-      img#rhLogo {
-        width: 120px;
-      }
-    }
   }
 }
 // columns without paddings
@@ -90,11 +98,16 @@
     }
   }
 }
-// Logal text in the footer takes 100% in small screens
+// override spacewalk rules
 .legal-text-footer {
   footer {
     div:nth-child(1) {
-      .make-xs-column(12);
+      position: relative;
+      float: none;
+      width: auto;
+      min-height: auto;
+      padding-left: 0px;
+      padding-right: 0px;
     }
   }
 }
@@ -106,56 +119,7 @@
     }
   }
 }
-// main navigation bar hidden in medium and small screens but with a button to make them visible again
-.menu-toggle-hide {
-  .main-menu-hor {
-    float: none;
-    width: 100%;
-    border-top: 1px solid #555;
-    margin: 0;
-    &.navbar-nav > li:hover {
-      .border-rounded(0;0;0;0);
-    }
-  }
-  .clear-responsive-btn {
-    .clearfix;
-  }
-}
-.main-menu-list-horizontally {
-  .main-menu-hor li{
-    float: left
-  }
-}
-.main-menu-hor {
-  .pull-left;
-}
-.clear-responsive-btn{
-  clear: none;
-}
 
-// Button for the main menu
-.main-menu-mobile{
-  display: none;
-}
-.button-main-menu-vissible {
-  .main-menu-mobile {
-    display: inline-block;
-    border: 1px solid #777;
-    padding: 0 .4em;
-    margin: 5px 15px;
-    color: #999;
-    background: @spacewalk-header;
-    .border-rounded(4px; 4px; 4px; 4px);
-    &:before{
-      content: "\f0c9";
-      font-family: 'FontAwesome';
-      font-size: 1.3em
-    }
-    &:hover{
-      color: #fff;
-    }
-  }
-}
 .login-form-100 {
   .login-page {
     width: 100%
@@ -205,38 +169,79 @@
   }
 }
 
+// smaller-logo
+.smaller-logo {
+  header {
+    .navbar-brand {
+      line-height: 1em;
+      vertical-align: top;
+      span {
+        font-size: 0.8em;
+      }
+      img {
+        height: 1em;
+      }
+    }
+  }
+}
+// logo with no text
+.no-text-logo {
+  header {
+    .navbar-brand {
+      span {
+        display: none;
+      }
+    }
+  }
+}
+
+// small footer
+.smaller-footer {
+  footer {
+    font-size: 0.7em;
+    div.wrapper {
+      background-image: none;
+    }
+  }
+}
+
 //classes that will take effect on tablets and mobiles screens
 @media (max-width: 1140px) {
   .fullPanelsNoMargin;
+  .responsive-main-column;
+  .override-spacwewalk-responsive-rules;
 }
 @media (max-width: @screen-desktop) {
-  .sidenav-horizontal;
-  .aside-horizontal;
-  .main-menu-list-horizontally;
+
 }
 @media (max-width: @screen-tablet) {
-  .aside-horizontal;
-  .header-responsive;
   .columns-no-padding;
   .legal-text-footer;
-  .menu-toggle-hide;
-  //.button-main-menu-vissible;
   .buttons-full-size;
   .fullPanels;
+
+  .header-navbar-responsive;
+  .smaller-logo;
 }
 //classes that will take effect only on mobiles screens
 @media (max-width: @screen-phone) {
   .logoLetter;
   .login-form-100;
-  .button-main-menu-vissible;
-  .menu-toggle-hide;
+
+  .aside-toggled;
+  .no-text-logo;
+  .smaller-footer;
 }
 
 /* --- changes after Pattern Fly  ---- */
 
-@media (max-width: 768px) {
-  nav .navbar-brand:nth-of-type(2) img {
-    width: 80% !important;
-    padding: 14px 26px
+@media (max-width: 767px) {
+  nav .navbar-brand img {
+    width: auto !important;
+    padding: 0;
+  }
+  footer div:nth-child(2) {
+    display: block!important;
+    height:4px;
   }
 }
