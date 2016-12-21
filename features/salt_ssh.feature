@@ -75,12 +75,12 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I follow remote ssh-minion hostname
     And I follow "Software" in the content area
     And I follow "Install"
-    When I check "subscription-tools-1.0-0" in the list
+    When I check "hoag-dummy-1.1-2.1" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait for "60" seconds
-    And "subscription-tools-1.0-0" is installed on "ssh-minion"
+    And "hoag-dummy-1.1-2.1" is installed on "ssh-minion"
 
   Scenario: No Salt Package and service are running on Minion
     Given no Salt packages are installed on remote minion host
@@ -155,10 +155,9 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I follow remote ssh-minion hostname
     And I follow "Software" in the content area
     And I follow "Install"
-    When I check "subscription-tools-1.0-0" in the list
+    When I check "hoag-dummy-1.1-2.1" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait for "60" seconds
-    And "subscription-tools-1.0-0" is installed on "ssh-minion"
-
+    And "hoag-dummy-1.1-2.1" is installed on "ssh-minion"
