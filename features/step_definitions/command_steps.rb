@@ -186,6 +186,8 @@ When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, target|
     _out, $fail_code = $server.run(cmd, false)
   elsif target == "ceos-minion"
     _out, _code = $ceos_minion.run(cmd, false)
+  elsif target == "ssh-minion"
+    _out, _code = $ssh_minion.run(cmd, false)
   end
 end
 Then(/^the command should fail$/) do
