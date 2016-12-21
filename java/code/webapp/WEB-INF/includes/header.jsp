@@ -15,7 +15,6 @@
     <img src="/img/susemanager/logo-header.png" id="rhLogo" />
     <span>SUSE Manager</span>
   </a>
-  <div id="breadcrumb"></div>
   <c:if test="${! empty custom_header}">
     <div class="custom-text">
       <c:out value="${custom_header}" escapeXml="false"/>
