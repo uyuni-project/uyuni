@@ -614,13 +614,14 @@ sed -e "s|^[\t ]*SSLCertificateFile.*$|SSLCertificateFile $HTTPDCONF_DIR/ssl.crt
     < $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak  > $HTTPDCONF_DIR/vhosts.d/ssl.conf
 
 SSH_PUSH_KEY_FILE="id_susemanager_ssh_push"
+SSH_PUSH_KEY_DIR=~/.ssh
 
 generate_or_import_ssh_push_key() {
     # backup first any existing keys
-    if [ -f ~/.ssh/${SSH_PUSH_KEY_FILE} ]; then
-       rm -f ~/.ssh/${SSH_PUSH_KEY_FILE}.*.bak
-       mv ~/.ssh/${SSH_PUSH_KEY_FILE} ~/.ssh/${SSH_PUSH_KEY_FILE}.bak
-       mv ~/.ssh/${SSH_PUSH_KEY_FILE}.pub ~/.ssh/${SSH_PUSH_KEY_FILE}.pub.bak
+    if [ -f $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE} ]; then
+       rm -f $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.*.bak
+       mv $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE} $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.bak
+       mv $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.pub $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.pub.bak
     fi
 
     # import existing or generate new ssh key for this proxy
@@ -629,15 +630,15 @@ generate_or_import_ssh_push_key() {
         while [[ -z "$EXISTING_SSH_KEY" || ( ! -r "$EXISTING_SSH_KEY" || ! -r "${EXISTING_SSH_KEY}.pub" ) ]]; do
            default_or_input "'$EXISTING_SSH_KEY' and '${EXISTING_SSH_KEY}.pub' don't exist or are not readable. Supply a valid path" EXISTING_SSH_KEY ''
         done
-        cp $EXISTING_SSH_KEY ~/.ssh/$SSH_PUSH_KEY_FILE
-        cp ${EXISTING_SSH_KEY}.pub ~/.ssh/${SSH_PUSH_KEY_FILE}.pub
+        cp $EXISTING_SSH_KEY $SSH_PUSH_KEY_DIR/$SSH_PUSH_KEY_FILE
+        cp ${EXISTING_SSH_KEY}.pub $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.pub
     else
         echo "Generating new SSH key for ssh-push minions."
-        ssh-keygen -q -N '' -C "susemanager-ssh-push" -f ~/.ssh/${SSH_PUSH_KEY_FILE}
+        ssh-keygen -q -N '' -C "susemanager-ssh-push" -f $SSH_PUSH_KEY_DIR/$SSH_PUSH_KEY_FILE
     fi
 
     # copy the public key to apache's pub dir
-    cp ~/.ssh/${SSH_PUSH_KEY_FILE}.pub ${HTMLPUB_DIR}/
+    cp $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.pub ${HTMLPUB_DIR}/
 }
 
 authorize_parent_ssh_push_key() {
