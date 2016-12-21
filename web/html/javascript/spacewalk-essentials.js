@@ -302,9 +302,29 @@ $(document).ready(function() {
 });
 
 $(document).on('click', '.toggle-box', function() {
-  $(this).toggleClass('open');
+  if ($(this).hasClass('open')) {
+    $(this).removeClass('open');
+  }
+  else {
+    $('.toggle-box.open').trigger('click');
+    $(this).addClass('open');
+  }
   $(this).blur(); // remove the focus
 })
+
+// focus go away from the menu or the nav menu
+$(document).click(function (e) {
+  var target = $(e.target);
+  // if a toggle-box button is active and the current click
+  // is not on its related box, trigger a close for it
+  $('.toggle-box.open').each(function() {
+    var toggleButton = $(this);
+    var toggleBox = toggleButton.parent();
+    if (!target.closest(toggleBox).length) {
+      toggleButton.trigger('click');
+    }
+  });
+});
 
 /* prevent jumping to the top of the page because
 of an <a href> tag that is actually not a link */
