@@ -29,18 +29,6 @@ header {
   img {
     float: left;
   }
-  #breadcrumb {
-    display: inline-block;
-    font-size: 1em;
-    color: @spacewalk-green;
-    padding: 2px 10px;
-    border-left: 1px solid #999;
-    vertical-align: middle;
-    margin-left: 10px;
-    span.level {
-      padding: 0 3px;
-    }
-  }
 }
 
 footer {
@@ -161,8 +149,19 @@ section {
     .make-md-column(10);
     padding-left:2em;
     padding-right: 2em;
-    padding-top: 1em;
+    padding-top: 0;
     padding-bottom: 2em;
+  }
+}
+
+#breadcrumb {
+  font-size: 0.9em;
+  color: @spacewalk-gray-dark;
+  margin: 10px auto;
+  font-size: 0.9em;
+  display: inline-block;
+  span.level {
+    padding: 0 3px;
   }
 }
 

@@ -23,6 +23,7 @@
         <jsp:include page="/WEB-INF/includes/legends.jsp" />
       </aside>
       <section id="spacewalk-content">
+        <div id="breadcrumb"></div>
         <noscript>
             <div class="alert alert-danger">
                 <bean:message key="common.jsp.noscript"/>
