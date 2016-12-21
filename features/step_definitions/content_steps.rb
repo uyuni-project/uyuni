@@ -256,6 +256,9 @@ Then(/^"([^"]*)" is installed on "([^"]*)"$/) do |package, target|
   when "minion"
     # this is a sles minion
     $minion.run("rpm -q #{package}", true, 600, 'root')
+  when "ssh-minion"
+    # this is a sles minion
+    $ssh_minion.run("rpm -q #{package}", true, 600, 'root')
   else
     raise "invalid target given"
   end
