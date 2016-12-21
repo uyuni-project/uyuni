@@ -69,7 +69,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
 
-   Scenario: Install a package to ssh-tunnel-minion
+   Scenario: Install a package to ssh-normal minion
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
     And I follow remote ssh-minion hostname
