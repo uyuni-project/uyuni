@@ -69,7 +69,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
 
-   Scenario: Install a package to ssh-tunnel-minion
+   Scenario: Install a package to normal ssh-minion
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
     And I follow remote ssh-minion hostname
@@ -79,13 +79,18 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait for "60" seconds
+    And I wait for "100" seconds
     And "hoag-dummy-1.1-2.1" is installed on "ssh-minion"
 
-  Scenario: No Salt Package and service are running on Minion
-    Given no Salt packages are installed on remote minion host
-    And remote minion host is not registered in Spacewalk
-  
+   Scenario: Delete minion system profile
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Systems"
+    And I follow remote ssh-minion hostname
+    When I follow "Delete System"
+    And I should see a "Confirm System Profile Deletion" text
+    And I click on "Delete Profile"
+    Then I should see a "has been deleted" text
+
   Scenario: Bootstrap a system via salt-ssh with reverse ssh-tunnel
     Given I am authorized
     When I follow "Salt"
@@ -159,5 +164,5 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait for "60" seconds
+    And I wait for "100" seconds
     And "hoag-dummy-1.1-2.1" is installed on "ssh-minion"

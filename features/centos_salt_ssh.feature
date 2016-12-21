@@ -9,9 +9,9 @@ Feature: CENTOS7 feature.
      verify functionality: script, remote cmds, packages install, channel subscription.
      verify tunnel proprety: repo 1233 port, and installation of pkg only via server.
 
-  Scenario: No Salt Package and service are running on Minion
+  Scenario: No Salt Package and service are running on Minion centos
     Given no Salt packages are installed on remote minion host
-    And remote minion host is not registered in Spacewalk
+    And centos minion is not registered in Spacewalk
     
   Scenario: Bootstrap a system via salt-ssh
     Given I am authorized
@@ -20,15 +20,15 @@ Feature: CENTOS7 feature.
     And I follow "Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     And I check "manageWithSSH"
-    And I enter remote ssh-minion hostname as "hostname"
+    And I enter the hostname of "ceos-minion" as hostname
     And I enter "linux" as "password"
     And I click on "Bootstrap"
     And I wait for "15" seconds
     Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
     And I wait for "10" seconds
     And I follow "System Overview"
-    Then I should see remote ssh-minion hostname as link
-    And I follow remote ssh-minion hostname
+    Then I should see centos ssh-minion hostname as link
+    And I follow centos ssh-minion hostname
     Then I should see a "Push via SSH" text
 
   Scenario: Run a remote command on ssh-minion
@@ -40,13 +40,13 @@ Feature: CENTOS7 feature.
     And I click on preview
     And I click on run
     Then I wait for "3" seconds
-    And I expand the results for "ssh-minion"
+    And I expand the results for "ceos-minion"
     Then I should see a "package salt-minion is not installed" text
 
    Scenario: Run a remote command from the systems overview page
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
-    And I follow remote ssh-minion hostname
+    And I follow centos ssh-minion hostname
     When I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
@@ -56,13 +56,13 @@ Feature: CENTOS7 feature.
     And I click on "Schedule"
     Then I should see a "Remote Command has been scheduled successfully" text
     And I wait for "10" seconds
-    And I check status "Completed" with spacecmd on "ssh-minion"
-    Then I run "zypper lr --show-enabled-only -u | grep :443/rhn" on "ssh-minion"
+    And I check status "Completed" with spacecmd on "ceos-minion"
+    Then I run "yum repoinfo | grep :443/rhn" on "ceos-minion"
 
-   Scenario: Subscribe ssh-minion to a base-channel for testing
+   Scenario: Subscribe centos ssh-minion to a base-channel for testing
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
-    And I follow remote ssh-minion hostname
+    And I follow centos ssh-minion hostname
     When I follow "Software" in the content area
     Then I follow "Software Channels" in the content area
     And I select "Test Base Channel" from "new_base_channel_id"
@@ -70,10 +70,10 @@ Feature: CENTOS7 feature.
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
 
-   Scenario: Install a package to ssh-tunnel-minion
+   Scenario: Install a package to centos ssh-normal minion
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
-    And I follow remote ssh-minion hostname
+    And I follow centos ssh-minion hostname
     And I follow "Software" in the content area
     And I follow "Install"
     When I check "hoag-dummy-1.1-2.1" in the list
@@ -81,20 +81,25 @@ Feature: CENTOS7 feature.
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait for "60" seconds
-    And "hoag-dummy-1.1-2.1" is installed on "ssh-minion"
+    And "hoag-dummy-1.1-2.1" is installed on "ceos-minion"
 
-  Scenario: No Salt Package and service are running on Minion
-    Given no Salt packages are installed on remote minion host
-    And remote minion host is not registered in Spacewalk
-  
-  Scenario: Bootstrap a system via salt-ssh with reverse ssh-tunnel
+  Scenario: Delete minion system profile
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Systems"
+    And I follow centos ssh-minion hostname
+    When I follow "Delete System"
+    And I should see a "Confirm System Profile Deletion" text
+    And I click on "Delete Profile"
+    Then I should see a "has been deleted" text
+
+  Scenario: Bootstrap a centos-salt-ssh with reverse ssh-tunnel
     Given I am authorized
     When I follow "Salt"
     Then I should see a "Bootstrapping" text
     And I follow "Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     And I check "manageWithSSH"
-    And I enter remote ssh-minion hostname as "hostname"
+    And I enter the hostname of "ceos-minion" as hostname
     And I enter "linux" as "password"
     And I select "1-ssh-push-tunnel" from "activationKeys"
     And I click on "Bootstrap"
@@ -102,11 +107,11 @@ Feature: CENTOS7 feature.
     Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
     And I wait for "10" seconds
     And I follow "System Overview"
-    Then I should see remote ssh-minion hostname as link
-    And I follow remote ssh-minion hostname
+    Then I should see centos ssh-minion hostname as link
+    And I follow centos ssh-minion hostname
     Then I should see a "Push via SSH tunnel" text
 
-  Scenario: Run a remote command on ssh-minion-tunnel
+  Scenario: Run a remote command on centos ssh-minion-tunnel
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
     And I follow "Remote Commands"
@@ -115,13 +120,13 @@ Feature: CENTOS7 feature.
     And I click on preview
     And I click on run
     Then I wait for "3" seconds
-    And I expand the results for "ssh-minion"
+    And I expand the results for "ceos-minion"
     Then I should see a "package salt-minion is not installed" text
 
    Scenario: Run a remote command from the systems overview page: ssh-tunnel
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
-    And I follow remote ssh-minion hostname
+    And I follow centos ssh-minion hostname
     When I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
@@ -131,12 +136,12 @@ Feature: CENTOS7 feature.
     And I click on "Schedule"
     Then I should see a "Remote Command has been scheduled successfully" text
     And I wait for "10" seconds
-    And I check status "Completed" with spacecmd on "ssh-minion"
+    And I check status "Completed" with spacecmd on "ceos-minion"
 
    Scenario: Subscribe ssh-tunnel-minion to a base-channel for testing
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
-    And I follow remote ssh-minion hostname
+    And I follow centos ssh-minion hostname
     When I follow "Software" in the content area
     Then I follow "Software Channels" in the content area
     And I select "Test Base Channel" from "new_base_channel_id"
@@ -144,16 +149,16 @@ Feature: CENTOS7 feature.
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
 
-   Scenario: test the ssh-reversing tunnel on sle-minion
+   Scenario: test the ssh-reversing tunnel on ceos-minion
    # Verify that the repository of ssh-tunnel-minion has port on 1233
    # normally this point somewhere else.
    Given I am authorized as "testing" with password "testing"
-   Then I run "zypper lr -u | grep :1233/rhn" on "ssh-minion"
+   Then I run "yum repoinfo | grep :1233/rhn" on "ceos-minion"
 
    Scenario: Install a package to ssh-tunnel-minion
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
-    And I follow remote ssh-minion hostname
+    And I follow centos ssh-minion hostname
     And I follow "Software" in the content area
     And I follow "Install"
     When I check "hoag-dummy-1.1-2.1" in the list
@@ -161,4 +166,4 @@ Feature: CENTOS7 feature.
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait for "60" seconds
-    And "hoag-dummy-1.1-2.1" is installed on "ssh-minion"
+    And "hoag-dummy-1.1-2.1" is installed on "ceos-minion"
