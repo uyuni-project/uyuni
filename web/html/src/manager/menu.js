@@ -15,7 +15,7 @@ $(document).ready(function() {
       $.closeNav(li);
     }
     else {
-      $.closeNav(li.siblings());
+      // $.closeNav(li.siblings());
       $.openNav(li);
     }
   });
