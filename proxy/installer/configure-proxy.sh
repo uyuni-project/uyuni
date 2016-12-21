@@ -384,6 +384,9 @@ default_or_input "Do you want to import existing certificates?" \
     USE_EXISTING_CERTS "y/N"
 USE_EXISTING_CERTS=$(yes_no $USE_EXISTING_CERTS)
 
+default_or_input "Do you want to use an existing ssh key for proxying ssh-push minions ?" USE_EXISTING_SSH_PUSH_KEY 'Y/n'
+USE_EXISTING_SSH_PUSH_KEY = $(yes_no $USE_EXISTING_SSH_PUSH_KEY)
+
 /usr/bin/rhn-proxy-activate --server="$RHN_PARENT" \
                             --http-proxy="$HTTP_PROXY" \
                             --http-proxy-username="$HTTP_USERNAME" \
@@ -608,6 +611,57 @@ sed -e "s|^[\t ]*SSLCertificateFile.*$|SSLCertificateFile $HTTPDCONF_DIR/ssl.crt
     -e "s|^[\t ]*SSLCipherSuite.*$|SSLCipherSuite ALL:!aNULL:!eNULL:!SSLv2:!LOW:!EXP:!MD5:@STRENGTH|g" \
     -e "s|</VirtualHost>|SSLProtocol all -SSLv2 -SSLv3\nRewriteEngine on\nRewriteOptions inherit\nSSLProxyEngine on\n</VirtualHost>|" \
     < $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak  > $HTTPDCONF_DIR/vhosts.d/ssl.conf
+
+SSH_PUSH_KEY_FILE="id_susemanager_ssh_push"
+
+generate_or_import_ssh_push_key() {
+    # backup first any existing keys
+    if [ -f ~/.ssh/${SSH_PUSH_KEY_FILE} ]; then
+       rm -f ~/.ssh/${SSH_PUSH_KEY_FILE}.*.bak
+       mv ~/.ssh/${SSH_PUSH_KEY_FILE} ~/.ssh/${SSH_PUSH_KEY_FILE}.bak
+       mv ~/.ssh/${SSH_PUSH_KEY_FILE}.pub ~/.ssh/${SSH_PUSH_KEY_FILE}.pub.bak
+    fi
+
+    # import existing or generate new ssh key for this proxy
+    if [ "$USE_EXISTING_SSH_PUSH_KEY" -eq "1" ]; then
+        default_or_input "Private SSH key for connecting to the next proxy in the chain (if any) for ssh-push minions" EXISTING_SSH_KEY ''
+        while [[ -z "$EXISTING_SSH_KEY" || ( ! -r "$EXISTING_SSH_KEY" || ! -r "${EXISTING_SSH_KEY}.pub" ) ]]; do
+           default_or_input "'$EXISTING_SSH_KEY' and '${EXISTING_SSH_KEY}.pub' don't exist or are not readable. Supply a valid path" EXISTING_SSH_KEY ''
+        done
+        cp $EXISTING_SSH_KEY ~/.ssh/$SSH_PUSH_KEY_FILE
+        cp ${EXISTING_SSH_KEY}.pub ~/.ssh/${SSH_PUSH_KEY_FILE}.pub
+    else
+        echo "Generating new SSH key for ssh-push minions."
+        ssh-keygen -q -N '' -C "susemanager-ssh-push" -f ~/.ssh/${SSH_PUSH_KEY_FILE}
+    fi
+
+    # copy the public key to apache's pub dir
+    cp ~/.ssh/${SSH_PUSH_KEY_FILE}.pub ${HTMLPUB_DIR}/
+}
+
+authorize_parent_ssh_push_key() {
+    # Fetch key from parent and add it to authorized_keys
+    echo "Authorizing $RHN_PARENT to use this proxy to connect to ssh-push minions."
+    local AUTH_KEYS=~/.ssh/authorized_keys
+    local TMP_PUSH_KEY_FILE=~/.ssh/${SSH_PUSH_KEY_FILE}.pub.tmp
+    rm -f $TMP_PUSH_KEY_FILE
+    local CURL_KEY="curl -s ${PROTO}://${RHN_PARENT}/pub/${SSH_PUSH_KEY_FILE}.pub"
+    echo "Fetching public ssh-push key from $RHN_PARENT."
+    $CURL_KEY > $TMP_PUSH_KEY_FILE
+    local EXIT_CODE=$?
+    if [[ $EXIT_CODE != 0 ]]; then
+      echo "Could not retrieve ssh-push key. '$CURL_KEY' failed with exit code $EXIT_CODE"
+      exit 1
+    fi
+
+    # remove any previously authorized key
+    [ -f $AUTH_KEYS ] && sed -i '/susemanager-ssh-push/d' $AUTH_KEYS
+    cat $TMP_PUSH_KEY_FILE >> $AUTH_KEYS && echo "Added public ssh-push key from $RHN_PARENT to $AUTH_KEYS."
+    rm $TMP_PUSH_KEY_FILE
+}
+
+generate_or_import_ssh_push_key
+authorize_parent_ssh_push_key
 
 CHANNEL_LABEL="rhn_proxy_config_$SYSTEM_ID"
 default_or_input "Create and populate configuration channel $CHANNEL_LABEL?" POPULATE_CONFIG_CHANNEL 'Y/n'
