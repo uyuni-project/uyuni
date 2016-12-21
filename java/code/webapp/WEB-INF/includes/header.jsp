@@ -6,9 +6,9 @@
 
 <c:set var="custom_header" scope="page" value="${rhn:getConfig('java.custom_header')}" />
 
-<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#spacewalk-aside">
+<a href="#" class="navbar-toggle" data-toggle="collapse" data-target="#spacewalk-aside">
   <i class="fa fa-bars" aria-hidden="true"></i>
-</button>
+</a>
 
 <div class="navbar-header">
   <a class="navbar-brand" href="/" title="<bean:message key="layout.jsp.productname"/> homepage">
@@ -24,6 +24,40 @@
 
 <rhn:require acl="user_authenticated()">
   <ul class="nav navbar-nav navbar-utility">
+    <li>
+    </li>
+    <li>
+      <a href="/rhn/account/UserDetails.do"
+        title="${requestScope.session.user.login}">
+          <rhn:icon type="header-user" /><span>${requestScope.session.user.login}</span>
+      </a>
+    </li>
+    <li>
+      <rhn:require acl="user_role(org_admin)">
+        <a href="/rhn/multiorg/OrgConfigDetails.do" title="${requestScope.session.user.org.name}">
+          <rhn:icon type="header-sitemap" /><span>${requestScope.session.user.org.name}</span>
+        </a>
+      </rhn:require>
+      <rhn:require acl="not user_role(org_admin)">
+        <span class="spacewalk-header-non-link" title="${requestScope.session.user.org.name}">
+          <rhn:icon type="header-sitemap" /><span>${requestScope.session.user.org.name}</span>
+        </span>
+      </rhn:require>
+    </li>
+    <li>
+      <a href="/rhn/account/UserPreferences.do" title="<bean:message key="header.jsp.preferences" />"
+          alt="<bean:message key="header.jsp.preferences" />">
+        <rhn:icon type="header-preferences"/>
+      </a>
+    </li>
+    <li>
+      <a href="/rhn/Logout.do" title="<bean:message key="header.jsp.signout" />"
+          alt="<bean:message key="header.jsp.signout" />">
+        <rhn:icon type="header-signout" />
+      </a>
+    </li>
+  </ul>
+  <ul class="nav navbar-nav navbar-primary">
     <li class="search">
       <a href="#" class="toggle-box" data-toggle="collapse" data-target="form#search-form">
         <i class="fa fa-search" aria-hidden="true"></i>
@@ -66,36 +100,6 @@
       <a id="clear-ssm" href="/rhn/systems/Overview.do?empty_set=true&amp;return_url=${rhn:urlEncode(rurl)}"
           title="<bean:message key="clear"/>">
         <i class="fa fa-eraser"></i>
-      </a>
-    </li>
-    <li>
-      <a href="/rhn/account/UserDetails.do"
-        title="${requestScope.session.user.login}">
-          <rhn:icon type="header-user" /><span>${requestScope.session.user.login}</span>
-      </a>
-    </li>
-    <li>
-      <rhn:require acl="user_role(org_admin)">
-        <a href="/rhn/multiorg/OrgConfigDetails.do" title="${requestScope.session.user.org.name}">
-          <rhn:icon type="header-sitemap" /><span>${requestScope.session.user.org.name}</span>
-        </a>
-      </rhn:require>
-      <rhn:require acl="not user_role(org_admin)">
-        <span class="spacewalk-header-non-link" title="${requestScope.session.user.org.name}">
-          <rhn:icon type="header-sitemap" /><span>${requestScope.session.user.org.name}</span>
-        </span>
-      </rhn:require>
-    </li>
-    <li>
-      <a href="/rhn/account/UserPreferences.do" title="<bean:message key="header.jsp.preferences" />"
-          alt="<bean:message key="header.jsp.preferences" />">
-        <rhn:icon type="header-preferences"/>
-      </a>
-    </li>
-    <li>
-      <a href="/rhn/Logout.do" title="<bean:message key="header.jsp.signout" />"
-          alt="<bean:message key="header.jsp.signout" />">
-        <rhn:icon type="header-signout" />
       </a>
     </li>
   </ul>
