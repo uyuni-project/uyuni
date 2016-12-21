@@ -23,11 +23,8 @@ When(/^I expand the results$/) do
 end
 
 When(/^I expand the results for "(.*)"$/) do |host|
-   if host == "ceos-minion"
-     find("div[id='#{$ceos_minion_fullhostname}']").click
-   else
-     find("div[id='#{host}']").click
-   end
+ find("div[id='#{$ceos_minion_fullhostname}']").click if host == "ceos-minion"
+ find("div[id='#{$ssh_minion_fullhostname}']").click if host == "ssh-minion"
 end
 
 Then(/^I enter command "([^"]*)"$/) do |arg1|

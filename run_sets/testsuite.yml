@@ -86,13 +86,13 @@
 # wait for fix, test ok, but need producht upstream fix
 # - features/salt_regression_multiminion.feature
 
-- 
+- features/salt_ssh.feature 
 ## Centos client related feat. ###
 ## ** salt ***
 
 - features/minion_centos_bootstrap.feature
 - features/centos_salt_remote_cmds.feature
-
+- features/centos_salt_ssh.feature 
 # end-tests
 - features/spacewalk-errors.feature
 - features/spacewalk-debug.feature
