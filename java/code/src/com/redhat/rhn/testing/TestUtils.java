@@ -305,10 +305,12 @@ public class TestUtils {
      * Util to reload an object from the DB using Hibernate.
      * @param objClass of object being looked up
      * @param id of object
+     * @param <T> type of object to reload
      * @return Object found or NULL if not
      * @throws HibernateException if something goes wrong.
      */
-    public static Object reload(Class objClass, Serializable id) throws HibernateException {
+    public static <T> T reload(Class<T> objClass, Serializable id)
+            throws HibernateException {
         Session session = HibernateFactory.getSession();
         session.flush();
         /*
@@ -318,18 +320,19 @@ public class TestUtils {
          * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
          * session.get is set to not return the proxy class, so that is what we'll use.
          */
-        Object obj = session.get(objClass, id);
+        T obj = (T)session.get(objClass, id);
         return reload(obj);
     }
 
     /**
      * Util to reload an object using Hibernate
      * @param obj to be reloaded
+     * @param <T> type of object to reload
      * @return Object found if not, null
      * @throws HibernateException if something bad happens.
      */
-    public static Object reload(Object obj) throws HibernateException {
-        return HibernateFactory.reload(obj);
+    public static <T> T reload(T obj) throws HibernateException {
+        return (T)HibernateFactory.reload(obj);
     }
 
     /**
@@ -484,9 +487,10 @@ public class TestUtils {
     /**
      * Save and reload an object from DB
      * @param o to save and reload.
+     * @param <T> type of object to save and reload
      * @return Object fresh from DB
      */
-    public static Object saveAndReload(Object o) {
+    public static <T> T saveAndReload(T o) {
         TestUtils.saveAndFlush(o);
         return reload(o);
     }
