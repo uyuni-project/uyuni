@@ -24,7 +24,7 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -45,10 +45,8 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SaltCustomState;
 import com.suse.manager.webui.utils.SaltPillar;
-import com.suse.manager.webui.utils.TokenBuilder;
 
 import org.apache.log4j.Logger;
-import org.jose4j.lang.JoseException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -110,7 +108,7 @@ public enum SaltStateGeneratorService {
 
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(minion);
         List<Long> groupIds = groups.stream()
-                .map(g -> g.getId()).collect(Collectors.toList());
+                .map(ServerGroup::getId).collect(Collectors.toList());
         SaltPillar pillar = new SaltPillar();
         pillar.add("org_id", minion.getOrg().getId());
         pillar.add("group_ids", groupIds.toArray(new Long[groupIds.size()]));
@@ -118,13 +116,10 @@ public enum SaltStateGeneratorService {
         pillar.add("mgr_server", getChannelHost(minion));
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
 
-        Map<String, Object> chanPillar = new HashMap<>();
-        try {
-            TokenBuilder tokenBuilder = new TokenBuilder(minion.getOrg().getId());
-            tokenBuilder.useServerSecret();
-            String token = tokenBuilder.getToken();
 
-            for (Channel chan : minion.getChannels()) {
+        Map<String, Object> chanPillar = new HashMap<>();
+        AccessTokenFactory.refreshTokens(minion).forEach(accessToken -> {
+            accessToken.getChannels().forEach(chan -> {
                 Map<String, Object> chanProps = new HashMap<>();
                 chanProps.put("alias", "susemanager:" + chan.getLabel());
                 chanProps.put("name", chan.getName());
@@ -134,38 +129,32 @@ public enum SaltStateGeneratorService {
                 if ("ssh-push-tunnel".equals(minion.getContactMethod().getLabel())) {
                     chanProps.put("port", Config.get().getInt("ssh_push_port_https"));
                 }
-                chanProps.put("token", token);
+                chanProps.put("token", accessToken.getToken());
                 chanProps.put("type", "rpm-md");
                 chanProps.put("gpgcheck", "0");
                 chanProps.put("repo_gpgcheck", "0");
                 chanProps.put("pkg_gpgcheck", "1");
 
                 chanPillar.put(chan.getLabel(), chanProps);
+            });
+        });
+        pillar.add("channels", chanPillar);
 
-            }
-            pillar.add("channels", chanPillar);
-
-            Map<String, Object> beaconConfig = new HashMap<>();
-            // this add the configuration for the beacon that tell us when the
-            // minion packages are modified locally
-            if (minion.getOs().toLowerCase().equals("sles") ||
-                    minion.getOsFamily().toLowerCase().equals("redhat")) {
-                beaconConfig.put("pkgset", PKGSET_BEACON_PROPS);
-            }
-            // this add the configuration for the beacon that tell us about
-            // virtual guests running on that minion
-            // TODO: find a better way to detect when the beacon should be configured
-            if (minion.isVirtualHost()) {
-                beaconConfig.put("virtpoller", VIRTPOLLER_BEACON_PROPS);
-            }
-            if (!beaconConfig.isEmpty()) {
-                pillar.add("beacons", beaconConfig);
-            }
+        Map<String, Object> beaconConfig = new HashMap<>();
+        // this add the configuration for the beacon that tell us when the
+        // minion packages are modified locally
+        if (minion.getOs().toLowerCase().equals("sles") ||
+                minion.getOsFamily().toLowerCase().equals("redhat")) {
+            beaconConfig.put("pkgset", PKGSET_BEACON_PROPS);
         }
-        catch (JoseException e) {
-            LOG.error(String.format(
-                    "Generating pillar for server with serverId '%s' failed.",
-                    minion.getId()), e);
+        // this add the configuration for the beacon that tell us about
+        // virtual guests running on that minion
+        // TODO: find a better way to detect when the beacon should be configured
+        if (minion.isVirtualHost()) {
+            beaconConfig.put("virtpoller", VIRTPOLLER_BEACON_PROPS);
+        }
+        if (!beaconConfig.isEmpty()) {
+            pillar.add("beacons", beaconConfig);
         }
 
         try {

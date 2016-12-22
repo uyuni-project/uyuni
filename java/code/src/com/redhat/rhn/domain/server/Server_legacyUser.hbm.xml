@@ -196,6 +196,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <property name="minionId" column="minion_id" />
             <property name="osFamily" column="os_family"  type="string" length="32" />
             <property name="kernelLiveVersion" column="kernel_live_version"  type="string" length="255" />
+            <set name="accessTokens" lazy="true" inverse="true">
+                <key column="minion_id"/>
+                <one-to-many class="com.redhat.rhn.domain.channel.AccessToken"/>
+            </set>
         </joined-subclass>
     </class>
 
