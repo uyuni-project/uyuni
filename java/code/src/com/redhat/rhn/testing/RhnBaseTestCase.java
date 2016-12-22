@@ -96,21 +96,22 @@ public abstract class RhnBaseTestCase extends TestCase {
         session.evict(obj);
     }
 
-    protected Object reload(Class objClass, Serializable id) throws HibernateException {
+    protected <T> T reload(Class<T> objClass, Serializable id) throws HibernateException {
         assertNotNull(id);
-        Object obj = TestUtils.reload(objClass, id);
+        T obj = TestUtils.reload(objClass, id);
         return reload(obj);
     }
 
     /**
      * Reload a Hibernate entity.
      * @param obj the entity to reload
+     * @param <T> type of object to reload
      * @return the new instance
      * @throws HibernateException in case of error
      */
-    public static Object reload(Object obj) throws HibernateException {
+    public static <T> T reload(T obj) throws HibernateException {
         assertNotNull(obj);
-        Object result = TestUtils.reload(obj);
+        T result = TestUtils.reload(obj);
         assertNotSame(obj, result);
         return result;
     }
