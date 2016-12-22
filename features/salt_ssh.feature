@@ -30,6 +30,17 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I follow remote ssh-minion hostname
     Then I should see a "Push via SSH" text
 
+   Scenario: Subscribe ssh-minion to a base-channel for testing
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Systems"
+    And I follow remote ssh-minion hostname
+    When I follow "Software" in the content area
+    Then I follow "Software Channels" in the content area
+    And I select "Test Base Channel" from "new_base_channel_id"
+    And I click on "Confirm"
+    And I click on "Modify Base Software Channel"
+    And I should see a "System's Base Channel has been updated." text
+
   Scenario: Run a remote command on ssh-minion
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
@@ -57,17 +68,6 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I wait for "10" seconds
     And I check status "Completed" with spacecmd on "ssh-minion"
     Then I run "zypper lr --show-enabled-only -u | grep :443/rhn" on "ssh-minion"
-
-   Scenario: Subscribe ssh-minion to a base-channel for testing
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow remote ssh-minion hostname
-    When I follow "Software" in the content area
-    Then I follow "Software Channels" in the content area
-    And I select "Test Base Channel" from "new_base_channel_id"
-    And I click on "Confirm"
-    And I click on "Modify Base Software Channel"
-    And I should see a "System's Base Channel has been updated." text
 
    Scenario: Install a package to ssh-normal minion
     Given I am authorized as "testing" with password "testing"
@@ -105,6 +105,18 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I follow remote ssh-minion hostname
     Then I should see a "Push via SSH tunnel" text
 
+   Scenario: Subscribe ssh-tunnel-minion to a base-channel for testing
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Systems"
+    And I follow remote ssh-minion hostname
+    When I follow "Software" in the content area
+    Then I follow "Software Channels" in the content area
+    And I select "Test Base Channel" from "new_base_channel_id"
+    And I click on "Confirm"
+    And I click on "Modify Base Software Channel"
+    And I should see a "System's Base Channel has been updated." text
+
+
   Scenario: Run a remote command on ssh-minion-tunnel
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
@@ -131,17 +143,6 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     Then I should see a "Remote Command has been scheduled successfully" text
     And I wait for "10" seconds
     And I check status "Completed" with spacecmd on "ssh-minion"
-
-   Scenario: Subscribe ssh-tunnel-minion to a base-channel for testing
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow remote ssh-minion hostname
-    When I follow "Software" in the content area
-    Then I follow "Software Channels" in the content area
-    And I select "Test Base Channel" from "new_base_channel_id"
-    And I click on "Confirm"
-    And I click on "Modify Base Software Channel"
-    And I should see a "System's Base Channel has been updated." text
 
    Scenario: test the ssh-reversing tunnel on sle-minion
    # Verify that the repository of ssh-tunnel-minion has port on 1233
