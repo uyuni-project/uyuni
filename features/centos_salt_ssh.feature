@@ -31,7 +31,18 @@ Feature: CENTOS7 feature: SSH-MINION tests
     And I follow centos ssh-minion hostname
     Then I should see a "Push via SSH" text
 
-  Scenario: Run a remote command on ssh-minion
+ Scenario: Subscribe centos ssh-minion to a base-channel for testing
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Systems"
+    And I follow centos ssh-minion hostname
+    When I follow "Software" in the content area
+    Then I follow "Software Channels" in the content area
+    And I select "Test Base Channel" from "new_base_channel_id"
+    And I click on "Confirm"
+    And I click on "Modify Base Software Channel"
+    And I should see a "System's Base Channel has been updated." text
+ 
+ Scenario: Run a remote command on ssh-minion
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
     And I follow "Remote Commands"
@@ -59,18 +70,7 @@ Feature: CENTOS7 feature: SSH-MINION tests
     And I check status "Completed" with spacecmd on "ceos-minion"
     Then I run "yum repoinfo | grep :443/rhn" on "ceos-minion"
 
-   Scenario: Subscribe centos ssh-minion to a base-channel for testing
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow centos ssh-minion hostname
-    When I follow "Software" in the content area
-    Then I follow "Software Channels" in the content area
-    And I select "Test Base Channel" from "new_base_channel_id"
-    And I click on "Confirm"
-    And I click on "Modify Base Software Channel"
-    And I should see a "System's Base Channel has been updated." text
-
-   Scenario: Install a package to centos ssh-normal minion
+     Scenario: Install a package to centos ssh-normal minion
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
     And I follow centos ssh-minion hostname
@@ -111,6 +111,17 @@ Feature: CENTOS7 feature: SSH-MINION tests
     And I follow centos ssh-minion hostname
     Then I should see a "Push via SSH tunnel" text
 
+   Scenario: Subscribe ssh-tunnel-minion to a base-channel for testing
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Systems"
+    And I follow centos ssh-minion hostname
+    When I follow "Software" in the content area
+    Then I follow "Software Channels" in the content area
+    And I select "Test Base Channel" from "new_base_channel_id"
+    And I click on "Confirm"
+    And I click on "Modify Base Software Channel"
+    And I should see a "System's Base Channel has been updated." text
+
   Scenario: Run a remote command on centos ssh-minion-tunnel
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
@@ -137,17 +148,6 @@ Feature: CENTOS7 feature: SSH-MINION tests
     Then I should see a "Remote Command has been scheduled successfully" text
     And I wait for "10" seconds
     And I check status "Completed" with spacecmd on "ceos-minion"
-
-   Scenario: Subscribe ssh-tunnel-minion to a base-channel for testing
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow centos ssh-minion hostname
-    When I follow "Software" in the content area
-    Then I follow "Software Channels" in the content area
-    And I select "Test Base Channel" from "new_base_channel_id"
-    And I click on "Confirm"
-    And I click on "Modify Base Software Channel"
-    And I should see a "System's Base Channel has been updated." text
 
    Scenario: test the ssh-reversing tunnel on ceos-minion
    # Verify that the repository of ssh-tunnel-minion has port on 1233
