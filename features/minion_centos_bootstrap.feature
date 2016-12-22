@@ -1,7 +1,7 @@
 # Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: register a salt-minion via bootstrap
+Feature: CENTOS: register a salt-minion via bootstrap
 
   Scenario: bootstrap a centos minion
      Given I am authorized
