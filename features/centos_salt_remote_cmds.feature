@@ -1,7 +1,7 @@
 # Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Test the remote commands via salt for redhat minion
+Feature: CENTOS Test the remote commands via salt for redhat minion
   In Order to test the remote commands via salt
   As an authorized user
   I want to verify that the remote commands function works for centos minion

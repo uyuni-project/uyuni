@@ -1,13 +1,13 @@
 # Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: CENTOS7 feature.
-   1) Bootstrap a new salt host via salt-ssh
-   verify functionality: script, remote cmds, packages install, channel subscription.
+Feature: CENTOS7 feature: SSH-MINION tests
+  1) Bootstrap a new salt host via salt-ssh
+  * verify functionality: script, remote cmds, packages install, channel subscription.
   2) delete the ssh-minion
   3) bootstap a ssh-minion tunneled by ssh-reverse. 
-     verify functionality: script, remote cmds, packages install, channel subscription.
-     verify tunnel proprety: repo 1233 port, and installation of pkg only via server.
+  *  verify functionality: script, remote cmds, packages install, channel subscription.
+  *  verify tunnel proprety: repo 1233 port, and installation of pkg only via server.
 
   Scenario: No Salt Package and service are running on Minion centos
     Given no Salt packages are installed on remote minion host
