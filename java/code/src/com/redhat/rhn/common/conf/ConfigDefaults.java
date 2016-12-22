@@ -216,7 +216,10 @@ public class ConfigDefaults {
      * Token lifetime in seconds
      */
     public static final String TEMP_TOKEN_LIFETIME = "susemanager.temp_token_lifetime";
-    public static final int DEFAULT_TEMP_TOKEN_LIFETIME = 60 * 60; // 1 hour
+    public static final int DEFAULT_TEMP_TOKEN_LIFETIME = 60; // 60 minutes
+
+    public static final int DEFAULT_TOKEN_LIFETIME = 60 * 24 * 365; // 1 year
+    public static final String TOKEN_LIFETIME = "susemanager.token_lifetime";
 
     private ConfigDefaults() {
     }
