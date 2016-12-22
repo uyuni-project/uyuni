@@ -14,11 +14,13 @@
  */
 package com.redhat.rhn.domain.server;
 
+import com.redhat.rhn.domain.channel.AccessToken;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * MinionServer
@@ -28,6 +30,7 @@ public class MinionServer extends Server {
     private String minionId;
     private String osFamily;
     private String kernelLiveVersion;
+    private Set<AccessToken> accessTokens;
 
     /**
      * Constructs a MinionServer instance.
@@ -100,6 +103,23 @@ public class MinionServer extends Server {
                 .append(getMachineId(), otherMinion.getMachineId())
                 .append(getMinionId(), otherMinion.getMinionId())
                 .isEquals();
+    }
+
+    /**
+     * Get channel access tokens assigned to this minion.
+     * @return set of access tokens
+     */
+    public Set<AccessToken> getAccessTokens() {
+        return accessTokens;
+    }
+
+    /**
+     * @deprecated do not used (its only here for hibernate)
+     * @param accessTokensIn access token
+     */
+    @Deprecated
+    public void setAccessTokens(Set<AccessToken> accessTokensIn) {
+        this.accessTokens = accessTokensIn;
     }
 
     /**

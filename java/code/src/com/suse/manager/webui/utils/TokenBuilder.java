@@ -15,13 +15,16 @@
 package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.NumericDate;
 import org.jose4j.keys.HmacKey;
 import org.jose4j.lang.JoseException;
 
 import java.security.Key;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,7 +34,6 @@ import java.util.stream.Collectors;
  */
 public class TokenBuilder {
 
-    private static final float YEAR_IN_MINUTES = 525600;
     private static final int NOT_BEFORE_MINUTES = 2;
 
     /**
@@ -57,8 +59,12 @@ public class TokenBuilder {
      *
      * @note: Default is a year
      */
-    private Optional<Float> expirationTimeMinutesInTheFuture =
-            Optional.of(YEAR_IN_MINUTES);
+    private long expirationTimeMinutesInTheFuture = Config.get().getInt(
+        ConfigDefaults.TOKEN_LIFETIME,
+        ConfigDefaults.DEFAULT_TOKEN_LIFETIME
+    );
+
+    private Instant issuedAt = Instant.now();
 
     /**
      * Constructs a token builder.
@@ -115,8 +121,33 @@ public class TokenBuilder {
      * Set expiration time of the token.
      * @param minutes minutes in the future when the token expires
      */
-    public void setExpirationTimeMinutesInTheFuture(float minutes) {
-        this.expirationTimeMinutesInTheFuture = Optional.of(minutes);
+    public void setExpirationTimeMinutesInTheFuture(long minutes) {
+        this.expirationTimeMinutesInTheFuture = minutes;
+    }
+
+
+    /**
+     * get the currently set expiration time in minutes in the future.
+     * @return expiration time in minutes in the future.
+     */
+    public long getExpirationTimeMinutesInTheFuture() {
+        return expirationTimeMinutesInTheFuture;
+    }
+
+    /**
+     * set the issued at date.
+     * @param issuedAtIn issued at data.
+     */
+    public void setIssuedAt(Instant issuedAtIn) {
+        this.issuedAt = issuedAtIn;
+    }
+
+    /**
+     * get the issued at data.
+     * @return issued at data.
+     */
+    public Instant getIssuedAt() {
+        return issuedAt;
     }
 
     /**
@@ -133,10 +164,8 @@ public class TokenBuilder {
      */
     public JwtClaims getClaims() {
         JwtClaims claims = new JwtClaims();
-        this.expirationTimeMinutesInTheFuture.ifPresent(exp -> {
-            claims.setExpirationTimeMinutesInTheFuture(exp);
-        });
-        claims.setIssuedAtToNow();
+        claims.setExpirationTimeMinutesInTheFuture(expirationTimeMinutesInTheFuture);
+        claims.setIssuedAt(NumericDate.fromSeconds(issuedAt.getEpochSecond()));
         claims.setNotBeforeMinutesInThePast(NOT_BEFORE_MINUTES);
         claims.setClaim("org", this.orgId);
         claims.setGeneratedJwtId();
