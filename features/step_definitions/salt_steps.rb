@@ -281,4 +281,3 @@ end
 Then(/^I can cleanup the no longer needed user$/) do
   @rpc.deleteUser(@username)
 end
-
