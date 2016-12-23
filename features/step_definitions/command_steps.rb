@@ -12,9 +12,8 @@ def checkShutdown(host, time_out)
         break
       end
     end
-  rescue Timeout::Error
-    raise "Machine didn't reboot!"
-  end
+rescue Timeout::Error
+  raise "Machine didn't reboot!"
 end
 
 def checkRestart(host, time_out)
@@ -26,9 +25,8 @@ def checkRestart(host, time_out)
         break
       end
     end
-  rescue Timeout::Error
-    raise "ERR: Machine didn't Went-up!"
-  end
+rescue Timeout::Error
+  raise "ERR: Machine didn't Went-up!"
 end
 
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
