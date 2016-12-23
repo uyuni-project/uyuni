@@ -1,5 +1,39 @@
-# Copyright (c) 2014 SUSE
+# Copyright (c) 2014-16 SUSE
 # Licensed under the terms of the MIT license.
+
+require 'timeout'
+
+def checkShutdown(host, time_out)
+  begin
+      Timeout.timeout(time_out) do
+        loop do
+          out = `ping -c1 #{host}`
+          if $?.exitstatus != 0
+             puts "machine: #{host} went down"
+             break
+          end
+        end
+      end
+  rescue Timeout::Error
+        raise "Machine didn't reboot!"
+  end
+end
+
+def checkRestart(host, time_out)
+  begin
+      Timeout.timeout(time_out) do
+        loop do
+          out = `ping -c1 #{host}`
+          if $?.exitstatus == 0
+             puts "machine: #{host} is again up"
+             break
+          end
+        end
+      end
+  rescue Timeout::Error
+        raise "ERR: Machine didn't Went-up!"
+  end
+end
 
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
   $command_output = sshcmd("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", ignore_err: true)[:stdout]
@@ -192,4 +226,21 @@ When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, target|
 end
 Then(/^the command should fail$/) do
    raise "Previous command must fail, but has NOT fail!!" if $fail_code.zero?
+end
+
+Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
+  timeout = 400
+  if target == "sle-client"
+    checkShutdown($client_fullhostname, timeout)
+    checkRestart($client_fullhostname, timeout)
+  elsif target == "ceos-minion"
+    checkShutdown($ceos_minion_fullhostname, timeout)
+    checkRestart($ceos_minion_fullhostname, timeout)
+  elsif target == "ssh-minion"
+    checkShutdown($ssh_minion_fullhostname, timeout)
+    checkRestart($ssh_minion_fullhostname, timeout)
+  elsif target == "sle-minion"
+    checkShutdown($minion_fullhostname, timeout)
+    checkRestart($minion_fullhostname, timeout)
+  end
 end
