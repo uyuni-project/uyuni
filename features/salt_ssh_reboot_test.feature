@@ -3,6 +3,7 @@
 
 Feature: Test a reboot on a salt minion (ssh-managed)
          The reboot is scheduled by suse-manager 
+
   Scenario: Reboot a salt minion (ssh-managed) (sle)
     Given I am on the Systems overview page of "ssh-minion"
     When I follow first "Schedule System Reboot"

@@ -1,4 +1,4 @@
-# COPYRIGHT 2015 SUSE LLC
+# COPYRIGHT 2015-16 SUSE LLC
 
 When(/^I setup the ipmi network card$/) do
   $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST TERM=xterm yast lan add name=eth1 ethdevice=eth1 bootproto=dhcp 2>&1`

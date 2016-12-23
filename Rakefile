@@ -46,19 +46,6 @@ namespace :cucumber do
     trap("SIGINT") do
       Process.kill("HUP", pid)
     end
-
-    #############################################
-    #### Launch a virtual framebuffer X server ###
-    ##############################################
-    # ENV["DISPLAY"] = ":98"
-    # system "Xvfb #{ENV["DISPLAY"]} >& Xvfb.log &"
-    # trap("EXIT") do
-    #  pid = $!
-    #  puts "kill #{pid}"
-    #  Process.kill("HUP", pid)
-    # end
-    # sleep 10
-    ## start your application/testsuite here
     Rake::Task["cucumber"].invoke
   end
 end

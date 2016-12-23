@@ -4,34 +4,30 @@
 require 'timeout'
 
 def checkShutdown(host, time_out)
-  begin
-      Timeout.timeout(time_out) do
-        loop do
-          out = `ping -c1 #{host}`
-          if $?.exitstatus != 0
-             puts "machine: #{host} went down"
-             break
-          end
-        end
+  Timeout.timeout(time_out) do
+    loop do
+      out = `ping -c1 #{host}`
+      if $?.exitstatus != 0
+        puts "machine: #{host} went down"
+        break
       end
+    end
   rescue Timeout::Error
-        raise "Machine didn't reboot!"
+    raise "Machine didn't reboot!"
   end
 end
 
 def checkRestart(host, time_out)
-  begin
-      Timeout.timeout(time_out) do
-        loop do
-          out = `ping -c1 #{host}`
-          if $?.exitstatus == 0
-             puts "machine: #{host} is again up"
-             break
-          end
-        end
+  Timeout.timeout(time_out) do
+    loop do
+      out = `ping -c1 #{host}`
+      if $?.exitstatus == 0
+        puts "machine: #{host} is again up"
+        break
       end
+    end
   rescue Timeout::Error
-        raise "ERR: Machine didn't Went-up!"
+    raise "ERR: Machine didn't Went-up!"
   end
 end
 
