@@ -168,9 +168,5 @@ When(/^I follow this "(.*?)" link$/) do |target|
   step %(I follow "#{$minion_fullhostname}") if target == "sle-minion"
   step %(I follow "#{$ssh_minion_fullhostname}") if target == "ssh-minion"
   step %(I follow "#{$ceos_minion_fullhostname}") if target == "ceos-minion"
-  if target == "sle-client"
-    step %(I follow "#{$client_hostname}")
-  else
-    raise "INVALID TARGET"
-  end
+  step %(I follow "#{$client_hostname}") if target == "sle-client" 
 end
