@@ -167,14 +167,21 @@ Given(/^I access the host the first time$/) do
   fail unless page.has_content?("Create SUSE Manager Administrator")
 end
 
-Then(/^I should be able to login$/) do
-    (0..10).each do |i|
-        visit Capybara.app_host
-        if page.has_content?('Welcome to SUSE Manager')
-            break
-        end
-        sleep(5)
-    end
+# Admin Page steps
+Given(/^I am on the Admin page$/) do
+  steps %(
+    When I am authorized as "admin" with password "admin"
+    And I follow "Admin"
+    )
+end
+
+# Credential Page steps
+Given(/^I am on the Credentials page$/) do
+  steps %(
+    When I am authorized as "testing" with password "testing"
+    And I follow "Your Account"
+    And I follow "Credentials"
+    )
 end
 
 # access the multi-clients/minions
@@ -194,4 +201,35 @@ When(/^I follow this "(.*?)" link$/) do |target|
   step %(I follow "#{$ssh_minion_fullhostname}") if target == "ssh-minion"
   step %(I follow "#{$ceos_minion_fullhostname}") if target == "ceos-minion"
   step %(I follow "#{$client_hostname}") if target == "sle-client" 
+end
+
+Given(/^I am on the groups page$/) do
+  steps %(
+    Given I am on the Systems page
+    And I follow "System Groups" in the left menu
+    )
+end
+
+When(/^I check this client$/) do
+  step %(I check "#{$client_hostname}" in the list)
+end
+
+Given(/^I am on the Users page$/) do
+  steps %(
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Users"
+    )
+end
+
+Given(/^I am on the Details page$/) do
+  steps %(
+    Given I am on the Users page
+    And I follow "user1"
+    )
+end
+
+Then(/^Table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
+  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg1}')]]") do
+    fail unless has_content?(arg2)
+  end
 end
