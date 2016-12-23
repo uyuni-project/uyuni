@@ -40,25 +40,43 @@ $(document).ready(function() {
   const Link = (props) => <a href={props.url} target={props.target}>{props.image}{props.label}</a>;
 
   const Element = React.createClass({
+    isVisible: function(element, search) {
+      if (search == null || search.length == 0) {
+        return true;
+      }
+
+      if (this.isLeaf(element)) {
+        return element.label.toLowerCase().includes(search.toLowerCase());
+      }
+
+      return element.submenu.filter(l => this.isVisible(l, search)).length > 0;
+    },
+
+    isLeaf: function(element) {
+      return element.submenu == null;
+    },
+
     render: function() {
-      const isLeaf = this.props.element.submenu == null;
       const image =
         this.props.withImg && this.props.level == 1 ?
           <img src={"images/" + this.props.imgFolder + '/' + this.props.element.label.toLowerCase() + ".png"} /> :
           null;
       return (
-        <li className={
-          (this.props.element.active ? " active " : "") +
-          (isLeaf ? " leaf " : " node ")
-          }
-        >
-          <Link url={this.props.element.submenu ? "#" : this.props.element.url}
-            image={image} label={this.props.element.label} target={this.props.element.target} />
-          {
-            isLeaf ? null :
-            <MenuLevel level={this.props.level+1} elements={this.props.element.submenu} />
-          }
-        </li>
+        this.isVisible(this.props.element, this.props.searchString) ?
+          <li className={
+            (this.props.element.active ? " active " : "") +
+            (this.isLeaf(this.props.element) ? " leaf " : " node ")
+            }
+          >
+            <Link url={this.props.element.submenu ? "#" : this.props.element.url}
+              image={image} label={this.props.element.label} target={this.props.element.target} />
+            {
+              this.isLeaf(this.props.element) ? null :
+              <MenuLevel level={this.props.level+1} elements={this.props.element.submenu}
+                  searchString={this.props.searchString} />
+            }
+          </li>
+        : null
       );
     }
   });
@@ -72,6 +90,7 @@ $(document).ready(function() {
           level={this.props.level}
           imgFolder={this.props.imgFolder}
           withImg={this.props.withImg}
+          searchString={this.props.searchString}
         />
       );
       return (
@@ -88,37 +107,22 @@ $(document).ready(function() {
     },
 
     componentDidMount: function() {
-      $.setMenu();
+      $.setMenu(this.state.search);
     },
 
     onSearch: function(e) {
-      this.setState({search: e.target.value});
-    },
-
-    filterTree: function(fullTree) {
-      if (fullTree == null) {
-        return [];
-      }
-      if (this.state.search == null || this.state.search.length == 0) {
-        return fullTree;
-      }
-
-      var filteredTree = fullTree.map(level =>
-          level.label.toLowerCase().includes(this.state.search.toLowerCase()) ||
-          this.filterTree(level.submenu).length > 0 ?
-          level : null
-        );
-      return filteredTree.filter(m => m != null);
+      this.setState({ search: e.target.value });
     },
 
     render: function() {
       return (
-        <nav>
+        <nav className={this.state.search != null && this.state.search.length > 0 ? '' : 'collapsed'}>
           <div className="nav-search-box">
             <input type="text" className="form-control" name="nav-search" id="nav-search" value={this.state.search}
               onChange={this.onSearch} placeholder="menu filter" />
           </div>
-          <MenuLevel level={1} elements={this.filterTree(JSONMenu)} imgFolder='black' withImg={this.props.withImg} />
+          <MenuLevel level={1} elements={JSONMenu} imgFolder='black'
+              withImg={this.props.withImg} searchString={this.state.search} />
         </nav>
       );
     }
