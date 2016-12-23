@@ -15,3 +15,9 @@ Feature: Test SUSE Manager generated metadata
     Given I am root
     When I refresh the metadata
     Then I should not have 'epoch="0"' in the metadata
+
+  Scenario: Check local metdata not contain \n at the end of the summary
+    Given I am testing channels
+    And I am root
+    When I refresh the metadata
+    Then I should have 'summary.*</summary' in the metadata

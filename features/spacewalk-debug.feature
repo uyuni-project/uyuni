@@ -1,15 +1,16 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-16 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: call spacewalk-debug and copy the server logs
-  In Order to get the server logfiles
-  As user root
-  I want to call spacewalk-debug on the server
-  And I want to copy the logs to the client
+Feature:  Call spacewalk-debug on the server
+ 	  Check some generics logs 
 
   Scenario: call spacewalk-debug
     Given I am root
     Then I execute spacewalk-debug on the server
 
-  Scenario: copy the archive
-    When I copy "/tmp/spacewalk-debug.tar.bz2"
+  Scenario: Check spacewalk upd2date logs on client
+    Then I control that up2date logs on client under test contains no Traceback error
+
+  Scenario: Check the tomcat log on manager-server
+    Then I check the tomcat logs for errors
+    And I check the tomcat logs for NullPointerExceptions

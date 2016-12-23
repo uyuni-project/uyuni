@@ -14,9 +14,12 @@ Testsuite to automatically test Spacewalk/Suse-Manager.
 ### Usefull tutorial infos:
 
 [Testing-api tutorial](docs/api-call.md)
+
 [Branches that we use](docs/branches.md)
-[Debug](Debug.md)
-[Pitfalls-test.md](Pitfalls)
+
+[Debug](docs/Debug.md)
+
+[Pitfalls-test.md](docs/Pitfalls)
 
 ## Running
 
