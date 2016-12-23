@@ -4,29 +4,33 @@
 require 'timeout'
 
 def checkShutdown(host, time_out)
+  cmd = "ping -c1 #{host}"
   Timeout.timeout(time_out) do
     loop do
-      out = `ping -c1 #{host}`
-      if $?.exitstatus != 0
+      out = `#{cmd}`
+      if $?.exitstatus.nonzero?
         puts "machine: #{host} went down"
         break
       end
     end
+  end
 rescue Timeout::Error
-  raise "Machine didn't reboot!"
+    raise "Machine didn't reboot!"
 end
 
 def checkRestart(host, time_out)
+  cmd = "ping -c1 #{host}"
   Timeout.timeout(time_out) do
     loop do
-      out = `ping -c1 #{host}`
-      if $?.exitstatus == 0
+      out = `#{cmd}`
+      if $?.exitstatus.zero?
         puts "machine: #{host} is again up"
         break
       end
     end
+  end
 rescue Timeout::Error
-  raise "ERR: Machine didn't Went-up!"
+    raise "ERR: Machine didn't Went-up!"
 end
 
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
