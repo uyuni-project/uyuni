@@ -81,18 +81,24 @@
 # - features/salt_action_pickedup.feature NEED FIX. Unstable test
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
+- features/salt_reboot_test.feature
+
 # salt regression
 - features/salt_regression_topsls.feature
 # wait for fix, test ok, but need producht upstream fix
 # - features/salt_regression_multiminion.feature
 
 - features/salt_ssh.feature 
+- features/salt_ssh_reboot_test.feature
 ## Centos client related feat. ###
 ## ** salt ***
 
 - features/minion_centos_bootstrap.feature
 - features/centos_salt_remote_cmds.feature
+- features/centos_salt_reboot_test.feature
 - features/centos_salt_ssh.feature 
+- features/centos_salt_ssh_reboot_test.feature 
+
 # end-tests
 - features/spacewalk-errors.feature
 - features/spacewalk-debug.feature
