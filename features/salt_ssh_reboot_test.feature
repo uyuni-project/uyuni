@@ -2,8 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Test a reboot on a salt minion (ssh-managed)
-         And test the webui for this feature.
-
+         The reboot is scheduled by suse-manager 
   Scenario: Reboot a salt minion (ssh-managed) (sle)
     Given I am on the Systems overview page of "ssh-minion"
     When I follow first "Schedule System Reboot"

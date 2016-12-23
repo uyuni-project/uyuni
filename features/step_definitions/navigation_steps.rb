@@ -153,13 +153,15 @@ When(/^I enter "(.*?)" in the editor$/) do |arg1|
 end
 
 # access the multi-clients/minions
-
 Given(/^I am on the Systems overview page of "(.*?)"$/) do |target|
   steps %(
     Given I am on the Systems page
     And I follow "Systems" in the left menu
     )
-    step %(And I follow this #{target} link)
+  step %(I follow "#{$minion_fullhostname}") if target == "sle-minion"
+  step %(I follow "#{$ssh_minion_fullhostname}") if target == "ssh-minion"
+  step %(I follow "#{$ceos_minion_fullhostname}") if target == "ceos-minion"
+  step %(I follow "#{$client_hostname}") if target == "sle-client"
 end
 
 When(/^I follow this "(.*?)" link$/) do |target|
@@ -167,8 +169,8 @@ When(/^I follow this "(.*?)" link$/) do |target|
   step %(I follow "#{$ssh_minion_fullhostname}") if target == "ssh-minion"
   step %(I follow "#{$ceos_minion_fullhostname}") if target == "ceos-minion"
   if target == "sle-client"
-    step %(I follow "#{$client_hostname}") 
-  else 
+    step %(I follow "#{$client_hostname}")
+  else
     raise "INVALID TARGET"
   end
 end
