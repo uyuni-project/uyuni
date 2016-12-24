@@ -281,3 +281,121 @@ end
 Then(/^I can cleanup the no longer needed user$/) do
   @rpc.deleteUser(@username)
 end
+
+When(/^I click on preview$/) do
+  find('button#preview').click
+end
+
+When(/^I click on run$/) do
+  find('button#run').click
+end
+
+When(/^I should see my hostname$/) do
+  fail unless page.has_content?($minion_hostname)
+end
+
+When(/^I should not see my hostname$/) do
+  fail if page.has_content?($minion_hostname)
+end
+
+When(/^I expand the results$/) do
+   find("div[id='#{$minion_fullhostname}']").click
+end
+
+When(/^I expand the results for "(.*)"$/) do |host|
+ find("div[id='#{$ceos_minion_fullhostname}']").click if host == "ceos-minion"
+ find("div[id='#{$ssh_minion_fullhostname}']").click if host == "ssh-minion"
+end
+
+Then(/^I enter command "([^"]*)"$/) do |arg1|
+  fill_in "command", with: arg1
+end
+
+Then(/^I should see "([^"]*)" in the command output$/) do |text|
+  within("pre[id='#{$minion_fullhostname}-results']") do
+    fail unless page.has_content?(text)
+  end
+end
+
+When(/^"(.*)" exists on the filesystem$/) do |file|
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if file_exist($minion, file)
+        sleep(1)
+      end
+    end
+  rescue Timeout::Error
+    puts "timeout waiting for the file to appear"
+  end
+  fail unless file_exist($minion, file)
+end
+
+# salt_pkgset_beacon_steps.rb
+Then(/^I manually install the "([^"]*)" package in the minion$/) do |package|
+  if file_exist($minion, "/usr/bin/zypper").zero?
+    cmd = "zypper --non-interactive install -y #{package}"
+  elsif file_exist($minion, "/usr/bin/yum").zero?
+    cmd = "yum -y install #{package}"
+  else
+    fail "not found: zypper or yum"
+  end
+  $minion.run(cmd, false)
+end
+
+Then(/^I manually remove the "([^"]*)" package in the minion$/) do |package|
+  if file_exist($minion, "/usr/bin/zypper").zero?
+    cmd = "zypper --non-interactive remove -y #{package}"
+  elsif file_exist($minion, "/usr/bin/yum").zero?
+    cmd = "yum -y remove #{package}"
+  else
+    fail "not found: zypper or yum"
+  end
+  $minion.run(cmd, false)
+end
+
+Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) do |css, arg1|
+  not_found = false
+  begin
+    Timeout.timeout(30) do
+      loop do
+        unless page.has_content?(debrand_string(arg1))
+          not_found = true
+          break
+        end
+        find(css).click
+      end
+    end
+  rescue Timeout::Error
+    raise "'#{arg1}' cannot be found after several tries"
+  end
+  fail unless not_found
+end
+# states catalog
+When(/^I enter the salt state$/) do |multiline|
+  within(:xpath, "//section") do
+    x = find('textarea[name="content"]')
+    x.set(multiline) # find("#{arg1}") #.set(lines)
+  end
+end
+
+When(/^I click on the css "(.*)"$/) do |css|
+  find(css).click
+end
+
+When(/^I enter "(.*)" in the css "(.*)"$/) do |input, css|
+  find(css).set(input)
+end
+
+When(/^I select the state "(.*)"$/) do |state|
+  find("input##{state}-cbox").click
+end
+
+When(/^I wait for the file "(.*)"$/) do |file|
+  # Wait 60 seconds for file to appear
+  60.times do
+    break if file_exist($minion, file)
+    sleep 1
+  end
+  fail unless file_exist($minion, file)
+end
