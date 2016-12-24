@@ -311,9 +311,9 @@ Then(/^I enter command "([^"]*)"$/) do |arg1|
   fill_in "command", with: arg1
 end
 
-Then(/^I should see "([^"]*)" in the command output$/) do |arg1|
+Then(/^I should see "([^"]*)" in the command output$/) do |text|
   within("pre[id='#{$minion_fullhostname}-results']") do
-    fail unless page.has_content?('SuSE-release')
+    fail unless page.has_content?(text)
   end
 end
 
