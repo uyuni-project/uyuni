@@ -46,19 +46,6 @@ namespace :cucumber do
     trap("SIGINT") do
       Process.kill("HUP", pid)
     end
-
-    #############################################
-    #### Launch a virtual framebuffer X server ###
-    ##############################################
-    # ENV["DISPLAY"] = ":98"
-    # system "Xvfb #{ENV["DISPLAY"]} >& Xvfb.log &"
-    # trap("EXIT") do
-    #  pid = $!
-    #  puts "kill #{pid}"
-    #  Process.kill("HUP", pid)
-    # end
-    # sleep 10
-    ## start your application/testsuite here
     Rake::Task["cucumber"].invoke
   end
 end
@@ -68,7 +55,7 @@ task :build do
 end
 
 task :install => :build do
-  system "sudo gem install spacewalk_testsuite_base-#{SpacewalkTestsuiteBase::VERSION}.gem"
+  system "sudo gem install spacewalk_testsuite_base.gem"
 end
 
 Rake::TestTask.new do |t|
@@ -89,7 +76,7 @@ rescue LoadError
   STDERR.puts "Install yard if you want prettier docs"
   Rake::RDocTask.new(:doc) do |rdoc|
     rdoc.rdoc_dir = "doc"
-    rdoc.title = "Spacewalk Testsuite #{SpacewalkTestsuiteBase::VERSION}"
+    rdoc.title = "Spacewalk Testsuite"
     extra_docs.each { |ex| rdoc.rdoc_files.include ex }
   end
 end

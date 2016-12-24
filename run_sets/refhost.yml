@@ -3,6 +3,7 @@
 - features/setup_proxy.feature
 - features/running.feature
 - features/login.feature
+- features/users.feature
 - features/channels_add.feature
 - features/create_repository.feature
 - features/create_activationkey.feature
