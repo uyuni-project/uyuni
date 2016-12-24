@@ -29,7 +29,7 @@ You can run the Spacewalk Testsuite:
 
 [Sumaform Cucumber testing howto](docs/sumaform-howto.md)
 
-*[Static run howto](docs/static-run.md)
+* [Static run howto](docs/static-run.md)
 
 
 ## Custom feature run sets
