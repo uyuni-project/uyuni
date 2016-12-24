@@ -86,6 +86,7 @@
 
 - features/salt_ssh.feature 
 - features/salt_ssh_reboot_test.feature
+
 ## Centos client related feat. ###
 ## ** salt ***
 
@@ -93,7 +94,6 @@
 - features/centos_salt_remote_cmds.feature
 - features/centos_salt_reboot_test.feature
 - features/centos_salt_ssh.feature 
-- features/centos_salt_ssh_reboot_test.feature 
 
 # end-tests
 - features/spacewalk-debug.feature
