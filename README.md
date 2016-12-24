@@ -29,8 +29,7 @@ You can run the Spacewalk Testsuite:
 
 [Sumaform Cucumber testing howto](docs/sumaform-howto.md)
 
-* static setup (means you have the machine already properly configured/provisioned)
-[Static run howto](docs/static-run.md)
+*[Static run howto](docs/static-run.md)
 
 
 ## Custom feature run sets
