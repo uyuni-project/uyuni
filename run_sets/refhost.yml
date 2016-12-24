@@ -27,7 +27,8 @@
 - features/salt.feature
 - features/salt_minions_page.feature
 - features/salt_minion_details.feature
-- features/salt_ssh.feature
+
+#- features/salt_ssh.feature
 
 
 ## Centos client related feat. ###
