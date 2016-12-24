@@ -9,7 +9,7 @@ require 'owasp_zap'
 include OwaspZap
 
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
-require "spacewalk_testsuite_base/version"
+
 
 ENV['LD_LIBRARY_PATH'] = "/usr/lib64/oracle/10.2.0.4/client/lib/"
 outputfile = ENV.key?('RUNID') ? "#{ENV['RUNID']}-cucumber-results_#{ENV['ARCH2']}.html" : "output.html"
