@@ -4,7 +4,7 @@
 Feature: Test a reboot on a salt minion (ssh-managed)
          And test the webui for this feature.
 
-  Scenario: Reboot a salt minion (ssh-managed) (sle)
+  Scenario: Reboot a salt minion (ssh-managed) (centos)
     Given I am on the Systems overview page of "ceos-minion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
