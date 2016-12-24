@@ -1,4 +1,4 @@
-Debugging... 
+## Debugging the testsuite itself, (not the product/software tested! )
 
 You need to change the spacewalk-testsuite-base/features/support/env.rb file to the following settings:
 
