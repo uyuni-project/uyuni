@@ -25,9 +25,7 @@ Testsuite to automatically test Spacewalk/Suse-Manager.
 
 You can run the Spacewalk Testsuite:
 
-* with sumaform (Official way)
-
-[Sumaform Cucumber testing howto](docs/sumaform-howto.md)
+* [with sumaform (Official way)](docs/sumaform-howto.md)
 
 * [Static run howto](docs/static-run.md)
 
