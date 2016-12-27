@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rhn-navi-tree xmlns:xi="http://www.w3.org/2001/XInclude" label="sitenav" title-depth="0">
-<<<<<<< HEAD
-  <rhn-tab name="Overview" url="#">
+  <rhn-tab name="Overview" url="#" fontawesome-icon="eye">
     <rhn-tab name="Overview" url="/rhn/YourRhn.do" />
     <rhn-tab name="User Account" url="#">
       <rhn-tab name="Your Account" url="/rhn/account/UserDetails.do" />
@@ -28,7 +27,7 @@
       <rhn-tab name="Custom States" url="/rhn/manager/yourorg/custom" acl="user_role(org_admin)" />
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Systems" url="#">
+  <rhn-tab name="Systems" url="#" fontawesome-icon="desktop">
     <rhn-tab name="Overview" url="/rhn/systems/Overview.do" />
     <rhn-tab name="Systems" url="#">
       <rhn-tab-directory>/rhn/systems/details</rhn-tab-directory>
@@ -120,14 +119,14 @@
     </rhn-tab>
     <rhn-tab name="Virtual Host Managers" url="/rhn/manager/vhms" acl="user_role(org_admin)" />
   </rhn-tab>
-  <rhn-tab name="Salt" url="/rhn/manager/minions">
+  <rhn-tab name="Salt" url="/rhn/manager/minions" fontawesome-icon="cubes">
     <rhn-tab name="Onboarding" url="/rhn/manager/minions" />
     <rhn-tab name="Bootstrapping" url="/rhn/manager/minions/bootstrap" acl="user_role(org_admin)" />
     <rhn-tab name="Remote Commands" url="/rhn/manager/minions/cmd" />
     <rhn-tab name="State Catalog" url="/rhn/manager/state-catalog" acl="user_role(org_admin)" />
     <rhn-tab name="Formula Catalog" url="/rhn/manager/formula-catalog" acl="user_role(org_admin); salt_formulas_installed()" />
   </rhn-tab>
-  <rhn-tab name="Patches" url="#">
+  <rhn-tab name="Patches" url="#" fontawesome-icon="dropbox">
     <rhn-tab name="Patches" url="/rhn/errata/RelevantErrata.do">
       <rhn-tab-directory>/rhn/errata</rhn-tab-directory>
       <rhn-tab name="Relevant">
@@ -153,8 +152,7 @@
       <rhn-tab-directory>/rhn/errata/manage/clone</rhn-tab-directory>
     </rhn-tab>
   </rhn-tab>
-<<<<<<< HEAD
-  <rhn-tab name="Channels" url="#">
+  <rhn-tab name="Channels" url="#" fontawesome-icon="code-fork">
     <rhn-tab name="Software Channels" url="/rhn/software/channels/All.do">
       <rhn-tab-directory>/rhn/channels</rhn-tab-directory>
       <rhn-tab name="channel.nav.all" url="/rhn/software/channels/All.do" />
@@ -191,7 +189,7 @@
       <rhn-tab-url>/rhn/channels/manage/DistChannelMapDelete.do</rhn-tab-url>
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Audit" url="/rhn/audit/CVEAudit.do">
+  <rhn-tab name="Audit" url="/rhn/audit/CVEAudit.do" fontawesome-icon="area-chart">
     <rhn-tab-directory>/rhn/audit</rhn-tab-directory>
     <rhn-tab name="cveaudit.nav.title" url="/rhn/audit/CVEAudit.do" />
     <rhn-tab name="subscriptionmatching.nav.title" url="/rhn/manager/subscription-matching" acl="user_role(satellite_admin)" />
@@ -208,7 +206,8 @@
       <rhn-tab name="Search" url="/rhn/audit/Search.do" />
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="config.nav.config" url="/rhn/configuration/Overview.do" acl="user_role(config_admin)">
+  <rhn-tab name="config.nav.config" url="/rhn/configuration/Overview.do" acl="user_role(config_admin)"
+      fontawesome-icon="sliders">
     <rhn-tab-directory>/rhn/configuration</rhn-tab-directory>
     <rhn-tab name="common.nav.overview" url="/rhn/configuration/Overview.do" acl="user_role(config_admin)" />
     <rhn-tab name="config.nav.channels" url="/rhn/configuration/GlobalConfigChannelList.do" acl="user_role(config_admin)" />
@@ -228,7 +227,7 @@
       </rhn-tab>
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Schedule" url="/rhn/schedule/PendingActions.do">
+  <rhn-tab name="Schedule" url="/rhn/schedule/PendingActions.do" fontawesome-icon="calendar">
     <rhn-tab-directory>/rhn/schedule</rhn-tab-directory>
     <rhn-tab name="Pending Actions" url="/rhn/schedule/PendingActions.do" />
     <rhn-tab name="Failed Actions" url="/rhn/schedule/FailedActions.do" />
@@ -238,7 +237,7 @@
       <rhn-tab-url>/rhn/schedule/ActionChain.do</rhn-tab-url>
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Users" url="#" acl="user_role(org_admin)">
+  <rhn-tab name="Users" url="#" acl="user_role(org_admin)" fontawesome-icon="users">
     <rhn-tab name="User List" acl="user_role(org_admin)" url="/rhn/users/ActiveList.do">
       <rhn-tab name="users.nav.active" acl="user_role(org_admin)" url="/rhn/users/ActiveList.do" />
       <rhn-tab name="users.nav.disabled" acl="user_role(org_admin)" url="/rhn/users/DisabledList.do" />
@@ -253,7 +252,7 @@
       </rhn-tab>
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Admin" url="/rhn/admin/setup/ProxySettings.do" acl="user_role(satellite_admin)">
+  <rhn-tab name="Admin" url="/rhn/admin/setup/ProxySettings.do" acl="user_role(satellite_admin)" fontawesome-icon="user">
     <rhn-tab name="Setup Wizard" acl="user_role(satellite_admin)" url="/rhn/admin/setup/ProxySettings.do">
       <rhn-tab-url>/rhn/admin/setup/ProxySettings.do</rhn-tab-url>
       <rhn-tab-url>/rhn/admin/setup/MirrorCredentials.do</rhn-tab-url>
@@ -317,7 +316,7 @@
     <rhn-tab name="Task Engine Status" acl="user_role(satellite_admin)" url="/rhn/admin/TaskStatus.do" />
     <rhn-tab name="Show Tomcat Logs" acl="user_role(satellite_admin)" url="/rhn/admin/Catalina.do" />
   </rhn-tab>
-  <rhn-tab name="Help" url="#">
+  <rhn-tab name="Help" url="#" fontawesome-icon="book">
     <rhn-tab name="Overview" url="/rhn/help/index.do" />
     <rhn-tab-directory>/rhn/help</rhn-tab-directory>
     <rhn-tab name="Getting Started Guide" url="/rhn/help/dispatcher/getting_started_guide">
@@ -344,7 +343,7 @@
     </rhn-tab>
       <rhn-tab name="Search" url="/rhn/help/Search.do" />
   </rhn-tab>
-  <rhn-tab name="Online Support" url="#">
+  <rhn-tab name="Online Support" url="#" fontawesome-icon="link">
     <rhn-tab name="header.jsp.knowledgebase" url="https://www.suse.com/support/kb/product.php?id=SUSE_Manager" target="blank" />
     <rhn-tab name="header.jsp.documentation" url="https://www.suse.com/documentation/suse_manager/" target="blank" />
   </rhn-tab>

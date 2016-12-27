@@ -42,6 +42,7 @@ public class NavNode {
     private boolean first;
     private boolean last;
     private String permFailRedirect;
+    private String icon;
     private String onClick;
     private String dynamicChildren;
 
@@ -257,6 +258,22 @@ public class NavNode {
      */
     public void setPermFailRedirect(String permFailRedirectIn) {
         this.permFailRedirect = permFailRedirectIn;
+    }
+
+    /**
+     * Gets the current value of icon
+     * @return String the current value
+     */
+    public String getIcon() {
+        return this.icon;
+    }
+
+    /**
+     * Sets the value of icon to new value
+     * @param icon New value for icon
+     */
+    public void setIcon(String iconIn) {
+        this.icon = iconIn;
     }
 
     /**
