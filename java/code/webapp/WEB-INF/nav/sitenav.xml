@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rhn-navi-tree xmlns:xi="http://www.w3.org/2001/XInclude" label="sitenav_unauth" title-depth="0">
   <rhn-tab name="Create First User" url="/rhn/newlogin/CreateFirstUser.do" acl="need_first_user()" />
-  <rhn-tab name="About Spacewalk" url="#">
+  <rhn-tab name="About Spacewalk" url="#" fontawesome-icon="question-circle">
     <rhn-tab name="Overview" url="/rhn/help/about.do" />
     <rhn-tab name="Sign In" url="/rhn/Login.do" acl="not user_authenticated()" />
     <rhn-tab name="Help Desk" url="/rhn/help/index.do" />

@@ -39,7 +39,12 @@ $(document).ready(function() {
 
   const Link = (props) =>
     <a href={props.url} target={props.target}>
-      <span>{props.label}</span>
+      {
+        props.icon ?
+        <i className={'fa fa-' + props.icon}></i>
+        : null
+      }
+      {props.label}
     </a>;
 
   const Element = React.createClass({
@@ -68,7 +73,8 @@ $(document).ready(function() {
             }
           >
             <Link url={this.props.element.submenu ? "#" : this.props.element.url}
-                label={this.props.element.label} target={this.props.element.target} />
+                label={this.props.element.label} target={this.props.element.target}
+                icon={this.props.element.icon} />
             {
               this.isLeaf(this.props.element) ? null :
               <MenuLevel level={this.props.level+1} elements={this.props.element.submenu}

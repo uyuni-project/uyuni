@@ -25,6 +25,7 @@ public class JSONMenuElement {
     private String url;
     private boolean active;
     private String target;
+    private String icon;
     private List<JSONMenuElement> submenu;
 
     /**
@@ -43,11 +44,12 @@ public class JSONMenuElement {
      * @param submenuIn the submenu level list
      */
     public JSONMenuElement(String labelIn, String urlIn, boolean activeIn,
-            String targetIn, List<JSONMenuElement> submenuIn) {
+            String targetIn, String iconIn, List<JSONMenuElement> submenuIn) {
         this.label = labelIn;
         this.url = urlIn;
         this.active = activeIn;
         this.target = targetIn;
+        this.icon = iconIn;
         this.submenu = submenuIn;
     }
 
@@ -113,6 +115,22 @@ public class JSONMenuElement {
      */
     public void setTarget(String targetIn) {
         this.target = targetIn;
+    }
+
+    /**
+     * Gets icon.
+     *
+     * @return the icon
+     */
+    public String getIcon() {
+        return icon;
+    }
+
+    /**
+     * @param iconIn The icon to set.
+     */
+    public void setIcon(String iconIn) {
+        this.icon = iconIn;
     }
 
     /**
