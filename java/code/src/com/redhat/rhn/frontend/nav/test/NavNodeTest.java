@@ -117,7 +117,7 @@ public class NavNodeTest extends RhnBaseTestCase {
     public void testStringSetters()
         throws Exception {
         String[] methods = { "Label", "Name", "Acl",
-                "PermFailRedirect", "ActiveImage", "InactiveImage", "OnClick",
+                "PermFailRedirect", "OnClick",
                 "DynamicChildren" };
 
         for (int i = 0; i < methods.length; i++) {
