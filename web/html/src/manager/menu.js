@@ -37,7 +37,10 @@ $(document).ready(function() {
   const React = require("react");
   const ReactDOM = require("react-dom");
 
-  const Link = (props) => <a href={props.url} target={props.target}>{props.image}{props.label}</a>;
+  const Link = (props) =>
+    <a href={props.url} target={props.target}>
+      <span>{props.label}</span>
+    </a>;
 
   const Element = React.createClass({
     isVisible: function(element, search) {
@@ -57,10 +60,6 @@ $(document).ready(function() {
     },
 
     render: function() {
-      const image =
-        this.props.withImg && this.props.level == 1 ?
-          <img src={"images/" + this.props.imgFolder + '/' + this.props.element.label.toLowerCase() + ".png"} /> :
-          null;
       return (
         this.isVisible(this.props.element, this.props.searchString) ?
           <li className={
@@ -69,7 +68,7 @@ $(document).ready(function() {
             }
           >
             <Link url={this.props.element.submenu ? "#" : this.props.element.url}
-              image={image} label={this.props.element.label} target={this.props.element.target} />
+                label={this.props.element.label} target={this.props.element.target} />
             {
               this.isLeaf(this.props.element) ? null :
               <MenuLevel level={this.props.level+1} elements={this.props.element.submenu}
@@ -88,8 +87,6 @@ $(document).ready(function() {
         <Element element={el}
           key={el.label + '_' + this.props.level}
           level={this.props.level}
-          imgFolder={this.props.imgFolder}
-          withImg={this.props.withImg}
           searchString={this.props.searchString}
         />
       );
@@ -121,15 +118,14 @@ $(document).ready(function() {
             <input type="text" className="form-control" name="nav-search" id="nav-search" value={this.state.search}
               onChange={this.onSearch} placeholder="menu filter" />
           </div>
-          <MenuLevel level={1} elements={JSONMenu} imgFolder='black'
-              withImg={this.props.withImg} searchString={this.state.search} />
+          <MenuLevel level={1} elements={JSONMenu} searchString={this.state.search} />
         </nav>
       );
     }
   });
 
   ReactDOM.render(
-    <Nav withImg={false} />,
+    <Nav />,
     document.getElementById('nav')
   );
 
@@ -153,7 +149,7 @@ $(document).ready(function() {
               (
                 a.submenu ?
                 <Link key={a.label + '_' + i} url={a.submenu[0].url}
-                  image={null} label={a.label} target={a.target} />
+                    label={a.label} target={a.target} />
                 :
                 <span className="level">{a.label}</span>
               );
@@ -168,7 +164,7 @@ $(document).ready(function() {
   });
 
   ReactDOM.render(
-    <Breadcrumb withImg={false} />,
+    <Breadcrumb />,
     document.getElementById('breadcrumb')
   );
 });
