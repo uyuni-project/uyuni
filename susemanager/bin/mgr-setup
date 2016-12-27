@@ -754,8 +754,11 @@ if [ "$DO_MIGRATION" = "1" ]; then
     echo "Please shut down the old SUSE Manager server now."
     echo "Reboot the new server and make sure it uses the same IP address and hostname"
     echo "as the old SUSE Manager server!"
-    echo "============================================================================"
     echo
+    echo "IMPORTANT: Make sure, if applicable, that your external storage is mounted"
+    echo "in the new server as well as the ISO images needed for distributions before"
+    echo "rebooting the new server!"
+    echo "============================================================================"
 fi
 
 # vim: set expandtab:
