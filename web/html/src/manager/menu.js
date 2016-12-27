@@ -143,6 +143,8 @@ $(document).ready(function() {
       }
       return (
         <div>
+          <Link key='home' url='/' label={<i className='fa fa-home'></i>} target='' />
+          <span>></span>
           {
             breadcrumbArray.map((a, i) => {
               const htmlElement =
