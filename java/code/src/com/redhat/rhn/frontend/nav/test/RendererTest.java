@@ -290,8 +290,6 @@ public class RendererTest extends RhnBaseTestCase {
         node.setOverrideSidenav(false);
         node.setShowChildrenIfActive(true);
         node.setPermFailRedirect("permFailRedirect");
-        node.setActiveImage("activeImage");
-        node.setInactiveImage("inactiveImage");
         node.setOnClick("onClick");
         node.setDynamicChildren("dynamicChildrenIn");
 

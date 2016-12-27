@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rhn-navi-tree xmlns:xi="http://www.w3.org/2001/XInclude" label="sitenav" title-depth="0">
-  <rhn-tab name="Overview" url="#" active-image="tab-your_rhn-selected.gif" inactive-image="tab-your_rhn.gif">
+<<<<<<< HEAD
+  <rhn-tab name="Overview" url="#">
     <rhn-tab name="Overview" url="/rhn/YourRhn.do" />
     <rhn-tab name="User Account" url="#">
       <rhn-tab name="Your Account" url="/rhn/account/UserDetails.do" />
@@ -126,7 +127,7 @@
     <rhn-tab name="State Catalog" url="/rhn/manager/state-catalog" acl="user_role(org_admin)" />
     <rhn-tab name="Formula Catalog" url="/rhn/manager/formula-catalog" acl="user_role(org_admin); salt_formulas_installed()" />
   </rhn-tab>
-  <rhn-tab name="Patches" url="#" active-image="tab-errata-selected.gif" inactive-image="tab-errata.gif">
+  <rhn-tab name="Patches" url="#">
     <rhn-tab name="Patches" url="/rhn/errata/RelevantErrata.do">
       <rhn-tab-directory>/rhn/errata</rhn-tab-directory>
       <rhn-tab name="Relevant">
@@ -152,7 +153,8 @@
       <rhn-tab-directory>/rhn/errata/manage/clone</rhn-tab-directory>
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Channels" url="#" active-image="tab-channels-selected.gif" inactive-image="tab-channels.gif">
+<<<<<<< HEAD
+  <rhn-tab name="Channels" url="#">
     <rhn-tab name="Software Channels" url="/rhn/software/channels/All.do">
       <rhn-tab-directory>/rhn/channels</rhn-tab-directory>
       <rhn-tab name="channel.nav.all" url="/rhn/software/channels/All.do" />
@@ -226,7 +228,7 @@
       </rhn-tab>
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Schedule" url="/rhn/schedule/PendingActions.do" active-image="tab-schedule-selected.gif" inactive-image="tab-schedule.gif">
+  <rhn-tab name="Schedule" url="/rhn/schedule/PendingActions.do">
     <rhn-tab-directory>/rhn/schedule</rhn-tab-directory>
     <rhn-tab name="Pending Actions" url="/rhn/schedule/PendingActions.do" />
     <rhn-tab name="Failed Actions" url="/rhn/schedule/FailedActions.do" />
@@ -236,7 +238,7 @@
       <rhn-tab-url>/rhn/schedule/ActionChain.do</rhn-tab-url>
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Users" url="#" acl="user_role(org_admin)" active-image="tab-users-selected.gif" inactive-image="tab-users.gif">
+  <rhn-tab name="Users" url="#" acl="user_role(org_admin)">
     <rhn-tab name="User List" acl="user_role(org_admin)" url="/rhn/users/ActiveList.do">
       <rhn-tab name="users.nav.active" acl="user_role(org_admin)" url="/rhn/users/ActiveList.do" />
       <rhn-tab name="users.nav.disabled" acl="user_role(org_admin)" url="/rhn/users/DisabledList.do" />
@@ -251,7 +253,7 @@
       </rhn-tab>
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Admin" url="/rhn/admin/setup/ProxySettings.do" active-image="tab-tools-selected.gif" inactive-image="tab-tools.gif" acl="user_role(satellite_admin)">
+  <rhn-tab name="Admin" url="/rhn/admin/setup/ProxySettings.do" acl="user_role(satellite_admin)">
     <rhn-tab name="Setup Wizard" acl="user_role(satellite_admin)" url="/rhn/admin/setup/ProxySettings.do">
       <rhn-tab-url>/rhn/admin/setup/ProxySettings.do</rhn-tab-url>
       <rhn-tab-url>/rhn/admin/setup/MirrorCredentials.do</rhn-tab-url>
@@ -315,7 +317,7 @@
     <rhn-tab name="Task Engine Status" acl="user_role(satellite_admin)" url="/rhn/admin/TaskStatus.do" />
     <rhn-tab name="Show Tomcat Logs" acl="user_role(satellite_admin)" url="/rhn/admin/Catalina.do" />
   </rhn-tab>
-  <rhn-tab name="Help" url="#" active-image="tab-help-selected.gif" inactive-image="tab-help.gif">
+  <rhn-tab name="Help" url="#">
     <rhn-tab name="Overview" url="/rhn/help/index.do" />
     <rhn-tab-directory>/rhn/help</rhn-tab-directory>
     <rhn-tab name="Getting Started Guide" url="/rhn/help/dispatcher/getting_started_guide">

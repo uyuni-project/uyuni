@@ -42,8 +42,6 @@ public class NavNode {
     private boolean first;
     private boolean last;
     private String permFailRedirect;
-    private String activeImage;
-    private String inactiveImage;
     private String onClick;
     private String dynamicChildren;
 
@@ -259,38 +257,6 @@ public class NavNode {
      */
     public void setPermFailRedirect(String permFailRedirectIn) {
         this.permFailRedirect = permFailRedirectIn;
-    }
-
-    /**
-     * Gets the current value of activeImage
-     * @return String the current value
-     */
-    public String getActiveImage() {
-        return this.activeImage;
-    }
-
-    /**
-     * Sets the value of activeImage to new value
-     * @param activeImageIn New value for activeImage
-     */
-    public void setActiveImage(String activeImageIn) {
-        this.activeImage = activeImageIn;
-    }
-
-    /**
-     * Gets the current value of inactiveImage
-     * @return String the current value
-     */
-    public String getInactiveImage() {
-        return this.inactiveImage;
-    }
-
-    /**
-     * Sets the value of inactiveImage to new value
-     * @param inactiveImageIn New value for inactiveImage
-     */
-    public void setInactiveImage(String inactiveImageIn) {
-        this.inactiveImage = inactiveImageIn;
     }
 
     /**
