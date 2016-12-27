@@ -47,14 +47,19 @@ function alignContentDimensions() {
 
 // Make columns 100% in height
 function columnHeight() {
-  $('.spacewalk-main-column-layout aside').css('min-height', 0);
-  $('.spacewalk-main-column-layout section').css('min-height', 0);
-  var headerHeight = $('header').outerHeight();
-  var footerHeight = $('footer').outerHeight();
-  var docHeight = $(document).height();
+  const aside = $('.spacewalk-main-column-layout aside');
+  const section = $('.spacewalk-main-column-layout section');
+  aside.css('min-height', 0);
+  section.css('min-height', 0);
+  const headerHeight = $('header').outerHeight();
+  const footerHeight = $('footer').outerHeight();
+  const docHeight = $(document).height();
   // Column heights should equal the document height minus the header height and footer height
-  $('.spacewalk-main-column-layout aside').css('min-height', docHeight - headerHeight - footerHeight);
-  $('.spacewalk-main-column-layout section').css('min-height', docHeight - headerHeight - footerHeight);
+  aside.css('min-height', docHeight - headerHeight - footerHeight);
+  // responsive rule: the aside block is layered on top of section,
+  // and when it is shown, its height increase the docHeight
+  const asideHeight = aside.is(':hidden') ? 0 : aside.outerHeight();
+  section.css('min-height', docHeight - headerHeight - asideHeight - footerHeight);
 };
 
 // returns an object that can be passed to DWR renderer as a callback
