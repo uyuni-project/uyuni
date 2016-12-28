@@ -104,4 +104,12 @@
     </li>
   </ul>
 </rhn:require>
+
+<rhn:require acl="not user_authenticated()">
+  <ul class="nav navbar-nav navbar-utility">
+    <li>
+      <a class="about-link" href="/rhn/help/about.do"><bean:message key="About Spacewalk"/></a>
+    </li>
+  </ul>
+</rhn:require>
 <!-- end header.jsp -->
