@@ -294,7 +294,6 @@ Given(/^I am on the errata page$/) do
   end
 end
 
-
 Given(/^I am on the "([^"]*)" errata Details page$/) do |arg1|
   steps %(
     Given I am on the errata page
