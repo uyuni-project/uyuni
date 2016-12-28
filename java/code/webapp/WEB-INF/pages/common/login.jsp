@@ -13,8 +13,7 @@
             <bean:message key="login.jsp.schemaupgraderequired" />
         </div>
     </c:if>
-    <section class="wrap">
-        <div class="row">
+
             <div class="col-sm-6">
                 <h1 class="Raleway-font">SUSE<br/> Manager</h1>
                 <p class="gray-text margins-updown">Discover a new way of managing your servers, packages, patches and more via one interface.</p>
@@ -61,7 +60,5 @@
                     </p>
                 </c:if>
             </div>
-        </div>
-    </section>
 </body>
 </html>
