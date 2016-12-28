@@ -41,6 +41,7 @@ public class JSONMenuElement {
      * @param urlIn the href value of the link
      * @param activeIn if it is the current page
      * @param targetIn the target of the link
+     * @param iconIn the icon of the link
      * @param submenuIn the submenu level list
      */
     public JSONMenuElement(String labelIn, String urlIn, boolean activeIn,
