@@ -285,6 +285,16 @@ Given(/^I am on the Errata page$/) do
   end
 end
 
+# HACK: please fix the given with lowcase errate, then remove
+# this duplicate given steps
+Given(/^I am on the errata page$/) do
+  step %(I am authorized)
+  within(:xpath, "//header") do
+    find_link(debrand_string("Errata")).click
+  end
+end
+
+
 Given(/^I am on the "([^"]*)" errata Details page$/) do |arg1|
   steps %(
     Given I am on the errata page
