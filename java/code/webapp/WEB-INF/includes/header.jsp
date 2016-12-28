@@ -25,8 +25,6 @@
 <rhn:require acl="user_authenticated()">
   <ul class="nav navbar-nav navbar-utility">
     <li>
-    </li>
-    <li>
       <a href="/rhn/account/UserDetails.do"
         title="${requestScope.session.user.login}">
           <rhn:icon type="header-user" /><span>${requestScope.session.user.login}</span>
