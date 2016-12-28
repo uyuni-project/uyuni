@@ -270,7 +270,7 @@ public class NavNode {
 
     /**
      * Sets the value of icon to new value
-     * @param icon New value for icon
+     * @param iconIn New value for icon
      */
     public void setIcon(String iconIn) {
         this.icon = iconIn;
