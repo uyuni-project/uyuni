@@ -150,12 +150,19 @@ class BrokerHandler(SharedHandler):
                 effectiveURI_parts.fragment]))
 
         if req.method == 'GET' or 'HEAD':
-            # The auth token is sent in either a header (RHEL) or in the query
-            if self.req.headers_in.has_key('X-Mgr-Auth'):
-                self.authToken = self.req.headers_in['X-Mgr-Auth']
-                del self.req.headers_in['X-Mgr-Auth']
-            elif not self.req.headers_in.has_key('X-RHN-Auth'):
-                self.authToken =  effectiveURI_parts.query
+            # The auth token is sent in either a header or in the query part of the URI:
+            # SLE minions -> query part of the URI.
+            # RHEL minions -> 'X-Mgr-Auth' header.
+            # Traditional SLE and RHEL clients -> 'X-RHN-Auth' header.
+            #
+            # Auth headers token are included in the outgoing request and used for
+            # handling the authorization.
+            #
+            # Therefore parsing the auth token from the URI is only needed when
+            # 'X-RHN-Auth' and 'X-Mgr-Auth' are not included in the headers.
+            if (not self.req.headers_in.has_key('X-RHN-Auth') and
+                not self.req.headers_in.has_key('X-Mgr-Auth')):
+                self.authToken = effectiveURI_parts.query
 
             self.fullRequestURL = "%s://%s%s" % (self.req.headers_in['REQUEST_SCHEME'], self.rhnParent, effectiveURI)
             effectiveURI_parts = urlparse(urlunparse([
