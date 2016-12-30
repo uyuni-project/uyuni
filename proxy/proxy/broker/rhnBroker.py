@@ -269,7 +269,14 @@ class BrokerHandler(SharedHandler):
                   % repr(_oto['X-RHN-Proxy-Auth']))
 
         if self.fullRequestURL and self.authToken:
-            if not suseLib.accessible(self.fullRequestURL):
+            # For RHEL Minions the auth token is not included in the fullRequestURL
+            # because it was provided as 'X-Mgr-Auth' header.
+            # In this case We need to append it to the URL to check if accessible
+            # with the given auth token.
+            checkURL = self.fullRequestURL
+            if not self.authToken in checkURL:
+                checkURL += "?" + self.authToken
+            if not suseLib.accessible(checkURL):
                 return apache.HTTP_FORBIDDEN
         if self.authToken:
             _oto['X-Suse-Auth-Token'] = self.authToken
