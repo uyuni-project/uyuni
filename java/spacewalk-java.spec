@@ -29,7 +29,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.10
+Version: 2.7.13
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -1036,6 +1036,17 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Dec 21 2016 Tomas Lestach <tlestach@redhat.com> 2.7.13-1
+- bz1389349 change taskomatic uuid task to writemode vs callable
+
+* Wed Dec 21 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.7.12-1
+- edit method description
+- fixing checkstyle - long line
+- keep satellite.isMonitoringEnabled API for backward compatibility
+
+* Tue Dec 20 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.7.11-1
+- 1384093 - new API call failSystemAction
+
 * Wed Dec 14 2016 Jiri Dostal <jdostal@redhat.com> 2.7.10-1
 - Fix: remove double and useless check
 

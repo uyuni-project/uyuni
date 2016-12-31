@@ -752,7 +752,7 @@ select sa.action_id, sa.server_id
     </query>
 </mode>
 
-<callable-mode name="taskomatic_uuid_cleanup">
+<write-mode name="taskomatic_uuid_cleanup">
   <query>
     delete
       from rhnVirtualInstance
@@ -760,6 +760,6 @@ select sa.action_id, sa.server_id
        and host_system_id is NULL
        and uuid is not NULL
   </query>
-</callable-mode>
+</write-mode>
 
 </datasource_modes>
