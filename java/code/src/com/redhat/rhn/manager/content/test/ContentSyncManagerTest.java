@@ -420,12 +420,12 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     public void testConsolidateSubscriptions() throws Exception {
         SCCSubscription subscription = new SCCSubscription();
         List<String> productClasses = new ArrayList<String>();
-        productClasses.add("SMS");
+        productClasses.add("SMS-X86");
         productClasses.add("SM_ENT_MGM_V");
         subscription.setProductClasses(productClasses);
         subscription.setType("full");
         subscription.setStartsAt("2013-12-12T00:00:00.000Z");
-        subscription.setExpiresAt("2016-12-12T00:00:00.000Z");
+        subscription.setExpiresAt("2031-01-01T00:00:00.000Z");
         List<SCCSubscription> subscriptions = new ArrayList<SCCSubscription>();
         subscriptions.add(subscription);
 
@@ -440,7 +440,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertTrue(entitlements.contains("SM_ENT_MGM_V"));
         List<String> channelSubscriptions = result.getChannelSubscriptions();
         assertEquals(6, channelSubscriptions.size());
-        assertTrue(channelSubscriptions.contains("SMS"));
+        assertTrue(channelSubscriptions.contains("SMS-X86"));
         // Check the free product classes
         assertTrue(channelSubscriptions.contains("SLESMT"));
         assertTrue(channelSubscriptions.contains("WEBYAST"));
