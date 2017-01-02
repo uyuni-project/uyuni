@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 02 14:40:38 CET 2017 - mc@suse.de
+
+- version 2.1.26-1
+- create bootstrap repo for SLES for SAP ppc64le
+- support creating bootstrap repos for SLE12 SP2 family (bsc#1010020)
+
+-------------------------------------------------------------------
 Wed Aug 10 09:23:54 CEST 2016 - mc@suse.de
 
 - version 2.1.25-1
