@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jan 02 14:46:34 CET 2017 - mc@suse.de
+
+- version 2.1.55.27-1
+- add symlink for manpage to SUSE name of program (bsc#1009435)
+- Fix selection of primary interface (bsc#1009677)
+- assign orphaned vendor packages to the default org (bsc#995764)
+
+-------------------------------------------------------------------
 Wed Aug 10 09:17:21 CEST 2016 - mc@suse.de
 
 - version 2.1.55.26-1
