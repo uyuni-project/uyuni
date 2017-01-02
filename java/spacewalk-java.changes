@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Mon Jan 02 14:48:54 CET 2017 - mc@suse.de
+
+- version 2.1.165.27-1
+- Fix checkbox icon align (bsc#966888)
+- Hides 'Save/Clear' buttons when no changes are present in action chain lists
+- Fix plus/minus buttons in action chain list (bsc#1011344)
+- Fix misleading message on system reboot schedule in SSM (bsc#1011817)
+- Increment 'earliest' date by a millisecond between chain actions (bsc#973226)
+- Fix SSM reboot action success messages (bsc#968935)
+- unittests: Support SUSE Manager Server on aarch64 (bsc#1002776)
+- Update 'view/modify file' action buttons text (bsc#1009102)
+- clarify button label (bsc#1010664)
+- check and fix also the assigned repository while updating the channels
+  (bsc#1007490)
+- match url including query param seperator to have a definitive end of the
+  path component (bsc#1007490)
+- Add a link to action details in single patch schedule notification
+  (bsc#971342)
+- Add a link to system pending events in patch schedule notification
+  for a single system (bsc#971342)
+- CVE Audit: tolerate null products (bsc#1004717)
+- fix autoyast upgrade mode (bsc#1006786)
+- Add a Back button for SPMigration wizard
+
+-------------------------------------------------------------------
 Thu Oct 20 10:30:19 CEST 2016 - mc@suse.de
 
 - version 2.1.165.26-1
