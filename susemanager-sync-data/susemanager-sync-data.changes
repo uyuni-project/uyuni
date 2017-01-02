@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Jan 02 14:29:34 CET 2017 - mc@suse.de
+
+- version 2.1.19-1
+- support SLES for SAP on ppc64le (bsc#1015414)
+- Add Raspberry Pi channels to SUSE Manager
+- add support for SUSE Enterprise Storage 4, SUSE OpenStack Cloud 7
+  and SLE-RT 12 SP2 (bsc#1006556, bsc#984450, bsc#984447)
+
+-------------------------------------------------------------------
 Tue Nov 22 09:34:18 CET 2016 - mc@suse.de
 
 - Support SUSE Manager Server on aarch64 (bsc#1002776)
