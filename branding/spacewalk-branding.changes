@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Mon Jan 02 14:44:33 CET 2017 - mc@suse.de
+
+- version 2.1.33.19-1
+- differentiate writable/non-writable fields (bsc#868132)
+- Fix checkbox icon align (bsc#966888)
+- Remove markup in autoinstallation warning messages (bsc#1006170)
+- Add a link to action details in single patch schedule notification
+  (bsc#971342)
+- Add a link to system pending events in patch schedule notification
+  for a single system (bsc#971342)
+- Align-top radio button with base product
+- Make SPMigration button text more consistent
+
+-------------------------------------------------------------------
 Thu Oct 20 10:40:32 CEST 2016 - mc@suse.de
 
 - version 2.1.33.18-1
