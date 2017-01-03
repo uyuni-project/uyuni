@@ -1,6 +1,7 @@
 [Unit]
 Description=Update status
 After=syslog.target network.target auditd.service
+ConditionPathExists=/etc/sysconfig/rhn/systemid
 
 [Service]
 Type=oneshot
