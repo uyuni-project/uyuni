@@ -433,7 +433,8 @@ class RepoSync(object):
         if self.error_messages:
             self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
             ret_code = 1
-        log(0, "Sync completed. (%s)" % ret_code)
+        if ret_code == 0:
+            log(0, "Sync completed.")
         return elapsed_time, ret_code
 
     def set_ks_tree_type(self, tree_type='externally-managed'):
