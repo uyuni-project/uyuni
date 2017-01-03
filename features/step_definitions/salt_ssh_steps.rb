@@ -3,9 +3,13 @@
 
 SALT_PACKAGES = "salt salt-minion".freeze
 
-Given(/^no Salt packages are installed on remote minion host$/) do
-  $ssh_minion.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", false)
-  $ceos_minion.run("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", false)
+Given(/^no Salt packages are installed on remote "(.*)"$/) do |host|
+  if host == "ssh-minion"
+    $ssh_minion.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", false)
+  end
+  if host == "centos"
+    $ceos_minion.run("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", false)
+  end
 end
 
 Given(/^remote minion host is not registered in Spacewalk$/) do
