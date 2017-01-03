@@ -10,7 +10,7 @@ Feature: CENTOS7 feature: SSH-MINION tests
   *  verify tunnel proprety: repo 1233 port, and installation of pkg only via server.
 
   Scenario: No Salt Package and service are running on Minion centos
-    Given no Salt packages are installed on remote minion host
+    Given no Salt packages are installed on remote "centos"
     And centos minion is not registered in Spacewalk
     
   Scenario: Bootstrap a system via salt-ssh
