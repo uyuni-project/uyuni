@@ -149,14 +149,19 @@ class BrokerHandler(SharedHandler):
                 effectiveURI_parts.query,
                 effectiveURI_parts.fragment]))
 
-        if req.method == 'GET' or 'HEAD':
-            # The auth token is sent in either a header (RHEL) or in the query
-            if self.req.headers_in.has_key('X-Mgr-Auth'):
-                self.authToken = self.req.headers_in['X-Mgr-Auth']
-                del self.req.headers_in['X-Mgr-Auth']
-            elif not self.req.headers_in.has_key('X-RHN-Auth'):
-                self.authToken =  effectiveURI_parts.query
+        # The auth token is sent in either a header or in the query part of the URI:
+        # SLE minions -> query part of the URI.
+        # RHEL minions -> 'X-Mgr-Auth' header.
+        #
+        # Traditional SLE and RHEL clients uses 'X-RHN-Auth' header, but
+        # no auth token is used in order to authenticate.
+        if self.req.headers_in.has_key('X-Mgr-Auth'):
+            self.authToken = self.req.headers_in['X-Mgr-Auth']
+            del self.req.headers_in['X-Mgr-Auth']
+        elif not self.req.headers_in.has_key('X-RHN-Auth'):
+            self.authToken = effectiveURI_parts.query
 
+        if req.method == 'GET':
             self.fullRequestURL = "%s://%s%s" % (self.req.headers_in['REQUEST_SCHEME'], self.rhnParent, effectiveURI)
             effectiveURI_parts = urlparse(urlunparse([
                 effectiveURI_parts.scheme,
@@ -264,7 +269,14 @@ class BrokerHandler(SharedHandler):
                   % repr(_oto['X-RHN-Proxy-Auth']))
 
         if self.fullRequestURL and self.authToken:
-            if not suseLib.accessible(self.fullRequestURL):
+            # For RHEL Minions the auth token is not included in the fullRequestURL
+            # because it was provided as 'X-Mgr-Auth' header.
+            # In this case We need to append it to the URL to check if accessible
+            # with the given auth token.
+            checkURL = self.fullRequestURL
+            if not self.authToken in checkURL:
+                checkURL += "?" + self.authToken
+            if not suseLib.accessible(checkURL):
                 return apache.HTTP_FORBIDDEN
         if self.authToken:
             _oto['X-Suse-Auth-Token'] = self.authToken
