@@ -525,23 +525,25 @@ public class HardwareMapper {
      * @param smbiosRecordsSystem optional DMI information about the system
      */
     public void mapVirtualizationInfo(Optional<Map<String, Object>> smbiosRecordsSystem) {
-        String virtType = grains.getValueAsString("virtual");
+        String virtTypeLowerCase = StringUtils.lowerCase(
+                grains.getValueAsString("virtual"));
         String virtSubtype = grains.getValueAsString("virtual_subtype");
         String virtUuid = grains.getValueAsString("uuid");
 
-        if (virtType == null) {
+        if (virtTypeLowerCase == null) {
             errors.add("Virtualization: Grain 'virtual' has no value");
         }
 
         VirtualInstanceType type = null;
 
-        if (StringUtils.isNotBlank(virtType) && !"physical".equals(virtType)) {
+        if (StringUtils.isNotBlank(virtTypeLowerCase) &&
+                !"physical".equals(virtTypeLowerCase)) {
             if (StringUtils.isNotBlank(virtUuid)) {
 
                 virtUuid = StringUtils.remove(virtUuid, '-');
 
                 String virtTypeLabel = null;
-                switch (virtType) {
+                switch (virtTypeLowerCase) {
                     case "xen":
                         if ("Xen PV DomU".equals(virtSubtype)) {
                             virtTypeLabel = "para_virtualized";
@@ -554,20 +556,20 @@ public class HardwareMapper {
                     case "kvm":
                         virtTypeLabel = "qemu";
                         break;
-                    case "VMware":
+                    case "vmware":
                         virtTypeLabel = "vmware";
                         break;
-                    case "HyperV":
+                    case "hyperv":
                         virtTypeLabel = "hyperv";
                         break;
-                    case "VirtualBox":
+                    case "virtualbox":
                         virtTypeLabel = "virtualbox";
                         break;
                     default:
                         LOG.warn(String.
                                 format("Unsupported virtual instance " +
                                         "type '%s' for minion '%s'",
-                                virtType, server.getMinionId()));
+                                virtTypeLowerCase, server.getMinionId()));
                         // TODO what to do with other virt types ?
                 }
                 type = VirtualInstanceFactory.getInstance()
@@ -578,7 +580,7 @@ public class HardwareMapper {
                     LOG.warn(String.format(
                             "Can't find virtual instance type for string '%s'. " +
                             "Defaulting to '%s' for minion '%s'",
-                            virtType, type.getLabel(), server.getMinionId()));
+                            virtTypeLowerCase, type.getLabel(), server.getMinionId()));
                 }
 
             }
