@@ -253,3 +253,11 @@ end
 When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)"$/) do |arg1, arg2|
   @command_output = sshcmd("spacewalk-repo-sync -c #{arg1} -u #{arg2}")[:stdout]
 end
+
+When(/^I click on "([^"]+)" for "([^"]+)"$/) do |arg1, arg2|
+  within(:xpath, "//section") do
+    within(:xpath, "//table/tbody/tr[.//a[contains(.,'#{arg2}')]]") do
+      find_link(arg1).click
+    end
+  end
+end
