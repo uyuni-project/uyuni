@@ -62,11 +62,11 @@ Feature: CENTOS7 feature.
     And I enter as remote command this script in
       """
       #!/bin/bash
-      sleep 1
+      sleep 10
       """
     And I click on "Schedule"
     Then I should see a "Remote Command has been scheduled successfully" text
-    And I wait for "10" seconds
+    And I wait for "20" seconds
     And I check status "Completed" with spacecmd on "ceos-minion"
     Then I run "yum repoinfo | grep :443/rhn" on "ceos-minion"
 
@@ -142,11 +142,11 @@ Feature: CENTOS7 feature.
     And I enter as remote command this script in
       """
       #!/bin/bash
-      sleep 1
+      sleep 10
       """
     And I click on "Schedule"
     Then I should see a "Remote Command has been scheduled successfully" text
-    And I wait for "10" seconds
+    And I wait for "20" seconds
     And I check status "Completed" with spacecmd on "ceos-minion"
 
    Scenario: test the ssh-reversing tunnel on ceos-minion
