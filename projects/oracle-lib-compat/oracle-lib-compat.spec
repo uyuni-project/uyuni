@@ -12,15 +12,15 @@ License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:	https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-root-%(%{__id_u} -n)
-ExclusiveArch:  %ix86 x86_64 s390x
+ExclusiveArch:  %ix86 x86_64 s390x ppc64le
 
 %define debug_package %{nil}
 
-%ifarch s390 s390x
+%ifarch s390 s390x ppc64le
 %define icversion 12.1.0
 %define icdir 12.1
 %define soversion 12.1
-# For s390x Oracle provide only a zip file.
+# For s390x and ppc64le Oracle provide only a zip file.
 # The customer should extract it to
 #   /usr/lib/oracle/%{icdir}/client64/lib/
 # but we use our package as BuildRequires only
@@ -46,7 +46,7 @@ Requires(post): /usr/bin/file
 Requires(post): /usr/bin/xargs
 %endif
 
-%ifarch x86_64 s390x
+%ifarch x86_64 s390x ppc64le
 %define lib64 ()(64bit)
 Requires:       libaio.so.1%{lib64}
 %endif
@@ -79,7 +79,7 @@ echo %{_libdir}/oracle/%{icdir}/client/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so
 # XE server is 32bit even on 64bit platforms
 #echo /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/oracle-xe.conf
 
-%ifarch x86_64 s390x
+%ifarch x86_64 s390x ppc64le
 mkdir -p $RPM_BUILD_ROOT%{_bindir}
 ln -s ../lib/oracle/%{icdir}/client64/bin/sqlplus $RPM_BUILD_ROOT%{_bindir}/sqlplus
 
@@ -99,7 +99,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%ifarch x86_64 s390x
+%ifarch x86_64 s390x ppc64le
 %{_bindir}/sqlplus
 %{_libdir}/oracle
 %dir /usr/lib/oracle/%{icdir}/client64/lib/network
