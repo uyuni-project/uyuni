@@ -117,7 +117,7 @@ When(/^I should see the power is "([^"]*)"$/) do |arg1|
   within(:xpath, "//*[@for='powerStatus']/..") do
     10.times do
       break if has_content?(arg1)
-      find(:xpath, '//button[@value="Get status"]').click if !has_content?(arg1)
+      find(:xpath, '//button[@value="Get status"]').click unless has_content?(arg1)
       sleep 3
     end
     fail unless has_content?(arg1)
