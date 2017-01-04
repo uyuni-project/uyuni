@@ -61,7 +61,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I enter as remote command this script in
       """
       #!/bin/bash
-      sleep 1
+      sleep 10
       """
     And I click on "Schedule"
     Then I should see a "Remote Command has been scheduled successfully" text
@@ -141,7 +141,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I enter as remote command this script in
       """
       #!/bin/bash
-      sleep 1
+      sleep 10
       """
     And I click on "Schedule"
     Then I should see a "Remote Command has been scheduled successfully" text
