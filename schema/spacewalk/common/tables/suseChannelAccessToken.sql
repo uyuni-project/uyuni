@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2015 SUSE LLC
+-- Copyright (c) 2017 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -22,6 +22,7 @@ CREATE TABLE suseChannelAccessToken
                              REFERENCES suseMinionInfo (server_id)
                              ON DELETE SET NULL,
     token            varchar2(4000) NOT NULL,
+    start            timestamp with local time zone NOT NULL,
     expiration       timestamp with local time zone NOT NULL
 )
 ENABLE ROW MOVEMENT

@@ -60,8 +60,7 @@ public class TokenBuilder {
      * @note: Default is a year
      */
     private long expirationTimeMinutesInTheFuture = Config.get().getInt(
-        ConfigDefaults.TOKEN_LIFETIME,
-        ConfigDefaults.DEFAULT_TOKEN_LIFETIME
+        ConfigDefaults.TOKEN_LIFETIME
     );
 
     private Instant issuedAt = Instant.now();
@@ -124,7 +123,6 @@ public class TokenBuilder {
     public void setExpirationTimeMinutesInTheFuture(long minutes) {
         this.expirationTimeMinutesInTheFuture = minutes;
     }
-
 
     /**
      * get the currently set expiration time in minutes in the future.

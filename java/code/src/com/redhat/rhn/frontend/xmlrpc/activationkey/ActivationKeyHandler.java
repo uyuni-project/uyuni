@@ -266,8 +266,7 @@ public class ActivationKeyHandler extends BaseHandler {
         tokenBuilder.useServerSecret();
         tokenBuilder.setExpirationTimeMinutesInTheFuture(
                 Config.get().getInt(
-                        ConfigDefaults.TEMP_TOKEN_LIFETIME,
-                        ConfigDefaults.DEFAULT_TEMP_TOKEN_LIFETIME
+                        ConfigDefaults.TEMP_TOKEN_LIFETIME
                 )
         );
         tokenBuilder.onlyChannels(key.getChannels()
