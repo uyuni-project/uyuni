@@ -65,7 +65,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
       """
     And I click on "Schedule"
     Then I should see a "Remote Command has been scheduled successfully" text
-    And I wait for "20" seconds
+    And I wait for "60" seconds
     And I check status "Completed" with spacecmd on "ssh-minion"
     Then I run "zypper lr --show-enabled-only -u | grep :443/rhn" on "ssh-minion"
 
@@ -140,7 +140,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
       """
     And I click on "Schedule"
     Then I should see a "Remote Command has been scheduled successfully" text
-    And I wait for "20" seconds
+    And I wait for "60" seconds
     And I check status "Completed" with spacecmd on "ssh-minion"
 
    Scenario: test the ssh-reversing tunnel on sle-minion
