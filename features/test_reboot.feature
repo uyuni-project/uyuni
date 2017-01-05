@@ -13,9 +13,9 @@ Feature: Test a reboot on a traditional-client
     And I run rhn_check on this client
     Then I wait and check that "sle-client" has rebooted
 
-  Scenario: Check that Reboot required is not anymore on displayed on client section 
-    Given I am authorized as "admin" with password "admin"
-    And I follow "Systems"
-    When I follow "Systems" in the left menu
-    And I follow "Requiring Reboot" in the left menu
-    Then I should not see the "sle-client" as text
+ # Scenario: Check that Reboot required is not anymore on displayed on client section 
+ #  Given I am authorized as "admin" with password "admin"
+ #   And I follow "Systems"
+ #   When I follow "Systems" in the left menu
+ #   And I follow "Requiring Reboot" in the left menu
+ #   Then I should not see the "sle-client" as text
