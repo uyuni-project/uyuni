@@ -29,6 +29,7 @@ public class AccessToken {
     private Long id;
     private String token;
     private Date expiration;
+    private Date start;
     private MinionServer minion;
     private Set<Channel> channels;
 
@@ -101,6 +102,20 @@ public class AccessToken {
      */
     public void setChannels(Set<Channel> channelsIn) {
         this.channels = channelsIn;
+    }
+
+    /**
+     * @return the start date
+     */
+    public Date getStart() {
+        return start;
+    }
+
+    /**
+     * @param start the start date
+     */
+    public void setStart(Date start) {
+        this.start = start;
     }
 
     /**

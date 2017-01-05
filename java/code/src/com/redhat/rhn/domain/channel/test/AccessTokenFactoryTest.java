@@ -44,11 +44,14 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
     public void testCleanupExpired() {
         AccessToken valid = new AccessToken();
         valid.setExpiration(Date.from(Instant.now().plus(Duration.ofDays(1))));
+        valid.setStart(Date.from(Instant.now()));
         valid.setToken("valid");
         AccessTokenFactory.save(valid);
 
         AccessToken expired = new AccessToken();
         expired.setExpiration(Date.from(Instant.now().minus(Duration.ofDays(1))));
+        expired.setStart(Date.from(Instant.now().minus(Duration.ofDays(3))));
+        valid.setToken("valid");
         expired.setToken("expired");
         AccessTokenFactory.save(expired);
 
@@ -94,6 +97,7 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
     public void testRegenerate() throws Exception {
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         AccessToken valid = new AccessToken();
+        valid.setStart(Date.from(Instant.now()));
         valid.setExpiration(Date.from(Instant.now().plus(Duration.ofDays(1))));
         valid.setToken("valid");
         valid.setMinion(testMinionServer);
