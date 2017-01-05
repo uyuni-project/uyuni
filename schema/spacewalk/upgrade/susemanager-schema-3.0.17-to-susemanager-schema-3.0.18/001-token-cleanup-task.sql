@@ -15,3 +15,41 @@ INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
                         (SELECT id FROM rhnTaskoTask WHERE name='token-cleanup'),
                         0,
                         null);
+
+
+CREATE TABLE suseChannelAccessToken
+(
+    id               NUMBER NOT NULL
+                         CONSTRAINT suse_channel_access_token_id_pk PRIMARY KEY,
+    minion_id        NUMBER
+                         CONSTRAINT suse_channel_access_token_mid_fk
+                             REFERENCES suseMinionInfo (server_id)
+                             ON DELETE SET NULL,
+    token            varchar2(4000) NOT NULL,
+    start            timestamp with local time zone NOT NULL,
+    expiration       timestamp with local time zone NOT NULL
+)
+ENABLE ROW MOVEMENT
+;
+
+CREATE SEQUENCE suse_channel_access_token_id_seq;
+
+CREATE TABLE suseChannelAccessTokenChannel
+(
+    token_id    NUMBER NOT NULL
+                    CONSTRAINT suse_catc_tid_fk
+                        REFERENCES suseChannelAccessToken (id),
+    channel_id  NUMBER NOT NULL
+                    CONSTRAINT suse_catc_cid_fk
+                        REFERENCES rhnChannel (id),
+    created     timestamp with local time zone
+                    DEFAULT (current_timestamp) NOT NULL,
+    modified    timestamp with local time zone
+                    DEFAULT (current_timestamp) NOT NULL
+)
+ENABLE ROW MOVEMENT
+;
+
+CREATE UNIQUE INDEX suse_catc_tid_cid_uq
+    ON suseChannelAccessTokenChannel (token_id, channel_id)
+    TABLESPACE [[8m_tbs]];

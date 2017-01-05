@@ -115,8 +115,15 @@ public class AccessTokenFactory extends HibernateFactory {
         Map<Boolean, List<AccessToken>> collect = all.stream()
                 .collect(Collectors.partitioningBy(token -> {
             Instant expiration = token.getExpiration().toInstant();
-            Duration duration = Duration.ofDays(30);
-            return Instant.now().plus(duration).isAfter(expiration);
+
+            Instant now = Instant.now();
+
+            // using 10% of the tokens lifetime as buffer to regenerate tokens before they expire
+            Duration duration = Duration.ofMillis(
+                    (long) (token.getExpiration().getTime() - token.getStart().getTime() * 0.1)
+            );
+
+            return now.plus(duration).isAfter(expiration);
         }));
         List<AccessToken> update = collect.get(true);
         List<AccessToken> noUpdate = collect.get(false);
@@ -186,6 +193,7 @@ public class AccessTokenFactory extends HibernateFactory {
             String tokenString = tokenBuilder.getToken();
 
             AccessToken newToken = new AccessToken();
+            newToken.setStart(Date.from(tokenBuilder.getIssuedAt()));
             newToken.setToken(tokenString);
             newToken.setMinion(minion);
             Instant expiration = tokenBuilder.getIssuedAt()
@@ -221,6 +229,7 @@ public class AccessTokenFactory extends HibernateFactory {
 
         //Link new token
         AccessToken newToken = new AccessToken();
+        newToken.setStart(Date.from(tokenBuilder.getIssuedAt()));
         newToken.setToken(tokenString);
         newToken.setMinion(token.getMinion());
         Instant expiration = tokenBuilder.getIssuedAt()
