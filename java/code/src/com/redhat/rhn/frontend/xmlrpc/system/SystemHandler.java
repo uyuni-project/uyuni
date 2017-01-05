@@ -5545,7 +5545,7 @@ public class SystemHandler extends BaseHandler {
 
     /**
      * List possible migration targets for given system
-     * @param loggedInUser The current user
+     * @param sessionKey User's session key
      * @param serverId Server ID
      * @return Array of migration targets for given system
      *
@@ -5560,7 +5560,8 @@ public class SystemHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
-    public List<Map<String, Object>> listMigrationTargets(User loggedInUser, Integer serverId) {
+    public List<Map<String, Object>> listMigrationTargets(String sessionKey, Integer serverId) {
+        User loggedInUser = getLoggedInUser(sessionKey);
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         Server server = lookupServer(loggedInUser, serverId);
         SUSEProductSet installedProducts = server.getInstalledProductSet();
@@ -5595,7 +5596,7 @@ public class SystemHandler extends BaseHandler {
      * target base channel and subscribe the system accordingly. Any additional
      * optional channels can be subscribed by providing their labels.
      *
-     * @param loggedInUser the currently logged in user
+     * @param sessionKey User's session key
      * @param sid ID of the server
      * @param baseChannelLabel label of the target base channel
      * @param optionalChildChannels labels of optional child channels to subscribe
@@ -5616,9 +5617,9 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
      * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
-    public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
+    public Long scheduleSPMigration(String sessionKey, Integer sid, String baseChannelLabel,
             List<String> optionalChildChannels, boolean dryRun, Date earliest) {
-        return scheduleSPMigration(loggedInUser, sid, null, baseChannelLabel,
+        return scheduleSPMigration(sessionKey, sid, null, baseChannelLabel,
                 optionalChildChannels, dryRun, earliest);
     }
 
@@ -5629,7 +5630,7 @@ public class SystemHandler extends BaseHandler {
      * the system accordingly. Any additional optional channels can be subscribed by
      * providing their labels.
      *
-     * @param loggedInUser the currently logged in user
+     * @param sessionKey User's session key
      * @param sid ID of the server
      * @param targetIdent identifier for the selected migration target ({@link #listMigrationTargets})
      * @param baseChannelLabel label of the target base channel
@@ -5652,9 +5653,10 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
      * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
-    public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
+    public Long scheduleSPMigration(String sessionKey, Integer sid, String targetIdent,
             String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
             Date earliest) {
+        User loggedInUser = getLoggedInUser(sessionKey);
 
         // Perform checks on the server
         Server server = null;

@@ -2261,7 +2261,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         boolean thrown = false;
         try {
-            handler.listMigrationTargets(admin, server.getId().intValue());
+            handler.listMigrationTargets(adminKey, server.getId().intValue());
         }
         catch(FaultException e) {
             if(e.getMessage().contains("Server has no Products installed")) {
@@ -2296,7 +2296,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         server.getInstalledProductSet().getBaseProduct().getUpgrades();
 
-        List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
+        List<Map<String, Object>> result = handler.listMigrationTargets(adminKey, server.getId().intValue());
 
         assertNotEmpty("no target found", result);
 
@@ -2336,7 +2336,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         server.getInstalledProductSet().getBaseProduct().getUpgrades();
 
-        List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
+        List<Map<String, Object>> result = handler.listMigrationTargets(adminKey, server.getId().intValue());
 
         assertNotEmpty("no target found", result);
 
@@ -2385,7 +2385,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         server.getInstalledProductSet().getBaseProduct().getUpgrades();
 
-        List<Map<String, Object>> result = handler.listMigrationTargets(admin, server.getId().intValue());
+        List<Map<String, Object>> result = handler.listMigrationTargets(adminKey, server.getId().intValue());
 
         assertNotEmpty("no target found", result);
         assertTrue(result.size() == 1);
