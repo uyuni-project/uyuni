@@ -43,6 +43,7 @@ def process_commandline():
     parser.add_argument("--no-packages", action="store_true", help="Do not sync packages.")
     parser.add_argument("--no-errata", action="store_true", help="Do not sync errata.")
     parser.add_argument("--no-kickstarts", action="store_true", help="Do not sync kickstart repositories.")
+    parser.add_argument("--force-kickstarts", action="store_true", help="Overwrite kickstart files.")
     parser.add_argument("--clear-cache", action="store_true", help="Delete partially synced channels.")
     parser.add_argument('--http-proxy', action='store', help="alternative http proxy (hostname:port)")
     parser.add_argument('--http-proxy-username', action='store', help="alternative http proxy username")
@@ -92,22 +93,24 @@ if __name__ == '__main__':
         cdnsync = CdnSync(no_packages=args.no_packages, no_errata=args.no_errata,
                           no_rpms=args.no_rpms, no_kickstarts=args.no_kickstarts,
                           log_level=args.verbose, mount_point=args.mount_point,
-                          consider_full=args.consider_full)
+                          consider_full=args.consider_full,
+                          force_kickstarts=args.force_kickstarts)
 
         if args.list_channels:
             if args.count_packages:
-                cdnsync.count_packages()
+                cdnsync.count_packages(channels=args.channel)
             cdnsync.print_channel_tree()
         elif args.list_repos:
             cdnsync.print_channel_tree(repos=True)
         elif args.count_packages:
-            cdnsync.count_packages()
+            cdnsync.count_packages(channels=args.channel)
         elif args.clear_cache:
             cdnsync.clear_cache()
         else:
             error_messages = cdnsync.sync(channels=args.channel)
             if error_messages:
                 system_exit(1, error_messages)
+        LOCK.release()
 
     except KeyboardInterrupt:
         system_exit(0, "\nUser interrupted process.")
@@ -120,19 +123,33 @@ if __name__ == '__main__':
         system_exit(1, "SYNC ERROR: attempting to run more than one instance of cdn-sync. Exiting.")
     except ChannelNotFoundError:
         e = sys.exc_info()[1]
+        if LOCK:
+            LOCK.release()
         system_exit(12, ["ERROR: these channels either do not exist or are not available:",
                          e,
                          "(to see a list of channel labels: /usr/bin/cdn-sync --list-channels)"])
     except (MissingParentChannelError, InvalidChannelFamilyError,
             InvalidChannelError, InvalidArchError):
         e = sys.exc_info()[1]
+        if LOCK:
+            LOCK.release()
         system_exit(1, "SYNC ERROR: %s. Exiting." % str(e))
     except rhnSQL.SQLConnectError:
         e = sys.exc_info()[1]
+        if LOCK:
+            LOCK.release()
         system_exit(20, ["ERROR: Can't connect to the database: %s" % str(e), "Check if your database is running."])
     except CdnMappingsLoadError:
         e = sys.exc_info()[1]
         system_exit(30, ["ERROR: %s" % str(e)])
+    except IOError:
+        e = sys.exc_info()[1]
+        if LOCK:
+            LOCK.release()
+        # Broken pipe
+        if e.errno != 32:
+            raise_with_tb(Exception("SYNC ERROR: attempting to display as much information as possible\n %s" % str(e)),
+                          sys.exc_info()[2])
     except Exception:
         e = sys.exc_info()[1]
         if LOCK:

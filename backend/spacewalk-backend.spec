@@ -42,7 +42,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.10
+Version: 2.7.18
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -919,6 +919,63 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Fri Jan 06 2017 Gennadii Altukhov <galt@redhat.com> 2.7.18-1
+- 1406462 - print help if no options were provided for rhn-satellite-activate
+
+* Wed Jan 04 2017 Jan Dobes 2.7.17-1
+- 1409434 - fixing mirror expansion
+
+* Wed Jan 04 2017 Jan Dobes 2.7.16-1
+- 1410149 - fixing activation on s390x
+- 1410146 - fixing entitlements without provided products
+
+* Tue Jan 03 2017 Gennadii Altukhov <galt@redhat.com> 2.7.15-1
+- fix usability bug in reposync
+- 1406038 - show number of packages which are failed during a channel syncing
+
+* Tue Jan 03 2017 Jan Dobes 2.7.14-1
+- 1409434 - this option works differently on different yum versions, reverting
+  for now
+- 1409434 - make baseurls in good format when not expanding mirrors
+- 1409434 - don't have to be in try block
+
+* Mon Jan 02 2017 Jan Dobes 2.7.13-1
+- 1401488 - Fixes the following error on errata-sync: ERROR: cannot concatenate
+  'str' and 'int' objects
+
+* Mon Jan 02 2017 Jan Dobes <jdobes@redhat.com> 2.7.12-1
+- 1409434 - fixing parameters
+- 1409434 - fixing pylint
+
+* Mon Jan 02 2017 Jan Dobes <jdobes@redhat.com> 2.7.11-1
+- 1409434 - make updating repodata default
+- 1409434 - log2stderr will not get it into log files
+- 1409434 - remove downloaded packages as well
+- 1409434 - returning ret_code is expected
+- 1409434 - adding option for overwriting kickstart data
+- 1409434 - do not try to link not imported package to channel
+- 1409434 - add multithreaded download to reposync
+- 1409434 - fixing broken pipe on long output and release locks
+- 1409434 - consistent time
+- 1409434 - improve list format
+- 1409434 - suppress "Unknown channel family" messages
+- 1409434 - support counting single channel
+- 1409434 - fixing argument format
+- 1409434 - download all repomd first and skip repositories with up to date
+  repomd
+- 1409434 - configurable threads
+- 1409434 - work with mirrors
+- 1409434 - work with proxy
+- 1409434 - changing parameter format, add function for setting parameters, add
+  text log class
+- 1409434 - retry download, checksum etc.
+- 1409434 - adding multi-threaded downloader
+- 1409434 - repodata can contain only sha word
+- 1409434 - we can skip mirror expansion in cdnsync
+- 1409434 - adding function to check if there is newer repomd in repository
+  than in cache
+- 1409434 - support keeping repomd in cache
+
 * Mon Dec 19 2016 Gennadii Altukhov <galt@redhat.com> 2.7.10-1
 - 1395815 - fix permissions for Kickstart Tree paths
 
