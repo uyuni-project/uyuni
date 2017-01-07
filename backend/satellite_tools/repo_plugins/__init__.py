@@ -92,7 +92,7 @@ class TextLogger:
 class PyCurlFileObjectThread(PyCurlFileObject):
     def __init__(self, url, filename, opts, curl_cache):
         self.curl_cache = curl_cache
-        PyCurlFileObject.__init__(self, url, filename, opts)
+        PyCurlFileObject.__init__(self, str(url), filename, opts)
 
     def _do_open(self):
         self.curl_obj = self.curl_cache
@@ -168,7 +168,9 @@ class DownloadThread(Thread):
         mirrors = len(params['urls'])
         for retry in max(range(self.parent.retries), mirrors):
             fo = None
-            url = urlparse.urljoin(params['urls'][self.mirror], params['relative_path'])
+            url = urlparse.urljoin(params['urls'][self.mirror], params['relative_path'], params['authtoken'])
+            if params['authtoken']:
+                url = "{0}?{1}".format(url, params['authtoken'])
             try:
                 try:
                     fo = PyCurlFileObjectThread(url, params['target_file'], opts, self.curl)

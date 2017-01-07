@@ -214,6 +214,7 @@ class ContentSource(object):
         repo.proxy = None
         repo.proxy_username = None
         repo.proxy_password = None
+        repo.authtoken = None
 
         if "file://" in self.url:
             repo.copy_local = 1
@@ -230,6 +231,7 @@ class ContentSource(object):
             # Make sure baseurl ends with / and urljoin will work correctly
             if repo.urls[0][-1] != '/':
                 repo.urls[0] += '/'
+
         else:
             warnings = YumWarnings()
             warnings.disable()
@@ -241,6 +243,8 @@ class ContentSource(object):
             warnings.restore()
         for burl in repo.baseurl:
             (scheme, netloc, path, query, fragid) = urlparse.urlsplit(burl)
+	    if query:
+                repo.authtoken = query
             repo.gpgkey = [urlparse.urlunsplit((scheme, netloc, path + '/repodata/repomd.xml.key', query, fragid))]
         repo.setup(0, None, gpg_import_func=self.getKeyForRepo,
                    confirm_func=self.askImportKey)
@@ -758,6 +762,7 @@ class ContentSource(object):
 
         params['urls'] = self.repo.urls
         params['relative_path'] = relative_path
+        params['authtoken'] = self.repo.authtoken
         params['target_file'] = target_file
         params['ssl_ca_cert'] = self.repo.sslcacert
         params['ssl_client_cert'] = self.repo.sslclientcert
