@@ -389,35 +389,35 @@ class RepoSync(object):
                 except ChannelTimeoutException, e:
                     log(0, e)
                     self.sendErrorMail(str(e))
-                    ret_code = 1
+                    sync_error = -1
                 except ChannelException, e:
                     log(0, "ChannelException: %s" % e)
                     self.sendErrorMail("ChannelException: %s" % str(e))
-                    ret_code = 1
+                    sync_error = -1
                 except Errors.YumGPGCheckError, e:
                     log(0, "YumGPGCheckError: %s" % e)
                     self.sendErrorMail("YumGPGCheckError: %s" % e)
-                    ret_code = 1
+                    sync_error = -1
                 except Errors.RepoError, e:
                     log(0, "RepoError: %s" % e)
                     self.sendErrorMail("RepoError: %s" % e)
-                    ret_code = 1
+                    sync_error = -1
                 except Errors.RepoMDError, e:
                     if "primary not available" in str(e):
                         taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                             [self.channel_label], [], "server.app.yumreposync")
                         rhnSQL.commit()
                         log(0, "Repository has no packages. (%s)" % e)
-                        ret_code = 0
+                        sync_error = -1
                     else:
                         log(0, "RepoMDError: %s" % e)
                         self.sendErrorMail("RepoMDError: %s" % e)
-                        ret_code = 1
+                        sync_error = -1
                 except:
                     log(0, "Unexpected error: %s" % sys.exc_info()[0])
                     log(0, "%s" % traceback.format_exc())
                     self.sendErrorMail(fetchTraceback())
-                    ret_code = 1
+                    sync_error = -1
 
                 if plugin is not None:
                     plugin.clear_ssl_cache()
@@ -430,8 +430,8 @@ class RepoSync(object):
         elapsed_time = datetime.now() - start_time
         if self.error_messages:
             self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
-            ret_code = 1
-        if ret_code == 0:
+            sync_error = -1
+        if sync_error == 0 and failed_packages == 0:
             log(0, "Sync completed.")
         # if there is no global problems, but some packages weren't synced
         if sync_error == 0 and failed_packages > 0:
