@@ -289,7 +289,7 @@ class RepoSync(object):
                 taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                     [channel_label], [], "server.app.yumreposync")
                 rhnSQL.commit()
-                log2stderr(0, "Channel has no URL associated")
+                log2(0, 0, "Channel has no URL associated", stream=sys.stderr)
                 if not self.channel['org_id']:
                     # RES base vendor channels do not have a URL. This is not an error
                     sys.exit(0)
@@ -461,10 +461,10 @@ class RepoSync(object):
         try:
             submod = getattr(mod, name)
         except AttributeError:
-            log2stderr(0, "Repository type %s is not supported. "
-                           "Could not import "
-                           "spacewalk.satellite_tools.repo_plugins.%s."
-                           % (repo_type, name))
+            log2(0, 0, "Repository type %s is not supported. "
+                       "Could not import "
+                       "spacewalk.satellite_tools.repo_plugins.%s."
+                       % (repo_type, name), stream=sys.stderr)
             sys.exit(1)
         return getattr(submod, "ContentSource")
 
@@ -1150,9 +1150,9 @@ class RepoSync(object):
             try:
                 creds_no = int(creds.split("_")[1])
             except (ValueError, IndexError):
-                log2stderr(0,
+                log2(0, 0,
                     "Could not figure out which credentials to use "
-                    "for this URL: {0}".format(url.getURL())
+                    "for this URL: {0}".format(url.getURL(), stream=sys.stderr)
                 )
                 sys.exit(1)
             # SCC - read credentials from DB
@@ -1160,8 +1160,8 @@ class RepoSync(object):
             h.execute(id=creds_no)
             credentials = h.fetchone_dict() or None
             if not credentials:
-                log2stderr(0, "Could not figure out which credentials to use "
-                               "for this URL: "+url.getURL())
+                log2(0, 0, "Could not figure out which credentials to use "
+                           "for this URL: "+url.getURL(), stream=sys.stderr)
                 sys.exit(1)
             url.username = credentials['username']
             url.password = base64.decodestring(credentials['password'])
@@ -1756,7 +1756,7 @@ class RepoSync(object):
                         bz["id"] = bz_id_match.group(1)
                         log(2, "Bugzilla ID found: {0}".format(bz["id"]))
                     else:
-                        log2stderr(0, "Unable to found Bugzilla ID for {0}. Omitting".format(bz["id"]))
+                        log2(0, 0, "Unable to found Bugzilla ID for {0}. Omitting".format(bz["id"]), stream=sys.stderr)
                         continue
                 if bz['id'] not in bugs:
                     bug = Bug()

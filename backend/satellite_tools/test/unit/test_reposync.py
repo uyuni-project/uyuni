@@ -195,7 +195,7 @@ class RepoSyncTest(unittest.TestCase):
         rs.sendErrorMail = Mock()
 
         etime, ret = rs.sync()
-        self.assertEqual(1, ret)
+        self.assertEqual(-1, ret)
         self.assertEqual(rs.sendErrorMail.call_args,
                          (("anony-error", ), {}))
         self.assertEqual(self.reposync.log.call_args[0][1], exception)
@@ -206,7 +206,7 @@ class RepoSyncTest(unittest.TestCase):
         rs.repo_plugin = Mock(side_effect=TypeError)
         rs.sendErrorMail = Mock()
         etime, ret = rs.sync()
-        self.assertEqual(1, ret)
+        self.assertEqual(-1, ret)
 
         error_string = self.reposync.log.call_args[0][1]
         assert (error_string.startswith('Traceback') and
@@ -577,9 +577,7 @@ class RepoSyncTest(unittest.TestCase):
                 "http://example.com/?credentials=bad_creds_with_underscore"
             ]
         }
-
         self.assertRaises(SystemExit, rs.set_repo_credentials, url)
-        self.assertTrue(self.stderr.getvalue() != "")
 
     def test_set_repo_credentials_number_credentials(self):
         rs = self._create_mocked_reposync()
@@ -683,7 +681,7 @@ class RepoSyncTest(unittest.TestCase):
         :rs: RepoSync object on which we're going to call sync() later
 
         """
-        rs.import_packages = Mock()
+        rs.import_packages = Mock(return_value=0)
         rs.import_updates = Mock()
         rs.import_products = Mock()
         rs.import_susedata = Mock()
@@ -717,7 +715,7 @@ class SyncTest(unittest.TestCase):
             ),
             get_compatible_arches=Mock(),
             load_plugin=Mock(),
-            import_packages=Mock(),
+            import_packages=Mock(return_value=0),
             import_groups=Mock(),
             import_updates=Mock(),
             import_products=Mock(),
@@ -938,7 +936,7 @@ def test_channel_exceptions():
     repoSync.RepoSync.get_compatible_arches = Mock(return_value=['arch1', 'arch2'])
     rs = repoSync.RepoSync("Label", RTYPE)
     rs.urls = [{"source_url": ["http://none.host/bogus-url"], "metadata_signed": "N", "label": None}]
-    rs.import_packages = Mock()
+    rs.import_packages = Mock(return_value=0)
     rs.import_updates = Mock()
     rs.mocked_plugin = Mock()
     rs.log = Mock()
@@ -961,7 +959,7 @@ def check_channel_exceptions(rs, exc_class, exc_name):
     rs.repo_plugin = Mock(side_effect=exc_class("error msg"))
 
     etime, ret = rs.sync()
-    assert_equal(1, ret)
+    assert_equal(-1, ret)
     assert_equal(rs.sendErrorMail.call_args,
                  (("%s: %s" % (exc_name, "error msg"), ), {}))
 
