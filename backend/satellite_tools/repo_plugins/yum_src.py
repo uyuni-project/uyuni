@@ -239,8 +239,6 @@ class ContentSource(object):
                 warnings.restore()
                 raise
             warnings.restore()
-            raise
-        warnings.restore()
         for burl in repo.baseurl:
             (scheme, netloc, path, query, fragid) = urlparse.urlsplit(burl)
             repo.gpgkey = [urlparse.urlunsplit((scheme, netloc, path + '/repodata/repomd.xml.key', query, fragid))]
