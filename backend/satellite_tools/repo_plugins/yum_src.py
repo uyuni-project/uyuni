@@ -50,7 +50,7 @@ except ImportError:
 from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException
 from urlgrabber.grabber import URLGrabError
 
-from spacewalk.common import fileutils
+from spacewalk.common import fileutils, checksum
 from spacewalk.satellite_tools.repo_plugins import ContentPackage
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy
@@ -119,7 +119,8 @@ class YumUpdateMetadata(UpdateMetadata):
 
 
 class ContentSource(object):
-    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=YUMSRC_CONF, org="1", channel_label=""):
+    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=YUMSRC_CONF, org="1", channel_label="",
+                 no_mirrors=False):
         # pylint can't see inside the SplitResult class
         # pylint: disable=E1103
         if urlparse.urlsplit(url).scheme:
@@ -139,6 +140,7 @@ class ContentSource(object):
         else:
             self.org = "NULL"
 
+        # read the proxy configuration in /etc/rhn/rhn.conf
         initCFG('server.satellite')
         self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
         self._authenticate(url)
@@ -160,7 +162,7 @@ class ContentSource(object):
             repo.populate(self.configparser, name, self.yumbase.conf)
         self.repo = repo
 
-        self.setup_repo(repo)
+        self.setup_repo(repo, no_mirrors)
         self.num_packages = 0
         self.num_excluded = 0
         self.gpgkey_autotrust = None
@@ -187,7 +189,7 @@ class ContentSource(object):
     def _authenticate(self, url):
         pass
 
-    def setup_repo(self, repo):
+    def setup_repo(self, repo, no_mirrors):
         """Fetch repository metadata"""
         repo.cache = 0
         repo.mirrorlist = self.url
@@ -206,6 +208,12 @@ class ContentSource(object):
         if not os.path.isdir(pkgdir):
             fileutils.makedirs(pkgdir, user='wwwrun', group='www')
         repo.pkgdir = pkgdir
+        repo.sslcacert = None
+        repo.sslclientcert = None
+        repo.sslclientkey = None
+        repo.proxy = None
+        repo.proxy_username = None
+        repo.proxy_password = None
 
         if "file://" in self.url:
             repo.copy_local = 1
@@ -215,18 +223,28 @@ class ContentSource(object):
             repo.proxy_username = self.proxy_user
             repo.proxy_password = self.proxy_pass
 
-        warnings = YumWarnings()
-        warnings.disable()
-        try:
-            repo.baseurlSetup()
-        except:
+        # Do not try to expand baseurl to other mirrors
+        if no_mirrors:
+            repo.urls = repo.baseurl
+            # FIXME: SUSE
+            # Make sure baseurl ends with / and urljoin will work correctly
+            if repo.urls[0][-1] != '/':
+                repo.urls[0] += '/'
+        else:
+            warnings = YumWarnings()
+            warnings.disable()
+            try:
+                repo.baseurlSetup()
+            except:
+                warnings.restore()
+                raise
             warnings.restore()
             raise
         warnings.restore()
         for burl in repo.baseurl:
             (scheme, netloc, path, query, fragid) = urlparse.urlsplit(burl)
             repo.gpgkey = [urlparse.urlunsplit((scheme, netloc, path + '/repodata/repomd.xml.key', query, fragid))]
-        repo.setup(False, None, gpg_import_func=self.getKeyForRepo,
+        repo.setup(0, None, gpg_import_func=self.getKeyForRepo,
                    confirm_func=self.askImportKey)
         # use a fix dir for repo metadata sig checks
         repo.gpgdir = GPG_DIR
@@ -385,11 +403,19 @@ class ContentSource(object):
     def verify_pkg(_fo, pkg, _fail):
         return pkg.verifyLocalPkg()
 
-    def clear_cache(self, directory=None):
+    def clear_cache(self, directory=None, keep_repomd=False):
         if directory is None:
             directory = os.path.join(CACHE_DIR, self.org, self.name)
-        rmtree(directory, True)
-        # restore empty directory
+
+        # remove content in directory
+        for item in os.listdir(directory):
+            path = os.path.join(directory, item)
+            if os.path.isfile(path) and not (keep_repomd and item == "repomd.xml"):
+                os.unlink(path)
+            elif os.path.isdir(path):
+                rmtree(path)
+
+        # restore empty directories
         makedirs(directory + "/packages", int('0755', 8))
         makedirs(directory + "/gen", int('0755', 8))
 
@@ -711,6 +737,71 @@ class ContentSource(object):
         finally:
             if os.path.exists(temp_file):
                 os.unlink(temp_file)
+
+    def repomd_up_to_date(self):
+        repomd_old_path = os.path.join(self.repo.basecachedir, self.name, "repomd.xml")
+        # No cached repomd?
+        if not os.path.isfile(repomd_old_path):
+            return False
+        repomd_new_path = os.path.join(self.repo.basecachedir, self.name, "repomd.xml.new")
+        # Newer file not available? Don't do anything. It should be downloaded before this.
+        if not os.path.isfile(repomd_new_path):
+            return True
+        return (checksum.getFileChecksum('sha256', filename=repomd_old_path) ==
+                checksum.getFileChecksum('sha256', filename=repomd_new_path))
+
+    # Get download parameters for threaded downloader
+    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None, checksum_value=None,
+                                bytes_range=None):
+        # Create directories if needed
+        target_dir = os.path.dirname(target_file)
+        if not os.path.exists(target_dir):
+            os.makedirs(target_dir, int('0755', 8))
+
+        params['urls'] = self.repo.urls
+        params['relative_path'] = relative_path
+        params['target_file'] = target_file
+        params['ssl_ca_cert'] = self.repo.sslcacert
+        params['ssl_client_cert'] = self.repo.sslclientcert
+        params['ssl_client_key'] = self.repo.sslclientkey
+        params['checksum_type'] = checksum_type
+        params['checksum'] = checksum_value
+        params['bytes_range'] = bytes_range
+        params['proxy'] = self.repo.proxy
+        params['proxy_username'] = self.repo.proxy_username
+        params['proxy_password'] = self.repo.proxy_password
+
+    # Simply load primary and updateinfo path from repomd
+    def get_metadata_paths(self):
+        def get_location(data_item):
+            for sub_item in data_item:
+                if sub_item.tag.endswith("location"):
+                    return sub_item.attrib.get("href")
+
+        def get_checksum(data_item):
+            for sub_item in data_item:
+                if sub_item.tag.endswith("checksum"):
+                    return sub_item.attrib.get("type"), sub_item.text
+
+        repomd_path = os.path.join(self.repo.basecachedir, self.name, "repomd.xml")
+        if not os.path.isfile(repomd_path):
+            raise RepoMDNotFound(repomd_path)
+        repomd = open(repomd_path, 'rb')
+        files = {}
+        for _event, elem in iterparse(repomd):
+            if elem.tag.endswith("data"):
+                if elem.attrib.get("type") == "primary_db":
+                    files['primary'] = (get_location(elem), get_checksum(elem))
+                elif elem.attrib.get("type") == "primary" and 'primary' not in files:
+                    files['primary'] = (get_location(elem), get_checksum(elem))
+                elif elem.attrib.get("type") == "updateinfo":
+                    files['updateinfo'] = (get_location(elem), get_checksum(elem))
+                elif elem.attrib.get("type") == "group_gz":
+                    files['group'] = (get_location(elem), get_checksum(elem))
+                elif elem.attrib.get("type") == "group" and 'group' not in files:
+                    files['group'] = (get_location(elem), get_checksum(elem))
+        repomd.close()
+        return files.values()
 
 def _fix_encoding(text):
     if text is None:
