@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Methods for working with AccessTokens
@@ -100,9 +99,9 @@ public class AccessTokenFactory extends HibernateFactory {
      *  - its close to or already expired.
      *  - it gives access to more channels then the minion should have access to.
      * @param minion the minion to refresh the tokens for
-     * @return the fresh list of AccessTokens
+     * @return boolean indicating if something change
      */
-    public static List<AccessToken> refreshTokens(MinionServer minion) {
+    public static boolean refreshTokens(MinionServer minion) {
         List<AccessToken> unneededTokens = unneededTokens(minion);
         Set<AccessToken> all = minion.getAccessTokens();
         all.removeAll(unneededTokens);
@@ -150,10 +149,7 @@ public class AccessTokenFactory extends HibernateFactory {
             }
         }).collect(Collectors.toList());
 
-
-        return Stream.concat(maybeRefreshed.stream(), Stream.concat(newTokens.stream(),
-                noUpdate.stream()))
-                .collect(Collectors.toList());
+        return !unneededTokens.isEmpty() || !update.isEmpty();
     }
 
     /**

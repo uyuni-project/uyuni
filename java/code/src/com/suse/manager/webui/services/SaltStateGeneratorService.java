@@ -24,6 +24,7 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -104,7 +105,20 @@ public enum SaltStateGeneratorService {
      * @param minion the minion server
      */
     public void generatePillar(MinionServer minion) {
+        generatePillar(minion, true);
+    }
+
+    /**
+     * Generate server specific pillar if the given server is a minion.
+     * @param minion the minion server
+     * @param refreshAccessTokens if access tokens should be refreshed first
+     */
+    public void generatePillar(MinionServer minion, boolean refreshAccessTokens) {
         LOG.debug("Generating pillar file for minion: " + minion.getMinionId());
+
+        if (refreshAccessTokens) {
+            AccessTokenFactory.refreshTokens(minion);
+        }
 
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(minion);
         List<Long> groupIds = groups.stream()
@@ -116,9 +130,8 @@ public enum SaltStateGeneratorService {
         pillar.add("mgr_server", getChannelHost(minion));
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
 
-
         Map<String, Object> chanPillar = new HashMap<>();
-        AccessTokenFactory.refreshTokens(minion).forEach(accessToken -> {
+        minion.getAccessTokens().forEach(accessToken -> {
             accessToken.getChannels().forEach(chan -> {
                 Map<String, Object> chanProps = new HashMap<>();
                 chanProps.put("alias", "susemanager:" + chan.getLabel());
