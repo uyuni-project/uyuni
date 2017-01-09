@@ -41,7 +41,7 @@ $(document).ready(function() {
     <a href={props.url} target={props.target}>
       {
         props.icon ?
-        <i className={'fa fa-' + props.icon}></i>
+        <i className={'fa ' + props.icon}></i>
         : null
       }
       {props.label}
