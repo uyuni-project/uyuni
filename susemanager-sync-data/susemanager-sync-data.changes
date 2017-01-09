@@ -1,4 +1,48 @@
 -------------------------------------------------------------------
+Fri Dec 16 16:02:39 CET 2016 - michele.bologna@suse.com
+
+- version 3.0.13-1
+- support SLE-POS 12 SP2 (bsc#1012789)
+- Add Raspberry Pi channels to SUSE Manager
+- add support for SUSE Enterprise Storage 4, SUSE OpenStack Cloud 7 and SLE-RT
+  12 SP2 (bsc#1006556, bsc#984450, bsc#984447)
+
+-------------------------------------------------------------------
+Mon Nov 07 11:32:56 CET 2016 - michele.bologna@suse.com
+
+- version 3.0.12-1
+- Support SUSE Manager Server on aarch64 (bsc#1002776)
+- Add SLE-HA 12 SP2 for ppc64le
+
+-------------------------------------------------------------------
+Thu Oct 06 15:07:36 CEST 2016 - mc@suse.de
+
+- version 3.0.11-1
+- Add support for Open Enterprise Server 11 SP3 (bsc#988303)
+- Add Support for SLE12 SP2 family (bsc#969889)
+- AMD repos removed because of security reasons
+- add SLES12-GA-LTSS-X86 and SLES12-GA-LTSS-Z channel families
+  (bsc#994305)
+
+-------------------------------------------------------------------
+Mon Jul 18 13:57:05 CEST 2016 - jrenner@suse.com
+
+- version 3.0.10-1
+- support SLES12 LTSS (bsc#979288)
+- support SP Migration for OES 2015 to 2015 SP1
+- add requires to spacewalk-java-lib with OES support
+- add support for OES 2015 and OES 2015 SP1 (bsc#934560)
+
+-------------------------------------------------------------------
+Tue May 24 15:04:56 CEST 2016 - kwalter@suse.com
+
+- version 3.0.9-1
+- support SUSE Enterprise Storage 3 (bsc#966441)
+- support SLE-Module-Certifications12 (bsc#976203)
+- support SLE-POS 11 SP3 as addon for SLES 11 SP4 (bsc#976194)
+- handle product class changes for SUSE Manager Server
+
+-------------------------------------------------------------------
 Mon Mar 21 16:24:15 CET 2016 - mc@suse.de
 
 - version 3.0.8-1

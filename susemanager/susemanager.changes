@@ -1,4 +1,73 @@
 -------------------------------------------------------------------
+Fri Dec 16 12:17:02 CET 2016 - michele.bologna@suse.com
+
+- version 3.0.19-1
+- Preventing stderr output from systemctl calls (bsc#1015055)
+
+-------------------------------------------------------------------
+Mon Nov 07 10:50:53 CET 2016 - michele.bologna@suse.com
+
+- version 3.0.18-1
+- Check for silent remote execution during migration and abort if there is
+  output (bsc#1006718)
+- Run migration helper script from /tmp via bash; /usr filesystem might be
+  mounted readonly (bsc#1004521)
+
+-------------------------------------------------------------------
+Thu Oct 06 15:32:02 CEST 2016 - mc@suse.de
+
+- version 3.0.17-1
+- support creating bootstrap repos for SLE12 SP2 family (bsc#969889)
+- use systemctl instead of insserv for enabling postgresql
+- quietly enable systemd services and do not pollute logfiles
+- enable postgresql via systemctl; it's already adapted to systemd
+  (bsc#995314)
+- Check the integrity of an archive before the import actually starts
+- mgr-create-bootstrap-repo: Support to append additional packages
+  names via commandline
+- mgr-create-bootstrap-repo: Collect errors and print them at the end
+  and copy all found packages
+- Add salt bootstrap repo data for RES6 and RES7
+- Added dependencies for JeOS SLE12
+- Add dependancy packages for JeOS (FATE#320809)
+- enable and start postfix on setup (bsc#979664)
+
+-------------------------------------------------------------------
+Mon Jul 18 14:19:05 CEST 2016 - jrenner@suse.com
+
+- version 3.0.16-1
+- allow migration from external Oracle db to local posgresql db (bsc#987795)
+- make sure migration with external database works for DB names other than
+  susemanager (bsc#987870)
+- create nCoW subvolume for /var/cache/rhn on btrfs (bsc#987614)
+- use performance optimized database configuration also for migration from
+  Oracle to postgresql (bsc#987550)
+- check for uppercase characters in hostname (bsc#980482)
+- add support for migrating SUMA21 to SUMA3 with external Oracle DB
+- call spacewalk-setup with correct parameter depending on database
+- allow DB_BACKEND to be oracle again
+- Forbid some more special characters for db and cert passwords (bsc#983295)
+- Do not create swapfile when / is on btrfs (bsc#977804)
+
+-------------------------------------------------------------------
+Tue May 24 16:09:59 CEST 2016 - kwalter@suse.com
+
+- version 3.0.15-1
+- fix help output for mgr-setup; no longer migration from RHN (bsc#975746)
+- for SLES11 SP2 and lower we do not support salt (bsc#978788)
+- mgr-sync: use bulk channel reposync (bsc#961002)
+- show optional channels in mgr-sync add channel and add an option to hide
+  optional channels (bsc#977579)
+- add more packages to bootstrap repo (bsc#971237)
+
+-------------------------------------------------------------------
+Mon Apr 11 09:26:14 CEST 2016 - mc@suse.de
+
+- version 3.0.14-1
+- add more packages to bootstrap repo (bsc#971237)
+- drop python-certifi from bootstrap repo for SLE12 (bsc#974727)
+
+-------------------------------------------------------------------
 Wed Apr 06 08:48:14 CEST 2016 - mc@suse.de
 
 - version 3.0.13-1

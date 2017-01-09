@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Oct 06 14:59:00 CEST 2016 - mc@suse.de
+
+- version 2.5.2.4-1
+- Restaring salt-broker service when configure-config.sh finished
+  the setup
+- spacewalk-proxy-installer now requires spacewalk-proxy-salt
+- configure firewall for saltproxy
+
+-------------------------------------------------------------------
 Mon Mar 21 16:33:55 CET 2016 - mc@suse.de
 
 - version 2.5.2.3-1

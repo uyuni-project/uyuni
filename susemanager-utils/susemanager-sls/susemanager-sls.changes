@@ -1,4 +1,90 @@
 -------------------------------------------------------------------
+Fri Dec 16 12:14:52 CET 2016 - michele.bologna@suse.com
+
+- version 0.1.18-1
+- Rename 'master' pillar to 'mgr_server'
+- Add tunneling to salt-ssh support
+- Provide SUMA static pillar data for unregistered minions (bsc#1015122)
+- implement fetching kernel live version as module (FATE#319519)
+- Removing '/usr/share/susemanager/pillar' path
+- Retreiving SUMA static pillar data from ext_pillar (bsc1010674)
+- Bugfix: Prevent salt-master ERROR messages if formulas files are missing
+  (bsc#1009004)
+- fallback to major os release version for cert names (bsc#1009749)
+
+-------------------------------------------------------------------
+Mon Nov 07 11:37:52 CET 2016 - michele.bologna@suse.com
+
+- version 0.1.17-1
+- Sync custom modules,grains,beacons always before pkg and hw profileupdate
+  (bsc#1004725)
+- Write distupgrade state for SP migration via salt
+- New location of the salt-ssh key/cert pair. The previous location wasn't
+  writable by the salt user
+
+-------------------------------------------------------------------
+Thu Oct 13 12:50:28 CEST 2016 - mc@suse.de
+
+- version 0.1.16-1
+- Only normalize lists (bsc#1004456)
+- Call normalize() before add_scsi_info() (bsc#1004456)
+
+-------------------------------------------------------------------
+Thu Oct 06 14:51:43 CEST 2016 - mc@suse.de
+
+- version 0.1.15-1
+- Fixed bug with numbers in FormulaForm and improved ext_pillar script
+- Added formula directories and formulas.sls to setup script
+- External pillar script now also includes formula pillars
+- Rename symlinks according to changed 'os' grain for Expanded Support
+- Adding certs states for RHEL minion based on SLES-ES
+- Rename udevdb scsi info json key
+- Add support for mapping mainframe sysinfo
+- Implement isX86() in jinja more correctly
+- Initial support for querying and saving DMI info
+- Add support for mapping the devices
+- Actually handle incoming hardware details
+- Initial version of the hardware.profileupdate sls
+- Added pkgset beacon support in susemanager yum plugin
+- trust also RES GPG key on all RedHat minions
+- trust GPG keys for SUSE Manager Tools channel on RES
+- configure bootstrap repository for RES
+- Always enable salt-minion service while bootstrapping (bsc#990202)
+- CentOS cert state symlinks and fixes
+- states for installing certificate on redhat minions
+- pkg.list_products only on Suse
+- yum plugin to add jwt token as http header
+- Generate SLE 12 bootstrap repo path correctly (bsc#994578)
+- Merging top.sls files in base env (bsc#986770)
+- Watch files instead of require
+
+-------------------------------------------------------------------
+Mon Jul 18 14:23:32 CEST 2016 - jrenner@suse.com
+
+- version 0.1.14-1
+- Initial version of the boostrap sls file
+- update trust store when multiple certs in one file are available on SLE11
+- update ca certificates only when they have changed
+- assume no pillar data if the yml file for the minion does not exist
+  (bsc#980354)
+- Add distributable pkgset beacon for RPM database notifications
+
+-------------------------------------------------------------------
+Tue May 24 16:04:20 CEST 2016 - kwalter@suse.com
+
+- version 0.1.13-1
+- require refresh channels before pkg states (bsc#975424)
+- use pillar and static states to install/remove packages (bsc#975424)
+
+-------------------------------------------------------------------
+Tue Apr 12 17:15:01 CEST 2016 - mc@suse.de
+
+- version 0.1.12-1
+- Add external pillar minion data resolver (bsc#974853)
+- Add readme about ext_pillars
+- remove pillar top.sls (bsc#974853)
+
+-------------------------------------------------------------------
 Wed Apr 06 08:46:20 CEST 2016 - mc@suse.de
 
 - version 0.1.11-1
