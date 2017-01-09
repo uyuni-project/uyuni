@@ -1,4 +1,56 @@
 -------------------------------------------------------------------
+Fri Dec 16 12:13:16 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.7.12-1
+- Version 3.0.3
+- Small adjustments on bootstrap page (bsc#1012761)
+- Bootstrapping: ssh push for salt system feature preview
+- Fix plus/minus buttons in action chain list (bsc#1011344)
+- BugFix: message consistency attempting bootstrapping a minion (bsc#1005924)
+- Only show minions with sids available as links (bsc#1007261, bsc#970460)
+
+-------------------------------------------------------------------
+Mon Nov 07 10:53:57 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.7.11-1
+- Increase minor version to 3.0.2
+- Adds a total systems counter in Salt Remote Cmd UI
+- Separate API endpoint for SSH system registration
+
+-------------------------------------------------------------------
+Thu Oct 06 16:11:48 CEST 2016 - mc@suse.de
+
+- version 2.5.7.10-1
+- Support formulas in SUSE Manager
+- switched SUSE Manager version to 3.0.1
+- introduce Spark router conventions
+- Disable strict host key checking per default
+- Rename "States Catalog" to "State Catalog" in UI
+- add TaskoTop to UI
+- BugFix: use user preferences parameters as default page size
+  (bsc#980678)
+- unified table version
+
+-------------------------------------------------------------------
+Mon Jul 18 14:09:44 CEST 2016 - jrenner@suse.com
+
+- version 2.5.7.9-1
+- BugFix: recompute window dimensions when content changes (bsc#971559)
+- Fix aside column height computation (bsc#969834)
+- Initial version of the bootstrapping UI
+
+-------------------------------------------------------------------
+Tue May 24 15:32:18 CEST 2016 - kwalter@suse.com
+
+- version 2.5.7.8-1
+- Disable action buttons to add/reject/delete minions if user is non org-admin
+- handle and show error message when session expires in remote-command page
+  (bsc#974891)
+- Enable Run button in remote-command page only if a preview exists
+- show both Preview and Run buttons to improve usability of remote
+  command feature (bsc#974288)
+
+-------------------------------------------------------------------
 Wed Apr 06 08:42:16 CEST 2016 - mc@suse.de
 
 - version 2.5.7.7-1

@@ -1,4 +1,54 @@
 -------------------------------------------------------------------
+Fri Dec 16 12:06:00 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.2.13-1
+- Show kernel live patching info in 'system details overview' (FATE#319519)
+- Bugfix: differentiate writable/non-writable fields (bsc#868132)
+- Fix checkbox icon align (bsc#966888)
+- Use different symbols for collapsible sidebar items (bsc#967880) (#870)
+- Use a brighter background color for legends in asides (bsc#967881)
+- Update copyright year to 2016 (bsc#1010543)
+
+-------------------------------------------------------------------
+Mon Nov 07 11:16:06 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.2.12-1
+- Enable SPMigration UI for minions
+- Add a link to system pending events in patch schedule notification for a
+  single system (bsc#971342)
+- Make default contact method show up as "Default"
+- 'errata' > 'patch' string fix in Patches overview page (bsc#981635)
+
+-------------------------------------------------------------------
+Thu Oct 06 16:07:25 CEST 2016 - mc@suse.de
+
+- version 2.5.2.11-1
+- Support Formulas in SUSE Manager
+- SPMigration: add multi-target-selection step in front of the wizard
+- handle minion down and job not found when canceling jobs on minions
+  (bsc#993304,bsc#994623)
+- Rename Errata to Patches/Updates in system details page (bsc#979476)
+- Change btn-primary border color to @suse-green-dark (bsc#967894)
+- Re-title page as "Managed Systems" (bsc#981278)
+- Rename "States Catalog" to "State Catalog" in UI
+
+-------------------------------------------------------------------
+Mon Jul 18 14:07:20 CEST 2016 - jrenner@suse.com
+
+- version 2.5.2.10-1
+- Get rid of scrollbar when it's not needed
+- Initial version of the bootstrapping UI
+- Integrate bootstrapping UI with System Overview
+- fix warning string (bsc#983826)
+- fix message about debuginfo packages (bsc#972156)
+
+-------------------------------------------------------------------
+Tue May 24 15:27:12 CEST 2016 - kwalter@suse.com
+
+- version 2.5.2.9-1
+- Add missing label definition for task.status.gatherer and task.status.matcher
+
+-------------------------------------------------------------------
 Wed Apr 06 08:39:38 CEST 2016 - mc@suse.de
 
 - version 2.5.2.8-1

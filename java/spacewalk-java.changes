@@ -1,4 +1,235 @@
 -------------------------------------------------------------------
+Fri Dec 16 16:35:50 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.59.11-1
+- Add support for live patching
+- Initial support for executing actions in taskomatic
+- Hide kernel patches in CVE Audit results when live patching is used
+	(FATE#319519)
+- Show kernel live patching info in 'system details overview' (FATE#319519)
+- Escape act key names in bootstrap UI (bsc#1015967)
+- Add tunneling to salt-ssh support
+- Fix server checks to allow minions to perform a distupgrade (bsc#1013945)
+- Change default sort to ascending for pending actions list
+- Add reboot/restart type icon to relevant patch column in upgradable package
+  lists
+- Add system.getKernelLivePatch API method
+- Update kernel version and other system info during package refresh
+  (bsc#1013551)
+- Fix ISE when sorting system notes list (bsc#979053)
+- Fix checkbox icon align (bsc#966888)
+- fix fromdir for 3rd party server (bsc#998696)
+- Display warning when JavaScript is disabled on all pages (bsc#987579)
+- Rename SSM page titles for consistency (bsc#979623)
+- hide action chain schedule for salt systems also in SSM (bsc#1005008)
+- send ActionScheduled message for all saved actions (bsc#1005008)
+- Fix plus/minus buttons in action chain list (bsc#1011344)
+- Fix misleading message on system reboot schedule in SSM (bsc#1011817)
+- Utilize HostPortValidator to validate bootstrap host (bsc#1011317)
+- Increment 'earliest' date by a millisecond between chain actions (bsc#973226)
+- Use human-parseable dates for server notes (bsc#969564) (#863)
+- Respect order of validation constraints in XSD files (bsc#959573)
+- Remove useless self-link on login page (bsc#963545) (#872)
+- Use different symbols for collapsible sidebar items (bsc#967880) (#870)
+- Fix SSM reboot action success messages (bsc#968935)
+- Allow sorting on avisory name in errata lists (bsc#989703)
+- Update 'view/modify file' action buttons text (bsc#1009102)
+- Handle salt ssh sdterr message (bsc#1005927)
+- scheduleDetail.jsp: clarify button label (bsc#1010664)
+- Bugfix: Prevent salt-master ERROR messages if formulas files are missing
+  (bsc#1009004)
+- Hide RHN disconnection option (bsc#1010049) (#850)
+- Reword general config page text (bsc#1009982)
+- check and fix also the assigned repository while updating the channels
+  (bsc#1007490)
+- match url including query param seperator to have a definitive end of the
+  path component (bsc#1007490)
+- Only show minions with sids available as links (bsc#1007261, bsc#970460)
+- Delete previous Salt key on register event (bsc#1006119)
+- Repository progress: decode another possible log info (bsc#972492)
+- add oes extensions to base products bsc#1008480
+- Create "script.run" capability if it is not found (bsc#1008759)
+- Avoid misleading expected check-in message (bsc#1009006)
+
+-------------------------------------------------------------------
+Mon Nov 07 11:43:42 CET 2016 - michele.bologna@suse.com
+
+- version 2.5.59.10-1
+- CVE Audit: tolerate null products (bsc#1004717)
+- If proxy is not found via FQDN, look it up via simple name (bsc#1006982)
+- Change rhnServerPath hibernate mapping to fix ISE for server behing proxy
+  (bsc#1004725)
+- fix autoyast upgrade mode (bsc#1006786)
+  chain (bsc#1000184)
+- Open repo sync log in a new window (bsc#1007459)
+- Always use queue=true when calling state.apply (bsc#1004743)
+- Add a link to system pending events in patch schedule notification for a
+  single system (bsc#971342)
+- Sort proxy clients list by name (bsc#998348)
+- Make exception class more generic and code fixup (bsc#1003449)
+- Raise UnsupportedOnSaltException performing listChannels (bsc#1003449)
+- New exception type to indicate unsupported operation (bsc#1003449)
+- Refactor to remove action canceling duplicate code (bsc#1004745)
+- arch_type of a SUSEProduct can be null (bsc#1001738 bsc#1001784 bsc#1001923
+  bsc#1002678)
+- Ensure no stray config channels are listed for ranking (bsc#979630)
+- PinnedSubscriptionHandler: documentation comment typo (bsc#994848)
+- Refactor unschedule minion actions to fix NPE (bsc#1004745)
+- Enable SPMigration UI for minions
+- Send an email to admin when salt event bus is down
+- Separate API endpoint for SSH system registration
+- Require salt-netapi-client 0.9.0
+- Initial handling of job return events for dist upgrades
+
+-------------------------------------------------------------------
+Thu Oct 06 16:08:09 CEST 2016 - mc@suse.de
+
+- version 2.5.59.9-1
+- Hide all formula tabs as long as there are no formulas installed
+- Support formulas in SUSE Manager
+- SPMigration UI: list not synced channels in the tooltip
+- SPMigration: add multi-target-selection step in front of the wizard
+- Sync product extensions
+- Handle JsonException when sls with error (bsc#987835)
+- Many fixes for onboarding minions
+- Handle hardware refresh like any other action
+- clone Severity from an errata (bsc#1000666)
+- Do not check for password type on autoyast files (bsc#999304)
+- handle minion down and job not found when canceling jobs on minions
+ (bsc#993304,bsc#994623)
+- clear hibernate session after entity type change to fix
+  NonUniqueObjectException (bsc#997243)
+- Remove previous client capabilities on traditional->minion
+  reactivation (bsc#997243)
+- Enables pkgset beacon to work in RHEL systems
+- support Open Enterprise Server 11 SP3 (bsc#988303)
+- Fix broken merge (bsc#987864)
+- use raw package install for non zypper systems
+- Redirect user to a meaningful page after requesting details of non-existing Action Chain (bsc#973198)
+- Setup Salt Minion before packages are taken
+- Support Salt on RedHat like systems
+- fix race condition during auto errata update (bsc#969790)
+- API requests should not be redirected to login
+- introduce Spark router conventions
+- Add server endpoint for TaskoTop web UI page
+- Change EmptyString warning to debug log level to not spam the logs (bsc#989498)
+- BugFix: use user preferences parameters as default page size (bsc#980678)
+- Add proxy detection during registration and pillar generation
+- Adding default channel for minion (bsc#986019)
+- Fix NoClassDefFoundError (bsc#988196)
+- call cobbler sync in profile edit only if requested (bsc#991440)
+- No explicite cobbler sync needed (bsc#991440)
+- call all sync_* functions at minion start event
+- add beacon configuration for pkgset (bsc#971372)
+
+-------------------------------------------------------------------
+Mon Jul 18 14:28:06 CEST 2016 - jrenner@suse.com
+
+- version 2.5.59.8-1
+- Initial version of the bootstrapping UI
+- Integrate bootstrapping with System Overview
+- support SP Migration for OES 2015 to 2015 SP1
+- Fix for minion w/ multiple interfaces (bsc#985707)
+- Fix HW Refresh duplicate insert (bsc#971622, bsc#983347)
+- no addon entitlements allowed for Foreign and Bootstrap systems (bsc#983826)
+- disable checkboxes for foreign and bootstrap systems in system types page
+  (bsc#983826)
+- Tell linuxrc that self_update is an user option so that it'll pass it to
+  autoyast but doesn't process it further and add this to the tests
+- Disable YaST self update for new autoinstallation trees for SLE
+- remove misleading links from action chain page (bsc#983297)
+
+-------------------------------------------------------------------
+Fri Jun 17 18:10:20 CEST 2016 - mc@suse.de
+
+- version 2.5.59.7-1
+- support OES 2015 (bsc#934560)
+- align reboot behavior of salt and tranditional clients (bsc#975534)
+- update to latest salt netapi library
+- Report the state of virtual guests from virtual host manager as
+  'unknown'(bsc#983344)
+- add taskomatic job to clean up minion actions
+- replace ZypperEvent with default beacon event
+- move uuid cleanup logic into taskomatic
+- enable oracle support again (FATE#320213)
+- Enable minions to be worked with SSM only on available features
+- Use the IP address when doing ssh push via proxy (bsc#940927)
+- Don't allow URLs that only differ on the authorization token (bsc#976184, bsc#982347)
+- Fix typo in Systems column (bsc#983916)
+- Salt hw reg: ignore virtual scsi devices (bsc#962588)
+
+-------------------------------------------------------------------
+Tue May 24 16:33:00 CEST 2016 - kwalter@suse.com
+
+- version 2.5.59.6-1
+- fix NoSuchFileException at setup time when there are no orgs yet
+-  add details to history event
+- only require lifecycle entitlements for systems with a SUSE base
+  product, adjust test
+- mgr-sync: use bulk channel reposync
+- enhance list of channel families for SUSE Manager Server
+- reactivate traditional server as minion on registration
+- TaskomaticApi: schedule bulk reposyncs in bulk
+- show machine_id in the system->hardware tab
+- change missing machine_id UI warning message
+- Make message handling thread pool size configurable
+- Support for concurrent handling of checkin events
+- add variable to make cobbler sync optional
+- Add Virtualization Groups to the input JSON data for the matcher
+- Backward synchronization for cobbler kernel options during CobblerSyncTask
+- support for multithreaded message handling
+- BugFix: redirect migration with no Org to the first step (bsc#969529)
+- Trigger errata cache job on changed channel assignments
+- Under high load, the service wrapper may incorrectly interpret the inability
+  to get a response in time from taskomatic and kill it (bsc#962253).
+- make cobbler commands work from taskomatik
+- Don't modify request map when rendering alphabar, since it may fail depending
+  on the implementation of ServletRequest (bsc#978253)
+- require refresh channels before pkg states (bsc#975424)
+- Manager-3.0: Reschedule failed actions (bsc#971622)
+- Exit if there are exceptions on startup to let tanuki restart taskomatic
+- BugFix: keep trace of the parent channel selected during 'Create Channel'
+  (bsc#967865)
+- remote commands: filter minions by permissions and not just by org
+  (bsc#978050)
+- ProductSyncManager: when scheduling reposyncs, use bulk mode through
+  TaskomaticApi (bsc961002)
+- call cobbler sync after cobbler command is finished (bsc#966890)
+- use pillar and static states to install/remove packages (bsc#975424)
+- Faster event processing.
+- Determine the action status more correctly
+- fix error msg if /srv/susemanager/salt/custom does not exist (bsc#978182)
+- Recreate upgrade paths on every refresh (bsc#978166)
+- prevent non org-admin user accept/reject/delete a minion (bsc#979686)
+- regenerate salt files (bsc#974302)
+- log permissions problems on channel access while SP migration (bsc#970223)
+- support SLE-POS 11 SP3 as addon for SLES 11 SP4 (bsc#976194)
+- delete salt key when system is deleted (bsc#971606)
+- Improve the output of remote command actions
+- No package list refresh after channel assignment change
+- Force a package list refresh after the onboarding
+- More "info" level logging about action executors
+- Log out the duration of package profile updates
+- Execute package profile update as a state.apply (bsc#973365)
+- Adjust autoinst file error detecting heuristics to the newer format
+  (bsc#974119)
+- Use queue=true for all calls to state.apply (bsc#980556)
+- make postgresql a weak systemd dependency
+- filter osad from the activation key extra packages (bsc#975135)
+- Ensure SCC data files are saved on disk as tomcat/root with 644 permissions
+- Bugfix: add management product ids to servers without products
+- Double the backslashes when reading the config files from java (bsc#958923)
+- fix setting cpu flags on hw refresh (bsc#975354)
+
+-------------------------------------------------------------------
+Tue Apr 12 17:18:44 CEST 2016 - mc@suse.de
+
+- version 2.5.59.5-1
+- trim cpu values and skip dmi for ppc64 (bsc#974792)
+- delete pillar data on remove server (bsc#974853)
+- use minion_id in pillar data file name (bsc#974853)
+
+-------------------------------------------------------------------
 Wed Apr 06 08:30:19 CEST 2016 - mc@suse.de
 
 - version 2.5.59.4-1

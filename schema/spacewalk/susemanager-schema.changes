@@ -1,4 +1,48 @@
 -------------------------------------------------------------------
+Fri Dec 16 16:34:11 CET 2016 - michele.bologna@suse.com
+
+- version 3.0.17-1
+- Schema upgrade for live patching (FATE#319519)
+
+-------------------------------------------------------------------
+Mon Nov 07 10:49:32 CET 2016 - michele.bologna@suse.com
+
+- version 3.0.16-1
+- Create path for schema upgrade to 3.0
+- Add table for storing product extensions
+
+-------------------------------------------------------------------
+Thu Oct 06 15:34:15 CEST 2016 - mc@suse.de
+
+- version 3.0.15-1
+- Add table for storing product extensions
+- Add severity_id to rhnErrataTmp for consistency with rhnErrata
+  (bsc#1000666)
+- Fixing suseMinionInfo.sql to make 'osFamily' NULLABLE
+- delete rhnContentSourceFilter before rhnContentSource (bsc#998380)
+- Avoid a deadlock when deleting a server (bsc#969790)
+
+-------------------------------------------------------------------
+Mon Jul 18 14:12:49 CEST 2016 - jrenner@suse.com
+
+- version 3.0.14-1
+- Add missing power_management feature for bootstrap_entitlement systems
+- Fix HW Refresh duplicate insert (bsc#971622)
+- add taskomatic job to clean up minion actions
+- provide seperate migration scripts for oracle
+- shorten constaint names and fix syntax (FATE#320213)
+- Remove duplicates from rhnChannelContentSource (bsc#976184)
+
+-------------------------------------------------------------------
+Tue May 24 15:55:53 CEST 2016 - kwalter@suse.com
+
+- version 3.0.13-1
+- move machine_id from suseMinionInfo to rhnServer table
+- fix removing nonlinux entitlement during migration
+- fix migrating and cleanup system types during migration (bsc#977465)
+- Enable ftr_package_refresh for minions
+
+-------------------------------------------------------------------
 Wed Apr 06 08:43:47 CEST 2016 - mc@suse.de
 
 - version 3.0.12-1
