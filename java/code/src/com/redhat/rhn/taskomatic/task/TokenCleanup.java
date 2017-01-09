@@ -15,6 +15,8 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -34,6 +36,17 @@ public class TokenCleanup extends RhnJavaJob {
             log.debug("start token cleanup");
         }
         try {
+            MinionServerFactory.listMinions().forEach(minionServer -> {
+                try {
+                    if (AccessTokenFactory.refreshTokens(minionServer)) {
+                        SaltStateGeneratorService.INSTANCE.generatePillar(minionServer, false);
+                    }
+                }
+                catch (Exception e) {
+                    log.error("error refreshing access tokens for minion " +
+                            minionServer.getMinionId(), e);
+                }
+            });
             AccessTokenFactory.cleanupUnusedExpired();
         }
         catch (Exception e) {
