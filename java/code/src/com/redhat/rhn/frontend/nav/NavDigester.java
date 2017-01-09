@@ -53,7 +53,7 @@ public class NavDigester {
                                   "target",
                                   "target");
         digester.addSetProperties("*/rhn-tab",
-                                  "fontawesome-icon",
+                                  "font-icon",
                                   "icon");
 
         digester.addCallMethod("*/rhn-tab",
