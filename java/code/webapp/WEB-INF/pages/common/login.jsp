@@ -8,60 +8,56 @@
     <script src="/javascript/susemanager-login.js"></script>
 </head>
 <body>
-    <c:if test="${schemaUpgradeRequired == 'true'}">
-        <div class="alert alert-danger">
-            <bean:message key="login.jsp.schemaupgraderequired" />
-        </div>
-    </c:if>
-    <section class="wrap">
-        <div class="row">
-            <div class="col-sm-6">
-                <h1 class="Raleway-font">SUSE<br/> Manager</h1>
-                <p class="gray-text margins-updown">Discover a new way of managing your servers, packages, patches and more via one interface.</p>
-                <p class="gray-text">Learn more about SUSE Manager: <a href="http://www.suse.com/products/suse-manager/" class="btn-dark" target="_blank"> View website</a></p>
+  <c:if test="${schemaUpgradeRequired == 'true'}">
+    <div class="alert alert-danger">
+      <bean:message key="login.jsp.schemaupgraderequired" />
+    </div>
+  </c:if>
+  <div class="col-sm-6">
+      <h1 class="Raleway-font">SUSE<br/> Manager</h1>
+      <p class="gray-text margins-updown">Discover a new way of managing your servers, packages, patches and more via one interface.</p>
+      <p class="gray-text">Learn more about SUSE Manager: <a href="http://www.suse.com/products/suse-manager/" class="btn-dark" target="_blank"> View website</a></p>
 
-                <!-- original text
-                <c:set var="login_banner" scope="page" value="${rhn:getConfig('java.login_banner')}" />
-                <c:choose>
-                    <c:when test="${! empty login_banner}">
-                        <p>
-                            <c:out value="${login_banner}" escapeXml="false" />
-                        </p>
-                    </c:when>
-                    <c:otherwise>
-                        <h1 id="welcome-title">
-                            <bean:message key="login.jsp.welcomemessage" />
-                        </h1>
-                        <p id="welcome-text">
-                            <bean:message key="login.jsp.satbody1" />
-                        </p>
-                    </c:otherwise>
-                </c:choose>
-                <c:if test="${empty login_banner}">
-                    <div class="login-reference-links">
-                        <p>
-                            <small><bean:message key="login.jsp.satbody2" /></small> <small><bean:message key="login.jsp.satbody3" /></small>
-                        </p>
-                    </div>
-                </c:if>
-                -->
+      <!-- original text
+      <c:set var="login_banner" scope="page" value="${rhn:getConfig('java.login_banner')}" />
+      <c:choose>
+          <c:when test="${! empty login_banner}">
+              <p>
+                  <c:out value="${login_banner}" escapeXml="false" />
+              </p>
+          </c:when>
+          <c:otherwise>
+              <h1 id="welcome-title">
+                  <bean:message key="login.jsp.welcomemessage" />
+              </h1>
+              <p id="welcome-text">
+                  <bean:message key="login.jsp.satbody1" />
+              </p>
+          </c:otherwise>
+      </c:choose>
+      <c:if test="${empty login_banner}">
+          <div class="login-reference-links">
+              <p>
+                  <small><bean:message key="login.jsp.satbody2" /></small> <small><bean:message key="login.jsp.satbody3" /></small>
+              </p>
+          </div>
+      </c:if>
+      -->
 
-            </div>
-            <div class="col-sm-5 col-sm-offset-1">
-                <h2 class="Raleway-font gray-text">Sign In</h2>
-                <html:form action="/LoginSubmit">
-                    <rhn:csrf />
-                    <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf"%>
-                </html:form>
-                <hr/>
-                <c:set var="legal_note" scope="page" value="${rhn:getConfig('java.legal_note')}" />
-                <c:if test="${! empty legal_note}">
-                    <p class="gray-text small-text">
-                        <c:out value="${legal_note}" escapeXml="false" />
-                    </p>
-                </c:if>
-            </div>
-        </div>
-    </section>
+  </div>
+  <div class="col-sm-5 col-sm-offset-1">
+      <h2 class="Raleway-font gray-text">Sign In</h2>
+      <html:form action="/LoginSubmit">
+          <rhn:csrf />
+          <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf"%>
+      </html:form>
+      <hr/>
+      <c:set var="legal_note" scope="page" value="${rhn:getConfig('java.legal_note')}" />
+      <c:if test="${! empty legal_note}">
+          <p class="gray-text small-text">
+              <c:out value="${legal_note}" escapeXml="false" />
+          </p>
+      </c:if>
+  </div>
 </body>
 </html>

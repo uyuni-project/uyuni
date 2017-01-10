@@ -50,14 +50,11 @@ public class NavDigester {
 
         digester.addObjectCreate("*/rhn-tab", NavNode.class);
         digester.addSetProperties("*/rhn-tab",
-                                  "active-image",
-                                  "activeImage");
-        digester.addSetProperties("*/rhn-tab",
-                                  "inactive-image",
-                                  "inactiveImage");
-        digester.addSetProperties("*/rhn-tab",
                                   "target",
                                   "target");
+        digester.addSetProperties("*/rhn-tab",
+                                  "font-icon",
+                                  "icon");
 
         digester.addCallMethod("*/rhn-tab",
                                "addPrimaryURL",
