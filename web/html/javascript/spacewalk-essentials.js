@@ -1,18 +1,13 @@
 $(document).on("ready", function(){
 
-  /* Menu in the left column - actions to hide submenu and create animation when a
-  menu only has submenues and doesnt have a URL */
-  $("#sidenav ul>ul").hide();
-
-  $("#sidenav li.active").each(function() {
-    $(this).next("ul").show();
+  /*
+   * System Set Manager: actions to hide the SSM toolbar
+   * when the Clear button is pressed or when
+   * no system is selected
+   */
+  $(document).on('click', '#clear-ssm-btn', function() {
+    hidesystemtool();
   });
-
-  /* Systems Selected Toolbar - actions to hide the toolbar when th Clear button is pressed or when
-  no system is selected */
-
-  $("#clear-btn").click(hidesystemtool);
-
   function hidesystemtool(){
     $(".spacewalk-bar").animate({
       "right": "-=50px",
@@ -47,24 +42,25 @@ $(window).resize(function () {
 // A container function for what should be fired
 // to set HTML tag dimensions
 function alignContentDimensions() {
-  $(".spacewalk-main-column-layout aside").css("padding-bottom", "");
   columnHeight();
 }
 
 // Make columns 100% in height
 function columnHeight() {
-  // Detect if side menu is really side and not whole screen wide. Detecting indirectly with section width because aside can be hidden.
-  if ($(".spacewalk-main-column-layout section").outerWidth() < $(".spacewalk-main-column-layout").outerWidth()) {
-    var asideHeight = $(".spacewalk-main-column-layout aside").height();
-    var navbarHeight = $("header").outerHeight();
-    var footerHeight = $("footer").outerHeight();
-    var heightDoc = $(document).height();
-    // Column heights should equal the document height minus the header height and footer height
-    var newHeight = heightDoc - asideHeight - navbarHeight - footerHeight + "px";
-    $(".spacewalk-main-column-layout aside").css("padding-bottom", newHeight);
-  };
+  const aside = $('.spacewalk-main-column-layout aside');
+  const section = $('.spacewalk-main-column-layout section');
+  aside.css('min-height', 0);
+  section.css('min-height', 0);
+  const headerHeight = $('header').outerHeight();
+  const footerHeight = $('footer').outerHeight();
+  const docHeight = $(document).height();
+  // Column heights should equal the document height minus the header height and footer height
+  aside.css('min-height', docHeight - headerHeight - footerHeight);
+  // responsive rule: the aside block is layered on top of section,
+  // and when it is shown, its height increase the docHeight
+  const asideHeight = aside.is(':hidden') ? 0 : aside.outerHeight();
+  section.css('min-height', docHeight - headerHeight - asideHeight - footerHeight);
 };
-
 
 // returns an object that can be passed to DWR renderer as a callback
 // puts rendered HTML in #divId, opens an alert with the same text if
@@ -309,4 +305,39 @@ $(document).ready(function() {
   var config = { childList: true, characterData: true, subtree: true };
   // pass in the target node, as well as the observer options
   observer.observe(target, config);
+});
+
+$(document).on('click', '.toggle-box', function() {
+  if ($(this).hasClass('open')) {
+    $(this).removeClass('open');
+  }
+  else {
+    $('.toggle-box.open').trigger('click');
+    $(this).addClass('open');
+  }
+  $(this).blur(); // remove the focus
+})
+
+// focus go away from the menu or the nav menu
+$(document).click(function (e) {
+  var target = $(e.target);
+  // if a toggle-box button is active and the current click
+  // is not on its related box, trigger a close for it
+  $('.toggle-box.open').each(function() {
+    var toggleButton = $(this);
+    var toggleBox = toggleButton.parent();
+    if (!target.closest(toggleBox).length) {
+      toggleButton.trigger('click');
+    }
+  });
+});
+
+/* prevent jumping to the top of the page because
+of an <a href> tag that is actually not a link */
+$(document).on('click', 'a', function(e) {
+  const href = $(this).attr('href');
+  if (href.length == 1 && href == '#') {
+    e.preventDefault();
+    $(this).blur(); // remove the focus
+  }
 });

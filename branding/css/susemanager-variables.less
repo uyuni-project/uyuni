@@ -1,24 +1,32 @@
 /* Special colours for Manager */
 // Colours for SUMa only
-@susemanager-green:      #268a90;
-@suse-green-dark:        #3f9988;
+@susemanager-green:        @spacewalk-green;
+@susemanager-green-light:  @spacewalk-green-light;
 
 /* Main tags colours */
+@spacewalk-green:        #00c081; // green
+@spacewalk-green-light:  #02d35f; // green-light
+@spacewalk-gray:         #a7a9ac; // gray
+@spacewalk-gray-light:   #dcddde; // gray-light
+@spacewalk-gray-dark:    #5f5f5f; // gray-dark
+@spacewalk-orange:       #ed6924; // orange
+@spacewalk-orange-light: #fd9a2b; // orange-light
+@spacewalk-yellow:       #ffef8d; // yellow
+@spacewalk-red:          #a42800; // red
 @spacewalk-background:   #f7f7f7;
-@spacewalk-header:       #383c3e;
-@spacewalk-aside:        #232526;
+@spacewalk-blue:         #00243e; // dark blue
+@spacewalk-blue-light:   #003258; // light blue
+@spacewalk-header:       @spacewalk-blue;
+@spacewalk-aside:        @spacewalk-blue-light;
 
 /* Main colour */
-@spacewalk-main:	     @susemanager-green;
+@spacewalk-main:       @susemanager-green;
 
 // Colours for the menu in the first column on the left:
 @spacewalk-aside-border: lighten(@spacewalk-aside, 8%);
-@spacewalk-aside-first-submenu-hyperlink: #fff;
-@spacewalk-aside-first-submenu-hyperlink-hover: #fff;
-@spacewalk-aside-second-submenu-hyperlink: @spacewalk-aside-menu-hyperlink;
-@spacewalk-aside-second-submenu-hyperlink-hover: @susemanager-green;
 @spacewalk-aside-menu-hyperlink:         #fff;
 @spacewalk-aside-menu-hyperlink-hover:   @susemanager-green;
+@spacewalk-aside-menu-active:        @spacewalk-green;
 
 
 /* Colours for the three different menus alocated in the header at the top-right corner */
@@ -31,6 +39,7 @@
 @spacewalk-header-upper-menu-text-icons:         #d7d7d7;
 
 /* Footer colours */
+@spacewalk-footer:      @spacewalk-header;
 @spacewalk-footer-text:       #ffffff;
 @spacewalk-footer-links:      #ffffff;
 @spacewalk-footer-hover:      #27460b;
@@ -49,7 +58,7 @@
 @spacewalk-list-second-submenu-last-line:    darken(@spacewalk-list-second-submenu, 8%);
 
 /* Icons legend */
-@spacewalk-icon-legend:       #363636;
+@spacewalk-icon-legend:       @spacewalk-blue;
 @spacewalk-icon-legend-text:  #dddddd;
 
 /* Buttons */

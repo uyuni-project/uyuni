@@ -1103,6 +1103,12 @@
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="User Account">
+        <source>User Account</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Your Account">
         <source>Your Account</source>
         <context-group name="ctx">
@@ -8065,6 +8071,18 @@ tree will not be usable for kickstarting.
         <source>A selected system has multiple child channels available that contain the rhncfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="External Links">
+        <source>External Links</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Home">
+        <source>Home</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
     </body>

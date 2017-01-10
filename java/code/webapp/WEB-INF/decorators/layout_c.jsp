@@ -13,37 +13,38 @@
     <decorator:head />
   </head>
   <body onload="<decorator:getProperty property="body.onload" />">
-    <div class="spacewalk-top-wrap">
-      <header class="navbar-pf">
-        <jsp:include page="/WEB-INF/includes/header.jsp" />
-      </header>
-      <div class="spacewalk-main-column-layout">
-        <aside id="spacewalk-aside" class="navbar-collapse collapse">
-          <jsp:include page="/WEB-INF/includes/leftnav.jsp" />
-          <jsp:include page="/WEB-INF/includes/legends.jsp" />
-        </aside>
-        <section id="spacewalk-content">
-          <noscript>
-              <div class="alert alert-danger">
-                  <bean:message key="common.jsp.noscript"/>
-              </div>
-          </noscript>
-          <!-- Alerts and messages -->
-          <logic:messagesPresent>
-            <div class="alert alert-warning">
-              <ul>
-              <html:messages id="message">
-                <li><c:out value="${message}"/></li>
-              </html:messages>
-              </ul>
+    <header class="navbar-pf">
+      <jsp:include page="/WEB-INF/includes/header.jsp" />
+    </header>
+    <div class="spacewalk-main-column-layout">
+      <aside id="spacewalk-aside" class="navbar-collapse collapse">
+        <div id="nav"></div>
+        <jsp:include page="/WEB-INF/includes/leftnav.jsp" />
+        <jsp:include page="/WEB-INF/includes/legends.jsp" />
+      </aside>
+      <section id="spacewalk-content">
+        <div id="breadcrumb"></div>
+        <noscript>
+            <div class="alert alert-danger">
+                <bean:message key="common.jsp.noscript"/>
             </div>
-          </logic:messagesPresent>
-          <html:messages id="message" message="true">
-            <rhn:messages><c:out escapeXml="false" value="${message}" /></rhn:messages>
-          </html:messages>
-          <decorator:body />
-        </section>
-      </div>
+        </noscript>
+        <!-- Alerts and messages -->
+        <logic:messagesPresent>
+          <div class="alert alert-warning">
+            <ul>
+            <html:messages id="message">
+              <li><c:out value="${message}"/></li>
+            </html:messages>
+            </ul>
+          </div>
+        </logic:messagesPresent>
+        <html:messages id="message" message="true">
+          <rhn:messages><c:out escapeXml="false" value="${message}" /></rhn:messages>
+        </html:messages>
+        <decorator:body />
+      </section>
+      <script src='/javascript/manager/menu.bundle.js'></script>
     </div>
     <footer>
       <jsp:include page="/WEB-INF/includes/footer.jsp" />

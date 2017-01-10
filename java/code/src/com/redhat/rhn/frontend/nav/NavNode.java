@@ -42,8 +42,7 @@ public class NavNode {
     private boolean first;
     private boolean last;
     private String permFailRedirect;
-    private String activeImage;
-    private String inactiveImage;
+    private String icon;
     private String onClick;
     private String dynamicChildren;
 
@@ -262,35 +261,19 @@ public class NavNode {
     }
 
     /**
-     * Gets the current value of activeImage
+     * Gets the current value of icon
      * @return String the current value
      */
-    public String getActiveImage() {
-        return this.activeImage;
+    public String getIcon() {
+        return this.icon;
     }
 
     /**
-     * Sets the value of activeImage to new value
-     * @param activeImageIn New value for activeImage
+     * Sets the value of icon to new value
+     * @param iconIn New value for icon
      */
-    public void setActiveImage(String activeImageIn) {
-        this.activeImage = activeImageIn;
-    }
-
-    /**
-     * Gets the current value of inactiveImage
-     * @return String the current value
-     */
-    public String getInactiveImage() {
-        return this.inactiveImage;
-    }
-
-    /**
-     * Sets the value of inactiveImage to new value
-     * @param inactiveImageIn New value for inactiveImage
-     */
-    public void setInactiveImage(String inactiveImageIn) {
-        this.inactiveImage = inactiveImageIn;
+    public void setIcon(String iconIn) {
+        this.icon = iconIn;
     }
 
     /**
