@@ -113,19 +113,20 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
 
     public void testRefresh() throws Exception {
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
-        assertEquals(0, AccessTokenFactory.refreshTokens(testMinionServer).size());
+        assertFalse(AccessTokenFactory.refreshTokens(testMinionServer));
+        assertEquals(0, testMinionServer.getAccessTokens().size());
 
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         testMinionServer.getChannels().add(base);
-        assertEquals(1, AccessTokenFactory.refreshTokens(testMinionServer).size());
+        assertTrue(AccessTokenFactory.refreshTokens(testMinionServer));
 
         Channel child = ChannelFactoryTest.createTestChannel(user);
         child.setParentChannel(base);
         testMinionServer.getChannels().add(child);
-        assertEquals(2, AccessTokenFactory.refreshTokens(testMinionServer).size());
+        assertTrue(AccessTokenFactory.refreshTokens(testMinionServer));
 
         testMinionServer.getChannels().remove(child);
-        assertEquals(1, AccessTokenFactory.refreshTokens(testMinionServer).size());
+        assertTrue(AccessTokenFactory.refreshTokens(testMinionServer));
     }
 
 }
