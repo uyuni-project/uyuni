@@ -39,7 +39,8 @@ public class TokenCleanup extends RhnJavaJob {
             MinionServerFactory.listMinions().forEach(minionServer -> {
                 try {
                     if (AccessTokenFactory.refreshTokens(minionServer)) {
-                        SaltStateGeneratorService.INSTANCE.generatePillar(minionServer, false);
+                        SaltStateGeneratorService.INSTANCE.generatePillar(
+                                minionServer, false);
                     }
                 }
                 catch (Exception e) {

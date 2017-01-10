@@ -117,9 +117,11 @@ public class AccessTokenFactory extends HibernateFactory {
 
             Instant now = Instant.now();
 
-            // using 10% of the tokens lifetime as buffer to regenerate tokens before they expire
+            // using 10% of the tokens lifetime as buffer to
+            // regenerate tokens before they expire
             Duration buffer = Duration.ofMillis(
-                    (long) ((token.getExpiration().getTime() - token.getStart().getTime()) * 0.1)
+                    (long) ((token.getExpiration().getTime() -
+                            token.getStart().getTime()) * 0.1)
             );
 
             return now.plus(buffer).isAfter(expiration);
@@ -149,7 +151,7 @@ public class AccessTokenFactory extends HibernateFactory {
             }
         }).collect(Collectors.toList());
 
-        return !unneededTokens.isEmpty() || !update.isEmpty();
+        return !unneededTokens.isEmpty() || !update.isEmpty() || !newTokens.isEmpty();
     }
 
     /**
