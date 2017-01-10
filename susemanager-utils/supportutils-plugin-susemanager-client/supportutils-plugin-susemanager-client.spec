@@ -13,7 +13,7 @@ Name:         supportutils-plugin-susemanager-client
 License:      GPLv2
 Group:        Documentation/SuSE
 Autoreqprov:  on
-Version:      3.0.4
+Version:      3.1.0
 Release:      1%{?dist}
 Source:       %{name}-%{version}.tar.gz
 Summary:      Supportconfig Plugin for SUSE Manager Client
