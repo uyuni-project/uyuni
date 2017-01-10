@@ -14,7 +14,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                     class="com.redhat.rhn.domain.server.MinionServer" column="minion_id"/>
         <property name="token" type="string" column="token" />
         <property name="expiration" column="expiration" type="timestamp"/>
-        <property name="start" column="start" type="timestamp"/>
+        <property name="start" column="created" type="timestamp"/>
         <set name="channels" lazy="true" table="suseChannelAccessTokenChannel" cascade="all">
             <key column="token_id"/>
             <many-to-many class="com.redhat.rhn.domain.channel.Channel"

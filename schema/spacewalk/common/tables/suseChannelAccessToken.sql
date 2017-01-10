@@ -22,7 +22,7 @@ CREATE TABLE suseChannelAccessToken
                              REFERENCES suseMinionInfo (server_id)
                              ON DELETE SET NULL,
     token            varchar2(4000) NOT NULL,
-    start            timestamp with local time zone NOT NULL,
+    created          timestamp with local time zone NOT NULL,
     expiration       timestamp with local time zone NOT NULL
 )
 ENABLE ROW MOVEMENT
