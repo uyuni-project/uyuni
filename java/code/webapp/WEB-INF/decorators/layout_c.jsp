@@ -44,6 +44,7 @@
         </html:messages>
         <decorator:body />
       </section>
+      <script src='/javascript/manager/menu.bundle.js'></script>
     </div>
     <footer>
       <jsp:include page="/WEB-INF/includes/footer.jsp" />
