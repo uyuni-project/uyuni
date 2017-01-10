@@ -16,9 +16,9 @@
 CREATE TABLE suseChannelAccessToken
 (
     id               NUMBER NOT NULL
-                         CONSTRAINT suse_channel_access_token_id_pk PRIMARY KEY,
+                         CONSTRAINT suse_chan_access_token_id_pk PRIMARY KEY,
     minion_id        NUMBER
-                         CONSTRAINT suse_channel_access_token_mid_fk
+                         CONSTRAINT suse_chan_access_token_mid_fk
                              REFERENCES suseMinionInfo (server_id)
                              ON DELETE SET NULL,
     token            varchar2(4000) NOT NULL,
@@ -28,4 +28,4 @@ CREATE TABLE suseChannelAccessToken
 ENABLE ROW MOVEMENT
 ;
 
-CREATE SEQUENCE suse_channel_access_token_id_seq;
+CREATE SEQUENCE suse_chan_access_token_id_seq;
