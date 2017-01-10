@@ -217,8 +217,11 @@ rhnWebContactChangeLog         :: rhnWebContactChangeState
 rhn_config_parameter           :: rhn_config_group rhn_config_security_type
 rhnActionChain                 :: web_contact
 rhnActionChainEntry            :: rhnActionChain rhnAction rhnServer
+suseChannelAccessToken         :: suseMinionInfo
+suseChannelAccessTokenChannel  :: suseChannelAccessToken rhnChannel
 suseCredentials                :: suseCredentialsType web_contact
 suseOSTarget                   :: rhnChannelArch
+suseMinionInfo                 :: rhnServer
 suseServer                     :: rhnServer suseOSTarget
 suseInstalledProduct           :: rhnPackageArch
 suseMdData                     :: rhnChannel rhnPackage suseMdKeyword
