@@ -22,7 +22,8 @@ class BootstrapMinions extends React.Component {
             messages: [],
             loading: false
         };
-        ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "manageWithSSHChanged", "activationKeyChanged", "clearFields"]
+        ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "manageWithSSHChanged", "activationKeyChanged", "clearFields",
+        "proxyChanged"]
             .forEach(method => this[method] = this[method].bind(this));
     }
 
@@ -70,6 +71,12 @@ class BootstrapMinions extends React.Component {
         });
     }
 
+    proxyChanged(event) {
+        this.setState({
+            proxy: event.target.value
+        });
+    }
+
     onBootstrap() {
         this.setState({messages: [], loading: true});
         var formData = {};
@@ -79,6 +86,9 @@ class BootstrapMinions extends React.Component {
         formData['password'] = this.state.password.trim();
         formData['activationKeys'] = this.state.activationKey === "" ? [] : [this.state.activationKey] ;
         formData['ignoreHostKeys'] = this.state.ignoreHostKeys;
+        if (this.state.proxy) {
+            formData['proxy'] = this.state.proxy;
+        }
 
         const request = Network.post(
             this.state.manageWithSSH ? "/rhn/manager/api/minions/bootstrapSSH" : "/rhn/manager/api/minions/bootstrap",
@@ -189,6 +199,19 @@ class BootstrapMinions extends React.Component {
                     </div>
                 </div>
                 <div className="form-group">
+                    <label className="col-md-3 control-label">{t("Proxy")}:</label>
+                    <div className="col-md-6">
+                       <select value={this.state.proxy} onChange={this.proxyChanged} className="form-control" name="proxies">
+                         <option key="none" value="">None</option>
+                         {
+                             this.props.proxies.map(p =>
+                                <option key={p.id} value={p.id}>{ p.name }</option>
+                             )
+                         }
+                       </select>
+                    </div>
+                </div>
+                <div className="form-group">
                     <div className="col-md-3"></div>
                     <div className="col-md-6">
                         <div className="checkbox">
@@ -222,6 +245,6 @@ class BootstrapMinions extends React.Component {
 }
 
 ReactDOM.render(
-    <BootstrapMinions availableActivationKeys={availableActivationKeys} />,
+    <BootstrapMinions availableActivationKeys={availableActivationKeys} proxies={proxies}/>,
     document.getElementById('bootstrap-minions')
 );

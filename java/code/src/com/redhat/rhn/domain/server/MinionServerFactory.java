@@ -141,14 +141,18 @@ public class MinionServerFactory extends HibernateFactory {
      * List all the SSH minion ids and their contact methods.
      * @return map of SSH minion id and its contact method
      */
-    public static Map<String, String> listSSHMinionIdsAndContactMethods() {
-        List<Object[]> list = (List<Object[]>)getSession()
-                .getNamedQuery("MinionServer.listSSHMinionsIdsAndContactMethods")
+    public static List<MinionServer> listSSHMinions() {
+//        List<Object[]> list = (List<Object[]>)getSession()
+//                .getNamedQuery("MinionServer.listSSHMinionsIdsAndContactMethods")
+//                .list();
+//        Map<String, String> map = new HashMap<>();
+//        for (Object[] entry : list) {
+//            map.put((String)entry[0], (String)entry[1]);
+//        }
+//        return map;
+        return ServerFactory.getSession().createCriteria(MinionServer.class)
+                .createAlias("contactMethod", "m")
+                .add(Restrictions.in("m.label", new String[] {"ssh-push", "ssh-push-tunnel"}))
                 .list();
-        Map<String, String> map = new HashMap<>();
-        for (Object[] entry : list) {
-            map.put((String)entry[0], (String)entry[1]);
-        }
-        return map;
     }
 }
