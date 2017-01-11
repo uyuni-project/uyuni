@@ -13,6 +13,9 @@
 -- in this software or its documentation.
 --
 
+insert into suseCredentialsType (id, label, name) values
+        (sequence_nextval('suse_credtype_id_seq'), 'docker', 'Docker Registry');
+
 CREATE TABLE suseDockerCredentialsInfo
 (
     creds_id  NUMBER NOT NULL
