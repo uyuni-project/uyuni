@@ -62,6 +62,8 @@ public class EntitlementManager extends BaseManager {
         BASE_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         BASE_ENTITLEMENTS.add(MANAGEMENT);
         BASE_ENTITLEMENTS.add(SALT);
+        BASE_ENTITLEMENTS.add(FOREIGN);
+        BASE_ENTITLEMENTS.add(BOOTSTRAP);
     }
 
     /**

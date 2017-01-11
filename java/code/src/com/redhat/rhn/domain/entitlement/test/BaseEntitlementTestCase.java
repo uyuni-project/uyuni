@@ -15,17 +15,22 @@
 package com.redhat.rhn.domain.entitlement.test;
 
 import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ServerTestUtils;
 
 /**
  * BaseEntitlementTestCase
  * @version $Rev$
  */
-public abstract class BaseEntitlementTestCase extends RhnBaseTestCase {
+public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
 
     protected Entitlement ent;
 
-    public void setUp() {
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
         createEntitlement();
     }
 
@@ -33,6 +38,19 @@ public abstract class BaseEntitlementTestCase extends RhnBaseTestCase {
         assertEquals(getLabel(), ent.getLabel());
     }
 
+
+    public void testIsAllowedOnServer() throws Exception {
+        Server traditional = ServerTestUtils.createTestSystem(user);
+        Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
+
+        traditional.setBaseEntitlement(EntitlementManager.MANAGEMENT);
+        foreign.setBaseEntitlement(EntitlementManager.FOREIGN);
+
+        assertTrue(traditional.getValidAddonEntitlementsForServer().size() > 0);
+        assertTrue(foreign.getValidAddonEntitlementsForServer().size() == 0);
+    }
+
     protected abstract void createEntitlement();
     protected abstract String getLabel();
+
 }

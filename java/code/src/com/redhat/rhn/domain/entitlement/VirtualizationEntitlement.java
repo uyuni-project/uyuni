@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.entitlement;
 
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 
@@ -46,5 +47,13 @@ public class VirtualizationEntitlement extends Entitlement {
     @Override
     public boolean isBase() {
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isAllowedOnServer(Server server) {
+        return super.isAllowedOnServer(server) && !server.isVirtualGuest();
     }
 }

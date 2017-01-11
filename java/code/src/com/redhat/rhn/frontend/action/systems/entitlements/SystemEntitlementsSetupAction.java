@@ -37,7 +37,9 @@ import org.apache.struts.util.LabelValueBean;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,12 +55,8 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
 
     public static final String ADDON_ENTITLEMENTS = "addOnEntitlements";
     public static final String ADDON_ENTITLEMENT = "addOnEntitlement";
-
-    public static final String MANAGEMENT_COUNTS_MESSAGE = "managementCountsMessage";
-    public static final String SALT_COUNTS_MESSAGE = "saltCountsMessage";
-    public static final String FOREIGN_COUNTS_MESSAGE = "foreignCountsMessage";
-    public static final String VIRTUALIZATION_COUNTS_MESSAGE =
-        "virtualizationCountsMessage";
+    public static final String BASE_ENTITLEMENT_COUNTS = "baseEntitlementCounts";
+    public static final String ADDON_ENTITLEMENT_COUNTS = "addOnEntitlementCounts";
 
     /**
      * {@inheritDoc}
@@ -98,9 +96,10 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
 
         List<LabelValueBean> addOnEntitlements = new ArrayList<LabelValueBean>();
 
-        log.debug("Adding virt-entitled droplist entry");
-        addOnEntitlements.add(lvl10n(EntitlementManager.VIRTUALIZATION_ENTITLED,
-                EntitlementManager.VIRTUALIZATION_ENTITLED));
+        for (Entitlement e : user.getOrg().getValidAddOnEntitlementsForOrg()) {
+            log.debug("Adding " + e.getLabel() + " droplist entry");
+            addOnEntitlements.add(lvl10n(e.getLabel(), e.getLabel()));
+        }
 
         log.debug("addonents.size(): " + addOnEntitlements.size());
         if (addOnEntitlements.size() > 0) {
@@ -116,29 +115,31 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
     }
 
     private void setupCounts(HttpServletRequest request, User user) {
-        setupCountsMessage(request, user, EntitlementManager.MANAGEMENT,
-                MANAGEMENT_COUNTS_MESSAGE);
-        setupCountsMessage(request, user, EntitlementManager.SALT,
-                SALT_COUNTS_MESSAGE);
-        setupCountsMessage(request, user, EntitlementManager.FOREIGN,
-                FOREIGN_COUNTS_MESSAGE);
+        Map<String, String> baseEntitlementCounts = new HashMap<>();
+        Map<String, String> addonEntitlementCounts = new HashMap<>();
 
-        setupCountsMessage(request, user, EntitlementManager.VIRTUALIZATION,
-                VIRTUALIZATION_COUNTS_MESSAGE);
+        for (Entitlement e : EntitlementManager.getBaseEntitlements()) {
+            baseEntitlementCounts.put(e.getLabel(), getCountsMessage(user, e));
+        }
+
+        for (Entitlement e : EntitlementManager.getAddonEntitlements()) {
+            addonEntitlementCounts.put(e.getLabel(), getCountsMessage(user, e));
+        }
+
+        request.setAttribute(BASE_ENTITLEMENT_COUNTS, baseEntitlementCounts);
+        request.setAttribute(ADDON_ENTITLEMENT_COUNTS, addonEntitlementCounts);
     }
 
-    private void setupCountsMessage(HttpServletRequest request, User user, Entitlement ent,
-            String requestId) {
+    private String getCountsMessage(User user, Entitlement ent) {
         EntitlementServerGroup sg = ServerGroupFactory.lookupEntitled(ent, user.getOrg());
         if (sg != null) {
             LocalizationService service = LocalizationService.getInstance();
-            String unlimitedKey =
-                    "systementitlements.jsp.entitlement_counts_message";
+            String countKey = "systementitlements.jsp.entitlement_counts_message";
 
-            String message = service.getMessage(unlimitedKey,
-                new Object[] {String.valueOf(sg.getCurrentMembers())});
-
-            request.setAttribute(requestId, message);
+            return service.getMessage(countKey,
+                    String.valueOf(sg.getCurrentMembers()));
         }
+
+        return null;
     }
 }
