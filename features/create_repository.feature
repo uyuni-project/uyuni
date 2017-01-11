@@ -7,9 +7,12 @@ Feature: Adding repository to a channel
   I want to add a repository
   And I want to add this repository to the base channel
 
+  Background:
+  Given I am authorized as "testing" with password "testing"
+  And I follow "Home" in the left menu
+  And I follow "Channels"
+
   Scenario: Adding SLES11-SP3-Updates-x86_64 repository
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Create Repository"
@@ -20,8 +23,6 @@ Feature: Adding repository to a channel
     And I should see "metadataSigned" as checked
 
   Scenario: Disable Metadata check for SLES11-SP3-Updates-x86_64 repository
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "SLES11-SP3-Updates-x86_64"
@@ -31,8 +32,6 @@ Feature: Adding repository to a channel
     And I should see "metadataSigned" as unchecked
 
   Scenario: Add repository to the x86_64 channel
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Repositories" in the content area
@@ -41,8 +40,6 @@ Feature: Adding repository to a channel
     Then I should see a "SLES11-SP3-Updates x86_64 Channel repository information was successfully updated" text
 
   Scenario: Sync the repository in the x86_64 channel
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Repositories" in the content area
@@ -51,8 +48,6 @@ Feature: Adding repository to a channel
     Then I should see a "Repository sync scheduled for SLES11-SP3-Updates x86_64 Channel." text
 
   Scenario: Adding SLES11-SP3-Updates-i586 repository
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Create Repository"
@@ -63,8 +58,6 @@ Feature: Adding repository to a channel
     Then I should see a "Repository created successfully" text
 
   Scenario: Add repository to the i586 channel
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "SLES11-SP3-Updates i586 Channel"
     And I follow "Repositories" in the content area
@@ -73,8 +66,6 @@ Feature: Adding repository to a channel
     Then I should see a "SLES11-SP3-Updates i586 Channel repository information was successfully updated" text
 
   Scenario: Sync the repository in the i586 channel
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "SLES11-SP3-Updates i586 Channel"
     And I follow "Repositories" in the content area
