@@ -13,6 +13,7 @@ Feature: Adding channels
   Scenario: Adding a base channel
     And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
+    And I follow "Overview" in the left menu
     And I follow "Create Channel"
     When I enter "Test Base Channel" as "Channel Name"
     And I enter "test_base_channel" as "Channel Label"
@@ -26,6 +27,7 @@ Feature: Adding channels
   Scenario: Adding a child channel
     And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
+    And I follow "Overview" in the left menu
     And I follow "Create Channel"
     When I enter "Test Child Channel" as "Channel Name"
     And I enter "test_child_channel" as "Channel Label"
@@ -39,6 +41,7 @@ Feature: Adding channels
   Scenario: Adding SLES11-SP3-Updates i586 base channel
     And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
+    And I follow "Overview" in the left menu
     And I follow "Create Channel"
     When I enter "SLES11-SP3-Updates i586 Channel" as "Channel Name"
     And I enter "sles11-sp3-updates-i586-channel" as "Channel Label"
@@ -52,6 +55,7 @@ Feature: Adding channels
   Scenario: Adding a child channel to SLES11-SP3-Updates i586
     And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
+    And I follow "Overview" in the left menu
     And I follow "Create Channel"
     When I enter "SLES11-SP3-Updates i586 Child Channel" as "Channel Name"
     And I enter "sles11-sp3-updates-i586-child-channel" as "Channel Label"
@@ -65,6 +69,7 @@ Feature: Adding channels
   Scenario: Adding SLES11-SP3-Updates x86_64 base channel
     And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
+    And I follow "Overview" in the left menu
     And I follow "Create Channel"
     When I enter "SLES11-SP3-Updates x86_64 Channel" as "Channel Name"
     And I enter "sles11-sp3-updates-x86_64-channel" as "Channel Label"
@@ -78,6 +83,7 @@ Feature: Adding channels
   Scenario: Adding a child channel to SLES11-SP3-Updates x86_64
     And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
+    And I follow "Overview" in the left menu
     And I follow "Create Channel"
     When I enter "SLES11-SP3-Updates x86_64 Child Channel" as "Channel Name"
     And I enter "sles11-sp3-updates-x86_64-child-channel" as "Channel Label"
@@ -91,6 +97,7 @@ Feature: Adding channels
   Scenario: Adding Fedora x86_64 base channel
     And I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
+    And I follow "Overview" in the left menu
     And I follow "Create Channel"
     When I enter "Fedora x86_64 Channel" as "Channel Name"
     And I enter "fedora-x86_64-channel" as "Channel Label"
@@ -104,6 +111,7 @@ Feature: Adding channels
    Scenario: Adding a duplicate channel fails
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
+     And I follow "Overview" in the left menu
      And I follow "Create Channel"
      When I enter "Test Base Channel" as "Channel Name"
      And I enter "test_base_channel" as "Channel Label"
@@ -117,6 +125,7 @@ Feature: Adding channels
     Scenario: I am not allowed to use invalid characters in the channel label
       And I follow "Channels"
       And I follow "Manage Software Channels" in the left menu
+      And I follow "Overview" in the left menu
       And I follow "Create Channel"
       When I enter "test123" as "Channel Name"
       And I enter "tesT123" as "Channel Label"
@@ -127,6 +136,7 @@ Feature: Adding channels
     Scenario: I am not allowed to invalid characters in the channel name
       And I follow "Channels"
       And I follow "Manage Software Channels" in the left menu
+      And I follow "Overview" in the left menu
       And I follow "Create Channel"
       When I enter "!test123" as "Channel Name"
       And I enter "test123" as "Channel Label"
@@ -137,6 +147,7 @@ Feature: Adding channels
     Scenario: I am not allowed to use a reserved name
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
+     And I follow "Overview" in the left menu
      And I follow "Create Channel"
     When I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
      And I enter "test123" as "Channel Label"
@@ -147,6 +158,7 @@ Feature: Adding channels
    Scenario: I am not allowed to use a reserved label
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
+     And I follow "Overview" in the left menu
      And I follow "Create Channel"
     When I enter "test123" as "Channel Name"
      And I enter "sle-we12-pool-x86_64-sap" as "Channel Label"
@@ -157,6 +169,7 @@ Feature: Adding channels
    Scenario: I create a channel to change
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
+     And I follow "Overview" in the left menu
      And I follow "Create Channel"
     When I enter "aaaSLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
      And I enter "sle-we12aaa-pool-x86_64-sap" as "Channel Label"
@@ -167,6 +180,7 @@ Feature: Adding channels
   Scenario: I try to change the channel name to a reserved name
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
+     And I follow "Overview" in the left menu
      When I follow "aaaSLE-12-Cloud-Compute5-Pool for x86_64"
      And I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
      And I click on "Update Channel"
