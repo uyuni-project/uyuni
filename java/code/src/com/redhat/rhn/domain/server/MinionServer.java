@@ -19,6 +19,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class MinionServer extends Server {
     private String minionId;
     private String osFamily;
     private String kernelLiveVersion;
-    private Set<AccessToken> accessTokens;
+    private Set<AccessToken> accessTokens = new HashSet<>();
 
     /**
      * Constructs a MinionServer instance.
