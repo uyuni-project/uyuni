@@ -39,7 +39,9 @@ Feature: Create initial users
 
   Scenario: Grant Testing user admin priviledges
     Given I am authorized as "admin" with password "admin"
-    When I go to the users page
+    When I follow "Users" in the left menu
+    And I follow "User List" in the left menu
+    And I follow "Active" in the left menu
     And I follow "testing"
     And I check "role_org_admin"
     And I check "role_system_group_admin"
