@@ -21,6 +21,8 @@ import com.suse.manager.webui.services.SaltConstants;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collections;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -43,9 +45,11 @@ public class SaltRoster {
      * @param passwd The password to login with
      * @param port The target system's ssh port number
      * @param remotePortForwarding ssh tunneling options
+     * @param sshOption additional ssh option to pass to salt-ssh
      */
     public void addHost(String host, String user, Optional<String> passwd,
-            Optional<Integer> port, Optional<String> remotePortForwarding) {
+            Optional<Integer> port, Optional<String> remotePortForwarding,
+            Optional<String> sshOption) {
         Map<String, Object> hostData = new LinkedHashMap<>();
         hostData.put("host", host);
         hostData.put("user", user);
@@ -53,6 +57,8 @@ public class SaltRoster {
         port.ifPresent(value -> hostData.put("port", value));
         remotePortForwarding.ifPresent(forwarding -> hostData.put("remote_port_forwards",
                 forwarding));
+        sshOption.ifPresent(option -> hostData.put("ssh_options",
+                Arrays.asList(option/*, "LogLevel=DEBUG3"*/)));
         data.put(host, hostData);
     }
 

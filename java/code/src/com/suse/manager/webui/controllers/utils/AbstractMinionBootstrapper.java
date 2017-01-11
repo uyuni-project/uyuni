@@ -18,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
@@ -163,7 +164,12 @@ public abstract class AbstractMinionBootstrapper {
     protected Map<String, Object> createPillarData(User user, BootstrapParameters input,
                                                    String contactMethod) {
         Map<String, Object> pillarData = new HashMap<>();
-        pillarData.put("mgr_server", ConfigDefaults.get().getCobblerHost());
+        String mgrServer = input.getProxyId()
+                .map(proxyId -> ServerFactory.lookupById(proxyId))
+                .map(proxy -> proxy.getHostname())
+                .orElse(ConfigDefaults.get().getCobblerHost());
+
+        pillarData.put("mgr_server", mgrServer);
         pillarData.put("minion_id", input.getHost());
         pillarData.put("contact_method", contactMethod);
         pillarData.put("mgr_sudo_user", SaltSSHService.getSSHUser());

@@ -78,9 +78,15 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
         MinionServer minionServer2 = createTestMinionServer(user);
         minionServer2.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
 
-        Map<String, String> minions = MinionServerFactory.listSSHMinionIdsAndContactMethods();
-        assertEquals("ssh-push", minions.get(minionServer1.getMinionId()));
-        assertEquals("ssh-push-tunnel", minions.get(minionServer2.getMinionId()));
+        List<MinionServer> minions = MinionServerFactory.listSSHMinions();
+        assertEquals("ssh-push", minions.stream()
+                .filter(m -> m.getId().equals(minionServer1.getId()))
+                .map(m -> minionServer1.getMinionId())
+                .findFirst().get());
+        assertEquals("ssh-push-tunnel", minions.stream()
+                .filter(m -> m.getId().equals(minionServer2.getId()))
+                .map(m -> minionServer2.getMinionId())
+                .findFirst().get());
     }
 
     /**

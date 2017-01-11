@@ -11,6 +11,7 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Tests for SaltService.
@@ -33,7 +34,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testfilterSSHMinionIdsBootstrap() {
-        SSHMinionsPendingRegistrationService.addMinion("m1", "salt-ssh");
+        SSHMinionsPendingRegistrationService.addMinion("m1", "salt-ssh", Optional.empty());
         List<String> minionIds = new ArrayList<>();
         minionIds.add("m1");
         minionIds.add("m2");
