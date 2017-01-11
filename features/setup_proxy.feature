@@ -1,10 +1,12 @@
-# Copyright 2015 SUSE LLC
+# Copyright 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: I want to setup the HTTP proxy
 
   Scenario: I want to test the proxy setup
-    Given I am on the Admin page
+    When I am authorized as "admin" with password "admin"
+    And I follow "Admin" in the left menu
+    And I follow "Setup Wizard" in the left menu
     And I should see a "HTTP Proxy Hostname" text
     And I should see a "HTTP Proxy Username" text
     And I should see a "HTTP Proxy Password" text
@@ -12,5 +14,4 @@ Feature: I want to setup the HTTP proxy
     And I enter "suma" as "HTTP Proxy Username"
     And I enter "P4$$word" as "HTTP Proxy Password"
     And I click on "Save and Verify"
-#    And I wait for "5" seconds
     Then I see verification succeeded
