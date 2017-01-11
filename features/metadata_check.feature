@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-17 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Test SUSE Manager generated metadata
@@ -17,7 +17,7 @@ Feature: Test SUSE Manager generated metadata
     Then I should not have 'epoch="0"' in the metadata
 
   Scenario: Check local metdata not contain \n at the end of the summary
-    Given I am testing channels
+    Given I am authorized as "admin" with password "admin"
     And I am root
     When I refresh the metadata
     Then I should have 'summary.*</summary' in the metadata

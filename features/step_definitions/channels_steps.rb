@@ -1,12 +1,5 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2017 SUSE LINUX
 # Licensed under the terms of the MIT license.
-
-#
-# Initial step for channel testing
-#
-Given(/^I am testing channels$/) do
-  step %(I am authorized as "admin" with password "admin")
-end
 
 Then(/^I should see package "([^"]*)"$/) do |package|
   fail unless has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a[contains(.,'#{package}')]")
@@ -45,13 +38,12 @@ When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   $server.run("ls -lR /var/spacewalk/packages", true, 500, 'root')
 end
 
-Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |arg1, arg2|
+Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
   steps %(
-    When I am authorized as "admin" with password "admin"
-    And I follow "Channels"
-    And I follow "#{arg2}"
+    And I follow "All Channels" in the left menu
+    And I follow "#{channel}"
     And I follow "Packages"
-    Then I should see package "#{arg1}"
+    Then I should see package "#{pkg}"
     )
 end
 
