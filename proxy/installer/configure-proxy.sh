@@ -385,7 +385,7 @@ default_or_input "Do you want to import existing certificates?" \
     USE_EXISTING_CERTS "y/N"
 USE_EXISTING_CERTS=$(yes_no $USE_EXISTING_CERTS)
 
-default_or_input "Do you want to use an existing ssh key for proxying ssh-push minions ?" USE_EXISTING_SSH_PUSH_KEY 'Y/n'
+default_or_input "Do you want to use an existing ssh key for proxying ssh-push Salt minions ?" USE_EXISTING_SSH_PUSH_KEY 'Y/n'
 USE_EXISTING_SSH_PUSH_KEY = $(yes_no $USE_EXISTING_SSH_PUSH_KEY)
 
 /usr/bin/rhn-proxy-activate --server="$RHN_PARENT" \
