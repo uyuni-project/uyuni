@@ -2464,20 +2464,17 @@ tree will not be usable for autoinstalling.
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system_entitlements.unentitle.success">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s)  &lt;strong&gt;without types&lt;/strong&gt;.</source>
+      <trans-unit id="system_entitlements.invalid">
+        <source>Invalid system type selected.</source>
       </trans-unit>
-      <trans-unit id="system_entitlements.unentitle.failure">
-        <source>Unable to &lt;strong&gt;remove&lt;/strong&gt; system types for &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
+      <trans-unit id="system_entitlements.addon.error">
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to set to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
       </trans-unit>
-      <trans-unit id="system_entitlements.unknown.error">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to add system types.  This was caused by an unknown error.  Please contact support.</source>
+      <trans-unit id="system_entitlements.addon.success">
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
       </trans-unit>
-      <trans-unit id="system_entitlements.virtualization_host.noManagement">
-        <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below.</source>
-      </trans-unit>
-      <trans-unit id="system_entitlements.monitoring.noManagement">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below.</source>
+      <trans-unit id="system_entitlements.addon.removed.success">
+        <source>Removed &lt;strong&gt;{1}&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.entitlement">
         <source>System Type</source>
@@ -2635,13 +2632,13 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization">
-        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.  See &lt;a href="{0}"&gt;here&lt;/a&gt; for more info.</source>
+      <trans-unit id="system.entitle.added.virtualization_host">
+        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better. See &lt;a href="/rhn/help/reference/en-US/ch-virtualization.jsp"&gt;here&lt;/a&gt; for more info.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.addedvirtualization.nodoc">
+      <trans-unit id="system.entitle.added.virtualization_host.nodoc">
         <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
