@@ -8,7 +8,7 @@ Feature: Adding channels
   I want to add channels
 
   Background:
-    Given I am testing channels
+    Given I am authorized as "admin" with password "admin"
 
   Scenario: Adding a base channel
     And I follow "Channels"

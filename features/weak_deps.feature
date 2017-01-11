@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-17 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Test weak dependencies
@@ -7,7 +7,7 @@ Feature: Test weak dependencies
   I want to see the weak deps in the package page and in the metadata on the client
 
   Background:
-    Given I am testing channels
+    Given I am authorized as "admin" with password "admin"
 
   Scenario: Check Package metadata displayed in WebUI (Supplements)
     When I follow "Channels"

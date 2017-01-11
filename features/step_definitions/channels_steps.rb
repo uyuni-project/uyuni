@@ -1,12 +1,5 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2017 SUSE LINUX
 # Licensed under the terms of the MIT license.
-
-#
-# Initial step for channel testing
-#
-Given(/^I am testing channels$/) do
-  step %(I am authorized as "admin" with password "admin")
-end
 
 Then(/^I should see package "([^"]*)"$/) do |package|
   fail unless has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a[contains(.,'#{package}')]")

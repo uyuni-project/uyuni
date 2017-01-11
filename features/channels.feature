@@ -1,16 +1,13 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-17 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-#@wip
 Feature: Explore the Channels page
   In Order to validate completeness of the Channels page and it's subpages
   As an authorized user
   I want to see all the texts and links
 
-  Background:
-    Given I am testing channels
-
   Scenario: Completeness of Channels page
+    Given I am authorized as "admin" with password "admin"
     When I follow "Channels"
     Then I should see a "Full Software Channel List" text
     And I should see a "Software Channels" link in the left menu
@@ -28,6 +25,7 @@ Feature: Explore the Channels page
     And I should see a "Retired Channels" link in the content area
 
   Scenario: Completeness of Channels page
+    Given I am authorized as "admin" with password "admin"
     When I follow "Channels"
     And I follow "Popular Channels" in the left menu
     Then I should see a "Popular Channels" text
