@@ -9,6 +9,7 @@ Feature: Adding channels
 
   Background:
     Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
 
   Scenario: Adding a base channel
     And I follow "Channels"
