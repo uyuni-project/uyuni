@@ -152,6 +152,9 @@ When(/^I enter "(.*?)" in the editor$/) do |arg1|
   page.execute_script("ace.edit('contents-editor').setValue('#{arg1}')")
 end
 
+When(/^I close the Home tab$/) do
+ steps %(And I follow "Overview" in the left menu)
+end
 Given(/^I am not authorized$/) do
   visit Capybara.app_host
   fail unless find_button('Sign In').visible?

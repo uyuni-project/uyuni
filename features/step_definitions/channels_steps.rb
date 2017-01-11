@@ -41,6 +41,7 @@ end
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
   steps %(
     When I am authorized as "admin" with password "admin"
+    And I close the Home tab
     And I follow "Channels"
     And I follow "Manage Software Channels"
     And I follow "Overview" in the left menu
