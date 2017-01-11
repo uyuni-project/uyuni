@@ -170,6 +170,17 @@ public class CredentialsFactory extends HibernateFactory {
         return creds;
     }
 
+    /**
+     * Helper method for creating new Docker {@link Credentials}
+     * @return new credential with type Docker
+     */
+    public static DockerCredentials createDockerCredentials() {
+        DockerCredentials creds = new DockerCredentials();
+        creds.setType(CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_DOCKER));
+        return creds;
+    }
+
     @Override
     protected Logger getLogger() {
         return log;
