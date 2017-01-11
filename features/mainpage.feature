@@ -16,8 +16,7 @@ Feature: Explore the main landing page
 
   Scenario: Completeness of the main navigation bar
     Given I am authorized
-    When I go to the home page
-    Then I should see a "Overview" link in the tab bar
+    Then I should see a "Overview" link
     And I should see a "Systems" link
     And I should see a "Errata" link
     And I should see a "Channels" link
@@ -27,7 +26,7 @@ Feature: Explore the main landing page
 
   Scenario: Completeness of the left sidebar
     Given I am authorized
-    When I go to the home page
+    When I follow "User Account" in the left menu
     Then I should see a "Your Account" link in the left menu
     And I should see a "Your Preferences" link in the left menu
     And I should see a "Locale Preferences" link in the left menu
@@ -35,7 +34,6 @@ Feature: Explore the main landing page
 
   Scenario: Completeness of the main content
     Given I am authorized
-    When I go to the home page
     Then I should see a "Tasks" text
     And I should see a "Inactive Systems" text
     And I should see a "Most Critical Systems" text
