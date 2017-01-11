@@ -14,8 +14,11 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import com.redhat.rhn.domain.server.ServerPath;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Class representation of the data needed for bootstrapping hosts.
@@ -29,6 +32,7 @@ public class BootstrapParameters {
     private Optional<String> password;
     private List<String> activationKeys;
     private boolean ignoreHostKeys;
+    private Optional<Long> proxyId;
 
     /**
      * For testing purposes.
@@ -42,13 +46,14 @@ public class BootstrapParameters {
      */
     public BootstrapParameters(String hostIn, Optional<Integer> portIn, String userIn,
             Optional<String> passwordIn, List<String> activationKeysIn,
-            boolean ignoreHostKeysIn) {
+            boolean ignoreHostKeysIn, Optional<Long> proxyIdIn) {
         this.host = hostIn;
         this.port = portIn;
         this.user = userIn;
         this.password = passwordIn;
         this.activationKeys = activationKeysIn;
         this.ignoreHostKeys = ignoreHostKeysIn;
+        this.proxyId = proxyIdIn;
     }
 
     /**
@@ -59,7 +64,7 @@ public class BootstrapParameters {
     public BootstrapParameters(JSONBootstrapHosts json) {
         this(json.getHost(), json.getPortInteger(), json.getUser(),
                 json.maybeGetPassword(), json.getActivationKeys(),
-                json.getIgnoreHostKeys());
+                json.getIgnoreHostKeys(), Optional.of(json.getProxy()));
     }
 
     /**
@@ -145,7 +150,7 @@ public class BootstrapParameters {
 
     /**
      * Convenience method for getting first selected activation key or empty.
-     * @return first selected activation key label or empty if none selected
+     * @return first selected activation key label ogetProxyPathr empty if none selected
      */
     public Optional<String> getFirstActivationKey() {
         return Optional.ofNullable(getActivationKeys())
@@ -176,5 +181,9 @@ public class BootstrapParameters {
      */
     public void setIgnoreHostKeys(boolean ignoreHostKeysIn) {
         this.ignoreHostKeys = ignoreHostKeysIn;
+    }
+
+    public Optional<Long> getProxyId() {
+        return proxyId;
     }
 }

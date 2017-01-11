@@ -117,7 +117,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * {@inheritDoc}
      */
     public void doExecute(EventMessage msg) {
-        registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false,
+        registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false, Optional.empty(),
                 Optional.empty());
     }
 
@@ -128,8 +128,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * @param activationKeyOverride label of activation key to be applied to the system.
      *                              If left empty, activation key from grains will be used.
      */
-    public void registerSSHMinion(String minionId, Optional<String> activationKeyOverride) {
-        registerMinion(minionId, true, activationKeyOverride);
+    public void registerSSHMinion(String minionId, Optional<Long> proxyId, Optional<String> activationKeyOverride) {
+        registerMinion(minionId, true, proxyId, activationKeyOverride);
     }
 
     /**
@@ -140,7 +140,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * @param activationKeyOverride label of activation key to be applied to the system.
      *                              If left empty, activation key from grains will be used.
      */
-    private void registerMinion(String minionId, boolean isSaltSSH,
+    private void registerMinion(String minionId, boolean isSaltSSH, Optional<Long> saltSshProxyId,
             Optional<String> activationKeyOverride) {
         // Match minions via their machine id
         Optional<String> optMachineId = SALT_SERVICE.getMachineId(minionId);
@@ -288,11 +288,21 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     .orElseThrow(() -> new SaltException(
                             "master not found in minion configuration"));
 
-            ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
-                Set<ServerPath> proxyPaths = ServerFactory
-                        .createServerPaths(server, proxy, master);
-                server.getServerPaths().addAll(proxyPaths);
-            });
+            if (isSaltSSH) {
+                saltSshProxyId
+                    .map(proxyId -> ServerFactory.lookupById(proxyId))
+                    .ifPresent(proxy -> {
+                        Set<ServerPath> proxyPaths = ServerFactory
+                                .createServerPaths(server, proxy, proxy.getHostname());
+                        server.getServerPaths().addAll(proxyPaths);
+                    });
+            } else {
+                ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
+                    Set<ServerPath> proxyPaths = ServerFactory
+                            .createServerPaths(server, proxy, master);
+                    server.getServerPaths().addAll(proxyPaths);
+                });
+            }
 
             ServerFactory.save(server);
 

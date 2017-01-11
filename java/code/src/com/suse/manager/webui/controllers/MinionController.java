@@ -234,7 +234,16 @@ public class MinionController {
         List<String> visibleBootstrapKeys = akm.findAll(user)
                 .stream().map(ActivationKey::getKey)
                 .collect(Collectors.toList());
+        List<Map<String, Object>> proxies = ServerFactory.lookupProxiesByOrg(user)
+                .stream()
+                .map(p -> {
+                    Map<String, Object> proxy = new HashMap<>();
+                    proxy.put("id", p.getId());
+                    proxy.put("name", p.getName());
+                    return proxy; })
+                .collect(Collectors.toList());
         data.put("availableActivationKeys", Json.GSON.toJson(visibleBootstrapKeys));
+        data.put("proxies", Json.GSON.toJson(proxies));
         return new ModelAndView(data, "minion/bootstrap.jade");
     }
 }

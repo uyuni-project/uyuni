@@ -16,6 +16,7 @@
 package com.suse.manager.webui.services.impl;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,7 +28,28 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SSHMinionsPendingRegistrationService {
 
-    private static Map<String, String> minionIds = new ConcurrentHashMap<>();
+    public static class PendingMinion {
+
+        private String contactMethod;
+
+        private Optional<List<String>> proxyPath;
+
+        public PendingMinion(String contactMethod, Optional<List<String>> proxyPath) {
+            this.contactMethod = contactMethod;
+            this.proxyPath = proxyPath;
+        }
+
+        public String getContactMethod() {
+            return contactMethod;
+        }
+
+        public Optional<List<String>> getProxyPath() {
+            return proxyPath;
+        }
+    }
+
+
+    private static Map<String, PendingMinion> minionIds = new ConcurrentHashMap<>();
 
     /**
      * Prevent instantiation.
@@ -40,8 +62,8 @@ public class SSHMinionsPendingRegistrationService {
      * @param minionId minion id to be added
      * @param contactMethod the contact method of the minion
      */
-    public static void addMinion(String minionId, String contactMethod) {
-        minionIds.put(minionId, contactMethod);
+    public static void addMinion(String minionId, String contactMethod, Optional<List<String>> proxyPath) {
+        minionIds.put(minionId, new PendingMinion(contactMethod, proxyPath));
     }
 
     /**
@@ -61,11 +83,15 @@ public class SSHMinionsPendingRegistrationService {
         return minionIds.containsKey(minionId);
     }
 
+    public static Optional<PendingMinion> get(String minionId) {
+        return Optional.ofNullable(minionIds.get(minionId));
+    }
+
     /**
      * Get all minion ids in the database.
      * @return all minion ids
      */
-    public static Map<String, String> getMinions() {
+    public static Map<String, PendingMinion> getMinions() {
         return Collections.unmodifiableMap(minionIds);
     }
 
@@ -74,7 +100,13 @@ public class SSHMinionsPendingRegistrationService {
      * @return contact method of the given minion
      */
     public static Optional<String> getContactMethod(String minionId) {
-        return Optional.ofNullable(minionIds.get(minionId));
+        return Optional.ofNullable(minionIds.get(minionId))
+                .map(minion -> minion.getContactMethod());
+    }
+
+    public static Optional<List<String>> getServerPath(String minionId) {
+        return Optional.ofNullable(minionIds.get(minionId))
+                .flatMap(minion -> minion.getProxyPath());
     }
 
 }

@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.impl.SSHMinionsPendingRegistrationService;
+import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -100,10 +101,15 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
         String minionId = params.getHost();
         try {
             if (result.isSuccess()) {
+                Optional<List<String>> proxyPath = params.getProxyId()
+                        .map(proxyId -> ServerFactory.lookupById(proxyId))
+                        .map(proxy -> SaltSSHService.proxyPathToHostnames(
+                                proxy.getServerPaths(), proxy));
                 SSHMinionsPendingRegistrationService.addMinion(minionId,
-                        result.getContactMethod().orElse(defaultContactMethod));
+                        result.getContactMethod().orElse(defaultContactMethod),
+                        proxyPath);
                 getRegisterAction().registerSSHMinion(
-                        minionId,
+                        minionId, params.getProxyId(),
                         params.getFirstActivationKey());
             }
         }
@@ -127,6 +133,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     protected BootstrapParameters createBootstrapParams(JSONBootstrapHosts input) {
         return new BootstrapParameters(input.getHost(),
                 Optional.of(SSH_PUSH_PORT), getSSHUser(), input.maybeGetPassword(),
-                input.getActivationKeys(), input.getIgnoreHostKeys());
+                input.getActivationKeys(), input.getIgnoreHostKeys(),
+                Optional.ofNullable(input.getProxy()));
     }
 }
