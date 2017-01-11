@@ -38,13 +38,15 @@ When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   $server.run("ls -lR /var/spacewalk/packages", true, 500, 'root')
 end
 
-Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |arg1, arg2|
+Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
   steps %(
     When I am authorized as "admin" with password "admin"
     And I follow "Channels"
-    And I follow "#{arg2}"
+    And I follow "Manage Software Channels"
+    And I follow "Overview" in the left menu
+    And I follow "#{channel}"
     And I follow "Packages"
-    Then I should see package "#{arg1}"
+    Then I should see package "#{pkg}"
     )
 end
 
