@@ -40,11 +40,7 @@ end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
   steps %(
-    When I am authorized as "admin" with password "admin"
-    And I close the Home tab
-    And I follow "Channels"
-    And I follow "Manage Software Channels"
-    And I follow "Overview" in the left menu
+    And I follow "All Channels" in the left menu
     And I follow "#{channel}"
     And I follow "Packages"
     Then I should see package "#{pkg}"
