@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2017 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
 Given(/^I am on the Systems page$/) do
@@ -8,8 +8,6 @@ Given(/^I am on the Systems page$/) do
     And I follow "Systems" in the left menu
     And I follow "Overview" in the left menu
     )
-
-  end
 end
 
 Given(/cobblerd is running/) do
