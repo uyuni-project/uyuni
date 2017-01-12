@@ -152,7 +152,7 @@ When(/^I enter "(.*?)" in the editor$/) do |arg1|
   page.execute_script("ace.edit('contents-editor').setValue('#{arg1}')")
 end
 
-When(/^I click Systems, under Systems node$/) do 
+When(/^I click Systems, under Systems node$/) do
   find('button[data-reactid="1.$Systems_1.1.$Systems_2.0"]').click
 end
 
