@@ -33,7 +33,7 @@ Feature: Adding repository to a channel
 
   Scenario: Add repository to the x86_64 channel
     When I follow "Manage Software Channels" in the left menu
-    And I follow "Manage Repositories" in the left menu
+    And I follow "Overview" in the left menu
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Repositories" in the content area
     When I select the "SLES11-SP3-Updates-x86_64" repo
