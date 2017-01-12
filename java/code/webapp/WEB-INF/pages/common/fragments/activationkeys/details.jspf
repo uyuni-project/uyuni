@@ -33,8 +33,11 @@
                     <c:if test="${not requestScope.unprefixed}">
                         <span class="input-group-addon">${requestScope.prefix}</span>
                     </c:if>
-                    <html:text property="key" styleId="key" styleClass="form-control"/>
+                    <html:text property="key" styleId="key" styleClass="form-control activationKey-check"/>
                 </div>
+                <span class="help-block">
+                    <bean:message key="activation-key.jsp.allowed-values"/>
+                </span>
                 <c:choose>
                     <c:when test = "${not requestScope.unprefixed}">
                         <span class="help-block">
