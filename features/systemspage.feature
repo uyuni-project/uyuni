@@ -11,6 +11,7 @@ Feature: Explore the main landing page
   And I follow "Home" in the left menu
   And I follow "Systems" in the left menu
   And I follow "Overview" in the left menu
+
   Scenario: Completeness of the side navigation bar and the content frame
     Then I should see a "System Overview" text
     And I should see a "No systems." text
@@ -29,7 +30,7 @@ Feature: Explore the main landing page
     And I should see a Sign Out link
 
   Scenario: Check sidebar link destination for Systems
-    When I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     Then I should see a "All" link in the left menu
     And I should see a "Physical Systems" link in the left menu
     And I should see a "Virtual Systems" link in the left menu
