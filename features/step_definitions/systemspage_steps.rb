@@ -2,12 +2,12 @@
 # Licensed under the terms of the MIT license.
 
 Given(/^I am on the Systems page$/) do
-    steps %(
-    When I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    )
+  steps %(
+  When I am authorized as "admin" with password "admin"
+  And I follow "Home" in the left menu
+  And I follow "Systems" in the left menu
+  And I follow "Overview" in the left menu
+  )
 end
 
 Given(/cobblerd is running/) do
