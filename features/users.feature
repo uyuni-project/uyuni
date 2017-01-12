@@ -6,7 +6,7 @@ Feature: Tests user feature in suse-manager
      Change permission, role on webui.
 
   Scenario: Validate users page accessibility
-    Given I am on the Users page
+    Given I am on the active Users page
     Then I should see a "Active Users" text
     And I should see a "Create User" link
     And I should see a "User List" link in the left menu
@@ -17,7 +17,7 @@ Feature: Tests user feature in suse-manager
     And I should see a "Download CSV" link
 
   Scenario: Create a new user
-    Given I am on the Users page
+    Given I am on the active Users page
     When I follow "Create User"
     And I enter "user1" as "login"
     And I enter "user1" as "desiredpassword"
@@ -36,7 +36,8 @@ Feature: Tests user feature in suse-manager
     Then I should see a "user1" link
 
   Scenario: Access user details
-    Given I am on the Details page
+    Given I am on the Users page
+    And I follow "user1"
     Then I should see a "User Details" text
     And I should see a "Delete User" link
     And I should see a "Deactivate User" link
@@ -57,7 +58,8 @@ Feature: Tests user feature in suse-manager
     And I should see a "Last Sign In:" text
 
   Scenario: Change Roles (1)
-    Given I am on the Details page
+    Given I am on the Users page
+    And I follow "user1"
     When the "role_satellite_admin" checkbox should be disabled
     And I check "role_org_admin"
     And I check "role_system_group_admin"
@@ -80,7 +82,7 @@ Feature: Tests user feature in suse-manager
     And I should see a "Above roles are granted via the Organization Administrator role." text
 
   Scenario: Verify User List
-    Given I am on the Users page
+    Given I am on the active Users page
     Then Table row for "user1" should contain "Organization Administrator"
     And Table row for "user1" should contain "Channel Administrator"
     And Table row for "user1" should contain "Configuration Administrator"
@@ -88,7 +90,8 @@ Feature: Tests user feature in suse-manager
     And Table row for "user1" should contain "Activation Key Administrator"
 
   Scenario: Deactivate User (Fail)
-    Given I am on the Details page
+    Given I am on the Users page
+    And I follow "user1"
     When I follow "Deactivate User"
     Then I should see a "This action will deactivate this user. This user will no longer be able to log in or perform actions unless it is reactivated." text
     When I click on "Deactivate User"
@@ -97,7 +100,8 @@ Feature: Tests user feature in suse-manager
     Then I should see a "No deactivated users." text
 
   Scenario: Change Role (2)
-    Given I am on the Details page
+    Given I am on the Users page
+    And I follow "user1"
     When I uncheck "role_org_admin"
     And I click on "Update"
     Then I should see "role_org_admin" as unchecked
@@ -107,7 +111,8 @@ Feature: Tests user feature in suse-manager
     And I should see "role_config_admin" as checked
 
   Scenario: Deactivate User (Succeed)
-    Given I am on the Details page
+    Given I am on the Users page
+    And I follow "user1"
     Then I should see "role_org_admin" as unchecked
     When I follow "Deactivate User"
     Then I should see a "This action will deactivate this user. This user will no longer be able to log in or perform actions unless it is reactivated." text
@@ -121,7 +126,7 @@ Feature: Tests user feature in suse-manager
     Then I should see a "user1" link
 
   Scenario: Reactivate User (Succeed)
-    Given I am on the Users page
+    Given I am on the active Users page
     When I follow "Deactivated"
     And I follow "user1"
     Then I should see a "Reactivate User" link
@@ -134,7 +139,8 @@ Feature: Tests user feature in suse-manager
     Then I should not see a "user1" link
 
   Scenario: Delete user1
-    Given I am on the Details page
+    Given I am on the Users page
+    And I follow "user1"
     When I follow "Delete User"
     Then I should see a "Confirm User Deletion" text
     And I should see a "This will delete this user permanently." text
