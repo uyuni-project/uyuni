@@ -341,3 +341,15 @@ $(document).on('click', 'a', function(e) {
     $(this).blur(); // remove the focus
   }
 });
+
+/*
+* Check if the field contains the allowed values only
+*/
+$(document).on('keyup change', '.activationKey-check', function(e) {
+  if ($(this).val().match(/[^a-zA-Z0-9_-]/g)) {
+    $(this).parent().addClass('has-error');
+  }
+  else {
+    $(this).parent().removeClass('has-error');
+  }
+});
