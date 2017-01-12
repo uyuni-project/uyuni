@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
@@ -84,6 +85,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -1740,8 +1742,23 @@ public class SystemManager extends BaseManager {
                 "System_queries", "entitle_server");
 
         m.execute(in, new HashMap<String, Integer>());
+        log.debug("entitle_server mode query executed.");
+
+        server.asMinionServer().ifPresent(SystemManager::refreshPillarDataForMinion);
+
         log.debug("done.  returning null");
         return result;
+    }
+
+    /**
+     * Refresh pillar data for a minion.
+     * @param minion to refresh
+     */
+    private static void refreshPillarDataForMinion(MinionServer minion) {
+        SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+        SaltService.INSTANCE.refreshPillar(
+                new MinionList(minion.getMinionId()));
+        log.debug("Refreshed pillars for minion.");
     }
 
     // Need to do some extra logic here
@@ -1929,6 +1946,9 @@ public class SystemManager extends BaseManager {
         CallableMode m = ModeFactory.getCallableMode(
                 "System_queries", "remove_server_entitlement");
         m.execute(in, new HashMap<String, Integer>());
+
+        Server server = ServerFactory.lookupById(sid);
+        server.asMinionServer().ifPresent(SystemManager::refreshPillarDataForMinion);
     }
 
 
