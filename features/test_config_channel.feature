@@ -1,13 +1,16 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Create a configuration channel
-  In Configuration
-  As the admin user
-  I want to create a configuration channel
+Feature: Test configuration channel basic functions
+  Subscribe system to channel, deploy some files
+
+  Background:
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
 
   Scenario: Successfully create configuration channel
-    Given I am testing configuration
     When I follow "Create a New Configuration Channel"
     And I enter "New Test Channel" as "cofName"
     And I enter "newtestchannel" as "cofLabel"
@@ -25,7 +28,6 @@ Feature: Create a configuration channel
     And I should see a "delete channel" link
 
   Scenario: Add a config file to newtestchannel
-    Given I am testing configuration
     When I follow "Configuration Channels" in the left menu
     And I follow "New Test Channel"
     And I follow "Create configuration file or directory"
@@ -46,8 +48,8 @@ Feature: Create a configuration channel
     Then I should see a "Channel Subscriptions successfully changed for" text
 
   Scenario: Check Centrally Managed Files
-    Given I am testing configuration
     When I follow "Configuration Files" in the left menu
+    And I follow "Centrally Managed Files" in the left menu
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "1 system"
 
   Scenario: Check Centrally Managed Files of this client
@@ -76,9 +78,8 @@ Feature: Create a configuration channel
     And On this client the File "/etc/mgr-test-file.cnf" should have the content "MGR_PROXY=yes"
 
   Scenario: Change local file and compare
-    Given I am root
-    When I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=no"
-    Given I am on the Systems overview page of this client
+    Given I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=no"
+    And I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
@@ -161,7 +162,7 @@ Feature: Create a configuration channel
   Scenario: Change one local file and compare multiple (bsc#910243, bsc#910247)
     Given I am root
     When I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=yes"
-    Given I am on the Systems overview page of this client
+    And I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
