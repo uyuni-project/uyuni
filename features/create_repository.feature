@@ -70,7 +70,8 @@ Feature: Adding repository to a channel
     Then I should see a "SLES11-SP3-Updates i586 Channel repository information was successfully updated" text
 
   Scenario: Sync the repository in the i586 channel
-    And I follow "Manage Software Channels" in the left menu
+    When I follow "Manage Software Channels" in the left menu
+    And I follow "Overview" in the left menu
     And I follow "SLES11-SP3-Updates i586 Channel"
     And I follow "Repositories" in the content area
     And I follow "Sync"
