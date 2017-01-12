@@ -1,11 +1,13 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2017 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
 Given(/^I am on the Systems page$/) do
-  step %(I am authorized)
-  within(:xpath, "//header") do
-    find_link("Systems").click
-  end
+  steps %(
+  When I am authorized as "admin" with password "admin"
+  And I follow "Home" in the left menu
+  And I follow "Systems" in the left menu
+  And I follow "Overview" in the left menu
+  )
 end
 
 Given(/cobblerd is running/) do

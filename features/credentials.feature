@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-17 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Create external system or API credentials
