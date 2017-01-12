@@ -49,7 +49,7 @@ Feature: Test configuration channel basic functions
 
   Scenario: Check Centrally Managed Files
     When I follow "Configuration Files" in the left menu
-    When I follow "Centrally Managed Files" in the left menu
+    And I follow "Centrally Managed Files" in the left menu
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "1 system"
 
   Scenario: Check Centrally Managed Files of this client
@@ -78,9 +78,8 @@ Feature: Test configuration channel basic functions
     And On this client the File "/etc/mgr-test-file.cnf" should have the content "MGR_PROXY=yes"
 
   Scenario: Change local file and compare
-    Given I am root
-    When I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=no"
-    Given I am on the Systems overview page of this client
+    Given I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=no"
+    And I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
@@ -163,7 +162,7 @@ Feature: Test configuration channel basic functions
   Scenario: Change one local file and compare multiple (bsc#910243, bsc#910247)
     Given I am root
     When I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=yes"
-    Given I am on the Systems overview page of this client
+    And I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
