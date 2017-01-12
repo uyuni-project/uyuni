@@ -35,10 +35,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.salt.netapi.datatypes.target.MinionList;
-
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -283,14 +279,6 @@ public class SystemDetailsEditAction extends RhnAction {
         }
 
         if (needsSnapshot) {
-            // Regenerate pillar data when the entitlements are changed
-            // TODO: Do it in entitleServer func?
-            s.asMinionServer().ifPresent(minion -> {
-                SaltStateGeneratorService.INSTANCE.generatePillar(minion);
-                SaltService.INSTANCE.refreshPillar(
-                        new MinionList(minion.getMinionId()));
-            });
-
             String message =
                 LocalizationService.getInstance().getMessage("snapshots.entitlements");
             SystemManager.snapshotServer(s, message);
