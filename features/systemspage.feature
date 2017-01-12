@@ -6,9 +6,13 @@ Feature: Explore the main landing page
   As a authorized user
   I want to see all the texts and links
 
+  Background:
+  Given I am authorized
+  And I follow "Home" in the left menu
+  And I follow "Systems" in the left menu
+  And I follow "Overview" in the left menu
+
   Scenario: Completeness of the side navigation bar and the content frame
-    Given I am authorized
-    When I follow "Systems"
     Then I should see a "System Overview" text
     And I should see a "No systems." text
     And I should see a "Overview" link in the left menu
@@ -25,21 +29,8 @@ Feature: Explore the main landing page
     And I should see a "Download CSV" link
     And I should see a Sign Out link
 
-  Scenario: Completeness of the main navigation bar
-    Given I am authorized
-    When I follow "Systems"
-    Then I should see a "Overview" link in the tab bar
-    And I should see a "Systems" link in the tab bar
-    And I should see a "Errata" link in the tab bar
-    And I should see a "Channels" link in the tab bar
-    And I should see a "Configuration" link in the tab bar
-    And I should see a "Schedule" link in the tab bar
-    And I should see a "Users" link in the tab bar
-    And I should see a "Help" link in the tab bar
-
   Scenario: Check sidebar link destination for Systems
-    Given I am on the Systems page
-    When I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     Then I should see a "All" link in the left menu
     And I should see a "Physical Systems" link in the left menu
     And I should see a "Virtual Systems" link in the left menu

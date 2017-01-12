@@ -81,8 +81,7 @@
 
 # salt regression
 - features/salt_regression_topsls.feature
-# wait for fix, test ok, but need producht upstream fix
-# - features/salt_regression_multiminion.feature
+- features/salt_regression_multiminion.feature
 
 - features/salt_ssh.feature 
 - features/salt_ssh_reboot_test.feature
