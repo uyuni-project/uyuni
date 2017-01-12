@@ -13,7 +13,7 @@ Feature: Create a configuration channel
     And I follow "Configuration Channels" in the left menu
 
   Scenario: Successfully create configuration channel
-    When I follow "Create a New Configuration Channel"
+    When I follow "Create Config Channel"
     And I enter "Test Channel" as "cofName"
     And I enter "testchannel" as "cofLabel"
     And I enter "This is a test channel" as "cofDescription"
@@ -30,7 +30,7 @@ Feature: Create a configuration channel
     And I should see a "delete channel" link
 
   Scenario: Try to create same channel again; this should fail
-    When I follow "Create a New Configuration Channel"
+    When I follow "Create Config Channel"
     And I enter "Test Channel" as "cofName"
     And I enter "testchannel" as "cofLabel"
     And I enter "This is a test channel" as "cofDescription"
@@ -39,7 +39,7 @@ Feature: Create a configuration channel
     And I should see a "Update Channel" button
 
   Scenario: Try to create a channel with an invalid label
-    When I follow "Create a New Configuration Channel"
+    When I follow "Create Config Channel"
     And I enter "Test Channel2" as "cofName"
     And I enter "!testchannel" as "cofLabel"
     And I enter "This is a test channel 2" as "cofDescription"
