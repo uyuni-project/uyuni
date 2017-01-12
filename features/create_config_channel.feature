@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-17 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Create a configuration channel
@@ -6,8 +6,13 @@ Feature: Create a configuration channel
   As the admin user
   I want to create a configuration channel
 
+  Background:
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+
   Scenario: Successfully create configuration channel
-    Given I am testing configuration
     When I follow "Create a New Configuration Channel"
     And I enter "Test Channel" as "cofName"
     And I enter "testchannel" as "cofLabel"
@@ -25,7 +30,6 @@ Feature: Create a configuration channel
     And I should see a "delete channel" link
 
   Scenario: Try to create same channel again; this should fail
-    Given I am testing configuration
     When I follow "Create a New Configuration Channel"
     And I enter "Test Channel" as "cofName"
     And I enter "testchannel" as "cofLabel"
@@ -35,7 +39,6 @@ Feature: Create a configuration channel
     And I should see a "Update Channel" button
 
   Scenario: Try to create a channel with an invalid label
-    Given I am testing configuration
     When I follow "Create a New Configuration Channel"
     And I enter "Test Channel2" as "cofName"
     And I enter "!testchannel" as "cofLabel"
