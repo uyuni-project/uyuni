@@ -228,7 +228,7 @@ Given(/^I am on the active Users page$/) do
     And I follow "Home" in the left menu
     And I follow "Users"
     And I follow "User List"
-    And I follow "Acrive"
+    And I follow "Active"
     )
 end
 
