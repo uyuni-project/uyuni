@@ -187,7 +187,7 @@ end
 Given(/^I am on the Credentials page$/) do
   steps %(
     When I am authorized as "testing" with password "testing"
-    And I follow "Your Account"
+    And I follow "User Account"
     And I follow "Credentials"
     )
 end
