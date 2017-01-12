@@ -2,9 +2,13 @@
 # Licensed under the terms of the MIT license.
 
 Given(/^I am on the Systems page$/) do
-  step %(I am authorized)
-  within(:xpath, "//header") do
-    find_link("Systems").click
+    steps %(
+    When I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
+    )
+
   end
 end
 
