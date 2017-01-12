@@ -3,12 +3,6 @@
 #
 # Initial step for channel testing
 #
-Given(/^I am testing configuration$/) do
-  steps %(
-    Given I am authorized
-    And I follow "Configuration"
-    )
-end
 
 When(/^I change the local file "([^"]*)" to "([^"]*)"$/) do |filename, content|
     $client.run("echo \"#{content}\" > #{filename}", true, 600, 'root')
