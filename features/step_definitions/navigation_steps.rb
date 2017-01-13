@@ -283,10 +283,12 @@ When(/^I go to the configuration page$/) do
 end
 
 Given(/^I am on the errata page$/) do
-  step %(I am authorized)
-  within(:xpath, "//header") do
-    find_link(debrand_string("Errata")).click
-  end
+  steps %(
+    Given I am authorized
+    And I follow "Home" in the left menu
+    And I follow "Patches" in the left menu
+    And I follow "Relevant" in the left menu
+    )
 end
 
 Given(/^I am on the "([^"]*)" errata Details page$/) do |arg1|
