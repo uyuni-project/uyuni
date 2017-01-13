@@ -73,10 +73,6 @@ When(/^I follow first "([^"]*)"$/) do |text|
   click_link(debrand_string(text), :match => :first)
 end
 
-When(/^I follow second "([^"]*)"$/) do |text|
-  all("#{text}")[1].click
-end
-
 #
 # Click on a link which appears inside of <div> with
 # the given "id"
