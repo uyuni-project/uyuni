@@ -287,7 +287,6 @@ Given(/^I am on the errata page$/) do
     Given I am authorized
     And I follow "Home" in the left menu
     And I follow "Patches" in the left menu
-    And I follow second "Patches"
     And I follow "Relevant" in the left menu
     )
 end
