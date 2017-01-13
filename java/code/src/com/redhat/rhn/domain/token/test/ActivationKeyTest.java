@@ -40,6 +40,7 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -243,4 +244,36 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
             throw e;
         }
     }
+
+    public void testActivationKeyValidationTrue() {
+        List<String> keys = new LinkedList<String>();
+        keys.add("1234567890");
+        keys.add("ABCdefGHI");
+        keys.add("a-1-b-2-C_D_E");
+        keys.add("-_");
+        keys.add("--11__22--aa__BB");
+        for (String key: keys) {
+            System.out.println("test-key:" + key +
+                    "; validation: " + ActivationKey.isValid(key));
+            assertTrue(ActivationKey.isValid(key));
+        }
+    }
+
+    public void testActivationKeyValidationFalse() {
+        List<String> keys = new LinkedList<String>();
+        keys.add("123,456");
+        keys.add("abcde+fgh");
+        keys.add("q=w=e;r");
+        keys.add("1#2:a:b");
+        keys.add("1$2:a-b");
+        keys.add("1@2!a)*(b");
+        keys.add("<key>");
+        for (String key: keys) {
+            System.out.println("test-key:" + key +
+                    "; validation: " + ActivationKey.isValid(key));
+            assertFalse(ActivationKey.isValid(key));
+        }
+    }
+
+
 }
