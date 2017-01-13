@@ -25,6 +25,10 @@ You can run the Spacewalk Testsuite:
 
 * [Static run howto](docs/static-run.md)
 
+## Tests order: 
+The tests are ordered and executed with the order of this yaml file:
+
+https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml
 
 ## Custom feature run sets
 
