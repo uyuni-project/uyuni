@@ -7,17 +7,14 @@ Feature: Test SUSE Manager generated metadata
   I want to see several xml elements and attributes in the metadata
 
   Scenario: Check pre requires
-    Given I am root
     When I refresh the metadata
     Then I should have 'pre="1"' in the metadata
 
   Scenario: Check for empty epoch
-    Given I am root
     When I refresh the metadata
     Then I should not have 'epoch="0"' in the metadata
 
   Scenario: Check local metdata not contain \n at the end of the summary
     Given I am authorized as "admin" with password "admin"
-    And I am root
     When I refresh the metadata
     Then I should have 'summary.*</summary' in the metadata

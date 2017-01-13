@@ -282,20 +282,13 @@ When(/^I go to the configuration page$/) do
   find_link("Configuration").click
 end
 
-Given(/^I am on the Errata page$/) do
-  step %(I am authorized)
-  within(:xpath, "//header") do
-    find_link(debrand_string("Errata")).click
-  end
-end
-
-# HACK: please fix the given with lowcase errate, then remove
-# this duplicate given steps
 Given(/^I am on the errata page$/) do
-  step %(I am authorized)
-  within(:xpath, "//header") do
-    find_link(debrand_string("Errata")).click
-  end
+  steps %(
+    Given I am authorized
+    And I follow "Home" in the left menu
+    And I follow "Patches" in the left menu
+    And I follow "Relevant" in the left menu
+    )
 end
 
 Given(/^I am on the "([^"]*)" errata Details page$/) do |arg1|
