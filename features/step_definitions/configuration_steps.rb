@@ -1,8 +1,5 @@
 # Copyright (c) 2010-2011 Novell, Inc.
 # Licensed under the terms of the MIT license.
-#
-# Initial step for channel testing
-#
 
 When(/^I change the local file "([^"]*)" to "([^"]*)"$/) do |filename, content|
     $client.run("echo \"#{content}\" > #{filename}", true, 600, 'root')
@@ -28,8 +25,4 @@ end
 Then(/^On this client the File "([^"]*)" should have the content "([^"]*)"$/) do |filename, content|
     $client.run("test -f #{filename}")
     $client.run("grep #{content} #{filename}")
-end
-
-When(/^I enable all actions$/) do
-   $client.run("rhn-actions-control --enable-all", true, 600, 'root')
 end

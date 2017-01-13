@@ -72,8 +72,10 @@ Feature: Test configuration channel basic functions
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "Revision 1"
 
   Scenario: Deploy Centrally Managed Files
-    Given I am testing configuration
-    And I enable all actions
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I run "rhn-actions-control --enable-all" on "sle-minion"
     And I follow "Configuration Channels" in the left menu
     And I follow "New Test Channel"
     And I follow "Deploy all configuration files to all subscribed systems"
