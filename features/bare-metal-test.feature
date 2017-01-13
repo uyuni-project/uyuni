@@ -15,7 +15,6 @@ Feature: Test Bare-metal discovery
     And the pxe-default-profile should be enabled
 
   Scenario: Register a client
-    Given I am root
     When I register using "1-spacewalk-bootstrap-activation-key" key
     Then I should see this client in spacewalk
 

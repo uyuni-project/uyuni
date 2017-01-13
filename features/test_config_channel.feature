@@ -86,14 +86,17 @@ Feature: Test configuration channel basic functions
     And I should see a "0 revision-deploys overridden." text
 
   Scenario: Check File deployment
-    Given I am root
     When I run rhn_check on this client
     Then On this client the File "/etc/mgr-test-file.cnf" should exists
     And On this client the File "/etc/mgr-test-file.cnf" should have the content "MGR_PROXY=yes"
 
   Scenario: Change local file and compare
-    Given I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=no"
-    And I am on the Systems overview page of this client
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    When I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu 
+    And I follow this "sle-client" link
+    And I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=no"
     When I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
@@ -103,7 +106,7 @@ Feature: Test configuration channel basic functions
     When I run rhn_check on this client
     And I follow "Events" in the content area
     And I follow "History" in the content area
-    Then I should see a "Show differences between profiled config files and deployed config files scheduled by testing" link
+    Then I should see a "Show differences between profiled config files and deployed config files scheduled by admin" link
     When I follow first "Show differences between profiled config files and deployed config files"
     Then I should see a "Differences exist" link
     When I follow "Differences exist"
@@ -111,7 +114,11 @@ Feature: Test configuration channel basic functions
     And I should see a "+MGR_PROXY=no" text
 
   Scenario: Import the changed file
-    Given I am on the Systems overview page of this client
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    When I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu 
+    And I follow this "sle-client" link
     When I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     And I follow "Import Files" in the content area
@@ -126,7 +133,11 @@ Feature: Test configuration channel basic functions
     Then I should see a table line with "/etc/mgr-test-file.cnf", "Revision 1"
 
   Scenario: Import the changed file
-    Given I am on the Systems overview page of this client
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    When I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu 
+    And I follow this "sle-client" link
     When I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     And I follow "Import Files" in the content area
@@ -141,7 +152,11 @@ Feature: Test configuration channel basic functions
     Then I should see a table line with "/etc/sysconfig/cron", "Revision 1"
 
   Scenario: Copy Sandbox file to Centrally-Managed
-    Given I am on the Systems overview page of this client
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    When I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu 
+    And I follow this "sle-client" link
     When I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
@@ -160,7 +175,9 @@ Feature: Test configuration channel basic functions
     And I should see a table line with "/etc/sysconfig/cron", "Revision 1"
 
   Scenario: Add another config file to newtestchannel
-    Given I am testing configuration
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     When I follow "Configuration Channels" in the left menu
     And I follow "New Test Channel"
     And I follow "Create configuration file or directory"
@@ -171,9 +188,12 @@ Feature: Test configuration channel basic functions
     And I should see a "Update Configuration File" button
 
   Scenario: Change one local file and compare multiple (bsc#910243, bsc#910247)
-    Given I am root
-    When I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=yes"
-    And I am on the Systems overview page of this client
+    Given I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=yes"
+    And I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    When I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu 
+    And I follow this "sle-client" link
     When I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
@@ -185,7 +205,7 @@ Feature: Test configuration channel basic functions
     When I run rhn_check on this client
     And I follow "Events" in the content area
     And I follow "History" in the content area
-    Then I should see a "Show differences between profiled config files and deployed config files scheduled by testing" link
+    Then I should see a "Show differences between profiled config files and deployed config files scheduled by admin" link
     When I follow first "Show differences between profiled config files and deployed config files"
     Then I should see a "Differences exist" link
     And I should see a "/etc/mgr-test-file.cnf (rev. 2) Differences exist /etc/sysconfig/cron (rev. 1) /tmp/mycache.txt (rev. 1) Missing file" text
