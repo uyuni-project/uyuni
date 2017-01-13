@@ -43,4 +43,4 @@ Feature: Create a group
     And I follow "Overview" in the left menu
     And I follow this "sle-client" link
     When I follow "Groups" in the content area
-    Then I should see "newgroup" text 
+    Then I should see a "newgroup" text 
