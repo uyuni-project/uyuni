@@ -1,12 +1,5 @@
-# Copyright (c) 2010-2016 Novell, Inc.
+# Copyright (c) 2010-2017 SUSE-LINUX
 # Licensed under the terms of the MIT license.
-Given(/^I am root$/) do
-  user, code = $client.run("whoami")
-  if user.strip != "root"
-    puts  "user on client was #{user}"
-    raise "You are not root!"
-  end
-end
 
 Given(/^I am on the Systems overview page of this client$/) do
   steps %(
