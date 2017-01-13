@@ -73,6 +73,10 @@ When(/^I follow first "([^"]*)"$/) do |text|
   click_link(debrand_string(text), :match => :first)
 end
 
+When(/^I follow second "([^"]*)"$/) do |text|
+  all("#{text}")[1].click
+end
+
 #
 # Click on a link which appears inside of <div> with
 # the given "id"
@@ -287,6 +291,7 @@ Given(/^I am on the errata page$/) do
     Given I am authorized
     And I follow "Home" in the left menu
     And I follow "Patches" in the left menu
+    And I follow second "Patches"
     And I follow "Relevant" in the left menu
     )
 end
