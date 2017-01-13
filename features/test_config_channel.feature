@@ -11,7 +11,7 @@ Feature: Test configuration channel basic functions
     And I follow "Configuration Channels" in the left menu
 
   Scenario: Successfully create configuration channel
-    When I follow "Create a New Configuration Channel"
+    When I follow "Create Config Channel"
     And I enter "New Test Channel" as "cofName"
     And I enter "newtestchannel" as "cofLabel"
     And I enter "This is a test channel" as "cofDescription"
@@ -28,8 +28,7 @@ Feature: Test configuration channel basic functions
     And I should see a "delete channel" link
 
   Scenario: Add a config file to newtestchannel
-    When I follow "Configuration Channels" in the left menu
-    And I follow "New Test Channel"
+    When I follow "New Test Channel"
     And I follow "Create configuration file or directory"
     And I enter "/etc/mgr-test-file.cnf" as "cffPath"
     And I enter "MGR_PROXY=yes" in the editor
