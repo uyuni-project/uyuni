@@ -20,7 +20,8 @@ class BootstrapMinions extends React.Component {
             ignoreHostKeys: true,
             manageWithSSH: false,
             messages: [],
-            loading: false
+            loading: false,
+            showProxyHostnameWarn: false
         };
         ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "manageWithSSHChanged", "activationKeyChanged", "clearFields",
         "proxyChanged"]
@@ -72,8 +73,11 @@ class BootstrapMinions extends React.Component {
     }
 
     proxyChanged(event) {
+        var hostname = event.target.options[event.target.selectedIndex].innerHTML;
+        var showWarn = event.target.value != "" && hostname.indexOf(".") < 0 ? true : false;
         this.setState({
-            proxy: event.target.value
+            proxy: event.target.value,
+            showProxyHostnameWarn: showWarn
         });
     }
 
@@ -209,6 +213,11 @@ class BootstrapMinions extends React.Component {
                              )
                          }
                        </select>
+                       <div>
+                           <i style={ this.state.showProxyHostnameWarn ? { display: 'inline'} : {display: 'none'} } className="fa fa-exclamation-triangle text-warning">
+                                {t("The hostname of the proxy is not fully qualified. This may cause problems when accessing the channels.")}
+                           </i>
+                       </div>
                     </div>
                 </div>
                 <div className="form-group">
