@@ -52,7 +52,6 @@ Feature: Test weak dependencies
     And I should see a "foobar" text
 
   Scenario: Check local metdata for weak deps
-    Given I am root
     When I refresh the metadata
     Then I should have 'rpm:recommends.*filesystem.*rpm:recommends' in the metadata
     And I should have 'rpm:supplements.*packageand.a-blackhole:dummy.*rpm:supplements' in the metadata

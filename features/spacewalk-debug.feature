@@ -5,7 +5,6 @@ Feature:  Call spacewalk-debug on the server
  	  Check some generics logs 
 
   Scenario: call spacewalk-debug
-    Given I am root
     Then I execute spacewalk-debug on the server
 
   Scenario: Check spacewalk upd2date logs on client
