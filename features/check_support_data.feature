@@ -7,6 +7,5 @@ Feature: Test support data available in the repos
   I'll test for the file
 
   Scenario: Check local metdata for susedata.xml
-    Given I am root
     When I refresh the metadata
     Then "susedata.xml.gz" should exists in the metadata
