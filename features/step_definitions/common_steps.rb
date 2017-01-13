@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2017 SUSE-LINUX
 # Licensed under the terms of the MIT license.
 
 When(/^I wait for "(\d+)" seconds$/) do |arg1|
@@ -122,4 +122,8 @@ When(/^I should see the power is "([^"]*)"$/) do |arg1|
     end
     fail unless has_content?(arg1)
   end
+end
+# clone channel
+When(/^I select "(.*?)" as the origin channel$/) do |label|
+  step %(I select "#{label}" from "original_id")
 end
