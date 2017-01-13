@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Create a group
@@ -37,7 +37,10 @@ Feature: Create a group
     Then I should see a "1 systems were added to newgroup server group." text
 
   Scenario: check this client is part of newgroup
-    Given I am on the groups page
-    When I follow "newgroup"
-    And I follow "Systems" in the content area
-    Then I should see this client as link
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    When I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
+    And I follow this "sle-client" link
+    When I follow "Groups" in the content area
+    Then I should see a "newgroup" text 
