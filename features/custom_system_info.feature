@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Test custom system info key value pairs
@@ -7,7 +7,10 @@ Feature: Test custom system info key value pairs
   I want to create and delete custom system info key value pairs
 
   Background:
-    Given I am on the Systems page
+    Given I am authorized
+    And I follow "Home" in the left menu
+    And I follow "Systems"
+    And I follow "Overview" in the left menu
 
   Scenario: Create a new key
     When I follow "Custom System Info" in the left menu
@@ -20,8 +23,7 @@ Feature: Test custom system info key value pairs
     Then I should see a "Successfully added 1 custom key." text
 
   Scenario: Add a value to a system
-    When I follow "Systems" in the left menu
-    And I follow this client link
+    When I follow this "sle-client" link
     And I follow "Custom Info"
     And I follow "Create Value"
     And I follow "key-label"
@@ -32,7 +34,7 @@ Feature: Test custom system info key value pairs
     And I should see a "Edit this value" link
 
   Scenario: Edit the value
-    When I follow this client link
+    When I follow this "sle-client" link
     And I follow "Custom Info"
     And I follow "Edit this value"
     And I should see a "Edit Custom Value" text
