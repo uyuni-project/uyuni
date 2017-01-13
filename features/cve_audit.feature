@@ -19,12 +19,14 @@ Feature: CVE Audit
     And I wait for "5" seconds
 
   Scenario: feature should be accessible
-    When I follow "Audit"
+    When I follow "Audit" in the left menu
+    And I follow "CVE Audit" in the left menu
     Then I should see a "CVE Audit" link in the left menu
     And I should see a "CVE Audit" text
 
   Scenario: searching for a known CVE number
-    When I follow "Audit"
+    When I follow "Audit" in the left menu
+    And I follow "CVE Audit" in the left menu
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit systems"
@@ -41,14 +43,16 @@ Feature: CVE Audit
     And I should see a "Relevant Patches" text
 
   Scenario: searching for an unknown CVE number
-    When I follow "Audit"
+    When I follow "Audit" in the left menu
+    And I follow "CVE Audit" in the left menu
     And I select "2012" from "cveIdentifierYear"
     And I enter "2806" as "cveIdentifierId"
     And I click on "Audit systems"
     Then I should see a "The specified CVE number was not found" text
 
   Scenario: selecting a system for the System Set Manager
-    When I follow "Audit"
+    When I follow "Audit" in the left menu
+    And I follow "CVE Audit" in the left menu
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit systems"
