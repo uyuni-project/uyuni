@@ -21,7 +21,6 @@
 - features/create_group.feature
 - features/add_sys_of_group_to_SSM.feature
 - features/configuration.feature
-- features/add_system_to_conf.feature
 - features/check_errata-npn.feature
 - features/cve_audit.feature
 - features/xmlrpc_cve_audit.feature

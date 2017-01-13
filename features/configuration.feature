@@ -51,3 +51,12 @@ Feature: Check configuration page/tab
     When I follow "Create a New Configuration Channel"
     Then I should see a "New Config Channel" text
     And I should see a "You must enter the configuration channel details below." text
+
+  Scenario: Subscribe system to configuration channel
+    When I follow "Configuration Channels" in the left menu
+    And I follow "Test Channel"
+    And I follow "Systems" in the content area
+    And I follow "Target Systems"
+    And I check this client
+    And I click on "Subscribe systems"
+    Then I should see a "Successfully subscribed 1 system(s)." text
