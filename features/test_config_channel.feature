@@ -4,14 +4,12 @@
 Feature: Test configuration channel basic functions
   Subscribe system to channel, deploy some files
 
-  Background:
+  Scenario: Successfully create configuration channel
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
-
-  Scenario: Successfully create configuration channel
-    When I follow "Create a New Configuration Channel"
+    When I follow "Create Config Channel"
     And I enter "New Test Channel" as "cofName"
     And I enter "newtestchannel" as "cofLabel"
     And I enter "This is a test channel" as "cofDescription"
@@ -28,8 +26,11 @@ Feature: Test configuration channel basic functions
     And I should see a "delete channel" link
 
   Scenario: Add a config file to newtestchannel
-    When I follow "Configuration Channels" in the left menu
-    And I follow "New Test Channel"
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    When I follow "New Test Channel"
     And I follow "Create configuration file or directory"
     And I enter "/etc/mgr-test-file.cnf" as "cffPath"
     And I enter "MGR_PROXY=yes" in the editor
@@ -38,7 +39,11 @@ Feature: Test configuration channel basic functions
     And I should see a "Update Configuration File" button
 
   Scenario: Subscribe system to channel
-    Given I am on the Systems overview page of this client
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    When I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu 
+    And I follow this "sle-client" link
     When I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -48,12 +53,19 @@ Feature: Test configuration channel basic functions
     Then I should see a "Channel Subscriptions successfully changed for" text
 
   Scenario: Check Centrally Managed Files
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     When I follow "Configuration Files" in the left menu
     And I follow "Centrally Managed Files" in the left menu
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "1 system"
 
   Scenario: Check Centrally Managed Files of this client
-    Given I am on the Systems overview page of this client
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    When I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu 
+    And I follow this "sle-client" link
     When I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Centrally-Managed Files" in the content area
