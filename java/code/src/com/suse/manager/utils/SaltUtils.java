@@ -499,7 +499,7 @@ public class SaltUtils {
         InstalledPackage pkg = new InstalledPackage();
         pkg.setEvr(evr);
         pkg.setArch(PackageFactory.lookupPackageArchByLabel(info.getArchitecture().get()));
-        pkg.setInstallTime(Date.from(info.getInstallDate().get().toInstant()));
+        pkg.setInstallTime(new Date(info.getInstallDateUnixTime().get() * 1000));
         pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
         pkg.setServer(server);
         return pkg;
