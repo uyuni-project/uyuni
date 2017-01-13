@@ -26,6 +26,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -83,6 +84,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -1731,6 +1733,13 @@ public class SystemManager extends BaseManager {
                             virtSetupResults.getMessage());
                     return result;
                 }
+            }
+        }
+        else if (EntitlementManager.DOCKER_BUILD_HOST.equals(ent)) {
+
+            if (!hasEntitlement(sid, EntitlementManager.DOCKER_BUILD_HOST)) {
+                MessageQueue.publish(new ApplyStatesEventMessage(sid, true,
+                        ApplyStatesEventMessage.DOCKER_SERVICE));
             }
         }
 
