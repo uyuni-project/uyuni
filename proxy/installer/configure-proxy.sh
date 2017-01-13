@@ -647,13 +647,17 @@ authorize_parent_ssh_push_key() {
     local AUTH_KEYS=~/.ssh/authorized_keys
     local TMP_PUSH_KEY_FILE=~/.ssh/${SSH_PUSH_KEY_FILE}.pub.tmp
     rm -f $TMP_PUSH_KEY_FILE
-    local CURL_KEY="curl -s ${PROTO}://${RHN_PARENT}/pub/${SSH_PUSH_KEY_FILE}.pub"
+    local PROXY_KEY_URL=${PROTO}://${RHN_PARENT}/pub/${SSH_PUSH_KEY_FILE}.pub
+    local SERVER_KEY_URL=${PROTO}://${RHN_PARENT}/rhn/manager/download/saltssh/pubkey
     echo "Fetching public ssh-push key from $RHN_PARENT."
-    $CURL_KEY > $TMP_PUSH_KEY_FILE
-    local EXIT_CODE=$?
-    if [[ $EXIT_CODE != 0 ]]; then
-      echo "Could not retrieve ssh-push key. '$CURL_KEY' failed with exit code $EXIT_CODE"
-      exit 1
+    local CURL_RESPONSE=$(curl --write-out %{http_code} --silent --output $TMP_PUSH_KEY_FILE $PROXY_KEY_URL)
+    if [ "$CURL_RESPONSE" == "404" ]; then
+        # parent is a Manager server
+        CURL_RESPONSE=$(curl --write-out %{http_code} --silent --output $TMP_PUSH_KEY_FILE $SERVER_KEY_URL)
+    fi
+    if [ "$CURL_RESPONSE" != "200" ]; then
+        echo "Could not retrieve ssh-push key. curl failed with HTTP response code $CURL_RESPONSE"
+        exit 1
     fi
 
     # remove any previously authorized key

@@ -66,6 +66,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -906,4 +907,20 @@ public class SaltService {
                         .getString(ConfigDefaults.MOUNT_POINT),
                 actionPath));
     }
+
+    /**
+     * Call the custom mgrutil.ssh_keygen runner.
+     *
+     * @param path of the key files
+     * @return the result of the runner call as a map
+     */
+    public Map<String, Object> generateSSHKey(String path) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("path", path);
+        RunnerCall<Map<String, Object>> call =
+                new RunnerCall<>("mgrutil.ssh_keygen", Optional.of(args),
+                    new TypeToken<Map<String, Object>>() { });
+        return callSync(call);
+    }
+
 }

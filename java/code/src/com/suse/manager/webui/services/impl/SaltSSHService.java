@@ -44,7 +44,6 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -66,7 +65,7 @@ import java.util.stream.Collectors;
  */
 public class SaltSSHService {
 
-    private static final String SSH_KEY_PATH = "/srv/susemanager/salt/salt_ssh/mgr_ssh_id";
+    public static final String SSH_KEY_PATH = "/srv/susemanager/salt/salt_ssh/mgr_ssh_id";
     private static final String MASTER_PROXY_SSH_PUSH_KEY = "/srv/susemanager/salt/salt_ssh/id_susemanager_ssh_push";
     private static final String PROXY_SSH_PUSH_KEY = "/root/.ssh/id_susemanager_ssh_push";
 
