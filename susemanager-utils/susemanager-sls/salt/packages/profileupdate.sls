@@ -2,7 +2,7 @@ packages:
   module.run:
     - name: pkg.info_installed
     - kwargs: {
-          attr: 'arch,epoch,version,release,install_date',
+          attr: 'arch,epoch,version,release,install_date_time_t',
           errors: report
       }
 {% if grains['os_family'] == 'Suse' %}
