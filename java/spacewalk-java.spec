@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.14.1
+Version: 2.7.18
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -1034,6 +1034,18 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Jan 13 2017 Grant Gainey 2.7.18-1
+- 1412555 - order all kickstart-tree-queries by label
+
+* Thu Jan 12 2017 Gennadii Altukhov <galt@redhat.com> 2.7.17-1
+- 1412177 - fix ISE when Kickstart File contains only newlines
+
+* Wed Jan 11 2017 Gennadii Altukhov <galt@redhat.com> 2.7.16-1
+- 1408167 - add links to systems in JSP
+
+* Tue Jan 10 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.15-1
+- update year in copyright
+
 * Fri Jan 06 2017 Gennadii Altukhov <galt@redhat.com> 2.7.14-1
 - 1410754 - fix Internal Server Error when kickstart file is empty
 - re-implement createMonitoringScout API for backward compatibility
