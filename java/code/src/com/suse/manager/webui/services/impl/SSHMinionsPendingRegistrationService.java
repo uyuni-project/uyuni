@@ -28,21 +28,35 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SSHMinionsPendingRegistrationService {
 
+    /**
+     * Information about the minion to bootstrap
+     * (contect method, proxy path)
+     */
     public static class PendingMinion {
 
         private String contactMethod;
 
         private Optional<List<String>> proxyPath;
 
-        public PendingMinion(String contactMethod, Optional<List<String>> proxyPath) {
-            this.contactMethod = contactMethod;
-            this.proxyPath = proxyPath;
+        /**
+         * @param contactMethodIn the contect method
+         * @param proxyPathIn the proxy path
+         */
+        public PendingMinion(String contactMethodIn, Optional<List<String>> proxyPathIn) {
+            this.contactMethod = contactMethodIn;
+            this.proxyPath = proxyPathIn;
         }
 
+        /**
+         * @return the contect method
+         */
         public String getContactMethod() {
             return contactMethod;
         }
 
+        /**
+         * @return the proxy path
+         */
         public Optional<List<String>> getProxyPath() {
             return proxyPath;
         }
@@ -61,8 +75,10 @@ public class SSHMinionsPendingRegistrationService {
      * Adds minion id to the database.
      * @param minionId minion id to be added
      * @param contactMethod the contact method of the minion
+     * @param proxyPath list of proxies hostnames in the order they connect through
      */
-    public static void addMinion(String minionId, String contactMethod, Optional<List<String>> proxyPath) {
+    public static void addMinion(String minionId, String contactMethod,
+                                 Optional<List<String>> proxyPath) {
         minionIds.put(minionId, new PendingMinion(contactMethod, proxyPath));
     }
 
@@ -83,6 +99,10 @@ public class SSHMinionsPendingRegistrationService {
         return minionIds.containsKey(minionId);
     }
 
+    /**
+     * @param minionId the minion id
+     * @return the {@link PendingMinion} if any for the given id
+     */
     public static Optional<PendingMinion> get(String minionId) {
         return Optional.ofNullable(minionIds.get(minionId));
     }
@@ -102,11 +122,6 @@ public class SSHMinionsPendingRegistrationService {
     public static Optional<String> getContactMethod(String minionId) {
         return Optional.ofNullable(minionIds.get(minionId))
                 .map(minion -> minion.getContactMethod());
-    }
-
-    public static Optional<List<String>> getServerPath(String minionId) {
-        return Optional.ofNullable(minionIds.get(minionId))
-                .flatMap(minion -> minion.getProxyPath());
     }
 
 }
