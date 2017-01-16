@@ -15,7 +15,7 @@ Feature: Test Powermanagement
     Given I am on the Systems overview page of this client
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
-    When I enter "10.162.210.3" as "powerAddress"
+    When I enter "10.162.210.10" as "powerAddress"
     And I enter "admin" as "powerUsername"
     And I enter "admin" as "powerPassword"
     And I click on "Save"
