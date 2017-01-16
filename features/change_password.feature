@@ -1,4 +1,4 @@
-# Copyright (c) 2015-16 SUSE LLC
+# Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Change the user's password
@@ -8,6 +8,7 @@ Feature: Change the user's password
 
   Scenario: Change the password to a New password
     Given I am authorized as "admin" with password "admin"
+    And I follow "User Account"
     And I follow "Your Account"
     And I enter "GoodPass" as "desiredpassword"
     And I enter "GoodPass" as "desiredpasswordConfirm"
@@ -21,6 +22,7 @@ Feature: Change the user's password
 
   Scenario: Revert the new password to a valid standard password
     Given I am authorized as "admin" with password "GoodPass"
+    And I follow "User Account"
     And I follow "Your Account"
     And I enter "admin" as "desiredpassword"
     And I enter "admin" as "desiredpasswordConfirm"
@@ -34,6 +36,7 @@ Feature: Change the user's password
 
   Scenario: Test invalid password
     Given I am authorized as "admin" with password "admin"
+    And I follow "User Account"
     And I follow "Your Account"
     And I enter "A" as "desiredpassword"
     And I enter "A" as "desiredpasswordConfirm"
