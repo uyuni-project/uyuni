@@ -180,6 +180,7 @@ Given(/^I am on the Admin page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
     And I follow "Admin"
+    And I follow "Setup Wizard"
     )
 end
 
