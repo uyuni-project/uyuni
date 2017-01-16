@@ -20,10 +20,10 @@ Feature: Test Powermanagement
     And I enter "admin" as "powerPassword"
     And I click on "Save"
     Then I should see a "Power settings saved" text
-    And the cobbler report contains "Power Management Address       : 10.162.210.3"
-    And the cobbler report contains "Power Management Password      : admin"
+    And the cobbler report contains "Power Management Address       : 10.162.210.10`"
+    And the cobbler report contains "Power Management Password      : ipmiusr"
     And the cobbler report contains "Power Management Type          : ipmitool"
-    And the cobbler report contains "Power Management Username      : admin"
+    And the cobbler report contains "Power Management Username      : test"
 
   Scenario: Test IPMI functions
     Given I am on the Systems overview page of this "sle-client"
@@ -72,7 +72,7 @@ Feature: Test Powermanagement
     Then I should see a "Configuration successfully saved for 1 system(s)" text
     And the cobbler report contains "Power Management Username      : testing"
     And the cobbler report contains "Power Management Password      : qwertz"
-    And the cobbler report contains "Power Management Address       : 10.162.210.3"
+    And the cobbler report contains "Power Management Address       : 10.162.210.10"
     And the cobbler report contains "Power Management Type          : ipmitool"
 
   Scenario: check powermanagement SSM Operation
