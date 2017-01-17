@@ -90,4 +90,19 @@ public enum ViewHelper {
         tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return tzFormat.format(new Date());
     }
+
+    /**
+     * Render the time in the current user's configured timezone (falling back to
+     * the system default in case there is currently no user context).
+     *
+     * @return user's local time
+     */
+    public String renderLocalTime() {
+        Context ctx = Context.getCurrentContext();
+        Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
+        TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
+        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm", locale);
+        isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
+        return isoFormat.format(new Date());
+    }
 }
