@@ -19,7 +19,7 @@ var Highstate = React.createClass({
         var state = {
             highstate: [],
             messages: [],
-            earliest: new Date()
+            earliest: new Date(localTime)
         };
         return state;
     },
