@@ -84,8 +84,7 @@
 - features/minion_bootstrap.feature
 # Regression test
 - features/salt_regression_topsls.feature
-# THIS feature WORK but fix isn't merged
-#- features/salt_regression_multiminion.feature
+- features/salt_regression_multiminion.feature
 
 ### Salt-ssh managed feature ##
 - features/salt_ssh.feature
