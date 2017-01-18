@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Methods for working with AccessTokens
@@ -150,6 +151,13 @@ public class AccessTokenFactory extends HibernateFactory {
                 return token;
             }
         }).collect(Collectors.toList());
+
+        List<AccessToken> tokens = Stream.concat(
+                maybeRefreshed.stream(),
+                Stream.concat(newTokens.stream(), noUpdate.stream())
+        ).collect(Collectors.toList());
+        minion.getAccessTokens().clear();
+        minion.getAccessTokens().addAll(tokens);
 
         return !unneededTokens.isEmpty() || !update.isEmpty() || !newTokens.isEmpty();
     }
