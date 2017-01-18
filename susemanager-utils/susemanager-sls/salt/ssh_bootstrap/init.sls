@@ -14,5 +14,45 @@ mgr_server_localhost_alias_absent:
     - names:
       - {{ salt['pillar.get']('mgr_server') }}
 
+{%- if salt['pillar.get']('proxy_pub_key') and salt['pillar.get']('contact_method') == 'ssh-push-tunnel' %}
+no_push_key_authorized:
+  ssh_auth.absent:
+    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - comment: susemanager-ssh-push
+
+proxy_ssh_identity:
+  ssh_auth.present:
+    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - source: salt://salt_ssh/{{ salt['pillar.get']('proxy_pub_key') }}
+    - require:
+      - ssh_auth: no_push_key_authorized
+{%- endif %}
+
+{%- if salt['pillar.get']('mgr_sudo_user') and salt['pillar.get']('mgr_sudo_user') != 'root' %}
+{%- set home = '/home/' ~ salt['pillar.get']('mgr_sudo_user') %}
+{%- else %}
+{%- set home = '/root' %}
+{%- endif %}
+
+generate_own_ssh_key:
+  cmd.run:
+    - name: ssh-keygen -N '' -C 'susemanager-own-ssh-push' -f {{ home }}/.ssh/mgr_own_id -t rsa -q
+    - creates: {{ home }}/.ssh/mgr_own_id.pub
+
+no_own_key_authorized:
+  ssh_auth.absent:
+    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - comment: susemanager-own-ssh-push
+    - require:
+      - cmd: generate_own_ssh_key
+
+authorize_own_key:
+  ssh_auth.present:
+    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - source: {{ home }}/.ssh/mgr_own_id.pub
+    - require:
+      - cmd: generate_own_ssh_key
+      - ssh_auth: no_own_key_authorized
+
 include:
   - bootstrap.remove_traditional_stack
