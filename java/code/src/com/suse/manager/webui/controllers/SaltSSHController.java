@@ -14,9 +14,9 @@
  */
 package com.suse.manager.webui.controllers;
 
-import java.util.Optional;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import org.apache.commons.io.IOUtils;
 import spark.Request;
 import spark.Response;
@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 import static spark.Spark.halt;
 
@@ -46,28 +45,20 @@ public class SaltSSHController {
     public static byte[] getPubKey(Request request, Response response) {
         File pubKey = new File(SaltSSHService.SSH_KEY_PATH + ".pub");
         if (!pubKey.isFile()) {
-            Map<String, Object> res = SaltService.INSTANCE
+            MgrUtilRunner.ExecResult res = SaltService.INSTANCE
                     .generateSSHKey(SaltSSHService.SSH_KEY_PATH);
-            Optional<Integer> retcode = Optional.ofNullable(res.get("returncode"))
-                    .filter(r -> r instanceof Integer)
-                    .map(r -> (Integer)r);
-            if (!retcode.isPresent()) {
-                halt(500, "Key could not be generated");
-            }
 
-            if (!(retcode.get() == 0 || retcode.get() == -1)) {
-                halt(500, res.get("stderr") + "");
+            if (!(res.getReturnCode() == 0 || res.getReturnCode() == -1)) {
+                halt(500, res.getStderr() + "");
             }
         }
 
         response.header("Content-Type", "application/octet-stream");
         response.header("Content-Disposition", "attachment; filename=" + pubKey.getName());
-        try {
-            try (InputStream fin = new FileInputStream(pubKey)) {
-                return IOUtils.toByteArray(fin);
-            }
-        }
-        catch (IOException e) {
+
+        try (InputStream fin = new FileInputStream(pubKey)) {
+            return IOUtils.toByteArray(fin);
+        } catch (IOException e) {
             halt(500, e.getMessage());
         }
         return null;
