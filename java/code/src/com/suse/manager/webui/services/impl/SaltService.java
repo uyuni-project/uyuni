@@ -66,7 +66,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -914,12 +913,37 @@ public class SaltService {
      * @param path of the key files
      * @return the result of the runner call as a map
      */
-    public Map<String, Object> generateSSHKey(String path) {
-        Map<String, Object> args = new LinkedHashMap<>();
-        args.put("path", path);
-        RunnerCall<Map<String, Object>> call =
-                new RunnerCall<>("mgrutil.ssh_keygen", Optional.of(args),
-                    new TypeToken<Map<String, Object>>() { });
+    public MgrUtilRunner.ExecResult generateSSHKey(String path) {
+        RunnerCall<MgrUtilRunner.ExecResult> call =
+                MgrUtilRunner.generateSshKey(path);
+
+        return callSync(call);
+    }
+
+    /**
+     * Chain ssh calls over one or more hops to run a command on the last host in the chain.
+     * This calls the mgrutil.chain_ssh_command runner.
+     *
+     * @param hosts a list of hosts, where the last one is where
+     *              the command will be executed
+     * @param clientKey the ssh key to use to connect to the first host
+     * @param proxyKey the ssh key path to use for the rest of the hosts
+     * @param user the user
+     * @param options ssh options
+     * @param command the command to execute
+     * @param outputfile the file to which to dump the command stdout
+     * @return the execution result
+     */
+    public MgrUtilRunner.ExecResult chainSSHCommand(List<String> hosts,
+                                                    String clientKey,
+                                                    String proxyKey,
+                                                    String user,
+                                                    Map<String, String> options,
+                                                    String command,
+                                                    String outputfile) {
+        RunnerCall<MgrUtilRunner.ExecResult> call =
+                MgrUtilRunner.chainSSHCommand(
+                        hosts, clientKey, proxyKey, user, options, command, outputfile);
         return callSync(call);
     }
 
