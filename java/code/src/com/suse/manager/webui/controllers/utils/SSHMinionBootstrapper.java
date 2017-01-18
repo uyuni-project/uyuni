@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -136,4 +137,20 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
                 input.getActivationKeys(), input.getIgnoreHostKeys(),
                 Optional.ofNullable(input.getProxy()));
     }
+
+    @Override
+    protected Map<String, Object> createPillarData(User user, BootstrapParameters input,
+                                                   String contactMethod) {
+        Map<String, Object> pillarData = super.createPillarData(user, input, contactMethod);
+        input.getProxyId()
+                .flatMap(proxyId -> SaltSSHService.retrieveSSHPushProxyPubKey(proxyId))
+                .map(key -> {
+                    pillarData.put("proxy_pub_key", key);
+                    return key;
+                })
+                .orElseThrow(() -> new RuntimeException(
+                        "Could not retrieve ssh-push public key from proxy"));
+        return pillarData;
+    }
+
 }
