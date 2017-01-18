@@ -23,6 +23,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -50,6 +52,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -65,12 +68,13 @@ import java.util.stream.Collectors;
  */
 public class SaltSSHService {
 
-    public static final String SSH_KEY_PATH = "/srv/susemanager/salt/salt_ssh/mgr_ssh_id";
-    private static final String MASTER_PROXY_SSH_PUSH_KEY =
-            "/srv/susemanager/salt/salt_ssh/id_susemanager_ssh_push";
-    private static final String PROXY_SSH_PUSH_KEY = "/root/.ssh/id_susemanager_ssh_push";
+    private static final String SSH_KEY_DIR = "/srv/susemanager/salt/salt_ssh";
+    public static final String SSH_KEY_PATH = SSH_KEY_DIR + "/mgr_ssh_id";
+    private static final String PROXY_SSH_PUSH_USER = "mgrsshtunnel";
+    private static final String PROXY_SSH_PUSH_KEY =
+            "/home/" + PROXY_SSH_PUSH_USER + "/.ssh/id_susemanager_ssh_push";
+
     private static final int SSL_PORT = 443;
-    private static final String SSH_PUSH_TUNNEL = "ssh-push-tunnel";
 
     public static final int SSH_PUSH_PORT = 22;
 
@@ -126,10 +130,11 @@ public class SaltSSHService {
                                 Optional.of(SSH_PUSH_PORT),
                                 remotePortForwarding(minion.getProxyPath().orElse(null),
                                         minion.getContactMethod()),
-                                proxySshOption(
+                                sshProxyCommandOption(
                                         minion.getProxyPath().orElse(null),
                                         minion.getContactMethod(),
-                                        mid)
+                                        mid),
+                                getSshPushTimeout()
                         );
                     });
                 }
@@ -144,10 +149,11 @@ public class SaltSSHService {
                                 remotePortForwarding(
                                         proxyPath, minion.getContactMethod().getLabel()
                                 ),
-                                proxySshOption(proxyPath,
+                                sshProxyCommandOption(proxyPath,
                                         minion.getContactMethod().getLabel(),
                                         minion.getMinionId()
-                                ));
+                                ),
+                                getSshPushTimeout());
                     });
                     if (!minionOpt.isPresent()) {
                         LOG.error("Minion id='" + mid + "' not found in the database");
@@ -246,13 +252,13 @@ public class SaltSSHService {
      * @return the <Code>ProxyCommand</Code> string used by salt-ssh to connect
      * to the minion.
      */
-    public static Optional<String> proxySshOption(List<String> proxyPath,
-                                                  String contactMethod,
-                                                  String minionHostname) {
+    public static Optional<String> sshProxyCommandOption(List<String> proxyPath,
+                                                         String contactMethod,
+                                                         String minionHostname) {
         if (CollectionUtils.isEmpty(proxyPath)) {
             return Optional.empty();
         }
-        boolean tunnel = SSH_PUSH_TUNNEL.equals(contactMethod);
+        boolean tunnel = ContactMethodUtil.SSH_PUSH_TUNNEL.equals(contactMethod);
         StringBuilder proxyCommand = new StringBuilder();
         proxyCommand.append("ProxyCommand='");
         for (int i = 0; i < proxyPath.size(); i++) {
@@ -260,29 +266,34 @@ public class SaltSSHService {
             String key;
             String stdioFwd = "";
             if (i == 0) {
-                key = MASTER_PROXY_SSH_PUSH_KEY;
+                key = SSH_KEY_PATH;
             }
             else {
                 key = PROXY_SSH_PUSH_KEY;
             }
             if (!tunnel && i == proxyPath.size() - 1) {
-                stdioFwd = "-W " + minionHostname + ":" + SSH_PUSH_PORT;
+                stdioFwd = String.format("-W %s:%s", minionHostname, SSH_PUSH_PORT);
             }
 
-            proxyCommand.append("/usr/bin/ssh -i " + key +
-                    " -o StrictHostKeyChecking=no -o User=root " +
-                    " " + stdioFwd + " " + proxyHostname + " ");
+            proxyCommand.append(String.format(
+                    "/usr/bin/ssh -i %s -o StrictHostKeyChecking=no -o User=%s %s %s ",
+                    key, PROXY_SSH_PUSH_USER, stdioFwd, proxyHostname));
         }
         if (tunnel) {
-            proxyCommand.append("/usr/bin/ssh -i " + PROXY_SSH_PUSH_KEY +
-                    " -o StrictHostKeyChecking=no -o User=root " +
-                    (tunnel ? " -R " + getSshPushRemotePort() + ":" +
-                            proxyPath.get(proxyPath.size() - 1) + ":" + SSL_PORT : "") +
-                    " " + minionHostname +
-                    " ssh -i /root/.ssh/mgr_own_id -W " +
-                    minionHostname + ":" + SSH_PUSH_PORT +
-                    " -o StrictHostKeyChecking=no -o User=root " + minionHostname
-            );
+            proxyCommand.append(String.format(
+                    "/usr/bin/ssh -i %s -o StrictHostKeyChecking=no -o User=root %s %s " +
+                            "ssh -i /root/.ssh/mgr_own_id -W %s:%s " +
+                            "-o StrictHostKeyChecking=no -o User=root %s",
+                    PROXY_SSH_PUSH_KEY,
+                    String.format("-R %s:%s:%s",
+                            getSshPushRemotePort(),
+                            proxyPath.get(proxyPath.size() - 1),
+                            SSL_PORT),
+                    minionHostname,
+                    minionHostname,
+                    SSH_PUSH_PORT,
+                    minionHostname
+                    ));
         }
         proxyCommand.append("'");
         return Optional.of(proxyCommand.toString());
@@ -324,10 +335,11 @@ public class SaltSSHService {
                                 Optional.of(SSH_PUSH_PORT),
                                 remotePortForwarding(minion.getProxyPath().orElse(null),
                                         minion.getContactMethod()),
-                                proxySshOption(
+                                sshProxyCommandOption(
                                         minion.getProxyPath().orElse(null),
                                         minion.getContactMethod(),
-                                        mid))
+                                        mid),
+                                getSshPushTimeout())
                 );
 
         // Add systems from the database, possible duplicates in roster will be overwritten
@@ -348,9 +360,10 @@ public class SaltSSHService {
                     Optional.of(SSH_PUSH_PORT),
                     remotePortForwarding(proxyPath,
                             minion.getContactMethod().getLabel()),
-                    proxySshOption(proxyPath,
+                    sshProxyCommandOption(proxyPath,
                             minion.getContactMethod().getLabel(),
-                            minion.getMinionId()));
+                            minion.getMinionId()),
+                    getSshPushTimeout());
         });
         return !minions.isEmpty();
     }
@@ -396,7 +409,8 @@ public class SaltSSHService {
         roster.addHost(parameters.getHost(), parameters.getUser(), parameters.getPassword(),
                 parameters.getPort(),
                 portForwarding,
-                proxySshOption(bootstrapProxyPath, null, parameters.getHost()));
+                sshProxyCommandOption(bootstrapProxyPath, null, parameters.getHost()),
+                getSshPushTimeout());
 
         Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> result =
                 callSyncSSHInternal(call,
@@ -409,7 +423,7 @@ public class SaltSSHService {
 
     private Optional<String> remotePortForwarding(List<String> proxyPath,
                                                   String sshContactMethod) {
-        if (SSH_PUSH_TUNNEL.equals(sshContactMethod) &&
+        if (ContactMethodUtil.SSH_PUSH_TUNNEL.equals(sshContactMethod) &&
                 CollectionUtils.isEmpty(proxyPath)) {
             return Optional.of(getSshPushRemotePort() + ":" +
                     ConfigDefaults.get().getCobblerHost() + ":" + SSL_PORT);
@@ -423,6 +437,10 @@ public class SaltSSHService {
 
     private boolean isSudoUser(String user) {
         return !CommonConstants.ROOT.equals(user);
+    }
+
+    private static Optional<Integer> getSshPushTimeout() {
+        return Optional.ofNullable(ConfigDefaults.get().getSaltSSHConnectTimeout());
     }
 
     /**
@@ -537,5 +555,37 @@ public class SaltSSHService {
             }
         });
         return Optional.of(f);
+    }
+
+    /**
+     * Retrieve the public key used for ssh-push from the given proxy.
+     * @param proxyId id of the proxy
+     * @return the content of the public key
+     */
+    public static Optional<String> retrieveSSHPushProxyPubKey(long proxyId) {
+        Server proxy = ServerFactory.lookupById(proxyId);
+        String keyFile = proxy.getHostname() + ".pub";
+        List<String> proxyPath = proxyPathToHostnames(proxy.getServerPaths(),
+                Optional.of(proxy.getHostname()));
+
+        Map<String, String> options = new HashMap<>();
+        options.put("StrictHostKeyChecking", "no");
+        options.put("ConnectTimeout", ConfigDefaults.get().getSaltSSHConnectTimeout() + "");
+        MgrUtilRunner.ExecResult ret = SaltService.INSTANCE.chainSSHCommand(proxyPath,
+                SSH_KEY_PATH,
+                PROXY_SSH_PUSH_KEY,
+                PROXY_SSH_PUSH_USER,
+                options,
+                "cat " + PROXY_SSH_PUSH_KEY + ".pub",
+                SSH_KEY_DIR + "/" + keyFile);
+        if (ret.getReturnCode() == 0) {
+            return Optional.of(keyFile);
+        }
+        else {
+            LOG.error("Could not retrieve ssh pub key from proxy [" + proxy.getHostname() +
+                    "]. ssh return code [" + ret.getReturnCode() +
+                    "[, stderr [" + ret.getStderr() + "]");
+            return Optional.empty();
+        }
     }
 }
