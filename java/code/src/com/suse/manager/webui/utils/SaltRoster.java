@@ -44,12 +44,13 @@ public class SaltRoster {
      * @param user The user to login as
      * @param passwd The password to login with
      * @param port The target system's ssh port number
-     * @param remotePortForwarding ssh tunneling options
-     * @param sshOption additional ssh option to pass to salt-ssh
+     * @param remotePortForwarding SSH tunneling options
+     * @param sshOption Additional SSH option to pass to salt-ssh
+     * @param timeout SSH connect timeout
      */
     public void addHost(String host, String user, Optional<String> passwd,
             Optional<Integer> port, Optional<String> remotePortForwarding,
-            Optional<String> sshOption) {
+            Optional<String> sshOption, Optional<Integer> timeout) {
         Map<String, Object> hostData = new LinkedHashMap<>();
         hostData.put("host", host);
         hostData.put("user", user);
@@ -58,7 +59,8 @@ public class SaltRoster {
         remotePortForwarding.ifPresent(forwarding -> hostData.put("remote_port_forwards",
                 forwarding));
         sshOption.ifPresent(option -> hostData.put("ssh_options",
-                Arrays.asList(option/*, "LogLevel=DEBUG3"*/)));
+                Arrays.asList(option)));
+        timeout.ifPresent(value -> hostData.put("timeout", value));
         data.put(host, hostData);
     }
 
