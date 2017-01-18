@@ -614,14 +614,24 @@ sed -e "s|^[\t ]*SSLCertificateFile.*$|SSLCertificateFile $HTTPDCONF_DIR/ssl.crt
     < $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak  > $HTTPDCONF_DIR/vhosts.d/ssl.conf
 
 SSH_PUSH_KEY_FILE="id_susemanager_ssh_push"
-SSH_PUSH_KEY_DIR=~/.ssh
+SSH_PUSH_USER="mgrsshtunnel"
+SSH_PUSH_KEY_DIR="/home/$SSH_PUSH_USER/.ssh"
 
 generate_or_import_ssh_push_key() {
+    # create user if needed
+    getent group $SSH_PUSH_USER >/dev/null || groupadd -r $SSH_PUSH_USER
+    getent passwd $SSH_PUSH_USER >/dev/null || useradd -r -g $SSH_PUSH_USER -m -c "susemanager ssh push tunnel" $SSH_PUSH_USER
+
+    # create .ssh dir in home and set permissions
+    mkdir -p $SSH_PUSH_KEY_DIR
+    chown $SSH_PUSH_USER:$SSH_PUSH_USER $SSH_PUSH_KEY_DIR
+    chmod 700 $SSH_PUSH_KEY_DIR
+
     # backup first any existing keys
     if [ -f $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE} ]; then
-       rm -f $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.*.bak
-       mv $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE} $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.bak
-       mv $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.pub $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.pub.bak
+       local TSTMP=$(date +%Y%m%d%H%M)
+       mv $SSH_PUSH_KEY_DIR/$SSH_PUSH_KEY_FILE $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.${TSTMP}
+       mv $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.pub $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.pub.${TSTMP}
     fi
 
     # import existing or generate new ssh key for this proxy
@@ -636,6 +646,11 @@ generate_or_import_ssh_push_key() {
         echo "Generating new SSH key for ssh-push minions."
         ssh-keygen -q -N '' -C "susemanager-ssh-push" -f $SSH_PUSH_KEY_DIR/$SSH_PUSH_KEY_FILE
     fi
+    # change owner to SSH_PUSH_USER
+    chown $SSH_PUSH_USER:$SSH_PUSH_USER $SSH_PUSH_KEY_DIR/$SSH_PUSH_KEY_FILE
+    chmod 600 $SSH_PUSH_KEY_DIR/$SSH_PUSH_KEY_FILE
+    chown $SSH_PUSH_USER:$SSH_PUSH_USER $SSH_PUSH_KEY_DIR/$SSH_PUSH_KEY_FILE.pub
+    chmod 644 $SSH_PUSH_KEY_DIR/$SSH_PUSH_KEY_FILE.pub
 
     # copy the public key to apache's pub dir
     cp $SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.pub ${HTMLPUB_DIR}/
@@ -644,11 +659,11 @@ generate_or_import_ssh_push_key() {
 authorize_parent_ssh_push_key() {
     # Fetch key from parent and add it to authorized_keys
     echo "Authorizing $RHN_PARENT to use this proxy to connect to ssh-push minions."
-    local AUTH_KEYS=~/.ssh/authorized_keys
-    local TMP_PUSH_KEY_FILE=~/.ssh/${SSH_PUSH_KEY_FILE}.pub.tmp
+    local AUTH_KEYS="$SSH_PUSH_KEY_DIR/authorized_keys"
+    local TMP_PUSH_KEY_FILE="$SSH_PUSH_KEY_DIR/${SSH_PUSH_KEY_FILE}.pub.tmp"
     rm -f $TMP_PUSH_KEY_FILE
-    local PROXY_KEY_URL=${PROTO}://${RHN_PARENT}/pub/${SSH_PUSH_KEY_FILE}.pub
-    local SERVER_KEY_URL=${PROTO}://${RHN_PARENT}/rhn/manager/download/saltssh/pubkey
+    local PROXY_KEY_URL="$PROTO://$RHN_PARENT/pub/${SSH_PUSH_KEY_FILE}.pub"
+    local SERVER_KEY_URL="$PROTO://$RHN_PARENT/rhn/manager/download/saltssh/pubkey"
     echo "Fetching public ssh-push key from $RHN_PARENT."
     local CURL_RESPONSE=$(curl --write-out %{http_code} --silent --output $TMP_PUSH_KEY_FILE $PROXY_KEY_URL)
     if [ "$CURL_RESPONSE" == "404" ]; then
