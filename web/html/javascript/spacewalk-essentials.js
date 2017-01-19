@@ -336,7 +336,7 @@ $(document).click(function (e) {
 of an <a href> tag that is actually not a link */
 $(document).on('click', 'a', function(e) {
   const href = $(this).attr('href');
-  if (href.length == 1 && href == '#') {
+  if (href != null && href.length == 1 && href == '#') {
     e.preventDefault();
     $(this).blur(); // remove the focus
   }
