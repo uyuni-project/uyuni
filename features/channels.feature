@@ -9,6 +9,8 @@ Feature: Explore the Channels page
   Scenario: Completeness of Channels page
     Given I am authorized as "admin" with password "admin"
     When I follow "Channels"
+    And I follow "Software Channels"
+    And I follow "All Channels"
     Then I should see a "Full Software Channel List" text
     And I should see a "Software Channels" link in the left menu
     And I should see a "All Channels" link in the left menu
@@ -27,11 +29,15 @@ Feature: Explore the Channels page
   Scenario: Completeness of Channels page
     Given I am authorized as "admin" with password "admin"
     When I follow "Channels"
+    And I follow "Software Channels"
     And I follow "Popular Channels" in the left menu
     Then I should see a "Popular Channels" text
 
   Scenario: Check Packages in SLES11-SP3-Updates x86_64 Channel
+    Given I am authorized as "admin" with password "admin"
     When I follow "Channels"
+    And I follow "Software Channels"
+    And I follow "All Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
     Then I should see package "andromeda-dummy-2.0-1.1.noarch"
@@ -42,7 +48,10 @@ Feature: Explore the Channels page
     And I should see package "virgo-dummy-2.0-1.1.noarch"
 
   Scenario: Check Package metadata displayed in WebUI
+    Given I am authorized as "admin" with password "admin"
     When I follow "Channels"
+    And I follow "Software Channels"
+    And I follow "All Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
@@ -54,7 +63,10 @@ Feature: Explore the Channels page
     And I should see a "packages/1/3bb/andromeda-dummy/2.0-1.1/noarch/3bb3a56e6654f14300ab815c3f6e2af848874c829541b4e1b342262bb2f72d30/andromeda-dummy-2.0-1.1.noarch.rpm" text
 
   Scenario: Check Package dependencies page
+    Given I am authorized as "admin" with password "admin"
     When I follow "Channels"
+    And I follow "Software Channels"
+    And I follow "All Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
@@ -64,7 +76,10 @@ Feature: Explore the Channels page
     And I should see a "andromeda-dummy = 2.0-1.1" text
 
   Scenario: Check Package Changelog page
+    Given I am authorized as "admin" with password "admin"
     When I follow "Channels"
+    And I follow "Software Channels"
+    And I follow "All Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
@@ -73,7 +88,10 @@ Feature: Explore the Channels page
     And I should see a "version 2.0" text
 
   Scenario: Check Package Filelist page
+    Given I am authorized as "admin" with password "admin"
     When I follow "Channels"
+    And I follow "Software Channels"
+    And I follow "All Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
