@@ -64,7 +64,7 @@ public class BootstrapParameters {
     public BootstrapParameters(JSONBootstrapHosts json) {
         this(json.getHost(), json.getPortInteger(), json.getUser(),
                 json.maybeGetPassword(), json.getActivationKeys(),
-                json.getIgnoreHostKeys(), Optional.of(json.getProxy()));
+                json.getIgnoreHostKeys(), Optional.ofNullable(json.getProxy()));
     }
 
     /**
