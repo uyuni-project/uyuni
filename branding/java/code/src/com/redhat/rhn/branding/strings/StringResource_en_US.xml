@@ -1462,6 +1462,12 @@ As a Channel Administrator, you may change the base channels your systems are su
       <trans-unit id="user.cannot.delete.last.sat.admin">
         <source>Cannot delete the last remaining SUSE Manager administrator.</source>
       </trans-unit>
+      <trans-unit id="image_admin">
+        <source>Image Administrator</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="taskomatic notif subject">
         <source>SUSE MANAGER TASKOMATIC NOTIFICATION</source>
       </trans-unit>
