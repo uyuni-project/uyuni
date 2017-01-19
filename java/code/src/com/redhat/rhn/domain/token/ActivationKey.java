@@ -484,4 +484,14 @@ public class ActivationKey extends BaseDomainHelper {
     public void setBootstrap(String bootstrapIn) {
         bootstrap = bootstrapIn;
     }
+
+    /**
+     * Check if the Activation Key has allowed values only
+     *
+     * @param value the activation key value
+     * @return boolean flag true if the activation key is valid,
+     */
+    public static boolean isValid(String value) {
+        return value.matches("[a-zA-Z0-9_-]+");
+    }
 }
