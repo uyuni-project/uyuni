@@ -236,11 +236,12 @@ public class MinionController {
                 .collect(Collectors.toList());
         List<Map<String, Object>> proxies = ServerFactory.lookupProxiesByOrg(user)
                 .stream()
-                .map(p -> {
-                    Map<String, Object> proxy = new HashMap<>();
-                    proxy.put("id", p.getId());
-                    proxy.put("name", p.getName());
-                    return proxy; })
+                .map(proxy -> {
+                    Map<String, Object> entry = new HashMap<>();
+                    entry.put("id", proxy.getId());
+                    entry.put("name", proxy.getName());
+                    entry.put("hostname", proxy.getHostname());
+                    return entry; })
                 .collect(Collectors.toList());
         data.put("availableActivationKeys", Json.GSON.toJson(visibleBootstrapKeys));
         data.put("proxies", Json.GSON.toJson(proxies));

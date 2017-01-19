@@ -73,8 +73,9 @@ class BootstrapMinions extends React.Component {
     }
 
     proxyChanged(event) {
-        var hostname = event.target.options[event.target.selectedIndex].innerHTML;
-        var showWarn = event.target.value != "" && hostname.indexOf(".") < 0 ? true : false;
+        var proxyId = event.target.value;
+        var proxy = this.props.proxies.find((p) => p.id == proxyId);
+        var showWarn = proxy && proxy.hostname.indexOf(".") < 0;
         this.setState({
             proxy: event.target.value,
             showProxyHostnameWarn: showWarn
