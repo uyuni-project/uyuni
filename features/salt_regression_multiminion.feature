@@ -19,6 +19,7 @@ Feature: Test Suse-manager Server Web-UI.
    Scenario:  Restart ceos-minion and test that we run cmd
     Given I am authorized as "testing" with password "testing"
     And  I run "systemctl restart salt-minion" on "ceos-minion"
+    And I wait for "50" seconds
     And I follow "Salt"
     And I follow "Remote Commands"
     And I should see a "Remote Commands" text
