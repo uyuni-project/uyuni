@@ -231,10 +231,11 @@ public class SaltSSHService {
      */
     public static List<String> proxyPathToHostnames(Set<ServerPath> serverPaths,
                                                     Optional<String> lastProxy) {
-        if (serverPaths == null || serverPaths.isEmpty()) {
+        if (CollectionUtils.isEmpty(serverPaths) && !lastProxy.isPresent()) {
             return Collections.emptyList();
         }
-        List<ServerPath> proxyPath = new ArrayList<>(serverPaths);
+        List<ServerPath> proxyPath = serverPaths == null ?
+                new ArrayList<>() : new ArrayList<>(serverPaths);
         Collections.sort(proxyPath, (p1, p2) ->
             -ObjectUtils.compare(p1.getPosition(), p2.getPosition()));
         List<String> hostnamePath = new ArrayList<>();
