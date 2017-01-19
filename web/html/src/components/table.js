@@ -81,7 +81,7 @@ const Header = (props) => {
 
     return (
       <th style={ thStyle } className={ thClass }>
-        <a className="orderBy"
+        <a href="#" className="orderBy"
             onClick={() => props.onSortChange(props.columnKey, newDirection)}>
           {props.children}
         </a>
