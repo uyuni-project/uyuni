@@ -153,7 +153,9 @@ When(/^I enter "(.*?)" in the editor$/) do |arg1|
 end
 
 When(/^I click Systems, under Systems node$/) do
-  find('button[data-reactid="1.$Systems_1.1.$Systems_2.0"]').click
+find(:xpath, "//div[@id=\"nav\"]/nav/ul/li[contains(@class, 'active')
+        and contains(@class, 'open')
+        and contains(@class,'node')]/ul/li/a/span[contains(.,'Systems')]").click
 end
 
 When(/^I close the Home tab$/) do
