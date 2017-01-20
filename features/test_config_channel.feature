@@ -75,7 +75,7 @@ Feature: Test configuration channel basic functions
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    And I run "rhn-actions-control --enable-all" on "sle-minion"
+    And I run "rhn-actions-control --enable-all" on "sle-client"
     And I follow "Configuration Channels" in the left menu
     And I follow "New Test Channel"
     And I follow "Deploy all configuration files to all subscribed systems"

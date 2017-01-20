@@ -82,33 +82,6 @@ When(/^I follow "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
   end
 end
 
-When(/^I click on Next Page$/) do
-  first(:xpath, "//button[@class='btn btn-default btn-xs fa fa-forward']").click
-end
-
-When(/^I click on Last Page$/) do
-  first(:xpath, "//button[@class='btn btn-default btn-xs fa fa-fast-forward')]").click
-end
-
-When(/^I click on Prev Page$/) do
-  first(:xpath, "//button[@class='btn btn-default btn-xs fa fa-backward')]").click
-end
-
-When(/^I click on First Page$/) do
-  first(:xpath, "//button[@class='btn btn-default btn-xs fa fa-fast-backward')]").click
-end
-
-When(/^I click the div "([^"]*)"$/) do |arg1|
-  # must give . or # for class or id
-  within("#spacewalk-content") do
-    fail unless find(arg1).click
-  end
-end
-
-When(/^I click element by css "([^"]*)"$/) do |arg1|
-  fail unless find(arg1).click
-end
-
 When(/^I want to add a new credential$/) do
   fail unless find("i.fa-plus-circle").click
 end
@@ -153,11 +126,9 @@ When(/^I enter "(.*?)" in the editor$/) do |arg1|
 end
 
 When(/^I click Systems, under Systems node$/) do
-  find('button[data-reactid="1.$Systems_1.1.$Systems_2.0"]').click
-end
-
-When(/^I close the Home tab$/) do
-  steps %(And I follow "Overview" in the left menu)
+  find(:xpath, "//div[@id=\"nav\"]/nav/ul/li[contains(@class, 'active')
+       and contains(@class, 'open')
+       and contains(@class,'node')]/ul/li/a/span[contains(.,'Systems')]").click
 end
 
 Given(/^I am not authorized$/) do
@@ -194,10 +165,9 @@ Given(/^I am on the Credentials page$/) do
 end
 
 # access the multi-clients/minions
-Given(/^I am on the Systems overview page of "(.*?)"$/) do |target|
+Given(/^I am on the Systems overview page of this "(.*?)"$/) do |target|
   steps %(
     Given I am on the Systems page
-    And I follow "Systems" in the left menu
     )
   step %(I follow "#{$minion_fullhostname}") if target == "sle-minion"
   step %(I follow "#{$ssh_minion_fullhostname}") if target == "ssh-minion"
@@ -284,12 +254,8 @@ When(/^I go to the configuration page$/) do
 end
 
 Given(/^I am on the errata page$/) do
-  steps %(
-    Given I am authorized
-    And I follow "Home" in the left menu
-    And I follow "Patches" in the left menu
-    And I follow "Relevant" in the left menu
-    )
+  step %(I am authorized)
+  visit("https://#{$server_fullhostname}/rhn/errata/RelevantErrata.do")
 end
 
 Given(/^I am on the "([^"]*)" errata Details page$/) do |arg1|
@@ -306,7 +272,6 @@ end
 
 Given(/^Patches are visible for the registered client$/) do
   step "I am on the errata page"
-  step "I follow \"Relevant\" in the left menu"
   for c in 0..20
     begin
       step "I should see an update in the list"
@@ -332,4 +297,11 @@ When(/^I search for "([^"]*)"$/) do |arg1|
     fill_in "search_string", :with => arg1
     click_button "Search"
   end
+end
+When(/^I am on System Set Manager Overview$/) do
+  visit("https://#{$server_fullhostname}/rhn/ssm/index.do")
+end
+
+When(/^I am on Autoinstallation Overview page$/) do
+  visit("https://#{$server_fullhostname}/rhn/kickstart/KickstartOverview.do")
 end
