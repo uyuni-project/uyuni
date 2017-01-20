@@ -131,6 +131,11 @@ When(/^I click Systems, under Systems node$/) do
        and contains(@class,'node')]/ul/li/a/span[contains(.,'Systems')]").click
 end
 
+And(/^I follow Patches under Patches node$/) do
+  find(:xpath, "//div[@id=\"nav\"]/nav/ul/li[contains(@class, 'active')
+       and contains(@class, 'open')
+       and contains(@class,'node')]/ul/li/a/span[contains(.,'Patches')]").click
+end
 Given(/^I am not authorized$/) do
   visit Capybara.app_host
   fail unless find_button('Sign In').visible?
@@ -259,6 +264,7 @@ Given(/^I am on the errata page$/) do
     Given I am authorized
     And I follow "Home" in the left menu
     And I follow "Patches" in the left menu
+    And I follow Patches under Patches node
     And I follow "Relevant" in the left menu
     )
 end
@@ -277,7 +283,6 @@ end
 
 Given(/^Patches are visible for the registered client$/) do
   step "I am on the errata page"
-  step "I follow \"Relevant\" in the left menu"
   for c in 0..20
     begin
       step "I should see an update in the list"
