@@ -19,7 +19,7 @@ Feature: Test Bare-metal discovery
     Then I should see this client in spacewalk
 
   Scenario: check registration values
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     Then I should see a "System Info" text
     And I should see a "Edit These Properties" link
     And I should not see a "[Management]" text
@@ -61,7 +61,7 @@ Feature: Test Bare-metal discovery
     And I should not see a "Custom Info" link in the content area
 
   Scenario: check tab links "Provisioning"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Provisioning" in the content area
     Then I should see a "Kickstart" link in the content area
     And I should not see a "Snapshots" link in the content area
@@ -93,7 +93,7 @@ Feature: Test Bare-metal discovery
     And I follow "Clear"
 
   Scenario: Delete the system profile
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
