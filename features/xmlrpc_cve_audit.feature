@@ -12,7 +12,6 @@ Feature: Test the XML-RPC CVE Audit feature.
     Then I should see a "bunch was scheduled" text
     And I wait for "10" seconds
 
-  @xmlrpc
   Scenario: before applying patches 
     Given I am logged in via XML-RPC/cve audit as user "admin" and password "admin"
     When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-1999-9979"
@@ -23,10 +22,8 @@ Feature: Test the XML-RPC CVE Audit feature.
     And I should get the "milkyway-dummy-2345" patch
     Then I logout from XML-RPC/cve audit namespace.
 
-  @xmlrpc
   Scenario: after applying patches 
-    When I follow "Systems"
-    And I follow this client link
+    Given I am on the Systems overview page of this "sle-client"
     And I follow "Software"
     And I follow "Patches" in the content area
     And I check "milkyway-dummy-2345" in the list
