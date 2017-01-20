@@ -4,7 +4,7 @@
 Feature: Test Powermanagement
 
   Scenario: Is the powermanagement page accessible
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
     Then I should see a "Power Management Settings" text
@@ -12,7 +12,7 @@ Feature: Test Powermanagement
     And I should see a "Save" button
 
   Scenario: Save powermanagement values
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
     When I enter "10.162.210.3" as "powerAddress"
@@ -26,7 +26,7 @@ Feature: Test Powermanagement
     And the cobbler report contains "Power Management Username      : admin"
 
   Scenario: Test IPMI functions
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
     Then I click on "Power On"

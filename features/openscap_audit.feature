@@ -4,7 +4,7 @@
 Feature: Use the openSCAP audit feature in SUSE Manager
 
   Scenario: Schedule an audit job
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     And I follow "Audit" in the content area
     And I follow "Schedule" in the content area
     When I enter "--profile RHEL6-Default" as "params"
@@ -14,7 +14,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager
     Then I should see a "XCCDF scan has been scheduled" text
 
   Scenario: Check results of the audit job
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     And I follow "Audit" in the content area
     When I follow "xccdf_org.open-scap_testresult_RHEL6-Default"
     Then I should see a "Details of XCCDF Scan" text
@@ -24,7 +24,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager
     And I should see a "rule-" link
 
   Scenario: Schedule an audit job using the suse profile
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     And I follow "Audit" in the content area
     And I follow "Schedule" in the content area
     When I enter "--profile Default" as "params"
@@ -34,7 +34,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager
     Then I should see a "XCCDF scan has been scheduled" text
 
   Scenario: Check results of the audit job
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     And I follow "Audit" in the content area
     When I follow "xccdf_org.open-scap_testresult_Default"
     Then I should see a "Details of XCCDF Scan" text

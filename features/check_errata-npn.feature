@@ -33,7 +33,7 @@ Feature: Check errata
     And I should see a "andromeda-dummy-2.0-1.1-noarch" link
 
   Scenario: check relevant errata for this client
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Errata" in the content area
     Then I should see a "Relevant Errata" text

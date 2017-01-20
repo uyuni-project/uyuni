@@ -35,13 +35,11 @@
 - features/sp_migration.feature
 - features/erratapage.feature
 - features/lock_packages_on_client.feature
-- features/install_package.feature
-- features/install_errata-npn.feature
+- features/install_package_and_errata.feature
 - features/clone_channel-npn.feature
 - features/openscap_audit.feature
 - features/spacewalk_repo_sync.feature
 - features/scc-sync-channels.feature
-- features/systemspage2.feature
 - features/xmlrpc_system.feature
 - features/nagios.feature
 - features/systems_needing_reboot.feature

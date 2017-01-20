@@ -2,9 +2,11 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Lock packages on client
+ 
+  Background:
+    Given I am on the Systems overview page of this "sle-client"
 
   Scenario: Lock a package on the client
-    Given I am on the Systems overview page of this client
     And I follow "Software" in the content area
     And I follow "Lock"
     When I check "hoag-dummy-1.1-2.1" in the list
@@ -16,7 +18,6 @@ Feature: Lock packages on client
     And Package "hoag-dummy-1.1-2.1" is reported as locked
 
   Scenario: Attempt to install a locked package on the client
-    Given I am on the Systems overview page of this client
     And I follow "Software" in the content area
     And I follow "Lock"
     And Package "hoag-dummy-1.1-2.1" is reported as locked
@@ -28,12 +29,11 @@ Feature: Lock packages on client
     Then I should see a "1 package install has been scheduled for" text
     And I follow "Events"
     And I follow "History"
-    And I follow first "Package Install scheduled by testing"
+    And I follow first "Package Install scheduled by admin"
     Then The package scheduled is "hoag-dummy-1.1-2.1"
     And The action status is "Failed"
 
   Scenario: Unlock a package on the client
-    Given I am on the Systems overview page of this client
     And I follow "Software" in the content area
     And I follow "Lock"
     And Package "hoag-dummy-1.1-2.1" is reported as locked
@@ -46,7 +46,6 @@ Feature: Lock packages on client
     And Package "hoag-dummy-1.1-2.1" is reported as unlocked
 
   Scenario: Schedule a package lock
-    Given I am on the Systems overview page of this client
     And I follow "Software" in the content area
     And I follow "Lock"
     When I check "hoag-dummy-1.1-2.1" in the list
@@ -55,7 +54,6 @@ Feature: Lock packages on client
     And Package "hoag-dummy-1.1-2.1" is reported as pending to be locked
 
   Scenario: Schedule another package lock
-    Given I am on the Systems overview page of this client
     And I follow "Software" in the content area
     And I follow "Lock"
     And Package "hoag-dummy-1.1-2.1" is reported as pending to be locked
@@ -76,7 +74,6 @@ Feature: Lock packages on client
     And Package "milkyway-dummy-2.0-1.1" is reported as locked
 
   Scenario: Mix package locks and unlock events
-    Given I am on the Systems overview page of this client
     And I follow "Software" in the content area
     And I follow "Lock"
     And Package "hoag-dummy-1.1-2.1" is reported as locked
@@ -106,7 +103,6 @@ Feature: Lock packages on client
     And Package "orion-dummy-1.1-1.1" is reported as locked
 
   Scenario: Mix package locks and unlock events
-    Given I am on the Systems overview page of this client
     And I follow "Software" in the content area
     And I follow "Lock"
     When I select all the packages
