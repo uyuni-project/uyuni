@@ -23,7 +23,7 @@ import static java.util.stream.Collectors.toSet;
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.taskomatic.TaskoFactory;
-import com.redhat.rhn.taskomatic.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import com.suse.matcher.json.JsonInput;
 import com.suse.matcher.json.JsonMatch;

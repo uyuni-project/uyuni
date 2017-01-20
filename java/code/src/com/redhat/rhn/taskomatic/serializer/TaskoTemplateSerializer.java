@@ -16,7 +16,7 @@ package com.redhat.rhn.taskomatic.serializer;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.RhnXmlRpcCustomSerializer;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-import com.redhat.rhn.taskomatic.TaskoTemplate;
+import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
 import java.io.IOException;
 import java.io.Writer;

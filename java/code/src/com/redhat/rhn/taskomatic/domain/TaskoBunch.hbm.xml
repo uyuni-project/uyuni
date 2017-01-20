@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.taskomatic.TaskoBunch"
+    <class name="com.redhat.rhn.taskomatic.domain.TaskoBunch"
         table="rhnTaskoBunch">
 
         <id name="id" type="long" column="id">
@@ -25,29 +25,29 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <list name="templates" inverse="true" lazy="false" table="rhnTaskoTemplate">
             <key column="bunch_id"/>
             <index column="ordering"/>
-            <one-to-many class="com.redhat.rhn.taskomatic.TaskoTemplate"/>
+            <one-to-many class="com.redhat.rhn.taskomatic.domain.TaskoTemplate"/>
         </list>
 
     </class>
 
     <query name="TaskoBunch.lookupByName">
-        <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoBunch WHERE name = :name]]>
+        <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoBunch WHERE name = :name]]>
     </query>
 
     <query name="TaskoBunch.lookupOrgBunchByName">
-        <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoBunch WHERE orgBunch is not null AND name = :name]]>
+        <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoBunch WHERE orgBunch is not null AND name = :name]]>
     </query>
 
     <query name="TaskoBunch.lookupSatBunchByName">
-        <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoBunch WHERE orgBunch is null AND name = :name]]>
+        <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoBunch WHERE orgBunch is null AND name = :name]]>
     </query>
 
     <query name="TaskoBunch.listOrgBunches">
-        <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoBunch WHERE orgBunch is not null]]>
+        <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoBunch WHERE orgBunch is not null]]>
     </query>
 
     <query name="TaskoBunch.listSatBunches">
-        <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoBunch WHERE orgBunch is null]]>
+        <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoBunch WHERE orgBunch is null]]>
     </query>
 
 </hibernate-mapping>

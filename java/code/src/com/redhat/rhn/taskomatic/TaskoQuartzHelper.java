@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic;
 
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 
+import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import org.apache.log4j.Logger;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
