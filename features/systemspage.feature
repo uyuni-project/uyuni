@@ -131,7 +131,7 @@ Feature: Explore the main landing page
 
   Scenario: Check sidebar link destination for Systems => System Currency
     When I click Systems, under Systems node
-    And I follow "Systems Currency" in the left menu
+    And I follow "System Currency" in the left menu
     Then I should see a "System Currency Report" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/SystemCurrency.do"
@@ -154,6 +154,7 @@ Feature: Explore the main landing page
 
   Scenario: Check sidebar link destination for Systems => System Set Manager
     When I follow "System Set Manager" in the left menu
+    And I follow "Overview" in the left menu
     Then I should see a "System Set Manager" text
     And I should see a "Task Log" link in the left menu
     And I should see a "Overview" link in the content area
@@ -189,7 +190,7 @@ Feature: Explore the main landing page
 
    Scenario: Check sidebar link destination for Systems => Autoinstallation
     When I follow "Autoinstallation" in the left menu
-    When I follow "Overview" in the left menu
+    And I follow "Overview" in the left menu
     Then I should see a "Autoinstallation Overview" text
     And I should see a "Profiles" link in the left menu
     And I should see a "Bare Metal" link in the left menu
@@ -263,8 +264,7 @@ Feature: Explore the main landing page
     And I should see a "Kickstart Details" text
 
   Scenario: Check "create kickstart distribution" page Systems => Kickstart => Distributions => create new kickstart distribution
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Distributions" in the left menu
     And I follow "Create Distribution"
     Then I should see a "Create Kickstart Distribution" text
@@ -280,15 +280,13 @@ Feature: Explore the main landing page
     Then create profile "testprofile" as user "testing" with password "testing"
 
   Scenario: Check cobbler created distro and profile Systems => Kickstart => Profiles
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     Then I should see a "testprofile" text
     And I should see a "testdistro" text
 
   Scenario: create a distro with the UI (requires a base channel)
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Distributions" in the left menu
     And I follow "Create Distribution"
     When I enter "fedora_kickstart_distro" as "label"
@@ -299,8 +297,7 @@ Feature: Explore the main landing page
    And I should see a "fedora_kickstart_distro" link
 
   Scenario: create a profile with the UI (requires a base channel)
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "Create Kickstart Profile"
     When I enter "fedora_kickstart_profile" as "kickstartLabel"
@@ -313,8 +310,7 @@ Feature: Explore the main landing page
     And I should see a "Kickstart Details" link
 
   Scenario: upload a profile with the UI (requires a base channel)
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "Upload Kickstart File"
     When I enter "fedora_kickstart_profile_upload" as "kickstartLabel"
@@ -324,8 +320,7 @@ Feature: Explore the main landing page
     And I should see a "Kickstart Details" text
 
   Scenario: adding a bare metal range to a profile (requires fedora_kickstart_profile)
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "fedora_kickstart_profile"
     And I follow "Bare Metal Kickstart"
@@ -341,8 +336,7 @@ Feature: Explore the main landing page
     Then I should see a "Successfully added IP Range" text
 
   Scenario: adding a variable to the uploaded profile (requires fedora_kickstart_profile_upload)
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "fedora_kickstart_profile_upload"
     And I follow "Variables"
@@ -352,7 +346,8 @@ Feature: Explore the main landing page
     Then I should see a "A_Test_String" text
 
   Scenario: adding a kernel option (requires fedora_kickstart_profile)
-    Given I am on the Systems page
+    When I follow "Autoinstallation" in the left menu
+    And I follow "Profiles" in the left menu
     And I follow "Kickstart" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "fedora_kickstart_profile"
@@ -361,8 +356,7 @@ Feature: Explore the main landing page
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value"
 
   Scenario: adding a kernel option (requires fedora_kickstart_profile_upload)
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "fedora_kickstart_profile_upload"
     And I enter "kernel_option2=a_value2" as "kernel_options"
@@ -370,18 +364,15 @@ Feature: Explore the main landing page
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2"
 
   Scenario: checking default snippets
-    Given I am on the Systems page
-    And I follow "Autoinstallation" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Autoinstallation Snippets" in the left menu
     And I follow "Default Snippets"
-    #And I wait for "1" seconds
     And I click on "Next Page"
     And I follow "spacewalk/sles_no_signature_checks"
     Then I should see "<signature-handling>" in the textarea
 
   Scenario: create a snippet
-    Given I am on the Systems page
-    And I follow "Autoinstallation" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Autoinstallation Snippets" in the left menu
     And I follow "Create Snippet"
     And I enter "created_test_snippet" as "name"
@@ -390,8 +381,7 @@ Feature: Explore the main landing page
     Then I should see a "created_test_snippet created successfully." text
   
   Scenario: delete a snippet (requires "create a snippet" test was run)
-    Given I am on the Systems page
-    And I follow "Autoinstallation" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Autoinstallation Snippets" in the left menu
     And I follow "created_test_snippet"
     And I follow "delete snippet"
@@ -405,6 +395,5 @@ Feature: Explore the main landing page
     And file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile_upload:1"
     And file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/initrd.img" exists on server
     And file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/vmlinuz" exists on server
-    #bug regression for #668908
     And file "/srv/tftpboot/menu.c32" exists on server
     And file "/srv/tftpboot/pxelinux.0" exists on server
