@@ -17,7 +17,7 @@ Feature: Test action chaining
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: I add a remote command to the action chain
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Remote Command"
     And I enter as remote command this script in
       """
@@ -29,7 +29,7 @@ Feature: Test action chaining
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: I add a patch installation to the action chain
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
     And I check "andromeda-dummy-6789" in the list
@@ -39,7 +39,7 @@ Feature: Test action chaining
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: I add a remove package to the action chain
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I check "adaptec-firmware" in the list
@@ -49,7 +49,7 @@ Feature: Test action chaining
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: I add a verify package to the action chain
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Verify" in the content area
     And I check "andromeda-dummy-1.0-4.1" in the list
@@ -59,7 +59,7 @@ Feature: Test action chaining
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: I add a config file deployment to the action chain
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Configuration" in the tabs
     And I follow "Configuration Channels" in the left menu
     And I follow "New Test Channel"
@@ -72,14 +72,14 @@ Feature: Test action chaining
     Then I should see a "3 actions are being added to Action Chain new action chain" text
 
   Scenario: I add a reboot action to the action chain
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Schedule System Reboot" in the content area
     And I check radio button "schedule-by-action-chain"
     And I click on "Reboot system"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: I verify the action chain list
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
@@ -106,7 +106,7 @@ Feature: Test action chaining
      Then I click on "Delete"
 
   Scenario: I add a remote command to new action chain
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Remote Command"
     And I enter as remote command this script in
       """
@@ -118,7 +118,7 @@ Feature: Test action chaining
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: I execute the action chain from the web ui
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
