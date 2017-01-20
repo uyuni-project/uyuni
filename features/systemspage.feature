@@ -346,8 +346,6 @@ Feature: Explore the main landing page
   Scenario: adding a kernel option (requires fedora_kickstart_profile)
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
-    And I follow "Kickstart" in the left menu
-    And I follow "Profiles" in the left menu
     And I follow "fedora_kickstart_profile"
     And I enter "kernel_option=a_value" as "kernel_options"
     And I click on "Update"
