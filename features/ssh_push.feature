@@ -37,5 +37,5 @@ Feature: Register a system to be managed via SSH push
     Then I should see this client in spacewalk
 
   Scenario: Check this client's contact method
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     Then I should see a "Push via SSH tunnel" text
