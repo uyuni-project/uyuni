@@ -173,7 +173,6 @@ end
 Given(/^I am on the Systems overview page of "(.*?)"$/) do |target|
   steps %(
     Given I am on the Systems page
-    And I follow "Systems" in the left menu
     )
   step %(I follow "#{$minion_fullhostname}") if target == "sle-minion"
   step %(I follow "#{$ssh_minion_fullhostname}") if target == "ssh-minion"
