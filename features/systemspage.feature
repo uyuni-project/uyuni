@@ -153,8 +153,7 @@ Feature: Explore the main landing page
     And I should see a "Your organization has no system groups." text
 
   Scenario: Check sidebar link destination for Systems => System Set Manager
-    When I follow "System Set Manager" in the left menu
-    And I follow "Overview" in the left menu
+    When I am on System Set Manager Overview
     Then I should see a "System Set Manager" text
     And I should see a "Task Log" link in the left menu
     And I should see a "Overview" link in the content area

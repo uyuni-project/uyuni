@@ -304,3 +304,6 @@ When(/^I search for "([^"]*)"$/) do |arg1|
     click_button "Search"
   end
 end
+When(/^I am on System Set Manager Overview$/) do
+  visit("https://#{$server_fullhostname}/rhn/ssm/index.do")
+end
