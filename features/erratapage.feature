@@ -19,21 +19,11 @@ Feature: Explore the Errata page
     And I should see a "Security Errata" link
     And I should see a Sign Out link
 
-  Scenario: Completeness of the main navigation bar
-    Given I am on the errata page
-    Then I should see a "Overview" link in the tab bar
-    And I should see a "Systems" link in the tab bar
-    And I should see a "Errata" link in the tab bar
-    And I should see a "Channels" link in the tab bar
-    And I should see a "Configuration" link in the tab bar
-    And I should see a "Schedule" link in the tab bar
-    And I should see a "Users" link in the tab bar
-    And I should see a "Help" link in the tab bar
-
   Scenario: Create new bugfix erratum with bnc URL
     Given I am on the errata page
-    And I follow "Manage Errata" in the left menu
-    And I follow "Create Erratum"
+    And I follow "Manage Patches" in the left menu
+    And I follow "Published" in the left menu
+    And I follow "Create Patch"
     When I enter "Test Erratum" as "synopsis"
     And I enter "Test Advisory" as "advisoryName"
     And I enter "Test Product" as "product"
@@ -52,8 +42,9 @@ Feature: Explore the Errata page
 
   Scenario: Create new enhancement erratum with no bnc URL
     Given I am on the errata page
-    And I follow "Manage Errata" in the left menu
-    And I follow "Create Erratum"
+    And I follow "Manage Patches" in the left menu
+    And I follow "Published" in the left menu
+    And I follow "Create Patch"
     When I enter "Enhancement Erratum" as "synopsis"
     And I enter "Enhancement Advisory" as "advisoryName"
     And I select "Product Enhancement Advisory" from "advisoryType"
@@ -71,7 +62,7 @@ Feature: Explore the Errata page
 
   Scenario: Delete enhancement erratum
     Given I am on the errata page
-    And I follow "Manage Errata" in the left menu
+    And I follow "Manage Patches" in the left menu
     And I follow "Unpublished" in the left menu
     And I check "Enhancement Advisory" erratum
     And I click on "Delete Errata"
@@ -80,7 +71,7 @@ Feature: Explore the Errata page
 
   Scenario: Publish erratum
     Given I am on the errata page
-    And I follow "Manage Errata" in the left menu
+    And I follow "Manage Patches" in the left menu
     And I follow "Unpublished" in the left menu
     And I follow "Test Advisory"
     And I click on "Publish Errata"
@@ -113,13 +104,16 @@ Feature: Explore the Errata page
   Scenario: Check erratum in channel
     Given I am on the errata page
     And I follow "Channels"
+    And I follow "Software Channels"
+    And I follow "All Channels"
     And I follow "Test Base Channel"
     And I follow "Errata" in the content area
     Then I should see a "Test Erratum" text
 
   Scenario: Delete erratum
     Given I am on the errata page
-    And I follow "Manage Errata" in the left menu
+    And I follow "Manage Patches" in the left menu
+    And I follow "Published" in the left menu
     And I check "Test Advisory" erratum
     And I click on "Delete Errata"
     And I click on "Confirm"
