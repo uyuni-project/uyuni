@@ -8,9 +8,11 @@ Feature: Test weak dependencies
 
   Background:
     Given I am authorized as "admin" with password "admin"
+    When I follow "Channels"
+    And I follow "Software Channels"
+    And I follow "All Channels"
 
   Scenario: Check Package metadata displayed in WebUI (Supplements)
-    When I follow "Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
     And I follow "virgo-dummy-2.0-1.1.noarch"
@@ -21,7 +23,6 @@ Feature: Test weak dependencies
     And I should see a "packageand(a-blackhole:dummy)" text
 
   Scenario: Check Package metadata displayed in WebUI (Recommends)
-    When I follow "Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
     And I follow "milkyway-dummy-2.0-1.1.x86_64"
@@ -32,7 +33,6 @@ Feature: Test weak dependencies
     And I should see a "filesystem" text
 
   Scenario: Check Package metadata displayed in WebUI (Suggests)
-    When I follow "Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
     And I follow "milkyway-dummy-2.0-1.1.x86_64"
@@ -43,7 +43,6 @@ Feature: Test weak dependencies
     And I should see a "apache2" text
 
   Scenario: Check Package metadata displayed in WebUI (Enhances) bnc 846436
-    When I follow "Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
     And I follow "orion-dummy-1.1-1.1.x86_64"
