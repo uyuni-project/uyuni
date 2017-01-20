@@ -670,8 +670,8 @@ authorize_parent_ssh_push_key() {
         CURL_RESPONSE=$(curl --write-out %{http_code} --silent --output $TMP_PUSH_KEY_FILE $SERVER_KEY_URL)
     fi
     if [ "$CURL_RESPONSE" != "200" ]; then
-        echo "Could not retrieve ssh-push key. curl failed with HTTP response code $CURL_RESPONSE"
-        exit 1
+        echo "Could not retrieve ssh-push key. curl failed with HTTP response code ${CURL_RESPONSE}."
+        echo "Check connectivity to the parent server or if it has a ssh-push key."
     fi
 
     # remove any previously authorized key
