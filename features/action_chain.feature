@@ -7,7 +7,7 @@ Feature: Test action chaining
     Given Patches are visible for the registered client
 
   Scenario: I add a package installation to an action chain
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
     And I check "hoag-dummy-1.1-2.1" in the list

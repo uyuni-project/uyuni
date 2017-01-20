@@ -165,7 +165,7 @@ Given(/^I am on the Credentials page$/) do
 end
 
 # access the multi-clients/minions
-Given(/^I am on the Systems overview page of "(.*?)"$/) do |target|
+Given(/^I am on the Systems overview page of this "(.*?)"$/) do |target|
   steps %(
     Given I am on the Systems page
     )
@@ -254,7 +254,7 @@ When(/^I go to the configuration page$/) do
 end
 
 Given(/^I am on the errata page$/) do
-  step %( Given I am authorized )
+  step %(I am authorized)
   visit("https://#{$server_fullhostname}/rhn/errata/RelevantErrata.do")
 end
 
