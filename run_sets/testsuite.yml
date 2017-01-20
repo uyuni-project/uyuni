@@ -84,7 +84,7 @@
 - features/minion_bootstrap.feature
 # Regression test
 - features/salt_regression_topsls.feature
-- features/salt_regression_multiminion.feature
+# - features/salt_regression_multiminion.feature : unstable
 
 ### Salt-ssh managed feature ##
 - features/salt_ssh.feature
