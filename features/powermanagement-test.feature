@@ -20,10 +20,10 @@ Feature: Test Powermanagement
     And I enter "test" as "powerPassword"
     And I click on "Save"
     Then I should see a "Power settings saved" text
-    And the cobbler report contains "Power Management Address       : 10.162.210.10`"
-    And the cobbler report contains "Power Management Password      : ipmiusr"
+    And the cobbler report contains "Power Management Address       : 10.162.210.10"
+    And the cobbler report contains "Power Management Username      : ipmiusr"
+    And the cobbler report contains "Power Management Password      : test"
     And the cobbler report contains "Power Management Type          : ipmitool"
-    And the cobbler report contains "Power Management Username      : test"
 
   Scenario: Test IPMI functions
     Given I am on the Systems overview page of this client
