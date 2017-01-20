@@ -131,6 +131,7 @@ Feature: Explore the main landing page
 
   Scenario: Check sidebar link destination for Systems => System Currency
     When I click Systems, under Systems node
+    And I follow "Systems Currency" in the left menu
     Then I should see a "System Currency Report" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/SystemCurrency.do"
@@ -146,15 +147,13 @@ Feature: Explore the main landing page
     And the current path is "/rhn/systems/SystemEntitlements.do"
 
   Scenario: Check sidebar link destination for Systems => System Groups
-    Given I am on the Systems page
-    And I follow "System Groups" in the left menu
+    When I follow "System Groups" in the left menu
     Then I should see a "System Groups" text
     And I should see a "Create Group" link
     And I should see a "Your organization has no system groups." text
 
   Scenario: Check sidebar link destination for Systems => System Set Manager
-    Given I am on the Systems page
-    And I follow "System Set Manager" in the left menu
+    When I follow "System Set Manager" in the left menu
     Then I should see a "System Set Manager" text
     And I should see a "Task Log" link in the left menu
     And I should see a "Overview" link in the content area
@@ -168,34 +167,30 @@ Feature: Explore the main landing page
     And I should see a "Misc" link in the content area
 
   Scenario: Check sidebar link destination for Systems => Advanced Search
-    Given I am on the Systems page
-    And I follow "Advanced Search" in the left menu
+    When I follow "Advanced Search" in the left menu
     Then I should see a "Advanced Search" text
 
   Scenario: Check sidebar link destination for Systems => Activation Keys
-    Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow "Activation Keys" in the left menu
     Then I should see a "Activation Keys" text
     And I should see a "Create Key" link
     And I should see a "No activation keys available" text
 
   Scenario: Check sidebar link destination for Systems => Stored Profiles
-    Given I am on the Systems page
-    And I follow "Stored Profiles" in the left menu
+    When I follow "Stored Profiles" in the left menu
     Then I should see a "Stored Profiles" text
     And I should see a "No stored profiles." text
 
   Scenario: Check sidebar link destination for Systems => Custom System Info
-    Given I am on the Systems page
-    And I follow "Custom System Info" in the left menu
+    When I follow "Custom System Info" in the left menu
     Then I should see a "Custom System Info Keys" text
     And I should see a "Create Key" link
     And I should see a "No Custom Info Keys Found" text
 
-   Scenario: Check sidebar link destination for Systems => Kickstart
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
-    Then I should see a "Kickstart Overview" text
+   Scenario: Check sidebar link destination for Systems => Autoinstallation
+    When I follow "Autoinstallation" in the left menu
+    When I follow "Overview" in the left menu
+    Then I should see a "Autoinstallation Overview" text
     And I should see a "Profiles" link in the left menu
     And I should see a "Bare Metal" link in the left menu
     And I should see a "GPG and SSL Keys" link in the left menu
@@ -209,23 +204,20 @@ Feature: Explore the main landing page
     And I should see a "Upload a New Kickstart File" link
 
   Scenario: Check sidebar link destination for Systems => Kickstart => Profiles
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     Then I should see a "Kickstart Profiles" text
     And I should see a "Create Kickstart Profile" link
     And I should see a "Upload Kickstart File" link
 
   Scenario: Check sidebar link destination for Systems => Kickstart => Bare Metal
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Bare Metal" in the left menu
     Then I should see a "Bare Metal Kickstart By IP" text
     And I should see a "No Ip Ranges Found" text
 
   Scenario: Check sidebar link destination for Systems => Kickstart => GPG and SSL Keys
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "GPG and SSL Keys" in the left menu
     Then I should see a "GPG Public Keys and SSL Certificates" text
     And I should see a "Create Stored Key/Cert" link
@@ -233,24 +225,21 @@ Feature: Explore the main landing page
     And I should see a "RHN-ORG-TRUSTED-SSL-CERT" link
 
   Scenario: Check sidebar link destination for Systems => Kickstart => Distributions
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Distributions" in the left menu
     Then I should see a "Kickstartable Distributions" text
     And I should see a "No kickstartable distributions available." text
     And I should see a "Create Distribution" link
 
   Scenario: Check sidebar link destination for Systems => Kickstart => File Preservation
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "File Preservation" in the left menu
     Then I should see a "File Preservation" text
     And I should see a "RHN Reference Guide" link
     And I should see a "Create File Preservation List" link
 
   Scenario: Check sidebar link destination for Systems => Kickstart => Kickstart Snippets
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Autoinstallation Snippets" in the left menu
     Then I should see a "Autoinstallation Snippets" text
     And I should see a "No autoinstallation snippets found." text
@@ -260,20 +249,18 @@ Feature: Explore the main landing page
     And I should see a "All Snippets" link in the content area
 
   Scenario: Check "Create Kickstart Profile" page Systems => Kickstart => Profiles => Create Kickstart Profile
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "Create Kickstart Profile"
     Then I should see a "Step 1: Create Kickstart Profile" text
 
   Scenario: Check "Upload Kickstart File" page Systems => Kickstart => Profiles => Upload Kickstart File
-    Given I am on the Systems page
-    And I follow "Kickstart" in the left menu
+    When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "Upload Kickstart File"
     Then I should see a "Create Autoinstallation Profile" text
-     And I should see a "File Contents:" text
-     And I should see a "Kickstart Details" text
+    And I should see a "File Contents:" text
+    And I should see a "Kickstart Details" text
 
   Scenario: Check "create kickstart distribution" page Systems => Kickstart => Distributions => create new kickstart distribution
     Given I am on the Systems page
