@@ -59,8 +59,9 @@ Feature: Test action chaining
     Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: I add a config file deployment to the action chain
-    Given I am on the Systems overview page of this "sle-client"
-    When I follow "Configuration" in the tabs
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "New Test Channel"
     And I follow "Deploy Files" in the content area
