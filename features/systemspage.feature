@@ -48,72 +48,63 @@ Feature: Explore the main landing page
     And I should see a "Systems" text
 
   Scenario: Check sidebar link destination for Systems => Physical Systems
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     And I follow "Physical Systems" in the left menu
     Then I should see a "Physical Systems" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/PhysicalList.do"
 
   Scenario: Check sidebar link destination for Systems => Virtual Systems
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     And I follow "Virtual Systems" in the left menu
     Then I should see a "Virtual Systems" text
     And I should see a "No Virtual Systems." text
     And the current path is "/rhn/systems/VirtualList.do"
 
   Scenario: Check sidebar link destination for Systems => Out of Date
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     And I follow "Out of Date" in the left menu
     Then I should see a "Out of Date Systems" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/OutOfDate.do"
 
   Scenario: Check sidebar link destination for Systems => Requiring Reboot
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     And I follow "Requiring Reboot" in the left menu
     Then I should see a "Systems Requiring Reboot" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/RequiringReboot.do"
 
   Scenario: Check sidebar link destination for Systems => Non Compliant
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     And I follow "Non Compliant" in the left menu
     Then I should see a "Non Compliant Systems" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/ExtraPackagesSystems.do"
 
   Scenario: Check sidebar link destination for Systems => Without System Type
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     And I follow "Without System Type" in the left menu
     Then I should see a "Systems without System Type" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/Unentitled.do"
 
   Scenario: Check sidebar link destination for Systems => Ungrouped
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     And I follow "Ungrouped" in the left menu
     Then I should see a "Ungrouped Systems" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/Ungrouped.do"
 
   Scenario: Check sidebar link destination for Systems => Inactive
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     And I follow "Inactive" in the left menu
     Then I should see a "Inactive Systems" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/Inactive.do"
 
   Scenario: Check sidebar link destination for Systems => Recently Registered
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     And I follow "Recently Registered" in the left menu
     Then I should see a "Recently Registered Systems" text
     And I should see a "No systems." text
@@ -121,16 +112,14 @@ Feature: Explore the main landing page
     And the current path is "/rhn/systems/Registered.do"
 
   Scenario: Check sidebar link destination for Systems => Proxy
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     And I follow "Proxy" in the left menu
     Then I should see a "Proxy Servers" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/ProxyList.do"
 
   Scenario: Check sidebar link destination for Systems => Duplicate Systems
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     And I follow "Duplicate Systems" in the left menu
     Then I should see a "Duplicate System Profiles" text
     And I should see a "No systems." text
@@ -141,16 +130,13 @@ Feature: Explore the main landing page
     And I should see a "Duplicate MAC Address" link
 
   Scenario: Check sidebar link destination for Systems => System Currency
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
-    And I follow "System Currency" in the left menu
+    When I click Systems, under Systems node
     Then I should see a "System Currency Report" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/SystemCurrency.do"
 
   Scenario: Check sidebar link destination for Systems => System Types
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     And I follow "System Types" in the left menu
     Then I should see a "System Types" text
     And I should see a "Management:" text
@@ -166,7 +152,6 @@ Feature: Explore the main landing page
     And I should see a "Create Group" link
     And I should see a "Your organization has no system groups." text
 
-  @failed
   Scenario: Check sidebar link destination for Systems => System Set Manager
     Given I am on the Systems page
     And I follow "System Set Manager" in the left menu
@@ -298,18 +283,15 @@ Feature: Explore the main landing page
     Then I should see a "Create Kickstart Distribution" text
     And I should see a "Distribution Label" text
 
-  @cobbler
   Scenario: create a dummy distro with cobbler (not visible in UI, SLES)
     Given cobblerd is running
     Then create distro "testdistro" as user "testing" with password "testing"
 
-  @cobbler
   Scenario: create dummy profile
     Given cobblerd is running
     And distro "testdistro" exists
     Then create profile "testprofile" as user "testing" with password "testing"
 
-  @cobbler
   Scenario: Check cobbler created distro and profile Systems => Kickstart => Profiles
     Given I am on the Systems page
     And I follow "Kickstart" in the left menu
@@ -317,7 +299,6 @@ Feature: Explore the main landing page
     Then I should see a "testprofile" text
     And I should see a "testdistro" text
 
-  @cobbler_ui
   Scenario: create a distro with the UI (requires a base channel)
     Given I am on the Systems page
     And I follow "Kickstart" in the left menu
@@ -330,7 +311,6 @@ Feature: Explore the main landing page
     Then I should see a "Autoinstallable Distributions" text
    And I should see a "fedora_kickstart_distro" link
 
-  @cobbler_ui
   Scenario: create a profile with the UI (requires a base channel)
     Given I am on the Systems page
     And I follow "Kickstart" in the left menu
@@ -345,7 +325,6 @@ Feature: Explore the main landing page
     Then I should see a "Kickstart: fedora_kickstart_profile" text
     And I should see a "Kickstart Details" link
 
-  @cobbler_ui
   Scenario: upload a profile with the UI (requires a base channel)
     Given I am on the Systems page
     And I follow "Kickstart" in the left menu
@@ -357,7 +336,6 @@ Feature: Explore the main landing page
     Then I should see a "Kickstart: fedora_kickstart_profile_upload" text
     And I should see a "Kickstart Details" text
 
-  @cobbler_ui
   Scenario: adding a bare metal range to a profile (requires fedora_kickstart_profile)
     Given I am on the Systems page
     And I follow "Kickstart" in the left menu
@@ -375,7 +353,6 @@ Feature: Explore the main landing page
     And I click on "Add IP Range"
     Then I should see a "Successfully added IP Range" text
 
-  @cobbler_ui
   Scenario: adding a variable to the uploaded profile (requires fedora_kickstart_profile_upload)
     Given I am on the Systems page
     And I follow "Kickstart" in the left menu
@@ -387,7 +364,6 @@ Feature: Explore the main landing page
     And I follow "Autoinstallation File"
     Then I should see a "A_Test_String" text
 
-  @cobbler_ui
   Scenario: adding a kernel option (requires fedora_kickstart_profile)
     Given I am on the Systems page
     And I follow "Kickstart" in the left menu
@@ -397,7 +373,6 @@ Feature: Explore the main landing page
     And I click on "Update"
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value"
 
-  @cobbler_ui
   Scenario: adding a kernel option (requires fedora_kickstart_profile_upload)
     Given I am on the Systems page
     And I follow "Kickstart" in the left menu
@@ -407,7 +382,6 @@ Feature: Explore the main landing page
     And I click on "Update"
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2"
 
-   @cobbler_ui 
   Scenario: checking default snippets
     Given I am on the Systems page
     And I follow "Autoinstallation" in the left menu
@@ -418,7 +392,6 @@ Feature: Explore the main landing page
     And I follow "spacewalk/sles_no_signature_checks"
     Then I should see "<signature-handling>" in the textarea
 
-   @cobbler_ui 
   Scenario: create a snippet
     Given I am on the Systems page
     And I follow "Autoinstallation" in the left menu
@@ -428,8 +401,7 @@ Feature: Explore the main landing page
     And I enter "<test_element>a text string</test_element>" in the editor
     And I click on "Create Snippet"
     Then I should see a "created_test_snippet created successfully." text
-
-   @cobbler_ui
+  
   Scenario: delete a snippet (requires "create a snippet" test was run)
     Given I am on the Systems page
     And I follow "Autoinstallation" in the left menu
@@ -439,7 +411,6 @@ Feature: Explore the main landing page
     And I click on "Delete Snippet"
     Then I should see a "created_test_snippet deleted successfully." text
 
-  @pxe_env
   Scenario: testing for pxe environment files. Requires cobbler_ui tests to have run
     Given cobblerd is running
     Then file "/srv/tftpboot/pxelinux.cfg/default" exists on server
