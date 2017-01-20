@@ -227,6 +227,10 @@ When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, target|
     _out, _code = $ceos_minion.run(cmd, false)
   elsif target == "ssh-minion"
     _out, _code = $ssh_minion.run(cmd, false)
+  elsif target == "sle-minion"
+    _out, _code = $minion.run(cmd, false)
+  elsif target == "sle-client"
+    _out, _code = $client.run(cmd, false)
   end
 end
 Then(/^the command should fail$/) do
