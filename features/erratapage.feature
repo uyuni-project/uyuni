@@ -7,8 +7,7 @@ Feature: Explore the Errata page
   I want to see all the texts and links
 
   Scenario: Completeness of the side navigation bar and the content frame
-    Given I am authorized
-    When I follow "Errata"
+    Given I am on the errata page
     Then I should see a "Errata Relevant to Your Systems" text
     And I should see a "Relevant" link in the left menu
     And I should see a "All" link in the left menu
@@ -21,8 +20,7 @@ Feature: Explore the Errata page
     And I should see a Sign Out link
 
   Scenario: Completeness of the main navigation bar
-    Given I am authorized
-    When I follow "Errata"
+    Given I am on the errata page
     Then I should see a "Overview" link in the tab bar
     And I should see a "Systems" link in the tab bar
     And I should see a "Errata" link in the tab bar
