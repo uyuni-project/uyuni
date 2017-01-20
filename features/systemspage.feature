@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2017 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
 Feature: Explore the main landing page
@@ -188,8 +188,7 @@ Feature: Explore the main landing page
     And I should see a "No Custom Info Keys Found" text
 
    Scenario: Check sidebar link destination for Systems => Autoinstallation
-    When I follow "Autoinstallation" in the left menu
-    And I follow "Overview" in the left menu
+    When I am on Autoinstallation Overview page
     Then I should see a "Autoinstallation Overview" text
     And I should see a "Profiles" link in the left menu
     And I should see a "Bare Metal" link in the left menu

@@ -307,3 +307,7 @@ end
 When(/^I am on System Set Manager Overview$/) do
   visit("https://#{$server_fullhostname}/rhn/ssm/index.do")
 end
+
+When(/^I am on Autoinstallation Overview page$/) do
+  visit("https://#{$server_fullhostname}/rhn/kickstart/KickstartOverview.do")
+end
