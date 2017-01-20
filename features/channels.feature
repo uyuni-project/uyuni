@@ -30,6 +30,7 @@ Feature: Explore the Channels page
     Given I am authorized as "admin" with password "admin"
     When I follow "Channels"
     And I follow "Software Channels"
+    And I follow "All Channels"
     And I follow "Popular Channels" in the left menu
     Then I should see a "Popular Channels" text
 
