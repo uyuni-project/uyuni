@@ -1,4 +1,4 @@
-# COPYRIGHT (c) 2015 SUSE LLC
+# COPYRIGHT (c) 2017 SUSE LLC
 # License under the terms of the MIT License.
 
 Feature: Clone a Channel

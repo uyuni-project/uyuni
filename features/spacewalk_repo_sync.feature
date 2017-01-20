@@ -1,3 +1,5 @@
+# Copyright (c) 2017 SUSE LLC
+# Licensed under the terms of the MIT license.
 
 Feature: The spacewalk-repo-sync command
   In Order to sync channels without using the web interface

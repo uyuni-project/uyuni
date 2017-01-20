@@ -8,10 +8,8 @@ Feature: Check client registration
 
   Scenario: check registration values
     Given I update the profile of this client
-    And I am on the Systems page
-    And I follow "Systems" in the left menu
-    When I follow this client link
-     And I wait for the data update
+    When I am on the Systems overview page of this "sle-client"
+    And I wait for the data update
     Then I should see a "System Status" text
     And I should see a "Software Updates Available" text
     And I should see a "Critical:" link
@@ -26,9 +24,7 @@ Feature: Check client registration
     And I should see a "Release: 12.1" text
 
   Scenario: check tab links "Details"
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
-    When I follow this client link
+    When I am on the Systems overview page of this "sle-client"
     Then I should see a "Details" link in the content area
     And I should see a "Software" link in the content area
     And I should see a "Configuration" link in the content area
@@ -45,8 +41,8 @@ Feature: Check client registration
     And I should see a "Custom Info" link in the content area
 
   Scenario: check tab links "Software"
-    Given I am on the Systems overview page of this client
-    When I follow "Software" in the content area
+    When I am on the Systems overview page of this "sle-client"
+    And I follow "Software" in the content area
     Then I should see a "Details" link in the content area
     And I should see a "Software" link in the content area
     And I should see a "Configuration" link in the content area
@@ -69,7 +65,7 @@ Feature: Check client registration
     And I should see a "Update Package List" button
 
   Scenario: check tab links "Configuration"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Configuration" in the content area
     Then I should see a "Details" link in the content area
     And I should see a "Software" link in the content area
@@ -93,7 +89,7 @@ Feature: Check client registration
     And I should see a "Import selected files from system" link
 
   Scenario: check tab links "Provisioning"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Provisioning" in the content area
     Then I should see a "Details" link in the content area
     And I should see a "Software" link in the content area
@@ -107,11 +103,7 @@ Feature: Check client registration
     And I should see a "Schedule" link in the content area
 
   Scenario: check tab links "Groups"
-    # If cobbler test was running there is a profile
-    # And I should see a "No profiles found that are compatible with this System.
-    # Either you haven't created any Kickstart Profiles
-    # or this system does not have a Base Channel." text
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Groups" in the content area
     Then I should see a "Details" link in the content area
     And I should see a "Software" link in the content area
@@ -128,7 +120,7 @@ Feature: Check client registration
     And I should see a "System Groups" text
 
   Scenario: check tab links "Events"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Events" in the content area
     Then I should see a "Details" link in the content area
     And I should see a "Software" link in the content area
@@ -141,7 +133,7 @@ Feature: Check client registration
     And I should see a " Pending Events" text
 
   Scenario: check tab links "Details" => "Properties"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Properties" in the content area
     Then I should see a "Edit System Details" text
     And I should see a "system_name" element in "systemDetailsForm" form
@@ -160,7 +152,7 @@ Feature: Check client registration
     And I should see a "Update Properties" button
 
   Scenario: check tab links "Details" => "Remote Command"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Remote Command" in the content area
     Then I should see a "Remote Command on" text
     And I should see a "uid" element in "remoteCommandForm" form
@@ -173,38 +165,38 @@ Feature: Check client registration
     And I should see a "Schedule" button
 
   Scenario: check tab links "Details" => "Reactivation"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Reactivation" in the content area
     Then I should see a "System Activation Key" text
      And I should see a "Generate New Key" button
 
   Scenario: check tab links "Details" => "Hardware"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Hardware" in the content area
     Then I should see a "Refresh Hardware List" text
     And I should see a "Schedule Hardware Refresh" button
 
   Scenario: check tab links "Details" => "Migrate"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Migrate" in the content area
     Then I should see a "Migrate System Between Organizations" text
     And I should see a "Migrate System" button
 
   Scenario: check tab links "Details" => "Notes"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Notes" in the content area
     Then I should see a "System Notes" text
     And I should see a "Create Note" link
 
   Scenario: check tab links "Details" => "Custom Info"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Custom Info" in the content area
     Then I should see a "Custom System Information" text
     And I should see a "Create Value" link
     And I should see a "Custom System Information" link
 
   Scenario: check tab links "Software" => "Errata"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Errata" in the content area
     Then I should see a "Relevant Errata" text
@@ -214,7 +206,7 @@ Feature: Check client registration
     And I should see a "andromeda-dummy-6789" link
 
   Scenario: check tab links "Software" => "Software Channels"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     Then I should see a "Software Channel Subscriptions" text
@@ -223,7 +215,7 @@ Feature: Check client registration
     And I should see a "Confirm" button
 
   Scenario: check tab links "Configuration" => "View/Modify Files"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     Then I should see a "Configuration Overview" text
@@ -233,7 +225,7 @@ Feature: Check client registration
     And I should see a "No files found" text
 
   Scenario: check tab links "Configuration" => "Add Files"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     Then I should see a "Upload Local File" text
@@ -252,7 +244,7 @@ Feature: Check client registration
     And I should see a "Upload Configuration File" button
 
   Scenario: check tab links "Configuration" => "Add Files" => "Import Files"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     And I follow "Import Files" in the content area
@@ -261,7 +253,7 @@ Feature: Check client registration
     And I should see a "Import Configuration Files" button
 
   Scenario: check tab links "Configuration" => "Add Files" => "Create File"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     And I follow "Create File" in the content area
@@ -281,19 +273,19 @@ Feature: Check client registration
     And I should see a "Create Configuration File" button
 
   Scenario: check tab links "Configuration" => "Deploy Files"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Configuration" in the content area
     And I follow "Deploy Files" in the content area
     Then I should see a "Deploy Files" text
 
   Scenario: check tab links "Configuration" => "Compare Files"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
     Then I should see a "Compare Files" text
 
   Scenario: check tab links "Configuration" => "Manage Configuration Channels"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     Then I should see a "Configuration Channels" text
@@ -302,14 +294,14 @@ Feature: Check client registration
     And I should see a "View/Modify Rankings" link in the content area
 
   Scenario: check tab links "Configuration" => "Manage Configuration Channels" => "Subscribe to Channels"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
     Then I should see a "Configuration Channel Subscriptions" text
 
   Scenario: check tab links "Configuration" => "Manage Configuration Channels" => "View/Modify Rankings"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow "View/Modify Rankings" in the content area
@@ -320,7 +312,7 @@ Feature: Check client registration
     And I should see a "Update Channel Rankings" button
 
   Scenario: check tab links "Provisioning" => "Snapshots"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Provisioning" in the content area
     And I follow "Snapshots" in the content area
     Then I should see a "System Snapshots" text
@@ -328,7 +320,7 @@ Feature: Check client registration
 
   @unsure
   Scenario: check tab links "Provisioning" => "Snapshots"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Provisioning" in the content area
     And I follow "Snapshots" in the content area
     And I follow "Package profile changed"
@@ -342,20 +334,20 @@ Feature: Check client registration
     And I should see a "Rollback to Snapshot" button
 
   Scenario: check tab links "Provisioning" => "Snapshot Tags"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Provisioning" in the content area
     And I follow "Snapshot Tags" in the content area
     Then I should see a "Snapshot Tags" text
     And I should see a "Create System Tag" link
 
   Scenario: check tab links "Groups" => "Join"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Groups" in the content area
     And I follow first "Join" in the content area
     Then I should see a "System Group Membership" text
 
   Scenario: check tab links "Events" => "History"
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     When I follow "Events" in the content area
     And I follow "History" in the content area
     Then I should see a "System History" text
