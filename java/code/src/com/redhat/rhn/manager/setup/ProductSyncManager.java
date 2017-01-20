@@ -27,8 +27,8 @@ import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.taskomatic.TaskoFactory;
-import com.redhat.rhn.taskomatic.TaskoRun;
-import com.redhat.rhn.taskomatic.TaskoSchedule;
+import com.redhat.rhn.taskomatic.domain.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 

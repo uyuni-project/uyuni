@@ -16,7 +16,7 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.manager.satellite.SystemCommandThreadedExecutor;
-import com.redhat.rhn.taskomatic.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;

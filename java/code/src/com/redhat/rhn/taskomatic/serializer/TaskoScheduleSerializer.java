@@ -16,7 +16,7 @@ package com.redhat.rhn.taskomatic.serializer;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.RhnXmlRpcCustomSerializer;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-import com.redhat.rhn.taskomatic.TaskoSchedule;
+import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
 import java.io.IOException;
 import java.io.Writer;

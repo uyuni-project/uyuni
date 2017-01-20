@@ -22,7 +22,7 @@ import com.redhat.rhn.frontend.nav.NavTree;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.taskomatic.TaskoFactory;
-import com.redhat.rhn.taskomatic.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;

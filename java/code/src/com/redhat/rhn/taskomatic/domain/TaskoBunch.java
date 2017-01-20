@@ -12,20 +12,23 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.taskomatic;
+package com.redhat.rhn.taskomatic.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.List;
 
 /**
- * TaskoTask
+ * TaskoBunch
  * @version $Rev$
  */
-public class TaskoTask {
+public class TaskoBunch {
 
     private Long id;
     private String name;
-    private String taskClass;
+    private String description;
+    private String orgBunch;
+    private List<TaskoTemplate> templates = new ArrayList();
     private Date created;
     private Date modified;
 
@@ -36,14 +39,12 @@ public class TaskoTask {
         return id;
     }
 
-
     /**
      * @param idIn The id to set.
      */
     public void setId(Long idIn) {
         this.id = idIn;
     }
-
 
     /**
      * @return Returns the name.
@@ -52,7 +53,6 @@ public class TaskoTask {
         return name;
     }
 
-
     /**
      * @param nameIn The name to set.
      */
@@ -60,23 +60,19 @@ public class TaskoTask {
         this.name = nameIn;
     }
 
-
     /**
-     * @return Returns the taskClass.
+     * @return Returns the description.
      */
-    public String getTaskClass() {
-        return taskClass;
+    public String getDescription() {
+        return description;
     }
 
-
     /**
-     * @param taskClassIn The taskClass to set.
+     * @param descriptionIn The description to set.
      */
-    public void setTaskClass(String taskClassIn) {
-        this.taskClass = taskClassIn;
+    public void setDescription(String descriptionIn) {
+        this.description = descriptionIn;
     }
-
-
 
     /**
      * @return Returns the created.
@@ -85,16 +81,12 @@ public class TaskoTask {
         return created;
     }
 
-
-
     /**
      * @param createdIn The created to set.
      */
     public void setCreated(Date createdIn) {
         this.created = createdIn;
     }
-
-
 
     /**
      * @return Returns the modified.
@@ -103,12 +95,38 @@ public class TaskoTask {
         return modified;
     }
 
-
-
     /**
      * @param modifiedIn The modified to set.
      */
     public void setModified(Date modifiedIn) {
         this.modified = modifiedIn;
+    }
+
+    /**
+     * @return Returns the templates.
+     */
+    public List<TaskoTemplate> getTemplates() {
+        return templates;
+    }
+
+    /**
+     * @param templatesIn The templates to set.
+     */
+    public void setTemplates(List<TaskoTemplate> templatesIn) {
+        this.templates = templatesIn;
+    }
+
+    /**
+     * @return Returns the orgBunch.
+     */
+    public String getOrgBunch() {
+        return orgBunch;
+    }
+
+    /**
+     * @param orgBunchIn The orgBunch to set.
+     */
+    public void setOrgBunch(String orgBunchIn) {
+        this.orgBunch = orgBunchIn;
     }
 }

@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.taskomatic.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
