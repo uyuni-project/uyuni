@@ -1,23 +1,26 @@
-# COPYRIGHT (c) 2015 SUSE LLC
+# COPYRIGHT (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Explore the main landing page
+Feature: Reboot required after patch
   In Order to avoid systems with different running/installed kernel
   As a authorized user
   I want to see systems that need a reboot
 
-  Scenario: Feature should be accessible
-    Given I am on the Systems page
-    When I follow "Systems" in the left menu
+  Scenario: Check requiring Rebot on the webui
+    Given I am authorized
+    And I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    When I click Systems, under Systems node
     Then I should see a "All" link in the left menu
-    And I should see a "Requiring Reboot" link in the left menu
+    And  I follow "All" in the left menu
+    Then I should see a "Requiring Reboot" link in the left menu
 
   Scenario: No reboot notice if no need to reboot
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     Then I should not see a "The system requires a reboot" text
 
   Scenario: Display Reboot Required after installing an Errata
-    Given I am on the Systems overview page of this client
+    Given I am on the Systems overview page of this "sle-client"
     And I follow "Software" in the content area
     And I follow "Errata" in the content area
     When I check "andromeda-dummy-6789" in the list
