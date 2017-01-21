@@ -42,7 +42,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.19
+Version: 2.7.23
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -919,6 +919,20 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Thu Jan 19 2017 Jan Dobes 2.7.23-1
+- 1414697 - proxy can't be specified in multiple parameters on all versions of
+  urlgrabber
+
+* Thu Jan 19 2017 Gennadii Altukhov <galt@redhat.com> 2.7.22-1
+- 1395815 - change permissions for /var/satellite/rhn* after syncing of a
+  channel
+
+* Wed Jan 18 2017 Gennadii Altukhov <galt@redhat.com> 2.7.21-1
+- bz1412600 - error during syncing duplicated channel's labels
+
+* Mon Jan 16 2017 Gennadii Altukhov <galt@redhat.com> 2.7.20-1
+- 1406462 - add possibility to use previous manifest
+
 * Thu Jan 12 2017 Gennadii Altukhov <galt@redhat.com> 2.7.19-1
 - 1412617 - Oracle backend returns LOB object not a string, convert to string
 
