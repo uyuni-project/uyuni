@@ -427,6 +427,14 @@ class RepoSync(object):
             taskomatic.add_to_erratacache_queue(self.channel_label)
         self.update_date()
         rhnSQL.commit()
+
+        # update permissions
+        fileutils.createPath(os.path.join(CFG.MOUNT_POINT, 'rhn'))  # if the directory exists update ownership only
+        for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, 'rhn')):
+            for d in dirs:
+                fileutils.setPermsPath(os.path.join(root, d), group='www')
+            for f in files:
+                fileutils.setPermsPath(os.path.join(root, f), group='www')
         elapsed_time = datetime.now() - start_time
         if self.error_messages:
             self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
@@ -513,7 +521,7 @@ class RepoSync(object):
                                   (select sequence_nextval('rhn_channelcomps_id_seq'),
                                           :cid,
                                           :relpath
-                                     from dual
+                                     from dual91cf1508a829dbbc07b23753d3e7e8d46a275ae4
                                     where not exists (select 1 from rhnChannelComps
                                                        where channel_id = :cid))""")
             hi.execute(cid=self.channel['id'], relpath=relativepath)
@@ -1101,11 +1109,6 @@ class RepoSync(object):
             log(0, "Nothing to download.")
 
         # set permissions recursively
-        for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, ks_path)):
-            for d in dirs:
-                fileutils.setPermsPath(os.path.join(root, d), group='www')
-            for f in files:
-                fileutils.setPermsPath(os.path.join(root, f), group='www')
         rhnSQL.commit()
 
 

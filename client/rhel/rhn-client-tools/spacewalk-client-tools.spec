@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.7.2.1
+Version: 2.7.3
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -496,6 +496,10 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Wed Jan 18 2017 Eric Herget <eherget@redhat.com> 2.7.3-1
+- 1414579 - rhn-search traceback - immediateTrigger-server exists with certain
+  identification
+
 * Mon Jan 02 2017 Jiri Dostal <jdostal@redhat.com> 2.7.2-1
 - urlsplit back compatibility with python 2.4 fixing bug introduced in dc7ee6d
 
