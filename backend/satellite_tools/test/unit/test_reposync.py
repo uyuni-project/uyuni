@@ -315,10 +315,10 @@ class RepoSyncTest(unittest.TestCase):
                          [])
 
     def test_send_error_mail(self):
+        rs = self._create_mocked_reposync()
         self.reposync.rhnMail.send = Mock()
         self.reposync.CFG.TRACEBACK_MAIL = 'recipient'
         self.reposync.hostname = 'testhost'
-        rs = self._create_mocked_reposync()
 
         rs.sendErrorMail('email body')
 
@@ -697,6 +697,11 @@ class RepoSyncTest(unittest.TestCase):
         rs.update_date = Mock()
 
         self.reposync.initCFG = Mock()
+        self.reposync.CFG = Mock()
+        self.reposync.CFG.MOUNT_POINT = '/tmp'
+        self.reposync.CFG.PREPENDED_DIR = ''
+        self.reposync.fileutils.createPath = Mock()
+        self.reposync.os.walk = Mock(return_value=[])
         return rs
 
 
@@ -930,6 +935,10 @@ def test_channel_exceptions():
     repoSync = spacewalk.satellite_tools.reposync
     repoSync.rhnLog.initLOG = Mock()
     repoSync.CFG = repoSync.initCFG = Mock()
+    repoSync.CFG.MOUNT_POINT = '/tmp'
+    repoSync.CFG.PREPENDED_DIR = ''
+    repoSync.fileutils.createPath = Mock()
+    repoSync.os.walk = Mock(return_value=[])
     backup_os = repoSync.os
     repoSync.os = Mock()
     repoSync.RepoSync._format_sources = Mock()
