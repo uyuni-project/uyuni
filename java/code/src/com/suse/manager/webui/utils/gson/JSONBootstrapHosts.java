@@ -75,6 +75,9 @@ public class JSONBootstrapHosts {
         return activationKeys;
     }
 
+    /**
+     * @return the id of the proxy
+     */
     public Long getProxy() {
         return proxy;
     }
