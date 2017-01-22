@@ -14,11 +14,8 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import com.redhat.rhn.domain.server.ServerPath;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Class representation of the data needed for bootstrapping hosts.
@@ -43,6 +40,7 @@ public class BootstrapParameters {
      * @param passwordIn password
      * @param activationKeysIn activation keys
      * @param ignoreHostKeysIn ignore hostIn keys?
+     * @param proxyIdIn proxy id
      */
     public BootstrapParameters(String hostIn, Optional<Integer> portIn, String userIn,
             Optional<String> passwordIn, List<String> activationKeysIn,
@@ -183,6 +181,11 @@ public class BootstrapParameters {
         this.ignoreHostKeys = ignoreHostKeysIn;
     }
 
+    /**
+     * Gets the proxy id.
+     *
+     * @return proxyId
+     */
     public Optional<Long> getProxyId() {
         return proxyId;
     }
