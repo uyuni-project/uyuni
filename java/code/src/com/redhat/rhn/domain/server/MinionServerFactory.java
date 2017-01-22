@@ -22,9 +22,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -142,17 +140,10 @@ public class MinionServerFactory extends HibernateFactory {
      * @return map of SSH minion id and its contact method
      */
     public static List<MinionServer> listSSHMinions() {
-//        List<Object[]> list = (List<Object[]>)getSession()
-//                .getNamedQuery("MinionServer.listSSHMinionsIdsAndContactMethods")
-//                .list();
-//        Map<String, String> map = new HashMap<>();
-//        for (Object[] entry : list) {
-//            map.put((String)entry[0], (String)entry[1]);
-//        }
-//        return map;
         return ServerFactory.getSession().createCriteria(MinionServer.class)
                 .createAlias("contactMethod", "m")
-                .add(Restrictions.in("m.label", new String[] {"ssh-push", "ssh-push-tunnel"}))
+                .add(Restrictions.in("m.label",
+                        new String[] {"ssh-push", "ssh-push-tunnel"}))
                 .list();
     }
 }

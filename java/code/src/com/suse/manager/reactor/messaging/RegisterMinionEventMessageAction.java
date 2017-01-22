@@ -117,8 +117,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * {@inheritDoc}
      */
     public void doExecute(EventMessage msg) {
-        registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false, Optional.empty(),
-                Optional.empty());
+        registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false,
+                Optional.empty(), Optional.empty());
     }
 
     /**
@@ -127,8 +127,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * @param minionId minion id
      * @param activationKeyOverride label of activation key to be applied to the system.
      *                              If left empty, activation key from grains will be used.
+     * @param proxyId the proxy to which the minion connects, if any
      */
-    public void registerSSHMinion(String minionId, Optional<Long> proxyId, Optional<String> activationKeyOverride) {
+    public void registerSSHMinion(String minionId, Optional<Long> proxyId,
+                                  Optional<String> activationKeyOverride) {
         registerMinion(minionId, true, proxyId, activationKeyOverride);
     }
 
@@ -140,8 +142,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * @param activationKeyOverride label of activation key to be applied to the system.
      *                              If left empty, activation key from grains will be used.
      */
-    private void registerMinion(String minionId, boolean isSaltSSH, Optional<Long> saltSshProxyId,
-            Optional<String> activationKeyOverride) {
+    private void registerMinion(String minionId, boolean isSaltSSH,
+                                Optional<Long> saltSshProxyId,
+                                Optional<String> activationKeyOverride) {
         // Match minions via their machine id
         Optional<String> optMachineId = SALT_SERVICE.getMachineId(minionId);
         if (!optMachineId.isPresent()) {
@@ -296,7 +299,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                                 .createServerPaths(server, proxy, proxy.getHostname());
                         server.getServerPaths().addAll(proxyPaths);
                     });
-            } else {
+            }
+            else {
                 ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
                     Set<ServerPath> proxyPaths = ServerFactory
                             .createServerPaths(server, proxy, master);
