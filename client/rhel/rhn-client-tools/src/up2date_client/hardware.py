@@ -511,6 +511,8 @@ def findHostByRoute():
     hostname = None
     intf = None
     intf6 = None
+    etchostname = False
+    sockethostname = None
     for serverUrl in sl:
         server = serverUrl.split('/')[2]
         servertype = serverUrl.split(':')[0]
@@ -538,6 +540,7 @@ def findHostByRoute():
                 hostname_tmp = socket.getfqdn(intf_tmp)
                 if hostname_tmp != intf_tmp:
                     hostname = hostname_tmp
+                    sockethostname = hostname_tmp
             except socket.error:
                 s.close()
                 continue
@@ -565,6 +568,7 @@ def findHostByRoute():
             if not info.strip().endswith(".suse"):
                 if not info.strip().endswith(".site") or len(tmpval) > 2:
                     hostname = info.strip()
+                    etchostname = True
 
     # Override hostname with the one in /etc/sysconfig/network
     # for bz# 457953
@@ -581,7 +585,27 @@ def findHostByRoute():
             vals[0] = strippedstring
             if vals[0] == "HOSTNAME":
                 hostname = ''.join(vals[1:]).strip()
+                etchostname = False
                 break
+
+    # /etc/hostname doesn't contain a fully qualified hostname
+    # try to find out the domain
+    if etchostname and "." not in hostname:
+        fqdn = socket.getfqdn(hostname)
+        if "." in fqdn:
+            domain = fqdn.split('.', 1)[1]
+            aliasfqdn = "{0}.{1}".format(hostname, domain)
+            try:
+                socket.gethostbyname(aliasfqdn)
+                hostname = aliasfqdn
+            except socket.error:
+                hostname = fqdn
+                log = up2dateLog.initLog()
+                log.log_me("Could not resolve /etc/hostname alias to {0}. Falling back to {1}".format(aliasfqdn, fqdn))
+        else:
+            log = up2dateLog.initLog()
+            log.log_me("Got an invalid FQDN {0} for /etc/hostname. Falling back to {1}".format(fqdn, sockethostname))
+            hostname = sockethostname
 
     if hostname == None or hostname == 'localhost.localdomain':
         hostname = "unknown"
