@@ -153,7 +153,7 @@ public class AccessTokenFactory extends HibernateFactory {
         List<AccessToken> newTokens = withoutToken.stream().flatMap(channel ->
                 Opt.stream(generate(minion, Collections.singleton(channel)))
         ).collect(Collectors.toList());
-
+        all.addAll(newTokens);
 
         List<AccessToken> maybeRefreshed = update.stream().map(token -> {
             try {
