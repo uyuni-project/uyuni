@@ -32,7 +32,7 @@ Feature: Test "virtualhostmanager" Web UI.
 
   Scenario: Run virtual-host-gatherer single run
    Given I am authorized as "admin" with password "admin"
-    When I follow "Systems" in the tabs
+    When I follow "Systems" in the left menu
      And I follow "Virtual Host Managers"
      And I follow "file-vmware"
     Then I should see a "file:///var/tmp/vCenter.json" text
@@ -42,7 +42,6 @@ Feature: Test "virtualhostmanager" Web UI.
 
   Scenario: Check new Virtual Hosts
     Given I am on the Systems page
-      And I follow "Systems" in the left menu
     When I follow "10.162.186.111"
     Then I should see a "OS: VMware ESXi" text
     When I follow "Virtual Systems" in the left menu
