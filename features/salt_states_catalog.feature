@@ -32,7 +32,7 @@ Feature: Check the Salt package state UI
     Then I should see a "State 'teststate' saved" text
 
   Scenario: I add a apply a state via the UI
-    Given I am on the Systems overview page of this minion
+    Given I am on the Systems overview page of this "sle-minion"
     And I follow "States"
     Then I follow "Custom"
     And I should see a "Custom States" text
