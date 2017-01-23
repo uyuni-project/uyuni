@@ -50,11 +50,7 @@ When(/^I execute mgr\-sync refresh$/) do
 end
 
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
-  arch = `uname -m`
-  arch.chomp!
-  if arch != "x86_64"
-    arch = "i586"
-  end
+  arch = "x86_64"
   $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-PKG-#{arch} #{arg1}")[:stdout]
 end
 
