@@ -7,6 +7,7 @@ Feature: Test Bare-metal discovery
     Given I am authorized as "admin" with password "admin"
     And I follow "Admin"
     And I follow "SUSE Manager Configuration" in the left menu
+    And I follow "General" in the left menu
     When I follow "Bare-metal systems" in the content area
     Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Enable adding to this organization" button
@@ -26,7 +27,7 @@ Feature: Test Bare-metal discovery
 
   Scenario: see the client in Bare metal specific system list
     Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    And I click Systems, under Systems node 
     And I follow "Bare Metal Systems" in the left menu
     Then I should see a "Bare Metal Systems" text
     And I should see a "Detected on" text
@@ -43,7 +44,7 @@ Feature: Test Bare-metal discovery
 
   Scenario: check tab links "Details"
     Given I am on the Systems page
-    And I follow "Systems" in the left menu
+    And I click Systems, under Systems node 
     When I follow this client link
     Then I should see a "Details" link in the content area
     And I should not see a "Software" link in the content area
@@ -73,12 +74,12 @@ Feature: Test Bare-metal discovery
     Given I am on the Systems page
     When I check this client
     And I wait for "30" seconds
-    And I follow "System Set Manager" in the left menu
+    And I am on System Set Manager Overview
     Then I should see a "At least one system in the set does not have the management system type: some actions will not be available" text
 
   Scenario: check SSM page for bare-metal system
-    Given I am on the Systems page
-    When I follow "System Set Manager" in the left menu
+    Given I am authorized as "admin" with password "admin"
+    And I am on System Set Manager Overview
     Then I should see a "List the systems" link in the content area
     And I should see a "Autoinstall" link in the content area
     And I should see a "Configure power management" link in the content area
@@ -102,6 +103,7 @@ Feature: Test Bare-metal discovery
     Given I am authorized as "admin" with password "admin"
     And I follow "Admin"
     And I follow "SUSE Manager Configuration" in the left menu
+    And I follow "General" in the left menu
     When I follow "Bare-metal systems" in the content area
     Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
     And I should see a "Disable adding to this organization" button
