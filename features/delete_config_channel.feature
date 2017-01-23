@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Delete a configuration channel
@@ -7,8 +7,10 @@ Feature: Delete a configuration channel
   I want to delete a configuration channel
 
   Scenario: Delete configuration channel labeled "testchannel"
-    Given I am testing configuration
-    When I follow "Configuration Channels"
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels"
     And I follow "Test Channel"
     And I follow "delete channel"
     And I click on "Delete Config Channel"
