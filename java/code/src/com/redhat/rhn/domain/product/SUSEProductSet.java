@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -45,6 +46,10 @@ public class SUSEProductSet {
 
     private String serializedProductIDs = "";
 
+    // when calculating a target product set we ignore these products
+    // sle-manager-tools: The tools channel is treated as part of the base product
+    private static final List<String> PRODUCTNAME_BLACKLIST =
+            Arrays.asList("sle-manager-tools");
     /**
      * Default constructor.
      */
@@ -130,6 +135,9 @@ public class SUSEProductSet {
     public void addAddonProduct(SUSEProduct addonProduct) {
         if (addonProducts == null) {
             addonProducts = new ArrayList<SUSEProduct>();
+        }
+        if(PRODUCTNAME_BLACKLIST.contains(addonProduct.getName())) {
+            return;
         }
         if (addonProduct != null) {
             addonProducts.add(addonProduct);
