@@ -50,7 +50,6 @@ Feature: Test XML-RPC "virtualhostmanager" namespace.
 
   Scenario: Check new Virtual Hosts
     Given I am on the Systems page
-      And I follow "Systems" in the left menu
     When I follow "10.162.186.111"
     Then I should see a "OS: VMware ESXi" text
     When I follow "Virtual Systems" in the left menu
@@ -66,7 +65,6 @@ Feature: Test XML-RPC "virtualhostmanager" namespace.
 
   Scenario: Delete Virtual Hosts
     Given I am on the Systems page
-      And I follow "Systems" in the left menu
     When I follow "10.162.186.111"
     Then I follow "Delete System"
     And I click on "Delete Profile"
