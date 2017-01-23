@@ -382,12 +382,21 @@ public class DistUpgradeManager extends BaseManager {
         for (List<SUSEProduct> combination : Lists.combinations(comb)) {
             if (!combination.equals(currentCombination)) {
                 SUSEProduct base = combination.get(0);
+                if (base.getSuseProductChannels().isEmpty()) {
+                    // No Product Channels means, no subscription to access the channels
+                    continue;
+                }
                 if (combination.size() == 1) {
                     result.add(new SUSEProductSet(base, Collections.emptyList()));
                 }
                 else {
                     List<SUSEProduct> addonProducts = combination
                             .subList(1, combination.size());
+                    //No Product Channels means, no subscription to access the channels
+                    if (addonProducts.stream()
+                            .anyMatch(ap -> ap.getSuseProductChannels().isEmpty())) {
+                        continue;
+                    }
                     result.add(new SUSEProductSet(base, addonProducts));
                 }
             }
