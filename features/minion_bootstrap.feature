@@ -39,11 +39,11 @@ Feature: register a salt-minion via bootstrap
     Then I should see "SuSE-release" in the command output
  
   Scenario: Check spacecmd system ID of bootstrapped minion.
-    Given I am on the Systems overview page of this minion
+    Given I am on the Systems overview page of this "sle-minion"
     Then I run spacecmd listevents for sle-minion
  
   Scenario: Delete minion system profile
-    Given I am on the Systems overview page of this minion
+    Given I am on the Systems overview page of this "sle-minion"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
@@ -93,11 +93,11 @@ Feature: register a salt-minion via bootstrap
      And I remove pkg "perseus-dummy" on minion
 
    Scenario: Check spacecmd system ID of second bootstrapped minion(after deletion of first)
-    Given I am on the Systems overview page of this minion
+    Given I am on the Systems overview page of this "sle-minion"
     Then I run spacecmd listevents for sle-minion
  
   Scenario: verify minion bootstrapped with activation key: activation key test
-     Given I am on the Systems overview page of this minion
+     Given I am on the Systems overview page of this "sle-minion"
      Then I should see a "Activation Key: 	1-MINION-TEST" text
 
   Scenario: verify minion bootstrapped with activation key: base channel test
@@ -121,7 +121,7 @@ Feature: register a salt-minion via bootstrap
      And I should see a "seems to already exist, please check!" text
 
   Scenario: Delete minion system profile
-    Given I am on the Systems overview page of this minion
+    Given I am on the Systems overview page of this "sle-minion"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
