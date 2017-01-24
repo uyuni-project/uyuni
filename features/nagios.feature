@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Check nagios plugins
@@ -17,4 +17,4 @@ Feature: Check nagios plugins
 
   Scenario: Check status of last action
     Given I perform a nagios check last event
-    Then I should see Completed: OpenSCAP xccdf scanning scheduled by testing
+    Then I should see Completed: OpenSCAP xccdf scanning scheduled by admin
