@@ -147,7 +147,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
                     String key = SaltSSHService.retrieveSSHPushProxyPubKey(proxyId)
                             .orElseThrow(() -> new RuntimeException(
                                     "Could not retrieve ssh-push public key from proxy. " +
-                                            "Check if proxy is up and can be "));
+                                            "Check if proxy is up and can be reached."));
                     pillarData.put("proxy_pub_key", key);
                 });
         return pillarData;
