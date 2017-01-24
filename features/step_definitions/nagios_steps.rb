@@ -21,8 +21,8 @@ Then(/^I should see WARNING: 1 patch pending$/) do
   $server.run(command, true, 600, 'root')
 end
 
-Then(/^I should see Completed: OpenSCAP xccdf scanning scheduled by testing$/) do
-  command = "grep \"Completed: OpenSCAP xccdf scanning scheduled by testing\" /tmp/nagios.out"
+Then(/^I should see Completed: OpenSCAP xccdf scanning scheduled by admin/) do
+  command = "grep \"Completed: OpenSCAP xccdf scanning scheduled by admin\" /tmp/nagios.out"
   $server.run(command, true, 600, 'root')
 end
 
