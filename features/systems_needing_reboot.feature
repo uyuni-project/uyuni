@@ -31,6 +31,5 @@ Feature: Reboot required after patch
     And I follow "All" in the left menu
     And I follow this client link
     Then I should see a "The system requires a reboot" text
-    When I follow "Systems" in the left menu
     And I follow "Requiring Reboot" in the left menu
     Then I should see this client as link
