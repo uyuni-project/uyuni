@@ -104,8 +104,8 @@ public abstract class AbstractMinionBootstrapper {
         List<String> bootstrapMods = getBootstrapMods();
         String contactMethod = ContactMethodUtil.getContactMethod(
                 params.getFirstActivationKey(), defaultContactMethod);
-        Map<String, Object> pillarData = createPillarData(user, params, contactMethod);
         try {
+            Map<String, Object> pillarData = createPillarData(user, params, contactMethod);
             return saltService.bootstrapMinion(params, bootstrapMods, pillarData)
                     .fold(error -> {
                         String errorMessage = decodeStdMessage(error, "stderr");
@@ -138,6 +138,10 @@ public abstract class AbstractMinionBootstrapper {
             return new BootstrapResult(false, Optional.empty(),
                     "Error during applying the bootstrap" +
                     " state, message: " + e.getMessage());
+        }
+        catch (Exception e) {
+            return new BootstrapResult(false, Optional.empty(),
+                    e.getMessage());
         }
     }
 
