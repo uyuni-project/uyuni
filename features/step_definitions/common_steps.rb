@@ -127,3 +127,8 @@ end
 When(/^I select "(.*?)" as the origin channel$/) do |label|
   step %(I select "#{label}" from "original_id")
 end
+ 
+Then(/^I sync "([^"]*)" channel$/) do |channel|
+  if channel == "sle-12sp1"
+  $server.run("spacewalk-repo-sync -c sles12-sp1-pool-x86_64", true, 130000, "root")
+end

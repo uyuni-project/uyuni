@@ -92,6 +92,10 @@
 - features/centos_salt_reboot_test.feature
 # - features/centos_salt_ssh.feature 
 
+## REPO_SYNC FEATURES, only refhost will execute this
+# We sync real channels
+- features/sync-real-channels.feature
+
 # end-tests
 - features/spacewalk-debug.feature
 
