@@ -142,14 +142,14 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     protected Map<String, Object> createPillarData(User user, BootstrapParameters input,
                                                    String contactMethod) {
         Map<String, Object> pillarData = super.createPillarData(user, input, contactMethod);
-        input.getProxyId()
-                .flatMap(proxyId -> SaltSSHService.retrieveSSHPushProxyPubKey(proxyId))
-                .map(key -> {
+        input.getProxyId().ifPresent(
+                proxyId -> {
+                    String key = SaltSSHService.retrieveSSHPushProxyPubKey(proxyId)
+                            .orElseThrow(() -> new RuntimeException(
+                                    "Could not retrieve ssh-push public key from proxy. " +
+                                            "Check if proxy is up and can be "));
                     pillarData.put("proxy_pub_key", key);
-                    return key;
-                })
-                .orElseThrow(() -> new RuntimeException(
-                        "Could not retrieve ssh-push public key from proxy"));
+                });
         return pillarData;
     }
 
