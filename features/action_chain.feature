@@ -93,13 +93,13 @@ Feature: Test action chaining
     Then I should see a "7. Reboot 1 system" text
 
   Scenario: check that different user cannot see the action chain
-    Given I am authorized as "admin" with password "admin"
+    Given I am authorized as "testing" with password "testing"
     When I follow "Schedule"
     And I follow "Action Chains"
     Then I should not see a "new action chain" link
 
   Scenario: I delete the action chain
-     Given I am authorized as "testing" with password "testing"
+     Given I am authorized as "admin" with password "admin"
      Then I follow "Schedule"
      And I follow "Action Chains"
      And I follow "new action chain"
