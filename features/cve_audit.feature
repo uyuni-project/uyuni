@@ -59,7 +59,6 @@ Feature: CVE Audit
     And I should see a "Affected, at least one patch available in an assigned channel" text
     When I check "Affected, at least one patch available in an assigned channel" in the list
     Then I should see a "system selected" text
-    When I follow "Manage"
-    And I follow "Systems" in the content area
+    When I am on the System Manager System Overview page
     Then I should see this client as link
     And I follow "Clear"
