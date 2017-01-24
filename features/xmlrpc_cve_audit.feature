@@ -1,9 +1,9 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Test the XML-RPC CVE Audit feature.
 
-  Background:
+  Scenario: before applying patches 
     Given I am on the Admin page
     When I follow "Task Schedules"
     And I follow "cve-server-channels-default"
@@ -11,9 +11,7 @@ Feature: Test the XML-RPC CVE Audit feature.
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I wait for "10" seconds
-
-  Scenario: before applying patches 
-    Given I am logged in via XML-RPC/cve audit as user "admin" and password "admin"
+    And I am logged in via XML-RPC/cve audit as user "admin" and password "admin"
     When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-1999-9979"
     Then I should get status "NOT_AFFECTED" for this client
     When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-1999-9999"
