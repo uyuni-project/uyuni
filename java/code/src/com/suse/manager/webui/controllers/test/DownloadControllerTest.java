@@ -18,8 +18,12 @@ package com.suse.manager.webui.controllers.test;
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.channel.AccessToken;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
@@ -245,6 +249,34 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         try {
             DownloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if a different org token is given",
+                    DownloadController.class.getSimpleName()));
+        } catch (spark.HaltException e) {
+            assertEquals(403, e.getStatusCode());
+            assertNull(response.raw().getHeader("X-Sendfile"));
+        }
+    }
+
+    /**
+     * Tests a download with a token not assigned to a minion.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testTokenNotAssignedToMinion() throws Exception {
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinionServer.getChannels().add(channel);
+        AccessTokenFactory.refreshTokens(testMinionServer);
+
+        AccessToken token = testMinionServer.getAccessTokens().iterator().next();
+        token.setMinion(null);
+        AccessTokenFactory.save(token);
+
+        Map<String, String> params = new HashMap<>();
+        params.put(token.getToken(), "");
+        Request request = getMockRequestWithParams(params);
+
+        try {
+            DownloadController.downloadPackage(request, response);
+            fail(String.format("%s should halt 403 if the token is not assigned to a minion",
                     DownloadController.class.getSimpleName()));
         } catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());

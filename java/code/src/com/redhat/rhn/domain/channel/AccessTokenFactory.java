@@ -68,6 +68,19 @@ public class AccessTokenFactory extends HibernateFactory {
                 .list();
     }
 
+    /**
+     * Queries an AccessToken by token.
+     * @param token token of the AccessToken
+     * @return optional of AccessToken
+     */
+    public static Optional<AccessToken> lookupByToken(String token) {
+        return Optional.ofNullable(
+            (AccessToken)HibernateFactory.getSession()
+            .createCriteria(AccessToken.class)
+            .add(Restrictions.eq("token", token))
+            .uniqueResult()
+        );
+    }
 
     /**
      * Saves the AccessToken to the database.
