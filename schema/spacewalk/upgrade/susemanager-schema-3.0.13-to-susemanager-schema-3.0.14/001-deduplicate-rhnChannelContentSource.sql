@@ -10,12 +10,13 @@ UPDATE rhnChannelContentSource
         WHERE (c1.modified > c2.modified OR (c1.modified = c2.modified AND c1.id > c2.id))
         -- make sure we are talking about SCC URLs
           AND c1.source_url LIKE 'https://updates.suse.com/%'
-          AND c1.source_url LIKE 'https://updates.suse.com/%'
+          AND c2.source_url LIKE 'https://updates.suse.com/%'
         -- make sure both have a URL with a token part
           AND instr(c1.source_url, '?') > 0
           AND instr(c2.source_url, '?') > 0
         -- finally, they have equal initial (non-token) part
-          AND c1.source_url LIKE substr(c2.source_url, 0, instr(c2.source_url, '?') - 1) || '%'
+        -- but include the ? in the compare
+          AND c1.source_url LIKE substr(c2.source_url, 0, instr(c2.source_url, '?')) || '%'
     )
     -- second, the new source id is simply the new_id from the duplicates table
     SELECT duplicates.new_id
@@ -31,10 +32,10 @@ UPDATE rhnChannelContentSource
         FROM rhnContentSource c1, rhnContentSource c2
         WHERE (c1.modified > c2.modified OR (c1.modified = c2.modified AND c1.id > c2.id))
           AND c1.source_url LIKE 'https://updates.suse.com/%'
-          AND c1.source_url LIKE 'https://updates.suse.com/%'
+          AND c2.source_url LIKE 'https://updates.suse.com/%'
           AND instr(c1.source_url, '?') > 0
           AND instr(c2.source_url, '?') > 0
-          AND c1.source_url LIKE substr(c2.source_url, 0, instr(c2.source_url, '?') - 1) || '%'
+          AND c1.source_url LIKE substr(c2.source_url, 0, instr(c2.source_url, '?')) || '%'
     )
     SELECT 1
       FROM duplicates
