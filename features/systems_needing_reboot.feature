@@ -28,7 +28,6 @@ Feature: Reboot required after patch
     And I click on "Apply Errata"
     And I click on "Confirm"
     And I run rhn_check on this client
-    And I click Systems, under Systems node
     And I follow "All" in the left menu
     And I follow this client link
     Then I should see a "The system requires a reboot" text
