@@ -17,7 +17,6 @@
 - features/test_config_channel.feature
 - features/action_chain.feature
 - features/xmlrpc_actionchain.feature
-- features/system_configuration.feature
 - features/custom_system_info.feature
 - features/create_group.feature
 - features/add_sys_of_group_to_SSM.feature
