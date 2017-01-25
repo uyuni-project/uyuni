@@ -49,6 +49,7 @@ public class ErrataOverview extends BaseDto {
     private String relationship;
     private boolean rebootSuggested;
     private boolean restartSuggested;
+    private String severityLabel;
 
     /**
      * This method is only used for csv export..
@@ -491,5 +492,31 @@ public class ErrataOverview extends BaseDto {
      */
     public void setRestartSuggested(boolean restartSuggestedIn) {
         this.restartSuggested = restartSuggestedIn;
+    }
+
+    /**
+     * @return the severityLabel
+     */
+    public String getSeverityLabel() {
+        return severityLabel;
+    }
+
+    /**
+     * @param severityLabelIn the severityLabel to set
+     */
+    public void setSeverityLabel(String severityLabelIn) {
+        this.severityLabel = severityLabelIn;
+    }
+
+    /**
+     * @return the errata severity as string.
+     */
+    public String getSeverity() {
+        String retval = "low";
+        if (getSeverityLabel() != null) {
+            retval = LocalizationService.getInstance().getMessage(getSeverityLabel())
+                    .toLowerCase();
+        }
+        return retval;
     }
 }
