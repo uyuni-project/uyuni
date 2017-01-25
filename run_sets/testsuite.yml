@@ -84,7 +84,6 @@
 - features/minion_bootstrap.feature
 # Regression test
 - features/salt_regression_topsls.feature
-# - features/salt_regression_multiminion.feature : unstable
 
 ### Salt-ssh managed feature ##
 - features/salt_ssh.feature
@@ -94,6 +93,8 @@
 
 - features/minion_centos_bootstrap.feature
 - features/centos_salt_remote_cmds.feature
+# this feature need minions with service.
+- features/salt_regression_multiminion.feature
 - features/centos_salt_ssh.feature
 # end-tests
 - features/spacewalk-errors.feature
