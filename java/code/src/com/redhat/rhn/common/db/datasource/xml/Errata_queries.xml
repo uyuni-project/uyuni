@@ -470,6 +470,7 @@ SELECT CE.errata_id AS id
  WHERE CE.channel_id = :cid
   </query>
   <elaborator name="simple_errata_overview" />
+  <elaborator name="errata_severity" />
 </mode>
 
 <mode name="relevant_to_channel_between_deprecated">
@@ -1151,6 +1152,13 @@ SELECT  E.id, E.advisory, E.advisory_name, E.advisory_type, E.update_date, E.syn
   FROM  rhnErrata E
  WHERE  E.id IN (%s)
 ORDER BY  E.update_date DESC
+</query>
+
+<query name="errata_severity" params="">
+    SELECT E.id, ES.label AS severity_label
+    FROM rhnErrata E
+    LEFT JOIN rhnErrataSeverity ES ON E.severity_id = ES.id
+    WHERE E.id IN (%s)
 </query>
 
 <query name="errata_flags" params="">
