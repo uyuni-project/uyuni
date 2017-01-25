@@ -136,6 +136,8 @@ public class UpdateInfoWriter extends RepomdWriter {
                 sanitize(0L, id));
         handler.addElementWithCharacters("title", sanitize(0L, erratum
                 .getAdvisorySynopsis()));
+        handler.addElementWithCharacters("severity", sanitize(0L, erratum
+                .getSeverity()));
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
