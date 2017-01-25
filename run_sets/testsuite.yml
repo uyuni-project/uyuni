@@ -96,3 +96,6 @@
 ## smdba and change password feature always put them at the end of the testsuite.
 - features/smdba.feature
 - features/change_password.feature
+
+# sync channels in background
+- features/sync-real-channels.feature
