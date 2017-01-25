@@ -1,4 +1,4 @@
---- # List of features for the REFHOST SERVER
+--- # refhost features 
 - features/init_user_create.feature
 - features/setup_proxy.feature
 - features/running.feature
@@ -21,7 +21,6 @@
 - features/create_group.feature
 - features/add_sys_of_group_to_SSM.feature
 - features/configuration.feature
-- features/add_system_to_conf.feature
 - features/check_errata-npn.feature
 - features/cve_audit.feature
 - features/xmlrpc_cve_audit.feature
@@ -36,17 +35,16 @@
 - features/sp_migration.feature
 - features/erratapage.feature
 - features/lock_packages_on_client.feature
-- features/install_package.feature
-- features/install_errata-npn.feature
+- features/install_package_and_errata.feature
 - features/clone_channel-npn.feature
 - features/openscap_audit.feature
 - features/spacewalk_repo_sync.feature
 - features/scc-sync-channels.feature
-- features/systemspage2.feature
 - features/xmlrpc_system.feature
 - features/nagios.feature
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
+- features/powermanagement-test.feature
 - features/CVE-ID-new-syntax.feature
 - features/datepicker.feature
 - features/delete_system_profile.feature
@@ -60,6 +58,7 @@
 - features/xmlrpc_VHM.feature
 - features/check_VHM.feature
 - features/setup_wizard.feature
+- features/security.feature
 
 #### Salt related features   ###
 - features/minion_bootstrap.feature
@@ -76,9 +75,8 @@
 
 # salt regression
 - features/salt_regression_topsls.feature
-
-# - features/salt_ssh.feature 
-# - features/salt_ssh_reboot_test.feature
+- features/salt_ssh.feature 
+- features/salt_ssh_reboot_test.feature
 
 ## Centos client related feat. ###
 ## ** salt ***
@@ -86,12 +84,14 @@
 - features/minion_centos_bootstrap.feature
 - features/centos_salt_remote_cmds.feature
 - features/centos_salt_reboot_test.feature
-# - features/centos_salt_ssh.feature 
+- features/centos_salt_ssh.feature 
+
+## Repo-sync features
+- features/sync-real-channels.feature
 
 # end-tests
 - features/spacewalk-debug.feature
 
 ## smdba and change password feature always put them at the end of the testsuite.
-## if they fails, they break the whole testsuite.
 - features/smdba.feature
 - features/change_password.feature
