@@ -307,7 +307,7 @@ Feature: Explore the main landing page
     Then I should see a "Kickstart: fedora_kickstart_profile" text
     And I should see a "Kickstart Details" link
 
-Scenario: test Upload Kickstart/Autoyast File page 
+  Scenario: test Upload Kickstart/Autoyast File page 
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "Upload Kickstart/Autoyast File"
