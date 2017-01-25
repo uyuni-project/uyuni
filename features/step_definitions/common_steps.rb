@@ -123,13 +123,15 @@ When(/^I should see the power is "([^"]*)"$/) do |arg1|
     fail unless has_content?(arg1)
   end
 end
-# clone channel
+
 When(/^I select "(.*?)" as the origin channel$/) do |label|
   step %(I select "#{label}" from "original_id")
 end
- 
+
 Then(/^I sync "([^"]*)" channel$/) do |channel|
-  if channel == "sle-12sp1"
-    $server.run("spacewalk-repo-sync -c sles12-sp1-pool-x86_64", true, 130000, "root")
-  end
+    $server.run("spacewalk-repo-sync -c #{channel}", true, 130_000, "root")
+end
+
+Then(/^I add "([^"]*)" channel$/) do |channel|
+    $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}")
 end
