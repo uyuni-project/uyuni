@@ -133,6 +133,8 @@ class BootstrapMinions extends React.Component {
           ignoreHostKeys: true,
           manageWithSSH: false,
           messages: [],
+          proxy: "",
+          showProxyHostnameWarn: false,
           loading: false
       });
       return;
