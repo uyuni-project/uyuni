@@ -136,7 +136,7 @@ public class SUSEProductSet {
         if (addonProducts == null) {
             addonProducts = new ArrayList<SUSEProduct>();
         }
-        if(PRODUCTNAME_BLACKLIST.contains(addonProduct.getName())) {
+        if (PRODUCTNAME_BLACKLIST.contains(addonProduct.getName())) {
             return;
         }
         if (addonProduct != null) {

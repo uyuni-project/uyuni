@@ -268,7 +268,7 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
 
     /**
      * Set list of product Channels
-     * @param productChannelsIn set of product channels
+     * @param suseProductChannelsIn set of product channels
      */
     public void setSuseProductChannels(Set<SUSEProductChannel> suseProductChannelsIn) {
         this.suseProductChannels = suseProductChannelsIn;
