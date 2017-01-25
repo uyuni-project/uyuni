@@ -1,4 +1,4 @@
---- # List of features for a full test run
+--- # List of features for the REFHOST SERVER
 - features/init_user_create.feature
 - features/setup_proxy.feature
 - features/running.feature
@@ -47,7 +47,6 @@
 - features/nagios.feature
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
-##  - features/powermanagement-test.feature NOT-READy
 - features/CVE-ID-new-syntax.feature
 - features/datepicker.feature
 - features/delete_system_profile.feature
@@ -61,8 +60,6 @@
 - features/xmlrpc_VHM.feature
 - features/check_VHM.feature
 - features/setup_wizard.feature
-###- features/mgr_create_bootstrap_repo.feature
-- features/security.feature
 
 #### Salt related features   ###
 - features/minion_bootstrap.feature
