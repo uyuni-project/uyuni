@@ -310,8 +310,8 @@ Feature: Explore the main landing page
   Scenario: test Upload Kickstart/Autoyast File page 
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
-    And I follow "Upload Kickstart/Autoyast File"
-    Then I follow "Profiles" in the left menu
+    And I follow "fedora_kickstart_profile_upload"
+    And I follow "Profiles" in the left menu
     Then I should see a "Distributions" text 
     
   Scenario: upload a profile with the UI (requires a base channel)
