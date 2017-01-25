@@ -64,6 +64,8 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     /** available products from which upgrade to this is possible */
     private Set<SUSEProduct> downgrades;
 
+    private Set<SUSEProductChannel> suseProductChannels;
+
     /**
      * Gets the id.
      * @return the id
@@ -254,6 +256,22 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      */
     public void setDowngrades(Set<SUSEProduct> downgradesIn) {
         this.downgrades = downgradesIn;
+    }
+
+    /**
+     * List product channels for this product
+     * @return set of SUSEProductChannel
+     */
+    public Set<SUSEProductChannel> getSuseProductChannels() {
+        return suseProductChannels;
+    }
+
+    /**
+     * Set list of product Channels
+     * @param suseProductChannelsIn set of product channels
+     */
+    public void setSuseProductChannels(Set<SUSEProductChannel> suseProductChannelsIn) {
+        this.suseProductChannels = suseProductChannelsIn;
     }
 
     /**
