@@ -39,20 +39,26 @@ generate_own_ssh_key:
     - name: ssh-keygen -N '' -C 'susemanager-own-ssh-push' -f {{ home }}/.ssh/mgr_own_id -t rsa -q
     - creates: {{ home }}/.ssh/mgr_own_id.pub
 
+ownership_own_ssh_key:
+  file.managed:
+    - name: {{ home }}/.ssh/mgr_own_id
+    - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
+    - require:
+      - cmd: generate_own_ssh_key
+
 no_own_key_authorized:
   ssh_auth.absent:
     - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
     - comment: susemanager-own-ssh-push
     - require:
-      - cmd: generate_own_ssh_key
+      - file: ownership_own_ssh_key
 
 authorize_own_key:
   ssh_auth.present:
     - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
     - source: {{ home }}/.ssh/mgr_own_id.pub
     - require:
-      - cmd: generate_own_ssh_key
+      - file: ownership_own_ssh_key
       - ssh_auth: no_own_key_authorized
-
 include:
   - bootstrap.remove_traditional_stack
