@@ -1,3 +1,28 @@
+# Make sure no SUSE Manager server aliasing left over from ssh-push via tunnel
+mgr_server_localhost_alias_absent:
+  host.absent:
+    - ip:
+      - 127.0.0.1
+    - names:
+      - {{ salt['pillar.get']('mgr_server') }}
+
+# disable all susemanager:* repos
+{%- set repos_disabled = {'disabled': false} %}
+{%- set repos = salt['pkg.list_repos']() %}
+{%- for alias, data in repos.iteritems() %}
+{%- if 'susemanager:' in alias %}
+{%- if data.get('enabled', true) %}
+disable_repo_{{ alias }}:
+  module.run:
+    - name: pkg.mod_repo
+    - repo: {{ alias }}
+    - kwargs:
+        enabled: False
+{%- if repos_disabled.update({'disabled': true}) %}{% endif %}
+{%- endif %}
+{%- endif %}
+{%- endfor %}
+
 bootstrap_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
@@ -9,6 +34,11 @@ bootstrap_repo:
       - salt://bootstrap/bootstrap.repo
     - template: jinja
     - mode: 644
+    - require:
+      - host: mgr_server_localhost_alias_absent
+{%- if repos_disabled.disabled %}
+      - module: disable_repo_*
+{%- endif %}
 
 {%- if grains['os_family'] == 'RedHat' %}
 trust_suse_manager_tools_gpg_key:
@@ -49,14 +79,6 @@ salt-minion-package:
     - contents_pillar: minion_id
     - require:
       - pkg: salt-minion-package
-
-# Make sure no SUSE Manager server aliasing left over from ssh-push via tunnel
-mgr_server_localhost_alias_absent:
-  host.absent:
-    - ip:
-      - 127.0.0.1
-    - names:
-      - {{ salt['pillar.get']('mgr_server') }}
 
 # Manage minion key files in case they are provided in the pillar
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
