@@ -4,6 +4,8 @@
 - features/running.feature
 - features/login.feature
 - features/mainpage.feature
+# smdba before we start to sync channels
+- features/smdba.feature
 - features/channels_add.feature
 - features/push_package.feature
 - features/create_repository.feature
@@ -94,7 +96,6 @@
 - features/spacewalk-debug.feature
 
 ## smdba and change password feature always put them at the end of the testsuite.
-- features/smdba.feature
 - features/change_password.feature
 
 # sync channels in background
