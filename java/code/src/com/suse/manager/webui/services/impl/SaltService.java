@@ -51,6 +51,7 @@ import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.event.EventListener;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
@@ -79,6 +80,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -434,33 +436,14 @@ public class SaltService {
         }
     }
 
-    private <R> Map<String, CompletableFuture<R>> completableAsyncCall(
-            LocalCall<R> call, Target<?> target, EventStream events) throws SaltException {
-        LocalAsyncResult<R> lar = call.callAsync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-
-        JobReturnEventListener jobEventListener = new JobReturnEventListener(lar.getJid(), lar.getType());
-        Map<String, CompletableFuture<R>> futures = lar.getMinions().stream().collect(Collectors.toMap(
-                mid -> mid,
-                mid -> new CompletableFuture<>()
-        ));
-        jobEventListener.addFutures(futures);
-
-        CompletableFuture.allOf(futures.values().toArray(new CompletableFuture[futures.size()])).handleAsync((r, err) -> {
-            events.removeEventListener(jobEventListener);
-            return r;
-        });
-
-        events.addEventListener(jobEventListener);
-
-        // in case the job return event came in before registering the listener
-        // query the salt master for the job result
-        Jobs.listJob(lar.getJid()).callAsync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-
-        return futures;
+    private <R> Map<String, CompletionStage<Result<R>>> completableAsyncCall(
+            LocalCall<R> call, Target<?> target, EventStream events, CompletableFuture<GenericError> cancel) throws SaltException {
+        return call.callAsync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO, events, cancel);
     }
 
-    public Map<String, CompletableFuture<String>> completableRemoteCommandAsync(Target<?> target, String cmd) throws SaltException {
-        return completableAsyncCall(Cmd.run(cmd), target, reactor.getEventStream());
+    public Map<String, CompletionStage<Result<String>>> completableRemoteCommandAsync(Target<?> target, String cmd,
+                                          CompletableFuture<GenericError> cancel) throws SaltException {
+        return completableAsyncCall(Cmd.run(cmd), target, reactor.getEventStream(), cancel);
     }
 
     public <T> CompletableFuture<T> failAfter(int seconds) {
@@ -523,9 +506,9 @@ public class SaltService {
         }
     }
 
-    public Map<String, CompletableFuture<Boolean>> matchAsync(String target) {
+    public Map<String, CompletionStage<Result<Boolean>>> matchAsync(String target, CompletableFuture<GenericError> cancel) {
         try {
-            return completableAsyncCall(Match.glob(target), new Glob(target), reactor.getEventStream());
+            return completableAsyncCall(Match.glob(target), new Glob(target), reactor.getEventStream(), cancel);
         } catch (SaltException e) {
             throw new RuntimeException(e);
         }
