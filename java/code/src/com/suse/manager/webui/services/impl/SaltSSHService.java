@@ -537,7 +537,7 @@ public class SaltSSHService {
             rosterPath = roster.persistInTempFile();
             SaltSSHConfig sshConfig = new SaltSSHConfig.Builder()
                     .ignoreHostKeys(ignoreHostKeys)
-                    .rosterFile(rosterPath.toString())
+                    .rosterFile(rosterPath.getFileName().toString())
                     .priv(SSH_KEY_PATH)
                     .sudo(sudo)
                     .wipe(true)
