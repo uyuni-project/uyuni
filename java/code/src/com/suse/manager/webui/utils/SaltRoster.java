@@ -16,9 +16,12 @@ package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.common.util.FileUtils;
 
+import com.suse.manager.webui.services.SaltConstants;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -60,7 +63,8 @@ public class SaltRoster {
      * @throws IOException in case there is an I/O error writing the roster file
      */
     public Path persistInTempFile() throws IOException {
-        Path filePath = Files.createTempFile(FILE_PREFIX, ".tmp");
+        Path dirPath = Paths.get(SaltConstants.SALT_FILE_GENERATION_TEMP_PATH);
+        Path filePath = Files.createTempFile(dirPath, FILE_PREFIX, ".tmp");
         FileUtils.writeStringToFile(YamlHelper.INSTANCE.dump(data), filePath.toString());
         return filePath;
     }
