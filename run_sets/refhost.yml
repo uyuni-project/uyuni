@@ -3,62 +3,17 @@
 - features/setup_proxy.feature
 - features/running.feature
 - features/login.feature
-- features/mainpage.feature
 - features/channels_add.feature
-- features/push_package.feature
 - features/create_repository.feature
-- features/systemspage.feature
 - features/create_activationkey.feature
-- features/users.feature
-- features/credentials.feature
-- features/csv-separator.feature
 - features/create_config_channel.feature
-- features/register_client.feature
-- features/test_config_channel.feature
-- features/action_chain.feature
-- features/xmlrpc_actionchain.feature
-- features/custom_system_info.feature
-- features/create_group.feature
-- features/add_sys_of_group_to_SSM.feature
-- features/configuration.feature
-- features/check_errata-npn.feature
-- features/cve_audit.feature
-- features/xmlrpc_cve_audit.feature
-- features/delete_system_from_conf.feature
-- features/spacewalk-channel.feature
 - features/mgr-bootstrap.feature
+- features/configuration.feature
+- features/scc-sync-channels.feature
 - features/channels.feature
-- features/weak_deps.feature
-- features/metadata_check.feature
-- features/check_support_data.feature
 - features/check_registration.feature
-- features/sp_migration.feature
-- features/erratapage.feature
-- features/lock_packages_on_client.feature
 - features/install_package_and_errata.feature
 - features/clone_channel-npn.feature
-- features/openscap_audit.feature
-- features/spacewalk_repo_sync.feature
-- features/scc-sync-channels.feature
-- features/xmlrpc_system.feature
-- features/nagios.feature
-- features/systems_needing_reboot.feature
-- features/test_reboot.feature
-- features/powermanagement-test.feature
-- features/CVE-ID-new-syntax.feature
-- features/datepicker.feature
-- features/delete_system_profile.feature
-- features/bare-metal-test.feature
-- features/compare_channel.feature
-- features/ssh_push.feature
-- features/delete_config_channel.feature
-- features/xmlrpc_api.feature
-- features/xmlrpc_activationkey.feature
-- features/xmlrpc_channel.feature
-- features/xmlrpc_VHM.feature
-- features/check_VHM.feature
-- features/setup_wizard.feature
-- features/security.feature
 
 #### Salt related features   ###
 - features/minion_bootstrap.feature
@@ -73,29 +28,13 @@
 - features/salt_states_catalog.feature
 - features/salt_reboot_test.feature
 
-# salt regression
-- features/salt_regression_topsls.feature
-- features/salt_ssh.feature 
-- features/salt_ssh_reboot_test.feature
-
 ## Centos client related feat. ###
 ## ** salt ***
 
 - features/minion_centos_bootstrap.feature
 - features/centos_salt_remote_cmds.feature
 - features/centos_salt_reboot_test.feature
-- features/centos_salt_ssh.feature 
-
-## Repo-sync features
-- features/sync-real-channels.feature
 
 ## REPO_SYNC FEATURES, only refhost will execute this
 # We sync real channels
 - features/sync-real-channels.feature
-
-# end-tests
-- features/spacewalk-debug.feature
-
-## smdba and change password feature always put them at the end of the testsuite.
-- features/smdba.feature
-- features/change_password.feature
