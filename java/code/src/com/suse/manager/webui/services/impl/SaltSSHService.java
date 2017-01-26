@@ -44,6 +44,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -281,20 +282,24 @@ public class SaltSSHService {
                     key, PROXY_SSH_PUSH_USER, stdioFwd, proxyHostname));
         }
         if (tunnel) {
-            proxyCommand.append(String.format(
-                    "/usr/bin/ssh -i %s -o StrictHostKeyChecking=no -o User=root %s %s " +
-                            "ssh -i /root/.ssh/mgr_own_id -W %s:%s " +
-                            "-o StrictHostKeyChecking=no -o User=root %s",
-                    PROXY_SSH_PUSH_KEY,
-                    String.format("-R %s:%s:%s",
-                            getSshPushRemotePort(),
-                            proxyPath.get(proxyPath.size() - 1),
-                            SSL_PORT),
-                    minionHostname,
-                    minionHostname,
-                    SSH_PUSH_PORT,
-                    minionHostname
-                    ));
+            Map<String, String> values = new HashMap<>();
+            values.put("pushKey", PROXY_SSH_PUSH_KEY);
+            values.put("user", getSSHUser());
+            values.put("pushPort", getSshPushRemotePort() + "");
+            values.put("proxy", proxyPath.get(proxyPath.size() - 1));
+            values.put("sslPort", SSL_PORT + "");
+            values.put("minion", minionHostname);
+            values.put("ownKey",
+                    ("root".equals(getSSHUser()) ? "/root" : "/home/" + getSSHUser()) +
+                            "/.ssh/mgr_own_id");
+            values.put("sshPort", SSH_PUSH_PORT + "");
+
+            StrSubstitutor sub = new StrSubstitutor(values);
+            proxyCommand.append(
+                sub.replace("/usr/bin/ssh -i ${pushKey} -o StrictHostKeyChecking=no " +
+                        "-o User=${user} -R ${pushPort}:${proxy}:${sslPort} ${minion} " +
+                            "ssh -i ${ownKey} -W ${minion}:${sshPort} " +
+                            "-o StrictHostKeyChecking=no -o User=${user} ${minion}"));
         }
         proxyCommand.append("'");
         return Optional.of(proxyCommand.toString());
@@ -410,7 +415,9 @@ public class SaltSSHService {
         roster.addHost(parameters.getHost(), parameters.getUser(), parameters.getPassword(),
                 parameters.getPort(),
                 portForwarding,
-                sshProxyCommandOption(bootstrapProxyPath, null, parameters.getHost()),
+                sshProxyCommandOption(bootstrapProxyPath,
+                        ContactMethodUtil.SSH_PUSH,
+                        parameters.getHost()),
                 getSshPushTimeout());
 
         Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> result =

@@ -19,6 +19,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
         Config.get().setString("ssh_push_port_https", "1233");
+        Config.get().setString("ssh_push_sudo_user", "mgruser");
     }
 
     public void testProxyCommandNoProxy() {
@@ -41,8 +42,8 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(
                 "ProxyCommand='" +
                         "/usr/bin/ssh -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o User=mgrsshtunnel  proxy1 " +
-                        "/usr/bin/ssh -i /home/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o StrictHostKeyChecking=no -o User=root -R 1233:proxy1:443 minion " +
-                        "ssh -i /root/.ssh/mgr_own_id -W minion:22 -o StrictHostKeyChecking=no -o User=root minion'",
+                        "/usr/bin/ssh -i /home/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o StrictHostKeyChecking=no -o User=mgruser -R 1233:proxy1:443 minion " +
+                        "ssh -i /home/mgruser/.ssh/mgr_own_id -W minion:22 -o StrictHostKeyChecking=no -o User=mgruser minion'",
                 res.get());
     }
 
@@ -63,8 +64,8 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
                 "ProxyCommand='" +
                         "/usr/bin/ssh -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o User=mgrsshtunnel  proxy1 " +
                         "/usr/bin/ssh -i /home/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o StrictHostKeyChecking=no -o User=mgrsshtunnel  proxy2 " +
-                        "/usr/bin/ssh -i /home/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o StrictHostKeyChecking=no -o User=root -R 1233:proxy2:443 minion " +
-                        "ssh -i /root/.ssh/mgr_own_id -W minion:22 -o StrictHostKeyChecking=no -o User=root minion'",
+                        "/usr/bin/ssh -i /home/mgrsshtunnel/.ssh/id_susemanager_ssh_push -o StrictHostKeyChecking=no -o User=mgruser -R 1233:proxy2:443 minion " +
+                        "ssh -i /home/mgruser/.ssh/mgr_own_id -W minion:22 -o StrictHostKeyChecking=no -o User=mgruser minion'",
                 res.get());
     }
 
