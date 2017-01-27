@@ -3,11 +3,11 @@ package com.suse.manager.webui.websocket.json;
 /**
  * Created by matei on 10/3/16.
  */
-public class MinionCmdRunResult extends RemoteSaltCommandEventDto  {
+public class MinionCommandResultEventDto extends AbstractSaltEventDto {
 
     private String out;
 
-    public MinionCmdRunResult(String minionId, String out) {
+    public MinionCommandResultEventDto(String minionId, String out) {
         super("runResult", minionId);
         this.out = out;
     }

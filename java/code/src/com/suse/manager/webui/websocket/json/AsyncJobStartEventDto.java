@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by matei on 9/28/16.
  */
-public class AsyncJobStartEventDto extends RemoteSaltCommandEventDto {
+public class AsyncJobStartEventDto extends AbstractSaltEventDto {
 
     private List<String> minions;
 

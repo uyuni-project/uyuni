@@ -3,7 +3,7 @@ package com.suse.manager.webui.websocket.json;
 /**
  * Created by matei on 9/28/16.
  */
-public abstract class RemoteSaltCommandEventDto {
+public abstract class AbstractSaltEventDto {
 
     private String type;
 
@@ -11,16 +11,16 @@ public abstract class RemoteSaltCommandEventDto {
 
     private String actionType;
 
-    public RemoteSaltCommandEventDto(String type) {
+    public AbstractSaltEventDto(String type) {
         this.type = type;
     }
 
-    public RemoteSaltCommandEventDto(String type, String minion) {
+    public AbstractSaltEventDto(String type, String minion) {
         this.type = type;
         this.minion = minion;
     }
 
-    public RemoteSaltCommandEventDto(String type, String minion, String actionType) {
+    public AbstractSaltEventDto(String type, String minion, String actionType) {
         this.type = type;
         this.minion = minion;
         this.actionType = actionType;
