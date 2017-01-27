@@ -294,6 +294,9 @@ public class SaltReactor implements EventListener {
         MessageQueue.publish(new MinionStartEventMessage(minionId));
     }
 
+    /**
+     * @return the Salt event stream
+     */
     public EventStream getEventStream() {
         return eventStream;
     }
