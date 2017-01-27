@@ -50,7 +50,8 @@ public class LocalizedEnvironmentFilter implements Filter {
             .getLogger(LocalizedEnvironmentFilter.class);
 
 
-    public static ThreadLocal<Long> USERID = new ThreadLocal<>();
+    private static final ThreadLocal<Long> CURRENT_USER_ID = new ThreadLocal<>();
+
     /**
      * {@inheritDoc}
      */
@@ -82,7 +83,7 @@ public class LocalizedEnvironmentFilter implements Filter {
         setTimeZone(current, user, request);
         resolveLocale(current, user, request);
         if (user != null) {
-            USERID.set(user.getId());
+            CURRENT_USER_ID.set(user.getId());
         }
     }
 
@@ -156,5 +157,12 @@ public class LocalizedEnvironmentFilter implements Filter {
             }
         }
         rhnRequest.configureLocale();
+    }
+
+    /**
+     * @return the id of the currently logged in user.
+     */
+    public static Long getCurrentUserId() {
+        return CURRENT_USER_ID.get();
     }
 }
