@@ -359,7 +359,7 @@ fi
 %defattr(-,root,root)
 %{_bindir}/salt-broker
 %{_unitdir}/salt-broker.service
-%{_sbindir}/rcosad
+%{_sbindir}/rcsalt-broker
 %config(noreplace) %{_sysconfdir}/salt/broker
 
 %files broker
