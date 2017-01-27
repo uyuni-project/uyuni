@@ -1,3 +1,6 @@
+include:
+  - bootstrap.remove_traditional_stack
+
 salt-minion:
   pkg.installed:
     - name: salt-minion
