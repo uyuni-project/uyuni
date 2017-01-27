@@ -130,6 +130,7 @@ public abstract class AbstractMinionBootstrapper {
             );
         }
         catch (SaltException e) {
+            LOG.error("Exception during bootstrap: " + e.getMessage(), e);
             return new BootstrapResult(false, Optional.empty(),
                     "Error during applying the bootstrap" +
                     " state, message: " + e.getMessage());
