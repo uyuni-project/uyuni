@@ -31,7 +31,6 @@ import com.suse.manager.webui.utils.salt.custom.Udevdb;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.RunnerAsyncResult;
 import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.WheelResult;
 import com.suse.salt.netapi.calls.modules.Cmd;
@@ -66,7 +65,6 @@ import org.apache.log4j.Logger;
 import javax.websocket.CloseReason;
 import java.io.IOException;
 import java.net.URI;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -124,7 +122,7 @@ public class SaltService {
                                 .filter(m -> MinionServerUtils.isSshPushMinion(m))
                                 .isPresent();
 
-    public SaltReactor reactor = null;
+    private SaltReactor reactor = null;
 
     private final ScheduledExecutorService scheduledExecutorService =
             Executors.newScheduledThreadPool(5);
@@ -140,8 +138,8 @@ public class SaltService {
         return reactor;
     }
 
-    public void setReactor(SaltReactor reactor) {
-        this.reactor = reactor;
+    public void setReactor(SaltReactor reactorIn) {
+        this.reactor = reactorIn;
     }
 
     /**
@@ -388,53 +386,53 @@ public class SaltService {
     }
 
 
-    public static class JobReturnEventListener<R> implements EventListener {
-
-        private String jobId;
-        private TypeToken<R> resultType;
-        private Map<String, CompletableFuture<R>> minionFutures = new HashedMap();
-
-        public JobReturnEventListener(String jobId, TypeToken<R> resultType) {
-            this.jobId = jobId;
-            this.resultType = resultType;
-        }
-
-        @Override
-        public void notify(Event event) {
-            JobReturnEvent.parse(event)
-                    .filter(jre -> jre.getJobId().equals(jobId))
-                    .ifPresent(jre ->  {
-                        CompletableFuture<R> future = minionFutures.get(jre.getMinionId());
-                        if (future != null) {
-                            future.complete(jre.getData().getResult(resultType));
-                        }
-                    });
-            RunnerJobReturnEvent.parse(event)
-                    .filter(jre -> {
-                        Jobs.Info data = jre.getData().getResult(Jobs.Info.class);
-                        return data.getJid().equals(jobId);
-                    }).ifPresent(jre -> {
-                        Jobs.Info data = jre.getData().getResult(Jobs.Info.class);
-                        data.getMinions().forEach((minionId) -> {
-                            data.getResult(minionId, resultType).ifPresent(result -> {
-                                CompletableFuture<R> future = minionFutures.get(minionId);
-                                if (future != null) {
-                                    future.complete(result);
-                                }
-                            });
-                        });
-                    });
-        }
-
-        @Override
-        public void eventStreamClosed(CloseReason closeReason) {
-            LOG.info("Closing event stream for jid=" + jobId);
-        }
-
-        public void addFutures(Map<String, CompletableFuture<R>> futures) {
-            minionFutures.putAll(futures);
-        }
-    }
+//    public static class JobReturnEventListener<R> implements EventListener {
+//
+//        private String jobId;
+//        private TypeToken<R> resultType;
+//        private Map<String, CompletableFuture<R>> minionFutures = new HashedMap();
+//
+//        public JobReturnEventListener(String jobIdIn, TypeToken<R> resultTypeIn) {
+//            this.jobId = jobIdIn;
+//            this.resultType = resultTypeIn;
+//        }
+//
+//        @Override
+//        public void notify(Event event) {
+//            JobReturnEvent.parse(event)
+//                    .filter(jre -> jre.getJobId().equals(jobId))
+//                    .ifPresent(jre ->  {
+//                        CompletableFuture<R> future = minionFutures.get(jre.getMinionId());
+//                        if (future != null) {
+//                            future.complete(jre.getData().getResult(resultType));
+//                        }
+//                    });
+//            RunnerJobReturnEvent.parse(event)
+//                    .filter(jre -> {
+//                        Jobs.Info data = jre.getData().getResult(Jobs.Info.class);
+//                        return data.getJid().equals(jobId);
+//                    }).ifPresent(jre -> {
+//                        Jobs.Info data = jre.getData().getResult(Jobs.Info.class);
+//                        data.getMinions().forEach((minionId) -> {
+//                            data.getResult(minionId, resultType).ifPresent(result -> {
+//                                CompletableFuture<R> future = minionFutures.get(minionId);
+//                                if (future != null) {
+//                                    future.complete(result);
+//                                }
+//                            });
+//                        });
+//                    });
+//        }
+//
+//        @Override
+//        public void eventStreamClosed(CloseReason closeReason) {
+//            LOG.info("Closing event stream for jid=" + jobId);
+//        }
+//
+//        public void addFutures(Map<String, CompletableFuture<R>> futures) {
+//            minionFutures.putAll(futures);
+//        }
+//    }
 
     private <R> Map<String, CompletionStage<Result<R>>> completableAsyncCall(
             LocalCall<R> call, Target<?> target, EventStream events, CompletableFuture<GenericError> cancel) throws SaltException {
@@ -509,7 +507,8 @@ public class SaltService {
     public Map<String, CompletionStage<Result<Boolean>>> matchAsync(String target, CompletableFuture<GenericError> cancel) {
         try {
             return completableAsyncCall(Match.glob(target), new Glob(target), reactor.getEventStream(), cancel);
-        } catch (SaltException e) {
+        }
+        catch (SaltException e) {
             throw new RuntimeException(e);
         }
     }
