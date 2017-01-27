@@ -13,3 +13,6 @@ mgr_server_localhost_alias_absent:
       - 127.0.0.1
     - names:
       - {{ salt['pillar.get']('mgr_server') }}
+
+include:
+  - bootstrap.remove_traditional_stack

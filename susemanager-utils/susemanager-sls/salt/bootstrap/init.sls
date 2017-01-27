@@ -80,6 +80,11 @@ salt-minion-package:
     - require:
       - pkg: salt-minion-package
 
+
+include:
+  - bootstrap.remove_traditional_stack
+
+
 # Manage minion key files in case they are provided in the pillar
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
 /etc/salt/pki/minion/minion.pub:
