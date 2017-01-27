@@ -34,17 +34,26 @@ public class RemoteMinionCommands {
 
     private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
 
-    private long userId;
+    private Long userId;
+
+    private CompletableFuture failAfter;
 
     @OnOpen
     public void onStart(Session session, EndpointConfig config) {
-        this.userId = LocalizedEnvironmentFilter.USERID.get();
+        this.userId = LocalizedEnvironmentFilter.getCurrentUserId();
+        if (this.userId == null) {
+            try {
+                LOG.debug("No userId available. Closing the web socket session.");
+                session.close();
+            } catch (IOException e) {
+                LOG.debug("Error closing web socket session", e);
+            }
+        }
     }
 
     @OnClose
     public void onClose() {
-        LOG.debug("Websocket closed");
-        // TODO cancel the JobReturnStream (if any)
+        LOG.debug("Closing web socket session");
     }
 
     @OnMessage
@@ -57,33 +66,41 @@ public class RemoteMinionCommands {
                 .collect(Collectors.toList());
 
         RemoteMinionCommandDto msg = Json.GSON.fromJson(messageBody, RemoteMinionCommandDto.class);
-        CompletableFuture failAfter = SALT_SERVICE.failAfter(20); // TODO remove hardcoding
-        if (msg.isPreview()) {
+        int timeOut = 20; // TODO remove hardcoding
+        try {
+            if (msg.isPreview()) {
+                this.failAfter = SALT_SERVICE.failAfter(timeOut);
+                Map<String, CompletionStage<Result<Boolean>>> res = SALT_SERVICE
+                        .matchAsync(msg.getTarget(), failAfter);
 
-            Map<String, CompletionStage<Result<Boolean>>> res = SALT_SERVICE
-                    .matchAsync(msg.getTarget(), failAfter);
+                List<String> allMinions = res.keySet().stream().collect(Collectors.toList());
+                allMinions.retainAll(allVisibleMinions);
+                sendMessage(session, new AsyncJobStartEventDto("preview", allMinions));
 
-            List<String> allMinions = res.keySet().stream().collect(Collectors.toList());
-            allMinions.retainAll(allVisibleMinions);
-            sendMessage(session, new AsyncJobStartEventDto("preview", allMinions));
-
-            res.forEach((minionId, future) -> {
-                future.whenComplete((matchResult, err) -> {
-                    if (matchResult != null) {
-                        sendMessage(session, new MinionMatchEventDto(minionId));
-                    }
-                    if (err != null) {
-                        if (err instanceof TimeoutException) {
-                            sendMessage(session, new ActionTimedOutEventDto(minionId, "preview"));
-                            LOG.debug("Timed out waiting response from minion " + minionId);
-                        } else {
-                            LOG.error("Error waiting for minion " + minionId, err);
+                res.forEach((minionId, future) -> {
+                    future.whenComplete((matchResult, err) -> {
+                        if (matchResult != null) {
+                            sendMessage(session, new MinionMatchResultEventDto(minionId));
                         }
-                    }
+                        if (err != null) {
+                            if (err instanceof TimeoutException) {
+                                sendMessage(session, new ActionTimedOutEventDto(minionId, "preview"));
+                                LOG.debug("Timed out waiting for response from minion " + minionId);
+                            } else {
+                                LOG.error("Error waiting for minion " + minionId, err);
+                                sendMessage(session,
+                                        new ActionErrorEventDto(minionId,
+                                                "Error waiting for matching: " + err.getMessage()));
+                            }
+                        }
+                    });
                 });
-            });
-        } else {
-            try {
+            } else if (msg.isCancel()) {
+                if (this.failAfter != null) {
+                    this.failAfter.completeExceptionally(new TimeoutException("Canceled waiting"));
+                }
+            } else {
+                this.failAfter = SALT_SERVICE.failAfter(timeOut);
                 Map<String, CompletionStage<Result<String>>> res = SALT_SERVICE
                         .completableRemoteCommandAsync(new Glob(msg.getTarget()), msg.getCommand(), failAfter);
 
@@ -92,32 +109,42 @@ public class RemoteMinionCommands {
 
                 res.forEach((minionId, future) -> {
                     future.whenComplete((cmdResult, err) -> {
-                        if (cmdResult != null) {
-                            sendMessage(session, new MinionCmdRunResult(minionId,
-                                    cmdResult.result().orElse(""))); // TODO handle empty result
+                        if (cmdResult != null ) {
+                            if (cmdResult.result().isPresent()) {
+                                sendMessage(session, new MinionCommandResultEventDto(minionId,
+                                        cmdResult.result().get()));
+                            } else {
+                                sendMessage(session,
+                                        new ActionErrorEventDto(minionId,
+                                                "Command executed succesfully but no result was returned"));
+                            }
                         }
                         if (err != null) {
                             if (err instanceof TimeoutException) {
                                 sendMessage(session, new ActionTimedOutEventDto(minionId, "run"));
-                                LOG.debug("Timed out waiting response from minion '" + minionId + "'");
+                                LOG.debug("Timed out waiting for response from minion " + minionId);
                             } else {
                                 LOG.error("Error waiting for minion " + minionId, err);
-                                // TODO send err msg
+                                sendMessage(session,
+                                        new ActionErrorEventDto(minionId,
+                                                "Error waiting to execute command: " + err.getMessage()));
                             }
                         }
                     });
                 });
-            } catch (SaltException e) {
-                LOG.error("Error executing Salt async remote command", e);
             }
+        } catch (SaltException e) {
+            LOG.error("Error executing Salt async remote command", e);
+            sendMessage(session, new ActionErrorEventDto(null, e.getMessage()));
         }
+
     }
 
     /**
      * Must be synchronized. Sending messages concurrently from separate threads
      * will result in IllegalStateException.
      */
-    private synchronized void sendMessage(Session session, RemoteSaltCommandEventDto dto) {
+    private synchronized void sendMessage(Session session, AbstractSaltEventDto dto) {
         try {
             session.getBasicRemote().sendText(Json.GSON.toJson(dto));
         } catch (IOException e) {
