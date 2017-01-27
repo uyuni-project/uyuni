@@ -3,9 +3,9 @@ package com.suse.manager.webui.websocket.json;
 /**
  * Created by matei on 9/28/16.
  */
-public class MinionMatchEventDto extends RemoteSaltCommandEventDto {
+public class MinionMatchResultEventDto extends AbstractSaltEventDto {
 
-    public MinionMatchEventDto(String minion) {
+    public MinionMatchResultEventDto(String minion) {
         super("match", minion);
     }
 

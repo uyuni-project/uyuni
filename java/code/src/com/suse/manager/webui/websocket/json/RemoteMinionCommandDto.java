@@ -11,6 +11,8 @@ public class RemoteMinionCommandDto {
 
     private boolean preview;
 
+    private boolean cancel;
+
     public String getTarget() {
         return target;
     }
@@ -33,5 +35,13 @@ public class RemoteMinionCommandDto {
 
     public void setPreview(boolean preview) {
         this.preview = preview;
+    }
+
+    public boolean isCancel() {
+        return cancel;
+    }
+
+    public void setCancel(boolean cancel) {
+        this.cancel = cancel;
     }
 }
