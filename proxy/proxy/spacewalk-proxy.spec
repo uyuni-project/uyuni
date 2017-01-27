@@ -230,6 +230,7 @@ install -m 0644 salt-broker/broker %{buildroot}/%{_sysconfdir}/salt/
 install -d -m 755 %{buildroot}/%{_unitdir}/
 %__install -D -m 444 salt-broker/salt-broker.service %{buildroot}/%{_unitdir}/salt-broker.service
 
+ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcsalt-broker
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -365,6 +366,7 @@ fi
 %defattr(-,root,root)
 %{_bindir}/salt-broker
 %{_unitdir}/salt-broker.service
+%{_sbindir}/rcsalt-broker
 %config(noreplace) %{_sysconfdir}/salt/broker
 
 %files broker
