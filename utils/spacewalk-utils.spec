@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.7.0.1
+Version:	2.7.1
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -121,6 +121,12 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Mon Jan 23 2017 Jan Dobes 2.7.1-1
+- use spacewalk 2.6 for openSUSE Leap 42.2
+- add channels for openSUSE Leap 42.2
+- 1402781 - solaris architecture was removed
+- Bumping package versions for 2.7.
+
 * Tue Nov 08 2016 Gennadii Altukhov <galt@redhat.com> 2.6.16-1
 - Added repo urls and gpg keys for Fedora 24
 

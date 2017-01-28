@@ -87,6 +87,12 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Jan 25 2017 Jiri Dostal <jdostal@redhat.com> 2.7.7-1
+- 1332805 - The problematic editing of kickstart profile - custom options
+
+* Mon Jan 23 2017 Jan Dobes 2.7.6-1
+- Drop code used from the Perl stack to 'trickle' OSAD
+
 * Tue Dec 20 2016 Tomas Kasparek <tkasparek@redhat.com> 2.7.5-1
 - 1402437 - update sha1
 

@@ -12,7 +12,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.7.0.1
+Version: 2.7.1
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -154,6 +154,11 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Mon Jan 23 2017 Jan Dobes 2.7.1-1
+- Mandatory Perl build-requires added
+  <https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl>
+- Bumping package versions for 2.7.
+
 * Thu Nov 10 2016 Ondrej Gajdusek <ogajduse@redhat.com> 2.6.5-1
 - 1373067 - Modified option for fonts directory
 
