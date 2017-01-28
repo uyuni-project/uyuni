@@ -29,8 +29,8 @@ Feature: I want to verify the Setup Wizard
     And I should see a "Channels" text
     And I should see a "Status" text
     And I should not see a "WebYaST 1.3" text
-    And I select "SUSE Linux Enterprise Server 12 SP1" as a product for the "x86_64" architecture
-    And I select the addon "Legacy Module 12" for the product "SUSE Linux Enterprise Server 12 SP1" with arch "x86_64"
+    And I select "SUSE Linux Enterprise Server 12 SP2" as a product for the "x86_64" architecture
+    And I select the addon "Legacy Module 12" for the product "SUSE Linux Enterprise Server 12 SP2" with arch "x86_64"
     And I click the Add Product button
     And I wait for "20" seconds
     And I verify the products were added
