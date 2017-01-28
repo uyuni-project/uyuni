@@ -114,10 +114,15 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
         SUSEProduct sourceProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sourceProduct = TestUtils.saveAndReload(sourceProduct);
+        SUSEProductTestUtils.createBaseChannelForBaseProduct(sourceProduct, user);
+        sourceProduct = TestUtils.saveAndReload(sourceProduct);
         SUSEProductSet sourceProducts = new SUSEProductSet(
                 sourceProduct, Collections.emptyList());
 
         SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        targetBaseProduct = TestUtils.saveAndReload(targetBaseProduct);
+        SUSEProductTestUtils.createBaseChannelForBaseProduct(targetBaseProduct, user);
         sourceProduct.setUpgrades(Collections.singleton(targetBaseProduct));
 
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
@@ -155,9 +160,13 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         // Setup source products
         ChannelFamily family = createTestChannelFamily();
         SUSEProduct sourceBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sourceBaseProduct = TestUtils.saveAndReload(sourceBaseProduct);
+        Channel sourceBaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(sourceBaseProduct, user);
 
         List<SUSEProduct> sourceAddons = new ArrayList<>();
         SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sourceAddonProduct = TestUtils.saveAndReload(sourceAddonProduct);
+        SUSEProductTestUtils.createChildChannelsForProduct(sourceAddonProduct, sourceBaseChannel, user);
         sourceAddonProduct.setExtensionOf(Collections.singleton(sourceBaseProduct));
         sourceBaseProduct.setExtensionFor(Collections.singleton(sourceAddonProduct));
 
@@ -166,10 +175,14 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         // Setup migration target product + upgrade path
         SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        targetBaseProduct = TestUtils.saveAndReload(targetBaseProduct);
+        Channel targetBaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(targetBaseProduct, user);
         sourceBaseProduct.setUpgrades(Collections.singleton(targetBaseProduct));
 
         // Setup target addon product + upgrade path
         SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        targetAddonProduct = TestUtils.saveAndReload(targetAddonProduct);
+        SUSEProductTestUtils.createChildChannelsForProduct(targetAddonProduct, targetBaseChannel, user);
         sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
         targetAddonProduct.setExtensionOf(new HashSet(Arrays.asList(targetBaseProduct, sourceBaseProduct)));
         targetBaseProduct.setExtensionFor(Collections.singleton(targetAddonProduct));
