@@ -34,6 +34,7 @@ end
 When(/^I go to the minion onboarding page$/) do
   steps %(
     And I follow "Salt"
+    And I follow "Onboarding"
     )
 end
 

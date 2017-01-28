@@ -5,7 +5,7 @@ Feature: register a salt-minion via bootstrap
 
   Scenario: bootstrap a sles minion
      Given I am authorized
-     When I follow "Salt"
+     And I go to the minion onboarding page
      Then I should see a "Bootstrapping" text
      And I follow "Bootstrapping"
      Then I should see a "Bootstrap Minions" text
@@ -20,7 +20,7 @@ Feature: register a salt-minion via bootstrap
   # testing command line
   Scenario: check new bootstrapped minion in System Overview page
      Given I am authorized
-     When I follow "Salt"
+     And I go to the minion onboarding page
      Then I should see a "accepted" text
      # sle-minion = sles, rh_minion = redhat
      And the salt-master can reach "sle-minion"
@@ -82,7 +82,7 @@ Feature: register a salt-minion via bootstrap
 
   Scenario: verify minion bootstrapped with activation key, packages
      Given I am authorized
-     When I follow "Salt"
+     And I go to the minion onboarding page
      Then I should see a "accepted" text
      # sle-minion = sles, rh_minion = redhat
      And the salt-master can reach "sle-minion"
