@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.domain.product.test;
 
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -24,6 +22,9 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
@@ -36,9 +37,7 @@ import org.hibernate.Session;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -106,20 +105,18 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param product the SUSE product
      */
     public static void createTestSUSEProductChannel(Channel channel, SUSEProduct product) {
-        WriteMode m = ModeFactory.getWriteMode("test_queries",
-                "insert_into_suseproductchannel");
-
+        Set<SUSEProductChannel> pcs = product.getSuseProductChannels();
+        SUSEProductChannel pc = new SUSEProductChannel();
+        pc.setChannel(channel);
+        pc.setProduct(product);
+        pc.setChannelLabel(channel.getLabel());
         Channel parentChannel = channel.getParentChannel();
-
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("product_id", product.getId());
-        parameters.put("channel_id", channel.getId());
-        parameters.put("channel_label", channel.getLabel());
-        parameters.put("parent_channel_label",
-                parentChannel != null ? parentChannel.getLabel() : null);
-
-        m.executeUpdate(parameters);
-        HibernateFactory.getSession().flush();
+        if (parentChannel != null) {
+            pc.setParentChannelLabel(parentChannel.getLabel());
+        }
+        SUSEProductFactory.save(pc);
+        pcs.add(pc);
+        product.setSuseProductChannels(pcs);
     }
 
     /**
@@ -130,17 +127,14 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param product the SUSE product
      */
     public static void createTestSUSEProductChannelNotSynced(String channelLabel, String parentChannelLabel, SUSEProduct product) {
-        WriteMode m = ModeFactory.getWriteMode("test_queries",
-                "insert_into_suseproductchannel");
-
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("product_id", product.getId());
-        parameters.put("channel_id", null);
-        parameters.put("channel_label", channelLabel);
-        parameters.put("parent_channel_label", parentChannelLabel);
-
-        m.executeUpdate(parameters);
-        HibernateFactory.getSession().flush();
+        Set<SUSEProductChannel> pcs = product.getSuseProductChannels();
+        SUSEProductChannel pc = new SUSEProductChannel();
+        pc.setProduct(product);
+        pc.setChannelLabel(channelLabel);
+        pc.setParentChannelLabel(parentChannelLabel);
+        SUSEProductFactory.save(pc);
+        pcs.add(pc);
+        product.setSuseProductChannels(pcs);
     }
 
     /**
@@ -149,15 +143,10 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param to the second SUSE product
      */
     public static void createTestSUSEUpgradePath(SUSEProduct from, SUSEProduct to) {
-        WriteMode m = ModeFactory.getWriteMode("test_queries",
-                "insert_into_suseupgradepath");
-
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("from_pdid", from.getId());
-        parameters.put("to_pdid", to.getId());
-
-        m.executeUpdate(parameters);
-        HibernateFactory.getSession().flush();
+        SUSEUpgradePath up = new SUSEUpgradePath();
+        up.setFromProduct(from);
+        up.setToProduct(to);
+        SUSEProductFactory.save(up);
     }
 
     /**
