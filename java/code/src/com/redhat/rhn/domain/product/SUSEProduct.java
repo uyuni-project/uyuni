@@ -21,6 +21,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -64,7 +65,7 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     /** available products from which upgrade to this is possible */
     private Set<SUSEProduct> downgrades;
 
-    private Set<SUSEProductChannel> suseProductChannels;
+    private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
 
     /**
      * Gets the id.
