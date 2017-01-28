@@ -61,9 +61,9 @@ end
 
 When(/^I verify the products were added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  fail unless output[:stdout].include? '[I] SLES12-SP1-Pool for x86_64 SUSE Linux Enterprise Server 12 SP1 x86_64 [sles12-sp1-pool-x86_64]'
-  fail unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool x86_64 SP1 SUSE Manager Tools [sle-manager-tools12-pool-x86_64-sp1]'
-  fail unless output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 SP1 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp1]'
+  fail unless output[:stdout].include? '[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]'
+  fail unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool x86_64 SP2 SUSE Manager Tools [sle-manager-tools12-pool-x86_64-sp2]'
+  fail unless output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 SP2 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
 end
 
 When(/^I click the channel list of product "(.*?)" for the "(.*?)" architecture$/) do |product, architecture|
