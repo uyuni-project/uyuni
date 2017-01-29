@@ -18,8 +18,10 @@ import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -310,6 +312,24 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             // Assign the Salt base entitlement by default
             server.setBaseEntitlement(EntitlementManager.SALT);
+
+            activationKey.ifPresent(ak -> {
+                Set<Entitlement> validEntits = server.getOrg()
+                        .getValidAddOnEntitlementsForOrg();
+                ak.getToken().getEntitlements().forEach(sg -> {
+                    Entitlement e = sg.getAssociatedEntitlement();
+                    if (validEntits.contains(e) &&
+                        SystemManager.canEntitleServer(server, e)) {
+                        ValidatorResult vr = SystemManager.entitleServer(server, e);
+                        if (vr.getWarnings().size() > 0) {
+                            LOG.warn(vr.getWarnings().toString());
+                        }
+                        if (vr.getErrors().size() > 0) {
+                            LOG.error(vr.getErrors().toString());
+                        }
+                    }
+                });
+            });
 
             // get hardware and network async
             triggerHardwareRefresh(server);
