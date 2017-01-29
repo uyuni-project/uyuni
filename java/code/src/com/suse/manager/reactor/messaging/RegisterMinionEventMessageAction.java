@@ -347,6 +347,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     true,
                     statesToApply
             ));
+            // Call final Highstate when we have an activation key
+            if (activationKey.isPresent()) {
+                MessageQueue.publish(new ApplyStatesEventMessage(server.getId(),
+                        true, Collections.emptyList()));
+            }
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
