@@ -2779,6 +2779,14 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="Formula Catalog">
           <source>Formula Catalog</source>
       </trans-unit>
+
+      <!-- Images -->
+      <trans-unit id="Images">
+        <source>Images</source>
+      </trans-unit>
+      <trans-unit id="Stores">
+          <source>Stores</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

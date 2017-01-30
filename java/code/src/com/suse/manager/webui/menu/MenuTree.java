@@ -161,6 +161,11 @@ public class MenuTree {
                 .addChild(new MenuItem("Formula Catalog").withPrimaryUrl("/rhn/manager/formula-catalog")
                     .withVisibility(adminRoles.get("org") && checkAcl(user, "salt_formulas_installed()"))));
 
+            // Images
+            nodes.add(new MenuItem("Images").withIcon("spacewalk-icon-manage-configuration-files")
+                .addChild(new MenuItem("Stores").withPrimaryUrl("/rhn/manager/cm/imagestores")
+                    .withDir("/rhn/manager/cm/imagestores").withVisibility(adminRoles.get("org"))));
+
             // Patches
             nodes.add(new MenuItem("Patches").withIcon("spacewalk-icon-patches")
                 .addChild(new MenuItem("Patches").withPrimaryUrl("/rhn/errata/RelevantErrata.do").withDir("/rhn/errata")

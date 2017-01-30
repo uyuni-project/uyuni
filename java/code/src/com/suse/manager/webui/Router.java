@@ -16,6 +16,7 @@ package com.suse.manager.webui;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -25,6 +26,7 @@ import static spark.Spark.head;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import com.suse.manager.webui.controllers.ImageStoreController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
 import com.suse.manager.webui.controllers.FormulaController;
@@ -50,6 +52,23 @@ public class Router implements SparkApplication {
     @Override
     public void init() {
         JadeTemplateEngine jade = setup();
+        // Content Management
+        get("/manager/cm/imagestores",
+                withCsrfToken(withUser(ImageStoreController::listView)), jade);
+        get("/manager/cm/imagestores/create",
+                withCsrfToken(withImageAdmin(ImageStoreController::createView)), jade);
+        get("/manager/cm/imagestores/edit/:id",
+                withCsrfToken(withImageAdmin(ImageStoreController::updateView)), jade);
+
+        get("/manager/api/cm/imagestores", withUser(ImageStoreController::list));
+        get("/manager/api/cm/imagestores/type/:type",
+                withUser(ImageStoreController::listAllWithType));
+        get("/manager/api/cm/imagestores/:id", withUser(ImageStoreController::getSingle));
+        post("/manager/api/cm/imagestores", withImageAdmin(ImageStoreController::create));
+        post("/manager/api/cm/imagestores/:id",
+                withImageAdmin(ImageStoreController::update));
+        delete("/manager/api/cm/imagestores/:id",
+                withUser(ImageStoreController::delete));
 
         // Minions
         get("/manager/minions",
