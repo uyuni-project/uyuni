@@ -29,11 +29,11 @@
 # invalid function name
 # pylint: disable=C0103
 
-import shlex
+import logging
 from getpass import getpass
 from operator import itemgetter
 from optparse import Option
-from spacecmd.utils import *
+from spacecmd.utils import parse_arguments, prompt_user, is_interactive, tab_completer
 
 _PREFIXES = ['Dr.', 'Mr.', 'Miss', 'Mrs.', 'Ms.']
 
