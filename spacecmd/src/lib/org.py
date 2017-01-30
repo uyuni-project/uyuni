@@ -29,11 +29,11 @@
 # invalid function name
 # pylint: disable=C0103
 
-import shlex
+import logging
 from getpass import getpass
 from operator import itemgetter
 from optparse import Option
-from spacecmd.utils import *
+from spacecmd.utils import parse_arguments, prompt_user, is_interactive, tab_completer
 
 _PREFIXES = ['Dr.', 'Mr.', 'Miss', 'Mrs.', 'Ms.']
 
@@ -397,39 +397,3 @@ def do_org_details(self, args):
     print 'Activation Keys:        %i' % details.get('activation_keys')
     print 'Kickstart Profiles:     %i' % details.get('kickstart_profiles')
     print 'Configuration Channels: %i' % details.get('configuration_channels')
-
-####################
-
-
-def help_org_setsystementitlements(self):
-    print "org_setsystementitlements: Sets an organization's system",
-    print "entitlements"
-    print 'usage: org_setsystementitlements ORG ENTITLEMENT VALUE'
-
-
-def complete_org_setsystementitlements(self, text, line, beg, end):
-    parts = shlex.split(line)
-    if line[-1] == ' ':
-        parts.append('')
-
-    if len(parts) == 2:
-        return tab_completer(self.do_org_list('', True), text)
-
-
-def do_org_setsystementitlements(self, args):
-    (args, _options) = parse_arguments(args)
-
-    if not len(args):
-        self.help_org_setsystementitlements()
-        return
-
-    org_id = self.get_org_id(args[0])
-    label = args[1]
-
-    try:
-        value = int(args[2])
-    except ValueError:
-        logging.error('Value must be an integer')
-        return
-
-    self.client.org.setSystemEntitlements(self.session, org_id, label, value)
