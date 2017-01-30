@@ -2784,6 +2784,9 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="Images">
         <source>Images</source>
       </trans-unit>
+      <trans-unit id="Profiles">
+        <source>Profiles</source>
+      </trans-unit>
       <trans-unit id="Stores">
           <source>Stores</source>
       </trans-unit>

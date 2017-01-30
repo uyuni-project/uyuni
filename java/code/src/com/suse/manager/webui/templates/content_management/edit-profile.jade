@@ -1,0 +1,10 @@
+include ../common.jade
+
+#image-profile-edit
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+    const profileId = "#{profile_id}";
+
+script(src='/javascript/manager/image-profile-edit.bundle.js', type='text/javascript')
+
