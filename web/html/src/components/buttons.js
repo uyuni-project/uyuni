@@ -96,9 +96,24 @@ class LinkButton extends React.Component {
 
 }
 
+class SubmitButton extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <button id={this.props.id} type="submit" className={'btn ' + this.props.className}>
+                <i className={'fa ' + this.props.icon}/>{this.props.text}
+            </button>
+        )
+    }
+}
 
 module.exports = {
     Button : Button,
     LinkButton : LinkButton,
-    AsyncButton : AsyncButton
+    AsyncButton : AsyncButton,
+    SubmitButton : SubmitButton
 }
