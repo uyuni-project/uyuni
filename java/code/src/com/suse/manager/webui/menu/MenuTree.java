@@ -404,7 +404,9 @@ public class MenuTree {
                 );
         }
 
-        getActiveNode(nodes, url);
+        if (getActiveNode(nodes, url) == null) {
+            getBestActiveDirs(nodes, url);
+        }
         return nodes;
     }
 
@@ -422,7 +424,8 @@ public class MenuTree {
     }
 
     /**
-     * Decode what is the active {@link MenuItem} from the current URL
+     * Decode which is the active {@link MenuItem} from the current URL
+     * based on the list of urls of the link
      *
      * @param nodes the list of nodes of the menu
      * @param url the current URL
@@ -450,15 +453,6 @@ public class MenuTree {
                 }
             }
 
-            // if we are so far, no perfect match with urls has been found
-            if (activeItem == null) {
-                for (String dir : item.getDirectories()) {
-                    if (url.contains(dir)) {
-                        activeItem = item;
-                    }
-                }
-            }
-
             if (activeItem != null) {
                 activeItem.setActive(true);
                 item.setActive(true);
@@ -466,6 +460,58 @@ public class MenuTree {
             }
         }
         return null;
+    }
+
+    /**
+     * Decode which is the active {@link MenuItem} from the current URL
+     * based on the list of directories of the link
+     *
+     * @param nodes the list of nodes of the menu
+     * @param url the current URL
+     * @return the current active {@link MenuItem}
+     */
+    public static List<MenuItem> getBestActiveDirs(List<MenuItem> nodes, String url) {
+        Integer depthPrecision = 0;
+        List<MenuItem> bestActiveItems = new LinkedList<>();
+        for (MenuItem item1 : nodes) {
+            for (String dir : item1.getDirectories()) {
+                if (url.contains(dir) && dir.length() > depthPrecision) {
+                    bestActiveItems = new LinkedList<>();
+                    bestActiveItems.add(item1);
+                    depthPrecision = dir.length();
+                }
+            }
+            if (item1.getSubmenu() != null) {
+                for (MenuItem item2 : item1.getSubmenu()) {
+                    for (String dir2 : item2.getDirectories()) {
+                        if (url.contains(dir2) && dir2.length() > depthPrecision) {
+                            bestActiveItems = new LinkedList<>();
+                            bestActiveItems.add(item1);
+                            bestActiveItems.add(item2);
+                            depthPrecision = dir2.length();
+                        }
+                    }
+                    if (item2.getSubmenu() != null) {
+                        for (MenuItem item3 : item2.getSubmenu()) {
+                            for (String dir3 : item3.getDirectories()) {
+                                if (url.contains(dir3) && dir3.length() > depthPrecision) {
+                                    bestActiveItems = new LinkedList<>();
+                                    bestActiveItems.add(item1);
+                                    bestActiveItems.add(item2);
+                                    bestActiveItems.add(item3);
+                                    depthPrecision = dir3.length();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (MenuItem menuItem : bestActiveItems) {
+            menuItem.setActive(true);
+        }
+        return bestActiveItems;
     }
 
     /**
