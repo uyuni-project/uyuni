@@ -16,6 +16,7 @@ package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
+import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -87,13 +88,7 @@ public class SparkApplicationHelper {
      * @return the route
      */
     public static TemplateViewRoute withOrgAdmin(TemplateViewRouteWithUser route) {
-        return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
-            if (user == null || !user.hasRole(RoleFactory.ORG_ADMIN)) {
-                throw new PermissionException("no perms");
-            }
-            return route.handle(request, response, user);
-        };
+        return withRole(route, RoleFactory.ORG_ADMIN);
     }
 
     /**
@@ -104,13 +99,7 @@ public class SparkApplicationHelper {
      * @return the route
      */
     public static TemplateViewRoute withProductAdmin(TemplateViewRouteWithUser route) {
-        return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
-            if (user == null || !user.hasRole(RoleFactory.SAT_ADMIN)) {
-                throw new PermissionException("no perms");
-            }
-            return route.handle(request, response, user);
-        };
+        return withRole(route, RoleFactory.SAT_ADMIN);
     }
 
     /**
@@ -121,13 +110,7 @@ public class SparkApplicationHelper {
      * @return the route
      */
     public static Route withProductAdmin(RouteWithUser route) {
-        return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
-            if (user == null || !user.hasRole(RoleFactory.SAT_ADMIN)) {
-                throw new PermissionException("no perms");
-            }
-            return route.handle(request, response, user);
-        };
+        return withRole(route, RoleFactory.SAT_ADMIN);
     }
 
     /**
@@ -138,13 +121,29 @@ public class SparkApplicationHelper {
      * @return the route
      */
     public static Route withOrgAdmin(RouteWithUser route) {
-        return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
-            if (user == null || !user.hasRole(RoleFactory.ORG_ADMIN)) {
-                throw new PermissionException("no perms");
-            }
-            return route.handle(request, response, user);
-        };
+        return withRole(route, RoleFactory.ORG_ADMIN);
+    }
+
+    /**
+     * Use in routes to automatically get the current user, which must be an
+     * Image Admin, in your controller.
+     * Example: <code>Spark.get("/url", withOrgAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static Route withImageAdmin(RouteWithUser route) {
+        return withRole(route, RoleFactory.IMAGE_ADMIN);
+    }
+
+    /**
+     * Use in routes to automatically get the current user, which must be an
+     * Image Admin, in your controller.
+     * Example: <code>Spark.get("/url", withOrgAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static TemplateViewRoute withImageAdmin(TemplateViewRouteWithUser route) {
+        return withRole(route, RoleFactory.IMAGE_ADMIN);
     }
 
     /**
@@ -170,6 +169,42 @@ public class SparkApplicationHelper {
                         " a Map!");
             }
             return modelAndView;
+        };
+    }
+
+    /**
+     * Use in routes to automatically get the current user, which must have the
+     * role specified, in your controller. Example:
+     * <code>Spark.get("/url", withRole(Controller::method, RoleFactory.SAT_ADMIN));</code>
+     * @param route the route
+     * @param role the required role to have access to the route
+     * @return the route
+     */
+    private static TemplateViewRoute withRole(TemplateViewRouteWithUser route, Role role) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            if (user == null || !user.hasRole(role)) {
+                throw new PermissionException("no perms");
+            }
+            return route.handle(request, response, user);
+        };
+    }
+
+    /**
+     * Use in routes to automatically get the current user, which must have the
+     * role specified, in your controller. Example:
+     * <code>Spark.get("/url", withRole(Controller::method, RoleFactory.SAT_ADMIN));</code>
+     * @param route the route
+     * @param role the required role to have access to the route
+     * @return the route
+     */
+    private static Route withRole(RouteWithUser route, Role role) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            if (user == null || !user.hasRole(role)) {
+                throw new PermissionException("no perms");
+            }
+            return route.handle(request, response, user);
         };
     }
 
