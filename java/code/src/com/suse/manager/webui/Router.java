@@ -30,6 +30,7 @@ import com.suse.manager.webui.controllers.ImageStoreController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
 import com.suse.manager.webui.controllers.FormulaController;
+import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -69,6 +70,23 @@ public class Router implements SparkApplication {
                 withImageAdmin(ImageStoreController::update));
         delete("/manager/api/cm/imagestores/:id",
                 withUser(ImageStoreController::delete));
+
+        get("/manager/cm/imageprofiles",
+                withCsrfToken(withUser(ImageProfileController::listView)), jade);
+        get("/manager/cm/imageprofiles/create",
+                withCsrfToken(withImageAdmin(ImageProfileController::createView)), jade);
+        get("/manager/cm/imageprofiles/edit/:id",
+                withCsrfToken(withImageAdmin(ImageProfileController::updateView)), jade);
+
+        get("/manager/api/cm/imageprofiles", withUser(ImageProfileController::list));
+        get("/manager/api/cm/imageprofiles/:id",
+                withUser(ImageProfileController::getSingle));
+        post("/manager/api/cm/imageprofiles",
+                withImageAdmin(ImageProfileController::create));
+        post("/manager/api/cm/imageprofiles/:id",
+                withImageAdmin(ImageProfileController::update));
+        delete("/manager/api/cm/imageprofiles/:id",
+                withImageAdmin(ImageProfileController::delete));
 
         // Minions
         get("/manager/minions",

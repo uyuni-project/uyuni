@@ -163,6 +163,8 @@ public class MenuTree {
 
             // Images
             nodes.add(new MenuItem("Images").withIcon("spacewalk-icon-manage-configuration-files")
+                .addChild(new MenuItem("Profiles").withPrimaryUrl("/rhn/manager/cm/imageprofiles")
+                    .withDir("/rhn/manager/cm/imageprofiles").withVisibility(adminRoles.get("org")))
                 .addChild(new MenuItem("Stores").withPrimaryUrl("/rhn/manager/cm/imagestores")
                     .withDir("/rhn/manager/cm/imagestores").withVisibility(adminRoles.get("org"))));
 
