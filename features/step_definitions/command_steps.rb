@@ -217,20 +217,23 @@ When(/^I take a snapshot "([^"]*)"$/) do |name|
 end
 
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, target|
-  if target == "server"
+  case target
+  when "server"
     _out, $fail_code = $server.run(cmd, false)
-  elsif target == "ceos-minion"
-    _out, _code = $ceos_minion.run(cmd, false)
-  elsif target == "ssh-minion"
-    _out, _code = $ssh_minion.run(cmd, false)
-  elsif target == "sle-minion"
-    _out, _code = $minion.run(cmd, false)
-  elsif target == "sle-client"
-    _out, _code = $client.run(cmd, false)
+  when "ceos-minion"
+    _out, $fail_code = $ceos_minion.run(cmd, false)
+  when "ssh-minion"
+    _out, $fail_code = $ssh_minion.run(cmd, false)
+  when "sle-minion"
+    _out, $fail_code = $minion.run(cmd, false)
+  when "sle-client"
+    _out, $fail_code = $client.run(cmd, false)
+  else
+    raise "Invalid target."
   end
 end
 Then(/^the command should fail$/) do
-   raise "Previous command must fail, but has NOT fail!!" if $fail_code.zero?
+   raise "Previous command must fail, but has NOT failed!" if $fail_code.zero?
 end
 
 Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
