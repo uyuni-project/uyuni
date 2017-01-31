@@ -30,6 +30,7 @@ import com.suse.manager.webui.controllers.ImageStoreController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
 import com.suse.manager.webui.controllers.FormulaController;
+import com.suse.manager.webui.controllers.ImageBuildController;
 import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.StateCatalogController;
@@ -87,6 +88,14 @@ public class Router implements SparkApplication {
                 withImageAdmin(ImageProfileController::update));
         delete("/manager/api/cm/imageprofiles/:id",
                 withImageAdmin(ImageProfileController::delete));
+
+        get("/manager/cm/build",
+                withCsrfToken(withUser(ImageBuildController::buildView)), jade);
+        get("/manager/cm/build/:profileId",
+                withCsrfToken(withImageAdmin(ImageBuildController::buildView)), jade);
+
+        get("/manager/api/cm/build/hosts",
+                withUser(ImageBuildController::getBuildHosts));
 
         // Minions
         get("/manager/minions",

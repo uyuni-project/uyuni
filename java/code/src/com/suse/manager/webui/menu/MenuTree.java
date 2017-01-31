@@ -51,6 +51,7 @@ public class MenuTree {
         adminRoles.put("config", checkAcl(user, "user_role(config_admin)"));
         adminRoles.put("satellite", checkAcl(user, "user_role(satellite_admin)"));
         adminRoles.put("activationKey", checkAcl(user, "user_role(activation_key_admin)"));
+        adminRoles.put("image", checkAcl(user, "user_role(image_admin)"));
 
         List<MenuItem> nodes = new LinkedList<>();
 
@@ -163,6 +164,8 @@ public class MenuTree {
 
             // Images
             nodes.add(new MenuItem("Images").withIcon("spacewalk-icon-manage-configuration-files")
+                .addChild(new MenuItem("Build").withPrimaryUrl("/rhn/manager/cm/build")
+                    .withDir("/rhn/manager/cm/build").withVisibility(adminRoles.get("image")))
                 .addChild(new MenuItem("Profiles").withPrimaryUrl("/rhn/manager/cm/imageprofiles")
                     .withDir("/rhn/manager/cm/imageprofiles").withVisibility(adminRoles.get("org")))
                 .addChild(new MenuItem("Stores").withPrimaryUrl("/rhn/manager/cm/imagestores")
