@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2017 Novell, SUSE-LINUX 
+# Copyright (c) 2010-2017 SUSE-LINUX
 # Licensed under the terms of the MIT license.
 
 #
@@ -129,6 +129,6 @@ end
 
 # make sure proxy is started if we will use ut
 Before do
- # FIXME: test this restart, to avoid phantomjs crash
- # page.driver.restart
+  # FIXME: test this restart, to avoid phantomjs crash
+  # page.driver.restart
 end
