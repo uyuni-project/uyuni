@@ -13,7 +13,7 @@ GROUP_OWNER = 'susemanager'
 
 def ssh_keygen(path):
     '''
-    Generate SSH keys using the give path.
+    Generate SSH keys using the given path.
     :param path: the path
     :return: map containing returncode and stdout/stderr
     '''
