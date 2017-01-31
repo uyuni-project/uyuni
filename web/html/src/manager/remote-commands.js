@@ -128,24 +128,30 @@ class RemoteCommand extends React.Component {
       previewed: $.Deferred(),
       ran: $.Deferred().resolve(),
       executing: $.Deferred().resolve(),
-      errors: []
+      errors: [],
+      warnings: []
     };
   }
 
   render() {
-    var errs = null;
+    var msgs = [];
     const style = {
         paddingBottom: "0px"
     }
     if (this.state.errors) {
         this.state.errors.map( msg => {
-            errs = <div className="alert alert-danger">{msg}</div>
+            msgs.push(<div className="alert alert-danger">{msg}</div>);
+        })
+    }
+    if (this.state.warnings) {
+        this.state.warnings.map( msg => {
+            msgs.push(<div className="alert alert-warning">{msg}</div>);
         })
     }
 
     return (
       <div>
-          {errs}
+          {msgs}
           <div id="remote-root" className="spacewalk-toolbar-h1">
             <h1>
               <i className="fa fa-desktop"></i>
@@ -202,6 +208,7 @@ class RemoteCommand extends React.Component {
                             }));
     this.setState({
         errors: [],
+        warnings: [],
         previewed: deferred,
         result: {
           minions: new Map()
@@ -219,6 +226,7 @@ class RemoteCommand extends React.Component {
                               }));
       this.setState({
           errors: [],
+          warnings: [],
           ran: deferred,
       });
       return deferred;
@@ -253,6 +261,7 @@ class RemoteCommand extends React.Component {
                 executing: $.Deferred(),
                 result: {
                     errors: [],
+                    warnings: [],
                     minions: event.minions.reduce((map, minionId) => map.set(minionId, {type: "pending", value: null}), new Map())
                 }
             });
@@ -288,7 +297,7 @@ class RemoteCommand extends React.Component {
             minionsMap.set(event.minion, {type: "timedOut", value: null});
             const timedOutDone = isTimedOutDone(minionsMap);
             this.setState({
-                errors: timedOutDone ? [t("Not all minions responded.")] : [],
+                warnings: timedOutDone ? [t("Not all minions responded on time.")] : [],
                 previewed: this.state.previewed.state() == "pending" ? this.state.previewed.resolve() : this.state.previewed,
                 ran: this.state.ran.state() == "pending" ? this.state.ran.resolve() : this.state.ran,
                 executing: timedOutDone ? this.state.executing.resolve() : this.state.executing,
