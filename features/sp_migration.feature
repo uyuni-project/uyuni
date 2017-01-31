@@ -14,5 +14,3 @@ Feature: Check the SP Migration feature
     When I follow "Software" in the content area
     And I follow "SP Migration" in the content area
     Then I should see a "Service Pack Migration - Target" text
-    And I should see a "SUSE Linux Enterprise Server 12 SP2" text
-    And the "targetProductSelected" field should be disabled
