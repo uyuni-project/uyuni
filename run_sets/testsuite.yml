@@ -50,7 +50,7 @@
 - features/CVE_ID_new_syntax.feature
 - features/datepicker.feature
 - features/delete_system_profile.feature
-- features/bare_metal_test.feature
+- features/baremetal_test.feature
 - features/compare_channel.feature
 - features/ssh_push.feature
 - features/delete_config_channel.feature
