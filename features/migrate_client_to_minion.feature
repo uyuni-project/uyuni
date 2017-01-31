@@ -23,6 +23,5 @@ Feature: Migrate a traditional client into a salt minion
 
   Scenario: Check that service nhsd has been stopped
      # bsc#1020902 - moving from traditional to salt with bootstrap is not disabling rhnsd
-     When I run "systemctl status nhsd | grep Active" on "sle-migrated-minion"
+     When I run "systemctl status nhsd" on "sle-migrated-minion"
      Then the command should fail
-
