@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * The UI Menu Tree.
@@ -512,6 +513,26 @@ public class MenuTree {
             menuItem.setActive(true);
         }
         return bestActiveItems;
+    }
+
+    /**
+     * Calculate the web page title on the active flagged MenuItems
+     *
+     * @param pageContext the context of the request
+     * @return the page title
+     */
+    public static String getTitlePage(PageContext pageContext) {
+        String title = "";
+        Optional<MenuItem> activeItem = getMenuTree(pageContext).stream()
+                .filter(node -> node.getActive()).findFirst();
+        while (activeItem.isPresent()) {
+          title += " - " + activeItem.get().getLabel();
+          activeItem = activeItem.get().getSubmenu() == null ?
+                  Optional.empty() :
+                  activeItem.get().getSubmenu().stream()
+                      .filter(node -> node.getActive()).findFirst();
+        }
+        return title;
     }
 
     /**
