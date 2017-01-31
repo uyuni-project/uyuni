@@ -169,10 +169,20 @@ Given(/^I am on the Systems overview page of this "(.*?)"$/) do |target|
   steps %(
     Given I am on the Systems page
     )
-  step %(I follow "#{$minion_fullhostname}") if target == "sle-minion"
-  step %(I follow "#{$ssh_minion_fullhostname}") if target == "ssh-minion"
-  step %(I follow "#{$ceos_minion_fullhostname}") if target == "ceos-minion"
-  step %(I follow "#{$client_hostname}") if target == "sle-client"
+  case target
+  when "sle-minion"
+    step %(I follow "#{$minion_fullhostname}")
+  when "ssh-minion"
+    step %(I follow "#{$ssh_minion_fullhostname}")
+  when "ceos-minion"
+    step %(I follow "#{$ceos_minion_fullhostname}")
+  when "sle-client"
+    step %(I follow "#{$client_fullhostname}")
+  when "sle-migrated-minion"
+    step %(I follow "#{$client_fullhostname}")
+  else
+    raise "No valid target."
+  end
 end
 
 When(/^I follow this "(.*?)" link$/) do |target|
