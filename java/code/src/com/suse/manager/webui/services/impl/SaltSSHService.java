@@ -109,7 +109,7 @@ public class SaltSSHService {
     public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target)
             throws SaltException {
         SaltRoster roster = new SaltRoster();
-        // these values are mostly fied, which should change when we allow configuring
+        // these values are mostly fixed, which should change when we allow configuring
         // per-minionserver
         target.getTarget().stream()
             .forEach(mid -> {
@@ -169,8 +169,8 @@ public class SaltSSHService {
     /**
      * @param serverPaths a set ot {@link ServerPath}
      * @param lastProxy the last proxy in the chain
-     * @return a list of proxy hostnames, the last one beeing connected
-     * dirrectly to the minion
+     * @return a list of proxy hostnames, the last one being connected
+     * directly to the minion
      */
     public static List<String> proxyPathToHostnames(Set<ServerPath> serverPaths,
                                                     Optional<String> lastProxy) {
