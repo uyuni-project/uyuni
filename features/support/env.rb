@@ -129,5 +129,6 @@ end
 
 # make sure proxy is started if we will use ut
 Before do
+ # FIXME: test this restart, to avoid phantomjs crash
+ # page.driver.restart
 end
-
