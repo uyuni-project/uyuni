@@ -143,7 +143,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      *                              If left empty, activation key from grains will be used.
      */
     private void registerMinion(String minionId, boolean isSaltSSH,
-                                Optional<Long> saltSshProxyId,
+                                Optional<Long> saltSSHProxyId,
                                 Optional<String> activationKeyOverride) {
         // Match minions via their machine id
         Optional<String> optMachineId = SALT_SERVICE.getMachineId(minionId);
@@ -292,7 +292,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                             "master not found in minion configuration"));
 
             if (isSaltSSH) {
-                saltSshProxyId
+                saltSSHProxyId
                     .map(proxyId -> ServerFactory.lookupById(proxyId))
                     .ifPresent(proxy -> {
                         Set<ServerPath> proxyPaths = ServerFactory
