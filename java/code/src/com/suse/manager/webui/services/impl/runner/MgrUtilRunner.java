@@ -69,7 +69,7 @@ public class MgrUtilRunner {
      * @param path path where to generate the keys
      * @return the execution result
      */
-    public static RunnerCall<ExecResult> generateSshKey(String path) {
+    public static RunnerCall<ExecResult> generateSSHKey(String path) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("path", path);
         RunnerCall<ExecResult> call =
