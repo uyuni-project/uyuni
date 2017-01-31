@@ -113,6 +113,12 @@ class ImageProfiles extends React.Component {
                   return <div className="btn-group">
                       <LinkButton
                           className="btn-default btn-sm"
+                          title={t("Build")}
+                          icon="fa-cogs"
+                          href={"/rhn/manager/cm/build/" + row.profile_id}
+                      />
+                      <LinkButton
+                          className="btn-default btn-sm"
                           title={t("Edit")}
                           icon="fa-edit"
                           href={"/rhn/manager/cm/imageprofiles/edit/" + row.profile_id}
