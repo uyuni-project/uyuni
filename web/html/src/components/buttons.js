@@ -83,11 +83,12 @@ class LinkButton extends React.Component {
     }
 
     render() {
+        const margin = this.props.text != undefined ? "" : " no-margin"
         var icon = this.props.icon ?
-            <i className={'fa ' + this.props.icon}/> :
+            <i className={'fa ' + this.props.icon + margin}/> :
             null;
         return (
-            <a id={this.props.id} className={'btn ' + this.props.className} href={this.props.href}>
+            <a id={this.props.id} title={this.props.title} className={'btn ' + this.props.className} href={this.props.href}>
                 {icon}
                 {this.props.text}
             </a>
@@ -104,7 +105,7 @@ class SubmitButton extends React.Component {
 
     render() {
         return (
-            <button id={this.props.id} type="submit" className={'btn ' + this.props.className}>
+            <button id={this.props.id} type="submit" className={'btn ' + this.props.className} disabled={this.props.disabled}>
                 <i className={'fa ' + this.props.icon}/>{this.props.text}
             </button>
         )
