@@ -40,7 +40,7 @@ Feature: Explore the Minions page
     # Registration takes a while
     And I wait for "20" seconds
     And I follow first "Systems"
-    Then I should see this client as link
+    Then I should see a "sle-minion" link
 
   Scenario: The minion communicates with the master
     # It takes a while before we can get the grains and registration is done
