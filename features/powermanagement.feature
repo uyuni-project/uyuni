@@ -47,17 +47,9 @@ Feature: Test Powermanagement
     Then I click on "Get status"
     And I should see the power is "On"
 
-  Scenario: check powermanagement in SSM
-    Given I am on the Systems page
-    When I check this client
-    And I wait for "15" seconds
-    And I follow "System Set Manager" in the left menu
-    Then I should see a "Configure power management" link in the content area
-    And I should see a "power management operations" link in the content area
-
   Scenario: check powermanagement SSM configuration
-    Given I am on the Systems page
-    When I follow "System Set Manager" in the left menu
+    Given I am authorized
+    And I am on System Set Manager Overview
     And I follow "Configure power management" in the content area
     Then I should see this client as link
     And I should see a "Change Power Management Configuration" text
@@ -77,8 +69,8 @@ Feature: Test Powermanagement
     And the cobbler report contains "Power Management Type          : ipmitool"
 
   Scenario: check powermanagement SSM Operation
-    Given I am on the Systems page
-    When I follow "System Set Manager" in the left menu
+    Given I am authorized
+    And I am on System Set Manager Overview
     And I follow "power management operations" in the content area
     Then I should see this client as link
     And I should see a "Power On" button

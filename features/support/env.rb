@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2017 SUSE-LINUX
 # Licensed under the terms of the MIT license.
 
 #
@@ -14,12 +14,10 @@ require 'capybara'
 require 'capybara/cucumber'
 require File.join(File.dirname(__FILE__), 'cobbler_test')
 require File.join(File.dirname(__FILE__), 'zypp_lock_helper')
-require 'owasp_zap'
 include OwaspZap
 
 browser = (ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil) || :firefox
 host = ENV['TESTHOST'] || 'andromeda.suse.de'
-proxy = ENV['ZAP_PROXY'].to_s || nil
 
 require 'minitest/unit'
 World(MiniTest::Assertions)
@@ -131,20 +129,6 @@ end
 
 # make sure proxy is started if we will use ut
 Before do
-  sec_proxy = ENV['ZAP_PROXY']
-  if sec_proxy && ['localhost', '127.0.0.1'].include?(sec_proxy)
-    $zap = Zap.new(:target => "https://#{ENV['TESTHOST']}", :zap => "/usr/share/owasp-zap/zap.sh")
-    unless $zap.running?
-      $zap.start(:daemon => true)
-      until $zap.running?
-        STDERR.puts 'waiting for security proxy...'
-        sleep 1
-      end
-    end
-  end
-end
-
-# kill owasp zap before exiting
-at_exit do
-  $zap.shutdown if $zap
+  # FIXME: test this restart, to avoid phantomjs crash
+  # page.driver.restart
 end
