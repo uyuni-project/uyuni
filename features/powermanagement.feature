@@ -48,7 +48,8 @@ Feature: Test Powermanagement
     And I should see the power is "On"
 
   Scenario: check powermanagement SSM configuration
-    Given I am on System Set Manager Overview
+    Given I am authorized
+    And I am on System Set Manager Overview
     And I follow "Configure power management" in the content area
     Then I should see this client as link
     And I should see a "Change Power Management Configuration" text
@@ -68,7 +69,8 @@ Feature: Test Powermanagement
     And the cobbler report contains "Power Management Type          : ipmitool"
 
   Scenario: check powermanagement SSM Operation
-    Given I am on System Set Manager Overview
+    Given I am authorized
+    And I am on System Set Manager Overview
     And I follow "power management operations" in the content area
     Then I should see this client as link
     And I should see a "Power On" button
