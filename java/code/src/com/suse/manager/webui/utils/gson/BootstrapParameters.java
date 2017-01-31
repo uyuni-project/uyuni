@@ -148,7 +148,7 @@ public class BootstrapParameters {
 
     /**
      * Convenience method for getting first selected activation key or empty.
-     * @return first selected activation key label ogetProxyPathr empty if none selected
+     * @return first selected activation key label or empty if none selected
      */
     public Optional<String> getFirstActivationKey() {
         return Optional.ofNullable(getActivationKeys())
