@@ -7,14 +7,14 @@
 - features/create_repository.feature
 - features/create_activationkey.feature
 - features/create_config_channel.feature
-- features/mgr-bootstrap.feature
+- features/mgr_bootstrap.feature
 - features/configuration.feature
-- features/scc-sync-channels.feature
+- features/scc_sync_channels.feature
 - features/setup_wizard.feature
 - features/channels.feature
 - features/check_registration.feature
 - features/install_package_and_errata.feature
-- features/clone_channel-npn.feature
+- features/clone_channel_npn.feature
 
 #### Salt related features   ###
 - features/minion_bootstrap.feature
@@ -39,4 +39,4 @@
 ## REPO_SYNC FEATURES, only refhost will execute this
 # We sync real channels
 # we run out of diskspace
-#- features/sync-real-channels.feature
+#- features/sync_real_channels.feature
