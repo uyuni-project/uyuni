@@ -177,9 +177,9 @@ Given(/^I am on the Systems overview page of this "(.*?)"$/) do |target|
   when "ceos-minion"
     step %(I follow "#{$ceos_minion_fullhostname}")
   when "sle-client"
-    step %(I follow "#{$client_fullhostname}")
+    step %(I follow "#{$client_hostname}")
   when "sle-migrated-minion"
-    step %(I follow "#{$client_fullhostname}")
+    step %(I follow "#{$client_hostname}")
   else
     raise "No valid target."
   end
@@ -318,4 +318,12 @@ end
 
 When(/^I am on the System Manager System Overview page$/) do
   visit("https://#{$server_fullhostname}/rhn/systems/ssm/ListSystems.do")
+end
+
+When(/^I am on the Create Autoinstallation Profile page$/) do
+  visit("https://#{$server_fullhostname}/rhn/kickstart/AdvancedModeCreate.do")
+end
+
+When(/^I am on the System Overview page$/) do
+  visit("https://#{$server_fullhostname}/rhn/systems/Overview.do")
 end
