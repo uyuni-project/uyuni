@@ -29,14 +29,14 @@ import java.io.InputStream;
 import static spark.Spark.halt;
 
 /**
- * Controller for downloading the public salt-ssh key.
+ * Generate and retrieve the salt-ssh public key.
  */
 public class SaltSSHController {
 
     private SaltSSHController() { }
 
     /**
-     * Generate the salt-ssh if it's missing and return the public key to the client.
+     * Generate the salt-ssh public key if it's missing and return it to the client.
      *
      * @param request the http request
      * @param response the http response
@@ -58,7 +58,8 @@ public class SaltSSHController {
 
         try (InputStream fin = new FileInputStream(pubKey)) {
             return IOUtils.toByteArray(fin);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             halt(500, e.getMessage());
         }
         return null;
