@@ -21,15 +21,12 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.domain.server.MinionServer;
 
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -125,17 +122,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                     jobResult.get(),
                                     jobReturnEvent.getData().getFun());
                             ActionFactory.save(sa);
-
-                            if (action.get() instanceof ApplyStatesAction &&
-                                    ((ApplyStatesAction) action.get()).getDetails()
-                                            .getStates().contains(ApplyStatesEventMessage
-                                                    .DOCKER_SERVICE) &&
-                                    sa.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                                // We have a failed Docker Build Host entitlement state.
-                                // Revert it.
-                                SystemManager.removeServerEntitlement(minionServer.getId(),
-                                        EntitlementManager.DOCKER_BUILD_HOST);
-                            }
                         });
                     });
                 }
