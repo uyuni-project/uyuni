@@ -228,6 +228,8 @@ When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, target|
     _out, $fail_code = $minion.run(cmd, false)
   when "sle-client"
     _out, $fail_code = $client.run(cmd, false)
+  when "sle-migrated-minion"
+    _out, $fail_code = $client.run(cmd, false)
   else
     raise "Invalid target."
   end

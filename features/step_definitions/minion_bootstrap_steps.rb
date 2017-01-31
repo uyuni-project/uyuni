@@ -2,13 +2,15 @@
 # Licensed under the terms of the MIT license.
 
 And(/^I enter the hostname of "([^"]*)" as hostname$/) do |minion|
-  if minion == "sle-minion"
+  case minion
+  when "sle-minion"
     step %(I enter "#{$minion_fullhostname}" as "hostname")
-
-  elsif minion == "ceos-minion"
+  when "ceos-minion"
     step %(I enter "#{$ceos_minion_fullhostname}" as "hostname")
+  when "sle-migrated-minion"
+    step %(I enter "#{$client_fullhostname}" as "hostname")
   else
-    raise "no valid name of minion given! "
+    raise "No valid target."
   end
 end
 
