@@ -951,7 +951,7 @@ public class SaltService {
      */
     public MgrUtilRunner.ExecResult generateSSHKey(String path) {
         RunnerCall<MgrUtilRunner.ExecResult> call =
-                MgrUtilRunner.generateSshKey(path);
+                MgrUtilRunner.generateSSHKey(path);
 
         return callSync(call);
     }
