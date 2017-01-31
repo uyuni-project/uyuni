@@ -24,6 +24,7 @@ public class ImageProfileCreateRequest {
     private String path;
     private String imageType;
     private String storeLabel;
+    private String activationKey;
 
     /**
      * @return the label
@@ -51,5 +52,12 @@ public class ImageProfileCreateRequest {
      */
     public String getStoreLabel() {
         return storeLabel;
+    }
+
+    /**
+     * @return the activation key
+     */
+    public String getActivationKey() {
+        return activationKey;
     }
 }

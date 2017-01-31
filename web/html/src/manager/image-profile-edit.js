@@ -29,11 +29,11 @@ class CreateImageProfile extends React.Component {
             imageStore: "",
             path: "",
             label: "",
-            token: ""
+            activationKey: ""
         };
 
         ["setValues", "handleChange", "handleImageTypeChange", "onUpdate", "onCreate",
-            "clearFields", "getImageStores", "getTokens", "renderField", "renderTypeInputs",
+            "clearFields", "getImageStores", "renderField", "renderTypeInputs",
             "renderImageTypeSelect", "renderStoreSelect", "renderButtons"]
                 .forEach(method => this[method] = this[method].bind(this));
 
@@ -53,7 +53,7 @@ class CreateImageProfile extends React.Component {
                 var data = res.data;
                 this.setState({
                     label: data.label,
-                    token: data.token_id,
+                    activationKey: data.activation_key ? data.activation_key.name : undefined,
                     path: data.path,
                     imageType: data.image_type,
                     imageStore: data.store,
@@ -91,7 +91,8 @@ class CreateImageProfile extends React.Component {
             label: this.state.label,
             path: this.state.path,
             imageType: this.state.imageType,
-            storeLabel: this.state.imageStore
+            storeLabel: this.state.imageStore,
+            activationKey: this.state.activationKey
         };
 
         return Network.post(
@@ -122,7 +123,8 @@ class CreateImageProfile extends React.Component {
             label: this.state.label,
             path: this.state.path,
             imageType: this.state.imageType,
-            storeLabel: this.state.imageStore
+            storeLabel: this.state.imageStore,
+            activationKey: this.state.activationKey
         };
         return Network.post(
             "/rhn/manager/api/cm/imageprofiles",
@@ -145,7 +147,8 @@ class CreateImageProfile extends React.Component {
       this.setState({
           label: "",
           path: "",
-          imageStore: ""
+          imageStore: "",
+          activationKey: ""
       });
     }
 
@@ -156,10 +159,6 @@ class CreateImageProfile extends React.Component {
                     imageStores: data
                 });
             });
-    }
-
-    getTokens() {
-
     }
 
     renderField(name, label, value, hidden = false, required = true) {
@@ -195,6 +194,22 @@ class CreateImageProfile extends React.Component {
                  {
                      this.state.imageTypes.map(k =>
                         <option key={k} value={k}>{ typeMap[k].name }</option>
+                     )
+                 }
+               </select>
+            </div>
+        </div>;
+    }
+
+    renderTokenSelect() {
+        return <div className="form-group">
+            <label className="col-md-3 control-label">Activation Key:</label>
+            <div className="col-md-6">
+               <select value={this.state.activationKey} onChange={this.handleChange} className="form-control" name="activationKey">
+                 <option key="0" value="">None</option>
+                 {
+                     activationKeys.map(k =>
+                        <option key={k} value={k}>{k}</option>
                      )
                  }
                </select>
@@ -239,6 +254,7 @@ class CreateImageProfile extends React.Component {
                 <div className="form-horizontal">
                     { this.renderField("label", t("Label"), this.state.label) }
                     { this.renderImageTypeSelect() }
+                    { this.renderTokenSelect() }
                     { this.renderTypeInputs(this.state.imageType) }
                     <div className="form-group">
                         <div className="col-md-offset-3 col-md-6">

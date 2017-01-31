@@ -16,7 +16,9 @@
 package com.suse.manager.webui.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -24,9 +26,14 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.webui.utils.gson.ImageProfileCreateRequest;
 import com.suse.manager.webui.utils.gson.JsonResult;
+import org.apache.commons.lang.StringUtils;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -74,8 +81,10 @@ public class ImageProfileController {
      * @return the model and view
      */
     public static ModelAndView createView(Request req, Response res, User user) {
-        return new ModelAndView(new HashMap<String, Object>(),
-                "content_management/edit-profile.jade");
+        Map<String, Object> data = new HashMap<>();
+        data.put("activation_keys", getActivationKeys(user));
+
+        return new ModelAndView(data, "content_management/edit-profile.jade");
     }
 
     /**
@@ -96,6 +105,7 @@ public class ImageProfileController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("profile_id", profileId);
+        data.put("activation_keys", getActivationKeys(user));
         return new ModelAndView(data, "content_management/edit-profile.jade");
     }
 
@@ -141,8 +151,34 @@ public class ImageProfileController {
             json.addProperty("profile_id", p.getProfileId());
             json.addProperty("image_type", p.getImageType());
             json.addProperty("label", p.getLabel());
-            json.addProperty("token_id",
-                    p.getToken() != null ? p.getToken().getId() : null);
+
+            if (p.getToken() != null) {
+                ActivationKey ak = ActivationKeyFactory.lookupByToken(p.getToken());
+                JsonObject akJson = new JsonObject();
+                akJson.addProperty("id", ak.getId());
+                akJson.addProperty("name", ak.getKey());
+
+                JsonObject channelsJson = new JsonObject();
+                JsonArray childChannelsJson = new JsonArray();
+
+                for (Channel ch : p.getToken().getChannels()) {
+                    JsonObject chJson = new JsonObject();
+                    chJson.addProperty("id", ch.getId());
+                    chJson.addProperty("name", ch.getLabel());
+
+                    if (ch.isBaseChannel()) {
+                        channelsJson.add("base", GSON.toJsonTree(chJson));
+                    }
+                    else {
+                        childChannelsJson.add(chJson);
+                    }
+                }
+                channelsJson.add("children", childChannelsJson);
+
+                akJson.add("channels", GSON.toJsonTree(channelsJson));
+                json.add("activation_key", GSON.toJsonTree(akJson));
+            }
+
             if (p instanceof DockerfileProfile) {
                 DockerfileProfile dp = (DockerfileProfile) p;
                 json.addProperty("path", dp.getPath());
@@ -192,6 +228,7 @@ public class ImageProfileController {
                 dp.setLabel(reqData.getLabel());
                 dp.setPath(reqData.getPath());
                 dp.setStore(store);
+                dp.setToken(getToken(reqData.getActivationKey()));
             }
 
             ImageProfileFactory.save(p);
@@ -224,6 +261,7 @@ public class ImageProfileController {
             dockerfileProfile.setPath(reqData.getPath());
             dockerfileProfile.setStore(store);
             dockerfileProfile.setOrg(user.getOrg());
+            dockerfileProfile.setToken(getToken(reqData.getActivationKey()));
 
             profile = dockerfileProfile;
         }
@@ -258,5 +296,32 @@ public class ImageProfileController {
     private static List<JsonObject> getJsonList(List<ImageProfile> profileList) {
         return profileList.stream().map(ImageProfileController::getJsonObject)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets a list of activation keys available to the user, as a JSON string
+     *
+     * @param user the user
+     * @return a JSON string of the list of activation keys
+     */
+    private static String getActivationKeys(User user) {
+        ActivationKeyManager akm = ActivationKeyManager.getInstance();
+        return GSON.toJson(akm.findAll(user).stream().map(ActivationKey::getKey)
+                .collect(Collectors.toList()));
+    }
+
+    /**
+     * Gets the Token instance from activation key string, or null, if a null or empty
+     * string is provided.
+     *
+     * @param activationKey the key string, or null/empty string
+     * @return the token instance, or null if no key is provided
+     */
+    private static Token getToken(String activationKey) {
+        if (StringUtils.isEmpty(activationKey)) {
+            return null;
+        }
+
+        return ActivationKeyFactory.lookupByKey(activationKey).getToken();
     }
 }
