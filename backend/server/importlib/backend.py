@@ -104,6 +104,8 @@ class Backend:
             capabilityHash[(name, version)] = row['id']
 
     def processChangeLog(self, changelogHash):
+        if CFG.has_key('incomplete_package_import') and CFG.incomplete_package_import:
+            return
         sql = "select id from rhnPackageChangeLogData where name = :name and time = :time and text = :text"
         h = self.dbmodule.prepare(sql)
         toinsert = [[], [], [], []]
@@ -827,6 +829,10 @@ class Backend:
             'susePackageProductFile':  'package_id',
             'susePackageEula':         'package_id',
         }
+
+        if CFG.has_key('incomplete_package_import') and CFG.incomplete_package_import:
+            del childTables['rhnPackageFile']
+            del childTables['rhnPackageChangeLogRec']
 
         for package in packages:
             if not isinstance(package, Package):
