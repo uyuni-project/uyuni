@@ -39,7 +39,6 @@ Feature: Explore the Minions page
     And we wait till Salt master sees this minion as accepted
     # Registration takes a while
     And I wait for "20" seconds
-    And I follow first "Systems"
     Then I should see a "sle-minion" link
 
   Scenario: The minion communicates with the master
