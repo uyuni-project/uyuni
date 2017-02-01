@@ -23,9 +23,7 @@ import com.redhat.rhn.frontend.nav.NavTree;
 import com.redhat.rhn.frontend.nav.NavTreeIndex;
 import com.redhat.rhn.frontend.nav.RenderEngine;
 import com.redhat.rhn.frontend.nav.Renderable;
-import com.redhat.rhn.frontend.nav.SidenavRenderer;
 import com.redhat.rhn.frontend.nav.TextRenderer;
-import com.redhat.rhn.frontend.nav.TopnavRenderer;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -77,15 +75,10 @@ public class NavTest extends RhnBaseTestCase {
         RenderEngine nr = new RenderEngine(nti);
         st.stop();
 
-        Renderable[] renderers = new Renderable[3];
+        Renderable[] renderers = new Renderable[2];
 
-        renderers[0] = new SidenavRenderer();
-
-        renderers[1] = new TopnavRenderer();
-        renderers[1].setRenderGuard(new DepthGuard(0, 0));
-
-        renderers[2] = new TextRenderer();
-        renderers[2].setRenderGuard(new DepthGuard(1, Integer.MAX_VALUE));
+        renderers[0] = new TextRenderer();
+        renderers[0].setRenderGuard(new DepthGuard(1, Integer.MAX_VALUE));
 
         for (int i = 0; i < renderers.length; i++) {
             log.info("Using Renderable " +

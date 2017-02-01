@@ -17,12 +17,9 @@ package com.redhat.rhn.frontend.taglibs;
 import com.redhat.rhn.frontend.nav.NavTreeIndex;
 import com.redhat.rhn.frontend.nav.RenderGuard;
 import com.redhat.rhn.frontend.nav.Renderable;
-import com.redhat.rhn.frontend.nav.TitleRenderer;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * NavDialogMenuTag is a specialization of the NavMenuTag.
@@ -48,10 +45,6 @@ public class NavDialogMenuTag extends NavMenuTag {
             RenderGuard guard, Map<String, String[]> params) {
         String body = RenderUtils.getInstance().render(
                 navTreeIndex, renderable, guard, params);
-        String title = RenderUtils.getInstance().render(
-                navTreeIndex, new TitleRenderer(), guard, params);
-        HttpServletRequest req = (HttpServletRequest) pageContext.getRequest();
-        req.setAttribute("innernavtitle", title);
         return body;
     }
 

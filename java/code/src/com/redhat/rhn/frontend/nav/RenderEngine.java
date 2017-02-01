@@ -54,11 +54,6 @@ public class RenderEngine {
         result = new StringBuffer();
         List todo = treeIndex.getTree().getNodes();
 
-        if (SidenavRenderer.class.isInstance(renderer)) {
-            return result.append(
-                    ((SidenavRenderer)renderer).jsonRender(treeIndex)).toString();
-        }
-
         renderer.preNav(result);
         this.renderLevel(renderer, todo, parameters, 0);
         renderer.postNav(result);
