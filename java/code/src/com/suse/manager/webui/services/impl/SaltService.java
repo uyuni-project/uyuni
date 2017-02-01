@@ -134,10 +134,16 @@ public class SaltService {
         saltSSHService = new SaltSSHService(SALT_CLIENT);
     }
 
+    /**
+     * @return the Salt reactor
+     */
     public SaltReactor getReactor() {
         return reactor;
     }
 
+    /**
+     * @param reactorIn the Salt reactor
+     */
     public void setReactor(SaltReactor reactorIn) {
         this.reactor = reactorIn;
     }
@@ -385,67 +391,39 @@ public class SaltService {
         }
     }
 
-
-//    public static class JobReturnEventListener<R> implements EventListener {
-//
-//        private String jobId;
-//        private TypeToken<R> resultType;
-//        private Map<String, CompletableFuture<R>> minionFutures = new HashedMap();
-//
-//        public JobReturnEventListener(String jobIdIn, TypeToken<R> resultTypeIn) {
-//            this.jobId = jobIdIn;
-//            this.resultType = resultTypeIn;
-//        }
-//
-//        @Override
-//        public void notify(Event event) {
-//            JobReturnEvent.parse(event)
-//                    .filter(jre -> jre.getJobId().equals(jobId))
-//                    .ifPresent(jre ->  {
-//                        CompletableFuture<R> future = minionFutures.get(jre.getMinionId());
-//                        if (future != null) {
-//                            future.complete(jre.getData().getResult(resultType));
-//                        }
-//                    });
-//            RunnerJobReturnEvent.parse(event)
-//                    .filter(jre -> {
-//                        Jobs.Info data = jre.getData().getResult(Jobs.Info.class);
-//                        return data.getJid().equals(jobId);
-//                    }).ifPresent(jre -> {
-//                        Jobs.Info data = jre.getData().getResult(Jobs.Info.class);
-//                        data.getMinions().forEach((minionId) -> {
-//                            data.getResult(minionId, resultType).ifPresent(result -> {
-//                                CompletableFuture<R> future = minionFutures.get(minionId);
-//                                if (future != null) {
-//                                    future.complete(result);
-//                                }
-//                            });
-//                        });
-//                    });
-//        }
-//
-//        @Override
-//        public void eventStreamClosed(CloseReason closeReason) {
-//            LOG.info("Closing event stream for jid=" + jobId);
-//        }
-//
-//        public void addFutures(Map<String, CompletableFuture<R>> futures) {
-//            minionFutures.putAll(futures);
-//        }
-//    }
-
     private <R> Map<String, CompletionStage<Result<R>>> completableAsyncCall(
-            LocalCall<R> call, Target<?> target, EventStream events, CompletableFuture<GenericError> cancel) throws SaltException {
-        return call.callAsync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO, events, cancel);
+            LocalCall<R> call, Target<?> target, EventStream events,
+            CompletableFuture<GenericError> cancel) throws SaltException {
+        return call.callAsync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD,
+                AuthModule.AUTO, events, cancel);
     }
 
-    public Map<String, CompletionStage<Result<String>>> completableRemoteCommandAsync(Target<?> target, String cmd,
-                                          CompletableFuture<GenericError> cancel) throws SaltException {
-        return completableAsyncCall(Cmd.run(cmd), target, reactor.getEventStream(), cancel);
+    /**
+     * Run a remote command on a given minion asynchronously.
+     * @param target the target
+     * @param cmd the command to execute
+     * @param cancel a future used to cancel waiting on return events
+     * @return a map holding a {@link CompletionStage}s for each minion
+     */
+    public Map<String, CompletionStage<Result<String>>> runRemoteCommandAsync(
+            Target<?> target, String cmd, CompletableFuture<GenericError> cancel) {
+        try {
+            return completableAsyncCall(Cmd.run(cmd), target,
+                    reactor.getEventStream(), cancel);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public <T> CompletableFuture<T> failAfter(int seconds) {
-        final CompletableFuture<T> promise = new CompletableFuture<>();
+    /**
+     * Create a {@link CompletableFuture} that completes exceptionally after
+     * the given number of seconds.
+     * @param seconds the seconds after which it completes exceptionally
+     * @return a {@link CompletableFuture}
+     */
+    public CompletableFuture failAfter(int seconds) {
+        final CompletableFuture promise = new CompletableFuture();
         scheduledExecutorService.schedule(() -> {
             final TimeoutException ex = new TimeoutException("Timeout after " + seconds);
             return promise.completeExceptionally(ex);
@@ -504,9 +482,17 @@ public class SaltService {
         }
     }
 
-    public Map<String, CompletionStage<Result<Boolean>>> matchAsync(String target, CompletableFuture<GenericError> cancel) {
+    /**
+     * Match the given target exression asynchronously.
+     * @param target the target expression
+     * @param cancel  a future used to cancel waiting on return events
+     * @return a map holding a {@link CompletionStage}s for each minion
+     */
+    public Map<String, CompletionStage<Result<Boolean>>> matchAsync(
+            String target, CompletableFuture<GenericError> cancel) {
         try {
-            return completableAsyncCall(Match.glob(target), new Glob(target), reactor.getEventStream(), cancel);
+            return completableAsyncCall(Match.glob(target), new Glob(target),
+                    reactor.getEventStream(), cancel);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
