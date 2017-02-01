@@ -6,6 +6,12 @@ Master
 Manager 30
 [![Build Status Master branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=manager30)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
 
+
+## Introduction
+
+Welcome ! This is the Testsuite to automatically test Suse-Manager/Spacewalk.
+
+
 ## How to Contribute. 
 
 #### CREATE always a PR, first against MASTER. After that, create a PR for other branches, if needed for backport the feature.
@@ -37,10 +43,7 @@ Steps files should be like:
         
 * The testsuite is licensed under the MIT license. See the `MIT-LICENSE.txt` file included in the distribution.
 
-
-## Introduction
-
-Testsuite to automatically test Spacewalk/Suse-Manager.
+.
 
 ### Usefull tutorial infos:
 
