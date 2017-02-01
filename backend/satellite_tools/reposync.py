@@ -1076,7 +1076,7 @@ class RepoSync(object):
         affected_row_count = h.execute()
         if (affected_row_count > 0):
             self.print_msg(
-                "Transferred {} orphaned vendor packages to the default organization"
+                "Transferred {0} orphaned vendor packages to the default organization"
                 .format(affected_row_count)
             )
 
