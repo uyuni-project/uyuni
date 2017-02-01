@@ -10,7 +10,7 @@ import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 import com.suse.salt.netapi.calls.wheel.Key;
-import com.suse.salt.netapi.errors.GenericSaltError;
+import com.suse.salt.netapi.errors.JsonParsingError;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
@@ -111,7 +111,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
     }
 
     private SaltError createGenericSaltError() {
-        return new GenericSaltError(
+        return new JsonParsingError(
                 new JsonPrimitive("salt error."),
                 new Exception("exception causing the error."));
     }
