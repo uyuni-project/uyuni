@@ -82,6 +82,8 @@ public class Router implements SparkApplication {
         get("/manager/api/cm/imageprofiles", withUser(ImageProfileController::list));
         get("/manager/api/cm/imageprofiles/:id",
                 withUser(ImageProfileController::getSingle));
+        get("/manager/api/cm/imageprofiles/channels/:token",
+                withImageAdmin(ImageProfileController::getChannels));
         post("/manager/api/cm/imageprofiles",
                 withImageAdmin(ImageProfileController::create));
         post("/manager/api/cm/imageprofiles/:id",

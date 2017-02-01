@@ -132,6 +132,21 @@ public class ImageProfileController {
     }
 
     /**
+     * Processes a GET request to get the channel information for a specific token
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getChannels(Request req, Response res, User user) {
+        String key = req.params("token");
+
+        JsonObject channelsJson = getChannelsJson(key);
+        return json(res, channelsJson);
+    }
+
+    /**
      * Processes a GET request to get a single image profile object
      *
      * @param req the request object
@@ -158,22 +173,7 @@ public class ImageProfileController {
                 akJson.addProperty("id", ak.getId());
                 akJson.addProperty("name", ak.getKey());
 
-                JsonObject channelsJson = new JsonObject();
-                JsonArray childChannelsJson = new JsonArray();
-
-                for (Channel ch : p.getToken().getChannels()) {
-                    JsonObject chJson = new JsonObject();
-                    chJson.addProperty("id", ch.getId());
-                    chJson.addProperty("name", ch.getLabel());
-
-                    if (ch.isBaseChannel()) {
-                        channelsJson.add("base", GSON.toJsonTree(chJson));
-                    }
-                    else {
-                        childChannelsJson.add(chJson);
-                    }
-                }
-                channelsJson.add("children", childChannelsJson);
+                JsonObject channelsJson = getChannelsJson(ak.getKey());
 
                 akJson.add("channels", GSON.toJsonTree(channelsJson));
                 json.add("activation_key", GSON.toJsonTree(akJson));
@@ -323,5 +323,37 @@ public class ImageProfileController {
         }
 
         return ActivationKeyFactory.lookupByKey(activationKey).getToken();
+    }
+
+    /**
+     * Gets a complex JSON object containing channel information for a specific
+     * activation key
+     *
+     * @param activationKey the activation key
+     * @return the JSON object
+     */
+    private static JsonObject getChannelsJson(String activationKey) {
+        Token token = getToken(activationKey);
+
+        JsonObject channelsJson = new JsonObject();
+        JsonArray childChannelsJson = new JsonArray();
+
+        channelsJson.addProperty("activation_key", activationKey);
+
+        for (Channel ch : token.getChannels()) {
+            JsonObject chJson = new JsonObject();
+            chJson.addProperty("id", ch.getId());
+            chJson.addProperty("name", ch.getLabel());
+
+            if (ch.isBaseChannel()) {
+                channelsJson.add("base", GSON.toJsonTree(chJson));
+            }
+            else {
+                childChannelsJson.add(chJson);
+            }
+        }
+        channelsJson.add("children", childChannelsJson);
+
+        return channelsJson;
     }
 }
