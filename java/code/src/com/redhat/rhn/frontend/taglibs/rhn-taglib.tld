@@ -65,27 +65,6 @@
             <type>com.redhat.rhn.common.util.DatePicker</type>
         </attribute>
     </tag>
-    <tag>
-        <name>menu</name>
-        <tag-class>com.redhat.rhn.frontend.taglibs.NavMenuTag</tag-class>
-        <body-content>JSP</body-content>
-        <attribute>
-            <name>mindepth</name>
-            <required>false</required>
-        </attribute>
-        <attribute>
-            <name>maxdepth</name>
-            <required>false</required>
-        </attribute>
-        <attribute>
-            <name>definition</name>
-            <required>false</required>
-        </attribute>
-        <attribute>
-            <name>renderer</name>
-            <required>false</required>
-        </attribute>
-    </tag>
 
     <tag>
         <name>dialogmenu</name>
