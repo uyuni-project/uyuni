@@ -643,7 +643,8 @@ public class StatesAPI {
                                         err -> err.fold(
                                                 Object::toString,
                                                 Object::toString,
-                                                e -> "Error during state.show_highstate"
+                                                e -> "Error during state.show_highstate",
+                                                Object::toString
                                         ),
                                         YamlHelper.INSTANCE::dump
                                 ))
