@@ -43,8 +43,6 @@ Steps files should be like:
         
 * The testsuite is licensed under the MIT license. See the `MIT-LICENSE.txt` file included in the distribution.
 
-.
-
 ### Usefull tutorial infos:
 
 [Testing-api tutorial](docs/api-call.md), [Branches that we use](docs/branches.md)
