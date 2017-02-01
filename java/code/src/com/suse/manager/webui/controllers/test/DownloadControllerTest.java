@@ -261,13 +261,13 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
-    public void testTokenNotAssignedToMinion() throws Exception {
+    public void testTokenNotValid() throws Exception {
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         testMinionServer.getChannels().add(channel);
         AccessTokenFactory.refreshTokens(testMinionServer);
 
         AccessToken token = testMinionServer.getAccessTokens().iterator().next();
-        token.setMinion(null);
+        token.setValid(false);
         AccessTokenFactory.save(token);
 
         Map<String, String> params = new HashMap<>();
