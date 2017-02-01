@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.servlets.LocalizedEnvironmentFilter;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.websocket.json.AsyncJobStartEventDto;
-import com.suse.manager.webui.websocket.json.RemoteMinionCommandDto;
+import com.suse.manager.webui.websocket.json.ExecuteMinionActionDto;
 import com.suse.manager.webui.websocket.json.MinionMatchResultEventDto;
 import com.suse.manager.webui.websocket.json.ActionTimedOutEventDto;
 import com.suse.manager.webui.websocket.json.MinionCommandResultEventDto;
@@ -104,8 +104,8 @@ public class RemoteMinionCommands {
                 .map(MinionServer::getMinionId)
                 .collect(Collectors.toList());
 
-        RemoteMinionCommandDto msg = Json.GSON.fromJson(
-                messageBody, RemoteMinionCommandDto.class);
+        ExecuteMinionActionDto msg = Json.GSON.fromJson(
+                messageBody, ExecuteMinionActionDto.class);
         int timeOut = 20; // TODO remove hardcoding
         try {
             if (msg.isPreview()) {
