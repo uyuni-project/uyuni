@@ -177,9 +177,9 @@ Given(/^I am on the Systems overview page of this "(.*?)"$/) do |target|
   when "ceos-minion"
     step %(I follow "#{$ceos_minion_fullhostname}")
   when "sle-client"
-    step %(I follow "#{$client_fullhostname}")
+    step %(I follow "#{$client_hostname}")
   when "sle-migrated-minion"
-    step %(I follow "#{$client_fullhostname}")
+    step %(I follow "#{$client_hostname}")
   else
     raise "No valid target."
   end
