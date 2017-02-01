@@ -49,7 +49,7 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.salt.ModuleRun;
+import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
