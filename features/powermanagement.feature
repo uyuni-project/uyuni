@@ -49,6 +49,8 @@ Feature: Test Powermanagement
 
   Scenario: check powermanagement SSM configuration
     Given I am authorized
+    And I am on the System Overview page
+    And I check this client
     And I am on System Set Manager Overview
     And I follow "Configure power management" in the content area
     Then I should see this client as link

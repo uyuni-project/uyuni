@@ -319,3 +319,11 @@ end
 When(/^I am on the System Manager System Overview page$/) do
   visit("https://#{$server_fullhostname}/rhn/systems/ssm/ListSystems.do")
 end
+
+When(/^I am on the Create Autoinstallation Profile page$/) do
+  visit("https://#{$server_fullhostname}/rhn/kickstart/AdvancedModeCreate.do")
+end
+
+When(/^I am on the System Overview page$/) do
+  visit("https://#{$server_fullhostname}/rhn/systems/Overview.do")
+end
