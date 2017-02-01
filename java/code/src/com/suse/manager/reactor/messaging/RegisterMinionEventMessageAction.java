@@ -528,7 +528,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             osRelease = whatprovidesRes.flatMap(res -> res.fold(
                     err -> err.fold(err1 -> rpmErrQueryRHELProvidesRelease(minionId),
                             err2 -> rpmErrQueryRHELProvidesRelease(minionId),
-                            err3 -> rpmErrQueryRHELProvidesRelease(minionId)),
+                            err3 -> rpmErrQueryRHELProvidesRelease(minionId),
+                            err4 -> rpmErrQueryRHELProvidesRelease(minionId)),
                     r -> Optional.of(r)
             ))
             .flatMap(pkg ->
@@ -542,7 +543,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                                 err -> err.fold(
                                         err1 -> rpmErrQueryRHELRelease(err1, minionId),
                                         err2 -> rpmErrQueryRHELRelease(err2, minionId),
-                                        err3 -> rpmErrQueryRHELRelease(err3, minionId)),
+                                        err3 -> rpmErrQueryRHELRelease(err3, minionId),
+                                        err4 -> rpmErrQueryRHELRelease(err4, minionId)),
                                 r -> Optional.of(r)
                         ))
                         .map(this::parseRHELReleseQuery)
