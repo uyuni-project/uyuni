@@ -158,6 +158,11 @@ public class DownloadController {
      * @param filename the filename
      */
     private static void validateToken(String token, String channel, String filename) {
+        AccessTokenFactory.lookupByToken(token).ifPresent(obj -> {
+            if (!obj.getValid()) {
+                halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
+            }
+        });
         try {
             JwtClaims jwtClaims = JWT_CONSUMER.processToClaims(token);
 
