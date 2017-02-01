@@ -32,9 +32,10 @@ class CreateImageProfile extends React.Component {
             activationKey: ""
         };
 
-        ["setValues", "handleChange", "handleImageTypeChange", "onUpdate", "onCreate",
-            "clearFields", "getImageStores", "renderField", "renderTypeInputs",
-            "renderImageTypeSelect", "renderStoreSelect", "renderButtons"]
+        ["setValues", "getChannels", "handleTokenChange", "handleChange",
+            "handleImageTypeChange", "onUpdate", "onCreate", "clearFields",
+            "getImageStores", "renderField", "renderTypeInputs", "renderImageTypeSelect",
+            "renderStoreSelect", "renderButtons"]
                 .forEach(method => this[method] = this[method].bind(this));
 
         this.getImageStores(typeMap[this.state.imageType].storeType);
@@ -59,10 +60,35 @@ class CreateImageProfile extends React.Component {
                     imageStore: data.store,
                     init_label: data.label
                 });
+                this.getChannels(data.activation_key.name);
             } else {
                 window.location = "/rhn/manager/cm/imageprofiles/create";
             }
         });
+    }
+
+    getChannels(token) {
+        if(!token) {
+            this.setState({
+                channels: undefined
+            });
+            return;
+        }
+
+        Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).promise.then(res => {
+            // Prevent out-of-order async results
+            if(res.activation_key != this.state.activationKey)
+                return false;
+
+            this.setState({
+                channels: res
+            });
+        });
+    }
+
+    handleTokenChange(event) {
+        this.handleChange(event);
+        this.getChannels(event.target.value);
     }
 
     handleChange(event) {
@@ -205,7 +231,7 @@ class CreateImageProfile extends React.Component {
         return <div className="form-group">
             <label className="col-md-3 control-label">Activation Key:</label>
             <div className="col-md-6">
-               <select value={this.state.activationKey} onChange={this.handleChange} className="form-control" name="activationKey">
+               <select value={this.state.activationKey} onChange={this.handleTokenChange} className="form-control" name="activationKey">
                  <option key="0" value="">None</option>
                  {
                      activationKeys.map(k =>
@@ -213,6 +239,24 @@ class CreateImageProfile extends React.Component {
                      )
                  }
                </select>
+               { this.state.channels &&
+                    ( this.state.channels.base ?
+                        <div className="help-block">
+                            <ul className="list-unstyled">
+                                <li>{this.state.channels.base.name}</li>
+                                <ul>
+                                    {
+                                        this.state.channels.children.map(c => <li>{c.name}</li>)
+                                    }
+                                </ul>
+                            </ul>
+                        </div>
+                    :
+                        <div className="help-block">
+                            <span><em>{t("There are no channels assigned to this key.")}</em></span>
+                        </div>
+                    )
+               }
             </div>
         </div>;
     }
@@ -254,8 +298,8 @@ class CreateImageProfile extends React.Component {
                 <div className="form-horizontal">
                     { this.renderField("label", t("Label"), this.state.label) }
                     { this.renderImageTypeSelect() }
-                    { this.renderTokenSelect() }
                     { this.renderTypeInputs(this.state.imageType) }
+                    { this.renderTokenSelect() }
                     <div className="form-group">
                         <div className="col-md-offset-3 col-md-6">
                             { this.renderButtons() }
