@@ -20,5 +20,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <many-to-many class="com.redhat.rhn.domain.channel.Channel"
                           column="channel_id"/>
         </set>
+        <property name="valid" column="valid" type="yes_no"/>
     </class>
 </hibernate-mapping>

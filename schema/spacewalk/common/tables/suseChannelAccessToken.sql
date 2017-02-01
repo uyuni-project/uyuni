@@ -23,7 +23,8 @@ CREATE TABLE suseChannelAccessToken
                              ON DELETE SET NULL,
     token            varchar2(4000) NOT NULL,
     created          timestamp with local time zone NOT NULL,
-    expiration       timestamp with local time zone NOT NULL
+    expiration       timestamp with local time zone NOT NULL,
+    valid            varchar2(1) DEFAULT ('N') NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;
