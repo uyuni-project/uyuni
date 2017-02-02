@@ -107,7 +107,7 @@ class RemoteCommand extends React.Component {
 
   constructor() {
     super();
-    ["onPreview", "onRun", "onStop", "commandChanged", "targetChanged", "commandResult"]
+    ["onPreview", "onRun", "onStop", "commandChanged", "targetChanged", "commandResult", "onBeforeUnload"]
     .forEach(method => this[method] = this[method].bind(this));
 
     this.state = {
@@ -229,6 +229,12 @@ class RemoteCommand extends React.Component {
                               }));
   }
 
+  onBeforeUnload(event) {
+      this.setState({
+          pageUnloading: true
+      });
+  }
+
   componentDidMount() {
     var ws = new WebSocket("wss://" + window.location.hostname + "/rhn/websocket/minion/remote-commands", "protocolOne");
     ws.onopen = () => {
@@ -240,7 +246,7 @@ class RemoteCommand extends React.Component {
     };
     ws.onclose = (e) => {
       var errs = [];
-      if (this.state.executing.state() == "pending") {
+      if (this.state.executing.state() == "pending" && !this.state.pageUnloading) {
           errs = [t("Websocket connection closed.")]
       }
       if (this.state.ran) {
@@ -340,6 +346,9 @@ class RemoteCommand extends React.Component {
             break;
       }
     };
+
+    window.addEventListener("beforeunload", this.onBeforeUnload)
+
     this.setState({
         websocket: ws,
     });
