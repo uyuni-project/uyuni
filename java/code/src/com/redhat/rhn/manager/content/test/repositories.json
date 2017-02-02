@@ -11808,5 +11808,305 @@
     "installer_updates": false,
     "name": "SLE-Module-HPC12-Source-Pool",
     "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/12/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12 for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2327,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12_x86_64/standard/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-Debuginfo for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2328,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-Debuginfo",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12_x86_64/standard_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-PackageHub-12-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2329,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-Pool",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12_x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12 for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": true,
+    "id": 2330,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12_s390x/standard/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-Debuginfo for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": false,
+    "id": 2331,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-Debuginfo",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12_s390x/standard_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-PackageHub-12-Pool for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": true,
+    "id": 2332,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-Pool",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12_s390x/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12 for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2333,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12_ppc64le/standard/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-Debuginfo for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2334,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-Debuginfo",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12_ppc64le/standard_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-PackageHub-12-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2335,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-Pool",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12_ppc64le/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP1 for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2336,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP1",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP1_x86_64/standard/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP1-Debuginfo for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2337,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP1-Debuginfo",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP1_x86_64/standard_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-PackageHub-12-SP1-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2338,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP1-Pool",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP1_x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP1 for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": true,
+    "id": 2339,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP1",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP1_s390x/standard/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP1-Debuginfo for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": false,
+    "id": 2340,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP1-Debuginfo",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP1_s390x/standard_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-PackageHub-12-SP1-Pool for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": true,
+    "id": 2341,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP1-Pool",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP1_s390x/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP1 for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2342,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP1",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP1_ppc64le/standard/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP1-Debuginfo for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2343,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP1-Debuginfo",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP1_ppc64le/standard_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-PackageHub-12-SP1-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2344,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP1-Pool",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP1_ppc64le/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP2 for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2345,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP2",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP2_x86_64/standard/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP2-Debuginfo for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2346,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP2-Debuginfo",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP2_x86_64/standard_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-PackageHub-12-SP2-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2347,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP2-Pool",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP2_x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP2 for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": true,
+    "id": 2348,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP2",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP2_s390x/standard/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP2-Debuginfo for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": false,
+    "id": 2349,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP2-Debuginfo",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP2_s390x/standard_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-PackageHub-12-SP2-Pool for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": true,
+    "id": 2350,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP2-Pool",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP2_s390x/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP2 for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2351,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP2",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP2_ppc64le/standard/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP2-Debuginfo for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2352,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP2-Debuginfo",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP2_ppc64le/standard_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-PackageHub-12-SP2-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2353,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP2-Pool",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP2_ppc64le/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP2 for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2354,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP2",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP2_aarch64/standard/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-PackageHub-12-SP2-Debuginfo for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2355,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP2-Debuginfo",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP2_aarch64/standard_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-PackageHub-12-SP2-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2356,
+    "installer_updates": false,
+    "name": "SUSE-PackageHub-12-SP2-Pool",
+    "url": "https://updates.suse.com/SUSE/Backports/SLE-12-SP2_aarch64/product/?my-fake-token"
   }
 ]
