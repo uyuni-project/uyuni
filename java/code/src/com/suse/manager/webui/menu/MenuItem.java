@@ -113,11 +113,9 @@ public class MenuItem {
 
     /**
      * @param activeIn The active to set.
-     * @return the MenuItem object
      */
-    public MenuItem setActive(boolean activeIn) {
+    public void setActive(boolean activeIn) {
         this.active = activeIn;
-        return this;
     }
 
     /**
