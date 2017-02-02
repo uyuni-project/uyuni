@@ -399,6 +399,10 @@ DATA = {
                           'PDID' : 1375, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
                         },
+    'SLES_RPI-12-SP2-aarch64' : {
+                          'PDID' : 1418, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+                        },
     'SLE-12-SP2-ppc64le' : {
                           'PDID' : 1355, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
