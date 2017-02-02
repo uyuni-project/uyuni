@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -36,10 +36,10 @@ import java.util.Optional;
  */
 public class MenuTree {
     /**
-     * Generate a List of {@link JSONMenuElement}.
+     * Generate a List of {@link MenuItem}.
      *
      * @param pageContext the PageContext object
-     * @return the full menu tree as a List of JSONMenuElement
+     * @return the full menu tree as a List of {@link MenuItem}
      */
     public static List<MenuItem> getMenuTree(PageContext pageContext) {
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
@@ -55,7 +55,7 @@ public class MenuTree {
         List<MenuItem> nodes = new LinkedList<>();
 
         if (checkAcl(user, "user_authenticated()")) {
-            // Level 1 - Home
+            // Home
             nodes.add(new MenuItem("Home").withPrimaryUrl("#").withIcon("fa-home")
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/YourRhn.do"))
                 .addChild(new MenuItem("User Account")
@@ -77,7 +77,7 @@ public class MenuTree {
                     .addChild(new MenuItem("Custom States").withPrimaryUrl("/rhn/manager/yourorg/custom").withVisibility(adminRoles.get("org")))
                     .withVisibility(adminRoles.get("org"))));
 
-            // Level 1 - Systems
+            // Systems
             nodes.add(new MenuItem("Systems").withIcon("fa-desktop").withDir("/rhn/systems/details")
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/systems/Overview.do"))
                 .addChild(new MenuItem("Systems").addChild(new MenuItem("All").withPrimaryUrl("/rhn/systems/SystemList.do"))
@@ -150,7 +150,7 @@ public class MenuTree {
                 .addChild(new MenuItem("Virtual Host Managers").withPrimaryUrl("/rhn/manager/vhms")
                     .withVisibility(adminRoles.get("org"))));
 
-            // Level 1 - Salt
+            // Salt
             nodes.add(new MenuItem("Salt").withIcon("spacewalk-icon-salt")
                 .addChild(new MenuItem("Onboarding").withPrimaryUrl("/rhn/manager/minions"))
                 .addChild(new MenuItem("Bootstrapping").withPrimaryUrl("/rhn/manager/minions/bootstrap")
@@ -161,7 +161,7 @@ public class MenuTree {
                 .addChild(new MenuItem("Formula Catalog").withPrimaryUrl("/rhn/manager/formula-catalog")
                     .withVisibility(adminRoles.get("org") && checkAcl(user, "salt_formulas_installed()"))));
 
-            // Level 1 - Patches
+            // Patches
             nodes.add(new MenuItem("Patches").withIcon("spacewalk-icon-patches")
                 .addChild(new MenuItem("Patches").withPrimaryUrl("/rhn/errata/RelevantErrata.do").withDir("/rhn/errata")
                     .addChild(new MenuItem("Relevant").withPrimaryUrl("/rhn/errata/RelevantErrata.do")
@@ -179,7 +179,7 @@ public class MenuTree {
                 .addChild(new MenuItem("Clone Errata").withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
                     .withDir("/rhn/errata/manage/clone").withVisibility(checkAcl(user, "user_role(channel_admin)"))));
 
-            // Level 1 - Channels
+            // Channels
             nodes.add(new MenuItem("Channels").withIcon("spacewalk-icon-software-channels")
                 .addChild(new MenuItem("Software Channels").withDir("/rhn/channels")
                     .addChild(new MenuItem("channel.nav.all").withPrimaryUrl("/rhn/software/channels/All.do"))
@@ -205,7 +205,7 @@ public class MenuTree {
                     .withAltUrl("/rhn/channels/manage/DistChannelMapEdit.do").withAltUrl("/rhn/channels/manage/DistChannelMapDelete.do")
                     .withVisibility(adminRoles.get("org"))));
 
-            // Level 1 - Audit
+            // Audit
             nodes.add(new MenuItem("Audit").withIcon("fa-search").withDir("/rhn/audit")
                 .addChild(new MenuItem("cveaudit.nav.title").withPrimaryUrl("/rhn/audit/CVEAudit.do"))
                 .addChild(new MenuItem("subscriptionmatching.nav.title").withPrimaryUrl("/rhn/manager/subscription-matching")
@@ -219,7 +219,7 @@ public class MenuTree {
                         .addChild(new MenuItem("Reviews").withPrimaryUrl("/rhn/audit/Machine.do"))
                         .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/audit/Search.do")))));
 
-            // Level 1 - Configuration
+            // Configuration
             nodes.add(new MenuItem("config.nav.config").withIcon("spacewalk-icon-software-channel-management")
                 .withVisibility(adminRoles.get("config"))
                 .withDir("/rhn/configuration")
@@ -243,7 +243,7 @@ public class MenuTree {
                         .withAltUrl("/rhn/configuration/system/Summary.do")))
                 );
 
-            // Level 1 - Schedule
+            // Schedule
             nodes.add(new MenuItem("Schedule").withIcon("fa-clock-o").withDir("/rhn/schedule")
                 .addChild(new MenuItem("Pending Actions").withPrimaryUrl("/rhn/schedule/PendingActions.do"))
                 .addChild(new MenuItem("Failed Actions").withPrimaryUrl("/rhn/schedule/FailedActions.do"))
@@ -253,7 +253,7 @@ public class MenuTree {
                     .withAltUrl("/rhn/schedule/ActionChain.do"))
                 );
 
-            // Level 1 - Users
+            // Users
             nodes.add(new MenuItem("Users").withIcon("fa-users").withVisibility(adminRoles.get("org"))
                 .addChild(new MenuItem("User List")
                     .withVisibility(adminRoles.get("org"))
@@ -329,7 +329,7 @@ public class MenuTree {
                     .withVisibility(adminRoles.get("satellite")))
                 );
 
-            // Level 1 - Help
+            // Help
             nodes.add(new MenuItem("Help").withIcon("fa-book")
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/help/index.do")
                     .withDir("/rhn/help"))
@@ -352,7 +352,7 @@ public class MenuTree {
                 .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/help/Search.do"))
                 );
 
-            // Level 1 - External Links
+            // External Links
             nodes.add(new MenuItem("External Links").withIcon("fa-link")
                 .addChild(new MenuItem("header.jsp.knowledgebase")
                     .withPrimaryUrl("https://www.suse.com/support/kb/product.php?id=SUSE_Manager")
@@ -363,12 +363,12 @@ public class MenuTree {
                 );
         }
         else {
-            // Level 1 - Create First User
+            // Create First User
             if (checkAcl(user, "need_first_user()")) {
                 nodes.add(new MenuItem("Create First User").withPrimaryUrl("/rhn/newlogin/CreateFirstUser.do"));
             }
 
-            // Level 1 - About Spacewalk
+            // About Spacewalk
             nodes.add(new MenuItem("About Spacewalk").withIcon("fa-question-circle")
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/help/about.do"))
                 .addChild(new MenuItem("Sign In").withPrimaryUrl("/rhn/Login.do"))
@@ -394,7 +394,7 @@ public class MenuTree {
                 .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/help/Search.do"))
                 );
 
-            // Level 1 - External Links
+            // External Links
             nodes.add(new MenuItem("External Links").withIcon("fa-link")
                 .addChild(new MenuItem("header.jsp.knowledgebase")
                     .withPrimaryUrl("https://www.suse.com/support/kb/product.php?id=SUSE_Manager")
@@ -412,6 +412,7 @@ public class MenuTree {
     }
 
     /**
+     * Evaluate acl conditions for the current {@link User}
      *
      * @param user the current User
      * @param aclMixin acls to evaluate
