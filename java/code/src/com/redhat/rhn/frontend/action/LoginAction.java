@@ -74,7 +74,7 @@ public class LoginAction extends RhnAction {
             }
             else {
                 // Errors, log failure
-                log.info("LOCAL AUTH FAILURE: [" + f.getString("username") + "]");
+                log.error("LOCAL AUTH FAILURE: [" + f.getString("username") + "]");
             }
         }
         // External-auth returned a user and no errors
