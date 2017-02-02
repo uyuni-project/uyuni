@@ -49,15 +49,13 @@ import java.util.stream.Collectors;
 
 /**
  * Websocket endpoint for executing remote commands on Salt minions.
+ * NOTE: there's an endpoint instance for each websocket session
  */
-@ServerEndpoint(value = "/websocket/minion/remote-commands",
-        configurator = ServletAwareConfigurator.class)
+@ServerEndpoint(value = "/websocket/minion/remote-commands")
 public class RemoteMinionCommands {
 
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(RemoteMinionCommands.class);
-
-    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
 
     private Long userId;
 
@@ -109,8 +107,8 @@ public class RemoteMinionCommands {
         int timeOut = 20; // TODO remove hardcoding
         try {
             if (msg.isPreview()) {
-                this.failAfter = SALT_SERVICE.failAfter(timeOut);
-                Map<String, CompletionStage<Result<Boolean>>> res = SALT_SERVICE
+                this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
+                Map<String, CompletionStage<Result<Boolean>>> res = SaltService.INSTANCE
                         .matchAsync(msg.getTarget(), failAfter);
 
                 List<String> allMinions = res.keySet().stream()
@@ -148,8 +146,8 @@ public class RemoteMinionCommands {
                 }
             }
             else {
-                this.failAfter = SALT_SERVICE.failAfter(timeOut);
-                Map<String, CompletionStage<Result<String>>> res = SALT_SERVICE
+                this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
+                Map<String, CompletionStage<Result<String>>> res = SaltService.INSTANCE
                         .runRemoteCommandAsync(new Glob(msg.getTarget()),
                                 msg.getCommand(), failAfter);
 
