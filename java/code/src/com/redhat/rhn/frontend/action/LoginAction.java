@@ -66,6 +66,14 @@ public class LoginAction extends RhnAction {
         if (user == null) {
             user = loginUser((String) f.get("username"), (String) f.get("password"),
                     request, response, errors);
+            if (errors.isEmpty()) {
+                // No errors, log success
+                log.info("LOCAL AUTH SUCCESS: [" + user.getLogin() + "]");
+            }
+            else {
+                // Errors, log failure
+                log.error("LOCAL AUTH FAILURE: [" + f.getString("username") + "]");
+            }
         }
 
         if (errors.isEmpty()) {
