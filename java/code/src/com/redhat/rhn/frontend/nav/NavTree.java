@@ -42,7 +42,7 @@ public class NavTree {
         titleDepth = 0;
         invisible = false;
 
-        nodes = new ArrayList<NavNode>();
+        nodes = new ArrayList<>();
     }
 
     /**
@@ -146,6 +146,7 @@ public class NavTree {
      *  String version of tree
      *  @return String the stringified tree
      */
+    @Override
     public String toString() {
         return
             ToStringBuilder.reflectionToString(this,
@@ -158,7 +159,7 @@ public class NavTree {
         return guard;
     }
     /**
-     * NavMenuTag sets this instance because the request is used for context
+     * NavDialogMenuTag sets this instance because the request is used for context
      * @param guardIn The guard to set.
      */
     public void setGuard(AclGuard guardIn) {

@@ -37,6 +37,7 @@ public class NavTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         TestUtils.disableLocalizationLogging();
@@ -75,20 +76,14 @@ public class NavTest extends RhnBaseTestCase {
         RenderEngine nr = new RenderEngine(nti);
         st.stop();
 
-        Renderable[] renderers = new Renderable[2];
+        Renderable renderer = new TextRenderer();
+        renderer.setRenderGuard(new DepthGuard(1, Integer.MAX_VALUE));
 
-        renderers[0] = new TextRenderer();
-        renderers[0].setRenderGuard(new DepthGuard(1, Integer.MAX_VALUE));
-
-        for (int i = 0; i < renderers.length; i++) {
-            log.info("Using Renderable " +
-                           renderers[i].getClass() + ":\n" +
-                           nr.render(renderers[i]));
-        }
+        log.info("Using Renderable " +
+            renderer.getClass() + ":\n" + nr.render(renderer));
 
         log.info("Parse Duration: " +
                        st.getTime() / 1000f + " seconds");
-
     }
 
     public void testUrlSplit() throws Exception {
