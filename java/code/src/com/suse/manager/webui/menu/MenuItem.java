@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -39,13 +39,13 @@ public class MenuItem {
     private List<MenuItem> submenu;
 
     /**
-     * Empty constructor
+     * Default constructor
      */
     public MenuItem() {
     }
 
     /**
-     * A constructor for JSONMenuElement.
+     * Standard constructor for MenuItem.
      *
      * @param labelIn the label of the menu item
      */
@@ -206,7 +206,7 @@ public class MenuItem {
      * Add a child menu item
      *
      * @param submenuItemIn a MenuItem child
-     * @return the parent of the added child
+     * @return this MenuItem
      */
     public MenuItem addChild(MenuItem submenuItemIn) {
         if (submenuItemIn.getIsVisible()) {
@@ -222,7 +222,7 @@ public class MenuItem {
      * Add a child menu item
      *
      * @param labelIn the label of the MenuItem
-     * @return the parent of the added child
+     * @return this MenuItem
      */
     public MenuItem addChild(String labelIn) {
         if (this.submenu == null) {
