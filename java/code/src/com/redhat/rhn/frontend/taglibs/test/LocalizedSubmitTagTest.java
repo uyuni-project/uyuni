@@ -25,7 +25,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 
 /**
- * NavMenuTagTest
+ * LocalizedSubmitTagTest
  * @version $Rev: 694 $
  */
 public class LocalizedSubmitTagTest extends RhnBaseTestCase {
