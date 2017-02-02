@@ -86,6 +86,11 @@ public class RemoteMinionCommands {
     @OnClose
     public void onClose() {
         LOG.debug("Closing web socket session");
+        if (this.failAfter != null) {
+            this.failAfter.completeExceptionally(
+                    new TimeoutException("Canceled waiting because of websocket close"));
+        }
+
     }
 
     /**
@@ -104,7 +109,7 @@ public class RemoteMinionCommands {
 
         ExecuteMinionActionDto msg = Json.GSON.fromJson(
                 messageBody, ExecuteMinionActionDto.class);
-        int timeOut = 20; // TODO remove hardcoding
+        int timeOut = 600; // 10 minutes
         try {
             if (msg.isPreview()) {
                 this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
@@ -201,7 +206,11 @@ public class RemoteMinionCommands {
      */
     private synchronized void sendMessage(Session session, AbstractSaltEventDto dto) {
         try {
-            session.getBasicRemote().sendText(Json.GSON.toJson(dto));
+            if (session.isOpen()) {
+                session.getBasicRemote().sendText(Json.GSON.toJson(dto));
+            } else {
+                LOG.debug("Could not send websocket message. Session is closed.");
+            }
         }
         catch (IOException e) {
             LOG.error("Error sending websocket message", e);
