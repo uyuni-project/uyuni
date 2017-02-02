@@ -21,6 +21,14 @@ host = ENV['TESTHOST'] || 'andromeda.suse.de'
 require 'minitest/unit'
 World(MiniTest::Assertions)
 
+def restart_phantomjs
+  session_pool = Capybara.send('session_pool')
+  session_pool.each do |_mode, session|
+    driver = session.driver
+    driver.restart if driver.is_a?(Capybara::Poltergeist::Driver)
+  end
+end
+
 # basic support for rebranding of strings in the UI
 BRANDING = ENV['BRANDING'] || 'suse'
 DEFAULT_TIMEOUT = 200
@@ -126,8 +134,8 @@ After do |scenario|
   end
 end
 
-# make sure proxy is started if we will use ut
+# restart always before each feature, we spare ram and
+# avoid ram issues!
 Before do
-  # FIXME: test this restart, to avoid phantomjs crash
-  # page.driver.restart
+  restart_phantomjs
 end
