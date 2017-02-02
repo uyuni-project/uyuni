@@ -27,7 +27,7 @@ import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.datatypes.target.SSHTarget;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
@@ -252,7 +252,7 @@ public class SaltSSHService {
      * @return result of the call
      */
     private <T> Map<String, Result<SSHResult<T>>> callSyncSSHInternal(LocalCall<T> call,
-            Target target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo)
+            SSHTarget target, SaltRoster roster, boolean ignoreHostKeys, boolean sudo)
             throws SaltException {
         if (!(target instanceof MinionList || target instanceof Glob)) {
             throw new UnsupportedOperationException("Only MinionList and Glob supported.");

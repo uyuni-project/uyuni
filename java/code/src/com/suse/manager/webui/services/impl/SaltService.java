@@ -24,7 +24,7 @@ import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.manager.webui.utils.salt.Config;
+import com.suse.salt.netapi.calls.modules.Config;
 import com.suse.manager.webui.utils.salt.custom.Udevdb;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;

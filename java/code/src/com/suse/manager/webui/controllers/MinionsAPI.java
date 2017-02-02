@@ -85,7 +85,8 @@ public class MinionsAPI {
                                 err -> err.fold(
                                         Object::toString,
                                         Object::toString,
-                                        genError -> "Generic error running remote command"
+                                        genError -> "Generic error running remote command",
+                                        Object::toString
                                 ),
                                 res -> res
                         )

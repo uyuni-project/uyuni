@@ -27,7 +27,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.errors.GenericSaltError;
+import com.suse.salt.netapi.errors.JsonParsingError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
@@ -257,8 +257,8 @@ public abstract class AbstractMinionBootstrapper {
      * @return the String decoded if it exists
      */
     private String decodeStdMessage(Object message, String key) {
-        if (message instanceof GenericSaltError) {
-            JsonElement json = ((GenericSaltError)message).getJson();
+        if (message instanceof JsonParsingError) {
+            JsonElement json = ((JsonParsingError)message).getJson();
             if (json.isJsonObject() && json.getAsJsonObject().has(key) &&
                     json.getAsJsonObject().get(key).isJsonPrimitive() &&
                     json.getAsJsonObject().get(key).getAsJsonPrimitive().isString()) {
