@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.services.impl;
 
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -64,7 +63,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.List;
@@ -880,22 +878,9 @@ public class SaltService {
         Optional<Long> uptime = Optional.empty();
         try {
             uptime = callSync(
-                    new LocalCall<>("status.uptime",
-                            Optional.empty(),
-                            Optional.empty(),
-                            new TypeToken<Object>() { }),
+                    Status.uptime(),
                     minion.getMinionId())
-                    .flatMap(SaltService::convertUptimeCompat);
-
-            if (!uptime.isPresent()) {
-                uptime = callSync(
-                    new LocalCall<>("status.uptime",
-                            Optional.empty(),
-                            Optional.of(Collections.singletonMap("human_readable", false)),
-                            new TypeToken<Float>() { }),
-                    minion.getMinionId())
-                    .flatMap(SaltService::convertUptimeCompat);
-            }
+                    .map(r -> ((Number) r.get("seconds")).longValue());
 
             if (!uptime.isPresent()) {
                 LOG.error("Can't get uptime for " + minion.getMinionId());
@@ -905,22 +890,6 @@ public class SaltService {
             LOG.error(e);
         }
         return uptime;
-    }
-
-    // compat method for old salt
-    private static Optional<Long> convertUptimeCompat(Object o) {
-        if (o instanceof Float) {
-            LOG.info("Extracting uptime from deprecated salt result.");
-            return Optional.of(((Float) o).longValue());
-        }
-        else if (o instanceof Map) {
-            Object seconds = ((Map) o).get("seconds");
-            if (seconds instanceof Number) {
-                return Optional.of(((Number) seconds).longValue());
-            }
-        }
-        LOG.error("Cannot extract uptime from  '" + o + "'.");
-        return Optional.empty();
     }
 
     /**
