@@ -208,7 +208,8 @@ public class RemoteMinionCommands {
         try {
             if (session.isOpen()) {
                 session.getBasicRemote().sendText(Json.GSON.toJson(dto));
-            } else {
+            }
+            else {
                 LOG.debug("Could not send websocket message. Session is closed.");
             }
         }
