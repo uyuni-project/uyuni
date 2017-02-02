@@ -20,9 +20,7 @@ import com.redhat.rhn.frontend.nav.NavTree;
 import com.redhat.rhn.frontend.nav.NavTreeIndex;
 import com.redhat.rhn.frontend.nav.RenderGuard;
 import com.redhat.rhn.frontend.nav.Renderable;
-import com.redhat.rhn.frontend.nav.SidenavRenderer;
 import com.redhat.rhn.frontend.nav.TextRenderer;
-import com.redhat.rhn.frontend.nav.TopnavRenderer;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import java.util.HashMap;
@@ -112,104 +110,6 @@ public class RendererTest extends RhnBaseTestCase {
         expectations.put("nodeRenderInline", Boolean.TRUE);
 
         rendererTest(new TextRenderer(), new FalseRenderGuard(), expectations, 4);
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // TEST: TopnavRenderer
-    ////////////////////////////////////////////////////////////////
-
-    public void testTopnavTrue() {
-        Map<String, Object> expectations = new HashMap<String, Object>();
-        expectations.put("preNavLevel", "<ul class=\"nav navbar-nav navbar-primary\">");
-        expectations.put("preNavNode", "");
-        expectations.put("navNodeActive", "<li class=\"active\">" +
-            "<a href=\"http://rhn.redhat.com\">name</a></li>\n");
-        expectations.put("navNodeInactive",
-                         "<li><a href=\"http://rhn.redhat.com\">name</a></li>\n");
-        expectations.put("postNavNode", "");
-        expectations.put("postNavLevel", "</ul>");
-        expectations.put("nodeRenderInline", Boolean.TRUE);
-
-        rendererTest(new TopnavRenderer(), new TrueRenderGuard(), expectations, 4);
-    }
-
-    public void testTopnavFalse() {
-        Map<String, Object> expectations = new HashMap<String, Object>();
-        expectations.put("preNavLevel", "");
-        expectations.put("preNavNode", "");
-        expectations.put("navNodeActive", "");
-        expectations.put("navNodeInactive", "");
-        expectations.put("postNavNode", "");
-        expectations.put("postNavLevel", "");
-        expectations.put("nodeRenderInline", Boolean.TRUE);
-
-        rendererTest(new TopnavRenderer(), new FalseRenderGuard(), expectations, 4);
-    }
-
-    public void testTopnavBug187800() {
-
-        TopnavRenderer tr = new TopnavRenderer();
-        StringBuffer buf = new StringBuffer();
-        NavNode node1 = new NavNode();
-        node1.addURL("/rhn/Login2.do");
-        node1.setName("Sign In");
-        node1.setFirst(true);
-
-        NavNode node2 = new NavNode();
-        node2.addURL("/rhn/Login2.do");
-        node2.setName("About Spacewalk");
-        node2.setLast(true);
-
-        // test the case where active node runs first
-        tr.navNodeActive(buf, node1, null, null, 4);
-        tr.navNodeInactive(buf, node2, null, null, 4);
-
-        String expectation = "<li class=\"active\">" +
-                "<a href=\"/rhn/Login2.do\">Sign In</a></li>\n" +
-                "<li><a href=\"/rhn/Login2.do\">About</a></li>\n";
-        assertEquals(expectation, buf.toString());
-
-        // test the case where inactive node runs first
-        buf = new StringBuffer();
-        tr.navNodeInactive(buf, node1, null, null, 4);
-        tr.navNodeActive(buf, node2, null, null, 4);
-
-        String expectation2 = "<li><a href=\"/rhn/Login2.do\">Sign In</a></li>\n" +
-                "<li class=\"active\"><a href=\"/rhn/Login2.do\">About</a></li>\n";
-        assertEquals(expectation2, buf.toString());
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // TEST: SidenavRenderer
-    ////////////////////////////////////////////////////////////////
-
-    public void testSidenavTrue() {
-        Map<String, Object> expectations = new HashMap<String, Object>();
-        expectations.put("preNavLevel", "<ul class=\"nav nav-pills nav-stacked\">");
-        expectations.put("preNavNode", "");
-        expectations.put("navNodeActive", "<li class=\"active\">" +
-                         "<a href=\"http://rhn.redhat.com\">name</a></li>\n");
-        expectations.put("navNodeInactive",
-                         "<li><a href=\"http://rhn.redhat.com\">" +
-                         "name</a></li>\n");
-        expectations.put("postNavNode", "");
-        expectations.put("postNavLevel", "</ul>\n");
-        expectations.put("nodeRenderInline", Boolean.TRUE);
-
-        rendererTest(new SidenavRenderer(), new TrueRenderGuard(), expectations, 1);
-    }
-
-    public void testSidenavFalse() {
-        Map<String, Object> expectations = new HashMap<String, Object>();
-        expectations.put("preNavLevel", "");
-        expectations.put("preNavNode", "");
-        expectations.put("navNodeActive", "");
-        expectations.put("navNodeInactive", "");
-        expectations.put("postNavNode", "");
-        expectations.put("postNavLevel", "");
-        expectations.put("nodeRenderInline", Boolean.TRUE);
-
-        rendererTest(new SidenavRenderer(), new FalseRenderGuard(), expectations, 4);
     }
 
     ////////////////////////////////////////////////////////////////

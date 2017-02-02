@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.tagext.Tag;
 
 /**
- * NavMenuTagTest
+ * AddressMenuTagTest
  * @version $Rev: 694 $
  */
 public class AddressTagTest extends RhnBaseTestCase {

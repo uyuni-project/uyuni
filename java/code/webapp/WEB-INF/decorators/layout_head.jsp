@@ -1,8 +1,9 @@
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"
-%><%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn"
-%><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"
-%><%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"
-%><!-- enclosing head tags in layout_c.jsp -->
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ page import="com.suse.manager.webui.menu.MenuTree" %>
+<!-- enclosing head tags in layout_c.jsp -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -15,15 +16,7 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
     <title>
       <bean:message key="layout.jsp.productname"/>
-      <rhn:require acl="user_authenticated()">
-        <rhn:menu definition="/WEB-INF/nav/sitenav-authenticated.xml"
-                  renderer="com.redhat.rhn.frontend.nav.TitleRenderer" />
-      </rhn:require>
-      <rhn:require acl="not user_authenticated()">
-        <rhn:menu definition="/WEB-INF/nav/sitenav.xml"
-                  renderer="com.redhat.rhn.frontend.nav.TitleRenderer" />
-      </rhn:require>
-      ${requestScope.innernavtitle}
+      <%= MenuTree.getTitlePage(pageContext) %>
     </title>
     <link rel="shortcut icon" href="/img/favicon.ico" />
 

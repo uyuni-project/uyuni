@@ -54,7 +54,7 @@ const Element = React.createClass({
           (this.isLeaf(element) ? " leaf " : " node ")
           }
         >
-          <Link url={element.submenu ? "#" : element.url}
+          <Link url={element.submenu ? "#" : element.primaryUrl}
               label={element.label} target={element.target}
               icon={element.icon} handleClick={this.isLeaf(element) ? null : this.toggleView} />
           {
@@ -134,7 +134,7 @@ const Breadcrumb = React.createClass({
             const htmlElement =
             (
               a.submenu ?
-              <Link key={a.label + '_' + i} url={a.submenu[0].url}
+              <Link key={a.label + '_' + i} url={a.submenu[0].primaryUrl}
                   label={a.label} target={a.target} />
               :
               <span className="level">{a.label}</span>
