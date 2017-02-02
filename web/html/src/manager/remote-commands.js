@@ -354,6 +354,11 @@ class RemoteCommand extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("beforeunload", this.onBeforeUnload)
+  }
+
+
   targetChanged(event) {
     this.setState({
       target: event.target.value,
