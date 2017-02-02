@@ -232,7 +232,6 @@ class RemoteCommand extends React.Component {
   componentDidMount() {
     var ws = new WebSocket("wss://" + window.location.hostname + "/rhn/websocket/minion/remote-commands", "protocolOne");
     ws.onopen = () => {
-      console.log("Websocket opened");
       this.setState({
           previewed: $.Deferred(),
           ran: $.Deferred().resolve(),
@@ -240,7 +239,6 @@ class RemoteCommand extends React.Component {
       });
     };
     ws.onclose = (e) => {
-      console.log("Websocket closed");
       var errs = [];
       if (this.state.executing.state() == "pending") {
           errs = [t("Websocket connection closed.")]
@@ -267,7 +265,6 @@ class RemoteCommand extends React.Component {
       });
     };
     ws.onmessage = (e) => {
-      console.log("Got websocket message: " + e.data);
       var event = JSON.parse(e.data);
       switch(event.type) {
         case "asyncJobStart":
