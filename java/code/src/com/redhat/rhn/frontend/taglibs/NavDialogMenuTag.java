@@ -21,8 +21,11 @@ import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
 import java.util.Map;
 
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.TagSupport;
+
 /**
- * NavDialogMenuTag is a specialization of the NavMenuTag.
+ * NavDialogMenuTag displays the navigation tabs.
  * This tag will capture the title of the page based
  * on the current selection of the main global navigation
  * menu and the current selection in the dialog menu.
@@ -33,11 +36,107 @@ import java.util.Map;
  * </pre>
  * @version $Rev$
  */
-public class NavDialogMenuTag extends NavMenuTag {
+public class NavDialogMenuTag extends TagSupport {
 
-    /** constructor */
-    public NavDialogMenuTag() {
-        super();
+
+    /** minimum depth to display */
+    private int mindepth = 0;
+    /** maximum depth to be rendered */
+    private int maxdepth = Integer.MAX_VALUE;
+    /** name of xml menu definition */
+    private String definition;
+    /** rendering classname which implements the Renderable interface */
+    private String renderer;
+
+    /** {@inheritDoc}
+     * @throws JspException*/
+    @Override
+    public int doStartTag() throws JspException {
+        try {
+            pageContext.getOut().print(RenderUtils.getInstance().renderNavigationMenu(
+                    pageContext, definition, renderer, mindepth, maxdepth));
+        }
+        catch (Exception e) {
+            throw new JspException("Error writing to JSP file:", e);
+        }
+
+        return (SKIP_BODY);
+    }
+
+    /**
+     * Returns the maximum depth to render.
+     * @return int
+     */
+    public int getMaxdepth() {
+        return maxdepth;
+    }
+
+    /**
+     * Sets maximum depth to render.
+     * @param depth maximum depth to render.
+     */
+    public void setMaxdepth(int depth) {
+        maxdepth = depth;
+    }
+
+    /**
+     * Sets menu xml definition filename.
+     * @param def xml definition filename.
+     */
+    public void setDefinition(String def) {
+        definition = def;
+    }
+
+    /**
+     * Returns the menu definition xml filename.
+     * @return String
+     */
+    public String getDefinition() {
+        return definition;
+    }
+
+    /**
+     * Sets the rendering class.
+     * @param r Renderer classname.
+     */
+    public void setRenderer(String r) {
+        renderer = r;
+    }
+
+    /**
+     * Return the class which renders the menu.
+     * @return String
+     */
+    public String getRenderer() {
+        return renderer;
+    }
+
+    /**
+     * Sets the level to start rendering.  Defaults to level zero.
+     * @param min Initial level to start.
+     */
+    public void setMindepth(int min) {
+        mindepth = min;
+    }
+
+    /**
+     * Return start level to render.
+     * @return int
+     */
+    public int getMindepth() {
+        return mindepth;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void release() {
+        mindepth = 0;
+        maxdepth = Integer.MAX_VALUE;
+        definition = null;
+        renderer = null;
+        super.release();
     }
 
     /** {@inheritDoc} */

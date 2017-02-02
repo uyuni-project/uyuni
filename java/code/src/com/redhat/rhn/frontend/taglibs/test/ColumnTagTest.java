@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.taglibs.test;
 
 import com.redhat.rhn.frontend.taglibs.ColumnTag;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
-import com.redhat.rhn.frontend.taglibs.NavMenuTag;
+import com.redhat.rhn.frontend.taglibs.NavDialogMenuTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestUtils;
 
@@ -115,13 +115,13 @@ public class ColumnTagTest extends RhnBaseTestCase {
         assertNotNull(ct.findListDisplay());
 
         ColumnTag ct2 = new ColumnTag();
-        NavMenuTag middle = new NavMenuTag();
+        NavDialogMenuTag middle = new NavDialogMenuTag();
         middle.setParent(new ListDisplayTag());
         ct2.setParent(middle);
         assertNotNull(ct2.findListDisplay());
 
         ColumnTag ct3 = new ColumnTag();
-        ct3.setParent(new NavMenuTag());
+        ct3.setParent(new NavDialogMenuTag());
         assertNull(ct3.findListDisplay());
     }
 
