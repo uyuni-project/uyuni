@@ -55,15 +55,6 @@ class MinionResultView extends React.Component {
                        <i className="fa fa-right fa-warning fa-1-5x"></i>
                     </div>
                   );
-//              } else if(resultType == "waitCanceled") {
-//                  return (
-//                    <div className="pull-right">
-//                       <div className="badge">
-//                           {t("canceled wait")}
-//                       </div>
-//                       <i className="fa fa-right fa-times-circle fa-1-5x"></i>
-//                    </div>
-//                  );
               } else if(resultType == "matched") {
                   // nothing
               } else if(resultType == "error") {
@@ -126,7 +117,7 @@ class RemoteCommand extends React.Component {
         minions: new Map()
       },
       previewed: $.Deferred(),
-      ran: $.Deferred().resolve(),
+      ran: $.Deferred(),
       executing: $.Deferred().resolve(),
       errors: [],
       warnings: []
@@ -242,15 +233,38 @@ class RemoteCommand extends React.Component {
     var ws = new WebSocket("wss://" + window.location.hostname + "/rhn/websocket/minion/remote-commands", "protocolOne");
     ws.onopen = () => {
       console.log("Websocket opened");
-    };
-    ws.onerror = (e) => {
-        this.setState({
-            errors: [t("Error connecting to server.")]
-        });
-       console.log(e);
+      this.setState({
+          previewed: $.Deferred(),
+          ran: $.Deferred().resolve(),
+          executing: $.Deferred().resolve(),
+      });
     };
     ws.onclose = (e) => {
-       console.log("Websocket closed");
+      console.log("Websocket closed");
+      var errs = [];
+      if (this.state.executing.state() == "pending") {
+          errs = [t("Websocket connection closed.")]
+      }
+      if (this.state.ran) {
+          this.state.ran.resolve();
+      }
+      if (this.state.previewed) {
+          this.state.previewed.resolve();
+      }
+      if (this.state.executing) {
+          this.state.executing.resolve();
+      }
+      this.setState({
+          errors: errs,
+          previewed: $.Deferred(),
+          ran: $.Deferred(),
+      });
+    };
+    ws.onerror = (e) => {
+      console.log("Websocket error: " + e);
+      this.setState({
+         errors: [t("Error connecting to server.")]
+      });
     };
     ws.onmessage = (e) => {
       console.log("Got websocket message: " + e.data);
@@ -306,21 +320,6 @@ class RemoteCommand extends React.Component {
                 }
             });
             break;
-//        case "waitCanceled":
-//            var minionsMap = this.state.result.minions;
-//            minionsMap.set(event.minion, {type: "waitCanceled", value: null});
-//            const waitCanceled = isWaitCanceled(minionsMap);
-//            if (waitCanceled) {
-//                this.state.ran.resolve();
-//                this.state.previewed.resolve();
-//                this.state.executing.resolve();
-//            }
-//            this.setState() {
-//                errors: waitCanceled ? [t("Canceled waiting for action to complete.")] : [],
-//                result: {
-//                    minions: minionsMap
-//                }
-//            }
         case "error":
             if (event.minion) {
                 var minionsMap = this.state.result.minions;
@@ -331,10 +330,14 @@ class RemoteCommand extends React.Component {
                     }
                 });
             } else {
+                if (this.state.previewed) {
+                    this.state.previewed.resolve();
+                }
+                if (this.state.executing) {
+                    this.state.executing.resolve();
+                }
                 this.setState({
-                    result: {
-                        errors: [t("Could not complete call: {0}", event.message)],
-                    }
+                    errors: [t("Server returned an error: {0}", event.message)]
                 });
             }
             break;
