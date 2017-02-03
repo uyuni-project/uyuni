@@ -26,20 +26,19 @@ import static spark.Spark.head;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import com.suse.manager.webui.controllers.ImageStoreController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
 import com.suse.manager.webui.controllers.FormulaController;
 import com.suse.manager.webui.controllers.ImageBuildController;
 import com.suse.manager.webui.controllers.ImageProfileController;
+import com.suse.manager.webui.controllers.ImageStoreController;
+import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.TaskoTop;
-import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
-
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
 
@@ -98,6 +97,8 @@ public class Router implements SparkApplication {
 
         get("/manager/api/cm/build/hosts",
                 withUser(ImageBuildController::getBuildHosts));
+
+        post("/manager/api/cm/build/:id", withUser(ImageBuildController::build));
 
         // Minions
         get("/manager/minions",
