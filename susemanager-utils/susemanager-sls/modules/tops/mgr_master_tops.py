@@ -31,7 +31,8 @@ MANAGER_BASE_TOP = [
     "custom_groups",
     "custom_org",
     "formulas",
-    "services.salt-minion"
+    "services.salt-minion",
+    "services.docker"
 ]
 
 

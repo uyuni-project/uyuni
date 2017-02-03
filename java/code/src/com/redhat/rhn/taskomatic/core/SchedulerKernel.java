@@ -23,8 +23,8 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoQuartzHelper;
-import com.redhat.rhn.taskomatic.TaskoRun;
-import com.redhat.rhn.taskomatic.TaskoSchedule;
+import com.redhat.rhn.taskomatic.domain.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.TaskoXmlRpcServer;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 

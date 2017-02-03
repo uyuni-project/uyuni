@@ -24,10 +24,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
-import com.redhat.rhn.domain.entitlement.BootstrapEntitlement;
 import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.domain.entitlement.ForeignEntitlement;
-import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -1758,26 +1755,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * Check to see if the passed in entitlement can be applied to this server.
-     * @param entIn to check
-     * @return boolean if its compatible with this server.
-     */
-    public boolean isEntitlementAllowed(Entitlement entIn) {
-        if (this.getBaseEntitlement() instanceof ForeignEntitlement ||
-                this.getBaseEntitlement() instanceof BootstrapEntitlement) {
-            // no addon entitlement allowed for these
-            return false;
-        }
-        // Check virt entitlements.
-        if (this.isVirtualGuest()) {
-            if (entIn instanceof VirtualizationEntitlement) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * Get the Set of valid addon Entitlements for this server.
      *
      * @return Set of valid addon Entitlement instances for this server
@@ -1788,7 +1765,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 .iterator();
         while (i.hasNext()) {
             Entitlement ent = (Entitlement) i.next();
-            if (this.isEntitlementAllowed(ent)) {
+            if (ent.isAllowedOnServer(this)) {
                 retval.add(ent);
             }
         }

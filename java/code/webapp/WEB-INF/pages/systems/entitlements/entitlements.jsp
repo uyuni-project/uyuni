@@ -68,21 +68,7 @@
         <div class="panel panel-default">
                   <table class="table">
                         <!-- On SUSE Manager doing a mass change of base entitlement will not work -->
-                        <!--  Base Entitlement Section -->
-                        <!--
-                        <tr>
-                          <th><bean:message key="systementitlements.jsp.baseentitlement" /></th>
-                          <td class="text-right">
-                              <html:submit styleClass="btn btn-default" property="dispatch">
-                                  <bean:message key="systementitlements.jsp.set_to_manage_entitled" />
-                              </html:submit>
-
-                              <html:submit styleClass="btn btn-default" property="dispatch">
-                                  <bean:message key="systementitlements.jsp.set_to_unentitled" />
-                              </html:submit>
-                          </td>
-                        </tr>
-                        -->
+                        <!-- Base Entitlement Section -REMOVED- (See git history)-->
                         <!--  Add On Entitlement Section -->
                         <tr>
                             <th><bean:message key="systementitlements.jsp.addonentitlement" /></th>
@@ -103,36 +89,32 @@
 
 <!--  Base Entitlement Counts Section -->
         <div class="panel panel-default">
-                <div class="panel-heading">
-                        <h5><bean:message key="systementitlements.jsp.base_entitlements"/></h5>
-                </div>
-                <table class="table">
-                <tr>
-                        <td><bean:message key="Spacewalk Management Entitled Servers"/>:</td>
-                        <td>${requestScope.managementCountsMessage}</td>
-                </tr>
-                <tr>
-                        <td><bean:message key="Salt Entitled Servers"/>:</td>
-                        <td>${requestScope.saltCountsMessage}</td>
-                </tr>
-                <tr>
-                        <td><bean:message key="Foreign Entitled Servers"/>:</td>
-                        <td>${requestScope.foreignCountsMessage}</td>
-                </tr>
-       </table>
+          <div class="panel-heading">
+                  <h5><bean:message key="systementitlements.jsp.base_entitlements"/></h5>
+          </div>
+          <table class="table">
+            <c:forEach items="${baseEntitlementCounts}" var="ent">
+              <tr>
+                <td><bean:message key="${ent.key}"/>:</td>
+                <td>${ent.value}</td>
+              </tr>
+            </c:forEach>
+          </table>
         </div>
 
 <!--  Add - On Entitlement Counts Section -->
         <div class="panel panel-default">
-                <div class="panel-heading">
-                        <h5><bean:message key="systementitlements.jsp.addonentitlement"/></h5>
-                </div>
-       <table class="table">
-                <tr>
-                        <td><bean:message key="virtualization_host"/>:</td>
-                        <td>${requestScope.virtualizationCountsMessage}</td>
-                </tr>
-       </table>
+          <div class="panel-heading">
+            <h5><bean:message key="systementitlements.jsp.addonentitlement"/></h5>
+          </div>
+          <table class="table">
+            <c:forEach items="${addOnEntitlementCounts}" var="ent">
+              <tr>
+                <td><bean:message key="${ent.key}"/>:</td>
+                <td>${ent.value}</td>
+              </tr>
+            </c:forEach>
+          </table>
         </div>
 
 <!--  Foot Note -->

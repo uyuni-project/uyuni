@@ -22,4 +22,7 @@ insert into suseCredentialsType (id, label, name) values
 insert into suseCredentialsType (id, label, name) values
         (sequence_nextval('suse_credtype_id_seq'), 'vhm', 'Virtual Host Manager');
 
+insert into suseCredentialsType (id, label, name) values
+        (sequence_nextval('suse_credtype_id_seq'), 'docker', 'Docker Registry');
+
 commit;

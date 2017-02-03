@@ -31,7 +31,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 
-import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -74,16 +73,6 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
     /**
      * @throws Exception on server init failure
      */
-    public void testManagementWithUnentitledSystems() throws Exception {
-        testWithUnentitledSystem(EntitlementManager.MANAGEMENT,
-                                   SystemEntitlementsSubmitAction.KEY_MANAGEMENT_ENTITLED,
-                                   success(MANAGEMENT)
-                                   );
-    }
-
-    /**
-     * @throws Exception on server init failure
-     */
     private void testWithUnentitledSystem(Entitlement ent,
                                             String dispatchKey,
                                             String msg) throws Exception {
@@ -120,67 +109,6 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
             }
         }
         return null;
-    }
-
-    /**
-     * @throws Exception on server init failure
-     */
-    public void testManagementOnly() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true,
-                            ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        /*
-         * this should Succeed because the org only has groups type = Update
-         *  that has available subscriptions > 0..
-         */
-        dispatch(SystemEntitlementsSubmitAction.KEY_MANAGEMENT_ENTITLED, server);
-        assertTrue(SystemManager.hasEntitlement(server.getId(),
-                                                    EntitlementManager.MANAGEMENT));
-        verifyActionMessage(success(MANAGEMENT));
-    }
-
-    /**
-     *
-     * @throws Exception on server init failure
-     */
-    public void testUpdateToManagement() throws Exception {
-
-        Server server = ServerFactoryTest.createUnentitledTestServer(user, true,
-                ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
-
-        if (!orgHasGroupType(ServerConstants.
-                getServerGroupTypeEnterpriseEntitled())) {
-            ServerGroupTest.createTestServerGroup(
-                       user.getOrg(),
-                       ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        }
-
-         /*
-          * this should Succeed because the org only has groups of both types
-          * Management & Update and both have available subscriptions > 0..
-          */
-         dispatch(SystemEntitlementsSubmitAction.KEY_MANAGEMENT_ENTITLED, server);
-         assertTrue(SystemManager.hasEntitlement(server.getId(),
-                                                     EntitlementManager.MANAGEMENT));
-         verifyActionMessage(success(MANAGEMENT));
-    }
-
-    /**
-     *
-     * @throws Exception on server init failure
-     */
-    public void testUnentitleForManagement() throws Exception {
-        Server server1 = ServerFactoryTest.createTestServer(user, true,
-                            ServerConstants.getServerGroupTypeEnterpriseEntitled());
-
-        assertTrue(SystemManager.hasEntitlement(server1.getId(),
-                                                  EntitlementManager.MANAGEMENT));
-
-
-
-        dispatch(SystemEntitlementsSubmitAction.KEY_UNENTITLED, server1);
-        verifyActionMessage(success(UNENTITLED));
-        assertFalse(SystemManager.hasEntitlement(server1.getId(),
-                                                EntitlementManager.MANAGEMENT));
     }
 
     /**
@@ -231,9 +159,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
         addRequestParameter("addOnEntitlement", selectKey);
         dispatch(SystemEntitlementsSubmitAction.KEY_ADD_ENTITLED, server);
 
-        String[] messageNames = {"system_entitlements." +
-                ent.getLabel() + ".success",
-                "system_entitlements.virtualization.success_note"};
+        String[] messageNames = {"system_entitlements.addon.success"};
 
         verifyActionMessages(messageNames);
         assertTrue("Doesn't have: " + ent,

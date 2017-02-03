@@ -12,23 +12,20 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.taskomatic;
+package com.redhat.rhn.taskomatic.domain;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
 
 /**
- * TaskoBunch
+ * TaskoTask
  * @version $Rev$
  */
-public class TaskoBunch {
+public class TaskoTask {
 
     private Long id;
     private String name;
-    private String description;
-    private String orgBunch;
-    private List<TaskoTemplate> templates = new ArrayList();
+    private String taskClass;
     private Date created;
     private Date modified;
 
@@ -39,12 +36,14 @@ public class TaskoBunch {
         return id;
     }
 
+
     /**
      * @param idIn The id to set.
      */
     public void setId(Long idIn) {
         this.id = idIn;
     }
+
 
     /**
      * @return Returns the name.
@@ -53,6 +52,7 @@ public class TaskoBunch {
         return name;
     }
 
+
     /**
      * @param nameIn The name to set.
      */
@@ -60,19 +60,23 @@ public class TaskoBunch {
         this.name = nameIn;
     }
 
-    /**
-     * @return Returns the description.
-     */
-    public String getDescription() {
-        return description;
-    }
 
     /**
-     * @param descriptionIn The description to set.
+     * @return Returns the taskClass.
      */
-    public void setDescription(String descriptionIn) {
-        this.description = descriptionIn;
+    public String getTaskClass() {
+        return taskClass;
     }
+
+
+    /**
+     * @param taskClassIn The taskClass to set.
+     */
+    public void setTaskClass(String taskClassIn) {
+        this.taskClass = taskClassIn;
+    }
+
+
 
     /**
      * @return Returns the created.
@@ -81,12 +85,16 @@ public class TaskoBunch {
         return created;
     }
 
+
+
     /**
      * @param createdIn The created to set.
      */
     public void setCreated(Date createdIn) {
         this.created = createdIn;
     }
+
+
 
     /**
      * @return Returns the modified.
@@ -95,38 +103,12 @@ public class TaskoBunch {
         return modified;
     }
 
+
+
     /**
      * @param modifiedIn The modified to set.
      */
     public void setModified(Date modifiedIn) {
         this.modified = modifiedIn;
-    }
-
-    /**
-     * @return Returns the templates.
-     */
-    public List<TaskoTemplate> getTemplates() {
-        return templates;
-    }
-
-    /**
-     * @param templatesIn The templates to set.
-     */
-    public void setTemplates(List<TaskoTemplate> templatesIn) {
-        this.templates = templatesIn;
-    }
-
-    /**
-     * @return Returns the orgBunch.
-     */
-    public String getOrgBunch() {
-        return orgBunch;
-    }
-
-    /**
-     * @param orgBunchIn The orgBunch to set.
-     */
-    public void setOrgBunch(String orgBunchIn) {
-        this.orgBunch = orgBunchIn;
     }
 }

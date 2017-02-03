@@ -18,6 +18,11 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.finder.FinderFactory;
 
+import com.redhat.rhn.domain.image.DockerfileProfile;
+import com.redhat.rhn.domain.image.ImageProfile;
+import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.ImageStoreType;
+import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -44,7 +49,7 @@ class ConnectionManager {
 
     private static final Logger LOG = Logger.getLogger(ConnectionManager.class);
     private static final String[] PACKAGE_NAMES = {"com.redhat.rhn.domain",
-    "com.redhat.rhn.taskomatic"};
+    "com.redhat.rhn.taskomatic.domain"};
 
     private final List<Configurator> configurators = new LinkedList<Configurator>();
     private SessionFactory sessionFactory;
@@ -188,6 +193,13 @@ class ConnectionManager {
                     c.addConfig(config);
                 }
             }
+
+            //TODO: Fix auto-discovery (see commit: e92b062)
+            config.addAnnotatedClass(ImageStore.class);
+            config.addAnnotatedClass(ImageStoreType.class);
+            config.addAnnotatedClass(DockerfileProfile.class);
+            config.addAnnotatedClass(ImageProfile.class);
+            config.addAnnotatedClass(ProfileCustomDataValue.class);
 
             // add empty varchar warning interceptor
             EmptyVarcharInterceptor interceptor = new EmptyVarcharInterceptor();

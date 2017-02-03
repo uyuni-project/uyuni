@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.entitlement;
 
 import com.redhat.rhn.domain.entitlement.BootstrapEntitlement;
+import com.redhat.rhn.domain.entitlement.DockerBuildHostEntitlement;
 import com.redhat.rhn.domain.entitlement.ForeignEntitlement;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.entitlement.ManagementEntitlement;
@@ -45,6 +46,7 @@ public class EntitlementManager extends BaseManager {
     public static final Entitlement BOOTSTRAP = new BootstrapEntitlement();
     public static final Entitlement SALT = new SaltEntitlement();
     public static final Entitlement FOREIGN = new ForeignEntitlement();
+    public static final Entitlement DOCKER_BUILD_HOST = new DockerBuildHostEntitlement();
 
     public static final String UNENTITLED = "unentitled";
     public static final String ENTERPRISE_ENTITLED = "enterprise_entitled";
@@ -52,16 +54,20 @@ public class EntitlementManager extends BaseManager {
     public static final String BOOTSTRAP_ENTITLED = "bootstrap_entitled";
     public static final String SALT_ENTITLED = "salt_entitled";
     public static final String FOREIGN_ENTITLED = "foreign_entitled";
+    public static final String DOCKER_BUILD_HOST_ENTITLED = "docker_build_host";
 
     private static final Set<Entitlement> ADDON_ENTITLEMENTS;
     private static final Set<Entitlement> BASE_ENTITLEMENTS;
     static {
         ADDON_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         ADDON_ENTITLEMENTS.add(VIRTUALIZATION);
+        ADDON_ENTITLEMENTS.add(DOCKER_BUILD_HOST);
 
         BASE_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         BASE_ENTITLEMENTS.add(MANAGEMENT);
         BASE_ENTITLEMENTS.add(SALT);
+        BASE_ENTITLEMENTS.add(FOREIGN);
+        BASE_ENTITLEMENTS.add(BOOTSTRAP);
     }
 
     /**
@@ -84,6 +90,9 @@ public class EntitlementManager extends BaseManager {
         }
         else if (FOREIGN_ENTITLED.equals(name)) {
             return FOREIGN;
+        }
+        else if (DOCKER_BUILD_HOST_ENTITLED.equals(name)) {
+            return DOCKER_BUILD_HOST;
         }
         return null;
     }

@@ -16,6 +16,7 @@ package com.suse.manager.webui;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -28,14 +29,16 @@ import static spark.Spark.put;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
 import com.suse.manager.webui.controllers.FormulaController;
+import com.suse.manager.webui.controllers.ImageBuildController;
+import com.suse.manager.webui.controllers.ImageProfileController;
+import com.suse.manager.webui.controllers.ImageStoreController;
+import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.TaskoTop;
-import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
-
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
 
@@ -50,6 +53,52 @@ public class Router implements SparkApplication {
     @Override
     public void init() {
         JadeTemplateEngine jade = setup();
+        // Content Management
+        get("/manager/cm/imagestores",
+                withCsrfToken(withUser(ImageStoreController::listView)), jade);
+        get("/manager/cm/imagestores/create",
+                withCsrfToken(withImageAdmin(ImageStoreController::createView)), jade);
+        get("/manager/cm/imagestores/edit/:id",
+                withCsrfToken(withImageAdmin(ImageStoreController::updateView)), jade);
+
+        get("/manager/api/cm/imagestores", withUser(ImageStoreController::list));
+        get("/manager/api/cm/imagestores/type/:type",
+                withUser(ImageStoreController::listAllWithType));
+        get("/manager/api/cm/imagestores/:id", withUser(ImageStoreController::getSingle));
+        post("/manager/api/cm/imagestores", withImageAdmin(ImageStoreController::create));
+        post("/manager/api/cm/imagestores/:id",
+                withImageAdmin(ImageStoreController::update));
+        delete("/manager/api/cm/imagestores/:id",
+                withUser(ImageStoreController::delete));
+
+        get("/manager/cm/imageprofiles",
+                withCsrfToken(withUser(ImageProfileController::listView)), jade);
+        get("/manager/cm/imageprofiles/create",
+                withCsrfToken(withImageAdmin(ImageProfileController::createView)), jade);
+        get("/manager/cm/imageprofiles/edit/:id",
+                withCsrfToken(withImageAdmin(ImageProfileController::updateView)), jade);
+
+        get("/manager/api/cm/imageprofiles", withUser(ImageProfileController::list));
+        get("/manager/api/cm/imageprofiles/:id",
+                withUser(ImageProfileController::getSingle));
+        get("/manager/api/cm/imageprofiles/channels/:token",
+                withImageAdmin(ImageProfileController::getChannels));
+        post("/manager/api/cm/imageprofiles",
+                withImageAdmin(ImageProfileController::create));
+        post("/manager/api/cm/imageprofiles/:id",
+                withImageAdmin(ImageProfileController::update));
+        delete("/manager/api/cm/imageprofiles/:id",
+                withImageAdmin(ImageProfileController::delete));
+
+        get("/manager/cm/build",
+                withCsrfToken(withUser(ImageBuildController::buildView)), jade);
+        get("/manager/cm/build/:profileId",
+                withCsrfToken(withImageAdmin(ImageBuildController::buildView)), jade);
+
+        get("/manager/api/cm/build/hosts",
+                withUser(ImageBuildController::getBuildHosts));
+
+        post("/manager/api/cm/build/:id", withUser(ImageBuildController::build));
 
         // Minions
         get("/manager/minions",

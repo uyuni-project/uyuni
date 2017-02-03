@@ -1,0 +1,11 @@
+include ../common.jade
+
+#image-profiles
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+    const isAdmin = #{is_admin};
+
++userPreferences
+script(src='/javascript/manager/image-profiles.bundle.js', type='text/javascript')
+

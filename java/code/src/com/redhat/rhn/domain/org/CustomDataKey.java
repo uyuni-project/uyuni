@@ -16,6 +16,9 @@ package com.redhat.rhn.domain.org;
 
 import com.redhat.rhn.domain.user.User;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.util.Date;
 
 /**
@@ -128,5 +131,28 @@ public class CustomDataKey {
      */
     public void setOrg(Org orgIn) {
         this.org = orgIn;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals(final Object other) {
+        if (other == null || !(other instanceof CustomDataKey)) {
+            return false;
+        }
+        CustomDataKey castOther = (CustomDataKey) other;
+        return new EqualsBuilder()
+                .append(org, castOther.getOrg())
+                .append(label, castOther.getLabel())
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(org)
+                .append(label)
+                .toHashCode();
     }
 }

@@ -40,6 +40,8 @@ import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -52,6 +54,7 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.image.Image;
+import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ProxyConfig;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -2182,6 +2185,35 @@ public class ActionManager extends BaseManager {
 
         ApplyStatesActionDetails actionDetails = new ApplyStatesActionDetails();
         actionDetails.setMods(mods);
+        action.setDetails(actionDetails);
+        ActionFactory.save(action);
+
+        scheduleForExecution(action, new HashSet<>(sids));
+        return action;
+    }
+
+    /**
+     * Schedule image build
+     *
+     * @param scheduler the scheduler
+     * @param sids      the sids
+     * @param tag       the tag
+     * @param profile   the profile
+     * @param earliest  the earliest
+     * @return the image build action
+     */
+    public static ImageBuildAction scheduleImageBuild(User scheduler, List<Long> sids,
+            String tag, ImageProfile profile, Date earliest) {
+        ImageBuildAction action = (ImageBuildAction) ActionFactory
+                .createAction(ActionFactory.TYPE_IMAGE_BUILD, earliest);
+        action.setName("Image Build " + profile.getLabel());
+        action.setOrg(scheduler != null ?
+                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
+        action.setSchedulerUser(scheduler);
+
+        ImageBuildActionDetails actionDetails = new ImageBuildActionDetails();
+        actionDetails.setTag(tag);
+        actionDetails.setImageProfileId(profile.getProfileId());
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 

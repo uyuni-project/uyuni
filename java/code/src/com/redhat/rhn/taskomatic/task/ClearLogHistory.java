@@ -17,8 +17,8 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.taskomatic.TaskoFactory;
-import com.redhat.rhn.taskomatic.TaskoRun;
-import com.redhat.rhn.taskomatic.TaskoSchedule;
+import com.redhat.rhn.taskomatic.domain.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

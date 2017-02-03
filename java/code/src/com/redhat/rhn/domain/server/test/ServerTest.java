@@ -68,19 +68,6 @@ public class ServerTest extends BaseTestCaseWithUser {
         assertTrue(s.getBaseEntitlement().equals(EntitlementManager.MANAGEMENT));
     }
 
-    public void testIsEntitlementAllowed() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuests(user, 1);
-        Server guest =
-            host.getGuests().iterator().next().getGuestSystem();
-        guest.setBaseEntitlement(EntitlementManager.MANAGEMENT);
-
-        assertFalse(guest.isEntitlementAllowed(EntitlementManager.VIRTUALIZATION));
-
-        assertNotNull(host.getValidAddonEntitlementsForServer());
-        assertEquals(1, host.getValidAddonEntitlementsForServer().size());
-    }
-
-
     public void testCapabilities() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(s.getId(),
