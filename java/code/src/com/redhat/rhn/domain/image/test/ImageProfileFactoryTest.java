@@ -7,15 +7,79 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
+import com.redhat.rhn.domain.org.test.OrgFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
+
+    public void testLookupById() throws Exception {
+        ImageStore store = new ImageStore();
+        store.setLabel("mystore");
+        store.setUri("my.store.uri");
+        store.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel("dockerreg"));
+        store.setOrg(user.getOrg());
+        ImageStoreFactory.save(store);
+
+        DockerfileProfile profile = new DockerfileProfile();
+        profile.setLabel("myprofile");
+        profile.setOrg(user.getOrg());
+        profile.setPath("my/test/path");
+        profile.setStore(store);
+        ImageProfileFactory.save(profile);
+
+        assertNotNull(profile.getProfileId());
+
+        Optional<ImageProfile> lookup =
+                ImageProfileFactory.lookupById(profile.getProfileId());
+        assertTrue(lookup.isPresent());
+        assertEquals(profile, lookup.get());
+
+        lookup = ImageProfileFactory.lookupById(-1);
+        assertFalse(lookup.isPresent());
+    }
+
+    public void testLookupByIdAndOrg() throws Exception {
+        ImageStore store = new ImageStore();
+        store.setLabel("mystore");
+        store.setUri("my.store.uri");
+        store.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel("dockerreg"));
+        store.setOrg(user.getOrg());
+        ImageStoreFactory.save(store);
+
+        DockerfileProfile profile = new DockerfileProfile();
+        profile.setLabel("myprofile");
+        profile.setOrg(user.getOrg());
+        profile.setPath("my/test/path");
+        profile.setStore(store);
+        ImageProfileFactory.save(profile);
+
+        assertNotNull(profile.getProfileId());
+
+        Optional<ImageProfile> lookup =
+                ImageProfileFactory.lookupByIdAndOrg(profile.getProfileId(), user.getOrg());
+        assertTrue(lookup.isPresent());
+        assertEquals(profile, lookup.get());
+
+        lookup = ImageProfileFactory.lookupByIdAndOrg(-1, user.getOrg());
+        assertFalse(lookup.isPresent());
+
+        Org org = OrgFactory.createOrg();
+        org.setName("foreign org");
+        org = OrgFactory.save(org);
+
+        lookup = ImageProfileFactory.lookupByIdAndOrg(profile.getProfileId(), org);
+        assertFalse(lookup.isPresent());
+    }
 
     public void testLookupByLabel() throws Exception {
         ImageStore iStore = new ImageStore();
@@ -32,10 +96,15 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         profile.setToken(null);
         profile.setStore(iStore);
         ImageProfileFactory.save(profile);
-        profile = TestUtils.saveAndReload(profile);
 
         ImageProfile prf = ImageProfileFactory.lookupByLabel("suma-3.1-base");
         assertEquals(profile, prf);
+
+        try {
+            ImageProfileFactory.lookupByLabel("non-exixtent-label");
+            fail("Should throw NoResultException");
+        }
+        catch (NoResultException ignored) { }
     }
 
     public void testLookupByLabelAndOrg() throws Exception {
@@ -57,6 +126,16 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
 
         ImageProfile prf = ImageProfileFactory.lookupByLabelAndOrg("suma-3.1-base", user.getOrg());
         assertEquals(profile, prf);
+
+        Org org = OrgFactory.createOrg();
+        org.setName("foreign org");
+        org = OrgFactory.save(org);
+
+        try {
+            ImageProfileFactory.lookupByLabelAndOrg("suma-3.1-base", org);
+            fail("Should throw NoResultException");
+        }
+        catch (NoResultException ignored) { }
     }
 
     public void testListImageProfiles() throws Exception {

@@ -15,16 +15,21 @@
 package com.redhat.rhn.frontend.action.systems.entitlements.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.systems.entitlements.SystemEntitlementsSetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.Iterator;
@@ -55,20 +60,27 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         assertNull(request.getAttribute(SystemEntitlementsSetupAction.SHOW_NO_SYSTEMS));
         assertNotNull(request.getAttribute(SystemEntitlementsSetupAction.SHOW_COMMANDS));
 
-        assertNull(request.getAttribute(SystemEntitlementsSetupAction.ADDON_ENTITLEMENTS));
-
-        Map<String, String> baseEntitlementCounts = (Map<String, String>) request
+        Map baseEntitlementCounts = (Map) request
                 .getAttribute(SystemEntitlementsSetupAction.BASE_ENTITLEMENT_COUNTS);
 
-        assertEquals("1 system type(s)",
+        assertEquals("1 system type(s).",
                 baseEntitlementCounts.get(EntitlementManager.MANAGEMENT.getLabel()));
     }
 
-    public void testAddVirtualization() throws Exception {
-        ServerFactoryTest.createTestServer(user, true,
+    public void testVirtualizationType() throws Exception {
+        Server server = ServerTestUtils.createTestSystem(user,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
-        UserTestUtils.addVirtualization(user.getOrg());
+        Channel[] ch = ChannelTestUtils.setupBaseChannelForVirtualization(user, server.getBaseChannel());
+        server.addChannel(ch[0]);
+        server.addChannel(ch[1]);
+
+        assertTrue(EntitlementManager.VIRTUALIZATION.isAllowedOnServer(server));
+        boolean hasErrors = SystemManager.entitleServer(server, EntitlementManager.VIRTUALIZATION).hasErrors();
+
+        assertFalse(hasErrors);
+        assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.VIRTUALIZATION));
+
         executeTests();
         assertNotNull(request.getAttribute(
                 SystemEntitlementsSetupAction.ADDON_ENTITLEMENTS));
@@ -76,8 +88,28 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         Map<String, String> addonEntitlementCounts = (Map<String, String>) request
                 .getAttribute(SystemEntitlementsSetupAction.ADDON_ENTITLEMENT_COUNTS);
 
-        assertEquals("1 system type(s)",
+        assertEquals("1 system type(s).",
                 addonEntitlementCounts.get(EntitlementManager.VIRTUALIZATION.getLabel()));
+    }
+
+    public void testDockerBuildHostType() throws Exception {
+        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+
+        assertTrue(EntitlementManager.DOCKER_BUILD_HOST.isAllowedOnServer(server));
+        boolean hasErrors = SystemManager.entitleServer(server, EntitlementManager.DOCKER_BUILD_HOST).hasErrors();
+
+        assertFalse(hasErrors);
+        assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.DOCKER_BUILD_HOST));
+
+        executeTests();
+        assertNotNull(request.getAttribute(
+                SystemEntitlementsSetupAction.ADDON_ENTITLEMENTS));
+
+        Map<String, String> addonEntitlementCounts = (Map<String, String>) request
+                .getAttribute(SystemEntitlementsSetupAction.ADDON_ENTITLEMENT_COUNTS);
+
+        assertEquals("1 system type(s).",
+                addonEntitlementCounts.get(EntitlementManager.DOCKER_BUILD_HOST.getLabel()));
     }
 
     /**
