@@ -24,8 +24,12 @@ echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
 sysctl -w kernel.shmmax=18446744073709551615
-su - postgres -c "/usr/lib/postgresql-init stop" ||:
-su - postgres -c "/usr/lib/postgresql-init start"
+if [ -e /usr/lib/postgresql-init ]; then
+    su - postgres -c "/usr/lib/postgresql-init stop" ||:
+    su - postgres -c "/usr/lib/postgresql-init start"
+else
+    /etc/init.d/postgresql restart
+fi
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 # SUSE Manager initialization
@@ -72,10 +76,17 @@ done
 # run the schema upgrade from git repo
 if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
     cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
-    su - postgres -c "/usr/lib/postgresql-init stop"
+    if [ -e /usr/lib/postgresql-init ]; then
+        su - postgres -c "/usr/lib/postgresql-init stop"
+    else
+        rcpostgresql stop
+    fi
     exit 1
 fi
 
 # Postgres shutdown (avoid stale memory by shmget())
-su - postgres -c "/usr/lib/postgresql-init stop"
-
+if [ -e /usr/lib/postgresql-init ]; then
+    su - postgres -c "/usr/lib/postgresql-init stop"
+else
+    rcpostgresql stop
+fi
