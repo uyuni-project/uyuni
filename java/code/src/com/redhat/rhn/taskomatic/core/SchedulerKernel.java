@@ -46,7 +46,7 @@ import java.util.Properties;
  */
 public class SchedulerKernel {
 
-    private static final String[] TASKOMATIC_PACKAGE_NAMES = {"com.redhat.rhn.taskomatic"};
+    private static final String[] TASKOMATIC_PACKAGE_NAMES = {"com.redhat.rhn.taskomatic.domain"};
     private static Logger log = Logger.getLogger(SchedulerKernel.class);
     private byte[] shutdownLock = new byte[0];
     private static SchedulerFactory factory = null;
