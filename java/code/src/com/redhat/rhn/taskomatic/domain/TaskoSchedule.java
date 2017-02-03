@@ -12,7 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.taskomatic;
+package com.redhat.rhn.taskomatic.domain;
+
+import com.redhat.rhn.taskomatic.TaskoFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

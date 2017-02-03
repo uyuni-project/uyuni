@@ -31,7 +31,7 @@ insert into rhnServerGroupType ( id, label, name, permanent, is_base)
    values ( sequence_nextval('rhn_servergroup_type_seq'),
       'virtualization_host', 'Virtualization Host Entitled Servers',
       'N', 'N'
-   );      
+   );
 
 --  bootstrap_entitled type ----------------------------------------------------
 
@@ -55,6 +55,14 @@ insert into rhnServerGroupType ( id, label, name, permanent, is_base)
    values ( sequence_nextval('rhn_servergroup_type_seq'),
       'foreign_entitled', 'Foreign Entitled Servers',
       'Y', 'Y'
+   );
+
+-- docker_build_host type ----------------------------------------------------
+
+insert into rhnServerGroupType ( id, label, name, permanent, is_base)
+   values ( sequence_nextval('rhn_servergroup_type_seq'),
+      'docker_build_host', 'Docker Build Host',
+      'N', 'N'
    );
 
 commit;

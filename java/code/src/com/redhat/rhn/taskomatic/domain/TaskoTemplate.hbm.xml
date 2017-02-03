@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.taskomatic.TaskoTemplate"
+    <class name="com.redhat.rhn.taskomatic.domain.TaskoTemplate"
         table="rhnTaskoTemplate">
 
         <id name="id" type="long" column="id">
@@ -15,19 +15,19 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
         <many-to-one
             name="bunch"
-            class="com.redhat.rhn.taskomatic.TaskoBunch"
+            class="com.redhat.rhn.taskomatic.domain.TaskoBunch"
             column="bunch_id"/>
         <many-to-one
             name="task"
             lazy="false"
-            class="com.redhat.rhn.taskomatic.TaskoTask"
+            class="com.redhat.rhn.taskomatic.domain.TaskoTask"
             column="task_id"/>
         <property name="ordering" type="long" column="ordering"/>
         <property name="startIf" type="string" column="start_if"/>
 
         <set name="runHistory" inverse="true" table="rhnTaskoRun">
             <key column="template_id"/>
-            <one-to-many class="com.redhat.rhn.taskomatic.TaskoRun"/>
+            <one-to-many class="com.redhat.rhn.taskomatic.domain.TaskoRun"/>
         </set>
 
         <property name="created" column="created" type="timestamp"
@@ -37,7 +37,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </class>
 
     <query name="TaskoTemplate.lookupByBunchAndOrder">
-            <![CDATA[from com.redhat.rhn.taskomatic.TaskoTemplate where bunch.id = :bunch_id and ordering = :order]]>
+        <![CDATA[from com.redhat.rhn.taskomatic.domain.TaskoTemplate where bunch.id = :bunch_id and ordering = :order]]>
     </query>
 
 </hibernate-mapping>

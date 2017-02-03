@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.services;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
@@ -23,19 +25,29 @@ import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.image.DockerfileProfile;
+import com.redhat.rhn.domain.image.ImageProfile;
+import com.redhat.rhn.domain.image.ImageProfileFactory;
+import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionServerUtils;
+import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Cmd;
@@ -48,7 +60,12 @@ import com.suse.salt.netapi.results.Result;
 
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
+import org.jose4j.lang.JoseException;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
@@ -259,6 +276,18 @@ public enum SaltServerActionService {
         else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) actionIn;
             return applyStatesAction(minions, applyStatesAction.getDetails().getMods());
+        }
+        else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
+            ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
+            ImageBuildActionDetails details = imageBuildAction.getDetails();
+            return ImageProfileFactory.lookupById(details.getImageProfileId())
+                    .flatMap(ImageProfile::asDockerfileProfile).map(
+                    ip -> imageBuildAction(
+                            minions,
+                            Optional.ofNullable(details.getTag()),
+                            ip,
+                            imageBuildAction.getSchedulerUser())
+            ).orElseGet(Collections::emptyMap);
         }
         else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
             return distUpgradeAction((DistUpgradeAction) actionIn, minions);
@@ -485,6 +514,102 @@ public enum SaltServerActionService {
             List<MinionServer> minions, List<String> mods) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         ret.put(State.apply(mods, Optional.empty(), Optional.of(true)), minions);
+        return ret;
+    }
+
+    private static Map<String, Object> dockerRegPillar(List<ImageStore> stores) {
+        Map<String, Object> dockerRegistries = new HashMap<>();
+        stores.forEach(store -> {
+            Optional.ofNullable(store.getCreds())
+                    .flatMap(Credentials::asDockerCredentials)
+                    .ifPresent(credentials -> {
+                        Map<String, Object> reg = new HashMap<>();
+                        reg.put("email", credentials.getEmail());
+                        reg.put("password", credentials.getPassword());
+                        reg.put("username", credentials.getUsername());
+                        dockerRegistries.put(store.getUri(), reg);
+                    });
+        });
+        return dockerRegistries;
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> imageBuildAction(
+            List<MinionServer> minions, Optional<String> tag,
+            DockerfileProfile profile, User user) {
+        List<ImageStore> imageStores = ImageStoreFactory.listImageStores(user.getOrg());
+        String cert = "";
+        try {
+            //TODO: maybe from the database
+            cert = Files.readAllLines(
+                    Paths.get("/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT"),
+                    Charset.defaultCharset()
+            ).stream().collect(Collectors.joining("\n\n"));
+        }
+        catch (IOException e) {
+            LOG.error("Could not read certificate", e);
+        }
+        final String certificate = cert;
+
+        //TODO: optimal scheduling would be to group by host and orgid
+        Map<LocalCall<?>, List<MinionServer>> ret = minions.stream().collect(
+                Collectors.toMap(minion -> {
+
+                    //TODO: refactor ActivationKeyHandler.listChannels to share this logic
+                    TokenBuilder tokenBuilder = new TokenBuilder(minion.getOrg().getId());
+                    tokenBuilder.useServerSecret();
+                    tokenBuilder.setExpirationTimeMinutesInTheFuture(
+                            Config.get().getInt(
+                                    ConfigDefaults.TEMP_TOKEN_LIFETIME
+                            )
+                    );
+                    tokenBuilder.onlyChannels(profile.getToken().getChannels()
+                            .stream().map(Channel::getLabel)
+                            .collect(Collectors.toSet()));
+                    String t = "";
+                    try {
+                        t = tokenBuilder.getToken();
+                    }
+                    catch (JoseException e) {
+                        e.printStackTrace();
+                    }
+                    final String token = t;
+
+
+                    Map<String, Object> pillar = new HashMap<>();
+                    Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
+                    pillar.put("docker-registries", dockerRegistries);
+                    String name = profile.getStore().getUri() + "/" + profile.getLabel() +
+                            ":" + tag.orElse("");
+                    pillar.put("imagename", name);
+                    pillar.put("builddir", profile.getPath());
+
+                    String host = SaltStateGeneratorService.getChannelHost(minion);
+                    String repocontent = profile.getToken().getChannels().stream().map(s ->
+                    {
+                        return "[susemanager:" + s.getLabel() + "]\n\n" +
+                                "name=" + s.getName() + "\n\n" +
+                                "enabled=1\n\n" +
+                                "autorefresh=1\n\n" +
+                                "baseurl=https://" + host + ":443/rhn/manager/download/" +
+                                s.getLabel() + "?" + token + "\n\n" +
+                                "type=rpm-md\n\n" +
+                                "gpgcheck=1\n\n" +
+                                "repo_gpgcheck=0\n\n" +
+                                "pkg_gpgcheck=1\n\n";
+                    }).collect(Collectors.joining("\n\n"));
+
+                    pillar.put("repo", repocontent);
+                    pillar.put("cert", certificate);
+
+                    return State.apply(
+                            Collections.singletonList("images.docker"),
+                            Optional.of(pillar),
+                            Optional.of(true)
+                    );
+                },
+                Collections::singletonList
+        ));
+
         return ret;
     }
 

@@ -40,5 +40,10 @@ public class EntitlementManagerTest extends RhnBaseTestCase {
                 EntitlementManager.VIRTUALIZATION_ENTITLED);
         assertNotNull(ent);
         assertEquals(EntitlementManager.VIRTUALIZATION, ent);
+
+        ent = EntitlementManager.getByName(
+                EntitlementManager.DOCKER_BUILD_HOST_ENTITLED);
+        assertNotNull(ent);
+        assertEquals(EntitlementManager.DOCKER_BUILD_HOST, ent);
     }
 }

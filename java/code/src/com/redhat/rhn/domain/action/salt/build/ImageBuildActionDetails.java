@@ -1,0 +1,121 @@
+/**
+ * Copyright (c) 2016 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.domain.action.salt.build;
+
+import com.redhat.rhn.domain.action.ActionChild;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * ApplyStatesActionDetails - Class representation of the table rhnActionApplyStates.
+ */
+public class ImageBuildActionDetails extends ActionChild {
+
+    private long id;
+    private long actionId;
+    private String tag;
+    private long imageProfileId;
+    private Set<ImageBuildActionResult> results = new HashSet<>();
+
+    /**
+     * Gets tag.
+     *
+     * @return the tag
+     */
+    public String getTag() {
+        return tag;
+    }
+
+    /**
+     * Sets tag.
+     *
+     * @param tagIn the tag
+     */
+    public void setTag(String tagIn) {
+        this.tag = tagIn;
+    }
+
+    /**
+     * Gets image profile id.
+     *
+     * @return the image profile id
+     */
+    public long getImageProfileId() {
+        return imageProfileId;
+    }
+
+    /**
+     * Sets image profile id.
+     *
+     * @param imageProfileIdIn the image profile id
+     */
+    public void setImageProfileId(long imageProfileIdIn) {
+        this.imageProfileId = imageProfileIdIn;
+    }
+
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * @param idIn the id to set
+     */
+    public void setId(long idIn) {
+        this.id = idIn;
+    }
+
+    /**
+     * @return the action id
+     */
+    public long getActionId() {
+        return actionId;
+    }
+
+    /**
+     * @param actionIdIn the action id to set
+     */
+    public void setActionId(long actionIdIn) {
+        this.actionId = actionIdIn;
+    }
+
+    /**
+     * @return the results
+     */
+    public Set<ImageBuildActionResult> getResults() {
+        return results;
+    }
+
+    /**
+     * @param resultsIn the results to set
+     */
+    public void setResults(Set<ImageBuildActionResult> resultsIn) {
+        this.results = resultsIn;
+    }
+
+    /**
+     * Add {@link com.redhat.rhn.domain.action.salt.ApplyStatesActionResult} to the results
+     * set.
+     *
+     * @param resultIn ApplyStatesActionResult to add to the set
+     */
+    public void addResult(ImageBuildActionResult resultIn) {
+        resultIn.setParentScriptActionDetails(this);
+        results.add(resultIn);
+    }
+}

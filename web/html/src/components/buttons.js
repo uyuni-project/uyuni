@@ -67,9 +67,10 @@ class Button extends React.Component {
     }
 
     render() {
+        const margin = this.props.text != undefined ? "" : " no-margin"
         return (
-            <button id={this.props.id} type="button" className={'btn ' + this.props.className} onClick={this.props.handler}>
-                <i className={'fa ' + this.props.icon}/>{this.props.text}
+            <button id={this.props.id} type="button" title={this.props.title} className={'btn ' + this.props.className} onClick={this.props.handler}>
+                <i className={'fa ' + this.props.icon + margin}/>{this.props.text}
             </button>
         )
     }
@@ -82,11 +83,12 @@ class LinkButton extends React.Component {
     }
 
     render() {
+        const margin = this.props.text != undefined ? "" : " no-margin"
         var icon = this.props.icon ?
-            <i className={'fa ' + this.props.icon}/> :
+            <i className={'fa ' + this.props.icon + margin}/> :
             null;
         return (
-            <a id={this.props.id} className={'btn ' + this.props.className} href={this.props.href}>
+            <a id={this.props.id} title={this.props.title} className={'btn ' + this.props.className} href={this.props.href}>
                 {icon}
                 {this.props.text}
             </a>
@@ -95,9 +97,24 @@ class LinkButton extends React.Component {
 
 }
 
+class SubmitButton extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <button id={this.props.id} type="submit" className={'btn ' + this.props.className} disabled={this.props.disabled}>
+                <i className={'fa ' + this.props.icon}/>{this.props.text}
+            </button>
+        )
+    }
+}
 
 module.exports = {
     Button : Button,
     LinkButton : LinkButton,
-    AsyncButton : AsyncButton
+    AsyncButton : AsyncButton,
+    SubmitButton : SubmitButton
 }

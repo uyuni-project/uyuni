@@ -38,6 +38,7 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     public static final String SALT_MINION_SERVICE = "services.salt-minion";
     public static final String SYNC_CUSTOM_ALL = "util.synccustomall";
     public static final String DISTUPGRADE = "distupgrade";
+    public static final String DOCKER_SERVICE = "services.docker";
 
     private final long serverId;
     private final Long userId;

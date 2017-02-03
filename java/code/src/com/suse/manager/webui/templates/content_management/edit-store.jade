@@ -1,0 +1,10 @@
+include ../common.jade
+
+#image-store-edit
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+    const storeId = "#{store_id}"
+
+script(src='/javascript/manager/image-store-edit.bundle.js', type='text/javascript')
+

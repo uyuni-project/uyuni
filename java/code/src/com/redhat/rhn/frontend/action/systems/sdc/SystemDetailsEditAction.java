@@ -20,7 +20,6 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.Server;
@@ -36,10 +35,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.salt.netapi.datatypes.target.MinionList;
-
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -54,7 +49,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -210,22 +204,23 @@ public class SystemDetailsEditAction extends RhnAction {
                 log.debug("looping on addon entitlements");
             }
 
-            Set validAddons = user.getOrg().getValidAddOnEntitlementsForOrg();
-            success = checkVirtEntitlements(request, daForm, validAddons, s, user);
+            success = applyAddonEntitlementChanges(request, daForm, s, user);
         }
 
         return success;
     }
 
     /**
-     * Checks the complicated virt logic.
+     * Adds/removes add-on entitlements for the system.
+     *
      * @param request the current HTTP request
      * @param daForm the DynaActionForm submitted by the user.
-     * @param validAddons list of valid add-on entitlements
+     * @param s the server to apply changes
+     * @param user the user applying changes
      * @return true if validation succeeds, false otherwise.
      */
-    private boolean checkVirtEntitlements(HttpServletRequest request,
-            DynaActionForm daForm, Set validAddons, Server s, User user) {
+    private boolean applyAddonEntitlementChanges(HttpServletRequest request,
+            DynaActionForm daForm, Server s, User user) {
 
         boolean success = true;
 
@@ -233,8 +228,7 @@ public class SystemDetailsEditAction extends RhnAction {
         // to be made
         boolean needsSnapshot = false;
 
-        for (Iterator i = validAddons.iterator(); i.hasNext();) {
-            Entitlement e = (Entitlement) i.next();
+        for (Entitlement e : user.getOrg().getValidAddOnEntitlementsForOrg()) {
             log.debug("Entitlement: " + e.getLabel());
             log.debug("form.get: " + daForm.get(e.getLabel()));
             if (Boolean.TRUE.equals(daForm.get(e.getLabel())) &&
@@ -245,7 +239,7 @@ public class SystemDetailsEditAction extends RhnAction {
                 if (vr.getWarnings().size() > 0) {
                     getStrutsDelegate().saveMessages(request,
                             RhnValidationHelper.validatorWarningToActionMessages(
-                                vr.getWarnings().toArray(new ValidatorWarning [] {})));
+                                    vr.getWarnings().toArray(new ValidatorWarning[] {})));
                 }
 
 
@@ -253,8 +247,7 @@ public class SystemDetailsEditAction extends RhnAction {
                     ValidatorError ve = vr.getErrors().get(0);
                     log.debug("Got error: " + ve);
                     getStrutsDelegate().saveMessages(request,
-                            RhnValidationHelper.
-                                        validatorErrorToActionErrors(ve));
+                            RhnValidationHelper.validatorErrorToActionErrors(ve));
                     success = false;
                 }
                 else {
@@ -263,17 +256,15 @@ public class SystemDetailsEditAction extends RhnAction {
                     if (log.isDebugEnabled()) {
                         log.debug("entitling worked?: " + s.hasEntitlement(e));
                     }
-                    if (e instanceof VirtualizationEntitlement) {
-                        log.debug("adding virt msg");
-                        if (ConfigDefaults.get().isDocAvailable()) {
-                            createSuccessMessage(request,
-                                "system.entitle.addedvirtualization",
-                                "/rhn/help/reference/en-US/ch-virtualization.jsp");
-                        }
-                        else {
-                            createSuccessMessage(request,
-                                    "system.entitle.addedvirtualization.nodoc", null);
-                        }
+
+                    log.debug("adding entitlement success msg");
+                    if (ConfigDefaults.get().isDocAvailable()) {
+                        createSuccessMessage(request,
+                                "system.entitle.added." + e.getLabel(), null);
+                    }
+                    else {
+                        createSuccessMessage(request,
+                                "system.entitle.added." + e.getLabel() + ".nodoc", null);
                     }
                 }
             }
@@ -284,14 +275,6 @@ public class SystemDetailsEditAction extends RhnAction {
                 SystemManager.removeServerEntitlement(s.getId(), e);
 
                 needsSnapshot = true;
-            }
-            if (e instanceof VirtualizationEntitlement) {
-                // regenerate pillar data when VirtualizationEntitlement changed
-                s.asMinionServer().ifPresent(minion -> {
-                    SaltStateGeneratorService.INSTANCE.generatePillar(minion);
-                    SaltService.INSTANCE.refreshPillar(
-                            new MinionList(minion.getMinionId()));
-                });
             }
         }
 
@@ -415,12 +398,5 @@ public class SystemDetailsEditAction extends RhnAction {
             countries.add(new LabelValueBean(name, code));
         }
         return countries;
-    }
-
-    private boolean checkEnt(Set<Entitlement> validAddons,
-            Entitlement e, DynaActionForm daForm) {
-
-        return validAddons.contains(e) &&
-                    Boolean.TRUE.equals(daForm.get(e.getLabel()));
     }
 }

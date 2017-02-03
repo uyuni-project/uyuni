@@ -16,11 +16,11 @@ package com.redhat.rhn.taskomatic.task.test;
 
 import org.apache.commons.lang.RandomStringUtils;
 
-import com.redhat.rhn.taskomatic.TaskoBunch;
+import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.TaskoFactory;
-import com.redhat.rhn.taskomatic.TaskoRun;
-import com.redhat.rhn.taskomatic.TaskoTask;
-import com.redhat.rhn.taskomatic.TaskoTemplate;
+import com.redhat.rhn.taskomatic.domain.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoTask;
+import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 import com.redhat.rhn.taskomatic.task.ErrataQueue;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 

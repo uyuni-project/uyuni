@@ -15,7 +15,7 @@
 package com.redhat.rhn.taskomatic.task.threaded;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.taskomatic.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import java.util.List;
 

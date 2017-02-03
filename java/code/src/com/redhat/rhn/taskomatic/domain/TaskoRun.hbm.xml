@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.taskomatic.TaskoRun"
+    <class name="com.redhat.rhn.taskomatic.domain.TaskoRun"
         table="rhnTaskoRun">
 
         <id name="id" type="long" column="id">
@@ -17,7 +17,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <many-to-one
             name="template"
             lazy="false"
-            class="com.redhat.rhn.taskomatic.TaskoTemplate"
+            class="com.redhat.rhn.taskomatic.domain.TaskoTemplate"
             column="template_id"/>
         <property name="scheduleId" type="long" column="schedule_id"/>
         <property name="startTime" type="timestamp" column="start_time"/>
@@ -34,31 +34,31 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </class>
 
         <query name="TaskoRun.lookupById">
-            <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoRun WHERE id = :run_id]]>
+            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE id = :run_id]]>
         </query>
 
         <query name="TaskoRun.listBySchedule">
-            <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoRun WHERE scheduleId = :schedule_id]]>
+            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE scheduleId = :schedule_id]]>
         </query>
 
         <query name="TaskoRun.listByBunch">
-            <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoRun WHERE template.bunch.name = :bunch_name ORDER BY startTime DESC, id DESC]]>
+            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE template.bunch.name = :bunch_name ORDER BY startTime DESC, id DESC]]>
         </query>
 
         <query name="TaskoRun.listOlderThan">
-            <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoRun WHERE endTime < :limit_time]]>
+            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE endTime < :limit_time]]>
         </query>
 
         <query name="TaskoRun.listNewerThan">
-            <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoRun WHERE endTime >= :limit_time]]>
+            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE endTime >= :limit_time]]>
         </query>
 
         <query name="TaskoRun.listByScheduleNewerThan">
-            <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoRun WHERE scheduleId = :schedule_id AND endTime > :limit_time]]>
+            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE scheduleId = :schedule_id AND endTime > :limit_time]]>
         </query>
 
         <query name="TaskoRun.listUnfinished">
-            <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoRun WHERE endTime IS NULL]]>
+            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoRun WHERE endTime IS NULL]]>
         </query>
 
 </hibernate-mapping>

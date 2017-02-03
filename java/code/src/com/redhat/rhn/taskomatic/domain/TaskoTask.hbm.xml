@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.taskomatic.TaskoTask"
+    <class name="com.redhat.rhn.taskomatic.domain.TaskoTask"
         table="rhnTaskoTask">
 
         <id name="id" type="long" column="id">
@@ -23,7 +23,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </class>
 
     <query name="TaskoTask.listTasks">
-        <![CDATA[from com.redhat.rhn.taskomatic.TaskoTask as t]]>
+        <![CDATA[from com.redhat.rhn.taskomatic.domain.TaskoTask as t]]>
     </query>
 
 </hibernate-mapping>
