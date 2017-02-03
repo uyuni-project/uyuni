@@ -24,7 +24,8 @@ echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
 sysctl -w kernel.shmmax=18446744073709551615
-su - postgres -c "/usr/lib/postgresql-init restart"
+su - postgres -c "/usr/lib/postgresql-init stop" ||:
+su - postgres -c "/usr/lib/postgresql-init start"
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 # SUSE Manager initialization
