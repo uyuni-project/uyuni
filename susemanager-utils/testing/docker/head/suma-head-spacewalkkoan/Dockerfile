@@ -1,9 +1,9 @@
 # Container used to test java code of SUSE Manager
 #
-# VERSION               1.0.2
+# VERSION               1.1.0
 
-FROM registry.mgr.suse.de/suma-head-base:1.0.2
-MAINTAINER Flavio Castelli "fcastelli@suse.com"
+FROM registry.mgr.suse.de/suma-head-base:1.1.0
+MAINTAINER Michael Calmer "mc@suse.com"
 
 # Install the required packages
 ADD add_packages.sh /root/add_packages.sh

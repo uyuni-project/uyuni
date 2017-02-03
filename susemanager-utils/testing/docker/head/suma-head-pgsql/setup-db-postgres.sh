@@ -5,7 +5,7 @@ MANAGER_USER="spacewalk"
 MANAGER_PASS="spacewalk"
 MANAGER_DB_NAME="susemanager"
 
-rcpostgresql start
+su - postgres -c "/usr/lib/postgresql-init start"
 
 su - postgres -c "createdb $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
 echo "listen_addresses = '*'" >> /var/lib/pgsql/data/postgresql.conf
@@ -16,9 +16,12 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
 cat /var/lib/pgsql/data/pg_hba.conf >> /tmp/pg_hba.conf
 mv /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
 mv /tmp/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf
-if [ -x "/usr/bin/pgtune" ]; then
-  mv /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.orig
-  /usr/bin/pgtune -T Mixed -i /var/lib/pgsql/data/postgresql.conf.orig -o /var/lib/pgsql/data/postgresql.conf
-fi
 
-rcpostgresql stop
+# HACK: allow less than 400 connections
+sed -i 's/        conn_lowest = 400/        conn_lowest = 100/' /usr/lib/python2.7/site-packages/smdba/postgresqlgate.py
+cp /root/rhn.conf /etc/rhn/
+
+smdba system-check autotuning --max_connections=100
+
+#rm /etc/rhn/rhn.conf
+su - postgres -c "/usr/lib/postgresql-init stop"

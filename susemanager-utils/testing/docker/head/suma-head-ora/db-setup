@@ -4,7 +4,7 @@ umount /dev/shm
 mount tmpfs -t tmpfs -o defaults /dev/shm
 
 echo "Setting up Oracle 12 database..."
-chkconfig oracle on
+insserv oracle
 /etc/init.d/oracle start
 
 export MANAGER_USER=susemanager
