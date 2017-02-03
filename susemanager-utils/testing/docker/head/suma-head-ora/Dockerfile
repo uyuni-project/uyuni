@@ -1,8 +1,8 @@
 # Container used to test java code of SUSE Manager
 #
-# VERSION               1.1.0
+# VERSION               1.1.1
 
-FROM registry.mgr.suse.de/suma-head-base:1.1.0
+FROM registry.mgr.suse.de/suma-head-base:1.1.1
 MAINTAINER Michael Calmer "mc@suse.de"
 
 # Add the repositories
@@ -22,8 +22,6 @@ RUN useradd oracle --gid dba --create-home
 
 ADD db-download /root/db-download
 RUN /root/db-download
-
-RUN zypper --non-interactive in aaa_base
 
 # requires privileges
 #ADD db-setup /root/db-setup

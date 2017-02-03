@@ -63,3 +63,5 @@ quit
 
 su -s /bin/bash - oracle -c "ORACLE_SID=susemanager sqlplus / as sysdba @/tmp/dbsetup.sql;"
 /etc/init.d/oracle restart
+
+/etc/init.d/oracle stop
