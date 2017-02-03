@@ -18,6 +18,11 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.finder.FinderFactory;
 
+import com.redhat.rhn.domain.image.DockerfileProfile;
+import com.redhat.rhn.domain.image.ImageProfile;
+import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.ImageStoreType;
+import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -27,8 +32,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,7 +39,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.stream.Collectors;
+
 
 /**
  * Manages the lifecycle of the Hibernate SessionFactory and associated
@@ -136,46 +139,23 @@ class ConnectionManager {
     }
 
     /**
-     * Create a SessionFactory, loading the hbm.xml files and annotated entity classes
-     * from pre-configurated packages.
+     * Create a SessionFactory, loading the hbm.xml files from the specified
+     * location.
+     * @param packageNames Package name to be searched.
      */
     private void createSessionFactory() {
         if (sessionFactory != null && !sessionFactory.isClosed()) {
             return;
         }
 
-        //Discover hbm.xml files to add to config
         List<String> hbms = new LinkedList<String>();
 
         for (Iterator<String> iter = packageNames.iterator(); iter.hasNext();) {
             String pn = iter.next();
-            LOG.info("Scanning for 'hbm.xml' files through package: " + pn);
-
-            List<String> pkgHbms = FinderFactory.getFinder(pn).find("hbm.xml");
-
+            hbms.addAll(FinderFactory.getFinder(pn).find("hbm.xml"));
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Found: " + pkgHbms);
+                LOG.debug("Found: " + hbms);
             }
-
-            hbms.addAll(pkgHbms);
-        }
-
-        //Discover annotated classes to add to config
-        List<Class<?>> annotatedClasses = new ArrayList<>();
-        for (String pkg : packageNames) {
-            LOG.info("Scanning for entity classes through package: " + pkg);
-
-            //Factory classes usually include static init code with DB calls, this leads to
-            //infinite recursion. We have to exclude Factory classes to prevent it.
-            List<Class<?>> pkgAnnotatedClasses = getEntityAnnotatedClasses(pkg, "Factory");
-
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Found: " +
-                        pkgAnnotatedClasses.stream().map(Class::getCanonicalName).collect(
-                                Collectors.toList()));
-            }
-
-            annotatedClasses.addAll(pkgAnnotatedClasses);
         }
 
         try {
@@ -214,52 +194,23 @@ class ConnectionManager {
                 }
             }
 
+            //TODO: Fix auto-discovery (see commit: e92b062)
+            config.addAnnotatedClass(ImageStore.class);
+            config.addAnnotatedClass(ImageStoreType.class);
+            config.addAnnotatedClass(DockerfileProfile.class);
+            config.addAnnotatedClass(ImageProfile.class);
+            config.addAnnotatedClass(ProfileCustomDataValue.class);
+
             // add empty varchar warning interceptor
             EmptyVarcharInterceptor interceptor = new EmptyVarcharInterceptor();
             interceptor.setAutoConvert(true);
             config.setInterceptor(interceptor);
 
-            for (Class<?> c : annotatedClasses) {
-                LOG.debug("Adding annotated entity class: " + c.getCanonicalName());
-                config.addAnnotatedClass(c);
-            }
             sessionFactory = config.buildSessionFactory();
         }
         catch (HibernateException e) {
             LOG.error("FATAL ERROR creating HibernateFactory", e);
         }
-        catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static List<Class<?>> getEntityAnnotatedClasses(String packageName,
-            String... excluded) {
-
-        List<Class<?>> entityClasses = new ArrayList<>();
-
-        for (String cname : FinderFactory.getFinder(packageName).findExcluding(excluded,
-                "class")) {
-            Class<?> cls;
-            try {
-                cls = Class.forName(
-                        cname.substring(0, cname.lastIndexOf('.')).replace('/', '.'));
-            }
-            catch (ClassNotFoundException e) {
-                LOG.warn(e.getMessage(), e);
-                continue;
-            }
-
-            Annotation[] annotations = cls.getAnnotations();
-
-            for (Annotation annotation : annotations) {
-                if (annotation instanceof javax.persistence.Entity) {
-                    entityClasses.add(cls);
-                }
-            }
-        }
-
-        return entityClasses;
     }
 
     private SessionInfo threadSessionInfo() {
