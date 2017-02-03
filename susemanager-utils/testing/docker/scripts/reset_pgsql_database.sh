@@ -14,7 +14,7 @@ echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
 sysctl -w kernel.shmmax=18446744073709551615
-rcpostgresql restart
+su - postgres -c "/usr/lib/postgresql-init restart"
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 touch /etc/rhn/rhn.conf
