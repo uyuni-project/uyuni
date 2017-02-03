@@ -58,7 +58,7 @@ CREATE UNIQUE INDEX rhn_image_build_result_sa_uq
     ON rhnActionImageBuildResult (server_id, action_image_build_id);
 
 CREATE INDEX rhn_image_build_result_ad_idx
-    ON rhnActionImageBuildResult (action_apply_states_id)
+    ON rhnActionImageBuildResult (action_image_build_id)
     NOLOGGING;
 
 insert into rhnActionType values (504, 'image.build', 'Build an Image Profile', 'N', 'N');
