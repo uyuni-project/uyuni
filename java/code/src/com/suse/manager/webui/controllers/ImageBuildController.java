@@ -15,21 +15,26 @@
 
 package com.suse.manager.webui.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.image.ImageProfile;
+import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.suse.manager.reactor.messaging.ImageBuildEventMessage;
+import com.suse.manager.webui.utils.gson.JsonResult;
 import org.apache.commons.lang.StringUtils;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
@@ -38,6 +43,8 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
  * Spark controller class for image building.
  */
 public class ImageBuildController {
+
+    private static final Gson GSON = new GsonBuilder().create();
 
     private ImageBuildController() { }
 
@@ -94,5 +101,38 @@ public class ImageBuildController {
             json.addProperty("name", s.getName());
             return json;
         }).collect(Collectors.toList());
+    }
+
+    public static class BuildRequest {
+        private long buildHostId;
+        private String tag;
+
+        public long getBuildHostId() {
+            return buildHostId;
+        }
+
+        public String getTag() {
+            return tag;
+        }
+    }
+
+    public static Object build(Request request, Response response, User user) {
+        response.type("application/json");
+
+        BuildRequest buildRequest = GSON.fromJson(request.body(), BuildRequest.class);
+
+        Long profileId = Long.parseLong(request.params("id"));
+        Optional<ImageProfile> maybeProfile =
+                ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
+
+        return maybeProfile.flatMap(ImageProfile::asDockerfileProfile).map(profile -> {
+            MessageQueue.publish(new ImageBuildEventMessage(
+                    buildRequest.getBuildHostId(), user.getId(), buildRequest.getTag(), profile
+            ));
+            return GSON.toJson(new JsonResult(true, Collections.singletonList("")));
+        }).orElseGet(
+                () -> GSON.toJson(new JsonResult(true, Collections.singletonList(
+                        "Image profile with id " + profileId + "does not exist")))
+        );
     }
 }

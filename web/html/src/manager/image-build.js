@@ -111,8 +111,16 @@ class BuildImage extends React.Component {
 
     onBuild(event) {
         event.preventDefault();
-
-        //TODO: Call build API
+        const payload = {
+            tag: this.state.tag,
+            buildHostId: this.state.host
+        };
+        Network.post("/rhn/manager/api/cm/build/" + this.state.profileId,
+            JSON.stringify(payload),
+            "application/json"
+        ).promise.then(data => {
+            console.log(data);
+        });
     }
 
     renderField(name, label, value, placeholder, hidden = false, required = true) {
