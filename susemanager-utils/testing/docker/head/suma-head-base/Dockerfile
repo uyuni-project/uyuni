@@ -1,6 +1,6 @@
 # Container used to test SUSE Manager HEAD
 #
-# VERSION               1.1.0
+# VERSION               1.1.1
 
 FROM registry.mgr.suse.de/sles12sp2:latest
 MAINTAINER Flavio Castelli "fcastelli@suse.com"

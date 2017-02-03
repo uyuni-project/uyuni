@@ -17,11 +17,5 @@ cat /var/lib/pgsql/data/pg_hba.conf >> /tmp/pg_hba.conf
 mv /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
 mv /tmp/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf
 
-# HACK: allow less than 400 connections
-sed -i 's/        conn_lowest = 400/        conn_lowest = 100/' /usr/lib/python2.7/site-packages/smdba/postgresqlgate.py
-cp /root/rhn.conf /etc/rhn/
-
-smdba system-check autotuning --max_connections=100
-
 #rm /etc/rhn/rhn.conf
 su - postgres -c "/usr/lib/postgresql-init stop"

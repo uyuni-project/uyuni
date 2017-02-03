@@ -22,7 +22,9 @@ zypper --non-interactive in perl \
              perl-Satcon \
              perl-DBI \
              which \
-             timezone
+             timezone \
+             aaa_base \
+             net-tools
 
 # Packages required to run the python unit tests
 zypper --non-interactive in  \
