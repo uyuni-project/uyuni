@@ -1,8 +1,8 @@
 # Container used to test java and python code of SUSE Manager against postgresql
 #
-# VERSION               1.0.2
+# VERSION               1.1.0
 
-FROM registry.mgr.suse.de/suma-head-base:1.0.2
+FROM registry.mgr.suse.de/suma-head-base:1.1.0
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
 
 # Install the required packages
@@ -11,6 +11,9 @@ RUN /root/add_packages.sh
 
 # PostgreSQL setup
 ADD setup-db-postgres.sh /root/setup-db-postgres.sh
+
+ADD rhn.conf /root/rhn.conf
+
 RUN sh /root/setup-db-postgres.sh
 
 # Change the number of maximum connections allowed by PostgreSQL.
@@ -18,7 +21,6 @@ RUN sh /root/setup-db-postgres.sh
 # needs of the test suites. A high value causes more memory to be requested by
 # PostgreSQL on startup, leading to memory issues when two pgsql containers are
 # are executed at the same time.
-RUN sed -i 's/^max_connections =.*$/max_connections = 20/g' /var/lib/pgsql/data/postgresql.conf
+#RUN sed -i 's/^max_connections =.*$/max_connections = 50/g' /var/lib/pgsql/data/postgresql.conf
 
-ADD rhn.conf /root/rhn.conf
 

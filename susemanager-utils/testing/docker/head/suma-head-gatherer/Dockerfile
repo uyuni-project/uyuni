@@ -1,8 +1,8 @@
 # Container used to test SUSE Manager Head
 #
-# VERSION               1.0.0
+# VERSION               1.1.0
 
-FROM registry.mgr.suse.de/sles12sp1
+FROM registry.mgr.suse.de/sles12sp2:latest
 MAINTAINER Michael Calmer "mc@suse.com"
 
 
