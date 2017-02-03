@@ -39,7 +39,7 @@ Feature: Explore the Minions page
     And we wait till Salt master sees this minion as accepted
     # Registration takes a while
     And I wait for "20" seconds
-    Then I should see a "sle-minion" link
+    Then I should see a "sle-minion" text
 
   Scenario: The minion communicates with the master
     # It takes a while before we can get the grains and registration is done
