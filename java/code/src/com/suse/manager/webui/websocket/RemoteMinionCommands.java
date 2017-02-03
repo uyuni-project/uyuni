@@ -16,8 +16,8 @@ package com.suse.manager.webui.websocket;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.domain.session.WebSession;
+import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.frontend.servlets.LocalizedEnvironmentFilter;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.websocket.json.AsyncJobStartEventDto;
@@ -57,7 +57,7 @@ public class RemoteMinionCommands {
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(RemoteMinionCommands.class);
 
-    private Long userId;
+    private Long sessionId;
 
     private CompletableFuture failAfter;
 
@@ -68,10 +68,10 @@ public class RemoteMinionCommands {
      */
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
-        this.userId = LocalizedEnvironmentFilter.getCurrentUserId();
-        if (this.userId == null) {
+        this.sessionId = LocalizedEnvironmentFilter.getCurrentSessionId();
+        if (this.sessionId == null) {
             try {
-                LOG.debug("No userId available. Closing the web socket session.");
+                LOG.debug("No web sessionId available. Closing the web socket.");
                 session.close();
             }
             catch (IOException e) {
@@ -100,15 +100,27 @@ public class RemoteMinionCommands {
      */
     @OnMessage
     public void onMessage(Session session, String messageBody) {
-        User user = UserFactory.lookupById(this.userId);
+        ExecuteMinionActionDto msg = Json.GSON.fromJson(
+                messageBody, ExecuteMinionActionDto.class);
+        WebSession webSession = WebSessionFactory.lookupById(sessionId);
+        if (webSession == null || webSession.getUser() == null) {
+            LOG.debug("Invalid web sessionId. Closing the web socket.");
+            sendMessage(session, new ActionErrorEventDto(null,
+                    "INVALID_SESSION", "Invalid user session."));
+            try {
+                session.close();
+                return;
+            }
+            catch (IOException e) {
+                LOG.debug("Error closing web socket session", e);
+            }
+        }
 
         List<String> allVisibleMinions = MinionServerFactory
-                .lookupVisibleToUser(user)
+                .lookupVisibleToUser(webSession.getUser())
                 .map(MinionServer::getMinionId)
                 .collect(Collectors.toList());
 
-        ExecuteMinionActionDto msg = Json.GSON.fromJson(
-                messageBody, ExecuteMinionActionDto.class);
         int timeOut = 600; // 10 minutes
         try {
             if (msg.isPreview()) {
@@ -137,6 +149,7 @@ public class RemoteMinionCommands {
                                 LOG.error("Error waiting for minion " + minionId, err);
                                 sendMessage(session,
                                         new ActionErrorEventDto(minionId,
+                                                "ERR_WAIT_MATCH",
                                                 "Error waiting for matching: " +
                                                         err.getMessage()));
                             }
@@ -170,6 +183,7 @@ public class RemoteMinionCommands {
                             else {
                                 sendMessage(session,
                                         new ActionErrorEventDto(minionId,
+                                            "ERR_CMD_NO_RESULTS",
                                             "Command executed succesfully" +
                                                     " but no result was returned"));
                             }
@@ -185,6 +199,7 @@ public class RemoteMinionCommands {
                                 LOG.error("Error waiting for minion " + minionId, err);
                                 sendMessage(session,
                                         new ActionErrorEventDto(minionId,
+                                                "ERR_WAIT_CMD",
                                                 "Error waiting to execute command: " +
                                                         err.getMessage()));
                             }
@@ -195,7 +210,8 @@ public class RemoteMinionCommands {
         }
         catch (Exception e) {
             LOG.error("Error executing Salt async remote command", e);
-            sendMessage(session, new ActionErrorEventDto(null, e.getMessage()));
+            sendMessage(session, new ActionErrorEventDto(null,
+                    "GENERIC_ERR", e.getMessage()));
         }
 
     }

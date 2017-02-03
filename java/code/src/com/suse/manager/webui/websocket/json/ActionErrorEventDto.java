@@ -20,14 +20,17 @@ package com.suse.manager.webui.websocket.json;
 public class ActionErrorEventDto extends AbstractSaltEventDto {
 
     private String message;
+    private String code;
 
     /**
      * @param minionIdIn the minion id
      * @param messageIn the error message
+     * @param codeIn the code of the error
      */
-    public ActionErrorEventDto(String minionIdIn, String messageIn) {
+    public ActionErrorEventDto(String minionIdIn, String codeIn, String messageIn) {
         super("error", minionIdIn);
         this.message = messageIn;
+        this.code = codeIn;
     }
 
     /**
@@ -42,5 +45,19 @@ public class ActionErrorEventDto extends AbstractSaltEventDto {
      */
     public void setMessage(String messageIn) {
         this.message = messageIn;
+    }
+
+    /**
+     * @return the code of the error
+     */
+    public String getCode() {
+        return code;
+    }
+
+    /**
+     * @param codeIn the code of the error
+     */
+    public void setCode(String codeIn) {
+        this.code = codeIn;
     }
 }
