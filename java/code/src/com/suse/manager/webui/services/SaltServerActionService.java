@@ -32,7 +32,11 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.image.*;
+import com.redhat.rhn.domain.image.DockerfileProfile;
+import com.redhat.rhn.domain.image.ImageProfile;
+import com.redhat.rhn.domain.image.ImageProfileFactory;
+import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -530,13 +534,16 @@ public enum SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionServer>> imageBuildAction(
-            List<MinionServer> minions, Optional<String> tag, DockerfileProfile profile, User user) {
+            List<MinionServer> minions, Optional<String> tag,
+            DockerfileProfile profile, User user) {
         List<ImageStore> imageStores = ImageStoreFactory.listImageStores(user.getOrg());
         String cert = "";
         try {
             //TODO: maybe from the database
-            cert = Files.readAllLines(Paths.get("/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT"), Charset.defaultCharset())
-                    .stream().collect(Collectors.joining("\n\n"));
+            cert = Files.readAllLines(
+                    Paths.get("/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT"),
+                    Charset.defaultCharset()
+            ).stream().collect(Collectors.joining("\n\n"));
         }
         catch (IOException e) {
             LOG.error("Could not read certificate", e);
@@ -544,8 +551,8 @@ public enum SaltServerActionService {
         final String certificate = cert;
 
         //TODO: optimal scheduling would be to group by host and orgid
-        Map<LocalCall<?>, List<MinionServer>> ret = minions.stream().collect(Collectors.toMap(
-                minion -> {
+        Map<LocalCall<?>, List<MinionServer>> ret = minions.stream().collect(
+                Collectors.toMap(minion -> {
 
                     //TODO: refactor ActivationKeyHandler.listChannels to share this logic
                     TokenBuilder tokenBuilder = new TokenBuilder(minion.getOrg().getId());
@@ -571,17 +578,20 @@ public enum SaltServerActionService {
                     Map<String, Object> pillar = new HashMap<>();
                     Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
                     pillar.put("docker-registries", dockerRegistries);
-                    String name = profile.getStore().getUri() + "/" + profile.getLabel() + ":" + tag.orElse("");
+                    String name = profile.getStore().getUri() + "/" + profile.getLabel() +
+                            ":" + tag.orElse("");
                     pillar.put("imagename", name);
                     pillar.put("builddir", profile.getPath());
 
                     String host = SaltStateGeneratorService.getChannelHost(minion);
-                    String repocontent = profile.getToken().getChannels().stream().map(s -> {
+                    String repocontent = profile.getToken().getChannels().stream().map(s ->
+                    {
                         return "[susemanager:" + s.getLabel() + "]\n\n" +
                                 "name=" + s.getName() + "\n\n" +
                                 "enabled=1\n\n" +
                                 "autorefresh=1\n\n" +
-                                "baseurl=https://" + host + ":443/rhn/manager/download/" + s.getLabel() + "?" + token + "\n\n" +
+                                "baseurl=https://" + host + ":443/rhn/manager/download/" +
+                                s.getLabel() + "?" + token + "\n\n" +
                                 "type=rpm-md\n\n" +
                                 "gpgcheck=1\n\n" +
                                 "repo_gpgcheck=0\n\n" +
