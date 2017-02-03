@@ -34,7 +34,11 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
@@ -103,19 +107,36 @@ public class ImageBuildController {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Build request object
+     */
     public static class BuildRequest {
         private long buildHostId;
         private String tag;
 
+        /**
+         * @return the build host id
+         */
         public long getBuildHostId() {
             return buildHostId;
         }
 
+        /**
+         * @return the tag
+         */
         public String getTag() {
             return tag;
         }
     }
 
+    /**
+     * Schedules a build for some image profile
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
     public static Object build(Request request, Response response, User user) {
         response.type("application/json");
 
@@ -127,7 +148,8 @@ public class ImageBuildController {
 
         return maybeProfile.flatMap(ImageProfile::asDockerfileProfile).map(profile -> {
             MessageQueue.publish(new ImageBuildEventMessage(
-                    buildRequest.getBuildHostId(), user.getId(), buildRequest.getTag(), profile
+                    buildRequest.getBuildHostId(), user.getId(), buildRequest.getTag(),
+                    profile
             ));
             return GSON.toJson(new JsonResult(true, Collections.singletonList("")));
         }).orElseGet(
