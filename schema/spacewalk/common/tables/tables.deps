@@ -20,6 +20,9 @@ PXTSessions                    :: web_contact
 rhnAction                      :: rhnActionType web_customer web_contact
 rhnActionApplyStates           :: rhnAction
 rhnActionApplyStatesResult     :: rhnActionApplyStates rhnServer
+rhnActionImageBuild            :: rhnAction suseImageProfile
+rhnActionImageBuildResult      :: rhnActionImageBuild rhnServer
+rhnActionImageDeploy           :: rhnAction
 rhnActionScript                :: rhnAction
 rhnActionConfigChannel         :: rhnServerAction rhnConfigChannel
 rhnActionConfigDate            :: rhnAction
