@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.MinionServerUtils;
@@ -47,6 +48,7 @@ import com.suse.salt.netapi.config.ClientConfig;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
+import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
@@ -69,6 +71,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -108,11 +116,30 @@ public class SaltService {
                                 .filter(m -> MinionServerUtils.isSshPushMinion(m))
                                 .isPresent();
 
+    private SaltReactor reactor = null;
+
+    private final ScheduledExecutorService scheduledExecutorService =
+            Executors.newScheduledThreadPool(5);
+
     // Prevent instantiation
     SaltService() {
         // Set unlimited timeout
         SALT_CLIENT.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
         saltSSHService = new SaltSSHService(SALT_CLIENT);
+    }
+
+    /**
+     * @return the Salt reactor
+     */
+    public SaltReactor getReactor() {
+        return reactor;
+    }
+
+    /**
+     * @param reactorIn the Salt reactor
+     */
+    public void setReactor(SaltReactor reactorIn) {
+        this.reactor = reactorIn;
     }
 
     /**
@@ -358,6 +385,47 @@ public class SaltService {
         }
     }
 
+    private <R> Map<String, CompletionStage<Result<R>>> completableAsyncCall(
+            LocalCall<R> call, Target<?> target, EventStream events,
+            CompletableFuture<GenericError> cancel) throws SaltException {
+        return call.callAsync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD,
+                AuthModule.AUTO, events, cancel);
+    }
+
+    /**
+     * Run a remote command on a given minion asynchronously.
+     * @param target the target
+     * @param cmd the command to execute
+     * @param cancel a future used to cancel waiting on return events
+     * @return a map holding a {@link CompletionStage}s for each minion
+     */
+    public Map<String, CompletionStage<Result<String>>> runRemoteCommandAsync(
+            Target<?> target, String cmd, CompletableFuture<GenericError> cancel) {
+        try {
+            return completableAsyncCall(Cmd.run(cmd), target,
+                    reactor.getEventStream(), cancel);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Create a {@link CompletableFuture} that completes exceptionally after
+     * the given number of seconds.
+     * @param seconds the seconds after which it completes exceptionally
+     * @return a {@link CompletableFuture}
+     */
+    public CompletableFuture failAfter(int seconds) {
+        final CompletableFuture promise = new CompletableFuture();
+        scheduledExecutorService.schedule(() -> {
+            final TimeoutException ex = new TimeoutException("Timeout after " + seconds);
+            return promise.completeExceptionally(ex);
+        }, seconds, TimeUnit.SECONDS);
+
+        return promise;
+    }
+
     /**
      * Returns the currently running jobs on the target
      *
@@ -402,6 +470,23 @@ public class SaltService {
     public Map<String, Result<Boolean>> match(String target) {
         try {
             return callSync(Match.glob(target), new Glob(target));
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Match the given target exression asynchronously.
+     * @param target the target expression
+     * @param cancel  a future used to cancel waiting on return events
+     * @return a map holding a {@link CompletionStage}s for each minion
+     */
+    public Map<String, CompletionStage<Result<Boolean>>> matchAsync(
+            String target, CompletableFuture<GenericError> cancel) {
+        try {
+            return completableAsyncCall(Match.glob(target), new Glob(target),
+                    reactor.getEventStream(), cancel);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
