@@ -52,7 +52,8 @@ Feature: Test XML-RPC "virtualhostmanager" namespace.
     Given I am on the Systems page
     When I follow "10.162.186.111"
     Then I should see a "OS: VMware ESXi" text
-    When I follow "Virtual Systems" in the left menu
+    When I click Systems, under Systems node
+    And I follow "Virtual Systems" in the left menu
     Then I should see a "vCenter" text
      And I should see a "NSX-l3gateway" text
 
