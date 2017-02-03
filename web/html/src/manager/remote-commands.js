@@ -332,6 +332,9 @@ class RemoteCommand extends React.Component {
                         minions: minionsMap
                     }
                 });
+            } else if (event.code == "INVALID_SESSION") {
+                window.location.href = "/rhn/Login2.do";
+                return
             } else {
                 if (this.state.previewed) {
                     this.state.previewed.resolve();
@@ -376,7 +379,7 @@ class RemoteCommand extends React.Component {
     const elements = [];
     for(var kv of result.minions) {
       const id = kv[0];
-      const value = kv[1]
+      const value = kv[1];
       elements.push(
         <MinionResultView key={id} id={id} result={value}/>
       );

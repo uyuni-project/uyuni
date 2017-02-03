@@ -527,6 +527,17 @@ public class RequestContext {
     }
 
     /**
+     * Retrieves the currently Logged in user's pxt session if it exists.
+     * @return The currently Logged in user's pxt session if it exists.
+     */
+    public WebSession getWebSessionIfExists() {
+        PxtSessionDelegateFactory factory = PxtSessionDelegateFactory.getInstance();
+        PxtSessionDelegate pxtDelegate = factory.newPxtSessionDelegate();
+
+        return pxtDelegate.getPxtSessionIfExists(request);
+    }
+
+    /**
      * Get the value for the lowest part of the list to display. This is
      * protected so that the setup actions can get this value for redirecting
      * the request.
