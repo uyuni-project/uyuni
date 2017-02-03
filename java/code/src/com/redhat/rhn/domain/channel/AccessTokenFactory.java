@@ -122,6 +122,7 @@ public class AccessTokenFactory extends HibernateFactory {
 
         unneededTokens.forEach(token -> {
             token.setMinion(null);
+            token.setValid(false);
             AccessTokenFactory.save(token);
         });
 
