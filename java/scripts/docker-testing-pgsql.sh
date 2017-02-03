@@ -14,7 +14,7 @@ fi
 
 # SUSE Manager initialization
 cp /root/rhn.conf /etc/rhn/rhn.conf
-cp /manager/susemanager/rhn-conf/rhn_server_susemanager.conf /usr/share/rhn/config-defaults/rhn_server_susemanager.conf
+#cp /manager/susemanager/rhn-conf/rhn_server_susemanager.conf /usr/share/rhn/config-defaults/rhn_server_susemanager.conf
 sysctl -w kernel.shmmax=18446744073709551615
 smdba system-check autotuning
 
