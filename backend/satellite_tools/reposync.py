@@ -24,7 +24,6 @@ import base64
 from datetime import datetime
 from dateutil.parser import parse as parse_date
 from dateutil.tz import tzutc
-from optparse import OptionParser
 
 from yum import Errors
 from yum.i18n import to_unicode
@@ -42,7 +41,6 @@ from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
 
-from urlgrabber.grabber import URLGrabError
 hostname = socket.gethostname()
 if '.' not in hostname:
     hostname = socket.getfqdn()
@@ -287,8 +285,6 @@ class RepoSync(object):
                 initCFG('server.satellite')
             else:
                 # SCC - read credentials from DB
-                if creds_no == "":
-                    cred_no = 0
                 h = rhnSQL.prepare("""SELECT username, password FROM suseCredentials WHERE id = :id""");
                 h.execute(id=creds_no);
                 credentials = h.fetchone_dict() or None;
@@ -1076,7 +1072,7 @@ class RepoSync(object):
         affected_row_count = h.execute()
         if (affected_row_count > 0):
             self.print_msg(
-                "Transferred {} orphaned vendor packages to the default organization"
+                "Transferred {0} orphaned vendor packages to the default organization"
                 .format(affected_row_count)
             )
 
@@ -1189,7 +1185,6 @@ class RepoSync(object):
                 url = url + '/'
             self.error_msg("ERROR: kickstartable tree not detected (no %s%s)" % (url, pxeboot_path))
             return
-        channel_id = int(self.channel['id'])
 
         if rhnSQL.fetchone_dict("""
             select id
