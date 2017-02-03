@@ -1765,8 +1765,8 @@ public class SystemManager extends BaseManager {
      */
     private static void refreshPillarDataForMinion(MinionServer minion) {
         SaltStateGeneratorService.INSTANCE.generatePillar(minion);
-        SaltService.INSTANCE.refreshPillar(
-                new MinionList(minion.getMinionId()));
+        //SaltService.INSTANCE.refreshPillar(
+        //        new MinionList(minion.getMinionId()));
         log.debug("Refreshed pillars for minion.");
     }
 
