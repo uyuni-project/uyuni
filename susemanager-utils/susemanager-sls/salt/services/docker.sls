@@ -4,7 +4,6 @@ mgr_install_docker:
     - pkgs:
       - docker
       - python-docker-py
-      - salt: '>=2016.11.1'
 
 mgr_docker_service:
   service.running:
@@ -12,4 +11,10 @@ mgr_docker_service:
     - enable: True
     - require:
       - pkg: mgr_install_docker
+
+mgr_min_salt:
+  pkg.installed:
+    - pkgs:
+      - salt: '>=2016.11.1'
+    - order: last
 {% endif %}
