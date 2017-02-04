@@ -2,8 +2,8 @@
 mgr_install_docker:
   pkg.installed:
     - pkgs:
-      - docker
-      - python-docker-py
+      - docker: '>=1.9.0'
+      - python-docker-py: '>=1.6.0'
 
 mgr_docker_service:
   service.running:
