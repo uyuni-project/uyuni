@@ -8,11 +8,12 @@ mgr_mine_config:
     - contents: |
         mine_return_job: True
 
-salt-minion:
+mgr_salt_minion:
   pkg.installed:
     - name: salt-minion
     - order: last
   service.running:
+    - name: salt-minion
     - enable: True
     - order: last
     - watch:
