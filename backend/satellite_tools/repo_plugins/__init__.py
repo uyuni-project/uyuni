@@ -42,12 +42,16 @@ class ProgressBarLogger:
         self.msg = msg
         self.total = total
         self.status = 0
+        self.last_log = time.time()
         self.lock = Lock()
 
     def log(self, *_):
         self.lock.acquire()
         self.status += 1
         self._print_progress_bar(self.status, self.total, prefix=self.msg, bar_length=50)
+        if time.time() > int(self.last_log + 90):
+            self.last_log = time.time()
+            log(0, '%s %s' % (round(100.00 * (self.status / float(self.total)), 2), '%'))
         self.lock.release()
 
     # from here http://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
