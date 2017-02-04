@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.22
+Version: 2.7.24
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -1036,6 +1036,16 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Feb 03 2017 Gennadii Altukhov <galt@redhat.com> 2.7.24-1
+- 1408167 - escape XML in name of a system in Proxy list
+
+* Fri Feb 03 2017 Gennadii Altukhov <galt@redhat.com> 2.7.23-1
+- fixup
+- fixup
+- 1414421 - fix unhandled internal exception: null
+- 1416810 - change the name of logfile
+- fixing year
+
 * Wed Jan 25 2017 Eric Herget <eherget@redhat.com> 2.7.22-1
 - 1394299 - fix regression with virt system status display
 
