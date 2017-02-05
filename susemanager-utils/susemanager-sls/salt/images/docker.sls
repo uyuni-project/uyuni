@@ -6,3 +6,10 @@ buildimage:
     - buildargs:
         repo: "{{ pillar.get('repo') }}"
         cert: "{{ pillar.get('cert') }}"
+
+pushimage:
+  module.run:
+    - name: dockerng.push
+    - image: "{{ pillar.get('imagename') }}"
+    - require:
+      - module: buildimage
