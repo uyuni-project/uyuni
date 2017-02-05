@@ -88,4 +88,6 @@ Feature: smdba database helper tool
     And I remove backup directory "/smdba-backup-test"
 
   Scenario: start spacewalk services
+    When I stop the database with the command "smdba db-stop"
+    And I start database with the command "smdba db-start"
     Then I restart the spacewalk service
