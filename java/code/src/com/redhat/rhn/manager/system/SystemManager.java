@@ -87,7 +87,6 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
