@@ -70,8 +70,9 @@ Feature: Migrate a traditional client into a salt minion
      And I enter as remote command this script in
       """
       #!/bin/bash
-      touch /tmp/tastes-better-with-salt
+      touch /tmp/remote-command-on-migrated-text
       """
      And I click on "Schedule"
      Then I should see a "Remote Command has been scheduled successfully" text
-     And "/tmp/tastes-better-with-salt" exists on the filesystem
+     And "/tmp/remote-command-on-migrated-test" exists on the filesystem of "sle-migrated-minion"
+     And I remove "/tmp/remote-command-on-migrated-test" from "sle-migrated-minion"
