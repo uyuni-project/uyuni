@@ -19,6 +19,7 @@ Requires: susemanager-jsp_en >= 1.2
 Requires: release-notes-susemanager >= 1.2
 BuildArch: noarch
 Provides: doc-indexes = %{version}
+ExcludeArch: aarch64
 
 %description
 Lucene generated indexes used by the spacewalk search-server for

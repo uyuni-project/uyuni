@@ -34,7 +34,7 @@ Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.ta
 Source1:   %{name}-rpmlintrc
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
-ExcludeArch: ia64
+ExcludeArch: ia64 aarch64
 
 Requires: bcel
 Requires: c3p0 >= 0.9.1

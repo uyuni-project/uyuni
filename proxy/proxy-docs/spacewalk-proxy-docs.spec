@@ -13,6 +13,7 @@ BuildRequires: susemanager-reference_en-pdf
 BuildRequires: xerces-j2
 Obsoletes: rhns-proxy-docs < 5.3.0
 Provides: rhns-proxy-docs = 5.3.0
+ExcludeArch: aarch64
 
 %description
 This package includes the SUSE Manager Proxy Quick Start guide

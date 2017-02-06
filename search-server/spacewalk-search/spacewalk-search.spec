@@ -15,6 +15,7 @@ URL: https://fedorahosted.org/spacewalk
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
+ExcludeArch: aarch64
 
 #Requires: apache-ibatis-sqlmap
 Requires: c3p0 >= 0.9.1
