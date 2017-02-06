@@ -58,9 +58,29 @@ $ssh_minion_hostname = node_hostnames[4]
 $ssh_minion_fullhostname = node_fqn[4]
 
 # helper functions for moment this are used in salt.steps but maybe move this to lavanda.rb
-def file_exist(node, file)
+def get_target(host)
+  case host
+  when "server"
+    node = $server
+  when "ceos-minion"
+    node = $ceos_minion
+  when "ssh-minion"
+    node = $ssh_minion
+  when "sle-minion"
+    node = $minion
+  when "sle-client"
+    node = $client
+  when "sle-migrated-minion"
+    node = $client
+  else
+    raise "Invalid target."
+  end
+  node
+end
+
+def file_exists?(node, file)
   _out, _local, _remote, code = node.test_and_store_results_together("test -f #{file}", "root", 500)
-  code
+  code.zero?
 end
 
 def file_delete(node, file)
