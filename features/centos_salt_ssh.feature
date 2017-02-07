@@ -50,7 +50,7 @@ Feature: CENTOS7 feature.
     Then I enter command "rpm -q salt-minion"
     And I click on preview
     And I click on run
-    Then I wait for "3" seconds
+    Then I wait for "15" seconds
     And I expand the results for "ceos-minion"
     Then I should see a "package salt-minion is not installed" text
 
@@ -130,7 +130,7 @@ Feature: CENTOS7 feature.
     Then I enter command "rpm -q salt-minion"
     And I click on preview
     And I click on run
-    Then I wait for "3" seconds
+    Then I wait for "15" seconds
     And I expand the results for "ceos-minion"
     Then I should see a "package salt-minion is not installed" text
 
