@@ -8,7 +8,7 @@ Given(/^the Salt Minion is configured$/) do
   step %(I stop salt-minion)
   step %(I stop salt-master)
   key = '/etc/salt/pki/minion/minion_master.pub'
-  if file_exist($minion, key)
+  if file_exists?($minion, key)
     file_delete($minion, key)
     puts "Key #{key} has been removed on minion"
   end

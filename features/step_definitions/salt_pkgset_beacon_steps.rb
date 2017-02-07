@@ -2,9 +2,9 @@
 # Licensed under the terms of the MIT license.
 
 Then(/^I manually install the "([^"]*)" package in the minion$/) do |package|
-  if file_exist($minion, "/usr/bin/zypper").zero?
+  if file_exists?($minion, "/usr/bin/zypper")
     cmd = "zypper --non-interactive install -y #{package}"
-  elsif file_exist($minion, "/usr/bin/yum").zero?
+  elsif file_exists?($minion, "/usr/bin/yum")
     cmd = "yum -y install #{package}"
   else
     fail "not found: zypper or yum"
@@ -13,9 +13,9 @@ Then(/^I manually install the "([^"]*)" package in the minion$/) do |package|
 end
 
 Then(/^I manually remove the "([^"]*)" package in the minion$/) do |package|
-  if file_exist($minion, "/usr/bin/zypper").zero?
+  if file_exists?($minion, "/usr/bin/zypper")
     cmd = "zypper --non-interactive remove -y #{package}"
-  elsif file_exist($minion, "/usr/bin/yum").zero?
+  elsif file_exists?($minion, "/usr/bin/yum")
     cmd = "yum -y remove #{package}"
   else
     fail "not found: zypper or yum"

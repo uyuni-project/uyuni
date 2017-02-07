@@ -126,4 +126,4 @@ Feature: Test action chaining
     Then I click on "Save and Schedule"
     And I should see a "Action Chain new action chain has been scheduled for execution." text
     When I run rhn_check on this client
-    Then "/root/webui-actionchain-test" exists on the filesystem
+    Then "/root/webui-actionchain-test" exists on the filesystem of "sle-client"

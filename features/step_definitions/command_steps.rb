@@ -229,18 +229,30 @@ Then(/^Service "([^"]*)" is running on the Server$/) do |service|
     fail if output != "active"
 end
 
-When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, target|
-  case target
-  when "server"
-    _out, $fail_code = $server.run(cmd, false)
-  when "ceos-minion"
-    _out, $fail_code = $ceos_minion.run(cmd, false)
-  when "ssh-minion"
-    _out, $fail_code = $ssh_minion.run(cmd, false)
-  else
-    raise "Invalid target."
-  end
+When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
+  node = get_target(host)
+  _out, $fail_code = node.run(cmd, false)
 end
 Then(/^the command should fail$/) do
    raise "Previous command must fail, but has NOT failed!" if $fail_code.zero?
+end
+
+When(/^"(.*)" exists on the filesystem of "(.*)"$/) do |file, host|
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if file_exists?(node, file)
+        sleep(1)
+      end
+    end
+  rescue Timeout::Error
+    puts "timeout waiting for the file to appear"
+  end
+  fail unless file_exists?(node, file)
+end
+
+Then(/^I remove "(.*)" from "(.*)"$/) do |file, host|
+  node = get_target(host)
+  file_delete(node, file)
 end

@@ -42,4 +42,4 @@ Feature: Check the Salt package state UI
     Then I should see a "1 Changes" text
     And I click on the css "button#save-btn"
     And I click on the css "button#apply-btn"
-    Then I wait for the file "/root/foobar"
+    Then "/root/foobar" exists on the filesystem of "sle-minion"

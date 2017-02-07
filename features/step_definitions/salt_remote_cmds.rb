@@ -36,17 +36,3 @@ Then(/^I should see "([^"]*)" in the command output$/) do |arg1|
     fail unless page.has_content?('SuSE-release')
   end
 end
-
-When(/^"(.*)" exists on the filesystem$/) do |file|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if file_exist($minion, file)
-        sleep(1)
-      end
-    end
-  rescue Timeout::Error
-    puts "timeout waiting for the file to appear"
-  end
-  fail unless file_exist($minion, file)
-end
