@@ -13,10 +13,10 @@ Feature: Test the remote commands via salt for redhat minion
     And I should see a "Remote Commands" text
     Then I enter command "cat /etc/os-release"
     And I click on preview
-    Then I wait for "5" seconds
+    And I wait for "5" seconds
     And I click on run
     Then I should see "ceos-minion" hostname
-    Then I wait for "15" seconds
+    And I wait for "15" seconds
     And I expand the results for "ceos-minion"
     And I should see a "rhel fedora" text
     Then I should see a "REDHAT_SUPPORT_PRODUCT" text
