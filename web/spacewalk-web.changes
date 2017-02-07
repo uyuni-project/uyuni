@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Feb 07 15:21:24 CET 2017 - michele.bologna@suse.com
+
+- version 2.7.1.2-1
+- Validate activation key values (bsc#1015967)
+- Pass user-preferred localtime to the highstate UI (bsc#1020027)
+- Various fixes for the new UI
+
+-------------------------------------------------------------------
 Wed Jan 11 16:41:52 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.1.1-1
