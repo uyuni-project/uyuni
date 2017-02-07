@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 07 15:11:39 CET 2017 - michele.bologna@suse.com
+
+- version 2.7.3.2-1
+- Removed obsolete code (bsc#1013938)
+
+-------------------------------------------------------------------
 Wed Jan 11 15:44:53 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.3.1-1
