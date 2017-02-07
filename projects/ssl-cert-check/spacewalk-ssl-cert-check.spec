@@ -4,7 +4,7 @@ Group:   Applications/System
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 2.4.1
+Version: 2.4.1.0
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -15,9 +15,9 @@ Requires:  /etc/cron.daily/certwatch
 Obsoletes: rhn-ssl-cert-check < %{version}
 Provides:  rhn-ssl-cert-check = %{version}
 
-%description 
+%description
 Runs a check once a day to see if the ssl certificates installed on this
-server are expected to expire in the next 30 days, and if so, email the 
+server are expected to expire in the next 30 days, and if so, email the
 administrator.
 
 %prep
@@ -37,7 +37,7 @@ install -m755 rhn-ssl-cert-check $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/rhn-s
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root,-) 
+%defattr(-,root,root,-)
 %attr(0755,root,root) %{_sysconfdir}/cron.daily/rhn-ssl-cert-check
 %doc LICENSE
 
@@ -58,4 +58,3 @@ rm -rf $RPM_BUILD_ROOT
 
 * Tue May 04 2010 Jan Pazdziora 2.0-1
 - 461270 - replace our own ssl-cert-check with stock certwatch.
-

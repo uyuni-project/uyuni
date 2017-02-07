@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.7.4
+Version: 2.7.4.0
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -28,7 +28,7 @@ Obsoletes: rhn-client-tools < %{version}-%{release}
 Obsoletes: rhn-setup-gnome
 %endif
 Requires: rpm >= 4.2.3-24_nonptl
-Requires: rpm-python 
+Requires: rpm-python
 Requires: gnupg
 Requires: sh-utils
 BuildRequires: python-devel
@@ -1613,4 +1613,3 @@ make -f Makefile.rhn-client-tools test
 
 * Thu Apr 08 2010 Jan Pazdziora 1.0.0-1
 - Bumping up version to 1.0.0.
-

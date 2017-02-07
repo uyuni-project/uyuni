@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        SQL schema for Spacewalk server
 
-Version:        3.1.2
+Version:        3.1.2.0
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -2264,7 +2264,7 @@ rm -rf $RPM_BUILD_ROOT
 - Fixed rhn_ugm_applicant_fix_fun trigger function.
 
 * Thu Jan 27 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.18-1
-- 671464 - added schema upgrade for new keys 
+- 671464 - added schema upgrade for new keys
 - added Fedora 14 key
 - added Fedora 13 key
 - added new Spacewalk key
@@ -2356,9 +2356,9 @@ rm -rf $RPM_BUILD_ROOT
 - 655509 - fixed namespace
 
 * Thu Nov 18 2010 Lukas Zapletal 1.3.1-1
-- Replacing rownum with limit-offset syntax 
-- 645694 - introducing cleanup-packagechangelog-data task 
-- Bumping package versions for 1.3. 
+- Replacing rownum with limit-offset syntax
+- 645694 - introducing cleanup-packagechangelog-data task
+- Bumping package versions for 1.3.
 
 * Sun Nov 14 2010 Tomas Lestach <tlestach@redhat.com> 1.2.69-1
 - create oracle compatible set of 'instr' functions for postgres(PG)
@@ -2438,10 +2438,10 @@ rm -rf $RPM_BUILD_ROOT
   first two which are in rhn_pkgnevra_nid_eid_paid_uq.
 
 * Wed Oct 27 2010 Lukas Zapletal 1.2.56-1
-- Addresing recursion with opened cursor in PostgreSQL 
-- Function unsubscribe_server now in sync with Oracle 
+- Addresing recursion with opened cursor in PostgreSQL
+- Function unsubscribe_server now in sync with Oracle
 - Function numtodsinterval now accepts days, minutes, hours (incl. fix)
-  
+
 
 * Mon Oct 25 2010 Lukas Zapletal 1.2.55-1
 - Taskomatic schedule schema correction (sysdate)
@@ -2478,7 +2478,7 @@ rm -rf $RPM_BUILD_ROOT
 - Trigger rhn_server_group_org_mapping_fun was missing return clause
 - Reformat of rhnServerGroupMembers.sql prior to next change
 - PostgreSQL function array_upper returns NULL on empty array
-  
+
 
 * Wed Oct 20 2010 Jan Pazdziora 1.2.47-1
 - Dropping rhn_package_changelog_id_trig. The id is always specified explicitly
@@ -2591,9 +2591,9 @@ rm -rf $RPM_BUILD_ROOT
 - removed rhnEmailAddressLog
 - removed rhnChannelParent
 - removed rhnActionPackageOrder
-- Use numeric instead of number in PostgreSQL. 
-- reviewed indexes for rhnErrataFileChannelTmp 
-- reviewed indexes for rhnErrataFileChannel 
+- Use numeric instead of number in PostgreSQL.
+- reviewed indexes for rhnErrataFileChannelTmp
+- reviewed indexes for rhnErrataFileChannel
 
 * Wed Oct 13 2010 Lukas Zapletal 1.2.36-1
 - Function rhn_channel.subscribe_server now in sync (Pg-Ora)
@@ -2621,7 +2621,7 @@ rm -rf $RPM_BUILD_ROOT
 
 * Wed Oct 13 2010 Michael Mraka <michael.mraka@redhat.com> 1.2.33-1
 - schema upgrades for deleted tables and indexes
-- reviewed and minimized number of indexes 
+- reviewed and minimized number of indexes
 
 * Tue Oct 12 2010 Tomas Lestach <tlestach@redhat.com> 1.2.32-1
 - 630884 - send errata notifications after errata cache get's regenerated
@@ -3051,4 +3051,3 @@ rm -rf $RPM_BUILD_ROOT
 
 * Mon Apr 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.1.1-1
 - bumping spec files to 1.1 packages
-

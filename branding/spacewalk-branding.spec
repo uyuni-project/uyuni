@@ -17,7 +17,7 @@
 %endif
 
 Name:       spacewalk-branding
-Version:    2.7.2
+Version:    2.7.2.0
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -636,4 +636,3 @@ rm -rf %{buildroot}
 
 * Mon Apr 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.1.1-1
 - bumping spec files to 1.1 packages
-
