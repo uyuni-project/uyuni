@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 07 15:09:07 CET 2017 - michele.bologna@suse.com
+
+- version 3.1.2-1
+- Create bootstrap repo for Raspberry Pi (bsc#1023133)
+
+-------------------------------------------------------------------
 Wed Jan 11 16:50:45 CET 2017 - michele.bologna@suse.com
 
 - version 3.1.1-1
