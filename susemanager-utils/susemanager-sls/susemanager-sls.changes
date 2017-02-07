@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Feb 07 15:12:30 CET 2017 - michele.bologna@suse.com
+
+- version 3.1.2-1
+- Configure mine.update to submit a job return event (bsc#1022735)
+- Disable spacewalksd and spacewalk-update-status when switching to salt
+  registration (bsc#1020902)
+- Fix timezone handling for rpm installtime (bsc#1017078)
+- Push build images into registry
+- Configure a Docker build host
+- Salt version update
+
+-------------------------------------------------------------------
 Wed Jan 11 16:57:58 CET 2017 - michele.bologna@suse.com
 
 - version 3.1.1-1
