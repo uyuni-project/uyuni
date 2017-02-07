@@ -151,10 +151,11 @@ public class ImageBuildController {
                     buildRequest.getBuildHostId(), user.getId(), buildRequest.getTag(),
                     profile
             ));
-            return GSON.toJson(new JsonResult(true, Collections.singletonList("")));
+            //TODO: Add action ID as a message parameter
+            return GSON.toJson(new JsonResult(true, "build_scheduled"));
         }).orElseGet(
                 () -> GSON.toJson(new JsonResult(true, Collections.singletonList(
-                        "Image profile with id " + profileId + "does not exist")))
+                        "unknown_error")))
         );
     }
 }
