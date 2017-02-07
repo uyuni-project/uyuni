@@ -9,10 +9,14 @@ Feature: CENTOS7 feature.
      verify functionality: script, remote cmds, packages install, channel subscription.
      verify tunnel proprety: repo 1233 port, and installation of pkg only via server.
 
-  Scenario: No Salt Package and service are running on Minion centos
+  Scenario: Deletes centos minion
     Given no Salt packages are installed on remote "centos"
-    And centos minion is not registered in Spacewalk
-    
+    When I am on the Systems overview page of this "ceos-minion"
+    And I follow "Delete System"
+    And I should see a "Confirm System Profile Deletion" text
+    And I click on "Delete Profile"
+    Then I should see a "has been deleted" text
+
   Scenario: Bootstrap a system via salt-ssh
     Given I am authorized
     When I follow "Salt"
@@ -32,9 +36,7 @@ Feature: CENTOS7 feature.
     Then I should see a "Push via SSH" text
 
    Scenario: Subscribe centos ssh-minion to a base-channel for testing
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow centos ssh-minion hostname
+    Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Software" in the content area
     Then I follow "Software Channels" in the content area
     And I select "Test Base Channel" from "new_base_channel_id"
@@ -55,9 +57,7 @@ Feature: CENTOS7 feature.
     Then I should see a "package salt-minion is not installed" text
 
    Scenario: Run a remote command from the systems overview page
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow centos ssh-minion hostname
+    Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
@@ -71,9 +71,7 @@ Feature: CENTOS7 feature.
     Then I run "yum repoinfo | grep :443/rhn" on "ceos-minion"
 
    Scenario: Install a package to centos ssh-normal minion
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow centos ssh-minion hostname
+    Given I am on the Systems overview page of this "ceos-minion"
     And I follow "Software" in the content area
     And I follow "Install"
     When I check "hoag-dummy-1.1-2.1" in the list
@@ -84,9 +82,7 @@ Feature: CENTOS7 feature.
     And "hoag-dummy-1.1-2.1" is installed on "ceos-minion"
 
   Scenario: Delete minion system profile
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow centos ssh-minion hostname
+    Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
@@ -112,9 +108,7 @@ Feature: CENTOS7 feature.
     Then I should see a "Push via SSH tunnel" text
 
    Scenario: Subscribe ssh-tunnel-minion to a base-channel for testing
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow centos ssh-minion hostname
+    Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Software" in the content area
     Then I follow "Software Channels" in the content area
     And I select "Test Base Channel" from "new_base_channel_id"
@@ -135,9 +129,7 @@ Feature: CENTOS7 feature.
     Then I should see a "package salt-minion is not installed" text
 
    Scenario: Run a remote command from the systems overview page: ssh-tunnel
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow centos ssh-minion hostname
+    Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Remote Command" in the content area
     And I enter as remote command this script in
       """
@@ -156,9 +148,7 @@ Feature: CENTOS7 feature.
    Then I run "yum repoinfo | grep :1233/rhn" on "ceos-minion"
 
    Scenario: Install a package to ssh-tunnel-minion
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow centos ssh-minion hostname
+    Given I am on the Systems overview page of this "ceos-minion"
     And I follow "Software" in the content area
     And I follow "Install"
     When I check "hoag-dummy-1.1-2.1" in the list
