@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 07 15:11:12 CET 2017 - michele.bologna@suse.com
+
+- version 3.1.2-1
+- Support SUSE-PackageHub (bsc#1021884)
+
+-------------------------------------------------------------------
 Wed Jan 11 16:58:50 CET 2017 - michele.bologna@suse.com
 
 - version 3.1.1-1
