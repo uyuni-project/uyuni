@@ -1,4 +1,4 @@
-buildimage:
+mgr_buildimage:
   module.run:
     - name: dockerng.build
     - image: "{{ pillar.get('imagename') }}"
@@ -7,9 +7,9 @@ buildimage:
         repo: "{{ pillar.get('repo') }}"
         cert: "{{ pillar.get('cert') }}"
 
-pushimage:
+mgr_pushimage:
   module.run:
     - name: dockerng.push
     - image: "{{ pillar.get('imagename') }}"
     - require:
-      - module: buildimage
+      - module: mgr_buildimage
