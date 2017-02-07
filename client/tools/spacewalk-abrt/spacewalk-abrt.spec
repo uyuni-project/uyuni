@@ -1,5 +1,5 @@
 Name:           spacewalk-abrt
-Version:        2.7.1
+Version:        2.7.1.0
 Release:        1%{?dist}
 Summary:        ABRT plug-in for rhn-check
 
@@ -162,4 +162,3 @@ service abrtd restart ||:
 
 * Mon Jul 09 2012 Richard Marko <rmarko@redhat.com> 0.0.1-1
 - initial packaging
-

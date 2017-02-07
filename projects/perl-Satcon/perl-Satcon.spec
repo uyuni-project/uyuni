@@ -2,7 +2,7 @@
 
 Name:           perl-Satcon
 Summary:        Framework for configuration files
-Version:        2.7.1
+Version:        2.7.1.0
 Release:        1%{?dist}
 License:        GPLv2
 Group:          Applications/System
@@ -62,7 +62,7 @@ make test
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%doc README LICENSE 
+%doc README LICENSE
 %{perl_vendorlib}/*
 %{_bindir}/*
 
@@ -123,4 +123,3 @@ rm -rf $RPM_BUILD_ROOT
 * Tue Dec 14 2010 Jan Pazdziora 1.12-1
 - We need to check the return value of GetOptions and die if the parameters
   were not correct.
-
