@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 07 15:07:39 CET 2017 - michele.bologna@suse.com
+
+- version 2.7.0.2-1
+- Add rcsalt-broker script (bsc#1012787)
+
+-------------------------------------------------------------------
 Wed Jan 11 16:24:33 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.0.1-1
