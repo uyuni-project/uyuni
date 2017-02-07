@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Tue Feb 07 15:24:57 CET 2017 - michele.bologna@suse.com
+
+- version 2.7.24.1-1
+- Apply addon system types from activation key during registration
+  (bsc#1020180)
+- Apply highstate as the last step of a registration in case an activation key
+  was provided (bsc#1020232)
+- Create tmp directory in spec file (bsc#1019672)
+- Add severity to updateinfo (bsc#1012365)
+- Store temporary roster in configured location (bsc#1019672)
+- hide migration targets without valid subscriptions (bsc#1019893)
+- fix SP migration when the SUSE Manager Tools product is installed
+  (bcs#1014498)
+- Use human-parseable dates for server notes (bsc#969564) (#863)
+- Fix timezone handling for rpm installtime (bsc#1017078)
+- Validate activation key values (bsc#1015967)
+- Pass user-preferred localtime to the highstate UI (bsc#1020027)
+- Send ChannelsChangedEventMessage in SSM (bsc#1019451)
+- Add "Content Management" feature
+
+-------------------------------------------------------------------
 Wed Jan 11 16:03:04 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.14.1-1
