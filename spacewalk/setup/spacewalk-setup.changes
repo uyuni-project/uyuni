@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 07 15:23:47 CET 2017 - michele.bologna@suse.com
+
+- version 2.7.0.2-1
+- Store temporary roster in configured location (bsc#1019672)
+
+-------------------------------------------------------------------
 Wed Jan 11 16:36:20 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.0.1-1
