@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Feb 07 15:10:11 CET 2017 - michele.bologna@suse.com
+
+- version 2.7.1.1-1
+- Use spacewalk 2.6 for openSUSE Leap 42.2
+- Add channels for openSUSE Leap 42.2
+
+-------------------------------------------------------------------
 Wed Jan 11 16:40:21 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.0.1-1
