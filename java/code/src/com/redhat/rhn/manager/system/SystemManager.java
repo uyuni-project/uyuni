@@ -31,6 +31,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -113,6 +114,7 @@ import java.util.Set;
 public class SystemManager extends BaseManager {
 
     private static Logger log = Logger.getLogger(SystemManager.class);
+    private static SaltService saltServiceInstance = SaltService.INSTANCE;
 
     public static final String CAP_CONFIGFILES_UPLOAD = "configfiles.upload";
     public static final String CAP_CONFIGFILES_DIFF = "configfiles.diff";
@@ -125,6 +127,14 @@ public class SystemManager extends BaseManager {
     public static final String CAP_SCRIPT_RUN = "script.run";
 
     private SystemManager() {
+    }
+
+    /**
+     * Used in tests to mock the SaltService.
+     * @param mockedSaltService The mocked SaltService.
+     */
+    public static void mockSaltService(SaltService mockedSaltService) {
+        saltServiceInstance = mockedSaltService;
     }
 
     /**
@@ -394,10 +404,19 @@ public class SystemManager extends BaseManager {
         toRemove.stream().forEach(vi ->
             VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(vi));
 
+
+        server.asMinionServer().ifPresent(minion -> {
+            minion.getAccessTokens().forEach(token -> {
+                token.setValid(false);
+                AccessTokenFactory.save(token);
+            });
+        });
+
         // remove server itself
         ServerFactory.delete(server);
+
         server.asMinionServer().ifPresent(minion -> {
-            SaltService.INSTANCE.deleteKey(minion.getMinionId());
+            saltServiceInstance.deleteKey(minion.getMinionId());
             SaltStateGeneratorService.INSTANCE.removeServer(minion);
         });
     }
