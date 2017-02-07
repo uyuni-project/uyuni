@@ -24,7 +24,7 @@ CREATE TABLE suseChannelAccessToken
     token            varchar2(4000) NOT NULL,
     created          timestamp with local time zone NOT NULL,
     expiration       timestamp with local time zone NOT NULL,
-    valid            varchar2(1) DEFAULT ('N') NOT NULL
+    valid            CHAR(1) DEFAULT ('N') NOT NULL CHECK (valid in ('Y', 'N'))
 )
 ENABLE ROW MOVEMENT
 ;
