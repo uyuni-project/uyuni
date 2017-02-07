@@ -2,9 +2,8 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const Buttons = require("../components/buttons");
+const {Button} = require("../components/buttons");
 const Network = require("../utils/network");
-const AsyncButton = Buttons.AsyncButton;
 
 function object2map(obj) {
   return Object.keys(obj).reduce((acc, id) => {
@@ -132,12 +131,30 @@ class RemoteCommand extends React.Component {
     if (this.state.errors) {
         this.state.errors.map( msg => {
             msgs.push(<div className="alert alert-danger">{msg}</div>);
-        })
+        });
     }
     if (this.state.warnings) {
         this.state.warnings.map( msg => {
             msgs.push(<div className="alert alert-warning">{msg}</div>);
-        })
+        });
+    }
+
+    var button;
+    if (this.state.executing.state() == "pending") {
+        button = <Button id="stop" className="btn-default"
+                     text={t("Stop waiting")} handler={this.onStop}
+                     icon="fa-circle-o-notch fa-spin"
+                     title={t("Stop waiting for all the minions to respond")}/>;
+    } else if (this.state.ran.state() == "resolved" && this.state.previewed.state() != "resolved") {
+        button = <Button id="preview" className="btn-default"
+                     text={t("Preview targets")} handler={this.onPreview}
+                     icon="fa-eye"
+                     title={t("Check which minions match the target expression")}/>;
+    } else if (this.state.previewed.state() == "resolved") {
+        button = <Button id="run" className="btn-default"
+                     text={t("Run command")} handler={this.onRun}
+                     icon="fa-play"
+                     title={t("Run the command on the target minions")}/>;
     }
 
     return (
@@ -154,16 +171,13 @@ class RemoteCommand extends React.Component {
               <div className="row">
                 <div className="col-lg-12">
                   <div className="input-group">
-                      <input id="command" className="form-control" type="text" defaultValue={this.state.command} onChange={this.commandChanged} />
+                      <input id="command" className="form-control" type="text" defaultValue={this.state.command} onChange={this.commandChanged}
+                            disabled={this.state.executing.state() == "pending" ? "disabled" : ""}/>
                       <span className="input-group-addon">@</span>
-                      <input id="target" className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged} />
+                      <input id="target" className="form-control" type="text" defaultValue={this.state.target} onChange={this.targetChanged}
+                            disabled={this.state.executing.state() == "pending" ? "disabled" : ""}/>
                       <div className="input-group-btn">
-                        <AsyncButton id="preview" disabled={this.state.ran.state() == "resolved" ? "" : "disabled"}
-                                name={t("Preview")} action={this.onPreview} icon="eye" title={t("Check which minions match the target expression")}/>
-                        <AsyncButton id="run" disabled={this.state.previewed.state() == "resolved" ? "" : "disabled"}
-                                name={t("Run")} action={this.onRun} icon="play" title={t("Run the command on the target minions")}/>
-                        <AsyncButton id="stop" disabled={this.state.executing.state() == "pending" ? "" : "disabled"}
-                                name={t("Stop")} action={this.onStop} icon="stop" title={t("Stop waiting for all the minions to respond")}/>
+                        { button }
                       </div>
                   </div>
                 </div>
@@ -267,7 +281,7 @@ class RemoteCommand extends React.Component {
     ws.onerror = (e) => {
       console.log("Websocket error: " + e);
       this.setState({
-         errors: [t("Error connecting to server.")]
+         errors: [t("Error connecting to server. Refresh page to try again.")]
       });
     };
     ws.onmessage = (e) => {
@@ -313,10 +327,21 @@ class RemoteCommand extends React.Component {
             var minionsMap = this.state.result.minions;
             minionsMap.set(event.minion, {type: "timedOut", value: null});
             const timedOutDone = isTimedOutDone(minionsMap);
+            var previewed = this.state.previewed;
+            var ran = this.state.ran;
+            if (timedOutDone) {
+                if (previewed.state() == "pending") {
+                    previewed.resolve();
+                    ran = $.Deferred();
+                } else if (ran.state() == "pending") {
+                    previewed.resolve();
+                    ran.resolve();
+                }
+            }
             this.setState({
                 warnings: timedOutDone ? [t("Not all minions responded on time.")] : [],
-                previewed: this.state.previewed.state() == "pending" ? this.state.previewed.resolve() : this.state.previewed,
-                ran: this.state.ran.state() == "pending" ? this.state.ran.resolve() : this.state.ran,
+                previewed: previewed,
+                ran: ran,
                 executing: timedOutDone ? this.state.executing.resolve() : this.state.executing,
                 result: {
                     minions: minionsMap
@@ -334,15 +359,27 @@ class RemoteCommand extends React.Component {
                 });
             } else if (event.code == "INVALID_SESSION") {
                 window.location.href = "/rhn/Login2.do";
-                return
+                return;
+            } else if (event.code == "ERR_TARGET_NO_MATCH") {
+                this.setState({
+                    warnings: [t("No minions matched the target expression.")]
+                });
             } else {
-                if (this.state.previewed) {
-                    this.state.previewed.resolve();
+                var previewed = this.state.previewed;
+                var ran = this.state.ran;
+                if (previewed && previewed.state() == "pending") {
+                    previewed = $.Deferred();
+                    ran = ran.resolve();
+                } else if (ran && ran.state() == "pending") {
+                    previewed = previewed.resolve();
+                    ran = ran.resolve();
                 }
                 if (this.state.executing) {
                     this.state.executing.resolve();
                 }
                 this.setState({
+                    previewed: previewed,
+                    ran: ran,
                     errors: [t("Server returned an error: {0}", event.message)]
                 });
             }
@@ -353,8 +390,9 @@ class RemoteCommand extends React.Component {
     window.addEventListener("beforeunload", this.onBeforeUnload)
 
     this.setState({
-        websocket: ws,
+        websocket: ws
     });
+
   }
 
   componentWillUnmount() {
@@ -365,7 +403,8 @@ class RemoteCommand extends React.Component {
   targetChanged(event) {
     this.setState({
       target: event.target.value,
-      previewed: $.Deferred()
+      previewed: $.Deferred(),
+      ran: $.Deferred().resolve()
     });
   }
 

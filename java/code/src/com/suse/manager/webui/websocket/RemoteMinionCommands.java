@@ -125,8 +125,16 @@ public class RemoteMinionCommands {
         try {
             if (msg.isPreview()) {
                 this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
-                Map<String, CompletionStage<Result<Boolean>>> res = SaltService.INSTANCE
-                        .matchAsync(msg.getTarget(), failAfter);
+                Map<String, CompletionStage<Result<Boolean>>> res;
+                try {
+                    res = SaltService.INSTANCE
+                            .matchAsync(msg.getTarget(), failAfter);
+                }
+                catch (NullPointerException e) {
+                    sendMessage(session, new ActionErrorEventDto(null,
+                            "ERR_TARGET_NO_MATCH", e.getMessage()));
+                    return;
+                }
 
                 List<String> allMinions = res.keySet().stream()
                         .collect(Collectors.toList());
@@ -165,9 +173,17 @@ public class RemoteMinionCommands {
             }
             else {
                 this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
-                Map<String, CompletionStage<Result<String>>> res = SaltService.INSTANCE
-                        .runRemoteCommandAsync(new Glob(msg.getTarget()),
-                                msg.getCommand(), failAfter);
+                Map<String, CompletionStage<Result<String>>> res;
+                try {
+                    res = SaltService.INSTANCE
+                            .runRemoteCommandAsync(new Glob(msg.getTarget()),
+                                    msg.getCommand(), failAfter);
+                }
+                catch (NullPointerException e) {
+                    sendMessage(session, new ActionErrorEventDto(null,
+                            "ERR_TARGET_NO_MATCH", e.getMessage()));
+                    return;
+                }
 
                 List<String> allMinions = res.keySet().stream()
                         .collect(Collectors.toList());
