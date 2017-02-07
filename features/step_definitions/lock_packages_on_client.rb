@@ -3,7 +3,7 @@
 
 Then(/^"(.*?)" is locked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
-  fail unless file_exist($client, zypp_lock_file)
+  fail unless file_exists?($client, zypp_lock_file)
   command = "zypper locks  --solvables | grep #{pkg}"
   $client.run(command, true, 600, 'root')
 end
@@ -17,7 +17,7 @@ end
 
 Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
-  fail unless file_exist($client, zypp_lock_file)
+  fail unless file_exists?($client, zypp_lock_file)
   command = "zypper locks  --solvables | grep #{pkg}"
   $client.run(command, false, 600, 'root')
 end

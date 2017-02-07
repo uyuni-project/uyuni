@@ -23,7 +23,7 @@ end
 Then(/^"([^"]*)" should exists in the metadata$/) do |file|
   arch, _code = $client.run("uname -m")
   arch.chomp!
-  fail unless file_exist($client, "#{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/#{file}")
+  fail unless file_exists?($client, "#{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/#{file}")
 end
 
 Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
