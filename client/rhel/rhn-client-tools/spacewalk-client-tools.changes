@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 07 17:46:56 CET 2017 - michele.bologna@suse.com
+
+- version 2.7.4.1-1
+- Traditional registration: resolve /etc/hostname if not FQDN (bsc#1019360)
+
+-------------------------------------------------------------------
 Wed Jan 11 15:59:30 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.2.1-1
