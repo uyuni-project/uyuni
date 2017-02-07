@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Feb 07 15:38:00 CET 2017 - michele.bologna@suse.com
+
+- version 12.1.0.2.2-1
+- Adapt oracle-lib-compat for oracle instant client 12.1.0.2.0 (FATE#320213)
+- Add support for ppc64le
+
+-------------------------------------------------------------------
 Mon Jul 18 13:58:17 CEST 2016 - jrenner@suse.com
 
 - version 12.1.0.2.1-1
