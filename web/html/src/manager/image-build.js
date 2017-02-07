@@ -11,6 +11,11 @@ const typeMap = {
     "dockerfile": "Dockerfile"
 };
 
+const msgMap = {
+  "unknown_error": t("Some unknown error has been occured."),
+  "build_scheduled": t("The image build has been scheduled.")
+};
+
 class BuildImage extends React.Component {
 
     constructor(props) {
@@ -119,7 +124,19 @@ class BuildImage extends React.Component {
             JSON.stringify(payload),
             "application/json"
         ).promise.then(data => {
-            console.log(data);
+            if (data.success) {
+                this.setState({
+                    messages: <Messages items={data.messages.map(msg => {
+                        return {severity: "info", text: msgMap[msg]};
+                    })}/>
+                });
+            } else {
+                this.setState({
+                    messages: <Messages items={data.messages.map(msg => {
+                        return {severity: "error", text: msgMap[msg]};
+                    })}/>
+                });
+            }
         });
     }
 
