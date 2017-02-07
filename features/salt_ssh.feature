@@ -70,9 +70,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     Then I run "zypper lr --show-enabled-only -u | grep :443/rhn" on "ssh-minion"
 
    Scenario: Install a package to normal ssh-minion
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow remote ssh-minion hostname
+    Given I am on the Systems overview page of this "ssh-minion" 
     And I follow "Software" in the content area
     And I follow "Install"
     When I check "hoag-dummy-1.1-2.1" in the list
@@ -83,9 +81,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And "hoag-dummy-1.1-2.1" is installed on "ssh-minion"
 
    Scenario: Delete minion system profile
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
-    And I follow remote ssh-minion hostname
+    Given I am on the Systems overview page of this "ssh-minion" 
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
