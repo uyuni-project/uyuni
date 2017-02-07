@@ -8,7 +8,7 @@ Given(/^the Salt Minion is configured$/) do
   step %(I stop salt-minion)
   step %(I stop salt-master)
   key = '/etc/salt/pki/minion/minion_master.pub'
-  if file_exist($minion, key)
+  if file_exists?($minion, key)
     file_delete($minion, key)
     puts "Key #{key} has been removed on minion"
   end
@@ -317,25 +317,11 @@ Then(/^I should see "([^"]*)" in the command output$/) do |text|
   end
 end
 
-When(/^"(.*)" exists on the filesystem$/) do |file|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if file_exist($minion, file)
-        sleep(1)
-      end
-    end
-  rescue Timeout::Error
-    puts "timeout waiting for the file to appear"
-  end
-  fail unless file_exist($minion, file)
-end
-
 # salt_pkgset_beacon_steps.rb
 Then(/^I manually install the "([^"]*)" package in the minion$/) do |package|
-  if file_exist($minion, "/usr/bin/zypper").zero?
+  if file_exists?($minion, "/usr/bin/zypper")
     cmd = "zypper --non-interactive install -y #{package}"
-  elsif file_exist($minion, "/usr/bin/yum").zero?
+  elsif file_exists?($minion, "/usr/bin/yum")
     cmd = "yum -y install #{package}"
   else
     fail "not found: zypper or yum"
@@ -344,9 +330,9 @@ Then(/^I manually install the "([^"]*)" package in the minion$/) do |package|
 end
 
 Then(/^I manually remove the "([^"]*)" package in the minion$/) do |package|
-  if file_exist($minion, "/usr/bin/zypper").zero?
+  if file_exists?($minion, "/usr/bin/zypper")
     cmd = "zypper --non-interactive remove -y #{package}"
-  elsif file_exist($minion, "/usr/bin/yum").zero?
+  elsif file_exists?($minion, "/usr/bin/yum")
     cmd = "yum -y remove #{package}"
   else
     fail "not found: zypper or yum"
@@ -389,13 +375,4 @@ end
 
 When(/^I select the state "(.*)"$/) do |state|
   find("input##{state}-cbox").click
-end
-
-When(/^I wait for the file "(.*)"$/) do |file|
-  # Wait 60 seconds for file to appear
-  60.times do
-    break if file_exist($minion, file)
-    sleep 1
-  end
-  fail unless file_exist($minion, file)
 end

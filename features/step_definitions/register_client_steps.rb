@@ -61,13 +61,13 @@ When(/^I follow this client link$/) do
 end
 
 Then(/^config-actions are enabled$/) do
-  unless  file_exist($client, '/etc/sysconfig/rhn/allowed-actions/configfiles/all')
+  unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/configfiles/all')
     raise "config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist on client"
   end
 end
 
 Then(/^remote-commands are enabled$/) do
-  unless file_exist($client, '/etc/sysconfig/rhn/allowed-actions/script/run')
+  unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/script/run')
     raise "remote-commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist"
   end
 end

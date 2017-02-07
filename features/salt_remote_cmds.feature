@@ -40,7 +40,7 @@ Feature: Test the remote commands via salt
       """
     And I click on "Schedule"
     Then I should see a "Remote Command has been scheduled successfully" text
-    And "/root/12345" exists on the filesystem
+    And "/root/12345" exists on the filesystem of "sle-minion"
     And I follow "Events" in the content area
     And I follow "History" in the content area
     Then I follow "Run an arbitrary script scheduled by testing" in the content area
