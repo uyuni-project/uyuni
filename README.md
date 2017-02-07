@@ -69,5 +69,23 @@ Add a file into `run_sets/$name.yml` and then execute `rake cucumber:$name`.
 At moment we support only one, this is the refhost (smoke tests set)
 
 
+### RE/Run single feature
+
+```console
+#!/bin/bash
+
+export SSHMINION=..
+export CENTOSMINION=your.minion.tf.local
+export TESTHOST=..
+export CLIENT=..
+export MINION=..
+export BROWSER=phantomjs
+
+cd /root/spacewalk-testsuite-base
+cucumber features/MY_FEATURE_NAME
+```
+
+
+
 
 
