@@ -71,6 +71,7 @@ At moment we support only one, this is the refhost (smoke tests set)
 
 ### RE/Run single feature
 
+On the control-node modify the ``vi /usr/bin/run-testsuite``. The file has per default already the needed hostname set.
 ```console
 #!/bin/bash
 
