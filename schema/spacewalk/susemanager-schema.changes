@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Feb 07 15:33:50 CET 2017 - michele.bologna@suse.com
+
+- version 3.1.2.1-1
+- drop index before it gets re-created and use if exists for postgres
+  (bsc#1021381)
+
+-------------------------------------------------------------------
 Wed Jan 11 16:56:57 CET 2017 - michele.bologna@suse.com
 
 - version 3.1.2-1
