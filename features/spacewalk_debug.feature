@@ -1,8 +1,7 @@
-# Copyright (c) 2015-16 SUSE LLC
+# Copyright (c) 2015-17 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature:  Call spacewalk-debug on the server
- 	  Check some generics logs 
+Feature:  Debug Suse-Manager server after the testsuite has run
 
   Scenario: call spacewalk-debug
     Then I execute spacewalk-debug on the server
@@ -13,3 +12,6 @@ Feature:  Call spacewalk-debug on the server
   Scenario: Check the tomcat log on manager-server
     Then I check the tomcat logs for errors
     And I check the tomcat logs for NullPointerExceptions
+
+  Scenario: Check that no scheduled events have failed on manager server
+     Then there should be no failed scheduled actions
