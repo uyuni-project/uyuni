@@ -23,9 +23,13 @@ CREATE TABLE suseChannelAccessToken
                              ON DELETE SET NULL,
     token            varchar2(4000) NOT NULL,
     created          timestamp with local time zone NOT NULL,
-    expiration       timestamp with local time zone NOT NULL
+    expiration       timestamp with local time zone NOT NULL,
+    valid            CHAR(1) DEFAULT ('N') NOT NULL CHECK (valid in ('Y', 'N'))
 )
 ENABLE ROW MOVEMENT
 ;
 
 CREATE SEQUENCE suse_chan_access_token_id_seq;
+
+CREATE UNIQUE INDEX suse_channelaccesstoken_token_uq
+    ON suseChannelAccessToken (token);
