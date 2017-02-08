@@ -260,8 +260,8 @@ class RemoteCommand extends React.Component {
     };
     ws.onclose = (e) => {
       var errs = this.state.errors ? this.state.errors : [];
-      if (this.state.executing.state() == "pending" && !this.state.pageUnloading) {
-          errs.push([t("Websocket connection closed.")]);
+      if (!this.state.pageUnloading && !this.state.websocketErr) {
+          errs.push(t("Websocket connection closed. Refresh the page to try again."));
       }
       if (this.state.ran) {
           this.state.ran.resolve();
@@ -281,7 +281,8 @@ class RemoteCommand extends React.Component {
     ws.onerror = (e) => {
       console.log("Websocket error: " + e);
       this.setState({
-         errors: [t("Error connecting to server. Refresh page to try again.")]
+         errors: [t("Error connecting to server. Refresh the page to try again.")],
+         websocketErr: true
       });
     };
     ws.onmessage = (e) => {
