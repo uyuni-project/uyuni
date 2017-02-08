@@ -32,6 +32,7 @@ public class AccessToken {
     private Date start;
     private MinionServer minion;
     private Set<Channel> channels;
+    private boolean valid = true;
 
 
     /**
@@ -88,6 +89,20 @@ public class AccessToken {
      */
     public void setMinion(MinionServer minionIn) {
         this.minion = minionIn;
+    }
+
+    /**
+     * @param validIn the new valid flag
+     */
+    public void setValid(boolean validIn) {
+        this.valid = validIn;
+    }
+
+    /**
+     * @return the valid flag
+     */
+    public boolean getValid() {
+        return valid;
     }
 
     /**

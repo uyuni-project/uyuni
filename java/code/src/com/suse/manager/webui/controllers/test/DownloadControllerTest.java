@@ -253,6 +253,34 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests a download with a token not assigned to a minion.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testTokenNotValid() throws Exception {
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinionServer.getChannels().add(channel);
+        AccessTokenFactory.refreshTokens(testMinionServer);
+
+        AccessToken token = testMinionServer.getAccessTokens().iterator().next();
+        token.setValid(false);
+        AccessTokenFactory.save(token);
+
+        Map<String, String> params = new HashMap<>();
+        params.put(token.getToken(), "");
+        Request request = getMockRequestWithParams(params);
+
+        try {
+            DownloadController.downloadPackage(request, response);
+            fail(String.format("%s should halt 403 if the token is not assigned to a minion",
+                    DownloadController.class.getSimpleName()));
+        } catch (spark.HaltException e) {
+            assertEquals(403, e.getStatusCode());
+            assertNull(response.raw().getHeader("X-Sendfile"));
+        }
+    }
+
+    /**
      * Test a download with a correct channel in the token and the token
      * in a query param.
      *

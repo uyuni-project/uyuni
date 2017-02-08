@@ -62,6 +62,11 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
         assertEquals("valid", all.get(0).getToken());
     }
 
+    public void testValidWhenCreated() {
+        AccessToken token = new AccessToken();
+        assertTrue(token.getValid());
+    }
+
     public void testGenerate() throws Exception {
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         Channel base = ChannelFactoryTest.createBaseChannel(user);
@@ -92,6 +97,20 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, minionServer.getChannels().size());
         assertEquals(1, AccessTokenFactory.unneededTokens(minionServer).size());
 
+    }
+
+    public void testUnnededTokensInvalidatedOnRefresh() throws Exception {
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        Channel base = ChannelFactoryTest.createBaseChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(user);
+        child.setParentChannel(base);
+        testMinionServer.getChannels().add(base);
+        testMinionServer.getChannels().add(child);
+        AccessToken token = AccessTokenFactory.generate(testMinionServer, Collections.singleton(child)).get();
+        testMinionServer.getChannels().remove(child);
+        MinionServer minionServer = TestUtils.saveAndReload(testMinionServer);
+        assertTrue(AccessTokenFactory.refreshTokens(minionServer));
+        assertFalse(token.getValid());
     }
 
     public void testRegenerate() throws Exception {
