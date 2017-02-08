@@ -27,6 +27,10 @@ CREATE TABLE suseImageProfile
                        REFERENCES rhnRegToken (id)
                        ON DELETE SET NULL,
     image_type     VARCHAR2(32) NOT NULL,
+    target_store_id NUMBER NOT NULL
+                      CONSTRAINT suse_imgprof_tsid_fk
+                         REFERENCES suseImageStore (id)
+                         ON DELETE CASCADE,
     created        timestamp with local time zone
                      DEFAULT (current_timestamp) NOT NULL,
     modified       timestamp with local time zone
