@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -158,6 +159,11 @@ public class DownloadController {
      * @param filename the filename
      */
     private static void validateToken(String token, String channel, String filename) {
+        AccessTokenFactory.lookupByToken(token).ifPresent(obj -> {
+            if (!obj.getValid()) {
+                halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
+            }
+        });
         try {
             JwtClaims jwtClaims = JWT_CONSUMER.processToClaims(token);
 
