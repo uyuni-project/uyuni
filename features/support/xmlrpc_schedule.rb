@@ -12,4 +12,8 @@ class XMLRPCScheduleTest < XMLRPCBaseTest
   def cancelActions(actions)
     @connection.call("schedule.cancelActions", @sid, actions)
   end
+
+  def listFailedActions
+    @connection.call("schedule.listFailedActions", @sid)
+  end
 end
