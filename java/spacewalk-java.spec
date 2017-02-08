@@ -671,6 +671,7 @@ echo "wrapper.java.classpath.73=/usr/share/java/classmate.jar" >> conf/default/r
 echo "wrapper.java.classpath.74=/usr/share/java/javassist.jar" >> conf/default/rhn_taskomatic_daemon.conf
 echo "wrapper.java.classpath.75=/usr/share/java/jboss-logging.jar" >> conf/default/rhn_taskomatic_daemon.conf
 echo "wrapper.java.classpath.76=/usr/share/java/statistics.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.77=/usr/share/java/jose4j.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
 echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
 echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
