@@ -9,6 +9,8 @@ const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
 const {Table, Column, SearchField} = require("../components/table");
 const Messages = require("../components/messages").Messages;
+const DeleteDialog = require("../components/dialogs").DeleteDialog;
+const ModalButton = require("../components/dialogs").ModalButton;
 
 const typeMap = {
   "dockerfile": t("Dockerfile")
@@ -23,7 +25,7 @@ class ImageProfiles extends React.Component {
 
   constructor(props) {
     super();
-    ["reloadData", "deleteProfile"]
+    ["reloadData", "selectProfile", "deleteProfile"]
         .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
@@ -48,7 +50,14 @@ class ImageProfiles extends React.Component {
     });
   }
 
-  deleteProfile(id) {
+  selectProfile(row) {
+    this.setState({
+        selected: row
+    });
+  }
+
+  deleteProfile(row) {
+    const id = row.profile_id;
     return Network.del("/rhn/manager/api/cm/imageprofiles/" + id).promise.then(data => {
         if (data.success) {
             this.setState({
@@ -125,11 +134,13 @@ class ImageProfiles extends React.Component {
                           icon="fa-edit"
                           href={"/rhn/manager/cm/imageprofiles/edit/" + row.profile_id}
                       />
-                      <AsyncButton
+                      <ModalButton
+                          className="btn-default btn-sm"
                           title={t("Delete")}
-                          defaultType="btn-default btn-sm"
-                          icon="trash"
-                          action={() => this.deleteProfile(row.profile_id)}
+                          icon="fa-trash"
+                          target="delete-modal"
+                          item={row}
+                          onClick={this.selectProfile}
                       />
                   </div>;
                 }}
@@ -137,6 +148,14 @@ class ImageProfiles extends React.Component {
             }
           </Table>
         </Panel>
+
+        <DeleteDialog id="delete-modal"
+          title={t("Delete Profile")}
+          content={<span>{t("Are you sure you want to delete profile")} <strong>{this.state.selected ? this.state.selected.label : ''}</strong>?</span>}
+          item={this.state.selected}
+          onConfirm={this.deleteProfile}
+          onClosePopUp={() => this.selectProfile(undefined)}
+        />
       </span>
     );
   }
