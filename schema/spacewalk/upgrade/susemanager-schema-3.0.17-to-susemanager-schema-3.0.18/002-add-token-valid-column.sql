@@ -1,4 +1,4 @@
-ALTER TABLE suseChannelAccessToken ADD valid VARCHAR(1) DEFAULT ('N') NOT NULL;
+ALTER TABLE suseChannelAccessToken ADD valid CHAR(1) DEFAULT ('N') NOT NULL;
 
 UPDATE suseChannelAccessToken
     SET valid='Y'
