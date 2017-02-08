@@ -205,7 +205,7 @@ class BootstrapMinions extends React.Component {
                         <div className="checkbox">
                             <label>
                                 <input name="manageWithSSH" type="checkbox" checked={this.state.manageWithSSH} onChange={this.manageWithSSHChanged}/>
-                                <span><strong>Technology preview:</strong> manage system completely via SSH (will not install an agent)</span>
+                                <span>Manage system completely via SSH (will not install an agent)</span>
                             </label>
                         </div>
                     </div>
