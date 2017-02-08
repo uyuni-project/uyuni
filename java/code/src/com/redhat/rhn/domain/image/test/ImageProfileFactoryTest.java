@@ -10,7 +10,6 @@ import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
-import com.redhat.rhn.domain.org.test.OrgFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -34,7 +33,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         profile.setLabel("myprofile");
         profile.setOrg(user.getOrg());
         profile.setPath("my/test/path");
-        profile.setStore(store);
+        profile.setTargetStore(store);
         ImageProfileFactory.save(profile);
 
         assertNotNull(profile.getProfileId());
@@ -60,7 +59,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         profile.setLabel("myprofile");
         profile.setOrg(user.getOrg());
         profile.setPath("my/test/path");
-        profile.setStore(store);
+        profile.setTargetStore(store);
         ImageProfileFactory.save(profile);
 
         assertNotNull(profile.getProfileId());
@@ -94,7 +93,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         profile.setOrg(user.getOrg());
         profile.setPath("http://git.domain.top/dockerimages.git#mybranch:profiles/suma-3.1-base");
         profile.setToken(null);
-        profile.setStore(iStore);
+        profile.setTargetStore(iStore);
         ImageProfileFactory.save(profile);
 
         ImageProfile prf = ImageProfileFactory.lookupByLabel("suma-3.1-base");
@@ -120,7 +119,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         profile.setOrg(user.getOrg());
         profile.setPath("http://git.domain.top/dockerimages.git#mybranch:profiles/suma-3.1-base");
         profile.setToken(null);
-        profile.setStore(iStore);
+        profile.setTargetStore(iStore);
         ImageProfileFactory.save(profile);
         profile = TestUtils.saveAndReload(profile);
 
@@ -151,7 +150,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         profile.setOrg(user.getOrg());
         profile.setPath("http://git.domain.top/dockerimages.git#mybranch:profiles/suma-3.1-base");
         profile.setToken(null);
-        profile.setStore(iStore);
+        profile.setTargetStore(iStore);
         ImageProfileFactory.save(profile);
         profile = TestUtils.saveAndReload(profile);
 
@@ -181,7 +180,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         profile.setOrg(user.getOrg());
         profile.setPath("http://git.domain.top/dockerimages.git#mybranch:profiles/suma-3.1-base");
         profile.setToken(null);
-        profile.setStore(iStore);
+        profile.setTargetStore(iStore);
         ImageProfileFactory.save(profile);
         profile = TestUtils.saveAndReload(profile);
 

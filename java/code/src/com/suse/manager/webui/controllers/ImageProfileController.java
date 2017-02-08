@@ -182,7 +182,7 @@ public class ImageProfileController {
             if (p instanceof DockerfileProfile) {
                 DockerfileProfile dp = (DockerfileProfile) p;
                 json.addProperty("path", dp.getPath());
-                json.addProperty("store", dp.getStore().getLabel());
+                json.addProperty("store", dp.getTargetStore().getLabel());
             }
 
             return json(res, new JsonResult(true, json));
@@ -227,7 +227,7 @@ public class ImageProfileController {
 
                 dp.setLabel(reqData.getLabel());
                 dp.setPath(reqData.getPath());
-                dp.setStore(store);
+                dp.setTargetStore(store);
                 dp.setToken(getToken(reqData.getActivationKey()));
             }
 
@@ -259,7 +259,7 @@ public class ImageProfileController {
 
             dockerfileProfile.setLabel(reqData.getLabel());
             dockerfileProfile.setPath(reqData.getPath());
-            dockerfileProfile.setStore(store);
+            dockerfileProfile.setTargetStore(store);
             dockerfileProfile.setOrg(user.getOrg());
             dockerfileProfile.setToken(getToken(reqData.getActivationKey()));
 

@@ -22,7 +22,6 @@ import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -34,7 +33,6 @@ import javax.persistence.Table;
 public class DockerfileProfile extends ImageProfile {
 
     private String path;
-    private ImageStore store;
 
     /**
      * @return the path
@@ -45,26 +43,12 @@ public class DockerfileProfile extends ImageProfile {
     }
 
     /**
-     * @return the store
-     */
-    @ManyToOne
-    public ImageStore getStore() {
-        return store;
-    }
-
-    /**
      * @param pathIn the path to set
      */
     public void setPath(String pathIn) {
         this.path = pathIn;
     }
 
-    /**
-     * @param storeIn the store to set
-     */
-    public void setStore(ImageStore storeIn) {
-        this.store = storeIn;
-    }
 
     /**
      * {@inheritDoc}
@@ -77,7 +61,6 @@ public class DockerfileProfile extends ImageProfile {
         return new EqualsBuilder()
                 .appendSuper(super.equals(castOther))
                 .append(path, castOther.path)
-                .append(store, castOther.store)
                 .isEquals();
     }
 
@@ -88,7 +71,6 @@ public class DockerfileProfile extends ImageProfile {
         return new HashCodeBuilder()
                 .appendSuper(super.hashCode())
                 .append(path)
-                .append(store)
                 .toHashCode();
     }
 

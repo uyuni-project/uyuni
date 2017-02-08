@@ -578,8 +578,8 @@ public enum SaltServerActionService {
                     Map<String, Object> pillar = new HashMap<>();
                     Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
                     pillar.put("docker-registries", dockerRegistries);
-                    String name = profile.getStore().getUri() + "/" + profile.getLabel() +
-                            ":" + tag.orElse("");
+                    String name = profile.getTargetStore().getUri() + "/" +
+                            profile.getLabel() + ":" + tag.orElse("");
                     pillar.put("imagename", name);
                     pillar.put("builddir", profile.getPath());
 
