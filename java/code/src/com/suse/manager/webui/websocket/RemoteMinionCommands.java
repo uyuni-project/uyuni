@@ -27,7 +27,7 @@ import com.suse.manager.webui.websocket.json.ActionTimedOutEventDto;
 import com.suse.manager.webui.websocket.json.MinionCommandResultEventDto;
 import com.suse.manager.webui.websocket.json.ActionErrorEventDto;
 import com.suse.manager.webui.websocket.json.AbstractSaltEventDto;
-import com.suse.salt.netapi.datatypes.target.Glob;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Json;
 import org.apache.log4j.Logger;
@@ -60,6 +60,7 @@ public class RemoteMinionCommands {
     private Long sessionId;
 
     private CompletableFuture failAfter;
+    private List<String> previewedMinions;
 
     /**
      * Callback executed when the websocket is opened.
@@ -116,14 +117,14 @@ public class RemoteMinionCommands {
             }
         }
 
-        List<String> allVisibleMinions = MinionServerFactory
-                .lookupVisibleToUser(webSession.getUser())
-                .map(MinionServer::getMinionId)
-                .collect(Collectors.toList());
-
         int timeOut = 600; // 10 minutes
         try {
             if (msg.isPreview()) {
+                List<String> allVisibleMinions = MinionServerFactory
+                        .lookupVisibleToUser(webSession.getUser())
+                        .map(MinionServer::getMinionId)
+                        .collect(Collectors.toList());
+
                 this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
                 Map<String, CompletionStage<Result<Boolean>>> res;
                 try {
@@ -136,13 +137,18 @@ public class RemoteMinionCommands {
                     return;
                 }
 
-                List<String> allMinions = res.keySet().stream()
+                previewedMinions = res.keySet().stream()
                         .collect(Collectors.toList());
-                allMinions.retainAll(allVisibleMinions);
-                sendMessage(session, new AsyncJobStartEventDto("preview", allMinions));
+                previewedMinions.retainAll(allVisibleMinions);
+                sendMessage(session, new AsyncJobStartEventDto("preview",
+                        previewedMinions));
 
                 res.forEach((minionId, future) -> {
                     future.whenComplete((matchResult, err) -> {
+                        if (!previewedMinions.contains(minionId)) {
+                            // minion is not visible to this user
+                            return;
+                        }
                         if (matchResult != null) {
                             sendMessage(session, new MinionMatchResultEventDto(minionId));
                         }
@@ -172,11 +178,17 @@ public class RemoteMinionCommands {
                 }
             }
             else {
+                if (previewedMinions == null) {
+                    sendMessage(session,
+                            new ActionErrorEventDto(null,
+                                    "ERR_NO_PREVIEW",
+                                    "Please execute preview first."));
+                }
                 this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
                 Map<String, CompletionStage<Result<String>>> res;
                 try {
                     res = SaltService.INSTANCE
-                            .runRemoteCommandAsync(new Glob(msg.getTarget()),
+                            .runRemoteCommandAsync(new MinionList(previewedMinions),
                                     msg.getCommand(), failAfter);
                 }
                 catch (NullPointerException e) {
