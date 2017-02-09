@@ -176,6 +176,10 @@ public class RemoteMinionCommands {
                     this.failAfter.completeExceptionally(
                             new TimeoutException("Canceled waiting"));
                 }
+                if (previewedMinions == null || previewedMinions.isEmpty()) {
+                    sendMessage(session,
+                            new ActionTimedOutEventDto(null, "preview"));
+                }
             }
             else {
                 if (previewedMinions == null) {
