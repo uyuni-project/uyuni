@@ -18,12 +18,3 @@ end
 When(/^I select the state "(.*)"$/) do |state|
   find("input##{state}-cbox").click
 end
-
-When(/^I wait for the file "(.*)"$/) do |file|
-  # Wait 60 seconds for file to appear
-  60.times do
-    break if file_exist($minion, file)
-    sleep 1
-  end
-  fail unless file_exist($minion, file)
-end
