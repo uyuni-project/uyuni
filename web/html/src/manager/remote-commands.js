@@ -326,8 +326,13 @@ class RemoteCommand extends React.Component {
             break;
         case "timedOut":
             var minionsMap = this.state.result.minions;
-            minionsMap.set(event.minion, {type: "timedOut", value: null});
-            const timedOutDone = isTimedOutDone(minionsMap);
+            var timedOutDone;
+            if (event.minion) {
+                minionsMap.set(event.minion, {type: "timedOut", value: null});
+                timedOutDone = isTimedOutDone(minionsMap);
+            } else {
+                timedOutDone = true;
+            }
             var previewed = this.state.previewed;
             var ran = this.state.ran;
             if (timedOutDone) {
