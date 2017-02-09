@@ -4,5 +4,5 @@ UPDATE suseChannelAccessToken
     SET valid='Y'
     WHERE minion_id IS NOT NULL;
 
-CREATE UNIQUE INDEX suse_channelaccesstoken_token_uq
+CREATE UNIQUE INDEX suse_accesstoken_token_uq
     ON suseChannelAccessToken (token);
