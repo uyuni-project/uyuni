@@ -2052,9 +2052,6 @@ class Backend:
                 localDML['update'][childTableName].append(val)
                 del dbside[key]
 
-            if childTableName == 'rhnErrataPackage':
-                continue
-
             # Anything else should be deleted
             for key, val in dbside.items():
                 # Send only the PKs
