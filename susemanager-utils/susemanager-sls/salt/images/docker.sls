@@ -13,3 +13,6 @@ mgr_pushimage:
     - image: "{{ pillar.get('imagename') }}"
     - require:
       - module: mgr_buildimage
+
+include:
+  - images.profileupdate
