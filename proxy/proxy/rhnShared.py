@@ -137,7 +137,7 @@ class SharedHandler:
             log_error("Error opening connection", self.rhnParent, e)
             Traceback(mail=0)
             raise rhnFault(1000,
-                           _("Spacewalk Proxy could not successfully connect its RHN parent. "
+                           _("SUSE Manager Proxy could not successfully connect its SUSE Manager parent. "
                              "Please contact your system administrator.")), None, sys.exc_info()[2]
 
         # At this point the server should be okay
@@ -221,12 +221,12 @@ class SharedHandler:
             # XXX: why are we not mailing this out???
             Traceback("SharedHandler._serverCommo", self.req, mail=0)
             raise rhnFault(1000, _(
-                "Spacewalk Proxy error: connection with the Spacewalk server failed")), None, sys.exc_info()[2]
+                "SUSE Manager Proxy error: connection with the SUSE Manager server failed")), None, sys.exc_info()[2]
         except socket.error:
             # maybe self.req.read() failed?
             Traceback("SharedHandler._serverCommo", self.req)
             raise rhnFault(1000, _(
-                "Spacewalk Proxy error: connection with the Spacewalk server failed")), None, sys.exc_info()[2]
+                "SUSE Manager Proxy error: connection with the SUSE Manager server failed")), None, sys.exc_info()[2]
 
         log_debug(2, "HTTP status code (200 means all is well): %s" % status)
 
