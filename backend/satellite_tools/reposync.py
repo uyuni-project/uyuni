@@ -225,7 +225,7 @@ def get_single_ssl_set(keys, check_dates=False):
                  verify_certificate_dates(ssl_set['client_cert'])):
                 return ssl_set
     # Get first
-    elif len(keys) >= 1:
+    elif keys and len(keys) >= 1:
         return keys[0]
     return None
 
