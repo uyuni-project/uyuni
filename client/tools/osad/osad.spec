@@ -49,7 +49,7 @@ Requires: rhn-client-tools >= 1.3.7
 %if 0%{?rhel} && 0%{?rhel} <= 5
 Requires: python-hashlib
 %endif
-%if 0%{?suse_version} >= 1140
+%if 0%{?suse_version} >= 1110
 Requires: python-xml
 %endif
 Conflicts: osa-dispatcher < %{version}-%{release}
@@ -64,6 +64,9 @@ Requires(post): aaa_base
 Requires(preun): aaa_base
 # to make chkconfig test work during build
 BuildRequires: sysconfig syslog
+%if 0%{?suse_version} < 1210
+Requires: %fillup_prereq %insserv_prereq
+%endif
 %else
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires(post): chkconfig
@@ -225,6 +228,23 @@ install -d %{buildroot}%{_sbindir}
 install -p -m 755 osa-dispatcher-selinux/osa-dispatcher-selinux-enable %{buildroot}%{_sbindir}/osa-dispatcher-selinux-enable
 %endif
 
+mkdir -p %{buildroot}%{_var}/log/rhn
+touch %{buildroot}%{_var}/log/osad
+touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
+
+%if 0%{?suse_version}
+%py_compile %{buildroot}/%{rhnroot}
+%py_compile -O %{buildroot}/%{rhnroot}
+# add rclinks
+%if 0%{?suse_version} < 1210
+ln -sf ../../etc/init.d/osad %{buildroot}%{_sbindir}/rcosad
+ln -sf ../../etc/init.d/osa-dispatcher %{buildroot}%{_sbindir}/rcosa-dispatcher
+%else
+ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcosad
+ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcosa-dispatcher
+%endif
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -234,11 +254,17 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %post
+ARG=$1
 %if 0%{?suse_version} >= 1210
 %service_add_post osad.service
+if [ $ARG -eq 1 ] ; then
+    # executed only in case of install
+    /usr/bin/systemctl enable osad.service >/dev/null 2>&1
+    /usr/bin/systemctl start osad.service ||:
+fi
 %else
 if [ -f %{_sysconfdir}/init.d/osad ]; then
-    /sbin/chkconfig --add osad
+    /sbin/chkconfig --add osad ||:
 fi
 if [ -f %{_unitdir}/osad.service ]; then
     %systemd_post osad.service
@@ -254,6 +280,10 @@ fi
 # Fix the /var/log/osad permission BZ 836984
 if [ -f %{_var}/log/osad ]; then
     /bin/chmod 600 %{_var}/log/osad
+fi
+if [ $ARG -eq 1 ] ; then
+  # executed only in case of install
+  /sbin/service osad start ||:
 fi
 %endif
 
@@ -297,7 +327,7 @@ fi
 %service_add_post osa-dispatcher.service
 %else
 if [ -f %{_sysconfdir}/init.d/osa-dispatcher ]; then
-    /sbin/chkconfig --add osa-dispatcher
+    /sbin/chkconfig --add osa-dispatcher ||:
 fi
 if [ -f %{_unitdir}/osa-dispatcher.service ]; then
     %systemd_post osa-dispatcher.service
@@ -353,6 +383,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %files
+%defattr(-,root,root)
 %dir %{rhnroot}/osad
 %attr(755,root,root) %{_sbindir}/osad
 %{rhnroot}/osad/osad.py*
@@ -370,6 +401,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %config(noreplace) %{_sysconfdir}/logrotate.d/osad
 %ghost %attr(600,root,root) %{_var}/log/osad
 %if 0%{?suse_version}
+%{_sbindir}/rcosad
 # provide directories not owned by any package during build
 %dir %{rhnroot}
 %dir %{_sysconfdir}/sysconfig/rhn
@@ -398,12 +430,15 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %doc LICENSE
 %ghost %attr(640,%{apache_user},root) %{_var}/log/rhn/osa-dispatcher.log
 %if 0%{?suse_version}
-%attr(750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
+%{_sbindir}/rcosa-dispatcher
+%dir %attr(750, root, %{apache_group}) %{_sysconfdir}/rhn
 %attr(755,root,%{apache_group}) %dir %{rhnroot}/config-defaults
-%dir %{_var}/log/rhn
+%dir %{_sysconfdir}/rhn/tns_admin
+%attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif
 
 %files -n osa-common
+%defattr(-,root,root)
 %{rhnroot}/osad/__init__.py*
 %{rhnroot}/osad/jabber_lib.py*
 %{rhnroot}/osad/rhn_log.py*
