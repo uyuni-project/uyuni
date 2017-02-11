@@ -35,13 +35,9 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *      #prop("string", "sourceUrl")
  *      #prop("string", "type")
  *      #prop("boolean", "hasSignedMetadata")
- *      #array("sslContentSources")
- *          #struct()
- *              #prop("string", "sslCaDesc")
- *              #prop("string", "sslCertDesc")
- *              #prop("string", "sslKeyDesc")
- *          #struct_end()
- *      #array_end()
+ *      #prop_array_begin_desc("sslContentSources", "")
+ *         $SslContentSourceSerializer
+ *      #prop_array_end()
  *  #struct_end()
  *
  */
