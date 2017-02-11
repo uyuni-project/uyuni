@@ -1,6 +1,6 @@
 # Container used to test java and python code of SUSE Manager against postgresql
 #
-# VERSION               1.1.1
+# VERSION               1.1.2
 
 FROM registry.mgr.suse.de/suma-head-base:1.1.1
 MAINTAINER Flavio Castelli "fcastelli@suse.com"

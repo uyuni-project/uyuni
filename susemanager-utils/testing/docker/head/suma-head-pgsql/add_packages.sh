@@ -8,4 +8,5 @@ zypper --non-interactive --gpg-auto-import-keys ref
 zypper in -y postgresql94-contrib \
              postgresql94-server \
              smdba \
-             perl-DBD-Pg
+             perl-DBD-Pg \
+             python-M2Crypto
