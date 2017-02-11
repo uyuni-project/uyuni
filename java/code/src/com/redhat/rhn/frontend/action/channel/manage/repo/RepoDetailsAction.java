@@ -218,8 +218,9 @@ public class RepoDetailsAction extends RhnAction {
         form.set(URL, repo.getSourceUrl());
         form.set(SOURCEID, repo.getId());
         form.set(TYPE, repo.getType().getLabel());
-        if (repo.isSsl()) {
-            SslContentSource sslRepo = (SslContentSource) repo;
+        Set<SslContentSource> repoSslSets = repo.getSslSets();
+        if (!repoSslSets.isEmpty()) {
+            SslContentSource sslRepo = repoSslSets.iterator().next();
             form.set(SSL_CA_CERT, getStringId(sslRepo.getCaCert()));
             form.set(SSL_CLIENT_CERT, getStringId(sslRepo.getClientCert()));
             form.set(SSL_CLIENT_KEY, getStringId(sslRepo.getClientKey()));
@@ -330,12 +331,15 @@ public class RepoDetailsAction extends RhnAction {
         repoCmd.setLabel(label);
         repoCmd.setUrl(url);
         repoCmd.setType(type);
-        repoCmd.setSslCaCertId(parseIdFromForm(form, SSL_CA_CERT));
-        repoCmd.setSslClientCertId(parseIdFromForm(form, SSL_CLIENT_CERT));
-        repoCmd.setSslClientKeyId(parseIdFromForm(form, SSL_CLIENT_KEY));
         repoCmd.setMetadataSigned(metadataSigned.booleanValue());
 
         try {
+            // Add SSL
+            // FIXME: Allow to set multiple SSL sets per custom repo - new page?
+            repoCmd.deleteAllSslSets();
+            repoCmd.addSslSet(parseIdFromForm(form, SSL_CA_CERT),
+                    parseIdFromForm(form, SSL_CLIENT_CERT),
+                    parseIdFromForm(form, SSL_CLIENT_KEY));
             // Process filters
             List<ContentSourceFilter> lresult = processFilters(sfilters);
 

@@ -33,12 +33,6 @@ rhnContentSource
                             DEFAULT ('Y') NOT NULL
                             CONSTRAINT rhn_cs_ms_ck
                                 CHECK (metadata_signed in ( 'Y' , 'N' )),
-        ssl_ca_cert_id number
-                constraint rhn_cs_cacertid_fk references rhnCryptoKey(id) on delete set null,
-        ssl_client_cert_id number
-                constraint rhn_cs_clcertid_fk references rhnCryptoKey(id) on delete set null,
-        ssl_client_key_id number
-                constraint rhn_cs_clkeyid_fk references rhnCryptoKey(id) on delete set null,
         created         timestamp with local time zone default(current_timestamp) NOT NULL,
         modified        timestamp with local time zone default(current_timestamp) NOT NULL
 )

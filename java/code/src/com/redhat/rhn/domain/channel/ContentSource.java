@@ -37,6 +37,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     private String label;
     private boolean metadataSigned;
     private Set<Channel> channels = new HashSet<Channel>();
+    private Set<SslContentSource> sslSets = new HashSet<SslContentSource>();
 
     /**
      * Constructor
@@ -54,6 +55,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
         sourceUrl = cs.getSourceUrl();
         label = cs.getLabel();
         channels = new HashSet<Channel>(cs.getChannels());
+        sslSets = new HashSet<SslContentSource>(cs.getSslSets());
     }
 
 
@@ -164,9 +166,18 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * @return indicates SSL attribute
+     *
+     * @return SSL sets for content source
      */
-    public boolean isSsl() {
-        return false;
+    public Set<SslContentSource> getSslSets() {
+        return sslSets;
+    }
+
+    /**
+     *
+     * @param sslSetsIn SSL sets to assign to repository
+     */
+    public void setSslSets(Set<SslContentSource> sslSetsIn) {
+        this.sslSets = sslSetsIn;
     }
 }

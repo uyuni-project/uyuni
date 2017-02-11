@@ -2515,28 +2515,21 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
          // check SSL-certificates parameters
          if (!StringUtils.isEmpty(sslCaCert)) {
-             repoCmd.setSslCaCertId(getKeyId(loggedInUser, sslCaCert));
-
-             if (!StringUtils.isEmpty(sslCliCert)) {
-                 repoCmd.setSslClientCertId(getKeyId(loggedInUser, sslCliCert));
+             try {
+                 // FIXME: Allow to set multiple SSL sets per custom repo - new API calls?
+                 repoCmd.addSslSet(getKeyId(loggedInUser, sslCaCert),
+                         getKeyId(loggedInUser, sslCliCert),
+                         getKeyId(loggedInUser, sslCliKey));
              }
-
-             if (!StringUtils.isEmpty(sslCliKey)) {
-                 repoCmd.setSslClientKeyId(getKeyId(loggedInUser, sslCliKey));
+             catch (InvalidCertificateException e) {
+                 throw new NoSuchCryptoKeyException(e.getMessage());
              }
          }
          else if (!StringUtils.isEmpty(sslCliCert) || !StringUtils.isEmpty(sslCliKey)) {
              log.warn("SSL CA Certificate is missing, ignoring other SSL Certs/Keys");
          }
 
-
-             try {
-                repoCmd.store();
-            }
-            catch (InvalidCertificateException e) {
-                throw new NoSuchCryptoKeyException(e.getMessage());
-            }
-
+         repoCmd.store();
 
          ContentSource repo = ChannelFactory.lookupContentSourceByOrgAndLabel(
                  loggedInUser.getOrg(), label);
@@ -2731,14 +2724,15 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         // set new SSL Certificates for the repository
         if (!StringUtils.isEmpty(sslCaCert)) {
-            repoEditor.setSslCaCertId(getKeyId(loggedInUser, sslCaCert));
-
-            if (!StringUtils.isEmpty(sslCliCert)) {
-                repoEditor.setSslClientCertId(getKeyId(loggedInUser, sslCliCert));
+            try {
+                // FIXME: Allow to set multiple SSL sets per custom repo - new API calls?
+                repoEditor.deleteAllSslSets();
+                repoEditor.addSslSet(getKeyId(loggedInUser, sslCaCert),
+                        getKeyId(loggedInUser, sslCliCert),
+                        getKeyId(loggedInUser, sslCliKey));
             }
-
-            if (!StringUtils.isEmpty(sslCliKey)) {
-                repoEditor.setSslClientKeyId(getKeyId(loggedInUser, sslCliKey));
+            catch (InvalidCertificateException e) {
+                throw new NoSuchCryptoKeyException(e.getMessage());
             }
         }
         else if (!StringUtils.isEmpty(sslCliCert) || !StringUtils.isEmpty(sslCliKey)) {
@@ -2746,12 +2740,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
 
         // Store Repo
-        try {
-            repoEditor.store();
-        }
-        catch (InvalidCertificateException e) {
-            throw new NoSuchCryptoKeyException(e.getMessage());
-        }
+        repoEditor.store();
         repo = ChannelFactory.lookupContentSourceByOrgAndLabel(loggedInUser.getOrg(),
                 label);
         return repo;
@@ -3281,6 +3270,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     private Long getKeyId(User loggedInUser, String keyDescription) {
+        if (StringUtils.isEmpty(keyDescription)) {
+            return null;
+        }
         CryptoKey key = KickstartFactory.lookupCryptoKey(keyDescription,
                 loggedInUser.getOrg());
         if (key == null) {

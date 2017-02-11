@@ -41,6 +41,7 @@ from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
 from spacewalk.satellite_tools.repo_plugins import ThreadedDownloader, ProgressBarLogger, TextLogger
+from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 
 from syncLib import log, log2, log2disk
 
@@ -215,12 +216,26 @@ def getCustomChannels():
     return l_custom_ch
 
 
+def get_single_ssl_set(keys, check_dates=False):
+    """Picks one of available SSL sets for given repository."""
+    if check_dates:
+        for ssl_set in keys:
+            if verify_certificate_dates(ssl_set['ca_cert']) and \
+                (not ssl_set['client_cert'] or
+                 verify_certificate_dates(ssl_set['client_cert'])):
+                return ssl_set
+    # Get first
+    elif len(keys) >= 1:
+        return keys[0]
+    return None
+
+
 class RepoSync(object):
 
     def __init__(self, channel_label, repo_type, url=None, fail=False,
                  filters=None, no_errata=False, sync_kickstart=False, latest=False,
                  metadata_only=False, strict=0, excluded_urls=None, no_packages=False,
-                 log_dir="reposync", log_level=None, force_kickstart=False,
+                 log_dir="reposync", log_level=None, force_kickstart=False, check_ssl_dates=False,
                  noninteractive=False, deep_verify=False):
         self.regen = False
         self.fail = fail
@@ -303,6 +318,7 @@ class RepoSync(object):
         self.repo_plugin = self.load_plugin(repo_type)
         self.strict = strict
         self.all_packages = []
+        self.check_ssl_dates = check_ssl_dates
         self.arches = self.get_compatible_arches(int(self.channel['id']))
 
     def set_urls_prefix(self, prefix):
@@ -352,18 +368,17 @@ class RepoSync(object):
 
                     if data['id'] is not None:
                         keys = rhnSQL.fetchone_dict("""
-                            select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
-                              from rhncontentsource cs
-                              join rhncryptokey k1
-                                on cs.ssl_ca_cert_id = k1.id
-                              left outer join rhncryptokey k2
-                                on cs.ssl_client_cert_id = k2.id
-                              left outer join rhncryptokey k3
-                                on cs.ssl_client_key_id = k3.id
-                             where cs.id = :repo_id
+                        select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
+                        from rhncontentsource cs inner join
+                             rhncontentsourcessl csssl on cs.id = csssl.content_source_id inner join
+                             rhncryptokey k1 on csssl.ssl_ca_cert_id = k1.id left outer join
+                             rhncryptokey k2 on csssl.ssl_client_cert_id = k2.id left outer join
+                             rhncryptokey k3 on csssl.ssl_client_key_id = k3.id
+                        where cs.id = :repo_id
                         """, repo_id=int(data['id']))
-                        if keys and ('ca_cert' in keys):
-                            plugin.set_ssl_options(keys['ca_cert'], keys['client_cert'], keys['client_key'])
+                        ssl_set = get_single_ssl_set(keys, check_dates=self.check_ssl_dates)
+                        if ssl_set:
+                            plugin.set_ssl_options(ssl_set['ca_cert'], ssl_set['client_cert'], ssl_set['client_key'])
 
                     # update the checksum type of channels with org_id NULL
                     self.updateChannelChecksumType(plugin.get_md_checksum_type())
