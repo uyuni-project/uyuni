@@ -8,7 +8,7 @@ const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
 
 const typeMap = {
-    "dockerreg": "Docker Registry"
+    "registry": "Registry"
 };
 
 const msgMap = {};
@@ -19,9 +19,9 @@ class CreateImageStore extends React.Component {
         super(props);
         this.state = {
             storeTypes: [
-                "dockerreg"
+                "registry"
             ],
-            storeType: "dockerreg",
+            storeType: "registry",
             email: "",
             username: "",
             password: "",
@@ -170,7 +170,7 @@ class CreateImageStore extends React.Component {
 
     renderTypeInputs(type, state) {
         switch (type) {
-            case "dockerreg":
+            case "registry":
                 return [
                     <div className="form-group">
                         <div className="col-md-6 col-md-offset-3">

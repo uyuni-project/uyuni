@@ -15,14 +15,12 @@ import java.util.Optional;
 
 public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
 
-    private static final String STORE_TYPE_DOCKER = "dockerreg";
-
     public void testLookupStoreType() throws Exception {
         ImageStoreType expected = new ImageStoreType();
-        expected.setLabel("dockerreg");
-        expected.setName("Docker Registry");
+        expected.setLabel("registry");
+        expected.setName("Registry");
 
-        ImageStoreType stype = ImageStoreFactory.lookupStoreTypeByLabel(STORE_TYPE_DOCKER);
+        ImageStoreType stype = ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY);
         assertEquals(expected, stype);
 
         try {
@@ -36,7 +34,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         ImageStore iStore = new ImageStore();
         iStore.setLabel("myregistry");
         iStore.setUri("registry.domain.top");
-        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(STORE_TYPE_DOCKER));
+        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
         iStore.setOrg(user.getOrg());
         ImageStoreFactory.save(iStore);
 
@@ -51,12 +49,12 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         ImageStore iStore = new ImageStore();
         iStore.setLabel("myregistry");
         iStore.setUri("registry.domain.top");
-        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(STORE_TYPE_DOCKER));
+        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
         iStore.setOrg(user.getOrg());
         ImageStoreFactory.save(iStore);
 
         List<ImageStore> iList =
-                ImageStoreFactory.listByTypeLabelAndOrg(STORE_TYPE_DOCKER, user.getOrg());
+                ImageStoreFactory.listByTypeLabelAndOrg(ImageStore.TYPE_REGISTRY, user.getOrg());
 
         assertEquals(1, iList.size());
         assertEquals(iStore, iList.get(0));
@@ -69,7 +67,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         org.setName("foreign org");
         org = OrgFactory.save(org);
 
-        iList = ImageStoreFactory.listByTypeLabelAndOrg(STORE_TYPE_DOCKER, org);
+        iList = ImageStoreFactory.listByTypeLabelAndOrg(ImageStore.TYPE_REGISTRY, org);
         assertEquals(0, iList.size());
     }
 
@@ -77,7 +75,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         ImageStore iStore = new ImageStore();
         iStore.setLabel("myregistry");
         iStore.setUri("registry.domain.top");
-        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(STORE_TYPE_DOCKER));
+        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
         iStore.setOrg(user.getOrg());
         ImageStoreFactory.save(iStore);
 
@@ -95,7 +93,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         ImageStore iStore = new ImageStore();
         iStore.setLabel("myregistry");
         iStore.setUri("registry.domain.top");
-        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(STORE_TYPE_DOCKER));
+        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
         iStore.setOrg(user.getOrg());
         ImageStoreFactory.save(iStore);
 
@@ -118,7 +116,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         ImageStore iStore = new ImageStore();
         iStore.setLabel("myregistry");
         iStore.setUri("registry.domain.top");
-        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(STORE_TYPE_DOCKER));
+        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
         iStore.setOrg(user.getOrg());
         ImageStoreFactory.save(iStore);
 
@@ -148,7 +146,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         ImageStore iStore = new ImageStore();
         iStore.setLabel("myregistry");
         iStore.setUri("registry.domain.top");
-        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(STORE_TYPE_DOCKER));
+        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
         iStore.setOrg(user.getOrg());
         iStore.setCreds(creds);
         ImageStoreFactory.save(iStore);
@@ -164,7 +162,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
 
         store.setLabel("myregistry");
         store.setUri("registry.domain.top");
-        store.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(STORE_TYPE_DOCKER));
+        store.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
         store.setOrg(user.getOrg());
         ImageStoreFactory.save(store);
 

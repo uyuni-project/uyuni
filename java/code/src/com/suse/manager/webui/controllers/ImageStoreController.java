@@ -232,7 +232,8 @@ public class ImageStoreController {
         imageStore.setUri(createRequest.getUri());
         setStoreDockerCredentials(imageStore, createRequest.getCredentials());
 
-        imageStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel("dockerreg"));
+        imageStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(
+                ImageStore.TYPE_REGISTRY));
         imageStore.setOrg(user.getOrg());
 
         ImageStoreFactory.save(imageStore);
