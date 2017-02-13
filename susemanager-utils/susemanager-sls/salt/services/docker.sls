@@ -1,4 +1,4 @@
-{% if pillar['addon_group_types'] is defined and 'docker_build_host' in pillar['addon_group_types'] %}
+{% if pillar['addon_group_types'] is defined and 'container_build_host' in pillar['addon_group_types'] %}
 mgr_install_docker:
   pkg.installed:
     - pkgs:
@@ -16,5 +16,6 @@ mgr_min_salt:
   pkg.installed:
     - pkgs:
       - salt: '>=2016.11.1'
+      - salt-minion: '>=2016.11.1'
     - order: last
 {% endif %}

@@ -425,19 +425,19 @@ public class SystemManagerTest extends RhnBaseTestCase {
         server = (Server) reload(server);
         assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 
-        //Test Docker Build Host
+        //Test Container Build Host
         assertTrue(SystemManager.canEntitleServer(server,
-                EntitlementManager.VIRTUALIZATION));
+                EntitlementManager.CONTAINER_BUILD_HOST));
         hasErrors = SystemManager.entitleServer(server,
-                EntitlementManager.VIRTUALIZATION).hasErrors();
+                EntitlementManager.CONTAINER_BUILD_HOST).hasErrors();
         assertFalse(hasErrors);
-        assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
+        assertTrue(server.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
 
         // Removal
         SystemManager.removeServerEntitlement(server.getId(),
-                EntitlementManager.VIRTUALIZATION);
+                EntitlementManager.CONTAINER_BUILD_HOST);
         server = (Server) reload(server);
-        assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
+        assertFalse(server.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
     }
 
     public void testEntitleVirtForGuest() throws Exception {

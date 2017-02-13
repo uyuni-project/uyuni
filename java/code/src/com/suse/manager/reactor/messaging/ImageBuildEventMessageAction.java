@@ -48,7 +48,8 @@ public class ImageBuildEventMessageAction extends AbstractDatabaseAction {
         Server server = ServerFactory.lookupById(imageBuildEvent.getServerId());
 
         // Apply states only for salt systems
-        if (server != null && server.hasEntitlement(EntitlementManager.DOCKER_BUILD_HOST)) {
+        if (server != null && server.hasEntitlement(
+                EntitlementManager.CONTAINER_BUILD_HOST)) {
             LOG.debug("Schedule image.build for " + server.getName() + ": " +
                     imageBuildEvent.getImageProfile().getLabel() + " " +
                     imageBuildEvent.getTag());

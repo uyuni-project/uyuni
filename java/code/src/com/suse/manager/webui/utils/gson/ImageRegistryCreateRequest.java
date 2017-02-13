@@ -15,9 +15,9 @@
 package com.suse.manager.webui.utils.gson;
 
 /**
- * JSON request wrapper for Docker registry image stores.
+ * JSON request wrapper for registry image stores.
  */
-public class DockerRegistryCreateRequest {
+public class ImageRegistryCreateRequest {
 
     /**
      * Nested class for credentials.

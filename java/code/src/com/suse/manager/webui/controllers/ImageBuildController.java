@@ -76,7 +76,7 @@ public class ImageBuildController {
     }
 
     /**
-     * Gets a JSON list of Docker Build Host entitled systems
+     * Gets a JSON list of Container Build Host entitled systems
      *
      * @param req the request object
      * @param res the response object
@@ -85,7 +85,7 @@ public class ImageBuildController {
      */
     public static Object getBuildHosts(Request req, Response res, User user) {
         ServerGroup sg = ServerGroupFactory
-                .lookupEntitled(EntitlementManager.DOCKER_BUILD_HOST, user.getOrg());
+                .lookupEntitled(EntitlementManager.CONTAINER_BUILD_HOST, user.getOrg());
 
         return json(res,
                 getServerStreamJson(SystemManager.systemsInGroupShort(sg.getId())));
