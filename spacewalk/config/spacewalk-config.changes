@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Feb 13 13:04:32 CET 2017 - jrenner@suse.com
+
+- version 2.5.2.6-1
+- add wss: to apache Content-Security-Policy
+- make remote commands UI async (bsc#993209)
+
+-------------------------------------------------------------------
 Mon Nov 07 11:07:44 CET 2016 - michele.bologna@suse.com
 
 - version 2.5.2.5-1
