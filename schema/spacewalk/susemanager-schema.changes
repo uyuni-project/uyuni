@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Feb 13 11:47:24 CET 2017 - jrenner@suse.com
+
+- version 3.0.18-1
+- Fix error on channel delete with tokens (bsc#1024471)
+- Add severity to updateinfo (bsc#1012365)
+- Drop index before it gets re-created and use if exists for postgres
+  (bsc#1021381)
+
+-------------------------------------------------------------------
 Fri Dec 16 16:34:11 CET 2016 - michele.bologna@suse.com
 
 - version 3.0.17-1
