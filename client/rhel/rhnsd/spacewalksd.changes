@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 13 13:07:09 CET 2017 - jrenner@suse.com
+
+- version 5.0.19.2-1
+- use spacewalk-update-status only on registered systems (bsc#1015136)
+
+-------------------------------------------------------------------
 Wed Mar 09 10:59:04 CET 2016 - mc@suse.de
 
 - version 5.0.19.1-1
