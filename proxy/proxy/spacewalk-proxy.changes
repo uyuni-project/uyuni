@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Feb 13 13:00:31 CET 2017 - jrenner@suse.com
+
+- version 2.5.1.6-1
+- Add rcsalt-broker script (bsc#1012787)
+- Fix handling of auth token and headers in rhnBroker (bsc#1017094)
+- Fix: use SUSE product names instead of spacewalk/rhn (bsc#1000110)
+
+-------------------------------------------------------------------
 Fri Dec 16 12:09:08 CET 2016 - michele.bologna@suse.com
 
 - version 2.5.1.5-1
