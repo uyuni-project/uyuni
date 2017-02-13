@@ -21,8 +21,6 @@ import org.quartz.JobExecutionContext;
 
 /**
  * Finds and cleans up salt Actions for which we missed the JobReturnEvent.
- *
- * @version $Rev$
  */
 public class MinionActionCleanup extends RhnJavaJob {
 
