@@ -26,7 +26,6 @@ public class ImageRegistryCreateRequest {
 
         private String username;
         private String password;
-        private String email;
 
         /**
          * @return the username
@@ -40,13 +39,6 @@ public class ImageRegistryCreateRequest {
          */
         public String getPassword() {
             return password;
-        }
-
-        /**
-         * @return the email
-         */
-        public String getEmail() {
-            return email;
         }
     }
 

@@ -22,7 +22,6 @@ class CreateImageStore extends React.Component {
                 "registry"
             ],
             storeType: "registry",
-            email: "",
             username: "",
             password: "",
             init_label: "",
@@ -57,7 +56,6 @@ class CreateImageStore extends React.Component {
 
                 if(data.credentials) {
                     this.setState({
-                        email: data.credentials.email,
                         username: data.credentials.username,
                         password: data.credentials.password,
                     });
@@ -99,8 +97,7 @@ class CreateImageStore extends React.Component {
         if(this.state.use_credentials) {
             payload.credentials = {
                 username: this.state.username,
-                password: this.state.password,
-                email: this.state.email
+                password: this.state.password
             }
         }
 
@@ -136,8 +133,7 @@ class CreateImageStore extends React.Component {
         if(this.state.use_credentials) {
             payload.credentials = {
                 username: this.state.username,
-                password: this.state.password,
-                email: this.state.email
+                password: this.state.password
             }
         }
 
@@ -163,8 +159,7 @@ class CreateImageStore extends React.Component {
           label: "",
           uri: "",
           username: "",
-          password: "",
-          email: ""
+          password: ""
       });
     }
 
@@ -182,7 +177,6 @@ class CreateImageStore extends React.Component {
                             </div>
                         </div>
                     </div>,
-                    this.renderField("email", t("Email"), this.state.email, false, true, this.state.use_credentials),
                     this.renderField("username", t("Username"), this.state.username, false, true, this.state.use_credentials),
                     this.renderField("password", t("Password"), this.state.password, true, true, this.state.use_credentials)
                 ];
