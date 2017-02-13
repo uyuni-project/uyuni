@@ -14,6 +14,6 @@
 --
 
 insert into suseImageStoreType (id, label, name) values
-	(sequence_nextval('suse_imgstore_type_id_seq'), 'dockerreg', 'Docker Registry');
+	(sequence_nextval('suse_imgstore_type_id_seq'), 'registry', 'Registry');
 
 commit;

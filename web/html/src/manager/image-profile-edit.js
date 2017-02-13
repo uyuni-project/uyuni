@@ -8,7 +8,7 @@ const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
 
 const typeMap = {
-    "dockerfile": { name: "Dockerfile", storeType: "dockerreg" }
+    "dockerfile": { name: "Dockerfile", storeType: "registry" }
 };
 
 const msgMap = {
