@@ -34,7 +34,7 @@ public final class CACertPathUtil {
 
     public static final String CA_CRT_NAME = "RHN-ORG-TRUSTED-SSL-CERT";
     public static final String CA_CRT_RPM_NAME = "rhn-org-trusted-ssl-cert";
-    public static final String GLOB_RPM = "*.rpm";
+    public static final String GLOB_NOARCH_RPM = "*.noarch.rpm";
     public static final String PUB_TREE = "/pub/";
     private static Logger logger = Logger.getLogger(CACertPathUtil.class);
 
@@ -64,7 +64,7 @@ public final class CACertPathUtil {
     private static String findRpmCACert(Path docrootPath) {
         String candidateRpmCA = StringUtils.EMPTY;
         try (DirectoryStream<Path> directoryStream =
-                Files.newDirectoryStream(docrootPath, "*" + CA_CRT_RPM_NAME + GLOB_RPM)) {
+                Files.newDirectoryStream(docrootPath, CA_CRT_RPM_NAME + GLOB_NOARCH_RPM)) {
             for (Path rpmFile : directoryStream) {
                 logger.debug("Found CA RPM file: " + candidateRpmCA);
                 if (rpmFile.toString().compareTo(candidateRpmCA) > 0) {
