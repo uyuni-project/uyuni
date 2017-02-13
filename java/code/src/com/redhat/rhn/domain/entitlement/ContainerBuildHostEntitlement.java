@@ -19,18 +19,18 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 /**
- * Docker build host entitlement
+ * Container build host entitlement
  */
-public class DockerBuildHostEntitlement extends Entitlement {
+public class ContainerBuildHostEntitlement extends Entitlement {
 
     /**
      * Constructor
      */
-    public DockerBuildHostEntitlement() {
-        super(EntitlementManager.DOCKER_BUILD_HOST_ENTITLED);
+    public ContainerBuildHostEntitlement() {
+        super(EntitlementManager.CONTAINER_BUILD_HOST_ENTITLED);
     }
 
-    DockerBuildHostEntitlement(String labelIn) {
+    ContainerBuildHostEntitlement(String labelIn) {
         super(labelIn);
     }
 

@@ -20,13 +20,12 @@ import com.google.gson.JsonObject;
 
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
-import com.redhat.rhn.domain.credentials.CredentialsType;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
-import com.suse.manager.webui.utils.gson.DockerRegistryCreateRequest;
+import com.suse.manager.webui.utils.gson.ImageRegistryCreateRequest;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import spark.ModelAndView;
 import spark.Request;
@@ -193,8 +192,8 @@ public class ImageStoreController {
      * @return the result JSON object
      */
     public static Object update(Request req, Response res, User user) {
-        DockerRegistryCreateRequest createRequest =
-                GSON.fromJson(req.body(), DockerRegistryCreateRequest.class);
+        ImageRegistryCreateRequest createRequest =
+                GSON.fromJson(req.body(), ImageRegistryCreateRequest.class);
 
         Long storeId = Long.parseLong(req.params("id"));
         Optional<ImageStore> store =
@@ -204,7 +203,7 @@ public class ImageStoreController {
             s.setLabel(createRequest.getLabel());
             s.setUri(createRequest.getUri());
             s.setOrg(user.getOrg());
-            setStoreDockerCredentials(s, createRequest.getCredentials());
+            setStoreCredentials(s, createRequest.getCredentials());
 
             ImageStoreFactory.save(s);
 
@@ -223,13 +222,13 @@ public class ImageStoreController {
      * @return the result JSON object
      */
     public static Object create(Request req, Response res, User user) {
-        DockerRegistryCreateRequest createRequest =
-                GSON.fromJson(req.body(), DockerRegistryCreateRequest.class);
+        ImageRegistryCreateRequest createRequest =
+                GSON.fromJson(req.body(), ImageRegistryCreateRequest.class);
 
         ImageStore imageStore = new ImageStore();
         imageStore.setLabel(createRequest.getLabel());
         imageStore.setUri(createRequest.getUri());
-        setStoreDockerCredentials(imageStore, createRequest.getCredentials());
+        setStoreCredentials(imageStore, createRequest.getCredentials());
 
         imageStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(
                 ImageStore.TYPE_REGISTRY));
@@ -257,8 +256,8 @@ public class ImageStoreController {
         }).collect(Collectors.toList());
     }
 
-    private static void setStoreDockerCredentials(ImageStore store,
-            DockerRegistryCreateRequest.CredentialsJson credentials) {
+    private static void setStoreCredentials(ImageStore store,
+            ImageRegistryCreateRequest.CredentialsJson credentials) {
         if (credentials != null) {
             Credentials dc = store.getCreds() != null ?
                     store.getCreds() : CredentialsFactory.createRegistryCredentials();

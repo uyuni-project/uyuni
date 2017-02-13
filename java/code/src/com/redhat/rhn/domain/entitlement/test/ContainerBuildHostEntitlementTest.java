@@ -15,22 +15,22 @@
 
 package com.redhat.rhn.domain.entitlement.test;
 
-import com.redhat.rhn.domain.entitlement.DockerBuildHostEntitlement;
+import com.redhat.rhn.domain.entitlement.ContainerBuildHostEntitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.ServerTestUtils;
 
-public class DockerBuildHostEntitlementTest extends BaseEntitlementTestCase {
+public class ContainerBuildHostEntitlementTest extends BaseEntitlementTestCase {
 
     @Override
     protected void createEntitlement() {
-        ent = new DockerBuildHostEntitlement();
+        ent = new ContainerBuildHostEntitlement();
     }
 
     @Override
     protected String getLabel() {
-        return EntitlementManager.DOCKER_BUILD_HOST_ENTITLED;
+        return EntitlementManager.CONTAINER_BUILD_HOST_ENTITLED;
     }
 
     @Override
