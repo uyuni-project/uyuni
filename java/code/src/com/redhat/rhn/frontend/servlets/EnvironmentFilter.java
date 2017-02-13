@@ -47,7 +47,8 @@ public class EnvironmentFilter implements Filter {
                                          "/rhn/common/DownloadFile",
                                          "/rhn/rpc/api",
                                          "/rhn/errors",
-                                         "/rhn/ty/TinyUrl"};
+                                         "/rhn/ty/TinyUrl",
+                                         "/rhn/websocket"};
 
     /**
      * {@inheritDoc}
