@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Mon Feb 13 12:02:46 CET 2017 - jrenner@suse.com
+
+- version 2.5.59.12-1
+- Create tmp directory in spec file (bsc#1024486, bsc#1024482)
+- Store rosters in SALT_FILE_GENERATION_TEMP_PATH (bsc#1024486, bsc#1024482)
+- Show only allowed minions in remote commands UI (bsc#1024496)
+- Reject tokens not assigned to minions (bsc#1019965)
+- Apply addon system types from activation key during registration
+  (bsc#1020180)
+- Remote commands: no blocking when minions are down (bsc#993209)
+- Log auth failure as error (bsc#1017505)
+- Apply highstate as the last step of a registration in case an activation key
+  was provided (bsc#1020232)
+- Add severity to updateinfo (bsc#1012365)
+- Hide migration targets without valid subscriptions (bsc#1019893)
+- Fix SP migration when the SUSE Manager Tools product is installed
+  (bcs#1014498)
+- Fix timezone handling for rpm installtime (bsc#1017078)
+- Validate activation key values (bsc#1015967)
+- Pass user-preferred localtime to the highstate UI (bsc#1020027)
+- Send ChannelsChangedEventMessage in SSM (bsc#1019451)
+- Fix token refresh logic (bsc#973421)
+- Ignore case when comparing virtualization type (bsc#1016960)
+- XMLRPC: Allow specifying config revision by natural attributes when adding to
+  action chain (bsc#1011962)
+- Do not execute package list refresh twice (bsc#1016344)
+
+-------------------------------------------------------------------
 Fri Dec 16 16:35:50 CET 2016 - michele.bologna@suse.com
 
 - version 2.5.59.11-1
