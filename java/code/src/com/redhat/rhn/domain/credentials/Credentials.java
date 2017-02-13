@@ -38,7 +38,7 @@ public class Credentials extends BaseDomainHelper {
     public static final String TYPE_SUSESTUDIO = "susestudio";
     public static final String TYPE_SCC = "scc";
     public static final String TYPE_VIRT_HOST_MANAGER = "vhm";
-    public static final String TYPE_DOCKER = "docker";
+    public static final String TYPE_REGISTRY = "registrycreds";
 
     private Long id;
     private User user;

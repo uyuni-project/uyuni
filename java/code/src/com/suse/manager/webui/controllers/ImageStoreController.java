@@ -17,6 +17,8 @@ package com.suse.manager.webui.controllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+
+import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.CredentialsType;
 import com.redhat.rhn.domain.credentials.DockerCredentials;
@@ -264,7 +266,8 @@ public class ImageStoreController {
             dc.setUsername(credentials.getUsername());
             dc.setPassword(credentials.getPassword());
             CredentialsType docker =
-                    CredentialsFactory.findCredentialsTypeByLabel("docker");
+                    CredentialsFactory.findCredentialsTypeByLabel(
+                            Credentials.TYPE_REGISTRY);
             dc.setType(docker);
 
             store.setCreds(dc);
