@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Feb 13 11:55:12 CET 2017 - jrenner@suse.com
+
+- version 3.0.20-1
+- Add missing '-y' parameter for salt-key call (bsc#1024473)
+- Create bootstrap repo for Raspberry Pi (bsc#1023133)
+- Add an "IMPORTANT" note after migration is done (bsc#1013145)
+- Create bootstrap repo for SLES for SAP ppc64le
+
+-------------------------------------------------------------------
 Fri Dec 16 12:17:02 CET 2016 - michele.bologna@suse.com
 
 - version 3.0.19-1
