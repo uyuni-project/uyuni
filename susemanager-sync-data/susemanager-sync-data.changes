@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Feb 13 13:08:33 CET 2017 - jrenner@suse.com
+
+- version 3.0.14-1
+- support SUSE-PackageHub (bsc#1021884)
+- support SLES for SAP on ppc64le (bsc#1015414)
+
+-------------------------------------------------------------------
 Fri Dec 16 16:02:39 CET 2016 - michele.bologna@suse.com
 
 - version 3.0.13-1
