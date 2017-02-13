@@ -177,7 +177,7 @@ public class CredentialsFactory extends HibernateFactory {
     public static DockerCredentials createDockerCredentials() {
         DockerCredentials creds = new DockerCredentials();
         creds.setType(CredentialsFactory
-                .findCredentialsTypeByLabel(Credentials.TYPE_DOCKER));
+                .findCredentialsTypeByLabel(Credentials.TYPE_REGISTRY));
         return creds;
     }
 
