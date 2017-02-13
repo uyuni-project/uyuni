@@ -21,7 +21,6 @@ import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.CredentialsType;
-import com.redhat.rhn.domain.credentials.DockerCredentials;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.role.Role;
@@ -143,10 +142,10 @@ public class ImageStoreController {
             json.addProperty("uri", s.getUri());
             json.addProperty("store_type", s.getStoreType().getLabel());
 
-            if (s.getCreds() != null && s.getCreds() instanceof DockerCredentials) {
-                DockerCredentials dc = (DockerCredentials) s.getCreds();
+            if (s.getCreds() != null && s.getCreds().getType().equals(
+                    Credentials.TYPE_REGISTRY)) {
+                Credentials dc = s.getCreds();
                 JsonObject creds = new JsonObject();
-                creds.addProperty("email", dc.getEmail());
                 creds.addProperty("username", dc.getUsername());
                 creds.addProperty("password", dc.getPassword());
                 json.add("credentials", creds);
@@ -261,15 +260,10 @@ public class ImageStoreController {
     private static void setStoreDockerCredentials(ImageStore store,
             DockerRegistryCreateRequest.CredentialsJson credentials) {
         if (credentials != null) {
-            DockerCredentials dc = store.getCreds() != null ?
-                    (DockerCredentials) store.getCreds() : new DockerCredentials();
-            dc.setEmail(credentials.getEmail());
+            Credentials dc = store.getCreds() != null ?
+                    store.getCreds() : CredentialsFactory.createRegistryCredentials();
             dc.setUsername(credentials.getUsername());
             dc.setPassword(credentials.getPassword());
-            CredentialsType docker =
-                    CredentialsFactory.findCredentialsTypeByLabel(
-                            Credentials.TYPE_REGISTRY);
-            dc.setType(docker);
 
             store.setCreds(dc);
         }

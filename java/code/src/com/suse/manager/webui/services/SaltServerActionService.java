@@ -521,10 +521,9 @@ public enum SaltServerActionService {
         Map<String, Object> dockerRegistries = new HashMap<>();
         stores.forEach(store -> {
             Optional.ofNullable(store.getCreds())
-                    .flatMap(Credentials::asDockerCredentials)
                     .ifPresent(credentials -> {
                         Map<String, Object> reg = new HashMap<>();
-                        reg.put("email", credentials.getEmail());
+                        reg.put("email", "tux@example.com");
                         reg.put("password", credentials.getPassword());
                         reg.put("username", credentials.getUsername());
                         dockerRegistries.put(store.getUri(), reg);
