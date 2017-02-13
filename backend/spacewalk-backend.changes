@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 13 12:59:00 CET 2017 - jrenner@suse.com
+
+- version 2.5.24.8-1
+- Add incomplete_package_import option to speed reposync up
+
+-------------------------------------------------------------------
 Fri Dec 16 12:10:26 CET 2016 - michele.bologna@suse.com
 
 - version 2.5.24.7-1
