@@ -1,7 +1,7 @@
 package com.redhat.rhn.domain.image.test;
 
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
-import com.redhat.rhn.domain.credentials.DockerCredentials;
+import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ImageStoreType;
@@ -137,8 +137,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testLookupImageStoreWithCredentials() throws Exception {
-        DockerCredentials creds = CredentialsFactory.createDockerCredentials();
-        creds.setEmail("dockeradmin@example.com");
+        Credentials creds = CredentialsFactory.createRegistryCredentials();
         creds.setUsername("admin");
         creds.setPassword("secret");
         CredentialsFactory.storeCredentials(creds);
@@ -154,7 +153,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         ImageStore i = ImageStoreFactory.lookupBylabelAndOrg("myregistry", user.getOrg());
 
         assertEquals(iStore, i);
-        assertTrue(i.getCreds().asDockerCredentials().isPresent());
+        assertEquals(i.getCreds(), creds);
     }
 
     public void testDelete() {

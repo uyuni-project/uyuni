@@ -222,7 +222,6 @@ rhnActionChainEntry            :: rhnActionChain rhnAction rhnServer
 suseChannelAccessToken         :: suseMinionInfo
 suseChannelAccessTokenChannel  :: suseChannelAccessToken rhnChannel
 suseCredentials                :: suseCredentialsType web_contact
-suseDockerCredentialsInfo      :: suseCredentials
 suseDockerfileProfile          :: suseImageProfile
 suseProfileCustomDataValue     :: rhnCustomDataKey suseImageProfile web_contact
 suseImageProfile               :: rhnRegTokenChannels web_customer suseImageStore
