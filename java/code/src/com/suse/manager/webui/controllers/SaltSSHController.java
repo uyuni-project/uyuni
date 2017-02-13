@@ -42,7 +42,7 @@ public class SaltSSHController {
      * @param response the http response
      * @return the public key content
      */
-    public static byte[] getPubKey(Request request, Response response) {
+    public synchronized static byte[] getPubKey(Request request, Response response) {
         File pubKey = new File(SaltSSHService.SSH_KEY_PATH + ".pub");
         if (!pubKey.isFile()) {
             MgrUtilRunner.ExecResult res = SaltService.INSTANCE
