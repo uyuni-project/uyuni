@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Feb 13 11:58:42 CET 2017 - jrenner@suse.com
+
+- version 0.1.19-1
+- configure mine.update to submit a job return event (bsc#1022735)
+- disable spacewalksd and spacewalk-update-status when switching to salt
+  registration (bsc#1020902)
+- Fix timezone handling for rpm installtime (bsc#1017078)
+
+-------------------------------------------------------------------
 Fri Dec 16 12:14:52 CET 2016 - michele.bologna@suse.com
 
 - version 0.1.18-1
