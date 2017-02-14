@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -105,7 +106,8 @@ public class BaseHandler implements XmlRpcInvocationHandler {
                 session = SessionManager.loadSession((String)params.get(0));
                 params.set(0, getLoggedInUser((String)params.get(0)));
                 if (((User)params.get(0)).isReadOnly()) {
-                    if (!beanifiedMethod.matches(RO_REGEX)) {
+                    if (!beanifiedMethod.matches(RO_REGEX) && !getReadonlyMethodNames()
+                            .stream().anyMatch(m -> m.equals(beanifiedMethod))) {
                         throw new SecurityException("The " + beanifiedMethod +
                                 " API is not available to read-only API users");
                     }
@@ -462,6 +464,17 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         }
 
         return server;
+    }
+
+    /**
+     * Get the list of API method names available for read-only users.
+     * The method names which start with 'get', 'list', 'is', 'find' are available by
+     * default, even if they are not included in the returning list.
+     *
+     * @return A list of API method names available for read-only users.
+     */
+    protected List<String> getReadonlyMethodNames() {
+        return Collections.emptyList();
     }
 
     private boolean isSessionKey(String string) {
