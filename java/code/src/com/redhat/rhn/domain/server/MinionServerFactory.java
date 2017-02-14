@@ -143,7 +143,7 @@ public class MinionServerFactory extends HibernateFactory {
         return ServerFactory.getSession().createCriteria(MinionServer.class)
                 .createAlias("contactMethod", "m")
                 .add(Restrictions.in("m.label",
-                        new String[] {"ssh-push", "ssh-push-tunnel"}))
+                        "ssh-push", "ssh-push-tunnel"))
                 .list();
     }
 }
