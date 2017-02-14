@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 14 17:28:24 CET 2017 - jrenner@suse.com
+
+- version 2.5.59.13-1
+- Fix spacecmd cannot be executed by RO user (bsc#1015790)
+
+-------------------------------------------------------------------
 Mon Feb 13 12:02:46 CET 2017 - jrenner@suse.com
 
 - version 2.5.59.12-1
