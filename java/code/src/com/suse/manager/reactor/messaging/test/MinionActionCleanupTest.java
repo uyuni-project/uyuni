@@ -47,6 +47,7 @@ import java.nio.file.Path;
 import java.sql.Date;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -69,19 +70,23 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
      * @throws Exception in case of an error
      */
     public void testMinionActionCleanup() throws Exception {
-        // Prepare test objects: minion server, products and action
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setMinionId("minionsles12-suma3pg.vagrant.local");
+        // Prepare test objects: minion servers, products and action
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        minion1.setMinionId("minion1");
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+        minion2.setMinionId("minion2");
 
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
                 user,
-                Collections.singletonList(minion.getId()),
+                Arrays.asList(minion1.getId(), minion2.getId()),
                 Collections.singletonList(ApplyStatesEventMessage.PACKAGES),
                 Date.from(Instant.now().minus(6, ChronoUnit.MINUTES)));
-        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
+        action.addServerAction(ActionFactoryTest.createServerAction(minion1, action));
+        action.addServerAction(ActionFactoryTest.createServerAction(minion2, action));
 
         Map<String, Result<List<SaltUtil.RunningInfo>>> running = new HashMap<>();
-        running.put(minion.getMinionId(), new Result<>(Xor.right(Collections.emptyList())));
+        running.put(minion1.getMinionId(), new Result<>(Xor.right(Collections.emptyList())));
+        running.put(minion2.getMinionId(), new Result<>(Xor.right(Collections.emptyList())));
 
         Jobs.Info listJobResult = listJob("jobs.list_job.state.apply.json", action.getId());
         SaltService saltServiceMock = mock(SaltService.class);
@@ -91,22 +96,24 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
             will(returnValue(running));
             allowing(saltServiceMock).jobsByMetadata(with(any(Object.class)));
             will(returnValue(jobsByMetadata("jobs.list_jobs.with_metadata.json", action.getId())));
-            allowing(saltServiceMock).listJob(with(any(String.class)));
+            allowing(saltServiceMock).listJob(with(equal("20160602085832364245")));
             will(returnValue(listJobResult));
         } });
 
         MinionActionUtils.cleanupMinionActions(saltServiceMock);
 
-        ServerAction sa = action.getServerActions().stream().findFirst().get();
-        assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
-        assertEquals("Successfully applied state(s): [packages]", sa.getResultMsg());
-        assertEquals(0L, sa.getResultCode().longValue());
+        action.getServerActions().stream().forEach(sa -> {
+            assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
+            assertEquals("Successfully applied state(s): [packages]", sa.getResultMsg());
+            assertEquals(0L, sa.getResultCode().longValue());
+        });
 
-        String dump = YamlHelper.INSTANCE.dump(listJobResult.getResult(minion.getMinionId(), Object.class).get());
+        String dump = YamlHelper.INSTANCE.dump(listJobResult.getResult(minion1.getMinionId(), Object.class).get());
 
-        ApplyStatesActionResult applyStatesActionResult = action.getDetails().getResults().stream().findFirst().get();
-        assertEquals(0L, applyStatesActionResult.getReturnCode().longValue());
-        assertEquals(dump, new String(applyStatesActionResult.getOutput()));
+        action.getDetails().getResults().stream().forEach(result -> {
+            assertEquals(0L, result.getReturnCode().longValue());
+            assertEquals(dump, new String(result.getOutput()));
+        });
     }
 
     private Jobs.Info listJob(String filename, long actionId) throws Exception {
