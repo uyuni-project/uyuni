@@ -2,7 +2,8 @@
   "20160602085832364245": {
     "Function": "state.apply",
     "Target": [
-      "minionsles12-suma3pg.vagrant.local"
+      "minion1",
+      "minion2"
     ],
     "Target-type": "list",
     "User": "admin",
