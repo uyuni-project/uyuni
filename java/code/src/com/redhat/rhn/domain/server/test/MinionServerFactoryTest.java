@@ -81,11 +81,11 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
         List<MinionServer> minions = MinionServerFactory.listSSHMinions();
         assertEquals("ssh-push", minions.stream()
                 .filter(m -> m.getId().equals(minionServer1.getId()))
-                .map(m -> minionServer1.getMinionId())
+                .map(m -> minionServer1.getContactMethod().getLabel())
                 .findFirst().get());
         assertEquals("ssh-push-tunnel", minions.stream()
                 .filter(m -> m.getId().equals(minionServer2.getId()))
-                .map(m -> minionServer2.getMinionId())
+                .map(m -> minionServer2.getContactMethod().getLabel())
                 .findFirst().get());
     }
 
