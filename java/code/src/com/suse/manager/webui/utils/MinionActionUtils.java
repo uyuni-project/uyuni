@@ -42,6 +42,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.suse.utils.Opt.flatMap;
+import static java.util.stream.Collectors.toMap;
+import static java.util.function.Function.identity;
 
 /**
  * Utilities for minion actions
@@ -72,10 +74,12 @@ public class MinionActionUtils {
      * @param sa ServerAction to update
      * @param server MinionServer of this ServerAction
      * @param running list of running jobs on the MinionServer
+     * @param jidMap map from Action IDs to Salt job IDs
      * @return the updated ServerAction
      */
     public static ServerAction updateMinionActionStatus(SaltService salt, ServerAction sa,
-            MinionServer server, List<SaltUtil.RunningInfo> running) {
+            MinionServer server, List<SaltUtil.RunningInfo> running,
+            Map<Long, Optional<String>> jidMap) {
         long actionId = sa.getParentAction().getId();
         boolean actionIsRunning = running.stream().filter(r ->
                 r.getMetadata(JsonElement.class)
@@ -85,13 +89,8 @@ public class MinionActionUtils {
         ).findFirst().isPresent();
 
         if (!actionIsRunning) {
-            Map<String, Object> metadata = new HashMap<>();
-            metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionId);
-            Map<String, Jobs.ListJobsEntry> jobCache =
-                    salt.jobsByMetadata(metadata);
-            ServerAction serverAction = jobCache.entrySet().stream().findFirst()
-                    .map(entry -> {
-                        String jid = entry.getKey();
+            ServerAction serverAction = jidMap.get(actionId)
+                    .map(jid -> {
                         Jobs.Info job = salt.listJob(jid);
                         Optional<JsonElement> result = job
                                 .getResult(server.getMinionId(), JsonElement.class);
@@ -161,14 +160,22 @@ public class MinionActionUtils {
                     }
                 }
             ).collect(Collectors.toList());
+
         List<String> minionIds = serverActions.stream().flatMap(sa ->
                 sa.getServer().asMinionServer()
                         .map(MinionServer::getMinionId)
                         .map(Stream::of)
                         .orElseGet(Stream::empty)
         ).collect(Collectors.toList());
+
         Map<String, Result<List<SaltUtil.RunningInfo>>> running =
                 salt.running(new MinionList(minionIds));
+
+        Map<Long, Optional<String>> jidMap = serverActions.stream()
+          .map(sa -> sa.getParentAction().getId())
+          .distinct()
+          .collect(toMap(identity(), id -> jidForActionId(salt, id)));
+
         serverActions.forEach(sa ->
                 sa.getServer().asMinionServer().ifPresent(minion -> {
                     Optional.ofNullable(running.get(minion.getMinionId())).ifPresent(r -> {
@@ -177,10 +184,23 @@ public class MinionActionUtils {
                         },
                         runningInfos -> {
                             ActionFactory.save(updateMinionActionStatus(
-                                    salt, sa, minion, runningInfos));
+                                    salt, sa, minion, runningInfos, jidMap));
                         });
                     });
                 })
         );
+    }
+
+    /**
+     * Returns the Salt jobId for a SUSE Manager actionId.
+     *
+     * @param salt the salt service to use
+     * @param actionId the action id
+     * @return an optional jobId
+     */
+    private static Optional<String> jidForActionId(SaltService salt, long actionId) {
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionId);
+        return salt.jobsByMetadata(metadata).keySet().stream().findFirst();
     }
 }
