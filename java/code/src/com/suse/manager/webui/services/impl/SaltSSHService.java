@@ -489,7 +489,9 @@ public class SaltSSHService {
             LOG.error("Could not retrieve ssh pub key from proxy [" + proxy.getHostname() +
                     "]. ssh return code [" + ret.getReturnCode() +
                     "[, stderr [" + ret.getStderr() + "]");
-            return Optional.empty();
+            throw new RuntimeException(
+                    "Could not retrieve ssh-push public key from proxy: " +
+                    ret.getStderr());
         }
     }
 }
