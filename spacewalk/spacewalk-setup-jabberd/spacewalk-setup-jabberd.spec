@@ -14,7 +14,7 @@ Requires:       perl
 Requires:       libxslt
 Requires:       jabberd
 %if 0%{?suse_version}
-Requires:       jabberd-db
+Requires:       jabberd-sqlite
 %endif
 
 %description
@@ -135,4 +135,3 @@ rm -rf %{buildroot}
 
 * Mon Apr 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.1.1-1
 - bumping spec files to 1.1 packages
-
