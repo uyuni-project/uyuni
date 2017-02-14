@@ -18,6 +18,7 @@
 package com.redhat.rhn.frontend.xmlrpc.errata;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,6 +77,8 @@ import com.redhat.rhn.manager.user.UserManager;
  * @xmlrpc.doc Provides methods to access and modify errata.
  */
 public class ErrataHandler extends BaseHandler {
+
+    private static final List<String> RO_METHODS = Arrays.asList("applicableToChannels");
 
     /**
      * Returns an OVAL metadata file for a given errata or CVE
@@ -1526,4 +1529,11 @@ public class ErrataHandler extends BaseHandler {
         return erratas;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected List<String> getReadonlyMethodNames() {
+        return RO_METHODS;
+    }
 }
