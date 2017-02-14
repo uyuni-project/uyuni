@@ -94,7 +94,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() { {
             allowing(saltServiceMock).running(with(any(MinionList.class)));
             will(returnValue(running));
-            allowing(saltServiceMock).jobsByMetadata(with(any(Object.class)));
+            oneOf(saltServiceMock).jobsByMetadata(with(any(Object.class)));
             will(returnValue(jobsByMetadata("jobs.list_jobs.with_metadata.json", action.getId())));
             allowing(saltServiceMock).listJob(with(equal("20160602085832364245")));
             will(returnValue(listJobResult));
