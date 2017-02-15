@@ -12,9 +12,10 @@ BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildArch:      noarch
 Requires:       perl
 Requires:       libxslt
-Requires:       jabberd
+BuildRequires:  jabberd
+BuildRequires:	sqlite3
 %if 0%{?suse_version}
-Requires:       jabberd-sqlite
+Requires:       jabberd-sqlite sqlite3
 %endif
 
 %description
@@ -42,6 +43,8 @@ install -m 0644 share/jabberd/* %{buildroot}/%{_datadir}/spacewalk/setup/jabberd
 
 # jabberd ssl cert location
 install -d -m 755 %{buildroot}/%{_sysconfdir}/pki/spacewalk/jabberd
+
+%{buildroot}/%{_datadir}/spacewalk/setup/jabberd/create_sqlite3_database
 
 %check
 make test
