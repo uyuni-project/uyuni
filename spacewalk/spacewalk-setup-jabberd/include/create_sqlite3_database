@@ -1,0 +1,8 @@
+#!/bin/sh
+
+size=`stat -c%s /var/lib/jabberd/db/sqlite.db 2>/dev/null`
+if [ $? -ne 0 ]; then
+  /usr/bin/sqlite3 /var/lib/jabberd/db/sqlite.db < /usr/share/doc/packages/jabberd/db-setup.sqlite
+fi
+
+
