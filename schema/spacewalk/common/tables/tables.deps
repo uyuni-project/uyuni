@@ -224,6 +224,10 @@ suseChannelAccessTokenChannel  :: suseChannelAccessToken rhnChannel
 suseCredentials                :: suseCredentialsType web_contact
 suseDockerfileProfile          :: suseImageProfile
 suseProfileCustomDataValue     :: rhnCustomDataKey suseImageProfile web_contact
+suseImageCustomDataValue       :: rhnCustomDataKey suseImageInfo web_contact
+suseImageInfo                  :: rhnServerAction suseImageProfile suseImageStore suseMinionInfo
+suseImageInfoPackage           :: suseImageInfo rhnPackageName rhnPackageEVR rhnPackageArch
+suseImageInfoChannel           :: suseImageInfo rhnChannel
 suseImageProfile               :: rhnRegTokenChannels web_customer suseImageStore
 suseImageStore                 :: suseCredentials web_customer suseImageStoreType
 suseOSTarget                   :: rhnChannelArch
