@@ -10,7 +10,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  perl
 BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  jabberd
-BuildRequires:	sqlite3
+BuildRequires:	 sqlite3
 BuildArch:      noarch
 Requires:       perl
 Requires:       libxslt
