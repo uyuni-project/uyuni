@@ -205,5 +205,10 @@ DELETE FROM rhnServerNeededCache SNC
   </query>
 </write-mode>
 
+<callable-mode name="update_image_needed_cache">
+  <query params="image_id">
+      {call update_image_needed_cache(:image_id)}
+  </query>
+</callable-mode>
 
 </datasource_modes>
