@@ -9,7 +9,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <cache usage="read-write"/>
                 <id name="id" type="long" column="id">
                         <meta attribute="scope-set">protected</meta>
-                        <generator class="assigned"/>
+                        <generator class="sequence">
+                                <param name="sequence">rhn_xccdf_tresult_id_seq</param>
+                        </generator>
                 </id>
 
                 <many-to-one name="server" column="server_id"
@@ -20,6 +22,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         class="com.redhat.rhn.domain.audit.XccdfBenchmark"/>
                 <many-to-one name="profile" column="profile_id"
                         class="com.redhat.rhn.domain.audit.XccdfProfile"/>
+                <set name="results" inverse="true" cascade="all" lazy="true">
+                        <key column="testresult_id"/>
+                        <one-to-many class="com.redhat.rhn.domain.audit.XccdfRuleResult"/>
+                </set>
 
                 <property name="identifier" column="identifier" type="string" length="120"/>
                 <property name="startTime" column="start_time" type="timestamp"/>
@@ -29,5 +35,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
         <query name="XccdfTestResult.findById">
                 <![CDATA[from com.redhat.rhn.domain.audit.XccdfTestResult as a where a.id = :xid]]>
+        </query>
+        <query name="XccdfTestResult.findByActionId">
+                <![CDATA[from com.redhat.rhn.domain.audit.XccdfTestResult as r join r.scapActionDetails d
+                        where d.parentAction.id=:actionId and r.server.id=:serverId
+                ]]>
         </query>
 </hibernate-mapping>

@@ -14,14 +14,23 @@
  */
 package com.redhat.rhn.domain.audit;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.taskomatic.task.TaskConstants;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * ScapFactory - the singleton class used to fetch and store
@@ -73,6 +82,24 @@ public class ScapFactory extends HibernateFactory {
         singleton.removeObject(tr);
     }
 
+    public static void clearTestResult(long serverId, long actionId) {
+        List<XccdfTestResult> results = getSession()
+                .getNamedQuery("XccdfTestResult.findByActionId")
+                .setLong("serverId", serverId)
+                .setLong("actionId", actionId)
+                .list();
+        results.forEach(tr -> delete(tr));
+    }
+
+    public static Optional<XccdfBenchmark> lookupBenchmarkById(long id) {
+        return Optional.ofNullable(
+                (XccdfBenchmark)getSession().get(XccdfBenchmark.class, id));
+    }
+
+    public static void save(XccdfTestResult result) {
+        getSession().persist(result);
+    }
+
     /**
      * Get the Logger for the derived class so log messages
      * show up on the correct class.
@@ -81,4 +108,23 @@ public class ScapFactory extends HibernateFactory {
      protected Logger getLogger() {
          return log;
      }
+
+    public static Optional<XccdfRuleResultType> lookupRuleResultType(String label) {
+        return getSession().createCriteria(XccdfRuleResultType.class)
+                .add(Restrictions.eq("label", label))
+                .list()
+                .stream().findFirst();
+    }
+
+    public static void save(XccdfRuleResult ruleResult) {
+        getSession().persist(ruleResult);
+    }
+
+    public static Optional<XccdfIdent> lookupIdentById(long identId) {
+        return Optional.ofNullable((XccdfIdent)getSession().get(XccdfIdent.class, identId));
+    }
+
+    public static Optional<XccdfProfile> lookupProfileById(long profileId) {
+        return Optional.ofNullable((XccdfProfile)getSession().get(XccdfProfile.class, profileId));
+    }
 }
