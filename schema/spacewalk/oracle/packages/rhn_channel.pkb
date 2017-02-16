@@ -787,6 +787,14 @@ IS
       ) loop
          queue_server(server.id, 0); -- NOT IMMEDIATELY
       end loop;
+      for image in (
+        select ic.image_info_id as id
+          from suseImageInfoChannel ic
+         where ic.channel_id = channel_id_in
+        order by id asc
+      ) loop
+        queue_image(image.id, 0);
+      end loop;
    end update_needed_cache;
 
     procedure set_comps(channel_id_in in number, path_in in varchar2, timestamp_in in varchar2)

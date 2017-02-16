@@ -40,6 +40,7 @@ rhnOrgDistChannelMap             :: rhnDistChannelMap
 rhnOrgErrata                     :: rhnChannelErrata  rhnAvailableChannels
 rhnPackageUpgradeArchCompat      :: rhnPackageArch
 rhnServerErrataTypeView          :: rhnErrata rhnServerNeededErrataCache
+rhnImageErrataTypeView           :: rhnErrata rhnImageNeededErrataCache
 rhnServerFeaturesView            :: rhnFeature rhnServerGroupTypeFeature \
                                     rhnServerGroupMembers rhnServerGroup 
 rhnServerGroupMembership         :: rhnServerGroupType rhnServerGroupMembers \
@@ -82,6 +83,8 @@ rhnServerOverview                :: rhnUserServerPerms \
                                     rhnPackage rhnServerNeededPackageCache \
                                     rhnServerErrataTypeView \
                                     rhn_entitlements.pks
+suseImageOverview                :: rhnChannel suseImageInfoChannel rhnPackage \
+                                    rhnImageNeededPackageCache rhnImageErrataTypeView
 rhnServerGroupOverview           :: rhnErrata rhnUserManagedServerGroups \
                                     rhnServerGroupMembers rhnServerGroup rhnServerFeaturesView
 rhnUserChannelFamilyPerms        :: rhnPrivateChannelFamily \

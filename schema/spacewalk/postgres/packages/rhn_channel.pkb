@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 0c393e5745fc1521f1e515875e6ba79f7212e67c
+-- oracle equivalent source sha1 f68706d578b21cd0cf5fac10b55d7ce73e7ffe96
 --
 -- Copyright (c) 2008--2016 Red Hat, Inc.
 --
@@ -806,6 +806,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
    as $$
    declare
    server record;
+   image record;
    begin
       -- we intentionaly do a loop here instead of one huge select
       -- b/c we want to break update into smaller transaction to unblock other sessions
@@ -817,6 +818,14 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
                  order by id asc
       ) loop
          perform queue_server(server.id, 0); -- NOT IMMEDIATE
+      end loop;
+      for image in (
+        select ic.image_info_id as id
+          from suseImageInfoChannel ic
+         where ic.channel_id = channe_id_in
+        order by id asc
+      ) loop
+         perform queue_image(image.id, 0);
       end loop;
    end$$ language plpgsql;
 
