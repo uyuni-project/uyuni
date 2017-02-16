@@ -14,7 +14,10 @@ echo $PERLLIB
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 
-spacewalk-setup --clear-db --db-only --answer-file=clear-db-answers-oracle.txt --external-oracle --non-interactive
+spacewalk-setup --clear-db --db-only --answer-file=clear-db-answers-oracle.txt --external-oracle --non-interactive || {
+  cat /var/log/rhn/populate_db.log
+  exit 1
+}
 
 echo "Creating First Org"
 
