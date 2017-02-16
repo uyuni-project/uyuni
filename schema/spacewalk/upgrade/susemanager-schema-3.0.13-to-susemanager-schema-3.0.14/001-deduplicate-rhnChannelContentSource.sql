@@ -19,7 +19,7 @@ UPDATE rhnChannelContentSource
           AND c1.source_url LIKE substr(c2.source_url, 0, instr(c2.source_url, '?')) || '%'
     )
     -- second, the new source id is simply the new_id from the duplicates table
-    SELECT duplicates.new_id
+    SELECT max(duplicates.new_id)
       FROM duplicates
       WHERE duplicates.old_id = rhnChannelContentSource.source_id
   )
@@ -37,7 +37,7 @@ UPDATE rhnChannelContentSource
           AND instr(c2.source_url, '?') > 0
           AND c1.source_url LIKE substr(c2.source_url, 0, instr(c2.source_url, '?')) || '%'
     )
-    SELECT 1
+    SELECT distinct 1
       FROM duplicates
       WHERE duplicates.old_id = rhnChannelContentSource.source_id
   )
