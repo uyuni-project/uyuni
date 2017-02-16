@@ -16,7 +16,9 @@ package com.redhat.rhn.domain.audit;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -47,6 +49,8 @@ public class XccdfTestResult {
 
     private Long comparableId = null;
     private String diffIcon = null;
+
+    private Set<XccdfRuleResult> results = new HashSet<>();
 
     /**
      * Getter for id
@@ -190,6 +194,14 @@ public class XccdfTestResult {
     */
     public void setErrors(byte[] errorsIn) {
         this.errors = errorsIn;
+    }
+
+    public Set<XccdfRuleResult> getResults() {
+        return results;
+    }
+
+    public void setResults(Set<XccdfRuleResult> results) {
+        this.results = results;
     }
 
     /**
