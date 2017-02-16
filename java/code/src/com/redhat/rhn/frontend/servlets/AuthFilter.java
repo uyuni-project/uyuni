@@ -106,6 +106,8 @@ public class AuthFilter implements Filter {
                 LoggingFactory.setLogAuth(user.getId());
             }
             chain.doFilter(request, response);
+            authenticationService.refresh((HttpServletRequest) request,
+                    (HttpServletResponse) response);
         }
         else {
             HttpServletRequest servletRequest = (HttpServletRequest) request;
