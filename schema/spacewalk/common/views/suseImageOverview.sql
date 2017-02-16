@@ -18,29 +18,21 @@ suseImageOverview
     image_version,
     image_checksum,
     modified,
-    channel_id,
-    channel_labels,
+    image_arch_name,
+    action_id,
+    profile_id,
+    store_id,
+    build_server_id,
     security_errata,
     bug_errata,
     enhancement_errata,
-    outdated_packages,
-    image_arch_name
+    outdated_packages
 )
 as
 select
     i.org_id, i.id, i.name, i.version, i.checksum, i.modified,
-    ( select C.id
-        from rhnChannel C,
-	     suseImageInfoChannel IC
-       where IC.image_info_id = i.id
-         and IC.channel_id = C.id
-	 and C.parent_channel IS NULL),
-    coalesce(( select C.name
-        from rhnChannel C,
-	     suseImageInfoChannel IC
-       where IC.image_info_id = i.id
-         and IC.channel_id = C.id
-	 and C.parent_channel IS NULL), '(none)'),
+    ( select name from rhnServerArch where id = i.image_arch_id),
+    i.action_id, i.profile_id, i.store_id, i.build_server_id,
     ( select count(*) from rhnImageErrataTypeView ietv
       where
             ietv.image_id = i.id
@@ -57,8 +49,7 @@ select
       where
              inpc.image_id = i.id
 	 and p.id = inpc.package_id
-	 ),
-    ( select name from rhnServerArch where id = i.image_arch_id)
+	 )
 from
     suseImageInfo i
 ;
