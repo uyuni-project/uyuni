@@ -40,6 +40,7 @@ chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/jabberd
 install -m 0644 share/jabberd/* %{buildroot}/%{_datadir}/spacewalk/setup/jabberd/
+install -m 0744 include/* %{buildroot}/%{_datadir}/spacewalk/setup/jabberd/
 
 # jabberd ssl cert location
 install -d -m 755 %{buildroot}/%{_sysconfdir}/pki/spacewalk/jabberd
