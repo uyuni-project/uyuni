@@ -9,11 +9,11 @@ Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{versio
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  perl
 BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  jabberd
+BuildRequires:	sqlite3
 BuildArch:      noarch
 Requires:       perl
 Requires:       libxslt
-BuildRequires:  jabberd
-BuildRequires:	sqlite3
 %if 0%{?suse_version}
 Requires:       jabberd-sqlite sqlite3
 %endif
