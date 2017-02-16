@@ -44,11 +44,8 @@ install -m 0644 share/jabberd/* %{buildroot}/%{_datadir}/spacewalk/setup/jabberd
 # jabberd ssl cert location
 install -d -m 755 %{buildroot}/%{_sysconfdir}/pki/spacewalk/jabberd
 
-%{buildroot}/%{_datadir}/spacewalk/setup/jabberd/create_sqlite3_database
-
 %check
 make test
-
 
 %clean
 rm -rf %{buildroot}
@@ -63,6 +60,9 @@ rm -rf %{buildroot}
 %{_datadir}/spacewalk/*
 %dir %{_sysconfdir}/pki
 %{_sysconfdir}/pki/spacewalk
+
+%post
+%{buildroot}/%{_datadir}/spacewalk/setup/jabberd/create_sqlite3_database
 
 %changelog
 * Thu Mar 19 2015 Grant Gainey 2.3.2-1
