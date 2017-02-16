@@ -15,7 +15,8 @@ BuildArch:      noarch
 Requires:       perl
 Requires:       libxslt
 %if 0%{?suse_version}
-Requires:       jabberd-sqlite sqlite3
+Requires:       jabberd-sqlite
+Requires:       sqlite3
 %endif
 
 %description
