@@ -661,4 +661,22 @@
   </query>
 </mode>
 
+<callable-mode name="lookup_xccdf_ident">
+    <query params="system_in, identifier_in">
+        {:ident_id = call lookup_xccdf_ident(:system_in, :identifier_in)}
+    </query>
+</callable-mode>
+
+<callable-mode name="lookup_xccdf_benchmark">
+    <query params="identifier_in, version_in">
+        {:benchmark_id = call lookup_xccdf_benchmark(:identifier_in, :version_in)}
+    </query>
+</callable-mode>
+
+<callable-mode name="lookup_xccdf_profile">
+    <query params="identifier_in, title_in">
+        {:profile_id = call lookup_xccdf_profile(:identifier_in, :title_in)}
+    </query>
+</callable-mode>
+
 </datasource_modes>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping
+        PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.redhat.rhn.domain.audit.XccdfIdent"
+           table="rhnXccdfIdent"
+           mutable="false">
+        <cache usage="read-only"/>
+        <id name="id" type="long" column="id">
+            <generator class="sequence">
+                <param name="sequence">rhn_xccdf_ident_id_seq</param>
+            </generator>
+        </id>
+
+        <many-to-one name="identSystem" column="identsystem_id"
+                     class="com.redhat.rhn.domain.audit.XccdfIdentSystem"/>
+
+        <property name="identifier" column="identifier" type="string" length="120"/>
+    </class>
+
+</hibernate-mapping>
