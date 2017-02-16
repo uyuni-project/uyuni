@@ -35,6 +35,7 @@ public class ErrataCacheWorker implements QueueWorker {
 
     public static final String BY_CHANNEL = "update_errata_cache_by_channel";
     public static final String FOR_SERVER = "update_server_errata_cache";
+    public static final String FOR_IMAGE  = "update_image_errata_cache";
 
     private Task task;
     private Logger logger;
@@ -66,6 +67,16 @@ public class ErrataCacheWorker implements QueueWorker {
                 uecc.updateErrataCacheForServer(sid, false);
                 if (logger.isDebugEnabled()) {
                     logger.debug("Finished errata cache for sid [" + sid + "]");
+                }
+            }
+            else if (ErrataCacheWorker.FOR_IMAGE.equals(task.getName())) {
+                Long iid = task.getData();
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Updating errata cache for iid [" + iid + "]");
+                }
+                uecc.updateErrataCacheForImage(iid, false);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Finished errata cache for iid [" + iid + "]");
                 }
             }
             else if (ErrataCacheWorker.BY_CHANNEL.equals(task.getName())) {
