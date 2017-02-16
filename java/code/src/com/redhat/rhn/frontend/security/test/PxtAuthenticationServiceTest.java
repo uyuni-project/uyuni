@@ -78,7 +78,7 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
 
     private void runValidateSucceedsTest() {
         context().checking(new Expectations() { {
-            atLeast(1).of(mockPxtDelegate).refreshPxtSession(
+            never(mockPxtDelegate).refreshPxtSession(
                     with(any(HttpServletRequest.class)),
                     with(any(HttpServletResponse.class)));
         } });

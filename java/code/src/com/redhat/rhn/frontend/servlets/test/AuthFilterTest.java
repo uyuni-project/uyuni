@@ -111,6 +111,8 @@ public class AuthFilterTest extends MockObjectTestCase {
             will(returnValue(true));
             oneOf(mockFilterChain).doFilter(with(any(HttpServletRequest.class)),
                     with(any(HttpServletResponse.class)));
+            oneOf(mockAuthService).refresh(with(any(HttpServletRequest.class)),
+                    with(any(HttpServletResponse.class)));
         } });
 
         filter.doFilter(getRequest(), getResponse(), getFilterChain());
