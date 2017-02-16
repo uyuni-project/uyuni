@@ -93,6 +93,7 @@ rhnErrataClonedTmp             :: rhnErrataTmp
 rhnErrataTmp                   :: web_customer
 rhnFile                        :: web_customer rhnChecksum
 rhnFileLocation                :: rhnFile
+rhnImageNeededCache            :: web_customer suseImageInfo rhnErrata rhnChannel
 rhnKSData                      :: web_customer
 rhnKickstartableTree           :: rhnChannel rhnKSTreeType web_customer \
                                   rhnKSInstallType
