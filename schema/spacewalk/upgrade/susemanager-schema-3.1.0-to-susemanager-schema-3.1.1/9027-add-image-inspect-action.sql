@@ -45,11 +45,11 @@ CREATE SEQUENCE rhn_act_image_inspect_id_seq;
 CREATE TABLE rhnActionImageInspectResult
 (
     server_id              NUMBER NOT NULL
-                               CONSTRAINT rhn_image_inspect_result_sid_fk
+                               CONSTRAINT rhn_image_inspect_res_sid_fk
                                    REFERENCES rhnServer (id)
                                    ON DELETE CASCADE,
     action_image_inspect_id NUMBER NOT NULL
-                               CONSTRAINT rhn_image_inspect_result_aid_fk
+                               CONSTRAINT rhn_image_inspect_res_aid_fk
                                    REFERENCES rhnActionImageInspect (id)
                                    ON DELETE CASCADE
 )
@@ -59,7 +59,7 @@ ENABLE ROW MOVEMENT
 CREATE UNIQUE INDEX rhn_image_inspect_result_sa_uq
     ON rhnActionImageInspectResult (server_id, action_image_inspect_id);
 
-CREATE INDEX rhn_image_inspect_result_ad_idx
+CREATE INDEX rhn_image_inspect_res_ad_idx
     ON rhnActionImageInspectResult (action_image_inspect_id)
     NOLOGGING;
 
