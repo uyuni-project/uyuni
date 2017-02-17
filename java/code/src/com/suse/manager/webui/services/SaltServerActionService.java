@@ -27,6 +27,8 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -275,6 +277,12 @@ public enum SaltServerActionService {
         else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) actionIn;
             return applyStatesAction(minions, applyStatesAction.getDetails().getMods());
+        }
+        else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
+            ImageInspectAction iia = (ImageInspectAction) actionIn;
+            ImageInspectActionDetails details = iia.getDetails();
+            ImageStore store = ImageStoreFactory.lookupById(details.getId()).get();
+            return imageInspectAction(minions, details.getTag(), details.getName(), store);
         }
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
             ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
@@ -529,6 +537,21 @@ public enum SaltServerActionService {
                     });
         });
         return dockerRegistries;
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> imageInspectAction(
+            List<MinionServer> minions, String tag,
+            String name, ImageStore store) {
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("imagename", store.getUri() + "/" + name + ":" + tag);
+        Map<LocalCall<?>, List<MinionServer>> result = new HashMap<>();
+        LocalCall<Map<String, State.ApplyResult>> apply = State.apply(
+                Collections.singletonList("images.profileupdate"),
+                Optional.of(pillar),
+                Optional.of(true)
+        );
+        result.put(apply, minions);
+        return result;
     }
 
     private Map<LocalCall<?>, List<MinionServer>> imageBuildAction(
