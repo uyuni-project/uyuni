@@ -49,6 +49,7 @@
 - features/powermanagement.feature
 - features/CVE_ID_new_syntax.feature
 - features/datepicker.feature
+- features/migrate_client_to_minion.feature
 - features/delete_system_profile.feature
 - features/baremetal_test.feature
 - features/compare_channel.feature
@@ -76,7 +77,6 @@
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
 - features/salt_reboot_test.feature
-- features/migrate_client_to_minion.feature
 
 # salt regression
 - features/salt_regression_topsls.feature
