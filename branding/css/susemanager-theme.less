@@ -341,12 +341,29 @@ header, nav.navbar-pf {
       padding: 0 10px;
     }
     a {
-      display: block;
+      display: inline-block;
       padding: 6px 2px;
       color: @spacewalk-aside-menu-hyperlink;
+      width: 100%;
+      vertical-align: middle;
     }
     a:hover, a:focus {
       text-decoration: none;
+      color: @spacewalk-aside-menu-hyperlink-hover;
+    }
+    div.showSubMenu {
+      display: inline-block;
+      font-size: inherit;
+      color: @spacewalk-gray-light;
+      // color: @spacewalk-aside-menu-hyperlink;
+      height: 100%;
+      width: 19px;
+      margin-left: -19px;
+      text-align: center;
+      cursor: default;
+      i {
+        margin: 0;
+      }
     }
     ul, li {
       padding: 0;
@@ -358,41 +375,47 @@ header, nav.navbar-pf {
     li {
       position: relative;
     }
+    div.nodeLink, div.leafLink {
+      margin-left: 18px;
+      display: block;
+      border-right: 4px solid transparent;
+    }
     /* First Level */
     > ul {
       margin-top: 10px;
       > li {
         border-top: 1px solid darken(@spacewalk-blue-light, 5%);
-        > a {
-          padding: 8px 2px 8px 8px;
-          color: @spacewalk-aside-menu-hyperlink;
-          > span {
-            display: inline-block;
-            vertical-align: middle;
-          }
-          i {
-            font-size: 1.1em;
-            width: 15px;
-            display: inline-block;
-            text-align: center;
+        > div {
+          > a {
+            padding: 8px 2px 8px 8px;
+            color: @spacewalk-aside-menu-hyperlink;
+            > span {
+              display: inline-block;
+              vertical-align: middle;
+            }
+            i {
+              font-size: 1.1em;
+              width: 15px;
+              display: inline-block;
+              text-align: center;
+            }
           }
         }
       }
     }
+    /* Every level */
     li.node {
-      > a {
-        > span:after {
-          content: '\25B8';
-          position: absolute;
-          right: 10px;
-          font-size: inherit;
+      div.nodeLink {
+        > div.showSubMenu:hover {
+          color: @spacewalk-aside-menu-hyperlink-hover;
         }
       }
     }
-    li.active > a {
+    li.active > div > * {
       color: @spacewalk-aside-menu-active;
     }
     ul {
+      padding-left: 8px;
       li {
         a {
           border-right: 4px solid transparent;
@@ -402,37 +425,33 @@ header, nav.navbar-pf {
         }
       }
       > li:hover {
-        > a {
-          color: @spacewalk-aside-menu-hyperlink-hover;
+        > .nodeLink,
+        > .leafLink {
           border-right-color: @spacewalk-aside-menu-hyperlink-hover;
           background-color: @spacewalk-blue-light;
         }
       }
       li.node.open {
-        > a {
-          > span:after {
-            content: '\25BE';
-          }
-        }
         > ul {
           display: block;
         }
       }
       /* Second Level */
       ul {
-        padding-left: 14px;
         padding-bottom: 10px;
         background-color: @spacewalk-blue;
         padding-top: 1px;
         li {
-          > a {
-            padding-left: 10px;
-            background-image: url('/img/susemanager/sub-list.png');
-            background-repeat: no-repeat;
-            background-position: left center;
+          > div {
+            > a {
+              padding-left: 10px;
+              background-image: url('/img/susemanager/sub-list.png');
+              background-repeat: no-repeat;
+              background-position: left center;
+            }
           }
         }
-        > li:last-of-type > a  {
+        > li:last-of-type > div > a  {
           background-image: url('/img/susemanager/sub-list-last.png');
         }
         > li:last-of-type ul {
@@ -440,7 +459,7 @@ header, nav.navbar-pf {
         }
         /* Third Level */
         ul {
-          padding-left: 15px;
+          margin-left: 18px;
           background-image: url('/img/susemanager/sub-list-line.png');
           background-repeat: repeat-y;
         }

@@ -57,7 +57,7 @@ public class MenuTree {
 
         if (checkAcl(user, "user_authenticated()")) {
             // Home
-            nodes.add(new MenuItem("Home").withPrimaryUrl("#").withIcon("fa-home")
+            nodes.add(new MenuItem("Home").withIcon("fa-home")
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/YourRhn.do"))
                 .addChild(new MenuItem("User Account")
                     .addChild(new MenuItem("Your Account").withPrimaryUrl("/rhn/account/UserDetails.do"))
