@@ -112,8 +112,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, key)));
                 }
-                allowing(saltServiceMock).getCpuInfo(MINION_ID);
-                will(returnValue(getCpuInfo(MINION_ID)));
                 allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
                 allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
             } };
@@ -334,8 +332,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
                     will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock).getCpuInfo(MINION_ID);
-                    will(returnValue(getCpuInfo(MINION_ID)));
                     allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
                     allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
 
@@ -371,8 +367,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
                     will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock).getCpuInfo(MINION_ID);
-                    will(returnValue(getCpuInfo(MINION_ID)));
                     allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
                     allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
 
@@ -415,8 +409,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.of(MINION_ID)));
                     allowing(saltServiceMock).getMachineId(MINION_ID);
                     will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock).getCpuInfo(MINION_ID);
-                    will(returnValue(getCpuInfo(MINION_ID)));
                     allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
                     allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
 
@@ -475,8 +467,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             will(returnValue(Optional.of(MACHINE_ID)));
             allowing(saltService).getGrains(MINION_ID);
             will(returnValue(getGrains(MINION_ID, null, "foo")));
-            allowing(saltService).getCpuInfo(MINION_ID);
-            will(returnValue(getCpuInfo(MINION_ID)));
             allowing(saltService).syncGrains(with(any(MinionList.class)));
             allowing(saltService).syncModules(with(any(MinionList.class)));
             List<ProductInfo> pil = new ArrayList<>();
@@ -497,12 +487,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 new RegisterMinionEventMessageAction(saltService);
         action.doExecute(new RegisterMinionEventMessage(MINION_ID));
         return saltService;
-    }
-
-
-    private Optional<Map<String, Object>> getCpuInfo(String minionId) throws IOException, ClassNotFoundException {
-        return Optional.of(new JsonParser<>(Status.cpuinfo().getReturnType()).parse(
-                readFile("dummy_cpuinfo.json")));
     }
 
     @SuppressWarnings("unchecked")
