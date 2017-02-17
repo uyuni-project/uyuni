@@ -14,11 +14,15 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
+import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
@@ -30,6 +34,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -582,4 +587,36 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
         // Verify the action status
         assertTrue(sa.getStatus().equals(ActionFactory.STATUS_FAILED));
     }
+
+
+    public void testOpenscap() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("minionsles12sp1.test.local");
+        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
+        ScapAction action = ActionManager.scheduleXccdfEval(user,
+                minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
+        ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
+
+        action.addServerAction(sa);
+
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("openscap.xccdf.success.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+
+        String cacheDir = new File(TestUtils.findTestData(
+                "/com/suse/manager/reactor/messaging/test/openscap").getPath()).getPath();
+        String resumeXsl = new File(TestUtils.findTestData(
+                "/com/suse/manager/reactor/messaging/test/openscap/xccdf-resume.xslt.in").getPath())
+                .getPath();
+        SaltUtils.INSTANCE.setMinionCacheDir(cacheDir);
+        SaltUtils.INSTANCE.setXccdfResumeXsl(resumeXsl);
+
+        messageAction.doExecute(message);
+
+        assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
+
+    }
+
 }

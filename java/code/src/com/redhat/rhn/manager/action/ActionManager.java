@@ -2101,13 +2101,18 @@ public class ActionManager extends BaseManager {
         for (Long serverId : serverIds) {
             Server server = SystemManager.lookupByIdAndUser(serverId, scheduler);
 
-            if (!SystemManager.clientCapable(serverId, "scap.xccdf_eval")) {
+            if (!SystemManager.clientCapable(serverId, SystemManager.CAP_SCAP)) {
                 throw new MissingCapabilityException("OpenSCAP", server);
             }
             if (!SystemManager.hasEntitlement(serverId,
-                    EntitlementManager.MANAGEMENT)) {
+                    EntitlementManager.MANAGEMENT) &&
+                    !SystemManager.hasEntitlement(serverId,
+                            EntitlementManager.SALT)) {
                 throw new MissingEntitlementException(
-                        EntitlementManager.MANAGEMENT.getHumanReadableLabel());
+                        EntitlementManager.MANAGEMENT.getHumanReadableLabel() +
+                                " or " +
+                                EntitlementManager.SALT.getHumanReadableLabel()
+                );
             }
         }
 

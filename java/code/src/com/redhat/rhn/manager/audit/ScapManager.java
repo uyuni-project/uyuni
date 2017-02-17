@@ -14,6 +14,13 @@
  */
 package com.redhat.rhn.manager.audit;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Path;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Date;
@@ -34,7 +41,6 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfIdent;
-import com.redhat.rhn.domain.audit.XccdfIdentSystem;
 import com.redhat.rhn.domain.audit.XccdfProfile;
 import com.redhat.rhn.domain.audit.XccdfRuleResult;
 import com.redhat.rhn.domain.audit.XccdfRuleResultType;
@@ -53,10 +59,16 @@ import com.redhat.rhn.manager.audit.scap.xml.TestResult;
 import com.redhat.rhn.manager.audit.scap.xml.TestResultRuleResult;
 import com.redhat.rhn.manager.audit.scap.xml.TestResultRuleResultIdent;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.transform.RegistryMatcher;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 /**
  * ScapManager
@@ -380,9 +392,30 @@ public class ScapManager extends BaseManager {
         return result;
     }
 
-    public static XccdfTestResult xccdfEval(Server server, ScapAction action, String errors, String resumeXml) {
+    public static XccdfTestResult xccdfEval(Server server, ScapAction action, String errors, InputStream resumeXml, File resumeXsl) throws IOException {
+        // Transform XML
+        File output = File.createTempFile("scap-resume-" + action.getId(), ".xml");
+        StreamSource xslStream = new StreamSource(resumeXsl);
+        StreamSource in = new StreamSource(resumeXml);
+        try (OutputStream resumeOut = new FileOutputStream(output)){
+            StreamResult out = new StreamResult(resumeOut);
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer(xslStream);
+            transformer.transform(in, out);
+        } catch (javax.xml.transform.TransformerException e) {
+            throw new RuntimeException("XSL transform failed", e);
+        }
+        try (InputStream resumeIn = new FileInputStream(output)) {
+            return xccdfEvalResume(server, action, errors, resumeIn);
+        } finally {
+            output.delete();
+        }
+    }
+
+    public static XccdfTestResult xccdfEvalResume(Server server, ScapAction action, String errors, InputStream resumeXml) {
         ScapFactory.clearTestResult(server.getId(), action.getId());
         try {
+
             BenchmarkResume resume = createXmlPersister()
                     .read(BenchmarkResume.class, resumeXml);
             Profile profile = Optional.ofNullable(resume.getProfile())

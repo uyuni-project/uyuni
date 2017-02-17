@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
+import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -51,6 +52,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
@@ -59,6 +61,8 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.Openscap;
+import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
@@ -74,6 +78,13 @@ import com.suse.utils.Opt;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -100,6 +111,9 @@ public class SaltUtils {
     private static final Logger LOG = Logger.getLogger(SaltUtils.class);
 
     public static final SaltUtils INSTANCE = new SaltUtils();
+
+    private String minionCacheDir = "/var/cache/salt/master/minions";
+    private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt";
 
     /**
      * Constructor for testing purposes.
@@ -323,6 +337,37 @@ public class SaltUtils {
                         message.substring(0, 1024) : message);
             }
 
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_SCAP_XCCDF_EVAL)) {
+            ScapAction scapAction = (ScapAction)action;
+            Openscap.OpenscapResult openscapResult = Json.GSON.fromJson(
+                    jsonResult, Openscap.OpenscapResult.class);
+            if (openscapResult.isSuccess()) {
+
+                serverAction.getServer().asMinionServer().ifPresent(
+                        minion -> {
+                            String minionId = minion.getMinionId();
+                            Path resultsFile = Paths.get(minionCacheDir, minionId, "files", openscapResult.getUploadDir(), "results.xml");
+                            if (!Files.exists(resultsFile)) {
+                                serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                serverAction.setResultMsg(resultsFile.toString() + " not found");
+                            } else {
+                                try (InputStream resultsFileIn = new FileInputStream(resultsFile.toFile())) {
+                                    // TODO errors string
+                                    ScapManager.xccdfEval(minion, scapAction, "", resultsFileIn, new File(xccdfResumeXsl));
+                                    serverAction.setResultMsg("Success");
+                                } catch (IOException e) {
+                                    LOG.error("Could not open file " + resultsFile.toString(), e);
+                                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                    serverAction.setResultMsg("Could not open file " + resultsFile.toString() + ": " + e.getMessage());
+                                }
+                            }
+                        });
+            }
+            else {
+                serverAction.setResultMsg(openscapResult.getError());
+
+            }
         }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
@@ -778,5 +823,33 @@ public class SaltUtils {
                 (sa.getStatus().equals(ActionFactory.STATUS_QUEUED) ||
                         sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP)) &&
                 bootTime.after(sa.getParentAction().getEarliestAction());
+    }
+
+    /**
+     * For unit testing purposes only.
+     * @return
+     */
+    public String getMinionCacheDir() {
+        return minionCacheDir;
+    }
+
+    /**
+     * For unit testing purposes only.
+     * @return
+     */
+    public void setMinionCacheDir(String minionCacheDir) {
+        this.minionCacheDir = minionCacheDir;
+    }
+
+    /**
+     * For unit testing purposes only.
+     * @return
+     */
+    public String getXccdfResumeXsl() {
+        return xccdfResumeXsl;
+    }
+
+    public void setXccdfResumeXsl(String xccdfResumeXsl) {
+        this.xccdfResumeXsl = xccdfResumeXsl;
     }
 }
