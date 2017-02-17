@@ -3,35 +3,59 @@ package com.redhat.rhn.manager.audit.test;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.suse.utils.Opt;
-import junit.framework.TestCase;
+import com.redhat.rhn.testing.TestUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestUser;
-
 /**
  * Created by matei on 2/14/17.
  */
-public class ScapManagerTest extends RhnBaseTestCase {
+public class ScapManagerTest extends BaseTestCaseWithUser {
 
     public void testXccdfEval() throws Exception {
-        User user = createTestUser();
-        Server server1 = createTestServer(user);
-        SystemManager.giveCapability(server1.getId(), "scap.xccdf_eval", 1L);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
         ScapAction action = ActionManager.scheduleXccdfEval(user,
-                server1, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
+                minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
+
+        File resumeXsl = new File(TestUtils.findTestData(
+                "/com/suse/manager/reactor/messaging/test/openscap/xccdf-resume.xslt.in").getPath());
+        InputStream resultsIn = TestUtils.findTestData(
+                "/com/suse/manager/reactor/messaging/test/openscap/tmp/tmpNVI7yv/results.xml")
+                .openStream();
+        XccdfTestResult result = ScapManager.xccdfEval(minion, action, "", resultsIn, resumeXsl);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        result = (XccdfTestResult)HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
+        assertNotNull(result);
+
+        assertEquals("Default", result.getProfile().getIdentifier());
+        assertEquals("Default vanilla kernel hardening", result.getProfile().getTitle());
+    }
+
+    public void testXccdfEvalResume() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
+        ScapAction action = ActionManager.scheduleXccdfEval(user,
+                minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
         String errors = "xccdf_eval: oscap tool returned 2\n";
         String resume = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<benchmark-resume xmlns:cdf=\"http://checklists.nist.gov/xccdf/1.1\" xmlns:xccdf_12=\"http://checklists.nist.gov/xccdf/1.2\" id=\"SUSE-Security-Benchmark-YaST2\" version=\"1\">\n" +
@@ -82,7 +106,9 @@ public class ScapManagerTest extends RhnBaseTestCase {
                 "    <fixed/>\n" +
                 "  </TestResult>\n" +
                 "</benchmark-resume>\n";
-        XccdfTestResult result = ScapManager.xccdfEval(server1, action, errors, resume);
+
+        XccdfTestResult result = ScapManager.xccdfEvalResume(minion, action, errors,
+                new ByteArrayInputStream(resume.getBytes("UTF-8")));
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -123,7 +149,6 @@ public class ScapManagerTest extends RhnBaseTestCase {
         );
         assertTrue(pass.containsAll(passIds));
         assertEquals(passIds.size(), pass.size());
-
     }
 
 }
