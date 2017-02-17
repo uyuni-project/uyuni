@@ -6,3 +6,8 @@ mgr_image_profileupdate:
     - mods: packages.profileupdate
     - dryrun: True
 
+mgr_container_remove:
+  module.run:
+    - name: dockerng.rm
+    - m_name: "{{ salt['pillar.get']('mgr_img_dummyname', 'dummy') }}"
+    - force: False
