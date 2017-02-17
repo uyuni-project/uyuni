@@ -326,6 +326,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             // Salt systems always have the script.run capability
             SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
+            // Salt systems can be audited
+            SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCAP, 1L);
+
             // Assign the Salt base entitlement by default
             server.setBaseEntitlement(EntitlementManager.SALT);
 

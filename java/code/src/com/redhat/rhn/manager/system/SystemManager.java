@@ -122,6 +122,7 @@ public class SystemManager extends BaseManager {
     public static final String CAP_CONFIGFILES_BASE64_ENC =
             "configfiles.base64_enc";
     public static final String CAP_SCRIPT_RUN = "script.run";
+    public static final String CAP_SCAP = "scap.xccdf_eval";
 
     private SystemManager() {
     }
