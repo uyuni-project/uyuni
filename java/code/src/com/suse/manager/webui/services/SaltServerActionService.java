@@ -534,7 +534,8 @@ public enum SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> imageBuildAction(
             List<MinionServer> minions, Optional<String> tag,
             DockerfileProfile profile, User user) {
-        List<ImageStore> imageStores = ImageStoreFactory.listImageStores(user.getOrg());
+        List<ImageStore> imageStores = new LinkedList<>();
+        imageStores.add(profile.getTargetStore());
         String cert = "";
         try {
             //TODO: maybe from the database
