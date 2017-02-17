@@ -1,0 +1,23 @@
+{
+  "tag": "salt/job/20170217154208936549/ret/minionsles12sp1.test.local",
+  "data": {
+    "fun_args": [
+      "eval --profile Default /usr/share/openscap/scap-yast2sec-xccdf.xml"
+    ],
+    "jid": "20170217154208936549",
+    "return": {
+      "upload_dir": "/tmp/tmpCtlaWO",
+      "success": true,
+      "error": null
+    },
+    "retcode": 0,
+    "success": true,
+    "cmd": "_return",
+    "_stamp": "2017-02-17T15:42:09.851051",
+    "fun": "openscap.xccdf",
+    "id": "minionsles12sp1.test.local",
+    "metadata": {
+      "suma-action-id": 123
+    }
+  }
+}
