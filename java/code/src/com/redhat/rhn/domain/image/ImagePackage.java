@@ -25,11 +25,18 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.Date;
 
+/**
+ * suseImageInfoPackage table class.
+ */
 @Entity
+@IdClass(ImagePackageKey.class)
 @Table(name = "suseImageInfoPackage")
 public class ImagePackage implements Comparable<ImagePackage> {
 
@@ -42,6 +49,8 @@ public class ImagePackage implements Comparable<ImagePackage> {
     /**
      * @return imageInfo
      */
+    @Id
+    @ManyToOne
     @JoinColumn(name = "image_info_id")
     public ImageInfo getImageInfo() {
         return imageInfo;
@@ -57,6 +66,7 @@ public class ImagePackage implements Comparable<ImagePackage> {
     /**
      * @return Returns the arch.
      */
+    @ManyToOne
     @JoinColumn(name = "arch_id")
     public PackageArch getArch() {
         return arch;
@@ -72,6 +82,8 @@ public class ImagePackage implements Comparable<ImagePackage> {
     /**
      * @return Returns the evr.
      */
+    @Id
+    @ManyToOne
     @JoinColumn(name = "evr_id")
     public PackageEvr getEvr() {
         return evr;
@@ -87,6 +99,8 @@ public class ImagePackage implements Comparable<ImagePackage> {
     /**
      * @return Returns the name.
      */
+    @Id
+    @ManyToOne
     @JoinColumn(name = "name_id")
     public PackageName getName() {
         return name;

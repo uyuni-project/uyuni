@@ -162,7 +162,7 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the packages
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
     public Set<ImagePackage> getPackages() {
         return packages;
     }
