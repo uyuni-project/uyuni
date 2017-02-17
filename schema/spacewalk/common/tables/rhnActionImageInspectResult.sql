@@ -13,24 +13,23 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE rhnActionImageBuildResult
+CREATE TABLE rhnActionImageInspectResult
 (
     server_id              NUMBER NOT NULL
-                               CONSTRAINT rhn_image_build_result_sid_fk
+                               CONSTRAINT rhn_image_inspect_result_sid_fk
                                    REFERENCES rhnServer (id)
                                    ON DELETE CASCADE,
-    action_image_build_id NUMBER NOT NULL
-                               CONSTRAINT rhn_image_build_result_aid_fk
-                                   REFERENCES rhnActionImageBuild (id)
+    action_image_inspect_id NUMBER NOT NULL
+                               CONSTRAINT rhn_image_inspect_result_aid_fk
+                                   REFERENCES rhnActionImageInspect (id)
                                    ON DELETE CASCADE
 )
 ENABLE ROW MOVEMENT
 ;
 
-CREATE UNIQUE INDEX rhn_image_build_result_sa_uq
-    ON rhnActionImageBuildResult (server_id, action_image_build_id);
+CREATE UNIQUE INDEX rhn_image_inspect_result_sa_uq
+    ON rhnActionImageInspectResult (server_id, action_image_inspect_id);
 
-CREATE INDEX rhn_image_build_result_ad_idx
-    ON rhnActionImageBuildResult (action_image_build_id)
+CREATE INDEX rhn_image_inspect_result_ad_idx
+    ON rhnActionImageInspectResult (action_image_inspect_id)
     NOLOGGING;
-

@@ -13,19 +13,20 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE rhnActionImageBuild
+CREATE TABLE rhnActionImageInspect
 (
     id               NUMBER NOT NULL
-                         CONSTRAINT rhn_act_image_build_id_pk PRIMARY KEY,
+                         CONSTRAINT rhn_act_image_inspect_id_pk PRIMARY KEY,
     action_id        NUMBER NOT NULL
-                         CONSTRAINT rhn_act_image_build_act_fk
+                         CONSTRAINT rhn_act_image_inspect_act_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    image_profile_id NUMBER NOT NULL
-                         CONSTRAINT rhn_act_image_build_ip_fk
-                             REFERENCES suseImageProfile (profile_id)
+    image_store_id NUMBER NOT NULL
+                         CONSTRAINT rhn_act_image_inspect_is_fk
+                             REFERENCES suseImageStore (id)
                              ON DELETE CASCADE,
     tag              VARCHAR2(128),
+    name             VARCHAR2(128),
     created          timestamp with local time zone
                          DEFAULT (current_timestamp) NOT NULL,
     modified         timestamp with local time zone
@@ -34,9 +35,8 @@ CREATE TABLE rhnActionImageBuild
 ENABLE ROW MOVEMENT
 ;
 
-CREATE UNIQUE INDEX rhn_act_image_build_aid_idx
-    ON rhnActionImageBuild (action_id)
+CREATE UNIQUE INDEX rhn_act_image_inspect_aid_idx
+    ON rhnActionImageInspect (action_id)
     NOLOGGING;
 
-CREATE SEQUENCE rhn_act_image_build_id_seq;
-
+CREATE SEQUENCE rhn_act_image_inspect_id_seq;
