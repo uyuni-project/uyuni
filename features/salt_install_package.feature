@@ -15,4 +15,4 @@ Feature: Install a patch the client via salt through the UI
     And I click on "Confirm"
     And I wait for "5" seconds
     Then I should see a "1 errata update has been scheduled for" text
-    And I wait for "virgo-dummy-2.0-1.1" to be installed
+    And I wait for "virgo-dummy-2.0-1.1" to be installed on this "sle-minion"
