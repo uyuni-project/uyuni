@@ -84,7 +84,7 @@
 - features/minion_bootstrap.feature
 # Regression test
 - features/salt_regression_topsls.feature
-- features/migrate_client_to_minion.feature
+# - features/migrate_client_to_minion.feature
 
 ### Salt-ssh managed feature ##
 - features/salt_ssh.feature
