@@ -1,0 +1,1799 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_results xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://oval.mitre.org/XMLSchema/oval-results-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-results-5 oval-results-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+  <generator>
+    <oval:product_name>cpe:/a:open-scap:oscap</oval:product_name>
+    <oval:schema_version>5.9</oval:schema_version>
+    <oval:timestamp>2017-02-17T14:06:40</oval:timestamp>
+  </generator>
+  <directives>
+    <definition_true reported="true" content="full"/>
+    <definition_false reported="true" content="full"/>
+    <definition_unknown reported="true" content="full"/>
+    <definition_error reported="true" content="full"/>
+    <definition_not_evaluated reported="true" content="full"/>
+    <definition_not_applicable reported="true" content="full"/>
+  </directives>
+  <oval_definitions xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:unix-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:ind-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:lin-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+    <generator>
+      <oval:product_name>vim</oval:product_name>
+      <oval:schema_version>5.9</oval:schema_version>
+      <oval:timestamp>2011-10-31T12:00:00-04:00</oval:timestamp>
+    </generator>
+    <definitions>
+      <definition id="oval:de.suse.suse121:def:9" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/login.defs must have a line that matches ^PASS_MAX_DAYS.*99999</title>
+          <description>file /etc/login.defs must have a line that matches ^PASS_MAX_DAYS.*99999</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:9" comment="file /etc/login.defs must have a line that matches ^PASS_MAX_DAYS.*99999"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:6" version="1" class="compliance">
+        <metadata>
+          <title>kernel config CONFIG_SYN_COOKIES must be y</title>
+          <description>kernel config CONFIG_SYN_COOKIES must be y</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:6" comment="kernel config CONFIG_SYN_COOKIES must be y"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:5" version="1" class="compliance">
+        <metadata>
+          <title>sysctl net.ipv6.conf.default.forwarding must be 0</title>
+          <description>sysctl net.ipv6.conf.default.forwarding must be 0</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:5" comment="sysctl net.ipv6.conf.default.forwarding must be 0"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:43" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/sysconfig/services must have a line that matches ^DISABLE_STOP_ON_REMOVAL.*yes</title>
+          <description>file /etc/sysconfig/services must have a line that matches ^DISABLE_STOP_ON_REMOVAL.*yes</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:43" comment="file /etc/sysconfig/services must have a line that matches ^DISABLE_STOP_ON_REMOVAL.*yes"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:42" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/sysconfig/services must have a line that matches ^DISABLE_RESTART_ON_UPDATE.*yes</title>
+          <description>file /etc/sysconfig/services must have a line that matches ^DISABLE_RESTART_ON_UPDATE.*yes</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:42" comment="file /etc/sysconfig/services must have a line that matches ^DISABLE_RESTART_ON_UPDATE.*yes"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:41" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD6_RUN_AS.*dhcpd</title>
+          <description>file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD6_RUN_AS.*dhcpd</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:41" comment="file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD6_RUN_AS.*dhcpd"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:40" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD6_RUN_CHROOTED.*yes</title>
+          <description>file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD6_RUN_CHROOTED.*yes</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:40" comment="file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD6_RUN_CHROOTED.*yes"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:4" version="1" class="compliance">
+        <metadata>
+          <title>sysctl net.ipv6.conf.all.forwarding must be 0</title>
+          <description>sysctl net.ipv6.conf.all.forwarding must be 0</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:4" comment="sysctl net.ipv6.conf.all.forwarding must be 0"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:39" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD_RUN_AS.*dhcpd</title>
+          <description>file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD_RUN_AS.*dhcpd</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:39" comment="file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD_RUN_AS.*dhcpd"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:38" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD_RUN_CHROOTED.*yes</title>
+          <description>file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD_RUN_CHROOTED.*yes</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:38" comment="file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD_RUN_CHROOTED.*yes"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:33" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/sysconfig/security must have a line that matches ^CHECK_SIGNATURES.*yes</title>
+          <description>file /etc/sysconfig/security must have a line that matches ^CHECK_SIGNATURES.*yes</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:33" comment="file /etc/sysconfig/security must have a line that matches ^CHECK_SIGNATURES.*yes"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:32" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/sysconfig/security must have a line that matches ^CHECK_PERMISSIONS.*set</title>
+          <description>file /etc/sysconfig/security must have a line that matches ^CHECK_PERMISSIONS.*set</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:32" comment="file /etc/sysconfig/security must have a line that matches ^CHECK_PERMISSIONS.*set"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:31" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/default/passwd may not have a line that matches ^CRYPT_FILES=des</title>
+          <description>file /etc/default/passwd may not have a line that matches ^CRYPT_FILES=des</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:31" comment="file /etc/default/passwd may not have a line that matches ^CRYPT_FILES=des"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:30" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/default/passwd may not have a line that matches ^CRYPT_FILES=md5</title>
+          <description>file /etc/default/passwd may not have a line that matches ^CRYPT_FILES=md5</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:30" comment="file /etc/default/passwd may not have a line that matches ^CRYPT_FILES=md5"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:3" version="1" class="compliance">
+        <metadata>
+          <title>sysctl net.ipv4.tcp_syncookies must be 1</title>
+          <description>sysctl net.ipv4.tcp_syncookies must be 1</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:3" comment="sysctl net.ipv4.tcp_syncookies must be 1"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:29" version="1" class="compliance">
+        <metadata>
+          <title>sysctl kernel.sysrq must be 0</title>
+          <description>sysctl kernel.sysrq must be 0</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:29" comment="sysctl kernel.sysrq must be 0"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:25" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/login.defs must have a line that matches ^GID_MAX.*60000</title>
+          <description>file /etc/login.defs must have a line that matches ^GID_MAX.*60000</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:25" comment="file /etc/login.defs must have a line that matches ^GID_MAX.*60000"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:24" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/login.defs must have a line that matches ^GID_MIN.*1000</title>
+          <description>file /etc/login.defs must have a line that matches ^GID_MIN.*1000</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:24" comment="file /etc/login.defs must have a line that matches ^GID_MIN.*1000"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:23" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/login.defs must have a line that matches ^UID_MAX.*60000</title>
+          <description>file /etc/login.defs must have a line that matches ^UID_MAX.*60000</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:23" comment="file /etc/login.defs must have a line that matches ^UID_MAX.*60000"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:22" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/login.defs must have a line that matches ^UID_MIN.*1000</title>
+          <description>file /etc/login.defs must have a line that matches ^UID_MIN.*1000</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:22" comment="file /etc/login.defs must have a line that matches ^UID_MIN.*1000"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:2" version="1" class="compliance">
+        <metadata>
+          <title>sysctl net.ipv4.ip_forward must be 0</title>
+          <description>sysctl net.ipv4.ip_forward must be 0</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:2" comment="sysctl net.ipv4.ip_forward must be 0"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:19" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/sysconfig/displaymanager must have a line that matches ^DISPLAYMANAGER_ROOT_LOGIN_REMOTE.*no</title>
+          <description>file /etc/sysconfig/displaymanager must have a line that matches ^DISPLAYMANAGER_ROOT_LOGIN_REMOTE.*no</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:19" comment="file /etc/sysconfig/displaymanager must have a line that matches ^DISPLAYMANAGER_ROOT_LOGIN_REMOTE.*no"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:18" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/sysconfig/displaymanager must have a line that matches ^DISPLAYMANAGER_REMOTE_ACCESS.*no</title>
+          <description>file /etc/sysconfig/displaymanager must have a line that matches ^DISPLAYMANAGER_REMOTE_ACCESS.*no</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:18" comment="file /etc/sysconfig/displaymanager must have a line that matches ^DISPLAYMANAGER_REMOTE_ACCESS.*no"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:17" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/login.defs must have a line that matches ^FAIL_DELAY</title>
+          <description>file /etc/login.defs must have a line that matches ^FAIL_DELAY</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:17" comment="file /etc/login.defs must have a line that matches ^FAIL_DELAY"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:16" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/login.defs may not have a line that matches ^FAIL_DELAY.*0</title>
+          <description>file /etc/login.defs may not have a line that matches ^FAIL_DELAY.*0</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:16" comment="file /etc/login.defs may not have a line that matches ^FAIL_DELAY.*0"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:13" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/pam.d/common-password must have a line that matches remember=</title>
+          <description>file /etc/pam.d/common-password must have a line that matches remember=</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:13" comment="file /etc/pam.d/common-password must have a line that matches remember="/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:12" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/pam.d/common-password must have a line that matches minlen=6</title>
+          <description>file /etc/pam.d/common-password must have a line that matches minlen=6</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:12" comment="file /etc/pam.d/common-password must have a line that matches minlen=6"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:11" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/login.defs must have a line that matches ^PASS_WARN_AGE.*7</title>
+          <description>file /etc/login.defs must have a line that matches ^PASS_WARN_AGE.*7</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:11" comment="file /etc/login.defs must have a line that matches ^PASS_WARN_AGE.*7"/>
+        </criteria>
+      </definition>
+      <definition id="oval:de.suse.suse121:def:10" version="1" class="compliance">
+        <metadata>
+          <title>file /etc/login.defs must have a line that matches ^PASS_MIN_DAYS.*0</title>
+          <description>file /etc/login.defs must have a line that matches ^PASS_MIN_DAYS.*0</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:de.suse.suse121:tst:10" comment="file /etc/login.defs must have a line that matches ^PASS_MIN_DAYS.*0"/>
+        </criteria>
+      </definition>
+    </definitions>
+    <tests>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:9" version="1" check="at least one" comment="file /etc/login.defs must have a line that matches ^PASS_MAX_DAYS.*99999">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:7"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:4"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:6" version="1" check="at least one" comment="kernel config CONFIG_SYN_COOKIES must be y">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:3"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:3"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:5" version="1" check="at least one" comment="sysctl net.ipv6.conf.default.forwarding must be 0">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:5"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:43" version="1" check="at least one" comment="file /etc/sysconfig/services must have a line that matches ^DISABLE_STOP_ON_REMOVAL.*yes">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:14"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:28"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:42" version="1" check="at least one" comment="file /etc/sysconfig/services must have a line that matches ^DISABLE_RESTART_ON_UPDATE.*yes">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:14"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:27"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:41" version="1" check="at least one" comment="file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD6_RUN_AS.*dhcpd">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:11"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:22"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:40" version="1" check="at least one" comment="file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD6_RUN_CHROOTED.*yes">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:11"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:21"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:4" version="1" check="at least one" comment="sysctl net.ipv6.conf.all.forwarding must be 0">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:4"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:39" version="1" check="at least one" comment="file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD_RUN_AS.*dhcpd">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:11"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:20"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:38" version="1" check="at least one" comment="file /etc/sysconfig/dhcpd must have a line that matches ^DHCPD_RUN_CHROOTED.*yes">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:11"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:19"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:33" version="1" check="at least one" comment="file /etc/sysconfig/security must have a line that matches ^CHECK_SIGNATURES.*yes">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:13"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:26"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:32" version="1" check="at least one" comment="file /etc/sysconfig/security must have a line that matches ^CHECK_PERMISSIONS.*set">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:13"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:25"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:31" version="1" check="none satisfy" comment="file /etc/default/passwd may not have a line that matches ^CRYPT_FILES=des">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:9"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:16"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:30" version="1" check="none satisfy" comment="file /etc/default/passwd may not have a line that matches ^CRYPT_FILES=md5">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:9"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:15"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:3" version="1" check="at least one" comment="sysctl net.ipv4.tcp_syncookies must be 1">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:2"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:2"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:29" version="1" check="at least one" comment="sysctl kernel.sysrq must be 0">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:6"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:25" version="1" check="at least one" comment="file /etc/login.defs must have a line that matches ^GID_MAX.*60000">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:7"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:14"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:24" version="1" check="at least one" comment="file /etc/login.defs must have a line that matches ^GID_MIN.*1000">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:7"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:13"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:23" version="1" check="at least one" comment="file /etc/login.defs must have a line that matches ^UID_MAX.*60000">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:7"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:12"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:22" version="1" check="at least one" comment="file /etc/login.defs must have a line that matches ^UID_MIN.*1000">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:7"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:11"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:2" version="1" check="at least one" comment="sysctl net.ipv4.ip_forward must be 0">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:1"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:19" version="1" check="at least one" comment="file /etc/sysconfig/displaymanager must have a line that matches ^DISPLAYMANAGER_ROOT_LOGIN_REMOTE.*no">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:12"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:24"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:18" version="1" check="at least one" comment="file /etc/sysconfig/displaymanager must have a line that matches ^DISPLAYMANAGER_REMOTE_ACCESS.*no">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:12"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:23"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:17" version="1" check="at least one" comment="file /etc/login.defs must have a line that matches ^FAIL_DELAY">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:7"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:10"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:16" version="1" check="none satisfy" comment="file /etc/login.defs may not have a line that matches ^FAIL_DELAY.*0">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:7"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:9"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:13" version="1" check="at least one" comment="file /etc/pam.d/common-password must have a line that matches remember=">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:10"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:18"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:12" version="1" check="at least one" comment="file /etc/pam.d/common-password must have a line that matches minlen=6">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:10"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:17"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:11" version="1" check="at least one" comment="file /etc/login.defs must have a line that matches ^PASS_WARN_AGE.*7">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:7"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:6"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:de.suse.suse121:tst:10" version="1" check="at least one" comment="file /etc/login.defs must have a line that matches ^PASS_MIN_DAYS.*0">
+        <ind-def:object object_ref="oval:de.suse.suse121:obj:7"/>
+        <ind-def:state state_ref="oval:de.suse.suse121:ste:5"/>
+      </ind-def:textfilecontent54_test>
+    </tests>
+    <objects>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:9" version="1" comment="Non-comment lines in /etc/default/passwd">
+        <ind-def:filepath>/etc/default/passwd</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:8" version="1" comment="Non-comment lines in /etc/pam.d/common-passwd">
+        <ind-def:filepath>/etc/pam.d/common-passwd</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:7" version="1" comment="Non-comment lines in /etc/login.defs">
+        <ind-def:filepath>/etc/login.defs</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:6" version="1" comment="Non-comment lines in /proc/sys/kernel/sysrq">
+        <ind-def:filepath>/proc/sys/kernel/sysrq</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:5" version="1" comment="Non-comment lines in /proc/sys/net/ipv6/conf/default/forwarding">
+        <ind-def:filepath>/proc/sys/net/ipv6/conf/default/forwarding</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:4" version="1" comment="Non-comment lines in /proc/sys/net/ipv6/conf/all/forwarding">
+        <ind-def:filepath>/proc/sys/net/ipv6/conf/all/forwarding</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:3" version="1" comment="Kernel configuration entry CONFIG_SYN_COOKIES">
+        <ind-def:filepath>/usr/src/linux/.config</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">(CONFIG_SYN_COOKIES.*)</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:2" version="1" comment="Non-comment lines in /proc/sys/net/ipv4/tcp_syncookies">
+        <ind-def:filepath>/proc/sys/net/ipv4/tcp_syncookies</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:14" version="1" comment="Non-comment lines in /etc/sysconfig/services">
+        <ind-def:filepath>/etc/sysconfig/services</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:13" version="1" comment="Non-comment lines in /etc/sysconfig/security">
+        <ind-def:filepath>/etc/sysconfig/security</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:12" version="1" comment="Non-comment lines in /etc/sysconfig/displaymanager">
+        <ind-def:filepath>/etc/sysconfig/displaymanager</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:11" version="1" comment="Non-comment lines in /etc/sysconfig/dhcpd">
+        <ind-def:filepath>/etc/sysconfig/dhcpd</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:10" version="1" comment="Non-comment lines in /etc/pam.d/common-password">
+        <ind-def:filepath>/etc/pam.d/common-password</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:de.suse.suse121:obj:1" version="1" comment="Non-comment lines in /proc/sys/net/ipv4/ip_forward">
+        <ind-def:filepath>/proc/sys/net/ipv4/ip_forward</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+    </objects>
+    <states>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:9" version="1" comment="The match of ^FAIL_DELAY.*0">
+        <ind-def:subexpression operation="pattern match">^FAIL_DELAY.*0</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:8" version="1" comment="The match of ^remember=">
+        <ind-def:subexpression operation="pattern match">^remember=</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:7" version="1" comment="The match of ^minlen=6">
+        <ind-def:subexpression operation="pattern match">^minlen=6</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:6" version="1" comment="The match of ^PASS_WARN_AGE.*7">
+        <ind-def:subexpression operation="pattern match">^PASS_WARN_AGE.*7</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:5" version="1" comment="The match of ^PASS_MIN_DAYS.*0">
+        <ind-def:subexpression operation="pattern match">^PASS_MIN_DAYS.*0</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:4" version="1" comment="The match of ^PASS_MAX_DAYS.*99999">
+        <ind-def:subexpression operation="pattern match">^PASS_MAX_DAYS.*99999</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:3" version="1" comment="The match of CONFIG_SYN_COOKIES=y">
+        <ind-def:subexpression operation="pattern match">CONFIG_SYN_COOKIES=y</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:28" version="1" comment="The match of ^DISABLE_STOP_ON_REMOVAL.*yes">
+        <ind-def:subexpression operation="pattern match">^DISABLE_STOP_ON_REMOVAL.*yes</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:27" version="1" comment="The match of ^DISABLE_RESTART_ON_UPDATE.*yes">
+        <ind-def:subexpression operation="pattern match">^DISABLE_RESTART_ON_UPDATE.*yes</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:26" version="1" comment="The match of ^CHECK_SIGNATURES.*yes">
+        <ind-def:subexpression operation="pattern match">^CHECK_SIGNATURES.*yes</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:25" version="1" comment="The match of ^CHECK_PERMISSIONS.*set">
+        <ind-def:subexpression operation="pattern match">^CHECK_PERMISSIONS.*set</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:24" version="1" comment="The match of ^DISPLAYMANAGER_ROOT_LOGIN_REMOTE.*no">
+        <ind-def:subexpression operation="pattern match">^DISPLAYMANAGER_ROOT_LOGIN_REMOTE.*no</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:23" version="1" comment="The match of ^DISPLAYMANAGER_REMOTE_ACCESS.*no">
+        <ind-def:subexpression operation="pattern match">^DISPLAYMANAGER_REMOTE_ACCESS.*no</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:22" version="1" comment="The match of ^DHCPD6_RUN_AS.*dhcpd">
+        <ind-def:subexpression operation="pattern match">^DHCPD6_RUN_AS.*dhcpd</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:21" version="1" comment="The match of ^DHCPD6_RUN_CHROOTED.*yes">
+        <ind-def:subexpression operation="pattern match">^DHCPD6_RUN_CHROOTED.*yes</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:20" version="1" comment="The match of ^DHCPD_RUN_AS.*dhcpd">
+        <ind-def:subexpression operation="pattern match">^DHCPD_RUN_AS.*dhcpd</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:2" version="1" comment="The match of 1">
+        <ind-def:subexpression operation="pattern match">1</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:19" version="1" comment="The match of ^DHCPD_RUN_CHROOTED.*yes">
+        <ind-def:subexpression operation="pattern match">^DHCPD_RUN_CHROOTED.*yes</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:18" version="1" comment="The match of remember=">
+        <ind-def:subexpression operation="pattern match">remember=</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:17" version="1" comment="The match of minlen=6">
+        <ind-def:subexpression operation="pattern match">minlen=6</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:16" version="1" comment="The match of ^CRYPT_FILES=des">
+        <ind-def:subexpression operation="pattern match">^CRYPT_FILES=des</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:15" version="1" comment="The match of ^CRYPT_FILES=md5">
+        <ind-def:subexpression operation="pattern match">^CRYPT_FILES=md5</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:14" version="1" comment="The match of ^GID_MAX.*60000">
+        <ind-def:subexpression operation="pattern match">^GID_MAX.*60000</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:13" version="1" comment="The match of ^GID_MIN.*1000">
+        <ind-def:subexpression operation="pattern match">^GID_MIN.*1000</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:12" version="1" comment="The match of ^UID_MAX.*60000">
+        <ind-def:subexpression operation="pattern match">^UID_MAX.*60000</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:11" version="1" comment="The match of ^UID_MIN.*1000">
+        <ind-def:subexpression operation="pattern match">^UID_MIN.*1000</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:10" version="1" comment="The match of ^FAIL_DELAY">
+        <ind-def:subexpression operation="pattern match">^FAIL_DELAY</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:de.suse.suse121:ste:1" version="1" comment="The match of 0">
+        <ind-def:subexpression operation="pattern match">0</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+    </states>
+  </oval_definitions>
+  <results>
+    <system>
+      <definitions>
+        <definition definition_id="oval:de.suse.suse121:def:9" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:9" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:6" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:6" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:5" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:5" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:43" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:43" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:42" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:42" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:41" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:41" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:40" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:40" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:4" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:4" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:39" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:39" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:38" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:38" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:33" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:33" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:32" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:32" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:31" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:31" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:30" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:30" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:3" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:3" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:29" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:29" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:25" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:25" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:24" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:24" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:23" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:23" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:22" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:22" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:2" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:2" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:19" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:19" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:18" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:18" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:17" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:17" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:16" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:16" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:13" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:13" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:12" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:de.suse.suse121:tst:12" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:11" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:11" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:de.suse.suse121:def:10" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:de.suse.suse121:tst:10" version="1" result="true"/>
+          </criteria>
+        </definition>
+      </definitions>
+      <tests>
+        <test test_id="oval:de.suse.suse121:tst:10" version="1" check="at least one" result="true">
+          <tested_item item_id="1057525" result="false"/>
+          <tested_item item_id="1057526" result="false"/>
+          <tested_item item_id="1057527" result="false"/>
+          <tested_item item_id="1057528" result="false"/>
+          <tested_item item_id="1057529" result="false"/>
+          <tested_item item_id="10575210" result="false"/>
+          <tested_item item_id="10575211" result="false"/>
+          <tested_item item_id="10575212" result="false"/>
+          <tested_item item_id="10575213" result="false"/>
+          <tested_item item_id="10575214" result="false"/>
+          <tested_item item_id="10575215" result="false"/>
+          <tested_item item_id="10575216" result="false"/>
+          <tested_item item_id="10575217" result="false"/>
+          <tested_item item_id="10575218" result="false"/>
+          <tested_item item_id="10575219" result="false"/>
+          <tested_item item_id="10575220" result="false"/>
+          <tested_item item_id="10575221" result="false"/>
+          <tested_item item_id="10575222" result="true"/>
+          <tested_item item_id="10575223" result="false"/>
+          <tested_item item_id="10575224" result="false"/>
+          <tested_item item_id="10575225" result="false"/>
+          <tested_item item_id="10575226" result="false"/>
+          <tested_item item_id="10575227" result="false"/>
+          <tested_item item_id="10575228" result="false"/>
+          <tested_item item_id="10575229" result="false"/>
+          <tested_item item_id="10575230" result="false"/>
+          <tested_item item_id="10575231" result="false"/>
+          <tested_item item_id="10575232" result="false"/>
+          <tested_item item_id="10575233" result="false"/>
+          <tested_item item_id="10575234" result="false"/>
+          <tested_item item_id="10575235" result="false"/>
+          <tested_item item_id="10575236" result="false"/>
+          <tested_item item_id="10575237" result="false"/>
+          <tested_item item_id="10575238" result="false"/>
+          <tested_item item_id="10575239" result="false"/>
+          <tested_item item_id="10575241" result="false"/>
+          <tested_item item_id="10575240" result="false"/>
+          <tested_item item_id="10575242" result="false"/>
+          <tested_item item_id="10575243" result="false"/>
+          <tested_item item_id="10575244" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:11" version="1" check="at least one" result="true">
+          <tested_item item_id="1057525" result="false"/>
+          <tested_item item_id="1057526" result="false"/>
+          <tested_item item_id="1057527" result="false"/>
+          <tested_item item_id="1057528" result="false"/>
+          <tested_item item_id="1057529" result="false"/>
+          <tested_item item_id="10575210" result="false"/>
+          <tested_item item_id="10575211" result="false"/>
+          <tested_item item_id="10575212" result="false"/>
+          <tested_item item_id="10575213" result="false"/>
+          <tested_item item_id="10575214" result="false"/>
+          <tested_item item_id="10575215" result="false"/>
+          <tested_item item_id="10575216" result="false"/>
+          <tested_item item_id="10575217" result="false"/>
+          <tested_item item_id="10575218" result="false"/>
+          <tested_item item_id="10575219" result="false"/>
+          <tested_item item_id="10575220" result="false"/>
+          <tested_item item_id="10575221" result="false"/>
+          <tested_item item_id="10575222" result="false"/>
+          <tested_item item_id="10575223" result="true"/>
+          <tested_item item_id="10575224" result="false"/>
+          <tested_item item_id="10575225" result="false"/>
+          <tested_item item_id="10575226" result="false"/>
+          <tested_item item_id="10575227" result="false"/>
+          <tested_item item_id="10575228" result="false"/>
+          <tested_item item_id="10575229" result="false"/>
+          <tested_item item_id="10575230" result="false"/>
+          <tested_item item_id="10575231" result="false"/>
+          <tested_item item_id="10575232" result="false"/>
+          <tested_item item_id="10575233" result="false"/>
+          <tested_item item_id="10575234" result="false"/>
+          <tested_item item_id="10575235" result="false"/>
+          <tested_item item_id="10575236" result="false"/>
+          <tested_item item_id="10575237" result="false"/>
+          <tested_item item_id="10575238" result="false"/>
+          <tested_item item_id="10575239" result="false"/>
+          <tested_item item_id="10575241" result="false"/>
+          <tested_item item_id="10575240" result="false"/>
+          <tested_item item_id="10575242" result="false"/>
+          <tested_item item_id="10575243" result="false"/>
+          <tested_item item_id="10575244" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:12" version="1" check="at least one" result="false">
+          <tested_item item_id="10575245" result="false"/>
+          <tested_item item_id="10575246" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:13" version="1" check="at least one" result="false">
+          <tested_item item_id="10575245" result="false"/>
+          <tested_item item_id="10575246" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:16" version="1" check="none satisfy" result="true">
+          <tested_item item_id="1057525" result="false"/>
+          <tested_item item_id="1057526" result="false"/>
+          <tested_item item_id="1057527" result="false"/>
+          <tested_item item_id="1057528" result="false"/>
+          <tested_item item_id="1057529" result="false"/>
+          <tested_item item_id="10575210" result="false"/>
+          <tested_item item_id="10575211" result="false"/>
+          <tested_item item_id="10575212" result="false"/>
+          <tested_item item_id="10575213" result="false"/>
+          <tested_item item_id="10575214" result="false"/>
+          <tested_item item_id="10575215" result="false"/>
+          <tested_item item_id="10575216" result="false"/>
+          <tested_item item_id="10575217" result="false"/>
+          <tested_item item_id="10575218" result="false"/>
+          <tested_item item_id="10575219" result="false"/>
+          <tested_item item_id="10575220" result="false"/>
+          <tested_item item_id="10575221" result="false"/>
+          <tested_item item_id="10575222" result="false"/>
+          <tested_item item_id="10575223" result="false"/>
+          <tested_item item_id="10575224" result="false"/>
+          <tested_item item_id="10575225" result="false"/>
+          <tested_item item_id="10575226" result="false"/>
+          <tested_item item_id="10575227" result="false"/>
+          <tested_item item_id="10575228" result="false"/>
+          <tested_item item_id="10575229" result="false"/>
+          <tested_item item_id="10575230" result="false"/>
+          <tested_item item_id="10575231" result="false"/>
+          <tested_item item_id="10575232" result="false"/>
+          <tested_item item_id="10575233" result="false"/>
+          <tested_item item_id="10575234" result="false"/>
+          <tested_item item_id="10575235" result="false"/>
+          <tested_item item_id="10575236" result="false"/>
+          <tested_item item_id="10575237" result="false"/>
+          <tested_item item_id="10575238" result="false"/>
+          <tested_item item_id="10575239" result="false"/>
+          <tested_item item_id="10575241" result="false"/>
+          <tested_item item_id="10575240" result="false"/>
+          <tested_item item_id="10575242" result="false"/>
+          <tested_item item_id="10575243" result="false"/>
+          <tested_item item_id="10575244" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:17" version="1" check="at least one" result="true">
+          <tested_item item_id="1057525" result="true"/>
+          <tested_item item_id="1057526" result="false"/>
+          <tested_item item_id="1057527" result="false"/>
+          <tested_item item_id="1057528" result="false"/>
+          <tested_item item_id="1057529" result="false"/>
+          <tested_item item_id="10575210" result="false"/>
+          <tested_item item_id="10575211" result="false"/>
+          <tested_item item_id="10575212" result="false"/>
+          <tested_item item_id="10575213" result="false"/>
+          <tested_item item_id="10575214" result="false"/>
+          <tested_item item_id="10575215" result="false"/>
+          <tested_item item_id="10575216" result="false"/>
+          <tested_item item_id="10575217" result="false"/>
+          <tested_item item_id="10575218" result="false"/>
+          <tested_item item_id="10575219" result="false"/>
+          <tested_item item_id="10575220" result="false"/>
+          <tested_item item_id="10575221" result="false"/>
+          <tested_item item_id="10575222" result="false"/>
+          <tested_item item_id="10575223" result="false"/>
+          <tested_item item_id="10575224" result="false"/>
+          <tested_item item_id="10575225" result="false"/>
+          <tested_item item_id="10575226" result="false"/>
+          <tested_item item_id="10575227" result="false"/>
+          <tested_item item_id="10575228" result="false"/>
+          <tested_item item_id="10575229" result="false"/>
+          <tested_item item_id="10575230" result="false"/>
+          <tested_item item_id="10575231" result="false"/>
+          <tested_item item_id="10575232" result="false"/>
+          <tested_item item_id="10575233" result="false"/>
+          <tested_item item_id="10575234" result="false"/>
+          <tested_item item_id="10575235" result="false"/>
+          <tested_item item_id="10575236" result="false"/>
+          <tested_item item_id="10575237" result="false"/>
+          <tested_item item_id="10575238" result="false"/>
+          <tested_item item_id="10575239" result="false"/>
+          <tested_item item_id="10575241" result="false"/>
+          <tested_item item_id="10575240" result="false"/>
+          <tested_item item_id="10575242" result="false"/>
+          <tested_item item_id="10575243" result="false"/>
+          <tested_item item_id="10575244" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:18" version="1" check="at least one" result="false"/>
+        <test test_id="oval:de.suse.suse121:tst:19" version="1" check="at least one" result="false"/>
+        <test test_id="oval:de.suse.suse121:tst:2" version="1" check="at least one" result="true">
+          <tested_item item_id="1057521" result="true"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:22" version="1" check="at least one" result="true">
+          <tested_item item_id="1057525" result="false"/>
+          <tested_item item_id="1057526" result="false"/>
+          <tested_item item_id="1057527" result="false"/>
+          <tested_item item_id="1057528" result="false"/>
+          <tested_item item_id="1057529" result="false"/>
+          <tested_item item_id="10575210" result="false"/>
+          <tested_item item_id="10575211" result="false"/>
+          <tested_item item_id="10575212" result="false"/>
+          <tested_item item_id="10575213" result="false"/>
+          <tested_item item_id="10575214" result="false"/>
+          <tested_item item_id="10575215" result="false"/>
+          <tested_item item_id="10575216" result="false"/>
+          <tested_item item_id="10575217" result="false"/>
+          <tested_item item_id="10575218" result="false"/>
+          <tested_item item_id="10575219" result="false"/>
+          <tested_item item_id="10575220" result="false"/>
+          <tested_item item_id="10575221" result="false"/>
+          <tested_item item_id="10575222" result="false"/>
+          <tested_item item_id="10575223" result="false"/>
+          <tested_item item_id="10575224" result="true"/>
+          <tested_item item_id="10575225" result="false"/>
+          <tested_item item_id="10575226" result="false"/>
+          <tested_item item_id="10575227" result="false"/>
+          <tested_item item_id="10575228" result="false"/>
+          <tested_item item_id="10575229" result="false"/>
+          <tested_item item_id="10575230" result="false"/>
+          <tested_item item_id="10575231" result="false"/>
+          <tested_item item_id="10575232" result="false"/>
+          <tested_item item_id="10575233" result="false"/>
+          <tested_item item_id="10575234" result="false"/>
+          <tested_item item_id="10575235" result="false"/>
+          <tested_item item_id="10575236" result="false"/>
+          <tested_item item_id="10575237" result="false"/>
+          <tested_item item_id="10575238" result="false"/>
+          <tested_item item_id="10575239" result="false"/>
+          <tested_item item_id="10575241" result="false"/>
+          <tested_item item_id="10575240" result="false"/>
+          <tested_item item_id="10575242" result="false"/>
+          <tested_item item_id="10575243" result="false"/>
+          <tested_item item_id="10575244" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:23" version="1" check="at least one" result="true">
+          <tested_item item_id="1057525" result="false"/>
+          <tested_item item_id="1057526" result="false"/>
+          <tested_item item_id="1057527" result="false"/>
+          <tested_item item_id="1057528" result="false"/>
+          <tested_item item_id="1057529" result="false"/>
+          <tested_item item_id="10575210" result="false"/>
+          <tested_item item_id="10575211" result="false"/>
+          <tested_item item_id="10575212" result="false"/>
+          <tested_item item_id="10575213" result="false"/>
+          <tested_item item_id="10575214" result="false"/>
+          <tested_item item_id="10575215" result="false"/>
+          <tested_item item_id="10575216" result="false"/>
+          <tested_item item_id="10575217" result="false"/>
+          <tested_item item_id="10575218" result="false"/>
+          <tested_item item_id="10575219" result="false"/>
+          <tested_item item_id="10575220" result="false"/>
+          <tested_item item_id="10575221" result="false"/>
+          <tested_item item_id="10575222" result="false"/>
+          <tested_item item_id="10575223" result="false"/>
+          <tested_item item_id="10575224" result="false"/>
+          <tested_item item_id="10575225" result="true"/>
+          <tested_item item_id="10575226" result="false"/>
+          <tested_item item_id="10575227" result="false"/>
+          <tested_item item_id="10575228" result="false"/>
+          <tested_item item_id="10575229" result="false"/>
+          <tested_item item_id="10575230" result="false"/>
+          <tested_item item_id="10575231" result="false"/>
+          <tested_item item_id="10575232" result="false"/>
+          <tested_item item_id="10575233" result="false"/>
+          <tested_item item_id="10575234" result="false"/>
+          <tested_item item_id="10575235" result="false"/>
+          <tested_item item_id="10575236" result="false"/>
+          <tested_item item_id="10575237" result="false"/>
+          <tested_item item_id="10575238" result="false"/>
+          <tested_item item_id="10575239" result="false"/>
+          <tested_item item_id="10575241" result="false"/>
+          <tested_item item_id="10575240" result="false"/>
+          <tested_item item_id="10575242" result="false"/>
+          <tested_item item_id="10575243" result="false"/>
+          <tested_item item_id="10575244" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:24" version="1" check="at least one" result="true">
+          <tested_item item_id="1057525" result="false"/>
+          <tested_item item_id="1057526" result="false"/>
+          <tested_item item_id="1057527" result="false"/>
+          <tested_item item_id="1057528" result="false"/>
+          <tested_item item_id="1057529" result="false"/>
+          <tested_item item_id="10575210" result="false"/>
+          <tested_item item_id="10575211" result="false"/>
+          <tested_item item_id="10575212" result="false"/>
+          <tested_item item_id="10575213" result="false"/>
+          <tested_item item_id="10575214" result="false"/>
+          <tested_item item_id="10575215" result="false"/>
+          <tested_item item_id="10575216" result="false"/>
+          <tested_item item_id="10575217" result="false"/>
+          <tested_item item_id="10575218" result="false"/>
+          <tested_item item_id="10575219" result="false"/>
+          <tested_item item_id="10575220" result="false"/>
+          <tested_item item_id="10575221" result="false"/>
+          <tested_item item_id="10575222" result="false"/>
+          <tested_item item_id="10575223" result="false"/>
+          <tested_item item_id="10575224" result="false"/>
+          <tested_item item_id="10575225" result="false"/>
+          <tested_item item_id="10575226" result="false"/>
+          <tested_item item_id="10575227" result="false"/>
+          <tested_item item_id="10575228" result="true"/>
+          <tested_item item_id="10575229" result="false"/>
+          <tested_item item_id="10575230" result="false"/>
+          <tested_item item_id="10575231" result="false"/>
+          <tested_item item_id="10575232" result="false"/>
+          <tested_item item_id="10575233" result="false"/>
+          <tested_item item_id="10575234" result="false"/>
+          <tested_item item_id="10575235" result="false"/>
+          <tested_item item_id="10575236" result="false"/>
+          <tested_item item_id="10575237" result="false"/>
+          <tested_item item_id="10575238" result="false"/>
+          <tested_item item_id="10575239" result="false"/>
+          <tested_item item_id="10575241" result="false"/>
+          <tested_item item_id="10575240" result="false"/>
+          <tested_item item_id="10575242" result="false"/>
+          <tested_item item_id="10575243" result="false"/>
+          <tested_item item_id="10575244" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:25" version="1" check="at least one" result="true">
+          <tested_item item_id="1057525" result="false"/>
+          <tested_item item_id="1057526" result="false"/>
+          <tested_item item_id="1057527" result="false"/>
+          <tested_item item_id="1057528" result="false"/>
+          <tested_item item_id="1057529" result="false"/>
+          <tested_item item_id="10575210" result="false"/>
+          <tested_item item_id="10575211" result="false"/>
+          <tested_item item_id="10575212" result="false"/>
+          <tested_item item_id="10575213" result="false"/>
+          <tested_item item_id="10575214" result="false"/>
+          <tested_item item_id="10575215" result="false"/>
+          <tested_item item_id="10575216" result="false"/>
+          <tested_item item_id="10575217" result="false"/>
+          <tested_item item_id="10575218" result="false"/>
+          <tested_item item_id="10575219" result="false"/>
+          <tested_item item_id="10575220" result="false"/>
+          <tested_item item_id="10575221" result="false"/>
+          <tested_item item_id="10575222" result="false"/>
+          <tested_item item_id="10575223" result="false"/>
+          <tested_item item_id="10575224" result="false"/>
+          <tested_item item_id="10575225" result="false"/>
+          <tested_item item_id="10575226" result="false"/>
+          <tested_item item_id="10575227" result="false"/>
+          <tested_item item_id="10575228" result="false"/>
+          <tested_item item_id="10575229" result="true"/>
+          <tested_item item_id="10575230" result="false"/>
+          <tested_item item_id="10575231" result="false"/>
+          <tested_item item_id="10575232" result="false"/>
+          <tested_item item_id="10575233" result="false"/>
+          <tested_item item_id="10575234" result="false"/>
+          <tested_item item_id="10575235" result="false"/>
+          <tested_item item_id="10575236" result="false"/>
+          <tested_item item_id="10575237" result="false"/>
+          <tested_item item_id="10575238" result="false"/>
+          <tested_item item_id="10575239" result="false"/>
+          <tested_item item_id="10575241" result="false"/>
+          <tested_item item_id="10575240" result="false"/>
+          <tested_item item_id="10575242" result="false"/>
+          <tested_item item_id="10575243" result="false"/>
+          <tested_item item_id="10575244" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:29" version="1" check="at least one" result="false">
+          <tested_item item_id="10575247" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:3" version="1" check="at least one" result="true">
+          <tested_item item_id="1057522" result="true"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:30" version="1" check="none satisfy" result="false"/>
+        <test test_id="oval:de.suse.suse121:tst:31" version="1" check="none satisfy" result="false"/>
+        <test test_id="oval:de.suse.suse121:tst:32" version="1" check="at least one" result="false">
+          <tested_item item_id="10575248" result="false"/>
+          <tested_item item_id="10575249" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:33" version="1" check="at least one" result="false">
+          <tested_item item_id="10575248" result="false"/>
+          <tested_item item_id="10575249" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:38" version="1" check="at least one" result="false"/>
+        <test test_id="oval:de.suse.suse121:tst:39" version="1" check="at least one" result="false"/>
+        <test test_id="oval:de.suse.suse121:tst:4" version="1" check="at least one" result="true">
+          <tested_item item_id="1057523" result="true"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:40" version="1" check="at least one" result="false"/>
+        <test test_id="oval:de.suse.suse121:tst:41" version="1" check="at least one" result="false"/>
+        <test test_id="oval:de.suse.suse121:tst:42" version="1" check="at least one" result="false">
+          <tested_item item_id="10575250" result="false"/>
+          <tested_item item_id="10575251" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:43" version="1" check="at least one" result="false">
+          <tested_item item_id="10575250" result="false"/>
+          <tested_item item_id="10575251" result="false"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:5" version="1" check="at least one" result="true">
+          <tested_item item_id="1057524" result="true"/>
+        </test>
+        <test test_id="oval:de.suse.suse121:tst:6" version="1" check="at least one" result="false"/>
+        <test test_id="oval:de.suse.suse121:tst:9" version="1" check="at least one" result="true">
+          <tested_item item_id="1057525" result="false"/>
+          <tested_item item_id="1057526" result="false"/>
+          <tested_item item_id="1057527" result="false"/>
+          <tested_item item_id="1057528" result="false"/>
+          <tested_item item_id="1057529" result="false"/>
+          <tested_item item_id="10575210" result="false"/>
+          <tested_item item_id="10575211" result="false"/>
+          <tested_item item_id="10575212" result="false"/>
+          <tested_item item_id="10575213" result="false"/>
+          <tested_item item_id="10575214" result="false"/>
+          <tested_item item_id="10575215" result="false"/>
+          <tested_item item_id="10575216" result="false"/>
+          <tested_item item_id="10575217" result="false"/>
+          <tested_item item_id="10575218" result="false"/>
+          <tested_item item_id="10575219" result="false"/>
+          <tested_item item_id="10575220" result="false"/>
+          <tested_item item_id="10575221" result="true"/>
+          <tested_item item_id="10575222" result="false"/>
+          <tested_item item_id="10575223" result="false"/>
+          <tested_item item_id="10575224" result="false"/>
+          <tested_item item_id="10575225" result="false"/>
+          <tested_item item_id="10575226" result="false"/>
+          <tested_item item_id="10575227" result="false"/>
+          <tested_item item_id="10575228" result="false"/>
+          <tested_item item_id="10575229" result="false"/>
+          <tested_item item_id="10575230" result="false"/>
+          <tested_item item_id="10575231" result="false"/>
+          <tested_item item_id="10575232" result="false"/>
+          <tested_item item_id="10575233" result="false"/>
+          <tested_item item_id="10575234" result="false"/>
+          <tested_item item_id="10575235" result="false"/>
+          <tested_item item_id="10575236" result="false"/>
+          <tested_item item_id="10575237" result="false"/>
+          <tested_item item_id="10575238" result="false"/>
+          <tested_item item_id="10575239" result="false"/>
+          <tested_item item_id="10575241" result="false"/>
+          <tested_item item_id="10575240" result="false"/>
+          <tested_item item_id="10575242" result="false"/>
+          <tested_item item_id="10575243" result="false"/>
+          <tested_item item_id="10575244" result="false"/>
+        </test>
+      </tests>
+      <oval_system_characteristics xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:unix-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix" xmlns:ind-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent" xmlns:lin-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux" xmlns="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5 oval-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent independent-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix unix-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux linux-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+        <generator>
+          <oval:product_name>cpe:/a:open-scap:oscap</oval:product_name>
+          <oval:schema_version>5.9</oval:schema_version>
+          <oval:timestamp>2017-02-17T14:06:40</oval:timestamp>
+        </generator>
+        <system_info>
+          <os_name>Linux</os_name>
+          <os_version>#1 SMP Tue Oct 18 12:21:38 UTC 2016 (42e0a66)</os_version>
+          <architecture>x86_64</architecture>
+          <primary_host_name>minionsles12sp1</primary_host_name>
+          <interfaces>
+            <interface>
+              <interface_name>lo</interface_name>
+              <ip_address>127.0.0.1</ip_address>
+              <mac_address>00:00:00:00:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth0</interface_name>
+              <ip_address>192.168.127.37</ip_address>
+              <mac_address>2A:C5:B3:13:1B:FE</mac_address>
+            </interface>
+            <interface>
+              <interface_name>lo</interface_name>
+              <ip_address>::1</ip_address>
+              <mac_address>00:00:00:00:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth0</interface_name>
+              <ip_address>fe80::28c5:b3ff:fe13:1bfe</ip_address>
+              <mac_address>2A:C5:B3:13:1B:FE</mac_address>
+            </interface>
+          </interfaces>
+        </system_info>
+        <collected_objects>
+          <object id="oval:de.suse.suse121:obj:1" version="1" flag="complete">
+            <reference item_ref="1057521"/>
+          </object>
+          <object id="oval:de.suse.suse121:obj:10" version="1" flag="complete">
+            <reference item_ref="10575245"/>
+            <reference item_ref="10575246"/>
+          </object>
+          <object id="oval:de.suse.suse121:obj:11" version="1" flag="does not exist"/>
+          <object id="oval:de.suse.suse121:obj:12" version="1" flag="does not exist"/>
+          <object id="oval:de.suse.suse121:obj:13" version="1" flag="complete">
+            <reference item_ref="10575248"/>
+            <reference item_ref="10575249"/>
+          </object>
+          <object id="oval:de.suse.suse121:obj:14" version="1" flag="complete">
+            <reference item_ref="10575250"/>
+            <reference item_ref="10575251"/>
+          </object>
+          <object id="oval:de.suse.suse121:obj:2" version="1" flag="complete">
+            <reference item_ref="1057522"/>
+          </object>
+          <object id="oval:de.suse.suse121:obj:3" version="1" flag="does not exist"/>
+          <object id="oval:de.suse.suse121:obj:4" version="1" flag="complete">
+            <reference item_ref="1057523"/>
+          </object>
+          <object id="oval:de.suse.suse121:obj:5" version="1" flag="complete">
+            <reference item_ref="1057524"/>
+          </object>
+          <object id="oval:de.suse.suse121:obj:6" version="1" flag="complete">
+            <reference item_ref="10575247"/>
+          </object>
+          <object id="oval:de.suse.suse121:obj:7" version="1" flag="complete">
+            <reference item_ref="1057525"/>
+            <reference item_ref="1057526"/>
+            <reference item_ref="1057527"/>
+            <reference item_ref="1057528"/>
+            <reference item_ref="1057529"/>
+            <reference item_ref="10575210"/>
+            <reference item_ref="10575211"/>
+            <reference item_ref="10575212"/>
+            <reference item_ref="10575213"/>
+            <reference item_ref="10575214"/>
+            <reference item_ref="10575215"/>
+            <reference item_ref="10575216"/>
+            <reference item_ref="10575217"/>
+            <reference item_ref="10575218"/>
+            <reference item_ref="10575219"/>
+            <reference item_ref="10575220"/>
+            <reference item_ref="10575221"/>
+            <reference item_ref="10575222"/>
+            <reference item_ref="10575223"/>
+            <reference item_ref="10575224"/>
+            <reference item_ref="10575225"/>
+            <reference item_ref="10575226"/>
+            <reference item_ref="10575227"/>
+            <reference item_ref="10575228"/>
+            <reference item_ref="10575229"/>
+            <reference item_ref="10575230"/>
+            <reference item_ref="10575231"/>
+            <reference item_ref="10575232"/>
+            <reference item_ref="10575233"/>
+            <reference item_ref="10575234"/>
+            <reference item_ref="10575235"/>
+            <reference item_ref="10575236"/>
+            <reference item_ref="10575237"/>
+            <reference item_ref="10575238"/>
+            <reference item_ref="10575239"/>
+            <reference item_ref="10575241"/>
+            <reference item_ref="10575240"/>
+            <reference item_ref="10575242"/>
+            <reference item_ref="10575243"/>
+            <reference item_ref="10575244"/>
+          </object>
+          <object id="oval:de.suse.suse121:obj:9" version="1" flag="does not exist"/>
+        </collected_objects>
+        <system_data>
+          <ind-sys:textfilecontent_item id="1057529" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">5</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>SYSLOG_SG_ENAB		yes
+</ind-sys:text>
+            <ind-sys:subexpression>SYSLOG_SG_ENAB		yes</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="1057528" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">4</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>SYSLOG_SU_ENAB		yes</ind-sys:text>
+            <ind-sys:subexpression>SYSLOG_SU_ENAB		yes</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="1057527" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">3</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>LOG_OK_LOGINS		no
+</ind-sys:text>
+            <ind-sys:subexpression>LOG_OK_LOGINS		no</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="1057526" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">2</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>LOG_UNKFAIL_ENAB	no
+</ind-sys:text>
+            <ind-sys:subexpression>LOG_UNKFAIL_ENAB	no</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575251" status="exists">
+            <ind-sys:filepath>/etc/sysconfig/services</ind-sys:filepath>
+            <ind-sys:path>/etc/sysconfig</ind-sys:path>
+            <ind-sys:filename>services</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">2</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>DISABLE_STOP_ON_REMOVAL="no"
+</ind-sys:text>
+            <ind-sys:subexpression>DISABLE_STOP_ON_REMOVAL="no"</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575250" status="exists">
+            <ind-sys:filepath>/etc/sysconfig/services</ind-sys:filepath>
+            <ind-sys:path>/etc/sysconfig</ind-sys:path>
+            <ind-sys:filename>services</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">1</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>DISABLE_RESTART_ON_UPDATE="no"
+</ind-sys:text>
+            <ind-sys:subexpression>DISABLE_RESTART_ON_UPDATE="no"</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="1057525" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">1</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>FAIL_DELAY		3
+</ind-sys:text>
+            <ind-sys:subexpression>FAIL_DELAY		3</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575249" status="exists">
+            <ind-sys:filepath>/etc/sysconfig/security</ind-sys:filepath>
+            <ind-sys:path>/etc/sysconfig</ind-sys:path>
+            <ind-sys:filename>security</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">2</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>PERMISSION_FSCAPS=""
+</ind-sys:text>
+            <ind-sys:subexpression>PERMISSION_FSCAPS=""</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575248" status="exists">
+            <ind-sys:filepath>/etc/sysconfig/security</ind-sys:filepath>
+            <ind-sys:path>/etc/sysconfig</ind-sys:path>
+            <ind-sys:filename>security</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">1</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>PERMISSION_SECURITY="easy local"
+</ind-sys:text>
+            <ind-sys:subexpression>PERMISSION_SECURITY="easy local"</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575247" status="exists">
+            <ind-sys:filepath>/proc/sys/kernel/sysrq</ind-sys:filepath>
+            <ind-sys:path>/proc/sys/kernel</ind-sys:path>
+            <ind-sys:filename>sysrq</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">1</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>184
+</ind-sys:text>
+            <ind-sys:subexpression>184</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575246" status="exists">
+            <ind-sys:filepath>/etc/pam.d/common-password</ind-sys:filepath>
+            <ind-sys:path>/etc/pam.d</ind-sys:path>
+            <ind-sys:filename>common-password</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">2</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>password	required	pam_unix.so	use_authtok nullok shadow try_first_pass 
+</ind-sys:text>
+            <ind-sys:subexpression>password	required	pam_unix.so	use_authtok nullok shadow try_first_pass </ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575245" status="exists">
+            <ind-sys:filepath>/etc/pam.d/common-password</ind-sys:filepath>
+            <ind-sys:path>/etc/pam.d</ind-sys:path>
+            <ind-sys:filename>common-password</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">1</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>password	requisite	pam_cracklib.so	</ind-sys:text>
+            <ind-sys:subexpression>password	requisite	pam_cracklib.so	</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575244" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">40</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>USERDEL_POSTCMD         /usr/sbin/userdel-post.local
+
+</ind-sys:text>
+            <ind-sys:subexpression>USERDEL_POSTCMD         /usr/sbin/userdel-post.local</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575243" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">39</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>USERDEL_PRECMD          /usr/sbin/userdel-pre.local
+</ind-sys:text>
+            <ind-sys:subexpression>USERDEL_PRECMD          /usr/sbin/userdel-pre.local</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575242" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">38</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>USERADD_CMD             /usr/sbin/useradd.local
+</ind-sys:text>
+            <ind-sys:subexpression>USERADD_CMD             /usr/sbin/useradd.local</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575241" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">37</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>GROUPADD_CMD             /usr/sbin/groupadd.local
+</ind-sys:text>
+            <ind-sys:subexpression>GROUPADD_CMD             /usr/sbin/groupadd.local</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575240" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">36</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>CHARACTER_CLASS         [ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-]*[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.$-]\?
+</ind-sys:text>
+            <ind-sys:subexpression>CHARACTER_CLASS         [ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-]*[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.$-]\?</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="1057524" status="exists">
+            <ind-sys:filepath>/proc/sys/net/ipv6/conf/default/forwarding</ind-sys:filepath>
+            <ind-sys:path>/proc/sys/net/ipv6/conf/default</ind-sys:path>
+            <ind-sys:filename>forwarding</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">1</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>0
+</ind-sys:text>
+            <ind-sys:subexpression>0</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575239" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">35</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>CREATE_HOME     no
+</ind-sys:text>
+            <ind-sys:subexpression>CREATE_HOME     no</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575238" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">34</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>USERGROUPS_ENAB no
+</ind-sys:text>
+            <ind-sys:subexpression>USERGROUPS_ENAB no</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575237" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">33</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>DEFAULT_HOME	yes
+</ind-sys:text>
+            <ind-sys:subexpression>DEFAULT_HOME	yes</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575236" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">32</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>ENCRYPT_METHOD_NIS DES
+</ind-sys:text>
+            <ind-sys:subexpression>ENCRYPT_METHOD_NIS DES</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575235" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">31</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>ENCRYPT_METHOD SHA512</ind-sys:text>
+            <ind-sys:subexpression>ENCRYPT_METHOD SHA512</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575234" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">30</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>CHFN_RESTRICT		rwh
+</ind-sys:text>
+            <ind-sys:subexpression>CHFN_RESTRICT		rwh</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575233" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">29</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>LOGIN_TIMEOUT		60
+</ind-sys:text>
+            <ind-sys:subexpression>LOGIN_TIMEOUT		60</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575232" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">28</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>LOGIN_RETRIES		3
+</ind-sys:text>
+            <ind-sys:subexpression>LOGIN_RETRIES		3</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575231" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">27</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>SYS_GID_MAX		  499
+</ind-sys:text>
+            <ind-sys:subexpression>SYS_GID_MAX		  499</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575230" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">26</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>SYS_GID_MIN		  100</ind-sys:text>
+            <ind-sys:subexpression>SYS_GID_MIN		  100</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="1057523" status="exists">
+            <ind-sys:filepath>/proc/sys/net/ipv6/conf/all/forwarding</ind-sys:filepath>
+            <ind-sys:path>/proc/sys/net/ipv6/conf/all</ind-sys:path>
+            <ind-sys:filename>forwarding</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">1</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>0
+</ind-sys:text>
+            <ind-sys:subexpression>0</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575229" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">25</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>GID_MAX			60000</ind-sys:text>
+            <ind-sys:subexpression>GID_MAX			60000</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575228" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">24</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>GID_MIN			 1000</ind-sys:text>
+            <ind-sys:subexpression>GID_MIN			 1000</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575227" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">23</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>SYS_UID_MAX		  499
+</ind-sys:text>
+            <ind-sys:subexpression>SYS_UID_MAX		  499</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575226" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">22</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>SYS_UID_MIN		  100</ind-sys:text>
+            <ind-sys:subexpression>SYS_UID_MIN		  100</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575225" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">21</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>UID_MAX			60000</ind-sys:text>
+            <ind-sys:subexpression>UID_MAX			60000</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575224" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">20</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>UID_MIN			 1000</ind-sys:text>
+            <ind-sys:subexpression>UID_MIN			 1000</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575223" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">19</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>PASS_WARN_AGE	7
+</ind-sys:text>
+            <ind-sys:subexpression>PASS_WARN_AGE	7</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575222" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">18</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>PASS_MIN_DAYS	0</ind-sys:text>
+            <ind-sys:subexpression>PASS_MIN_DAYS	0</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575221" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">17</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>PASS_MAX_DAYS	99999</ind-sys:text>
+            <ind-sys:subexpression>PASS_MAX_DAYS	99999</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575220" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">16</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>UMASK		022
+</ind-sys:text>
+            <ind-sys:subexpression>UMASK		022</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="1057522" status="exists">
+            <ind-sys:filepath>/proc/sys/net/ipv4/tcp_syncookies</ind-sys:filepath>
+            <ind-sys:path>/proc/sys/net/ipv4</ind-sys:path>
+            <ind-sys:filename>tcp_syncookies</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">1</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>1
+</ind-sys:text>
+            <ind-sys:subexpression>1</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575219" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">15</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>KILLCHAR	025
+</ind-sys:text>
+            <ind-sys:subexpression>KILLCHAR	025</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575218" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">14</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>ERASECHAR	0177</ind-sys:text>
+            <ind-sys:subexpression>ERASECHAR	0177</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575217" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">13</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>TTYPERM		0620
+</ind-sys:text>
+            <ind-sys:subexpression>TTYPERM		0620</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575216" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">12</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>TTYGROUP	tty</ind-sys:text>
+            <ind-sys:subexpression>TTYGROUP	tty</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575215" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">11</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>ENV_ROOTPATH            /sbin:/bin:/usr/sbin:/usr/bin
+</ind-sys:text>
+            <ind-sys:subexpression>ENV_ROOTPATH            /sbin:/bin:/usr/sbin:/usr/bin</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575214" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">10</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>ENV_PATH	PATH=/usr/local/bin:/usr/bin:/bin
+</ind-sys:text>
+            <ind-sys:subexpression>ENV_PATH	PATH=/usr/local/bin:/usr/bin:/bin</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575213" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">9</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>ENV_SUPATH	PATH=/sbin:/bin:/usr/sbin:/usr/bin</ind-sys:text>
+            <ind-sys:subexpression>ENV_SUPATH	PATH=/sbin:/bin:/usr/sbin:/usr/bin</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575212" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">8</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>HUSHLOGIN_FILE	/etc/hushlogins
+</ind-sys:text>
+            <ind-sys:subexpression>HUSHLOGIN_FILE	/etc/hushlogins</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575211" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">7</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>MOTD_FILE	/etc/motd</ind-sys:text>
+            <ind-sys:subexpression>MOTD_FILE	/etc/motd</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="10575210" status="exists">
+            <ind-sys:filepath>/etc/login.defs</ind-sys:filepath>
+            <ind-sys:path>/etc</ind-sys:path>
+            <ind-sys:filename>login.defs</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">6</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>CONSOLE		/etc/securetty</ind-sys:text>
+            <ind-sys:subexpression>CONSOLE		/etc/securetty</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+          <ind-sys:textfilecontent_item id="1057521" status="exists">
+            <ind-sys:filepath>/proc/sys/net/ipv4/ip_forward</ind-sys:filepath>
+            <ind-sys:path>/proc/sys/net/ipv4</ind-sys:path>
+            <ind-sys:filename>ip_forward</ind-sys:filename>
+            <ind-sys:pattern>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:pattern>
+            <ind-sys:instance datatype="int">1</ind-sys:instance>
+            <ind-sys:line>^[[:space:]]*([^#[:space:]].*[^[:space:]]?)[[:space:]]*$</ind-sys:line>
+            <ind-sys:text>0
+</ind-sys:text>
+            <ind-sys:subexpression>0</ind-sys:subexpression>
+          </ind-sys:textfilecontent_item>
+        </system_data>
+      </oval_system_characteristics>
+    </system>
+  </results>
+</oval_results>
