@@ -4,14 +4,27 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 
 const Link = (props) =>
-  <a href={props.url} target={props.target} onClick={props.handleClick}>
+  <a href={props.url} target={props.target}>
     {
       props.icon ?
       <i className={'fa ' + props.icon}></i>
       : null
     }
     {props.label}
-  </a>;
+  </a>
+  ;
+
+const NodeLink = (props) =>
+  <div className={props.isLeaf ? " leafLink " : " nodeLink "}>
+    {
+      !props.isLeaf ?
+      <div className="showSubMenu" onClick={props.handleClick}>
+        <i className={props.isOpen ? "fa fa-minus-square" : "fa fa-plus-square"}></i>
+      </div>
+      : null
+    }
+    {props.children}
+  </div>;
 
 const Element = React.createClass({
   getInitialState: function() {
@@ -44,6 +57,10 @@ const Element = React.createClass({
     this.setState({open : !this.state.open});
   },
 
+  getUrl: function(element) {
+    return element.submenu ? this.getUrl(element.submenu[0]) : element.primaryUrl;
+  },
+
   render: function() {
     const element = this.props.element;
     return (
@@ -54,9 +71,12 @@ const Element = React.createClass({
           (this.isLeaf(element) ? " leaf " : " node ")
           }
         >
-          <Link url={element.submenu ? "#" : element.primaryUrl}
-              label={element.label} target={element.target}
-              icon={element.icon} handleClick={this.isLeaf(element) ? null : this.toggleView} />
+          <NodeLink isLeaf={this.isLeaf(element)}
+              handleClick={this.isLeaf(element) ? null : this.toggleView}
+              isOpen={this.state.open}>
+              <Link url={this.getUrl(element)}
+                  label={element.label} target={element.target} icon={element.icon} />
+          </NodeLink>
           {
             this.isLeaf(element) ? null :
             <MenuLevel level={this.props.level+1} elements={element.submenu}
