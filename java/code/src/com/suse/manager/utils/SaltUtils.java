@@ -28,10 +28,19 @@ import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.domain.image.ImagePackage;
+import com.redhat.rhn.domain.image.ImageProfileFactory;
+import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -42,6 +51,7 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
@@ -49,11 +59,12 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
+import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
+import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
 import com.suse.salt.netapi.results.CmdExecCodeAllResult;
@@ -229,6 +240,12 @@ public class SaltUtils {
             }
             scriptResult.setOutput(sb.toString().getBytes());
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD)) {
+            handleImageBuildData(serverAction, jsonResult);
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_INSPECT)) {
+            handleImageInspectData(serverAction, jsonResult);
+        }
         else if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_REFRESH_LIST)) {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
                 serverAction.setResultMsg("Failure");
@@ -317,6 +334,68 @@ public class SaltUtils {
         }
     }
 
+    private static void handleImageBuildData(ServerAction serverAction,
+            JsonElement jsonResult) {
+        Action action = serverAction.getParentAction();
+        ImageBuildAction ba = (ImageBuildAction)action;
+        ImageBuildActionDetails details = ba.getDetails();
+
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+            ActionManager.scheduleImageInspect(
+                    action.getSchedulerUser(),
+                    action.getServerActions()
+                            .stream()
+                            .map(ServerAction::getServerId)
+                            .collect(Collectors.toList()),
+                    details.getTag(),
+                    ImageProfileFactory.lookupById(details.getImageProfileId()).get()
+                            .getLabel(),
+                    ImageProfileFactory.lookupById(details.getImageProfileId()).get()
+                            .getTargetStore(),
+                    Date.from(Instant.now())
+            );
+        }
+        // Pretty-print the whole return map (or whatever fits into 1024 characters)
+        Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(returnObject);
+        serverAction.setResultMsg(json.length() > 1024 ?
+                json.substring(0, 1024) : json);
+    }
+
+    private static void handleImageInspectData(ServerAction serverAction,
+            JsonElement jsonResult) {
+        Action action = serverAction.getParentAction();
+        ImageInspectAction ia = (ImageInspectAction) action;
+        ImageInspectActionDetails details = ia.getDetails();
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+            serverAction.setResultMsg("Failure");
+        }
+        else {
+            serverAction.setResultMsg("Success");
+        }
+        ImageInfo imageInfo = ImageInfoFactory.lookupByName(details.getName(),
+                details.getTag(), details.getImageStoreId()).orElseGet(() -> {
+                    ImageInfo ii = new ImageInfo();
+                    ii.setStore(
+                            ImageStoreFactory.lookupById(details.getImageStoreId()).get());
+                    ii.setOrg(action.getOrg());
+                    ii.setVersion(details.getTag());
+                    ii.setName(details.getName());
+                    // TODO: we could store the inspect action here but it makes
+                    // it
+                    // harder to work with
+                    // ii.setAction();
+                    ImageInfoFactory.save(ii);
+                    return ii;
+                });
+
+        serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+            handleImagePackageProfileUpdate(imageInfo,
+                    Json.GSON.fromJson(jsonResult, ImagesProfileUpdateSlsResult.class));
+        });
+    }
+
     /**
      * Check if an action is failed based on the return event data. The status depends on
      * the "success" and "retcode" attributes as well as on the single states results in
@@ -358,6 +437,24 @@ public class SaltUtils {
             LOG.error(jsonResult.toString());
         }
         return results;
+    }
+
+    private static void handleImagePackageProfileUpdate(ImageInfo imageInfo,
+                                                   ImagesProfileUpdateSlsResult result) {
+        PkgProfileUpdateSlsResult ret = result.getDockerngSlsBuild().getChanges().getRet();
+
+        Optional.of(ret.getInfoInstalled().getChanges().getRet())
+                .map(saltPkgs -> saltPkgs.entrySet().stream()
+                        .map(entry -> createPackageFromSalt2(entry.getKey(),
+                                entry.getValue(), imageInfo))
+                        .collect(Collectors.toSet())
+                ).ifPresent(newPackages -> {
+            Set<ImagePackage> oldPackages = imageInfo.getPackages();
+            oldPackages.addAll(newPackages);
+            oldPackages.retainAll(newPackages);
+        });
+
+        ErrataManager.insertErrataCacheTask(imageInfo);
     }
 
     /**
@@ -502,6 +599,23 @@ public class SaltUtils {
         pkg.setInstallTime(new Date(info.getInstallDateUnixTime().get() * 1000));
         pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
         pkg.setServer(server);
+        return pkg;
+    }
+
+    private static ImagePackage createPackageFromSalt2(
+            String name, Pkg.Info info, ImageInfo imageInfo) {
+        String epoch = info.getEpoch().orElse(null);
+        String release = info.getRelease().orElse("0");
+        String version = info.getVersion().get();
+        PackageEvr evr = PackageEvrFactory
+                .lookupOrCreatePackageEvr(epoch, version, release);
+
+        ImagePackage pkg = new ImagePackage();
+        pkg.setEvr(evr);
+        pkg.setArch(PackageFactory.lookupPackageArchByLabel(info.getArchitecture().get()));
+        pkg.setInstallTime(new Date(info.getInstallDateUnixTime().get() * 1000));
+        pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
+        pkg.setImageInfo(imageInfo);
         return pkg;
     }
 

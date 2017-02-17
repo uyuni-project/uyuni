@@ -42,6 +42,8 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -55,6 +57,7 @@ import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.image.Image;
 import com.redhat.rhn.domain.image.ImageProfile;
+import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ProxyConfig;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -2245,6 +2248,37 @@ public class ActionManager extends BaseManager {
         ImageBuildActionDetails actionDetails = new ImageBuildActionDetails();
         actionDetails.setTag(tag);
         actionDetails.setImageProfileId(profile.getProfileId());
+        action.setDetails(actionDetails);
+        ActionFactory.save(action);
+
+        scheduleForExecution(action, new HashSet<>(sids));
+        return action;
+    }
+
+    /**
+     *
+     * @param scheduler the scheduler
+     * @param sids      the sids
+     * @param tag       the image tag
+     * @param name      the image name
+     * @param store     the image store
+     * @param earliest  the earliest
+     * @return the image inspect action
+     */
+    public static ImageInspectAction scheduleImageInspect(User scheduler, List<Long> sids,
+                                                          String tag, String name,
+                                                          ImageStore store, Date earliest) {
+        ImageInspectAction action = (ImageInspectAction) ActionFactory
+                .createAction(ActionFactory.TYPE_IMAGE_INSPECT, earliest);
+        action.setName("Image Inspect " + store.getUri() + "/" + name + ":" + tag);
+        action.setOrg(scheduler != null ?
+                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
+        action.setSchedulerUser(scheduler);
+
+        ImageInspectActionDetails actionDetails = new ImageInspectActionDetails();
+        actionDetails.setName(name);
+        actionDetails.setTag(tag);
+        actionDetails.setImageStoreId(store.getId());
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
