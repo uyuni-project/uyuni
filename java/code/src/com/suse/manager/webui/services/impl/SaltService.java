@@ -17,7 +17,6 @@ package com.suse.manager.webui.services.impl;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
-import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
@@ -459,21 +458,6 @@ public class SaltService {
     }
 
     /**
-     * Match the salt minions against a target glob.
-     *
-     * @param target the target glob
-     * @return a map from minion name to boolean representing if they matched the target
-     */
-    public Map<String, Result<Boolean>> match(String target) {
-        try {
-            return callSync(Match.glob(target), new Glob(target));
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Match the given target exression asynchronously.
      * @param target the target expression
      * @param cancel  a future used to cancel waiting on return events
@@ -629,25 +613,6 @@ public class SaltService {
     }
 
     /**
-     * Execute a LocalCall synchronously on glob target using the default Salt client.
-     * Note that salt-ssh systems are also called by this method.
-     *
-     * @param <T> the return type of the call
-     * @param call the glob call to execute
-     * @param target minions targeted by the call
-     * @return the result of the call
-     * @throws SaltException in case of an error executing the job with Salt
-     */
-    public <T> Map<String, Result<T>> callSync(LocalCall<T> call, Glob target)
-            throws SaltException {
-        Map<String, Result<T>> results = new HashMap<>();
-        results.putAll(saltSSHService.callSyncSSH(call, target));
-        results.putAll(call.callSync(SALT_CLIENT, target, SALT_USER, SALT_PASSWORD,
-                AuthModule.AUTO));
-        return results;
-    }
-
-    /**
      * Execute a LocalCall asynchronously on the default Salt client.
      *
      * @param <T> the return type of the call
@@ -704,29 +669,6 @@ public class SaltService {
         })
           .map(MinionServer::getId)
           .collect(Collectors.toList());
-    }
-
-
-    /**
-     * Find all minions matching the target expression and
-     * retain only those allowed for the given user.
-     *
-     * @param user the user
-     * @param target the Salt target expression
-     * @return a set of minion ids
-     */
-    public Set<String> getAllowedMinions(User user, String target) {
-        Set<String> saltMatches = match(target).keySet();
-        Set<String> allowed = new HashSet<>(saltMatches);
-
-        List<String> minionIds = MinionServerFactory
-                .lookupVisibleToUser(user)
-                .map(MinionServer::getMinionId)
-                .collect(Collectors.toList());
-
-        allowed.retainAll(minionIds);
-
-        return allowed;
     }
 
     /**

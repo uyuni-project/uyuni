@@ -33,7 +33,6 @@ import spark.Response;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -56,25 +55,6 @@ public class MinionsAPI {
     private static final Logger LOG = Logger.getLogger(MinionsAPI.class);
 
     private MinionsAPI() { }
-
-    /**
-     * API endpoint to get all minions matching a target glob
-     * @param request the request object
-     * @param response the response object
-     * @param user the current user
-     * @return json result of the API call
-     */
-    public static String match(Request request, Response response, User user) {
-        String target = request.queryParams("target");
-
-        Set<String> minions = SALT_SERVICE.getAllowedMinions(user, target);
-
-        // Keep the list of allowed minions in the session to make sure
-        // the user cannot tamper with it and also for scalability reasons.
-        request.session().attribute(SALT_CMD_RUN_TARGETS, minions);
-
-        return json(response, minions);
-    }
 
     /**
      * API endpoint to get all minions matching a target glob
