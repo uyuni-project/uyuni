@@ -35,6 +35,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -52,8 +53,9 @@ public class ImageInfo extends BaseDomainHelper {
     private ImageStore store;
     private MinionServer buildServer;
     private ServerAction action;
-    private Set<ImageInfoCustomDataValue> customDataValues;
-    private Set<Channel> channels;
+    private Set<ImageInfoCustomDataValue> customDataValues = new HashSet<>();
+    private Set<Channel> channels = new HashSet<>();
+    private Set<ImagePackage> packages = new HashSet<>();
     private Org org;
     private ServerArch imageArch;
 
@@ -158,8 +160,16 @@ public class ImageInfo extends BaseDomainHelper {
     }
 
     /**
-     * @return the channels
+     * @return the packages
      */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    public Set<ImagePackage> getPackages() {
+        return packages;
+    }
+
+    /**
+         * @return the channels
+         */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
     public Set<Channel> getChannels() {
         return channels;
@@ -247,6 +257,13 @@ public class ImageInfo extends BaseDomainHelper {
      */
     public void setImageArch(ServerArch imageArchIn) {
         this.imageArch = imageArchIn;
+    }
+
+    /**
+     * @param packagesIn packages to set
+     */
+    public void setPackages(Set<ImagePackage> packagesIn) {
+        this.packages = packagesIn;
     }
 
     /**

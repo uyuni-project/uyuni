@@ -52,10 +52,20 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     /**
-     * Save a {@link ImageInfo}.
+     * Save a {@link ImagePackage}.
      *
-     * @param imageInfo the image info to save
+     * @param imagePackage the image package to save
      */
+    public static void save(ImagePackage imagePackage) {
+        instance.saveObject(imagePackage);
+    }
+
+
+        /**
+         * Save a {@link ImageInfo}.
+         *
+         * @param imageInfo the image info to save
+         */
     public static void save(ImageInfo imageInfo) {
         instance.saveObject(imageInfo);
     }
@@ -113,6 +123,27 @@ public class ImageInfoFactory extends HibernateFactory {
         Root<ImageInfo> root = criteria.from(ImageInfo.class);
         criteria.where(builder.equal(root.get("org"), org));
         return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Lookup an image info by name, tag and image store.
+     *
+     * @param name         the name
+     * @param tag          the tag
+     * @param imageStoreId the image store id
+     * @return the optional
+     */
+    public static Optional<ImageInfo> lookupByName(String name, String tag,
+            long imageStoreId) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageInfo> query = builder.createQuery(ImageInfo.class);
+
+        Root<ImageInfo> root = query.from(ImageInfo.class);
+        query.where(builder.equal(root.get("name"), name))
+             .where(builder.equal(root.get("tag"), tag))
+             .where(builder.equal(root.get("image_store_id"), imageStoreId));
+
+        return getSession().createQuery(query).uniqueResultOptional();
     }
 
 }
