@@ -100,4 +100,4 @@
 - features/change_password.feature
 
 # sync channels in background
-- features/sync_real_channels.feature
+# - features/sync_real_channels.feature
