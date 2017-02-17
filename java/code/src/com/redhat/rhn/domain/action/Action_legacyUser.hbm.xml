@@ -409,6 +409,13 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         class="com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails"
                         outer-join="false" cascade="all" constrained="false" property-ref="parentAction"/>
         </subclass>
+        <!-- ImageInspectAction -->
+        <subclass name="com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction"
+                  lazy="true" discriminator-value="505">
+            <one-to-one name="details"
+                class="com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails"
+                        outer-join="false" cascade="all" constrained="false" property-ref="parentAction"/>
+        </subclass>
     </class>
     <query name="Action.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>
