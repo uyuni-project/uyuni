@@ -979,6 +979,7 @@ class KickstartFileItem(BaseChecksummedItem):
         'relative-path': 'relative_path',
         'file-size': 'file_size',
         'last-modified': 'last_modified',
+        'checksums': 'checksum_list',
     }
 addItem(KickstartFileItem)
 

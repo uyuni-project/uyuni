@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.7.0.1
+Version: 2.7.1
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,10 @@ fi
 
 
 %changelog
+* Fri Feb 17 2017 Jan Dobes 2.7.1-1
+- fix bz1422518 - request failed: error reading the headers (CVE-2016-8743)
+- Bumping package versions for 2.7.
+
 * Wed Nov 09 2016 Gennadii Altukhov <galt@redhat.com> 2.6.3-1
 - Revert Project-Id-Version for translations
 
