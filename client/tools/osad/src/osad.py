@@ -263,8 +263,12 @@ class Runner(jabber_lib.Runner):
         # we need to run rhn_check in order to let the server
         # know the reboot is complete, otherwise it won't send
         # any further events to us.
-        super(Runner, self).preprocess_once(client)
-        client.run_rhn_check_async()
+        #
+        # not needed for SUSE systems - we have update-status-service
+        # to do this.
+        #
+        #super(Runner, self).preprocess_once(client)
+        #client.run_rhn_check_async()
         return client
 
     def process_once(self, client):
