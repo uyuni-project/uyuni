@@ -71,6 +71,7 @@ rm -r -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__pycache__
 %endif
 
 %files
+%defattr(-,root,root)
 %dir %{pythonrhnroot}
 %dir %{pythonrhnroot}/common
 %{pythonrhnroot}/common/usix.py*
