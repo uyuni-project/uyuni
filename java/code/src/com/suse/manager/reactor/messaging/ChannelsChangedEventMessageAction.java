@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
@@ -30,6 +31,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Handle changes of channel assignments on minions: trigger a refresh of the errata cache,
@@ -42,6 +44,8 @@ public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
         long serverId = ((ChannelsChangedEventMessage) event).getServerId();
 
         Server s = ServerFactory.lookupById(serverId);
+        List<Package> prodPkgs =
+                PackageFactory.findMissingProductPackagesOnServer(serverId);
         s.asMinionServer().ifPresent(minion -> {
             // This code acts only on salt minions
 
@@ -50,6 +54,10 @@ public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
 
             // Regenerate the pillar data
             SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+
+            // add product packages to package state
+            StateFactory.addPackagesToNewStateRevision(minion,
+                    Optional.ofNullable(event.getUserId()), prodPkgs);
 
             // Propagate changes to the minion via state.apply
             if (event.getUserId() != null) {
@@ -65,9 +73,6 @@ public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
         });
         if (!s.asMinionServer().isPresent()) {
             // This code acts only on traditional systems
-            List<Package> prodPkgs =
-                    PackageFactory.findMissingProductPackagesOnServer(serverId);
-
             if (event.getUserId() != null) {
                 User user = UserFactory.lookupById(event.getUserId());
                 ActionManager.schedulePackageInstall(user, prodPkgs, s, new Date());

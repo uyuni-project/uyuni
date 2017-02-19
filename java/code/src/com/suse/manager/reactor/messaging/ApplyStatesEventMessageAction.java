@@ -17,8 +17,6 @@ package com.suse.manager.reactor.messaging;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -33,7 +31,6 @@ import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Applies states to a server
@@ -70,14 +67,6 @@ public class ApplyStatesEventMessageAction extends AbstractDatabaseAction {
                     new Date());
             MessageQueue.publish(new ActionScheduledEventMessage(action,
                     applyStatesEvent.isForcePackageListRefresh()));
-
-            if (applyStatesEvent.getStateNames().contains(
-                    ApplyStatesEventMessage.CHANNELS)) {
-                List<Package> prodPkgs =
-                        PackageFactory.findMissingProductPackagesOnServer(server.getId());
-                ActionManager.schedulePackageInstall(scheduler, prodPkgs, server,
-                        new Date());
-            }
 
             // For Salt SSH: simply schedule package profile update (no job metadata)
             if (MinionServerUtils.isSshPushMinion(server) &&
