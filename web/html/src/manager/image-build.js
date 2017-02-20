@@ -66,14 +66,14 @@ class BuildImage extends React.Component {
                 var data = res.data;
 
                 // Prevent out-of-order async results
-                if(data.profile_id != this.state.profileId)
+                if(data.profileId != this.state.profileId)
                     return false;
 
                 this.setState({
                     profile: {
                         label: data.label,
-                        imageType: data.image_type,
-                        activationKey: data.activation_key,
+                        imageType: data.imageType,
+                        activationKey: data.activationKey,
                         store: data.store,
                         path: data.path
                     }
@@ -177,7 +177,7 @@ class BuildImage extends React.Component {
                  <option key="0" disabled="disabled" value="">Select a build profile</option>
                  {
                      this.state.profiles.map(k =>
-                        <option key={k.profile_id} value={k.profile_id}>{ k.label }</option>
+                        <option key={k.profileId} value={k.profileId}>{ k.label }</option>
                      )
                  }
                </select>
@@ -208,21 +208,21 @@ class BuildImage extends React.Component {
                                         <tr><th>{t("Path")}</th><td>{p.path}</td></tr>
                                         <tr>
                                             <th>{t("Activation Key")}</th>
-                                            { p.activationKey ? <td><a href={"/rhn/activationkeys/Edit.do?tid=" + p.activationKey.id} title={p.activationKey.name}>{p.activationKey.name}</a></td> : <td>-</td> }
+                                            { p.activationKey ? <td><a href={"/rhn/activationkeys/Edit.do?tid=" + p.activationKey.id} title={p.activationKey.key}>{p.activationKey.key}</a></td> : <td>-</td> }
                                         </tr>
                                         { p.activationKey &&
                                             <tr>
                                                 <th>{t("Software Channels")}</th>
-                                                { p.activationKey.channels && p.activationKey.channels.base ?
+                                                { p.channels && p.channels.base ?
                                                     <td>
                                                         <ul className="list-unstyled">
                                                             <li>
-                                                                <a href={"/rhn/channels/ChannelDetail.do?cid=" + p.activationKey.channels.base.id} title={p.activationKey.channels.base.name}>{p.activationKey.channels.base.name}</a>
+                                                                <a href={"/rhn/channels/ChannelDetail.do?cid=" + p.channels.base.id} title={p.channels.base.name}>{p.channels.base.name}</a>
                                                             </li>
                                                             <li>
                                                                 <ul>
                                                                     {
-                                                                        p.activationKey.channels.children.map(ch => <li><a href={"/rhn/channels/ChannelDetail.do?cid=" + ch.id} title={ch.name}>{ch.name}</a></li>)
+                                                                        p.channels.children.map(ch => <li><a href={"/rhn/channels/ChannelDetail.do?cid=" + ch.id} title={ch.name}>{ch.name}</a></li>)
                                                                     }
                                                                 </ul>
                                                             </li>

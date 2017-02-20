@@ -64,14 +64,14 @@ class ImageProfiles extends React.Component {
   }
 
   deleteProfile(row) {
-    const id = row.profile_id;
+    const id = row.profileId;
     return Network.del("/rhn/manager/api/cm/imageprofiles/" + id).promise.then(data => {
         if (data.success) {
             this.setState({
                 messages: <Messages items={data.messages.map(msg => {
                     return {severity: "success", text: msgMap[msg]};
                 })}/>,
-                imageprofiles: this.state.imageprofiles.filter(profile => profile.profile_id !== id)
+                imageprofiles: this.state.imageprofiles.filter(profile => profile.profileId !== id)
             });
         } else {
             this.setState({
@@ -101,8 +101,8 @@ class ImageProfiles extends React.Component {
           {this.state.messages}
           <Table
               data={this.state.imageprofiles}
-              identifier={profile => profile.profile_id}
-              initialSortColumnKey="profile_id"
+              identifier={profile => profile.profileId}
+              initialSortColumnKey="profileId"
               initialItemsPerPage={userPrefPageSize}
               searchField={
                   <SearchField filter={this.searchData} criteria={""} />
@@ -115,11 +115,11 @@ class ImageProfiles extends React.Component {
               cell={ (row, criteria) => row.label }
             />
             <Column
-              columnKey="image_type"
+              columnKey="imageType"
               width="35%"
               comparator={Utils.sortByText}
               header={t('Build Type')}
-              cell={ (row, criteria) => typeMap[row.image_type] }
+              cell={ (row, criteria) => typeMap[row.imageType] }
             />
             { isAdmin &&
               <Column
@@ -133,13 +133,13 @@ class ImageProfiles extends React.Component {
                           className="btn-default btn-sm"
                           title={t("Build")}
                           icon="fa-cogs"
-                          href={"/rhn/manager/cm/build/" + row.profile_id}
+                          href={"/rhn/manager/cm/build/" + row.profileId}
                       />
                       <LinkButton
                           className="btn-default btn-sm"
                           title={t("Edit")}
                           icon="fa-edit"
-                          href={"/rhn/manager/cm/imageprofiles/edit/" + row.profile_id}
+                          href={"/rhn/manager/cm/imageprofiles/edit/" + row.profileId}
                       />
                       <ModalButton
                           className="btn-default btn-sm"
