@@ -15,12 +15,17 @@
 package com.redhat.rhn.manager.audit.scap.file;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
 /**
  * ScapFileManager - Handling of full SCAP results assigned to a rhnXccdfTestResult
@@ -28,6 +33,21 @@ import com.redhat.rhn.domain.audit.XccdfTestResult;
 public class ScapFileManager {
     private ScapFileManager() {
     }
+
+//    public static void storeMinionTestResult() {
+//
+//
+//
+//        Path folder = Paths.get(getStoragePath(testResult));
+//        if (Files.exists(folder)) {
+//            try {
+//                Files.createDirectories(folder); // TODO permissions ?
+//                Files.copy(resultsFile, folder.resolve(resultsFile.getFileName()));
+//            } catch (IOException e) {
+//                throw new RuntimeException("Could not store SCAP test result", e);
+//            }
+//        }
+//    }
 
     /**
      * Find SCAP Result files assigned with the given testResult
@@ -81,6 +101,11 @@ public class ScapFileManager {
             "/" + getStorageRelativePath(tr);
     }
 
+    public static String getStoragePath(Long orgId, Long systemId, Long actionId) {
+        return Config.get().getString(ConfigDefaults.MOUNT_POINT) +
+            "/" + getActionPath(orgId, systemId, actionId);
+    }
+
     private static String getStorageRelativePath(XccdfTestResult tr) {
         return getActionPath(tr.getServer().getOrg().getId(),
             tr.getServer().getId(), tr.getScapActionDetails().getParentAction().getId());
@@ -90,4 +115,5 @@ public class ScapFileManager {
         // an equivalent of rhnLib.get_action_path()
         return "systems/" + orgId + "/" + systemId + "/actions/" + actionId;
     }
+
 }

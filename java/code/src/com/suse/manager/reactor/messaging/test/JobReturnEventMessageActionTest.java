@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import com.google.gson.JsonElement;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -23,6 +24,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
@@ -35,15 +37,22 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.salt.custom.Openscap;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.parser.JsonParser;
 
 import com.google.gson.reflect.TypeToken;
+import com.suse.utils.Json;
+import org.jmock.Expectations;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
 import java.util.Date;
@@ -55,11 +64,16 @@ import java.util.stream.Collectors;
 /**
  * Tests for {@link JobReturnEventMessageAction}.
  */
-public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
+public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     // JsonParser for parsing events from files
     public static final JsonParser<Event> EVENTS =
             new JsonParser<>(new TypeToken<Event>(){});
+
+    public void setUp() throws Exception {
+        super.setUp();
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }
 
     /**
      * Test the processing of packages.profileupdate job return event.
@@ -605,14 +619,29 @@ public class JobReturnEventMessageActionTest extends BaseTestCaseWithUser {
 
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
 
-        String cacheDir = new File(TestUtils.findTestData(
-                "/com/suse/manager/reactor/messaging/test/openscap").getPath()).getPath();
+        String scapDir = new File(TestUtils.findTestData(
+                "/com/suse/manager/reactor/messaging/test/openscap/minionsles12sp1.test.local").getPath()).getPath();
         String resumeXsl = new File(TestUtils.findTestData(
                 "/com/suse/manager/reactor/messaging/test/openscap/xccdf-resume.xslt.in").getPath())
                 .getPath();
-        SaltUtils.INSTANCE.setMinionCacheDir(cacheDir);
-        SaltUtils.INSTANCE.setXccdfResumeXsl(resumeXsl);
 
+        JsonElement jsonElement = message.getJobReturnEvent().getData().getResult(JsonElement.class);
+        Openscap.OpenscapResult openscapResult = Json.GSON.fromJson(
+                jsonElement, Openscap.OpenscapResult.class);
+
+        SaltService saltServiceMock = mock(SaltService.class);
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).moveMinionScapFiles(
+                    with(any(MinionServer.class)),
+                    with(openscapResult.getUploadDir()),
+                    with(action.getId()));
+            Map<Boolean, String> result = new HashMap<>();
+            result.put(true, scapDir);
+            will(returnValue(result));
+        }});
+
+        SaltUtils.INSTANCE.setXccdfResumeXsl(resumeXsl);
+        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
         messageAction.doExecute(message);
 
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());

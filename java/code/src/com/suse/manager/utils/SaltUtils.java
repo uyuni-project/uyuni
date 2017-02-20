@@ -60,6 +60,7 @@ import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.salt.netapi.results.ModuleRun;
@@ -82,7 +83,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -112,7 +112,8 @@ public class SaltUtils {
 
     public static final SaltUtils INSTANCE = new SaltUtils();
 
-    private String minionCacheDir = "/var/cache/salt/master/minions";
+    private SaltService saltService = SaltService.INSTANCE;
+
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt";
 
     /**
@@ -346,27 +347,34 @@ public class SaltUtils {
 
                 serverAction.getServer().asMinionServer().ifPresent(
                         minion -> {
-                            String minionId = minion.getMinionId();
-                            Path resultsFile = Paths.get(minionCacheDir, minionId, "files", openscapResult.getUploadDir(), "results.xml");
-                            if (!Files.exists(resultsFile)) {
-                                serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                                serverAction.setResultMsg(resultsFile.toString() + " not found");
-                            } else {
-                                try (InputStream resultsFileIn = new FileInputStream(resultsFile.toFile())) {
-                                    // TODO errors string
-                                    ScapManager.xccdfEval(minion, scapAction, "", resultsFileIn, new File(xccdfResumeXsl));
-                                    serverAction.setResultMsg("Success");
-                                } catch (IOException e) {
-                                    LOG.error("Could not open file " + resultsFile.toString(), e);
-                                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                                    serverAction.setResultMsg("Could not open file " + resultsFile.toString() + ": " + e.getMessage());
+                            Map<Boolean, String> moveRes = saltService.moveMinionScapFiles(
+                                    minion, openscapResult.getUploadDir(), action.getId());
+                            moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
+                                if (moved.getKey()) {
+                                    Path resultsFile = Paths.get(moved.getValue(), "results.xml");
+                                    try (InputStream resultsFileIn = new FileInputStream(resultsFile.toFile())) {
+                                        // TODO errors string
+                                        ScapManager.xccdfEval(
+                                                minion, scapAction, "", resultsFileIn, new File(xccdfResumeXsl));
+                                        serverAction.setResultMsg("Success");
+                                    } catch (IOException e) {
+                                        LOG.error("Error processing SCAP results file " + resultsFile.toString(), e);
+                                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                        serverAction.setResultMsg("Error processing SCAP results file " +
+                                                resultsFile.toString() + ": " + e.getMessage());
+                                    }
                                 }
-                            }
+                                else {
+                                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                    serverAction.setResultMsg("Could not store SCAP files on server: "
+                                            + moved.getValue());
+                                }
+                            });
                         });
             }
             else {
                 serverAction.setResultMsg(openscapResult.getError());
-
+                serverAction.setStatus(ActionFactory.STATUS_FAILED);
             }
         }
         else {
@@ -825,28 +833,13 @@ public class SaltUtils {
                 bootTime.after(sa.getParentAction().getEarliestAction());
     }
 
-    /**
-     * For unit testing purposes only.
-     * @return
-     */
-    public String getMinionCacheDir() {
-        return minionCacheDir;
-    }
 
     /**
-     * For unit testing purposes only.
-     * @return
+     * For unit testing.
+     * @param saltService
      */
-    public void setMinionCacheDir(String minionCacheDir) {
-        this.minionCacheDir = minionCacheDir;
-    }
-
-    /**
-     * For unit testing purposes only.
-     * @return
-     */
-    public String getXccdfResumeXsl() {
-        return xccdfResumeXsl;
+    public void setSaltService(SaltService saltService) {
+        this.saltService = saltService;
     }
 
     public void setXccdfResumeXsl(String xccdfResumeXsl) {

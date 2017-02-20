@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
 
+import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -846,5 +847,11 @@ public class SaltService {
             BootstrapParameters parameters, List<String> bootstrapMods,
             Map<String, Object> pillarData) throws SaltException {
         return saltSSHService.bootstrapMinion(parameters, bootstrapMods, pillarData);
+    }
+
+    public Map<Boolean, String> moveMinionScapFiles(
+            MinionServer minion, String uploadDir, Long actionId) {
+        String scapStorePath = ScapFileManager.getStoragePath(minion.getOrg().getId(), minion.getId(), actionId);
+        return callSync(MgrUtilRunner.moveMinionScapFiles(minion.getMinionId(), uploadDir, scapStorePath));
     }
 }
