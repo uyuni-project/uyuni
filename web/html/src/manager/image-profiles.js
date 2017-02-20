@@ -48,11 +48,18 @@ class ImageProfiles extends React.Component {
             imageprofiles: data
         });
     });
+    this.clearMessages();
   }
 
   selectProfile(row) {
     this.setState({
         selected: row
+    });
+  }
+
+  clearMessages() {
+    this.setState({
+        messages: undefined
     });
   }
 
