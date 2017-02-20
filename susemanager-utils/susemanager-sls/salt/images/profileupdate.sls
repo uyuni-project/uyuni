@@ -6,6 +6,11 @@ mgr_image_profileupdate:
     - mods: packages.profileupdate
     - dryrun: True
 
+mgr_image_inspect:
+  module.run:
+    - name: dockerng.inspect
+    - m_name: "{{ pillar.get('imagename') }}"
+
 mgr_container_remove:
   module.run:
     - name: dockerng.rmi
@@ -14,3 +19,4 @@ mgr_container_remove:
     - force: False
     - require:
       - module: mgr_image_profileupdate
+      - module: mgr_image_inspect
