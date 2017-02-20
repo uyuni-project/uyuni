@@ -15,7 +15,6 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -58,18 +57,6 @@ public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
             // add product packages to package state
             StateFactory.addPackagesToNewStateRevision(minion,
                     Optional.ofNullable(event.getUserId()), prodPkgs);
-
-            // Propagate changes to the minion via state.apply
-            if (event.getUserId() != null) {
-                MessageQueue.publish(new ApplyStatesEventMessage(serverId,
-                        event.getUserId(), ApplyStatesEventMessage.CHANNELS)
-                );
-            }
-            else {
-                MessageQueue.publish(new ApplyStatesEventMessage(
-                        serverId, ApplyStatesEventMessage.CHANNELS)
-                );
-            }
         });
         if (!s.asMinionServer().isPresent()) {
             // This code acts only on traditional systems
