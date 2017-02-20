@@ -822,7 +822,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
       for image in (
         select ic.image_info_id as id
           from suseImageInfoChannel ic
-         where ic.channel_id = channe_id_in
+         where ic.channel_id = channel_id_in
         order by id asc
       ) loop
          perform queue_image(image.id, 0);
