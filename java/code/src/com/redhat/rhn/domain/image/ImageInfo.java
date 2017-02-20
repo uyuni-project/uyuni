@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
@@ -33,6 +34,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.HashSet;
@@ -52,7 +54,8 @@ public class ImageInfo extends BaseDomainHelper {
     private ImageProfile profile;
     private ImageStore store;
     private MinionServer buildServer;
-    private ServerAction action;
+    private ImageBuildAction action;
+    private ServerAction serverAction;
     private Set<ImageInfoCustomDataValue> customDataValues = new HashSet<>();
     private Set<Channel> channels = new HashSet<>();
     private Set<ImagePackage> packages = new HashSet<>();
@@ -142,13 +145,31 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the build action
      */
+    @OneToOne
+    @JoinColumn(name = "action_id")
+    public ImageBuildAction getAction() {
+        return action;
+    }
+
+    /**
+     * @param actionIn the build action
+     */
+    public void setAction(ImageBuildAction actionIn) {
+        this.action = actionIn;
+    }
+
+    /**
+     * @return the build serverAction
+     */
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "action_id", referencedColumnName = "action_id", insertable = false, updatable = false),
-            @JoinColumn(name = "build_server_id", referencedColumnName = "server_id", insertable = false, updatable = false)
+            @JoinColumn(name = "action_id", referencedColumnName = "action_id",
+                    insertable = false, updatable = false),
+            @JoinColumn(name = "build_server_id", referencedColumnName = "server_id",
+                    insertable = false, updatable = false)
     })
-    public ServerAction getAction() {
-        return action;
+    public ServerAction getServerAction() {
+        return serverAction;
     }
 
     /**
@@ -232,10 +253,10 @@ public class ImageInfo extends BaseDomainHelper {
     }
 
     /**
-     * @param actionIn build action to set
+     * @param actionIn build serverAction to set
      */
-    public void setAction(ServerAction actionIn) {
-        this.action = actionIn;
+    public void setServerAction(ServerAction actionIn) {
+        this.serverAction = actionIn;
     }
 
     /**
