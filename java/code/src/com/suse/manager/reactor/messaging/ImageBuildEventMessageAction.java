@@ -17,6 +17,9 @@ package com.suse.manager.reactor.messaging;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
+import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -28,6 +31,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 
 /**
  * Applies states to a server
@@ -67,6 +71,26 @@ public class ImageBuildEventMessageAction extends AbstractDatabaseAction {
                     new Date());
             MessageQueue.publish(new ActionScheduledEventMessage(action,
                     false));
+
+            ImageInfo info = new ImageInfo();
+            info.setName(imageBuildEvent.getImageProfile().getLabel());
+            info.setOrg(server.getOrg());
+            info.setAction(action);
+            info.setStore(imageBuildEvent.getImageProfile().getTargetStore());
+            info.setProfile(imageBuildEvent.getImageProfile());
+            info.setBuildServer((MinionServer)server);
+            info.setVersion(imageBuildEvent.getTag().isEmpty() ? "latest" :
+                    imageBuildEvent.getTag());
+            info.setChannels(new HashSet<>(
+                    imageBuildEvent.getImageProfile().getToken().getChannels()));
+
+            // Image arch should be the same as the build host
+            info.setImageArch(server.getServerArch());
+
+            // Checksum will be available from inspect
+
+            //TODO: Set customDataValues
+            ImageInfoFactory.save(info);
         }
     }
 }
