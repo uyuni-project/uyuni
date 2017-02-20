@@ -106,13 +106,6 @@ when :firefox
   require 'selenium-webdriver'
   Capybara.register_driver :selenium do |app|
     profile = Selenium::WebDriver::Firefox::Profile.new
-    if proxy
-      profile["network.proxy.type"] = 1
-      profile["network.proxy.http"] = proxy
-      profile["network.proxy.http_port"] = 8080
-      profile["network.proxy.ssl"] = proxy
-      profile["network.proxy.ssl_port"] = 8080
-    end
     driver = Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile)
     driver.browser.manage.window.resize_to(1280, 1024)
     driver
