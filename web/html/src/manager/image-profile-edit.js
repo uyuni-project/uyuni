@@ -54,13 +54,13 @@ class CreateImageProfile extends React.Component {
                 var data = res.data;
                 this.setState({
                     label: data.label,
-                    activationKey: data.activation_key ? data.activation_key.name : undefined,
+                    activationKey: data.activationKey ? data.activationKey.key : undefined,
                     path: data.path,
-                    imageType: data.image_type,
+                    imageType: data.imageType,
                     imageStore: data.store,
-                    init_label: data.label
+                    initLabel: data.label
                 });
-                this.getChannels(data.activation_key.name);
+                this.getChannels(data.activationKey.key);
             } else {
                 window.location = "/rhn/manager/cm/imageprofiles/create";
             }
@@ -77,7 +77,7 @@ class CreateImageProfile extends React.Component {
 
         Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).promise.then(res => {
             // Prevent out-of-order async results
-            if(res.activation_key != this.state.activationKey)
+            if(res.activationKey != this.state.activationKey)
                 return false;
 
             this.setState({
@@ -292,7 +292,7 @@ class CreateImageProfile extends React.Component {
 
     render() {
         return (
-        <Panel title={this.isEdit() ? t("Edit Image Profile: '" + this.state.init_label + "'") : t("Create Image Profile")} icon="fa fa-pencil">
+        <Panel title={this.isEdit() ? t("Edit Image Profile: '" + this.state.initLabel + "'") : t("Create Image Profile")} icon="fa fa-pencil">
             {this.state.messages}
             <form className="image-profile-form" onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}>
                 <div className="form-horizontal">

@@ -66,10 +66,10 @@ public class ImageBuildController {
         // Parse optional profile id
         if (StringUtils.isNotBlank(req.params("profileId"))) {
             Long profileId = Long.parseLong(req.params("profileId"));
-            model.put("profile_id", profileId);
+            model.put("profileId", profileId);
         }
         else {
-            model.put("profile_id", null);
+            model.put("profileId", null);
         }
 
         return new ModelAndView(model, "content_management/build.jade");
