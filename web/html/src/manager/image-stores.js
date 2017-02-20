@@ -44,6 +44,13 @@ class ImageStores extends React.Component {
             imagestores: data
         });
     });
+    this.clearMessages();
+  }
+
+  clearMessages() {
+    this.setState({
+        messages: undefined
+    });
   }
 
   selectStore(row) {
