@@ -27,13 +27,10 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 import com.suse.manager.webui.utils.gson.JSONSaltMinion;
 import com.suse.salt.netapi.calls.wheel.Key;
-import com.suse.salt.netapi.datatypes.target.MinionList;
-import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import spark.Request;
 import spark.Response;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -59,41 +56,6 @@ public class MinionsAPI {
     private static final Logger LOG = Logger.getLogger(MinionsAPI.class);
 
     private MinionsAPI() { }
-
-    /**
-     * API endpoint to execute a command on salt minions by target glob
-     * @param request the request object
-     * @param response the response object
-     * @param user the current user
-     * @return json result of the API call
-     */
-    public static String run(Request request, Response response, User user) {
-        String cmd = request.queryParams("cmd");
-
-        Set<String> minionTargets = request.session().attribute(SALT_CMD_RUN_TARGETS);
-        if (minionTargets == null) {
-            response.status(HttpStatus.SC_BAD_REQUEST);
-            return json(response, Arrays.asList("Click preview first"));
-        }
-
-        MinionList minionList = new MinionList(minionTargets
-                .toArray(new String[minionTargets.size()]));
-        Map<String, String> result = SALT_SERVICE.runRemoteCommand(minionList, cmd)
-                .entrySet().stream().collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        e -> e.getValue().fold(
-                                err -> err.fold(
-                                        Object::toString,
-                                        Object::toString,
-                                        genError -> "Generic error running remote command",
-                                        Object::toString
-                                ),
-                                res -> res
-                        )
-                ));
-
-        return json(response, result);
-    }
 
     /**
      * API endpoint to get all minions matching a target glob
