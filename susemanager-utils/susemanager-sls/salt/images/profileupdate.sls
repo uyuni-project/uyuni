@@ -8,6 +8,9 @@ mgr_image_profileupdate:
 
 mgr_container_remove:
   module.run:
-    - name: dockerng.rm
-    - m_name: "{{ salt['pillar.get']('mgr_img_dummyname', 'dummy') }}"
+    - name: dockerng.rmi
+    - m_names:
+      - "{{ pillar.get('imagename') }}"
     - force: False
+    - require:
+      - module: mgr_image_profileupdate
