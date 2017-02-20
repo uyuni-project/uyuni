@@ -188,7 +188,7 @@ class BuildImage extends React.Component {
     renderProfileSummary() {
         var p = this.state.profile;
         var pselected = p.label ? true : false;
-        return <div className="col-md-offset-1 col-md-5">
+        return <div className="col-md-6">
                 <div className="panel panel-default">
                     <div className="panel-heading">
                         <h4>{t("Profile Summary")}</h4>
