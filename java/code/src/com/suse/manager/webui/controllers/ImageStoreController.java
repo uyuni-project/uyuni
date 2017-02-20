@@ -141,7 +141,7 @@ public class ImageStoreController {
             json.addProperty("uri", s.getUri());
             json.addProperty("store_type", s.getStoreType().getLabel());
 
-            if (s.getCreds() != null && s.getCreds().getType().equals(
+            if (s.getCreds() != null && s.getCreds().getType().getLabel().equals(
                     Credentials.TYPE_REGISTRY)) {
                 Credentials dc = s.getCreds();
                 JsonObject creds = new JsonObject();
