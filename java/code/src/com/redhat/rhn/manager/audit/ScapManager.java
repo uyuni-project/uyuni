@@ -20,7 +20,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Date;
@@ -392,11 +394,11 @@ public class ScapManager extends BaseManager {
         return result;
     }
 
-    public static XccdfTestResult xccdfEval(Server server, ScapAction action, String errors, InputStream resumeXml, File resumeXsl) throws IOException {
+    public static XccdfTestResult xccdfEval(Server server, ScapAction action, String errors, InputStream resultsXml, File resumeXsl) throws IOException {
         // Transform XML
         File output = File.createTempFile("scap-resume-" + action.getId(), ".xml");
         StreamSource xslStream = new StreamSource(resumeXsl);
-        StreamSource in = new StreamSource(resumeXml);
+        StreamSource in = new StreamSource(resultsXml);
         try (OutputStream resumeOut = new FileOutputStream(output)){
             StreamResult out = new StreamResult(resumeOut);
             TransformerFactory factory = TransformerFactory.newInstance();
@@ -412,10 +414,17 @@ public class ScapManager extends BaseManager {
         }
     }
 
+    /**
+     * Evaluates the SCAP resume xml.
+     * @param server
+     * @param action
+     * @param errors
+     * @param resumeXml
+     * @return
+     */
     public static XccdfTestResult xccdfEvalResume(Server server, ScapAction action, String errors, InputStream resumeXml) {
         ScapFactory.clearTestResult(server.getId(), action.getId());
         try {
-
             BenchmarkResume resume = createXmlPersister()
                     .read(BenchmarkResume.class, resumeXml);
             Profile profile = Optional.ofNullable(resume.getProfile())
