@@ -503,20 +503,6 @@ public class SaltService {
     }
 
     /**
-     * Call 'saltutil.refresh_pillar' to refresh pillar data on the target minion(s).
-     * @param minionList the minion list
-     */
-    public void refreshPillar(MinionList minionList) {
-        try {
-            LocalCall<Boolean> call = SaltUtil.refreshPillar(
-                    Optional.empty(), Optional.empty());
-            callSync(call, minionList);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    /**
      * Call 'saltutil.sync_beacons' to sync the beacons to the target minion(s).
      * @param minionList minionList
      */

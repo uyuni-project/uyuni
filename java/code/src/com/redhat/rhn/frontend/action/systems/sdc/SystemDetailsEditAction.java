@@ -37,8 +37,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
@@ -289,8 +287,6 @@ public class SystemDetailsEditAction extends RhnAction {
                 // regenerate pillar data when VirtualizationEntitlement changed
                 s.asMinionServer().ifPresent(minion -> {
                     SaltStateGeneratorService.INSTANCE.generatePillar(minion);
-                    SaltService.INSTANCE.refreshPillar(
-                            new MinionList(minion.getMinionId()));
                 });
             }
         }
