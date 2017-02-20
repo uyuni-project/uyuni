@@ -165,6 +165,8 @@ public class MenuTree {
 
             // Images
             nodes.add(new MenuItem("Images").withIcon("spacewalk-icon-manage-configuration-files")
+                .addChild(new MenuItem("Images").withPrimaryUrl("/rhn/manager/cm/images")
+                    .withDir("/rhn/manager/cm/images").withVisibility(adminRoles.get("org")))
                 .addChild(new MenuItem("Build").withPrimaryUrl("/rhn/manager/cm/build")
                     .withDir("/rhn/manager/cm/build").withVisibility(adminRoles.get("image")))
                 .addChild(new MenuItem("Profiles").withPrimaryUrl("/rhn/manager/cm/imageprofiles")
