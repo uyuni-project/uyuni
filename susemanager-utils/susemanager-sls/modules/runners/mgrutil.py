@@ -1,7 +1,9 @@
 from subprocess import Popen, PIPE
+import logging
 import shlex
 import os
 
+log = logging.getLogger(__name__)
 
 def ssh_keygen(path):
     '''
@@ -48,3 +50,14 @@ def _cmd(cmd):
     p = Popen(cmd, stdout=PIPE, stderr=PIPE)
     stdout, stderr = p.communicate()
     return {"returncode": p.returncode, "stdout": stdout, "stderr": stderr}
+
+def move_minion_scap_files(minion = None, dirtomove = None, scapstorepath = None):
+    src = os.path.join(__opts__['cachedir'], "minions", minion, 'files', dirtomove.lstrip('/'))
+    log.debug("xxxxxx %s %s %s" % (__opts__['cachedir'], minion, src))
+    try:
+        shutil.move(src, scapstorepath)
+    except Exception as err:
+        log.error('Failed to move {0} -> {1}'.format(src, scapstorepath), exc_info=True)
+        return {False: str(err)}
+    return {True: scapstorepath}
+

@@ -552,7 +552,7 @@ public enum SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionServer>> scapXccdfEvalAction(List<MinionServer> minions, ScapActionDetails scapActionDetails) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        String parameters =
+        String parameters = "eval " +
             scapActionDetails.getParametersContents() + " " + scapActionDetails.getPath();
         ret.put(Openscap.xccdf(parameters), minions);
         return ret;
