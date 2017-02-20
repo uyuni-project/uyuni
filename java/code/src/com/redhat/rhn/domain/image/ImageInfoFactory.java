@@ -113,6 +113,24 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup an image overview by id and organization
+     * @param id the id
+     * @param org the organization
+     * @return the image profile
+     */
+    public static Optional<ImageOverview> lookupOverviewByIdAndOrg(long id, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageOverview> query = builder.createQuery(ImageOverview.class);
+
+        Root<ImageOverview> root = query.from(ImageOverview.class);
+        query.where(builder.and(
+                builder.equal(root.get("id"), id),
+                builder.equal(root.get("org"), org)));
+
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
      * List all image infos from a given organization
      * @param org the organization
      * @return Returns a list of ImageProfiles
@@ -144,6 +162,19 @@ public class ImageInfoFactory extends HibernateFactory {
              .where(builder.equal(root.get("image_store_id"), imageStoreId));
 
         return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
+     * List all image overviews from a given organization
+     * @param org the organization
+     * @return Returns a list of ImageProfiles
+     */
+    public static List<ImageOverview> listImageOverviews(Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageOverview> criteria = builder.createQuery(ImageOverview.class);
+        Root<ImageOverview> root = criteria.from(ImageOverview.class);
+        criteria.where(builder.equal(root.get("org"), org));
+        return getSession().createQuery(criteria).getResultList();
     }
 
 }
