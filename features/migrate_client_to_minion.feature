@@ -30,8 +30,6 @@ Feature: Migrate a traditional client into a salt minion
      Then the command should fail
 
   Scenario: Check that the migrated system is now a minion
-     # we should also try to migrate a traditional client in SSH push mode because of
-     # bsc1023399 - Migrate a traditional client in SSH push mode into a salt minion doesn't work
      Given I am on the Systems overview page of this "sle-migrated-minion"
      When I follow "Properties" in the content area
      Then I should see a "Base System Type:     Salt" text
