@@ -21,6 +21,7 @@ import com.redhat.rhn.common.finder.FinderFactory;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
+import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImagePackage;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
@@ -205,6 +206,7 @@ class ConnectionManager {
             config.addAnnotatedClass(ProfileCustomDataValue.class);
             config.addAnnotatedClass(ImageInfo.class);
             config.addAnnotatedClass(ImageInfoCustomDataValue.class);
+            config.addAnnotatedClass(ImageOverview.class);
             config.addAnnotatedClass(ImagePackage.class);
 
 
