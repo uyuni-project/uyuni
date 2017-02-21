@@ -27,7 +27,6 @@ Then(/^"([^"]*)" is not installed$/) do |package|
         output, code = $minion.run("rpm -q #{package}", false)
         if code.nonzero?
           uninstalled = true
-          sleep 15
           break
         end
         sleep 1
@@ -37,16 +36,16 @@ Then(/^"([^"]*)" is not installed$/) do |package|
   raise "exec rpm removal failed (Code #{$?}): #{$!}: #{output}" unless uninstalled
 end
 
-Then(/^I wait for "([^"]*)" to be installed$/) do |package|
+Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, host|
+  node = get_target(host)
   installed = false
   output = ""
   begin
     Timeout.timeout(120) do
       loop do
-        output, code = $minion.run("rpm -q #{package}", false)
+        output, code = node.run("rpm -q #{package}", false)
         if code.zero?
           installed = true
-          sleep 15
           break
         end
         sleep 1
