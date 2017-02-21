@@ -49,7 +49,7 @@
 - features/powermanagement.feature
 - features/CVE_ID_new_syntax.feature
 - features/datepicker.feature
-- features/migrate_client_to_minion.feature
+# - features/migrate_client_to_minion.feature
 - features/delete_system_profile.feature
 - features/baremetal_test.feature
 - features/compare_channel.feature
