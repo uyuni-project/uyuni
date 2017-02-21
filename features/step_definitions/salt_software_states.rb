@@ -27,7 +27,6 @@ Then(/^"([^"]*)" is not installed$/) do |package|
         output, code = $minion.run("rpm -q #{package}", false)
         if code.nonzero?
           uninstalled = true
-          sleep 15
           break
         end
         sleep 1
@@ -46,7 +45,26 @@ Then(/^I wait for "([^"]*)" to be installed$/) do |package|
         output, code = $minion.run("rpm -q #{package}", false)
         if code.zero?
           installed = true
-          sleep 15
+          break
+        end
+        sleep 1
+      end
+    end
+  rescue Timeout::Error
+    raise "exec rpm installation failed: timeout"
+  end
+  raise "exec rpm installation failed (Code #{$?}): #{$!}: #{output}" unless installed
+end
+
+Then(/^I wait for "([^"]*)" to be installed on the migrated minion$/) do |package|
+  installed = false
+  output = ""
+  begin
+    Timeout.timeout(120) do
+      loop do
+        output, code = $client.run("rpm -q #{package}", false)
+        if code.zero?
+          installed = true
           break
         end
         sleep 1
