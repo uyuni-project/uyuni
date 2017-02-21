@@ -62,7 +62,6 @@ public class RepoSyncTask extends RhnJavaJob {
 
                 try {
                     executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]));
-                    channel.setLastSynced(new Date());
                 }
                 catch (JobExecutionException e) {
                     log.error(e.getMessage());
