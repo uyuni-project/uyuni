@@ -38,7 +38,7 @@ Feature: Check the Salt package state UI
     Then I should see a "1 Changes" text
     And I click save
     And I click apply
-    And I wait for "milkyway-dummy" to be installed
+    And I wait for "milkyway-dummy" to be installed on this "sle-minion"
 
    Scenario: Test package installation with any through the UI
     Given I am on the Systems overview page of this "sle-minion"
@@ -51,7 +51,7 @@ Feature: Check the Salt package state UI
     Then I should see a "1 Changes" text
     And I click save
     And I click apply
-    And I wait for "virgo-dummy-1.0" to be installed
+    And I wait for "virgo-dummy-1.0" to be installed on this "sle-minion"
 
   Scenario: Test package upgrade through the UI
     Given I am on the Systems overview page of this "sle-minion"
@@ -64,7 +64,7 @@ Feature: Check the Salt package state UI
     Then I should see a "1 Changes" text
     And I click save
     And I click apply
-    And I wait for "andromeda-dummy-2.0-1.1" to be installed
+    And I wait for "andromeda-dummy-2.0-1.1" to be installed on this "sle-minion"
 
   Scenario: I verify the system status of the salt ui
     Given I am on the Systems overview page of this "sle-minion"
