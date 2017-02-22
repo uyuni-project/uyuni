@@ -54,7 +54,7 @@
 - features/powermanagement-test.feature
 - features/CVE-ID-new-syntax.feature
 - features/datepicker.feature
-- features/migrate_client_to_minion.feature
+# - features/migrate_client_to_minion.feature. Need to be tested with whole suite
 - features/delete_system_profile.feature
 - features/bare-metal-test.feature
 - features/compare_channel.feature
