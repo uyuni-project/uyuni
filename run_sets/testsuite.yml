@@ -54,6 +54,7 @@
 - features/powermanagement-test.feature
 - features/CVE-ID-new-syntax.feature
 - features/datepicker.feature
+- features/migrate_client_to_minion.feature
 - features/delete_system_profile.feature
 - features/bare-metal-test.feature
 - features/compare_channel.feature
@@ -84,7 +85,6 @@
 - features/minion_bootstrap.feature
 # Regression test
 - features/salt_regression_topsls.feature
-# - features/migrate_client_to_minion.feature
 
 ### Salt-ssh managed feature ##
 - features/salt_ssh.feature

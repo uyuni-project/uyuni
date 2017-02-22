@@ -30,28 +30,19 @@ Feature: Migrate a traditional client into a salt minion
      Then the command should fail
 
   Scenario: Check that the migrated system is now a minion
-     # bsc1023399 - Migrate a traditional client in SSH push mode into a salt minion doesn't work
      Given I am on the Systems overview page of this client
      When I follow "Properties" in the content area
      Then I should see a "Base System Type:     Salt" text
 
   Scenario: Check that channels are still the same after migration
      Given I am on the Systems overview page of this client
-     When I follow "Software" in the content area
-     And I follow "Software Channels" in the content area
      Then I should see a "SLES11-SP3-Updates x86_64 Channel" text
-     And I should see a "Test Base Channel" text
-
-  Scenario: Check that groups are still the same after migration
-     Given I am on the Systems overview page of this client
-     When I follow "Groups" in the content area
-     Then I should see a "newgroup" text
 
   Scenario: Check that events history is still the same after migration
      Given I am on the Systems overview page of this client
      When I follow "Events" in the content area
      And I follow "History" in the content area
-     Then I should see a "Subscription via Token" text
+     Then I should see a "System reboot scheduled by admin" text
 
   Scenario: Install a package onto the migrated minion
      Given I am on the Systems overview page of this client
@@ -62,15 +53,15 @@ Feature: Migrate a traditional client into a salt minion
      And I click on "Confirm"
      And I wait for "5" seconds
      Then I should see a "1 package install has been scheduled for" text
-     And I wait for "perseus-dummy-1.1-1.1" to be installed
+     And I wait for "perseus-dummy-1.1-1.1" to be installed on the migrated minion
 
-  Scenario: Run a remote command on the migrated minion
+  Scenario: Run a remote script on the migrated minion
      Given I am on the Systems overview page of this client
      When I follow "Remote Command" in the content area
      And I enter as remote command this script in
       """
       #!/bin/bash
-      touch /tmp/remote-command-on-migrated-text
+      touch /tmp/remote-command-on-migrated-test
       """
      And I click on "Schedule"
      Then I should see a "Remote Command has been scheduled successfully" text
