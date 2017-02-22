@@ -14,7 +14,6 @@ BuildRequires:  jabberd
 BuildRequires:	 sqlite3
 BuildArch:      noarch
 Requires:       perl
-Requires:       libxslt
 %if 0%{?suse_version}
 Requires:       jabberd-sqlite
 %endif
