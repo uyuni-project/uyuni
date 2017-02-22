@@ -7,6 +7,7 @@ License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+PreReq:         sqlite3
 BuildRequires:  perl
 BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  jabberd
@@ -16,7 +17,6 @@ Requires:       perl
 Requires:       libxslt
 %if 0%{?suse_version}
 Requires:       jabberd-sqlite
-Requires:       sqlite3
 %endif
 
 %description
