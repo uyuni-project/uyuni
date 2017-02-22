@@ -1,9 +1,8 @@
 #!/bin/sh
 DB_FILE=/var/lib/jabberd/db/sqlite.db
-size=`stat -c%s /var/lib/jabberd/db/sqlite.db 2>/dev/null`
-if [ $? -ne 0 ]; then
   /usr/bin/sqlite3 $DB_FILE < /usr/share/doc/packages/jabberd/db-setup.sqlite
   chown jabber:jabber $DB_FILE
+if [ ! -s "$DB_FILE" ]; then
 fi
 
 
