@@ -322,42 +322,7 @@ public class SaltUtils {
 
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCAP_XCCDF_EVAL)) {
-            ScapAction scapAction = (ScapAction)action;
-            Openscap.OpenscapResult openscapResult = Json.GSON.fromJson(
-                    jsonResult, Openscap.OpenscapResult.class);
-            if (openscapResult.isSuccess()) {
-
-                serverAction.getServer().asMinionServer().ifPresent(
-                        minion -> {
-                            Map<Boolean, String> moveRes = saltService.moveMinionScapFiles(
-                                    minion, openscapResult.getUploadDir(), action.getId());
-                            moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
-                                if (moved.getKey()) {
-                                    Path resultsFile = Paths.get(moved.getValue(), "results.xml");
-                                    try (InputStream resultsFileIn = new FileInputStream(resultsFile.toFile())) {
-                                        // TODO errors string
-                                        ScapManager.xccdfEval(
-                                                minion, scapAction, "", resultsFileIn, new File(xccdfResumeXsl));
-                                        serverAction.setResultMsg("Success");
-                                    } catch (IOException e) {
-                                        LOG.error("Error processing SCAP results file " + resultsFile.toString(), e);
-                                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                                        serverAction.setResultMsg("Error processing SCAP results file " +
-                                                resultsFile.toString() + ": " + e.getMessage());
-                                    }
-                                }
-                                else {
-                                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                                    serverAction.setResultMsg("Could not store SCAP files on server: "
-                                            + moved.getValue());
-                                }
-                            });
-                        });
-            }
-            else {
-                serverAction.setResultMsg(openscapResult.getError());
-                serverAction.setStatus(ActionFactory.STATUS_FAILED);
-            }
+            handleScapXccdfEval(serverAction, jsonResult, action);
         }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
@@ -366,6 +331,57 @@ public class SaltUtils {
             String json = gson.toJson(returnObject);
             serverAction.setResultMsg(json.length() > 1024 ?
                     json.substring(0, 1024) : json);
+        }
+    }
+
+    private void handleScapXccdfEval(ServerAction serverAction,
+                                     JsonElement jsonResult, Action action) {
+        ScapAction scapAction = (ScapAction)action;
+        Openscap.OpenscapResult openscapResult = Json.GSON.fromJson(
+                jsonResult, Openscap.OpenscapResult.class);
+        if (openscapResult.isSuccess()) {
+
+            serverAction.getServer().asMinionServer().ifPresent(
+                    minion -> {
+                        Map<Boolean, String> moveRes = saltService.storeMinionScapFiles(
+                                minion, openscapResult.getUploadDir(), action.getId());
+                        moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
+                            if (moved.getKey()) {
+                                Path resultsFile = Paths.get(moved.getValue(),
+                                        "results.xml");
+                                try (InputStream resultsFileIn =
+                                             new FileInputStream(
+                                                     resultsFile.toFile())) {
+                                    // TODO errors string
+                                    ScapManager.xccdfEval(
+                                            minion, scapAction,
+                                            "",
+                                            resultsFileIn,
+                                            new File(xccdfResumeXsl));
+                                    serverAction.setResultMsg("Success");
+                                }
+                                catch (IOException e) {
+                                    LOG.error(
+                                            "Error processing SCAP results file " +
+                                            resultsFile.toString(), e);
+                                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                    serverAction.setResultMsg(
+                                            "Error processing SCAP results file " +
+                                            resultsFile.toString() + ": " + e.getMessage());
+                                }
+                            }
+                            else {
+                                serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                serverAction.setResultMsg(
+                                        "Could not store SCAP files on server: " +
+                                        moved.getValue());
+                            }
+                        });
+                    });
+        }
+        else {
+            serverAction.setResultMsg(openscapResult.getError());
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
         }
     }
 
@@ -671,14 +687,17 @@ public class SaltUtils {
 
 
     /**
-     * For unit testing.
-     * @param saltService
+     * For unit testing only.
+     * @param saltServiceIn the {@link SaltService} to set
      */
-    public void setSaltService(SaltService saltService) {
-        this.saltService = saltService;
+    public void setSaltService(SaltService saltServiceIn) {
+        this.saltService = saltServiceIn;
     }
 
-    public void setXccdfResumeXsl(String xccdfResumeXsl) {
-        this.xccdfResumeXsl = xccdfResumeXsl;
+    /**
+     * @param xccdfResumeXslIn to set
+     */
+    public void setXccdfResumeXsl(String xccdfResumeXslIn) {
+        this.xccdfResumeXsl = xccdfResumeXslIn;
     }
 }

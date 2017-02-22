@@ -15,17 +15,12 @@
 package com.redhat.rhn.manager.audit.scap.file;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
-import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
 /**
  * ScapFileManager - Handling of full SCAP results assigned to a rhnXccdfTestResult
@@ -33,21 +28,6 @@ import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 public class ScapFileManager {
     private ScapFileManager() {
     }
-
-//    public static void storeMinionTestResult() {
-//
-//
-//
-//        Path folder = Paths.get(getStoragePath(testResult));
-//        if (Files.exists(folder)) {
-//            try {
-//                Files.createDirectories(folder); // TODO permissions ?
-//                Files.copy(resultsFile, folder.resolve(resultsFile.getFileName()));
-//            } catch (IOException e) {
-//                throw new RuntimeException("Could not store SCAP test result", e);
-//            }
-//        }
-//    }
 
     /**
      * Find SCAP Result files assigned with the given testResult
@@ -101,6 +81,14 @@ public class ScapFileManager {
             "/" + getStorageRelativePath(tr);
     }
 
+    /**
+     * Get file path to the storage directory assigned with a given org,
+     * system and action.
+     * @param orgId the org
+     * @param systemId the system
+     * @param actionId the action
+     * @return the path
+     */
     public static String getStoragePath(Long orgId, Long systemId, Long actionId) {
         return Config.get().getString(ConfigDefaults.MOUNT_POINT) +
             "/" + getActionPath(orgId, systemId, actionId);

@@ -893,9 +893,22 @@ public class SaltService {
         return callSync(call);
     }
 
-    public Map<Boolean, String> moveMinionScapFiles(
+    /**
+     * Store the files uploaded by a minion to the SCAP storage directory.
+     * @param minion the minion
+     * @param uploadDir the uploadDir
+     * @param actionId the action id
+     * @return a map with one element: @{code true} -> scap store path,
+     * {@code false} -> err message
+     *
+     */
+    public Map<Boolean, String> storeMinionScapFiles(
             MinionServer minion, String uploadDir, Long actionId) {
-        String scapStorePath = ScapFileManager.getStoragePath(minion.getOrg().getId(), minion.getId(), actionId);
-        return callSync(MgrUtilRunner.moveMinionScapFiles(minion.getMinionId(), uploadDir, scapStorePath));
+        String scapStorePath = ScapFileManager
+                .getStoragePath(minion.getOrg().getId(),
+                        minion.getId(), actionId);
+        return callSync(MgrUtilRunner
+                .moveMinionUploadedFiles(minion.getMinionId(),
+                        uploadDir, scapStorePath));
     }
 }

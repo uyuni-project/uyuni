@@ -113,23 +113,24 @@ public class MgrUtilRunner {
     }
 
     /**
-     * Moves a directory from /var/cache/salt/master/minions/[minion]/files/[dirToMove]
-     * to scapStorePath
+     * Moves a directory from
+     * {@code /var/cache/salt/master/minions/[minion]/files/[dirToMove]}
+     * to {@code scapStorePath}
      *
-     * @param minion
-     * @param dirToMove
-     * @param scapStorePath
-     * @return
+     * @param minion minion id
+     * @param dirToMove path of directory to move. Relative to Salt's cache dir.
+     * @param scapStorePath path where to move the dir
+     * @return a {@link RunnerCall} to pass to the SaltClient
      */
-    public static RunnerCall<Map<Boolean, String>> moveMinionScapFiles(
+    public static RunnerCall<Map<Boolean, String>> moveMinionUploadedFiles(
             String minion, String dirToMove, String scapStorePath) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("minion", minion);
         args.put("dirtomove", dirToMove);
         args.put("scapstorepath", scapStorePath);
         RunnerCall<Map<Boolean, String>> call =
-                new RunnerCall<>("mgrutil.move_minion_scap_files", Optional.of(args),
-                        new TypeToken<Map<Boolean, String>>() { });
+            new RunnerCall<>("mgrutil.move_minion_uploaded_files", Optional.of(args),
+                new TypeToken<Map<Boolean, String>>() { });
         return call;
     }
 

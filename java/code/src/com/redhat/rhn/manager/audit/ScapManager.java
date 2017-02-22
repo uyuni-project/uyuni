@@ -20,9 +20,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Date;
@@ -61,7 +58,6 @@ import com.redhat.rhn.manager.audit.scap.xml.TestResult;
 import com.redhat.rhn.manager.audit.scap.xml.TestResultRuleResult;
 import com.redhat.rhn.manager.audit.scap.xml.TestResultRuleResultIdent;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
@@ -268,18 +264,34 @@ public class ScapManager extends BaseManager {
         return m.execute(params);
     }
 
-    public static long lookupIdent(String system, String identifier) {
+    /**
+     * Calls the db function {@code lookup_xccdf_ident} to get or create
+     * a new entry in {@code rhnXccdfIdent} with the given identifier.
+     * Also creates the {@code system} if it's not yet in the db.
+     * @param xccdfSystem the XCCDF system
+     * @param xccdfIdentifier the XCCDF ident
+     * @return the id of the existing or newly created XCCDF ident
+     */
+    public static long lookupIdent(String xccdfSystem, String xccdfIdentifier) {
         CallableMode m = ModeFactory.getCallableMode("scap_queries",
                 "lookup_xccdf_ident");
         Map<String, Object> inParams = new HashMap<>();
-        inParams.put("system_in", system);
-        inParams.put("identifier_in", identifier);
+        inParams.put("system_in", xccdfSystem);
+        inParams.put("identifier_in", xccdfIdentifier);
         Map<String, Integer> outParams = new HashMap<>();
         outParams.put("ident_id", Types.NUMERIC);
         Map out = m.execute(inParams, outParams);
         return (Long)out.get("ident_id");
     }
 
+    /**
+     * Calls the db function {@code lookup_xccdf_benchmark} to get or create
+     * a new entry in {@code rhnXccdfBenchmark} with the given identifier
+     * and version.
+     * @param identifier benchmark identifier
+     * @param version benchmark version
+     * @return the id of the existing or newly created XCCDF benchmark
+     */
     public static long lookupBenchmark(String identifier, String version) {
         CallableMode m = ModeFactory.getCallableMode("scap_queries",
                 "lookup_xccdf_benchmark");
@@ -292,6 +304,14 @@ public class ScapManager extends BaseManager {
         return (Long)out.get("benchmark_id");
     }
 
+    /**
+     * Calls the db function {@code lookup_xccdf_profile} to get or create
+     * a new entry in {@code rhnXccdfProfile} with the given identifier
+     * and title.
+     * @param identifier profile identifier
+     * @param tile profile title
+     * @return the id of the existing or newly created XCCDF profile
+     */
     public static long lookupProfile(String identifier, String tile) {
         CallableMode m = ModeFactory.getCallableMode("scap_queries",
                 "lookup_xccdf_profile");
@@ -394,45 +414,63 @@ public class ScapManager extends BaseManager {
         return result;
     }
 
-    public static XccdfTestResult xccdfEval(Server server, ScapAction action, String errors, InputStream resultsXml, File resumeXsl) throws IOException {
+    /**
+     * Evaluate the XCCDF results report and store the results in the db.
+     * @param server the server
+     * @param action the action
+     * @param errors openscap errors output
+     * @param resultsXml the XCCDF file
+     * @param resumeXsl the XSL used to generate the intermediary XML
+     * @return the {@link XccdfTestResult} that was saved in the db
+     * @throws IOException if the input files could not be read
+     */
+    public static XccdfTestResult xccdfEval(Server server, ScapAction action,
+                                            String errors, InputStream resultsXml,
+                                            File resumeXsl) throws IOException {
         // Transform XML
         File output = File.createTempFile("scap-resume-" + action.getId(), ".xml");
         StreamSource xslStream = new StreamSource(resumeXsl);
         StreamSource in = new StreamSource(resultsXml);
-        try (OutputStream resumeOut = new FileOutputStream(output)){
+        try (OutputStream resumeOut = new FileOutputStream(output)) {
             StreamResult out = new StreamResult(resumeOut);
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer(xslStream);
             transformer.transform(in, out);
-        } catch (javax.xml.transform.TransformerException e) {
+        }
+        catch (javax.xml.transform.TransformerException e) {
             throw new RuntimeException("XSL transform failed", e);
         }
         try (InputStream resumeIn = new FileInputStream(output)) {
             return xccdfEvalResume(server, action, errors, resumeIn);
-        } finally {
+        }
+        finally {
             output.delete();
         }
     }
 
     /**
-     * Evaluates the SCAP resume xml.
-     * @param server
-     * @param action
-     * @param errors
-     * @param resumeXml
-     * @return
+     * Evaluate the SCAP results report and store the results in the db.
+     * @param server the server
+     * @param action the action
+     * @param errors openscap errors output
+     * @param resumeXml the SCAP report in intermediary XML format
+     * @return the {@link XccdfTestResult} that was saved in the db
      */
-    public static XccdfTestResult xccdfEvalResume(Server server, ScapAction action, String errors, InputStream resumeXml) {
+    public static XccdfTestResult xccdfEvalResume(Server server, ScapAction action,
+                                                  String errors, InputStream resumeXml) {
         ScapFactory.clearTestResult(server.getId(), action.getId());
         try {
             BenchmarkResume resume = createXmlPersister()
                     .read(BenchmarkResume.class, resumeXml);
-            Profile profile = Optional.ofNullable(resume.getProfile())
-                    .orElse(new Profile("None", "No profile selected. Using defaults.", ""));
+            Profile profile = Optional.ofNullable(resume.getProfile()).orElse(
+                    new Profile("None",
+                            "No profile selected. Using defaults.",
+                            ""));
             TestResult testResults = resume.getTestResult();
             if (testResults == null) {
                 log.error("Scap report misses profile or testresult element");
-                throw new RuntimeException("Scap report misses profile or testresult element");
+                throw new RuntimeException(
+                        "Scap report misses profile or testresult element");
             }
             MutableBoolean truncated = new MutableBoolean();
             XccdfTestResult result = new XccdfTestResult();
@@ -466,45 +504,73 @@ public class ScapManager extends BaseManager {
             log.error("Scap xccdf eval failed", e);
             throw new RuntimeException("Scap xccdf eval failed", e);
         }
-
     }
 
-    private static void processRuleResult(XccdfTestResult testResult, List<TestResultRuleResult> ruleResults, String label, MutableBoolean truncated) {
+    private static void processRuleResult(XccdfTestResult testResult,
+                                          List<TestResultRuleResult> ruleResults,
+                                          String label,
+                                          MutableBoolean truncated) {
         for (TestResultRuleResult rr : ruleResults) {
             XccdfRuleResult ruleResult = new XccdfRuleResult();
             ruleResult.setTestResult(testResult);
             testResult.getResults().add(ruleResult);
-            Optional<XccdfRuleResultType> resultType = ScapFactory.lookupRuleResultType(label);
-            ruleResult.setResultType(resultType.orElseThrow(() -> new RuntimeException("no xccdf result type found for label=" + label)));
+            Optional<XccdfRuleResultType> resultType
+                    = ScapFactory.lookupRuleResultType(label);
+            ruleResult.setResultType(
+                    resultType.orElseThrow(() ->
+                            new RuntimeException("no xccdf result type found for label=" +
+                                    label)));
             ruleResult.getIdents().add(
                     getOrCreateIdent("#IDREF#", truncate(rr.getId(), 100, truncated)));
             if (rr.getIdents() != null) {
                 for (TestResultRuleResultIdent rrIdent : rr.getIdents()) {
                     ruleResult.getIdents().add(
-                            getOrCreateIdent(rrIdent.getSystem(), truncate(rrIdent.getText(), 100, truncated)));
+                            getOrCreateIdent(
+                                    rrIdent.getSystem(),
+                                    truncate(rrIdent.getText(),
+                                            100, truncated)));
                 }
 
             }
         }
     }
 
-    private static XccdfProfile getOrCreateProfile(Profile profile, MutableBoolean truncated) {
-        long profileId = lookupProfile(profile.getId(), truncate(profile.getTitle(), 120, truncated));
+    private static XccdfProfile getOrCreateProfile(Profile profile,
+                                                   MutableBoolean truncated) {
+        long profileId = lookupProfile(profile.getId(),
+                truncate(profile.getTitle(),
+                        120, truncated));
         return ScapFactory.lookupProfileById(profileId)
-                .orElseThrow(() -> new RuntimeException("Xccdf benchmark not found in db identifier=" + profile.getId() + ", version=" + profile.getTitle()));
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Xccdf benchmark not found in db identifier=" +
+                                        profile.getId() +
+                                        ", version=" +
+                                        profile.getTitle()));
     }
 
-    private static XccdfBenchmark getOrCreateBenchmark(BenchmarkResume resume, MutableBoolean truncated) {
+    private static XccdfBenchmark getOrCreateBenchmark(BenchmarkResume resume,
+                                                       MutableBoolean truncated) {
         long benchId = lookupBenchmark(truncate(resume.getId(), 120, truncated),
                 truncate(resume.getVersion(), 80, truncated));
         return ScapFactory.lookupBenchmarkById(benchId)
-                .orElseThrow(() -> new RuntimeException("Xccdf benchmark not found in db identifier=" + resume.getId() + ", version=" + resume.getVersion()));
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Xccdf benchmark not found in db identifier=" +
+                                        resume.getId() +
+                                        ", version=" +
+                                        resume.getVersion()));
     }
 
     private static XccdfIdent getOrCreateIdent(String system, String ruleIdentifier) {
         long identId = lookupIdent(system, ruleIdentifier);
         return ScapFactory.lookupIdentById(identId)
-                .orElseThrow(() -> new RuntimeException("Xccdf ident not found in db identifier=" + ruleIdentifier + ", system=" + system));
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Xccdf ident not found in db identifier=" +
+                                        ruleIdentifier +
+                                        ", system=" +
+                                        system));
     }
 
     private static Persister createXmlPersister() {
