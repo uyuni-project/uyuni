@@ -22,6 +22,7 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -231,9 +232,25 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
-            server.setOrg(activationKey
-                    .map(ActivationKey::getOrg)
-                    .orElse(OrgFactory.getSatelliteOrg()));
+            Org org = activationKey.map(ActivationKey::getOrg)
+                    .orElse(OrgFactory.getSatelliteOrg());
+            if (server.getOrg() == null) {
+                server.setOrg(org);
+            }
+            else if (!server.getOrg().equals(org)) {
+                LOG.error("The Server organization does not match the activation key " +
+                          "organization. The activation key will not be used.");
+                activationKey = Optional.empty();
+                org = server.getOrg();
+                ServerHistoryEvent historyEvent = new ServerHistoryEvent();
+                historyEvent.setCreated(new Date());
+                historyEvent.setServer(server);
+                historyEvent.setSummary("Invalid Activation Key");
+                historyEvent.setDetails(
+                        "The Server organization does not match the activation key " +
+                        "organization. The activation key will not be used.");
+                server.getHistory().add(historyEvent);
+            }
             activationKey.map(ActivationKey::getChannels)
                     .ifPresent(channels -> channels.forEach(server::addChannel));
 
