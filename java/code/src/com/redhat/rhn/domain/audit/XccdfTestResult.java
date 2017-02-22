@@ -196,12 +196,20 @@ public class XccdfTestResult {
         this.errors = errorsIn;
     }
 
+    /**
+     * Getter for results
+     * @return results to get
+     */
     public Set<XccdfRuleResult> getResults() {
         return results;
     }
 
-    public void setResults(Set<XccdfRuleResult> results) {
-        this.results = results;
+    /**
+     * Setter for results
+     * @param resultsIn to set
+     */
+    public void setResults(Set<XccdfRuleResult> resultsIn) {
+        this.results = resultsIn;
     }
 
     /**

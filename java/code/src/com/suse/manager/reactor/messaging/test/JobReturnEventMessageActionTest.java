@@ -15,10 +15,8 @@
 package com.suse.manager.reactor.messaging.test;
 
 import com.google.gson.JsonElement;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -30,7 +28,6 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.server.*;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
@@ -39,7 +36,6 @@ import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
-import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -631,7 +627,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         SaltService saltServiceMock = mock(SaltService.class);
         context().checking(new Expectations() {{
-            oneOf(saltServiceMock).moveMinionScapFiles(
+            oneOf(saltServiceMock).storeMinionScapFiles(
                     with(any(MinionServer.class)),
                     with(openscapResult.getUploadDir()),
                     with(action.getId()));
