@@ -22,6 +22,7 @@ import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.modules.Config;
@@ -849,9 +850,22 @@ public class SaltService {
         return saltSSHService.bootstrapMinion(parameters, bootstrapMods, pillarData);
     }
 
-    public Map<Boolean, String> moveMinionScapFiles(
+    /**
+     * Store the files uploaded by a minion to the SCAP storage directory.
+     * @param minion the minion
+     * @param uploadDir the uploadDir
+     * @param actionId the action id
+     * @return a map with one element: @{code true} -> scap store path,
+     * {@code false} -> err message
+     *
+     */
+    public Map<Boolean, String> storeMinionScapFiles(
             MinionServer minion, String uploadDir, Long actionId) {
-        String scapStorePath = ScapFileManager.getStoragePath(minion.getOrg().getId(), minion.getId(), actionId);
-        return callSync(MgrUtilRunner.moveMinionScapFiles(minion.getMinionId(), uploadDir, scapStorePath));
+        String scapStorePath = ScapFileManager
+                .getStoragePath(minion.getOrg().getId(),
+                        minion.getId(), actionId);
+        return callSync(MgrUtilRunner
+                .moveMinionUploadedFiles(minion.getMinionId(),
+                        uploadDir, scapStorePath));
     }
 }
