@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -41,12 +42,14 @@ import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.distupgrade.test.DistUpgradeManagerTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
@@ -248,6 +251,45 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             Collections.sort(history, (h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
             assertEquals(history.get(history.size()-1).getSummary(), "Server reactivated as Salt minion");
         });
+    }
+
+    public void testReRegisterTraditionalAsMinionInvalidActKey() throws Exception {
+        ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+
+        // create machine in different organization
+        Org otherOrg = UserTestUtils.createNewOrgFull("otherOrg");
+        User otherUser = UserTestUtils.createUser("otheruser", otherOrg.getId());
+        Server server = ServerTestUtils.createTestSystem(otherUser);
+        server.setMachineId(MACHINE_ID);
+        ServerFactory.save(server);
+        //SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
+        SaltService saltService = setupStubs(product);
+
+        // Verify the resulting system entry
+        String machineId = saltService.getMachineId(MINION_ID).get();
+        Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
+        assertTrue(optMinion.isPresent());
+        MinionServer minion = optMinion.get();
+
+        // no base/required channels - e.g. we need an SCC sync
+        assertEquals(MINION_ID, minion.getName());
+        assertNull(minion.getBaseChannel());
+        assertTrue(minion.getChannels().isEmpty());
+
+        // Invalid Activation Key should be reported because
+        // org of server does not match org of activation key
+        boolean found = false;
+        for (ServerHistoryEvent h : minion.getHistory()) {
+            if (h.getSummary().equals("Invalid Activation Key")) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue("Activation Key not set as invalid", found);
+        assertEquals(otherOrg, minion.getOrg());
     }
 
     public void testRegisterMinionWithoutActivationKeyNoProductChannel() throws Exception {
