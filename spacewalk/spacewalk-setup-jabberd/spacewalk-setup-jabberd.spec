@@ -63,7 +63,7 @@ rm -rf %{buildroot}
 %{_sysconfdir}/pki/spacewalk
 
 %post
-%{buildroot}/%{_datadir}/spacewalk/setup/jabberd/create_sqlite3_database
+/usr/share/spacewalk/setup/jabberd/create_sqlite3_database
 
 %changelog
 * Thu Mar 19 2015 Grant Gainey 2.3.2-1
