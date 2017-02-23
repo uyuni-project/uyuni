@@ -34,7 +34,7 @@
     <xsl:if test="not(auto-create)">
     <xsl:text>
     </xsl:text>
-    <auto-create/> 
+    <auto-create/>
     <xsl:text>
     </xsl:text>
     </xsl:if>
@@ -44,7 +44,7 @@
 
 <xsl:template match="/sm/storage/driver">
   <xsl:copy>
-    <xsl:text>db</xsl:text>
+    <xsl:text>sqlite</xsl:text>
   </xsl:copy>
 </xsl:template>
 
