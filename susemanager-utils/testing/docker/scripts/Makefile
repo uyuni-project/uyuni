@@ -1,4 +1,4 @@
-DOCKER_CONTAINER = registry.mgr.suse.de/suma-head-cobbler
+DOCKER_CONTAINER = registry.mgr.suse.de/suma-3.0-cobbler
 
 all :: cobbler_tests
 
