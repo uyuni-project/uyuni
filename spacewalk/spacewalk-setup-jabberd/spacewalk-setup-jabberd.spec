@@ -7,14 +7,15 @@ License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+PreReq:         sqlite3
 BuildRequires:  perl
 BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  jabberd
+BuildRequires:	 sqlite3
 BuildArch:      noarch
 Requires:       perl
-Requires:       libxslt
-Requires:       jabberd
 %if 0%{?suse_version}
-Requires:       jabberd-db
+Requires:       jabberd-sqlite
 %endif
 
 %description
@@ -39,13 +40,13 @@ chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/jabberd
 install -m 0644 share/jabberd/* %{buildroot}/%{_datadir}/spacewalk/setup/jabberd/
+install -m 0744 include/* %{buildroot}/%{_datadir}/spacewalk/setup/jabberd/
 
 # jabberd ssl cert location
 install -d -m 755 %{buildroot}/%{_sysconfdir}/pki/spacewalk/jabberd
 
 %check
 make test
-
 
 %clean
 rm -rf %{buildroot}
@@ -60,6 +61,9 @@ rm -rf %{buildroot}
 %{_datadir}/spacewalk/*
 %dir %{_sysconfdir}/pki
 %{_sysconfdir}/pki/spacewalk
+
+%post
+%{buildroot}/%{_datadir}/spacewalk/setup/jabberd/create_sqlite3_database
 
 %changelog
 * Thu Mar 19 2015 Grant Gainey 2.3.2-1
@@ -135,4 +139,3 @@ rm -rf %{buildroot}
 
 * Mon Apr 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.1.1-1
 - bumping spec files to 1.1 packages
-
