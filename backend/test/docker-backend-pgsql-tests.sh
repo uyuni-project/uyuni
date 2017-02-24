@@ -4,6 +4,7 @@
 #su - postgres -c '/usr/lib/postgresql-init start'
 rcpostgresql start
 cp /root/rhn.conf /etc/rhn/rhn.conf
+mkdir -p /manager/backend/reports
 nosetests --with-xunit --xunit-file /manager/backend/reports/pgsql_tests.xml /manager/backend/test/runtests-postgresql.py
 EXIT=$?
 #su - postgres -c '/usr/lib/postgresql-init stop'
