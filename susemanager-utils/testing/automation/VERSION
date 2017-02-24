@@ -1,0 +1,4 @@
+REGISTRY=registry.mgr.suse.de
+VER=head
+BASE_CONTAINER=suma-$VER-base
+PGSQL_CONTAINER=suma-$VER-pgsql
