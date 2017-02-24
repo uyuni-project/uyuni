@@ -24,7 +24,6 @@ import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +61,6 @@ public class RepoSyncTask extends RhnJavaJob {
 
                 try {
                     executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]));
-                    channel.setLastSynced(new Date());
                 }
                 catch (JobExecutionException e) {
                     log.error(e.getMessage());
