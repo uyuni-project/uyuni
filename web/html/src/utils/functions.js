@@ -26,6 +26,16 @@ const cancelable = (promise, onCancel) => {
     };
 }
 
+function dateWithTimezone(dateString) {
+    const offsetNum = parseInt(dateString.substring(dateString.length - 5));
+    const serverOffset = Math.trunc(offsetNum / 100) * 60 + offsetNum % 100;
+    const orig = new Date(dateString);
+    const clientOffset = -orig.getTimezoneOffset();
+
+    const final = new Date(orig.getTime() + (serverOffset - clientOffset) * 60000);
+    return final;
+}
+
 function LocalDateTime(date) {
     const padTo = (v) => {
         v = v.toString();
@@ -57,7 +67,8 @@ module.exports = {
     Utils: {
         cancelable: cancelable,
         sortById: sortById,
-        sortByText: sortByText
+        sortByText: sortByText,
+        dateWithTimezone: dateWithTimezone
     },
     Formats: {
         LocalDateTime: LocalDateTime
