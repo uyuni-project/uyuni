@@ -268,7 +268,8 @@
     <echo message="and excluding:" />
     <echo message="${tests.excludes.text}" />
     
-    <junit fork="yes" forkmode="once" maxmemory="256m" dir="${basedir}/buildconf">
+    <junit fork="yes" forkmode="once" maxmemory="256m" dir="${basedir}/buildconf"
+	    failureproperty="junit_failed">
       <sysproperty key="rhn-home" value="." />
       <sysproperty key="java.awt.headless" value="true" />
       <sysproperty key="log4j.threshold" value="warn" />
@@ -282,6 +283,10 @@
         <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
       </batchtest>
     </junit>
+  </target>
+
+  <target name="test-pr" depends="test" description="Run unit tests for Pull Requests">
+    <fail if="junit_failed"/>
   </target>
 
   <target name="checkstyle" depends="compile" description="Runs the checkstyle tool on sources">
