@@ -6,8 +6,7 @@ GITROOT=`readlink -f $HERE/../../../`
 
 # fake usix.py
 if [ ! -e $GITROOT/usix/spacewalk/common/usix.py ]; then
-    mkdir -p $GITROOT/usix/spacewalk/common/
-    ln -sf ../../usix.py $GITROOT/usix/spacewalk/common/usix.py
+    ln -sf . $GITROOT/usix/spacewalk
 fi
 
 DOCKER_RUN_EXPORT="PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src:/manager/usix"
@@ -18,8 +17,6 @@ if [ $? -ne 0 ]; then
     EXIT=3
 fi
 
-rm $GITROOT/usix/spacewalk/common/usix.py
-rmdir $GITROOT/usix/spacewalk/common
-rmdir $GITROOT/usix/spacewalk
+rm $GITROOT/usix/spacewalk
 
 exit $EXIT
