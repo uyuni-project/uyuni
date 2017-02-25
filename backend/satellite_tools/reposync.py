@@ -220,13 +220,14 @@ def get_single_ssl_set(keys, check_dates=False):
     """Picks one of available SSL sets for given repository."""
     if check_dates:
         for ssl_set in keys:
-            if verify_certificate_dates(ssl_set['ca_cert']) and \
+            if verify_certificate_dates(str(ssl_set['ca_cert'])) and \
                 (not ssl_set['client_cert'] or
-                 verify_certificate_dates(ssl_set['client_cert'])):
+                 verify_certificate_dates(str(ssl_set['client_cert']))):
                 return ssl_set
     # Get first
     else:
         return keys[0]
+    return None
 
 
 class RepoSync(object):
@@ -377,7 +378,10 @@ class RepoSync(object):
                         """, repo_id=int(data['id']))
                         if keys:
                             ssl_set = get_single_ssl_set(keys, check_dates=self.check_ssl_dates)
-                            plugin.set_ssl_options(ssl_set['ca_cert'], ssl_set['client_cert'], ssl_set['client_key'])
+                            if ssl_set:
+                                plugin.set_ssl_options(ssl_set['ca_cert'], ssl_set['client_cert'], ssl_set['client_key'])
+                            else:
+                                raise ValueError("No valid SSL certificates were found for repository.")
 
                     # update the checksum type of channels with org_id NULL
                     self.updateChannelChecksumType(plugin.get_md_checksum_type())

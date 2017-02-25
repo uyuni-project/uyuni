@@ -87,6 +87,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Feb 24 2017 Jan Dobes 2.7.9-1
+- drop create_first_org
+
 * Thu Feb 09 2017 Jan Dobes 2.7.8-1
 - 1401497 - upgrades
 - 1401497 - save ssl in separate table again, now allow to have multiple ssl
