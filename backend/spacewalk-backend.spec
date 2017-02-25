@@ -42,7 +42,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.35
+Version: 2.7.42
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -441,12 +441,14 @@ make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} test || :
 %if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn:/usr/share/rhn
+cp %{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{pythonrhnroot}/common
 spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_tools \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
+rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py
 %endif
 
 if [ -x %py_libdir/py_compile.py ]; then
@@ -890,6 +892,32 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Fri Feb 24 2017 Jan Dobes 2.7.42-1
+- Postgresql 9.6 support
+
+* Fri Feb 24 2017 Ondrej Gajdusek <ogajduse@redhat.com> 2.7.41-1
+- Fixing wrong-import-position (C0413) for backend.
+- Fixing ungrouped-imports for backend
+- Fixing trailing-newlines for backend
+- Fixing consider-iterating-dictionary for backend
+
+* Fri Feb 24 2017 Jan Dobes 2.7.40-1
+- align number to right in output
+
+* Thu Feb 23 2017 Jan Dobes 2.7.39-1
+- 1401497 - fixing case when there isn't any valid SSL cert
+- 1401497 - fixing 'ERROR: expected a readable buffer object' on Oracle
+
+* Thu Feb 23 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.38-1
+- temporarily copy usix into buildroot for pylint check
+
+* Tue Feb 21 2017 Jan Dobes 2.7.37-1
+- 1425137 - fixing element CODE undefined
+- 1425137 - close term tags
+
+* Mon Feb 20 2017 Gennadii Altukhov <galt@redhat.com> 2.7.36-1
+- 1390241 - catch exception InvalidArchError and send back an error message
+
 * Fri Feb 17 2017 Jan Dobes 2.7.35-1
 - 1401497 - fixing empty select
 

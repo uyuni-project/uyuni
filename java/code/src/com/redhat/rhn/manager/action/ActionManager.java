@@ -106,6 +106,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Calendar;
 import java.util.stream.Collectors;
 import java.util.Optional;
 import java.util.Collections;
@@ -191,9 +192,11 @@ public class ActionManager extends BaseManager {
         Server server = SystemManager.lookupByIdAndUser(serverId, loggedInUser);
         ServerAction serverAction = ActionFactory.getServerActionForServerAndAction(server,
                 action);
+        Date now = Calendar.getInstance().getTime();
 
         serverAction.setStatus(ActionFactory.STATUS_FAILED);
         serverAction.setResultMsg(message);
+        serverAction.setCompletionTime(now);
 
         return 1;
     }
