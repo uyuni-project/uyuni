@@ -81,10 +81,12 @@ rm -r -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__pycache__
 %{pythonrhnroot}/__init__.py
 %{pythonrhnroot}/common/__init__.py
 %{pythonrhnroot}/common/usix.py*
+%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1200
 %exclude %{pythonrhnroot}/__init__.pyc
 %exclude %{pythonrhnroot}/__init__.pyo
 %exclude %{pythonrhnroot}/common/__init__.pyc
 %exclude %{pythonrhnroot}/common/__init__.pyo
+%endif
 
 %if 0%{?fedora} && 0%{?fedora} >= 23
 
