@@ -5,11 +5,11 @@ HERE=`dirname $0`
 GITROOT=`readlink -f $HERE/../../../`
 
 # fake usix.py
-if [ ! -e $GITROOT/usix/spacewalk/common/usix.py ]; then
-    ln -sf . $GITROOT/usix/spacewalk
+if [ ! -e $GITROOT/backend/common/usix.py ]; then
+    ln -sf ../../usix/common/usix.py $GITROOT/backend/common/usix.py
 fi
 
-DOCKER_RUN_EXPORT="PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src:/manager/usix"
+DOCKER_RUN_EXPORT="PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src"
 EXIT=0
 docker pull $REGISTRY/$PGSQL_CONTAINER
 docker run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /manager/backend/test/docker-backend-common-tests.sh
@@ -25,6 +25,6 @@ if [ $? -ne 0 ]; then
     EXIT=3
 fi
 
-rm $GITROOT/usix/spacewalk
+rm -f $GITROOT/backend/common/usix.py*
 
 exit $EXIT
