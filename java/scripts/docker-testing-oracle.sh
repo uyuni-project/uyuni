@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+TARGET="test"
+if [ -n "$1" ]; then
+    TARGET=$1
+fi
+
 MYHOSTNAME=`hostname`
 
 echo "
@@ -29,7 +34,6 @@ ant resolve-ivy
 cp /root/rhn.conf /etc/rhn/rhn.conf
 
 cp buildconf/test/rhn.conf.oracle-example buildconf/test/rhn.conf
-ant -f manager-build.xml refresh-branding-jar test
-
+ant -f manager-build.xml refresh-branding-jar $TARGET
 
 /etc/init.d/oracle stop
