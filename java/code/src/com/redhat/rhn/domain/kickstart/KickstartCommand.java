@@ -126,6 +126,7 @@ public class KickstartCommand implements Comparable {
         KickstartCommand k = (KickstartCommand)kc;
         int order = getCommandName().getOrder().compareTo(k.getCommandName().getOrder());
         if (k.getCommandName().getName().equals("custom")) {
+            order = getCustomPosition().compareTo(k.getCustomPosition());
             return order;
         }
 
