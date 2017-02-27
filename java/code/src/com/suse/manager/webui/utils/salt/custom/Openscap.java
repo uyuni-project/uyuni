@@ -40,25 +40,35 @@ public class Openscap {
         @SerializedName("upload_dir")
         private String uploadDir;
 
+        @SerializedName("returnCode") //TODO
+        private int returnCode;
+
         /**
-         * @return error to get
+         * @return Openscap command stderr
          */
         public String getError() {
             return error;
         }
 
         /**
-         * @return success to get
+         * @return command success flag
          */
         public boolean isSuccess() {
             return success;
         }
 
         /**
-         * @return uploadDir to get
+         * @return dir uploaded by the openscap module
          */
         public String getUploadDir() {
             return uploadDir;
+        }
+
+        /**
+         * @return Openscp command return code
+         */
+        public int getReturnCode() {
+            return returnCode;
         }
     }
 
