@@ -143,6 +143,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         creds.setEmail("dockeradmin@example.com");
         creds.setUsername("admin");
         creds.setPassword("secret");
+        CredentialsFactory.storeCredentials(creds);
 
         ImageStore iStore = new ImageStore();
         iStore.setLabel("myregistry");
