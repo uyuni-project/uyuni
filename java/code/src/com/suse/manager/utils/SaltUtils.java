@@ -69,7 +69,6 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -343,40 +342,48 @@ public class SaltUtils {
 
             serverAction.getServer().asMinionServer().ifPresent(
                     minion -> {
-                        Map<Boolean, String> moveRes = saltService.storeMinionScapFiles(
-                                minion, openscapResult.getUploadDir(), action.getId());
-                        moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
-                            if (moved.getKey()) {
-                                Path resultsFile = Paths.get(moved.getValue(),
-                                        "results.xml");
-                                try (InputStream resultsFileIn =
-                                             new FileInputStream(
-                                                     resultsFile.toFile())) {
-                                    // TODO errors string
-                                    ScapManager.xccdfEval(
-                                            minion, scapAction,
-                                            "",
-                                            resultsFileIn,
-                                            new File(xccdfResumeXsl));
-                                    serverAction.setResultMsg("Success");
+                        try {
+                            Map<Boolean, String> moveRes = saltService.storeMinionScapFiles(
+                                    minion, openscapResult.getUploadDir(), action.getId());
+                            moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
+                                if (moved.getKey()) {
+                                    Path resultsFile = Paths.get(moved.getValue(),
+                                            "results.xml");
+                                    try (InputStream resultsFileIn =
+                                                 new FileInputStream(
+                                                         resultsFile.toFile())) {
+                                        ScapManager.xccdfEval(
+                                                minion, scapAction,
+                                                openscapResult.getReturnCode(),
+                                                openscapResult.getError(),
+                                                resultsFileIn,
+                                                new File(xccdfResumeXsl));
+                                        serverAction.setResultMsg("Success");
+                                    }
+                                    catch (Exception e) {
+                                        LOG.error(
+                                                "Error processing SCAP results file " +
+                                                        resultsFile.toString(), e);
+                                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                        serverAction.setResultMsg(
+                                                "Error processing SCAP results file " +
+                                                        resultsFile.toString() + ": " +
+                                                        e.getMessage());
+                                    }
                                 }
-                                catch (IOException e) {
-                                    LOG.error(
-                                            "Error processing SCAP results file " +
-                                            resultsFile.toString(), e);
+                                else {
                                     serverAction.setStatus(ActionFactory.STATUS_FAILED);
                                     serverAction.setResultMsg(
-                                            "Error processing SCAP results file " +
-                                            resultsFile.toString() + ": " + e.getMessage());
+                                            "Could not store SCAP files on server: " +
+                                                    moved.getValue());
                                 }
-                            }
-                            else {
-                                serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                                serverAction.setResultMsg(
-                                        "Could not store SCAP files on server: " +
-                                        moved.getValue());
-                            }
-                        });
+                            });
+                        }
+                        catch (Exception e) {
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setResultMsg(
+                                    "Error saving SCAP result: " + e.getMessage());
+                        }
                     });
         }
         else {
