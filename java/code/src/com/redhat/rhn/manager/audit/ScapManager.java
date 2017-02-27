@@ -418,6 +418,7 @@ public class ScapManager extends BaseManager {
      * Evaluate the XCCDF results report and store the results in the db.
      * @param server the server
      * @param action the action
+     * @param returnCode openscap return code
      * @param errors openscap errors output
      * @param resultsXml the XCCDF file
      * @param resumeXsl the XSL used to generate the intermediary XML
@@ -425,10 +426,12 @@ public class ScapManager extends BaseManager {
      * @throws IOException if the input files could not be read
      */
     public static XccdfTestResult xccdfEval(Server server, ScapAction action,
-                                            String errors, InputStream resultsXml,
-                                            File resumeXsl) throws IOException {
+                                            int returnCode, String errors,
+                                            InputStream resultsXml, File resumeXsl)
+            throws IOException {
         // Transform XML
         File output = File.createTempFile("scap-resume-" + action.getId(), ".xml");
+        output.deleteOnExit();
         StreamSource xslStream = new StreamSource(resumeXsl);
         StreamSource in = new StreamSource(resultsXml);
         try (OutputStream resumeOut = new FileOutputStream(output)) {
@@ -441,7 +444,7 @@ public class ScapManager extends BaseManager {
             throw new RuntimeException("XSL transform failed", e);
         }
         try (InputStream resumeIn = new FileInputStream(output)) {
-            return xccdfEvalResume(server, action, errors, resumeIn);
+            return xccdfEvalResume(server, action, returnCode, errors, resumeIn);
         }
         finally {
             output.delete();
@@ -452,12 +455,14 @@ public class ScapManager extends BaseManager {
      * Evaluate the SCAP results report and store the results in the db.
      * @param server the server
      * @param action the action
+     * @param returnCode openscap return code
      * @param errors openscap errors output
      * @param resumeXml the SCAP report in intermediary XML format
      * @return the {@link XccdfTestResult} that was saved in the db
      */
     public static XccdfTestResult xccdfEvalResume(Server server, ScapAction action,
-                                                  String errors, InputStream resumeXml) {
+                                                  int returnCode, String errors,
+                                                  InputStream resumeXml) {
         ScapFactory.clearTestResult(server.getId(), action.getId());
         try {
             BenchmarkResume resume = createXmlPersister()
@@ -488,9 +493,23 @@ public class ScapManager extends BaseManager {
             result.setEndTime(testResults.getEndTime());
 
             processRuleResult(result, testResults.getPass(), "pass", truncated);
-            // TODO rest of the rule types
+            processRuleResult(result, testResults.getFail(), "fail", truncated);
+            processRuleResult(result, testResults.getError(), "error", truncated);
+            processRuleResult(result, testResults.getUnknown(), "unknown", truncated);
+            processRuleResult(result, testResults.getNotapplicable(),
+                    "notapplicable", truncated);
+            processRuleResult(result, testResults.getNotchecked(),
+                    "notchecked", truncated);
+            processRuleResult(result, testResults.getNotselected(),
+                    "notselected", truncated);
+            processRuleResult(result, testResults.getInformational(),
+                    "informational", truncated);
+            processRuleResult(result, testResults.getFixed(), "fixed", truncated);
 
             String errs = errors;
+            if (returnCode != 0) {
+                errs += String.format("xccdf_eval: oscap tool returned %d\n", returnCode);
+            }
             if (truncated.isTrue()) {
                 errs = errors +
                     "\nSome text strings were truncated when saving to the database.";
