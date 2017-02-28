@@ -828,7 +828,6 @@ class Backend:
         }
 
         if CFG.has_key('incomplete_package_import') and CFG.incomplete_package_import:
-            del childTables['rhnPackageFile']
             del childTables['rhnPackageChangeLogRec']
 
         for package in packages:
