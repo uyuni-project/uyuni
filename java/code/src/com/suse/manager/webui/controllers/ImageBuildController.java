@@ -180,7 +180,7 @@ public class ImageBuildController {
         return maybeProfile.flatMap(ImageProfile::asDockerfileProfile).map(profile -> {
             MessageQueue.publish(new ImageBuildEventMessage(
                     buildRequest.getBuildHostId(), user.getId(), buildRequest.getTag(),
-                    profile
+                    profile.getProfileId()
             ));
             //TODO: Add action ID as a message parameter
             return GSON.toJson(new JsonResult(true, "build_scheduled"));
