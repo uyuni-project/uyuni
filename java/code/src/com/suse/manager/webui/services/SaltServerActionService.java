@@ -281,7 +281,8 @@ public enum SaltServerActionService {
         else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
             ImageInspectAction iia = (ImageInspectAction) actionIn;
             ImageInspectActionDetails details = iia.getDetails();
-            ImageStore store = ImageStoreFactory.lookupById(details.getId()).get();
+            ImageStore store = ImageStoreFactory.lookupById(
+                    details.getImageStoreId()).get();
             return imageInspectAction(minions, details.getTag(), details.getName(), store);
         }
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
