@@ -156,6 +156,8 @@ class Onboarding extends React.Component {
             <Column
               columnKey="state"
               width="10%"
+              columnClass="text-center"
+              headerClass="text-center"
               comparator={Utils.sortByText}
               header={t('State')}
               cell={ (row) => labelFor(row.state) }
