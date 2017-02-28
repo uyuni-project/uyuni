@@ -433,7 +433,7 @@ public class SaltUtils {
 
         Optional.of(ret.getInfoInstalled().getChanges().getRet())
                 .map(saltPkgs -> saltPkgs.entrySet().stream()
-                        .map(entry -> createPackageFromSalt2(entry.getKey(),
+                        .map(entry -> createImagePackageFromSalt(entry.getKey(),
                                 entry.getValue(), imageInfo))
                         .collect(Collectors.toSet())
                 );
@@ -586,7 +586,7 @@ public class SaltUtils {
         return pkg;
     }
 
-    private static ImagePackage createPackageFromSalt2(
+    private static ImagePackage createImagePackageFromSalt(
             String name, Pkg.Info info, ImageInfo imageInfo) {
         String epoch = info.getEpoch().orElse(null);
         String release = info.getRelease().orElse("0");
