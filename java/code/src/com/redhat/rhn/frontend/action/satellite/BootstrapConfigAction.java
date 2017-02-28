@@ -43,6 +43,7 @@ public class BootstrapConfigAction extends BaseConfigAction {
 
     public static final String HOSTNAME = "hostname";
     public static final String SSL_CERT = "ssl-cert";
+    public static final String SALT = "salt";
     public static final String ENABLE_SSL = "ssl";
 
     public static final String ENABLE_GPG = "gpg";
@@ -80,6 +81,7 @@ public class BootstrapConfigAction extends BaseConfigAction {
                 getCommand(requestContext.getCurrentUser());
                 cmd.setHostname(IDN.toASCII(form.getString(HOSTNAME)));
                 cmd.setSslPath(form.getString(SSL_CERT));
+                cmd.setSaltEnabled((Boolean) form.get(SALT));
                 cmd.setEnableSsl((Boolean) form.get(ENABLE_SSL));
                 cmd.setEnableGpg((Boolean) form.get(ENABLE_GPG));
                 cmd.setAllowConfigActions((Boolean) form.get(ALLOW_CONFIG_ACTIONS));
@@ -105,6 +107,7 @@ public class BootstrapConfigAction extends BaseConfigAction {
             form.set(HOSTNAME, IDN.toUnicode(
                 Config.get().getString(ConfigDefaults.JABBER_SERVER)));
             form.set(SSL_CERT, caCertPath);
+            form.set(SALT, Boolean.TRUE);
             form.set(ENABLE_SSL, Boolean.TRUE);
             form.set(ENABLE_GPG, Boolean.TRUE);
             form.set(ALLOW_CONFIG_ACTIONS, Boolean.FALSE);

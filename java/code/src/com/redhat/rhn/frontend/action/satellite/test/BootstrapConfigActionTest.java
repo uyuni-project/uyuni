@@ -65,6 +65,8 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
                 form.get(BootstrapConfigAction.ALLOW_CONFIG_ACTIONS));
         assertEquals(Boolean.FALSE,
                 form.get(BootstrapConfigAction.ALLOW_REMOTE_COMMANDS));
+        assertEquals(Boolean.TRUE,
+                form.get(BootstrapConfigAction.SALT));
         assertEquals("", form.getString(BootstrapConfigAction.HTTP_PROXY));
         assertEquals("", form.getString(BootstrapConfigAction.HTTP_PROXY_USERNAME));
         assertEquals("", form.getString(BootstrapConfigAction.HTTP_PROXY_PASSWORD));
@@ -87,4 +89,3 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
         verifyActionMessages(new String[]{"bootstrap.config.success"});
     }
 }
-

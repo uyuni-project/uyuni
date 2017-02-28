@@ -382,6 +382,7 @@
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
             <form-property name="hostname"  type="java.lang.String"/>
             <form-property name="ssl-cert"  type="java.lang.String"/>
+            <form-property name="salt"  type="java.lang.Boolean"/>
             <form-property name="ssl"  type="java.lang.Boolean"/>
             <form-property name="gpg"  type="java.lang.Boolean"/>
             <form-property name="allow-config-actions"  type="java.lang.Boolean"/>
