@@ -23,7 +23,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.MethodUtil;
-import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
@@ -168,7 +167,6 @@ public class TestUtils {
      * @return a request with a Session and a User.
      */
     public static RhnMockHttpServletRequest getRequestWithSessionAndUser() {
-        LoggingFactory.clearLogId();
         RhnMockHttpServletRequest req = new RhnMockHttpServletRequest();
         RhnMockHttpServletResponse resp = new RhnMockHttpServletResponse();
         RhnMockHttpSession session = new RhnMockHttpSession();

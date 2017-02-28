@@ -66,7 +66,6 @@ public abstract class RhnBaseTestCase extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        TestCaseHelper.setUpHelper();
     }
 
     /**

@@ -19,8 +19,6 @@ import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.domain.common.LoggingFactory;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -28,7 +26,6 @@ public class MessageQueueTest extends RhnBaseTestCase {
 
     private static Logger logger = Logger.getLogger(MessageQueueTest.class);
     protected User user;
-    protected boolean committed = false;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -47,18 +44,8 @@ public class MessageQueueTest extends RhnBaseTestCase {
         TestDBAction.deRegisterAction();
         MessageQueue.stopMessaging();
 
-        // If at some point we created a user and committed the transaction, we need
-        // clean up our mess
-        if (committed) {
-           LoggingFactory.clearLogId();
-           OrgFactory.deleteOrg(user.getOrg().getId(), user);
-           commitAndCloseSession();
-        }
-
-        committed = false;
         user = null;
         logger.debug("tearDown - end");
-
     }
 
     public void testPublish() throws Exception {

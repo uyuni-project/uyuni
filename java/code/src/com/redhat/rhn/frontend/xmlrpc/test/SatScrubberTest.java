@@ -18,7 +18,6 @@ import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
@@ -125,7 +124,6 @@ public class SatScrubberTest extends TestCase {
         for (int i = 0; i < dr.size(); i++) {
             Long uid = (Long) ((Map) dr.get(i)).get("id");
             try {
-                LoggingFactory.clearLogId();
                 UserFactory.deleteUser(uid);
             }
             catch (Exception e) {
@@ -162,7 +160,6 @@ public class SatScrubberTest extends TestCase {
      * @param sid
      */
     private void deleteServer(Long sid) {
-        LoggingFactory.clearLogId();
         CallableMode m = ModeFactory.
                 getCallableMode("System_queries", "delete_server");
         Map in = new HashMap();
@@ -181,7 +178,6 @@ public class SatScrubberTest extends TestCase {
             Long id = (Long) row.get("id");
             log.debug("Deleting org: " + id);
             try {
-                LoggingFactory.clearLogId();
                 OrgFactory.deleteOrg(new Long(id.longValue()), UserFactory
                         .findResponsibleUser(1L, RoleFactory.SAT_ADMIN));
             }
