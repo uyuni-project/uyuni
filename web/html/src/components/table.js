@@ -69,14 +69,16 @@ const Column = (props) => {
   } else {
     content = props.cell;
   }
-  return <td>{content}</td>;
+  return <td className={props.columnClass}>{content}</td>;
 }
 
 const Header = (props) => {
   const thStyle = props.width ? { width: props.width } : null;
 
+  let thClass = props.className;
+
   if (props.comparator) {
-    const thClass = props.sortDirection == 0 ? "" : (props.sortDirection > 0 ? "ascSort" : "descSort");
+    thClass += (thClass ? " " : "") + (props.sortDirection == 0 ? "" : (props.sortDirection > 0 ? "ascSort" : "descSort"));
     const newDirection = props.sortDirection == 0 ? 1 : props.sortDirection * -1;
 
     return (
@@ -88,7 +90,7 @@ const Header = (props) => {
       </th>
     );
   }
-  return <th style={ thStyle }>{props.children}</th>;
+  return <th style={ thStyle } className={ thClass }>{props.children}</th>;
 }
 
 const Button = React.createClass({
@@ -225,11 +227,12 @@ const Table = React.createClass({
                     sortDirection={sortDirection}
                     onSortChange={this.onSortChange}
                     width={column.props.width}
-                    comparator={column.props.comparator}>
+                    comparator={column.props.comparator}
+                    className={column.props.headerClass}>
                         {column.props.header}
                     </Header>;
             } else {
-                return <Header key={index}/>;
+                return <Header key={index} className={column.props.headerClass}/>;
             }
         });
 
