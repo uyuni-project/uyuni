@@ -262,9 +262,12 @@ public class ImageBuildController {
 
         if (imageOverview.getSecurityErrata() != null) {
             JsonObject patches = new JsonObject();
-            patches.addProperty("critical", 7);
-            patches.addProperty("noncritical",
-                    32);
+            patches.addProperty("critical", imageOverview.getSecurityErrata());
+            if (imageOverview.getBugErrata() != null &&
+                    imageOverview.getEnhancementErrata() != null) {
+                patches.addProperty("noncritical", imageOverview.getBugErrata() +
+                        imageOverview.getEnhancementErrata());
+            }
             json.add("patches", patches);
         }
 

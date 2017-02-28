@@ -250,9 +250,9 @@ public class ImageInfoJson {
             return;
         }
         JsonObject json = new JsonObject();
-        json.addProperty("security", 7);
-        json.addProperty("bug", 13);
-        json.addProperty("enhancement", 19);
+        json.addProperty("security", security);
+        json.addProperty("bug", bug);
+        json.addProperty("enhancement", enhancement);
         this.patches = json;
     }
 
