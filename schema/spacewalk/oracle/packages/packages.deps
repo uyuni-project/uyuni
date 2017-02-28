@@ -15,7 +15,6 @@
 
 path = . tables views procs
 
-logging.pkb             :: log
 rhn_cache.pkb           :: rhnUserServerPerms rhnUserServerPermsDupes \
                            rhnUserServerGroupPerms rhnUserGroupType \
                            rhnUserGroupMembers rhnServerGroup rhnUserGroup
