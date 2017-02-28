@@ -55,6 +55,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -341,7 +342,7 @@ public class SaltUtils {
         ImageBuildActionDetails details = ba.getDetails();
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-            ActionManager.scheduleImageInspect(
+            ImageInspectAction iAction = ActionManager.scheduleImageInspect(
                     action.getSchedulerUser(),
                     action.getServerActions()
                             .stream()
@@ -354,6 +355,7 @@ public class SaltUtils {
                             .getTargetStore(),
                     Date.from(Instant.now())
             );
+            MessageQueue.publish(new ActionScheduledEventMessage(iAction, false));
         }
         // Pretty-print the whole return map (or whatever fits into 1024 characters)
         Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
