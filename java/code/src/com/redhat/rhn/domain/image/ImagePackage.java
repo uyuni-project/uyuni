@@ -67,7 +67,7 @@ public class ImagePackage implements Comparable<ImagePackage> {
      * @return Returns the arch.
      */
     @ManyToOne
-    @JoinColumn(name = "arch_id")
+    @JoinColumn(name = "package_arch_id")
     public PackageArch getArch() {
         return arch;
     }
