@@ -146,20 +146,21 @@ public class ImageInfoFactory extends HibernateFactory {
     /**
      * Lookup an image info by name, tag and image store.
      *
-     * @param name         the name
-     * @param tag          the tag
+     * @param name             the name
+     * @param version          the version/tag
      * @param imageStoreId the image store id
      * @return the optional
      */
-    public static Optional<ImageInfo> lookupByName(String name, String tag,
+    public static Optional<ImageInfo> lookupByName(String name, String version,
             long imageStoreId) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ImageInfo> query = builder.createQuery(ImageInfo.class);
 
         Root<ImageInfo> root = query.from(ImageInfo.class);
-        query.where(builder.equal(root.get("name"), name))
-             .where(builder.equal(root.get("tag"), tag))
-             .where(builder.equal(root.get("image_store_id"), imageStoreId));
+        query.where(builder.and(
+                builder.equal(root.get("name"), name),
+                builder.equal(root.get("version"), version),
+                builder.equal(root.get("store"), imageStoreId)));
 
         return getSession().createQuery(query).uniqueResultOptional();
     }
