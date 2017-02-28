@@ -111,7 +111,7 @@ public class SSHPushWorker implements QueueWorker {
         ssh = new JSch();
         try {
             ssh.setKnownHosts(KNOWN_HOSTS);
-            ssh.addIdentity(PRIVATE_KEY);
+            ssh.addIdentity(PRIVATE_KEY, StringUtils.EMPTY);
         }
         catch (JSchException e) {
             log.error(e.getMessage(), e);
