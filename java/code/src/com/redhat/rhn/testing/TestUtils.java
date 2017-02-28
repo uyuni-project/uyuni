@@ -59,10 +59,7 @@ import java.util.Map;
 /**
  * TestUtils, a simple package for utility functions helpful when
  * writing unit tests
- *
- * @version $Rev$
  */
-
 public class TestUtils {
 
     /** Prefix for temporary file names created by this class. */

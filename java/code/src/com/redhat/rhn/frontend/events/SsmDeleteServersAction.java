@@ -30,7 +30,6 @@ import java.util.List;
  * Handles performing subscription changes for servers in the SSM.
  *
  * @see com.redhat.rhn.frontend.events.SsmDeleteServersEvent
- * @version $Revision$
  */
 public class SsmDeleteServersAction extends AbstractDatabaseAction {
     public static final String OPERATION_NAME = "ssm.server.delete.operationname";

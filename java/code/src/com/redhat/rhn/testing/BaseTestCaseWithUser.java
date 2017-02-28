@@ -26,7 +26,6 @@ import java.nio.file.Path;
 
 /**
  * Basic test class class with a User
- * @version $Rev: 54849 $
  */
 public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
 

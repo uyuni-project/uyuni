@@ -24,8 +24,6 @@ import org.hibernate.HibernateException;
 /**
  * Base action for any action that communicates with the database. This class will
  * take care of committing the transaction and any cleanup that is necessary.
- *
- * @version $Rev$
  */
 public abstract class AbstractDatabaseAction implements MessageAction {
 

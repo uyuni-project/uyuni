@@ -32,7 +32,6 @@ import javax.servlet.ServletResponse;
 /**
  * SessionFilter is a simple servlet filter to handle cleaning up the Hibernate
  * Session after each request.
- * @version $Rev$
  */
 public class SessionFilter implements Filter {
 
