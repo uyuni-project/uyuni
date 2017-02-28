@@ -21,8 +21,6 @@ import org.hibernate.TransactionException;
 /**
  * TestCaseHelper - helper class to contain some common logic
  * between a few of our base unit test classes.
- *
- * @version $Rev$
  */
 public class TestCaseHelper {
 

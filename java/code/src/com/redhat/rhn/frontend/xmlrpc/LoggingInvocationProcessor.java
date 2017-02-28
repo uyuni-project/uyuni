@@ -31,7 +31,6 @@ import redstone.xmlrpc.XmlRpcInvocationInterceptor;
 /**
  * LoggingInvocationProcessor extends the marquee-xmlrpc library to allow
  * us to log method calls.
- * @version $Rev$
  */
 public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
     private static Logger log = Logger.getLogger(LoggingInvocationProcessor.class);

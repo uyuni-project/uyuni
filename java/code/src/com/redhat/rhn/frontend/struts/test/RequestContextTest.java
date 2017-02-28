@@ -24,8 +24,6 @@ import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 /**
  * RequestContextTest
- *
- * @version $Rev$
  */
 public class RequestContextTest extends MockObjectTestCase {
 
