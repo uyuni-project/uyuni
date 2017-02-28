@@ -36,6 +36,16 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-lg-3 control-label" for="salt">
+                            <bean:message key="bootstrap.jsp.salt"/>
+                        </label>
+                        <div class="col-lg-6">
+                            <div class="checkbox">
+                                <html:checkbox property="salt" styleId="salt" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-lg-3 control-label" for="ssl">
                             <bean:message key="bootstrap.jsp.ssl"/>
                         </label>
