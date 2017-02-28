@@ -54,7 +54,6 @@ if __name__ == '__main__':
 
     initCFG('server.satellite')
     rhnSQL.initDB()
-    rhnSQL.clear_log_id()
 
     user = rhnUser.search(userIn)
     if not user:

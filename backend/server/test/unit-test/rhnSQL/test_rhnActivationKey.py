@@ -43,7 +43,6 @@ class Tests(unittest.TestCase):
             password=DB_SETTINGS["password"],
             database=DB_SETTINGS["database"]
         )
-        rhnSQL.clear_log_id()
 
     def tearDown(self):
         # Roll back any unsaved data

@@ -907,7 +907,6 @@ class SystemInformation():
         guestid = guest.getid()
         if not hid:
             # create a new host entry
-            rhnSQL.set_log_auth(guest.user.getid())
             host = server_class.Server(guest.user, hw.get('arch'))
             host.server["name"] = hw.get('name')
             host.server["os"] = hw.get('os')
