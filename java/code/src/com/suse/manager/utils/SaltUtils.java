@@ -40,7 +40,6 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImagePackage;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
-import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -376,26 +375,13 @@ public class SaltUtils {
         else {
             serverAction.setResultMsg("Success");
         }
-        ImageInfo imageInfo = ImageInfoFactory.lookupByName(details.getName(),
-                details.getTag(), details.getImageStoreId()).orElseGet(() -> {
-                    ImageInfo ii = new ImageInfo();
-                    ii.setStore(
-                            ImageStoreFactory.lookupById(details.getImageStoreId()).get());
-                    ii.setOrg(action.getOrg());
-                    ii.setVersion(details.getTag());
-                    ii.setName(details.getName());
-                    // TODO: we could store the inspect action here but it makes
-                    // it
-                    // harder to work with
-                    // ii.setAction();
-                    ImageInfoFactory.save(ii);
-                    return ii;
-                });
-
-        serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
-            handleImagePackageProfileUpdate(imageInfo,
-                    Json.GSON.fromJson(jsonResult, ImagesProfileUpdateSlsResult.class));
-        });
+        ImageInfoFactory
+                .lookupByName(details.getName(), details.getTag(),
+                        details.getImageStoreId())
+                .ifPresent(imageInfo -> serverAction.getServer().asMinionServer()
+                        .ifPresent(minionServer -> handleImagePackageProfileUpdate(
+                                imageInfo, Json.GSON.fromJson(jsonResult,
+                                        ImagesProfileUpdateSlsResult.class))));
     }
 
     /**

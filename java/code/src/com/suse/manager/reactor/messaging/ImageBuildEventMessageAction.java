@@ -72,15 +72,23 @@ public class ImageBuildEventMessageAction extends AbstractDatabaseAction {
             MessageQueue.publish(new ActionScheduledEventMessage(action,
                     false));
 
-            ImageInfo info = new ImageInfo();
-            info.setName(imageBuildEvent.getImageProfile().getLabel());
+            ImageInfo info = ImageInfoFactory
+                    .lookupByName(imageBuildEvent.getImageProfile().getLabel(),
+                            imageBuildEvent.getTag(),
+                            imageBuildEvent.getImageProfile().getProfileId())
+                    .orElseGet(() -> {
+                        ImageInfo i = new ImageInfo();
+                        i.setName(imageBuildEvent.getImageProfile().getLabel());
+                        i.setVersion(imageBuildEvent.getTag().isEmpty() ? "latest" :
+                                imageBuildEvent.getTag());
+                        i.setStore(imageBuildEvent.getImageProfile().getTargetStore());
+                        return i;
+                    });
+
             info.setOrg(server.getOrg());
             info.setAction(action);
-            info.setStore(imageBuildEvent.getImageProfile().getTargetStore());
             info.setProfile(imageBuildEvent.getImageProfile());
             info.setBuildServer((MinionServer)server);
-            info.setVersion(imageBuildEvent.getTag().isEmpty() ? "latest" :
-                    imageBuildEvent.getTag());
             info.setChannels(new HashSet<>(
                     imageBuildEvent.getImageProfile().getToken().getChannels()));
 
