@@ -107,7 +107,7 @@ public class BootstrapConfigAction extends BaseConfigAction {
             form.set(HOSTNAME, IDN.toUnicode(
                 Config.get().getString(ConfigDefaults.JABBER_SERVER)));
             form.set(SSL_CERT, caCertPath);
-            form.set(SALT, Boolean.FALSE);
+            form.set(SALT, Boolean.TRUE);
             form.set(ENABLE_SSL, Boolean.TRUE);
             form.set(ENABLE_GPG, Boolean.TRUE);
             form.set(ALLOW_CONFIG_ACTIONS, Boolean.FALSE);
