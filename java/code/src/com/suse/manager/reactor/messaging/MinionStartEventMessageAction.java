@@ -15,7 +15,6 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.suse.manager.utils.SaltUtils;
@@ -24,8 +23,6 @@ import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.log4j.Logger;
-
-import java.util.Optional;
 
 /**
  * Event message handler for {@link MinionStartEventMessage}.
