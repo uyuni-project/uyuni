@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.events;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
-import com.redhat.rhn.domain.common.LoggingFactory;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -45,11 +44,6 @@ public abstract class AbstractDatabaseAction implements MessageAction {
     public void execute(EventMessage msg) {
         boolean commit = true;
         try {
-            // initialize logging
-            LoggingFactory.clearLogId();
-            if (msg.getUserId() != null) {
-                LoggingFactory.setLogAuth(msg.getUserId());
-            }
             doExecute(msg);
         }
         catch (Exception e) {

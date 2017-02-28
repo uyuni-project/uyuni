@@ -14,15 +14,11 @@
  */
 package com.redhat.rhn.testing;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.commons.io.FileUtils;
-import org.hibernate.HibernateException;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,7 +29,6 @@ import java.nio.file.Path;
 public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
 
     protected User user;
-    private boolean committed = false;
     protected Path tmpPillarRoot;
     protected Path tmpSaltRoot;
 
@@ -61,41 +56,8 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
     public void tearDown() throws Exception {
         super.tearDown();
 
-        // If at some point we created a user and committed the transaction, we need
-        // clean up our mess
-        if (committed) {
-           // Set up logging again, as Hibernate might have swapped the connection
-           // with a new one after the commit
-           LoggingFactory.clearLogId();
-           OrgFactory.deleteOrg(user.getOrg().getId(), user);
-           commitAndCloseSession();
-        }
-        committed = false;
         user = null;
         FileUtils.deleteDirectory(tmpPillarRoot.toFile());
         FileUtils.deleteDirectory(tmpSaltRoot.toFile());
-    }
-
-    // If we have to commit in mid-test, set up the next transaction correctly
-    protected void commitHappened() {
-        committed = true;
-        try {
-            LoggingFactory.clearLogId();
-        }
-        catch (Exception se) {
-            TestCaseHelper.tearDownHelper();
-            LoggingFactory.clearLogId();
-        }
-    }
-
-    /**
-     * PLEASE Refrain from using this unless you really have to.
-     *
-     * Try clearSession() instead
-     * @throws HibernateException
-     */
-    protected void commitAndCloseSession() throws HibernateException {
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
     }
 }

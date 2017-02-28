@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.servlets;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
-import com.redhat.rhn.domain.common.LoggingFactory;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -53,7 +52,6 @@ private static final String ROLLBACK_MSG = "Error during transaction. Rolling ba
         try {
             logHere("Calling doFilter");
             // pass up stack
-            LoggingFactory.clearLogId();
             chain.doFilter(request, response);
             HibernateFactory.commitTransaction();
             logHere("Transaction committed");
@@ -90,9 +88,6 @@ private static final String ROLLBACK_MSG = "Error during transaction. Rolling ba
                         final String msg = "Additional error during rollback";
                         LOG.warn(msg, e);
                     }
-                }
-                else {
-                    LoggingFactory.clearLogId();
                 }
             }
             finally {

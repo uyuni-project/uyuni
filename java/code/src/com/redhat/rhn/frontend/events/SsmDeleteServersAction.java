@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
@@ -67,9 +66,6 @@ public class SsmDeleteServersAction extends AbstractDatabaseAction {
 
                 HibernateFactory.closeSession();
                 HibernateFactory.getSession();
-                // initialize logging
-                LoggingFactory.clearLogId();
-                LoggingFactory.setLogAuth(user.getId());
             }
         }
         catch (Exception e) {

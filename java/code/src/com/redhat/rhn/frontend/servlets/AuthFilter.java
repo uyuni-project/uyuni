@@ -20,9 +20,6 @@ import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 
-import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.domain.common.LoggingFactory;
-import com.redhat.rhn.domain.user.User;
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionMessage;
@@ -98,10 +95,6 @@ public class AuthFilter implements Filter {
                         return;
                     }
                 }
-            }
-            User user = new RequestContext((HttpServletRequest)request).getCurrentUser();
-            if (user != null) {
-                LoggingFactory.setLogAuth(user.getId());
             }
             chain.doFilter(request, response);
             authenticationService.refresh((HttpServletRequest) request,

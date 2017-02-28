@@ -29,7 +29,6 @@ public abstract class RhnJmockBaseTestCase extends MockObjectTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        TestCaseHelper.setUpHelper();
     }
 
     /**
