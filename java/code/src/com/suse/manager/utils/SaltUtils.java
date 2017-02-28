@@ -436,12 +436,8 @@ public class SaltUtils {
                         .map(entry -> createPackageFromSalt2(entry.getKey(),
                                 entry.getValue(), imageInfo))
                         .collect(Collectors.toSet())
-                ).ifPresent(newPackages -> {
-            Set<ImagePackage> oldPackages = imageInfo.getPackages();
-            oldPackages.addAll(newPackages);
-            oldPackages.retainAll(newPackages);
-        });
-
+                );
+        ImageInfoFactory.save(imageInfo);
         ErrataManager.insertErrataCacheTask(imageInfo);
     }
 
@@ -604,6 +600,7 @@ public class SaltUtils {
         pkg.setInstallTime(new Date(info.getInstallDateUnixTime().get() * 1000));
         pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
         pkg.setImageInfo(imageInfo);
+        ImageInfoFactory.save(pkg);
         return pkg;
     }
 
