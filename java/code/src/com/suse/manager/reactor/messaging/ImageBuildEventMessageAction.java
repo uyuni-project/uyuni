@@ -19,6 +19,8 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.domain.image.ImageProfile;
+import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -50,12 +52,14 @@ public class ImageBuildEventMessageAction extends AbstractDatabaseAction {
     public void doExecute(EventMessage event) {
         ImageBuildEventMessage imageBuildEvent = (ImageBuildEventMessage) event;
         Server server = ServerFactory.lookupById(imageBuildEvent.getServerId());
+        ImageProfile imageProfile = ImageProfileFactory.lookupById(
+                imageBuildEvent.getImageProfileId()).get();
 
         // Apply states only for salt systems
         if (server != null && server.hasEntitlement(
                 EntitlementManager.CONTAINER_BUILD_HOST)) {
             LOG.debug("Schedule image.build for " + server.getName() + ": " +
-                    imageBuildEvent.getImageProfile().getLabel() + " " +
+                    imageProfile.getLabel() + " " +
                     imageBuildEvent.getTag());
 
             // The scheduling user can be null
@@ -67,30 +71,29 @@ public class ImageBuildEventMessageAction extends AbstractDatabaseAction {
                     scheduler,
                     Collections.singletonList(server.getId()),
                     imageBuildEvent.getTag(),
-                    imageBuildEvent.getImageProfile(),
+                    imageProfile,
                     new Date());
             MessageQueue.publish(new ActionScheduledEventMessage(action,
                     false));
 
             ImageInfo info = ImageInfoFactory
-                    .lookupByName(imageBuildEvent.getImageProfile().getLabel(),
+                    .lookupByName(imageProfile.getLabel(),
                             imageBuildEvent.getTag(),
-                            imageBuildEvent.getImageProfile().getProfileId())
+                            imageProfile.getProfileId())
                     .orElseGet(() -> {
                         ImageInfo i = new ImageInfo();
-                        i.setName(imageBuildEvent.getImageProfile().getLabel());
+                        i.setName(imageProfile.getLabel());
                         i.setVersion(imageBuildEvent.getTag().isEmpty() ? "latest" :
                                 imageBuildEvent.getTag());
-                        i.setStore(imageBuildEvent.getImageProfile().getTargetStore());
+                        i.setStore(imageProfile.getTargetStore());
                         return i;
                     });
 
             info.setOrg(server.getOrg());
             info.setAction(action);
-            info.setProfile(imageBuildEvent.getImageProfile());
+            info.setProfile(imageProfile);
             info.setBuildServer((MinionServer)server);
-            info.setChannels(new HashSet<>(
-                    imageBuildEvent.getImageProfile().getToken().getChannels()));
+            info.setChannels(new HashSet<>(imageProfile.getToken().getChannels()));
 
             // Image arch should be the same as the build host
             info.setImageArch(server.getServerArch());

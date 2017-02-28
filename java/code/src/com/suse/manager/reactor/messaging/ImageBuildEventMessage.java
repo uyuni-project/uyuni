@@ -16,7 +16,6 @@ package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventDatabaseMessage;
-import com.redhat.rhn.domain.image.ImageProfile;
 import org.hibernate.Transaction;
 
 /**
@@ -28,7 +27,7 @@ public class ImageBuildEventMessage implements EventDatabaseMessage {
     private final long serverId;
     private final Long userId;
     private final String tag;
-    private final ImageProfile imageProfile;
+    private final long imageProfileId;
     private final Transaction txn;
 
     /**
@@ -37,14 +36,14 @@ public class ImageBuildEventMessage implements EventDatabaseMessage {
      * @param serverIdIn     the server
      * @param userIdIn       the user
      * @param tagIn          the tag
-     * @param imageProfileIn the image profile
+     * @param imageProfileIdIn the image profile
      */
     public ImageBuildEventMessage(long serverIdIn, Long userIdIn,
-                                  String tagIn, ImageProfile imageProfileIn) {
+                                  String tagIn, long imageProfileIdIn) {
         serverId = serverIdIn;
         userId = userIdIn;
         tag = tagIn;
-        imageProfile = imageProfileIn;
+        imageProfileId = imageProfileIdIn;
         txn = HibernateFactory.getSession().getTransaction();
     }
 
@@ -70,10 +69,10 @@ public class ImageBuildEventMessage implements EventDatabaseMessage {
     /**
      * Gets image profile.
      *
-     * @return the image profile
+     * @return the image profile id
      */
-    public ImageProfile getImageProfile() {
-        return imageProfile;
+    public long getImageProfileId() {
+        return imageProfileId;
     }
 
     /**
@@ -88,7 +87,7 @@ public class ImageBuildEventMessage implements EventDatabaseMessage {
     @Override
     public String toString() {
         return "ImageProfileEventMessage[serverId: " + serverId + ", tag: " +
-                tag + ", label: " + imageProfile.getLabel() + "]";
+                tag + "]";
     }
 
     @Override
