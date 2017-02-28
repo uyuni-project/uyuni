@@ -100,15 +100,17 @@ class ImageProfiles extends React.Component {
             />
             <Column
               columnKey="image_type"
-              width="40%"
+              width="35%"
               comparator={Utils.sortByText}
               header={t('Build Type')}
               cell={ (row, criteria) => typeMap[row.image_type] }
             />
             { isAdmin &&
               <Column
-                width="10%"
+                width="15%"
                 header={t('Actions')}
+                columnClass="text-right"
+                headerClass="text-right"
                 cell={ (row, criteria) => {
                   return <div className="btn-group">
                       <LinkButton
