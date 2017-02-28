@@ -74,6 +74,7 @@ class BuildImage extends React.Component {
                         label: data.label,
                         imageType: data.imageType,
                         activationKey: data.activationKey,
+                        channels: data.channels,
                         store: data.store,
                         path: data.path
                     }
