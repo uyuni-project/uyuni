@@ -1,0 +1,8 @@
+BEGIN
+    logging.recreate_trigger('rhnserver');
+    logging.recreate_trigger('rhnservergroup');
+    logging.recreate_trigger('web_contact');
+END;
+/
+
+TRUNCATE TABLE log CASCADE;
