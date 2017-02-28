@@ -1,3 +1,5 @@
+-- oracle equivalent source sha1 078a69a7597241ab24b0bd9265bf55bdd6c0f57f
+
 SELECT logging.recreate_trigger('rhnserver');
 SELECT logging.recreate_trigger('rhnservergroup');
 SELECT logging.recreate_trigger('web_contact');
