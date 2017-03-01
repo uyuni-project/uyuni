@@ -32,6 +32,7 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ImageBuildEventMessage;
+import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.ImageInfoJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import org.apache.commons.lang.StringUtils;
@@ -255,6 +256,8 @@ public class ImageBuildController {
         json.addProperty("id", imageOverview.getId());
         json.addProperty("name", imageOverview.getName());
         json.addProperty("version", imageOverview.getVersion());
+        json.addProperty("modified",
+                ViewHelper.getInstance().renderDate(imageOverview.getModified()));
 
         if (imageOverview.getOutdatedPackages() != null) {
             json.addProperty("packages", imageOverview.getOutdatedPackages());
