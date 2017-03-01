@@ -84,6 +84,28 @@ authorize_parent_ssh_push_key() {
     rm $TMP_PUSH_KEY_FILE
 }
 
+configure_sshd() {
+    local SSHD_CONFIG="/etc/ssh/sshd_config"
+    if ! grep "^[^#]*Match user $SSH_PUSH_USER" > /dev/null ; then
+        cat >> $SSHD_CONFIG <<EOF
+
+Match user mgrsshtunnel
+    ForceCommand /usr/bin/mgr-ssh-proxy-force-cmd
+    KbdInteractiveAuthentication no
+    PasswordAuthentication no
+    PubkeyAuthentication yes
+    X11Forwarding no
+    PermitTTY no
+EOF
+        echo "Updated ${SSHD_CONFIG}."
+        echo "Restarting sshd..."
+        systemctl restart sshd
+        echo "Done."
+    fi
+
+
+}
+
 USE_EXISTING_SSH_PUSH_KEY=0
 while getopts ":k:h" opt; do
   case $opt in
@@ -107,3 +129,4 @@ done
 
 generate_or_import_ssh_push_key
 authorize_parent_ssh_push_key
+configure_sshd
