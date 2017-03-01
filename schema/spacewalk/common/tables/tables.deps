@@ -229,6 +229,7 @@ suseImageCustomDataValue       :: rhnCustomDataKey suseImageInfo web_contact
 suseImageInfo                  :: rhnServerAction suseImageProfile suseImageStore suseMinionInfo
 suseImageInfoPackage           :: suseImageInfo rhnPackageName rhnPackageEVR rhnPackageArch
 suseImageInfoChannel           :: suseImageInfo rhnChannel
+suseImageInfoInstalledProduct  :: suseInstalledProduct suseImageInfo
 suseImageProfile               :: rhnRegTokenChannels web_customer suseImageStore
 suseImageStore                 :: suseCredentials web_customer suseImageStoreType
 suseOSTarget                   :: rhnChannelArch
