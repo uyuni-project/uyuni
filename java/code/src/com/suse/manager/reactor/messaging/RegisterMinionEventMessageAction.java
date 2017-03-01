@@ -291,22 +291,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     .orElseThrow(() -> new SaltException(
                             "master not found in minion configuration"));
 
-            if (isSaltSSH) {
-                saltSSHProxyId
-                    .map(proxyId -> ServerFactory.lookupById(proxyId))
-                    .ifPresent(proxy -> {
-                        Set<ServerPath> proxyPaths = ServerFactory
-                                .createServerPaths(server, proxy, proxy.getHostname());
-                        server.getServerPaths().addAll(proxyPaths);
-                    });
-            }
-            else {
-                ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
-                    Set<ServerPath> proxyPaths = ServerFactory
-                            .createServerPaths(server, proxy, master);
-                    server.getServerPaths().addAll(proxyPaths);
-                });
-            }
+            setServerPaths(server, master, isSaltSSH, saltSSHProxyId);
 
             ServerFactory.save(server);
 
@@ -406,6 +391,26 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
+        }
+    }
+
+    private void setServerPaths(MinionServer server, String master,
+                                boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
+        if (isSaltSSH) {
+            saltSSHProxyId
+                .map(proxyId -> ServerFactory.lookupById(proxyId))
+                .ifPresent(proxy -> {
+                    Set<ServerPath> proxyPaths = ServerFactory
+                            .createServerPaths(server, proxy, proxy.getHostname());
+                    server.getServerPaths().addAll(proxyPaths);
+                });
+        }
+        else {
+            ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
+                Set<ServerPath> proxyPaths = ServerFactory
+                        .createServerPaths(server, proxy, master);
+                server.getServerPaths().addAll(proxyPaths);
+            });
         }
     }
 
