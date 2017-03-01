@@ -79,7 +79,7 @@ public class MenuTree {
                     .withVisibility(adminRoles.get("org"))));
 
             // Systems
-            nodes.add(new MenuItem("Systems").withIcon("fa-desktop").withDir("/rhn/systems/details")
+            nodes.add(new MenuItem("Systems").withIcon("fa-desktop").withDir("/rhn/systems/details").withDir("/rhn/manager/systems/details")
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/systems/Overview.do"))
                 .addChild(new MenuItem("Systems").addChild(new MenuItem("All").withPrimaryUrl("/rhn/systems/SystemList.do"))
                     .addChild(new MenuItem("Physical Systems").withPrimaryUrl("/rhn/systems/PhysicalList.do"))
@@ -103,7 +103,7 @@ public class MenuTree {
                     .addChild(new MenuItem("System Entitlements").withPrimaryUrl("/rhn/systems/SystemEntitlements.do")
                         .withVisibility(adminRoles.get("org"))))
                 .addChild(new MenuItem("System Groups").withPrimaryUrl("/rhn/systems/SystemGroupList.do").withDir("/rhn/groups")
-                    .withDir("/rhn/systems/groups"))
+                    .withDir("/rhn/systems/groups").withDir("/rhn/manager/groups"))
                 .addChild(new MenuItem("System Set Manager").withDir("/rhn/systems/ssm").withDir("/rhn/ssm")
                     .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/ssm/index.do"))
                     .addChild(new MenuItem("ssm.nav.status").withPrimaryUrl("/rhn/ssm/ViewAllLog.do")
@@ -112,7 +112,8 @@ public class MenuTree {
                 .addChild(new MenuItem("Activation Keys").withPrimaryUrl("/rhn/activationkeys/List.do")
                     .withAltUrl("/rhn/activationkeys/Create.do").withAltUrl("/rhn/activationkeys/Edit.do")
                     .withAltUrl("/rhn/activationkeys/Delete.do").withAltUrl("/rhn/activationkeys/Clone.do")
-                    .withDir("/rhn/activationkeys/configuration").withDir("/rhn/activationkeys/groups")
+                    .withDir("/rhn/activationkeys/channels").withDir("/rhn/activationkeys/configuration")
+                    .withDir("/rhn/activationkeys/groups").withDir("/rhn/activationkeys/packages")
                     .withDir("/rhn/activationkeys/systems").withVisibility(adminRoles.get("activationKey")))
                 .addChild(new MenuItem("Stored Profiles").withPrimaryUrl("/rhn/profiles/List.do").withDir("/rhn/profiles"))
                 .addChild(new MenuItem("Custom System Info").withPrimaryUrl("/rhn/systems/customdata/CustomDataList.do")
@@ -266,6 +267,7 @@ public class MenuTree {
             // Users
             nodes.add(new MenuItem("Users").withIcon("fa-users").withVisibility(adminRoles.get("org"))
                 .addChild(new MenuItem("User List")
+                    .withDir("/rhn/users")
                     .withVisibility(adminRoles.get("org"))
                     .addChild(new MenuItem("users.nav.active").withPrimaryUrl("/rhn/users/ActiveList.do")
                         .withVisibility(adminRoles.get("org")))
