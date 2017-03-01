@@ -226,25 +226,26 @@ class ImageViewList extends React.Component {
             <Column
               columnKey="updates"
               header={t('Updates')}
-              comparator={Utils.sortByText}
               cell={ (row, criteria) => this.renderUpdatesIcon(row) }
             />
             <Column
               columnKey="patches"
               header={t('Patches')}
-              comparator={Utils.sortById}
+              comparator={(a, b, ck, sd) => Utils.sortByNumber(
+                {patches: a.patches.critical + a.patches.noncritical},
+                {patches: b.patches.critical + b.patches.noncritical},
+                ck, sd)}
               cell={ (row, criteria) => row.patches ? row.patches.critical + row.patches.noncritical : '-' }
             />
             <Column
               columnKey="packages"
               header={t('Packages')}
-              comparator={Utils.sortById}
+              comparator={Utils.sortByNumber}
               cell={ (row, criteria) => row.patches ? row.packages : '-' }
             />
             <Column
               columnKey="status"
               header={t('Status')}
-              comparator={Utils.sortByText}
               cell={ (row, criteria) => this.renderStatusIcon(row) }
             />
             <Column
