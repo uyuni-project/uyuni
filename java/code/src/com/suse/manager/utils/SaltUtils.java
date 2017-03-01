@@ -437,6 +437,34 @@ public class SaltUtils {
                                 entry.getValue(), imageInfo))
                         .collect(Collectors.toSet())
                 );
+        Optional.ofNullable(ret.getListProducts())
+        .map(products -> products.getChanges().getRet())
+        .map(SaltUtils::getInstalledProducts)
+        .ifPresent(imageInfo::setInstalledProducts);
+
+        Optional<String> rhelReleaseFile =
+                Optional.ofNullable(ret.getRhelReleaseFile())
+                .map(StateApplyResult::getChanges)
+                .filter(res -> res.getStdout() != null)
+                .map(CmdExecCodeAllResult::getStdout);
+        Optional<String> centosReleaseFile =
+                Optional.ofNullable(ret.getCentosReleaseFile())
+                .map(StateApplyResult::getChanges)
+                .filter(res -> res.getStdout() != null)
+                .map(CmdExecCodeAllResult::getStdout);
+        Optional<String> resReleasePkg =
+                Optional.ofNullable(ret.getWhatProvidesResReleasePkg())
+                .map(StateApplyResult::getChanges)
+                .filter(res -> res.getStdout() != null)
+                .map(CmdExecCodeAllResult::getStdout);
+        if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
+                resReleasePkg.isPresent()) {
+            Set<InstalledProduct> products = getInstalledProductsForRhel(
+                    imageInfo, resReleasePkg,
+                    rhelReleaseFile, centosReleaseFile);
+            imageInfo.setInstalledProducts(products);
+        }
+
         ImageInfoFactory.save(imageInfo);
         ErrataManager.insertErrataCacheTask(imageInfo);
     }
@@ -674,6 +702,42 @@ public class SaltUtils {
             return Collections.singleton(installedProduct);
         }).orElse(Collections.emptySet());
     }
+
+    private static Set<InstalledProduct> getInstalledProductsForRhel(
+            ImageInfo image,
+            Optional<String> resPackage,
+            Optional<String> rhelReleaseFile,
+            Optional<String> centosRelaseFile) {
+
+         Optional<RhelUtils.RhelProduct> rhelProductInfo =
+                 RhelUtils.detectRhelProduct(image, resPackage,
+                         rhelReleaseFile, centosRelaseFile);
+
+         if (!rhelProductInfo.isPresent()) {
+             LOG.warn("Could not determine RHEL product type for image: " +
+                     image.getName() + " " + image.getVersion());
+             return Collections.emptySet();
+         }
+
+         LOG.debug(String.format(
+                 "Detected image %s:%s as a RedHat compatible system: %s %s %s %s",
+                 image.getName(), image.getVersion(),
+                 rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
+                 rhelProductInfo.get().getRelease(), image.getImageArch().getName()));
+
+         return rhelProductInfo.get().getSuseProduct().map(product -> {
+             String arch = image.getImageArch().getLabel().replace("-redhat-linux", "");
+
+             InstalledProduct installedProduct = new InstalledProduct();
+             installedProduct.setName(product.getName());
+             installedProduct.setVersion(product.getVersion());
+             installedProduct.setRelease(product.getRelease());
+             installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
+             installedProduct.setBaseproduct(true);
+
+             return Collections.singleton(installedProduct);
+         }).orElse(Collections.emptySet());
+     }
 
     /**
      * Handle the minion uptime update, that means:
