@@ -214,6 +214,10 @@ class Runner:
 
         except Exception, e:  # pylint: disable=E0012, W0703
             log(-1, ['', messages.syncer_error % e], )
+            log(-1, '*** TRACEBACK: ')
+            import traceback
+            log(-1, traceback.format_exc())
+            log(-1, '*** BASIC INFO:\n %s' % str(sys.exc_info()[:2]))
             sys.exit(10)
 
         log(1, '   db:  %s/<password>@%s' % (CFG.DB_USER, CFG.DB_NAME))
