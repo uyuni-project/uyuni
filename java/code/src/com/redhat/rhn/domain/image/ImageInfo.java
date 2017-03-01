@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerArch;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -44,7 +45,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * ImageStore
+ * ImageInfo
  */
 @Entity
 @Table(name = "suseImageInfo")
@@ -62,6 +63,7 @@ public class ImageInfo extends BaseDomainHelper {
     private Set<ImageInfoCustomDataValue> customDataValues = new HashSet<>();
     private Set<Channel> channels = new HashSet<>();
     private Set<ImagePackage> packages = new HashSet<>();
+    private Set<InstalledProduct> installedProducts = new HashSet<>();
     private Org org;
     private ServerArch imageArch;
 
@@ -195,10 +197,22 @@ public class ImageInfo extends BaseDomainHelper {
      * @return the channels
      */
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "suseImageInfoChannel", joinColumns = { @JoinColumn(name = "image_info_id") },
-    inverseJoinColumns = { @JoinColumn(name = "channel_id") })
+    @JoinTable(name = "suseImageInfoChannel",
+               joinColumns = { @JoinColumn(name = "image_info_id") },
+               inverseJoinColumns = { @JoinColumn(name = "channel_id") })
     public Set<Channel> getChannels() {
         return channels;
+    }
+
+    /**
+     * @return the installed installedProducts
+     */
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "suseImageInfoInstalledProduct",
+               joinColumns = { @JoinColumn(name = "image_info_id") },
+               inverseJoinColumns = { @JoinColumn(name = "installed_product_id") })
+    public Set<InstalledProduct> getInstalledProducts() {
+        return installedProducts;
     }
 
     /**
@@ -276,6 +290,13 @@ public class ImageInfo extends BaseDomainHelper {
      */
     public void setChannels(Set<Channel> channelsIn) {
         this.channels = channelsIn;
+    }
+
+    /**
+     * @param productsIn channels to set
+     */
+    public void setInstalledProducts(Set<InstalledProduct> productsIn) {
+        this.installedProducts = productsIn;
     }
 
     /**
