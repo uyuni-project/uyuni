@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * AuthFilterTest
- * @version $Rev$
  */
 public class AuthFilterTest extends MockObjectTestCase {
 
@@ -110,6 +109,8 @@ public class AuthFilterTest extends MockObjectTestCase {
                     with(any(HttpServletResponse.class)));
             will(returnValue(true));
             oneOf(mockFilterChain).doFilter(with(any(HttpServletRequest.class)),
+                    with(any(HttpServletResponse.class)));
+            oneOf(mockAuthService).refresh(with(any(HttpServletRequest.class)),
                     with(any(HttpServletResponse.class)));
         } });
 
