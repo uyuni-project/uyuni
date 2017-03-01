@@ -12,6 +12,7 @@ const DeleteDialog = require("../components/dialogs").DeleteDialog;
 const ModalButton = require("../components/dialogs").ModalButton;
 const TabContainer = require("../components/tab-container").TabContainer;
 const ImageViewOverview = require("./image-view-overview").ImageViewOverview;
+const DateTime = require("../components/datetime").DateTime;
 
 const msgMap = {
   "not_found": t("Image cannot be found."),
@@ -247,6 +248,12 @@ class ImageViewList extends React.Component {
               columnKey="status"
               header={t('Status')}
               cell={ (row, criteria) => this.renderStatusIcon(row) }
+            />
+            <Column
+              columnKey="modified"
+              header={t('Last Modified')}
+              comparator={Utils.sortByDate}
+              cell={ (row, criteria) => <DateTime time={row.modified}/> }
             />
             <Column
               width="10%"

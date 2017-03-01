@@ -25,6 +25,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Immutable;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -208,6 +209,12 @@ public class ImageOverview extends BaseDomainHelper {
     @Column(name = "outdated_packages")
     public Integer getOutdatedPackages() {
         return outdatedPackages;
+    }
+
+    @Override
+    @Column(name = "modified")
+    public Date getModified() {
+        return super.getModified();
     }
 
     /**
