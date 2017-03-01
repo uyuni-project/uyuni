@@ -187,7 +187,7 @@ class CreateImageProfile extends React.Component {
             });
     }
 
-    renderField(name, label, value, hidden = false, required = true) {
+    renderField(name, label, value, hidden = false, required = true, placeholder = "") {
         return <div className="form-group">
             <label className="col-md-3 control-label">
                 {label}
@@ -195,7 +195,7 @@ class CreateImageProfile extends React.Component {
                 :
             </label>
             <div className="col-md-6">
-                <input name={name} className="form-control" type={hidden ? "password" : "text"} value={value} onChange={this.handleChange}/>
+                <input name={name} placeholder={placeholder} className="form-control" type={hidden ? "password" : "text"} value={value} onChange={this.handleChange}/>
             </div>
         </div>;
     }
@@ -205,7 +205,7 @@ class CreateImageProfile extends React.Component {
             case "dockerfile":
                 return [
                     this.renderStoreSelect(),
-                    this.renderField("path", t("Path"), this.state.path)
+                    this.renderField("path", t("Path"), this.state.path, false, true, "giturl#branch:dockerfile_location")
                 ];
             default:
                 return <div>if you see this please report a bug</div>;
