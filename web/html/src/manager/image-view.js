@@ -2,55 +2,69 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {AsyncButton, LinkButton, Button} = require("../components/buttons");
+const {AsyncButton, Button} = require("../components/buttons");
 const Panel = require("../components/panel").Panel;
 const Network = require("../utils/network");
-const Functions = require("../utils/functions");
-const Utils = Functions.Utils;
+const Utils = require("../utils/functions").Utils;
 const {Table, Column, SearchField} = require("../components/table");
 const Messages = require("../components/messages").Messages;
 const DeleteDialog = require("../components/dialogs").DeleteDialog;
 const ModalButton = require("../components/dialogs").ModalButton;
-const DateTime = require("../components/datetime").DateTime;
+const TabContainer = require("../components/tab-container").TabContainer;
+const ImageViewOverview = require("./image-view-overview").ImageViewOverview;
 
 const msgMap = {
   "not_found": t("Image cannot be found."),
   "delete_success": t("Image profile has been deleted.")
 };
 
+const hashUrlRegex = /^#\/([^\/]*)\/(\d*)$/;
+
+function getHashId() {
+    const match = window.location.hash.match(hashUrlRegex);
+    return match ? match[2] : undefined;
+}
+
+function getHashTab() {
+    const match = window.location.hash.match(hashUrlRegex);
+    return match ? match[1] : undefined;
+}
+
 class ImageView extends React.Component {
 
   constructor(props) {
     super(props);
-    ["reloadData", "selectImage", "deleteImage"]
+    ["reloadData", "handleBackAction", "handleDetailsAction", "deleteImage"]
         .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
       images: []
     };
 
-    const imageInfoId = window.location.hash.substring(1);
-    if(imageInfoId)
-        this.selectImage(imageInfoId);
-    else
-        this.reloadData();
+    this.updateView(getHashId());
+    window.addEventListener("popstate", () => {
+        this.updateView(getHashId());
+    });
   }
 
-  componentWillMount() {
-    window.addEventListener("popstate", () => {
-        const imageInfoId = window.location.hash.substring(1);
-        if(imageInfoId)
-            this.selectImage(imageInfoId);
-        else
-            this.reloadData();
-    });
+  updateView(id) {
+    if(id)
+        this.getImageInfoDetails(id)
+            .then(data => this.setState({selected: data}));
+    else {
+        this.getImageInfoList()
+            .then(data => this.setState({selected: undefined, images: data}));
+    }
+    this.clearMessages();
   }
 
   reloadData() {
     if(this.state.selected) {
-        this.getImageInfoDetails(this.state.selected.id);
+        this.getImageInfoDetails(this.state.selected.id)
+            .then(data => this.setState({selected: data}));
     } else {
-        this.getImageInfoList();
+        this.getImageInfoList()
+            .then(data => this.setState({images: data}));
     }
     this.clearMessages();
   }
@@ -61,37 +75,27 @@ class ImageView extends React.Component {
     });
   }
 
-  selectImage(row) {
-    const id = row instanceof Object ? row.id : row;
+  handleBackAction() {
+    this.getImageInfoList().then(data => {
+        this.setState({selected: undefined, images: data});
+        const loc = window.location;
+        history.pushState(null, null, loc.pathname + loc.search);
+    });
+  }
 
-    if(!id) {
-        this.setState({
-            selected: undefined
-        }, () => {
-            const loc = window.location;
-            history.pushState(null, null, loc.pathname + loc.search);
-            this.reloadData();
-        });
-    } else {
-        this.getImageInfoDetails(id);
-        history.pushState(null, null, "#" + id);
-    }
+  handleDetailsAction(row) {
+    this.getImageInfoDetails(row.id).then(data => {
+        this.setState({selected: data})
+        history.pushState(null, null, '#/' + (getHashTab() || 'overview') + '/' + row.id);
+    });
   }
 
   getImageInfoList() {
-    Network.get("/rhn/manager/api/cm/images").promise.then(data => {
-        this.setState({
-            images: data
-        });
-    });
+    return Network.get("/rhn/manager/api/cm/images").promise;
   }
 
   getImageInfoDetails(id) {
-    Network.get("/rhn/manager/api/cm/images/" + id).promise.then(data => {
-        this.setState({
-            selected: data
-        });
-    });
+    return Network.get("/rhn/manager/api/cm/images/" + id).promise;
   }
 
   deleteImage(row) {
@@ -124,208 +128,15 @@ class ImageView extends React.Component {
         <Panel title={this.state.selected ? this.state.selected.name : t("Images")} icon={this.state.selected ? "fa-hdd-o" : "fa-list"} button={ panelButtons }>
           {this.state.messages}
           { this.state.selected ?
-              <ImageViewDetails data={this.state.selected} onCancel={() => {this.selectImage(undefined)}}/>
+              <ImageViewDetails data={this.state.selected} onCancel={this.handleBackAction}/>
           :
-              <ImageViewList data={this.state.images} onSelect={this.selectImage} onDelete={this.deleteImage}/>
+              <ImageViewList data={this.state.images} onSelect={this.handleDetailsAction} onDelete={this.deleteImage}/>
           }
         </Panel>
 
       </span>
     );
   }
-}
-
-function BootstrapPanel(props) {
-    return (
-        <div className="panel panel-default">
-            <div className="panel-heading">
-                <h4>{props.title}</h4>
-            </div>
-            <div className="panel-body">
-                {props.children}
-            </div>
-        </div>
-    );
-}
-
-function BuildStatus(props) {
-    const data = props.data;
-
-    let status;
-    if(!data.action) {
-        status = [<i className="fa fa-question-circle fa-1-5x" title="Unknown"/>,"No information"]
-    } else if(data.action.status === 0) {
-        status = [<i className="fa fa-clock-o fa-1-5x" title="Queued"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + data.action.id}>{t("Build is queued")}</a>]
-    } else if(data.action.status === 1) {
-        status = [<i className="fa fa-exchange fa-1-5x text-info" title="Building"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + data.action.id}>{t("Build in progress")}</a>]
-    } else if(data.action.status === 2) {
-        status = [<i className="fa fa-check-circle-o fa-1-5x text-success" title="Built"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + data.action.id}>{t("Build is successful")}</a>]
-    } else if(data.action.status === 3) {
-        status = [<i className="fa fa-times-circle-o fa-1-5x text-danger" title="Failed"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + data.action.id}>{t("Build has failed")}</a>]
-    } else {
-        status = [<i className="fa fa-question-circle fa-1-5x" title="Unknown"/>,"No information"]
-    }
-
-    return (
-        <div className="table-responsive">
-            <table className="table">
-                <tbody>
-                    <tr>
-                        <td>Build Status:</td>
-                        <td>{status}</td>
-                    </tr>
-                    { data.action && data.action.pickup_time &&
-                        <tr>
-                            <td>Picked Up:</td>
-                            <td><DateTime time={data.action.pickup_time}/></td>
-                        </tr>
-                    }
-                    { data.action && data.action.completion_time &&
-                        <tr>
-                            <td>Completed:</td>
-                            <td><DateTime time={data.action.completion_time}/></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    );
-}
-
-function ImageInfo(props) {
-    const data = props.data;
-    return (
-        <div className="table-responsive">
-            <table className="table">
-                <tbody>
-                    <tr>
-                        <td>Image Name:</td>
-                        <td>{data.name}</td>
-                    </tr>
-                    <tr>
-                        <td>Version:</td>
-                        <td>{data.version}</td>
-                    </tr>
-                    <tr>
-                        <td>Checksum:</td>
-                        <td>{data.checksum ? data.checksum : "-"}</td>
-                    </tr>
-                    <tr>
-                        <td>Profile:</td>
-                        { data.profile ?
-                            <td>{data.profile.label}<LinkButton icon="fa-edit" href={"/rhn/manager/cm/imageprofiles/edit/" + data.profile.id} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit profile")}/></td>
-                            :<td>-</td>
-                        }
-                    </tr>
-                    <tr>
-                        <td>Store:</td>
-                        <td>{data.store.label}<LinkButton icon="fa-edit" href={"/rhn/manager/cm/imagestores/edit/" + data.store.id} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit store")}/></td>
-                    </tr>
-                    <tr>
-                        <td>Build Host:</td>
-                        { data.buildServer ?
-                            <td><a href={"/rhn/systems/details/Overview.do?sid=" + data.buildServer.id}>{data.buildServer.name}</a></td>
-                            :<td></td>
-                        }
-                    </tr>
-                    <tr>
-                        <td>Software Channels:</td>
-                        { data.channels && data.channels.base ?
-                            <td>
-                                <ul className="list-unstyled">
-                                    <li><a href={"/rhn/channels/ChannelDetail.do?cid=" + data.channels.base} title={data.channels.base.name}>{data.channels.base.name}</a></li>
-                                    <li>
-                                        <ul>{data.channels.children.map(ch => <li><a href={"/rhn/channels/ChannelDetail.do?cid=" + ch.id} title={ch.name}>{ch.name}</a></li>)}</ul>
-                                    </li>
-                                </ul>
-                            </td>
-                            :<td>-</td>
-                        }
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    );
-}
-
-class ImageViewDetails extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    renderStatus(row) {
-        let status, statusText;
-
-        if(!row.patches) {
-            status = [<i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>,t("No information ")];
-        } else if (row.patches.security > 0) {
-            status = [<i className="fa fa-exclamation-circle fa-1-5x text-danger" title={t("Critical updates available")}/>,t("Critical updates available ")];
-        } else if (row.patches.bugs + row.patches.enhancement > 0) {
-            status = [<i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Non-critical updates available")}/>,t("Non-critical updates available ")];
-        } else if (row.packages > 0) {
-            status = [<i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Package updates available")}/>,t("Package updates available ")];
-        } else {
-            status = [<i className="fa fa-check-circle fa-1-5x text-success" title={t("Image is up to date")}/>,t("Image is up to date ")];
-        }
-
-        const counts = <span>
-            { row.patches.security > 0 &&
-                [<strong> Security patches: </strong>,row.patches.security]
-            }
-            { row.patches.bug > 0 &&
-                [<strong> Bug patches: </strong>,row.patches.bug]
-            }
-            { row.patches.security > 0 &&
-                [<strong> Enhancement patches: </strong>,row.patches.enhancement]
-            }
-            { row.packages > 0 &&
-                [<strong> Package updates: </strong>,row.packages]
-            }
-        </span>;
-
-        return <span>{status} {counts}</span>;
-    }
-
-    hasUpdates() {
-        const data = this.props.data;
-        return (data.patches && data.patches > 0) || (data.packages && data.packages > 0);
-    }
-
-    hasBuilt() {
-        return this.props.data.action && this.props.data.action.status === 2;
-    }
-
-    render() {
-        const data = this.props.data;
-        return (
-            <div>
-            { this.hasBuilt() &&
-                <BootstrapPanel title={t("Image Status")}>
-                    {this.renderStatus(data)}
-                </BootstrapPanel>
-            }
-            <div className="row-0">
-                <div className="col-md-6">
-                    <BootstrapPanel title={t("Image Info")}>
-                        <ImageInfo data={data}/>
-                    </BootstrapPanel>
-                </div>
-                <div className="col-md-6">
-                    <BootstrapPanel title={t("Build Status")}>
-                        <BuildStatus data={data}/>
-                    </BootstrapPanel>
-                </div>
-            </div>
-            <Button
-                text={t("Back")}
-                icon="fa-chevron-left"
-                title={t("Back")}
-                className="btn-default"
-                handler={this.props.onCancel}
-            />
-            </div>
-        );
-    }
 }
 
 class ImageViewList extends React.Component {
@@ -395,7 +206,8 @@ class ImageViewList extends React.Component {
           <Table
               data={this.props.data}
               identifier={img => img.id}
-              initialSortColumnKey="id"
+              initialSortColumnKey="modified"
+              initialSortDirection="-1"
               initialItemsPerPage={userPrefPageSize}
               searchField={
                   <SearchField filter={this.searchData} criteria={""} />
@@ -467,6 +279,48 @@ class ImageViewList extends React.Component {
             onConfirm={this.props.onDelete}
             onClosePopUp={() => this.selectImage(undefined)}
           />
+        </div>
+        );
+    }
+}
+
+class ImageViewDetails extends React.Component {
+
+    constructor(props) {
+        super(props);
+        ['onTabChange'].forEach(method => this[method] = this[method].bind(this));
+    }
+
+    getHashUrls(tabs) {
+        const id = this.props.data.id;
+        return tabs.map((t) => '#/' + t + '/' + id);
+    }
+
+    onTabChange(hash) {
+        history.pushState(null, null, hash);
+    }
+
+    render() {
+        const data = this.props.data;
+
+        return (
+        <div>
+            <TabContainer
+                labels={[t('Overview')]}
+                hashes={this.getHashUrls(['overview'])}
+                initialActiveTabHash={window.location.hash}
+                onTabHashChange={this.onTabChange}
+                tabs={[
+                    <ImageViewOverview data={data}/>,
+                    ]}
+            />
+            <Button
+                text={t("Back")}
+                icon="fa-chevron-left"
+                title={t("Back")}
+                className="btn-default"
+                handler={this.props.onCancel}
+            />
         </div>
         );
     }
