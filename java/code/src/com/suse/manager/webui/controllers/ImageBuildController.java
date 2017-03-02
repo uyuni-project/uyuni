@@ -17,7 +17,9 @@ package com.suse.manager.webui.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;
@@ -40,6 +42,7 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +59,8 @@ public class ImageBuildController {
 
     private static final Gson GSON = new GsonBuilder().create();
     private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
+
+    private static final ViewHelper VIEW_HELPER = ViewHelper.INSTANCE;
 
     private ImageBuildController() { }
 
@@ -217,10 +222,48 @@ public class ImageBuildController {
     public static Object get(Request req, Response res, User user) {
         Long id = Long.parseLong(req.params("id"));
 
+        String tab = req.queryParams("data");
+
         Optional<ImageOverview> imageInfo =
                 ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
-        return json(res, imageInfo.map(ImageInfoJson::fromImageInfo).orElseGet(null));
+        return json(res, imageInfo.map(ImageInfoJson::fromImageInfo).orElse(null));
+    }
+
+    /**
+     * Gets patches list for a single image info object in JSON
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getPatches(Request req, Response res, User user) {
+        Long id = Long.parseLong(req.params("id"));
+
+        Optional<ImageOverview> imageInfo =
+                ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
+
+        return json(res, imageInfo.map(ImageBuildController::getImagePatchList)
+                    .orElse(new ArrayList<>()));
+    }
+
+    /**
+     * Gets packages list for a single image info object in JSON
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getPackages(Request req, Response res, User user) {
+        Long id = Long.parseLong(req.params("id"));
+
+        Optional<ImageOverview> imageInfo =
+                ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
+
+        return json(res, imageInfo.map(ImageBuildController::getImagePackageList)
+                    .orElse(new ArrayList<>()));
     }
 
     private static List<JsonObject> getImageInfoSummaryList(
@@ -256,8 +299,7 @@ public class ImageBuildController {
         json.addProperty("id", imageOverview.getId());
         json.addProperty("name", imageOverview.getName());
         json.addProperty("version", imageOverview.getVersion());
-        json.addProperty("modified",
-                ViewHelper.getInstance().renderDate(imageOverview.getModified()));
+        json.addProperty("modified", VIEW_HELPER.renderDate(imageOverview.getModified()));
 
         if (imageOverview.getOutdatedPackages() != null) {
             json.addProperty("packages", imageOverview.getOutdatedPackages());
@@ -278,5 +320,31 @@ public class ImageBuildController {
             json.addProperty("statusId", imageOverview.getAction().getStatus().getId());
         }
         return json;
+    }
+
+    private static List<JsonObject> getImagePackageList(ImageOverview imageOverview) {
+        return imageOverview.getPackages().stream().map(p -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("name", p.getName().getName());
+            json.addProperty("arch", p.getArch().getName());
+            json.addProperty("installed", VIEW_HELPER.renderDate(p.getInstallTime()));
+            return json;
+        }).collect(Collectors.toList());
+    }
+
+    private static List<JsonObject> getImagePatchList(ImageOverview imageOverview) {
+        return imageOverview.getPatches().stream().map(p -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("id", p.getId());
+            json.addProperty("name", p.getAdvisoryName());
+            json.addProperty("synopsis", p.getSynopsis());
+            json.addProperty("type", p.getAdvisoryType());
+            JsonArray keywords = new JsonArray();
+            p.getKeywords().stream().map(k -> new JsonPrimitive(k.getKeyword()))
+                    .forEach(keywords::add);
+            json.add("keywords", keywords);
+            json.addProperty("update", VIEW_HELPER.renderDate(p.getUpdateDate()));
+            return json;
+        }).collect(Collectors.toList());
     }
 }

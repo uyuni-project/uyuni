@@ -102,6 +102,10 @@ public class Router implements SparkApplication {
 
         get("/manager/api/cm/images", withUser(ImageBuildController::list));
         get("/manager/api/cm/images/:id", withUser(ImageBuildController::get));
+        get("/manager/api/cm/images/patches/:id",
+                withUser(ImageBuildController::getPatches));
+        get("/manager/api/cm/images/packages/:id",
+                withUser(ImageBuildController::getPackages));
         delete("/manager/api/cm/images/:id", withImageAdmin(ImageBuildController::delete));
 
         // Minions
