@@ -42,7 +42,6 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -244,8 +243,8 @@ public class ImageBuildController {
         Optional<ImageOverview> imageInfo =
                 ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
-        return json(res, imageInfo.map(ImageBuildController::getImagePatchList)
-                    .orElse(new ArrayList<>()));
+        return json(res, imageInfo.map(ImageBuildController::getImageInfoWithPatchlist)
+                    .orElse(null));
     }
 
     /**
@@ -262,8 +261,8 @@ public class ImageBuildController {
         Optional<ImageOverview> imageInfo =
                 ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
-        return json(res, imageInfo.map(ImageBuildController::getImagePackageList)
-                    .orElse(new ArrayList<>()));
+        return json(res, imageInfo.map(ImageBuildController::getImageInfoWithPackageList)
+                    .orElse(null));
     }
 
     private static List<JsonObject> getImageInfoSummaryList(
@@ -322,18 +321,28 @@ public class ImageBuildController {
         return json;
     }
 
-    private static List<JsonObject> getImagePackageList(ImageOverview imageOverview) {
-        return imageOverview.getPackages().stream().map(p -> {
+    private static JsonObject getImageInfoWithPackageList(ImageOverview imageOverview) {
+        JsonArray list = new JsonArray();
+        imageOverview.getPackages().stream().map(p -> {
             JsonObject json = new JsonObject();
             json.addProperty("name", p.getName().getName());
             json.addProperty("arch", p.getArch().getName());
             json.addProperty("installed", VIEW_HELPER.renderDate(p.getInstallTime()));
             return json;
-        }).collect(Collectors.toList());
+        }).forEach(list::add);
+
+        JsonObject obj = GSON
+                .toJsonTree(ImageInfoJson.fromImageInfo(imageOverview), ImageInfoJson.class)
+                .getAsJsonObject();
+
+        obj.add("packagelist", list);
+
+        return obj;
     }
 
-    private static List<JsonObject> getImagePatchList(ImageOverview imageOverview) {
-        return imageOverview.getPatches().stream().map(p -> {
+    private static JsonObject getImageInfoWithPatchlist(ImageOverview imageOverview) {
+        JsonArray list = new JsonArray();
+        imageOverview.getPatches().stream().map(p -> {
             JsonObject json = new JsonObject();
             json.addProperty("id", p.getId());
             json.addProperty("name", p.getAdvisoryName());
@@ -345,6 +354,14 @@ public class ImageBuildController {
             json.add("keywords", keywords);
             json.addProperty("update", VIEW_HELPER.renderDate(p.getUpdateDate()));
             return json;
-        }).collect(Collectors.toList());
+        }).forEach(list::add);
+
+        JsonObject obj = GSON
+                .toJsonTree(ImageInfoJson.fromImageInfo(imageOverview), ImageInfoJson.class)
+                .getAsJsonObject();
+
+        obj.add("patchlist", list);
+
+        return obj;
     }
 }

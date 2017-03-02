@@ -12,6 +12,8 @@ const DeleteDialog = require("../components/dialogs").DeleteDialog;
 const ModalButton = require("../components/dialogs").ModalButton;
 const TabContainer = require("../components/tab-container").TabContainer;
 const ImageViewOverview = require("./image-view-overview").ImageViewOverview;
+const ImageViewPatches = require("./image-view-patches").ImageViewPatches;
+const ImageViewPackages = require("./image-view-packages").ImageViewPackages;
 const DateTime = require("../components/datetime").DateTime;
 
 const msgMap = {
@@ -42,15 +44,15 @@ class ImageView extends React.Component {
       images: []
     };
 
-    this.updateView(getHashId());
+    this.updateView(getHashId(), getHashTab());
     window.addEventListener("popstate", () => {
-        this.updateView(getHashId());
+        this.updateView(getHashId(), getHashTab());
     });
   }
 
-  updateView(id) {
+  updateView(id, tab) {
     if(id)
-        this.getImageInfoDetails(id)
+        this.getImageInfoDetails(id, tab)
             .then(data => this.setState({selected: data}));
     else {
         this.getImageInfoList()
@@ -61,7 +63,7 @@ class ImageView extends React.Component {
 
   reloadData() {
     if(this.state.selected) {
-        this.getImageInfoDetails(this.state.selected.id)
+        this.getImageInfoDetails(this.state.selected.id, getHashTab())
             .then(data => this.setState({selected: data}));
     } else {
         this.getImageInfoList()
@@ -95,8 +97,14 @@ class ImageView extends React.Component {
     return Network.get("/rhn/manager/api/cm/images").promise;
   }
 
-  getImageInfoDetails(id) {
-    return Network.get("/rhn/manager/api/cm/images/" + id).promise;
+  getImageInfoDetails(id, tab) {
+    let url;
+    if(tab === "patches" || tab === "packages")
+        url = "/rhn/manager/api/cm/images/" + tab + "/" + id;
+    else
+        url = "/rhn/manager/api/cm/images/" + id;
+
+    return Network.get(url).promise;
   }
 
   deleteImage(row) {
@@ -314,12 +322,14 @@ class ImageViewDetails extends React.Component {
         return (
         <div>
             <TabContainer
-                labels={[t('Overview')]}
-                hashes={this.getHashUrls(['overview'])}
+                labels={[t('Overview'), t('Patches'), t('Packages')]}
+                hashes={this.getHashUrls(['overview', 'patches', 'packages'])}
                 initialActiveTabHash={window.location.hash}
                 onTabHashChange={this.onTabChange}
                 tabs={[
                     <ImageViewOverview data={data}/>,
+                    <ImageViewPatches data={data}/>,
+                    <ImageViewPackages data={data}/>
                     ]}
             />
             <Button
