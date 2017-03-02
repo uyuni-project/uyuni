@@ -69,11 +69,11 @@ function ImageInfo(props) {
                 <tbody>
                     <tr>
                         <td>Image Name:</td>
-                        <td>{data.name}</td>
+                        <td>{data.name ? data.name : "-"}</td>
                     </tr>
                     <tr>
                         <td>Version:</td>
-                        <td>{data.version}</td>
+                        <td>{data.version ? data.version : "-"}</td>
                     </tr>
                     <tr>
                         <td>Checksum:</td>
@@ -88,13 +88,16 @@ function ImageInfo(props) {
                     </tr>
                     <tr>
                         <td>Store:</td>
-                        <td>{data.store.label}<LinkButton icon="fa-edit" href={"/rhn/manager/cm/imagestores/edit/" + data.store.id} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit store")}/></td>
+                        { data.store ?
+                            <td>{data.store.label}<LinkButton icon="fa-edit" href={"/rhn/manager/cm/imagestores/edit/" + data.store.id} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit store")}/></td>
+                            :<td>-</td>
+                        }
                     </tr>
                     <tr>
                         <td>Build Host:</td>
                         { data.buildServer ?
                             <td><a href={"/rhn/systems/details/Overview.do?sid=" + data.buildServer.id}>{data.buildServer.name}</a></td>
-                            :<td></td>
+                            :<td>-</td>
                         }
                     </tr>
                     <tr>
