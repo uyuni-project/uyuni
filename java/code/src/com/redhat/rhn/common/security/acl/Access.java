@@ -193,22 +193,6 @@ public class Access extends BaseHandler {
     }
 
     /**
-     * Check if all systems in the current system have a certain entitlement.
-     * @param ctx Context map to pass in.
-     * @param params Parameters to use to fetch from context.
-     * @return true if at all systems in the set have the entitlement passed as params[0]
-     */
-    @SuppressWarnings("unchecked")
-    public boolean aclAllSystemsInSetHaveEntitlement(Object ctx,
-            String[] params) {
-        Map<String, Object> map = (Map<String, Object>) ctx;
-        User user = (User) map.get("user");
-
-        return SystemManager.countSystemsInSetWithoutEntitlement(user,
-                RhnSetDecl.SYSTEMS.getLabel(), Arrays.asList(params)) == 0;
-    }
-
-    /**
      * Check if all systems in the current system have a certain feature.
      * @param ctx Context map to pass in.
      * @param params Parameters to use to fetch from context.
