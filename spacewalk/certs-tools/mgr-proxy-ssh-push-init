@@ -2,10 +2,11 @@
 
 print_help() {
     cat <<HELP
-usage: proxy-ssh-push-init [options]
+USAGE: proxy-ssh-push-init [options]
 
 options:
   -k path to existing key
+  -s configure only sshd and exit
   -h show this help message and exit
 HELP
     exit 1
@@ -86,28 +87,29 @@ authorize_parent_ssh_push_key() {
 
 configure_sshd() {
     local SSHD_CONFIG="/etc/ssh/sshd_config"
-    if ! grep "^[^#]*Match user $SSH_PUSH_USER" > /dev/null ; then
+    if ! grep "^[^#]*Match user $SSH_PUSH_USER" $SSHD_CONFIG> /dev/null ; then
         cat >> $SSHD_CONFIG <<EOF
 
 Match user mgrsshtunnel
-    ForceCommand /usr/bin/mgr-ssh-proxy-force-cmd
+    ForceCommand /usr/sbin/mgr-proxy-ssh-force-cmd
     KbdInteractiveAuthentication no
     PasswordAuthentication no
     PubkeyAuthentication yes
     X11Forwarding no
     PermitTTY no
+
 EOF
         echo "Updated ${SSHD_CONFIG}."
-        echo "Restarting sshd..."
+        printf "Restarting sshd..."
         systemctl restart sshd
-        echo "Done."
+        echo "done."
+    else
+        echo "sshd is already configured."
     fi
-
-
 }
 
 USE_EXISTING_SSH_PUSH_KEY=0
-while getopts ":k:h" opt; do
+while getopts ":k:sh" opt; do
   case $opt in
     k)
       USE_EXISTING_SSH_PUSH_KEY=1
@@ -115,6 +117,11 @@ while getopts ":k:h" opt; do
       ;;
     h)
       print_help
+      exit 0
+      ;;
+    s)
+      configure_sshd
+      exit 0
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
