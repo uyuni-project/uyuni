@@ -1,0 +1,104 @@
+.wrapper-box {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.svg-aside {
+  .wrapper-box;
+  border-radius: 3px 0 0 3px;
+  width: 19%;
+  padding: 10px;
+  /* filters */
+  #filter-wrapper {
+    div.filter {
+      padding: 16px 0px;
+      margin-right: 4px;
+      label {
+        display: block;
+      }
+      input[type=text] {
+        .form-control;
+        .input-sm;
+      }
+    }
+  }
+  .detailBox {
+    border-top: 1px solid #ccc;
+    // padding: 20px 10px 10px 10px;
+    background-color: #e7ecf1;
+    div {
+      padding: 5px 10px;
+    }
+    div:first-child {
+      padding-top: 20px;
+    }
+    div:last-child {
+      padding-bottom: 20px
+    }
+  }
+}
+
+#svg-wrapper {
+  .wrapper-box;
+  border: 1px solid #ddd;
+  box-shadow: 0px 0px 4px 3px #eee;
+  background-color: #f7f7f7;
+  width: 80%;
+  border-radius: 3px;
+}
+
+
+
+/* svg elements */
+.node {
+  cursor: pointer;
+}
+
+// default
+.node circle {
+  r: 5;
+  fill: #bbb;
+  stroke: #333;
+  stroke-width: 0.5px;
+}
+
+.node.depth0 circle {
+  fill: #00c081;
+  r: 20;
+}
+
+.node.depth1 circle {
+  fill: #004981;
+  r: 8;
+}
+
+.node.default circle {
+  fill: #C6DBEF;
+  r: 5;
+}
+
+.node.selected circle {
+  fill: #333;
+  stroke-width: 3px;
+  stroke: #ffaa00;
+}
+
+.node text {
+  font-size:14px;
+  font-family:sans-serif;
+}
+
+.link {
+  stroke: #9ECBE2;
+  stroke-width: 0.5px;
+}
+
+.stroke-red circle {
+  stroke: red;
+  stroke-width: 1.5px;
+}
+
+.stroke-green circle {
+  stroke: green;
+  stroke-width: 1.5px;
+}
