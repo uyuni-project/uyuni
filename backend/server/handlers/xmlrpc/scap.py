@@ -15,6 +15,7 @@
 
 import os
 import stat
+import grp
 from base64 import decodestring
 
 from spacewalk.common.rhnTranslate import _
@@ -69,8 +70,21 @@ class Scap(rhnHandler):
             log_debug(1, self.server_id, "Creating action directory: %s" % absolute_dir)
             os.makedirs(absolute_dir)
             mode = stat.S_IRWXU | stat.S_IRWXG | stat.S_IROTH | stat.S_IXOTH
-            os.chmod(absolute_dir, mode)
-            os.chmod(os.path.dirname(os.path.normpath(absolute_dir)), mode)
+            subdirs = r_dir.split('/')
+            susemanager_gid = grp.getgrnam('susemanager').gr_gid
+            for idx in range(1, len(subdirs)):
+                subdir = os.path.join(CFG.MOUNT_POINT, *subdirs[0: idx])
+                if os.path.isdir(subdir):
+                    try:
+                        log_debug(1, "chmod 755", subdir)
+                        os.chmod(subdir, mode)
+                    except OSError:
+                        pass
+                    try:
+                        log_debug(1, "chgrp susemnager ", subdir)
+                        os.chown(subdir, -1, susemanager_gid)
+                    except OSError:
+                        pass
         log_debug(1, self.server_id, "Creating file: %s" % absolute_file)
         f = open(absolute_file, 'w+')
         f.write(filecontent)

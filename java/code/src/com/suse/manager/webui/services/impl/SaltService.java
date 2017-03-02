@@ -15,6 +15,7 @@
 package com.suse.manager.webui.services.impl;
 
 import com.google.gson.reflect.TypeToken;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -904,11 +905,14 @@ public class SaltService {
      */
     public Map<Boolean, String> storeMinionScapFiles(
             MinionServer minion, String uploadDir, Long actionId) {
-        String scapStorePath = ScapFileManager
-                .getStoragePath(minion.getOrg().getId(),
+        String actionPath = ScapFileManager
+                .getActionPath(minion.getOrg().getId(),
                         minion.getId(), actionId);
-        return callSync(MgrUtilRunner
-                .moveMinionUploadedFiles(minion.getMinionId(),
-                        uploadDir, scapStorePath));
+        return callSync(MgrUtilRunner.moveMinionUploadedFiles(
+                minion.getMinionId(),
+                uploadDir,
+                com.redhat.rhn.common.conf.Config.get()
+                        .getString(ConfigDefaults.MOUNT_POINT),
+                actionPath));
     }
 }

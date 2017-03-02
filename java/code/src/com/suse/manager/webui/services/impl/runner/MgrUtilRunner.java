@@ -119,15 +119,17 @@ public class MgrUtilRunner {
      *
      * @param minion minion id
      * @param dirToMove path of directory to move. Relative to Salt's cache dir.
-     * @param scapStorePath path where to move the dir
+     * @param basePath absolute base path where to action dir is located
+     * @param actionPath relative path of the action dir
      * @return a {@link RunnerCall} to pass to the SaltClient
      */
     public static RunnerCall<Map<Boolean, String>> moveMinionUploadedFiles(
-            String minion, String dirToMove, String scapStorePath) {
+            String minion, String dirToMove, String basePath, String actionPath) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("minion", minion);
         args.put("dirtomove", dirToMove);
-        args.put("scapstorepath", scapStorePath);
+        args.put("basepath", basePath);
+        args.put("actionpath", actionPath);
         RunnerCall<Map<Boolean, String>> call =
             new RunnerCall<>("mgrutil.move_minion_uploaded_files", Optional.of(args),
                 new TypeToken<Map<Boolean, String>>() { });
