@@ -21,10 +21,13 @@ import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.webui.utils.ViewHelper;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,6 +45,7 @@ public class ImageInfoJson {
     private JsonObject buildServer;
     private JsonObject action;
     private ChannelsJson channels;
+    private InstalledProductsJson installedProducts;
     private Map<String, String> customData;
     private JsonObject patches;
     private Integer packages;
@@ -271,6 +275,13 @@ public class ImageInfoJson {
     }
 
     /**
+     * @param installedProductsIn installed products
+     */
+    public void setInstalledProducts(InstalledProductsJson installedProductsIn) {
+        this.installedProducts = installedProductsIn;
+    }
+
+    /**
      * Creates a JSON object from an image overview object
      *
      * @param imageOverview the image overview
@@ -291,6 +302,18 @@ public class ImageInfoJson {
                 imageOverview.getEnhancementErrata());
         json.setPackages(imageOverview.getOutdatedPackages());
 
+        Map<Boolean, List<InstalledProduct>> collect = imageOverview.getInstalledProducts()
+                .stream().collect(Collectors.partitioningBy(ip -> ip.isBaseproduct()));
+        Optional<InstalledProductsJson> installedProductsJson = collect.get(true).stream()
+                .findFirst().map(base ->
+                new InstalledProductsJson(
+                        base.getSUSEProduct().getFriendlyName(),
+                        collect.get(false).stream().map(
+                                ip -> ip.getSUSEProduct().getFriendlyName())
+                        .collect(Collectors.toSet())
+                )
+        );
+        json.setInstalledProducts(installedProductsJson.orElse(null));
         return json;
     }
 }

@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -59,6 +60,7 @@ public class ImageOverview extends BaseDomainHelper {
     private ServerAction action;
     private Set<ImageInfoCustomDataValue> customDataValues;
     private Set<Channel> channels;
+    private Set<InstalledProduct> installedProducts;
     private Org org;
     private Integer securityErrata;
     private Integer bugErrata;
@@ -169,6 +171,20 @@ public class ImageOverview extends BaseDomainHelper {
     )
     public Set<Channel> getChannels() {
         return channels;
+    }
+
+    /**
+     * @return the installed products
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "suseImageInfoInstalledProduct",
+        joinColumns = {
+            @JoinColumn(name = "image_info_id", nullable = false, updatable = false)},
+        inverseJoinColumns = {
+            @JoinColumn(name = "installed_product_id", nullable = false, updatable = false)
+    })
+    public Set<InstalledProduct> getInstalledProducts() {
+        return installedProducts;
     }
 
     /**
@@ -327,6 +343,15 @@ public class ImageOverview extends BaseDomainHelper {
      */
     public void setOutdatedPackages(Integer outdatedPackagesIn) {
         this.outdatedPackages = outdatedPackagesIn;
+    }
+
+    /**
+     * @deprecated do not use. Only for hibernate.
+     * @param installedProductsIn the installed products
+     */
+    @Deprecated
+    public void setInstalledProducts(Set<InstalledProduct> installedProductsIn) {
+        this.installedProducts = installedProductsIn;
     }
 
     /**
