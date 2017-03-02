@@ -241,6 +241,68 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </query>
 
+    <query name="Server.listSystemsBehindProxy">
+        <![CDATA[ select
+                new com.redhat.rhn.manager.visualization.json.System(s.id, sp.id.proxyServer.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
+                from Server s
+                    inner join s.serverPaths sp
+                    left join s.channels c
+                    left join s.groups g
+                where c.parentChannel is NULL and
+                    g.groupType.isBaseChar = 'Y' and
+                    s.org = :org and
+                    sp.position = (select max(position) from ServerPath sp2 where sp2.id.server = sp.id.server)]]>
+    </query>
+
+    <query name="Server.listProxySystems">
+        <![CDATA[ select
+                new com.redhat.rhn.manager.visualization.json.System(s.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
+                from Server s
+                    inner join s.proxyInfo pi
+                    left join s.channels c
+                    left join s.groups g
+                where c.parentChannel is NULL and
+                    g.groupType.isBaseChar = 'Y' and
+                    s.org = :org and
+                    pi is not null]]>
+    </query>
+
+    <query name="Server.listHostSystems">
+        <![CDATA[ select
+                new com.redhat.rhn.manager.visualization.json.System(s.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
+                from Server s
+                    left join s.channels c
+                    left join s.groups g
+                where c.parentChannel is NULL and
+                    g.groupType.isBaseChar = 'Y' and
+                    s.org = :org and
+                    exists (select 1 from VirtualInstance vi where vi.hostSystem = s)
+    ]]>
+    </query>
+
+    <sql-query name="Server.serverIdVirtualHostManagerId">
+        <return-scalar column="server_id" type="long"/>
+        <return-scalar column="vhmserver_id" type="long"/>
+        <![CDATA[select server_id, vhmserver_id
+            from suseServerVirtualHostManager
+        ]]>
+    </sql-query>
+
+    <query name="Server.listGuestSystems">
+        <![CDATA[ select
+                new com.redhat.rhn.manager.visualization.json.System(s.id, vi.hostSystem.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
+                from Server s, VirtualInstance vi
+                    left join s.channels c
+                    left join s.groups g
+                where c.parentChannel is NULL and
+                    g.groupType.isBaseChar = 'Y' and
+                    s.org = :org and
+                    vi.guestSystem = s and
+                    vi.hostSystem is not null and
+                    vi.uuid is not null
+    ]]>
+    </query>
+
     <query name="MinionServer.listSSHMinionsIdsAndContactMethods">
         <![CDATA[ select s.minionId, m.label
            from com.redhat.rhn.domain.server.MinionServer as s
