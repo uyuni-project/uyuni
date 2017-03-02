@@ -287,7 +287,11 @@ When(/^I click on preview$/) do
 end
 
 When(/^I click on run$/) do
+  find('button#stop').click
   find('button#run').click
+  # just wait some time for executing commands.
+  sleep(10)
+  find('button#stop').click
 end
 
 When(/^I should see my hostname$/) do
