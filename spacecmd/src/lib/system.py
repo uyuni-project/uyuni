@@ -1634,7 +1634,7 @@ def do_system_delete(self, args):
 
     self.client.system.deleteSystems(self.session, system_ids)
 
-    logging.info('Deleted %i system(s)', len(system_ids))
+    logging.info('%i system(s) scheduled for removal', len(system_ids))
 
     # regenerate the system name cache
     self.generate_system_cache(True, delay=1)
