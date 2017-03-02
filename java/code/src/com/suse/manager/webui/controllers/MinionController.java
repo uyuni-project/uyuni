@@ -20,12 +20,14 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.webui.services.impl.SaltService;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -241,6 +243,11 @@ public class MinionController {
                     entry.put("id", proxy.getId());
                     entry.put("name", proxy.getName());
                     entry.put("hostname", proxy.getHostname());
+                    List<String> path = proxy.getServerPaths().stream()
+                            .sorted(Comparator.comparingLong(ServerPath::getPosition))
+                            .map(ServerPath::getHostname)
+                            .collect(Collectors.toList());
+                    entry.put("path", path);
                     return entry; })
                 .collect(Collectors.toList());
         data.put("availableActivationKeys", Json.GSON.toJson(visibleBootstrapKeys));
