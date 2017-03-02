@@ -39,6 +39,8 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
+import com.suse.manager.webui.controllers.VisualizationController;
+
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
 
@@ -264,5 +266,15 @@ public class Router implements SparkApplication {
                 withUser(FormulaController::saveSelectedFormulas));
         post("/manager/api/formulas/save",
                 withUser(FormulaController::saveFormula));
+
+        // Visualization
+        get("/manager/visualization/virtualization-hierarchy",
+                withOrgAdmin(VisualizationController::showVirtualizationHierarchy), jade);
+        get("/manager/api/visualization/virtualization-hierarchy/data",
+                withOrgAdmin(VisualizationController::vhData));
+        get("/manager/visualization/proxy-hierarchy",
+                withOrgAdmin(VisualizationController::showProxyHierarchy), jade);
+        get("/manager/api/visualization/proxy-hierarchy/data",
+                withOrgAdmin(VisualizationController::proxyHierarchyData));
     }
 }
