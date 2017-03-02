@@ -212,7 +212,11 @@ class BootstrapMinions extends React.Component {
                          <option key="none" value="">None</option>
                          {
                              this.props.proxies.map(p =>
-                                <option key={p.id} value={p.id}>{ p.name }</option>
+                                <option key={p.id} value={p.id}>{ p.name }
+                                    { p.path.reduce((acc, val, idx) =>
+                                        acc + "\u2192 " + val + (idx == p.path.length - 1 ? "" : " "), "")
+                                    }
+                                </option>
                              )
                          }
                        </select>
