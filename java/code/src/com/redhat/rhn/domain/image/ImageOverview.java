@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.image;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -61,6 +62,8 @@ public class ImageOverview extends BaseDomainHelper {
     private Set<ImageInfoCustomDataValue> customDataValues;
     private Set<Channel> channels;
     private Set<InstalledProduct> installedProducts;
+    private Set<ImagePackage> packages;
+    private Set<PublishedErrata> patches;
     private Org org;
     private Integer securityErrata;
     private Integer bugErrata;
@@ -188,6 +191,26 @@ public class ImageOverview extends BaseDomainHelper {
     }
 
     /**
+     * @return the packages
+     */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
+    public Set<ImagePackage> getPackages() {
+        return packages;
+    }
+
+    /**
+     * @return the patches
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "rhnImageNeededErrataCache",
+            joinColumns = {@JoinColumn(name = "image_id")},
+            inverseJoinColumns = {@JoinColumn(name = "errata_id")}
+    )
+    public Set<PublishedErrata> getPatches() {
+        return patches;
+    }
+
+    /**
      * @return the arch string
      */
     @Column(name = "image_arch_name")
@@ -308,6 +331,20 @@ public class ImageOverview extends BaseDomainHelper {
      */
     public void setChannels(Set<Channel> channelsIn) {
         this.channels = channelsIn;
+    }
+
+    /**
+     * @param packagesIn the packages
+     */
+    public void setPackages(Set<ImagePackage> packagesIn) {
+        this.packages = packagesIn;
+    }
+
+    /**
+     * @param patchesIn the patches
+     */
+    public void setPatches(Set<PublishedErrata> patchesIn) {
+        this.patches = patchesIn;
     }
 
     /**
