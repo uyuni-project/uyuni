@@ -1421,17 +1421,12 @@ public class SystemHandler extends BaseHandler {
         List<Long> deletion = new LinkedList<Long>();
         // Loop through the sids and try to delete the server
         for (Integer sysId : systemIds) {
-            try {
-                if (SystemManager.isAvailableToUser(loggedInUser, sysId.longValue())) {
-                    deletion.add(sysId.longValue());
-                }
-                else {
-                    skippedSids.add(sysId);
-                }
+            if (SystemManager.isAvailableToUser(loggedInUser, sysId.longValue())) {
+                deletion.add(sysId.longValue());
             }
-            catch (Exception e) {
-                System.out.println("Exception: " + e);
-                e.printStackTrace();
+            else {
+                log.warn("system " + sysId +
+                        " is not available to user, hence will not be deleted");
                 skippedSids.add(sysId);
             }
         }
