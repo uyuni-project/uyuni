@@ -111,6 +111,20 @@ function ImageInfo(props) {
                             :<td>-</td>
                         }
                     </tr>
+                    <tr>
+                        <td>Installed Products</td>
+                        { data.installedProducts ?
+                            <td>
+                                <ul className="list-group">
+                                    <li className="list-group-item">{data.installedProducts.base}</li>
+                                    {data.installedProducts.addons.map(addon =>
+                                        <li className="list-group-item">{addon}</li>
+                                    )}
+                                </ul>
+                            </td>
+                            :<td>-</td>
+                        }
+                    </tr>
                 </tbody>
             </table>
         </div>
