@@ -2354,6 +2354,19 @@ tree will not be usable for autoinstalling.
         <source>Virtual Host Managers</source>
       </trans-unit>
 
+      <!-- Visualization -->
+      <trans-unit id="visualization.nav.title">
+        <source>Visualization</source>
+      </trans-unit>
+      <trans-unit id="Virtualization Hierarchy">
+        <source>Virtualization Hierarchy</source>
+      </trans-unit>
+      <trans-unit id="Proxy Hierarchy">
+        <source>Proxy Hierarchy</source>
+      </trans-unit>
+
+
+
       <!-- rename system entitlements to system types -->
       <trans-unit id="system-legend.jsp.unentitled">
         <source>No System Types</source>
