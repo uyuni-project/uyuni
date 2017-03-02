@@ -77,6 +77,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(Optional.of("mypassword")));
             allowing(input).getIgnoreHostKeys();
             will(returnValue(true));
+            allowing(input).getProxy();
+            will(returnValue(null));
         }});
         return input;
     }
@@ -87,6 +89,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(Collections.emptyList()));
             allowing(mock).getFirstActivationKey();
             will(returnValue(empty()));
+            allowing(mock).getProxy();
+            will(returnValue(null));
         }});
     }
 

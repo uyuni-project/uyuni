@@ -29,6 +29,7 @@ import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
 import com.suse.manager.webui.controllers.FormulaController;
 import com.suse.manager.webui.controllers.MinionsAPI;
+import com.suse.manager.webui.controllers.SaltSSHController;
 import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
@@ -207,5 +208,7 @@ public class Router implements SparkApplication {
                 withUser(FormulaController::saveSelectedFormulas));
         post("/manager/api/formulas/save",
                 withUser(FormulaController::saveFormula));
+
+        get("/manager/download/saltssh/pubkey", SaltSSHController::getPubKey);
     }
 }

@@ -15,7 +15,6 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.suse.manager.utils.SaltUtils;
@@ -24,8 +23,6 @@ import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.log4j.Logger;
-
-import java.util.Optional;
 
 /**
  * Event message handler for {@link MinionStartEventMessage}.
@@ -57,18 +54,15 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
     @Override
     protected void doExecute(EventMessage msg) {
         String minionId = ((MinionStartEventMessage) msg).getMinionId();
-
-        // Update custom grains, modules and beacons on every minion restart
-        MinionList minionTarget = new MinionList(minionId);
-        SALT_SERVICE.syncGrains(minionTarget);
-        SALT_SERVICE.syncBeacons(minionTarget);
-
-        Optional<MinionServer> minionOpt = MinionServerFactory.findByMinionId(minionId);
-        minionOpt.ifPresent(minion -> {
-            MinionList target = new MinionList(minion.getMinionId());
+        MinionServerFactory.findByMinionId(minionId)
+                .ifPresent(minion -> {
+            // Update custom grains, modules and beacons on every minion restart
+            MinionList minionTarget = new MinionList(minionId);
+            SALT_SERVICE.syncGrains(minionTarget);
+            SALT_SERVICE.syncBeacons(minionTarget);
 
             if (!MinionServerUtils.isSshPushMinion(minion)) {
-                SALT_SERVICE.syncModules(target);
+                SALT_SERVICE.syncModules(minionTarget);
             }
 
             SALT_SERVICE.getUptimeForMinion(minion).ifPresent(uptime ->

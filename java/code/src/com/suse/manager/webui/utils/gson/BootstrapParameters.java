@@ -29,6 +29,7 @@ public class BootstrapParameters {
     private Optional<String> password;
     private List<String> activationKeys;
     private boolean ignoreHostKeys;
+    private Optional<Long> proxyId;
 
     /**
      * For testing purposes.
@@ -39,16 +40,18 @@ public class BootstrapParameters {
      * @param passwordIn password
      * @param activationKeysIn activation keys
      * @param ignoreHostKeysIn ignore hostIn keys?
+     * @param proxyIdIn proxy id
      */
     public BootstrapParameters(String hostIn, Optional<Integer> portIn, String userIn,
             Optional<String> passwordIn, List<String> activationKeysIn,
-            boolean ignoreHostKeysIn) {
+            boolean ignoreHostKeysIn, Optional<Long> proxyIdIn) {
         this.host = hostIn;
         this.port = portIn;
         this.user = userIn;
         this.password = passwordIn;
         this.activationKeys = activationKeysIn;
         this.ignoreHostKeys = ignoreHostKeysIn;
+        this.proxyId = proxyIdIn;
     }
 
     /**
@@ -59,7 +62,7 @@ public class BootstrapParameters {
     public BootstrapParameters(JSONBootstrapHosts json) {
         this(json.getHost(), json.getPortInteger(), json.getUser(),
                 json.maybeGetPassword(), json.getActivationKeys(),
-                json.getIgnoreHostKeys());
+                json.getIgnoreHostKeys(), Optional.ofNullable(json.getProxy()));
     }
 
     /**
@@ -176,5 +179,14 @@ public class BootstrapParameters {
      */
     public void setIgnoreHostKeys(boolean ignoreHostKeysIn) {
         this.ignoreHostKeys = ignoreHostKeysIn;
+    }
+
+    /**
+     * Gets the proxy id.
+     *
+     * @return proxyId
+     */
+    public Optional<Long> getProxyId() {
+        return proxyId;
     }
 }

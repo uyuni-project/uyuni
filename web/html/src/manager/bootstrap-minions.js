@@ -20,9 +20,11 @@ class BootstrapMinions extends React.Component {
             ignoreHostKeys: true,
             manageWithSSH: false,
             messages: [],
-            loading: false
+            loading: false,
+            showProxyHostnameWarn: false
         };
-        ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "manageWithSSHChanged", "activationKeyChanged", "clearFields"]
+        ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "manageWithSSHChanged", "activationKeyChanged", "clearFields",
+        "proxyChanged"]
             .forEach(method => this[method] = this[method].bind(this));
     }
 
@@ -70,6 +72,16 @@ class BootstrapMinions extends React.Component {
         });
     }
 
+    proxyChanged(event) {
+        var proxyId = event.target.value;
+        var proxy = this.props.proxies.find((p) => p.id == proxyId);
+        var showWarn = proxy && proxy.hostname.indexOf(".") < 0;
+        this.setState({
+            proxy: event.target.value,
+            showProxyHostnameWarn: showWarn
+        });
+    }
+
     onBootstrap() {
         this.setState({messages: [], loading: true});
         var formData = {};
@@ -79,6 +91,9 @@ class BootstrapMinions extends React.Component {
         formData['password'] = this.state.password.trim();
         formData['activationKeys'] = this.state.activationKey === "" ? [] : [this.state.activationKey] ;
         formData['ignoreHostKeys'] = this.state.ignoreHostKeys;
+        if (this.state.proxy) {
+            formData['proxy'] = this.state.proxy;
+        }
 
         const request = Network.post(
             this.state.manageWithSSH ? "/rhn/manager/api/minions/bootstrapSSH" : "/rhn/manager/api/minions/bootstrap",
@@ -118,6 +133,8 @@ class BootstrapMinions extends React.Component {
           ignoreHostKeys: true,
           manageWithSSH: false,
           messages: [],
+          proxy: "",
+          showProxyHostnameWarn: false,
           loading: false
       });
       return;
@@ -189,6 +206,28 @@ class BootstrapMinions extends React.Component {
                     </div>
                 </div>
                 <div className="form-group">
+                    <label className="col-md-3 control-label">{t("Proxy")}:</label>
+                    <div className="col-md-6">
+                       <select value={this.state.proxy} onChange={this.proxyChanged} className="form-control" name="proxies">
+                         <option key="none" value="">None</option>
+                         {
+                             this.props.proxies.map(p =>
+                                <option key={p.id} value={p.id}>{ p.name }
+                                    { p.path.reduce((acc, val, idx) =>
+                                        acc + "\u2192 " + val + (idx == p.path.length - 1 ? "" : " "), "")
+                                    }
+                                </option>
+                             )
+                         }
+                       </select>
+                       <div>
+                           <i style={ this.state.showProxyHostnameWarn ? { display: 'inline'} : {display: 'none'} } className="fa fa-exclamation-triangle text-warning">
+                                {t("The hostname of the proxy is not fully qualified. This may cause problems when accessing the channels.")}
+                           </i>
+                       </div>
+                    </div>
+                </div>
+                <div className="form-group">
                     <div className="col-md-3"></div>
                     <div className="col-md-6">
                         <div className="checkbox">
@@ -222,6 +261,6 @@ class BootstrapMinions extends React.Component {
 }
 
 ReactDOM.render(
-    <BootstrapMinions availableActivationKeys={availableActivationKeys} />,
+    <BootstrapMinions availableActivationKeys={availableActivationKeys} proxies={proxies}/>,
     document.getElementById('bootstrap-minions')
 );
