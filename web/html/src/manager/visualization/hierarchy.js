@@ -101,6 +101,7 @@ $(document).ready(function() {
     // Prepare filters
     const myFilters = Filters.filters();
     const myCriteria = Criteria.criteria();
+    myCriteria.get()['default'] = myDeriveClass;
 
     const nameFilterDiv = d3.select('#filter-wrapper')
       .append('div').attr('class', 'filter');
@@ -142,7 +143,6 @@ $(document).ready(function() {
         .attr('type', 'text')
         .attr('value', new Date())
         .on('input', function() {
-          myCriteria.get()['default'] = myDeriveClass;
           myCriteria.get()['checkin-criteria'] = d => {
               var firstPartition = d.data.checkin < new Date(this.value).getTime();
               d.data.partition = firstPartition;
