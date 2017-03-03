@@ -8,6 +8,7 @@ Feature: Create initial users
 
   Scenario: Create Admin users and first org
     Given I access the host the first time
+    And  I run "rm -Rf /srv/salt/*" on "server"
     When I go to the home page
     And I enter "SUSE Test" as "orgName"
     And I enter "admin" as "login"
