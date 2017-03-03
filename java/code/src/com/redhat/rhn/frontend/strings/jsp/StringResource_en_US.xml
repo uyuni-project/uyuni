@@ -1382,6 +1382,24 @@
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="visualization-legend.jsp.title">
+        <source>Visualization Hierarchy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="visualization-legend.jsp.notcheckin">
+        <source>Not check-in system</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="visualization-legend.jsp.checkin">
+        <source>Check-in system</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
+        </context-group>
+      </trans-unit>
       <!-- email_sent.jsp -->
       <!-- yourchangeemail.jsp -->
       <trans-unit id="yourchangeemail.jsp.title">
