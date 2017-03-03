@@ -17,6 +17,7 @@ package com.suse.manager.reactor.messaging;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -28,6 +29,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
+import org.apache.log4j.Logger;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -38,14 +41,21 @@ import java.util.Optional;
  */
 public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
 
+    private static Logger log = Logger.getLogger(ChannelsChangedEventMessageAction.class);
+
     @Override
     protected void doExecute(EventMessage event) {
         long serverId = ((ChannelsChangedEventMessage) event).getServerId();
 
         Server s = ServerFactory.lookupById(serverId);
+        if (s == null) {
+            log.error("Server with id " + serverId + " not found.");
+            return;
+        }
         List<Package> prodPkgs =
                 PackageFactory.findMissingProductPackagesOnServer(serverId);
-        s.asMinionServer().ifPresent(minion -> {
+        Optional<MinionServer> optMinion = s.asMinionServer();
+        optMinion.ifPresent(minion -> {
             // This code acts only on salt minions
 
             // Trigger update of the errata cache
@@ -58,7 +68,7 @@ public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
             StateFactory.addPackagesToNewStateRevision(minion,
                     Optional.ofNullable(event.getUserId()), prodPkgs);
         });
-        if (!s.asMinionServer().isPresent()) {
+        if (!optMinion.isPresent()) {
             // This code acts only on traditional systems
             if (event.getUserId() != null) {
                 User user = UserFactory.lookupById(event.getUserId());
