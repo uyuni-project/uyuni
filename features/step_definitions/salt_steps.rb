@@ -287,7 +287,6 @@ When(/^I click on preview$/) do
 end
 
 When(/^I click on run$/) do
-  find('button#stop').click
   find('button#run').click
 end
 
