@@ -179,6 +179,9 @@ $(document).ready(function() {
         .attr('type', 'button')
         .on('click', updateTree)
         .text('Apply partitioning');
+    }, (xhr) => {
+        d3.select('#svg-wrapper')
+          .text(t('There was an error fetching data from the server.'));
     });
 });
 }
