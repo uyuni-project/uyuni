@@ -121,7 +121,7 @@ $(document).ready(function() {
       .append('div').attr('class', 'filter');
     baseProdFilterDiv
        .append('label')
-       .text('Entity base product');
+       .text('Entity base channel');
     baseProdFilterDiv
       .append('input')
       .attr('type', 'text')
