@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -142,7 +143,7 @@ public enum StateRevisionService {
                         copy.setVersionConstraint(p.getVersionConstraint());
                         return copy;
                     }).collect(Collectors.toSet()))
-            .orElse(Collections.emptySet());
+            .orElseGet(HashSet::new);
         newRevision.setPackageStates(packageCopies);
     }
 

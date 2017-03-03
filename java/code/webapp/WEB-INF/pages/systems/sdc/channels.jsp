@@ -7,6 +7,9 @@
 <html:html >
 <body>
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
+  <div class="alert alert-info">
+      <bean:message key="sdc.channels.info.change" />
+  </div>
   <h2>
     <rhn:icon type="header-channel" title="common.download.channelAlt" />
     <bean:message key="sdc.channels.edit.header2"/>

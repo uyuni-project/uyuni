@@ -598,4 +598,18 @@ public class PackageFactory extends HibernateFactory {
         }
         return m.execute(params);
     }
+
+    /**
+     * Search for packages containing a product which are not installed on a server.
+     * Return all missing packages found (in the latest version).
+     * @param sid The server id
+     * @return Return missing packages which contains a product
+     */
+    public static List<Package> findMissingProductPackagesOnServer(Long sid) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("sid", sid);
+        List<Package> pkgs = singleton.listObjectsByNamedQuery(
+                "Package.findMissingProductPackagesOnServer", params);
+        return pkgs;
+    }
 }
