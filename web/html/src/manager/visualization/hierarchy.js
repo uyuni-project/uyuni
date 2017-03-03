@@ -110,6 +110,7 @@ $(document).ready(function() {
     nameFilterDiv
       .append('input')
       .attr('type', 'text')
+      .attr('placeholder', 'e.g., client.nue.sles')
       .on('input', function() {
         myFilters.put('name', d => d.data.name.toLowerCase().includes(this.value.toLowerCase()));
         nodeVisible(root, myFilters.predicate());
@@ -124,6 +125,7 @@ $(document).ready(function() {
     baseProdFilterDiv
       .append('input')
       .attr('type', 'text')
+      .attr('placeholder', 'e.g., SLE12')
       .on('input', function() {
         myFilters.put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(this.value.toLowerCase()));
         nodeVisible(root, myFilters.predicate());
