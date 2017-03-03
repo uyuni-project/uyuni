@@ -62,8 +62,26 @@ cp -p spacewalk-schema-upgrade.1 $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-sql.1 $RPM_BUILD_ROOT%{_mandir}/man1
 %fdupes -s $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 
+%if 0%{?suse_version}
+
+mkdir -p $RPM_BUILD_ROOT/usr/share/susemanager/
+install -m 0644 update-messages.txt $RPM_BUILD_ROOT/usr/share/susemanager/
+
+%fdupes %{buildroot}/%{rhnroot}
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%if 0%{?suse_version}
+%post
+if [ $1 -eq 2 ] ; then
+    cp /usr/share/susemanager/update-messages.txt /var/adm/update-messages/%{name}-%{version}-%{release}
+else
+    # new install: empty messages are not shown
+    touch /var/adm/update-messages/%{name}-%{version}-%{release}
+fi
+%endif
 
 %files
 %defattr(-,root,root)
@@ -75,6 +93,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/spacewalk-sql
 %{_mandir}/man1/spacewalk-schema-upgrade*
 %{_mandir}/man1/spacewalk-sql*
+%if 0%{?suse_version}
+%dir /usr/share/susemanager
+/usr/share/susemanager/update-messages.txt
+%ghost /var/adm/update-messages/%{name}-%{version}-%{release}
+%endif
 
 %changelog
 * Fri Feb 12 2016 Jan Dobes 2.5.12-1
