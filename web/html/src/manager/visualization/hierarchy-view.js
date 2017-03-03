@@ -121,19 +121,23 @@ function updateSelectedNode(node) {
 function updateDetailBox(d) {
   var data = d.data;
   var systemDetailLink = '';
+  var systemSpecificInfo = '';
   if (data.type && data.type == 'system' && data.id != 'root') {
     var idSlices = (data.id).split('-');
     var systemId = idSlices[idSlices.length - 1];
     systemDetailLink = '<div>System details page: <a href="/rhn/systems/details/Overview.do?sid=' +
       systemId + '" target="_blank">' + data.name + '</a></div>';
+
+    systemSpecificInfo =
+      '<div>Base entitlement : <strong>' + data.base_entitlement + '</strong></div>' +
+      '<div>Base channel: <strong>' + data.base_channel + '</strong></div>' +
+      '<div>Checkin time : <strong>' + new Date(data.checkin) + '</strong></div>';
   }
   $('.detailBox').html(
     systemDetailLink +
     '<div>System name : <strong>' + data.name + '</strong></div>' +
     '<div>Type : <strong>' + data.type + '</strong></div>' +
-    '<div>Base entitlement : <strong>' + data.base_entitlement + '</strong></div>' +
-    '<div>Base channel: <strong>' + data.base_channel + '</strong></div>' +
-    '<div>Checkin time : <strong>' + new Date(data.checkin) + '</strong></div>').show()
+    systemSpecificInfo).show()
     .css('top', (window.mouseY || 0) - $('.detailBox').height()).css('left', (window.mouseX || 0) + 20);
 }
 
