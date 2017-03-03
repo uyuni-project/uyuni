@@ -93,6 +93,10 @@
 - features/centos_salt_reboot_test.feature
 # - features/centos_salt_ssh.feature  FIXME: this feature at moment is unstable
 
+#### * Docker releated features tests.  ###
+
+- features/docker_build_image.feature
+
 # end-tests
 - features/spacewalk_debug.feature
 
