@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2016 SUSE LLC
+-- Copyright (c) 2017 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -25,7 +25,7 @@ CREATE TABLE rhnActionImageBuild
                          CONSTRAINT rhn_act_image_build_ip_fk
                              REFERENCES suseImageProfile (profile_id)
                              ON DELETE CASCADE,
-    tag              VARCHAR2(30),
+    tag              VARCHAR2(128),
     created          timestamp with local time zone
                          DEFAULT (current_timestamp) NOT NULL,
     modified         timestamp with local time zone

@@ -724,104 +724,104 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 	values (lookup_server_arch('mips-debian-linux'),
             lookup_sg_type('foreign_entitled'));
 
--- docker_build_host* compatibilities --
+-- container_build_host* compatibilities --
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('i386-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('i386-debian-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('i486-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('i586-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('i686-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('athlon-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('amd64-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('amd64-debian-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('ia64-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('ia64-debian-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('ia32e-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('s390-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('s390-debian-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('s390x-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('ppc-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('powerpc-debian-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('ppc64-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('ppc64le-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('x86_64-redhat-linux'),
-            lookup_sg_type('docker_build_host'));
+            lookup_sg_type('container_build_host'));
 
 -- currently not supported
 -- insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 --         values (lookup_server_arch('aarch64-redhat-linux'),
---             lookup_sg_type('docker_build_host'));
+--             lookup_sg_type('container_build_host'));
 
 -- insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 --         values (lookup_server_arch('armv7l-redhat-linux'),
---             lookup_sg_type('docker_build_host'));
+--             lookup_sg_type('container_build_host'));
 
 -- insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 --         values (lookup_server_arch('armv5tejl-redhat-linux'),
---             lookup_sg_type('docker_build_host'));
+--             lookup_sg_type('container_build_host'));
 
 -- insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 --         values (lookup_server_arch('armv6l-redhat-linux'),
---             lookup_sg_type('docker_build_host'));
+--             lookup_sg_type('container_build_host'));
 
 -- insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 --         values (lookup_server_arch('armv6hl-redhat-linux'),
---             lookup_sg_type('docker_build_host'));
+--             lookup_sg_type('container_build_host'));
 
 commit;
 

@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 26ae6a865ccdb45230072f9449fb819efd81b75e
+-- oracle equivalent source sha1 fa30625ad371e993e19850672611923e37ade230
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -185,7 +185,7 @@ begin
                 select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name,
                         sgt.id, new_org_id
                 from rhnServerGroupType sgt
-                where sgt.label = 'docker_build_host';
+                where sgt.label = 'container_build_host';
 
         org_id_out := new_org_id;
 

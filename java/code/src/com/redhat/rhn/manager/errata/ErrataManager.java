@@ -38,6 +38,7 @@ import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFile;
+import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -1921,6 +1922,23 @@ public class ErrataManager extends BaseManager {
         params.put("org_id", server.getOrg().getId());
         params.put("task_name", "update_server_errata_cache");
         params.put("task_data", server.getId());
+        params.put("earliest", new Timestamp(System.currentTimeMillis()));
+        mode.executeUpdate(params);
+    }
+
+    /**
+     * Insert an errata cache task for a given image, will be picked up by taskomatic on
+     * the next run (runs every minute per default).
+     *
+     * @param image the image
+     */
+    public static void insertErrataCacheTask(ImageInfo image) {
+        WriteMode mode = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
+                "insert_into_task_queue");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("org_id", image.getOrg().getId());
+        params.put("task_name", "update_image_errata_cache");
+        params.put("task_data", image.getId());
         params.put("earliest", new Timestamp(System.currentTimeMillis()));
         mode.executeUpdate(params);
     }

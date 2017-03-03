@@ -15,9 +15,9 @@
 package com.suse.manager.webui.utils.gson;
 
 /**
- * JSON request wrapper for Docker registry image stores.
+ * JSON request wrapper for registry image stores.
  */
-public class DockerRegistryCreateRequest {
+public class ImageRegistryCreateRequest {
 
     /**
      * Nested class for credentials.
@@ -26,7 +26,6 @@ public class DockerRegistryCreateRequest {
 
         private String username;
         private String password;
-        private String email;
 
         /**
          * @return the username
@@ -40,13 +39,6 @@ public class DockerRegistryCreateRequest {
          */
         public String getPassword() {
             return password;
-        }
-
-        /**
-         * @return the email
-         */
-        public String getEmail() {
-            return email;
         }
     }
 

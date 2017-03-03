@@ -34,6 +34,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -54,6 +55,7 @@ public abstract class ImageProfile extends BaseDomainHelper {
     private String label;
     private Org org;
     private Token token;
+    private ImageStore targetStore;
     private Set<ProfileCustomDataValue> customDataValues;
 
     /**
@@ -93,6 +95,15 @@ public abstract class ImageProfile extends BaseDomainHelper {
     }
 
     /**
+     * @return the targetStore
+     */
+    @ManyToOne
+    @JoinColumn(name = "target_store_id")
+    public ImageStore getTargetStore() {
+        return targetStore;
+    }
+
+    /**
      * @return the custom data values
      */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
@@ -125,6 +136,13 @@ public abstract class ImageProfile extends BaseDomainHelper {
      */
     public void setToken(Token tokenIn) {
         this.token = tokenIn;
+    }
+
+    /**
+     * @param storeIn the targetStore to set
+     */
+    public void setTargetStore(ImageStore storeIn) {
+        this.targetStore = storeIn;
     }
 
     /**

@@ -21,8 +21,6 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import java.util.Optional;
-
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.user.User;
 
@@ -38,7 +36,7 @@ public class Credentials extends BaseDomainHelper {
     public static final String TYPE_SUSESTUDIO = "susestudio";
     public static final String TYPE_SCC = "scc";
     public static final String TYPE_VIRT_HOST_MANAGER = "vhm";
-    public static final String TYPE_DOCKER = "docker";
+    public static final String TYPE_REGISTRY = "registrycreds";
 
     private Long id;
     private User user;
@@ -176,15 +174,6 @@ public class Credentials extends BaseDomainHelper {
     public boolean isComplete() {
         return !StringUtils.isEmpty(username) &&
                 !StringUtils.isEmpty(encodedPassword);
-    }
-
-    /**
-     * Converts this credentials to a DockerCredentials if it is one.
-     *
-     * @return optional of DockerCredentials
-     */
-    public Optional<DockerCredentials> asDockerCredentials() {
-        return Optional.empty();
     }
 
     /**

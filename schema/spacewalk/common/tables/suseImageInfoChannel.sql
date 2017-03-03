@@ -12,19 +12,13 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
 --
-
-CREATE TABLE suseDockerCredentialsInfo
-(
-    creds_id  NUMBER NOT NULL
-                 CONSTRAINT suse_dockercredsinf_cid_fk
-                     REFERENCES suseCredentials (id)
-                     ON DELETE CASCADE,
-    email    VARCHAR2(256) NOT NULL
-)
-ENABLE ROW MOVEMENT
-;
-
-CREATE INDEX suse_dockercredsinf_cid_idx
-    ON suseDockerCredentialsInfo (creds_id)
-        TABLESPACE [[2m_tbs]];
-
+CREATE TABlE suseImageInfoChannel (
+    channel_id      NUMBER NOT NULL
+                        CONSTRAINT suse_imginfoc_cid_fk
+                        REFERENCES rhnChannel (id)
+                        ON DELETE CASCADE,
+    image_info_id   NUMBER NOT NULL
+                        CONSTRAINT suse_imginfoc_iiid_fk
+                        REFERENCES suseImageInfo (id)
+                        ON DELETE CASCADE
+);

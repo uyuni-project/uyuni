@@ -119,6 +119,28 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
     }
 
     /**
+     * Updates the errata cache for the given image.
+     * @param imageId Image id which needs to get updated.
+     * @param commit commit the database transaction when complete
+     */
+    public void updateErrataCacheForImage(Long imageId, boolean commit) {
+        log.info("Updating errata cache for image [" + imageId + "]");
+        try {
+            processImage(imageId);
+        }
+        catch (Exception e) {
+            log.error("Problem updating cache for image", e);
+            HibernateFactory.rollbackTransaction();
+        }
+        finally {
+            if (commit) {
+                handleTransaction();
+            }
+        }
+        log.info("Finished errata cache for image [" + imageId + "]");
+    }
+
+    /**
      * Updates the needed cache for particular packages within a channel
      *  This isn't a full regeneration, only the changes are handled
      * @param cid the channel affected
@@ -177,6 +199,15 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
                 "System_queries", "update_needed_cache");
         Map inParams = new HashMap();
         inParams.put("server_id", serverId);
+
+        m.execute(inParams, new HashMap());
+    }
+
+    private void processImage(Long imageId) {
+        CallableMode m = ModeFactory.getCallableMode(
+                "ErrataCache_queries", "update_image_needed_cache");
+        Map inParams = new HashMap();
+        inParams.put("image_id", imageId);
 
         m.execute(inParams, new HashMap());
     }

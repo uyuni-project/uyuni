@@ -17,17 +17,26 @@ package com.suse.manager.webui.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
+import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ImageBuildEventMessage;
+import com.suse.manager.webui.utils.ViewHelper;
+import com.suse.manager.webui.utils.gson.ImageInfoJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import org.apache.commons.lang.StringUtils;
 import spark.ModelAndView;
@@ -44,11 +53,14 @@ import java.util.stream.Collectors;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 /**
- * Spark controller class for image building.
+ * Spark controller class for image building and listing.
  */
 public class ImageBuildController {
 
     private static final Gson GSON = new GsonBuilder().create();
+    private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
+
+    private static final ViewHelper VIEW_HELPER = ViewHelper.INSTANCE;
 
     private ImageBuildController() { }
 
@@ -66,17 +78,17 @@ public class ImageBuildController {
         // Parse optional profile id
         if (StringUtils.isNotBlank(req.params("profileId"))) {
             Long profileId = Long.parseLong(req.params("profileId"));
-            model.put("profile_id", profileId);
+            model.put("profileId", profileId);
         }
         else {
-            model.put("profile_id", null);
+            model.put("profileId", null);
         }
 
         return new ModelAndView(model, "content_management/build.jade");
     }
 
     /**
-     * Gets a JSON list of Docker Build Host entitled systems
+     * Gets a JSON list of Container Build Host entitled systems
      *
      * @param req the request object
      * @param res the response object
@@ -85,10 +97,35 @@ public class ImageBuildController {
      */
     public static Object getBuildHosts(Request req, Response res, User user) {
         ServerGroup sg = ServerGroupFactory
-                .lookupEntitled(EntitlementManager.DOCKER_BUILD_HOST, user.getOrg());
+                .lookupEntitled(EntitlementManager.CONTAINER_BUILD_HOST, user.getOrg());
 
         return json(res,
                 getServerStreamJson(SystemManager.systemsInGroupShort(sg.getId())));
+    }
+
+    /**
+     * Returns a view to display image info list
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public static ModelAndView listView(Request req, Response res, User user) {
+        Map<String, Object> model = new HashMap<>();
+
+        // Parse optional image id
+        if (StringUtils.isNotBlank(req.params("id"))) {
+            Long profileId = Long.parseLong(req.params("id"));
+            model.put("id", profileId);
+        }
+        else {
+            model.put("id", null);
+        }
+
+        model.put("pageSize", user.getPageSize());
+        model.put("isAdmin", user.hasRole(ADMIN_ROLE));
+        return new ModelAndView(model, "content_management/view.jade");
     }
 
     /**
@@ -149,12 +186,183 @@ public class ImageBuildController {
         return maybeProfile.flatMap(ImageProfile::asDockerfileProfile).map(profile -> {
             MessageQueue.publish(new ImageBuildEventMessage(
                     buildRequest.getBuildHostId(), user.getId(), buildRequest.getTag(),
-                    profile
+                    profile.getProfileId()
             ));
-            return GSON.toJson(new JsonResult(true, Collections.singletonList("")));
+            //TODO: Add action ID as a message parameter
+            return GSON.toJson(new JsonResult(true, "build_scheduled"));
         }).orElseGet(
                 () -> GSON.toJson(new JsonResult(true, Collections.singletonList(
-                        "Image profile with id " + profileId + "does not exist")))
+                        "unknown_error")))
         );
+    }
+
+    /**
+     * Lists image profiles in JSON
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object list(Request req, Response res, User user) {
+        List<JsonObject> result =
+                getImageInfoSummaryList(ImageInfoFactory.listImageOverviews(user.getOrg()));
+
+        return json(res, result);
+    }
+
+    /**
+     * Gets a single image info object in JSON
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object get(Request req, Response res, User user) {
+        Long id = Long.parseLong(req.params("id"));
+
+        String tab = req.queryParams("data");
+
+        Optional<ImageOverview> imageInfo =
+                ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
+
+        return json(res, imageInfo.map(ImageInfoJson::fromImageInfo).orElse(null));
+    }
+
+    /**
+     * Gets patches list for a single image info object in JSON
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getPatches(Request req, Response res, User user) {
+        Long id = Long.parseLong(req.params("id"));
+
+        Optional<ImageOverview> imageInfo =
+                ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
+
+        return json(res, imageInfo.map(ImageBuildController::getImageInfoWithPatchlist)
+                    .orElse(null));
+    }
+
+    /**
+     * Gets packages list for a single image info object in JSON
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getPackages(Request req, Response res, User user) {
+        Long id = Long.parseLong(req.params("id"));
+
+        Optional<ImageOverview> imageInfo =
+                ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
+
+        return json(res, imageInfo.map(ImageBuildController::getImageInfoWithPackageList)
+                    .orElse(null));
+    }
+
+    private static List<JsonObject> getImageInfoSummaryList(
+            List<ImageOverview> imageInfos) {
+        return imageInfos.stream().map(ImageBuildController::getImageInfoSummary)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Processes a DELETE request
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object delete(Request req, Response res, User user) {
+        Long id = Long.parseLong(req.params("id"));
+
+        JsonResult result =
+                ImageInfoFactory.lookupByIdAndOrg(id, user.getOrg()).map(info -> {
+                    ImageInfoFactory.delete(info);
+                    return new JsonResult(true,
+                            Collections.singletonList("delete_success"));
+                }).orElseGet(() -> new JsonResult(false,
+                        Collections.singletonList("not_found")));
+
+        return json(res, result);
+    }
+
+    private static JsonObject getImageInfoSummary(ImageOverview imageOverview) {
+        JsonObject json = new JsonObject();
+        json.addProperty("id", imageOverview.getId());
+        json.addProperty("name", imageOverview.getName());
+        json.addProperty("version", imageOverview.getVersion());
+        json.addProperty("modified", VIEW_HELPER.renderDate(imageOverview.getModified()));
+
+        if (imageOverview.getOutdatedPackages() != null) {
+            json.addProperty("packages", imageOverview.getOutdatedPackages());
+        }
+
+        if (imageOverview.getSecurityErrata() != null) {
+            JsonObject patches = new JsonObject();
+            patches.addProperty("critical", imageOverview.getSecurityErrata());
+            if (imageOverview.getBugErrata() != null &&
+                    imageOverview.getEnhancementErrata() != null) {
+                patches.addProperty("noncritical", imageOverview.getBugErrata() +
+                        imageOverview.getEnhancementErrata());
+            }
+            json.add("patches", patches);
+        }
+
+        if (imageOverview.getAction() != null) {
+            json.addProperty("statusId", imageOverview.getAction().getStatus().getId());
+        }
+        return json;
+    }
+
+    private static JsonObject getImageInfoWithPackageList(ImageOverview imageOverview) {
+        JsonArray list = new JsonArray();
+        imageOverview.getPackages().stream().map(p -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("name", PackageManager.getNevr(p.getName(), p.getEvr()));
+            json.addProperty("arch", p.getArch().getName());
+            json.addProperty("installed", VIEW_HELPER.renderDate(p.getInstallTime()));
+            return json;
+        }).forEach(list::add);
+
+        JsonObject obj = GSON
+                .toJsonTree(ImageInfoJson.fromImageInfo(imageOverview), ImageInfoJson.class)
+                .getAsJsonObject();
+
+        obj.add("packagelist", list);
+
+        return obj;
+    }
+
+    private static JsonObject getImageInfoWithPatchlist(ImageOverview imageOverview) {
+        JsonArray list = new JsonArray();
+        imageOverview.getPatches().stream().map(p -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("id", p.getId());
+            json.addProperty("name", p.getAdvisoryName());
+            json.addProperty("synopsis", p.getSynopsis());
+            json.addProperty("type", p.getAdvisoryType());
+            JsonArray keywords = new JsonArray();
+            p.getKeywords().stream().map(k -> new JsonPrimitive(k.getKeyword()))
+                    .forEach(keywords::add);
+            json.add("keywords", keywords);
+            json.addProperty("update", VIEW_HELPER.renderDate(p.getUpdateDate()));
+            return json;
+        }).forEach(list::add);
+
+        JsonObject obj = GSON
+                .toJsonTree(ImageInfoJson.fromImageInfo(imageOverview), ImageInfoJson.class)
+                .getAsJsonObject();
+
+        obj.add("patchlist", list);
+
+        return obj;
     }
 }

@@ -128,9 +128,15 @@ lookup_xccdf_profile            :: insert_xccdf_profile \
 pxt_session_cleanup             :: PXTSessions
 queue_server                    :: rhnTaskQueue rhnServer \
                                    rhn_server.update_needed_cache
+queue_image                     :: rhnTaskQueue suseImageInfo \
+                                   update_image_needed_cache
 
 set_ks_session_history_message  :: rhnKickstartSessionState \
                                    rhnKickstartSessionHistory
 get_hw_info_as_clob             :: rhnCpu rhnServerNetInterface
 randomize_bunch_schedule        :: rhnTaskoSchedule
+update_image_needed_cache       :: suseImageInfoChannel suseImageInfoPackage \
+                                   suseImageInfo rhnPackage rhnPackageEVR \
+                                   rhnChannelPackage rhnErrataPackage \
+                                   rhnChannelErrata rhnPackageUpgradeArchCompat
 

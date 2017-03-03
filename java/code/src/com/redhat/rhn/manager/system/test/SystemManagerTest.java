@@ -58,6 +58,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.test.CPUTest;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -425,19 +426,20 @@ public class SystemManagerTest extends RhnBaseTestCase {
         server = (Server) reload(server);
         assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 
-        //Test Docker Build Host
-        assertTrue(SystemManager.canEntitleServer(server,
-                EntitlementManager.VIRTUALIZATION));
-        hasErrors = SystemManager.entitleServer(server,
-                EntitlementManager.VIRTUALIZATION).hasErrors();
+        //Test Container Build Host
+        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
+        assertTrue(SystemManager.canEntitleServer(minion,
+                EntitlementManager.CONTAINER_BUILD_HOST));
+        hasErrors = SystemManager.entitleServer(minion,
+                EntitlementManager.CONTAINER_BUILD_HOST).hasErrors();
         assertFalse(hasErrors);
-        assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
+        assertTrue(minion.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
 
         // Removal
-        SystemManager.removeServerEntitlement(server.getId(),
-                EntitlementManager.VIRTUALIZATION);
+        SystemManager.removeServerEntitlement(minion.getId(),
+                EntitlementManager.CONTAINER_BUILD_HOST);
         server = (Server) reload(server);
-        assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
+        assertFalse(minion.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
     }
 
     public void testEntitleVirtForGuest() throws Exception {

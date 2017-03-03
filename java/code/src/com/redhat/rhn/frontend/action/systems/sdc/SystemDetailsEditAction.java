@@ -260,11 +260,13 @@ public class SystemDetailsEditAction extends RhnAction {
                     log.debug("adding entitlement success msg");
                     if (ConfigDefaults.get().isDocAvailable()) {
                         createSuccessMessage(request,
-                                "system.entitle.added." + e.getLabel(), null);
+                                "system.entitle.added." + e.getLabel(),
+                                s.getId().toString());
                     }
                     else {
                         createSuccessMessage(request,
-                                "system.entitle.added." + e.getLabel() + ".nodoc", null);
+                                "system.entitle.added." + e.getLabel() + ".nodoc",
+                                s.getId().toString());
                     }
                 }
             }

@@ -68,8 +68,7 @@ public class Router implements SparkApplication {
         post("/manager/api/cm/imagestores", withImageAdmin(ImageStoreController::create));
         post("/manager/api/cm/imagestores/:id",
                 withImageAdmin(ImageStoreController::update));
-        delete("/manager/api/cm/imagestores/:id",
-                withUser(ImageStoreController::delete));
+        delete("/manager/api/cm/imagestores/:id", withUser(ImageStoreController::delete));
 
         get("/manager/cm/imageprofiles",
                 withCsrfToken(withUser(ImageProfileController::listView)), jade);
@@ -90,15 +89,24 @@ public class Router implements SparkApplication {
         delete("/manager/api/cm/imageprofiles/:id",
                 withImageAdmin(ImageProfileController::delete));
 
-        get("/manager/cm/build",
-                withCsrfToken(withUser(ImageBuildController::buildView)), jade);
+        get("/manager/cm/build", withCsrfToken(withUser(ImageBuildController::buildView)),
+                jade);
         get("/manager/cm/build/:profileId",
                 withCsrfToken(withImageAdmin(ImageBuildController::buildView)), jade);
 
-        get("/manager/api/cm/build/hosts",
-                withUser(ImageBuildController::getBuildHosts));
-
+        get("/manager/api/cm/build/hosts", withUser(ImageBuildController::getBuildHosts));
         post("/manager/api/cm/build/:id", withUser(ImageBuildController::build));
+
+        get("/manager/cm/images", withCsrfToken(withUser(ImageBuildController::listView)),
+                jade);
+
+        get("/manager/api/cm/images", withUser(ImageBuildController::list));
+        get("/manager/api/cm/images/:id", withUser(ImageBuildController::get));
+        get("/manager/api/cm/images/patches/:id",
+                withUser(ImageBuildController::getPatches));
+        get("/manager/api/cm/images/packages/:id",
+                withUser(ImageBuildController::getPackages));
+        delete("/manager/api/cm/images/:id", withImageAdmin(ImageBuildController::delete));
 
         // Minions
         get("/manager/minions",

@@ -49,6 +49,8 @@ public class ErrataCacheDriver implements QueueDriver {
         List<Task> tasks = TaskFactory.getTaskListByNameLike(ErrataCacheWorker.BY_CHANNEL);
         tasks.addAll(consolidateTasks(
                 TaskFactory.getTaskListByNameLike(ErrataCacheWorker.FOR_SERVER)));
+        tasks.addAll(consolidateTasks(
+                TaskFactory.getTaskListByNameLike(ErrataCacheWorker.FOR_IMAGE)));
         return tasks;
     }
 
