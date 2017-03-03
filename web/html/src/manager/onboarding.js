@@ -145,7 +145,7 @@ class Onboarding extends React.Component {
             />
             <Column
               columnKey="fingerprint"
-              width="50%"
+              width="45%"
               comparator={Utils.sortByText}
               header={t('Fingerprint')}
               cell={ (row, criteria) =>
@@ -156,12 +156,16 @@ class Onboarding extends React.Component {
             <Column
               columnKey="state"
               width="10%"
+              columnClass="text-center"
+              headerClass="text-center"
               comparator={Utils.sortByText}
               header={t('State')}
               cell={ (row) => labelFor(row.state) }
             />
             <Column
-              width="10%"
+              width="15%"
+              columnClass="text-right"
+              headerClass="text-right"
               header={t('Actions')}
               cell={ (row) => actionsFor(row.id, row.state, this.reloadKeys, this.state.isOrgAdmin)}
             />
