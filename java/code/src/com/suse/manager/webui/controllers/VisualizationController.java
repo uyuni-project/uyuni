@@ -62,7 +62,7 @@ public class VisualizationController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String vhData(Request request, Response response, User user) {
+    public static String virtHierarchyData(Request request, Response response, User user) {
         response.type("application/json");
         return json(response, VisualizationManager.virtualizationHierarchy(user));
     }

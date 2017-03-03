@@ -271,7 +271,7 @@ public class Router implements SparkApplication {
         get("/manager/visualization/virtualization-hierarchy",
                 withOrgAdmin(VisualizationController::showVirtualizationHierarchy), jade);
         get("/manager/api/visualization/virtualization-hierarchy/data",
-                withOrgAdmin(VisualizationController::vhData));
+                withOrgAdmin(VisualizationController::virtHierarchyData));
         get("/manager/visualization/proxy-hierarchy",
                 withOrgAdmin(VisualizationController::showProxyHierarchy), jade);
         get("/manager/api/visualization/proxy-hierarchy/data",
