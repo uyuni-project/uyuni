@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.testing;
 
-import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
@@ -27,7 +26,6 @@ import java.nio.file.Path;
 
 /**
  * Basic test class class with a User
- * @version $Rev: 54849 $
  */
 public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
 
@@ -62,9 +60,6 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
         // If at some point we created a user and committed the transaction, we need
         // clean up our mess
         if (committed) {
-           // Set up logging again, as Hibernate might have swapped the connection
-           // with a new one after the commit
-           LoggingFactory.clearLogId();
            OrgFactory.deleteOrg(user.getOrg().getId(), user);
            commitAndCloseSession();
         }
@@ -77,12 +72,5 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
     // If we have to commit in mid-test, set up the next transaction correctly
     protected void commitHappened() {
         committed = true;
-        try {
-            LoggingFactory.clearLogId();
-        }
-        catch (Exception se) {
-            TestCaseHelper.tearDownHelper();
-            LoggingFactory.clearLogId();
-        }
     }
 }

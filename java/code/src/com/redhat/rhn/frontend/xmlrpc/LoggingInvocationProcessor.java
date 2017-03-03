@@ -18,7 +18,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.logging.AuditLog;
 import com.redhat.rhn.common.translation.Translator;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.common.LoggingFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
@@ -32,7 +31,6 @@ import redstone.xmlrpc.XmlRpcInvocationInterceptor;
 /**
  * LoggingInvocationProcessor extends the marquee-xmlrpc library to allow
  * us to log method calls.
- * @version $Rev$
  */
 public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
     private static Logger log = Logger.getLogger(LoggingInvocationProcessor.class);
@@ -199,7 +197,6 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
         try {
             User user = BaseHandler.getLoggedInUser(key);
             if (user != null) {
-                LoggingFactory.setLogAuth(user.getId());
                 return user;
             }
         }

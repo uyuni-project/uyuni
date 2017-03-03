@@ -2207,8 +2207,6 @@ def processCommandline():
     #
     try:
         rhnSQL.initDB()
-        rhnSQL.clear_log_id()
-        rhnSQL.set_log_auth_login('SETUP')
     except (SQLError, SQLSchemaError, SQLConnectError):
         e = sys.exc_info()[1]
         # An SQL error is fatal... crash and burn
