@@ -97,6 +97,7 @@ fi
 %{_mandir}/man1/spacewalk-schema-upgrade*
 %{_mandir}/man1/spacewalk-sql*
 %if 0%{?suse_version}
+%dir /usr/share/susemanager
 /usr/share/susemanager/update-messages.txt
 %ghost /var/adm/update-messages/%{name}-%{version}-%{release}
 %dir %{rhnroot}
