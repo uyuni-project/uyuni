@@ -2204,11 +2204,14 @@ def complete_softwarechannel_listrepos(self, text, line, beg, end):
 def do_softwarechannel_listrepos(self, args):
     (args, _options) = parse_arguments(args)
 
-    details = self.client.channel.software.getDetails(self.session, args[0])
-    repos = [r.get('label') for r in details.get('contentSources')]
+    if args:
+        details = self.client.channel.software.getDetails(self.session, args[0])
+        repos = [r.get('label') for r in details.get('contentSources')]
 
-    if len(repos):
-        print '\n'.join(sorted(repos))
+        if len(repos):
+            print '\n'.join(sorted(repos))
+    else:
+        self.help_softwarechannel_listrepos()
 
 ####################
 
