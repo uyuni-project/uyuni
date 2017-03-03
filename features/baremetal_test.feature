@@ -74,9 +74,8 @@ Feature: Test Bare-metal discovery
     Given I am on the Systems page
     When I check this client
     And I wait for "30" seconds
-    And I am on System Set Manager Overview
-    Then I should see a "At least one system in the set does not have the management system type: some actions will not be available" text
-
+    Then I am on System Set Manager Overview
+  
   Scenario: check SSM page for bare-metal system
     Given I am authorized as "admin" with password "admin"
     And I am on System Set Manager Overview
