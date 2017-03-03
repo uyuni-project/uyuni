@@ -99,6 +99,7 @@ is
             after insert or update or delete on ' || table_name_in || '
             for each row
             begin
+              null;
             end;
             ';
     end recreate_trigger;
