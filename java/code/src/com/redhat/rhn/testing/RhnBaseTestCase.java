@@ -40,7 +40,6 @@ import com.redhat.rhn.common.util.Asserts;
  * It ensures that the HibernateSession is closed after each
  * test to similuate what happens when the code is run
  * in a web application server.
- * @version $Rev$
  */
 public abstract class RhnBaseTestCase extends TestCase {
 
@@ -66,7 +65,6 @@ public abstract class RhnBaseTestCase extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        TestCaseHelper.setUpHelper();
     }
 
     /**

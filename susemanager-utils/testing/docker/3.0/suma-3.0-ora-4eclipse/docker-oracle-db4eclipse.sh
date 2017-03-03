@@ -66,7 +66,6 @@ echo "Creating First Org"
 
 echo "
 VARIABLE x NUMBER
-call logging.clear_log_id();
 call create_new_org('Test Default Organization', '$RANDOM', :x);
 " | spacewalk-sql --select-mode -
 

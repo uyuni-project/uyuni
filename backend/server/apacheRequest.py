@@ -133,7 +133,6 @@ class apacheRequest:
         force_rollback = 1
         func = None
         try:
-            rhnSQL.clear_log_id()
             # now get the function reference and call it
             func = self.method_ref(method)
             response = func(*params)
@@ -215,7 +214,6 @@ class apacheRequest:
             Traceback(method, self.req,
                       extra="AuditLogging error: %s" % e)
             return apache.HTTP_INTERNAL_SERVER_ERROR
-        rhnSQL.clear_log_id()
         # and now send everything back
         ret = self.response(response)
 

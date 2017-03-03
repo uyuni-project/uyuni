@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -49,8 +48,6 @@ public class SsmPowerManagementAction extends AbstractDatabaseAction {
         SsmPowerManagementEvent event = (SsmPowerManagementEvent) msgIn;
         Long userId = event.getUserId();
         User user = UserFactory.lookupById(userId);
-        LoggingFactory.clearLogId();
-        LoggingFactory.setLogAuth(userId);
         List<Long> sids = new ArrayList<Long>();
         for (SystemOverview systemOverview : event.getSystemOverviews()) {
             sids.add(systemOverview.getId());

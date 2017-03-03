@@ -23,7 +23,6 @@ class SUSEEulaTest(unittest.TestCase):
 
     def setUp(self):
         misc_functions.setup_db_connection()
-        rhnSQL.clear_log_id()
         self.__transaction_name = 'eula_test_%d' % (int(time.time()))
         rhnSQL.transaction(self.__transaction_name)
 
@@ -70,4 +69,3 @@ class SUSEEulaTest(unittest.TestCase):
         text     = "Fake EULA %d" % int(time.time())
         checksum = hashlib.new("sha256", text).hexdigest()
         return text, checksum
-

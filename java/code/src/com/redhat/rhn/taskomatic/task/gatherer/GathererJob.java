@@ -16,7 +16,6 @@
 package com.redhat.rhn.taskomatic.task.gatherer;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
@@ -75,7 +74,6 @@ public class GathererJob extends RhnJavaJob {
             log.debug(String.format("Got %d Virtual Host Managers from gatherer",
                     results.size()));
 
-            LoggingFactory.clearLogId();
             for (VirtualHostManager manager : managers) {
                 String label = manager.getLabel();
 

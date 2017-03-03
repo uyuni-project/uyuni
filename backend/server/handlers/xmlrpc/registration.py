@@ -337,7 +337,6 @@ class Registration(rhnHandler):
 
         if newserv is None:
             # Not a re-registration token, we need a fresh server object
-            rhnSQL.set_log_auth(log_user_id)
             newserv = rhnServer.Server(user, architecture)
 
         # Proceed with using the rest of the data

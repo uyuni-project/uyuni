@@ -27,7 +27,6 @@ class Tests1(unittest.TestCase):
             database=DB_SETTINGS["database"]
         )
         self._cleanup()
-        rhnSQL.clear_log_id()
 
         rhnSQL.execute("create table %s (id int, val varchar2(10))" %
                        self.table_name)
@@ -48,13 +47,6 @@ class Tests1(unittest.TestCase):
         "Tests exceptions raised by procedure calls"
         p = rhnSQL.Procedure("rhn_channel.subscribe_server")
         self.assertRaises(rhnSQL.SQLError, p, 1000102174, 33)
-
-    def test_function_1(self):
-        "Tests function calls"
-        p = rhnSQL.Function("logging.get_log_id",
-                            rhnSQL.types.NUMBER())
-        ret = p()
-        self.failUnless(isinstance(ret, usix.FloatType))
 
     def _run_stproc(self):
         p = rhnSQL.Procedure("create_new_org")

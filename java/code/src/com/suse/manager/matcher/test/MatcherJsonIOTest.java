@@ -2,7 +2,6 @@ package com.suse.manager.matcher.test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.CPU;
@@ -49,7 +48,6 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
         SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
         SUSEProductTestUtils.createVendorEntitlementProducts();
-        LoggingFactory.clearLogId();
 
         Server h1 = ServerTestUtils.createTestSystem();
         h1.setName("host1.example.com");
@@ -142,7 +140,6 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
     public void testProductsToJson() throws Exception {
         SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
-        LoggingFactory.clearLogId();
 
         List<JsonProduct> result = new MatcherJsonIO().getJsonProducts();
         assertNotNull(result);
@@ -262,7 +259,6 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
             SUSEProductTestUtils.clearAllProducts();
             SUSEProductTestUtils.createVendorSUSEProducts();
             SUSEProductTestUtils.createVendorEntitlementProducts();
-            LoggingFactory.clearLogId();
 
             Server h1 = ServerTestUtils.createTestSystem();
             h1.setName("host1.example.com");
