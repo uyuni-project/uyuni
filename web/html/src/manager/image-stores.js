@@ -95,14 +95,16 @@ class ImageStores extends React.Component {
             />
             <Column
               columnKey="type"
-              width="40%"
+              width="35%"
               comparator={Utils.sortByText}
               header={t('Type')}
               cell={ (row, criteria) => row.type }
             />
             { isAdmin &&
               <Column
-                width="10%"
+                width="15%"
+                columnClass="text-right"
+                headerClass="text-right"
                 header={t('Actions')}
                 cell={ (row, criteria) => {
                   return <div className="btn-group">
