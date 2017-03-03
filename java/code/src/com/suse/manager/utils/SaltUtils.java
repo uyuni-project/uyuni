@@ -336,10 +336,17 @@ public class SaltUtils {
     private void handleScapXccdfEval(ServerAction serverAction,
                                      JsonElement jsonResult, Action action) {
         ScapAction scapAction = (ScapAction)action;
-        Openscap.OpenscapResult openscapResult = Json.GSON.fromJson(
-                jsonResult, Openscap.OpenscapResult.class);
+        Openscap.OpenscapResult openscapResult;
+        try {
+            openscapResult = Json.GSON.fromJson(
+                    jsonResult, Openscap.OpenscapResult.class);
+        }
+        catch (JsonSyntaxException e) {
+            serverAction.setResultMsg("Error parsing minion response: " + jsonResult);
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            return;
+        }
         if (openscapResult.isSuccess()) {
-
             serverAction.getServer().asMinionServer().ifPresent(
                     minion -> {
                         try {
