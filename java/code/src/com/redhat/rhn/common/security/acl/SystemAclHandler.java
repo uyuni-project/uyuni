@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -186,4 +187,28 @@ public class SystemAclHandler extends BaseHandler {
         List  proxies = ServerFactory.lookupProxiesByOrg(user);
         return proxies.size() > 0;
     }
+
+    /**
+     * Checks it a system is Salt entitles and uses the given
+     * contact method.
+     * @param ctx Context Map to pass in
+     * @param params  Parameters to use
+     * @return true if system is minion and uses the contact method
+     */
+    public boolean aclSystemHasSaltEntitlementAndContactMethod(
+            Object ctx, String[] params) {
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        boolean ret = false;
+        if (sid != null) {
+            User user = (User) map.get("user");
+            Server server = SystemManager.lookupByIdAndUser(sid, user);
+            if (server != null) {
+                ret = server.hasEntitlement(EntitlementManager.SALT) &&
+                    server.getContactMethod().getLabel().equals(params[0]);
+            }
+        }
+        return ret;
+    }
+
 }
