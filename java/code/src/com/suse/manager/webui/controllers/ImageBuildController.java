@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.messaging.ImageBuildEventMessage;
 import com.suse.manager.webui.utils.ViewHelper;
@@ -325,7 +326,7 @@ public class ImageBuildController {
         JsonArray list = new JsonArray();
         imageOverview.getPackages().stream().map(p -> {
             JsonObject json = new JsonObject();
-            json.addProperty("name", p.getName().getName());
+            json.addProperty("name", PackageManager.getNevr(p.getName(), p.getEvr()));
             json.addProperty("arch", p.getArch().getName());
             json.addProperty("installed", VIEW_HELPER.renderDate(p.getInstallTime()));
             return json;
