@@ -25,9 +25,13 @@ fi
 
 BASE_DIR=/tmp
 IS_SUSE=0
+NO_REPORTS=0
 MAX_LOG_AGE=10
 if [ -f /etc/SuSE-release ]; then
     IS_SUSE=1
+fi
+if [ "$SPACEWALK_DEBUG_NO_REPORTS" -eq 1 ]; then
+    NO_REPORTS=1
 fi
 
 usage() {
@@ -39,6 +43,7 @@ usage() {
     echo "    --help                Display usage and exit"
     echo "    --dir                 Destination directory for the tarball ($BASE_DIR)"
     echo "    --log-age             Set the maximum age (in days) for extracted logs ($MAX_LOG_AGE)"
+    echo "    --no-reports          Do not run spacewalk-report. Useful if spacewalk-debug takes too long"
     exit $1
 }
 
@@ -55,6 +60,10 @@ while [ ${#} -ne 0 ]; do
         --log-age)
             shift
             MAX_LOG_AGE=$1
+            ;;
+        --no-reports)
+            shift
+            NO_REPORTS=1
             ;;
         --*)
             echo "Unknown option $arg (use --help)"
@@ -89,6 +98,9 @@ chmod 700 $DIR
 cd $DIR
 
 echo "Collecting and packaging relevant diagnostic information."
+if [ $NO_REPORTS -eq 1 ] ; then
+    echo "NOTE: Running with '--no-reports' means 'spacewalk-report' won't be executed."
+fi
 echo "Warning: this may take some time..."
 
 mkdir -p $DIR/conf/httpd
@@ -339,8 +351,9 @@ if [ $IS_SUSE -eq 1 ]; then
         done
     fi
 
-    if [ -x /usr/bin/spacewalk-report ]; then
+    if [ -x /usr/bin/spacewalk-report ] && [ $NO_REPORTS -eq 0 ]; then
         # get some inventory info
+        echo "    * running spacewalk-report to create reports."
         /usr/bin/spacewalk-report inventory > $DIR/inventory-report.csv
         /usr/bin/spacewalk-report channels > $DIR/channels-report.csv
         /usr/bin/spacewalk-report activation-keys > $DIR/activation-keys-report.csv
