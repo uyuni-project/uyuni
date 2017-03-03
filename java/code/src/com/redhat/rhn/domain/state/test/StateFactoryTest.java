@@ -27,9 +27,12 @@ import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -404,6 +407,66 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
                 .findFirst().map(r -> r.getId()).get());
         assertEquals(1, usage.getServerStateRevisions().size());
 
+    }
+
+    public void testAddPackageToState() throws Exception {
+        // Create test packages and a server
+        Package pkg1 = PackageTest.createTestPackage(user.getOrg());
+        Package pkg2 = PackageTest.createTestPackage(user.getOrg());
+        Server server = ServerFactoryTest.createTestServer(user);
+
+        // Create a server state revision
+        ServerStateRevision serverState = new ServerStateRevision();
+        serverState.setServer(server);
+        serverState.setCreator(user);
+
+        // Add custom states
+        CustomState state1 = new CustomState();
+        state1.setOrg(user.getOrg());
+        state1.setStateName("foo");
+
+        CustomState state2 = new CustomState();
+        state2.setOrg(user.getOrg());
+        state2.setStateName("bar");
+
+        serverState.getCustomStates().add(state1);
+        serverState.getCustomStates().add(state2);
+
+        // Add a package state and save: pkg1 -> REMOVED
+        PackageState packageState = new PackageState();
+        packageState.setStateRevision(serverState);
+        packageState.setName(pkg1.getPackageName());
+        packageState.setPackageState(PackageStates.REMOVED);
+        serverState.addPackageState(packageState);
+        StateFactory.save(serverState);
+        long id = serverState.getId();
+
+        List<Package> pkgs = new ArrayList<>();
+        pkgs.add(pkg1);
+        pkgs.add(pkg2);
+        StateFactory.addPackagesToNewStateRevision(server, Optional.of(user.getId()),
+                pkgs);
+
+        // Verify: Latest package states contain only pkg1 -> REMOVED and
+        // pkg2 -> INSTALLED - latest
+        Optional<ServerStateRevision> sstate = StateFactory.latestStateRevision(server);
+        assertFalse(id == sstate.get().getId());
+        Set<PackageState> pstates = sstate.get().getPackageStates();
+        assertEquals(2, pstates.size());
+        for (PackageState pst : pstates) {
+            if (pst.getName().equals(pkg1.getPackageName())) {
+                assertEquals(PackageStates.REMOVED, pst.getPackageState());
+            }
+            else if (pst.getName().equals(pkg2.getPackageName())) {
+                assertEquals(PackageStates.INSTALLED, pst.getPackageState());
+                assertEquals(VersionConstraints.LATEST, pst.getVersionConstraint());
+            }
+            else {
+                assertTrue("unexpected package state", false);
+            }
+        }
+        assertContains(sstate.get().getCustomStates(), state1);
+        assertContains(sstate.get().getCustomStates(), state2);
     }
 
     private void clearFlush() {

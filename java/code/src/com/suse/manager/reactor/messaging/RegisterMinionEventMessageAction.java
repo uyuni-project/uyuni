@@ -40,6 +40,7 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -251,6 +252,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         "organization. The activation key will not be used.");
                 server.getHistory().add(historyEvent);
             }
+            server.setCreator(activationKey.map(ActivationKey::getCreator).orElseGet(
+                    () -> UserFactory.findRandomOrgAdmin(OrgFactory.getSatelliteOrg())));
             activationKey.map(ActivationKey::getChannels)
                     .ifPresent(channels -> channels.forEach(server::addChannel));
 
@@ -381,6 +384,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             }
             MessageQueue.publish(new ApplyStatesEventMessage(
                     server.getId(),
+                    server.getCreator() != null ? server.getCreator().getId() : null,
                     activationKey.isPresent() ? false : true,
                     statesToApply
             ));
