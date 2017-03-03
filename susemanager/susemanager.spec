@@ -116,6 +116,12 @@ pushd %{buildroot}
 find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
 
+%pre
+getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager
+usermod -G susemanager salt
+usermod -G susemanager tomcat
+usermod -G susemanager wwwrun
+
 %post
 %{fillup_and_insserv susemanager}
 if [ -f /etc/sysconfig/atftpd ]; then
@@ -130,6 +136,9 @@ if [ ! -d /srv/tftpboot ]; then
 fi
 # XE appliance overlay file created this with different user
 chown root.root /etc/sysconfig
+# ensure susemanager group can write in all subdirs under /var/spacewalk/systems
+chgrp -R susemanager /var/spacewalk/systems > /dev/null
+find /var/spacewalk/systems -type d -exec chmod 775 {} \; > /dev/null
 
 %postun
 %{insserv_cleanup}
