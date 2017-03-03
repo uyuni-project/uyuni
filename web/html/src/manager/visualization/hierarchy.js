@@ -44,17 +44,13 @@ $(document).ready(function() {
         .attr("transform", "translate(" + mainDivWidth / 2 + ',' + mainDivHeight / 2 + ")");
 
       // Zoom handling
-      activateZoom(svg, container);
-      function activateZoom(svg, elem) {
-        svg.call(d3.zoom()
-          .scaleExtent([1 / 8, 16])
-          .on("zoom", zoomed))
-          .on("dblclick.zoom", null);
-
-        function zoomed(d) {
-          var event = d3.event;
-          elem.attr("transform", event.transform);
-        }
+      svg.call(d3.zoom()
+        .scaleExtent([1 / 8, 16])
+        .on("zoom", zoomed))
+        .on("dblclick.zoom", null);
+      function zoomed(d) {
+        var event = d3.event;
+        container.attr("transform", event.transform);
       }
 
     // Returns a value bound to the depth level of the node
