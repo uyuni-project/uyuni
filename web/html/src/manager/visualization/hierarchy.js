@@ -142,7 +142,7 @@ $(document).ready(function() {
         myCriteria.get()['checkin-criteria'] = d => {
           var firstPartition = d.data.checkin < dateTime.getTime();
           d.data.partition = firstPartition;
-          return firstPartition  ? 'stroke-green' : 'stroke-red';
+          return firstPartition  ? 'stroke-red' : 'stroke-green';
         };
         t.deriveClass(myCriteria.deriveClass)
         t();
