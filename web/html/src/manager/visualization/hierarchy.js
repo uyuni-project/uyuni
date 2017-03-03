@@ -8,6 +8,7 @@ const HierarchyView = require("./hierarchy-view.js");
 const Filters = require("./filters.js");
 const Criteria = require("./criteria.js");
 
+function initHierarchy() {
 $(document).ready(function() {
   // disable the #spacewalk-content observer:
   // drawing svg triggers it for every small changes,
@@ -180,9 +181,11 @@ $(document).ready(function() {
         .text('Apply partitioning');
     });
 });
+}
 
 const Hierarchy = React.createClass({
   componentDidMount: function() {
+    initHierarchy();
   },
 
   render: function() {
