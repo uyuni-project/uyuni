@@ -9,6 +9,8 @@ const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
 const {Table, Column, SearchField} = require("../components/table");
 const Messages = require("../components/messages").Messages;
+const DeleteDialog = require("../components/dialogs").DeleteDialog;
+const ModalButton = require("../components/dialogs").ModalButton;
 
 const msgMap = {
   "not_found": t("Image store cannot be found."),
@@ -19,7 +21,8 @@ class ImageStores extends React.Component {
 
   constructor(props) {
     super();
-    ["reloadData", "deleteStore"].forEach(method => this[method] = this[method].bind(this));
+    ["reloadData", "selectStore", "deleteStore"]
+        .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
       imagestores: []
@@ -41,9 +44,23 @@ class ImageStores extends React.Component {
             imagestores: data
         });
     });
+    this.clearMessages();
   }
 
-  deleteStore(id) {
+  clearMessages() {
+    this.setState({
+        messages: undefined
+    });
+  }
+
+  selectStore(row) {
+    this.setState({
+        selected: row
+    });
+  }
+
+  deleteStore(row) {
+    const id = row.id;
     return Network.del("/rhn/manager/api/cm/imagestores/" + id).promise.then(data => {
         if (data.success) {
             this.setState({
@@ -114,11 +131,13 @@ class ImageStores extends React.Component {
                         icon="fa-edit"
                         href = {"/rhn/manager/cm/imagestores/edit/" + row.id}
                       />
-                      <AsyncButton
+                      <ModalButton
+                          className="btn-default btn-sm"
                           title={t("Delete")}
-                          defaultType="btn-default btn-sm"
-                          icon="trash"
-                          action={() => this.deleteStore(row.id)}
+                          icon="fa-trash"
+                          target="delete-modal"
+                          item={row}
+                          onClick={this.selectStore}
                       />
                   </div>;
                 }}
@@ -126,6 +145,14 @@ class ImageStores extends React.Component {
             }
           </Table>
         </Panel>
+
+        <DeleteDialog id="delete-modal"
+          title={t("Delete Store")}
+          content={<span>{t("Are you sure you want to delete store")} <strong>{this.state.selected ? this.state.selected.label : ''}</strong>?</span>}
+          item={this.state.selected}
+          onConfirm={this.deleteStore}
+          onClosePopUp={() => this.selectStore(undefined)}
+        />
       </span>
     );
   }

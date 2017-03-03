@@ -92,14 +92,14 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
                 addonEntitlementCounts.get(EntitlementManager.VIRTUALIZATION.getLabel()));
     }
 
-    public void testDockerBuildHostType() throws Exception {
+    public void testContainerBuildHostType() throws Exception {
         Server server = MinionServerFactoryTest.createTestMinionServer(user);
 
-        assertTrue(EntitlementManager.DOCKER_BUILD_HOST.isAllowedOnServer(server));
-        boolean hasErrors = SystemManager.entitleServer(server, EntitlementManager.DOCKER_BUILD_HOST).hasErrors();
+        assertTrue(EntitlementManager.CONTAINER_BUILD_HOST.isAllowedOnServer(server));
+        boolean hasErrors = SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST).hasErrors();
 
         assertFalse(hasErrors);
-        assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.DOCKER_BUILD_HOST));
+        assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.CONTAINER_BUILD_HOST));
 
         executeTests();
         assertNotNull(request.getAttribute(
@@ -109,7 +109,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
                 .getAttribute(SystemEntitlementsSetupAction.ADDON_ENTITLEMENT_COUNTS);
 
         assertEquals("1 system type(s).",
-                addonEntitlementCounts.get(EntitlementManager.DOCKER_BUILD_HOST.getLabel()));
+                addonEntitlementCounts.get(EntitlementManager.CONTAINER_BUILD_HOST.getLabel()));
     }
 
     /**

@@ -9,6 +9,8 @@ const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
 const {Table, Column, SearchField} = require("../components/table");
 const Messages = require("../components/messages").Messages;
+const DeleteDialog = require("../components/dialogs").DeleteDialog;
+const ModalButton = require("../components/dialogs").ModalButton;
 
 const typeMap = {
   "dockerfile": t("Dockerfile")
@@ -23,7 +25,7 @@ class ImageProfiles extends React.Component {
 
   constructor(props) {
     super();
-    ["reloadData", "deleteProfile"]
+    ["reloadData", "selectProfile", "deleteProfile"]
         .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
@@ -46,16 +48,30 @@ class ImageProfiles extends React.Component {
             imageprofiles: data
         });
     });
+    this.clearMessages();
   }
 
-  deleteProfile(id) {
+  selectProfile(row) {
+    this.setState({
+        selected: row
+    });
+  }
+
+  clearMessages() {
+    this.setState({
+        messages: undefined
+    });
+  }
+
+  deleteProfile(row) {
+    const id = row.profileId;
     return Network.del("/rhn/manager/api/cm/imageprofiles/" + id).promise.then(data => {
         if (data.success) {
             this.setState({
                 messages: <Messages items={data.messages.map(msg => {
                     return {severity: "success", text: msgMap[msg]};
                 })}/>,
-                imageprofiles: this.state.imageprofiles.filter(profile => profile.profile_id !== id)
+                imageprofiles: this.state.imageprofiles.filter(profile => profile.profileId !== id)
             });
         } else {
             this.setState({
@@ -85,8 +101,8 @@ class ImageProfiles extends React.Component {
           {this.state.messages}
           <Table
               data={this.state.imageprofiles}
-              identifier={profile => profile.profile_id}
-              initialSortColumnKey="profile_id"
+              identifier={profile => profile.profileId}
+              initialSortColumnKey="profileId"
               initialItemsPerPage={userPrefPageSize}
               searchField={
                   <SearchField filter={this.searchData} criteria={""} />
@@ -99,11 +115,11 @@ class ImageProfiles extends React.Component {
               cell={ (row, criteria) => row.label }
             />
             <Column
-              columnKey="image_type"
+              columnKey="imageType"
               width="35%"
               comparator={Utils.sortByText}
               header={t('Build Type')}
-              cell={ (row, criteria) => typeMap[row.image_type] }
+              cell={ (row, criteria) => typeMap[row.imageType] }
             />
             { isAdmin &&
               <Column
@@ -117,19 +133,21 @@ class ImageProfiles extends React.Component {
                           className="btn-default btn-sm"
                           title={t("Build")}
                           icon="fa-cogs"
-                          href={"/rhn/manager/cm/build/" + row.profile_id}
+                          href={"/rhn/manager/cm/build/" + row.profileId}
                       />
                       <LinkButton
                           className="btn-default btn-sm"
                           title={t("Edit")}
                           icon="fa-edit"
-                          href={"/rhn/manager/cm/imageprofiles/edit/" + row.profile_id}
+                          href={"/rhn/manager/cm/imageprofiles/edit/" + row.profileId}
                       />
-                      <AsyncButton
+                      <ModalButton
+                          className="btn-default btn-sm"
                           title={t("Delete")}
-                          defaultType="btn-default btn-sm"
-                          icon="trash"
-                          action={() => this.deleteProfile(row.profile_id)}
+                          icon="fa-trash"
+                          target="delete-modal"
+                          item={row}
+                          onClick={this.selectProfile}
                       />
                   </div>;
                 }}
@@ -137,6 +155,14 @@ class ImageProfiles extends React.Component {
             }
           </Table>
         </Panel>
+
+        <DeleteDialog id="delete-modal"
+          title={t("Delete Profile")}
+          content={<span>{t("Are you sure you want to delete profile")} <strong>{this.state.selected ? this.state.selected.label : ''}</strong>?</span>}
+          item={this.state.selected}
+          onConfirm={this.deleteProfile}
+          onClosePopUp={() => this.selectProfile(undefined)}
+        />
       </span>
     );
   }

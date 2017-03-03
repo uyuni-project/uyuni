@@ -1852,4 +1852,15 @@ public class PackageManager extends BaseManager {
 
         return depmod.toString();
     }
+
+    /**
+     * Util to output package name + evr: krb5-devel-1.3.4-47
+     *
+     * @param name the package name
+     * @param evr  the evr
+     * @return String name and evr
+     */
+    public static String getNevr(PackageName name, PackageEvr evr) {
+        return name.getName() + "-" + evr.toString();
+    }
 }

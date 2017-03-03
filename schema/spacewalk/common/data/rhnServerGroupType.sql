@@ -57,11 +57,11 @@ insert into rhnServerGroupType ( id, label, name, permanent, is_base)
       'Y', 'Y'
    );
 
--- docker_build_host type ----------------------------------------------------
+-- container_build_host type ----------------------------------------------------
 
 insert into rhnServerGroupType ( id, label, name, permanent, is_base)
    values ( sequence_nextval('rhn_servergroup_type_seq'),
-      'docker_build_host', 'Docker Build Host',
+      'container_build_host', 'Container Build Host',
       'N', 'N'
    );
 

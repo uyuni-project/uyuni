@@ -183,7 +183,7 @@ begin
                 select rhn_server_group_id_seq.nextval, sgt.name, sgt.name,
                         sgt.id, new_org_id
                 from rhnServerGroupType sgt
-                where sgt.label = 'docker_build_host';
+                where sgt.label = 'container_build_host';
 
 	org_id_out := new_org_id;
 		

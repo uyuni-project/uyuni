@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 69428312983c27a325c9bb23572bf1bb6b8809c6
+-- oracle equivalent source sha1 a73f03ed8a959c87e782d818737d182588f692fe
 --
 -- Copyright (c) 2008--2015 Red Hat, Inc.
 --
@@ -227,7 +227,7 @@ as $$
                        when 'salt_entitled' then 'Salt'
                        when 'foreign_entitled' then 'Foreign'
                        when 'virtualization_host' then 'Virtualization'
-                       when 'docker_build_host' then 'Docker'
+                       when 'container_build_host' then 'Container'
                       end  );
 
             perform rhn_server.insert_into_servergroup (server_id_in, sgid);
@@ -282,7 +282,7 @@ as $$
                     when 'salt_entitled' then 'Salt'
                     when 'foreign_entitled' then 'Foreign'
                     when 'virtualization_host' then 'Virtualization'
-                    when 'docker_build_host' then 'Docker'
+                    when 'container_build_host' then 'Container'
                    end  );
 
          perform rhn_server.delete_from_servergroup(server_id_in, group_id);
@@ -322,7 +322,7 @@ as $$
                     when 'salt_entitled' then 'Salt'
                     when 'foreign_entitled' then 'Foreign'
                     when 'virtualization_host' then 'Virtualization'
-                    when 'docker_build_host' then 'Docker'
+                    when 'container_build_host' then 'Container'
                    end  );
 
          perform rhn_server.delete_from_servergroup(server_id_in,

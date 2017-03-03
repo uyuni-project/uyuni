@@ -210,7 +210,7 @@ is
                        when 'salt_entitled' then 'Salt'
                        when 'foreign_entitled' then 'Foreign'
                        when 'virtualization_host' then 'Virtualization'
-                       when 'docker_build_host' then 'Docker'
+                       when 'container_build_host' then 'Container'
                       end  );
 
             rhn_server.insert_into_servergroup (server_id_in, sgid);
@@ -259,7 +259,7 @@ is
                     when 'salt_entitled' then 'Salt'
                     when 'foreign_entitled' then 'Foreign'
                     when 'virtualization_host' then 'Virtualization'
-                    when 'docker_build_host' then 'Docker'
+                    when 'container_build_host' then 'Container'
                    end  );
 
          rhn_server.delete_from_servergroup(server_id_in, group_id);
@@ -300,7 +300,7 @@ is
                     when 'salt_entitled' then 'Salt'
                     when 'foreign_entitled' then 'Foreign'
                     when 'virtualization_host' then 'Virtualization'
-                    when 'docker_build_host' then 'Docker'
+                    when 'container_build_host' then 'Container'
                    end  );
 
          rhn_server.delete_from_servergroup(server_id_in,

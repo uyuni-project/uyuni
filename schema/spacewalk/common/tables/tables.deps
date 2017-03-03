@@ -93,6 +93,7 @@ rhnErrataClonedTmp             :: rhnErrataTmp
 rhnErrataTmp                   :: web_customer
 rhnFile                        :: web_customer rhnChecksum
 rhnFileLocation                :: rhnFile
+rhnImageNeededCache            :: web_customer suseImageInfo rhnErrata rhnChannel
 rhnKSData                      :: web_customer
 rhnKickstartableTree           :: rhnChannel rhnKSTreeType web_customer \
                                   rhnKSInstallType
@@ -222,10 +223,14 @@ rhnActionChainEntry            :: rhnActionChain rhnAction rhnServer
 suseChannelAccessToken         :: suseMinionInfo
 suseChannelAccessTokenChannel  :: suseChannelAccessToken rhnChannel
 suseCredentials                :: suseCredentialsType web_contact
-suseDockerCredentialsInfo      :: suseCredentials
-suseDockerfileProfile          :: suseImageProfile suseImageStore
+suseDockerfileProfile          :: suseImageProfile
 suseProfileCustomDataValue     :: rhnCustomDataKey suseImageProfile web_contact
-suseImageProfile               :: rhnRegTokenChannels web_customer
+suseImageCustomDataValue       :: rhnCustomDataKey suseImageInfo web_contact
+suseImageInfo                  :: rhnServerAction suseImageProfile suseImageStore suseMinionInfo
+suseImageInfoPackage           :: suseImageInfo rhnPackageName rhnPackageEVR rhnPackageArch
+suseImageInfoChannel           :: suseImageInfo rhnChannel
+suseImageInfoInstalledProduct  :: suseInstalledProduct suseImageInfo
+suseImageProfile               :: rhnRegTokenChannels web_customer suseImageStore
 suseImageStore                 :: suseCredentials web_customer suseImageStoreType
 suseOSTarget                   :: rhnChannelArch
 suseMinionInfo                 :: rhnServer

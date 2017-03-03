@@ -19,11 +19,7 @@ CREATE TABLE suseDockerfileProfile
                   CONSTRAINT suse_dockfileprof_prid_fk
                      REFERENCES suseImageProfile (profile_id)
                      ON DELETE CASCADE,
-    path        VARCHAR2(1024) NOT NULL,
-    store_id    NUMBER NOT NULL
-                  CONSTRAINT suse_dockfileprof_sid_fk
-                     REFERENCES suseImageStore (id)
-                     ON DELETE CASCADE
+    path        VARCHAR2(1024) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;

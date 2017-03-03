@@ -76,6 +76,7 @@ insert into rhnActionType values (501, 'distupgrade.upgrade', 'Service Pack Migr
 insert into rhnActionType values (502, 'packages.setLocks', 'Lock packages', 'N', 'N');
 insert into rhnActionType values (503, 'states.apply', 'Apply states', 'N', 'N');
 insert into rhnActionType values (504, 'image.build', 'Build an Image Profile', 'N', 'N');
+insert into rhnActionType values (505, 'image.inspect', 'Inspect an Image', 'N', 'N');
 --
 --
 -- Revision 1.25  2004/10/29 05:07:52  pjones

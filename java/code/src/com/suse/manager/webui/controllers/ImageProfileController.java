@@ -16,9 +16,7 @@
 package com.suse.manager.webui.controllers;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -31,7 +29,9 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ImageProfileCreateRequest;
+import com.suse.manager.webui.utils.gson.ImageProfileJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import org.apache.commons.lang.StringUtils;
 import spark.ModelAndView;
@@ -68,7 +68,7 @@ public class ImageProfileController {
     public static ModelAndView listView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("pageSize", user.getPageSize());
-        data.put("is_admin", user.hasRole(ADMIN_ROLE));
+        data.put("isAdmin", user.hasRole(ADMIN_ROLE));
         return new ModelAndView(data, "content_management/list-profiles.jade");
     }
 
@@ -82,7 +82,7 @@ public class ImageProfileController {
      */
     public static ModelAndView createView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("activation_keys", getActivationKeys(user));
+        data.put("activationKeys", getActivationKeys(user));
 
         return new ModelAndView(data, "content_management/edit-profile.jade");
     }
@@ -104,8 +104,8 @@ public class ImageProfileController {
         }
 
         Map<String, Object> data = new HashMap<>();
-        data.put("profile_id", profileId);
-        data.put("activation_keys", getActivationKeys(user));
+        data.put("profileId", profileId);
+        data.put("activationKeys", getActivationKeys(user));
         return new ModelAndView(data, "content_management/edit-profile.jade");
     }
 
@@ -142,7 +142,8 @@ public class ImageProfileController {
     public static Object getChannels(Request req, Response res, User user) {
         String key = req.params("token");
 
-        JsonObject channelsJson = getChannelsJson(key);
+        ActivationKey ak = ActivationKeyFactory.lookupByKey(key);
+        ChannelsJson channelsJson = getChannelsJson(ak);
         return json(res, channelsJson);
     }
 
@@ -160,33 +161,9 @@ public class ImageProfileController {
         Optional<ImageProfile> profile =
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
-        // TODO: Use a TypeAdapter?
-        return profile.map(p -> {
-            JsonObject json = new JsonObject();
-            json.addProperty("profile_id", p.getProfileId());
-            json.addProperty("image_type", p.getImageType());
-            json.addProperty("label", p.getLabel());
-
-            if (p.getToken() != null) {
-                ActivationKey ak = ActivationKeyFactory.lookupByToken(p.getToken());
-                JsonObject akJson = new JsonObject();
-                akJson.addProperty("id", ak.getId());
-                akJson.addProperty("name", ak.getKey());
-
-                JsonObject channelsJson = getChannelsJson(ak.getKey());
-
-                akJson.add("channels", GSON.toJsonTree(channelsJson));
-                json.add("activation_key", GSON.toJsonTree(akJson));
-            }
-
-            if (p instanceof DockerfileProfile) {
-                DockerfileProfile dp = (DockerfileProfile) p;
-                json.addProperty("path", dp.getPath());
-                json.addProperty("store", dp.getStore().getLabel());
-            }
-
-            return json(res, new JsonResult(true, json));
-        }).orElseGet(() -> json(res, new JsonResult(false, "not_found")));
+        return profile.map(
+                p -> json(res, new JsonResult(true, ImageProfileJson.fromImageProfile(p))))
+                .orElseGet(() -> json(res, new JsonResult(false, "not_found")));
     }
 
     /**
@@ -227,7 +204,7 @@ public class ImageProfileController {
 
                 dp.setLabel(reqData.getLabel());
                 dp.setPath(reqData.getPath());
-                dp.setStore(store);
+                dp.setTargetStore(store);
                 dp.setToken(getToken(reqData.getActivationKey()));
             }
 
@@ -259,7 +236,7 @@ public class ImageProfileController {
 
             dockerfileProfile.setLabel(reqData.getLabel());
             dockerfileProfile.setPath(reqData.getPath());
-            dockerfileProfile.setStore(store);
+            dockerfileProfile.setTargetStore(store);
             dockerfileProfile.setOrg(user.getOrg());
             dockerfileProfile.setToken(getToken(reqData.getActivationKey()));
 
@@ -281,9 +258,9 @@ public class ImageProfileController {
      */
     private static JsonObject getJsonObject(ImageProfile profile) {
         JsonObject json = new JsonObject();
-        json.addProperty("profile_id", profile.getProfileId());
+        json.addProperty("profileId", profile.getProfileId());
         json.addProperty("label", profile.getLabel());
-        json.addProperty("image_type", profile.getImageType());
+        json.addProperty("imageType", profile.getImageType());
         return json;
     }
 
@@ -332,28 +309,12 @@ public class ImageProfileController {
      * @param activationKey the activation key
      * @return the JSON object
      */
-    private static JsonObject getChannelsJson(String activationKey) {
-        Token token = getToken(activationKey);
+    private static ChannelsJson getChannelsJson(ActivationKey activationKey) {
+        Token token = activationKey.getToken();
 
-        JsonObject channelsJson = new JsonObject();
-        JsonArray childChannelsJson = new JsonArray();
+        ChannelsJson json = ChannelsJson.fromChannelSet(token.getChannels());
+        json.setActivationKey(activationKey.getKey());
 
-        channelsJson.addProperty("activation_key", activationKey);
-
-        for (Channel ch : token.getChannels()) {
-            JsonObject chJson = new JsonObject();
-            chJson.addProperty("id", ch.getId());
-            chJson.addProperty("name", ch.getLabel());
-
-            if (ch.isBaseChannel()) {
-                channelsJson.add("base", GSON.toJsonTree(chJson));
-            }
-            else {
-                childChannelsJson.add(chJson);
-            }
-        }
-        channelsJson.add("children", childChannelsJson);
-
-        return channelsJson;
+        return json;
     }
 }

@@ -63,12 +63,27 @@ function sortByText(aRaw, bRaw, columnKey, sortDirection) {
   return (result || sortById(aRaw, bRaw)) * sortDirection;
 }
 
+function sortByNumber(aRaw, bRaw, columnKey, sortDirection) {
+    const result = aRaw[columnKey] > bRaw[columnKey] ? 1 : (aRaw[columnKey] < bRaw[columnKey] ? -1 : 0);
+    return result * sortDirection;
+}
+
+function sortByDate(aRaw, bRaw, columnKey, sortDirection) {
+    const aDate = aRaw[columnKey] instanceof Date ? aRaw[columnKey] : new Date(aRaw[columnKey]);
+    const bDate = bRaw[columnKey] instanceof Date ? bRaw[columnKey] : new Date(bRaw[columnKey]);
+
+    const result = aDate > bDate ? 1 : (aDate < bDate ? -1 : 0);
+    return result * sortDirection;
+}
+
 module.exports = {
     Utils: {
         cancelable: cancelable,
         sortById: sortById,
         sortByText: sortByText,
-        dateWithTimezone: dateWithTimezone
+        dateWithTimezone: dateWithTimezone,
+        sortByNumber: sortByNumber,
+        sortByDate: sortByDate
     },
     Formats: {
         LocalDateTime: LocalDateTime
