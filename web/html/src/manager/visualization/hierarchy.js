@@ -53,15 +53,6 @@ $(document).ready(function() {
         container.attr("transform", event.transform);
       }
 
-    // Returns a value bound to the depth level of the node
-    function distanceFromDepth(depth) {
-      switch (depth) {
-        case 0: return 200;
-        case 1: return 80;
-        default: return 30;
-      }
-    }
-
     // Prepare simulation
     var mySimulation = d3.forceSimulation()
       .force("charge", d3.forceManyBody().strength(d => -distanceFromDepth(d.depth) * 1.5))
@@ -83,6 +74,15 @@ $(document).ready(function() {
       .simulation(mySimulation)
       .deriveClass(myDeriveClass);
     t();
+
+    // Returns a value bound to the depth level of the node
+    function distanceFromDepth(depth) {
+      switch (depth) {
+        case 0: return 200;
+        case 1: return 80;
+        default: return 30;
+      }
+    }
 
     function nodeVisible(node, pred) {
       // dfs
