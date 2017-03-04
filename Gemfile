@@ -9,4 +9,5 @@ gem 'owasp_zap'
 gem 'poltergeist', :require => false
 gem "rubyzip"
 gem "selenium-webdriver"
+gem 'simplecov'
 gem 'twopence'
