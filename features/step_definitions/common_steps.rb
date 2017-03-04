@@ -32,17 +32,6 @@ Then(/^I should not see the "([^"]*)" as text$/) do |target|
   step %(I should not see a "#{$ceos_minion_fullhostname}" text) if target == "ceos-minion"
 end
 
-Given(/^the list of distributions$/) do |table|
-  @distros = table.raw.flatten
-end
-
-Then(/^calling mgr\-create\-bootstrap\-repo \-c should show no error$/) do
-  @distros.each do |distro|
-    command_output = sshcmd("mgr-create-bootstrap-repo -c #{distro}")[:stdout]
-    refute_includes(command_output, "ERROR")
-  end
-end
-
 # spacewalk errors steps
 Then(/^I control that up2date logs on client under test contains no Traceback error$/) do
   cmd = "if grep \"Traceback\" /var/log/up2date ; then exit 1; else exit 0; fi"
@@ -99,18 +88,6 @@ Then(/^I should see the CPU frequency of the client$/) do
    cpu = get_cpu.split(".")
    cpu = cpu[0].gsub(/[^\d]/, '')
    step %(I should see a "#{cpu.to_i / 1000} GHz" text)
-end
-
-# ipmi
-When(/^I setup the ipmi network card$/) do
-  $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST TERM=xterm yast lan add name=eth1 ethdevice=eth1 bootproto=dhcp 2>&1`
-  unless $?.success?
-    raise "Unable to change setup network card: #{$sshout}"
-  end
-  $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST TERM=xterm ifup eth1 2>&1`
-  unless $?.success?
-    raise "Unable to bring up the network interface: #{$sshout}"
-  end
 end
 
 When(/^I should see the power is "([^"]*)"$/) do |arg1|
