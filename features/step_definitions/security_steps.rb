@@ -2,10 +2,6 @@ require 'open-uri'
 require 'uri'
 require 'openssl'
 
-Given(/^any non\-static resource$/) do
-  pending # express the regexp above with the code you wish you had
-end
-
 Given(/^I navigate to any non-static page$/) do
   where = ['I am on the Systems page'].sample
   step(where)
