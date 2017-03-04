@@ -61,7 +61,6 @@
 - features/xmlrpc_VHM.feature
 - features/check_VHM.feature
 - features/setup_wizard.feature
-###- features/mgr_create_bootstrap_repo.feature
 - features/security.feature
 
 #### Salt related features   ###
