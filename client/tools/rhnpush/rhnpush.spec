@@ -9,10 +9,10 @@
 Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
-URL:           http://fedorahosted.org/spacewalk
+URL:           https://github.com/spacewalkproject/spacewalk
 Version:       5.5.102
 Release:       1%{?dist}
-Source0:       https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+Source0:       https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:     noarch

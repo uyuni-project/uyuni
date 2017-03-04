@@ -2,10 +2,10 @@ Name: spacewalk-reports
 Summary: Script based reporting
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.3
+Version: 2.7.4
 Release: 1%{?dist}
-URL: https://fedorahosted.org/spacewalk
-Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+URL: https://github.com/spacewalkproject/spacewalk
+Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 Requires: python
@@ -49,6 +49,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Mar 03 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.4-1
+- Updated links to github in spec files
+- Migrating Fedorahosted to GitHub
+- errata-list-all report: add date
+
 * Wed Feb 22 2017 Jan Dobes 2.7.3-1
 - 1401497 - fixing query
 

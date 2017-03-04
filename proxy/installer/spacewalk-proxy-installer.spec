@@ -10,8 +10,8 @@ Group:   Applications/Internet
 License: GPLv2
 Version: 2.7.1.1
 Release: 1%{?dist}
-URL:     https://fedorahosted.org/spacewalk
-Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+URL:     https://github.com/spacewalkproject/spacewalk
+Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root-%(%{__id_u} -n)
 BuildArch: noarch
 

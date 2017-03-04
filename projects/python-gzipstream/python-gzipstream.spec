@@ -6,8 +6,8 @@ Summary: Streaming zlib (gzip) support for python
 Name: python-gzipstream
 Version: 2.7.0.1
 Release: 1%{?dist}
-URL:        https://fedorahosted.org/spacewalk/wiki/Projects/python-gzipstream
-Source0:    https://fedorahosted.org/releases/s/p/spacewalk/python-gzipstream-%{version}.tar.gz
+URL:        https://github.com/spacewalkproject/spacewalk/wiki/Projects_python-gzipstream
+Source0:    https://github.com/spacewalkproject/spacewalk/archive/python-gzipstream-%{version}.tar.gz
 License: GPLv2
 Group: Development/Libraries
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)

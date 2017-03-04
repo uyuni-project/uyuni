@@ -76,6 +76,10 @@ Syncs the content from yum repos into SUSE Manager channels.
         </group>
         <sbr>
         <group>
+        <arg>--force-all-errata</arg>
+        </group>
+        <sbr>
+        <group>
         <arg>-Y</arg>
         <arg>--deep-verify</arg>
         </group>
@@ -197,6 +201,13 @@ Syncs the content from yum repos into SUSE Manager channels.
             <para>Attempt to create kickstartable tree (distribution) if there is subdirectory images/pxeboot/ under repo's URL. The option is ignored for repositories set from CLI via option [-u|--url].</para>
         </listitem>
     </varlistentry>
+    <varlistentry>
+        <term>--force-all-errata</term>
+        <listitem>
+            <para>process metadata of all errata, not only missing.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
     <varlistentry>
         <term>-Y, --deep-verify</term>
         <listitem>

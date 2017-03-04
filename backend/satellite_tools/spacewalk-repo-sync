@@ -45,7 +45,7 @@ except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
 except ImportError:
     systemExit(1, "Unable to find code tree.\n"
-               "Path not correct? " + ', '.join(sys.path))
+               "Path not correct? " + str(sys.path))
 
 
 def releaseLOCK():
@@ -114,6 +114,8 @@ def main():
                       default=False, help="Do not sync errata")
     parser.add_option('', '--sync-kickstart', action='store_true', dest='sync_kickstart',
                       default=False, help="Sync kickstartable tree")
+    parser.add_option('', '--force-all-errata', action='store_true', dest='force_all_errata',
+                      default=False, help="Process metadata of all errata, not only missing.")
     parser.add_option('-Y', '--deep-verify', action='store_true',
                       dest='deep_verify', default=False,
                       help='Do not use cached package checksums')
@@ -242,7 +244,8 @@ def main():
                       no_errata=options.no_errata,
                       sync_kickstart=options.sync_kickstart,
                       latest=options.latest,
-                      log_level=options.verbose)
+                      log_level=options.verbose,
+                      force_all_errata=options.force_all_errata)
         elapsed_time, channel_ret_code = sync.sync()
         if channel_ret_code != 0 and ret_code == 0:
             ret_code = channel_ret_code

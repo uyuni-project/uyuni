@@ -358,6 +358,7 @@ class ContentPackage:
                                                 force=False,
                                                 relative_path=rel_package_path,
                                                 org_id=channel['org_id'])
+        return rel_package_path
 
     def set_checksum(self, checksum_type_in=None, checksum_in=None):
         if checksum_type_in and checksum_in:

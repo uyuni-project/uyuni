@@ -4,8 +4,8 @@ Release:        1%{?dist}
 Summary:        Tools to setup jabberd for Spacewalk
 Group:          Applications/System
 License:        GPLv2
-URL:            https://fedorahosted.org/spacewalk
-Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 PreReq:         sqlite3
 BuildRequires:  perl

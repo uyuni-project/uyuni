@@ -42,10 +42,10 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.42
+Version: 2.7.50
 Release: 1%{?dist}
-URL:       https://fedorahosted.org/spacewalk
-Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+URL:       https://github.com/spacewalkproject/spacewalk
+Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %if !0%{?suse_version} || 0%{?suse_version} >= 1120
@@ -628,6 +628,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %dir %{_var}/cache/rhn/satsync
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server.conf
+# Workaround for strict-whitespace-enforcement in httpd
+%attr(644,root,%{apache_group}) %config %{apacheconfd}/aa-spacewalk-server.conf
+
 # main httpd config
 %attr(644,root,%{apache_group}) %config %{apacheconfd}/zz-spacewalk-server.conf
 
@@ -892,6 +895,43 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Fri Mar 03 2017 Jan Dobes 2.7.50-1
+- 1419867 - provide option for forcibly syncing all errata, similarly as in
+  satsync
+- 1419867 - do not import always all errata by default for performance reasons
+- 1419867 - don't re-insert existing files again
+
+* Fri Mar 03 2017 Gennadii Altukhov <galt@redhat.com> 2.7.49-1
+- fix pylint warning
+- Updated links to github in spec files
+- 1428834 - show sys.path as string if anything goes wrong
+- Migrating Fedorahosted to GitHub
+
+* Fri Mar 03 2017 Gennadii Altukhov <galt@redhat.com> 2.7.48-1
+- 1418025 - sync RPM packages for addons in Kickstart Tree
+- Fix: selection of primary interface
+
+* Thu Mar 02 2017 Jan Dobes 2.7.47-1
+- 1427220 - trigger repodata generation after and only if channel packages are
+  updated
+- 1419867 - do not re-subscribe packages to channel if nothing was added
+
+* Thu Mar 02 2017 Jan Dobes 2.7.46-1
+- 1419867 - simplyfying nested blocks
+- wrong-import-position is not present in pylint on Fedora 23
+
+* Wed Mar 01 2017 Jan Dobes 2.7.45-1
+- 1419867 - cache correct path of uploaded package
+- don't use keys() to iterate over a dictionary
+
+* Tue Feb 28 2017 Grant Gainey 2.7.44-1
+- 1427625 - Add strict-httpd-workaround *FIRST* in httpd conf files
+  (bz is a SW-clone of BZ#1422518)
+
+* Mon Feb 27 2017 Jan Dobes 2.7.43-1
+- 1419867 - adding checksum cache for reposync to speed up syncing already
+  synced channel
+
 * Fri Feb 24 2017 Jan Dobes 2.7.42-1
 - Postgresql 9.6 support
 
