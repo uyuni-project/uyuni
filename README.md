@@ -39,9 +39,8 @@ Steps files should be like:
     Running commands
     Salt
     
-#### 2) Reuse steps, don't create new if you don't need.
+#### 2) Reuse steps, don't create new if you don't need them.
         
-* The testsuite is licensed under the MIT license. See the `MIT-LICENSE.txt` file included in the distribution.
 
 #### 3) Check the code coverage results, after you runned the testsuite with your code.
 
@@ -90,7 +89,7 @@ cd /root/spacewalk-testsuite-base
 cucumber features/MY_FEATURE_NAME
 ```
 
-
+* The testsuite is licensed under the MIT license. See the `MIT-LICENSE.txt` file included in the distribution.
 
 
 
