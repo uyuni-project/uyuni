@@ -73,42 +73,12 @@ class CobblerTest
     exists("profiles", "name", name)
   end
 
-  def profile_get_key(name, key)
-    result = nil
-    if profile_exists(name)
-      result = get("profiles", name, key)
-    else
-      raise "Profile " + name + " does not exists"
-    end
-    result
-  end
-
   def system_exists(name)
     exists("systems", "name", name)
   end
 
-  def system_get_key(name, key)
-    result = nil
-    if system_exists(name)
-      result = get("systems", name, key)
-    else
-      raise "System " + name + " does not exists"
-    end
-    result
-  end
-
   def distro_exists(name)
     exists("distros", "name", name)
-  end
-
-  def distro_get_key(name, key)
-    result = nil
-    if distro_exists(name)
-      result = get("distros", name, key)
-    else
-      raise "Distro " + name + " does not exists"
-    end
-    result
   end
 
   def distro_create(name, kernel, initrd, breed="suse")
