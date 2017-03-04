@@ -32,7 +32,9 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
 
    Scenario: Subscribe ssh-minion to a base-channel for testing
     Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
+    And I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
     And I follow remote ssh-minion hostname
     When I follow "Software" in the content area
     Then I follow "Software Channels" in the content area
@@ -55,7 +57,9 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
 
    Scenario: Run a remote command from the systems overview page
     Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
+    And I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
     And I follow remote ssh-minion hostname
     When I follow "Remote Command" in the content area
     And I enter as remote command this script in
@@ -108,7 +112,9 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
 
    Scenario: Subscribe ssh-tunnel-minion to a base-channel for testing
     Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
+    And I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
     And I follow remote ssh-minion hostname
     When I follow "Software" in the content area
     Then I follow "Software Channels" in the content area
@@ -131,7 +137,9 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
 
    Scenario: Run a remote command from the systems overview page: ssh-tunnel
     Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
+    And I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
     And I follow remote ssh-minion hostname
     When I follow "Remote Command" in the content area
     And I enter as remote command this script in
@@ -152,7 +160,9 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
 
    Scenario: Install a package to ssh-tunnel-minion
     Given I am authorized as "testing" with password "testing"
-    And I follow "Systems"
+    And I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
     And I follow remote ssh-minion hostname
     And I follow "Software" in the content area
     And I follow "Install"
