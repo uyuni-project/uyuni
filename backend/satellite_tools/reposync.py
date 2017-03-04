@@ -335,9 +335,9 @@ class RepoSync(object):
         self.all_packages = []
         self.check_ssl_dates = check_ssl_dates
         # Init cache for computed checksums to not compute it on each reposync run again
-        self.checksum_cache = rhnCache.get(checksum_cache_filename)
-        if self.checksum_cache is None:
-            self.checksum_cache = {}
+        #self.checksum_cache = rhnCache.get(checksum_cache_filename)
+        #if self.checksum_cache is None:
+        #    self.checksum_cache = {}
         self.arches = self.get_compatible_arches(int(self.channel['id']))
 
     def set_urls_prefix(self, prefix):
@@ -459,7 +459,7 @@ class RepoSync(object):
                 if plugin is not None:
                     plugin.clear_ssl_cache()
         # Update cache with package checksums
-        rhnCache.set(checksum_cache_filename, self.checksum_cache)
+        #rhnCache.set(checksum_cache_filename, self.checksum_cache)
         if self.regen:
             taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                 [self.channel_label], [], "server.app.yumreposync")
@@ -806,8 +806,8 @@ class RepoSync(object):
                     pack.load_checksum_from_header()
                     rel_package_path = pack.upload_package(self.channel, metadata_only=self.metadata_only)
                     # Save uploaded package to cache with repository checksum type
-                    if rel_package_path:
-                        self.checksum_cache[rel_package_path] = {pack.checksum_type: pack.checksum}
+                    #if rel_package_path:
+                    #    self.checksum_cache[rel_package_path] = {pack.checksum_type: pack.checksum}
 
                     # we do not want to keep a whole 'a_pkg' object for every package in memory,
                     # because we need only checksum. see BZ 1397417
