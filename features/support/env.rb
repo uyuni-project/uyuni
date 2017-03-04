@@ -13,7 +13,6 @@ require 'base64'
 require 'capybara'
 require 'capybara/cucumber'
 require File.join(File.dirname(__FILE__), 'cobbler_test')
-require File.join(File.dirname(__FILE__), 'zypp_lock_helper')
 require 'simplecov'
 SimpleCov.start
 browser = (ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil) || :firefox

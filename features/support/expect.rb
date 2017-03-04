@@ -4,10 +4,7 @@
 require 'tempfile'
 
 # Class for generating expect files to interactively run spacewalk-push-register.
-#
 class ExpectFileGenerator
-  # Constructor.
-  #
   def initialize(host, bootstrap)
     raise(ArgumentError, "Hostname is missing!") if host.nil? || host.empty?
     Tempfile.open('push-registration.expect') do |f|
@@ -24,20 +21,12 @@ class ExpectFileGenerator
   end
 
   # Return the file path.
-  #
   def path
     @file.path
   end
 
   # Return the file name.
-  #
   def filename
     File.basename(path)
-  end
-
-  # Delete the file.
-  #
-  def delete
-    @file.unlink
   end
 end
