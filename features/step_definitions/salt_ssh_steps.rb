@@ -20,14 +20,6 @@ Given(/^remote minion host is not registered in Spacewalk$/) do
   refute_includes(@rpc.listSystems.map { |s| s['id'] }, ENV['SSHMINION'])
 end
 
-Given(/^centos minion is not registered in Spacewalk$/) do
-  @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
-  @rpc.login('admin', 'admin')
-  sid = @rpc.listSystems.select { |s| s['name'] == ENV['CENTOSMINION'] }.map { |s| s['id'] }.first
-  @rpc.deleteSystem(sid) if sid
-  refute_includes(@rpc.listSystems.map { |s| s['id'] }, ENV['CENTOSMINION'])
-end
-
 Then(/^I enter remote ssh-minion hostname as "(.*?)"$/) do |hostname|
   step %(I enter "#{ENV['SSHMINION']}" as "#{hostname}")
 end
