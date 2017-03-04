@@ -5,8 +5,8 @@ Summary:	Package allowing manipulation with Spacewalk client certificates
 
 Group:		Applications/System
 License:	GPLv2
-URL:		https://fedorahosted.org/spacewalk
-Source0:	https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+URL:		https://github.com/spacewalkproject/spacewalk
+Source0:	https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch

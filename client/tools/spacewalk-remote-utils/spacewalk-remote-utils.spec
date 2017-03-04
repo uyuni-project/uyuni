@@ -10,8 +10,8 @@ Summary:     Utilities to interact with a Spacewalk server remotely.
 
 Group:       Applications/System
 License:     GPLv2
-URL:         http://fedorahosted.org/spacewalk
-Source:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+URL:         https://github.com/spacewalkproject/spacewalk
+Source:      https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:   %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:   noarch
 

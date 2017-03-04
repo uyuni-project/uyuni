@@ -8,11 +8,11 @@ Summary: Support package for spacewalk koan interaction
 Name: spacewalk-koan
 Group: System Environment/Kernel
 License: GPLv2
-Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 Version: 2.7.0.1
 Release: 1%{?dist}
-URL:            https://fedorahosted.org/spacewalk
+URL:            https://github.com/spacewalkproject/spacewalk
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildArch:      noarch
 BuildRequires:  python

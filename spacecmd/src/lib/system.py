@@ -159,7 +159,7 @@ def do_system_list(self, args, doreturn=False):
         return self.get_system_names()
     else:
         if len(self.get_system_names()):
-            print '\n'.join(sorted(self.get_system_names()))
+            print '\n'.join(sorted(['%s : %s' % (v, k) for k, v in self.get_system_names_ids().iteritems()]))
 
 ####################
 
@@ -1602,7 +1602,7 @@ def do_system_setconfigchannelorder(self, args):
     print
     print 'New Configuration Channels'
     print '--------------------------'
-    for i, new_channel in new_channels(new_channels, 1):
+    for i, new_channel in enumerate(new_channels, 1):
         print '[%i] %s' % (i, new_channel)
 
     if not self.user_confirm():
@@ -2589,7 +2589,7 @@ def do_system_details(self, args, short=False):
             print self.SEPARATOR
         add_separator = True
 
-        print 'Name:          %s' % system
+        print 'Name:          %s' % details.get('profile_name')
         print 'System ID:     %i' % system_id
 
         if uuid:

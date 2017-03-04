@@ -30,7 +30,7 @@ from yum import Errors
 from yum.i18n import to_unicode
 
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, suseEula
-from spacewalk.common import fileutils, rhnLog, rhnMail, suseLib
+from spacewalk.common import fileutils, rhnLog, rhnCache, rhnMail, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
 from spacewalk.common.rhnLib import isSUSE
 from spacewalk.common.checksum import getFileChecksum
@@ -52,6 +52,7 @@ if '.' not in hostname:
 
 default_log_location = '/var/log/rhn/'
 relative_comps_dir = 'rhn/comps'
+checksum_cache_filename = 'reposync/checksum_cache'
 
 # namespace prefixes for parsing SUSE patches XML files
 YUM = "{http://linux.duke.edu/metadata/common}"
@@ -77,17 +78,22 @@ class ChannelTimeoutException(ChannelException):
 class KSDirParser:
     file_blacklist = ["release-notes/"]
 
-    def __init__(self, dir_html):
+    def __init__(self, dir_html, additional_blacklist=None):
         self.dir_content = []
+
+        if additional_blacklist is None:
+            additional_blacklist = []
+        elif not isinstance(additional_blacklist, type([])):
+            additional_blacklist = [additional_blacklist]
+
         for s in (m.group(1) for m in re.finditer(r'(?i)<a href="(.+?)"', dir_html)):
-            if not (re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s) or re.match(r'[a-zA-Z]+:', s) or
-                    re.search(r'\.rpm$', s)):
+            if not (re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s) or re.match(r'[a-zA-Z]+:', s)):
                 if re.search(r'/$', s):
                     file_type = 'DIR'
                 else:
                     file_type = 'FILE'
 
-                if s not in self.file_blacklist:
+                if s not in (self.file_blacklist + additional_blacklist):
                     self.dir_content.append({'name': s, 'type': file_type})
 
     def get_content(self):
@@ -133,6 +139,14 @@ class TreeInfoParser(object):
                 for item in self.parser.items(section_name):
                     if item[0] == 'version':
                         return item[1].split('.')[0]
+
+    def get_package_dir(self):
+        for section_name in self.parser.sections():
+            if section_name == 'general':
+                for item in self.parser.items(section_name):
+                    if item[0] == 'packagedir':
+                        return item[1]
+
 
 
 def set_filter_opt(option, opt_str, value, parser):
@@ -235,14 +249,15 @@ class RepoSync(object):
     def __init__(self, channel_label, repo_type, url=None, fail=False,
                  filters=None, no_errata=False, sync_kickstart=False, latest=False,
                  metadata_only=False, strict=0, excluded_urls=None, no_packages=False,
-                 log_dir="reposync", log_level=None, force_kickstart=False, check_ssl_dates=False,
-                 noninteractive=False, deep_verify=False):
+                 log_dir="reposync", log_level=None, force_kickstart=False, force_all_errata=False,
+                 check_ssl_dates=False, noninteractive=False, deep_verify=False):
         self.regen = False
         self.fail = fail
         self.filters = filters or []
         self.no_packages = no_packages
         self.no_errata = no_errata
         self.sync_kickstart = sync_kickstart
+        self.force_all_errata = force_all_errata
         self.force_kickstart = force_kickstart
         self.latest = latest
         self.metadata_only = metadata_only
@@ -319,6 +334,10 @@ class RepoSync(object):
         self.strict = strict
         self.all_packages = []
         self.check_ssl_dates = check_ssl_dates
+        # Init cache for computed checksums to not compute it on each reposync run again
+        self.checksum_cache = rhnCache.get(checksum_cache_filename)
+        if self.checksum_cache is None:
+            self.checksum_cache = {}
         self.arches = self.get_compatible_arches(int(self.channel['id']))
 
     def set_urls_prefix(self, prefix):
@@ -439,6 +458,8 @@ class RepoSync(object):
 
                 if plugin is not None:
                     plugin.clear_ssl_cache()
+        # Update cache with package checksums
+        rhnCache.set(checksum_cache_filename, self.checksum_cache)
         if self.regen:
             taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                 [self.channel_label], [], "server.app.yumreposync")
@@ -555,8 +576,13 @@ class RepoSync(object):
             'enhancement': 'Product Enhancement Advisory'
         }
         backend = SQLBackend()
+        channel_advisory_names = self.list_errata()
         for notice in notices:
             notice = self.fix_notice(notice)
+
+            if not self.force_all_errata and notice['update_id'] in channel_advisory_names:
+                continue
+
             patch_name = self._patch_naming(notice)
             existing_errata = self.get_errata(patch_name)
             if existing_errata and not self._is_old_suse_style(notice):
@@ -576,6 +602,7 @@ class RepoSync(object):
                     continue
                 # else: release match, so we update the errata
 
+
             if notice['updated']:
                 updated_date = self._to_db_date(notice['updated'])
             else:
@@ -583,6 +610,7 @@ class RepoSync(object):
             if (existing_errata and
                 not self.errata_needs_update(existing_errata, notice['version'], updated_date)):
                 continue
+
             log(0, "Add Patch %s" % patch_name)
             e = Erratum()
             e['errata_from']   = notice['from']
@@ -634,10 +662,13 @@ class RepoSync(object):
                 importer.run()
                 batch = []
 
-        if len(batch) > 0:
+        if batch:
+            log(0, "Syncing %s new errata to channel." % len(batch))
             importer = ErrataImport(batch, backend)
             importer.run()
-        self.regen = True
+            self.regen = True
+        elif notices:
+            log(0, "No new errata to sync.")
 
     def import_packages(self, plug, source_id, url):
         failed_packages = 0
@@ -733,7 +764,6 @@ class RepoSync(object):
             log(0, "Packages already synced:      %5d" % (num_passed - num_to_process))
             log(0, "Packages to sync:             %5d" % num_to_process)
 
-        self.regen = True
         is_non_local_repo = (url.find("file:/") < 0)
 
         downloader = ThreadedDownloader()
@@ -767,24 +797,27 @@ class RepoSync(object):
         progress_bar = ProgressBarLogger("Importing packages:    ", to_download_count)
         for (index, what) in enumerate(to_process):
             pack, to_download, to_link = what
-            localpath = None
+            if not to_download:
+                continue
+            localpath = pack.path
             # pylint: disable=W0703
             try:
-                if to_download:
-                    localpath = pack.path
-                    if os.path.exists(localpath):
-                        pack.load_checksum_from_header()
-                        pack.upload_package(self.channel, metadata_only=self.metadata_only)
+                if os.path.exists(localpath):
+                    pack.load_checksum_from_header()
+                    rel_package_path = pack.upload_package(self.channel, metadata_only=self.metadata_only)
+                    # Save uploaded package to cache with repository checksum type
+                    if rel_package_path:
+                        self.checksum_cache[rel_package_path] = {pack.checksum_type: pack.checksum}
 
-                        # we do not want to keep a whole 'a_pkg' object for every package in memory,
-                        # because we need only checksum. see BZ 1397417
-                        pack.checksum = pack.a_pkg.checksum
-                        pack.checksum_type = pack.a_pkg.checksum_type
-                        pack.epoch = pack.a_pkg.header['epoch']
-                        pack.a_pkg = None
-                    else:
-                        raise Exception
-                    progress_bar.log(True, None)
+                    # we do not want to keep a whole 'a_pkg' object for every package in memory,
+                    # because we need only checksum. see BZ 1397417
+                    pack.checksum = pack.a_pkg.checksum
+                    pack.checksum_type = pack.a_pkg.checksum_type
+                    pack.epoch = pack.a_pkg.header['epoch']
+                    pack.a_pkg = None
+                else:
+                    raise Exception
+                progress_bar.log(True, None)
             except KeyboardInterrupt:
                 raise
             except Exception:
@@ -802,21 +835,26 @@ class RepoSync(object):
             pack.clear_header()
         log2disk(0, "Importing packages finished.")
 
-        log(0, "Linking packages to channel.")
         if self.strict:
+            # Need to make sure all packages from all repositories are associated with channel
             import_batch = [self.associate_package(pack)
                             for pack in self.all_packages]
         else:
+            # Only packages from current repository are appended to channel
             import_batch = [self.associate_package(pack)
                             for (pack, to_download, to_link) in to_process
                             if to_link]
-        backend = SQLBackend()
-        caller = "server.app.yumreposync"
-        importer = ChannelPackageSubscription(import_batch,
-                                              backend, caller=caller, repogen=False,
-                                              strict=self.strict)
-        importer.run()
-        backend.commit()
+        # Do not re-link if nothing was marked to link
+        if any([to_link for (pack, to_download, to_link) in to_process]):
+            log(0, "Linking packages to channel.")
+            backend = SQLBackend()
+            caller = "server.app.yumreposync"
+            importer = ChannelPackageSubscription(import_batch,
+                                                  backend, caller=caller, repogen=False,
+                                                  strict=self.strict)
+            importer.run()
+            backend.commit()
+            self.regen = True
         self._normalize_orphan_vendor_packages()
         return failed_packages
 
@@ -994,6 +1032,17 @@ class RepoSync(object):
 
         return ret
 
+    def list_errata(self):
+        """List advisory names present in channel"""
+        h = rhnSQL.prepare("""select e.advisory_name
+            from rhnChannelErrata ce
+            inner join rhnErrata e on e.id = ce.errata_id
+            where ce.channel_id = :cid
+        """)
+        h.execute(cid=self.channel['id'])
+        advisories = [row['advisory_name'] for row in h.fetchall_dict()]
+        return advisories
+
     def import_kickstart(self, plug, repo_label):
         ks_path = 'rhn/kickstart/'
         ks_tree_label = re.sub(r'[^-_0-9A-Za-z@.]', '', repo_label.replace(' ', '_'))
@@ -1046,12 +1095,12 @@ class RepoSync(object):
 
         fileutils.createPath(os.path.join(CFG.MOUNT_POINT, ks_path))
         # Make sure images are included
-        to_download = []
+        to_download = set()
         for repo_path in treeinfo_parser.get_images():
             local_path = os.path.join(CFG.MOUNT_POINT, ks_path, repo_path)
             # TODO: better check
-            if not os.path.exists(local_path):
-                to_download.append(repo_path)
+            if not os.path.exists(local_path) or self.force_kickstart:
+                to_download.add(repo_path)
 
         if row:
             log(0, "Kickstartable tree %s already synced. Updating content..." % ks_tree_label)
@@ -1087,6 +1136,7 @@ class RepoSync(object):
 
         # Downloading/Updating content of KS Tree
         # start from root dir
+        is_root = True
         dirs_queue = ['']
         log(0, "Gathering all files in kickstart repository...")
         while len(dirs_queue) > 0:
@@ -1095,7 +1145,12 @@ class RepoSync(object):
             if cur_dir_html is None:
                 continue
 
-            parser = KSDirParser(cur_dir_html)
+            blacklist = None
+            if is_root:
+                blacklist = [treeinfo_parser.get_package_dir() + '/']
+                is_root = False
+
+            parser = KSDirParser(cur_dir_html, blacklist)
 
             for ks_file in parser.get_content():
                 repo_path = cur_dir_name + ks_file['name']
@@ -1104,11 +1159,11 @@ class RepoSync(object):
                     dirs_queue.append(repo_path)
                     continue
 
-                if repo_path not in to_download:
-                    to_download.append(repo_path)
+                if not os.path.exists(os.path.join(CFG.MOUNT_POINT, ks_path, repo_path)) or self.force_kickstart:
+                    to_download.add(repo_path)
 
         if to_download:
-            log2disk(0, "Downloading %d files." % len(to_download))
+            log(0, "Downloading %d kickstart files." % len(to_download))
             progress_bar = ProgressBarLogger("Downloading kickstarts:", len(to_download))
             downloader = ThreadedDownloader(force=self.force_kickstart)
             for item in to_download:
@@ -1126,7 +1181,7 @@ class RepoSync(object):
                                  checksum=getFileChecksum('sha256', os.path.join(CFG.MOUNT_POINT, ks_path, item)),
                                  st_size=st.st_size, st_time=st.st_mtime)
         else:
-            log(0, "Nothing to download.")
+            log(0, "No new kickstart files to download.")
 
         # set permissions recursively
         rhnSQL.commit()

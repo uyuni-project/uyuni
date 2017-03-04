@@ -17,7 +17,7 @@
 
 
 # __lang. imports__
-# pylint: disable=C0413
+# pylint: disable=E0012, C0413
 import datetime
 import os
 import sys
@@ -2347,7 +2347,7 @@ def processCommandline():
                     "force_all_errata": 'force-all-errata',
                     'no_ssl': 'no-ssl'}
 
-    for oa in otherActions.keys():
+    for oa in otherActions:
         if getattr(OPTIONS, oa):
             actionDict[otherActions[oa]] = 1
         else:

@@ -9,8 +9,8 @@ License:        GPLv2
 # git clone git://git.fedorahosted.org/git/spacewalk.git/
 # cd spec-tree/oracle-lib-compat
 # make srpm
-URL:            https://fedorahosted.org/spacewalk
-Source0:	https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+URL:            https://github.com/spacewalkproject/spacewalk
+Source0:	https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-root-%(%{__id_u} -n)
 ExclusiveArch:  %ix86 x86_64 s390x ppc64le
 

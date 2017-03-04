@@ -6,12 +6,12 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.7.1
+Version: 2.7.3
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
-Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-URL:     https://fedorahosted.org/spacewalk
+Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+URL:     https://github.com/spacewalkproject/spacewalk
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if %{?suse_version: %{?suse_version} > 1110} %{!?suse_version:1}
 BuildArch: noarch
@@ -96,6 +96,13 @@ fi
 
 
 %changelog
+* Fri Mar 03 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.3-1
+- 1398406 - update repo options from rhnplugin.conf even in cacheonly mode
+- 1391867 - pass retry_no_cache option to urlgrabber
+
+* Thu Mar 02 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.2-1
+- 1361185 - use yum's lock to prevent concurent yum & rhn_check actions
+
 * Fri Feb 17 2017 Jan Dobes 2.7.1-1
 - fix bz1422518 - request failed: error reading the headers (CVE-2016-8743)
 - Bumping package versions for 2.7.
