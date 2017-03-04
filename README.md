@@ -43,6 +43,10 @@ Steps files should be like:
         
 * The testsuite is licensed under the MIT license. See the `MIT-LICENSE.txt` file included in the distribution.
 
+#### 3) Check the code coverage results, after you runned the testsuite with your code.
+
+[Howto check code coverage](docs/codecoverage.md)
+
 ### Usefull tutorial infos:
 
 [Testing-api tutorial](docs/api-call.md), [Branches that we use](docs/branches.md)
