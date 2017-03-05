@@ -22,6 +22,7 @@ import java.util.List;
 public class AsyncJobStartEventDto extends AbstractSaltEventDto {
 
     private List<String> minions;
+    private boolean waitForSSHMinions;
 
     /**
      * No arg constructor.
@@ -34,9 +35,10 @@ public class AsyncJobStartEventDto extends AbstractSaltEventDto {
      * @param actionTypeIn the action type
      * @param minionsIn the minions for which the job was started
      */
-    public AsyncJobStartEventDto(String actionTypeIn, List<String> minionsIn) {
+    public AsyncJobStartEventDto(String actionTypeIn, List<String> minionsIn, boolean waitForSSHIn) {
         super("asyncJobStart", null, actionTypeIn);
         this.minions = minionsIn;
+        this.waitForSSHMinions = waitForSSHIn;
     }
 
     /**
@@ -51,5 +53,9 @@ public class AsyncJobStartEventDto extends AbstractSaltEventDto {
      */
     public void setMinions(List<String> minionsIn) {
         this.minions = minionsIn;
+    }
+
+    public boolean isWaitForSSHMinions() {
+        return waitForSSHMinions;
     }
 }
