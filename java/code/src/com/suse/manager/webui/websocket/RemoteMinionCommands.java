@@ -27,6 +27,7 @@ import com.suse.manager.webui.websocket.json.ActionTimedOutEventDto;
 import com.suse.manager.webui.websocket.json.MinionCommandResultEventDto;
 import com.suse.manager.webui.websocket.json.ActionErrorEventDto;
 import com.suse.manager.webui.websocket.json.AbstractSaltEventDto;
+import com.suse.manager.webui.websocket.json.SSHMinionMatchResultDto;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Json;
@@ -40,8 +41,12 @@ import javax.websocket.Session;
 import javax.websocket.EndpointConfig;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeoutException;
@@ -137,11 +142,13 @@ public class RemoteMinionCommands {
                     return;
                 }
 
-                previewedMinions = res.keySet().stream()
-                        .collect(Collectors.toList());
+                Optional<CompletionStage<Map<String, Result<Boolean>>>> resSSH =
+                        SaltService.INSTANCE.matchAsyncSSH(msg.getTarget(), failAfter);
+
+                previewedMinions = Collections.synchronizedList(new ArrayList<>(res.size()));
+                previewedMinions.addAll(res.keySet().stream()
+                        .collect(Collectors.toList()));
                 previewedMinions.retainAll(allVisibleMinions);
-                sendMessage(session, new AsyncJobStartEventDto("preview",
-                        previewedMinions));
 
                 res.forEach((minionId, future) -> {
                     future.whenComplete((matchResult, err) -> {
@@ -149,7 +156,7 @@ public class RemoteMinionCommands {
                             // minion is not visible to this user
                             return;
                         }
-                        if (matchResult != null) {
+                        if (matchResult != null && matchResult.result().orElse(false)) {
                             sendMessage(session, new MinionMatchResultEventDto(minionId));
                         }
                         if (err != null) {
@@ -170,6 +177,29 @@ public class RemoteMinionCommands {
                         }
                     });
                 });
+
+                resSSH.ifPresent(future -> {
+                    future.whenComplete((result, err) -> {
+                        List<String> sshMinions = result.entrySet().stream().filter((entry) -> {
+                            if (!allVisibleMinions.contains(entry.getKey())) {
+                                // minion is not visible to this user
+                                return false;
+                            }
+                            return entry.getValue() != null &&
+                                    entry.getValue().result().orElse(false);
+                        })
+                        .map((entry) -> entry.getKey())
+                        .collect(Collectors.toList());
+
+                        previewedMinions.addAll(sshMinions);
+
+                        sendMessage(session,
+                                new SSHMinionMatchResultDto(sshMinions));
+                    });
+                });
+
+                sendMessage(session, new AsyncJobStartEventDto("preview",
+                        previewedMinions, resSSH.isPresent()));
             }
             else if (msg.isCancel()) {
                 if (this.failAfter != null) {
@@ -203,7 +233,7 @@ public class RemoteMinionCommands {
 
                 List<String> allMinions = res.keySet().stream()
                         .collect(Collectors.toList());
-                sendMessage(session, new AsyncJobStartEventDto("run", allMinions));
+                sendMessage(session, new AsyncJobStartEventDto("run", allMinions, false));
 
                 res.forEach((minionId, future) -> {
                     future.whenComplete((cmdResult, err) -> {
