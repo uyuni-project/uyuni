@@ -73,6 +73,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -400,14 +401,37 @@ public class SaltService {
      * @return a map holding a {@link CompletionStage}s for each minion
      */
     public Map<String, CompletionStage<Result<String>>> runRemoteCommandAsync(
-            Target<?> target, String cmd, CompletableFuture<GenericError> cancel) {
-        try {
-            return completableAsyncCall(Cmd.run(cmd), target,
-                    reactor.getEventStream(), cancel);
+            MinionList target, String cmd, CompletableFuture<GenericError> cancel) {
+
+        HashSet<String> uniqueMinionIds = new HashSet<>(target.getTarget());
+        Map<Boolean, List<String>> minionPartitions =
+                partitionMinionsByContactMethod(uniqueMinionIds);
+
+        List<String> sshMinionIds = minionPartitions.get(true);
+        List<String> regularMinionIds = minionPartitions.get(false);
+        Map<String, CompletionStage<Result<String>>> results =
+                new HashMap<>();
+        LocalCall<String> call = Cmd.run(cmd);
+        if (!sshMinionIds.isEmpty()) {
+            results.putAll(
+                saltSSHService.callAsyncSSH(
+                        call,
+                        new MinionList(sshMinionIds),
+                        cancel));
         }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
+
+        if (!regularMinionIds.isEmpty()) {
+            try {
+                results.putAll(
+                        completableAsyncCall(call, target,
+                        reactor.getEventStream(), cancel));
+            }
+            catch (SaltException e) {
+                throw new RuntimeException(e);
+            }
         }
+
+        return results;
     }
 
     /**
@@ -462,7 +486,7 @@ public class SaltService {
     }
 
     /**
-     * Match the given target exression asynchronously.
+     * Match the given target expression asynchronously.
      * @param target the target expression
      * @param cancel  a future used to cancel waiting on return events
      * @return a map holding a {@link CompletionStage}s for each minion
@@ -476,6 +500,11 @@ public class SaltService {
         catch (SaltException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Optional<CompletionStage<Map<String, Result<Boolean>>>> matchAsyncSSH(
+            String target, CompletableFuture<GenericError> cancel) {
+        return saltSSHService.matchAsyncSSH(target, cancel);
     }
 
     /**
