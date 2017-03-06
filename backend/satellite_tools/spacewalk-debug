@@ -30,7 +30,7 @@ MAX_LOG_AGE=10
 if [ -f /etc/SuSE-release ]; then
     IS_SUSE=1
 fi
-if [ "$SPACEWALK_DEBUG_NO_REPORTS" -eq 1 ]; then
+if [ "$SPACEWALK_DEBUG_NO_REPORTS" == 1 ]; then
     NO_REPORTS=1
 fi
 
