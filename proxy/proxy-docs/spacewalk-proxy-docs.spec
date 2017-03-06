@@ -4,7 +4,7 @@ Group: Applications/Internet
 License: OPL-1.0
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-Version: 2.7.0.2
+Version: 2.7.0.3
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
