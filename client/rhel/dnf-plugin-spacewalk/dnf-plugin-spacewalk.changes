@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Mar 06 16:32:03 CET 2017 - mc@suse.de
+
+- version 2.7.4.1-1
+- Updated links to github in spec files
+- request failed: error reading the headers (CVE-2016-8743)
+- allow building both dnf 1.0 and 2.0 version from the same source
+- initialize spacewalk channels before --enablerepo/--disablerepo
+  handler
+- dnf-plugin-spacewalk updated to dnf 2.0
+
+-------------------------------------------------------------------
 Wed Jan 11 15:13:31 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.2.1-1
