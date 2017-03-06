@@ -4,7 +4,7 @@ Group: Applications/System
 License: GPLv2
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 URL:     https://github.com/spacewalkproject/spacewalk
-Version: 5.4.33.1
+Version: 5.4.33.2
 Release: 1%{?dist}
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch: noarch
