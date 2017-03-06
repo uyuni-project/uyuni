@@ -10,7 +10,7 @@ Group: System Environment/Kernel
 License: GPLv2
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 2.7.0.1
+Version: 2.7.0.2
 Release: 1%{?dist}
 URL:            https://github.com/spacewalkproject/spacewalk
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
