@@ -69,7 +69,6 @@ import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
-import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
 import com.suse.salt.netapi.results.CmdExecCodeAllResult;
