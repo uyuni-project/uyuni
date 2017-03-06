@@ -43,7 +43,6 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -145,9 +144,10 @@ public class RemoteMinionCommands {
                 Optional<CompletionStage<Map<String, Result<Boolean>>>> resSSH =
                         SaltService.INSTANCE.matchAsyncSSH(msg.getTarget(), failAfter);
 
-                previewedMinions = Collections.synchronizedList(new ArrayList<>(res.size()));
-                previewedMinions.addAll(res.keySet().stream()
-                        .collect(Collectors.toList()));
+                previewedMinions = Collections
+                        .synchronizedList(new ArrayList<>(res.size()));
+                previewedMinions.addAll(
+                        res.keySet().stream().collect(Collectors.toList()));
                 previewedMinions.retainAll(allVisibleMinions);
 
                 res.forEach((minionId, future) -> {
@@ -180,7 +180,8 @@ public class RemoteMinionCommands {
 
                 resSSH.ifPresent(future -> {
                     future.whenComplete((result, err) -> {
-                        List<String> sshMinions = result.entrySet().stream().filter((entry) -> {
+                        List<String> sshMinions = result.entrySet().stream()
+                                .filter((entry) -> {
                             if (!allVisibleMinions.contains(entry.getKey())) {
                                 // minion is not visible to this user
                                 return false;
