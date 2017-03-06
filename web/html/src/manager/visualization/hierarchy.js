@@ -104,7 +104,7 @@ function initHierarchy() {
           .append('div').attr('class', 'filter');
         nameFilterDiv
           .append('label')
-          .text('Entity name');
+          .text('Filter by system name');
         nameFilterDiv
           .append('input')
           .attr('type', 'text')
@@ -119,7 +119,7 @@ function initHierarchy() {
           .append('div').attr('class', 'filter');
         baseProdFilterDiv
            .append('label')
-           .text('Entity base channel');
+           .text('Filter by system base channel');
         baseProdFilterDiv
           .append('input')
           .attr('type', 'text')
