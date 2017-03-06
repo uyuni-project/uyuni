@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.server.ServerArch;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -207,7 +206,7 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the installed installedProducts
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "suseImageInfoInstalledProduct",
                joinColumns = { @JoinColumn(name = "image_info_id") },
                inverseJoinColumns = { @JoinColumn(name = "installed_product_id") })
