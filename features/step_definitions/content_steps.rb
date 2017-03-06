@@ -295,10 +295,6 @@ When(/^I uncheck "([^"]*)" in the list$/) do |arg1|
   end
 end
 
-Then(/^The table should have a column named "([^"]+)"$/) do |arg1|
-  find(:xpath, "//div[@class=\"table-responsive\"]/table/thead[.//th[contains(.,'#{arg1}')]]")
-end
-
 Then(/^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/) do |count, name, id|
     within(:xpath, "//form[@id=\"#{id}\" or  @name=\"#{id}\"]") do
         fail unless has_field?(name, :count => count.to_i)
