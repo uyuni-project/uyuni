@@ -323,11 +323,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 StateFactory.save(serverStateRevision);
             });
 
-            // Salt systems always have the script.run capability
-            SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
-
-            // Salt systems can be audited
-            SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCAP, 1L);
+            giveCapabilities(server);
 
             // Assign the Salt base entitlement by default
             server.setBaseEntitlement(EntitlementManager.SALT);
@@ -395,6 +391,14 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
         }
+    }
+
+    private void giveCapabilities(MinionServer server) {
+        // Salt systems always have the script.run capability
+        SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        // Salt systems can be audited
+        SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCAP, 1L);
     }
 
     private void setServerPaths(MinionServer server, String master,

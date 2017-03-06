@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.services.impl;
 
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
