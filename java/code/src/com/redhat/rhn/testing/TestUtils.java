@@ -53,6 +53,8 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -91,6 +93,29 @@ public class TestUtils {
 
         if (ret.toString().contains("!")) { // file is from an archive
             String tempPath = "/tmp/" + filePrefix + ret.hashCode();
+            InputStream input = clazz.getResourceAsStream(path);
+
+            OutputStream output = new FileOutputStream(tempPath);
+            IOUtils.copy(input, output);
+
+            return new File(tempPath).toURI().toURL();
+        }
+
+        return ret;
+    }
+
+    public static URL findTestDataInDir(String path) throws ClassNotFoundException, IOException {
+        Throwable t = new Throwable();
+        StackTraceElement[] ste = t.getStackTrace();
+
+        String className = ste[1].getClassName();
+        Class clazz = Class.forName(className);
+
+        URL ret = clazz.getResource(path);
+
+        if (ret.toString().contains("!")) { // file is from an archive
+            Path tmpDir = Files.createTempDirectory("testutils");
+            String tempPath = tmpDir + "/" + StringUtils.substringAfterLast(path, "/");
             InputStream input = clazz.getResourceAsStream(path);
 
             OutputStream output = new FileOutputStream(tempPath);
