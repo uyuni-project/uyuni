@@ -125,8 +125,8 @@ function updateDetailBox(d) {
   if (data.type && data.type == 'system' && data.id != 'root') {
     var idSlices = (data.id).split('-');
     var systemId = idSlices[idSlices.length - 1];
-    systemDetailLink = '<div>System details page: <a href="/rhn/systems/details/Overview.do?sid=' +
-      systemId + '" target="_blank">' + data.name + '</a></div>';
+    systemDetailLink = '<div><a href="/rhn/systems/details/Overview.do?sid=' +
+      systemId + '" target="_blank">System details page</a></div>';
 
     systemSpecificInfo =
       '<div>Base entitlement : <strong>' + data.base_entitlement + '</strong></div>' +
@@ -134,8 +134,8 @@ function updateDetailBox(d) {
       '<div>Checkin time : <strong>' + new Date(data.checkin) + '</strong></div>';
   }
   $('.detailBox').html(
-    systemDetailLink +
     '<div>System name : <strong>' + data.name + '</strong></div>' +
+    systemDetailLink +
     '<div>Type : <strong>' + data.type + '</strong></div>' +
     systemSpecificInfo).show()
     .css('top', (window.mouseY || 0) - $('.detailBox').height()).css('left', (window.mouseX || 0) + 20);
