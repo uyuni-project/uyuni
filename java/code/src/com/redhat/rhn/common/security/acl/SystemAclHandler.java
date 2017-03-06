@@ -189,7 +189,7 @@ public class SystemAclHandler extends BaseHandler {
     }
 
     /**
-     * Checks it a system is Salt entitles and uses the given
+     * Checks if a system is Salt entitled and uses the given
      * contact method.
      * @param ctx Context Map to pass in
      * @param params  Parameters to use
