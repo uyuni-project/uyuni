@@ -598,7 +598,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(sa.getStatus().equals(ActionFactory.STATUS_FAILED));
     }
 
-
     public void testOpenscap() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("minionsles12sp1.test.local");
@@ -615,8 +614,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
 
-        String scapDir = new File(TestUtils.findTestData(
-                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local").getPath()).getPath();
+        File scapFile = new File(TestUtils.findTestDataInDir(
+                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/results.xml").getPath());
         String resumeXsl = new File(TestUtils.findTestData(
                 "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in").getPath())
                 .getPath();
@@ -632,7 +631,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(openscapResult.getUploadDir()),
                     with(action.getId()));
             Map<Boolean, String> result = new HashMap<>();
-            result.put(true, scapDir);
+            result.put(true, scapFile.getParent());
             will(returnValue(result));
         }});
 
@@ -641,7 +640,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.doExecute(message);
 
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
-
     }
 
 }
