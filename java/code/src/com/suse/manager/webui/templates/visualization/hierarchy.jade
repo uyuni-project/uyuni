@@ -1,0 +1,12 @@
+include ../common.jade
+
+script(src='/javascript/d3.js', type='text/javascript')
+
+#hierarchy
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+    const endpoint = "#{endpoint}";
+    const title = "#{title}";
+
+script(src='/javascript/manager/visualization/hierarchy.bundle.js', type='text/javascript')

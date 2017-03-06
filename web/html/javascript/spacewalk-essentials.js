@@ -293,18 +293,18 @@ function t(key) {
 * if that happens it fires the window resize computation event
 * https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
 */
+// create an observer instance
+var spacewalkContentObserver = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    alignContentDimensions();
+  });
+});
 $(document).ready(function() {
   var target = document.getElementById('spacewalk-content');
-  // create an observer instance
-  var observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      alignContentDimensions();
-    });
-  });
   // configuration of the observer:
   var config = { childList: true, characterData: true, subtree: true };
   // pass in the target node, as well as the observer options
-  observer.observe(target, config);
+  spacewalkContentObserver.observe(target, config);
 });
 
 $(document).on('click', '.toggle-box', function() {

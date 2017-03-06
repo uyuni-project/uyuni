@@ -26,7 +26,7 @@ gulp.task('prod-opts', function(done) {
 });
 
 gulp.task('bundle-manager', function(done) {
-    glob('./manager/*.js', function(err, files) {
+    glob('./manager/**/*.js', function(err, files) {
         if(err) done(err);
 
         var tasks = files.map(function(entry) {
@@ -44,10 +44,9 @@ gulp.task('bundle-manager', function(done) {
                 })
                 .pipe(source(entry)) // this is a surrogate file name //'org-state-catalog-app.js'
                 .pipe(rename({
-                    dirname: '',
                     extname: '.bundle.js'
                 }))
-                .pipe(gulp.dest('../javascript/manager'));
+                .pipe(gulp.dest('../javascript'));
 
             });
 
@@ -57,7 +56,7 @@ gulp.task('bundle-manager', function(done) {
 
 
 gulp.task("watch", function(event) {
-    var watcher1 = gulp.watch(["./manager/*.js"], ["bundle-manager"]);
+    var watcher1 = gulp.watch(["./manager/**/*.js"], ["bundle-manager"]);
     watcher1.on('change', function(event) {
         gutil.log('File changed: ' + event.path);
     });
