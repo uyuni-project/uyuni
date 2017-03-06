@@ -196,7 +196,7 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the channels
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "suseImageInfoChannel",
                joinColumns = { @JoinColumn(name = "image_info_id") },
                inverseJoinColumns = { @JoinColumn(name = "channel_id") })
