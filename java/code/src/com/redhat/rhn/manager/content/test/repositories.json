@@ -12148,5 +12148,155 @@
     "installer_updates": false,
     "name": "OpenStack-Cloud-Magnum-Orchestration-Debuginfo-Pool",
     "url": "https://updates.suse.com/SUSE/Products/OpenStack-Cloud-Magnum-Orchestration/7/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Server-3.1-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2400,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.1-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.1/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Server-3.1-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2401,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.1-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.1/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Server-3.1-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2402,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.1-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.1/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Server-3.1-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2403,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.1-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.1/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Server-3.1-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2404,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.1-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.1/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Server-3.1-Updates for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": true,
+    "id": 2405,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.1-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.1/s390x/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Server-3.1-Debuginfo-Updates for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": false,
+    "id": 2406,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.1-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.1/s390x/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Server-3.1-Pool for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": true,
+    "id": 2407,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.1-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.1/s390x/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Server-3.1-Debuginfo-Pool for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": false,
+    "id": 2408,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.1-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.1/s390x/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Server-3.1-Source-Pool for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": false,
+    "id": 2409,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.1-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.1/s390x/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Proxy-3.1-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2410,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Proxy-3.1-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Proxy/3.1/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Proxy-3.1-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2411,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Proxy-3.1-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Proxy/3.1/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Proxy-3.1-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2412,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Proxy-3.1-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Proxy/3.1/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Proxy-3.1-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2413,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Proxy-3.1-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Proxy/3.1/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Proxy-3.1-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2414,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Proxy-3.1-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Proxy/3.1/x86_64/product_source/?my-fake-token"
   }
 ]
