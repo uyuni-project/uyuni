@@ -118,9 +118,9 @@ popd
 
 %pre
 getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager
-usermod -G susemanager salt
-usermod -G susemanager tomcat
-usermod -G susemanager wwwrun
+usermod -a -G susemanager salt
+usermod -a -G susemanager tomcat
+usermod -a -G susemanager wwwrun
 
 %post
 %{fillup_and_insserv susemanager}
