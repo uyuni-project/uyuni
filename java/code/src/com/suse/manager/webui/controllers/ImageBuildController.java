@@ -162,7 +162,12 @@ public class ImageBuildController {
          * @return the tag
          */
         public String getTag() {
-            return tag;
+            if (tag == null || tag.isEmpty()) {
+                return "latest";
+            }
+            else {
+                return tag;
+            }
         }
     }
 
