@@ -108,7 +108,21 @@ public class TestUtils {
         return ret;
     }
 
-    public static URL findTestDataInDir(String path) throws ClassNotFoundException, IOException {
+    /**
+     * method to find a file relative to the calling class.  primarily
+     * useful when writing tests that need access to external data.
+     * this lets you put the data relative to the test class file.
+     * The data is extracted to a temp directory.
+     *
+     * @param path the path, relative to caller's location
+     * @return URL a URL referencing the file
+     * @throws ClassNotFoundException if the calling class can not be found
+     * (i.e., should not happen)
+     * @throws IOException if the specified file in an archive (eg. jar) and
+     * it cannot be copied to a temporary location
+     */
+    public static URL findTestDataInDir(String path)
+            throws ClassNotFoundException, IOException {
         Throwable t = new Throwable();
         StackTraceElement[] ste = t.getStackTrace();
 
