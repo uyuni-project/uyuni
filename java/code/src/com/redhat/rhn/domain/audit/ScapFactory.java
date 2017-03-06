@@ -156,7 +156,4 @@ public class ScapFactory extends HibernateFactory {
          return log;
      }
 
-
-
-
 }
