@@ -101,7 +101,7 @@ public class SaltUtils {
 
     private SaltService saltService = SaltService.INSTANCE;
 
-    private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt";
+    private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
     /**
      * Constructor for testing purposes.

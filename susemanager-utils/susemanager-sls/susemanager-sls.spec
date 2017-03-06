@@ -45,6 +45,7 @@ mkdir -p %{buildroot}/usr/share/susemanager/modules/runners
 mkdir -p %{buildroot}/usr/share/susemanager/pillar_data
 mkdir -p %{buildroot}/usr/share/susemanager/formulas
 mkdir -p %{buildroot}/usr/share/susemanager/formulas/metadata
+mkdir -p %{buildroot}/usr/share/susemanager/scap
 mkdir -p %{buildroot}/srv/formula_metadata
 cp -R salt/* %{buildroot}/usr/share/susemanager/salt
 cp -R modules/pillar/* %{buildroot}/usr/share/susemanager/modules/pillar
@@ -53,6 +54,7 @@ cp -R modules/runners/* %{buildroot}/usr/share/susemanager/modules/runners
 cp -R pillar_data/* %{buildroot}/usr/share/susemanager/pillar_data
 cp -R formulas/* %{buildroot}/usr/share/susemanager/formulas
 cp -R formula_metadata/* %{buildroot}/srv/formula_metadata
+cp -R scap/* %{buildroot}/usr/share/susemanager/scap
 
 # Manually install Python part to already prepared structure
 cp src/beacons/pkgset.py %{buildroot}/usr/share/susemanager/salt/_beacons
@@ -77,5 +79,6 @@ ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
 /usr/share/susemanager/modules/tops
 /usr/share/susemanager/modules/runners
 /usr/share/susemanager/formulas
+/usr/share/susemanager/scap
 /srv/formula_metadata
 %ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
