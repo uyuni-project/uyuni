@@ -618,7 +618,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         String scapDir = new File(TestUtils.findTestData(
                 "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local").getPath()).getPath();
         String resumeXsl = new File(TestUtils.findTestData(
-                "/com/redhat/rhn/manager/audit/test/openscap/xccdf-resume.xslt.in").getPath())
+                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in").getPath())
                 .getPath();
 
         JsonElement jsonElement = message.getJobReturnEvent().getData().getResult(JsonElement.class);
