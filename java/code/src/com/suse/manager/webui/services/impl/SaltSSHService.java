@@ -48,6 +48,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -88,7 +89,7 @@ public class SaltSSHService {
      */
     public SaltSSHService(SaltClient saltClientIn) {
         this.saltClient = saltClientIn;
-        asyncSaltSSHExecutor = Executors.newCachedThreadPool(); // TODO configurable
+        asyncSaltSSHExecutor = Executors.newCachedThreadPool();
     }
 
     /**
@@ -254,8 +255,16 @@ public class SaltSSHService {
         return Optional.of(proxyCommand.toString());
     }
 
-    public <R> Map<String, CompletionStage<Result<R>>> callAsyncSSH(LocalCall<R> call, MinionList target,
-                                                                    CompletableFuture<GenericError> cancel) {
+    /**
+     * Executes salt-ssh calls in another thread and returns {@link CompletionStage}s.
+     * @param call the salt call
+     * @param target the minion list target
+     * @param <R> result type of the salt function
+     * @param cancel a future used to cancel waiting
+     * @return the result of the call
+     */
+    public <R> Map<String, CompletionStage<Result<R>>> callAsyncSSH(
+            LocalCall<R> call, MinionList target, CompletableFuture<GenericError> cancel) {
         Map<String, CompletionStage<Result<R>>> futures = new HashedMap();
         target.getTarget().forEach(minionId -> {
             futures.put(minionId, new CompletableFuture<>());
@@ -263,16 +272,19 @@ public class SaltSSHService {
         CompletableFuture.supplyAsync(() -> {
             try {
                 return callSyncSSH(call, target);
-            } catch (SaltException e) {
+            }
+            catch (SaltException e) {
                 throw new RuntimeException(e);
             }
         }, asyncSaltSSHExecutor)
                 .whenComplete((executionResult, err) -> {
                     executionResult.forEach((minionId, minionResult) -> {
-                        CompletableFuture<Result<R>> f = futures.get(minionId).toCompletableFuture();
-                        if (err != null) {
+                        CompletableFuture<Result<R>> f = futures.get(minionId)
+                                .toCompletableFuture();
+                        if (err == null) {
                             f.complete(minionResult);
-                        } else {
+                        }
+                        else {
                             f.completeExceptionally(err);
                         }
                     });
@@ -281,9 +293,12 @@ public class SaltSSHService {
         cancel.whenComplete((v, e) -> {
             if (v != null) {
                 Result<R> error = Result.error(v);
-                futures.values().forEach(f -> f.toCompletableFuture().complete(error));
-            } else if (e != null) {
-                futures.values().forEach(f -> f.toCompletableFuture().completeExceptionally(e));
+                futures.values().forEach(f ->
+                        f.toCompletableFuture().complete(error));
+            }
+            else if (e != null) {
+                futures.values().forEach(f ->
+                        f.toCompletableFuture().completeExceptionally(e));
             }
         });
         return futures;
@@ -543,8 +558,14 @@ public class SaltSSHService {
         }
     }
 
+    /**
+     * Executes match.glob in another thread and returns a {@link CompletionStage}.
+     * @param target the target to pass to match.glob
+     * @param cancel a future used to cancel waiting
+     * @return a future or Optional.empty if there's no ssh-push minion in the db
+     */
     public Optional<CompletionStage<Map<String, Result<Boolean>>>> matchAsyncSSH(
-        String target, CompletableFuture<GenericError> cancel) { // TODO cancel
+        String target, CompletableFuture<GenericError> cancel) {
         SaltRoster roster = new SaltRoster();
         boolean added = addSaltSSHMinionsFromDb(roster);
         if (!added) {
@@ -559,15 +580,17 @@ public class SaltSSHService {
                                 roster,
                                 false,
                                 isSudoUser(getSSHUser())));
-            } catch (SaltException e) {
+            }
+            catch (SaltException e) {
                 throw new RuntimeException(e);
             }
         }, asyncSaltSSHExecutor);
         cancel.whenComplete((v, e) -> {
             if (v != null) {
-                Result<Map<String, Result<Boolean>>> error = Result.error(v);
-//                f.complete(v); // TODO
-            } else if (e != null) {
+                Result<Boolean> error = Result.error(v);
+                f.complete(Collections.singletonMap("", error));
+            }
+            else if (e != null) {
                 f.completeExceptionally(e);
             }
         });

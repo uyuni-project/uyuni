@@ -73,7 +73,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -502,6 +501,12 @@ public class SaltService {
         }
     }
 
+    /**
+     * Executes match.glob in another thread and returns a {@link CompletionStage}.
+     * @param target the target to pass to match.glob
+     * @param cancel a future used to cancel waiting
+     * @return a future or Optional.empty if there's no ssh-push minion in the db
+     */
     public Optional<CompletionStage<Map<String, Result<Boolean>>>> matchAsyncSSH(
             String target, CompletableFuture<GenericError> cancel) {
         return saltSSHService.matchAsyncSSH(target, cancel);
