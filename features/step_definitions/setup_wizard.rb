@@ -23,18 +23,6 @@ When(/^I view the primary subscription list for asdf$/) do
   end
 end
 
-When(/^I click on "([^"]*)" link in the setup wizard$/) do |arg1|
-  tag = case arg1
-  when /Edit/ then "i.fa-pencil"
-  when /List/ then "i.fa-th-list"
-  when /Verify/ then "i.fa-check-square"
-  else raise "Unknown element"
-  end
-  within(".text-left") do
-     fail unless find(tag).click
-  end
-end
-
 When(/^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/) do |product, architecture|
   within(:xpath, "(//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]])[1]") do
     fail unless find("button.product-add-btn").click
@@ -53,10 +41,6 @@ end
 
 When(/^I click the Add Product button$/) do
   fail unless find("button#synchronize").click
-end
-
-When(/^I wait until it has finished$/) do
-  find("button#synchronize .fa-plus")
 end
 
 When(/^I verify the products were added$/) do

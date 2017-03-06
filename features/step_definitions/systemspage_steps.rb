@@ -42,13 +42,6 @@ Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |a
   ct.profile_create("testprofile", "testdistro", "/install/empty.xml")
 end
 
-Given(/profile "([^"]*)" exists/) do |arg1|
-  ct = CobblerTest.new
-  unless ct.profile_exists(arg1)
-    raise "profile " + arg1 + " does not exist"
-  end
-end
-
 When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
   attach_file(field, File.join(File.dirname(__FILE__), '/../upload_files/', path))
 end
