@@ -27,6 +27,8 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
+import com.redhat.rhn.domain.action.scap.ScapAction;
+import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
@@ -48,6 +50,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionServerUtils;
+import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -299,6 +302,10 @@ public enum SaltServerActionService {
         }
         else if (ActionFactory.TYPE_DIST_UPGRADE.equals(actionType)) {
             return distUpgradeAction((DistUpgradeAction) actionIn, minions);
+        }
+        else if (ActionFactory.TYPE_SCAP_XCCDF_EVAL.equals(actionType)) {
+            ScapAction scapAction = (ScapAction)actionIn;
+            return scapXccdfEvalAction(minions, scapAction.getScapActionDetails());
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -690,4 +697,14 @@ public enum SaltServerActionService {
         }
         return ret;
     }
+
+    private Map<LocalCall<?>, List<MinionServer>> scapXccdfEvalAction(
+            List<MinionServer> minions, ScapActionDetails scapActionDetails) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        String parameters = "eval " +
+            scapActionDetails.getParametersContents() + " " + scapActionDetails.getPath();
+        ret.put(Openscap.xccdf(parameters), minions);
+        return ret;
+    }
+
 }
