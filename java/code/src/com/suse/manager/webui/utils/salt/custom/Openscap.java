@@ -40,7 +40,7 @@ public class Openscap {
         @SerializedName("upload_dir")
         private String uploadDir;
 
-        @SerializedName("returnCode") //TODO
+        @SerializedName("returncode")
         private int returnCode;
 
         /**
