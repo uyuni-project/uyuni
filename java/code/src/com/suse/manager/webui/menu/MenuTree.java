@@ -230,7 +230,15 @@ public class MenuTree {
                     .addChild(new MenuItem("audit.nav.logreview").withVisibility(checkAcl(user, "not is_satellite()"))
                         .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/audit/Overview.do"))
                         .addChild(new MenuItem("Reviews").withPrimaryUrl("/rhn/audit/Machine.do"))
-                        .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/audit/Search.do")))));
+                        .addChild(new MenuItem("Search").withPrimaryUrl("/rhn/audit/Search.do"))))
+                .addChild(new MenuItem("visualization.nav.title")
+                        .withVisibility(adminRoles.get("org"))
+                        .addChild(new MenuItem("Virtualization Hierarchy")
+                                .withPrimaryUrl("/rhn/manager/visualization/virtualization-hierarchy")
+                                .withVisibility(adminRoles.get("org")))
+                        .addChild(new MenuItem("Proxy Hierarchy")
+                                .withPrimaryUrl("/rhn/manager/visualization/proxy-hierarchy")
+                                .withVisibility(adminRoles.get("org")))));
 
             // Configuration
             nodes.add(new MenuItem("config.nav.config").withIcon("spacewalk-icon-software-channel-management")
@@ -287,6 +295,7 @@ public class MenuTree {
                         .withVisibility(adminRoles.get("org"))))
                 );
 
+            // Admin
             nodes.add(new MenuItem("Admin").withIcon("fa-user").withVisibility(adminRoles.get("satellite"))
                 .addChild(new MenuItem("Setup Wizard")
                     .withPrimaryUrl("/rhn/admin/setup/ProxySettings.do")
