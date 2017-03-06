@@ -25,6 +25,8 @@ def move_minion_uploaded_files(minion=None, dirtomove=None, basepath=None, actio
         subdirs = actionpath.split('/')
         for idx in range(1, len(subdirs)):
             if subdirs[0: idx] != '':
+                # ignore errors. If dir has owner != salt then chmod fails but the dir
+                # might still have the correct group owner
                 try:
                     os.chmod(os.path.join(basepath, *subdirs[0: idx]), mode)
                 except OSError:
