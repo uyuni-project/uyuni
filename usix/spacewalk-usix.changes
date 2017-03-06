@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Mar 06 16:35:53 CET 2017 - mc@suse.de
+
+- version 2.7.5.1-1
+- Updated links to github in spec files
+- SLES11 does not support noarch python packages
+- add defattr for older distros
+
+-------------------------------------------------------------------
 Sat Feb 18 12:27:00 CET 2017 - mc@suse.de
 
 - initial package
