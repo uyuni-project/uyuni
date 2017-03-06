@@ -16,7 +16,7 @@
         <many-to-one name="identSystem" column="identsystem_id"
                      class="com.redhat.rhn.domain.audit.XccdfIdentSystem"/>
 
-        <property name="identifier" column="identifier" type="string" length="120"/>
+        <property name="identifier" column="identifier" type="string" length="100"/>
     </class>
 
 </hibernate-mapping>
