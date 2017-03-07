@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Mar 07 14:54:08 CET 2017 - mc@suse.de
+
+- version 3.1.3-1
+- pre require tomcat and salt
+- append salt,tomcat,wwwrung to susemanager group
+- susemanager group and change owner and permissions for
+  /var/susemanager/systems
+- Adds missing '-y' parameter for salt-key call (bsc#1024473)
+
+-------------------------------------------------------------------
 Tue Feb 07 15:09:07 CET 2017 - michele.bologna@suse.com
 
 - version 3.1.2-1
