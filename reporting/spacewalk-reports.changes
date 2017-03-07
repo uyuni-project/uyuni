@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Mar 07 15:16:04 CET 2017 - mc@suse.de
+
+- version 2.7.4.1-1
+- Updated links to github in spec files
+- errata-list-all report: add date
+- Remove legacy audit logging reports
+
+-------------------------------------------------------------------
 Wed Jan 11 16:34:03 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.2.1-1
