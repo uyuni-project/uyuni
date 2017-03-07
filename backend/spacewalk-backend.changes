@@ -1,4 +1,38 @@
 -------------------------------------------------------------------
+Tue Mar 07 15:04:25 CET 2017 - mc@suse.de
+
+- version 2.7.50.1-1
+- Don't skip 'rhnErrataPackage' cleanup during an errata update (bsc#1023233)
+- set scap store dir mod to 775 and group owner to susemanager
+- fix errata sync
+- provide option for forcibly syncing all errata, similarly as in
+  satsync
+- do not import always all errata by default for performance reasons
+- don't re-insert existing files again
+- Updated links to github in spec files
+- sync RPM packages for addons in Kickstart Tree
+- Add support for running spacewalk-debug without creating reports.
+  (bsc#1024714)
+- install product packages during traditional registration
+- Fix selection of primary interface
+- trigger repodata generation after and only if channel packages are
+  updated
+- do not re-subscribe packages to channel if nothing was added
+- Remove legacy audit logging Python code
+- Add strict-httpd-workaround *FIRST* in httpd conf files
+- Postgresql 9.6 support
+- fixing 'ERROR: expected a readable buffer object' on Oracle
+- catch exception InvalidArchError and send back an error message
+- require spacewalk-usix indead of spacewalk-backend-usix
+- support importing KS files with other checksum type than md5
+- adding more details of current SSL certificates in DB
+- support creating repository tree with only repos provided by single
+  client certificate
+- catch on higher level to not mark missing repositories as found
+  repositories with no SSL certificates
+- check SSL dates in reposync
+
+-------------------------------------------------------------------
 Tue Feb 07 17:48:48 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.28.1-1
