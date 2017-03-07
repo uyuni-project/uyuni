@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Tue Mar 07 15:13:15 CET 2017 - mc@suse.de
+
+- version 2.7.6.1-1
+- exit with 1 with incorrect command, wrong server, etc.
+- Updated links to github in spec files
+- print also systemdid with system name
+- improve output on error for listrepo (bsc#1027426)
+- print profile_name instead of string we're searching for
+- Fix: reword spacecmd removal msg (bsc#1024406)
+- Fix interactive mode
+- Add a type parameter to repo_create
+
+-------------------------------------------------------------------
 Tue Feb 07 15:11:39 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.3.2-1
