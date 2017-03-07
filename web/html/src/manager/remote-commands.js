@@ -261,7 +261,12 @@ class RemoteCommand extends React.Component {
   }
 
   componentDidMount() {
-    var ws = new WebSocket("wss://" + window.location.hostname + "/rhn/websocket/minion/remote-commands");
+    var port = window.location.port;
+    var url = "wss://" +
+      window.location.hostname +
+      (port ? ":" + port : "") +
+       "/rhn/websocket/minion/remote-commands";
+    var ws = new WebSocket(url);
     ws.onopen = () => {
       this.setState({
           previewed: $.Deferred(),
