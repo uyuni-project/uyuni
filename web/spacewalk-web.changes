@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Tue Mar 07 14:57:03 CET 2017 - mc@suse.de
+
+- version 2.7.1.3-1
+- Fix the initial view jump-on-drag bug
+- remote cmd UI changes for salt-ssh minions
+- Rephrase the system details page caption a bit
+- Adjust field captions
+- initial Visualization Feature
+- Add patches and packages pages for images
+- show installed products in the ui
+- Add image info UI
+- Add datetime react component with moment.js
+- Remove 'email' field from image profile form
+- Add delete confirmation pop-ups to image profile and image store pages
+- Add build schedule notification on image build page
+- Updated links to github in spec files
+- Add js utility function to create Date objects in different timezones
+- send timeout if no minions available in remote cmd ui
+- Remove "Technology preview" from Salt SSH push
+- improve salt remote cmd ui err handling
+- make remote commands UI async
+
+-------------------------------------------------------------------
 Tue Feb 07 15:21:24 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.1.2-1
