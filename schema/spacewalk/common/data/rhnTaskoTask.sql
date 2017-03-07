@@ -98,4 +98,7 @@ INSERT INTO rhnTaskoTask (id, name, class)
 INSERT INTO rhnTaskoTask (id, name, class)
          VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'token-cleanup', 'com.redhat.rhn.taskomatic.task.TokenCleanup');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+   VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'minion-action-executor', 'com.redhat.rhn.taskomatic.task.MinionActionExecutor');
+
 commit;
