@@ -72,23 +72,38 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         List<Object> hierarchy = VisualizationManager.proxyHierarchy(user);
-        List<System> proxies = hierarchy.stream()
+
+        System proxyProfile = extractSingleSystem(hierarchy.stream(),
+                proxy.getId().toString());
+        assertEquals(proxy.getName(), proxyProfile.getName());
+        assertEquals("root", proxyProfile.getParentId());
+
+        System client1Profile = extractSingleSystem(hierarchy.stream(),
+                client1.getId().toString());
+        assertEquals(client1.getName(), client1Profile.getName());
+        assertEquals(proxy.getId().toString(), client1Profile.getParentId());
+
+        System client2Profile = extractSingleSystem(hierarchy.stream(),
+                client2.getId().toString());
+        assertEquals(client2.getName(), client2Profile.getName());
+        assertEquals(proxy.getId().toString(), client2Profile.getParentId());
+
+        System client3Profile = extractSingleSystem(hierarchy.stream(),
+                client3.getId().toString());
+        assertEquals(client3.getName(), client3Profile.getName());
+        assertEquals(proxy.getId().toString(), client3Profile.getParentId());
+
+        assertEquals(1, hierarchy.stream()
                 .filter(o -> (o instanceof System))
                 .map(o -> ((System) o))
                 .filter(p -> p.getName().equals(proxy.getName()))
-                .collect(Collectors.toList());
+                .count());
 
-        List<System> clientOfProxy = hierarchy.stream()
+        assertEquals(3, hierarchy.stream()
                 .filter(o -> (o instanceof System))
                 .map(o -> ((System) o))
-                .filter(p -> p.getParentId() != null)
-                .filter(p -> p.getParentId().equals(proxy.getId().toString()))
-                .collect(Collectors.toList());
-
-        assertEquals(1, proxies.size());
-        assertEquals(proxy.getName(), proxies.get(0).getName());
-
-        assertEquals(3, clientOfProxy.size());
+                .filter(p -> proxy.getId().toString().equals(p.getParentId()))
+                .count());
     }
 
     /**
