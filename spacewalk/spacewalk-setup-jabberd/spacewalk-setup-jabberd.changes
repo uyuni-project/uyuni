@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Mar 07 15:14:42 CET 2017 - mc@suse.de
+
+- version 2.7.0.2-1
+- Updated links to github in spec files
+- Feat: initialize sqlite database post-install
+- Feat: use sqlite as back-end for jabberd
+
+-------------------------------------------------------------------
 Wed Jan 11 16:37:23 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.0.1-1
