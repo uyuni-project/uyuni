@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Mar 07 14:40:13 CET 2017 - mc@suse.de
+
+- version 2.7.2.1-1
+- add xccdf result xslt
+- Migrating Fedorahosted to GitHub
+- reset stdin for failed connections
+- don't leak output of cobbler sync into installer
+- change RHN on RHSM in installer script
+
+-------------------------------------------------------------------
 Tue Feb 07 15:23:47 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.0.2-1
