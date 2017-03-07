@@ -137,8 +137,7 @@ function updateDetailBox(d) {
     '<div>System name : <strong>' + data.name + '</strong></div>' +
     systemDetailLink +
     '<div>Type : <strong>' + data.type + '</strong></div>' +
-    systemSpecificInfo).show()
-    .css('top', (window.mouseY || 0) - $('.detailBox').height()).css('left', (window.mouseX || 0) + 20);
+    systemSpecificInfo);
 }
 
 module.exports = {
