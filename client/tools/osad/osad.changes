@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Mar 07 14:38:36 CET 2017 - mc@suse.de
+
+- version 5.11.80.1-1
+- Updated links to github in spec files
+- fix TypeError: descriptor 'with_traceback'
+- remove running rhn_check on osad start
+- require spacewalk-usix indead of spacewalk-backend-usix
+- fix osa_dispatcher so it can successfully register with jabberd
+
+-------------------------------------------------------------------
 Tue Feb 07 17:49:37 CET 2017 - michele.bologna@suse.com
 
 - version 5.11.77.1-1
