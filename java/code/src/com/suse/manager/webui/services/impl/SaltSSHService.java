@@ -23,24 +23,34 @@ import com.suse.manager.webui.utils.SaltRoster;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.SaltSSHConfig;
+import com.suse.salt.netapi.calls.modules.Match;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.datatypes.target.Glob;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.SSHTarget;
+import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.utils.Xor;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Executor;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -56,12 +66,15 @@ public class SaltSSHService {
     // Shared salt client instance
     private final SaltClient saltClient;
 
+    private Executor asyncSaltSSHExecutor;
     /**
      * Standard constructor.
      * @param saltClientIn salt client to use for the underlying salt calls
      */
     public SaltSSHService(SaltClient saltClientIn) {
         this.saltClient = saltClientIn;
+        asyncSaltSSHExecutor = new ThreadPoolExecutor(
+                0, 20, 60L, TimeUnit.SECONDS, new SynchronousQueue());
     }
 
     /**
@@ -107,6 +120,55 @@ public class SaltSSHService {
     }
 
     /**
+     * Executes salt-ssh calls in another thread and returns {@link CompletionStage}s.
+     * @param call the salt call
+     * @param target the minion list target
+     * @param <R> result type of the salt function
+     * @param cancel a future used to cancel waiting
+     * @return the result of the call
+     */
+    public <R> Map<String, CompletionStage<Result<R>>> callAsyncSSH(
+            LocalCall<R> call, MinionList target, CompletableFuture<GenericError> cancel) {
+        Map<String, CompletionStage<Result<R>>> futures = new HashedMap();
+        target.getTarget().forEach(minionId -> {
+            futures.put(minionId, new CompletableFuture<>());
+        });
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return callSyncSSH(call, target);
+            }
+            catch (SaltException e) {
+                throw new RuntimeException(e);
+            }
+        }, asyncSaltSSHExecutor)
+                .whenComplete((executionResult, err) -> {
+                    executionResult.forEach((minionId, minionResult) -> {
+                        CompletableFuture<Result<R>> f = futures.get(minionId)
+                                .toCompletableFuture();
+                        if (err == null) {
+                            f.complete(minionResult);
+                        }
+                        else {
+                            f.completeExceptionally(err);
+                        }
+                    });
+
+        });
+        cancel.whenComplete((v, e) -> {
+            if (v != null) {
+                Result<R> error = Result.error(v);
+                futures.values().forEach(f ->
+                        f.toCompletableFuture().complete(error));
+            }
+            else if (e != null) {
+                futures.values().forEach(f ->
+                        f.toCompletableFuture().completeExceptionally(e));
+            }
+        });
+        return futures;
+    }
+
+    /**
      * Synchronously executes a salt function on given glob using salt-ssh.
      *
      * Before the execution, this method creates an one-time roster corresponding all
@@ -146,15 +208,21 @@ public class SaltSSHService {
                 );
 
         // Add systems from the database, possible duplicates in roster will be overwritten
-        MinionServerFactory.listSSHMinionIdsAndContactMethods()
-                .forEach((minionId, contactMethod) ->
+        addSaltSSHMinionsFromDb(roster);
+
+        return roster;
+    }
+
+    private boolean addSaltSSHMinionsFromDb(SaltRoster roster) {
+        Map<String, String> minions = MinionServerFactory
+                .listSSHMinionIdsAndContactMethods();
+        minions.forEach((minionId, contactMethod) ->
                         roster.addHost(minionId,
                                 getSSHUser(),
                                 Optional.empty(),
                                 Optional.of(SSH_PUSH_PORT),
                                 remotePortForwarding(contactMethod)));
-
-        return roster;
+        return !minions.isEmpty();
     }
 
     /**
@@ -286,5 +354,44 @@ public class SaltSSHService {
                 }
             }
         }
+    }
+
+    /**
+     * Executes match.glob in another thread and returns a {@link CompletionStage}.
+     * @param target the target to pass to match.glob
+     * @param cancel a future used to cancel waiting
+     * @return a future or Optional.empty if there's no ssh-push minion in the db
+     */
+    public Optional<CompletionStage<Map<String, Result<Boolean>>>> matchAsyncSSH(
+        String target, CompletableFuture<GenericError> cancel) {
+        SaltRoster roster = new SaltRoster();
+        boolean added = addSaltSSHMinionsFromDb(roster);
+        if (!added) {
+            return Optional.empty();
+        }
+        CompletableFuture<Map<String, Result<Boolean>>> f =
+                CompletableFuture.supplyAsync(() -> {
+            try {
+                return unwrapSSHReturn(
+                        callSyncSSHInternal(Match.glob(target),
+                                new Glob(target),
+                                roster,
+                                false,
+                                isSudoUser(getSSHUser())));
+            }
+            catch (SaltException e) {
+                throw new RuntimeException(e);
+            }
+        }, asyncSaltSSHExecutor);
+        cancel.whenComplete((v, e) -> {
+            if (v != null) {
+                Result<Boolean> error = Result.error(v);
+                f.complete(Collections.singletonMap("", error));
+            }
+            else if (e != null) {
+                f.completeExceptionally(e);
+            }
+        });
+        return Optional.of(f);
     }
 }
