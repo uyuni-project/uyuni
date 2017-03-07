@@ -18528,7 +18528,7 @@ den Tab &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;
         <target>Kickstart-Profile, die nicht von @@PRODUCT_NAME@@ verwaltet werden, können nicht über die @@PRODUCT_NAME@@-Benutzeroberfläche modifiziert werden. Um diese Profile zu modifizieren, loggen Sie sich bitte beim @@PRODUCT_NAME@@ Server ein und führen den 'cobbler profile edit' Befehl aus. Für weitere Informationen siehe das @@PRODUCT_NAME@@ Referenzhandbuch.</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>

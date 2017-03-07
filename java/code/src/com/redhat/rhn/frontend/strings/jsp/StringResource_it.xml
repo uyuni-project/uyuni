@@ -18503,7 +18503,7 @@ per sottoscrivere i sistemi ai canali software durante un kickstart.&lt;/span&gt
         <target>I profili di kickstart non gestiti da @@PRODUCT_NAME@@ non possono essere modificati nella UI di @@PRODUCT_NAME@@. Per modificare i suddetti profili eseguite il login sul server di @@PRODUCT_NAME@@ ed eseguite il comando 'cobbler profile edit'. Per maggiori informazioni consultate la @@PRODUCT_NAME@@ Reference Guide.</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>

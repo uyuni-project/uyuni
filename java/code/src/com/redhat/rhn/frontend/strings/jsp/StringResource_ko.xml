@@ -18082,7 +18082,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>@@PRODUCT_NAME@@에 의해 관리되지 않는 킥스타트 프로파일은 @@PRODUCT_NAME@@ 사용자 인터페이스를 수정할 수 없습니다. 이러한 프로파일을 수정하려면, @@PRODUCT_NAME@@ 서버에 로그인하여 'cobbler profile edit' 명령을 실행합니다. 보다 자세한 내용은 @@PRODUCT_NAME@@ 참조 가이드를 살펴보십시오.  </target>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>

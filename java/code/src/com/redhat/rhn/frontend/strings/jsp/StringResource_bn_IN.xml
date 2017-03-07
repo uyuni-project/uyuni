@@ -17581,7 +17581,7 @@ Kickstart করার সময় অনুগ্রহ করে সিস্ট
         <target>@@PRODUCT_NAME@@ দ্বারা না পরিচালিত হওয়া প্রোফাইলগুলি @@PRODUCT_NAME@@ ইউজার ইন্টারফেসের মধ্যে পরিবর্তন করা সম্ভব নয়। এই প্রোফাইলগুলি পরিবর্তনের জন্য @@PRODUCT_NAME@@-এ লগ-ইন করে 'cobbler profile edit' কমান্ডটি সঞ্চালনা করুন। অধিক বিবরণের জন্য @@PRODUCT_NAME@@ Reference Guide পড়ুন।</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>

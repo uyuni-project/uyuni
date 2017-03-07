@@ -17583,7 +17583,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>கிக்ஸ்டார்ட் விவரக்குறிப்புகள் @@PRODUCT_NAME@@ஆல் நிர்வகிக்கப்படாதது @@PRODUCT_NAME@@ UIஇல் திருத்த முடியாது. இந்த விவரக்குறிப்புகளை மாற்ற, @@PRODUCT_NAME@@ சேவையகத்தில் புகுபதிவு செய்து 'cobbler profile edit' கட்டளையை உள்ளிடவும். மேலும் தகவலுக்கு, @@PRODUCT_NAME@@ குறிப்பு கையேட்டை பார்க்கவும்.</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>

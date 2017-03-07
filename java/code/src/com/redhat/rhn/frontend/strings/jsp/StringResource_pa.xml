@@ -17582,7 +17582,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>ਕਿੱਸਟਾਰਕਟ ਪਰੋਫਾਈਲ ਜਿਸ ਦਾ ਪਰਬੰਧਨ @@PRODUCT_NAME@@ ਨਾਲ ਨਹੀਂ ਹੁੰਦਾ ਨੂੰ @@PRODUCT_NAME@@ UI ਵਿੱਚ ਸੋਧਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ। ਇਹਨਾਂ ਪਰੋਫਾਈਲਾਂ ਨੂੰ ਸੋਧਣ ਲਈ, ਕਿਰਪਾ ਕਰਕੇ @@PRODUCT_NAME@@ ਸਰਵਰ ਤੇ ਲਾਗਇਨ ਕਰੋ ਅਤੇ 'cobbler profile edit' ਕਮਾਂਡ ਚਲਾਓ। ਵਝੇਰੇ ਜਾਣਕਾਰੀ ਲਈ, @@PRODUCT_NAME@@ ਹਵਾਲਾ ਗਾਈਡ ਵੇਖੋ।</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>

@@ -18523,7 +18523,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>非 @@PRODUCT_NAME@@ 所管理的 Kickstart 設定檔無法在 @@PRODUCT_NAME@@ UI 中進行編輯。若要編輯這些設定檔，請登入 @@PRODUCT_NAME@@ 伺服器，並執行「cobbler profile edit」這項指令。欲取得更多相關資訊，請參閱 @@PRODUCT_NAME@@ 參考指南。</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>
