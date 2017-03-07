@@ -59,7 +59,9 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -89,7 +91,8 @@ public class SaltSSHService {
      */
     public SaltSSHService(SaltClient saltClientIn) {
         this.saltClient = saltClientIn;
-        asyncSaltSSHExecutor = Executors.newCachedThreadPool();
+        asyncSaltSSHExecutor = new ThreadPoolExecutor(
+                0, 20, 60L, TimeUnit.SECONDS, new SynchronousQueue());
     }
 
     /**
