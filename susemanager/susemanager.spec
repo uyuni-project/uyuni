@@ -118,9 +118,6 @@ popd
 
 %pre
 getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager
-usermod -a -G susemanager salt
-usermod -a -G susemanager tomcat
-usermod -a -G susemanager wwwrun
 
 %post
 %{fillup_and_insserv susemanager}
@@ -137,8 +134,14 @@ fi
 # XE appliance overlay file created this with different user
 chown root.root /etc/sysconfig
 # ensure susemanager group can write in all subdirs under /var/spacewalk/systems
-chgrp -R susemanager /var/spacewalk/systems > /dev/null
-find /var/spacewalk/systems -type d -exec chmod 775 {} \; > /dev/null
+getent passwd salt >/dev/null && echo "xxx" && usermod -a -G susemanager salt
+getent passwd tomcat >/dev/null && usermod -a -G susemanager tomcat
+getent passwd wwwrun >/dev/null && usermod -a -G susemanager wwwrun
+if [ -d /var/spacewalk/systems ]; then
+  echo "aaa"
+  chgrp -R susemanager /var/spacewalk/systems > /dev/null
+  find /var/spacewalk/systems -type d -exec chmod 775 {} \; > /dev/null
+fi
 
 %postun
 %{insserv_cleanup}
