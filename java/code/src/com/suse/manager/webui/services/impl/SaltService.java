@@ -40,7 +40,6 @@ import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
-import com.suse.salt.netapi.calls.modules.Timezone;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
@@ -59,9 +58,6 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -78,7 +74,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Singleton class acting as a service layer for accessing the salt API.
@@ -279,21 +274,6 @@ public class SaltService {
               return Optional.empty();
           }
         });
-    }
-
-    /**
-     * Get the timezone offsets for a target, e.g. a list of minions.
-     *
-     * @param target the targeted minions
-     * @return the timezone offsets of the targeted minions
-     */
-    public Map<String, Result<String>> getTimezoneOffsets(MinionList target) {
-        try {
-            return callSync(Timezone.getOffset(), target);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**
@@ -556,46 +536,6 @@ public class SaltService {
         catch (SaltException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Schedule a function call for a given target.
-     *
-     * @param name the name to use for the scheduled job
-     * @param call the module call to schedule
-     * @param target the target
-     * @param scheduleDate schedule date
-     * @param metadata metadata to pass to the salt job
-     * @return the result of the schedule call
-     * @throws SaltException in case there is an error scheduling the job
-     */
-    public Map<String, Result<Schedule.Result>> schedule(String name,
-            LocalCall<?> call, MinionList target, ZonedDateTime scheduleDate,
-            Map<String, ?> metadata) throws SaltException {
-        // We do one Salt call per timezone: group minions by their timezone offsets
-        Map<String, Result<String>> minionOffsets = getTimezoneOffsets(target);
-        Map<String, List<String>> offsetMap = minionOffsets.keySet().stream()
-                .collect(Collectors.groupingBy(k -> minionOffsets.get(k).result().get()));
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Minions grouped by timezone offsets: " + offsetMap);
-        }
-
-        // The return type is a map of minion ids to their schedule results
-        return offsetMap.entrySet().stream().flatMap(entry -> {
-            LocalDateTime targetScheduleDate = scheduleDate.toOffsetDateTime()
-                    .withOffsetSameInstant(ZoneOffset.of(entry.getKey())).toLocalDateTime();
-            try {
-                MinionList timezoneTarget = new MinionList(entry.getValue());
-                Map<String, Result<Schedule.Result>> result = callSync(
-                        Schedule.add(name, call, targetScheduleDate, metadata),
-                        timezoneTarget);
-                return result.entrySet().stream();
-            }
-            catch (SaltException e) {
-                LOG.error(String.format("Error scheduling actions: %s", e.getMessage()));
-                return Stream.empty();
-            }
-        }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     /**
