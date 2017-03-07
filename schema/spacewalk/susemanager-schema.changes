@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Tue Mar 07 14:50:03 CET 2017 - mc@suse.de
+
+- version 3.1.4-1
+- grant minions scap capability
+- add modified trigger for suseImageInfo
+- add table suseImageInfoInstalledProduct
+- add image inspect action
+- schema upgrade for suseImageOverview and ImageNeededChache views
+- create views, tables and procs for counting available updates on images
+- DB: move target store to image profile
+- add image_admin to existing organizations
+- Migrating Fedorahosted to GitHub
+- show update message only when updating the schema package (bsc#1024456)
+- Remove legacy audit logging database code
+- fix deduplicate to work with more than two duplicates
+- merge valid column migration with create table
+- fix error on channel delete with tokens bsc#1024471
+- save ssl in separate table again, now allow to have multiple ssl
+  sets per content source
+- Create token index
+- Add AccessToken.valid column and use it to reject tokens
+
+-------------------------------------------------------------------
 Tue Feb 07 15:33:50 CET 2017 - michele.bologna@suse.com
 
 - version 3.1.2.1-1
