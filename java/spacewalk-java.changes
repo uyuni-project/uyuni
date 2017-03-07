@@ -1,4 +1,55 @@
 -------------------------------------------------------------------
+Tue Mar 07 15:44:51 CET 2017 - mc@suse.de
+
+- version 2.7.30.1-1
+- Load ace-editor js library from a different place (bsc#1021897)
+- use a bounded thread pool for salt-ssh async calls
+- use consistent spelling in UI (bsc#1028306)
+- remote cmd UI changes for salt-ssh minions
+- add support for SUSE Manager Proxy 3.1
+- openscap action scheduling and handling for salt minions
+- rewording distchannelmap text (bsc#1017772)
+- add support for salt ssh minions to remote cmd UI
+- Visualization: show Proxy and Virtual Host Manager hierarchy
+- Add patches and packages pages for images
+- parse installed products on images
+- add pillar data only for used image stores
+- add image info schema and mapping
+- Remove 'email' field from image profile form
+- Add a notification for when Container Build Host type is applied
+- Add build schedule notification on image build page
+- Updated links to github in spec files
+- do not push changed channels directly out to the minions
+- do not schedule product installation, but add product packages to server
+  state
+- provide a user to the event if possible
+- Set the creator of a server
+- search and install missing product packages when channel assignment changes
+- Display warning when JavaScript is disabled on all pages (bsc#987579)
+- Remove warning on ssm page (bsc#1025981)
+- Add missing dirs to the menu tree (bsc#1023413)
+- Remove legacy audit logging Java code
+- AuthFilter: update cookie expiry date at end of HTTP request (bsc#1025775)
+- MinionActionCleanup: only call list_jobs once per action id (bsc#1025291)
+- Feat: enable Salt by default on bootstrap via UI
+- Fix: uniform bootstrap.sh (bsc#1000762)
+- Feat: supply SSH passphrase when adding identity
+- fix NPE when no SUSE Product was found for an installed product
+- keep organization after migrating a system to salt (bsc#1026301)
+- action now store its completion time
+- Avoid deadlock with spacewalk-repo-sync (bsc#1022530)
+- Changed tab text for Formulas tab to Formula Catalog (bsc#1022076)
+- Add missing library to taskomatic classpath (bsc#1024066)
+- Fix spacecmd cannot be executed by RO user (bsc#1015790)
+- send timeout if no minions available in remote cmd ui
+- show only allowed minions in remote cmd ui (bsc#1024496)
+- Fix broken merge (bsc#987864)
+- add possibility to add systems to SSM from ProxyClients page
+- Reject tokens not assigned to minions (bsc#1019965)
+- Invalidate tokens when deleting system
+- make remote commands UI async
+
+-------------------------------------------------------------------
 Tue Feb 07 15:24:57 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.24.1-1
