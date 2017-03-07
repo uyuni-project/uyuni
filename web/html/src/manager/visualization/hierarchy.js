@@ -27,8 +27,6 @@ function initHierarchy() {
       .promise
       .then(d => {
         var root = d3.stratify()(d);
-        root.x = mainDivWidth / 2;
-        root.y = mainDivHeight / 2;
         var tree = d3.tree().size([mainDivWidth, mainDivHeight]);
         tree(root);
         root.each(d => {
@@ -40,8 +38,7 @@ function initHierarchy() {
           .append('svg')
           .attr('width', mainDivWidth)
           .attr('height', mainDivHeight);
-        var container = svg.append("g")
-          .attr("transform", "translate(" + mainDivWidth / 2 + ',' + mainDivHeight / 2 + ")");
+        var container = svg.append("g");
 
         // Zoom handling
         svg.call(d3.zoom()
@@ -57,8 +54,8 @@ function initHierarchy() {
         var mySimulation = d3.forceSimulation()
           .force("charge", d3.forceManyBody().strength(d => -distanceFromDepth(d.depth) * 1.5))
           .force("link", d3.forceLink().distance(d =>distanceFromDepth(d.source.depth)))
-          .force("x", d3.forceX())
-          .force("y", d3.forceY());
+          .force("x", d3.forceX(mainDivWidth / 2))
+          .force("y", d3.forceY(mainDivHeight / 2));
 
         // Returns the CSS class for the given node
         // simple algorithm based on depth
