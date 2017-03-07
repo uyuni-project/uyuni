@@ -18563,7 +18563,7 @@ para suscribir los sistemas a los canales de software durante el inicio de insta
         <target>Perfiles Kickstart que no son administrados por @@PRODUCT_NAME@@ no se pueden editar en la interfaz de usuario de @@PRODUCT_NAME@@. Para modificar estos perfiles, por favor ingrese en el servidor de @@PRODUCT_NAME@@ y ejecute el comando 'cobbler profile edit'. Para obtener más información, consulte la Guía de referencia de @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>

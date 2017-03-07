@@ -18562,7 +18562,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>不是由 @@PRODUCT_NAME@@ 管理的 kickstart 侧写无法在 @@PRODUCT_NAME@@ 用户界面中进行编辑。要修改这些侧写，请登录到 @@PRODUCT_NAME@@ 服务器，并运行 'cobbler profile edit' 命令。有关详情请参考《@@PRODUCT_NAME@@ 参考指南》。</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>

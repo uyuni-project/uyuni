@@ -17615,7 +17615,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>કિકસ્ટાર્ટ રૂપરેખાઓ કે જે @@PRODUCT_NAME@@ દ્દારા સંચાલિત થયેલ છે જે @@PRODUCT_NAME@@ UI માં ફેરફાર કરી શકાતુ નથી. આ રૂપરેખાઓને બદલવા માટે, મહેરબાની કરીને @@PRODUCT_NAME@@ સર્વર પર પ્રવેશો અને 'cobbler profile edit' આદેશને ચલાવો. વધારે જાણકારી માટે, @@PRODUCT_NAME@@ સંદર્ભ માર્ગદર્શિકાનો સંપર્ક કરો.</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>

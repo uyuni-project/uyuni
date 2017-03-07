@@ -18564,7 +18564,7 @@ a aba &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Ch
         <target>Os perfis de kickstart que não são gerenciados por @@PRODUCT_NAME@@ não poderão ser editados na UI do @@PRODUCT_NAME@@. Para modificar estes perfis, registre-se no servidor do @@PRODUCT_NAME@@ e execute o comando 'cobbler profile edit'. Para mais informações, consulte o Guia de Referência do @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>
