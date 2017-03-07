@@ -96,4 +96,7 @@ INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
              VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'token-cleanup-bunch', 'Cleanup expired channel tokens', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+   VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'minion-action-executor-bunch', 'Execute actions on Minions', null);
+
 commit;
