@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Mar 07 14:43:45 CET 2017 - mc@suse.de
+
+- version 2.7.4.2-1
+- Updated links to github in spec files
+- Fix rhn_register crashing on startup on Python < 2.5.
+
+-------------------------------------------------------------------
 Tue Feb 07 17:46:56 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.4.1-1
