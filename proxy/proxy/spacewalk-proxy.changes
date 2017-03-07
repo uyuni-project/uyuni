@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Mar 07 14:47:41 CET 2017 - mc@suse.de
+
+- version 2.7.0.3-1
+- Updated links to github in spec files
+- use SUSE product names instead of spacewalk/rhn (bsc#1000110)
+
+-------------------------------------------------------------------
 Tue Feb 07 15:07:39 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.0.2-1
