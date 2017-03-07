@@ -20,6 +20,7 @@ BuildRequires:  suseRegisterInfo
 BuildRequires:  pyxml
 
 PreReq:         %fillup_prereq %insserv_prereq atftp
+Requires(pre):  tomcat salt
 Requires:       openslp-server
 Requires:       spacewalk-setup
 Requires:       spacewalk-admin
@@ -134,11 +135,10 @@ fi
 # XE appliance overlay file created this with different user
 chown root.root /etc/sysconfig
 # ensure susemanager group can write in all subdirs under /var/spacewalk/systems
-getent passwd salt >/dev/null && echo "xxx" && usermod -a -G susemanager salt
+getent passwd salt >/dev/null && usermod -a -G susemanager salt
 getent passwd tomcat >/dev/null && usermod -a -G susemanager tomcat
 getent passwd wwwrun >/dev/null && usermod -a -G susemanager wwwrun
 if [ -d /var/spacewalk/systems ]; then
-  echo "aaa"
   chgrp -R susemanager /var/spacewalk/systems > /dev/null
   find /var/spacewalk/systems -type d -exec chmod 775 {} \; > /dev/null
 fi
