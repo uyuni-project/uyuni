@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Mar 07 15:02:32 CET 2017 - mc@suse.de
+
+- version 2.7.2.2-1
+- Fix svg and circle default dimension
+- Visualization: add legend
+- JS component for rendering visualization data
+- Add non-JS part of visualization
+- rename system type to Container Build Host
+- Add a notification for when Container Build Host type is applied
+- Updated links to github in spec files
+- add text to explain product installation on channel change
+- Remove warning on ssm page (bsc#1025981)
+
+-------------------------------------------------------------------
 Tue Feb 07 17:45:52 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.2.1-1
