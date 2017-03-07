@@ -87,8 +87,6 @@ Requires:       selinux-policy-base >= 3.7.19-93
 %endif
 
 
-Requires:       ace-editor >= 1.1.1
-
 %if 0%{?suse_version}
 Requires:       cobbler
 Requires:       susemanager-jsp_en
