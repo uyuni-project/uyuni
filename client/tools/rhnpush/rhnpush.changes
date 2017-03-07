@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Mar 07 16:00:37 CET 2017 - mc@suse.de
+
+- version 5.5.102.1-1
+- Updated links to github in spec files
+- require spacewalk-usix indead of spacewalk-backend-usix
+
+-------------------------------------------------------------------
 Wed Jan 11 15:34:37 CET 2017 - michele.bologna@suse.com
 
 - version 5.5.101.1-1
