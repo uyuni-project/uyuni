@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.7.3
+Version: 2.7.3.1
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
