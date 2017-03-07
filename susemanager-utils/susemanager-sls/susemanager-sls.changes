@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Mar 07 14:55:32 CET 2017 - mc@suse.de
+
+- version 3.1.3-1
+- add xccdf result xslt
+- move move_minion_uploaded_files runner
+- call docker inspect for additional data
+- remove the container after inspecting it
+- do not call image profile automatically after build
+- Add state for image profileupdate
+- add SUSE Manager prefix to state ids
+
+-------------------------------------------------------------------
 Tue Feb 07 15:12:30 CET 2017 - michele.bologna@suse.com
 
 - version 3.1.2-1
