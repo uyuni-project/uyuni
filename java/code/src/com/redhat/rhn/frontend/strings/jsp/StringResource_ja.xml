@@ -18561,7 +18561,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>@@PRODUCT_NAME@@ によって管理されないキックスタートプロファイルは、@@PRODUCT_NAME@@ ユーザーインターフェースで編集することはできません。これらのプロファイルを変更するには、@@PRODUCT_NAME@@ サーバーにログインし、「cobbler profile edit」コマンドを実行します。詳細は、@@PRODUCT_NAME@@ リファレンスガイドを参照してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>

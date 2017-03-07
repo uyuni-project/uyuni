@@ -15729,7 +15729,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>

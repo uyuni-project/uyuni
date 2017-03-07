@@ -13148,7 +13148,7 @@ Kickstart করার সময় অনুগ্রহ করে সিস্ট
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.distro.sw_managed.jsp">
-        <source>@@PRODUCT_NAME@@ Managed?*</source>
+        <source>@@PRODUCT_NAME@@-managed?*</source>
         <target>@@PRODUCT_NAME@@ পরিচালিত?*</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
