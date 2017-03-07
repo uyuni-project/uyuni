@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Mar 07 14:42:32 CET 2017 - mc@suse.de
+
+- version 2.7.6.1-1
+- Updated links to github in spec files
+- add exception processing in taskotop
+- tweaked manpage a bit
+- add additional info about taskotop
+- add Fedora 25 repositories
+
+-------------------------------------------------------------------
 Tue Feb 07 15:10:11 CET 2017 - michele.bologna@suse.com
 
 - version 2.7.1.1-1
