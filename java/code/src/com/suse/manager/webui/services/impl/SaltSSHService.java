@@ -59,9 +59,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -91,8 +89,9 @@ public class SaltSSHService {
      */
     public SaltSSHService(SaltClient saltClientIn) {
         this.saltClient = saltClientIn;
-        asyncSaltSSHExecutor = new ThreadPoolExecutor(
-                0, 20, 60L, TimeUnit.SECONDS, new SynchronousQueue());
+        // use a small fixed pool so we don't overwhelm the salt-api
+        // with salt-ssh executions
+        asyncSaltSSHExecutor = Executors.newFixedThreadPool(3);
     }
 
     /**
@@ -277,6 +276,7 @@ public class SaltSSHService {
                 return callSyncSSH(call, target);
             }
             catch (SaltException e) {
+                LOG.error("Error calling async salt-ssh minions", e);
                 throw new RuntimeException(e);
             }
         }, asyncSaltSSHExecutor)
@@ -585,6 +585,7 @@ public class SaltSSHService {
                                 isSudoUser(getSSHUser())));
             }
             catch (SaltException e) {
+                LOG.error("Error matching salt-ssh minions", e);
                 throw new RuntimeException(e);
             }
         }, asyncSaltSSHExecutor);
