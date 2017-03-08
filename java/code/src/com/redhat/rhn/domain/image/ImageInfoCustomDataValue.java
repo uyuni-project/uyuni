@@ -51,6 +51,27 @@ public class ImageInfoCustomDataValue {
     private Date modified;
 
     /**
+     * Instantiates a new image info custom data value.
+     */
+    public ImageInfoCustomDataValue() { }
+
+    /**
+     * Instantiates a new image info custom data value from a
+     * {@link ProfileCustomDataValue} instance
+     *
+     * @param customDataValueIn the profile custom data value
+     * @param imageInfoIn the image info
+     */
+    public ImageInfoCustomDataValue(
+            ProfileCustomDataValue customDataValueIn, ImageInfo imageInfoIn) {
+        this.setImageInfo(imageInfoIn);
+        this.setKey(customDataValueIn.getKey());
+        this.setValue(customDataValueIn.getValue());
+        this.setCreator(customDataValueIn.getCreator());
+        this.setLastModifier(customDataValueIn.getLastModifier());
+    }
+
+    /**
      * @return Returns the Id
      */
     @Id
