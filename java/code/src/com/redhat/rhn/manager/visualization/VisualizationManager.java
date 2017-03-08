@@ -21,8 +21,10 @@ import com.redhat.rhn.manager.visualization.json.System;
 import com.redhat.rhn.manager.visualization.json.VirtualHostManager;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,6 +41,8 @@ public class VisualizationManager {
      * @return Data for virtualization hierarchy
      */
     public static List<Object> virtualizationHierarchy(User user) {
+        Map<String, Set<String>> installedProducts = installedProducts(user);
+
         System root = new System();
         root.setId("root");
         root.setParentId(null);
@@ -64,6 +68,7 @@ public class VisualizationManager {
                 .setParameter("org", user.getOrg())
                 .list()
                 .stream())
+                .map(p -> p.setInstalledProducts((installedProducts.get(p.getId()))))
                 .map(p -> p.setParentId(serverVhmMapping.getOrDefault(
                         p.getId(),
                         unknownVirtualHostManager.getId()
@@ -73,7 +78,8 @@ public class VisualizationManager {
                 .getNamedQuery("Server.listGuestSystems")
                 .setParameter("org", user.getOrg())
                 .list()
-                .stream());
+                .stream())
+                .map(p -> p.setInstalledProducts((installedProducts.get(p.getId()))));
 
         return concatStreams(
                 Stream.of(root),
@@ -103,6 +109,8 @@ public class VisualizationManager {
      * @return Data for proxy hierarchy
      */
     public static List<Object> proxyHierarchy(User user) {
+        Map<String, Set<String>> installedProducts = installedProducts(user);
+
         System root = new System();
         root.setId("root");
         root.setName("SUSE Manager");
@@ -112,19 +120,48 @@ public class VisualizationManager {
                 .setParameter("org", user.getOrg())
                 .list()
                 .stream())
+                .map(p -> p.setInstalledProducts(installedProducts.get(p.getId())))
                 .map(p -> p.setParentId(root.getId()));
 
         Stream<System> systemsWithProxies = ((Stream<System>) HibernateFactory.getSession()
                 .getNamedQuery("Server.listSystemsBehindProxy")
                 .setParameter("org", user.getOrg())
                 .list()
-                .stream());
+                .stream())
+                .map(s -> s.setInstalledProducts(installedProducts.get(s.getId())));
 
         return concatStreams(
                 Stream.of(root),
                 proxies,
                 systemsWithProxies
         ).collect(Collectors.toList());
+    }
+
+    /**
+     * Map of system id as string -> set of installed product names
+     * @param user user
+     * @return map of system id as string -> set of installed product names
+     */
+    private static Map<String, Set<String>> installedProducts(User user) {
+        return ((List<Object[]>) HibernateFactory.getSession()
+                .getNamedQuery("Server.serverInstalledProductNames")
+                .setParameter("org", user.getOrg())
+                .list())
+                .stream()
+                .collect(Collectors.toMap(
+                        v -> v[0].toString(),
+                        v -> set((String) v[1]),
+                        (u, v) -> {
+                            u.addAll(v);
+                            return u;
+                        }
+                ));
+    }
+
+    private static <T> Set<T> set(T elem) {
+        HashSet<T> ts = new HashSet<>();
+        ts.add(elem);
+        return ts;
     }
 
     private static Stream<?> concatStreams(Stream<?>... streams) {
