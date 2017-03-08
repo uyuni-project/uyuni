@@ -89,7 +89,7 @@ function initHierarchy() {
 
           const visibleChildren = node._allChildren.filter(c => nodeVisible(c, pred));
           node.children = visibleChildren;
-          return visibleChildren.length > 0;
+          return visibleChildren.length > 0 || pred(node);
         }
 
         // Prepare filters
