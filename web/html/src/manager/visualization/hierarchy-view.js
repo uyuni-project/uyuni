@@ -43,13 +43,17 @@ function hierarchyView(root, container) {
     gEnter
       .append("text")
       .attr("dx", "1em")
-      .attr("dy", ".15em")
-      .text(d => d.data.type && d.data.type != 'system' ? d.data.name : '');
+      .attr("dy", ".15em");
 
     // common for enter + update sections
     node
       .merge(gEnter)
       .attr('class', d => 'node ' + deriveClass(d));
+
+    node
+      .merge(gEnter)
+      .selectAll('text')
+      .text(d => (d.data.type && d.data.type != 'system' ? d.data.name : '') + countChildren(d));
 
     var link = container.selectAll('line.link').data(links, d => d.target.id);
 
@@ -138,6 +142,10 @@ function updateDetailBox(d) {
     systemDetailLink +
     '<div>Type : <strong>' + data.type + '</strong></div>' +
     systemSpecificInfo);
+}
+
+function countChildren(node) {
+  return node._allChildren ? ' [' + node.children.length + '/' + node._allChildren.length + ']' : '';
 }
 
 module.exports = {
