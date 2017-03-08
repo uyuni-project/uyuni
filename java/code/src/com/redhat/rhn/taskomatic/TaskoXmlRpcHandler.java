@@ -15,10 +15,10 @@
 package com.redhat.rhn.taskomatic;
 
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
-
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
+
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 

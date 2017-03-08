@@ -36,7 +36,6 @@ import com.suse.salt.netapi.calls.modules.Config;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Match;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
-import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
@@ -602,50 +601,6 @@ public class SaltService {
             throws SaltException {
         return call.callAsync(
                 SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-    }
-
-    /**
-     * Remove a scheduled job from the minion
-     *
-     * @param name the name of the job to delete from the schedule
-     * @param target the target
-     * @return the result
-     */
-    public Map<String, Result<Schedule.Result>> deleteSchedule(
-            String name, MinionList target) {
-        try {
-            return callSync(Schedule.delete(name), target);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Remove a scheduled task (referenced via action id) on a list of servers.
-     *
-     * @param sids server ids
-     * @param aid action id
-     * @return the list of server ids that successfully removed the action
-     */
-    public List<Long> deleteSchedulesForActionId(List<Long> sids, long aid) {
-        List<MinionServer> minions = MinionServerFactory
-                .lookupByIds(sids)
-                .collect(Collectors.toList());
-
-        Map<String, Result<Schedule.Result>> results = deleteSchedule(
-                "scheduled-action-" + aid,
-                new MinionList(minions.stream()
-                        .map(MinionServer::getMinionId)
-                        .collect(Collectors.toList())
-                )
-        );
-        return minions.stream().filter(minionServer -> {
-            Schedule.Result result = results.get(minionServer.getMinionId()).result().get();
-            return result != null && result.getResult();
-        })
-          .map(MinionServer::getId)
-          .collect(Collectors.toList());
     }
 
     /**

@@ -57,13 +57,14 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-
-import com.suse.manager.webui.services.impl.SaltService;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -81,6 +82,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * ActionFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.action.Action objects from the
@@ -92,6 +95,7 @@ public class ActionFactory extends HibernateFactory {
     private static ActionFactory singleton = new ActionFactory();
     private static Logger log = Logger.getLogger(ActionFactory.class);
     private static Set actionArchTypes;
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     private ActionFactory() {
         super();
@@ -158,12 +162,15 @@ public class ActionFactory extends HibernateFactory {
      * @param user the user witht he set
      * @return the number of failed systems to remove an action for.
      */
-    public static int removeActionForSystemSet(long actionId,
-            String setLabel, User user) {
+    public static int removeActionForSystemSet(long actionId, String setLabel, User user) {
 
         RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
-        List<Long> ids = SaltService.INSTANCE.deleteSchedulesForActionId(
-                new ArrayList<>(set.getElementValues()), actionId);
+        TASKOMATIC_API.deleteScheduledAction(actionId);
+
+        List<Long> ids = MinionServerFactory
+                    .lookupByIds(new ArrayList<>(set.getElementValues()))
+                    .map(MinionServer::getId)
+                    .collect(toList());
         int failed = 0;
         for (Long sid : ids) {
             try {
@@ -513,7 +520,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static Action lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        Action a = (Action)session.get(Action.class, id);
+        Action a = session.get(Action.class, id);
         return a;
     }
 
@@ -583,7 +590,7 @@ public class ActionFactory extends HibernateFactory {
     lookupConfigRevisionAction(Long id) {
 
         Session session = HibernateFactory.getSession();
-        ConfigRevisionAction c = (ConfigRevisionAction) session.
+        ConfigRevisionAction c = session.
                 get(ConfigRevisionAction.class, id);
         return c;
     }

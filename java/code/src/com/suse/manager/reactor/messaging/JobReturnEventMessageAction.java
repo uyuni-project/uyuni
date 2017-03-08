@@ -29,9 +29,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
-import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.event.JobReturnEvent;
 
 import org.apache.log4j.Logger;
@@ -42,7 +40,6 @@ import java.util.Optional;
  * Handler class for {@link JobReturnEventMessage}.
  */
 public class JobReturnEventMessageAction extends AbstractDatabaseAction {
-
 
     /**
      * Converts an event to json
@@ -125,16 +122,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         });
                     });
                 }
-
-                // Delete schedule on the minion if we created it
-                jobReturnEvent.getData().getSchedule().ifPresent(scheduleName -> {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Deleting schedule '" + scheduleName +
-                                "' from minion: " + jobReturnEvent.getMinionId());
-                    }
-                    SaltService.INSTANCE.deleteSchedule(scheduleName,
-                            new MinionList(jobReturnEvent.getMinionId()));
-                });
             }
             else {
                 LOG.warn("Action referenced from Salt job was not found: " + id);
