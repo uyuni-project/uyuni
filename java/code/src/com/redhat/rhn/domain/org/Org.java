@@ -89,7 +89,7 @@ public class Org extends BaseDomainHelper {
     /**
      * @return Returns the customDataKeys.
      */
-    public Set getCustomDataKeys() {
+    public Set<CustomDataKey> getCustomDataKeys() {
         return this.customDataKeys;
     }
 
