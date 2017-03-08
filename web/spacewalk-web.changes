@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Mar 08 19:03:33 CET 2017 - mc@suse.de
+
+- version 2.7.1.4-1
+- show message when waiting for ssh minions times out
+- fix remote cmd ui js err and timed out msg
+
+-------------------------------------------------------------------
 Tue Mar 07 14:57:03 CET 2017 - mc@suse.de
 
 - version 2.7.1.3-1
