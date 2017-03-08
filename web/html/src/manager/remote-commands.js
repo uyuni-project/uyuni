@@ -325,8 +325,7 @@ class RemoteCommand extends React.Component {
             });
             break;
         case "matchSSH":
-            var minionsMap = this.state.result.minions;
-            minionsMap = event.minions.reduce(
+            var minionsMap = event.minions.reduce(
                 (map, minionId) => map.set(minionId, {type: "matched", value: null}),
                  this.state.result.minions);
             if (isPreviewDone(minionsMap, false)) {
@@ -470,7 +469,11 @@ class RemoteCommand extends React.Component {
     }
     if (result.waitForSSH) {
         elements.push(
-            <MinionResultView key="waitForSSH" id="waitForSSH" label={t("Matching ssh-push minions...")} result={ {type: "pending"} }/>
+            <MinionResultView key="waitForSSH" id="waitForSSH" label={t("Matching ssh-push minions...")} result={ {type: "pending", value: null} }/>
+        );
+    } else if (result.timedOutSSH) {
+        elements.push(
+            <MinionResultView key="waitForSSH" id="waitForSSH" label={t("Matching ssh-push minions...")} result={ {type: "timedOut", value: null} }/>
         );
     }
     return <div>{elements}</div>;
