@@ -43,6 +43,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -130,19 +131,23 @@ public class RemoteMinionCommands {
                         .collect(Collectors.toList());
 
                 this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
-                Map<String, CompletionStage<Result<Boolean>>> res;
+
+                Optional<CompletionStage<Map<String, Result<Boolean>>>> resSSH =
+                        SaltService.INSTANCE.matchAsyncSSH(msg.getTarget(), failAfter);
+
+                Map<String, CompletionStage<Result<Boolean>>> res = new HashMap<>();
                 try {
                     res = SaltService.INSTANCE
                             .matchAsync(msg.getTarget(), failAfter);
                 }
                 catch (NullPointerException e) {
-                    sendMessage(session, new ActionErrorEventDto(null,
-                            "ERR_TARGET_NO_MATCH", e.getMessage()));
-                    return;
+                    if (!resSSH.isPresent()) {
+                        // just return, no need to wait for salt-ssh results
+                        sendMessage(session, new ActionErrorEventDto(null,
+                                "ERR_TARGET_NO_MATCH", e.getMessage()));
+                        return;
+                    }
                 }
-
-                Optional<CompletionStage<Map<String, Result<Boolean>>>> resSSH =
-                        SaltService.INSTANCE.matchAsyncSSH(msg.getTarget(), failAfter);
 
                 previewedMinions = Collections
                         .synchronizedList(new ArrayList<>(res.size()));
@@ -180,22 +185,41 @@ public class RemoteMinionCommands {
 
                 resSSH.ifPresent(future -> {
                     future.whenComplete((result, err) -> {
-                        List<String> sshMinions = result.entrySet().stream()
-                                .filter((entry) -> {
-                            if (!allVisibleMinions.contains(entry.getKey())) {
-                                // minion is not visible to this user
-                                return false;
+                        if (err != null) {
+                            if (err instanceof TimeoutException) {
+                                sendMessage(session,
+                                        new ActionTimedOutEventDto(true, "preview"));
+                                LOG.debug(
+                                    "Timed out waiting for response from salt-ssh minions");
                             }
-                            return entry.getValue() != null &&
-                                    entry.getValue().result().orElse(false);
-                        })
-                        .map((entry) -> entry.getKey())
-                        .collect(Collectors.toList());
+                            else {
+                                LOG.error("Error waiting for salt-ssh minions", err);
+                                sendMessage(session,
+                                        new ActionErrorEventDto(null,
+                                                "ERR_WAIT_SSH_MATCH",
+                                                "Error waiting for matching: " +
+                                                        err.getMessage()));
+                            }
+                            return;
+                        }
+                        if (result != null) {
+                            List<String> sshMinions = result.entrySet().stream()
+                                    .filter((entry) -> {
+                                        if (!allVisibleMinions.contains(entry.getKey())) {
+                                            // minion is not visible to this user
+                                            return false;
+                                        }
+                                        return entry.getValue() != null &&
+                                                entry.getValue().result().orElse(false);
+                                    })
+                                    .map((entry) -> entry.getKey())
+                                    .collect(Collectors.toList());
 
-                        previewedMinions.addAll(sshMinions);
+                            previewedMinions.addAll(sshMinions);
 
-                        sendMessage(session,
-                                new SSHMinionMatchResultDto(sshMinions));
+                            sendMessage(session,
+                                    new SSHMinionMatchResultDto(sshMinions));
+                        }
                     });
                 });
 
@@ -218,6 +242,11 @@ public class RemoteMinionCommands {
                             new ActionErrorEventDto(null,
                                     "ERR_NO_PREVIEW",
                                     "Please execute preview first."));
+                }
+                else if (previewedMinions.isEmpty()) {
+                    sendMessage(session, new ActionErrorEventDto(null,
+                            "ERR_TARGET_NO_MATCH", ""));
+                    return;
                 }
                 this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
                 Map<String, CompletionStage<Result<String>>> res;

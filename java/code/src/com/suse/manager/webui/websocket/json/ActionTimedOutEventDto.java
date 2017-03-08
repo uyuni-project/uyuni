@@ -19,11 +19,29 @@ package com.suse.manager.webui.websocket.json;
  */
 public class ActionTimedOutEventDto extends AbstractSaltEventDto {
 
+    private boolean timedOutSSH;
+
     /**
      * @param minionId the minion id
      * @param actionType the action type
      */
     public ActionTimedOutEventDto(String minionId, String actionType) {
         super("timedOut", minionId, actionType);
+    }
+
+    /**
+     * @param timedOutSSHIn waiting for salt-ssh timed out
+     * @param actionType the action type
+     */
+    public ActionTimedOutEventDto(boolean timedOutSSHIn, String actionType) {
+        super("timedOut", null, actionType);
+        this.timedOutSSH = timedOutSSHIn;
+    }
+
+    /**
+     * @return waiting for salt-ssh timed out
+     */
+    public boolean isTimedOutSSH() {
+        return timedOutSSH;
     }
 }
