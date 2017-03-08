@@ -91,6 +91,17 @@ public class ImageStoreFactory extends HibernateFactory {
     }
 
     /**
+     * Return a list of ImageStoreTypes
+     * @return list of image store types
+     */
+    public static List<ImageStoreType> listImageStoreTypes() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageStoreType> criteria = builder.createQuery(ImageStoreType.class);
+        criteria.from(ImageStoreType.class);
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
      * Lookup ImageStore by label and org
      * @param label the label
      * @param org the organization
