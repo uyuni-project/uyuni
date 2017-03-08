@@ -46,12 +46,12 @@ function hierarchyView(root, container) {
       .attr("dy", ".15em");
 
     // common for enter + update sections
-    node
-      .merge(gEnter)
+    const enterUpdate = node.merge(gEnter);
+
+    enterUpdate
       .attr('class', d => 'node ' + deriveClass(d));
 
-    node
-      .merge(gEnter)
+    enterUpdate
       .selectAll('text')
       .text(d => (d.data.type && d.data.type != 'system' ? d.data.name : '') + countChildren(d));
 
