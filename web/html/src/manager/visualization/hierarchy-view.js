@@ -126,8 +126,8 @@ function updateDetailBox(d) {
   var data = d.data;
   var systemDetailLink = '';
   var systemSpecificInfo = '';
-  if (data.type && data.type == 'system' && data.id != 'root') {
-    var idSlices = (data.id).split('-');
+  if (data.type && data.type == 'system' && data.rawId != 'root') {
+    var idSlices = (data.rawId).split('-');
     var systemId = idSlices[idSlices.length - 1];
     systemDetailLink = '<div><a href="/rhn/systems/details/Overview.do?sid=' +
       systemId + '" target="_blank">System details page</a></div>';
