@@ -63,6 +63,7 @@ import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -90,6 +91,7 @@ import java.util.stream.Collectors;
 public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = Logger.getLogger(ActionManagerTest.class);
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
@@ -291,8 +293,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action parent = createActionWithMinionServerActions(user, 3);
         List actionList = createActionList(user, new Action [] {parent});
 
-        SaltService saltServiceMock = mock(SaltService.class);
-        ActionManager.setSaltService(saltServiceMock);
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
 
         ServerAction[] sa = parent.getServerActions().toArray(new ServerAction[3]);
         Map<String, Result<Schedule.Result>> result = new HashMap<>();
@@ -302,20 +304,15 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 new Result<>(Xor.right(new Schedule.Result("Job 123 does not exist.", false))));
         context().checking(new Expectations() { {
             // minion 2 is down -> did not return anything
-            allowing(saltServiceMock).deleteSchedule(with(equal("scheduled-action-" + parent.getId())), with(any(MinionList.class)));
+            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent.getId())));
             will(returnValue(result));
         } });
 
         assertServerActionCount(parent, 3);
         assertActionsForUser(user, 1);
 
-        Map<Action, Map<Server, ActionManager.CancelServerActionStatus>> cancelResult = ActionManager.cancelActions(user, actionList);
+        ActionManager.cancelActions(user, actionList);
 
-        assertEquals(1, cancelResult.size());
-        assertEquals(3, cancelResult.get(parent).size());
-        assertEquals(cancelResult.get(parent).get(sa[0].getServer()), ActionManager.CancelServerActionStatus.CANCELED);
-        assertEquals(cancelResult.get(parent).get(sa[1].getServer()), ActionManager.CancelServerActionStatus.CANCELED_NO_MINION_JOB);
-        assertEquals(cancelResult.get(parent).get(sa[2].getServer()), ActionManager.CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN);
         assertServerActionCount(parent, 1);
         assertActionsForUser(user, 1); // shouldn't have been deleted
         context().assertIsSatisfied();
@@ -341,8 +338,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 });
         List actionList = createActionList(user, new Action [] {parent});
 
-        SaltService saltServiceMock = mock(SaltService.class);
-        ActionManager.setSaltService(saltServiceMock);
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
 
         List<ServerAction> sa = parent.getServerActions().stream()
                 .filter(s -> s.getServer().asMinionServer().isPresent())
@@ -354,7 +351,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 new Result<>(Xor.right(new Schedule.Result("Job 123 does not exist.", false))));
         // minion 2 is down -> did not return anything
         context().checking(new Expectations() { {
-            allowing(saltServiceMock).deleteSchedule(with(equal("scheduled-action-" + parent.getId())), with(any(MinionList.class)));
+            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent.getId())));
             will(returnValue(result));
         } });
         Optional<ServerAction> traditionalServerAction = parent.getServerActions().stream()
@@ -364,15 +361,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertServerActionCount(parent, 4);
         assertActionsForUser(user, 1);
 
-        Map<Action, Map<Server, ActionManager.CancelServerActionStatus>> cancelResult = ActionManager.cancelActions(user, actionList);
+        ActionManager.cancelActions(user, actionList);
 
-        assertEquals(1, cancelResult.size());
-        assertEquals(4, cancelResult.get(parent).size());
-        assertEquals(cancelResult.get(parent).get(sa.get(0).getServer()), ActionManager.CancelServerActionStatus.CANCELED);
-        assertEquals(cancelResult.get(parent).get(sa.get(1).getServer()), ActionManager.CancelServerActionStatus.CANCELED_NO_MINION_JOB);
-        assertEquals(cancelResult.get(parent).get(sa.get(2).getServer()), ActionManager.CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN);
-        assertEquals(cancelResult.get(parent).get(traditionalServerAction.get().getServer()),
-                ActionManager.CancelServerActionStatus.CANCELED);
         assertServerActionCount(parent, 1);
         assertActionsForUser(user, 1); // shouldn't have been deleted
         context().assertIsSatisfied();
@@ -479,7 +469,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server,
                 ksData, user, parentAction);
         TestUtils.saveAndFlush(ksSession);
-        ksSession = (KickstartSession)RhnBaseTestCase.reload(ksSession);
+        ksSession = RhnBaseTestCase.reload(ksSession);
 
         List actionList = createActionList(user, new Action [] {parentAction});
 

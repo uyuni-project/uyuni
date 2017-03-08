@@ -32,7 +32,6 @@ import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -478,13 +477,26 @@ public class TaskomaticApi {
     }
 
     /**
-     * Schedule action cleanup e.g. when new job results are available.
+     * Delete a scheduled Action.
      *
-     * @return schedule date
+     * @param actionId the action id to be removed
      * @throws TaskomaticApiException if there was an error
      */
-    public Date scheduleActionCleanup() throws TaskomaticApiException {
-        return (Date) invoke("tasko.scheduleSingleSatBunchRun",
-                "minion-action-cleanup-bunch", Collections.emptyMap());
+    public void deleteScheduledAction(Long actionId) throws TaskomaticApiException {
+        try {
+            String jobLabel = MINION_ACTION_JOB_PREFIX + actionId;
+
+            LOG.debug("Unscheduling job: " + jobLabel);
+
+            invoke("tasko.unscheduleSatBunch", jobLabel);
+        }
+        catch (TaskomaticApiException e) {
+            if (e.getCause() instanceof XmlRpcFault &&
+                    e.getMessage().contains("InvalidParamException")) {
+                // bunch was not there to begin with. Move on
+                return;
+            }
+            throw e;
+        }
     }
 }
