@@ -32,6 +32,7 @@ import spark.Request;
 import spark.Response;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -263,6 +264,7 @@ public class ImageStoreController {
                     store.getCreds() : CredentialsFactory.createRegistryCredentials();
             dc.setUsername(credentials.getUsername());
             dc.setPassword(credentials.getPassword());
+            dc.setModified(new Date());
 
             store.setCreds(dc);
         }
