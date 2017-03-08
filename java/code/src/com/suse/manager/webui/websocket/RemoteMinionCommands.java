@@ -109,17 +109,9 @@ public class RemoteMinionCommands {
         ExecuteMinionActionDto msg = Json.GSON.fromJson(
                 messageBody, ExecuteMinionActionDto.class);
         WebSession webSession = WebSessionFactory.lookupById(sessionId);
-        if (webSession == null || webSession.getUser() == null) {
-            LOG.debug("Invalid web sessionId. Closing the web socket.");
-            sendMessage(session, new ActionErrorEventDto(null,
-                    "INVALID_SESSION", "Invalid user session."));
-            try {
-                session.close();
-                return;
-            }
-            catch (IOException e) {
-                LOG.debug("Error closing web socket session", e);
-            }
+
+        if (invalidWebSession(session, webSession)) {
+            return;
         }
 
         int timeOut = 600; // 10 minutes
@@ -308,21 +300,39 @@ public class RemoteMinionCommands {
 
     }
 
+    private boolean invalidWebSession(Session session, WebSession webSession) {
+        if (webSession == null || webSession.getUser() == null) {
+            LOG.debug("Invalid web sessionId. Closing the web socket.");
+            sendMessage(session, new ActionErrorEventDto(null,
+                    "INVALID_SESSION", "Invalid user session."));
+            try {
+                session.close();
+                return true;
+            }
+            catch (IOException e) {
+                LOG.debug("Error closing web socket session", e);
+            }
+        }
+        return false;
+    }
+
     /**
      * Must be synchronized. Sending messages concurrently from separate threads
      * will result in IllegalStateException.
      */
-    private synchronized void sendMessage(Session session, AbstractSaltEventDto dto) {
-        try {
-            if (session.isOpen()) {
-                session.getBasicRemote().sendText(Json.GSON.toJson(dto));
+    private void sendMessage(Session session, AbstractSaltEventDto dto) {
+        synchronized (session) {
+            try {
+                if (session.isOpen()) {
+                    session.getBasicRemote().sendText(Json.GSON.toJson(dto));
+                }
+                else {
+                    LOG.debug("Could not send websocket message. Session is closed.");
+                }
             }
-            else {
-                LOG.debug("Could not send websocket message. Session is closed.");
+            catch (IOException e) {
+                LOG.error("Error sending websocket message", e);
             }
-        }
-        catch (IOException e) {
-            LOG.error("Error sending websocket message", e);
         }
     }
 
