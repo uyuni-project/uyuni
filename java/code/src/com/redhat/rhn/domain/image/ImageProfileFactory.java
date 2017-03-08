@@ -147,4 +147,22 @@ public class ImageProfileFactory extends HibernateFactory {
         criteria.where(builder.equal(root.get("org"), org));
         return getSession().createQuery(criteria).getResultList();
     }
+
+    /**
+     * Save a {@link ProfileCustomDataValue}.
+     *
+     * @param customDataValue the image profile to save
+     */
+    public static void save(ProfileCustomDataValue customDataValue) {
+        instance.saveObject(customDataValue);
+    }
+
+    /**
+     * Delete a {@link ProfileCustomDataValue}.
+     *
+     * @param customDataValue the profile custom data value to delete
+     */
+    public static void delete(ProfileCustomDataValue customDataValue) {
+        instance.removeObject(customDataValue);
+    }
 }

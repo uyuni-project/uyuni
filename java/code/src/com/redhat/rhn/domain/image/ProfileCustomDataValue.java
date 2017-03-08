@@ -24,7 +24,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -89,7 +88,7 @@ public class ProfileCustomDataValue {
     /**
      * @return Returns the creator.
      */
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = UserImpl.class)
+    @ManyToOne(targetEntity = UserImpl.class)
     @JoinColumn(name = "created_by", nullable = true)
     public User getCreator() {
         return creator;
@@ -97,7 +96,7 @@ public class ProfileCustomDataValue {
     /**
      * @return Returns the lastModifier.
      */
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = UserImpl.class)
+    @ManyToOne(targetEntity = UserImpl.class)
     @JoinColumn(name = "last_modified_by", nullable = true)
     public User getLastModifier() {
         return lastModifier;

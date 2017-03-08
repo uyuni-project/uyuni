@@ -19,6 +19,10 @@ import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The Image profile JSON class
@@ -32,6 +36,7 @@ public class ImageProfileJson {
     private String store;
     private ActivationKeyJson activationKey;
     private ChannelsJson channels;
+    private Map<String, String> customData;
 
     /**
      * @return the profile id
@@ -132,6 +137,20 @@ public class ImageProfileJson {
     }
 
     /**
+     * @return the custom data
+     */
+    public Map<String, String> getCustomData() {
+        return customData;
+    }
+
+    /**
+     * @param customDataIn the custom data
+     */
+    public void setCustomData(Map<String, String> customDataIn) {
+        this.customData = customDataIn;
+    }
+
+    /**
      * Creates a JSON object from an image profile
      *
      * @param profile the image profile
@@ -153,6 +172,9 @@ public class ImageProfileJson {
         if (profile instanceof DockerfileProfile) {
             json.setPath(((DockerfileProfile) profile).getPath());
         }
+
+        json.setCustomData(profile.getCustomDataValues().stream().collect(Collectors.toMap(
+                v -> v.getKey().getLabel(), v -> StringUtils.defaultString(v.getValue()))));
 
         return json;
     }
