@@ -127,6 +127,21 @@ function initHierarchy() {
             t();
           });
 
+        const installedProductsFilterDiv = d3.select('#filter-wrapper')
+          .append('div').attr('class', 'filter');
+        installedProductsFilterDiv
+          .append('label')
+          .text('Filter by system installed products');
+        installedProductsFilterDiv
+          .append('input')
+          .attr('type', 'text')
+          .attr('placeholder', 'e.g., SLES')
+          .on('input', function() {
+            myFilters.put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(this.value.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
+            nodeVisible(root, myFilters.predicate());
+            t();
+          });
+
         function updateTree() {
           const date = $( '#criteria-datepicker' ).datepicker( "getDate" );
           const time = $( '#criteria-timepicker' ).timepicker( "getTime" );

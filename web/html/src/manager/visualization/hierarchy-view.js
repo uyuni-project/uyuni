@@ -135,7 +135,8 @@ function updateDetailBox(d) {
     systemSpecificInfo =
       '<div>Base entitlement : <strong>' + data.base_entitlement + '</strong></div>' +
       '<div>Base channel: <strong>' + data.base_channel + '</strong></div>' +
-      '<div>Checkin time : <strong>' + new Date(data.checkin) + '</strong></div>';
+      '<div>Checkin time : <strong>' + new Date(data.checkin) + '</strong></div>' +
+      '<div>Installed products : <strong>' + data.installedProducts + '</strong></div>';
   }
   $('.detailBox').html(
     '<div>System name : <strong>' + data.name + '</strong></div>' +
