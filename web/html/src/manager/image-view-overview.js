@@ -200,6 +200,23 @@ class ImageViewOverview extends React.Component {
         return this.props.data.action && this.props.data.action.status === 2;
     }
 
+    getRescheduleLink() {
+        const data = this.props.data;
+
+        const params = {
+            host: data.buildServer ? data.buildServer.id : undefined,
+            profile: data.profile ? data.profile.id : undefined,
+            tag: data.version ? encodeURIComponent(data.version) : undefined
+        }
+
+        const loc = "/rhn/manager/cm/build?" + (
+            Object.keys(params).filter(k => params[k] !== undefined)
+                    .map(key => key + '=' + params[key]).join('&')
+        );
+
+        return loc;
+    }
+
     render() {
         const data = this.props.data;
         return (
@@ -218,6 +235,13 @@ class ImageViewOverview extends React.Component {
                 <div className="col-md-6">
                     <BootstrapPanel title={t("Build Status")}>
                         <BuildStatus data={data}/>
+                        <LinkButton
+                            text={t("Rebuild")}
+                            icon="fa-cogs"
+                            title={t("Reschedule the build")}
+                            className="btn-default pull-right btn-xs"
+                            href={this.getRescheduleLink()}
+                        />
                     </BootstrapPanel>
                 </div>
             </div>

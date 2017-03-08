@@ -133,7 +133,7 @@ class ImageProfiles extends React.Component {
                           className="btn-default btn-sm"
                           title={t("Build")}
                           icon="fa-cogs"
-                          href={"/rhn/manager/cm/build/" + row.profileId}
+                          href={"/rhn/manager/cm/build?profile=" + row.profileId}
                       />
                       <LinkButton
                           className="btn-default btn-sm"
