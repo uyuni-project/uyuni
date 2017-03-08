@@ -232,7 +232,7 @@ public class ImageStoreController {
         setStoreCredentials(imageStore, createRequest.getCredentials());
 
         imageStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(
-                ImageStore.TYPE_REGISTRY));
+                ImageStore.TYPE_REGISTRY).get());
         imageStore.setOrg(user.getOrg());
 
         ImageStoreFactory.save(imageStore);

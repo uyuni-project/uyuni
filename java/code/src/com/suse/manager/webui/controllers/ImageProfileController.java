@@ -205,8 +205,10 @@ public class ImageProfileController {
         JsonResult result = profile.map(p -> {
             if (p instanceof DockerfileProfile) {
                 DockerfileProfile dp = (DockerfileProfile) p;
+
+                //Throw NoSuchElementException if not found
                 ImageStore store = ImageStoreFactory
-                        .lookupBylabelAndOrg(reqData.getStoreLabel(), user.getOrg());
+                        .lookupBylabelAndOrg(reqData.getStoreLabel(), user.getOrg()).get();
 
                 dp.setLabel(reqData.getLabel());
                 dp.setPath(reqData.getPath());
@@ -238,8 +240,10 @@ public class ImageProfileController {
 
         ImageProfile profile;
         if ("dockerfile".equals(reqData.getImageType())) {
+            //Throw NoSuchElementException if not found
             ImageStore store = ImageStoreFactory
-                    .lookupBylabelAndOrg(reqData.getStoreLabel(), user.getOrg());
+                    .lookupBylabelAndOrg(reqData.getStoreLabel(), user.getOrg()).get();
+
             DockerfileProfile dockerfileProfile = new DockerfileProfile();
 
             dockerfileProfile.setLabel(reqData.getLabel());

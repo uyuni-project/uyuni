@@ -77,12 +77,12 @@ public class ImageStoreFactory extends HibernateFactory {
      * @param label the label to search for
      * @return Returns the ImageStoreType
      */
-    public static ImageStoreType lookupStoreTypeByLabel(String label) {
+    public static Optional<ImageStoreType> lookupStoreTypeByLabel(String label) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ImageStoreType> criteria = builder.createQuery(ImageStoreType.class);
         Root<ImageStoreType> root = criteria.from(ImageStoreType.class);
         criteria.where(builder.equal(root.get("label"), label));
-        return (ImageStoreType) getSession().createQuery(criteria).getSingleResult();
+        return getSession().createQuery(criteria).uniqueResultOptional();
     }
 
     /**
@@ -91,14 +91,14 @@ public class ImageStoreFactory extends HibernateFactory {
      * @param org the organization
      * @return Returns the ImageStore
      */
-    public static ImageStore lookupBylabelAndOrg(String label, Org org) {
+    public static Optional<ImageStore> lookupBylabelAndOrg(String label, Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ImageStore> criteria = builder.createQuery(ImageStore.class);
         Root<ImageStore> root = criteria.from(ImageStore.class);
         criteria.where(builder.and(
                 builder.equal(root.get("label"), label),
                 builder.equal(root.get("org"), org)));
-        return (ImageStore) getSession().createQuery(criteria).getSingleResult();
+        return getSession().createQuery(criteria).uniqueResultOptional();
     }
 
     /**
