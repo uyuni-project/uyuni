@@ -16,14 +16,16 @@ const TabContainer = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState({activeTabHash: this.sanitizeHash(nextProps.initialActiveTabHash)});
+    this.setState({activeTabHash: this.sanitizeHash(nextProps.initialActiveTabHash, nextProps.hashes)});
   },
 
-  sanitizeHash: function(hash) {
-    if (this.props.hashes.indexOf(hash) >= 0) {
+  sanitizeHash: function(hash, hashArr) {
+    hashArr = hashArr || this.props.hashes;
+
+    if (hashArr.indexOf(hash) >= 0) {
       return hash;
     }
-    return this.props.hashes[0];
+    return hashArr[0];
   },
 
   onActiveTabChange: function(hash) {
